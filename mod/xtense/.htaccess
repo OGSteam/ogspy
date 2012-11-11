@@ -1,0 +1,18 @@
+<Files *.png>
+Allow from all
+</Files>
+<Files *.jpg>
+Allow from all
+</Files>
+<Files *.gif>
+Allow from all
+</Files>
+<Files *.css>
+Allow from all
+</Files>
+<Files xtense.php>
+Allow from all
+</Files>
+#<Files utf-8.php>
+#Allow from all
+#</Files>
