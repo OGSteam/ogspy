@@ -1,0 +1,749 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/2002/REC-xhtml1-20020801/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr" >
+<head>
+	<title>Xtense 2 - Documentation des appels</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+
+body {
+	font-family: Tahoma;
+	font-size: 12px;
+	color: #000;
+}
+
+a {
+	color: #000;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+h1 {
+	margin-top: 0px;
+	color: #93B300;
+	font-size: 1.5em;
+}
+
+h2 {
+	color: #FF9900;
+	font-size: 1.3em;
+}
+
+h3 {
+	color: #51a7bd;
+	font-size: 1.1em;
+	padding-left: 20px;
+}
+
+p {
+	margin: 6px 0px;
+}
+
+p.list span {
+	width: 150px; float: left; margin-right: 10px;
+}
+
+div.class {
+	margin: 5px 0px 5px 20px;
+}
+
+div.class pre {
+	margin-left: 10px;
+}
+
+clear {
+	clear: both;
+}
+
+div.ident {
+	margin-left: 40px;
+}
+
+dl {}
+
+dt {
+	float: left;
+	width: 150px;
+	margin: 2px 10px 2px 0px;
+	border-right: 2px solid #93B300;
+	font-weight: bold;
+	color: #F90;
+}
+
+dt:hover { border-color: #DDD; }
+
+dd {
+	margin: 4px 10px 4px 170px;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+tr {
+	
+}
+
+td {
+	border: 1px solid #CCC;
+	vertical-align: top;
+	text-align: left;
+	padding: 3px;
+}
+
+td.left {
+	font-weight: bold;
+}
+
+td.right {
+	font-family: "Courier New";
+}
+
+th {
+	border: none;
+	border-bottom: 2px solid #93B300;
+	text-align: left;
+	padding: 3px;
+	color: #000;
+}
+
+#wrapper {
+	width: 800px;
+	border: 1px solid #DDD;
+	padding: 15px;
+	margin: 20px auto;
+}
+
+#content {
+	margin-top: 10px;
+	padding-top: 10px;
+	border-top: 1px solid #EEE;
+}
+
+#sum p {
+	padding-left: 20px;
+}
+
+#sum p:hover {
+	color: #999;
+}
+
+#sum .ident {
+	float: left;
+	width: 50px;
+}
+
+/* FSHL */
+/*
+.php-keyword1 {color:#d24; font-weight:bold;}
+.php-keyword2 {color:#d24; }
+.php-var {color:#fa0; font-weight:bold;}
+.php-num {color:red;}
+.php-quote {color:#843; font-weight:bold;}
+.php-vquote {color:#fa0;}
+.php-comment {color:#999; background-color:#ffe;}*/
+
+pre {color:#666; font-family:"Courier New";}
+.php {color:#666; font-family:"Courier New";}
+
+.php-keyword1, .php-keyword2 {color:#069; font-weight:bold;}
+.php-var {color:#09C;}
+.php-num {color:red;}
+.php-quote {color:#F90;}
+.php-vquote {color:#fa0;}
+.php-comment {color:#990;}
+.xlang {color:red; font-weight:bold;}
+
+.eunivers {color:#ffa000}
+.ogame {color:#344566}
+</style>
+</head>
+<body>
+
+<div id="wrapper">
+	<img src="logo_doc.png" align="middle" />
+	<div id="sum">
+		<h1>Sommaire</h1>
+		
+		<p><a href="#I">I. Introduction</a></p>
+		<p><a href="#II">II. Enregistrement</a></p>
+		<p><a href="#III">III. Fichiers</a></p>
+		<p><span class="ident">&nbsp;</span><a href="#III.1">1. Structure des fichiers</a></p>
+		<p><span class="ident">&nbsp;</span><a href="#III.2">2. Contexte de developpement</a></p>
+		
+		<p><a href="#IV">IV. Utilisation de MySQL</a></p>
+		<p><span class="ident">&nbsp;</span><a href="#IV.1">1. Classe</a></p>
+		<p><span class="ident">&nbsp;</span><a href="#IV.2">2. Exemple</a></p>
+		
+		<p><a href="#V">V. Paramètres des fonctions d'appels</a></p>
+		<p><span class="ident">&nbsp;</span><a href="#V.1">1. Types d'appels</a></p>
+		<p><span class="ident">&nbsp;</span><a href="#V.2">2. Sommaire des paramètres</a></p>
+		
+		<p><a href="#VI">VI. Fonctions usuelles</a></p>
+	</div>
+	
+	<div id="content">
+		<h1>Documentation</h1>
+		
+		<h2 id="I">I. Introduction</h2>
+		<p>
+			Introduits dans Xtense 2, les appels (nommés Callbacks en anglais) sont l'envoi des données reçues par Xtense aux mods de OGSpy. A chaque réception de données par le mod Xtense, il appellera les mods enregistrés pour leur envoyer les données.<br />
+			Lors de cet appel, Xtense inclut un fichier spécial du mod, dans lequel il exécutera une fonction définie par l'appel.
+		</p>
+		
+		<h2 id="II">II. Enregistrement</h2>
+		<p>
+			L'enregistrement est nécessaire pour recevoir des appels. A chaque enregistrement correspond un type d'appel et une fonction, vous ne pouvez pas définir pour un même appel plusieurs types de données à renvoyer.
+		</p>
+		<p><em>Structure de la table MySQL stockant ces appels (</em></p>
+		<p>
+			<em class="php-var">`prefix des tables`</em> <strong>xtense_callbacks</strong>
+			<ul>
+				<li><strong>`id`</strong> <span class="php-keyword1">int</span>(<span class="php-num">3</span>) : id de l'appel</li>
+				<li><strong>`mod_id`</strong> <span class="php-keyword1">int</span>(<span class="php-num">3</span>) : id de votre mod</li>
+				<li><strong>`function`</strong> <span class="php-keyword1">varchar</span>(<span class="php-num">30</span>) : nom de la fonction à appeler</li>
+				<li><strong>`type`</strong> <span class="php-keyword1">enum</span>() : type d'appel.</li>
+				<li><strong>`active`</strong> <span class="php-keyword1">int</span>(<span class="php-num">1</span>) : determine le status de l'appel</li>
+			</ul>
+		</p>
+		<p>Le champ `id` possédant une auto incrémentation, il ne faut pas le mettre dans la requête tout comme le champ `active` qui est par défaut à 1.</p>
+		<p>Lors d'un ajout, vérifiez si un enregistrement identique n'existe pas déjà dans la table.</p>
+		<p><em>Exemple</em>
+			<pre><span class="php-keyword1">INSERT</span> <span class="php-keyword1">INTO</span> ogspy_xtense_callbacks (mod_id, function, type) <span class="php-keyword1">VALUES</span> (<span class="php-num">1</span>, <span class="php-quote">'prout_galaxy_import'</span>, <span class="php-quote">'system'</span>)</pre>
+		</p>
+		
+		<h2 id="III">III. Fichiers</h2>
+		
+		<h3 id="III.1">1. Structure des fichiers</h3>
+		<p>
+			Lors des appels, Xtense inclura le fichier <strong>_xtense.php</strong> qui doit être dans le dossier de votre mod.<br />
+			Ce fichier doit respecter une certaine hiérarchie :
+		</p>
+		<ul>
+			<li>La verification de la constante IN_SPYOGAME pour éviter les includes non sécurisées</li>
+			<li>La présence d'une variable, nommée $xtense_version qui contiendra la version minimum du plugin pour laquelle ce fichier est correct. Si la révision du plugin Xtense est plus vielle que celle de votre fichier, l'appel sera ignoré</li>
+			<li>Les fonctions appelées doivent commencer par le nom de votre mod pour éviter tout problème avec des fonctions définies plusieurs fois (ex: import_system qui peut être définie dans deux mods différents)</li>
+			<li>Un nombre d'includes le plus faible possible pour éviter une surcharge trop importante mais aussi pour éviter des problèmes de surdéfinition (fonctions, constantes)</li>
+		</ul>
+		
+		<h3 id="III.2">2. Contexte de développement</h3>
+		<p>
+			Il faut savoir que Xtense est maintenant totalement dissocié de OGSpy, aucun fichier de OGSpy n'est inclus (si ce n'est id.php). Donc toutes les fonctions, classes, constantes disponibles sont celles de Xtense. A noter que vos fichiers sont inclus depuis une fonction de Xtense (comme les mods). Voici une liste des variables globales utiles aux mods :
+		</p>
+		<ul>
+			<li><span class="php-var">$server_config</span> : Contient toutes les directives de configuration de l'OGSpy contenues dans la table <em>ogspy_config</em></li>
+			<li><span class="php-var">$user</span> : Tableau avec les informations sur l'utilisateur actuellement connecté (pseudo, id, grand [tableau des droits pour Xtense (valeur 0 ou 1), index: system, ranking, empire, messages])</li>
+			<li><span class="php-var">$db</span> : Instance de la classe MySQL utilisée dans Xtense</li>
+			<li><span class="php-var">$database</span> : Tableau contenant les codes MySQL de l'espace personnel des joueurs<br /><em>Structure</em>
+<pre><span class="php-var">$database</span> = <span class="php-keyword2"><span class="php-keyword1">array</span></span>(
+    <span class="php-quote">'buildings'</span> =&gt; <span class="php-keyword2"><span class="php-keyword1">array</span></span>(<span class="php-quote">'M'</span>, <span class="php-quote">'C'</span>, <span class="php-quote">'D'</span>, <span class="php-quote">'CES'</span>, <span class="php-quote">'CEF'</span>, <span class="php-quote">'UdR'</span>, <span class="php-quote">'UdN'</span>, <span class="php-quote">'CSp'</span>, <span class="php-quote">'HM'</span>, <span class="php-quote">'HC'</span>, <span class="php-quote">'HD'</span>, <span class="php-quote">'Lab'</span>, <span class="php-quote">'Ter'</span>, 
+<span class="php-quote">'Silo'</span>, <span class="php-quote">'BaLu'</span>, <span class="php-quote">'Pha'</span>, <span class="php-quote">'PoSa'</span>),
+    <span class="php-quote">'labo'</span> =&gt; <span class="php-keyword2"><span class="php-keyword1">array</span></span>(<span class="php-quote">'Esp'</span>, <span class="php-quote">'Ordi'</span>, <span class="php-quote">'Armes'</span>, <span class="php-quote">'Bouclier'</span>, <span class="php-quote">'Protection'</span>, <span class="php-quote">'NRJ'</span>, <span class="php-quote">'Hyp'</span>, <span class="php-quote">'RC'</span>, <span class="php-quote">'RI'</span>, <span class="php-quote">'PH'</span>, 
+<span class="php-quote">'Laser'</span>, <span class="php-quote">'Ions'</span>, <span class="php-quote">'Plasma'</span>, <span class="php-quote">'RRI'</span>, <span class="php-quote">'Graviton'</span>, <span class="php-quote">'Expeditions'</span>),
+    <span class="php-quote">'defense'</span> =&gt; <span class="php-keyword2"><span class="php-keyword1">array</span></span>(<span class="php-quote">'LM'</span>, <span class="php-quote">'LLE'</span>, <span class="php-quote">'LLO'</span>, <span class="php-quote">'CG'</span>, <span class="php-quote">'LP'</span>, <span class="php-quote">'AI'</span>, <span class="php-quote">'PB'</span>, <span class="php-quote">'GB'</span>, <span class="php-quote">'MIC'</span>, <span class="php-quote">'MIP'</span>), 
+    <span class="php-quote">'fleet'</span> =&gt; <span class="php-keyword2"><span class="php-keyword1">array</span></span>(<span class="php-quote">'PT'</span>, <span class="php-quote">'GT'</span>, <span class="php-quote">'CLE'</span>, <span class="php-quote">'CLO'</span>, <span class="php-quote">'CR'</span>, <span class="php-quote">'VB'</span>, <span class="php-quote">'VC'</span>, <span class="php-quote">'RE'</span>, <span class="php-quote">'SE'</span>, <span class="php-quote">'BM'</span>, <span class="php-quote">'SS'</span>, <span class="php-quote">'DE'</span>, <span class="php-quote">'EDLM'</span>, <span class="php-quote">'TR'</span>)
+);</pre>
+			</li>
+		</ul>
+		
+		<h2 id="IV">IV. Utilisation de MySQL</h2>
+		<p>
+			Dans Xtense la classe MySQL utilisée diffère de celle dans OGSpy pour des questions pratiques (beaucoup plus de fonctionnalités - Débogage, journalisation	...). Voici une brève description de son utilisation.
+		</p>
+		
+		<h3 id="IV.1">1. Classe</h3>
+		<p><strong>Propriétés</strong></p>
+		<div class="class">
+			<span class="php">mysql <span class="php-keyword1">::</span> <span class="php-var">link</span></span>
+			<p>Lien de la connexion mysql, utile pour utiliser des fonctions non implémentées directement dans la classe avec plusieurs connexions à la fois</p>
+		</div>
+		
+		<p><strong>Méthodes</strong></p>
+		<div class="class">
+			<span class="php">mysql <span class="php-keyword1">::</span> <span class="php-var">query</span> ( <span class="php-keyword1">string</span> $query )</span>
+			<p>Exécute la requête $query puis retourne le résultat</p>
+		</div>
+		
+		<div class="class">
+			<span class="php">mysql <span class="php-keyword1">::</span> <span class="php-var">check</span> ( [<span class="php-keyword1">string</span> $query] )</span>
+			<p>Exécute la requête $query puis retourne <span class="php-keyword1">true</span> si il y a au moins 1 enregistrement retourné, sinon <span class="php-keyword1">false</span></p>
+			<p>Si aucune requête n'est spécifiée, il sera utilisé le résultat de la dernière</p>
+		</div>
+		
+		<div class="class">
+			<span class="php">mysql <span class="php-keyword1">::</span> <span class="php-var">assoc</span> ( [<span class="php-keyword1">string</span> $query] )</span>
+			<p>D'un ordre général cette fonction est une extension de mysql_fetch_assoc. Si une requête est placée en paramètre elle l'effectuera, sinon elle utilisera le résultat de la dernière requête effectuée.</p>
+			<p>Elle place dans un tableau bidimensionnel toutes les données de la requête. Le premier est un tableau numérique contenant ensuite le tableau des données avec comme index le nom des champs (mysql_fetch_assoc)</p>
+			<p><em>Exemple de données renvoyées</em></p>
+<pre><span class="php-keyword2"><span class="php-keyword1">array</span></span>(<span class="php-num">3</span>) {
+    [<span class="php-num">0</span>]=&gt;
+    <span class="php-keyword2"><span class="php-keyword1">array</span></span>(<span class="php-num">4</span>) {
+        [<span class="php-quote">"system"</span>]=&gt;
+        <span class="php-keyword1">string</span>(<span class="php-num">1</span>) <span class="php-quote">"1"</span>
+        [<span class="php-quote">"ranking"</span>]=&gt;
+        <span class="php-keyword1">string</span>(<span class="php-num">1</span>) <span class="php-quote">"1"</span>
+    }
+    [<span class="php-num">1</span>]=&gt;
+    <span class="php-keyword2"><span class="php-keyword1">array</span></span>(<span class="php-num">4</span>) {
+        [<span class="php-quote">"system"</span>]=&gt;
+        <span class="php-keyword1">string</span>(<span class="php-num">1</span>) <span class="php-quote">"0"</span>
+        [<span class="php-quote">"ranking"</span>]=&gt;
+        <span class="php-keyword1">string</span>(<span class="php-num">1</span>) <span class="php-quote">"1"</span>
+    }
+    [<span class="php-num">2</span>]=&gt;
+    <span class="php-keyword2"><span class="php-keyword1">array</span></span>(<span class="php-num">4</span>) {
+        [<span class="php-quote">"system"</span>]=&gt;
+        <span class="php-keyword1">string</span>(<span class="php-num">1</span>) <span class="php-quote">"1"</span>
+        [<span class="php-quote">"ranking"</span>]=&gt;
+        <span class="php-keyword1">string</span>(<span class="php-num">1</span>) <span class="php-quote">"1"</span>
+    }
+}</pre>
+			<p>Si aucune requête n'est spécifiée, il sera utilisé le résultat de la dernière</p>
+		</div>
+		
+		<div class="class">
+			<span class="php">mysql <span class="php-keyword1">::</span> <span class="php-var">num</span> ( [<span class="php-keyword1">string</span> $query] )</span>
+			<p>Retourne le nombre d'enregistrement retournés par la requête</p>
+			<p>Si aucune requête n'est spécifiée, il sera utilisé le résultat de la dernière</p>
+		</div>
+		
+		<div class="class">
+			<span class="php">mysql <span class="php-keyword1">::</span> <span class="php-var">insert_id</span></span>
+			<p>Retourne l'ID du dernier enregistrement effectué</p>
+		</div>
+		
+		<div class="class">
+			<span class="php">mysql <span class="php-keyword1">::</span> <span class="php-var">affected_rows</span></span>
+			<p>Retourne le nombre d'enregistrements affectés par la dernièr requête</p>
+		</div>
+	</div>
+	
+	<h3 id="IV.2">2. Exemple</h3>
+	<p><strong>Exemple concret d'utilisation de la classe avec l'identification (basique) d'un membre</strong></p>
+	<pre><span class="xlang">&lt;?php</span>
+
+<span class="php-comment">// Pour l'exemple on prend des variables toutes bêtes
+</span><span class="php-var">$pseudo</span> = <span class="php-quote">'Unibozu'</span>;
+<span class="php-var">$pass</span> = <span class="php-quote">'Prout'</span>;
+
+<span class="php-keyword1">if</span> (<span class="php-var">$db</span>-&gt;check(<span class="php-quote">'SELECT password, user_id FROM '</span>.TABLE_USER.<span class="php-quote">' WHERE pseudo = "'</span>.quote(<span class="php-var">$pseudo</span>).<span class="php-quote">'"'</span>)) {
+	<span class="php-keyword2">list</span>(<span class="php-var">$data</span>) = <span class="php-var">$db</span>-&gt;assoc();
+	
+	<span class="php-keyword1">if</span> (<span class="php-var">$data</span>[<span class="php-quote">'password'</span>] != <span class="php-keyword2">md5</span>(sha1(<span class="php-var">$pass</span>))) {
+		<span class="php-keyword1">echo</span> <span class="php-quote">'Mauvais mot de passe'</span>;
+	} <span class="php-keyword1">else</span> {
+		<span class="php-comment">// Compte ok
+
+</span>	}
+} <span class="php-keyword1">else</span> {
+	<span class="php-keyword1">echo</span> <span class="php-quote">'Aucun utilisateur avec ce nom'</span>;
+}
+
+<span class="xlang">?&gt;</span></pre>
+
+	<h2 id="V">V. Arguments des fonctions d'appels</h2>
+	<p>Chaque fonction ne reçoit qu'un seul paramètre : un tableau (souvent sur plusieurs dimensions) contenant les données utiles aux mods. Les données envoyées sont spécifiques à chaque type d'appel</p>
+	
+	<h3 id="V.1">1. Types d'appels</h3>
+	<p>Voici une liste de tous les types d'appels que vous pouvez utiliser</p>
+	<p class="list">
+		<span>system</span>
+		<span>spy</span>
+		<span>ennemy_spy</span>
+		<span>rc</span>
+		<span>rc_cdr</span>
+		<span>msg</span>
+		<span>ally_msg</span>
+		<span>expedition</span>
+		<span>ally_list</span>
+		<span>overview</span>
+		<span>buildings</span>
+		<span>research</span>
+		<span>fleet</span>
+		<span>defense</span>
+		<span>ranking_player_points</span>
+		<span>ranking_player_fleet</span>
+		<span>ranking_player_research</span>
+		<span>ranking_ally_points</span>
+		<span>ranking_ally_fleet</span>
+		<span>ranking_ally_research</span>
+	</p>
+	
+	<h3 id="V.2">2. Sommaire des paramètres</h3>
+	<p>
+		La liste ci-dessous représente une vue "raccourcie" de la variable contenant les données envoyée aux fonctions d'appel.
+	</p>
+	<p>
+		La syntaxe est un peu particulière, tous les index ayant un type "array #" sont des tableaux avec des index numériques. Soit il y a un nombre à la suite du #, ce qui signifie que c'est un tableau avec X lignes, soit une plage qui signifie que la taille du tableau varie suivant cette plage. Un index avec un type "array" est un tableau avec comme index des chaînes de caractères.
+	</p>
+	
+	<div>
+		<em>Exemple</em>
+		
+		<table width="100%">
+			<tr>
+				<th>Code PHP</th>
+				<th>Equivalent</th>
+			</tr>
+			<tr>
+				<td width="50%" class="left"><pre><span class="php-var">$params</span> = <span class="php-keyword2">array</span>(
+    <span class="php-quote">'params'</span> =&gt; <span class="php-keyword2">array</span>(
+        <span class="php-num">0</span> =&gt; <span class="php-keyword2">array</span>(
+            <span class="php-quote">'name'</span> =&gt; <span class="php-quote">'Unibozu'</span>,
+            <span class="php-quote">'ally'</span> =&gt; <span class="php-quote">'prout'</span>
+        ),
+        <span class="php-num">1</span> =&gt; <span class="php-keyword2">array</span>(
+            <span class="php-quote">'name'</span> =&gt; <span class="php-quote">'prout'</span>,
+            <span class="php-quote">'ally'</span> =&gt; <span class="php-quote">'haha'</span>
+        )
+    )
+);</pre></td>
+				<td width="50%" class="right">
+					<span class="php-keyword1">array</span>
+					<div class="ident">
+						[data] (<span class="php-keyword1">array</span> <span class="php-var">#2</span>)
+						<div class="ident">
+							<span class="php-keyword1">array</span>
+							<div class="ident">
+								[name] (<span class="php-keyword1">string</span>)<br />
+								[ally] (<span class="php-keyword1">string</span>)
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<table width="100%">
+		<tr>
+			<th>Code d'appels</th>
+			<th>Données envoyées</th>
+		</tr>
+		
+		<tr><td class="left">system</td>
+		<td class="right">
+			<span class="php-keyword1">array</span>
+			<div class="ident">
+				[galaxy] (<span class="php-keyword1">int</span>)<br />
+				[system] (<span class="php-keyword1">int</span>)<br />
+				[data] (<span class="php-keyword1">array</span> <span class="php-var">#15</span>)
+				<div class="ident">
+					<span class="php-keyword1">array</span>
+					<div class="ident">
+						[planet_name] (<span class="php-keyword1">string</span>)<br />
+						[moon] (<span class="php-keyword1">int</span>) <span class="php-comment">défini par les constantes TYPE_PLANET ou TYPE_MOON</span> <span class="ogame">Ogame</span><br />
+						[player_name] (<span class="php-keyword1">string</span>)<br />
+						[status] (<span class="php-keyword1">string</span>)<br />
+						[ally_tag] (<span class="php-keyword1">string</span>)<br />
+						[debris] (<span class="php-keyword1">array</span>)
+						<div class="ident">
+							[metal] (<span class="php-keyword1">int</span>) <span class="ogame">Ogame</span><br />
+							[cristal] (<span class="php-keyword1">int</span>) <span class="ogame">Ogame</span><br />
+							[titanium] (<span class="php-keyword1">int</span>) <span class="eunivers">E-Univers</span><br />
+							[carbon] (<span class="php-keyword1">int</span>) <span class="eunivers">E-Univers</span><br />
+							[tritium] (<span class="php-keyword1">int</span>) <span class="eunivers">E-Univers</span><br />
+						</div>
+						[activity] (<span class="php-keyword1">string</span>) <span class="php-comment">au format du jeu, * ou 37mn par exemple</span> <span class="ogame">Ogame</span><br />
+					</div>
+				</div>
+
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">spy</td>
+		<td class="right">
+			<span class="php-keyword1">array</span> <span class="php-var">#~</span>
+			<div class="ident">
+				<span class="php-keyword1">array</span>
+				<div class="ident">
+					[coords] (<span class="php-keyword1">array</span> <span class="php-var">#3</span>)
+					<div class="ident">
+						[0] (<span class="php-keyword1">int</span>) <span class="php-comment">galaxie</span><br />
+						[1] (<span class="php-keyword1">int</span>) <span class="php-comment">système</span><br />
+						[2] (<span class="php-keyword1">int</span>) <span class="php-comment">ligne</span>
+					</div>
+					[content] (<span class="php-keyword1">string</span><br />
+					[time] (<span class="php-keyword1">int</span>)
+				</div>
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">ennemy_spy</td>
+		<td class="right">
+			<span class="php-keyword1">array</span> <span class="php-var">#~</span>
+			<div class="ident">
+				<span class="php-keyword1">array</span>
+				<div class="ident">
+					[from] (<span class="php-keyword1">array</span> <span class="php-var">#3</span>)
+					<div class="ident">
+						[0] (<span class="php-keyword1">int</span>) <span class="php-comment">galaxie</span><br />
+						[1] (<span class="php-keyword1">int</span>) <span class="php-comment">système</span><br />
+						[2] (<span class="php-keyword1">int</span>) <span class="php-comment">ligne</span>
+					</div>
+					[to] (<span class="php-keyword1">array</span> <span class="php-var">#3</span>)
+					<div class="ident">
+						[0] (<span class="php-keyword1">int</span>) <span class="php-comment">galaxie</span><br />
+						[1] (<span class="php-keyword1">int</span>) <span class="php-comment">système</span><br />
+						[2] (<span class="php-keyword1">int</span>) <span class="php-comment">ligne</span>
+					</div>
+					[proba] (<span class="php-keyword1">int</span>)<br />
+					[time] (<span class="php-keyword1">int</span>)
+				</div>
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">rc</td>
+		<td class="right">
+			<span class="php-keyword1">array</span>
+			<div class="ident">
+				[content] (<span class="php-keyword1">string</span>) <span class="php-comment">le contenu brut de la page du RC, entre les balises &lt;body></span>
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">rc_cdr</td>
+		<td class="right">
+			<span class="php-keyword1">array</span> <span class="php-var">#~</span>
+			<div class="ident">
+				<span class="php-keyword1">array</span>
+				<div class="ident">
+					[nombre] (<span class="php-keyword1">int</span>)<br />
+					[coords] (<span class="php-keyword1">array</span> <span class="php-var">#3</span>)
+					<div class="ident">
+						[0] (<span class="php-keyword1">int</span>) <span class="php-comment">galaxie</span><br />
+						[1] (<span class="php-keyword1">int</span>) <span class="php-comment">système</span><br />
+						[2] (<span class="php-keyword1">int</span>) <span class="php-comment">ligne</span>
+					</div>
+					[M_reco] (<span class="php-keyword1">int</span>) <span class="php-comment">Métal récupéré</span> <br />
+					[C_reco] (<span class="php-keyword1">int</span>) <span class="php-comment">Cristal récupéré</span> <br />
+					[M_total] (<span class="php-keyword1">int</span>) <span class="php-comment">Metal dans le CdR</span> <br />
+					[C_total] (<span class="php-keyword1">int</span>) <span class="php-comment">Cristal dans le CdR</span> <br />
+					[time] (<span class="php-keyword1">int</span>)
+				</div>
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">msg</td>
+		<td class="right">
+			<span class="php-keyword1">array</span> <span class="php-var">#~</span>
+			<div class="ident">
+				<span class="php-keyword1">array</span>
+				<div class="ident">
+					[coords] (<span class="php-keyword1">array</span> <span class="php-var">#3</span>)
+					<div class="ident">
+						[0] (<span class="php-keyword1">int</span>) <span class="php-comment">galaxie</span><br />
+						[1] (<span class="php-keyword1">int</span>) <span class="php-comment">système</span><br />
+						[2] (<span class="php-keyword1">int</span>) <span class="php-comment">ligne</span>
+					</div>
+					[from] (<span class="php-keyword1">string</span>)<br />
+					[subject] (<span class="php-keyword1">string</span>)<br />
+					[message] (<span class="php-keyword1">string</span>)<br />
+					[time] (<span class="php-keyword1">int</span>)
+				</div>
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">ally_msg</td>
+		<td class="right">
+			<span class="php-keyword1">array</span> <span class="php-var">#~</span>
+			<div class="ident">
+				<span class="php-keyword1">array</span>
+				<div class="ident">
+					[from] (<span class="php-keyword1">string</span>)<br />
+					[tag] (<span class="php-keyword1">string</span>)<br />
+					[message] (<span class="php-keyword1">string</span>)<br />
+					[time] (<span class="php-keyword1">int</span>)
+				</div>
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">expedition</td>
+		<td class="right">
+			<span class="php-keyword1">array</span> <span class="php-var">#~</span>
+			<div class="ident">
+				<span class="php-keyword1">array</span>
+				<div class="ident">
+					[coords] (<span class="php-keyword1">array</span> <span class="php-var">#3</span>)
+					<div class="ident">
+						[0] (<span class="php-keyword1">int</span>) <span class="php-comment">galaxie</span><br />
+						[1] (<span class="php-keyword1">int</span>) <span class="php-comment">système</span><br />
+						[2] (<span class="php-keyword1">int</span>) <span class="php-comment">ligne</span>
+					</div>
+					[content] (<span class="php-keyword1">string</span>)<br />
+					[time] (<span class="php-keyword1">int</span>
+				</div>
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">ally_list</td>
+		<td class="right">
+			<span class="php-keyword1">array</span>
+			<div class="ident">
+				[tag] (<span class="php-keyword1">string</span>)<br />
+				[list] (<span class="php-keyword1">array</span> <span class="php-var">#~</span>)
+				<div class="ident">
+					<span class="php-keyword1">array</span>
+					<div class="ident">
+						[pseudo] (<span class="php-keyword1">string</span>)<br />
+						[points] (<span class="php-keyword1">int</span>)<br />
+						[coords] (<span class="php-keyword1">string</span>)<br />
+						[rang] (<span class="php-keyword1">string</span>)
+					</div>
+				</div>
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">overview</td>
+		<td class="right">
+			<span class="php-keyword1">array</span>
+			<div class="ident">
+				[coords] (<span class="php-keyword1">array</span> <span class="php-var">#3</span>)
+				<div class="ident">
+					[0] (<span class="php-keyword1">int</span>) <span class="php-comment">galaxie</span><br />
+					[1] (<span class="php-keyword1">int</span>) <span class="php-comment">système</span><br />
+					[2] (<span class="php-keyword1">int</span>) <span class="php-comment">ligne</span>
+				</div>
+				[planet_name] (<span class="php-keyword1">string</span>)<br />
+				[planet_type] (<span class="php-keyword1">int</span>) <span class="php-comment">défini par les constantes TYPE_PLANET ou TYPE_MOON</span><br />
+				[fields] (<span class="php-keyword1">int</span>) <span class="php-comment">cases max de la planète</span><br />
+				[temp] (<span class="php-keyword1">int</span>) <span class="php-comment">température max</span>
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">buildings</td>
+		<td class="right">
+			<span class="php-keyword1">array</span>
+			<div class="ident">
+				[coords] (<span class="php-keyword1">array</span> <span class="php-var">#3</span>)
+				<div class="ident">
+					[0] (<span class="php-keyword1">int</span>) <span class="php-comment">galaxie</span><br />
+					[1] (<span class="php-keyword1">int</span>) <span class="php-comment">système</span><br />
+					[2] (<span class="php-keyword1">int</span>) <span class="php-comment">ligne</span>
+				</div>
+				[planet_name] (<span class="php-keyword1">string</span>)<br />
+				[planet_type] (<span class="php-keyword1">int</span>) <span class="php-comment">défini par les constantes TYPE_PLANET ou TYPE_MOON</span><br />
+				[buildings] (<span class="php-keyword1">array</span>)
+				<div class="ident">
+					<span class="php-comment">Tableau associatif contenant en index le code des batiments présents sur la planète ainsi que leur niveau. Comme tel : </span><br />
+					[code] => niveau (<span class="php-keyword1">int</span>)
+				</div>
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">research</td>
+		<td class="right">
+			<span class="php-keyword1">array</span>
+			<div class="ident">
+				[research] (<span class="php-keyword1">array</span>)
+				<div class="ident">
+					<span class="php-comment">Tableau associatif contenant en index le code des recherches présentes sur la planète ainsi que leur niveau. Comme tel : </span><br />
+					[code] => niveau (<span class="php-keyword1">int</span>)
+				</div>
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">fleet</td>
+		<td class="right">
+			<span class="php-keyword1">array</span>
+			<div class="ident">
+				[coords] (<span class="php-keyword1">array</span> <span class="php-var">#3</span>)
+				<div class="ident">
+					[0] (<span class="php-keyword1">int</span>) <span class="php-comment">galaxie</span><br />
+					[1] (<span class="php-keyword1">int</span>) <span class="php-comment">système</span><br />
+					[2] (<span class="php-keyword1">int</span>) <span class="php-comment">ligne</span>
+				</div>
+				[planet_name] (<span class="php-keyword1">string</span>)<br />
+				[planet_type] (<span class="php-keyword1">int</span>) <span class="php-comment">défini par les constantes TYPE_PLANET ou TYPE_MOON</span><br />
+				[fleet] (<span class="php-keyword1">array</span>)
+				<div class="ident">
+					<span class="php-comment">Tableau associatif contenant en index le code des vaisseaux présents sur la planète ainsi que leur nombre. Comme tel : </span><br />
+					[code] => nombre (<span class="php-keyword1">int</span>)
+				</div>
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">defense</td>
+		<td class="right">
+			<span class="php-keyword1">array</span>
+			<div class="ident">
+				[coords] (<span class="php-keyword1">array</span> <span class="php-var">#3</span>)
+				<div class="ident">
+					[0] (<span class="php-keyword1">int</span>) <span class="php-comment">galaxie</span><br />
+					[1] (<span class="php-keyword1">int</span>) <span class="php-comment">système</span><br />
+					[2] (<span class="php-keyword1">int</span>) <span class="php-comment">ligne</span>
+				</div>
+				[planet_name] (<span class="php-keyword1">string</span>)<br />
+				[planet_type] (<span class="php-keyword1">int</span>) <span class="php-comment">défini par les constantes TYPE_PLANET ou TYPE_MOON</span><br />
+				[defense] (<span class="php-keyword1">array</span>)
+				<div class="ident">
+					<span class="php-comment">Tableau associatif contenant en index le code des defenses présentes sur la planète ainsi que leur nombre. Comme tel : </span><br />
+					[code] => nombre (<span class="php-keyword1">int</span>)
+				</div>
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">ranking_ally_points<br />ranking_ally_fleet<br />ranking_ally_research</td>
+		<td class="right">
+			<span class="php-keyword1">array</span>
+			<div class="ident">
+				[offset] (<span class="php-keyword1">int</span>)<br />
+				[time] (<span class="php-keyword1">int</span>)<br />
+				[data] (<span class="php-keyword1">array</span> <span class="php-var"><span class="php-var">#1-100</span></span>)
+				<div class="ident">
+					<span class="php-keyword1">array</span>
+					<div class="ident">
+						[ally_tag] (<span class="php-keyword1">string</span>)<br />
+						[members] (<span class="php-keyword1">int</span>) <span class="ogame">Ogame</span><br />
+						[points] (<span class="php-keyword1">int</span>)<br />
+						[mean] (<span class="php-keyword1">int</span>) <span class="ogame">Ogame</span><br />
+						[ally_id] (<span class="php-keyword1">int</span>) <span class="eunivers">E-Univers</span>
+					</div>
+				</div>
+			</div>
+		</td></tr>
+		
+		<tr><td class="left">ranking_player_points<br />ranking_player_fleet<br />ranking_player_research</td>
+		<td class="right">
+			<span class="php-keyword1">array</span>
+			<div class="ident">
+				[offset] (<span class="php-keyword1">int</span>)<br />
+				[time] (<span class="php-keyword1">int</span>)<br />
+				[data] (<span class="php-keyword1">array</span> <span class="php-var">#1-100</span>)
+				<div class="ident">
+					<span class="php-keyword1">array</span>
+					<div class="ident">
+						[player_name] (<span class="php-keyword1">string</span>)<br />
+						[ally_tag] (<span class="php-keyword1">string</span>)<br />
+						[points] (<span class="php-keyword1">int</span>)<br />
+						[player_id] (<span class="php-keyword1">int</span>) <span class="eunivers">E-Univers</span><br />
+						[ally_id] (<span class="php-keyword1">int</span>) <span class="eunivers">E-Univers</span>
+					</div>
+				</div>
+			</div>
+		</td></tr>
+	</table>
+	
+	<h2 id="VI">VI. Fonctions usuelles</h2>
+	<p>Le fichier de fonctions de xtense étant inclut vous pouvez avoir accès à ces fonctions. Voici quelques unes qui pourraient vous être utiles</p>
+	
+	<div class="class">
+		<span class="php">quote ( <span class="php-keyword1">string</span> <span class="php-var">$str</span> )</span>
+		<p>Une amélioration de add_slashes. Cette fonction rajoute des antislash si les magic_quotes_gpc ne sont pas activées. A utiliser pour chaque requête MySQL.</p>
+	</div>
+	<div class="class">
+		<span class="php">dump ( <span class="php-keyword1">mixed</span> <span class="php-var">$var</span> [, <span class="php-keyword1">mixed</span> <span class="php-var">$var</span> [, $... ]] )</span>
+		<p>Amélioration de la fonction var_dump() pour les renvois de Xtense. Elle formate les données pour qu'elles soient affichables depuis la fenêtre de debug</p>
+	</div>
+	<div class="class">
+		<span class="php">get_microtime ()</span>
+		<p>Retourne le timestamp UNIX courant avec les millisecondes</p>
+	</div>
+	<div class="class">
+		<span class="php">check_coords ( <span class="php-keyword1">string</span> <span class="php-var">$coords</span> [, <span class="php-keyword1">int</span> <span class="php-var">$expedition</span>] )</span>
+		<p>Cette fonction renvoi <span class="php-keyword1">true</span> ou <span class="php-keyword1">false</span> si les coordonnées sont correctes (prend en charge la config OGSpy pour le nombre de systèmes et de galaxies). Si $expedition est à 1 elle vérifie si les coordonnées sont celles d'une expédition</p>
+	</div>
+</div>
+</body>
+</html>
