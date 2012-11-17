@@ -1,13 +1,13 @@
 // Production par heure
-function production (building, level, temperatureMax, energy) {
+function production (building, level, temperatureMax, energy, plasma = 0) {
 
     var speed = document.getElementById('vitesse_uni').value,
         ingenieur = document.getElementById('off_ingenieur').value == 1 ? 1.1 : 1,
         geologue = document.getElementById('off_geologue').value == 1 ? 1.1 : 1;
 
     switch (building) {
-        case 'M': return speed * (30 + Math.floor(30 * level * Math.pow(1.1, level) * geologue));
-        case 'C': return speed * (15 + Math.floor(20 * level * Math.pow(1.1, level) * geologue));
+        case 'M': return speed * (30 + Math.floor(30 * level * Math.pow(1.1, level) * geologue *(1 + (0.01 * plasma))));
+        case 'C': return speed * (15 + Math.floor(20 * level * Math.pow(1.1, level) * geologue *(1 + (0.0066 * plasma))));
         case 'D': return speed * Math.floor(10 * level * Math.pow(1.1, level) * (1.44 - 0.004 * temperatureMax) * geologue);
         case 'CES': return 20 * level * Math.pow(1.1, level) * ingenieur;
         case 'CEF': return 30 * level * Math.pow(1.05 + 0.01 * energy, level) * ingenieur;
@@ -38,6 +38,7 @@ function consumption (building, level) {
 // Met à jour la page Espace Personel > Simulation
 function update_page () {
 	var NRJ = document.getElementById("NRJ").value;
+    var Plasma = document.getElementById("Plasma").value;
 	
 	//
 	// Planètes
@@ -70,7 +71,7 @@ function update_page () {
 		var M_1_percentage = document.getElementById("M_" + i + "_percentage").value;
 	
 		M_1_conso[i] = Math.round(consumption("M", M_1[i]) * M_1_percentage / 100);
-		M_1_prod[i] = Math.round(production("M", M_1[i], temperature_max_1, NRJ) * M_1_percentage / 100);
+		M_1_prod[i] = Math.round(production("M", M_1[i], temperature_max_1, NRJ, Plasma) * M_1_percentage / 100);
 	
 		document.getElementById("M_" + i + "_conso").innerHTML = M_1_conso[i];
 		document.getElementById("M_" + i + "_prod").innerHTML = M_1_prod[i];
@@ -80,7 +81,7 @@ function update_page () {
 		var C_1_percentage = document.getElementById("C_" + i + "_percentage").value;
 	
 		C_1_conso[i] = Math.round(consumption("C", C_1[i]) * C_1_percentage / 100);
-		C_1_prod[i] = Math.round(production("C", C_1[i], temperature_max_1, NRJ) * C_1_percentage / 100);
+		C_1_prod[i] = Math.round(production("C", C_1[i], temperature_max_1, NRJ, Plasma) * C_1_percentage / 100);
 	
 		document.getElementById("C_" + i + "_conso").innerHTML = C_1_conso[i];
 		document.getElementById("C_" + i + "_prod").innerHTML = C_1_prod[i];
