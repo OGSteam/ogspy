@@ -263,7 +263,7 @@ if($view == "planets") {
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$M = $user_building[$i]["M"];
-	if ($M != "") $production = production("M", $M, $user_data['off_geologue']);
+	if ($M != "") $production = production("M", $M, $user_data['off_geologue'], 0, 0, $user_technology['Plasma']);
 	else $production = "&nbsp";
 
 	echo "\t"."<th>".floor($production)."</th>"."\n";
@@ -275,7 +275,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$C = $user_building[$i]["C"];
-	if ($C != "") $production = production("C", $C, $user_data['off_geologue']);
+	if ($C != "") $production = production("C", $C, $user_data['off_geologue'], 0, 0, $user_technology['Plasma']);
 	else $production = "&nbsp";
 
 	echo "\t"."<th>".floor($production)."</th>"."\n";
@@ -306,7 +306,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
     $ratio[$i] = $product;
    $NRJ = $user_technology["NRJ"] != "" ? $user_technology["NRJ"] : "0"; // pour deut !!!! erreur dans ancienne formule ou nrj etait pas prise en compte
     $ratio[$i] = bilan_production_ratio($user_building[$i]["M"],$user_building[$i]["C"],$user_building[$i]["D"],$user_building[$i]["CES"], 
-    $user_building[$i]["CEF"],$user_building[$i]["Sat"],$user_building[$i]["temperature_min"],$user_building[$i]["temperature_max"],$NRJ,$user_data['off_ingenieur'],$user_data['off_geologue']);
+    $user_building[$i]["CEF"],$user_building[$i]["Sat"],$user_building[$i]["temperature_min"],$user_building[$i]["temperature_max"],$NRJ,$user_data['off_ingenieur'],$user_data['off_geologue'], $user_technology['Plasma']);
      }
    
    
