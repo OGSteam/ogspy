@@ -112,6 +112,7 @@ Energie
 <tr>
 	<td class="c">Énergies</td>
 	<td class="c" colspan="4">Technologie Énergie <input type="text" id="NRJ" size="2" maxlength="2" value="<?php print $user_technology['NRJ'] ?>" onchange='update_page();'></td>
+    <td class="c" colspan="4">Technologie Plasma <input type="text" id="Plasma" size="2" maxlength="2" value="<?php print $user_technology['Plasma'] ?>" onchange='update_page();'></td>
 	<td class="c" colspan="<?php echo 2 * ($nb_planete + 1) - 5; ?>">&nbsp;</td>
 </tr>
 <tr>
