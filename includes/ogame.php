@@ -27,7 +27,7 @@ if (!isset($server_config['speed_uni'])) {
 * @param int $NRJ Current value of Energy available on the planet
 * @return the result of the production on the specified building.
 */
-function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ = 0)
+function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ = 0, $Plasma = 0)
 {
     // attention officier
     // pour m / c / d => geologue
@@ -42,6 +42,7 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
 			$result =  floor($result); // arrondi inf ( apres geologue)
 			$result = $prod_base + $result; // prod de base
 			$result = $server_config['speed_uni'] * $result; // vitesse uni
+            $result = (1 + (0.01 * $Plasma)) * $result; // Technologie Plasma
             break;
 
         case "C":
@@ -52,6 +53,7 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
 			$result =  floor($result); // arrondi inf ( apres geologue)
 			$result = $prod_base + $result; // prod de base
             $result = $server_config['speed_uni'] * $result; // vitesse uni
+            $result = (1 + (0.0066 * $Plasma)) * $result; // Technologie Plasma
             break;
 
         case "D":
@@ -191,7 +193,7 @@ function ratio($M, $C, $D, $CES, $CEF, $ingenieur, $SAT, $temperature_min, $temp
 * @param int $geologue Geologue option enabled or not
 * @return the production for each building for the selected planet according to the current ratio
 */
-function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_min, $temperature_max, $NRJ = 0, $ingenieur = 0, $geologue = 0)
+function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_min, $temperature_max, $NRJ = 0, $ingenieur = 0, $geologue = 0, $Plasma = 0)
 {
 
     $tmp = ratio($M, $C, $D, $CES, $CEF, $ingenieur, $SAT, $temperature_min, $temperature_max,$NRJ);
@@ -206,11 +208,11 @@ function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_min, 
     $conso_D = $tmp["conso_D"];
 
     //production de metal avec ratio
-    $prod_M = production("M", $M, $geologue);
+    $prod_M = production("M", $M, $geologue,$temperature_max,$NRJ, $Plasma);
     $prod_M *= $ratio;
 
     //production de cristal avec ratio
-    $prod_C = production("C", $C, $geologue);
+    $prod_C = production("C", $C, $geologue,$temperature_max,$NRJ, $Plasma);
     $prod_C *= $ratio;
 
     //production de deut avec ratio
