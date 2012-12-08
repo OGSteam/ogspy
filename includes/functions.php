@@ -880,8 +880,6 @@ function log_check_exist($date)
     if (!isset($date))
         redirection("index.php?action=message&id_message=errorfatal&info");
 
-    require_once ('library/zip.lib.php');
-
     $typelog = array("sql", "log", "txt");
 
     $root = PATH_LOG;
