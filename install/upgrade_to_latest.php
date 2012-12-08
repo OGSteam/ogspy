@@ -287,8 +287,7 @@ switch ($ogsversion) {
 		$requests[] = "DROP TABLE `".TABLE_RANK_ALLY_FLEET."`";		// ancien classement flotte
 		$requests[] = "DROP TABLE `".TABLE_RANK_ALLY_RESEARCH."`";	// ancien classement recherche
 		$requests[] = "DROP TABLE `".TABLE_SPY."`";					// ancienne table des RE
-		$requests[] = "DROP TABLE `".TABLE_UNIVERSE_TEMPORARY."`";	// ancienne table temporaire univers
-		
+		$requests[] = "DROP TABLE `".TABLE_UNIVERSE_TEMPORARY."`";	// ancienne table temporaire univers		
 		
 		$ogsversion = '3.1.1';
 		$up_to_date = true;

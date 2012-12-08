@@ -63,25 +63,6 @@ CREATE TABLE ogspy_mod (
   UNIQUE KEY root (root)
 ) ;
 
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_ally_fleet`
-## 
-
-CREATE TABLE ogspy_rank_ally_fleet (
-  datadate int(11) NOT NULL default '0',
-  rank int(11) NOT NULL default '0',
-  ally varchar(30) NOT NULL,
-  number_member int(11) NOT NULL,
-  points int(11) NOT NULL default '0',
-  points_per_member int(11) NOT NULL,
-  sender_id int(11) NOT NULL default '0',
-  PRIMARY KEY  (rank,datadate),
-  KEY datadate (datadate,ally),
-  KEY ally (ally)
-) ;
-
 
 ## ########################################################
 
@@ -228,42 +209,6 @@ CREATE TABLE ogspy_rank_ally_points (
   KEY ally (ally)
 ) ;
 
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_ally_research`
-## 
-
-CREATE TABLE ogspy_rank_ally_research (
-  datadate int(11) NOT NULL default '0',
-  rank int(11) NOT NULL default '0',
-  ally varchar(30) NOT NULL,
-  number_member int(11) NOT NULL,
-  points int(11) NOT NULL default '0',
-  points_per_member int(11) NOT NULL,
-  sender_id int(11) NOT NULL default '0',
-  PRIMARY KEY  (rank,datadate),
-  KEY datadate (datadate,ally),
-  KEY ally (ally)
-) ;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_player_fleet`
-## 
-
-CREATE TABLE ogspy_rank_player_fleet (
-  datadate int(11) NOT NULL default '0',
-  rank int(11) NOT NULL default '0',
-  player varchar(30) NOT NULL default '',
-  ally varchar(100) NOT NULL default '',
-  points int(11) NOT NULL default '0',
-  sender_id int(11) NOT NULL default '0',
-  PRIMARY KEY  (rank,datadate),
-  KEY datadate (datadate,player),
-  KEY player (player)
-) ;
 
 ## ########################################################
 
@@ -415,24 +360,6 @@ CREATE TABLE ogspy_rank_player_points (
 ## ########################################################
 
 ## 
-## Structure de la table `ogspy_rank_player_research`
-## 
-
-CREATE TABLE ogspy_rank_player_research (
-  datadate int(11) NOT NULL default '0',
-  rank int(11) NOT NULL default '0',
-  player varchar(30) NOT NULL default '',
-  ally varchar(100) NOT NULL default '',
-  points int(11) NOT NULL default '0',
-  sender_id varchar(30) NOT NULL default '',
-  PRIMARY KEY  (rank,datadate),
-  KEY datadate (datadate,player),
-  KEY player (player)
-) ;
-
-## ########################################################
-
-## 
 ## Structure de la table `ogspy_sessions`
 ## 
 
@@ -447,24 +374,7 @@ CREATE TABLE ogspy_sessions (
   UNIQUE KEY session_id (session_id,session_ip)
 ) ;
 
-## ########################################################
 
-## 
-## Structure de la table `ogspy_spy`
-## 
-
-CREATE TABLE ogspy_spy (
-  spy_id int(11) NOT NULL auto_increment,
-  spy_GALAXY_ENUM
-  spy_system smallint(3) NOT NULL default '0',
-  spy_row enum('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15') NOT NULL default '1',
-  sender_id int(11) NOT NULL default '0',
-  datadate int(11) NOT NULL default '0',
-  rawdata mediumtext NOT NULL,
-  active enum('0','1') NOT NULL default '1',
-  PRIMARY KEY  (spy_id),
-  UNIQUE KEY spy_galaxy (spy_galaxy,spy_system,spy_row,datadate)
-) ;
 
 ## ########################################################
 
@@ -516,7 +426,6 @@ CREATE TABLE ogspy_universe (
 ##) ;
 
 ## ########################################################
-
 ## 
 ## Structure de la table `ogspy_user`
 ## 
