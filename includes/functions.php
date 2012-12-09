@@ -932,14 +932,14 @@ function log_extractor()
 
     if (!isset($pub_date))
         redirection("index.php?action=message&id_message=errorfatal&info");
-
-    require_once ('library/zip.lib.php');
-
-    $typelog = array("sql", "log", "txt");
+	
+	$typelog = array("sql", "log", "txt");
 
     $root = PATH_LOG;
+	$zip_file= $root."log.zip";
     $path = opendir("$root");
-
+	unlink($zip_file);
+	
     //Récupération de la liste des répertoires correspondant à cette date
     while ($file = readdir($path)) {
         if ($file != "." && $file != "..") {
@@ -972,26 +972,27 @@ function log_extractor()
     }
 
     // création d'un objet 'zipfile'
-    $zip = new zipfile();
+	
+	$zip = new ZipArchive;
+	$zip->open($zip_file, ZipArchive::CREATE);
     foreach ($files as $filename) {
-        // contenu du fichier
-        $fp = fopen($root . $filename, 'r');
-        $content = @fread($fp, @filesize($root . $filename));
-        fclose($fp);
-
         // ajout du fichier dans cet objet
-        $zip->addfile($content, $filename);
-        // production de l'archive Zip
-        $archive = $zip->file();
-    }
+        $zip->addFile($root.$filename);
+		log_('debug',"fichier dans archive:".$filename);
+		}
+	
+	// production de l'archive Zip
+    $zip->close();
 
     // entêtes HTTP
     header('Content-Type: application/x-zip');
     // force le téléchargement
-    header('Content-Disposition: inline; filename=log_' . $pub_date . '.zip');
+    header('Content-disposition: attachment; filename=log_' . $pub_date . '.zip');
+	header('Content-Transfer-Encoding: binary');
 
     // envoi du fichier au navigateur
-    echo $archive;
+    flush();
+	readfile($zip_file);
 }
 
 /**
