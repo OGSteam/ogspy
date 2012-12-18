@@ -48,7 +48,7 @@ if (isset($pub_redirection)) {
 		<tr>	
 			<td>
 <font size="2">
-<ul><li type="square">OGSPy est un projet qui a pour but d'enregistrer dans une base de données les coordonnées de tous les joueurs d'un univers.
+<ul><li type="square">OGSpy est un projet qui a pour but d'enregistrer dans une base de données les coordonnées de tous les joueurs d'un univers.
 <li type="square">Disposer d'un tel outil offre de multiples avantages pour une alliance ou un collectif :
 <ul><li type="disc">Recensement de toutes les coordonnées libres selon plusieurs critères (galaxie, système solaire et rang).
 <li type="disc">Recensement de toutes les planètes d'un joueur ou d'une ally. Information vitale durant les périodes de guerre.

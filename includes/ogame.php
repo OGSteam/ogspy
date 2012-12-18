@@ -25,6 +25,7 @@ if (!isset($server_config['speed_uni'])) {
 * @param int $officier Officer option enabled or not
 * @param int $temperature_max Max temprature of the current planet
 * @param int $NRJ Current value of Energy available on the planet
+* @param int $Plasma Current value of the user Plasma Technology
 * @return the result of the production on the specified building.
 */
 function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ = 0, $Plasma = 0)
@@ -141,8 +142,8 @@ function consumption($building, $level)
 * @param int $D Deuterieum Mine Level
 * @param int $CES Solar Plant Level
 * @param int $CEF Fusion Plant Level
-* @param int $SAT Number of sattelites
 * @param int $ingenieur Ingenieur option enabled or not
+* @param int $SAT Number of sattelites
 * @param int $temperature_min Min temprature of the current planet
 * @param int $temperature_max Max temprature of the current planet
 * @param int $NRJ NRJ available on the current planet
