@@ -27,6 +27,17 @@ if (!defined('IN_SPYOGAME')) {
 		<td class="c">Description</td>
 	</tr>
 	<tr>
+		<th>3.1.2</th>
+		<th style="text-align:left">
+			<ul>
+				<li>Compatibilité OGame 5.X</li>
+				<li>Correctif de la supression d'un utilisateur</li>
+				<li>Correctif du système de Mise à jour</li>
+				<li>Mise à jour de l'équipe OGSteam</li>
+			</ul>
+	  	</th>
+	</tr>
+	<tr>
 		<th>3.1.1</th>
 		<th style="text-align:left">
 			<ul>

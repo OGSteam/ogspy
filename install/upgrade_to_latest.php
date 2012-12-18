@@ -291,6 +291,10 @@ switch ($ogsversion) {
 		
 		$ogsversion = '3.1.1';
 		$up_to_date = true;
+		//Pas de break pour faire toutes les mises à jour d'un coup !
+	case '3.1.1':
+		$ogsversion = '3.1.2';
+		$up_to_date = true;
 		break;
 	default:
 	die("Aucune mise … jour n'est disponible");

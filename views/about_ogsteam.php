@@ -45,7 +45,7 @@ if (!defined('IN_SPYOGAME')) {
 		</td> 
 	</tr> 
 	<tr>
-		<td class="c" width="100" height="100" align="center" valign="middle"><img src="http://forum.ogsteam.fr/index.php?action=dlattach;attach=17;type=avatar" width="80" title="Capi"></td>
+		<td class="c" width="100" height="100" align="center" valign="middle"><img src="http://www.ogsteam.fr/index.php?action=dlattach;attach=17;type=avatar" width="80" title="Capi"></td>
 		<td class="l">
 			&nbsp;<a><font color="Yellow" size="2">Capi</font></a><br />
 			<center><b>Développeur / Testeur<br />
@@ -125,9 +125,8 @@ if (!defined('IN_SPYOGAME')) {
 			<br />
 			<ul>
 				<li>Gilga</li>
-				<li>Guiliguili</li>
-				<li>Dudule</li>
-				<li>bdd_1</li>
+				<li>Elrond</li>
+				<li>Mascotte</li>
 			</ul>
 		</td>
 	</tr>
