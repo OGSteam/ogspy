@@ -1,7 +1,8 @@
 // Production par heure
-function production (building, level, temperatureMax, energy, plasma = 0) {
+function production (building, level, temperatureMax, energy, plasma) {
 
-    var speed = document.getElementById('vitesse_uni').value,
+    if(typeof(plasma) == 'undefined'){ plasma = 0;}
+	var speed = document.getElementById('vitesse_uni').value,
         ingenieur = document.getElementById('off_ingenieur').value == 1 ? 1.1 : 1,
         geologue = document.getElementById('off_geologue').value == 1 ? 1.1 : 1;
 
