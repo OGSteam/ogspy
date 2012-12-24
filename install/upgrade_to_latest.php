@@ -293,6 +293,7 @@ switch ($ogsversion) {
 		$up_to_date = true;
 		//Pas de break pour faire toutes les mises à jour d'un coup !
 	case '3.1.1':
+		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.2' WHERE config_name = 'version'";
 		$ogsversion = '3.1.2';
 		$up_to_date = true;
 		break;
