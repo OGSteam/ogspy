@@ -225,12 +225,12 @@ if ($fsock) {
             /*$version_info .='Latest_Head: '.$latest_head_revision.' Minor: '.$latest_minor_revision.' Ext: '.$latest_extension_revision.' vs Head:'.$head_revision.' Minor: '.$minor_revision.' Ext: '.$extension_revision;*/
         } else {
             $version_info = "<blink><b><font color='red'>Votre serveur OGSpy n'est pas à jour.</font></blink>";
-            $version_info .= "<br />Rendez vous sur le  <a href='http://board.ogsteam.fr' target='_blank'>forum</a> dédié au support d'OGSpy pour récupérer la dernière version : <font color='red'>" .
+            $version_info .= "<br />Rendez vous sur le  <a href='http://www.ogsteam.fr' target='_blank'>forum</a> dédié au support d'OGSpy pour récupérer la dernière version : <font color='red'>" .
                 $latest_version . "</b>";
         }
     } else {
         $version_info = "<blink><b><font color='orange'>Une incohérence a été rencontrée avec le serveur de contrôle de version.</font></blink>";
-        $version_info .= "<br />Consulter le <a href='http://board.ogsteam.fr' target='_blank'>forum</a> dédié au support d'OGSpy pour en connaître la raison.</b>";
+        $version_info .= "<br />Consulter le <a href='http://www.ogsteam.fr' target='_blank'>forum</a> dédié au support d'OGSpy pour en connaître la raison.</b>";
     }
 } else {
     $version_info = "<blink><b><font color='orange'>Impossible de récupérer le numéro de la dernière version car le lien n'a pas pu être établie avec le serveur de contrôle.</font></blink>";
@@ -298,7 +298,7 @@ help("drop_sessions"); ?>)</th>
 	<td class="c_ogspy">Information de version</td>
 </tr>
 <tr>
-	<th style="text-align:left"><?php echo $version_info; ?></th>
+	<th style="text-align:left">Merci de consulter le Forum de l'OGSteam pour connaitre la dernière version d'OGSpy: <a href='http://www.ogsteam.fr' target='_blank'>Forum</a></th>
 </tr>
 </table>
 <br />
