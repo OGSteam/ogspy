@@ -313,7 +313,9 @@ if ( $ogsversion == '3.1.0' && function_exists ( 'import_RE' ) ) {
 // on supprime tous les fichiers du cache
 // pour prendre en compte toutes les modifications
 $files = glob('../cache/*.php');
-foreach ($files as $filename){unlink($filename);}  
+if (count($files) > 0) {
+	foreach ($files as $filename){unlink($filename);} 
+}
   
 ?>
 	<h3 align='center'><font color='yellow'>Mise à jour du serveur OGSpy vers la version <?php echo $ogsversion;?> effectuée avec succès</font></h3>
