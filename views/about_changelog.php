@@ -27,6 +27,14 @@ if (!defined('IN_SPYOGAME')) {
 		<td class="c">Description</td>
 	</tr>
 	<tr>
+		<th>3.1.3</th>
+		<th style="text-align:left">
+			<ul>
+				<li>A définir</li>
+			</ul>
+	  	</th>
+	</tr>
+	<tr>
 		<th>3.1.2</th>
 		<th style="text-align:left">
 			<ul>
