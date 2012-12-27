@@ -637,7 +637,7 @@ INSERT INTO `ogspy_config` VALUES ('url_forum', 'http://www.ogsteam.fr/index.php
 INSERT INTO `ogspy_config` VALUES ('log_phperror', '0');
 INSERT INTO `ogspy_config` VALUES ('block_ratio', '0');
 INSERT INTO `ogspy_config` VALUES ('ratio_limit', '0');
-INSERT INTO `ogspy_config` VALUES ('version', '3.1.2');
+INSERT INTO `ogspy_config` VALUES ('version', '3.1.3');
 INSERT INTO `ogspy_config` VALUES ('config_cache', '3600');
 INSERT INTO `ogspy_config` VALUES ('mod_cache', '604800');
 
