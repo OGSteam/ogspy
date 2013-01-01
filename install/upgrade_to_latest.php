@@ -297,6 +297,7 @@ switch ($ogsversion) {
 		$ogsversion = '3.1.2';
 		$up_to_date = true;
 	case '3.1.2':
+		$requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` MODIFY `coordinates` VARCHAR(10)"; 
 		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.3' WHERE config_name = 'version'";
 		$ogsversion = '3.1.3';
 		$up_to_date = true;
