@@ -33,6 +33,7 @@ if (!defined('IN_SPYOGAME')) {
 				<li>Correctif pour la suppression d'une planète dans l'espace Personel</li>
 				<li>Modification du champ phalanx pour mettre une valeur par défaut</li>
 				<li>Réorganisation du profil utilisateur et ajout de l'adresse mail</li>
+				<li>Taille d'un champ de la BDD pour les univers > 9 Galaxies</li>
 			</ul>
 	  	</th>
 	</tr>
