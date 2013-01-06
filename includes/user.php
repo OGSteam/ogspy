@@ -1235,10 +1235,10 @@ function user_set_all_empire_resync_planet()
 
         // planete
         $request = "update " . TABLE_USER_BUILDING . " set planet_id = " . $i .
-            " where planet_id = " . $valeur ."and user_id = " . $user_data["user_id"];
+            " where planet_id = " . $valeur ." and user_id = " . $user_data["user_id"];
         $db->sql_query($request);
         $request = "update " . TABLE_USER_DEFENCE . " set planet_id = " . $i .
-            " where planet_id = " . $valeur . "and user_id = " . $user_data["user_id"];
+            " where planet_id = " . $valeur . " and user_id = " . $user_data["user_id"];
         $db->sql_query($request);
 
         $i++;
