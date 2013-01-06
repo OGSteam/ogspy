@@ -1,6 +1,6 @@
 #
-# OGSpy version 3.1.2
-# Décembre 2012
+# OGSpy version 3.1.3
+# Janvier 2013
 # 
 
 ## ########################################################
@@ -399,7 +399,7 @@ CREATE TABLE ogspy_universe (
   system smallint(3) NOT NULL default '0',
   `row` enum('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15') NOT NULL default '1',
   moon enum('0','1') NOT NULL default '0',
-  phalanx tinyint(1) NOT NULL,
+  phalanx tinyint(1) NOT NULL default '0',
   gate enum('0','1') NOT NULL default '0',
   `name` varchar(20) NOT NULL default '',
   ally varchar(20) default NULL,
@@ -434,6 +434,7 @@ CREATE TABLE ogspy_user (
   user_id int(11) NOT NULL auto_increment,
   user_name varchar(20) NOT NULL default '',
   user_password varchar(32) NOT NULL default '',
+  user_email varchar(50) NOT NULL default '',
   user_admin enum('0','1') NOT NULL default '0',
   user_coadmin enum('0','1') NOT NULL default '0',
   user_active enum('0','1') NOT NULL default '0',
