@@ -382,7 +382,7 @@ function member_user_set()
  * Entree en BDD de donnees utilisateur
  * @todo Query x1
  */
-function user_set_general($user_id, $user_name = null, $user_password = null, $user_lastvisit = null,
+function user_set_general($user_id, $user_name = null, $user_password = null, $user_email = null, $user_lastvisit = null,
     $user_galaxy = null, $user_system = null, $user_skin = null, $disable_ip_check = null)
 {
     global $db, $user_data, $server_config;
@@ -563,7 +563,7 @@ function user_get($user_id = false)
 {
     global $db;
 
-    $request = "select user_id, user_name, user_password, user_active, user_regdate, user_lastvisit," .
+    $request = "select user_id, user_name, user_password, user_email, user_active, user_regdate, user_lastvisit," .
         " user_galaxy, user_system, user_admin, user_coadmin, management_user, management_ranking, disable_ip_check" .
         " from " . TABLE_USER;
 

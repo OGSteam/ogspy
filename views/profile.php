@@ -14,6 +14,7 @@ $user_name = $user_data["user_name"];
 $user_galaxy = $user_data["user_galaxy"];
 $user_system = $user_data["user_system"];
 $user_skin = $user_data["user_skin"];
+$user_email = $user_data["user_email"];
 $user_stat_name = $user_data["user_stat_name"];
 if ($server_config["disable_ip_check"] == 1) $disable_ip_check = $user_data["disable_ip_check"] == 1 ? "checked" : "";
 else $disable_ip_check = "disabled";
@@ -60,7 +61,7 @@ function check_password(form) {
 <form method="POST" action="index.php" onSubmit="return check_password(this);">
 <input name="action" type="hidden" value="member_modify_member">
 <tr>
-	<td class="c_user" colspan="2">Informations générales</td>
+	<td class="c_user" colspan="2">Informations OGSpy</td>
 </tr>
 <tr>
 	<th>Pseudo&nbsp;<?php echo help("profile_login");?></th>
@@ -68,18 +69,25 @@ function check_password(form) {
 </tr>
 <tr>
 	<th>Ancien mot de passe</th>
-	<th><input name="old_password" type="password" size="20" maxlength="15"></th>
+	<th><input name="old_password" type="password" autocomplete="off" size="20" maxlength="15"></th>
 </tr>
 <tr>
 	<th>Nouveau mot de passe&nbsp;<?php echo help("profile_password");?></th>
-	<th><input name="new_password" type="password" size="20" maxlength="15"></th>
+	<th><input name="new_password" type="password" autocomplete="off" size="20" maxlength="15"></th>
 </tr>
 <tr>
 	<th>Nouveau mot de passe [Confirmez]</th>
-	<th><input name="new_password2" type="password" size="20" maxlength="15"></th>
+	<th><input name="new_password2" type="password" autocomplete="off" size="20" maxlength="15"></th>
 </tr>
 <tr>
-	<td class="c" colspan="2">Position de la planète principale</td>
+	<th>Adresse Email&nbsp;<?php echo help("profile_pseudo_email");?></th>
+	<th>
+		<input name="pseudo_email" type="text" size="30" value="<?php echo $user_email;?>">
+	</th>
+</tr>
+<tr>
+<tr>
+	<td class="c" colspan="2">Informations du Jeu</td>
 </tr>
 <tr>
 	<th>Position de la planète principale&nbsp;<?php echo help("profile_main_planet");?></th>
@@ -89,27 +97,9 @@ function check_password(form) {
 	</th>
 </tr>
 <tr>
-	<td class="c" colspan="2">Pseudo ingame</td>
-</tr>
-<tr>
-	<th>Pseudo ingame&nbsp;<?php echo help("profile_pseudo_ingame");?></th>
+	<th>Pseudo dans le Jeu&nbsp;<?php echo help("profile_pseudo_ingame");?></th>
 	<th>
 		<input name="pseudo_ingame" type="text" size="20" value="<?php echo $user_stat_name;?>">
-	</th>
-</tr>
-<tr>
-	<td class="c" colspan="2">Divers</td>
-</tr>
-<tr>
-	<th>Lien du skin utilisé&nbsp;<?php echo help("profile_skin");?></th>
-	<th>
-		<input name="skin" type="text" size="20" value="<?php echo $user_skin;?>">
-	</th>
-</tr>
-<tr>
-	<th>Désactiver la vérification de l'adresse IP&nbsp;<?php echo help("profile_disable_ip_check");?></th>
-	<th>
-		<input name="disable_ip_check" value="1" type="checkbox" <?php echo $disable_ip_check;?>>
 	</th>
 </tr>
 <tr>
@@ -135,6 +125,20 @@ function check_password(form) {
 	<th>Technocrate:</th>
 	<th>
 		<input name="off_technocrate" value="1" type="checkbox" <?php echo $off_technocrate;?>>
+	</th>
+</tr>
+	<td class="c" colspan="2">Divers</td>
+</tr>
+<tr>
+	<th>Lien du skin utilisé&nbsp;<?php echo help("profile_skin");?></th>
+	<th>
+		<input name="skin" type="text" size="20" value="<?php echo $user_skin;?>">
+	</th>
+</tr>
+<tr>
+	<th>Désactiver la vérification de l'adresse IP&nbsp;<?php echo help("profile_disable_ip_check");?></th>
+	<th>
+		<input name="disable_ip_check" value="1" type="checkbox" <?php echo $disable_ip_check;?>>
 	</th>
 </tr>
 <tr>

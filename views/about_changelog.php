@@ -30,7 +30,9 @@ if (!defined('IN_SPYOGAME')) {
 		<th>3.1.3</th>
 		<th style="text-align:left">
 			<ul>
-				<li>A définir</li>
+				<li>Correctif pour la suppression d'une planète dans l'espace Personel</li>
+				<li>Modification du champ phalanx pour mettre une valeur par défaut</li>
+				<li>Réorganisation du profil utilisateur et ajout de l'adresse mail</li>
 			</ul>
 	  	</th>
 	</tr>
