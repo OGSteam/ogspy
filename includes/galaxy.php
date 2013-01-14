@@ -16,7 +16,82 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+/**
+ * Vérification des droits OGSpy
+ * @param string $action Droit interrogé
+ */
 
+function galaxy_check_auth($action)
+{
+    global $user_data, $user_auth;
+
+    switch ($action) {
+        case "import_planet":
+            if ($user_auth["ogs_set_system"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] !=
+                1)
+                die("<!-- [AccessDenied] Accès refusé -->" . "\n" .
+                    "<!-- Vous n'avez pas les droits pour exporter des systèmes solaires -->" . "\n");
+            break;
+
+        case "export_planet":
+            if ($user_auth["ogs_get_system"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] !=
+                1)
+                die("<!-- [AccessDenied] Accès refusé -->" . "\n" .
+                    "<!-- Vous n'avez pas les droits pour importer des systèmes solaires -->" . "\n");
+            break;
+
+        case "import_spy":
+            if ($user_auth["ogs_set_spy"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] !=
+                1)
+                die("<!-- [AccessDenied] Accès refusé -->" . "\n" .
+                    "<!-- Vous n'avez pas les droits pour exporter des rapports d'espionnage -->" .
+                    "\n");
+            break;
+
+        case "export_spy":
+            if ($user_auth["ogs_get_spy"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] !=
+                1)
+                die("<!-- [AccessDenied] Accès refusé -->" . "\n" .
+                    "<!-- Vous n'avez pas les droits pour importer des rapports d'espionnage -->" .
+                    "\n");
+            break;
+
+        case "import_ranking":
+            if ($user_auth["ogs_set_ranking"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] !=
+                1)
+                die("<!-- [AccessDenied] Accès refusé -->" . "\n" .
+                    "<!-- Vous n'avez pas les droits pour exporter des classements -->" . "\n");
+            break;
+
+        case "export_ranking":
+            if ($user_auth["ogs_get_ranking"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] !=
+                1)
+                die("<!-- [AccessDenied] Accès refusé -->" . "\n" .
+                    "<!-- Vous n'avez pas les droits pour importer des classements -->" . "\n");
+            break;
+
+        case "drop_ranking":
+            if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_ranking"] !=
+                1)
+                redirection("index.php?action=message&id_message=forbidden&info");
+            break;
+
+        case "set_ranking":
+            if (($user_auth["server_set_ranking"] != 1) && $user_data["user_admin"] != 1 &&
+                $user_data["user_coadmin"] != 1)
+                redirection("index.php?action=message&id_message=forbidden&info");
+            break;
+
+        case "set_rc":
+            if (($user_auth["server_set_rc"] != 1) && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] !=
+                1)
+                redirection("index.php?action=message&id_message=forbidden&info");
+            break;
+
+        default:
+            die("<!-- [ErrorFatal=18] Données transmises incorrectes  -->");
+    }
+}
 
 /**
  * Affichage des galaxies
