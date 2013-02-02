@@ -267,11 +267,12 @@ function member_user_set()
     global $db, $user_data, $user_technology;
     global $pub_pseudo, $pub_old_password, $pub_new_password, $pub_new_password2, $pub_galaxy,
         $pub_system, $pub_skin, $pub_disable_ip_check, $pub_off_amiral, $pub_off_ingenieur,
-        $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame;
+        $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email;
 
     if (!check_var($pub_pseudo, "Text") || !check_var($pub_old_password, "Text") ||
         !check_var($pub_new_password, "Text") || !check_var($pub_new_password2,
-        "CharNum") || !check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") ||
+        "CharNum") || !check_var($pub_pseudo_email, "Email")
+		|| !check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") ||
         !check_var($pub_skin, "URL") || !check_var($pub_disable_ip_check, "Num") || !
         check_var($pub_pseudo_ingame, "Pseudo_ingame")) {
         redirection("index.php?action=message&id_message=errordata&info");
@@ -284,7 +285,7 @@ function member_user_set()
 
     $password_validated = null;
     if (!isset($pub_pseudo) || !isset($pub_old_password) || !isset($pub_new_password) ||
-        !isset($pub_new_password2) || !isset($pub_galaxy) || !isset($pub_system) || !
+        !isset($pub_new_password2) || !isset($pub_pseudo_email) || !isset($pub_galaxy) || !isset($pub_system) || !
         isset($pub_skin)) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed&info");
     }
@@ -373,7 +374,7 @@ function member_user_set()
     if (is_null($pub_disable_ip_check) || $pub_disable_ip_check != 1)
         $pub_disable_ip_check = 0;
 
-    user_set_general($user_id, $pub_pseudo, $pub_new_password, null, $pub_galaxy, $pub_system,
+    user_set_general($user_id, $pub_pseudo, $pub_new_password, $pub_pseudo_email, null, $pub_galaxy, $pub_system,
         $pub_skin, $pub_disable_ip_check);
     redirection("index.php?action=profile");
 }
@@ -423,7 +424,12 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
     if (!empty($user_lastvisit))
         $update .= ((strlen($update) > 0) ? ", " : "") . "user_lastvisit = '" . $user_lastvisit .
             "'";
-
+   
+   //Email
+    if (!empty($user_email))
+        $update .= ((strlen($update) > 0) ? ", " : "") . "user_email = '" . $user_email .
+            "'";			
+			
     //Skin
     if (!is_null($user_skin)) {
         if (strlen($user_skin) > 0 && substr($user_skin, strlen($user_skin) - 1) != "/")
