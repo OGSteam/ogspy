@@ -1125,7 +1125,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
             //Mot de passe des membres
         case "Password":
-            if (!preg_match("#^[\w\s\-]{6,15}$#", $value)) {
+            if (!preg_match("#^[\w\s\-]{6,20}$#", $value)) {
                 return false;
             }
             break;
@@ -1161,6 +1161,13 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
                 return false;
             }
             break;
+		            //Chiffres
+        case "Email":
+            if (!preg_match('#^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}$#', $value)) {
+                log_("check_var", array("Email", $value));
+                return false;
+            }
+            break;	
 
             //Galaxies
         case "Galaxies":

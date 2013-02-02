@@ -86,7 +86,6 @@ function check_password(form) {
 	</th>
 </tr>
 <tr>
-<tr>
 	<td class="c" colspan="2">Informations du Jeu</td>
 </tr>
 <tr>
