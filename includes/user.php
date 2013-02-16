@@ -266,7 +266,7 @@ function member_user_set()
 {
     global $db, $user_data, $user_technology;
     global $pub_pseudo, $pub_old_password, $pub_new_password, $pub_new_password2, $pub_galaxy,
-        $pub_system, $pub_skin, $pub_disable_ip_check, $pub_off_amiral, $pub_off_ingenieur,
+        $pub_system, $pub_skin, $pub_disable_ip_check, $pub_off_commandant, $pub_off_amiral, $pub_off_ingenieur,
         $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email;
 
     if (!check_var($pub_pseudo, "Text") || !check_var($pub_old_password, "Text") ||
@@ -312,6 +312,16 @@ function member_user_set()
         user_set_stat_name($pub_pseudo_ingame);
     }
 
+	//compte Commandant
+    if ($user_data['off_commandant'] == "0" && $pub_off_commandant == 1) {
+        $db->sql_query("UPDATE " . TABLE_USER .
+            " SET `off_commandant` = '1' WHERE `user_id` = " . $user_id);
+    }
+    if ($user_data['off_commandant'] == 1 && (is_null($pub_off_commandant) || $pub_off_commandant !=
+        1)) {
+        $db->sql_query("UPDATE " . TABLE_USER .
+            " SET `off_commandant` = '0' WHERE `user_id` = " . $user_id);
+    }
 
     //compte amiral
     if ($user_data['off_amiral'] == "0" && $pub_off_amiral == 1) {
@@ -570,7 +580,8 @@ function user_get($user_id = false)
     global $db;
 
     $request = "select user_id, user_name, user_password, user_email, user_active, user_regdate, user_lastvisit," .
-        " user_galaxy, user_system, user_admin, user_coadmin, management_user, management_ranking, disable_ip_check" .
+        " user_galaxy, user_system, user_admin, user_coadmin, management_user, management_ranking, disable_ip_check," .
+        " off_commandant, off_amiral, off_ingenieur, off_geologue, off_technocrate" .
         " from " . TABLE_USER;
 
     if ($user_id !== false) {
@@ -705,8 +716,6 @@ function user_create()
         "'";
     $result = $db->sql_query($request);
     if ($db->sql_numrows($result) == 0) {
-        //$request = "insert into ".TABLE_USER." (user_name, user_password, user_regdate, user_active)".
-        //" values ('". $db->sql_escape_string($pub_pseudo)."', '".md5(sha1($password))."', ".time().", '1')";
         $request = "insert into " . TABLE_USER .
             " (user_name, user_password, user_regdate, user_active)" . " values ('" . $pub_pseudo .
             "', '" . md5(sha1($password)) . "', " . time() . ", '1')";

@@ -459,6 +459,7 @@ CREATE TABLE ogspy_user (
   management_user enum('0','1') NOT NULL default '0',
   management_ranking enum('0','1') NOT NULL default '0',
   disable_ip_check enum('0','1') NOT NULL default '0',
+  off_commandant enum('0','1') NOT NULL default '0',
   off_amiral enum('0','1') NOT NULL default '0',
   off_ingenieur enum('0','1') NOT NULL default '0',
   off_geologue enum('0','1') NOT NULL default '0',
@@ -634,7 +635,7 @@ INSERT INTO `ogspy_config` VALUES ('reason', '');
 INSERT INTO `ogspy_config` VALUES ('servername', 'Cartographie');
 INSERT INTO `ogspy_config` VALUES ('server_active', '1');
 INSERT INTO `ogspy_config` VALUES ('session_time', '30');
-INSERT INTO `ogspy_config` VALUES ('url_forum', 'http://www.ogsteam.fr/index.php');
+INSERT INTO `ogspy_config` VALUES ('url_forum', 'http://www.ogsteam.fr/');
 INSERT INTO `ogspy_config` VALUES ('log_phperror', '0');
 INSERT INTO `ogspy_config` VALUES ('block_ratio', '0');
 INSERT INTO `ogspy_config` VALUES ('ratio_limit', '0');
