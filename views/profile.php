@@ -18,6 +18,7 @@ $user_email = $user_data["user_email"];
 $user_stat_name = $user_data["user_stat_name"];
 if ($server_config["disable_ip_check"] == 1) $disable_ip_check = $user_data["disable_ip_check"] == 1 ? "checked" : "";
 else $disable_ip_check = "disabled";
+$off_commandant = ( isset ( $user_data["off_commandant"] ) && $user_data["off_commandant"] == 1 ) ? "checked" : "";
 $off_amiral = ( isset ( $user_data["off_amiral"] ) && $user_data["off_amiral"] == 1 ) ? "checked" : "";
 $off_ingenieur = ( isset ( $user_data["off_ingenieur"] ) && $user_data["off_ingenieur"] == 1 ) ? "checked" : "";
 $off_geologue = ( isset ( $user_data["off_geologue"] ) && $user_data["off_geologue"] == 1 ) ? "checked" : "";
@@ -103,6 +104,12 @@ function check_password(form) {
 </tr>
 <tr>
 	<td class="c" colspan="2">Comptes Officiers</td>
+</tr>
+<tr>
+	<th>Commandant:</th>
+	<th>
+		<input name="off_commandant" value="1" type="checkbox" <?php echo $off_commandant;?>>
+	</th>
 </tr>
 <tr>
 	<th>Amiral de flotte:</th>
