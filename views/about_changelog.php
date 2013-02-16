@@ -34,6 +34,9 @@ if (!defined('IN_SPYOGAME')) {
 				<li>Modification du champ phalanx pour mettre une valeur par défaut</li>
 				<li>Réorganisation du profil utilisateur et ajout de l'adresse mail</li>
 				<li>Taille d'un champ de la BDD pour les univers > 9 Galaxies</li>
+				<li>Correctif Formules de Production</li>
+				<li>Ajout du compte Commandant</li>
+				<li>Mise à jour de l'équipe OGSteam</li>
 			</ul>
 	  	</th>
 	</tr>
