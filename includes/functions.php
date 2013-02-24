@@ -537,8 +537,8 @@ function set_serverconfig()
     $pub_max_spyreport = intval($pub_max_spyreport);
     if ($pub_max_spyreport < 1)
         $pub_max_spyreport = 1;
-    if ($pub_max_spyreport > 10)
-        $pub_max_spyreport = 10;
+    if ($pub_max_spyreport > 50)
+        $pub_max_spyreport = 50;
     $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_spyreport .
         " where config_name = 'max_spyreport'";
     $db->sql_query($request);
@@ -547,8 +547,8 @@ function set_serverconfig()
     $pub_max_battlereport = intval($pub_max_battlereport);
     if ($pub_max_battlereport < 0)
         $pub_max_battlereport = 0;
-    if ($pub_max_battlereport > 99)
-        $pub_max_battlereport = 99;
+    if ($pub_max_battlereport > 999)
+        $pub_max_battlereport = 999;
     $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_battlereport .
         " where config_name = 'max_battlereport'";
     $db->sql_query($request);
@@ -605,8 +605,8 @@ function set_serverconfig()
     $pub_max_keeprank = intval($pub_max_keeprank);
     if ($pub_max_keeprank < 1)
         $pub_max_keeprank = 1;
-    if ($pub_max_keeprank > 50)
-        $pub_max_keeprank = 50;
+    if ($pub_max_keeprank > 999)
+        $pub_max_keeprank = 999;
     $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_keeprank .
         " where config_name = 'max_keeprank'";
     $db->sql_query($request);
@@ -623,8 +623,8 @@ function set_serverconfig()
     $pub_max_keepspyreport = intval($pub_max_keepspyreport);
     if ($pub_max_keepspyreport < 1)
         $pub_max_keepspyreport = 1;
-    if ($pub_max_keepspyreport > 90)
-        $pub_max_keepspyreport = 90;
+    if ($pub_max_keepspyreport > 999)
+        $pub_max_keepspyreport = 999;
     $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_keepspyreport .
         " where config_name = 'max_keepspyreport'";
     $db->sql_query($request);
