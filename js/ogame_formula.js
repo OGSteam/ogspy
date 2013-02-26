@@ -2,16 +2,16 @@
 function production (building, level, temperatureMax, energy, plasma) {
 
     if(typeof(plasma) == 'undefined'){ plasma = 0;}
-    var speed = document.getElementById('vitesse_uni').value,
-        ingenieur = document.getElementById('off_ingenieur').value == 1 ? 0.1 : 0,
-        geologue = document.getElementById('off_geologue').value == 1 ? 0.1 : 0;
+	var speed = document.getElementById('vitesse_uni').value,
+        ingenieur = document.getElementById('off_ingenieur').value == 1 ? 1.1 : 1,
+        geologue = document.getElementById('off_geologue').value == 1 ? 1.1 : 1;
 
     switch (building) {
-        case 'M': return speed * (30 + Math.floor(30 * level * Math.pow(1.1, level) * (1 + geologue + (0.01 * plasma))));
-        case 'C': return speed * (15 + Math.floor(20 * level * Math.pow(1.1, level) * (1 + geologue + (0.0066 * plasma))));
-        case 'D': return speed * Math.floor(10 * level * Math.pow(1.1, level) * (1.44 - 0.004 * temperatureMax) * (1 + geologue));
-        case 'CES': return 20 * level * Math.pow(1.1, level) * (1 + ingenieur);
-        case 'CEF': return 30 * level * Math.pow(1.05 + 0.01 * energy, level) * (1 + ingenieur);
+        case 'M': return speed * (30 + Math.round(30 * level * Math.pow(1.1, level) * geologue *(1 + (0.01 * plasma))));
+        case 'C': return speed * (15 + Math.round(20 * level * Math.pow(1.1, level) * geologue *(1 + (0.0066 * plasma))));
+        case 'D': return speed * Math.round(10 * level * Math.pow(1.1, level) * (1.44 - 0.004 * temperatureMax) * geologue);
+        case 'CES': return Math.floor(20 * level * Math.pow(1.1, level) * ingenieur);
+        case 'CEF': return Math.floor(30 * level * Math.pow(1.05 + 0.01 * energy, level) * ingenieur);
         default: return 0;
     }
 }
@@ -29,10 +29,9 @@ function consumption (building, level) {
         case 'M': return Math.ceil(10 * level * Math.pow(1.1, level));
         case 'C': return Math.ceil(10 * level * Math.pow(1.1, level));
         case 'D': return Math.ceil(20 * level * Math.pow(1.1, level));
-        case 'CEF': return Math.ceil((10 * level * Math.pow(1.1, level)) * document.getElementById('vitesse_uni').value);
+        case 'CEF': return Math.round((10 * level * Math.pow(1.1, level)) * document.getElementById('vitesse_uni').value);
         default: return 0;
     }
-
 }
 
 // Met à jour la page Espace Personel > Simulation
