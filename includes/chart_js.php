@@ -577,7 +577,7 @@ var highchartsOptions = Highcharts.setOptions(Highcharts.theme); ";
  * @param string $conteneur
  * @return string the gerated JS Code
  */
-function create_multi_curve($titre, $sous_titre, $data, $names, $conteneur)
+function create_multi_curve($titre, $sous_titre, $data, $names, $conteneur, $theme = true)
 {
     global $zoom , $server_config; // on recupere le zoom s il existe
 
@@ -649,9 +649,16 @@ $(document).ready(function() {
    });
    
    
-});
-</script>
-";
+});";
+
+    // insertion du theme par defaut
+    if ($theme == true) {
+        $retour .= graph_theme();
+    }
+
+
+    $retour .= "</script> ";
+
     return $retour;
 }
 
