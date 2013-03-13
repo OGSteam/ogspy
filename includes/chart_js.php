@@ -119,6 +119,110 @@ $(document).ready(function() {
     return $retour;
 }
 /**
+ * create_pie_numbers()
+ * genere le script js d un camenbert
+ *  le nom du grah = nom du $conteneur
+ *
+ * @param mixed $_data
+ * @param mixed $_legend
+ * @param mixed $_title
+ * @param mixed $conteneur
+ * @return string contenant script js
+ */
+function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true)
+{
+	global $server_config;
+	// todo voir si insertion possible que si on genere un graph ( test pas concluant)
+	//   $retour = import_js();
+	$retour = "";
+
+	// test erreurs donnés
+	if (!check_var($_data, "Special", "#^[0-9(_x_)]+$#") || !check_var($_legend,
+        "Text") || !check_var($_title, "Text") || !check_var($conteneur, "Text")) {
+	$retour .= affiche_error($conteneur, 'erreur 1');
+	return $retour;
+	}
+	//
+	//  recuperation des infos
+	$data = explode('_x_', $_data);
+	$legend = explode('_x_', $_legend);
+	$title = $_title;
+
+	// il doit y avoir autant de legende que de valeur
+	if (count($data) != count($legend)) {
+		$retour .= affiche_error($conteneur, 'erreur 2');
+		return $retour;
+	}
+
+	// préparation des données
+	$i = 0;
+	$temp = array();
+	while ($i < count($data)) {
+		$temp[$i] = "['" . $legend[$i] . "'," . $data[$i] . " ]";
+		$i++;
+	}
+	// format hightchart
+	$format_data = implode(" , ", $temp);
+
+
+	// création du script
+	$retour .= "<script type=\"text/javascript\">
+	var " . $conteneur . ";
+	$(document).ready(function() {
+
+
+    " . $conteneur . " = new Highcharts.Chart({
+		chart: {
+	        renderTo: '" . $conteneur . "',
+	        plotBackgroundColor: null,
+	        plotBorderWidth: null,
+			plotShadow: false
+		},
+      	credits: {
+			text: '<b>OGSteam Software</b> v ".$server_config["version"]." ',
+        	href: 'http://www.ogsteam.fr'
+	  	},
+		title: {
+			text: '" . $title . "'
+        },
+        tooltip: {
+            formatter: function() {
+				return '<b>' + this.point.name + '</b>: ' + number_format(this.point.y, 0, ',', ' ');
+            }
+        },
+      	plotOptions: {
+        	pie: {
+	            allowPointSelect: true,
+	            cursor: 'pointer',
+	            dataLabels: {
+	                color: '#FFFFFF',
+	                enabled: true
+	            },
+	            showInLegend: true
+         	}
+		},
+        series: [{
+        	type: 'pie',
+         	name: 'Browser share',
+         	data: [" . $format_data . "]
+      	}]
+   	});
+}); ";
+
+
+	// insertion du theme par defaut
+	if ($theme == true) {
+		$retour .= graph_theme();
+	}
+
+    $retour .= "</script> ";
+
+
+    return $retour;
+}
+
+
+/**
  * create_curves()
  * Generate the JS Code for a Curves chart
  * 
