@@ -299,6 +299,7 @@ switch ($ogsversion) {
 	case '3.1.2':
 		$requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` MODIFY `coordinates` VARCHAR(10)";
 		$requests[] = "ALTER TABLE `".TABLE_UNIVERSE."` MODIFY `phalanx` tinyint(1) NOT NULL default '0'";
+		$requests[] = "ALTER TABLE `".TABLE_USER."` MODIFY `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP','ANDROID')";
 		$requests[] = "ALTER TABLE `".TABLE_USER."` ADD `user_email` VARCHAR(50) NOT NULL default '' AFTER `user_password`";
 		$requests[] = "ALTER TABLE `".TABLE_USER."` ADD `off_commandant` enum('0','1') NOT NULL default '0', AFTER `disable_ip_check`";
 		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.3' WHERE config_name = 'version'";
