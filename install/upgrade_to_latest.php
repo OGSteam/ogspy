@@ -57,7 +57,7 @@ switch ($ogsversion) {
         $requests[] = "UPDATE ".TABLE_USER_DEFENCE." SET planet_id = (planet_id + 191) WHERE planet_id > 9 and planet_id < 19 ";
         $ogsversion = '3.0.7';
 		$up_to_date = true;
-		break;
+		//Pas de break pour faire toutes les mises à jour d'un coup !
 		
 	case '3.0.7':
 		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.0.8' WHERE config_name = 'version'";
@@ -65,7 +65,7 @@ switch ($ogsversion) {
 		$requests[] = "INSERT IGNORE INTO ".TABLE_CONFIG." (config_name, config_value) VALUES ('mod_cache', '604800')";
         $ogsversion = '3.0.8';
 		$up_to_date = true;
-		break;
+		//Pas de break pour faire toutes les mises à jour d'un coup !
 		
 	case '3.0.8':
         // modif building
@@ -270,7 +270,7 @@ switch ($ogsversion) {
     
         $ogsversion = '3.1.0';
 		$up_to_date = true;
-		break;
+		//Pas de break pour faire toutes les mises à jour d'un coup !
 		
 	case '3.1.0':
 		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.1' WHERE config_name = 'version'";
@@ -296,6 +296,7 @@ switch ($ogsversion) {
 		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.2' WHERE config_name = 'version'";
 		$ogsversion = '3.1.2';
 		$up_to_date = true;
+		//Pas de break pour faire toutes les mises à jour d'un coup !
 	case '3.1.2':
 		$requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` MODIFY `coordinates` VARCHAR(10)";
 		$requests[] = "ALTER TABLE `".TABLE_UNIVERSE."` MODIFY `phalanx` tinyint(1) NOT NULL default '0'";
