@@ -201,6 +201,18 @@ $mod_cache = $server_config['mod_cache'];
 	<th><input name="log_phperror" type="checkbox" value="1" <?php echo $log_phperror;?>></th>
 
 </tr>
+<?php
+	if ($user_data["user_admin"] == 1) {
+?>
+<tr>
+	<td class="c_ogame" colspan="2">Utilisateurs Google Cloud Messaging <div class="z"><i>Necessaire pour les push de noticications sur les appareils android</i></div></td>
+</tr>
+<tr>
+	<th colspan="2"><?php require_once 'gcm_users.php';?></th>
+</tr>
+<?php
+}
+?>
 <tr>
 	<td>&nbsp;</td>
 </tr>
