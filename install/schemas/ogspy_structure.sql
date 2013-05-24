@@ -865,3 +865,14 @@ CREATE TABLE `ogspy_round_defense` (
   KEY `id_rcround` (`id_rcround`),
   KEY `player` (`player`,`coordinates`)
 );
+## ########################################################
+
+##
+## Structure de la table `ogspy_gcm_users`
+##
+CREATE TABLE IF NOT EXISTS `ogspy_gcm_users` (
+	`user_id` int(11) NOT NULL default '0',
+  	`gcm_regid` text,
+  	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  	PRIMARY KEY (`user_id`)
+);

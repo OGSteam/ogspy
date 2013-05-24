@@ -1438,4 +1438,43 @@ function generate_key()
     }
 
 }
+
+
+/***********************************************************************
+ ************** Fonctions pour table Google Cloud Messaging ************
+ ***********************************************************************/
+
+/** Storing new GCM user
+ * @return : user true or false
+ */
+function storeGCMUser($name,$gcm_regid) {	
+	global $db;
+	$user_id = "0";
+	$result = $db->sql_query("SELECT user_id FROM " . TABLE_USER . " WHERE user_name = '" . $name . "' OR user_stat_name = '" . $name . "'");
+	
+	while (list($userid) = $db->sql_fetch_row($result))	{
+		$user_id = $userid;		
+	}
+	
+	// insert user into database
+	$result = $db->sql_query("INSERT INTO " . TABLE_GCM_USERS . "(user_id, gcm_regid, created_at) VALUES('" . $user_id ."' , '" . $gcm_regid . "', NOW())");
+	
+	// check for successful store
+	if ($result) {		
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * Getting all GCM users
+ */
+function getAllGCMUsers() {
+	global $db;
+	$query = "SELECT gcm.user_id AS user_id, users.user_name AS name, users.user_stat_name AS name2, users.user_email AS email, gcm.gcm_regid AS gcm_regid, gcm.created_at AS created_at ".
+			 "FROM " . TABLE_GCM_USERS . " gcm ".
+			 "INNER JOIN " . TABLE_USER . " users ON users.user_id = gcm.user_id";
+	return $db->sql_query($query);
+}
 ?>
