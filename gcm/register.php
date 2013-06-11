@@ -65,24 +65,71 @@
 	// je pense qu il y a moyen de passer par la session native d ogspy ...
 	// mais bon ... :p ( regarde dans le common.php et include/user.php)
 		
+	function writeLog($texte){
+		$filename = 'log.txt';
+
+		// Assurons nous que le fichier est accessible en écriture
+		if (is_writable($filename)) {
+		    // Dans notre exemple, nous ouvrons le fichier $filename en mode d'ajout
+		    // Le pointeur de fichier est placé à la fin du fichier
+		    // c'est là que le texte sera placé
+		    if (!$handle = fopen($filename, 'a')) {
+		         //echo "Impossible d'ouvrir le fichier ($filename)";
+		         exit;
+		    }
+		    // Ecrivons quelque chose dans notre fichier.
+		    if (fwrite($handle, $texte."\n") === FALSE) {
+		        //echo "Impossible d'écrire dans le fichier ($filename)";
+		        exit;
+		    }
+		    //echo "L'écriture de ($texte) dans le fichier ($filename) a réussi";		
+		    fclose($handle);		
+		} else {
+		    //echo "Le fichier $filename n'est pas accessible en écriture.";
+		}
+	}
+		
+		
 	/**
 	 * Registering a user device
 	 * Store reg id in users table
 	 */
-	if (isset($pub_name) && isset($pub_regId)) {
-	    $gcm = new GCM();
-	 
-	    $res = storeGCMUser($pub_name, $pub_regId);
-
-		echo "Success=" . $res;
-
-	    $registatoin_ids = array($pub_regId);
-	    $message = array("product" => "ok");
-	 
-	    $result = $gcm->send_notification($registatoin_ids, $message);
-	 
-	    return $result;
+	if(isset($pub_unregister) && isset($pub_regId)){
+		$gcm = new GCM();
+		writeLog("Try to unregister User ($pub_name) | regId ($pub_regId)");
+		$res = deleteGCMUser($pub_regId);
+		writeLog("Successfull unregistering User ($pub_name) | regId ($pub_regId)");
+		echo $res;
 	} else {
-	    die("User details missing for registration !");
+		if (isset($pub_name) && isset($pub_regId)) {
+			writeLog("Try to register User ($pub_name) | regId ($pub_regId)");
+		    $gcm = new GCM();		 
+		    $res = storeGCMUser($pub_name, $pub_regId);
+	
+			//echo "Resultat=" . $res;
+			
+			if ($res == 1){
+				writeLog("Success !");
+					
+				$registatoin_ids = array($pub_regId);
+				//$message = array("product" => "ok");
+				$message = array("message" => "You are register on your OGSPY server !");
+				
+				$result = $gcm->send_notification($registatoin_ids, $message);
+					
+				//echo $result;
+				writeLog("Notif envoyée : " . $result);
+				echo $result;
+			} else if($res == 1) {
+				writeLog("Echec !");
+			} else if($res == -1) {
+				writeLog("Déjà enregistré !");
+			}
+			
+		} else {
+			writeLog("User details missing for registration !");
+		    die("User details missing for registration !");
+		}
 	}
+	
 ?>

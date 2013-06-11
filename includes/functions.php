@@ -1452,15 +1452,38 @@ function storeGCMUser($name,$gcm_regid) {
 	$user_id = "0";
 	$result = $db->sql_query("SELECT user_id FROM " . TABLE_USER . " WHERE user_name = '" . $name . "' OR user_stat_name = '" . $name . "'");
 	
+	$nbGcmUsers = $db->sql_numrows("SELECT * FROM " . TABLE_GCM_USERS . " WHERE gcm_regid = '" . $gcm_regid . "'");
+	
 	while (list($userid) = $db->sql_fetch_row($result))	{
 		$user_id = $userid;		
 	}
 	
-	// insert user into database
-	$result = $db->sql_query("INSERT INTO " . TABLE_GCM_USERS . "(user_id, gcm_regid, created_at) VALUES('" . $user_id ."' , '" . $gcm_regid . "', NOW())");
+	//return "Nombre de users GCM = " . $nbGcmUsers;
 	
+	if($nbGcmUsers == 0){
+		// insert user into database
+		$result = $db->sql_query("INSERT INTO " . TABLE_GCM_USERS . "(user_id, gcm_regid, created_at) VALUES('" . $user_id ."' , '" . $gcm_regid . "', NOW())");
+		// check for successful store
+		if ($result) {
+			return 1;
+		} else {
+			return 0;
+		}
+	} else {
+		return -1;
+	}
+}
+
+/** Storing new GCM user
+* @return : user true or false
+*/
+function deleteGCMUser($gcm_regid) {
+	global $db;
+
+	// delete user in database
+	$result = $db->sql_query("DELETE FROM " . TABLE_GCM_USERS . " WHERE gcm_regid = '" . $gcm_regid . "'");
 	// check for successful store
-	if ($result) {		
+	if ($result) {
 		return true;
 	} else {
 		return false;
