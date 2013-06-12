@@ -872,7 +872,7 @@ CREATE TABLE `ogspy_round_defense` (
 ##
 CREATE TABLE IF NOT EXISTS `ogspy_gcm_users` (
 	`user_id` int(11) NOT NULL default '0',
-  	`gcm_regid` text,
+  	`gcm_regid` varchar(256) NOT NULL,
   	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  	PRIMARY KEY (`user_id`)
+  	PRIMARY KEY (`gcm_regid`)
 );
