@@ -309,9 +309,9 @@ switch ($ogsversion) {
 	case '3.1.3':
 		$requests[] = "CREATE TABLE IF NOT EXISTS `".TABLE_GCM_USERS."` ( ".
   					  "`user_id` int(11) NOT NULL default '0',".
-  					  "`gcm_regid` text, ".
+  					  "`gcm_regid` varchar(256) NOT NULL, ".
   					  "`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, ".
-  					  "PRIMARY KEY (`user_id`) ".
+  					  "PRIMARY KEY (`gcm_regid`) ".
   					  ") ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1";
 		$ogsversion = '3.2.0';
 		$up_to_date = true;

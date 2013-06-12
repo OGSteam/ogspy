@@ -67,7 +67,9 @@
 		
 	function writeLog($texte){
 		$filename = 'log.txt';
-
+		$date = date("d-m-Y");
+		$heure = date("G:i");
+		
 		// Assurons nous que le fichier est accessible en écriture
 		if (is_writable($filename)) {
 		    // Dans notre exemple, nous ouvrons le fichier $filename en mode d'ajout
@@ -78,7 +80,7 @@
 		         exit;
 		    }
 		    // Ecrivons quelque chose dans notre fichier.
-		    if (fwrite($handle, $texte."\n") === FALSE) {
+		    if (fwrite($handle, $date ." - " . $heure . " : " . $texte . "\n") === FALSE) {
 		        //echo "Impossible d'écrire dans le fichier ($filename)";
 		        exit;
 		    }
@@ -98,7 +100,15 @@
 		$gcm = new GCM();
 		writeLog("Try to unregister User ($pub_name) | regId ($pub_regId)");
 		$res = deleteGCMUser($pub_regId);
-		writeLog("Successfull unregistering User ($pub_name) | regId ($pub_regId)");
+		if($res){
+			writeLog("Successfull unregistering User ($pub_name) | regId ($pub_regId)");
+		} else {
+			writeLog("Fail to unregister User ($pub_name) | regId ($pub_regId)");
+		}
+		$registatoin_ids = array($pub_regId);
+		$message = array("message" => "You are unregister from your OGSPY server !");		
+		$gcm->send_notification($registatoin_ids, $message);
+		
 		echo $res;
 	} else {
 		if (isset($pub_name) && isset($pub_regId)) {
