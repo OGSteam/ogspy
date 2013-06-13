@@ -106,10 +106,10 @@
 			writeLog("Fail to unregister User ($pub_name) | regId ($pub_regId)");
 		}
 		$registatoin_ids = array($pub_regId);
-		$message = array("message" => "You are unregister from your OGSPY server !");		
-		$gcm->send_notification($registatoin_ids, $message);
+		$message = array("message" => "$pub_name , you are unregister from your OGSPY server !");		
+		$result = $gcm->send_notification($registatoin_ids, $message);
 		
-		echo $res;
+		echo $result;
 	} else {
 		if (isset($pub_name) && isset($pub_regId)) {
 			writeLog("Try to register User ($pub_name) | regId ($pub_regId)");
@@ -123,7 +123,7 @@
 					
 				$registatoin_ids = array($pub_regId);
 				//$message = array("product" => "ok");
-				$message = array("message" => "You are register on your OGSPY server !");
+				$message = array("message" => "$pub_name, you are register on your OGSPY server !");
 				
 				$result = $gcm->send_notification($registatoin_ids, $message);
 					
