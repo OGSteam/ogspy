@@ -37,6 +37,7 @@ function sendPushNotification(id){
 	});
 	return true;
 }
+
 </script>
 <style type="text/css">
 .container {
@@ -126,8 +127,10 @@ if ($users != false) {
 	<hr/>
 	<ul class="devices">
 		<?php
+		$i=0;
 			if ($no_of_users > 0) {
 					while ($row = $db->sql_fetch_row($users)) {
+						$i++;
 						$userId = $row[0];
 						$name = $row[1];
 						$pseudo = $row[2];
@@ -136,7 +139,7 @@ if ($users != false) {
 						$created = $row[5];
 				?>
 						<li>
-							<form id="form<?php echo $userId; ?>" name="form<?php echo $userId; ?>" method="post">
+							<form id="form<?php echo $userId;echo $i; ?>" name="form<?php echo $userId;echo $i; ?>" method="post">
 								<label>Membre : </label><span><?php echo $name; if(isset($pseudo)) { echo " <i>(" . $pseudo .")</i>"; } ?></span>
 								<div class="clear"/>
 								<label>Mail : </label><?php if(isset($email)) { echo "<span>" . $email . "</span>"; }?>
@@ -144,9 +147,9 @@ if ($users != false) {
 								<label>Enregistré le : </label><?php if(isset($created)) { echo "<span>" . $created . "</span>"; }?>
 								<div class="clear"/>
 								<div class="send_container">
-									<textarea rows="3" id="message<?php echo $userId; ?>" cols="25" class="txt_message" placeholder="Type message here"></textarea>									
-									<input type="hidden" id="regId<?php echo $userId; ?>" value="<?php echo $gcmRegid; ?>" />
-									<input type="button" class="send_btn" value="Envoyer" onclick="sendPushNotification('<?php echo $userId; ?>')"/>
+									<textarea rows="3" id="message<?php echo $userId;echo $i; ?>" cols="25" class="txt_message" placeholder="Type message here"></textarea>									
+									<input type="hidden" id="regId<?php echo $userId;echo $i; ?>" value="<?php echo $gcmRegid; ?>" />
+									<input type="button" class="send_btn" value="Envoyer" onclick="sendPushNotification('<?php echo $userId;echo $i; ?>')"/>
 								</div>
 							</form>
 						</li>
