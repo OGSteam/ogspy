@@ -840,7 +840,7 @@ function user_statistic()
 {
     global $db;
 
-    $request = "select user_id, user_name, planet_added_web, planet_added_ogs, search, spy_added_web, spy_added_ogs, rank_added_web, rank_added_ogs, planet_exported, spy_exported, rank_exported, xtense_type, xtense_version";
+    $request = "select user_id, user_name, planet_added_web, planet_added_ogs, search, spy_added_web, spy_added_ogs, rank_added_web, rank_added_ogs, planet_exported, spy_exported, rank_exported, xtense_type, xtense_version, user_active, user_admin";
     $request .= " from " . TABLE_USER .
         " order by (planet_added_web + planet_added_ogs) desc";
     $result = $db->sql_query($request);

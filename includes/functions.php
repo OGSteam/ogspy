@@ -1500,4 +1500,15 @@ function getAllGCMUsers() {
 			 "INNER JOIN " . TABLE_USER . " users ON users.user_id = gcm.user_id";
 	return $db->sql_query($query);
 }
+
+/**
+ * Getting all GCM users but not me
+ */
+function getAllGCMUsersExceptMe($id) {
+	global $db;
+	$query = "SELECT gcm_regid ".
+			 "FROM " . TABLE_GCM_USERS .
+			 " WHERE gcm_regid != '" . $id ."'";
+	return $db->sql_query($query);
+}
 ?>
