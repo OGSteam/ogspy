@@ -69,26 +69,27 @@ if (isset($regId) && isset($message) && isset($username)) {
     $gcm = new GCM();
  
     $users = getAllGCMUsersExceptMe($regId);
-    //$regsIds="";
+    $registatoin_ids=array();    
     while ($row = $db->sql_fetch_row($users)) {
     	$gcmRegid = $row[0];
-    	$registatoin_ids = array($gcmRegid);
-    	$messageArray = array("message" => "Alerte de " . $username . " : " . $message);
+    	$registatoin_ids[] = $gcmRegid;
+    	//$registatoin_ids = array($gcmRegid);
+    	//$messageArray = array("message" => "Alerte de " . $username . " : " . $message);
     	
-    	$result = $gcm->send_notification($registatoin_ids, $messageArray);
-    	writeLog("$username envoie le message **$message** a $gcmRegid");
-    	writeLog("Résultat : $result");
+    	//$result = $gcm->send_notification($registatoin_ids, $messageArray);
+    	//writeLog("$username envoie le message **$message** a $gcmRegid");
+    	//writeLog("Résultat : $result");
     }
-    //writeLog("$username envoie un message a : $regsIds\nContenu du message : $message");
-    
+    writeLog("$username envoie un message ($message) a " . sizeof($registatoin_ids) . " membre(s) de la communauté.");
+        
     //$registatoin_ids = array($regsIds);
-    //$messageArray = array("message" => "Alerte de " . $username . " : " . $message);
+    $messageArray = array("message" => "Alerte de " . $username . " : " . $message);
  
-    //$result = $gcm->send_notification($registatoin_ids, $messageArray);
+    $result = $gcm->send_notification($registatoin_ids, $messageArray);
+ 	writeLog("Resultat : $result");
  
-    //writeLog("Resultat : $result");
- 
-    return true;
+ 	echo $result;
+    //return $result;
 } else {
 	echo "hack";
 }
