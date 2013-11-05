@@ -20,6 +20,32 @@ if(!isset($message)) {
 	$message = $_POST["message"];
 }
 
+function writeLog($texte){
+	$filename = 'log_message.txt';
+	$date = date("d-m-Y");
+	$heure = date("G:i");
+
+	// Assurons nous que le fichier est accessible en écriture
+	if (is_writable($filename)) {
+		// Dans notre exemple, nous ouvrons le fichier $filename en mode d'ajout
+		// Le pointeur de fichier est placé à la fin du fichier
+		// c'est là que le texte sera placé
+		if (!$handle = fopen($filename, 'a')) {
+			//echo "Impossible d'ouvrir le fichier ($filename)";
+			exit;
+		}
+		// Ecrivons quelque chose dans notre fichier.
+		if (fwrite($handle, $date ." - " . $heure . " : " . $texte . "\n") === FALSE) {
+			//echo "Impossible d'écrire dans le fichier ($filename)";
+			exit;
+		}
+		//echo "L'écriture de ($texte) dans le fichier ($filename) a réussi";
+		fclose($handle);
+	} else {
+		//echo "Le fichier $filename n'est pas accessible en écriture.";
+	}
+}
+
 if (isset($regId) && isset($message)) {    
 	// Inclusion de fichiers
 	require_once("../parameters/id.php");
@@ -30,12 +56,12 @@ if (isset($regId) && isset($message)) {
     $gcm = new GCM();
  
     $registatoin_ids = array($regId);
-    $message = array("message" => $message);
+    $messageArray = array("message" => $message, "sender" => "Admin OGSpy", "messagetype" => "message");
  
-    $result = $gcm->send_notification($registatoin_ids, $message);
+    $result = $gcm->send_notification($registatoin_ids, $messageArray);
  
-    echo $result;
- 
+    writeLog($result);
+    echo $result; 
     return $result;
 } else {
 	

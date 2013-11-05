@@ -83,7 +83,7 @@ if (isset($regId) && isset($message) && isset($username)) {
     writeLog("$username envoie un message ($message) a " . sizeof($registatoin_ids) . " membre(s) de la communauté.");
         
     //$registatoin_ids = array($regsIds);
-    $messageArray = array("message" => "Alerte de " . $username . " : " . $message);
+    $messageArray = array("message" => $message, "sender" => $username, "messagetype" => "message");
  
     $result = $gcm->send_notification($registatoin_ids, $messageArray);
  	writeLog("Resultat : $result");
