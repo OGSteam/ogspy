@@ -311,9 +311,12 @@ switch ($ogsversion) {
   					  "`user_id` int(11) NOT NULL default '0',".
   					  "`gcm_regid` varchar(256) NOT NULL, ".
   					  "`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, ".
+					  "`version_android` varchar(50), ".
+		  			  "`version_ogspy` varchar(50), ".
+					  "`device` varchar(50), ".
   					  "PRIMARY KEY (`gcm_regid`) ".
   					  ") ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1";
-		$ogsversion = '3.2.0';
+		$ogsversion = '3.1.4';
 		$up_to_date = true;
 		break;
 	default:
