@@ -92,6 +92,10 @@ ul.devices li label {
 	width: 100px;
 }
 
+ul.devices li  {
+	width: 300px;
+}
+
 ul.devices li textarea {
 	float: left;
 	resize: none;
@@ -137,14 +141,23 @@ if ($users != false) {
 						$email = $row[3];
 						$gcmRegid = $row[4];
 						$created = $row[5];
+						$androidVersion = $row[6];
+						$ogspyVersion = $row[7];
+						$deviceInformation = $row[8];
 				?>
 						<li>
 							<form id="form<?php echo $userId;echo $i; ?>" name="form<?php echo $userId;echo $i; ?>" method="post">
-								<label>Membre : </label><span><?php echo $name; if(isset($pseudo)) { echo " <i>(" . $pseudo .")</i>"; } ?></span>
+								<label>Membre : </label><span><?php echo $name; if(isset($pseudo)) { echo " <i>(" . $pseudo .")</i>"; } ?></span> 					
 								<div class="clear"/>
 								<label>Mail : </label><?php if(isset($email)) { echo "<span>" . $email . "</span>"; }?>
 								<div class="clear"/>
 								<label>Enregistré le : </label><?php if(isset($created)) { echo "<span>" . $created . "</span>"; }?>
+								<div class="clear"/>
+								<label>OGSPY : </label><?php if(isset($ogspyVersion)) { echo "<span>" . $ogspyVersion . "</span>"; } else { echo '<span>nc</span>';}?>		
+								<div class="clear"/>
+								<label>Android : </label><?php if(isset($androidVersion)) { echo "<span>" . $androidVersion . "</span>"; } else { echo '<span>nc</span>';}?>
+								<div class="clear"/>
+								<label>Appareil : </label><?php if(isset($deviceInformation)) { echo "<span>" . $deviceInformation . "</span>"; } else { echo '<span>nc</span>';}?>		
 								<div class="clear"/>
 								<div class="send_container">
 									<textarea rows="3" id="message<?php echo $userId;echo $i; ?>" cols="25" class="txt_message" placeholder="Type message here"></textarea>									
