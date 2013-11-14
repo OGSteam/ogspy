@@ -1495,7 +1495,7 @@ function deleteGCMUser($gcm_regid) {
  */
 function getAllGCMUsers() {
 	global $db;
-	$query = "SELECT gcm.user_id AS user_id, users.user_name AS name, users.user_stat_name AS name2, users.user_email AS email, gcm.gcm_regid AS gcm_regid, gcm.created_at AS created_at ".
+	$query = "SELECT gcm.user_id AS user_id, users.user_name AS name, users.user_stat_name AS name2, users.user_email AS email, gcm.gcm_regid AS gcm_regid, gcm.created_at AS created_at, gcm.version_android AS version_android, gcm.version_ogspy AS version_ogspy, gcm.device AS device ".
 			 "FROM " . TABLE_GCM_USERS . " gcm ".
 			 "INNER JOIN " . TABLE_USER . " users ON users.user_id = gcm.user_id";
 	return $db->sql_query($query);
