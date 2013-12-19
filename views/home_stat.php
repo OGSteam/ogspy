@@ -321,6 +321,8 @@ echo "<table width='1000'>";
 
 <?php
 // on fabrique toutes les courbes ici
+global $zoom;
+$zoom = 'false';
 $curve = create_curves($user_data["user_stat_name"], $min_date, $max_date, 
     $player_comp);
 

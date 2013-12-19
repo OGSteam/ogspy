@@ -27,6 +27,31 @@ if (!defined('IN_SPYOGAME')) {
 		<td class="c">Description</td>
 	</tr>
 	<tr>
+		<th>3.1.3</th>
+		<th style="text-align:left">
+			<ul>
+				<li>Correctif pour la suppression d'une planète dans l'espace Personel</li>
+				<li>Modification du champ phalanx pour mettre une valeur par défaut</li>
+				<li>Réorganisation du profil utilisateur et ajout de l'adresse mail</li>
+				<li>Taille d'un champ de la BDD pour les univers > 9 Galaxies</li>
+				<li>Correctif Formules de Production</li>
+				<li>Ajout du compte Commandant</li>
+				<li>Mise à jour de l'équipe OGSteam</li>
+			</ul>
+	  	</th>
+	</tr>
+	<tr>
+		<th>3.1.2</th>
+		<th style="text-align:left">
+			<ul>
+				<li>Compatibilité OGame 5.X</li>
+				<li>Correctif de la supression d'un utilisateur</li>
+				<li>Correctif du système de Mise à jour</li>
+				<li>Mise à jour de l'équipe OGSteam</li>
+			</ul>
+	  	</th>
+	</tr>
+	<tr>
 		<th>3.1.1</th>
 		<th style="text-align:left">
 			<ul>

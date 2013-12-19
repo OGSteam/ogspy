@@ -537,8 +537,8 @@ function set_serverconfig()
     $pub_max_spyreport = intval($pub_max_spyreport);
     if ($pub_max_spyreport < 1)
         $pub_max_spyreport = 1;
-    if ($pub_max_spyreport > 10)
-        $pub_max_spyreport = 10;
+    if ($pub_max_spyreport > 50)
+        $pub_max_spyreport = 50;
     $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_spyreport .
         " where config_name = 'max_spyreport'";
     $db->sql_query($request);
@@ -547,8 +547,8 @@ function set_serverconfig()
     $pub_max_battlereport = intval($pub_max_battlereport);
     if ($pub_max_battlereport < 0)
         $pub_max_battlereport = 0;
-    if ($pub_max_battlereport > 99)
-        $pub_max_battlereport = 99;
+    if ($pub_max_battlereport > 999)
+        $pub_max_battlereport = 999;
     $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_battlereport .
         " where config_name = 'max_battlereport'";
     $db->sql_query($request);
@@ -605,8 +605,8 @@ function set_serverconfig()
     $pub_max_keeprank = intval($pub_max_keeprank);
     if ($pub_max_keeprank < 1)
         $pub_max_keeprank = 1;
-    if ($pub_max_keeprank > 50)
-        $pub_max_keeprank = 50;
+    if ($pub_max_keeprank > 999)
+        $pub_max_keeprank = 999;
     $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_keeprank .
         " where config_name = 'max_keeprank'";
     $db->sql_query($request);
@@ -623,8 +623,8 @@ function set_serverconfig()
     $pub_max_keepspyreport = intval($pub_max_keepspyreport);
     if ($pub_max_keepspyreport < 1)
         $pub_max_keepspyreport = 1;
-    if ($pub_max_keepspyreport > 90)
-        $pub_max_keepspyreport = 90;
+    if ($pub_max_keepspyreport > 999)
+        $pub_max_keepspyreport = 999;
     $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_keepspyreport .
         " where config_name = 'max_keepspyreport'";
     $db->sql_query($request);
@@ -1125,7 +1125,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
             //Mot de passe des membres
         case "Password":
-            if (!preg_match("#^[\w\s\-]{6,15}$#", $value)) {
+            if (!preg_match("#^[\w\s\-]{6,20}$#", $value)) {
                 return false;
             }
             break;
@@ -1161,6 +1161,13 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
                 return false;
             }
             break;
+		            //Chiffres
+        case "Email":
+            if (!preg_match('#^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}$#', $value)) {
+                log_("check_var", array("Email", $value));
+                return false;
+            }
+            break;	
 
             //Galaxies
         case "Galaxies":
@@ -1430,5 +1437,78 @@ function generate_key()
         die("Echec , impossible de générer le fichier 'parameters/key.php'");
     }
 
+}
+
+
+/***********************************************************************
+ ************** Fonctions pour table Google Cloud Messaging ************
+ ***********************************************************************/
+
+/** Storing new GCM user
+ * @return : user true or false
+ */
+function storeGCMUser($name,$gcm_regid) {	
+	global $db;
+	$user_id = "0";
+	$result = $db->sql_query("SELECT user_id FROM " . TABLE_USER . " WHERE user_name = '" . $name . "' OR user_stat_name = '" . $name . "'");
+	
+	$nbGcmUsers = $db->sql_numrows("SELECT * FROM " . TABLE_GCM_USERS . " WHERE gcm_regid = '" . $gcm_regid . "'");
+	
+	while (list($userid) = $db->sql_fetch_row($result))	{
+		$user_id = $userid;		
+	}
+	
+	//return "Nombre de users GCM = " . $nbGcmUsers;
+	
+	if($nbGcmUsers == 0){
+		// insert user into database
+		$result = $db->sql_query("INSERT INTO " . TABLE_GCM_USERS . "(user_id, gcm_regid, created_at) VALUES('" . $user_id ."' , '" . $gcm_regid . "', NOW())");
+		// check for successful store
+		if ($result) {
+			return 1;
+		} else {
+			return 0;
+		}
+	} else {
+		return -1;
+	}
+}
+
+/** Storing new GCM user
+* @return : user true or false
+*/
+function deleteGCMUser($gcm_regid) {
+	global $db;
+
+	// delete user in database
+	$result = $db->sql_query("DELETE FROM " . TABLE_GCM_USERS . " WHERE gcm_regid = '" . $gcm_regid . "'");
+	// check for successful store
+	if ($result) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * Getting all GCM users
+ */
+function getAllGCMUsers() {
+	global $db;
+	$query = "SELECT gcm.user_id AS user_id, users.user_name AS name, users.user_stat_name AS name2, users.user_email AS email, gcm.gcm_regid AS gcm_regid, gcm.created_at AS created_at, gcm.version_android AS version_android, gcm.version_ogspy AS version_ogspy, gcm.device AS device ".
+			 "FROM " . TABLE_GCM_USERS . " gcm ".
+			 "INNER JOIN " . TABLE_USER . " users ON users.user_id = gcm.user_id";
+	return $db->sql_query($query);
+}
+
+/**
+ * Getting all GCM users but not me
+ */
+function getAllGCMUsersExceptMe($id) {
+	global $db;
+	$query = "SELECT gcm_regid ".
+			 "FROM " . TABLE_GCM_USERS .
+			 " WHERE gcm_regid != '" . $id ."'";
+	return $db->sql_query($query);
 }
 ?>

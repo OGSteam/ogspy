@@ -229,15 +229,17 @@ require_once 'views/page_header.php';
 				default: $xtense_type = 'N/A ('.$v['xtense_type'].')';
 			}
 			
-			echo '<tr>';
-			echo '<th style="color: '. $color .'">'. $v['user_name'] . (($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) ? ' '. $v['here'] : '') .'</th>';
-			echo '<th>'. formate_number($v['planet_added_ogs']) .'</th>';
-			echo '<th>'. formate_number($v['spy_added_ogs']) .'</th>';
-			echo '<th>'. formate_number($v['rank_added_ogs']) .'</th>';
-			echo '<th>'. formate_number($v['search']) .'</th>';
-			echo '<th style="color: '. $couleur .'">'. formate_number($result) .'</th>';
-			echo '<th>'. $xtense_type .'</th>';
-			echo '</tr>';
+			if($v['user_active'] == "1" && $v['user_admin'] == "0") {
+				echo '<tr>';
+				echo '<th style="color: '. $color .'">'. $v['user_name'] . (($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) ? ' '. $v['here'] : '') .'</th>';
+				echo '<th>'. formate_number($v['planet_added_ogs']) .'</th>';
+				echo '<th>'. formate_number($v['spy_added_ogs']) .'</th>';
+				echo '<th>'. formate_number($v['rank_added_ogs']) .'</th>';
+				echo '<th>'. formate_number($v['search']) .'</th>';
+				echo '<th style="color: '. $couleur .'">'. formate_number($result) .'</th>';
+				echo '<th>'. $xtense_type .'</th>';
+				echo '</tr>';
+			}
 		}
 	}
 	
