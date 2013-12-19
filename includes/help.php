@@ -30,9 +30,10 @@ $help["search_strict"] = "<font color=orange>Joueur recherché :</font><br /><i>L
 
 $help["home_commandant"] = "Page empire du compte commandant";
 
+$help["profile_login"] = "Doit contenir entre 3 et 15 caractères (les caractères spéciaux ne sont pas acceptés)";
+$help["profile_pseudo_email"] = "Si rempli, vous recevrez des mails de la part de certains mods";
 $help["profile_skin"] = "OGSpy utilise les mêmes skins qu'OGame";
 $help["profile_main_planet"] = "La vue Galaxie sera ouverte directement sur ce système solaire";
-$help["profile_login"] = "Doit contenir entre 3 et 15 caractères (les caractères spéciaux ne sont pas acceptés)";
 $help["profile_password"] = "Doit contenir entre 6 et 15 caractères (les caractères spéciaux ne sont pas acceptés)";
 $help["profile_galaxy"] = "Doit contenir un nombre<br /> de 1 à 999";
 $help["profile_disable_ip_check"] = "La vérification de l'adresse IP permet de vous protéger contre le vol de session.<br /><br />";

@@ -44,7 +44,10 @@ if (!defined("INSTALL_IN_PROGRESS")) {
 	define("TABLE_PARSEDRCROUND", $table_prefix."parsedRCRound");
 	define("TABLE_ROUND_ATTACK", $table_prefix."round_attack");
 	define("TABLE_ROUND_DEFENSE", $table_prefix."round_defense");
-    
+	
+	// Google Cloud Messaging users table
+	define("TABLE_GCM_USERS", $table_prefix."gcm_users");
+	
     // Classements joueur
 	define("TABLE_RANK_PLAYER_POINTS", $table_prefix."rank_player_points"); //points
     define("TABLE_RANK_PLAYER_ECO", $table_prefix."rank_player_economique"); // economique
@@ -73,6 +76,12 @@ define("COOKIE_NAME", "ogspy_id");
 
 //Activation du mode débuggage
 define("MODE_DEBUG", FALSE);
+
+/*
+* Google API Key
+*/
+// For using Google Google Cloud Messaging and can push notifications on ogspy for android
+define("GOOGLE_API_KEY", "AIzaSyB5W5hiGP97Jh1e6s7c0vva0Hs_xSiGeQw");
 
 //Chemin d'accès aux ressources
 if (!defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS") && !defined("GRAPHIC")) define("PATH_LOG", "journal/");

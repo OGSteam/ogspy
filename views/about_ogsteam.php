@@ -45,7 +45,7 @@ if (!defined('IN_SPYOGAME')) {
 		</td> 
 	</tr> 
 	<tr>
-		<td class="c" width="100" height="100" align="center" valign="middle"><img src="http://forum.ogsteam.fr/index.php?action=dlattach;attach=17;type=avatar" width="80" title="Capi"></td>
+		<td class="c" width="100" height="100" align="center" valign="middle"><img src="http://forum.ogsteam.fr/index.php?action=dlattach;attach=76;type=avatar" width="80" title="Capi"></td>
 		<td class="l">
 			&nbsp;<a><font color="Yellow" size="2">Capi</font></a><br />
 			<center><b>Développeur / Testeur<br />
@@ -117,6 +117,13 @@ if (!defined('IN_SPYOGAME')) {
 			&nbsp;<b><font color="Yellow" size="2">Xaviernuma</font></b><br /> 
 			<center><b>Développeur</b></center><br />
 		</td> 
+	</tr>
+	<tr> 
+		<td class="c" width="100" height="100" align="center" valign="middle"><img src="http://img57.xooimage.com/files/6/3/a/moe-148053-dxlsma..._200x200-3669dc4.jpg" width="80" title="pitch314"></td> 
+		<td class="l"> 
+			&nbsp;<b><font color="Yellow" size="2">Pitch314</font></b><br /> 
+			<center><b>Développeur</b></center><br />
+		</td> 
 	</tr> 
 	<tr>
 		<td class="c" width="100" height="100" align="center" valign="middle"><img src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Testeurs"></td> 
@@ -125,9 +132,8 @@ if (!defined('IN_SPYOGAME')) {
 			<br />
 			<ul>
 				<li>Gilga</li>
-				<li>Guiliguili</li>
-				<li>Dudule</li>
-				<li>bdd_1</li>
+				<li>Elrond</li>
+				<li>Mascotte</li>
 			</ul>
 		</td>
 	</tr>
