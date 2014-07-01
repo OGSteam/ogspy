@@ -130,15 +130,15 @@ $mod_cache = $server_config['mod_cache'];
 	<td class="c_tech" colspan="2">Maintenance</td>
 </tr>
 <tr>
-	<th width="60%">Durée de conservation des classements <a>[1-50 jours ou nombre]</a></th>
+	<th width="60%">Durée de conservation des classements <a>[1-999 jours ou nombre]</a></th>
 	<th><input type="text" name="max_keeprank" maxlength="4" size="5" value="<?php echo $max_keeprank;?>">&nbsp;<select name="keeprank_criterion"><option value="quantity" <?php echo $keeprank_criterion == "quantity" ? "selected" : "";?>>Nombre</option><option value="day" <?php echo $keeprank_criterion == "day" ? "selected" : "";?>>Jours</option></th>
 </tr>
 <tr>
-	<th width="60%">Nombre maximal de rapports d'espionnage par planète <a>[1-10]</a></th>
+	<th width="60%">Nombre maximal de rapports d'espionnage par planète <a>[1-50]</a></th>
 	<th><input type="text" name="max_spyreport" maxlength="4" size="5" value="<?php echo $max_spyreport;?>"></th>
 </tr>
 <tr>
-	<th width="60%">Durée de conservation des rapports d'espionnage <a>[1-90 jours]</a></th>
+	<th width="60%">Durée de conservation des rapports d'espionnage <a>[1-999 jours]</a></th>
 	<th><input type="text" name="max_keepspyreport" maxlength="4" size="5" value="<?php echo $max_keepspyreport;?>"></th>
 </tr>
 <tr>
@@ -201,6 +201,18 @@ $mod_cache = $server_config['mod_cache'];
 	<th><input name="log_phperror" type="checkbox" value="1" <?php echo $log_phperror;?>></th>
 
 </tr>
+<?php
+	if ($user_data["user_admin"] == 1) {
+?>
+<tr>
+	<td class="c_ogame" colspan="2">Utilisateurs Google Cloud Messaging <div class="z"><i>Necessaire pour les push de noticications sur les appareils android</i></div></td>
+</tr>
+<tr>
+	<th colspan="2"><?php require_once 'gcm_users.php';?></th>
+</tr>
+<?php
+}
+?>
 <tr>
 	<td>&nbsp;</td>
 </tr>

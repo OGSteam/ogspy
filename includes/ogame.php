@@ -22,9 +22,10 @@ if (!isset($server_config['speed_uni'])) {
 * Gets the hourly production of a Mine or a solar plant.
 * @param string $building The building type
 * @param int $level The building level
-* @param int $officier Officer option enabled or not
+* @param int $officier Officer option enabled (=1) or not(=0) or full Officer(=2)
 * @param int $temperature_max Max temprature of the current planet
 * @param int $NRJ Current value of Energy available on the planet
+* @param int $Plasma Current value of the user Plasma Technology
 * @return the result of the production on the specified building.
 */
 function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ = 0, $Plasma = 0)
@@ -33,49 +34,56 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
     // pour m / c / d => geologue
     // pour ces cef => ingenieur
     global $server_config;
+    
+    //Valeur de l'officier en valeur ajouté.
+    if ($officier == 0) {
+        $geo = 0;
+    } elseif ($officier == 1) {
+        $geo = 0.10;    //+10%
+    } elseif ($officier == 2) {
+        $geo = 0.12;    //+12%
+    } else {
+        $geo = 0;
+    }
+    $ing = $geo;
     switch ($building) {
         case "M":
-            $geo = ($officier == 0) ? 1: 1.10;
-            $prod_base = 30;
+            $prod_base = 30 * $server_config['speed_uni'];
             $result =  30 * $level * pow(1.1, $level); // formule de base
-            $result = $geo * $result; // geologue
-			$result =  floor($result); // arrondi inf ( apres geologue)
-			$result = $prod_base + $result; // prod de base
-			$result = $server_config['speed_uni'] * $result; // vitesse uni
-            $result = (1 + (0.01 * $Plasma)) * $result; // Technologie Plasma
+            $result = $result * (1 + $geo + 0.01 * $Plasma);
+            $result = round($result); // arrondi 
+            $result = $result + $prod_base; // prod de base
+            $result = $server_config['speed_uni'] * $result; // vitesse uni
             break;
 
         case "C":
-            $geo = ($officier == 0) ? 1: 1.10;
-            $prod_base = 15;
-            $result = 20 * $level * pow(1.1, $level);
-			$result = $geo * $result; // geologue
-			$result =  floor($result); // arrondi inf ( apres geologue)
-			$result = $prod_base + $result; // prod de base
+            $prod_base = 15 * $server_config['speed_uni'];    
+            $result = 20 * $level * pow(1.1, $level); // formule de base
+            $result = $result * (1 + $geo + 0.0066 * $Plasma);
+            $result = round($result); // arrondi
+            $result = $result + $prod_base; // prod de base
             $result = $server_config['speed_uni'] * $result; // vitesse uni
-            $result = (1 + (0.0066 * $Plasma)) * $result; // Technologie Plasma
             break;
 
         case "D":
-            $geo = ($officier == 0) ? 1: 1.10;
             $result = (10 * $level * pow(1.1, $level) * (1.44 - 0.004 * $temperature_max));
-            $result = $geo * $result; // geologue
-			$result =  floor($result); // arrondi inf ( apres geologue)
-			$result = $server_config['speed_uni'] * $result; // vitesse uni
+            $result = $result * (1 + $geo); // geologue
+            $result = round($result); // arrondi
+            $result = $server_config['speed_uni'] * $result; // vitesse uni
             break;
 
         case "CES":
-            $ing = ($officier == 0) ? 1: 1.10;
             $result = 20 * $level * pow(1.1, $level);
+            $result = $result * (1 + $ing); // ingenieur
+            $result = floor($result);   // troncature inférieure
             //$result = $server_config['speed_uni'] * $result; // vitesste uni ne change pas la prod d E
-            $result = $ing * $result; // ingenieur
             break;
 
         case "CEF":
-            $ing = ($officier == 0) ? 1: 1.10;
             $result = 30 * $level * pow((1.05 + $NRJ * 0.01), $level);
+            $result = $result * (1 + $ing); // ingenieur
+            $result = floor($result);   // troncature inférieure
             //$result = $server_config['speed_uni'] * $result; // vitesste uni ne change pas la prod d E
-            $result = $ing * $result; // ingenieur
             break;
 
         default:
@@ -90,12 +98,20 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
 * Gets the energy production of satellites.
 * @param int $temperature_min Min temprature of the current planet
 * @param int $temperature_max Max temprature of the current planet
-* @param int $officier Officer option enabled or not
+* @param int $officier Officer option enabled (=1) or not(=0) or full Officer(=2)
 * @return the result of the production on the specified building.
 */
 function production_sat($temperature_min, $temperature_max, $officier = 0)
 {
-    $ing = ($officier == 0) ? 1 : 1.10;
+    if ($officier == 0) {
+        $ing = 1;
+    } elseif ($officier == 1) {
+        $ing = 1.10;    //110%
+    } elseif ($officier == 2) {
+        $ing = 1.12;    //112%
+    } else {
+        $ing = 1;
+    }
     return floor($ing * (((($temperature_min + $temperature_max) / 2) + 160) / 6));
 }
 
@@ -109,21 +125,20 @@ function consumption($building, $level)
 {
     global $server_config;
     switch ($building) {
-        case "M":
-            $result = 10 * $level * pow(1.1, $level);
-            break;
-
+        case "M":   //no break
         case "C":
             $result = 10 * $level * pow(1.1, $level);
+            $result = ceil($result);    //troncature supérieure
             break;
 
         case "D":
             $result = 20 * $level * pow(1.1, $level);
+            $result = ceil($result);    //troncature supérieure
             break;
 
         case "CEF":
             $result = $server_config['speed_uni'] * (10 * $level * pow(1.1, $level));
-            $result = ceil($result); // arrondi supp
+            $result = round($result); // arrondi
             break;
 
         default:
@@ -141,8 +156,8 @@ function consumption($building, $level)
 * @param int $D Deuterieum Mine Level
 * @param int $CES Solar Plant Level
 * @param int $CEF Fusion Plant Level
-* @param int $SAT Number of sattelites
 * @param int $ingenieur Ingenieur option enabled or not
+* @param int $SAT Number of sattelites
 * @param int $temperature_min Min temprature of the current planet
 * @param int $temperature_max Max temprature of the current planet
 * @param int $NRJ NRJ available on the current planet

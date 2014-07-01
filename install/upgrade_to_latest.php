@@ -57,7 +57,7 @@ switch ($ogsversion) {
         $requests[] = "UPDATE ".TABLE_USER_DEFENCE." SET planet_id = (planet_id + 191) WHERE planet_id > 9 and planet_id < 19 ";
         $ogsversion = '3.0.7';
 		$up_to_date = true;
-		break;
+		//Pas de break pour faire toutes les mises à jour d'un coup !
 		
 	case '3.0.7':
 		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.0.8' WHERE config_name = 'version'";
@@ -65,7 +65,7 @@ switch ($ogsversion) {
 		$requests[] = "INSERT IGNORE INTO ".TABLE_CONFIG." (config_name, config_value) VALUES ('mod_cache', '604800')";
         $ogsversion = '3.0.8';
 		$up_to_date = true;
-		break;
+		//Pas de break pour faire toutes les mises à jour d'un coup !
 		
 	case '3.0.8':
         // modif building
@@ -270,7 +270,7 @@ switch ($ogsversion) {
     
         $ogsversion = '3.1.0';
 		$up_to_date = true;
-		break;
+		//Pas de break pour faire toutes les mises à jour d'un coup !
 		
 	case '3.1.0':
 		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.1' WHERE config_name = 'version'";
@@ -287,10 +287,36 @@ switch ($ogsversion) {
 		$requests[] = "DROP TABLE `".TABLE_RANK_ALLY_FLEET."`";		// ancien classement flotte
 		$requests[] = "DROP TABLE `".TABLE_RANK_ALLY_RESEARCH."`";	// ancien classement recherche
 		$requests[] = "DROP TABLE `".TABLE_SPY."`";					// ancienne table des RE
-		$requests[] = "DROP TABLE `".TABLE_UNIVERSE_TEMPORARY."`";	// ancienne table temporaire univers
-		
+		$requests[] = "DROP TABLE `".TABLE_UNIVERSE_TEMPORARY."`";	// ancienne table temporaire univers		
 		
 		$ogsversion = '3.1.1';
+		$up_to_date = true;
+		//Pas de break pour faire toutes les mises à jour d'un coup !
+	case '3.1.1':
+		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.2' WHERE config_name = 'version'";
+		$ogsversion = '3.1.2';
+		$up_to_date = true;
+		//Pas de break pour faire toutes les mises à jour d'un coup !
+	case '3.1.2':
+		$requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` MODIFY `coordinates` VARCHAR(10)";
+		$requests[] = "ALTER TABLE `".TABLE_UNIVERSE."` MODIFY `phalanx` tinyint(1) NOT NULL default '0'";
+		$requests[] = "ALTER TABLE `".TABLE_USER."` MODIFY `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP','ANDROID')";
+		$requests[] = "ALTER TABLE `".TABLE_USER."` ADD `user_email` VARCHAR(50) NOT NULL default '' AFTER `user_password`";
+		$requests[] = "ALTER TABLE `".TABLE_USER."` ADD `off_commandant` enum('0','1') NOT NULL default '0' AFTER `disable_ip_check`";
+		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.3' WHERE config_name = 'version'";
+		$ogsversion = '3.1.3';
+		$up_to_date = true;
+	case '3.1.3':
+		$requests[] = "CREATE TABLE IF NOT EXISTS `".TABLE_GCM_USERS."` ( ".
+  					  "`user_id` int(11) NOT NULL default '0',".
+  					  "`gcm_regid` varchar(256) NOT NULL, ".
+  					  "`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, ".
+					  "`version_android` varchar(50), ".
+		  			  "`version_ogspy` varchar(50), ".
+					  "`device` varchar(50), ".
+  					  "PRIMARY KEY (`gcm_regid`) ".
+  					  ") ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1";
+		$ogsversion = '3.1.4';
 		$up_to_date = true;
 		break;
 	default:
@@ -309,7 +335,9 @@ if ( $ogsversion == '3.1.0' && function_exists ( 'import_RE' ) ) {
 // on supprime tous les fichiers du cache
 // pour prendre en compte toutes les modifications
 $files = glob('../cache/*.php');
-foreach ($files as $filename){unlink($filename);}  
+if (count($files) > 0) {
+	foreach ($files as $filename){unlink($filename);} 
+}
   
 ?>
 	<h3 align='center'><font color='yellow'>Mise à jour du serveur OGSpy vers la version <?php echo $ogsversion;?> effectuée avec succès</font></h3>
