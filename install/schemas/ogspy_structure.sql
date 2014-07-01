@@ -1,6 +1,6 @@
 #
-# OGSpy version 3.1.0
-# Janvier 2012
+# OGSpy version 3.1.3
+# Janvier 2013
 # 
 
 ## ########################################################
@@ -61,25 +61,6 @@ CREATE TABLE ogspy_mod (
   UNIQUE KEY title (title),
   UNIQUE KEY menu (menu),
   UNIQUE KEY root (root)
-) ;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_ally_fleet`
-## 
-
-CREATE TABLE ogspy_rank_ally_fleet (
-  datadate int(11) NOT NULL default '0',
-  rank int(11) NOT NULL default '0',
-  ally varchar(30) NOT NULL,
-  number_member int(11) NOT NULL,
-  points int(11) NOT NULL default '0',
-  points_per_member int(11) NOT NULL,
-  sender_id int(11) NOT NULL default '0',
-  PRIMARY KEY  (rank,datadate),
-  KEY datadate (datadate,ally),
-  KEY ally (ally)
 ) ;
 
 
@@ -228,42 +209,6 @@ CREATE TABLE ogspy_rank_ally_points (
   KEY ally (ally)
 ) ;
 
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_ally_research`
-## 
-
-CREATE TABLE ogspy_rank_ally_research (
-  datadate int(11) NOT NULL default '0',
-  rank int(11) NOT NULL default '0',
-  ally varchar(30) NOT NULL,
-  number_member int(11) NOT NULL,
-  points int(11) NOT NULL default '0',
-  points_per_member int(11) NOT NULL,
-  sender_id int(11) NOT NULL default '0',
-  PRIMARY KEY  (rank,datadate),
-  KEY datadate (datadate,ally),
-  KEY ally (ally)
-) ;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_player_fleet`
-## 
-
-CREATE TABLE ogspy_rank_player_fleet (
-  datadate int(11) NOT NULL default '0',
-  rank int(11) NOT NULL default '0',
-  player varchar(30) NOT NULL default '',
-  ally varchar(100) NOT NULL default '',
-  points int(11) NOT NULL default '0',
-  sender_id int(11) NOT NULL default '0',
-  PRIMARY KEY  (rank,datadate),
-  KEY datadate (datadate,player),
-  KEY player (player)
-) ;
 
 ## ########################################################
 
@@ -415,24 +360,6 @@ CREATE TABLE ogspy_rank_player_points (
 ## ########################################################
 
 ## 
-## Structure de la table `ogspy_rank_player_research`
-## 
-
-CREATE TABLE ogspy_rank_player_research (
-  datadate int(11) NOT NULL default '0',
-  rank int(11) NOT NULL default '0',
-  player varchar(30) NOT NULL default '',
-  ally varchar(100) NOT NULL default '',
-  points int(11) NOT NULL default '0',
-  sender_id varchar(30) NOT NULL default '',
-  PRIMARY KEY  (rank,datadate),
-  KEY datadate (datadate,player),
-  KEY player (player)
-) ;
-
-## ########################################################
-
-## 
 ## Structure de la table `ogspy_sessions`
 ## 
 
@@ -447,24 +374,7 @@ CREATE TABLE ogspy_sessions (
   UNIQUE KEY session_id (session_id,session_ip)
 ) ;
 
-## ########################################################
 
-## 
-## Structure de la table `ogspy_spy`
-## 
-
-CREATE TABLE ogspy_spy (
-  spy_id int(11) NOT NULL auto_increment,
-  spy_GALAXY_ENUM
-  spy_system smallint(3) NOT NULL default '0',
-  spy_row enum('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15') NOT NULL default '1',
-  sender_id int(11) NOT NULL default '0',
-  datadate int(11) NOT NULL default '0',
-  rawdata mediumtext NOT NULL,
-  active enum('0','1') NOT NULL default '1',
-  PRIMARY KEY  (spy_id),
-  UNIQUE KEY spy_galaxy (spy_galaxy,spy_system,spy_row,datadate)
-) ;
 
 ## ########################################################
 
@@ -489,7 +399,7 @@ CREATE TABLE ogspy_universe (
   system smallint(3) NOT NULL default '0',
   `row` enum('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15') NOT NULL default '1',
   moon enum('0','1') NOT NULL default '0',
-  phalanx tinyint(1) NOT NULL,
+  phalanx tinyint(1) NOT NULL default '0',
   gate enum('0','1') NOT NULL default '0',
   `name` varchar(20) NOT NULL default '',
   ally varchar(20) default NULL,
@@ -516,7 +426,6 @@ CREATE TABLE ogspy_universe (
 ##) ;
 
 ## ########################################################
-
 ## 
 ## Structure de la table `ogspy_user`
 ## 
@@ -525,6 +434,7 @@ CREATE TABLE ogspy_user (
   user_id int(11) NOT NULL auto_increment,
   user_name varchar(20) NOT NULL default '',
   user_password varchar(32) NOT NULL default '',
+  user_email varchar(50) NOT NULL default '',
   user_admin enum('0','1') NOT NULL default '0',
   user_coadmin enum('0','1') NOT NULL default '0',
   user_active enum('0','1') NOT NULL default '0',
@@ -541,7 +451,7 @@ CREATE TABLE ogspy_user (
   spy_exported int(11) NOT NULL default '0',
   rank_added_web int(11) NOT NULL default '0',
   rank_added_ogs int(11) NOT NULL default '0',
-  xtense_type enum('FF','GMFF','GMGC'),
+  xtense_type enum('FF','GMFF','GMGC','ANDROID'),
   xtense_version varchar(10),
   rank_exported int(11) NOT NULL default '0',
   user_skin varchar(255) NOT NULL default '',
@@ -549,6 +459,7 @@ CREATE TABLE ogspy_user (
   management_user enum('0','1') NOT NULL default '0',
   management_ranking enum('0','1') NOT NULL default '0',
   disable_ip_check enum('0','1') NOT NULL default '0',
+  off_commandant enum('0','1') NOT NULL default '0',
   off_amiral enum('0','1') NOT NULL default '0',
   off_ingenieur enum('0','1') NOT NULL default '0',
   off_geologue enum('0','1') NOT NULL default '0',
@@ -567,7 +478,7 @@ CREATE TABLE ogspy_user_building (
   user_id int(11) NOT NULL default '0',
   planet_id int(11) NOT NULL default '0',
   planet_name varchar(20) NOT NULL default '',
-  coordinates varchar(8) NOT NULL default '',
+  coordinates varchar(10) NOT NULL default '',
   `fields` smallint(3) NOT NULL default '0',
   temperature_min smallint(2) NOT NULL default '0',
   temperature_max smallint(2) NOT NULL default '0',
@@ -724,11 +635,11 @@ INSERT INTO `ogspy_config` VALUES ('reason', '');
 INSERT INTO `ogspy_config` VALUES ('servername', 'Cartographie');
 INSERT INTO `ogspy_config` VALUES ('server_active', '1');
 INSERT INTO `ogspy_config` VALUES ('session_time', '30');
-INSERT INTO `ogspy_config` VALUES ('url_forum', 'http://www.ogsteam.fr/index.php');
+INSERT INTO `ogspy_config` VALUES ('url_forum', 'http://www.ogsteam.fr/');
 INSERT INTO `ogspy_config` VALUES ('log_phperror', '0');
 INSERT INTO `ogspy_config` VALUES ('block_ratio', '0');
 INSERT INTO `ogspy_config` VALUES ('ratio_limit', '0');
-INSERT INTO `ogspy_config` VALUES ('version', '3.1.0');
+INSERT INTO `ogspy_config` VALUES ('version', '3.1.3');
 INSERT INTO `ogspy_config` VALUES ('config_cache', '3600');
 INSERT INTO `ogspy_config` VALUES ('mod_cache', '604800');
 
@@ -953,4 +864,18 @@ CREATE TABLE `ogspy_round_defense` (
   PRIMARY KEY  (`id_rounddefense`),
   KEY `id_rcround` (`id_rcround`),
   KEY `player` (`player`,`coordinates`)
+);
+## ########################################################
+
+##
+## Structure de la table `ogspy_gcm_users`
+##
+CREATE TABLE IF NOT EXISTS `ogspy_gcm_users` (
+	`user_id` int(11) NOT NULL default '0',
+  	`gcm_regid` varchar(256) NOT NULL,
+  	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  	`version_android` varchar(50),
+  	`version_ogspy` varchar(50),
+  	`device` varchar(50),
+  	PRIMARY KEY (`gcm_regid`)
 );
