@@ -21,9 +21,9 @@ if (version_compare(PHP_VERSION, "5.1.0RC1") >= 0) {
 	date_default_timezone_set("Europe/Paris");
 }
 
-// Définitions des noms des tables de la BDD
+// DÃ©finitions des noms des tables de la BDD
 if (!defined("INSTALL_IN_PROGRESS")) {
-	//Tables utilisées par les programmes
+	//Tables utilisÃ©es par les programmes
 	define("TABLE_CONFIG", $table_prefix."config");
 	define("TABLE_GROUP", $table_prefix."group");
 	define("TABLE_SESSIONS", $table_prefix."sessions");
@@ -71,10 +71,10 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     
 }
 
-//Paramètres session
+//ParamÃ¨tres session
 define("COOKIE_NAME", "ogspy_id");
 
-//Activation du mode débuggage
+//Activation du mode dÃ©buggage
 define("MODE_DEBUG", FALSE);
 
 /*
@@ -83,7 +83,7 @@ define("MODE_DEBUG", FALSE);
 // For using Google Google Cloud Messaging and can push notifications on ogspy for android
 define("GOOGLE_API_KEY", "AIzaSyB5W5hiGP97Jh1e6s7c0vva0Hs_xSiGeQw");
 
-//Chemin d'accès aux ressources
+//Chemin d'accÃ¨s aux ressources
 if (!defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS") && !defined("GRAPHIC")) define("PATH_LOG", "journal/");
 else define("PATH_LOG", "../journal/");
 $path_log_today = PATH_LOG.date("ymd")."/";
@@ -95,7 +95,7 @@ if (!is_dir($path_log_today)) {
 define("PATH_LOG_TODAY", PATH_LOG.date("ymd")."/");
 
 
-//Bannière OGSPY
+//BanniÃ¨re OGSPY
 $banner[] = "logos/logo.png";
 
 srand(time());

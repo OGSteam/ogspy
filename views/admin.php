@@ -38,12 +38,12 @@ if (!isset($pub_subaction)) {
 if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
 	if ($pub_subaction != "infoserver") {
 		echo "\t\t\t"."<td class='c' width='14%' onclick=\"window.location = 'index.php?action=administration&subaction=infoserver';\">";
-		echo "<a style='cursor:pointer'><font color='lime'>Informations générales</font></a>";
+		echo "<a style='cursor:pointer'><font color='lime'>Informations gÃ©nÃ©rales</font></a>";
 		echo "</td>"."\n";
 	}
 	else {
 		echo "\t\t\t"."<th width='14%'>";
-		echo "<a>Informations générales</a>";
+		echo "<a>Informations gÃ©nÃ©rales</a>";
 		echo "</th>"."\n";
 	}
 }
@@ -51,12 +51,12 @@ if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
 if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
 	if ($pub_subaction != "parameter") {
 		echo "\t\t\t"."<td class='c_tech' width='14%' onclick=\"window.location = 'index.php?action=administration&subaction=parameter';\">";
-		echo "<a style='cursor:pointer'><font color='lime'>Paramètres du serveur</font></a>";
+		echo "<a style='cursor:pointer'><font color='lime'>ParamÃ¨tres du serveur</font></a>";
 		echo "</td>"."\n";
 	}
 	else {
 		echo "\t\t\t"."<th width='14%'>";
-		echo "<a>Paramètres du serveur</a>";
+		echo "<a>ParamÃ¨tres du serveur</a>";
 		echo "</th>"."\n";
 	}
 }
@@ -64,12 +64,12 @@ if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
 if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
 	if ($pub_subaction != "affichage") {
 		echo "\t\t\t"."<td class='c' width='14%' onclick=\"window.location = 'index.php?action=administration&subaction=affichage';\">";
-		echo "<a style='cursor:pointer'><font color='lime'>Paramètres d'affichage</font></a>";
+		echo "<a style='cursor:pointer'><font color='lime'>ParamÃ¨tres d'affichage</font></a>";
 		echo "</td>"."\n";
 	}
 	else {
 		echo "\t\t\t"."<th width='14%'>";
-		echo "<a>Paramètres d'affichage</a>";
+		echo "<a>ParamÃ¨tres d'affichage</a>";
 		echo "</th>"."\n";
 	}
 }

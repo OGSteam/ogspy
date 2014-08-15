@@ -27,7 +27,7 @@ if (!isset($HTTP_POST_VARS) && isset($_POST)) {
     }
 }
 
-//Récupération des paramètres de connexion à la base de données
+//RÃ©cupÃ©ration des paramÃ¨tres de connexion Ã  la base de donnÃ©es
 if (file_exists("parameters/id.php")) {
     require_once ("parameters/id.php");
 } else {
@@ -52,7 +52,7 @@ require_once ("includes/ogame.php");
 require_once ("includes/cache.php");
 require_once ("includes/chart_js.php");
 
-//Récupération des valeur GET, POST, COOKIE
+//RÃ©cupÃ©ration des valeur GET, POST, COOKIE
 extract($_GET,EXTR_PREFIX_ALL , "pub");
 extract($_POST,EXTR_PREFIX_ALL , "pub");
 extract($_COOKIE,EXTR_PREFIX_ALL , "pub");
@@ -86,17 +86,17 @@ if (file_exists('parameters/key.php')) {
 }
 }
 
-//Connexion à la base de donnnées
+//Connexion Ã  la base de donnnÃ©es
 if (!defined("INSTALL_IN_PROGRESS")) {
     // appel de l instance en cours
     $db = sql_db::getInstance($db_host, $db_user, $db_password, $db_database);
 
     if (!$db->db_connect_id) {
-        die("Impossible de se connecter à la base de données");
+        die("Impossible de se connecter Ã  la base de donnÃ©es");
     }
 
 
-    //Récupération et encodage de l'adresse ip
+    //RÃ©cupÃ©ration et encodage de l'adresse ip
     $user_ip = $_SERVER['REMOTE_ADDR'];
     $user_ip = encode_ip($user_ip);
 

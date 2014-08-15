@@ -17,7 +17,7 @@ if ($link_css == "") {
 ?>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset="UTF-8" />
 <meta name="language" content="fr">
 <title><?php echo $server_config["servername"]." - OGSpy ".$server_config["version"];?></title>
 <link rel="stylesheet" type="text/css" href="<?php echo $link_css;?>formate.css" />

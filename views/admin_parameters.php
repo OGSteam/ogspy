@@ -1,7 +1,7 @@
 <?php
 /** $Id: admin_parameters.php 7508 2012-01-30 21:59:01Z darknoon $ **/
 /**
-* Panneau d'Administration : paramètres et options du serveur 
+* Panneau d'Administration : paramÃ¨tres et options du serveur 
 * @package OGSpy
 * @version 3.04b ($Rev: 7508 $)
 * @subpackage views
@@ -56,7 +56,7 @@ $mod_cache = $server_config['mod_cache'];
 <input type="hidden" name="action" value="set_serverconfig">
 <input name="max_battlereport" type="hidden" size="5" value="10">
 <tr>
-	<td class="c_ogspy" colspan="2">Options générales du serveur</td>
+	<td class="c_ogspy" colspan="2">Options gÃ©nÃ©rales du serveur</td>
 </tr>
 <tr>
 	<th width="60%">Nom du serveur</th>
@@ -74,48 +74,48 @@ $mod_cache = $server_config['mod_cache'];
 	<td class="c" colspan="2">Options des membres</td>
 </tr>
 <tr>
-	<th>Autoriser la désactivation du contrôle des adresses ip&nbsp;<?php echo help("admin_check_ip");?></th>
+	<th>Autoriser la dÃ©sactivation du contrÃ´le des adresses ip&nbsp;<?php echo help("admin_check_ip");?></th>
 	<th><input name="disable_ip_check" type="checkbox" value="1" <?php echo $disable_ip_check;?>></th>
 </tr>
 <tr>
-	<th>Skin par défaut<br /><div class="z"><i>ex: http://80.237.203.201/download/use/epicblue/</i></div></th>
+	<th>Skin par dÃ©faut<br /><div class="z"><i>ex: http://80.237.203.201/download/use/epicblue/</i></div></th>
 	<th><input name="default_skin" type="text" size="60" value="<?php echo $default_skin;?>"></th>
 </tr>
 <tr>
-	<th>Nombre maximum de systèmes favoris autorisé <a>[0-99]</a></th>
+	<th>Nombre maximum de systÃ¨mes favoris autorisÃ© <a>[0-99]</a></th>
 	<th><input name="max_favorites" type="text" size="5" maxlength="2" value="<?php echo $max_favorites;?>"></th>
 </tr>
 <tr>
-	<th>Nombre maximum de rapports d'espionnage favoris autorisé <a>[0-99]</a></th>
+	<th>Nombre maximum de rapports d'espionnage favoris autorisÃ© <a>[0-99]</a></th>
 	<th><input name="max_favorites_spy" type="text" size="5" maxlength="2" value="<?php echo $max_favorites_spy;?>"></th>
 </tr>
 <tr>
 	<td class="c_tech" colspan="2">Gestion des sessions</td>
 </tr>
 <tr>
-	<th>Durée des sessions <a>[5-180 minutes]</a> <a>[0=durée indéterminée&nbsp;<?php echo help("admin_session_infini");?>]</a></th>
+	<th>DurÃ©e des sessions <a>[5-180 minutes]</a> <a>[0=durÃ©e indÃ©terminÃ©e&nbsp;<?php echo help("admin_session_infini");?>]</a></th>
 	<th><input name="session_time" type="text" size="5" maxlength="3" value="<?php echo $session_time;?>"></th>
 </tr>
 <tr>
 	<td class="c" colspan="2">Protection alliance</td>
 </tr>
 <tr>
-	<th width="60%">Liste des alliances à ne pas afficher<br /><div class="z"><i>Séparez les alliances avec des virgules</i></div></th>
+	<th width="60%">Liste des alliances Ã  ne pas afficher<br /><div class="z"><i>SÃ©parez les alliances avec des virgules</i></div></th>
 	<th><input type="text" size="60" name="ally_protection" value="<?php echo $ally_protection;?>"></th>
 </tr>
 <tr>
-	<th width="60%">Liste des alliances amies<br /><div class="z"><i>Séparez les alliances avec des virgules</i></div></th>
+	<th width="60%">Liste des alliances amies<br /><div class="z"><i>SÃ©parez les alliances avec des virgules</i></div></th>
 	<th><input type="text" size="60" name="allied" value="<?php echo $allied;?>"></th>
 </tr>
 <tr>
-	<td class="c" colspan="2">Paramètres divers</td>
+	<td class="c" colspan="2">ParamÃ¨tres divers</td>
 </tr>
 <tr>
 	<th width="60%">Lien du forum de l'alliance</th>
 	<th><input type="text" size="60" name="url_forum" value="<?php echo $url_forum;?>"></th>
 </tr>
 <tr>
-	<th>Journaliser les transactions et requêtes SQL&nbsp;<?php echo help("admin_save_transaction");?><br /><div class="z"><i>Risque de dégradation des performances du serveur</i></div></th>
+	<th>Journaliser les transactions et requÃªtes SQL&nbsp;<?php echo help("admin_save_transaction");?><br /><div class="z"><i>Risque de dÃ©gradation des performances du serveur</i></div></th>
 	<th><input name="debug_log" type="checkbox" value="1" <?php echo $debug_log;?>></th>
 </tr>
 <tr>
@@ -130,19 +130,19 @@ $mod_cache = $server_config['mod_cache'];
 	<td class="c_tech" colspan="2">Maintenance</td>
 </tr>
 <tr>
-	<th width="60%">Durée de conservation des classements <a>[1-999 jours ou nombre]</a></th>
+	<th width="60%">DurÃ©e de conservation des classements <a>[1-999 jours ou nombre]</a></th>
 	<th><input type="text" name="max_keeprank" maxlength="4" size="5" value="<?php echo $max_keeprank;?>">&nbsp;<select name="keeprank_criterion"><option value="quantity" <?php echo $keeprank_criterion == "quantity" ? "selected" : "";?>>Nombre</option><option value="day" <?php echo $keeprank_criterion == "day" ? "selected" : "";?>>Jours</option></th>
 </tr>
 <tr>
-	<th width="60%">Nombre maximal de rapports d'espionnage par planète <a>[1-50]</a></th>
+	<th width="60%">Nombre maximal de rapports d'espionnage par planÃ¨te <a>[1-50]</a></th>
 	<th><input type="text" name="max_spyreport" maxlength="4" size="5" value="<?php echo $max_spyreport;?>"></th>
 </tr>
 <tr>
-	<th width="60%">Durée de conservation des rapports d'espionnage <a>[1-999 jours]</a></th>
+	<th width="60%">DurÃ©e de conservation des rapports d'espionnage <a>[1-999 jours]</a></th>
 	<th><input type="text" name="max_keepspyreport" maxlength="4" size="5" value="<?php echo $max_keepspyreport;?>"></th>
 </tr>
 <tr>
-	<th width="60%">Durée de conservation des fichiers logs <a>[0-365 jours]</a></th>
+	<th width="60%">DurÃ©e de conservation des fichiers logs <a>[0-365 jours]</a></th>
 	<th><input name="max_keeplog" type="text" size="5" maxlength="3" value="<?php echo $max_keeplog;?>"></th>
 </tr>
 <?php
@@ -153,11 +153,11 @@ $mod_cache = $server_config['mod_cache'];
 </tr>
 <tr>
 	<th width="60%">Nombre de galaxies&nbsp;<?php echo help("profile_galaxy");?></th>
-	<th><input name="num_of_galaxies" id="galaxies" type="text" size="5" maxlength="3" value="<?php echo $num_of_galaxies;?>" onChange="if (!confirm('Etes vous sur de vouloir modifier le nombre de galaxies?\nsi vous réduisez ce nombre\nLes membres qui sont définit comme étant dans l\'une des galaxies supprimé ce verront mis dans la galaxie 1, système 1\n et leur favoris supprimé')){document.getElementById('galaxies').value='<?php echo $num_of_galaxies;?>';}" readonly="readonly"> &nbsp; &nbsp; active le champs(<input name="enable_input_num_galaxies" type="checkbox" onClick="(this.checked)? document.getElementById('galaxies').readOnly=false : document.getElementById('galaxies').readOnly=true;">)</th>
+	<th><input name="num_of_galaxies" id="galaxies" type="text" size="5" maxlength="3" value="<?php echo $num_of_galaxies;?>" onChange="if (!confirm('Etes vous sur de vouloir modifier le nombre de galaxies?\nsi vous rÃ©duisez ce nombre\nLes membres qui sont dÃ©finit comme Ã©tant dans l\'une des galaxies supprimÃ© ce verront mis dans la galaxie 1, systÃ¨me 1\n et leur favoris supprimÃ©')){document.getElementById('galaxies').value='<?php echo $num_of_galaxies;?>';}" readonly="readonly"> &nbsp; &nbsp; active le champs(<input name="enable_input_num_galaxies" type="checkbox" onClick="(this.checked)? document.getElementById('galaxies').readOnly=false : document.getElementById('galaxies').readOnly=true;">)</th>
 </tr>
 <tr>
-	<th width="60%">Nombre de systèmes par galaxies&nbsp;<?php echo help("profile_galaxy");?></th>
-	<th><input name="num_of_systems" id="systems" type="text" size="5" maxlength="3" value="<?php echo $num_of_systems;?>" onChange="if (!confirm('Etes vous sur de vouloir modifier le nombre de systèmes?\nsi vous réduisez ce nombre\nLes membres qui sont définit comme étant dans l\'un des systèmes supprimé ce verront mis dans la galaxie 1, système 1\n et leur favoris supprimé')){document.getElementById('systems').value='<?php echo $num_of_systems;?>';}" readonly="readonly"> &nbsp; &nbsp; active le champs(<input name="enable_input_num_systems" type="checkbox" onClick="(this.checked)? document.getElementById('systems').readOnly=false : document.getElementById('systems').readOnly=true;">)</th>
+	<th width="60%">Nombre de systÃ¨mes par galaxies&nbsp;<?php echo help("profile_galaxy");?></th>
+	<th><input name="num_of_systems" id="systems" type="text" size="5" maxlength="3" value="<?php echo $num_of_systems;?>" onChange="if (!confirm('Etes vous sur de vouloir modifier le nombre de systÃ¨mes?\nsi vous rÃ©duisez ce nombre\nLes membres qui sont dÃ©finit comme Ã©tant dans l\'un des systÃ¨mes supprimÃ© ce verront mis dans la galaxie 1, systÃ¨me 1\n et leur favoris supprimÃ©')){document.getElementById('systems').value='<?php echo $num_of_systems;?>';}" readonly="readonly"> &nbsp; &nbsp; active le champs(<input name="enable_input_num_systems" type="checkbox" onClick="(this.checked)? document.getElementById('systems').readOnly=false : document.getElementById('systems').readOnly=true;">)</th>
 </tr>
 <tr>
 	<th width="60%">Vitesse de l'univers&nbsp;<?php echo help("profile_speed_uni");?></th>
@@ -181,15 +181,15 @@ $mod_cache = $server_config['mod_cache'];
 	<td class="c_tech" colspan="2">Options de cache</td>
 </tr>
 <tr>	
-    <th>régénérer tous les fichiers caches<br /></th>
+    <th>rÃ©gÃ©nÃ©rer tous les fichiers caches<br /></th>
 	<th><input name="regenere_cache" type="checkbox" value="0" /></th>
 </tr>
 <tr>
-	<th width="60%">Durée de conservation du cache "config" <?php echo help("config_cache");?> <br /><div class="z"><i>(Attention, peut impacter la mise a jour des statitistiques du serveur et le ratio .. )</i></div></a></th>
+	<th width="60%">DurÃ©e de conservation du cache "config" <?php echo help("config_cache");?> <br /><div class="z"><i>(Attention, peut impacter la mise a jour des statitistiques du serveur et le ratio .. )</i></div></a></th>
 	<th><input type="text" name="config_cache" maxlength="10" size="10" value="<?php echo $config_cache;?>"></th>
 </tr>
 <tr>
-	<th width="60%">Durée de conservation du cache "mod" <?php echo help("mod_cache");?></a></th>
+	<th width="60%">DurÃ©e de conservation du cache "mod" <?php echo help("mod_cache");?></a></th>
 	<th><input type="text" name="mod_cache" maxlength="10" size="10" value="<?php echo $mod_cache;?>"></th>
 </tr>
 
@@ -217,7 +217,7 @@ $mod_cache = $server_config['mod_cache'];
 	<td>&nbsp;</td>
 </tr>
 <tr>
-	<th colspan="2"><input type="submit" value="Valider">&nbsp;<input type="reset" value="Réinitialiser"></th>
+	<th colspan="2"><input type="submit" value="Valider">&nbsp;<input type="reset" value="RÃ©initialiser"></th>
 </tr>
 </form>
 </table>

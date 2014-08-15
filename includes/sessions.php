@@ -74,7 +74,7 @@ function session() {
 	$cookie_name = COOKIE_NAME;
 	$cookie_time = ( $server_config["session_time"] == 0 ) ? 525600:$server_config["session_time"];
 
-	//Purge des sessions expirées 
+	//Purge des sessions expirÃ©es 
 	if ($server_config["session_time"] != 0) {
 		$request = "delete from ".TABLE_SESSIONS." where session_expire < ".time();
 		$db->sql_query($request, true, false);
@@ -82,11 +82,11 @@ function session() {
 
 	$link_css = $server_config["default_skin"];
 
-	//Récupération de l'id de session si cookie présent
+	//RÃ©cupÃ©ration de l'id de session si cookie prÃ©sent
 	if (isset($HTTP_COOKIE_VARS[$cookie_name])) {
 		$cookie_id = $HTTP_COOKIE_VARS[$cookie_name];
 
-		//Vérification de la validité de le session
+		//VÃ©rification de la validitÃ© de le session
 		$request = "select session_id from ".TABLE_SESSIONS.
 		" where session_id = '".$cookie_id."'".
 		" and session_ip = '".$user_ip."'";
@@ -94,7 +94,7 @@ function session() {
 
 		if ($db->sql_numrows($result) != 1) {
 			if ( isset ( $server_config["disable_ip_check"] ) && $server_config["disable_ip_check"] == 1) {
-				//Mise à jour de l'adresse ip de session si le contrôle des ip est désactivé
+				//Mise Ã  jour de l'adresse ip de session si le contrÃ´le des ip est dÃ©sactivÃ©
 				$request = "select session_id from ".TABLE_SESSIONS." left join ".TABLE_USER.
 				" on session_user_id = user_id".
 				" where session_id = '".$cookie_id."'".
@@ -242,7 +242,7 @@ function session_whois_online() {
 		$session_ip = decode_ip($session_ip);
 
 		if (is_null($user_name)) {
-			$user_name = "Visiteur non identifié";
+			$user_name = "Visiteur non identifiÃ©";
 			$guests[] = array("user" => $user_name, "time_start" => $session_start, "time_lastactivity" => $time_lastactivity, "ip" => $session_ip, "ogs" => 0);
 		}
 		else {

@@ -33,7 +33,7 @@ function generate_config_cache()
 	if (!$fh) { 
 	           if (!defined('UPGRADE_IN_PROGRESS'))
                     {
-                    	echo '<p>Impossible d écrire sur le fichier cache. Vérifier les droits d acces au dossier  \'cache\' </p>';  
+                    	echo '<p>Impossible d Ã©crire sur le fichier cache. VÃ©rifier les droits d acces au dossier  \'cache\' </p>';  
                         log_("erreur_config_cache"); 
                     }
 
@@ -70,7 +70,7 @@ function generate_mod_cache()
 	if (!$fh) { 
 	           if (!defined('UPGRADE_IN_PROGRESS'))
                     {
-                    	echo '<p>Impossible d écrire sur le fichier cache. Vérifier les droits d acces au dossier  \'cache\' </p>';  
+                    	echo '<p>Impossible d Ã©crire sur le fichier cache. VÃ©rifier les droits d acces au dossier  \'cache\' </p>';  
                         log_("erreur_mod_cache"); 
                     }
 
@@ -95,7 +95,7 @@ function generate_all_cache()
         $files = glob('cache/*.php');
         foreach ($files as $filename){unlink($filename);}  
         
-        // on les génére a nouveau
+        // on les gÃ©nÃ©re a nouveau
         generate_config_cache();
         generate_mod_cache;        
 }

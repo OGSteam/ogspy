@@ -46,7 +46,7 @@ if ($search_result) {
 	}
 
 	if ($type_search != "colonization") {
-		$link_order_coordinates = "<a href='index.php?action=search&sort=1&sort2=".$new_sort2."&type_search=".$type_search."&page=".$page."&string_search=".$string_search.$strict_on."'>Coordonnées";
+		$link_order_coordinates = "<a href='index.php?action=search&sort=1&sort2=".$new_sort2."&type_search=".$type_search."&page=".$page."&string_search=".$string_search.$strict_on."'>CoordonnÃ©es";
 		$link_order_ally = "<a href='index.php?action=search&sort=2&sort2=".$new_sort2."&type_search=".$type_search."&page=".$page."&string_search=".$string_search.$strict_on."'>Alliances";
 		$link_order_player = "<a href='index.php?action=search&sort=3&sort2=".$new_sort2."&type_search=".$type_search."&page=".$page."&string_search=".$string_search.$strict_on."'>Joueurs";
 
@@ -71,7 +71,7 @@ if ($search_result) {
 	}
 }
 
-//Données recherches joueurs
+//DonnÃ©es recherches joueurs
 if (!isset($string_search)) {
 	$string_search = "";
 }
@@ -98,7 +98,7 @@ if (isset($type_search)) {
 	}
 }
 
-//Données recherche coordonnées colonisables
+//DonnÃ©es recherche coordonnÃ©es colonisables
 $galaxy_down = isset($galaxy_down) ? $galaxy_down : "";
 $galaxy_up = isset($galaxy_up) ? $galaxy_up : "";
 $system_down = isset($system_down) ? $system_down : "";
@@ -130,7 +130,7 @@ require_once("views/page_header.php");
 		</tr>
 		<tr>
 			<th><input name="type_search" value="planet" type="radio"<?php echo $type_planet;?>></th>
-			<th>Planète</th>
+			<th>PlanÃ¨te</th>
 		</tr>
 		<tr>
 			<th><input name="strict" value="false" type="checkbox"<?php echo $strict;?>></th>
@@ -147,20 +147,20 @@ require_once("views/page_header.php");
 		<form method="POST" action="index.php">
 		<input type="hidden" name="action" value="search">
 		<tr>
-			<td class="c_recherche" colspan="4">Recherche spéciale</td>
+			<td class="c_recherche" colspan="4">Recherche spÃ©ciale</td>
 		</tr>
 		<tr>
 			<th colspan="2">
 				<select name="type_search">
 <?php
-if (isset($type_search) && $type_search == "colonization") echo "\t\t\t\t\t"."<option value='colonization' selected>Planètes colonisables</option>";
-else echo "\t\t\t\t\t"."<option value='colonization'>Planètes colonisables</option>";
+if (isset($type_search) && $type_search == "colonization") echo "\t\t\t\t\t"."<option value='colonization' selected>PlanÃ¨tes colonisables</option>";
+else echo "\t\t\t\t\t"."<option value='colonization'>PlanÃ¨tes colonisables</option>";
 if (isset($type_search) && $type_search == "moon") echo "\t\t\t\t\t"."<option value='moon' selected>Lunes</option>";
 else echo "\t\t\t\t\t"."<option value='moon'>Lunes</option>";
 if (isset($type_search) && $type_search == "away") echo "\t\t\t\t\t"."<option value='away' selected>Joueurs absents</option>";
 else echo "\t\t\t\t\t"."<option value='away'>Joueurs absents</option>";
-if (isset($type_search) && $type_search == "spy") echo "\t\t\t\t\t"."<option value='spy' selected>Planètes espionnées</option>";
-else echo "\t\t\t\t\t"."<option value='spy'>Planètes espionnées</option>";
+if (isset($type_search) && $type_search == "spy") echo "\t\t\t\t\t"."<option value='spy' selected>PlanÃ¨tes espionnÃ©es</option>";
+else echo "\t\t\t\t\t"."<option value='spy'>PlanÃ¨tes espionnÃ©es</option>";
 ?>
 				</select>
 				</th>
@@ -175,7 +175,7 @@ else echo "\t\t\t\t\t"."<option value='spy'>Planètes espionnées</option>";
 		</tr>
 		<tr>
 			<th>&nbsp;</th>
-			<th>Système solaire</th>
+			<th>SystÃ¨me solaire</th>
 			<th><input name="system_down" type="text" maxlength="3" size="3" value="<?php echo $system_down;?>"></th>
 			<th><input name="system_up" type="text" maxlength="3" size="3" value="<?php echo $system_up;?>"></th>
 		</tr>
@@ -291,7 +291,7 @@ foreach ($search_result as $v) {
 		$tooltip[$v["ally"]] .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">Alliance ".$v["ally"]."</td></tr>";
 		$individual_ranking_ally = galaxy_show_ranking_unique_ally($v["ally"]);
 		while ($ranking = current($individual_ranking_ally)) {
-			$datadate = strftime("%d %b %Y à %Hh", key($individual_ranking_ally));
+			$datadate = strftime("%d %b %Y Ã  %Hh", key($individual_ranking_ally));
 			$general_rank = isset($ranking["general"]) ?  formate_number($ranking["general"]["rank"]) : "&nbsp;";
 			$general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) . " <i>( ". formate_number($ranking["general"]["points_per_member"]) ." )</i>" : "&nbsp;";
 			$eco_rank = isset($ranking["eco"]) ?  formate_number($ranking["eco"]["rank"]) : "&nbsp;";
@@ -308,7 +308,7 @@ foreach ($search_result as $v) {
         	$honnor_points = isset($ranking["honnor"]) ?  formate_number($ranking["honnor"]["points"]) . " <i>( ". formate_number($ranking["honnor"]["points_per_member"]) ." )</i>" : "&nbsp;";
             
             $tooltip[$v["ally"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">Classement du ".$datadate."</td></tr>";
-			$tooltip[$v["ally"]] .= "<tr><td class=\"c\" width=\"75\">Général</td><th width=\"30\">".$general_rank."</th><th>".$general_points."</th></tr>";
+			$tooltip[$v["ally"]] .= "<tr><td class=\"c\" width=\"75\">GÃ©nÃ©ral</td><th width=\"30\">".$general_rank."</th><th>".$general_points."</th></tr>";
 			$tooltip[$v["ally"]] .= "<tr><td class=\"c\">Economique</td><th>".$eco_rank."</th><th>".$eco_points."</th></tr>";
 			$tooltip[$v["ally"]] .= "<tr><td class=\"c\">Recherche</td><th>".$techno_rank."</th><th>".$techno_points."</th></tr>";
 			$tooltip[$v["ally"]] .= "<tr><td class=\"c\">Militaire</td><th width=\"30\">".$military_rank."</th><th>".$military_points."</th></tr>";
@@ -321,7 +321,7 @@ foreach ($search_result as $v) {
             
 			break;
 		}
-		$tooltip[$v["ally"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=ally&string_search=".$v["ally"]."&strict=on\">Voir détail</a></td></tr>";
+		$tooltip[$v["ally"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=ally&string_search=".$v["ally"]."&strict=on\">Voir dÃ©tail</a></td></tr>";
 		$tooltip[$v["ally"]] .= "</table>";
 		$tooltip[$v["ally"]] = htmlentities($tooltip[$v["ally"]]);
 
@@ -335,7 +335,7 @@ foreach ($search_result as $v) {
 			$tooltip[$v["player"]] .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">Joueur ".$v["player"]."</td></tr>";
 			$individual_ranking_player = galaxy_show_ranking_unique_player($v["player"]);
 			while ($ranking = current($individual_ranking_player)) {
-				$datadate = strftime("%d %b %Y à %Hh", key($individual_ranking_player));
+				$datadate = strftime("%d %b %Y Ã  %Hh", key($individual_ranking_player));
 				$general_rank = isset($ranking["general"]) ?  formate_number($ranking["general"]["rank"]) : "&nbsp;";
 				$general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
 				$eco_rank = isset($ranking["eco"]) ?  formate_number($ranking["eco"]["rank"]) : "&nbsp;";
@@ -352,7 +352,7 @@ foreach ($search_result as $v) {
         	   $honnor_points = isset($ranking["honnor"]) ?  formate_number($ranking["honnor"]["points"]) : "&nbsp;";
                 
               $tooltip[$v["player"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">Classement du ".$datadate."</td></tr>";
-			$tooltip[$v["player"]] .= "<tr><td class=\"c\" width=\"75\">Général</td><th width=\"30\">".$general_rank."</th><th>".$general_points."</th></tr>";
+			$tooltip[$v["player"]] .= "<tr><td class=\"c\" width=\"75\">GÃ©nÃ©ral</td><th width=\"30\">".$general_rank."</th><th>".$general_points."</th></tr>";
 			$tooltip[$v["player"]] .= "<tr><td class=\"c\">Economique</td><th>".$eco_rank."</th><th>".$eco_points."</th></tr>";
 			$tooltip[$v["player"]] .= "<tr><td class=\"c\">Recherche</td><th>".$techno_rank."</th><th>".$techno_points."</th></tr>";
 			$tooltip[$v["player"]] .= "<tr><td class=\"c\">Militaire</td><th width=\"30\">".$military_rank."</th><th>".$military_points."</th></tr>";
@@ -363,7 +363,7 @@ foreach ($search_result as $v) {
                
 			break;
 			}
-			$tooltip[$v["player"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=player&string_search=".$v["player"]."&strict=on\">Voir détail</a></td></tr>";
+			$tooltip[$v["player"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=player&string_search=".$v["player"]."&strict=on\">Voir dÃ©tail</a></td></tr>";
 			$tooltip[$v["player"]] .= "</table>";
 			$tooltip[$v["player"]] = htmlentities($tooltip[$v["player"]]);
 		}
@@ -410,17 +410,17 @@ foreach ($search_result as $v) {
 }
 echo "\t\t"."<tr>";
 $legend = "<table width=\"225\">";
-$legend .= "<tr><td class=\"c\" colspan=\"2\" align=\"center\"e width=\"150\">Légende</td></tr>";
+$legend .= "<tr><td class=\"c\" colspan=\"2\" align=\"center\"e width=\"150\">LÃ©gende</td></tr>";
 $legend .= "<tr><td class=\"c\">Inactif 7 jours</td><th>i</th></tr>";
 $legend .= "<tr><td class=\"c\">Inactif 28 jours</td><th>I</th></tr>";
 $legend .= "<tr><td class=\"c\">Joueur faible</td><th>d</th></tr>";
 $legend .= "<tr><td class=\"c\">Lune<br><i>phalange 4 avec porte spatial</i></td><th><img src=\"".$link_css."img/lune.png\"> - 4P</th></tr>";
 $legend .= "<tr><td class=\"c\">Rapport d\'espionnage</td><th>xE</th></tr>";
-$legend .= "<tr><td class=\"c\">Joueur / Alliance alliée</td><th><a><blink>abc</blink></a></th></tr>";
-$legend .= "<tr><td class=\"c\">Joueur / Alliance masquée</td><th><font color=\"lime\">abc</font></th></tr>";
+$legend .= "<tr><td class=\"c\">Joueur / Alliance alliÃ©e</td><th><a><blink>abc</blink></a></th></tr>";
+$legend .= "<tr><td class=\"c\">Joueur / Alliance masquÃ©e</td><th><font color=\"lime\">abc</font></th></tr>";
 $legend .= "</table>";
 $legend = htmlentities($legend);
-echo "<tr align='center'><td class='c' colspan='7'><a href='' onmouseover=\"this.T_WIDTH=210;this.T_TEMP=0;return escape('".$legend."')\">Légende</a></td></tr>";
+echo "<tr align='center'><td class='c' colspan='7'><a href='' onmouseover=\"this.T_WIDTH=210;this.T_TEMP=0;return escape('".$legend."')\">LÃ©gende</a></td></tr>";
 
 echo "\t\t\t"."<td colspan='3' align='left' width='50%'>"."\n";
 if ($total_page > 1) {
@@ -501,7 +501,7 @@ if ( $type_search == "ally" || $type_search == "player" )
 		</tr>
 		<tr>
 			<td class="c" width="140">Date</td>
-			<td class="c_classement_points" colspan="2">Général</td>
+			<td class="c_classement_points" colspan="2">GÃ©nÃ©ral</td>
 			<td class="c" colspan="2">Economique</td>
 			<td class="c_classement_recherche" colspan="2">Recherche</td>
 			<td class="c_classement_flotte" colspan="2">Militaire</td>

@@ -25,24 +25,24 @@ function writeLog($texte){
 	$date = date("d-m-Y");
 	$heure = date("G:i");
 
-	// Assurons nous que le fichier est accessible en Ècriture
+	// Assurons nous que le fichier est accessible en √©criture
 	if (is_writable($filename)) {
 		// Dans notre exemple, nous ouvrons le fichier $filename en mode d'ajout
-		// Le pointeur de fichier est placÈ ‡ la fin du fichier
-		// c'est l‡ que le texte sera placÈ
+		// Le pointeur de fichier est plac√© √† la fin du fichier
+		// c'est l√† que le texte sera plac√©
 		if (!$handle = fopen($filename, 'a')) {
 			//echo "Impossible d'ouvrir le fichier ($filename)";
 			exit;
 		}
 		// Ecrivons quelque chose dans notre fichier.
 		if (fwrite($handle, $date ." - " . $heure . " : " . $texte . "\n") === FALSE) {
-			//echo "Impossible d'Ècrire dans le fichier ($filename)";
+			//echo "Impossible d'√©crire dans le fichier ($filename)";
 			exit;
 		}
-		//echo "L'Ècriture de ($texte) dans le fichier ($filename) a rÈussi";
+		//echo "L'√©criture de ($texte) dans le fichier ($filename) a r√©ussi";
 		fclose($handle);
 	} else {
-		//echo "Le fichier $filename n'est pas accessible en Ècriture.";
+		//echo "Le fichier $filename n'est pas accessible en √©criture.";
 	}
 }
 

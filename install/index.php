@@ -48,11 +48,11 @@ if (isset($pub_redirection)) {
 		<tr>	
 			<td>
 <font size="2">
-<ul><li type="square">OGSpy est un projet qui a pour but d'enregistrer dans une base de données les coordonnées de tous les joueurs d'un univers.
+<ul><li type="square">OGSpy est un projet qui a pour but d'enregistrer dans une base de donnÃ©es les coordonnÃ©es de tous les joueurs d'un univers.
 <li type="square">Disposer d'un tel outil offre de multiples avantages pour une alliance ou un collectif :
-<ul><li type="disc">Recensement de toutes les coordonnées libres selon plusieurs critères (galaxie, système solaire et rang).
-<li type="disc">Recensement de toutes les planètes d'un joueur ou d'une ally. Information vitale durant les périodes de guerre.
-<li type="disc">Possibilités d'extensions quasi illimitées grâce aux mods.
+<ul><li type="disc">Recensement de toutes les coordonnÃ©es libres selon plusieurs critÃ¨res (galaxie, systÃ¨me solaire et rang).
+<li type="disc">Recensement de toutes les planÃ¨tes d'un joueur ou d'une ally. Information vitale durant les pÃ©riodes de guerre.
+<li type="disc">PossibilitÃ©s d'extensions quasi illimitÃ©es grÃ¢ce aux mods.
 <li type="disc">Etc ...
 </ul></ul>
 <center>Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href="http://www.ogsteam.fr/" target="_blank">http://www.ogsteam.fr/</a></center>
@@ -63,7 +63,7 @@ if (isset($pub_redirection)) {
 <?php 	
 if(!(version_compare(PHP_VERSION, "5.0.0") >= 0)){
     echo "<tr><td style='font-size: 24px;'><font color='red'>Version de PHP insuffisante</font></td></tr>";
-    echo "<tr><td><font color='red'>Pour pouvoir effectuer une installation complète d'OGSpy, votre hébergement doit être doté au minimum de la version 5 de PHP.";
+    echo "<tr><td><font color='red'>Pour pouvoir effectuer une installation complÃ¨te d'OGSpy, votre hÃ©bergement doit Ãªtre dotÃ© au minimum de la version 5 de PHP.";
     echo "<br/><br/>Vous disposez actuellement de la version : " . PHP_VERSION;
     echo "</font></td></tr>";
 }else{
@@ -71,11 +71,11 @@ if(!(version_compare(PHP_VERSION, "5.0.0") >= 0)){
 		<tr><td>&nbsp;</td></tr>
 		<form action="index.php" method="POST">
 		<tr>
-			<td align="center"><font color="orange"><b>Choisissez quelle action vous désirez effectuer : </b></font>
+			<td align="center"><font color="orange"><b>Choisissez quelle action vous dÃ©sirez effectuer : </b></font>
 				<select name="redirection" onchange="this.form.submit();" onkeyup="this.form.submit();">
 					<option></option>
-					<option value="install">Installation complète</option>
-					<option value="upgrade">Mise à jour</option>
+					<option value="install">Installation complÃ¨te</option>
+					<option value="upgrade">Mise Ã  jour</option>
 				</select>
 			</td>
 		</tr>

@@ -49,12 +49,12 @@ CREATE TABLE ogspy_mod (
   id int(11) NOT NULL auto_increment,
   title varchar(255) NOT NULL COMMENT 'Nom du mod',
   menu varchar(255) NOT NULL COMMENT 'Titre du lien dans le menu',
-  `action` varchar(255) NOT NULL COMMENT 'Action transmise en get et traitée dans index.php',
-  root varchar(255) NOT NULL COMMENT 'Répertoire où se situe le mod (relatif au répertoire mods)',
+  `action` varchar(255) NOT NULL COMMENT 'Action transmise en get et traitÃ©e dans index.php',
+  root varchar(255) NOT NULL COMMENT 'RÃ©pertoire oÃ¹ se situe le mod (relatif au rÃ©pertoire mods)',
   link varchar(255) NOT NULL COMMENT 'fichier principale du mod',
   version varchar(10) NOT NULL COMMENT 'Version du mod',
   position int(11) NOT NULL default '-1',
-  active tinyint(1) NOT NULL COMMENT 'Permet de désactiver un mod sans le désinstaller, évite les mods#pirates',
+  active tinyint(1) NOT NULL COMMENT 'Permet de dÃ©sactiver un mod sans le dÃ©sinstaller, Ã©vite les mods#pirates',
   admin_only enum('0','1') NOT NULL default '0' COMMENT 'Affichage des mods de l utilisateur',
   PRIMARY KEY  (id),
   UNIQUE KEY `action` (`action`),
@@ -639,7 +639,7 @@ INSERT INTO `ogspy_config` VALUES ('url_forum', 'http://www.ogsteam.fr/');
 INSERT INTO `ogspy_config` VALUES ('log_phperror', '0');
 INSERT INTO `ogspy_config` VALUES ('block_ratio', '0');
 INSERT INTO `ogspy_config` VALUES ('ratio_limit', '0');
-INSERT INTO `ogspy_config` VALUES ('version', '3.1.3');
+INSERT INTO `ogspy_config` VALUES ('version', '3.2.0');
 INSERT INTO `ogspy_config` VALUES ('config_cache', '3600');
 INSERT INTO `ogspy_config` VALUES ('mod_cache', '604800');
 

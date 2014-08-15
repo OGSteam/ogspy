@@ -10,7 +10,7 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
-//integré dasn le common.php
+//integrÃ© dasn le common.php
 //require "includes/ogame.php";
 
 if (!isset($pub_zoom) || !isset($pub_user_stat_name) || !isset($pub_player_comp) ||
@@ -87,7 +87,7 @@ if (sizeof($dates) > 0) {
 					value="<?php echo $user_data["user_stat_name"]; ?>" /> <input
 					type="submit" value="obtenir les statistiques" />
 				</th>
-				<th rowspan="2"><U>intervalle d'étude</U> : du <input type="text"
+				<th rowspan="2"><U>intervalle d'Ã©tude</U> : du <input type="text"
 					size="10" maxlength="10" name="start_date"
 					value="<?php echo strftime("%d/%m/%Y", $min_date + 60 * 60 * 2); ?>" />
 					au <input type="text" size="10" maxlength="10" name="end_date"
@@ -327,7 +327,7 @@ $curve = create_curves($user_data["user_stat_name"], $min_date, $max_date,
     $player_comp);
 
 
-//echo "<table width=''><tr><td class='c' colspan='2'>Général</td></tr>";
+//echo "<table width=''><tr><td class='c' colspan='2'>GÃ©nÃ©ral</td></tr>";
 //
 //echo "<tr><td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=points_rank&titre=Classement par points&zoom=".$zoom."' alt='pas de graphique disponible' /></td> \n";
 //
@@ -378,7 +378,7 @@ $curve = create_curves($user_data["user_stat_name"], $min_date, $max_date,
 //
 
 
-$title = "Basé sur vos données dans \"Empire\"";
+$title = "BasÃ© sur vos donnÃ©es dans \"Empire\"";
 if (!empty($user_data["user_stat_name"])) {
     $title .= " et les stats de " . $user_data["user_stat_name"];
     if (!empty($last_date["general"]))
@@ -411,17 +411,17 @@ echo "<th align='center' width='400'>";
 echo "<div id='pie_point'>";
 // pas d info
 if ($b == 0 && $d == 0 && $l == 0 && $t == 0)
-    echo "Pas de données dans l'empire";
+    echo "Pas de donnÃ©es dans l'empire";
 
 // calcul impossible ( non connaissance du classement)
 elseif ($last["general_pts"] == 0)
-    echo "Pas de données sur le total de points";
+    echo "Pas de donnÃ©es sur le total de points";
 
 // autrement on affiche rien : on prepare juste l affichage du script
 else {
     $pie_point = create_pie($b . "_x_" . $d . "_x_" . $l . "_x_" . $f . "_x_" . $t,
-        "Batiments_x_Défenses_x_Lunes_x_Flotte_x_Technologies",
-        "Dernière répartition des points connue", "pie_point");
+        "Batiments_x_DÃ©fenses_x_Lunes_x_Flotte_x_Technologies",
+        "DerniÃ¨re rÃ©partition des points connue", "pie_point");
 }
 echo "</div>";
 echo "</th>\n";
@@ -446,12 +446,12 @@ echo "<th align='center' width='400'>";
 echo "<div id='pie_empire'  width='400'>";
 // pas d info
 if ($b == 0 && $d == 0 && $l == 0 && $t == 0)
-    echo "Pas de données dans l'empire";
+    echo "Pas de donnÃ©es dans l'empire";
 
 // autrement on affiche rien : on prepare juste l affichage du script
 else {
     $pie_empire = create_pie(implode($planet, "_x_"), implode($planet_name, "_x_"),
-        "Proportion des planètes - lunes comprises", "pie_empire");
+        "Proportion des planÃ¨tes - lunes comprises", "pie_empire");
 }
 
 echo "</div>";
@@ -470,7 +470,7 @@ echo "</th></tr></table>";
 		</tr>
 		<tr>
 			<td class="c" width="140">Date</td>
-			<td class="c_classement_points" colspan="2">Pts Général</td>
+			<td class="c_classement_points" colspan="2">Pts GÃ©nÃ©ral</td>
 			<td class="c" colspan="2">Pts Economique</td>
 			<td class="c_classement_recherche" colspan="2">Pts Recherche</td>
 			<td class="c_classement_flotte" colspan="2">Pts Militaire</td>
@@ -558,7 +558,7 @@ echo "\t\t\t" . "<th width='40' style='border-color:#FF0000'><font color='lime'>
 </center>
 
 <?php
-/// affichage des script de création graph
+/// affichage des script de crÃ©ation graph
 // camembert
 echo $pie_point;
 echo $pie_empire;

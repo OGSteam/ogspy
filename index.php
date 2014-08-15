@@ -9,7 +9,7 @@
  * @since 3.03 - 21 sept. 07
  */
 /**
- * @abstract UtilisÈ dans les autres fichiers pour s'assurer qu'index.php est bien appelÈ
+ * @abstract Utilis√© dans les autres fichiers pour s'assurer qu'index.php est bien appel√©
  */
 define("IN_SPYOGAME", true);
 
@@ -17,13 +17,13 @@ define("IN_SPYOGAME", true);
 
 
 /**
- * Tout les includes se font ‡ partir de l‡
+ * Tout les includes se font √† partir de l√†
  */
 require_once("common.php");
 
 
 /**
- * RepËre de dÈbut de traitement par OGSpy
+ * Rep√®re de d√©but de traitement par OGSpy
  * @name $php_start
  */
 $php_start = benchmark();
@@ -53,7 +53,7 @@ if ($server_config["server_active"] == 0 && $pub_action != "login_web" && $pub_a
 	$pub_action = "server_close";
 }
 
-//	Visiteur non identifiÈ
+//	Visiteur non identifi√©
 if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "login_web")) {
 	if ($pub_action == "message") {
 		require("views/message.php");
@@ -96,7 +96,7 @@ switch ($pub_action) {
 		}
 	break;
 
-	//DÈconnexion
+	//D√©connexion
 	case "logout" :
 	user_logout();
 	break;

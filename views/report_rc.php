@@ -22,7 +22,7 @@ if ($reports === false) {
 
 require_once("views/page_header_2.php");
 if ( sizeof ( $reports ) == 0 ) {
-    echo '<p>Pas de rapport de combat disponible pour cette planètre</p>';
+    echo '<p>Pas de rapport de combat disponible pour cette planÃ¨tre</p>';
     echo '<script language="javascript">window.opener.location.href=window.opener.location.href;</script>';
 }
 else {

@@ -29,10 +29,10 @@ function sendPushNotification(id){
 	$.ajax(url, {
 		type: 'GET',
 		success: function(data, textStatus, xhr) {
-			$('#message'+id).val("Notification envoyée");
+			$('#message'+id).val("Notification envoyÃ©e");
 		},
         error: function(xhr, textStatus, errorThrown) {  
-        	$('#message'+id).val("Notification échouée !!!");                 
+        	$('#message'+id).val("Notification Ã©chouÃ©e !!!");                 
         }
 	});
 	return true;
@@ -127,7 +127,7 @@ if ($users != false) {
 }
 ?>
 <div class="container">
-	<h1>Nombre d'utilisateurs enregistrés : <?php echo $no_of_users; ?></h1>
+	<h1>Nombre d'utilisateurs enregistrÃ©s : <?php echo $no_of_users; ?></h1>
 	<hr/>
 	<ul class="devices">
 		<?php
@@ -151,7 +151,7 @@ if ($users != false) {
 								<div class="clear"/>
 								<label>Mail : </label><?php if(isset($email)) { echo "<span>" . $email . "</span>"; }?>
 								<div class="clear"/>
-								<label>Enregistré le : </label><?php if(isset($created)) { echo "<span>" . $created . "</span>"; }?>
+								<label>EnregistrÃ© le : </label><?php if(isset($created)) { echo "<span>" . $created . "</span>"; }?>
 								<div class="clear"/>
 								<label>OGSPY : </label><?php if(isset($ogspyVersion)) { echo "<span>" . $ogspyVersion . "</span>"; } else { echo '<span>nc</span>';}?>		
 								<div class="clear"/>

@@ -22,7 +22,7 @@ function production_sat (temperatureMin, temperatureMax) {
     return Math.floor(ingenieur * ((((parseInt(temperatureMin) + parseInt(temperatureMax)) / 2) + 160) / 6));
 }
 
-// Consommation d"énergie
+// Consommation d"Ã©nergie
 function consumption (building, level) {
     
     switch (building) {
@@ -34,13 +34,13 @@ function consumption (building, level) {
     }
 }
 
-// Met à jour la page Espace Personel > Simulation
+// Met Ã  jour la page Espace Personel > Simulation
 function update_page () {
 	var NRJ = document.getElementById("NRJ").value;
     var Plasma = document.getElementById("Plasma").value;
 	
 	//
-	// Planètes
+	// PlanÃ¨tes
 	//
 	var M_1_conso = new Array();
 	var M_1_prod = new Array();
@@ -65,7 +65,7 @@ function update_page () {
 		var temperature_min_1 = document.getElementById("temperature_min_" + i).value;
 		var temperature_max_1 = document.getElementById("temperature_max_" + i).value;
 	
-		//Métal - Planète 1
+		//MÃ©tal - PlanÃ¨te 1
 		M_1[i] = document.getElementById("M_" + i).value;
 		var M_1_percentage = document.getElementById("M_" + i + "_percentage").value;
 	
@@ -75,7 +75,7 @@ function update_page () {
 		document.getElementById("M_" + i + "_conso").innerHTML = M_1_conso[i];
 		document.getElementById("M_" + i + "_prod").innerHTML = M_1_prod[i];
 	
-		//Cristal - Planète 1
+		//Cristal - PlanÃ¨te 1
 		C_1[i] = document.getElementById("C_" + i).value;
 		var C_1_percentage = document.getElementById("C_" + i + "_percentage").value;
 	
@@ -85,23 +85,23 @@ function update_page () {
 		document.getElementById("C_" + i + "_conso").innerHTML = C_1_conso[i];
 		document.getElementById("C_" + i + "_prod").innerHTML = C_1_prod[i];
 	
-		//CES - Planète 1
+		//CES - PlanÃ¨te 1
 		CES_1[i] = document.getElementById("CES_" + i).value;
 		var CES_1_percentage = document.getElementById("CES_" + i + "_percentage").value;
 		var CES_1_production = production("CES", CES_1[i], temperature_max_1, NRJ) * CES_1_percentage / 100;
 	
-		//CEF - Planète 1
+		//CEF - PlanÃ¨te 1
 		CEF_1[i] = document.getElementById("CEF_" + i).value;
 		var CEF_1_percentage = document.getElementById("CEF_" + i + "_percentage").value;
 		var CEF_1_production = production("CEF", CEF_1[i], temperature_max_1, NRJ) * CEF_1_percentage / 100;
 	
-		//Sat - Planète 1
+		//Sat - PlanÃ¨te 1
 		Sat_1[i] = document.getElementById("Sat_" + i).value;
 		var Sat_1_percentage = document.getElementById("Sat_" + i + "_percentage").value;
 		var Sat_1_production = production_sat(temperature_min_1, temperature_max_1) * Sat_1[i] * Sat_1_percentage / 100;
 
 	
-		//Deutérium - Planète 1
+		//DeutÃ©rium - PlanÃ¨te 1
 		D_1[i] = document.getElementById("D_" + i).value;
 		var D_1_percentage = document.getElementById("D_" + i + "_percentage").value;
 	
@@ -119,7 +119,7 @@ function update_page () {
 		if (NRJ_1_delta < 0) NRJ_1_delta = "<font color='red'>" + NRJ_1_delta + "</font>";
 		document.getElementById("NRJ_" + i).innerHTML = NRJ_1_delta + " / " + NRJ_1[i];
 	
-		//Ratio de consommation d'énergie
+		//Ratio de consommation d'Ã©nergie
 		var ratio_conso = NRJ_1[i] / (M_1_conso[i] + C_1_conso[i] + D_1_conso[i]);
 		if (ratio_conso < 1) {
 			M_1_prod[i] = Math.round(M_1_prod[i] * ratio_conso);
@@ -163,7 +163,7 @@ function update_page () {
 	document.getElementById("C_conso").innerHTML = C_conso;
 	document.getElementById("C_prod").innerHTML = C_prod;
 
-	//Deutérium
+	//DeutÃ©rium
 	document.getElementById("D_conso").innerHTML = D_conso;
 	document.getElementById("D_prod").innerHTML = D_prod;
 

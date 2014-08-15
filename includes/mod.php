@@ -27,10 +27,10 @@ function mod_list() {
 	if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1)
 	redirection("index.php?action=message&id_message=forbidden&info");
 
-	//Listing des mod prÈsents dans le rÈpertoire "mod"
+	//Listing des mod pr√©sents dans le r√©pertoire "mod"
 	$path = opendir("mod/");
 
-	//RÈcupÈration de la liste des rÈpertoires correspondant 
+	//R√©cup√©ration de la liste des r√©pertoires correspondant 
 	$directories = array();
 	while($file = readdir($path)) {
 		if($file != "." && $file != "..") {
@@ -57,9 +57,9 @@ function mod_list() {
 	$request = "select id, title, root, link, version, active, admin_only from ".TABLE_MOD." order by position, title";
 	$result = $db->sql_query($request);
 	while (list($id, $title, $root, $link, $version, $active, $admin_only) = $db->sql_fetch_row($result)) {
-		if (isset($directories[$root])) { //Mod prÈsent du rÈpertoire "mod"
+		if (isset($directories[$root])) { //Mod pr√©sent du r√©pertoire "mod"
 			if (in_array($link, $directories[$root]) && in_array("version.txt", $directories[$root])) {
-				//VÈrification disponibilitÈ mise ‡ jour de version
+				//V√©rification disponibilit√© mise √† jour de version
 				$line = file("mod/".$root."/version.txt");
 				$up_to_date = true;
 				if (isset($line[1])) {
@@ -68,10 +68,10 @@ function mod_list() {
 					}
 				}
 
-				if ($active == 0) { // Mod dÈsactivÈ
+				if ($active == 0) { // Mod d√©sactiv√©
 					$mod_list["disabled"][] = array("id" => $id, "title" => $title, "version" => $version, "up_to_date" => $up_to_date);
 				}
-				else { //Mod activÈ
+				else { //Mod activ√©
 					$mod_list["actived"][] = array("id" => $id, "title" => $title, "version" => $version, "up_to_date" => $up_to_date, "admin_only" => $admin_only);
 				}
 			}
@@ -81,7 +81,7 @@ function mod_list() {
 
 			unset($directories[$root]);
 		}
-		else { //Mod absent du rÈpertoire "mod"
+		else { //Mod absent du r√©pertoire "mod"
 			$mod_list["wrong"][] = array("id" => $id, "title" => $title);
 		}
 	}
@@ -137,7 +137,7 @@ function mod_install () {
 
 	mod_check("directory");
     // modif pour 3.0.7 
-    // check d un mod " normalisÈ"
+    // check d un mod " normalis√©"
     // voir @ shad 
     
     // fichier install non present
@@ -165,14 +165,14 @@ function mod_install () {
     
     // verification sur le fichier .txt
     $filename = 'mod/' . $pub_directory . '/version.txt';
-    // On rÈcupËre les donnÈes du fichier version.txt
+    // On r√©cup√®re les donn√©es du fichier version.txt
     $file = file($filename);
     $mod_version = trim($file[1]);
     $mod_config = trim($file[2]);
      // On explode la chaine d'information
     $value_mod = explode(',', $mod_config);
     
-    // On vÈrifie si le mod est dÈj‡ installÈ""
+    // On v√©rifie si le mod est d√©j√† install√©""
     $check = "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] .
         "'";
     $query_check = $db->sql_query($check);
@@ -234,7 +234,7 @@ function mod_update () {
     
     
      // modif pour 3.0.7 
-    // check d un mod " normalisÈ"
+    // check d un mod " normalis√©"
     // voir @ shad 
     
     // fichier mod_erreur_update non present
@@ -262,7 +262,7 @@ function mod_update () {
     
      // verification sur le fichier .txt
     $filename = 'mod/' . $root . '/version.txt';
-    // On rÈcupËre les donnÈes du fichier version.txt
+    // On r√©cup√®re les donn√©es du fichier version.txt
     $file = file($filename);
     $mod_version = trim($file[1]);
     $mod_config = trim($file[2]);
@@ -433,7 +433,7 @@ function mod_sort ($order) {
 		$i++;
 	}
 
-	//Parade pour Èviter les mods qui aurait les mÍme positions
+	//Parade pour √©viter les mods qui aurait les m√™me positions
 	switch ($order) {
 		case "up" : $mods[$pub_mod_id] -= 1.5;break;
 		case "down" : $mods[$pub_mod_id] += 1.5;break;
@@ -493,7 +493,7 @@ function mod_set_option ( $param, $value, $nom_mod='' ) {
 	if (!is_object($db)) {
 		global $pub_sgbd_server, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_dbname;
 		$db = new sql_db($pub_sgbd_server, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_dbname);
-		if (!$db->db_connect_id) error_sql("Impossible de se connecter ‡ la base de donnÈes");
+		if (!$db->db_connect_id) error_sql("Impossible de se connecter √† la base de donn√©es");
 	}
 	else {
     	$nom_mod = mod_get_nom();

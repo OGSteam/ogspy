@@ -15,7 +15,7 @@ if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
 	redirection("index.php?action=message&id_message=forbidden&info");
 }
 
-//Définition de la date sélectionnée
+//DÃ©finition de la date sÃ©lectionnÃ©e
 if (!isset($pub_show)) $show = date("y~m~d");
 else $show = $pub_show;
 
@@ -41,19 +41,19 @@ if ($typelog != "log" && $typelog != "sql") {
 if ($typelog == "log") $file = $typelog."_".$show.".log";
 if ($typelog == "sql") $file = $typelog."_".$show.".sql";
 
-//Récupération du log
+//RÃ©cupÃ©ration du log
 $dir = $show;
 $file = PATH_LOG.$dir."/".$file;
 
 if (file_exists($file)) $log = file($file);
-else $log = array("Aucun log n'a été trouvé à cette date");
+else $log = array("Aucun log n'a Ã©tÃ© trouvÃ© Ã  cette date");
 
-echo "<a>Date sélectionnée : ".strftime("%d %b %Y", mktime(0, 0, 0, $show_month, $show_day, $show_year))."</a>";
+echo "<a>Date sÃ©lectionnÃ©e : ".strftime("%d %b %Y", mktime(0, 0, 0, $show_month, $show_day, $show_year))."</a>";
 ?>
 
 <table width="100%">
 <tr>
-	<td class="c" colspan="12">Sélectionnez le mois</th>
+	<td class="c" colspan="12">SÃ©lectionnez le mois</th>
 </tr>
 <?php
 $date = mktime(0, 0, 0, date("n"), 1) - 60*60*24*365;
@@ -65,7 +65,7 @@ for ($i=0 ; $i<12 ; $i++) {
 	if ($show == $show_year."~".$show_month."~".$show_day) {
 		if (log_check_exist(date("ym", $date))) {
 			echo "\t"."<th><a>".strftime("%B %Y", $date)."</a></th>"."\n";
-			echo "\t"."<th width='40px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&date=".date("ym", $date)."'\" title='Télécharger les logs de ".strftime("%B %Y", $date)."'><input type='image' src='images/drop.png' onclick=\"window.location = 'index.php?action=remove&date=".date("ym", $date).$show_day."&directory=TRUE'\" title='Effacer les logs de ".strftime("%B %Y", $date)."'>";
+			echo "\t"."<th width='40px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&date=".date("ym", $date)."'\" title='TÃ©lÃ©charger les logs de ".strftime("%B %Y", $date)."'><input type='image' src='images/drop.png' onclick=\"window.location = 'index.php?action=remove&date=".date("ym", $date).$show_day."&directory=TRUE'\" title='Effacer les logs de ".strftime("%B %Y", $date)."'>";
 		} else {
 			echo "\t"."<th colspan='2'><a>".strftime("%B %Y", $date)."</a></th>"."\n";
 		}
@@ -74,7 +74,7 @@ for ($i=0 ; $i<12 ; $i++) {
 		if (log_check_exist(date("ym", $date))) {
 		echo "\t"."<th onclick=\"window.location = 'index.php?action=administration&subaction=viewer&show=".$show."&typelog=".$typelog."';\">";
 		echo "<a style='cursor:pointer'><font color='lime'>".strftime("%B %Y", $date)."</font></a></th>"."\n";
-			echo "\t"."<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&date=".date("ym", $date)."'\" title='Télécharger les logs de ".strftime("%B %Y", $date)."'></font>";
+			echo "\t"."<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&date=".date("ym", $date)."'\" title='TÃ©lÃ©charger les logs de ".strftime("%B %Y", $date)."'></font>";
 		} else {
 			echo "\t"."<th colspan='2' onclick=\"window.location = 'index.php?action=administration&subaction=viewer&show=".$show."&typelog=".$typelog."';\">";
 			echo "<a style='cursor:pointer'><font color='lime'>".strftime("%B %Y", $date)."</font></a></th>"."\n";
@@ -89,7 +89,7 @@ echo "</tr>";
 <br />
 <table width="100%">
 <tr>
-	<td class="c" colspan="20">Sélectionnez le jour</th>
+	<td class="c" colspan="20">SÃ©lectionnez le jour</th>
 </tr>
 <?php
 $max_day = date("d");
@@ -106,7 +106,7 @@ for ($i=1 ; $i<=$max_day ; $i++) {
 
 		if (log_check_exist($show_year.$show_month.$day)) {
 			echo "\t"."<th><a>".$day."</a></th>";
-			echo "\t"."<th width='40px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&date=".$show_year.$show_month.$day."'\" title='Télécharger les logs de ".strftime("%d %B %Y", $date)."'><input type='image' src='images/drop.png' onclick=\"window.location = 'index.php?action=remove&date=".$show_year.$show_month.$day."'\" title='Effacer les logs de ".strftime("%d %B %Y", $date)."'>";
+			echo "\t"."<th width='40px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&date=".$show_year.$show_month.$day."'\" title='TÃ©lÃ©charger les logs de ".strftime("%d %B %Y", $date)."'><input type='image' src='images/drop.png' onclick=\"window.location = 'index.php?action=remove&date=".$show_year.$show_month.$day."'\" title='Effacer les logs de ".strftime("%d %B %Y", $date)."'>";
 		}
 		else echo "\t"."<th colspan='2'><a>".$day."</a></th>";
 		echo "</th>"."\n";
@@ -115,7 +115,7 @@ for ($i=1 ; $i<=$max_day ; $i++) {
 		if (log_check_exist($show_year.$show_month.$day)) {
 			echo "\t"."<th onclick=\"window.location='index.php?action=administration&subaction=viewer&show=".$show."&typelog=".$typelog."';\">";
 			echo "<a style='cursor:pointer'><font color='lime'>".$day."</font></a></th>";
-			echo "\t"."<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&date=".$show_year.$show_month.$day."'\" title='Télécharger les logs de ".strftime("%d %B %Y", $date)."'>";
+			echo "\t"."<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&date=".$show_year.$show_month.$day."'\" title='TÃ©lÃ©charger les logs de ".strftime("%d %B %Y", $date)."'>";
 		} else {
 			echo "\t"."<th colspan='2' onclick=\"window.location='index.php?action=administration&subaction=viewer&show=".$show."&typelog=".$typelog."';\">";
 			echo "<a style='cursor:pointer'><font color='lime'>".$day."</font></a></th>";
@@ -135,30 +135,30 @@ echo "</tr>";
 <br />
 <table width="100%">
 <tr>
-	<td class="c" colspan="3">Sélectionnez le type de log à visualiser</td>
+	<td class="c" colspan="3">SÃ©lectionnez le type de log Ã  visualiser</td>
 </tr>
 <?php
 $show = $show_year."~".$show_month."~".$show_day;
 echo "<tr>";
 if ($typelog == "log") {
-	echo "\t"."<th width='50%'><a>Log général</a></td>";
+	echo "\t"."<th width='50%'><a>Log gÃ©nÃ©ral</a></td>";
 	echo "\t"."<th width='50%' onclick=\"window.location = 'index.php?action=administration&subaction=viewer&show=".$show."&typelog=sql';\"><a style='cursor:pointer'><font color='lime'>Log SQL</font></a></td>";
 }
 else {
-	echo "\t"."<th width='50%' onclick=\"window.location = 'index.php?action=administration&subaction=viewer&show=".$show."&typelog=log';\"><a style='cursor:pointer'><font color='lime'>Log général</font></a></td>";
+	echo "\t"."<th width='50%' onclick=\"window.location = 'index.php?action=administration&subaction=viewer&show=".$show."&typelog=log';\"><a style='cursor:pointer'><font color='lime'>Log gÃ©nÃ©ral</font></a></td>";
 	echo "\t"."<th width='50%'><a>Log SQL</a></td>";
 }
 echo "</tr>";
 ?>
 <tr>
-	<td colspan='2'><font color="Red"><i>Si vous souhaitez visualiser les fichiers transactionnels, télechargez les logs</i></font></td>
+	<td colspan='2'><font color="Red"><i>Si vous souhaitez visualiser les fichiers transactionnels, tÃ©lechargez les logs</i></font></td>
 </tr>
 </table>
 
 <br />
 <table width="100%">
 <tr>
-	<td class="l" colspan="3"><b>Visionneuse :</b> <i><font color="red"><b><?php echo $typelog == "log" ? "Log général" : "Log SQL";?></b></font></i><br>
+	<td class="l" colspan="3"><b>Visionneuse :</b> <i><font color="red"><b><?php echo $typelog == "log" ? "Log gÃ©nÃ©ral" : "Log SQL";?></b></font></i><br>
 <?php
 end($log);
 while ($line = current($log)) {

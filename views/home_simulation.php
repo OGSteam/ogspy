@@ -51,7 +51,7 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	<td class="c">Totaux</td>
 </tr>
 <tr>
-	<th><a>Coordonnées</a></th>
+	<th><a>CoordonnÃ©es</a></th>
 <?php
 for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	$coordinates = $user_building[$i]["coordinates"];
@@ -81,7 +81,7 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	<th></th>
 </tr>
 <tr>
-	<th><a>Température Min.</a></th>
+	<th><a>TempÃ©rature Min.</a></th>
 <?php
 for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	$temperature_min = $user_building[$i]["temperature_min"];
@@ -93,7 +93,7 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	<th></th>
 </tr>
 <tr>
-	<th><a>Température Max.</a></th>
+	<th><a>TempÃ©rature Max.</a></th>
 <?php
 for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	$temperature_max = $user_building[$i]["temperature_max"];
@@ -110,8 +110,8 @@ Energie
 -->
 
 <tr>
-	<td class="c">Énergies</td>
-	<td class="c" colspan="4">Technologie Énergie <input type="text" id="NRJ" size="2" maxlength="2" value="<?php print $user_technology['NRJ'] ?>" onchange='update_page();'></td>
+	<td class="c">Ã‰nergies</td>
+	<td class="c" colspan="4">Technologie Ã‰nergie <input type="text" id="NRJ" size="2" maxlength="2" value="<?php print $user_technology['NRJ'] ?>" onchange='update_page();'></td>
     <td class="c" colspan="4">Technologie Plasma <input type="text" id="Plasma" size="2" maxlength="2" value="<?php print $user_technology['Plasma'] ?>" onchange='update_page();'></td>
 	<td class="c" colspan="<?php echo 2 * ($nb_planete + 1) - 5; ?>">&nbsp;</td>
 </tr>
@@ -184,11 +184,11 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 </tr>
 
 <!--
-Métal
+MÃ©tal
 -->
 
 <tr>
-	<td class="c" colspan="<?php echo 2 * ($nb_planete + 1); ?>">Métal</td>
+	<td class="c" colspan="<?php echo 2 * ($nb_planete + 1); ?>">MÃ©tal</td>
 </tr>
 <tr>
 	<th><a>Niveau</a></th>
@@ -275,11 +275,11 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 </tr>
 
 <!--
-Deutérium
+DeutÃ©rium
 -->
 
 <tr>
-	<td class="c" colspan="<?php echo 2 * ($nb_planete + 1); ?>">Deutérium</td>
+	<td class="c" colspan="<?php echo 2 * ($nb_planete + 1); ?>">DeutÃ©rium</td>
 </tr>
 <tr>
 	<th><a>Niveau</a></th>
@@ -319,10 +319,10 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	<th><div id="D_prod">-</div></th>
 </tr>
 <tr>
-	<td class="c" colspan="<?php echo 2 * ($nb_planete + 1); ?>">Poids en points de chaque planète</td>
+	<td class="c" colspan="<?php echo 2 * ($nb_planete + 1); ?>">Poids en points de chaque planÃ¨te</td>
 </tr>
 <tr>
-<th><a>Bâtiments</a></th>
+<th><a>BÃ¢timents</a></th>
 <?php
 $lab_max = 0;
 for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
@@ -334,7 +334,7 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	<th><font color='white'><span id='total_b_pts'>-</span></font></th>
 </tr>
 <tr>
-<th><a>Défenses</a></th>
+<th><a>DÃ©fenses</a></th>
 <?php
 for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	echo "\t<input type='hidden' id='defence_".$i."' value='".implode($user_defence[$i], "<>")."' />";

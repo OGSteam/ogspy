@@ -17,37 +17,37 @@ if (!defined('IN_SPYOGAME')) {
 	die("Hacking attempt");
 }
 
-$help["admin_server_status"] = "Lorsque le serveur est désactivé, seul les membres avec le statut d'administrateur ont accès aux fonctionnalités du serveur";
-$help["admin_server_status_message"] = "Le message sera affiché aux membres \"de base\" lorsque le serveur sera désactivé";
-$help["admin_save_transaction"] = "Les transactions correspondent aux :<br />- Systèmes solaires<br />- Rapports d'espionnage<br />- Classements joueurs et alliances";
-$help["admin_member_manager"] = "Autorise la création, la mise à jour et la suppression des utilisateurs";
+$help["admin_server_status"] = "Lorsque le serveur est dÃ©sactivÃ©, seul les membres avec le statut d'administrateur ont accÃ¨s aux fonctionnalitÃ©s du serveur";
+$help["admin_server_status_message"] = "Le message sera affichÃ© aux membres \"de base\" lorsque le serveur sera dÃ©sactivÃ©";
+$help["admin_save_transaction"] = "Les transactions correspondent aux :<br />- SystÃ¨mes solaires<br />- Rapports d'espionnage<br />- Classements joueurs et alliances";
+$help["admin_member_manager"] = "Autorise la crÃ©ation, la mise Ã  jour et la suppression des utilisateurs";
 $help["admin_ranking_manager"] = "Autorise la suppression des classements joueurs et alliances";
-$help["admin_check_ip"] = "Certains utilisateurs subissent des déconnexions intempestives (AOL, Proxy, etc).<br />Activez cette option afin qu'ils puissent désactiver la vérification dans leur profil";
-$help["admin_session_infini"] = "Si vous choisissez des sessions indéfinies dans le temps, plusieurs individus ne pourront plus utiliser le même compte en même temps";
-$help["drop_sessions"] = "Vide la table des sessions, cela allége l'administration mais oblige tout les utilisateurs à se reconnecter.";
+$help["admin_check_ip"] = "Certains utilisateurs subissent des dÃ©connexions intempestives (AOL, Proxy, etc).<br />Activez cette option afin qu'ils puissent dÃ©sactiver la vÃ©rification dans leur profil";
+$help["admin_session_infini"] = "Si vous choisissez des sessions indÃ©finies dans le temps, plusieurs individus ne pourront plus utiliser le mÃªme compte en mÃªme temps";
+$help["drop_sessions"] = "Vide la table des sessions, cela allÃ©ge l'administration mais oblige tout les utilisateurs Ã  se reconnecter.";
 
-$help["search_strict"] = "<font color=orange>Joueur recherché :</font><br /><i>Liquid snake</i><br /><font color=orange>Critère de recherche :</font><br /><i>snake</i><br /><br />=> <font color=lime>Résultat positif</font> si l'option \"strict\" est désactivée<br />=> <font color=red>Résultat négatif</font> si l'option \"strict\" est activée";
+$help["search_strict"] = "<font color=orange>Joueur recherchÃ© :</font><br /><i>Liquid snake</i><br /><font color=orange>CritÃ¨re de recherche :</font><br /><i>snake</i><br /><br />=> <font color=lime>RÃ©sultat positif</font> si l'option \"strict\" est dÃ©sactivÃ©e<br />=> <font color=red>RÃ©sultat nÃ©gatif</font> si l'option \"strict\" est activÃ©e";
 
 $help["home_commandant"] = "Page empire du compte commandant";
 
-$help["profile_login"] = "Doit contenir entre 3 et 15 caractères (les caractères spéciaux ne sont pas acceptés)";
+$help["profile_login"] = "Doit contenir entre 3 et 15 caractÃ¨res (les caractÃ¨res spÃ©ciaux ne sont pas acceptÃ©s)";
 $help["profile_pseudo_email"] = "Si rempli, vous recevrez des mails de la part de certains mods";
-$help["profile_skin"] = "OGSpy utilise les mêmes skins qu'OGame";
-$help["profile_main_planet"] = "La vue Galaxie sera ouverte directement sur ce système solaire";
-$help["profile_password"] = "Doit contenir entre 6 et 15 caractères (les caractères spéciaux ne sont pas acceptés)";
-$help["profile_galaxy"] = "Doit contenir un nombre<br /> de 1 à 999";
-$help["profile_disable_ip_check"] = "La vérification de l'adresse IP permet de vous protéger contre le vol de session.<br /><br />";
-$help["profile_disable_ip_check"] .= "Si vous êtes déconnecté régulièrement (AOL, Proxy, etc), désactivez la vérification.<br /><br />";
-$help["profile_disable_ip_check"] .= "<i>L'option est disponible uniquement si l'administrateur l'a activée</i>";
+$help["profile_skin"] = "OGSpy utilise les mÃªmes skins qu'OGame";
+$help["profile_main_planet"] = "La vue Galaxie sera ouverte directement sur ce systÃ¨me solaire";
+$help["profile_password"] = "Doit contenir entre 6 et 15 caractÃ¨res (les caractÃ¨res spÃ©ciaux ne sont pas acceptÃ©s)";
+$help["profile_galaxy"] = "Doit contenir un nombre<br /> de 1 Ã  999";
+$help["profile_disable_ip_check"] = "La vÃ©rification de l'adresse IP permet de vous protÃ©ger contre le vol de session.<br /><br />";
+$help["profile_disable_ip_check"] .= "Si vous Ãªtes dÃ©connectÃ© rÃ©guliÃ¨rement (AOL, Proxy, etc), dÃ©sactivez la vÃ©rification.<br /><br />";
+$help["profile_disable_ip_check"] .= "<i>L'option est disponible uniquement si l'administrateur l'a activÃ©e</i>";
 
 $help["galaxy_phalanx"] = "Chargez des rapports d'espionnage pour afficher les phalanges hostiles";
 
-$help["ratio_block"] = "Vous avez un ratio inferieur au seuil, vous ne pouvez pas accéder aux mods";
-$help["profile_speed_uni"] = "Indiquez le multiplicateur de vitesse de votre univers (1 par défaut)";
-$help["profile_ddr"] = "Cocher si le dépôt de ravitaillement est présent dans votre univers";
+$help["ratio_block"] = "Vous avez un ratio inferieur au seuil, vous ne pouvez pas accÃ©der aux mods";
+$help["profile_speed_uni"] = "Indiquez le multiplicateur de vitesse de votre univers (1 par dÃ©faut)";
+$help["profile_ddr"] = "Cocher si le dÃ©pÃ´t de ravitaillement est prÃ©sent dans votre univers";
 $help["astro_strict"] = "Cocher si l'univers est ancien. Cela permet d'avoir 9 planetes sans avoir la technologie astrophysique correspondante.";
-$help["config_cache"] = "Durée de vie du cache config en seconde.";
-$help["mod_cache"] = "Durée de vie du cache mod en seconde..";
+$help["config_cache"] = "DurÃ©e de vie du cache config en seconde.";
+$help["mod_cache"] = "DurÃ©e de vie du cache mod en seconde..";
 
 /**
 * help() creates a pop-up to display the help message on the mouse over.

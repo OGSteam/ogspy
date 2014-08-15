@@ -15,7 +15,7 @@ if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
     redirection("index.php?action=message&id_message=forbidden&info");
 }
 
-//Statistiques concernant la base de données
+//Statistiques concernant la base de donnÃ©es
 $db_size_info = db_size_info();
 if ($db_size_info["Server"] == $db_size_info["Total"]) {
     $db_size_info = $db_size_info["Server"];
@@ -117,7 +117,7 @@ list($connectes) = $db->sql_fetch_row($connectes_req);
 $online = session_whois_online();
 
 
-//Vérification version installée et envoi de statistiques
+//VÃ©rification version installÃ©e et envoi de statistiques
 preg_match("#([0-9]+)\.([0-9]+)\.([0-9]+)(\-[a-z]*)?#", $server_config["version"],
     $current_version);
 @list($current_version, $head_revision, $minor_revision, $extension_revision) =
@@ -132,7 +132,7 @@ $errstr = $version_info = '';
 $proxy_use = false;
 //Nom du serveur de proxy
 $proxy_name = 'proxy';
-//port utilisé par le serveur proxy
+//port utilisÃ© par le serveur proxy
 $proxy_port = 3128;
 //utilisateur du proxy
 $proxy_user = '';
@@ -141,7 +141,7 @@ $proxy_pass = '';
 
 //Adresse du serveur a contacter
 $url_server = "update.ogsteam.fr";
-//port du serveur spécifié en hard dans le code
+//port du serveur spÃ©cifiÃ© en hard dans le code
 
 $fsock = false;
 if ($proxy_use) {
@@ -153,7 +153,7 @@ if ($proxy_use) {
 }
 
 if ($fsock) {
-    //paramètres de la requete
+    //paramÃ¨tres de la requete
     $link = "/ogspy/latest2.php";
     $link .= "?version=" . $server_config["version"];
 
@@ -180,9 +180,9 @@ if ($fsock) {
     $link .= "&og_pays=" . $og_pays;
 
     if ($proxy_use) {
-        //si on passe par le proxy ==> requête sauce proxy
+        //si on passe par le proxy ==> requÃªte sauce proxy
 
-        //création de l'url réellement recherchée
+        //crÃ©ation de l'url rÃ©ellement recherchÃ©e
         $request_url = "http://$url_server:80$link";
         //appel de l'url via le proxy
         @fputs($fsock, "GET $request_url HTTP/1.0\r\nHost: $proxy_name\r\n");
@@ -221,21 +221,21 @@ if ($fsock) {
         if (version_compare($latest_head_revision . '.' . $latest_minor_revision . '.' .
             $latest_extension_revision, $head_revision . '.' . $minor_revision . '.' . $extension_revision,
             '<=')) {
-            $version_info = "<font color='lime'><b>Votre serveur OGSpy est à jour.</b></font>";
+            $version_info = "<font color='lime'><b>Votre serveur OGSpy est Ã  jour.</b></font>";
             /*$version_info .='Latest_Head: '.$latest_head_revision.' Minor: '.$latest_minor_revision.' Ext: '.$latest_extension_revision.' vs Head:'.$head_revision.' Minor: '.$minor_revision.' Ext: '.$extension_revision;*/
         } else {
-            $version_info = "<blink><b><font color='red'>Votre serveur OGSpy n'est pas à jour.</font></blink>";
-            $version_info .= "<br />Rendez vous sur le  <a href='http://www.ogsteam.fr' target='_blank'>forum</a> dédié au support d'OGSpy pour récupérer la dernière version : <font color='red'>" .
+            $version_info = "<blink><b><font color='red'>Votre serveur OGSpy n'est pas Ã  jour.</font></blink>";
+            $version_info .= "<br />Rendez vous sur le  <a href='http://www.ogsteam.fr' target='_blank'>forum</a> dÃ©diÃ© au support d'OGSpy pour rÃ©cupÃ©rer la derniÃ¨re version : <font color='red'>" .
                 $latest_version . "</b>";
         }
     } else {
-        $version_info = "<blink><b><font color='orange'>Une incohérence a été rencontrée avec le serveur de contrôle de version.</font></blink>";
-        $version_info .= "<br />Consulter le <a href='http://www.ogsteam.fr' target='_blank'>forum</a> dédié au support d'OGSpy pour en connaître la raison.</b>";
+        $version_info = "<blink><b><font color='orange'>Une incohÃ©rence a Ã©tÃ© rencontrÃ©e avec le serveur de contrÃ´le de version.</font></blink>";
+        $version_info .= "<br />Consulter le <a href='http://www.ogsteam.fr' target='_blank'>forum</a> dÃ©diÃ© au support d'OGSpy pour en connaÃ®tre la raison.</b>";
     }
 } else {
-    $version_info = "<blink><b><font color='orange'>Impossible de récupérer le numéro de la dernière version car le lien n'a pas pu être établie avec le serveur de contrôle.</font></blink>";
-    $version_info .= "<br />Il se peut que ce soit votre hébergeur qui n'autorise pas cette action.";
-    $version_info .= "<br />Il vous faudra consulter régulièrement le <a href='http://board.ogsteam.fr' target='_blank'>forum</a> dédié au support d'OGSpy pour prendre connaissance des nouvelles versions.</b>";
+    $version_info = "<blink><b><font color='orange'>Impossible de rÃ©cupÃ©rer le numÃ©ro de la derniÃ¨re version car le lien n'a pas pu Ãªtre Ã©tablie avec le serveur de contrÃ´le.</font></blink>";
+    $version_info .= "<br />Il se peut que ce soit votre hÃ©bergeur qui n'autorise pas cette action.";
+    $version_info .= "<br />Il vous faudra consulter rÃ©guliÃ¨rement le <a href='http://board.ogsteam.fr' target='_blank'>forum</a> dÃ©diÃ© au support d'OGSpy pour prendre connaissance des nouvelles versions.</b>";
 }
 ?>
 
@@ -246,17 +246,17 @@ if ($fsock) {
 </tr>
 <tr>
 	<th><a>Nombre de membres</a></th><th><?php echo $users_info; ?></th>
-	<th><a>Nombre de planètes répertoriées libres</a></th><th><?php echo
+	<th><a>Nombre de planÃ¨tes rÃ©pertoriÃ©es libres</a></th><th><?php echo
 formate_number($galaxy_statistic["nb_planets_free"]); ?></th>
 </tr>
 <tr>
-	<th><a>Nombre de planètes répertoriées</a></th><th><?php echo formate_number($galaxy_statistic["nb_planets"]); ?></th>
-	<th rowspan="2"><a>Espace occupé par la base de données</a></th><th><?php echo
+	<th><a>Nombre de planÃ¨tes rÃ©pertoriÃ©es</a></th><th><?php echo formate_number($galaxy_statistic["nb_planets"]); ?></th>
+	<th rowspan="2"><a>Espace occupÃ© par la base de donnÃ©es</a></th><th><?php echo
 $db_size_info; ?></th>
 </tr>
 <tr>
-	<th><a>Espace occupé par les logs</a></th><th><?php echo $log_size_info; ?></th>
-	<th><a href="index.php?action=db_optimize"><i>Optimiser la base de données</i></a></th>
+	<th><a>Espace occupÃ© par les logs</a></th><th><?php echo $log_size_info; ?></th>
+	<th><a href="index.php?action=db_optimize"><i>Optimiser la base de donnÃ©es</i></a></th>
 </tr>
 <tr>
 	<th><a>Nombre de session ouvertes</a></th><th><?php echo $connectes; ?><a href="index.php?action=drop_sessions"> (vider <?php echo
@@ -270,7 +270,7 @@ help("drop_sessions"); ?>)</th>
 	<th><a>Connexions au serveur</a></th>
 	<th><?php echo formate_number($connection_server); ?></th>
 	
-	<th><a>Planètes</a></th>
+	<th><a>PlanÃ¨tes</a></th>
 	<th><?php echo formate_number($planetimport_ogs); ?> importations - <?php echo formate_number($planetexport_ogs); ?> exportations</th>
 </tr>
 <tr>
@@ -298,7 +298,7 @@ help("drop_sessions"); ?>)</th>
 	<td class="c_ogspy">Information de version</td>
 </tr>
 <tr>
-	<th style="text-align:left">Merci de consulter le Forum de l'OGSteam pour connaitre la dernière version d'OGSpy: <a href='http://www.ogsteam.fr' target='_blank'>Forum</a></th>
+	<th style="text-align:left">Merci de consulter le Forum de l'OGSteam pour connaitre la derniÃ¨re version d'OGSpy: <a href='http://www.ogsteam.fr' target='_blank'>Forum</a></th>
 </tr>
 </table>
 <br />
@@ -306,7 +306,7 @@ help("drop_sessions"); ?>)</th>
 <tr>
 	<td class="c_user">Nom de membre</td>
 	<td class="c">Connexion</td>
-	<td class="c">Dernière activité</td>
+	<td class="c">DerniÃ¨re activitÃ©</td>
 	<td class="c_tech">Adresse IP</td>
 </tr>
 <?php

@@ -73,7 +73,7 @@ function Set(ally) {
 	<td class="c_ogspy" colspan="2">Option de la page: "Galaxie"</td>
 </tr>
 <tr>
-	<th width="60%">Affichage des MIPs&nbsp;<?php echo help(null,"Affiche ou cache les MIP des users de OGSpy, mais ne les affichent qu'a ceux qui peuvent voir les alliances protégées.");?></th>
+	<th width="60%">Affichage des MIPs&nbsp;<?php echo help(null,"Affiche ou cache les MIP des users de OGSpy, mais ne les affichent qu'a ceux qui peuvent voir les alliances protÃ©gÃ©es.");?></th>
 	<th><input name="enable_portee_missil" type="checkbox" value="1" <?php echo $enable_portee_missil;?> onClick="if (view.enable_portee_missil.checked == false)view.enable_portee_missil.checked=false;"></th>
 </tr>
 <tr>
@@ -84,7 +84,7 @@ function Set(ally) {
 	<th><input name="enable_stat_view" type="checkbox" value="1" <?php echo $enable_stat_view;?> onClick="if (view.enable_stat_view.checked == false)view.enable_members_view.checked=false;"></th>
 </tr>
 <tr>
-	<th width="60%">Affichage des membres connectées&nbsp;<?php echo help(null,"Affiche les (*) qui permettent de savoir qui est connecté<br />Désactivé si l'affichage des membres n'est pas activé");?></th>
+	<th width="60%">Affichage des membres connectÃ©es&nbsp;<?php echo help(null,"Affiche les (*) qui permettent de savoir qui est connectÃ©<br />DÃ©sactivÃ© si l'affichage des membres n'est pas activÃ©");?></th>
 	<th><input name="enable_members_view" type="checkbox" value="1" <?php echo $enable_members_view;?> onClick="if (view.enable_stat_view.checked == false)view.enable_members_view.checked=false;"></th>
 </tr>
 <tr>
@@ -92,7 +92,7 @@ function Set(ally) {
 	<th><input name="galaxy_by_line_stat" type="text" size="5" maxlength="3" value="<?php echo $galaxy_by_line_stat;?>"></th>
 </tr>
 <tr>
-	<th>Nombre de systèmes par ligne <a>[1-100]</a></th>
+	<th>Nombre de systÃ¨mes par ligne <a>[1-100]</a></th>
 	<th><input name="system_by_line_stat" type="text" size="5" maxlength="3" value="<?php echo $system_by_line_stat;?>"></th>
 </tr>
 <tr>
@@ -105,7 +105,7 @@ function Set(ally) {
 <?php for ($i = 1 ; $i <= $nb_colonnes_ally ; $i ++){ ?>
 <tr>
 	<th><font color="<?php echo $color_ally_e[$i-1];?>">Couleur de l'alliance <?php echo $i; ?></font>
-	<br /><div class="z"><i>Doit etre le nom d'une couleur en anglais ou sont code hexadécimal précédé d'un #</i></div></th>
+	<br /><div class="z"><i>Doit etre le nom d'une couleur en anglais ou sont code hexadÃ©cimal prÃ©cÃ©dÃ© d'un #</i></div></th>
 	<th><input name="color_ally[<?php echo $i; ?>]" id="color_ally[<?php echo $i; ?>]"type="text" size="15" maxlength="20" value="<?php echo $color_ally_e[$i-1];?>"> <?php echo help("color_picker".$i);?></th>
 </tr>
 <?php } ?>
@@ -114,7 +114,7 @@ function Set(ally) {
 	<th><input name="galaxy_by_line_ally" type="text" size="5" maxlength="3" value="<?php echo $galaxy_by_line_ally;?>"></th>
 </tr>
 <tr>
-	<th>Nombre de systèmes par ligne <a>[1-100]</a></th>
+	<th>Nombre de systÃ¨mes par ligne <a>[1-100]</a></th>
 	<th><input name="system_by_line_ally" type="text" size="5" maxlength="3" value="<?php echo $system_by_line_ally;?>"></th>
 </tr>
 <tr>
@@ -133,7 +133,7 @@ function Set(ally) {
 	<th><input type="text" size="60" name="register_forum" value="<?php echo $register_forum;?>"></th>
 </tr>
 <tr>
-	<th width="60%">Module de connexions users&nbsp;<?php echo help(null,"Module affiché lors de la connexion des utilisateurs de cet OGSpy");?></th>
+	<th width="60%">Module de connexions users&nbsp;<?php echo help(null,"Module affichÃ© lors de la connexion des utilisateurs de cet OGSpy");?></th>
 	<th><select name="open_user">
 	<option>------</option>
 	<?php if ($open_user == "./views/profile.php") echo '<option selected value="./views/profile.php">Profil</option>';
@@ -150,8 +150,8 @@ function Set(ally) {
 		else echo '<option value="./views/ranking.php">Classement</option>';
 		if ($open_user == "./views/statistic.php") echo '<option selected value="./views/statistic.php">Statistiques</option>';
 		else echo '<option value="./views/statistic.php">Statistiques</option>';
-		if ($open_user == "./views/galaxy_obsolete.php") echo '<option selected value="./views/galaxy_obsolete.php">Syst. obsolètes</option>';
-		else echo '<option value="./views/galaxy_obsolete.php">Syst. obsolètes</option>';
+		if ($open_user == "./views/galaxy_obsolete.php") echo '<option selected value="./views/galaxy_obsolete.php">Syst. obsolÃ¨tes</option>';
+		else echo '<option value="./views/galaxy_obsolete.php">Syst. obsolÃ¨tes</option>';
 	?>
 	<option>------</option>
 	<?php while ($mod = $db->sql_fetch_assoc($mod_user)) {
@@ -163,7 +163,7 @@ function Set(ally) {
 	</select></th>
 </tr>
 <tr>
-	<th width="60%">Module de connexions admins&nbsp;<?php echo help(null,"Module affiché lors de la connexion des administrateurs de cet OGSpy");?></th>
+	<th width="60%">Module de connexions admins&nbsp;<?php echo help(null,"Module affichÃ© lors de la connexion des administrateurs de cet OGSpy");?></th>
 	<th><select name="open_admin">
 	<option>------</option>
 	<?php if ($open_admin == "./views/admin.php") echo '<option selected value="./views/admin.php">Administration</option>';
@@ -182,8 +182,8 @@ function Set(ally) {
 		else echo '<option value="./views/ranking.php">Classement</option>';
 		if ($open_admin == "./views/statistic.php") echo '<option selected value="./views/statistic.php">Statistiques</option>';
 		else echo '<option value="./views/statistic.php">Statistiques</option>';
-		if ($open_admin == "./views/galaxy_obsolete.php") echo '<option selected value="./views/galaxy_obsolete.php">Syst. obsolètes</option>';
-		else echo '<option value="./views/galaxy_obsolete.php">Syst. obsolètes</option>';
+		if ($open_admin == "./views/galaxy_obsolete.php") echo '<option selected value="./views/galaxy_obsolete.php">Syst. obsolÃ¨tes</option>';
+		else echo '<option value="./views/galaxy_obsolete.php">Syst. obsolÃ¨tes</option>';
 	?>
 	<option>------</option>
 	<?php while ($mod = $db->sql_fetch_assoc($mod_admin)){
@@ -207,7 +207,7 @@ function Set(ally) {
 	<td>&nbsp;</td>
 </tr>
 <tr>
-	<th colspan="2"><input type="submit" value="Valider">&nbsp;<input type="reset" value="Réinitialiser"></th>
+	<th colspan="2"><input type="submit" value="Valider">&nbsp;<input type="reset" value="RÃ©initialiser"></th>
 </tr>
 </form>
 </table>

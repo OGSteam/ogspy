@@ -28,12 +28,12 @@ if ($user_auth["server_set_rc"] == 1 || $user_data["user_admin"] == 1 || $user_d
 if ($user_auth["server_set_ranking"] == 1 || $user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
 	$items[] = array("none", "");
 	$items[] = array("none", "----Classement joueur----");
-	$items[] = array("general_player", "-> Général");
+	$items[] = array("general_player", "-> GÃ©nÃ©ral");
 	$items[] = array("fleet_player", "-> Flotte");
 	$items[] = array("research_player", "-> Recherche");
 	$items[] = array("none", "");
 	$items[] = array("none", "---Classement alliance---");
-	$items[] = array("general_ally", "-> Général");
+	$items[] = array("general_ally", "-> GÃ©nÃ©ral");
 	$items[] = array("fleet_ally", "-> Flotte");
 	$items[] = array("research_ally", "-> Recherche");
 }
@@ -45,7 +45,7 @@ var date = new Date;
 var delta = Math.round((<?php echo (time() * 1000);?> - date.getTime()) / 1000);
 function Timer() {
 	var days = new Array ("Dim","Lun","Mar","Mer","Jeu","Ven","Sam");
-	var months = new Array ("Jan","Fév","Mar","Avr","Mai","Jui","Jui","Aoû","Sep","oct","nov","déc");
+	var months = new Array ("Jan","FÃ©v","Mar","Avr","Mai","Jui","Jui","AoÃ»","Sep","oct","nov","dÃ©c");
 
 	date = new Date;
 	date.setTime(date.getTime() + delta*1000);
@@ -82,7 +82,7 @@ function goblink() {
 }
 
 function clear_box() {
-	if (document.post.data.value == "Système solaire & Rapport espionnage & Classement") {
+	if (document.post.data.value == "SystÃ¨me solaire & Rapport espionnage & Classement") {
 		document.post.data.value = "";
 	}
 }

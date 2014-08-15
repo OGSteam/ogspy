@@ -27,7 +27,7 @@ require_once("views/page_header.php");
 <table border="1">
 <form method="POST" action="index.php?action=galaxy_obsolete">
 <tr>
-	<td class="c" colspan="2">Recherche des systèmes solaires et lunes obsolètes</td>
+	<td class="c" colspan="2">Recherche des systÃ¨mes solaires et lunes obsolÃ¨tes</td>
 </tr>
 <tr>
 	<th colspan="2">
@@ -53,7 +53,7 @@ require_once("views/page_header.php");
 	</th>
 </tr>
 <tr>
-	<th width="50%"><input type="radio" name="typesearch" value="P" <?php if ($typesearch == "P") echo "checked";?>> Afficher les planètes</th>
+	<th width="50%"><input type="radio" name="typesearch" value="P" <?php if ($typesearch == "P") echo "checked";?>> Afficher les planÃ¨tes</th>
 	<th width="50%"><input type="radio" name="typesearch" value="M" <?php if ($typesearch == "M") echo "checked";?>> Afficher les lunes</th>
 </tr>
 <tr><th colspan="2"><input type="submit" value="Rechercher"></th></tr>
@@ -66,10 +66,10 @@ if ($since >= 56) {
 <table>
 <tr><td class="c" colspan="8">Plus de 8 semaines</td></tr>
 <tr>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
 </tr>
 <?php
 if (isset($obsolete_listing[56])) {
@@ -92,7 +92,7 @@ if (isset($obsolete_listing[56])) {
 		$i++;
 
 		if ($index == 50) {
-			echo "<th colspan='4'><font color='orange'><i>Liste limitée à 50 systèmes</i></font></th>";
+			echo "<th colspan='4'><font color='orange'><i>Liste limitÃ©e Ã  50 systÃ¨mes</i></font></th>";
 			$i=4;
 			break;
 		}
@@ -112,10 +112,10 @@ if ($since >= 42) {
 <table>
 <tr><td class="c" colspan="8">Plus de 6 semaines</td></tr>
 <tr>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
 </tr>
 <?php
 if (isset($obsolete_listing[42])) {
@@ -137,7 +137,7 @@ if (isset($obsolete_listing[42])) {
 		$i++;
 
 		if ($index == 50) {
-			echo "<th colspan='4'><font color='orange'><i>Liste limitée à 50 systèmes</i></font></th>";
+			echo "<th colspan='4'><font color='orange'><i>Liste limitÃ©e Ã  50 systÃ¨mes</i></font></th>";
 			$i=4;
 			break;
 		}
@@ -157,10 +157,10 @@ if ($since >= 28) {
 <table>
 <tr><td class="c" colspan="8">Plus de 4 semaines</td></tr>
 <tr>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
 </tr>
 <?php
 if (isset($obsolete_listing[28])) {
@@ -182,7 +182,7 @@ if (isset($obsolete_listing[28])) {
 		$i++;
 
 		if ($index == 50) {
-			echo "<th colspan='4'><font color='orange'><i>Liste limitée à 50 systèmes</i></font></th>";
+			echo "<th colspan='4'><font color='orange'><i>Liste limitÃ©e Ã  50 systÃ¨mes</i></font></th>";
 			$i=4;
 			break;
 		}
@@ -202,10 +202,10 @@ if ($since >= 21) {
 <table>
 <tr><td class="c" colspan="8">Plus de 3 semaines</td></tr>
 <tr>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
 </tr>
 <?php
 if (isset($obsolete_listing[21])) {
@@ -227,7 +227,7 @@ if (isset($obsolete_listing[21])) {
 		$i++;
 
 		if ($index == 50) {
-			echo "<th colspan='4'><font color='orange'><font color='orange'><i>Liste limitée à 50 systèmes</i></font></font></th>";
+			echo "<th colspan='4'><font color='orange'><font color='orange'><i>Liste limitÃ©e Ã  50 systÃ¨mes</i></font></font></th>";
 			$i=4;
 			break;
 		}
@@ -247,10 +247,10 @@ if ($since >= 14) {
 <table>
 <tr><td class="c" colspan="8">Plus de 2 semaines</td></tr>
 <tr>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
 </tr>
 <?php
 if (isset($obsolete_listing[14])) {
@@ -272,7 +272,7 @@ if (isset($obsolete_listing[14])) {
 		$i++;
 
 		if ($index == 50) {
-			echo "<th colspan='4'><font color='orange'><i>Liste limitée à 50 systèmes</i></font></th>";
+			echo "<th colspan='4'><font color='orange'><i>Liste limitÃ©e Ã  50 systÃ¨mes</i></font></th>";
 			$i=4;
 			break;
 		}
@@ -292,10 +292,10 @@ if ($since >= 7) {
 <table>
 <tr><td class="c" colspan="8">Plus de 1 semaine</td></tr>
 <tr>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
-	<td class="c" width="110">Système solaire</td><td class="c" width="110">Date mise à jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
+	<td class="c" width="110">SystÃ¨me solaire</td><td class="c" width="110">Date mise Ã  jour</td>
 </tr>
 <?php
 if (isset($obsolete_listing[7])) {
@@ -317,7 +317,7 @@ if (isset($obsolete_listing[7])) {
 		$i++;
 
 		if ($index == 50) {
-			echo "<th colspan='4'><font color='orange'><i>Liste limitée à 50 systèmes</i></font></th>";
+			echo "<th colspan='4'><font color='orange'><i>Liste limitÃ©e Ã  50 systÃ¨mes</i></font></th>";
 			$i=4;
 			break;
 		}

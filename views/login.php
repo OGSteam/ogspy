@@ -28,7 +28,7 @@ $enable_register_view = isset ($server_config['enable_register_view']) ? $server
 	
 	<table align='center' cellpadding="0" cellspacing="1">
 		<tr>
-			<td class="c" colspan="2">Paramètres de connexion</td>
+			<td class="c" colspan="2">ParamÃ¨tres de connexion</td>
 		</tr>
 		<tr>
 			<th width="150">Login :</th>

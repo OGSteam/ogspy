@@ -28,12 +28,12 @@ if (isset($pub_group_id)) {
 <table>
 <form method="POST" action="index.php?action=usergroup_create">
 <tr>
-	<td class="c" colspan="3">Création d'un groupe</td>
+	<td class="c" colspan="3">CrÃ©ation d'un groupe</td>
 </tr>
 <tr>
 	<th width="150">Nom</th>
 	<th width="150"><input name="groupname" type="text" maxlength="15" size="20"></th>
-	<th width="150"><input type="submit" value="Créer nouveau groupe"></th>
+	<th width="150"><input type="submit" value="CrÃ©er nouveau groupe"></th>
 </tr>
 </form>
 <tr><td colspan="3">&nbsp;</td></tr>
@@ -45,7 +45,7 @@ if (isset($pub_group_id)) {
 <tr>
 	<th>
 		<select name="group_id">
-			<option>Sélectionnez un groupe</option>
+			<option>SÃ©lectionnez un groupe</option>
 <?php
 foreach ($usergroup_list as $value) {
 	echo "\t\t\t\t"."<option value='".$value["group_id"]."'>".$value["group_name"]."</option>";
@@ -76,7 +76,7 @@ if (sizeof($usergroup_member) > 0) {
 			$index = 0;
 			echo "</tr>"."\n"."<tr>";
 		}
-		echo "\t"."<form method='POST' action='index.php?action=usergroup_delmember&user_id=".$user["user_id"]."&group_id=".$group_id."' onsubmit=\"return confirm('Etes-vous sûr de vouloir supprimer ".$user["user_name"]." du groupe ?');\">"."\n";
+		echo "\t"."<form method='POST' action='index.php?action=usergroup_delmember&user_id=".$user["user_id"]."&group_id=".$group_id."' onsubmit=\"return confirm('Etes-vous sÃ»r de vouloir supprimer ".$user["user_name"]." du groupe ?');\">"."\n";
 		echo "\t"."<th width='175'>".$user["user_name"]."</th><th width='25'><input type='image' src='images/userdrop.png' title='Supprimer ".$user["user_name"]." du groupe'></th>";
 		echo "\t"."</form>"."\n";
 		$index++;
@@ -108,7 +108,7 @@ echo "</form>"."\n";
 <table align="center">
 <?php
 if ($group_id != 1) {?>
-<form method="POST" action="index.php?action=usergroup_delete" onsubmit="return confirm('Etes-vous sûr de vouloir supprimer le groupe ?');">
+<form method="POST" action="index.php?action=usergroup_delete" onsubmit="return confirm('Etes-vous sÃ»r de vouloir supprimer le groupe ?');">
 <input type="hidden" name="group_id" value="<?php echo $group_id;?>">
 <tr>
 	<td>
@@ -132,7 +132,7 @@ if ($group_id != 1) {?>
 			<td class="c" width="150">Permissions</td>
 		</tr>
 		<tr>
-			<th>Ajout/Mise à jour système solaire</th>
+			<th>Ajout/Mise Ã  jour systÃ¨me solaire</th>
 			<th><input name="server_set_system" type="checkbox" value="1" <?php echo ($usergroup_info["server_set_system"]) ? "checked" : ""?>></th>
 		</tr>
 		<tr>
@@ -148,7 +148,7 @@ if ($group_id != 1) {?>
 			<th><input name="server_set_ranking" type="checkbox" value="1" <?php echo ($usergroup_info["server_set_ranking"]) ? "checked" : ""?>></th>
 		</tr>
 		<tr>
-			<th>Visualiser coordonnées alliances protégées</th>
+			<th>Visualiser coordonnÃ©es alliances protÃ©gÃ©es</th>
 			<th><input name="server_show_positionhided" type="checkbox" value="1" <?php echo ($usergroup_info["server_show_positionhided"]) ? "checked" : ""?>></th>
 		</tr>
 		</table>
@@ -157,7 +157,7 @@ if ($group_id != 1) {?>
 	<td valign="top" width="450">
 		<table align="center" width="100%">
 		<tr>
-			<td class="c" width="300">Droits clients externes (OGame Stratège, toolbars)</td>
+			<td class="c" width="300">Droits clients externes (OGame StratÃ¨ge, toolbars)</td>
 			<td class="c" width="150">Permissions</td>
 		</tr>
 		<tr>
@@ -165,11 +165,11 @@ if ($group_id != 1) {?>
 			<th><input name="ogs_connection" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_connection"]) ? "checked" : ""?>></th>
 		</tr>
 		<tr>
-			<th>Importation système solaire</th>
+			<th>Importation systÃ¨me solaire</th>
 			<th><input name="ogs_set_system" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_set_system"]) ? "checked" : ""?>></th>
 		</tr>
 		<tr>
-			<th>Exportation système solaire</th>
+			<th>Exportation systÃ¨me solaire</th>
 			<th><input name="ogs_get_system" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_get_system"]) ? "checked" : ""?>></th>
 		</tr>
 		<tr>

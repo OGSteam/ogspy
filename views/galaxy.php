@@ -59,7 +59,7 @@ require_once("views/page_header.php");
 	<td>
 		<table align="center">
 			<tr>
-				<td class="c" colspan="3">Système solaire</td>
+				<td class="c" colspan="3">SystÃ¨me solaire</td>
 			</tr>
 			<tr>
 				<td class="l"><input type="button" value="<<<" onclick="window.location = 'index.php?action=galaxy&galaxy=<?php echo $galaxy;?>&system=<?php echo $system_down;?>';"></td>
@@ -79,7 +79,7 @@ require_once("views/page_header.php");
 	<form method="POST" action="index.php?action=galaxy">
 	<td colspan="3" align="left">
 		<select name="coordinates" onchange="this.form.submit();" onkeyup="this.form.submit();">
-			<option>Liste des systèmes favoris</option>
+			<option>Liste des systÃ¨mes favoris</option>
 <?php
 foreach ($favorites as $v) {
 	$coordinate = $v["galaxy"].":".$v["system"];
@@ -106,18 +106,18 @@ $string_delfavorites = "alert('Vous n\'avez pas de favoris')";
 	</td>
 </tr>
 <tr>
-	<td class="c" align="left" colspan="9">Système solaire <?php echo $missil;?></td>
+	<td class="c" align="left" colspan="9">SystÃ¨me solaire <?php echo $missil;?></td>
 </tr>
 <tr>
 	<td class="c" width="25">&nbsp;</td>
-	<td class="c" width="175">Planètes</td>
+	<td class="c" width="175">PlanÃ¨tes</td>
 	<td class="c" width="175">Alliances</td>
 	<td class="c" width="175">Joueurs</td>
 	<td class="c" width="40">&nbsp;</td>
 	<td class="c" width="20">&nbsp;</td>
 	<td class="c" width="20">&nbsp;</td>
 	<td class="c" width="20">&nbsp;</td>
-	<td class="c" width="250">Mises à jour</td>
+	<td class="c" width="250">Mises Ã  jour</td>
 </tr>
 <?php
 $i=1;
@@ -180,7 +180,7 @@ foreach ($population as $v) {
         	$honnor_points = isset($ranking["honnor"]) ?  formate_number($ranking["honnor"]["points"]) : "&nbsp;";
     
 			$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">Classement du ".$datadate."</td></tr>";
-			$tooltip .= "<tr><td class=\"c\" width=\"75\">Général</td><th width=\"30\">".$general_rank."</th><th>".$general_points."</th></tr>";
+			$tooltip .= "<tr><td class=\"c\" width=\"75\">GÃ©nÃ©ral</td><th width=\"30\">".$general_rank."</th><th>".$general_points."</th></tr>";
 			$tooltip .= "<tr><td class=\"c\">Economique</td><th>".$eco_rank."</th><th>".$eco_points."</th></tr>";
 			$tooltip .= "<tr><td class=\"c\">Recherche</td><th>".$techno_rank."</th><th>".$techno_points."</th></tr>";
 			$tooltip .= "<tr><td class=\"c\">Militaire</td><th width=\"30\">".$military_rank."</th><th>".$military_points."</th></tr>";
@@ -191,7 +191,7 @@ foreach ($population as $v) {
 			$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">".formate_number($ranking["number_member"])." membre(s)</td></tr>";
 			break;
 		}
-		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=ally&string_search=".$ally."&strict=on\">Voir détail</a></td></tr>";
+		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=ally&string_search=".$ally."&strict=on\">Voir dÃ©tail</a></td></tr>";
 		$tooltip .= "</table>";
 		$tooltip = htmlentities($tooltip);
 
@@ -224,7 +224,7 @@ foreach ($population as $v) {
         	$honnor_points = isset($ranking["honnor"]) ?  formate_number($ranking["honnor"]["points"]) : "&nbsp;";
 
 			$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">Classement du ".$datadate."</td></tr>";
-			$tooltip .= "<tr><td class=\"c\" width=\"75\">Général</td><th width=\"30\">".$general_rank."</th><th>".$general_points."</th></tr>";
+			$tooltip .= "<tr><td class=\"c\" width=\"75\">GÃ©nÃ©ral</td><th width=\"30\">".$general_rank."</th><th>".$general_points."</th></tr>";
 			$tooltip .= "<tr><td class=\"c\">Economique</td><th>".$eco_rank."</th><th>".$eco_points."</th></tr>";
 			$tooltip .= "<tr><td class=\"c\">Recherche</td><th>".$techno_rank."</th><th>".$techno_points."</th></tr>";
 			$tooltip .= "<tr><td class=\"c\">Militaire</td><th width=\"30\">".$military_rank."</th><th>".$military_points."</th></tr>";
@@ -234,7 +234,7 @@ foreach ($population as $v) {
 			$tooltip .= "<tr><td class=\"c\">Honneur</td><th>".$honnor_rank."</th><th>".$honnor_points."</th></tr>";
 			break;
 		}
-		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=player&string_search=".$player."&strict=on\">Voir détail</a></td></tr>";
+		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=player&string_search=".$player."&strict=on\">Voir dÃ©tail</a></td></tr>";
 		$tooltip .= "</table>";
 		$tooltip = htmlentities($tooltip);
 
@@ -277,7 +277,7 @@ foreach ($population as $v) {
 	$i++;
 }
 $legend = "<table width=\"225\">";
-$legend .= "<tr><td class=\"c\" colspan=\"2\" align=\"center\"e width=\"150\">Légende</td></tr>";
+$legend .= "<tr><td class=\"c\" colspan=\"2\" align=\"center\"e width=\"150\">LÃ©gende</td></tr>";
 $legend .= "<tr><td class=\"c\">Inactif 7 jours</td><th>i</th></tr>";
 $legend .= "<tr><td class=\"c\">Inactif 28 jours</td><th>I</th></tr>";
 $legend .= "<tr><td class=\"c\">Mode vacance</td><th>v</th></tr>";
@@ -285,12 +285,12 @@ $legend .= "<tr><td class=\"c\">Joueur faible</td><th>d</th></tr>";
 $legend .= "<tr><td class=\"c\">Lune<br><i>phalange 4 avec porte spatial</i></td><th><img src=\"".$link_css."img/lune.png\"> - 4P</th></tr>";
 $legend .= "<tr><td class=\"c\">Rapport d\'espionnage</td><th>RE</th></tr>";
 $legend .= "<tr><td class=\"c\">Rapports de combat</td><th>X RC</th></tr>";
-$legend .= "<tr><td class=\"c\">Joueur / Alliance allié</td><th><blink><a>abc</a></blink></th></tr>";
-$legend .= "<tr><td class=\"c\">Joueur / Alliance masqué</td><th><font color=\"lime\">abc</font></th></tr>";
+$legend .= "<tr><td class=\"c\">Joueur / Alliance alliÃ©</td><th><blink><a>abc</a></blink></th></tr>";
+$legend .= "<tr><td class=\"c\">Joueur / Alliance masquÃ©</td><th><font color=\"lime\">abc</font></th></tr>";
 $legend .= "</table>";
 $legend = htmlentities($legend);
 
-echo "<tr align='center'><td class='c' colspan='9'><a style='cursor:pointer' onmouseover=\"this.T_WIDTH=210;this.T_TEMP=0;return escape('".$legend."')\">Légende</a></td></tr>";
+echo "<tr align='center'><td class='c' colspan='9'><a style='cursor:pointer' onmouseover=\"this.T_WIDTH=210;this.T_TEMP=0;return escape('".$legend."')\">LÃ©gende</a></td></tr>";
 echo "</table>";
 
 
@@ -311,7 +311,7 @@ if (sizeof($phalanx_list) > 0) {
 			$tooltip = "<table width=\"250\">";
 			$tooltip .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">Alliance ".$value["ally"]."</td></tr>";
 			while ($ranking = current($individual_ranking)) {
-				$datadate = strftime("%d %b %Y à %Hh", key($individual_ranking));
+				$datadate = strftime("%d %b %Y Ã  %Hh", key($individual_ranking));
 				$general_rank = isset($ranking["general"]) ?  formate_number($ranking["general"]["rank"]) : "&nbsp;";
 				$general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) . " <i>( ". formate_number($ranking["general"]["points_per_member"]) ." )</i>" : "&nbsp;";
 				$fleet_rank = isset($ranking["fleet"]) ?  formate_number($ranking["fleet"]["rank"]) : "&nbsp;";
@@ -320,13 +320,13 @@ if (sizeof($phalanx_list) > 0) {
 				$research_points = isset($ranking["research"]) ?  formate_number($ranking["research"]["points"]) . " <i>( ". formate_number($ranking["research"]["points_per_member"]) ." )</i>" : "&nbsp;";
 
 				$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">Classement du ".$datadate."</td></tr>";
-				$tooltip .= "<tr><td class=\"c\" width=\"75\">Général</td><th width=\"30\">".$general_rank."</th><th>".$general_points."</th></tr>";
+				$tooltip .= "<tr><td class=\"c\" width=\"75\">GÃ©nÃ©ral</td><th width=\"30\">".$general_rank."</th><th>".$general_points."</th></tr>";
 				$tooltip .= "<tr><td class=\"c\">Flotte</td><th>".$fleet_rank."</th><th>".$fleet_points."</th></tr>";
 				$tooltip .= "<tr><td class=\"c\">Recherche</td><th>".$research_rank."</th><th>".$research_points."</th></tr>";
 				$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">".formate_number($ranking["number_member"])." membre(s)</td></tr>";
 				break;
 			}
-			$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=ally&string_search=".$value["ally"]."&strict=on\">Voir détail</a></td></tr>";
+			$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=ally&string_search=".$value["ally"]."&strict=on\">Voir dÃ©tail</a></td></tr>";
 			$tooltip .= "</table>";
 			$tooltip = htmlentities($tooltip);
 
@@ -337,7 +337,7 @@ if (sizeof($phalanx_list) > 0) {
 		$tooltip = "<table width=\"250\">";
 		$tooltip .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">Joueur ".$value["player"]."</td></tr>";
 		while ($ranking = current($individual_ranking)) {
-			$datadate = strftime("%d %b %Y à %Hh", key($individual_ranking));
+			$datadate = strftime("%d %b %Y Ã  %Hh", key($individual_ranking));
 			$general_rank = isset($ranking["general"]) ?  formate_number($ranking["general"]["rank"]) : "&nbsp;";
 			$general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
 			$fleet_rank = isset($ranking["fleet"]) ?  formate_number($ranking["fleet"]["rank"]) : "&nbsp;";
@@ -346,22 +346,22 @@ if (sizeof($phalanx_list) > 0) {
 			$research_points = isset($ranking["research"]) ?  formate_number($ranking["research"]["points"]) : "&nbsp;";
 
 			$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">Classement du ".$datadate."</td></tr>";
-			$tooltip .= "<tr><td class=\"c\" width=\"75\">Général</td><th width=\"30\">".$general_rank."</th><th>".$general_points."</th></tr>";
+			$tooltip .= "<tr><td class=\"c\" width=\"75\">GÃ©nÃ©ral</td><th width=\"30\">".$general_rank."</th><th>".$general_points."</th></tr>";
 			$tooltip .= "<tr><td class=\"c\">Flotte</td><th>".$fleet_rank."</th><th>".$fleet_points."</th></tr>";
 			$tooltip .= "<tr><td class=\"c\">Recherche</td><th>".$research_rank."</th><th>".$research_points."</th></tr>";
 			break;
 		}
-		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=player&string_search=".$value["player"]."&strict=on\">Voir détail</a></td></tr>";
+		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=player&string_search=".$value["player"]."&strict=on\">Voir dÃ©tail</a></td></tr>";
 		$tooltip .= "</table>";
 		$tooltip = htmlentities($tooltip);
-		echo "<a href=\"index.php?action=search&type_search=player&string_search=".$value["player"]."&strict=on\" onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$value["player"]."</a> possède une lune avec phalange de niveau ".$value["phalanx"];
+		echo "<a href=\"index.php?action=search&type_search=player&string_search=".$value["player"]."&strict=on\" onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$value["player"]."</a> possÃ¨de une lune avec phalange de niveau ".$value["phalanx"];
 		echo " en <a href='index.php?action=galaxy&galaxy=".$value["galaxy"]."&system=".$value["system"]."'>".$value["galaxy"].":".$value["system"].":".$value["row"]."</a> [<font color='orange'>".$value["galaxy"].":".$range_down." <-> ".$value["galaxy"].":".$range_up."</font>]";
 
 		if ($value["gate"] == "1") echo " avec une <font color='red'>porte spatiale</font>";
 		echo ".</th></tr>";
 	}
 }
-else echo "<tr><th>Aucune phalange répertoriée n'a une portée suffisante pour phalanger les planètes de ce système</th></tr>";
+else echo "<tr><th>Aucune phalange rÃ©pertoriÃ©e n'a une portÃ©e suffisante pour phalanger les planÃ¨tes de ce systÃ¨me</th></tr>";
 echo "</table>";
 
 
@@ -377,10 +377,10 @@ for ($i=10 ; $i<=50 ; $i=$i+10) {
 	if ($system + $i <= intval($server_config['num_of_systems'])) $up = $system+$i;
 	else $up = intval($server_config['num_of_systems']);
 
-	$tooltip_colonization .= "<tr><th><a href=\"index.php?action=search&type_search=colonization&galaxy_down=".$galaxy."&galaxy_up=".$galaxy."&system_down=".$down."&system_up=".$up."&row_down=&row_up=\">".$i." systèmes environnants</a></th></tr>";
-	$tooltip_moon .= "<tr><th><a href=\"index.php?action=search&type_search=moon&galaxy_down=".$galaxy."&galaxy_up=".$galaxy."&system_down=".$down."&system_up=".$up."&row_down=&row_up=\">".$i." systèmes environnants</a></th></tr>";
-	$tooltip_away .= "<tr><th><a href=\"index.php?action=search&type_search=away&galaxy_down=".$galaxy."&galaxy_up=".$galaxy."&system_down=".$down."&system_up=".$up."&row_down=&row_up=\">".$i." systèmes environnants</a></th></tr>";
-	$tooltip_spy .= "<tr><th><a href=\"index.php?action=search&type_search=spy&galaxy_down=".$galaxy."&galaxy_up=".$galaxy."&system_down=".$down."&system_up=".$up."&row_down=&row_up=\">".$i." systèmes environnants</a></th></tr>";
+	$tooltip_colonization .= "<tr><th><a href=\"index.php?action=search&type_search=colonization&galaxy_down=".$galaxy."&galaxy_up=".$galaxy."&system_down=".$down."&system_up=".$up."&row_down=&row_up=\">".$i." systÃ¨mes environnants</a></th></tr>";
+	$tooltip_moon .= "<tr><th><a href=\"index.php?action=search&type_search=moon&galaxy_down=".$galaxy."&galaxy_up=".$galaxy."&system_down=".$down."&system_up=".$up."&row_down=&row_up=\">".$i." systÃ¨mes environnants</a></th></tr>";
+	$tooltip_away .= "<tr><th><a href=\"index.php?action=search&type_search=away&galaxy_down=".$galaxy."&galaxy_up=".$galaxy."&system_down=".$down."&system_up=".$up."&row_down=&row_up=\">".$i." systÃ¨mes environnants</a></th></tr>";
+	$tooltip_spy .= "<tr><th><a href=\"index.php?action=search&type_search=spy&galaxy_down=".$galaxy."&galaxy_up=".$galaxy."&system_down=".$down."&system_up=".$up."&row_down=&row_up=\">".$i." systÃ¨mes environnants</a></th></tr>";
 }
 
 $tooltip_colonization = htmlentities($tooltip_begin.$tooltip_colonization.$tooltip_end);
@@ -391,7 +391,7 @@ $tooltip_spy = htmlentities($tooltip_begin.$tooltip_spy.$tooltip_end);
 echo "<br /><table width='860' border='1'>";
 echo "<tr><td class='c' align='center' colspan='4'>Recherches</td></tr>";
 echo "<tr align='center'>";
-echo "<th width='25%' onmouseover=\"this.T_WIDTH=210;return escape('".$tooltip_colonization."')\">Planètes colonisables</th>";
+echo "<th width='25%' onmouseover=\"this.T_WIDTH=210;return escape('".$tooltip_colonization."')\">PlanÃ¨tes colonisables</th>";
 echo "<th width='25%' onmouseover=\"this.T_WIDTH=210;return escape('".$tooltip_moon."')\">Lunes</th>";
 echo "<th width='25%' onmouseover=\"this.T_WIDTH=210;return escape('".$tooltip_away."')\">Joueurs inactifs</th>";
 echo "<th width='25%' onmouseover=\"this.T_WIDTH=210;return escape('".$tooltip_spy."')\">Rapports d'espionnage</th>";

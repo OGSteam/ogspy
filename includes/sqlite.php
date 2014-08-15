@@ -19,7 +19,7 @@ if (!defined('IN_SPYOGAME')) {
 
 /**
 * Affichage d'une erreur SQL et sortie du script
-* @param string $query Requête SQL fautive
+* @param string $query RequÃªte SQL fautive
 */
 function DieSQLError($query){
   echo "<table align=center border=1>\n";
@@ -53,7 +53,7 @@ function DieSQLError($query){
 }
 
 /**
-* Classe d'accès MySQL
+* Classe d'accÃ¨s MySQL
 */
 class sql_db {
   private static $_instance = false; //(singleton)
@@ -62,7 +62,7 @@ class sql_db {
   var $nb_requete = 0;
     
 /**
-* recuperation de l instance en cours, ou création le cas echeant
+* recuperation de l instance en cours, ou crÃ©ation le cas echeant
 * (singleton)
 */   
     public static function getInstance($sqlserver, $sqluser, $sqlpassword, $database){  
@@ -77,7 +77,7 @@ class sql_db {
     
 /**
 * Constructeur
-* passage en fonction privé (singleton)
+* passage en fonction privÃ© (singleton)
 */
  
     private  function sql_db($sqlserver, $sqluser, $sqlpassword, $database) {
@@ -105,7 +105,7 @@ class sql_db {
 * empeche fonction magique __clone
 */    
     public function __clone(){  
-       throw new Exception('Cet objet ne peut pas être cloné');
+       throw new Exception('Cet objet ne peut pas Ãªtre clonÃ©');
        die();  
    }  
 
@@ -120,7 +120,7 @@ class sql_db {
 
   }
 /**
-* Requête SQL
+* RequÃªte SQL
 */
   function sql_query($query = "", $Auth_dieSQLError = true, $save = true) {
     global $sql_timing, $server_config;
@@ -152,7 +152,7 @@ class sql_db {
     return $this->result;
   }
 /**
-* Récupération d'une ligne d'enregistrement
+* RÃ©cupÃ©ration d'une ligne d'enregistrement
 */
   function sql_fetch_row($query_id = 0) {
     if(!$query_id) {
@@ -167,7 +167,7 @@ class sql_db {
     
   }
 /**
-* Récupération d'un tableau associatif d'une ligne d'enregistrement
+* RÃ©cupÃ©ration d'un tableau associatif d'une ligne d'enregistrement
 */
   function sql_fetch_assoc($query_id = 0) {
     if(!$query_id) {
@@ -181,7 +181,7 @@ class sql_db {
     }
   }
 /**
-* Nombre de lignes concernées par la dernière requête
+* Nombre de lignes concernÃ©es par la derniÃ¨re requÃªte
 */
   function sql_numrows($query_id = 0) {
     if(!$query_id) {
@@ -196,7 +196,7 @@ class sql_db {
     }
   }
 /**
-* Nombre de ligne affectés
+* Nombre de ligne affectÃ©s
 */
   function sql_affectedrows() {
     if($this->db_connect_id) {
@@ -208,7 +208,7 @@ class sql_db {
     }
   }
 /**
-* Identificateur unique de la dernière insertion SQL
+* Identificateur unique de la derniÃ¨re insertion SQL
 */
   function sql_insertid(){
     if($this->db_connect_id) {
@@ -220,13 +220,13 @@ class sql_db {
     }
   }
 /**
-* Libération des ressources
+* LibÃ©ration des ressources
 */
   function sql_free_result($query_id = 0) {
     /*mysql_free_result($query_id);*/
   }
 /**
-* renvoie sous forme d'un tableau de la dernière erreur SQL
+* renvoie sous forme d'un tableau de la derniÃ¨re erreur SQL
 */
   function sql_error($query_id = 0) {
     $result["message"] = @sqlite_error_string($this->db_connect_id);
@@ -243,7 +243,7 @@ class sql_db {
   }
   
  /**
-* Protège les caractères spéciaux SQL
+* ProtÃ¨ge les caractÃ¨res spÃ©ciaux SQL
 */
   function sql_escape_string($str) {
     if(isset($str)) {

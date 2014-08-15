@@ -1,6 +1,6 @@
 <?php
 /**
-* Mise à jour d'OGSpy : update_to_latest.php
+* Mise Ã  jour d'OGSpy : update_to_latest.php
 * @package OGSpy
 * @subpackage install
 * @created 28/11/2005
@@ -21,7 +21,7 @@ if($pub_verbose == true){
 
 <html>
 <head>
-<title>Mise à jour OGSpy</title>
+<title>Mise Ã  jour OGSpy</title>
 <link rel="stylesheet" type="text/css" href="../skin/OGSpy_skin/formate.css" />
 </head>
 <body>
@@ -29,8 +29,8 @@ if($pub_verbose == true){
 <?php
 }
 
-// on réinitialise la sequense config
-// evite d utiliser le cache ( qui sera périmé ))
+// on rÃ©initialise la sequense config
+// evite d utiliser le cache ( qui sera pÃ©rimÃ© ))
 $request = "select * from " . TABLE_CONFIG;
 $result = mysql_query($request);
  while (list($name, $value) = mysql_fetch_row($result)) {
@@ -57,7 +57,7 @@ switch ($ogsversion) {
         $requests[] = "UPDATE ".TABLE_USER_DEFENCE." SET planet_id = (planet_id + 191) WHERE planet_id > 9 and planet_id < 19 ";
         $ogsversion = '3.0.7';
 		$up_to_date = true;
-		//Pas de break pour faire toutes les mises à jour d'un coup !
+		//Pas de break pour faire toutes les mises Ã  jour d'un coup !
 		
 	case '3.0.7':
 		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.0.8' WHERE config_name = 'version'";
@@ -65,7 +65,7 @@ switch ($ogsversion) {
 		$requests[] = "INSERT IGNORE INTO ".TABLE_CONFIG." (config_name, config_value) VALUES ('mod_cache', '604800')";
         $ogsversion = '3.0.8';
 		$up_to_date = true;
-		//Pas de break pour faire toutes les mises à jour d'un coup !
+		//Pas de break pour faire toutes les mises Ã  jour d'un coup !
 		
 	case '3.0.8':
         // modif building
@@ -270,13 +270,13 @@ switch ($ogsversion) {
     
         $ogsversion = '3.1.0';
 		$up_to_date = true;
-		//Pas de break pour faire toutes les mises à jour d'un coup !
+		//Pas de break pour faire toutes les mises Ã  jour d'un coup !
 		
 	case '3.1.0':
 		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.1' WHERE config_name = 'version'";
         // MODIF TABLE_USER
-        $requests[] = "ALTER TABLE `".TABLE_USER."` ADD `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP') AFTER `rank_added_ogs`"; // Type de barre utilisée par le user
-		$requests[] = "ALTER TABLE `".TABLE_USER."` ADD `xtense_version` VARCHAR(10) AFTER `xtense_type`"; // Type de barre utilisée par le user
+        $requests[] = "ALTER TABLE `".TABLE_USER."` ADD `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP') AFTER `rank_added_ogs`"; // Type de barre utilisÃ©e par le user
+		$requests[] = "ALTER TABLE `".TABLE_USER."` ADD `xtense_version` VARCHAR(10) AFTER `xtense_type`"; // Type de barre utilisÃ©e par le user
 		
 		// MODIF TABLE_RANK_PLAYER_MILITARY
 		$requests[] = "ALTER TABLE `".TABLE_RANK_PLAYER_MILITARY."` ADD `nb_spacecraft` int(11) NOT NULL default '0' AFTER `sender_id`"; // Ajout nombre de vaisseaux au classement militaire joueur
@@ -291,12 +291,12 @@ switch ($ogsversion) {
 		
 		$ogsversion = '3.1.1';
 		$up_to_date = true;
-		//Pas de break pour faire toutes les mises à jour d'un coup !
+		//Pas de break pour faire toutes les mises Ã  jour d'un coup !
 	case '3.1.1':
 		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.2' WHERE config_name = 'version'";
 		$ogsversion = '3.1.2';
 		$up_to_date = true;
-		//Pas de break pour faire toutes les mises à jour d'un coup !
+		//Pas de break pour faire toutes les mises Ã  jour d'un coup !
 	case '3.1.2':
 		$requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` MODIFY `coordinates` VARCHAR(10)";
 		$requests[] = "ALTER TABLE `".TABLE_UNIVERSE."` MODIFY `phalanx` tinyint(1) NOT NULL default '0'";
@@ -320,7 +320,7 @@ switch ($ogsversion) {
 		$up_to_date = true;
 		break;
 	default:
-	die("Aucune mise … jour n'est disponible");
+	die("Aucune mise â€¦ jour n'est disponible");
 }
 
 
@@ -340,18 +340,18 @@ if (count($files) > 0) {
 }
   
 ?>
-	<h3 align='center'><font color='yellow'>Mise à jour du serveur OGSpy vers la version <?php echo $ogsversion;?> effectuée avec succès</font></h3>
+	<h3 align='center'><font color='yellow'>Mise Ã  jour du serveur OGSpy vers la version <?php echo $ogsversion;?> effectuÃ©e avec succÃ¨s</font></h3>
 	<center>
 	<br />
 <?php
 if($pub_verbose == true){
 if ($up_to_date) {
-	echo "\t"."<b><i>Pensez à supprimer le dossier 'install'</i></b><br />"."\n";
+	echo "\t"."<b><i>Pensez Ã  supprimer le dossier 'install'</i></b><br />"."\n";
 	echo "\t"."<br /><a href='../index.php'>Retour</a>"."\n";
 }
 else {
-	echo "\t"."<br><font color='orange'><b>Cette version n'est pas la dernière en date, veuillez réexécuter le script</font><br />"."\n";
-	echo "\t"."<a href=''>Recommencer l'opération</a>"."\n";
+	echo "\t"."<br><font color='orange'><b>Cette version n'est pas la derniÃ¨re en date, veuillez rÃ©exÃ©cuter le script</font><br />"."\n";
+	echo "\t"."<a href=''>Recommencer l'opÃ©ration</a>"."\n";
 }
 ?>
 	</center>

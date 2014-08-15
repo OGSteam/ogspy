@@ -35,7 +35,7 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
     // pour ces cef => ingenieur
     global $server_config;
     
-    //Valeur de l'officier en valeur ajouté.
+    //Valeur de l'officier en valeur ajoutÃ©.
     if ($officier == 0) {
         $geo = 0;
     } elseif ($officier == 1) {
@@ -75,14 +75,14 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
         case "CES":
             $result = 20 * $level * pow(1.1, $level);
             $result = $result * (1 + $ing); // ingenieur
-            $result = floor($result);   // troncature inférieure
+            $result = floor($result);   // troncature infÃ©rieure
             //$result = $server_config['speed_uni'] * $result; // vitesste uni ne change pas la prod d E
             break;
 
         case "CEF":
             $result = 30 * $level * pow((1.05 + $NRJ * 0.01), $level);
             $result = $result * (1 + $ing); // ingenieur
-            $result = floor($result);   // troncature inférieure
+            $result = floor($result);   // troncature infÃ©rieure
             //$result = $server_config['speed_uni'] * $result; // vitesste uni ne change pas la prod d E
             break;
 
@@ -128,12 +128,12 @@ function consumption($building, $level)
         case "M":   //no break
         case "C":
             $result = 10 * $level * pow(1.1, $level);
-            $result = ceil($result);    //troncature supérieure
+            $result = ceil($result);    //troncature supÃ©rieure
             break;
 
         case "D":
             $result = 20 * $level * pow(1.1, $level);
-            $result = ceil($result);    //troncature supérieure
+            $result = ceil($result);    //troncature supÃ©rieure
             break;
 
         case "CEF":
@@ -250,7 +250,7 @@ function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_min, 
 */
 function depot_capacity($level)
 {
-    // capacité par défaut
+    // capacitÃ© par dÃ©faut
     $capacity = 10000;
 
     if ($level > 0) {

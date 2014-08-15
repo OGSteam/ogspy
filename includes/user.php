@@ -198,7 +198,7 @@ function admin_user_set()
         redirection("index.php?action=message&id_message=admin_modifyuser_failed&info");
     }
 
-    //VÈrification des droits
+    //V√©rification des droits
     user_check_auth("user_update", $pub_user_id);
 
     if ($user_data["user_admin"] == 1) {
@@ -373,7 +373,7 @@ function member_user_set()
             " WHERE `user_id` = " . $user_id);
     }
 
-    //ContrÙle que le pseudo ne soit pas dÈj‡ utilisÈ
+    //Contr√¥le que le pseudo ne soit pas d√©j√† utilis√©
     $request = "select * from " . TABLE_USER . " where user_name = '" .
          $db->sql_escape_string($pub_pseudo) . "' and user_id <> " . $user_id;
     $result = $db->sql_query($request);
@@ -422,7 +422,7 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
         $update .= ((strlen($update) > 0) ? ", " : "") . "user_password = '" . md5(sha1
             ($user_password)) . "'";
 
-    //Galaxy et systËme solaire du membre
+    //Galaxy et syst√®me solaire du membre
     if (!empty($user_galaxy))
         $update .= ((strlen($update) > 0) ? ", " : "") . "user_galaxy = '" . $user_galaxy .
             "'";
@@ -430,7 +430,7 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
         $update .= ((strlen($update) > 0) ? ", " : "") . "user_system = '" . $user_system .
             "'";
 
-    //DerniËre visite
+    //Derni√®re visite
     if (!empty($user_lastvisit))
         $update .= ((strlen($update) > 0) ? ", " : "") . "user_lastvisit = '" . $user_lastvisit .
             "'";
@@ -448,7 +448,7 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
              $db->sql_escape_string($user_skin) . "'";
     }
 
-    //DÈsactivation de la vÈrification de l'adresse ip
+    //D√©sactivation de la v√©rification de l'adresse ip
     if (!is_null($disable_ip_check))
         $update .= ((strlen($update) > 0) ? ", " : "") . "disable_ip_check = '" . $disable_ip_check .
             "'";
@@ -477,7 +477,7 @@ function user_set_grant($user_id, $user_admin = null, $user_active = null, $user
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    //VÈrification des droits
+    //V√©rification des droits
     user_check_auth("user_update", $user_id);
 
     $update = "";
@@ -532,7 +532,7 @@ function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $sear
 
     $update = "";
 
-    //Statistiques envoi systËmes solaires et rapports d'espionnage
+    //Statistiques envoi syst√®mes solaires et rapports d'espionnage
     if (!is_null($planet_added_web))
         $update .= ((strlen($update) > 0) ? ", " : "") .
             "planet_added_web = planet_added_web + " . $planet_added_web;
@@ -693,7 +693,7 @@ function user_create()
         redirection("index.php?action=message&id_message=createuser_failed_general&info");
     }
 
-    //VÈrification des droits
+    //V√©rification des droits
     user_check_auth("user_create");
 
     if (!check_var($pub_pseudo, "Pseudo_Groupname")) {
@@ -937,7 +937,7 @@ function user_set_all_empire($data)
         }
 
         if ($OK) {
-            if (preg_match("#^CoordonnÈes\s+\[(.*)\]$#", $line, $arr)) {
+            if (preg_match("#^Coordonn√©es\s+\[(.*)\]$#", $line, $arr)) {
                 $coordonnees = preg_split("/\]\s+\[/", $arr[1]);
                 $planetes_total_row = sizeof($coordonnees) + 1;
                 if ($planetes_total_row > 10)
@@ -1011,7 +1011,7 @@ function user_set_all_empire($data)
                 }
 
                 if (preg_match("#^(" . $lang_empire["Batiment"] . "|" . $lang_empire["Recherche"] .
-                    "|" . $lang_empire["Vaisseaux"] . "|" . $lang_empire["DÈfense"] . ")$#", $line)) {
+                    "|" . $lang_empire["Vaisseaux"] . "|" . $lang_empire["D√©fense"] . ")$#", $line)) {
                     $etape = $line;
                     continue;
                 }
@@ -1022,7 +1022,7 @@ function user_set_all_empire($data)
                     $levels = array_slice($arr, 2);
 
                     switch ($etape) {
-                        case "B‚timents":
+                        case "B√¢timents":
                             if (isset($link_building[$building])) {
                                 if (sizeof($levels) != $planetes_total_row)
                                     return false;
@@ -1043,7 +1043,7 @@ function user_set_all_empire($data)
                                 $satellites = $levels;
                             }
                             break;
-                        case "DÈfense":
+                        case "D√©fense":
                             if (isset($link_defence[$building])) {
                                 if (sizeof($levels) != $planetes_total_row)
                                     return false;
@@ -1557,8 +1557,8 @@ function user_set_defence($data, $planet_id, $planet_name, $fields, $coordinates
 }
 
 /**
- * RÈcupÈration des donnÈes empire de l'utilisateur loggÈ
- * @comment On pourrait mettre un paramËte $user_id optionnel
+ * R√©cup√©ration des donn√©es empire de l'utilisateur logg√©
+ * @comment On pourrait mettre un param√®te $user_id optionnel
  */
 function user_get_empire()
 {
@@ -1651,7 +1651,7 @@ function user_get_empire()
         "defence" => $user_defence, );
 }
 /**
- * RÈcuperation du nombre de  planete de l utilisateur
+ * R√©cuperation du nombre de  planete de l utilisateur
  * TODO => cette fonction sera a mettre en adequation avec astro 
  * ( attention ancien uni techno a 1 planete mais utilisateur 9 possible  !!!!!)
  */
@@ -1697,7 +1697,7 @@ function find_nb_moon_user()
 }
 
 /**
- * Suppression des donnÈes de batiments de l'utilisateur loggÈ
+ * Suppression des donn√©es de batiments de l'utilisateur logg√©
  */
 function user_del_building()
 {
@@ -1744,7 +1744,7 @@ function user_del_building()
     redirection("index.php?action=home&subaction=empire&view=" . $pub_view);
 }
 /**
- * DÈplacement des donnÈes de planËte de la page empire
+ * D√©placement des donn√©es de plan√®te de la page empire
  */
 function user_move_empire()
 {
@@ -1807,7 +1807,7 @@ function user_move_empire()
 }
 
 /**
- * Ajout d'un systËme favori
+ * Ajout d'un syst√®me favori
  */
 function user_add_favorite()
 {
@@ -1838,7 +1838,7 @@ function user_add_favorite()
 }
 
 /**
- * Suppression d'un systËme favori
+ * Suppression d'un syst√®me favori
  */
 function user_del_favorite()
 {
@@ -1861,7 +1861,7 @@ function user_del_favorite()
 }
 
 /**
- * RÈcupÈration des rapports favoris
+ * R√©cup√©ration des rapports favoris
  */
 function user_getfavorites_spy()
 {
@@ -2001,7 +2001,7 @@ function user_del_favorite_spy()
 }
 
 /**
- * CrÈation d'un groupe
+ * Cr√©ation d'un groupe
  */
 function usergroup_create()
 {
@@ -2012,7 +2012,7 @@ function usergroup_create()
         redirection("index.php?action=message&id_message=createusergroup_failed_general&info");
     }
 
-    //VÈrification des droits
+    //V√©rification des droits
     user_check_auth("usergroup_manage");
 
     if (!check_var($pub_groupname, "Pseudo_Groupname")) {
@@ -2053,7 +2053,7 @@ function usergroup_delete()
         redirection("index.php?action=message&id_message=createusergroup_failed_general&info");
     }
 
-    //VÈrification des droits
+    //V√©rification des droits
     user_check_auth("usergroup_manage");
 
     if ($pub_group_id == 1) {
@@ -2072,13 +2072,13 @@ function usergroup_delete()
 }
 
 /**
- * RÈcupÈration des droits d'un groupe d'utilisateurs
+ * R√©cup√©ration des droits d'un groupe d'utilisateurs
  */
 function usergroup_get($group_id = false)
 {
     global $db, $user_data;
 
-    //VÈrification des droits
+    //V√©rification des droits
     user_check_auth("usergroup_manage");
 
     $request = "select group_id, group_name, ";
@@ -2162,7 +2162,7 @@ function usergroup_setauth()
     if (is_null($pub_ogs_get_ranking))
         $pub_ogs_get_ranking = 0;
 
-    //VÈrification des droits
+    //V√©rification des droits
     user_check_auth("usergroup_manage");
 
     log_("modify_usergroup", $pub_group_id);
@@ -2188,8 +2188,8 @@ function usergroup_setauth()
 }
 
 /**
- * RÈcupÈration des utilisateurs appartenant ‡ un groupe
- * @param int $group_id Identificateur du groupe demandÈ
+ * R√©cup√©ration des utilisateurs appartenant √† un groupe
+ * @param int $group_id Identificateur du groupe demand√©
  * @return Array Liste des utilisateurs
  */
 function usergroup_member($group_id)
@@ -2216,7 +2216,7 @@ function usergroup_member($group_id)
 }
 
 /**
- * Ajout d'un utilisateur ‡ un groupe
+ * Ajout d'un utilisateur √† un groupe
  */
 function usergroup_newmember()
 {
@@ -2244,7 +2244,7 @@ function usergroup_newmember()
             redirection("index.php?action=message&id_message=errorfatal&info");
         }
 
-        //VÈrification des droits
+        //V√©rification des droits
         user_check_auth("usergroup_manage");
 
         $request = "select group_id from " . TABLE_GROUP . " where group_id = " . intval($pub_group_id);
@@ -2289,7 +2289,7 @@ function usergroup_delmember()
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    //VÈrification des droits
+    //V√©rification des droits
     user_check_auth("usergroup_manage");
 
     $request = "delete from " . TABLE_USER_GROUP . " where group_id = " . intval($pub_group_id) .
@@ -2352,7 +2352,7 @@ function user_del_spy()
 
 /**
  * Parsing des RC
- * @param string $rawRC RC ‡ parser
+ * @param string $rawRC RC √† parser
  * @return int $return identifiant du RC
  */
 function parseRC($rawRC)
@@ -2368,7 +2368,7 @@ function parseRC($rawRC)
         -1, 'lune' => 0, 'coordinates' => '1:1:1');
 
     // Extraction du timestamp pour la date du RC
-    preg_match('/affrontÈes le (\d*)-(\d*) (\d*):(\d*):(\d*) \.:/', $rawRC, $reg);
+    preg_match('/affront√©es le (\d*)-(\d*) (\d*):(\d*):(\d*) \.:/', $rawRC, $reg);
     $jourRC = trim($reg[2]);
     $moisRC = trim($reg[1]);
     $heureRC = trim($reg[3]);
@@ -2377,7 +2377,7 @@ function parseRC($rawRC)
     $return['dateRC'] = mktime($heureRC, $minutesRC, $secondesRC, $moisRC, $jourRC,
         date('Y'));
 
-    // Extraction du nom, des coordonnÈes et des techs de l'attaquant et du dÈfenseur
+    // Extraction du nom, des coordonn√©es et des techs de l'attaquant et du d√©fenseur
     $opponents = array();
     preg_match_all('/Attaquant (.*) \(\[(.*)\]\)(\s*)Armes: (\d*)% Bouclier: (\d*)% Coque: (\d*)%/',
         $rawRC, $reg);
@@ -2405,7 +2405,7 @@ function parseRC($rawRC)
     preg_match('/Le d.fenseur a perdu au total (\d*) unit.s/', $rawRC, $reg);
     $return['pertes_D'] = trim($reg[1]);
 
-    // Extraction du champ de dÈbris et du pourcentage de lune
+    // Extraction du champ de d√©bris et du pourcentage de lune
     preg_match('/Un champ de d.bris contenant (\d*) unit.s de m.tal et (\d*) unit.s de cristal(.*)/',
         $rawRC, $reg);
     $return['debris_M'] = trim($reg[1]);
@@ -2413,13 +2413,13 @@ function parseRC($rawRC)
     if (preg_match('/une lune est de (\d*)( ?)%/', $rawRC, $reg))
         $return['lune'] = trim($reg[1]);
 
-    // Extraction du rÈsultat du RC
+    // Extraction du r√©sultat du RC
     // A = victoire de l'attaquant
-    // D = victoire du dÈfenseur
+    // D = victoire du d√©fenseur
     // N = match nul
     if (preg_match('/L\'attaquant a gagn. la bataille/', $rawRC)) {
         $return['victoire'] = 'A';
-        // Extraction des ressources gagnÈes
+        // Extraction des ressources gagn√©es
         preg_match('/(\d*) unit.s de m.tal, (\d*) unit.s de cristal et (\d*) unit.s de deut.rium/',
             $rawRC, $reg);
         $return['gain_M'] = trim($reg[1]);
@@ -2443,23 +2443,23 @@ function parseRC($rawRC)
 
 /**
  * Parsing de chaque round des RC
- * @param string $rawRC RC ‡ analyser
- * @param int $nb_rounds Nombre de round du RC ‡ analyser
+ * @param string $rawRC RC √† analyser
+ * @param int $nb_rounds Nombre de round du RC √† analyser
  * @param array $opponents Tableau contenant le nom de chaque joueur du RC
- * @return array $row_RC Tableau contenant pour chaque round du RC, les flottes/dÈfenses de chaque joueur
+ * @return array $row_RC Tableau contenant pour chaque round du RC, les flottes/d√©fenses de chaque joueur
  */
 function parseRCround($rawRC, $nb_rounds, $opponents, $victoire)
 {
     $rawRC = preg_replace("/ \n/", '|', $rawRC);
     $row_RC = array();
-    $row_RC_opponent = array('P.transp.' => -1, 'G.transp.' => -1, 'Ch.lÈger' => -1,
+    $row_RC_opponent = array('P.transp.' => -1, 'G.transp.' => -1, 'Ch.l√©ger' => -1,
         'Ch.lourd' => -1, 'Croiseur' => -1, 'V.bataille' => -1, 'V.colonisation' => -1,
         'Recycleur' => -1, 'Sonde' => -1, 'Bombardier' => -1, 'Destr.' => -1, 'Rip' => -
-        1, 'Sat.sol.' => -1, 'Traqueur' => -1, 'Missile' => -1, 'L.lÈger.' => -1,
+        1, 'Sat.sol.' => -1, 'Traqueur' => -1, 'Missile' => -1, 'L.l√©ger.' => -1,
         'L.lourd' => -1, 'Can.Gauss' => -1, 'Art.ions' => -1, 'Lanc.plasma' => -1,
         'P.bouclier' => -1, 'G.bouclier' => -1, );
 
-    $decoupe = explode('points de dÈg‚ts||', $rawRC);
+    $decoupe = explode('points de d√©g√¢ts||', $rawRC);
     for ($idx_round = 0; $idx_round < $nb_rounds; $idx_round++) {
         $row_RC[$idx_round] = array();
         for ($idx_opp = 0; $idx_opp < sizeof($opponents); $idx_opp++) {
@@ -2505,18 +2505,18 @@ function parseRCround($rawRC, $nb_rounds, $opponents, $victoire)
 /**
  * Reconstruction des RC
  * @global $db
- * @param int $id_RC RC ‡ reconstituer
- * @return string $template_RC reconstituÈ
+ * @param int $id_RC RC √† reconstituer
+ * @return string $template_RC reconstitu√©
  */
 function UNparseRC($id_RC)
 {
     global $db;
 
-    $key_ships = array('PT' => 'P.transp.', 'GT' => 'G.transp.', 'CLE' => 'Ch.lÈger',
+    $key_ships = array('PT' => 'P.transp.', 'GT' => 'G.transp.', 'CLE' => 'Ch.l√©ger',
         'CLO' => 'Ch.lourd', 'CR' => 'Croiseur', 'VB' => 'V.bataille', 'VC' =>
         'V.colonisation', 'REC' => 'Recycleur', 'SE' => 'Sonde', 'BMD' => 'Bombardier',
         'DST' => 'Destr.', 'EDLM' => 'Rip', 'SAT' => 'Sat.sol.', 'TRA' => 'Traqueur');
-    $key_defs = array('LM' => 'Missile', 'LLE' => 'L.lÈger.', 'LLO' => 'L.lourd',
+    $key_defs = array('LM' => 'Missile', 'LLE' => 'L.l√©ger.', 'LLO' => 'L.lourd',
         'CG' => 'Can.Gauss', 'AI' => 'Art.ions', 'LP' => 'Lanc.plasma', 'PB' =>
         'P.bouclier', 'GB' => 'G.bouclier');
     $base_ships = array('PT' => array(4000, 10, 5), 'GT' => array(12000, 25, 5),
@@ -2530,7 +2530,7 @@ function UNparseRC($id_RC)
         500, 150), 'LP' => array(100000, 300, 3000), 'PB' => array(20000, 2000, 1), 'GB' =>
         array(100000, 10000, 1));
 
-    // RÈcupÈration des constantes du RC
+    // R√©cup√©ration des constantes du RC
     $query = 'SELECT dateRC, coordinates, nb_rounds, victoire, pertes_A, pertes_D, gain_M, gain_C, 
     gain_D, debris_M, debris_C, lune FROM ' . TABLE_PARSEDRC . ' WHERE id_rc = ' .
         $id_RC;
@@ -2540,7 +2540,7 @@ function UNparseRC($id_RC)
     $dateRC = date('d.m.Y H:i:s', $dateRC);
     $template = 'Les flottes suivantes s\'affrontent (' . $dateRC . "):\n\n";
 
-    // RÈcupÈration de chaque round du RC
+    // R√©cup√©ration de chaque round du RC
     for ($idx = 1; $idx <= $nb_rounds; $idx++) {
         $query = 'SELECT id_rcround, attaque_tir, attaque_puissance, attaque_bouclier, defense_tir, 
       defense_puissance, defense_bouclier FROM ' . TABLE_PARSEDRCROUND .
@@ -2549,7 +2549,7 @@ function UNparseRC($id_RC)
         $result_round = $db->sql_query($query);
         list($id_rcround, $attaque_tir, $attaque_puissance, $attaque_bouclier, $defense_tir,
             $defense_puissance, $defense_bouclier) = $db->sql_fetch_row($result_round);
-		// On formate les rÈsultats
+		// On formate les r√©sultats
 		$nf_gain_M = number_format($gain_M,0,',','.');
 		$nf_gain_C = number_format($gain_C,0,',','.');
 		$nf_gain_D = number_format($gain_D,0,',','.');
@@ -2564,7 +2564,7 @@ function UNparseRC($id_RC)
 		$nf_defense_puissance = number_format($defense_puissance,0,',','.');
 		$nf_defense_bouclier = number_format($defense_bouclier,0,',','.');
 	
-        // RÈcupÈration de chaque attaquant du RC
+        // R√©cup√©ration de chaque attaquant du RC
         $query = 'SELECT player, coordinates, Armes, Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, 
       SE, BMD, DST, EDLM, TRA FROM ' . TABLE_ROUND_ATTACK .
             ' WHERE id_rcround = ' . $id_rcround;
@@ -2598,10 +2598,10 @@ function UNparseRC($id_RC)
 				$template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
 			}
             else
-                $template .= ' dÈtruit.' . "\n\n";
-        } // Fin rÈcupÈration de chaque attaquant du RC
+                $template .= ' d√©truit.' . "\n\n";
+        } // Fin r√©cup√©ration de chaque attaquant du RC
 
-        // RÈcupÈration de chaque dÈfenseur du RC
+        // R√©cup√©ration de chaque d√©fenseur du RC
         $query = 'SELECT player, coordinates, Armes, Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, 
       SE, BMD, SAT, DST, EDLM, TRA, LM, LLE, LLO, CG, AI, LP, PB, GB FROM ' .
             TABLE_ROUND_DEFENSE . ' WHERE 
@@ -2613,7 +2613,7 @@ function UNparseRC($id_RC)
             $key = '';
             $ship = 0;
             $vivant_def = false;
-            $template .= 'DÈfenseur ' . $player;
+            $template .= 'D√©fenseur ' . $player;
             $ship_type = 'Type';
             $ship_nombre = 'Nombre';
             $ship_armes = 'Armes';
@@ -2647,51 +2647,51 @@ function UNparseRC($id_RC)
 				$template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
 			}
             else
-                $template .= ' dÈtruit.' . "\n\n";
-        } // Fin rÈcupÈration de chaque dÈfenseur du RC
+                $template .= ' d√©truit.' . "\n\n";
+        } // Fin r√©cup√©ration de chaque d√©fenseur du RC
 
-        // RÈsultat du round
+        // R√©sultat du round
         if ($attaque_tir != 0 || $defense_tir != 0) {
             $template .= 'La flotte attaquante tire ' . $nf_attaque_tir .
                 ' fois avec une force totale de ' . $nf_attaque_puissance .
-                ' sur le dÈfenseur. Les boucliers du dÈfenseur absorbent ' . $nf_defense_bouclier .
+                ' sur le d√©fenseur. Les boucliers du d√©fenseur absorbent ' . $nf_defense_bouclier .
                 ' points de dommage.' . "\n\n";
-            $template .= 'La flotte de dÈfense tire ' . $nf_defense_tir .
+            $template .= 'La flotte de d√©fense tire ' . $nf_defense_tir .
                 ' fois sur l\'attaquant avec une force de ' . $nf_defense_puissance . '. Les boucliers de l\'attaquant absorbent ' .
                 $nf_attaque_bouclier . ' points de dommage.' . "\n\n";
         }
-    } // Fin rÈcupÈration de chaque round du RC
+    } // Fin r√©cup√©ration de chaque round du RC
 
-    // Qui a remportÈ le combat ?
+    // Qui a remport√© le combat ?
 	    switch ($victoire) {
         case 'N':
-            $template .= 'La bataille se termine par un match nul, les deux flottes rentrent vers leurs planËtes respectives.' .
+            $template .= 'La bataille se termine par un match nul, les deux flottes rentrent vers leurs plan√®tes respectives.' .
                 "\n\n";
             break;
         case 'A':
-            $template .= 'L\'attaquant a gagnÈ la bataille ! Il emporte ' .
-                $nf_gain_M . ' unitÈs de mÈtal, ' . $nf_gain_C . ' unitÈs de cristal et ' . $nf_gain_D .
-                ' unitÈs de deutÈrium.' . "\n\n";
+            $template .= 'L\'attaquant a gagn√© la bataille ! Il emporte ' .
+                $nf_gain_M . ' unit√©s de m√©tal, ' . $nf_gain_C . ' unit√©s de cristal et ' . $nf_gain_D .
+                ' unit√©s de deut√©rium.' . "\n\n";
             break;
         case 'D':
-            $template .= 'Le dÈfenseur a gagnÈ la bataille !' . "\n\n";
+            $template .= 'Le d√©fenseur a gagn√© la bataille !' . "\n\n";
             break;
     }
 
-    // Pertes et champs de dÈbris
-    $template .= 'L\'attaquant a perdu au total ' . $nf_pertes_A . ' unitÈs.' . "\n";
-    $template .= 'Le dÈfenseur a perdu au total ' . $nf_pertes_D . ' unitÈs.' . "\n";
-    $template .= 'Un champ de dÈbris contenant ' . $nf_debris_M .
-        ' de mÈtal et ' . $nf_debris_C . ' de cristal se forme dans l\'orbite de la planËte.' .
+    // Pertes et champs de d√©bris
+    $template .= 'L\'attaquant a perdu au total ' . $nf_pertes_A . ' unit√©s.' . "\n";
+    $template .= 'Le d√©fenseur a perdu au total ' . $nf_pertes_D . ' unit√©s.' . "\n";
+    $template .= 'Un champ de d√©bris contenant ' . $nf_debris_M .
+        ' de m√©tal et ' . $nf_debris_C . ' de cristal se forme dans l\'orbite de la plan√®te.' .
         "\n";
 	
 	$lunePourcent = floor(($debris_M + $debris_C) / 100000);
 	$lunePourcent = ($lunePourcent<0 ? 0 : ($lunePourcent>20 ? 20 : $lunePourcent));
 	if ($lunePourcent>0)
-		$template .= 'La probabilitÈ de crÈation d\'une lune est de ' . $lunePourcent . ' %';
+		$template .= 'La probabilit√© de cr√©ation d\'une lune est de ' . $lunePourcent . ' %';
 		
 	if($lune==1)
-		$template .= "\nLes quantitÈs Ènormes de mÈtal et de cristal s'attirent, formant ainsi une lune dans l'orbite de cette planËte.";
+		$template .= "\nLes quantit√©s √©normes de m√©tal et de cristal s'attirent, formant ainsi une lune dans l'orbite de cette plan√®te.";
 
     return ($template);
 }
@@ -2699,7 +2699,7 @@ function UNparseRC($id_RC)
 /**
  * Enregistrement des RC
  * @global $db
- * @param string $rawRC RC brut ‡ analyser
+ * @param string $rawRC RC brut √† analyser
  */
 function insert_RC($rawRC)
 {
@@ -2739,7 +2739,7 @@ function insert_RC($rawRC)
         Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, DST, EDLM, TRA) VALUES (' .
                 $id_parsedround . ', "' . $row['pseudo'] . '", "' . $row['coordinates'] . '", ' .
                 $row['armes'] . ', ' . $row['bouclier'] . ', ' . $row['protection'] . ', "' . $parsedRC[$round][$pseudo]['P.transp.'] .
-                '", "' . $parsedRC[$round][$pseudo]['G.transp.'] . '", "' . $parsedRC[$round][$pseudo]['Ch.lÈger'] .
+                '", "' . $parsedRC[$round][$pseudo]['G.transp.'] . '", "' . $parsedRC[$round][$pseudo]['Ch.l√©ger'] .
                 '", "' . $parsedRC[$round][$pseudo]['Ch.lourd'] . '", "' . $parsedRC[$round][$pseudo]['Croiseur'] .
                 '", "' . $parsedRC[$round][$pseudo]['V.bataille'] . '", "' . $parsedRC[$round][$pseudo]['V.colonisation'] .
                 '", "' . $parsedRC[$round][$pseudo]['Recycleur'] . '", "' . $parsedRC[$round][$pseudo]['Sonde'] .
@@ -2759,14 +2759,14 @@ function insert_RC($rawRC)
         CG, AI, LP, PB, GB) VALUES (' . $id_parsedround . ', "' . $row['pseudo'] .
                 '", "' . $row['coordinates'] . '", ' . $row['armes'] . ', ' . $row['bouclier'] .
                 ', ' . $row['protection'] . ', "' . $parsedRC[$round][$pseudo]['P.transp.'] .
-                '", "' . $parsedRC[$round][$pseudo]['G.transp.'] . '", "' . $parsedRC[$round][$pseudo]['Ch.lÈger'] .
+                '", "' . $parsedRC[$round][$pseudo]['G.transp.'] . '", "' . $parsedRC[$round][$pseudo]['Ch.l√©ger'] .
                 '", "' . $parsedRC[$round][$pseudo]['Ch.lourd'] . '", "' . $parsedRC[$round][$pseudo]['Croiseur'] .
                 '", "' . $parsedRC[$round][$pseudo]['V.bataille'] . '", "' . $parsedRC[$round][$pseudo]['V.colonisation'] .
                 '", "' . $parsedRC[$round][$pseudo]['Recycleur'] . '", "' . $parsedRC[$round][$pseudo]['Sonde'] .
                 '", "' . $parsedRC[$round][$pseudo]['Bombardier'] . '", "' . $parsedRC[$round][$pseudo]['Destr.'] .
                 '", "' . $parsedRC[$round][$pseudo]['Rip'] . '", "' . $parsedRC[$round][$pseudo]['Sat.sol.'] .
                 '", "' . $parsedRC[$round][$pseudo]['Traqueur'] . '", "' . $parsedRC[$round][$pseudo]['Missile'] .
-                '", "' . $parsedRC[$round][$pseudo]['L.lÈger.'] . '", "' . $parsedRC[$round][$pseudo]['L.lourd'] .
+                '", "' . $parsedRC[$round][$pseudo]['L.l√©ger.'] . '", "' . $parsedRC[$round][$pseudo]['L.lourd'] .
                 '", "' . $parsedRC[$round][$pseudo]['Can.Gauss'] . '", "' . $parsedRC[$round][$pseudo]['Art.ions'] .
                 '", "' . $parsedRC[$round][$pseudo]['Lanc.plasma'] . '", "' . $parsedRC[$round][$pseudo]['P.bouclier'] .
                 '", "' . $parsedRC[$round][$pseudo]['G.bouclier'] . '")';
@@ -2782,14 +2782,14 @@ function insert_RC($rawRC)
 /**
  * Fonction de calcul du ratio
  * @param int $player user_id ID du joueur
- * @return array ratio et divers calculs intermÈdiaires pour l'utilisateur en question
+ * @return array ratio et divers calculs interm√©diaires pour l'utilisateur en question
  * @author Bousteur 25/11/2006
  */
 function ratio_calc($player)
 {
     global $db, $user_data;
 
-    //rÈcupÈration des donnÈes nÈcessaires
+    //r√©cup√©ration des donn√©es n√©cessaires
     $sqlrecup = "SELECT planet_added_web, planet_added_ogs, planet_exported, search, spy_added_web, spy_added_ogs, spy_exported, rank_added_web, rank_added_ogs, rank_exported FROM " .
         TABLE_USER . " WHERE user_id='" . $player . "'";
     $result = $db->sql_query($sqlrecup);
@@ -2810,7 +2810,7 @@ function ratio_calc($player)
         $row = $db->sql_fetch_assoc($result);
         $max = $row['count'];
     }
-    //pour Èviter la division par zÈro
+    //pour √©viter la division par z√©ro
     if ($planetimporttotal == 0)
         $planetimporttotal = 1;
     if ($spyimporttotal == 0)
@@ -2841,12 +2841,12 @@ function ratio_calc($player)
     $array = array($result, $ratio_searchpenality, $ratio_search, $ratio_penality, $ratio_rank_penality,
         $ratio_spy_penality, $ratio_planet_penality);
 
-    //retourne le ratio et calculs intermÈdiaires
+    //retourne le ratio et calculs interm√©diaires
     return $array;
 }
 
 /**
- * Fonction de test d'autorisation d'effectuer une action en fonction du ratio ou de l'appartenance ‡ un groupe qui a un ratio illimitÈ
+ * Fonction de test d'autorisation d'effectuer une action en fonction du ratio ou de l'appartenance √† un groupe qui a un ratio illimit√©
  * @return bool vrai si l'utilisateur peut faire des recherches
  * @author Bousteur 28/11/2006
  */

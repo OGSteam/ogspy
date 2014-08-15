@@ -29,7 +29,7 @@ function create_pie($_data, $_legend, $_title, $conteneur, $theme = true)
     //   $retour = import_js();
     $retour = "";
 
-    // test erreurs donnés
+    // test erreurs donnÃ©s
     if (!check_var($_data, "Special", "#^[0-9(_x_)]+$#") || !check_var($_legend,
         "Text") || !check_var($_title, "Text") || !check_var($conteneur, "Text")) {
         $retour .= affiche_error($conteneur, 'erreur 1');
@@ -47,7 +47,7 @@ function create_pie($_data, $_legend, $_title, $conteneur, $theme = true)
         return $retour;
     }
 
-    // préparation des données
+    // prÃ©paration des donnÃ©es
     $i = 0;
     $temp = array();
     while ($i < count($data)) {
@@ -58,7 +58,7 @@ function create_pie($_data, $_legend, $_title, $conteneur, $theme = true)
     $format_data = implode(" , ", $temp);
 
 
-    // création du script
+    // crÃ©ation du script
     $retour .= "<script type=\"text/javascript\">
 var " . $conteneur . ";
 $(document).ready(function() {
@@ -136,7 +136,7 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 	//   $retour = import_js();
 	$retour = "";
 
-	// test erreurs donnés
+	// test erreurs donnÃ©s
 	if (!check_var($_data, "Special", "#^[0-9(_x_)]+$#") || !check_var($_legend,
         "Text") || !check_var($_title, "Text") || !check_var($conteneur, "Text")) {
 	$retour .= affiche_error($conteneur, 'erreur 1');
@@ -154,7 +154,7 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 		return $retour;
 	}
 
-	// préparation des données
+	// prÃ©paration des donnÃ©es
 	$i = 0;
 	$temp = array();
 	while ($i < count($data)) {
@@ -165,7 +165,7 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 	$format_data = implode(" , ", $temp);
 
 
-	// création du script
+	// crÃ©ation du script
 	$retour .= "<script type=\"text/javascript\">
 	var " . $conteneur . ";
 	$(document).ready(function() {
@@ -263,7 +263,7 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
     $date_max = $_date_max;
     $player_comp = $_comp;
 
-    // récuperation des datas
+    // rÃ©cuperation des datas
 
     $data = array();
     $tables = array(TABLE_RANK_PLAYER_POINTS, TABLE_RANK_PLAYER_ECO,
@@ -401,7 +401,7 @@ function graph_theme()
     $retour = " 
 /**
  * Dark blue theme for Highcharts JS
- * @author Torstein Hønsi
+ * @author Torstein HÃ¸nsi
  */
 
 Highcharts.theme = {
@@ -687,13 +687,13 @@ function create_multi_curve($titre, $sous_titre, $data, $names, $conteneur, $the
 
     // traitement des datas recu
     foreach ($names as $name) {
-        if (isset($data[$name])) { //au moins 2 résultats
+        if (isset($data[$name])) { //au moins 2 rÃ©sultats
 
             $series[] = "{ name: '" . $name . "',data: [" . implode(',', $data[$name]) .
                 "]}";
         }
     }
-    // traitement final des données
+    // traitement final des donnÃ©es
     $serie = implode(",", $series);
 
 

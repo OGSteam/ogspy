@@ -1,7 +1,7 @@
 <?php
 /** $Id: about_ogsteam.php 7665 2012-07-09 14:44:26Z luke_skywalker $ **/
 /**
-*  Panneau d'affichage: A propos de l'OGsteam et des contributeurs à OGSpy
+*  Panneau d'affichage: A propos de l'OGsteam et des contributeurs Ã  OGSpy
 * @package OGSpy
 * @version 3.04b ($Rev: 7665 $)
 * @subpackage views
@@ -40,7 +40,7 @@ if (!defined('IN_SPYOGAME')) {
 	<tr>
 		<td class="c" width="100" height="100" align="center" valign="middle"><img src="http://www.gravatar.com/avatar/201bc534b68afd93f7474a96a911effe.png" width="80" title="Aeris"></td>
 		<td class="l">
-			&nbsp;<b><font color="Yellow" size="2">Aéris</font></b><br />
+			&nbsp;<b><font color="Yellow" size="2">AÃ©ris</font></b><br />
 			<center><b>Administrateur du Site OGSteam.fr</b></center><br />
 		</td> 
 	</tr> 
@@ -48,7 +48,7 @@ if (!defined('IN_SPYOGAME')) {
 		<td class="c" width="100" height="100" align="center" valign="middle"><img src="http://forum.ogsteam.fr/index.php?action=dlattach;attach=76;type=avatar" width="80" title="Capi"></td>
 		<td class="l">
 			&nbsp;<a><font color="Yellow" size="2">Capi</font></a><br />
-			<center><b>Développeur / Testeur<br />
+			<center><b>DÃ©veloppeur / Testeur<br />
 			<font color="orange">Capi capi, capo...</font></b></center><br />
 		</td>
 	</tr>
@@ -66,7 +66,7 @@ if (!defined('IN_SPYOGAME')) {
 			<br/>
 			<ul>
 				<li><b>Responsable Projet</b></li>
-				<li><b>Développeur Xtense - <i>Script GreaseMonkey</i></b></li>
+				<li><b>DÃ©veloppeur Xtense - <i>Script GreaseMonkey</i></b></li>
 			</ul>
 		</td>
 	</tr>
@@ -76,10 +76,10 @@ if (!defined('IN_SPYOGAME')) {
 			<b><font color="Yellow" size="2">Jedinight</font></b>
 			<br />
 			<ul>
-				<li><b>Développeur Xtense - <i>Module et Xtense for Firefox</i></b></li>
-				<li><b>Développeur OGSPY</b></li>
-				<li><b>Développeur module <i>Hostiles</i></b></li>
-				<li><b>Débuggueur</b></li>
+				<li><b>DÃ©veloppeur Xtense - <i>Module et Xtense for Firefox</i></b></li>
+				<li><b>DÃ©veloppeur OGSPY</b></li>
+				<li><b>DÃ©veloppeur module <i>Hostiles</i></b></li>
+				<li><b>DÃ©buggueur</b></li>
 			</ul>
 		</td>
 	</tr>
@@ -87,42 +87,42 @@ if (!defined('IN_SPYOGAME')) {
 		<td class="c" width="100" height="100" align="center" valign="middle"><img src="http://www.mx2k.com/utilisateurphoto/65897-11022011-Bender.jpg" width="80" title="Machine"></td> 
 		<td class="l"> 
 			&nbsp;<b><font color="Yellow" size="2">Machine</font></b><br /> 
-			<center><b>Développeur - Débuggueur</b></center><br /> 
+			<center><b>DÃ©veloppeur - DÃ©buggueur</b></center><br /> 
 		</td>
 	</tr>
 	<tr> 
 		<td class="c" width="100" height="100" align="center" valign="middle"><img src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Ninety"></td> 
 		<td class="l"> 
 			&nbsp;<b><font color="Yellow" size="2">Ninety</font></b><br /> 
-			<center><b>Développeur</b></center><br /> 
+			<center><b>DÃ©veloppeur</b></center><br /> 
 		</td>
 	</tr> 
 	<tr> 
 		<td class="c" width="100" height="100" align="center" valign="middle"><img src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Shad"></td> 
 		<td class="l"> 
 			&nbsp;<b><font color="Yellow" size="2">Shad</font></b><br /> 
-			<center><b>Développeur - Débuggueur</b></center><br /> 
+			<center><b>DÃ©veloppeur - DÃ©buggueur</b></center><br /> 
 		</td>
 	</tr>
 	<tr> 
 		<td class="c" width="100" height="100" align="center" valign="middle"><img src="http://r27.imgfast.net/users/2712/24/28/03/avatars/165-4.gif" width="80" title="Superbox"></td> 
 		<td class="l"> 
 			&nbsp;<b><font color="Yellow" size="2">Superbox</font></b><br /> 
-			<center><b>Développeur</b></center><br />
+			<center><b>DÃ©veloppeur</b></center><br />
 		</td> 
 	</tr> 
 	<tr> 
 		<td class="c" width="100" height="100" align="center" valign="middle"><img src="http://board.ogame.fr/wcf/images/avatars/avatar-49964.jpg" width="80" title="Xaviernuma"></td> 
 		<td class="l"> 
 			&nbsp;<b><font color="Yellow" size="2">Xaviernuma</font></b><br /> 
-			<center><b>Développeur</b></center><br />
+			<center><b>DÃ©veloppeur</b></center><br />
 		</td> 
 	</tr>
 	<tr> 
 		<td class="c" width="100" height="100" align="center" valign="middle"><img src="http://img57.xooimage.com/files/6/3/a/moe-148053-dxlsma..._200x200-3669dc4.jpg" width="80" title="pitch314"></td> 
 		<td class="l"> 
 			&nbsp;<b><font color="Yellow" size="2">Pitch314</font></b><br /> 
-			<center><b>Développeur</b></center><br />
+			<center><b>DÃ©veloppeur</b></center><br />
 		</td> 
 	</tr> 
 	<tr>

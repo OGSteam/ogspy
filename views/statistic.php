@@ -31,7 +31,7 @@ require_once 'views/page_header.php';
 
 <table>
 	<tr>
-		<td class="c" colspan="<?php echo $galaxy_step * 2 + 2;?>" align="center">État de la cartographie</td>
+		<td class="c" colspan="<?php echo $galaxy_step * 2 + 2;?>" align="center">Ã‰tat de la cartographie</td>
 	</tr>
 	
 	<?php
@@ -129,10 +129,10 @@ require_once 'views/page_header.php';
 	while ($galaxy_up < intval($server_config['num_of_galaxies']));
 	
 	$legend = '<table width="225">';
-	$legend .= '<tr><td class="c" colspan="2" align="center" width="150">Légende</td></tr>';
-	$legend .= '<tr><td class="c">Planètes répertoriées</td><th><font color="lime">xx</font></th></tr>';
-	$legend .= '<tr><td class="c">Planètes colonisables</td><th><font color="orange"><b>xx</b></font></th></tr>';
-	$legend .= '<tr><td class="c">Planètes mises à jour récemment</td><th style="color: lime; text-decoration: blink;"><b>xx</b></th></tr>';
+	$legend .= '<tr><td class="c" colspan="2" align="center" width="150">LÃ©gende</td></tr>';
+	$legend .= '<tr><td class="c">PlanÃ¨tes rÃ©pertoriÃ©es</td><th><font color="lime">xx</font></th></tr>';
+	$legend .= '<tr><td class="c">PlanÃ¨tes colonisables</td><th><font color="orange"><b>xx</b></font></th></tr>';
+	$legend .= '<tr><td class="c">PlanÃ¨tes mises Ã  jour rÃ©cemment</td><th style="color: lime; text-decoration: blink;"><b>xx</b></th></tr>';
 	$legend .= '</table>';
 	
 	$legend = htmlentities($legend);
@@ -141,7 +141,7 @@ require_once 'views/page_header.php';
 	
 	<tr>
 		<td class="c" colspan="<?php echo $galaxy_step * 2 + 2; ?>" align="center">
-			<a style="cursor:pointer" onmouseover="this.T_WIDTH=210;this.T_TEMP=0;return escape('<?php echo $legend;?>')">Légende</a>
+			<a style="cursor:pointer" onmouseover="this.T_WIDTH=210;this.T_TEMP=0;return escape('<?php echo $legend;?>')">LÃ©gende</a>
 		</td>
 	</tr>
 </table>
@@ -153,7 +153,7 @@ require_once 'views/page_header.php';
 	
 	if ($user_data['user_admin'] == 1 || $user_data['user_coadmin'] == 1 || $user_data['management_user'] == 1) {
 		echo '<tr align="right">';
-		echo '<td colspan="7"><a href="index.php?action=raz_ratio">Remise à zéro</a></td>';
+		echo '<td colspan="7"><a href="index.php?action=raz_ratio">Remise Ã  zÃ©ro</a></td>';
 		echo '</tr>';
 	}
 	
@@ -161,10 +161,10 @@ require_once 'views/page_header.php';
 	
 	<tr align="center">
 		<td class="c" width="100">Pseudos</td>
-		<td class="c" width="100">Planètes</td>
+		<td class="c" width="100">PlanÃ¨tes</td>
 		<td class="c" width="100">Rapports d'espionnage</td>
 		<td class="c" width="100">Classement (lignes)</td>
-		<td class="c" width="100">Recherches<br />effectuées</td>
+		<td class="c" width="100">Recherches<br />effectuÃ©es</td>
 		<td class="c" width="100">Ratio</td>
 		<td class="c" width="100">Xtense</td>
 	</tr>
@@ -225,7 +225,7 @@ require_once 'views/page_header.php';
 				case 'FF': $xtense_type = 'Firefox ('. $v['xtense_version'] .')'; break;
 				case 'GM-FF': $xtense_type = 'GreaseMonkey Firefox ('. $v['xtense_version'] .')'; break;
 				case 'GM-GC': $xtense_type = 'GreaseMonkey Google Chrome ('. $v['xtense_version'] .')'; break;
-				case 'GM-OP': $xtense_type = 'GreaseMonkey Opéra ('. $v['xtense_version'] .')'; break;
+				case 'GM-OP': $xtense_type = 'GreaseMonkey OpÃ©ra ('. $v['xtense_version'] .')'; break;
 				default: $xtense_type = 'N/A ('.$v['xtense_type'].')';
 			}
 			
@@ -249,10 +249,10 @@ require_once 'views/page_header.php';
 	
 		<tr align="center">
 			<td class="c">Pseudos</td>
-			<td class="c">Planètes</td>
+			<td class="c">PlanÃ¨tes</td>
 			<td class="c">Rapports d'espionnage</td>
 			<td class="c">Classement (lignes)</td>
-			<td class="c">Recherches effectuées</td>
+			<td class="c">Recherches effectuÃ©es</td>
 			<td class="c">Ratio</td>
 			<td class="c">Xtense</td>
 		</tr>
@@ -266,7 +266,7 @@ require_once 'views/page_header.php';
 	?>
 	
 		<tr>
-			<td colspan="7">(*) connecté sur le serveur<br />(**) connecté avec Xtense ou GMXtense</td>
+			<td colspan="7">(*) connectÃ© sur le serveur<br />(**) connectÃ© avec Xtense ou GMXtense</td>
 		</tr>
 	
 	<?php

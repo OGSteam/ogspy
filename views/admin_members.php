@@ -21,10 +21,10 @@ $usergroup_list = usergroup_get();
 
 <table width="200">
 <tr>
-	<td class="c" colspan="3">Création d'un nouveau compte</td>
+	<td class="c" colspan="3">CrÃ©ation d'un nouveau compte</td>
 </tr>
 <tr>
-	<th width="100"><input type="button" value="Créer nouveau membre" onclick="document.getElementById('new_member').style.visibility = 'visible';"></th>
+	<th width="100"><input type="button" value="CrÃ©er nouveau membre" onclick="document.getElementById('new_member').style.visibility = 'visible';"></th>
 </tr>
 </table>
 <br />
@@ -41,7 +41,7 @@ if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {?>
 	<td class="c" width="120">Gestion des membres&nbsp;<?php echo help("admin_member_manager");?></td>
 <?php }?>
 	<td class="c" width="120">Gestion des classements&nbsp;<?php echo help("admin_ranking_manager");?></td>
-	<td class="c" width="120">Dernière connexion</td>
+	<td class="c" width="120">DerniÃ¨re connexion</td>
 	<td class="c" colspan="3">&nbsp;</td>
 </tr>
 <?php
@@ -58,15 +58,15 @@ foreach ($user_info as $v) {
 
 	$auth = "<table width=\"100%\">";
 	$auth .= "<tr><td class=\"c\" colspan=\"2\">Droits sur le serveur</td></tr>";
-	$auth .= "<tr><th>Ajout de systèmes solaires</th><th>".$YesNo[$user_auth["server_set_system"]]."</th></tr>";
+	$auth .= "<tr><th>Ajout de systÃ¨mes solaires</th><th>".$YesNo[$user_auth["server_set_system"]]."</th></tr>";
 	$auth .= "<tr><th>Ajout de rapports d\'espionnage</th><th>".$YesNo[$user_auth["server_set_spy"]]."</th></tr>";
 	$auth .= "<tr><th>Ajout de classements</th><th>".$YesNo[$user_auth["server_set_ranking"]]."</th></tr>";
-	$auth .= "<tr><th>Affichage des positions protégées</th><th>".$YesNo[$user_auth["server_show_positionhided"]]."</th></tr>";
+	$auth .= "<tr><th>Affichage des positions protÃ©gÃ©es</th><th>".$YesNo[$user_auth["server_show_positionhided"]]."</th></tr>";
 
 	$auth .= "<tr><td class=\"c\" colspan=\"2\">Droits clients externes</td></tr>";
 	$auth .= "<tr><th>Connexion au serveur</th><th>".$YesNo[$user_auth["ogs_connection"]]."</th></tr>";
-	$auth .= "<tr><th>Importation de systèmes solaires</th><th>".$YesNo[$user_auth["ogs_set_system"]]."</th></tr>";
-	$auth .= "<tr><th>Exportation de systèmes solaires</th><th>".$YesNo[$user_auth["ogs_get_system"]]."</th></tr>";
+	$auth .= "<tr><th>Importation de systÃ¨mes solaires</th><th>".$YesNo[$user_auth["ogs_set_system"]]."</th></tr>";
+	$auth .= "<tr><th>Exportation de systÃ¨mes solaires</th><th>".$YesNo[$user_auth["ogs_get_system"]]."</th></tr>";
 	$auth .= "<tr><th>Importation de rapports d\'espionnage</th><th>".$YesNo[$user_auth["ogs_set_spy"]]."</th></tr>";
 	$auth .= "<tr><th>Exportation de rapports d\'espionnage</th><th>".$YesNo[$user_auth["ogs_get_spy"]]."</th></tr>";
 	$auth .= "<tr><th>Importation de classements</th><th>".$YesNo[$user_auth["ogs_set_ranking"]]."</th></tr>";
@@ -105,15 +105,15 @@ foreach ($user_info as $v) {
 	}
 		echo "\t"."<th><select name='management_ranking'><option value='1'>Oui</option><option value='0'$management_ranking_off>Non</option></select></th>"."\n";
 		echo "\t"."<th>".$last_visit."</th>"."\n";
-	echo "\t"."<th><input type='image' src='images/usercheck.png' title='Valider les paramètres de ".$name."'></th>"."\n";
+	echo "\t"."<th><input type='image' src='images/usercheck.png' title='Valider les paramÃ¨tres de ".$name."'></th>"."\n";
 	echo "</form>"."\n";
 
-	echo "<form method='POST' action='index.php?action=delete_member&user_id=".$user_id."' onsubmit=\"return confirm('Etes-vous sûr de vouloir supprimer ".$name."');\">"."\n";
+	echo "<form method='POST' action='index.php?action=delete_member&user_id=".$user_id."' onsubmit=\"return confirm('Etes-vous sÃ»r de vouloir supprimer ".$name."');\">"."\n";
 	echo "\t"."<th><input type='image' src='images/userdrop.png' title='Supprimer le compte de ".$name."'></th>"."\n";
 	echo "</form>"."\n";
 
 	echo "<form method='POST' action='index.php?action=new_password&user_id=".$user_id."' id=".$user_id.">"."\n";
-	echo "\t"."<th><img style=\"cursor:pointer\" src='images/userpwd.png' title='Changer le mot de passe de ".$name."' onclick=\"if(confirm('Etes-vous sûr de vouloir changer le mot de passe de ".$name."')){document.all.pass_name.value='".$name."';document.all.pass_id.value='".$user_id."';document.getElementById('pass_new').value = '';document.getElementById('new_pass').style.visibility = 'visible';}\"><input type=\"hidden\" id=\"".$name."\" name=\"pass_".$user_id."\" value=\"\"></th>"."\n"; 
+	echo "\t"."<th><img style=\"cursor:pointer\" src='images/userpwd.png' title='Changer le mot de passe de ".$name."' onclick=\"if(confirm('Etes-vous sÃ»r de vouloir changer le mot de passe de ".$name."')){document.all.pass_name.value='".$name."';document.all.pass_id.value='".$user_id."';document.getElementById('pass_new').value = '';document.getElementById('new_pass').style.visibility = 'visible';}\"><input type=\"hidden\" id=\"".$name."\" name=\"pass_".$user_id."\" value=\"\"></th>"."\n"; 
 	echo "</form>"."\n";
 	echo "</tr>"."\n";
 }
@@ -121,7 +121,7 @@ foreach ($user_info as $v) {
 </table>
 <div id="new_pass" name="new_pass" style="visibility:hidden;position: fixed;    top: 300px;     left: 500;z-index: 100;"> 
 	<table width="200" style="border:1px #003399 solid;" cellpadding="3"><tr><td align="center" class="c">Nouveau mot de passe</td></tr><tr><th align="center"> 
-	Laissez vide pour un mot de passe aléatoire<br> 
+	Laissez vide pour un mot de passe alÃ©atoire<br> 
 		<input type="hidden" name="pass_name" value=""><br> 
 		<input type="hidden" name="pass_id" value=""> 
 		<input type="text" name="pass" id="pass_new" value=""><br><br> 
@@ -134,7 +134,7 @@ foreach ($user_info as $v) {
 	<table><tr><td> 
 		<table width="400" style="border:1px #003399 solid;background-color:#000000" cellpadding="3"> 
 			<tr> 
-				<td align="center" class="c" colspan="2">Création d'un nouveau compte</td> 
+				<td align="center" class="c" colspan="2">CrÃ©ation d'un nouveau compte</td> 
 			</tr><tr> 
 				<th align="center">Nom :</th> 
 				<th align="center"><input name="pseudo" type="text" maxlength="15" size="20"></th> 

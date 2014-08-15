@@ -35,7 +35,7 @@ function log_ ($parameter, $option=0) {
 	}
 
 	switch ($parameter) {
-		/* ----------- Entrée Journal générique de Mod ----------- */
+		/* ----------- EntrÃ©e Journal gÃ©nÃ©rique de Mod ----------- */
 		case 'mod':
 		$line = "[$pub_action] ".$member." ";
 		if (is_array($option)) {
@@ -47,11 +47,11 @@ function log_ ($parameter, $option=0) {
 
 		/* ----------- Administration ----------- */		
 		case 'set_serverconfig' :
-		$line = "[admin] ".$member." modifie les paramètres du serveur";
+		$line = "[admin] ".$member." modifie les paramÃ¨tres du serveur";
 		break;
 		
 		case 'set_server_view' :
-		$line = "[admin] ".$member." modifie les paramètres d'affichage du serveur";
+		$line = "[admin] ".$member." modifie les paramÃ¨tres d'affichage du serveur";
 		break;
     
 		case 'set_db_size' :
@@ -63,11 +63,11 @@ function log_ ($parameter, $option=0) {
 		break;
 		
 		case 'mod_update' :
-		$line = "[admin] ".$member." met à jour le mod \"".$option."\"";
+		$line = "[admin] ".$member." met Ã  jour le mod \"".$option."\"";
 		break;
 		
 		case 'mod_uninstall' :
-		$line = "[admin] ".$member." désinstalle le mod \"".$option."\"";
+		$line = "[admin] ".$member." dÃ©sinstalle le mod \"".$option."\"";
 		break;
 		
 		case 'mod_active' :
@@ -75,7 +75,7 @@ function log_ ($parameter, $option=0) {
 		break;
 		
 		case 'mod_disable' :
-		$line = "[admin] ".$member." désactive le mod \"".$option."\"";
+		$line = "[admin] ".$member." dÃ©sactive le mod \"".$option."\"";
 		break;
 		
 		case 'mod_order' :
@@ -108,26 +108,26 @@ function log_ ($parameter, $option=0) {
 		break;
         
         case 'mod_erreur_install_bis' :
-		$line = "[admin][mod_erreur] ".$member."  mod ".$option." déjà installé ";
+		$line = "[admin][mod_erreur] ".$member."  mod ".$option." dÃ©jÃ  installÃ© ";
 		break;
         
         case 'mod_erreur_txt_warning' :
-		$line = "[admin][mod_erreur] ".$member."  mod/".$option."/version.txt mal formé ";
+		$line = "[admin][mod_erreur] ".$member."  mod/".$option."/version.txt mal formÃ© ";
 		break;
         
         
-		/* ----------- Gestion systèmes solaires et rapports ----------- */
+		/* ----------- Gestion systÃ¨mes solaires et rapports ----------- */
 		case 'load_system' :
-		$line = $member." charge le système solaire ".$option[0].":".$option[1];
+		$line = $member." charge le systÃ¨me solaire ".$option[0].":".$option[1];
 		break;
 
 		case 'load_system_OGS' :
-		$line = $member." charge ".$option[0]." planetes via OGS : ".$option[1]." insertion(".$option[1]."), mise à jour(".$option[2]."), obsolète(".$option[3]."), échec(".$option[4].") - ".$option[5]." sec";
+		$line = $member." charge ".$option[0]." planetes via OGS : ".$option[1]." insertion(".$option[1]."), mise Ã  jour(".$option[2]."), obsolÃ¨te(".$option[3]."), Ã©chec(".$option[4].") - ".$option[5]." sec";
 		break;
 
 		case 'get_system_OGS' :
-		if ($option != 0) $line = $member." récupère les planètes de la galaxie ".$option;
-		else $line = $member." récupère toutes les planètes de l'univers";
+		if ($option != 0) $line = $member." rÃ©cupÃ¨re les planÃ¨tes de la galaxie ".$option;
+		else $line = $member." rÃ©cupÃ¨re toutes les planÃ¨tes de l'univers";
 		break;
 
 		case 'load_spy' :
@@ -140,18 +140,18 @@ function log_ ($parameter, $option=0) {
 
 		case 'export_spy_sector' :
 		list($nb_spy, $galaxy, $system) = $option;
-		$line = $member." récupère ".$nb_spy." rapport(s) d'espionnage du système [".$galaxy.":".$system."]";
+		$line = $member." rÃ©cupÃ¨re ".$nb_spy." rapport(s) d'espionnage du systÃ¨me [".$galaxy.":".$system."]";
 		break;
 
 		case 'export_spy_date' :
 		list($nb_spy, $timestamp) = $option;
 		$date = strftime("%d %b %Y %H:%M", $timestamp);
-		$line = $member." récupère ".$nb_spy." rapport(s) d'espionnage postérieur au ".$date;
+		$line = $member." rÃ©cupÃ¨re ".$nb_spy." rapport(s) d'espionnage postÃ©rieur au ".$date;
 		break;
 
 		/* ----------- Gestion des erreurs ----------- */
 		case 'mysql_error' :
-		$line = 'Erreur critique mysql - Req : '.$option[0].' - Erreur n°'.$option[1].' '.$option[2];
+		$line = 'Erreur critique mysql - Req : '.$option[0].' - Erreur nÂ°'.$option[1].' '.$option[2];
 		$i=0;
 		foreach ($option[3] as $l) {
 			$line .= "\n";
@@ -182,7 +182,7 @@ function log_ ($parameter, $option=0) {
 		break;
 
 		case 'logout' :
-		$line = $member." se déconnecte";
+		$line = $member." se dÃ©connecte";
 		break;
 
 		case 'modify_account' :
@@ -196,12 +196,12 @@ function log_ ($parameter, $option=0) {
 
 		case 'create_account' :
 		$user_info = user_get($option);
-		$line = "[admin] ".$member." créé le compte de ".$user_info[0]['user_name'];
+		$line = "[admin] ".$member." crÃ©Ã© le compte de ".$user_info[0]['user_name'];
 		break;
 
 		case 'regeneratepwd' :
 		$user_info = user_get($option);
-		$line = "[admin] ".$member." génère un nouveau mot de passe pour ".$user_info[0]['user_name'];
+		$line = "[admin] ".$member." gÃ©nÃ¨re un nouveau mot de passe pour ".$user_info[0]['user_name'];
 		break;
 
 		case 'delete_account' :
@@ -210,12 +210,12 @@ function log_ ($parameter, $option=0) {
 		break;
 
 		case 'create_usergroup' :
-		$line = "[admin] ".$member." créé le groupe ".$option;
+		$line = "[admin] ".$member." crÃ©Ã© le groupe ".$option;
 		break;
 
 		case 'modify_usergroup' :
 		$usergroup_info = usergroup_get($option);
-		$line = "[admin] ".$member." modifie les paramètres du groupe ".$usergroup_info["group_name"];
+		$line = "[admin] ".$member." modifie les paramÃ¨tres du groupe ".$usergroup_info["group_name"];
 		break;
 
 		case 'delete_usergroup' :
@@ -245,7 +245,7 @@ function log_ ($parameter, $option=0) {
 			case "WEB": $support = "serveur web";break;
 		}
 		switch ($typerank) {
-			case "general": $typerank = "général";break;
+			case "general": $typerank = "gÃ©nÃ©ral";break;
 			case "fleet": $typerank = "flotte";break;
 			case "research": $typerank = "recherche";break;
 		}
@@ -261,32 +261,32 @@ function log_ ($parameter, $option=0) {
 		list($typerank, $timestamp) = $option;
 		$date = strftime("%d %b %Y %H:%M", $timestamp);
 		switch ($typerank) {
-			case "points": $typerank = "général";break;
+			case "points": $typerank = "gÃ©nÃ©ral";break;
 			case "flotte": $typerank = "flotte";break;
 			case "research": $typerank = "recherche";break;
 		}
-		$line = $member." récupère le classement ".$typerank." du ".$date;
+		$line = $member." rÃ©cupÃ¨re le classement ".$typerank." du ".$date;
 		break;
         
         /* ----------- cache ----------- */
         case 'erreur_config_cache' :
-		$line = $member." Impossible d écrire sur le fichier donfig_cache. Vérifier les droits d acces au dossier  \'cache\' ";
+		$line = $member." Impossible d Ã©crire sur le fichier donfig_cache. VÃ©rifier les droits d acces au dossier  \'cache\' ";
 		break;
 
 	   case 'erreur_mod_cache' :
-		$line = $member." Impossible d écrire sur le fichier mod_cache. Vérifier les droits d acces au dossier  \'cache\' ";
+		$line = $member." Impossible d Ã©crire sur le fichier mod_cache. VÃ©rifier les droits d acces au dossier  \'cache\' ";
 		break;
 
 		  /* ----------- cache ----------- */
        
 	   case 'key' :
-		$line = $member." Impossible de retrouver le fichier key.php. Vérifier les droits d acces au dossier  \'parameters\' ";
+		$line = $member." Impossible de retrouver le fichier key.php. VÃ©rifier les droits d acces au dossier  \'parameters\' ";
 		break;
 
 		/* ----------------------------------------- */
 
 		case 'check_var' :
-		$line = $member." envoie des données refusées par le contrôleur : ".$option[0]." - ".$option[1];
+		$line = $member." envoie des donnÃ©es refusÃ©es par le contrÃ´leur : ".$option[0]." - ".$option[1];
 		break;
 
 		case 'debug' :

@@ -30,24 +30,24 @@ function writeLog($texte){
 	$date = date("d-m-Y");
 	$heure = date("G:i");
 
-	// Assurons nous que le fichier est accessible en écriture
+	// Assurons nous que le fichier est accessible en Ã©criture
 	if (is_writable($filename)) {
 		// Dans notre exemple, nous ouvrons le fichier $filename en mode d'ajout
-		// Le pointeur de fichier est placé à la fin du fichier
-		// c'est là que le texte sera placé
+		// Le pointeur de fichier est placÃ© Ã  la fin du fichier
+		// c'est lÃ  que le texte sera placÃ©
 		if (!$handle = fopen($filename, 'a')) {
 			//echo "Impossible d'ouvrir le fichier ($filename)";
 			exit;
 		}
 		// Ecrivons quelque chose dans notre fichier.
 		if (fwrite($handle, $date ." - " . $heure . " : " . $texte . "\n") === FALSE) {
-			//echo "Impossible d'écrire dans le fichier ($filename)";
+			//echo "Impossible d'Ã©crire dans le fichier ($filename)";
 			exit;
 		}
-		//echo "L'écriture de ($texte) dans le fichier ($filename) a réussi";
+		//echo "L'Ã©criture de ($texte) dans le fichier ($filename) a rÃ©ussi";
 		fclose($handle);
 	} else {
-		//echo "Le fichier $filename n'est pas accessible en écriture.";
+		//echo "Le fichier $filename n'est pas accessible en Ã©criture.";
 	}
 }
 
@@ -64,7 +64,7 @@ if (isset($regId) && isset($message) && isset($username)) {
 	//appel co sql natif
 	$db = sql_db::getInstance($db_host, $db_user, $db_password, $db_database);
 	if (!$db->db_connect_id) {
-	die("Impossible de se connecter à la base de données : '" . $db_host . "'");
+	die("Impossible de se connecter Ã  la base de donnÃ©es : '" . $db_host . "'");
 	}
     $gcm = new GCM();
  
@@ -78,9 +78,9 @@ if (isset($regId) && isset($message) && isset($username)) {
     	
     	//$result = $gcm->send_notification($registatoin_ids, $messageArray);
     	//writeLog("$username envoie le message **$message** a $gcmRegid");
-    	//writeLog("Résultat : $result");
+    	//writeLog("RÃ©sultat : $result");
     }
-    writeLog("$username envoie un message ($message) a " . sizeof($registatoin_ids) . " membre(s) de la communauté.");
+    writeLog("$username envoie un message ($message) a " . sizeof($registatoin_ids) . " membre(s) de la communautÃ©.");
         
     //$registatoin_ids = array($regsIds);
     $messageArray = array("message" => $message, "sender" => $username, "messagetype" => "message");

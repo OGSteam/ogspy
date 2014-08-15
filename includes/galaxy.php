@@ -17,8 +17,8 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 /**
- * Vérification des droits OGSpy
- * @param string $action Droit interrogé
+ * VÃ©rification des droits OGSpy
+ * @param string $action Droit interrogÃ©
  */
 
 function galaxy_check_auth($action)
@@ -29,21 +29,21 @@ function galaxy_check_auth($action)
         case "import_planet":
             if ($user_auth["ogs_set_system"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] !=
                 1)
-                die("<!-- [AccessDenied] Accès refusé -->" . "\n" .
-                    "<!-- Vous n'avez pas les droits pour exporter des systèmes solaires -->" . "\n");
+                die("<!-- [AccessDenied] AccÃ¨s refusÃ© -->" . "\n" .
+                    "<!-- Vous n'avez pas les droits pour exporter des systÃ¨mes solaires -->" . "\n");
             break;
 
         case "export_planet":
             if ($user_auth["ogs_get_system"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] !=
                 1)
-                die("<!-- [AccessDenied] Accès refusé -->" . "\n" .
-                    "<!-- Vous n'avez pas les droits pour importer des systèmes solaires -->" . "\n");
+                die("<!-- [AccessDenied] AccÃ¨s refusÃ© -->" . "\n" .
+                    "<!-- Vous n'avez pas les droits pour importer des systÃ¨mes solaires -->" . "\n");
             break;
 
         case "import_spy":
             if ($user_auth["ogs_set_spy"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] !=
                 1)
-                die("<!-- [AccessDenied] Accès refusé -->" . "\n" .
+                die("<!-- [AccessDenied] AccÃ¨s refusÃ© -->" . "\n" .
                     "<!-- Vous n'avez pas les droits pour exporter des rapports d'espionnage -->" .
                     "\n");
             break;
@@ -51,7 +51,7 @@ function galaxy_check_auth($action)
         case "export_spy":
             if ($user_auth["ogs_get_spy"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] !=
                 1)
-                die("<!-- [AccessDenied] Accès refusé -->" . "\n" .
+                die("<!-- [AccessDenied] AccÃ¨s refusÃ© -->" . "\n" .
                     "<!-- Vous n'avez pas les droits pour importer des rapports d'espionnage -->" .
                     "\n");
             break;
@@ -59,14 +59,14 @@ function galaxy_check_auth($action)
         case "import_ranking":
             if ($user_auth["ogs_set_ranking"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] !=
                 1)
-                die("<!-- [AccessDenied] Accès refusé -->" . "\n" .
+                die("<!-- [AccessDenied] AccÃ¨s refusÃ© -->" . "\n" .
                     "<!-- Vous n'avez pas les droits pour exporter des classements -->" . "\n");
             break;
 
         case "export_ranking":
             if ($user_auth["ogs_get_ranking"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] !=
                 1)
-                die("<!-- [AccessDenied] Accès refusé -->" . "\n" .
+                die("<!-- [AccessDenied] AccÃ¨s refusÃ© -->" . "\n" .
                     "<!-- Vous n'avez pas les droits pour importer des classements -->" . "\n");
             break;
 
@@ -89,7 +89,7 @@ function galaxy_check_auth($action)
             break;
 
         default:
-            die("<!-- [ErrorFatal=18] Données transmises incorrectes  -->");
+            die("<!-- [ErrorFatal=18] DonnÃ©es transmises incorrectes  -->");
     }
 }
 
@@ -825,9 +825,9 @@ function galaxy_reportspy_show()
         intval($pub_galaxy) . " and system = " . intval($pub_system) . " and row = " .
         intval($pub_row);
     $result_astre_name = $db->sql_query($request_astre_name);
-    $astre_name = $db->sql_fetch_assoc($result_astre_name); //Récupère le nom de la planète
+    $astre_name = $db->sql_fetch_assoc($result_astre_name); //RÃ©cupÃ¨re le nom de la planÃ¨te
 
-    //RE planète
+    //RE planÃ¨te
     $request = "select id_spy, user_name, dateRE";
     $request .= " from " . TABLE_PARSEDSPY . " left join " . TABLE_USER .
         " on user_id = sender_id";
@@ -1448,7 +1448,7 @@ function galaxy_drop_ranking()
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    //Vérification des droits
+    //VÃ©rification des droits
     galaxy_check_auth("drop_ranking");
 
     if (!isset($pub_datadate) || !isset($pub_subaction)) {
@@ -1574,7 +1574,7 @@ return $obsolete;
         $indice_sup = $timestamp - 60 * 60 * 24 * $since[$indice+1] ;
         $indice_inf = $timestamp - 60 * 60 * 24 * $since[$indice-1] ;
         
-        // on peut maintenant lancer une requete générique
+        // on peut maintenant lancer une requete gÃ©nÃ©rique
         
            if ($pub_typesearch == "P") {
             $field = "last_update";
@@ -1627,33 +1627,33 @@ function UNparseRE($id_RE)
     global $table_prefix, $db;
     $show = array('flotte' => 0, 'defense' => 0, 'batiment' => 0, 'recherche' => 0);
     $flotte = array('PT' => 'Petit transporteur', 'GT' => 'Grand transporteur',
-        'CLE' => 'Chasseur léger', 'CLO' => 'Chasseur lourd', 'CR' => 'Croiseur', 'VB' =>
+        'CLE' => 'Chasseur lÃ©ger', 'CLO' => 'Chasseur lourd', 'CR' => 'Croiseur', 'VB' =>
         'Vaisseau de bataille', 'VC' => 'Vaisseau de colonisation', 'REC' => 'Recycleur',
         'SE' => 'Sonde espionnage', 'BMD' => 'Bombardier', 'DST' => 'Destructeur',
-        'EDLM' => 'Étoile de la mort', 'SAT' => 'Satellite solaire', 'TRA' => 'Traqueur');
-    $defs = array('LM' => 'Lanceur de missiles', 'LLE' => 'Artillerie laser légère',
+        'EDLM' => 'Ã‰toile de la mort', 'SAT' => 'Satellite solaire', 'TRA' => 'Traqueur');
+    $defs = array('LM' => 'Lanceur de missiles', 'LLE' => 'Artillerie laser lÃ©gÃ¨re',
         'LLO' => 'Artillerie laser lourde', 'CG' => 'Canon de Gauss', 'AI' =>
-        'Artillerie à ions', 'LP' => 'Lanceur de plasma', 'PB' => 'Petit bouclier', 'GB' =>
+        'Artillerie Ã  ions', 'LP' => 'Lanceur de plasma', 'PB' => 'Petit bouclier', 'GB' =>
         'Grand bouclier', 'MIC' => 'Missile interception', 'MIP' =>
-        'Missile interplanétaire');
-    $bats = array('M' => 'Mine de métal', 'C' => 'Mine de cristal', 'D' =>
-        'Synthétiseur de deutérium', 'CES' => 'Centrale électrique solaire', 'CEF' =>
-        'Centrale électrique de fusion', 'UdR' => 'Usine de robots', 'UdN' =>
-        'Usine de nanites', 'CSp' => 'Chantier spatial', 'HM' => 'Hangar de métal', 'HC' =>
-        'Hangar de cristal', 'HD' => 'Réservoir de deutérium', 'Lab' =>
+        'Missile interplanÃ©taire');
+    $bats = array('M' => 'Mine de mÃ©tal', 'C' => 'Mine de cristal', 'D' =>
+        'SynthÃ©tiseur de deutÃ©rium', 'CES' => 'Centrale Ã©lectrique solaire', 'CEF' =>
+        'Centrale Ã©lectrique de fusion', 'UdR' => 'Usine de robots', 'UdN' =>
+        'Usine de nanites', 'CSp' => 'Chantier spatial', 'HM' => 'Hangar de mÃ©tal', 'HC' =>
+        'Hangar de cristal', 'HD' => 'RÃ©servoir de deutÃ©rium', 'Lab' =>
         'Laboratoire de recherche', 'Ter' => 'Terraformeur', 'DdR' =>
-        'Dépôt de ravitaillement', 'Silo' => 'Silo de missiles', 'BaLu' =>
+        'DÃ©pÃ´t de ravitaillement', 'Silo' => 'Silo de missiles', 'BaLu' =>
         'Base lunaire', 'Pha' => 'Phalange de capteur', 'PoSa' =>
         'Porte de saut spatial');
     $techs = array('Esp' => 'Technologie Espionnage', 'Ordi' =>
         'Technologie Ordinateur', 'Armes' => 'Technologie Armes', 'Bouclier' =>
         'Technologie Bouclier', 'Protection' =>
         'Technologie Protection des vaisseaux spatiaux', 'NRJ' => 'Technologie Energie',
-        'Hyp' => 'Technologie Hyperespace', 'RC' => 'Technologie Réacteur à combustion',
-        'RI' => 'Technologie Réacteur à impulsion', 'PH' =>
+        'Hyp' => 'Technologie Hyperespace', 'RC' => 'Technologie RÃ©acteur Ã  combustion',
+        'RI' => 'Technologie RÃ©acteur Ã  impulsion', 'PH' =>
         'Technologie Propulsion hyperespace', 'Laser' => 'Technologie Laser', 'Ions' =>
         'Technologie Ions', 'Plasma' => 'Technologie Plasma', 'RRI' =>
-        'Réseau de recherche intergalactique', 'Graviton' => 'Technologie Graviton',
+        'RÃ©seau de recherche intergalactique', 'Graviton' => 'Technologie Graviton',
         'Astrophysique' => 'Technologie Astrophysique');
     $query = 'SELECT planet_name, coordinates, metal, cristal, deuterium, energie, activite, M, C, D, CES, CEF, UdR, UdN, CSp, HM, HC, 
 		HD, Lab, Ter, Silo, DdR, BaLu, Pha, PoSa, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, 
@@ -1683,13 +1683,13 @@ function UNparseRE($id_RE)
         '</td>
 	</tr>
 	<tr>
-		<td class="c" style="text-align:right;">Métal:</td>
+		<td class="c" style="text-align:right;">MÃ©tal:</td>
 		<th>' . number_format($row['metal'], 0, ',', $sep_mille) . '</th>
 		<td class="c" style="text-align:right;">Cristal:</td>
 		<th>' . number_format($row['cristal'], 0, ',', $sep_mille) . '</th>
 	</tr>
 	<tr>
-		<td class="c" style="text-align:right;">Deutérium:</td>
+		<td class="c" style="text-align:right;">DeutÃ©rium:</td>
 		<th>' . number_format($row['deuterium'], 0, ',', $sep_mille) . '</th>
 		<td class="c" style="text-align:right;">Energie:</td>
 		<th>' . number_format($row['energie'], 0, ',', $sep_mille) . '</th>
@@ -1697,10 +1697,10 @@ function UNparseRE($id_RE)
 	<tr>
 		<th colspan="4">';
     if ($row['activite'] > 0)
-        $template .= 'Le scanner des sondes a détecté des anomalies dans l\'atmosphère de cette planète, indiquant qu\'il y a eu une activité sur cette planète dans les ' .
-            $row['activite'] . ' dernières minutes.';
+        $template .= 'Le scanner des sondes a dÃ©tectÃ© des anomalies dans l\'atmosphÃ¨re de cette planÃ¨te, indiquant qu\'il y a eu une activitÃ© sur cette planÃ¨te dans les ' .
+            $row['activite'] . ' derniÃ¨res minutes.';
     else
-        $template .= 'Le scanner des sondes n\'a pas détecté d\'anomalies atmosphériques sur cette planète. Une activité sur cette planète dans la dernière heure peut quasiment être exclue.';
+        $template .= 'Le scanner des sondes n\'a pas dÃ©tectÃ© d\'anomalies atmosphÃ©riques sur cette planÃ¨te. Une activitÃ© sur cette planÃ¨te dans la derniÃ¨re heure peut quasiment Ãªtre exclue.';
     $template .= '</th>
 	</tr>' . "\n";
     foreach ($flotte as $key => $value) {
@@ -1818,7 +1818,7 @@ function UNparseRE($id_RE)
     }
     if ($show['defense'] == 1) {
         $template .= '  <tr>
-		<td class="l" colspan="4">Défense</td>
+		<td class="l" colspan="4">DÃ©fense</td>
 	</tr>
 	<tr>' . "\n";
         $count = 0;
@@ -1843,7 +1843,7 @@ function UNparseRE($id_RE)
     }
     if ($show['batiment'] == 1) {
         $template .= '  <tr>
-		<td class="l" colspan="4">Bâtiments</td>
+		<td class="l" colspan="4">BÃ¢timents</td>
 	</tr>
 	<tr>' . "\n";
         $count = 0;
@@ -1892,7 +1892,7 @@ function UNparseRE($id_RE)
         $template .= '  </tr>' . "\n";
     }
     $template .= '  <tr>
-		<th colspan="4">Probabilité de destruction de la flotte d\'espionnage :' . $row['proba'] .
+		<th colspan="4">ProbabilitÃ© de destruction de la flotte d\'espionnage :' . $row['proba'] .
         '%</th>
 	</tr>
 </table>';
@@ -1924,12 +1924,12 @@ function portee_missiles ( $galaxy, $system )
   $ok_missil = '';
   while ( list ( $base_joueur, $base_id_planet, $base_coord, $base_missil ) = $db->sql_fetch_row ( $req1 ) )
   {   
-    // sépare les coords
+    // sÃ©pare les coords
     $missil_coord = explode ( ':', $base_coord );
     $galaxie_missil = $missil_coord[0];
     $sysSol_missil = $missil_coord[1];
     $planet_missil = $missil_coord[2];
-    // recherche le niveau du réacteur du joueur
+    // recherche le niveau du rÃ©acteur du joueur
     $request = 'SELECT RI FROM ' . TABLE_USER_TECHNOLOGY . ' where user_id = ' . $base_joueur;
     $req2 = $db->sql_query ( $request );
     list ( $niv_reac_impuls ) = $db->sql_fetch_row ( $req2 );
@@ -1950,12 +1950,12 @@ function portee_missiles ( $galaxy, $system )
     $tooltip .= '<tr><td class="c" width="70">Nb de missiles dispo : </td><th width="30">' . $missil_dispo . '</th></tr>';
     $tooltip .= '</table>';
     $tooltip = htmlentities ( $tooltip );
-    // calcule la porté du silo
+    // calcule la portÃ© du silo
     $porte_missil = ( $niv_reac_impuls * 5 ) - 1;
-    // calcul des écarts
+    // calcul des Ã©carts
     $vari_missil_moins = $sysSol_missil - $porte_missil;
     $vari_missil_plus = $sysSol_missil + $porte_missil;
-    // création des textes si missil à portée
+    // crÃ©ation des textes si missil Ã  portÃ©e
     if ( $galaxy == $galaxie_missil && $system >= $vari_missil_moins && $system <= $vari_missil_plus )
     {
       if ( $retour == 11 )
@@ -1975,9 +1975,9 @@ function portee_missiles ( $galaxy, $system )
     }
   }
   if ( $ok_missil )
-    $missil_ok = '<font color="#FFFF66"> à porté du (des) Silo de missiles suivant(s) : ' . $ok_missil . '</font><br><font color="#DBBADC">Total : ' . $total_missil . ' MIP Dispo</font>';
+    $missil_ok = '<font color="#FFFF66"> Ã  portÃ© du (des) Silo de missiles suivant(s) : ' . $ok_missil . '</font><br><font color="#DBBADC">Total : ' . $total_missil . ' MIP Dispo</font>';
   else
-    $missil_ok = '<font color="#FFFF66"> à porté d\'aucun silo de missiles connu</font>';
+    $missil_ok = '<font color="#FFFF66"> Ã  portÃ© d\'aucun silo de missiles connu</font>';
   return $missil_ok;
 }
 ?>

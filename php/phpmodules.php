@@ -1,9 +1,9 @@
 <?php
 /*
-Ce script vous permet de connaître toutes les fonctions disponibles sur votre serveur
-Il vous permet également d'accéder facilement à la documentation française de cette
+Ce script vous permet de connaÃ®tre toutes les fonctions disponibles sur votre serveur
+Il vous permet Ã©galement d'accÃ©der facilement Ã  la documentation franÃ§aise de cette
 fonction sur le site officiel de PHP
-Ce Script ne fonctionne qu'avec les versions 4.0 et supérieur de PHP
+Ce Script ne fonctionne qu'avec les versions 4.0 et supÃ©rieur de PHP
 
 Auteurs : julp et hachesse
 */
@@ -33,7 +33,7 @@ foreach ($listModule as $moduleKey => $module) {
 	sort($listfonctions);
 	echo "\t\t\t\t<ol type=\"1\">\n";
 	foreach ($listfonctions as $fonctionKey => $fonctions) {
-		echo "\t\t\t\t\t<li>Fonction supportée : <a href=\"http://fr.php.net/$fonctions\">$fonctions</a><br />\n";
+		echo "\t\t\t\t\t<li>Fonction supportÃ©e : <a href=\"http://fr.php.net/$fonctions\">$fonctions</a><br />\n";
 	}
 	echo "\t\t\t\t</ol>\n";
 	echo "\t\t\t</td>\n\t\t</tr>\n";

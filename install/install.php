@@ -28,8 +28,8 @@ define("INSTALL_IN_PROGRESS", true);
 if(!(version_compare(PHP_VERSION, "5.0.0") >= 0)){
 	echo "<br /><br />";
 	echo "<table align='center'><tr><th colspan ='2'><font color='red'>Installation impossible :</font></th><tr/>";
-	echo "<tr><td colspan='2'>Pour pouvoir effectuer une installation complète d'OGSpy,";
-	echo "<br/>votre hébergement doit être doté au minimum de la version 5 de PHP !";
+	echo "<tr><td colspan='2'>Pour pouvoir effectuer une installation complÃ¨te d'OGSpy,";
+	echo "<br/>votre hÃ©bergement doit Ãªtre dotÃ© au minimum de la version 5 de PHP !";
 	echo "<br/><br/>Vous disposez actuellement de la version : " . PHP_VERSION;
 	echo "<tr align='center'><td colspan='2'><a href='install.php'>Rafraichir</a></td></tr>";
 	echo "</table>";
@@ -42,14 +42,14 @@ if(!(version_compare(PHP_VERSION, "5.0.0") >= 0)){
 $error = "";
 $alerte = FALSE;
 if (is_writable("../parameters")) {
-	$error .= "<tr><td width=\"250\">- \"parameters\" : </td><td><font color='green'>Ecriture autorisé</font></td></tr>";
+	$error .= "<tr><td width=\"250\">- \"parameters\" : </td><td><font color='green'>Ecriture autorisÃ©</font></td></tr>";
 } else {
 	$error .= "<tr><td width=\"250\">- \"parameters\" : </td><td><font color='red'>Ecriture impossible</font></td></tr>";
 	$alerte = TRUE;
 }
 
 if (is_writable("../journal")) {
-	$error .= "<tr><td width=\"250\">- \"journal\" : </td><td><font color='green'>Ecriture autorisé</font></td></tr>";
+	$error .= "<tr><td width=\"250\">- \"journal\" : </td><td><font color='green'>Ecriture autorisÃ©</font></td></tr>";
 } else {
 	$error .= "<tr><td width=\"250\">- \"journal\" : </td><td><font color='red'>Ecriture impossible</font></td></tr>";
 	$alerte = TRUE;
@@ -57,7 +57,7 @@ if (is_writable("../journal")) {
 
 $error2 = "";
 if (is_writable("../mod")) {
-	$error2 .= "<tr><td width=\"250\">- \"mod\" : </td><td><font color='green'>Ecriture autorisé</font></td></tr>";
+	$error2 .= "<tr><td width=\"250\">- \"mod\" : </td><td><font color='green'>Ecriture autorisÃ©</font></td></tr>";
 } else {
 	$error2 .= "<tr><td width=\"250\">- \"mod\" : </td><td><font color='red'>Ecriture impossible</font></td></tr>";
 }
@@ -66,12 +66,12 @@ if (is_writable("../mod")) {
 if ($alerte) {
 	echo "<br /><br />";
 	echo "<table align='center'><tr><th colspan ='2'><font color='red'>Installation impossible :</font></th><tr/>";
-	echo "<tr><td colspan='2'>Pour le bon fonctionnement et une installation complète de OGSpy,<br />vous devez";
-	echo " autoriser ces dossiers en écriture";
+	echo "<tr><td colspan='2'>Pour le bon fonctionnement et une installation complÃ¨te de OGSpy,<br />vous devez";
+	echo " autoriser ces dossiers en Ã©criture";
 	echo $error;
 	echo "<tr><th colspan='2'><font color='red'>Erreur optionelle :</font></th><tr/>";
-	echo "<tr><td colspan='2'>Ces dossiers servent à l'installation et à la mise à jour des modules OGSpy.<br>";
-	echo "<font color='red'><b>Leurs dossiers et fichiers doivent être accessibles en écriture.</b></font>";
+	echo "<tr><td colspan='2'>Ces dossiers servent Ã  l'installation et Ã  la mise Ã  jour des modules OGSpy.<br>";
+	echo "<font color='red'><b>Leurs dossiers et fichiers doivent Ãªtre accessibles en Ã©criture.</b></font>";
 	echo $error2;
 	echo "<tr align='center'><td colspan='2'><a href='install.php'>Rafraichir</a></td></tr>";
 	echo "</table>";
@@ -86,35 +86,35 @@ require_once("version.php");
 * @var string $message Message d'erreur
 */
 function error_sql($message) {
-	echo "<h3 align='center'><font color='red'>Erreur durant la procédure d'installation du serveur OGSpy</font></h3>";
+	echo "<h3 align='center'><font color='red'>Erreur durant la procÃ©dure d'installation du serveur OGSpy</font></h3>";
 	echo "<center><b>- ".$message."</b></center>";
 	exit();
 }
 
 /**
-* Création de la structure de la base de donnée
+* CrÃ©ation de la structure de la base de donnÃ©e
 * @var string $sgbd_server Serveur MySql (localhost)
-* @var string $sgbd_username Utilisateur Base de donnée
-* @var string $sgbd_password Mot de passe Base de donnée
-* @var string $sgbd_tableprefix Préfixe à utiliser pour les tables ogspy
+* @var string $sgbd_username Utilisateur Base de donnÃ©e
+* @var string $sgbd_password Mot de passe Base de donnÃ©e
+* @var string $sgbd_tableprefix PrÃ©fixe Ã  utiliser pour les tables ogspy
 * @var string $admin_username Nom de l'Administrateur OGSpy
 * @var string $admin_password Mot de passe Administrateur OGSpy
 * @var string $admin_password2 Confirmation du Mot de passe Administrateur OGSpy
 * @var int $num_of_galaxies Nombre de galaxies dans l'univers OGame de cet OGSpy
-* @var int $num_of_systems Nombre de systèmes dans l'univers OGame de cet OGSpy
+* @var int $num_of_systems Nombre de systÃ¨mes dans l'univers OGame de cet OGSpy
 */
 function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $admin_username, $admin_password, $admin_password2, $num_of_galaxies, $num_of_systems) {
 	global $pub_directory;
 	$db  = sql_db::getInstance($sgbd_server, $sgbd_username, $sgbd_password, $sgbd_dbname);
-	if (!$db->db_connect_id) error_sql("Impossible de se connecter à la base de données");
+	if (!$db->db_connect_id) error_sql("Impossible de se connecter Ã  la base de donnÃ©es");
 
-	//Création de la structure de la base de données
+	//CrÃ©ation de la structure de la base de donnÃ©es
 	$sql_query = @fread(@fopen("schemas/ogspy_structure.sql", 'r'), @filesize("schemas/ogspy_structure.sql")) or die("<h1>Le script sql d'installation est introuvable</h1>");
 
 	$sql_query = preg_replace("#ogspy_#", $sgbd_tableprefix, $sql_query);
 	
 	//## nevada51
-	//Création de l'énumération des galaxies:
+	//CrÃ©ation de l'Ã©numÃ©ration des galaxies:
 	$galaxies_db_str = 'galaxy enum(';
 	for($i=1 ; $i<$num_of_galaxies ; $i++)
 		$galaxies_db_str .= "'$i' , ";
@@ -165,13 +165,13 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 }
 
 /**
-* Création du fichier de configuration id.php et quitte le script
+* CrÃ©ation du fichier de configuration id.php et quitte le script
 * @var string $sgbd_server Serveur MySql (localhost)
-* @var string $sgbd_username Utilisateur Base de donnée
-* @var string $sgbd_password Mot de passe Base de donnée
-* @var string $sgbd_tableprefix Préfixe à utiliser pour les tables ogspy
+* @var string $sgbd_username Utilisateur Base de donnÃ©e
+* @var string $sgbd_password Mot de passe Base de donnÃ©e
+* @var string $sgbd_tableprefix PrÃ©fixe Ã  utiliser pour les tables ogspy
 * @var int $num_of_galaxies Nombre de galaxies dans l'univers OGame de cet OGSpy
-* @var int $num_of_systems Nombre de systèmes dans l'univers OGame de cet OGSpy
+* @var int $num_of_systems Nombre de systÃ¨mes dans l'univers OGame de cet OGSpy
 */
 function generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $sgbd_num_of_galaxies, $sgbd_num_of_systems) {
 	$id_php[] = '<?php';
@@ -184,7 +184,7 @@ function generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password,
 	$id_php[] = '';
 	$id_php[] = '$table_prefix = "'.$sgbd_tableprefix.'";';
 	$id_php[] = '';
-	$id_php[] = '//Paramètres de connexion à la base de données';
+	$id_php[] = '//ParamÃ¨tres de connexion Ã  la base de donnÃ©es';
 	$id_php[] = '$db_host = "'.$sgbd_server.'";';
 	$id_php[] = '$db_user = "'.$sgbd_username.'";';
 	$id_php[] = '$db_password = "'.$sgbd_password.'";';
@@ -193,12 +193,12 @@ function generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password,
 	$id_php[] = 'define("OGSPY_INSTALLED", TRUE);';
 	$id_php[] = '?>';
 	if (!write_file("../parameters/id.php", "w", $id_php)) {
-		die("Echec installation, impossible de générer le fichier 'parameters/id.php'");
+		die("Echec installation, impossible de gÃ©nÃ©rer le fichier 'parameters/id.php'");
 	}
 
-	echo "<h3 align='center'><font color='yellow'>Installation du serveur OGSpy effectuée avec succès !</font></h3>";
+	echo "<h3 align='center'><font color='yellow'>Installation du serveur OGSpy effectuÃ©e avec succÃ¨s !</font></h3>";
 	echo "<center>";
-	echo "<b>Pensez à supprimer le dossier 'install'</b><br />";
+	echo "<b>Pensez Ã  supprimer le dossier 'install'</b><br />";
 	echo "<a href='../index.php'>Retour</a>";
 	echo "</center>";
 	exit();
@@ -209,10 +209,10 @@ isset($pub_admin_username) && isset($pub_admin_password) && isset($pub_admin_pas
 
 	if (isset($pub_complete)) {
 		if (!empty($pub_sgbd_tableprefix) && !check_var($pub_sgbd_tableprefix , "Pseudo_Groupname", "", true) ) {
-			$pub_error = "Des caractères utilisés pour le préfixe de la base de donnée sont incorrect.";
+			$pub_error = "Des caractÃ¨res utilisÃ©s pour le prÃ©fixe de la base de donnÃ©e sont incorrect.";
 		}
 		elseif (!check_var($pub_admin_username, "Pseudo_Groupname", "", true) || !check_var($pub_admin_password, "Password", "", true)) {
-			$pub_error = "Des caractères utilisés pour le nom d'utilisateur ou le mot de passe ne sont pas corrects";
+			$pub_error = "Des caractÃ¨res utilisÃ©s pour le nom d'utilisateur ou le mot de passe ne sont pas corrects";
 		}
 		elseif (!check_var($pub_num_of_galaxies, "Galaxy","", true) || !check_var($pub_num_of_systems, "Galaxy","", true)){
 			$pub_error = "Vous n'avez pas rentrez des valeurs correcte pour le nombres de galaxies et (ou) de systemes";
@@ -222,7 +222,7 @@ isset($pub_admin_username) && isset($pub_admin_password) && isset($pub_admin_pas
 				installation_db($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_admin_username, $pub_admin_password, $pub_admin_password2, $pub_num_of_galaxies, $pub_num_of_systems);
 			}
 			else {
-				$pub_error = "Saisissez correctement les champs de connexion à la base de données et du compte administrateur";
+				$pub_error = "Saisissez correctement les champs de connexion Ã  la base de donnÃ©es et du compte administrateur";
 			}
 		}
 	}
@@ -231,7 +231,7 @@ isset($pub_admin_username) && isset($pub_admin_password) && isset($pub_admin_pas
 			generate_id($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_num_of_galaxies, $pub_num_of_systems);
 		}
 		else {
-			$pub_error = "Saisissez correctement les champs de connexion à la base de données";
+			$pub_error = "Saisissez correctement les champs de connexion Ã  la base de donnÃ©es";
 		}
 	}
 
@@ -257,7 +257,7 @@ isset($pub_admin_username) && isset($pub_admin_password) && isset($pub_admin_pas
 	<td align="center">
 		<table width="800">
 		<tr>
-			<td colspan="2" align="center"><font size="3"><b>Bienvenue à l'installation d'OGSpy version <?php echo $install_version; ?></b></font></td>
+			<td colspan="2" align="center"><font size="3"><b>Bienvenue Ã  l'installation d'OGSpy version <?php echo $install_version; ?></b></font></td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center">&nbsp;</td>
@@ -267,14 +267,14 @@ isset($pub_admin_username) && isset($pub_admin_password) && isset($pub_admin_pas
 		</tr>
 		
 		<tr>
-			<td class="c" colspan="2">Configuration de la base de données</td>
+			<td class="c" colspan="2">Configuration de la base de donnÃ©es</td>
 		</tr>
 		<tr>
-			<th>Nom du Serveur de Base de données / SGBD</th>
+			<th>Nom du Serveur de Base de donnÃ©es / SGBD</th>
 			<th><input name="sgbd_server" type="text" value="<?php echo isset($pub_sgbd_server) ? $pub_sgbd_server : "localhost";?>"></th>
 		</tr>
 		<tr>
-			<th>Nom de votre base de données</th>
+			<th>Nom de votre base de donnÃ©es</th>
 			<th><input name="sgbd_dbname" type="text" value="<?php echo isset($pub_sgbd_dbname) ? $pub_sgbd_dbname : "";?>"></th>
 		</tr>
 		<tr>
@@ -286,7 +286,7 @@ isset($pub_admin_username) && isset($pub_admin_password) && isset($pub_admin_pas
 			<th><input name="sgbd_password" type="password"></th>
 		</tr>
 		<tr>
-			<th>Préfixe des tables</th>
+			<th>PrÃ©fixe des tables</th>
 			<th><input name="sgbd_tableprefix" type="text" value="<?php echo isset($pub_sgbd_tableprefix) ? $pub_sgbd_tableprefix : "ogspy_";?>"></th>
 		</tr>
 		<tr>
@@ -297,7 +297,7 @@ isset($pub_admin_username) && isset($pub_admin_password) && isset($pub_admin_pas
 			<th><input name="num_of_galaxies" type="text" value="<?php echo isset($pub_num_of_galaxies) ? $pub_num_of_galaxies : "9";?>"></th>
 		</tr>
 		<tr>
-			<th>Nombre de systèmes par galaxies&nbsp;<?php echo help("profile_galaxy", "", "../");?></th>
+			<th>Nombre de systÃ¨mes par galaxies&nbsp;<?php echo help("profile_galaxy", "", "../");?></th>
 			<th><input name="num_of_systems" type="text" value="<?php echo isset($pub_num_of_systems) ? $pub_num_of_systems : "499";?>"></th>
 		</tr>
 		
@@ -319,7 +319,7 @@ isset($pub_admin_username) && isset($pub_admin_password) && isset($pub_admin_pas
 		
 		<tr><td colspan="2">&nbsp;</td></tr>
 		<tr>
-			<th colspan="2"><input name="complete" type="submit" value="Démarrer l'installation complète">&nbsp;ou&nbsp;<input name="file" type="submit" value="Générer le fichier 'id.php'"></th>
+			<th colspan="2"><input name="complete" type="submit" value="DÃ©marrer l'installation complÃ¨te">&nbsp;ou&nbsp;<input name="file" type="submit" value="GÃ©nÃ©rer le fichier 'id.php'"></th>
 		</tr>
 		
 		<tr><td colspan="2">&nbsp;</td></tr>

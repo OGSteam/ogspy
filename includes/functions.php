@@ -749,7 +749,7 @@ function db_optimize($maintenance_action = false)
         $request = 'OPTIMIZE TABLE ' . $table;
         $db->sql_query($request);
     }
-    // 09-07-2012 : Commenté car cette table n'est plus utilisée
+    // 09-07-2012 : CommentÃ© car cette table n'est plus utilisÃ©e
     //$request = 'TRUNCATE ' . TABLE_UNIVERSE_TEMPORARY;
     //$db->sql_query($request);
 
@@ -758,7 +758,7 @@ function db_optimize($maintenance_action = false)
 
     if (!$maintenance_action) {
         redirection("index.php?action=message&id_message=db_optimize&info=" . $dbSize_before .
-            "¤" . $dbSize_after);
+            "Â¤" . $dbSize_after);
     }
 }
 /**
@@ -782,7 +782,7 @@ function resize_db($new_num_of_galaxies, $new_num_of_systems)
 {
     global $db, $db_host, $db_user, $db_password, $db_database, $table_prefix, $server_config;
 
-    // si on reduit on doit supprimez toutes les entrées qui font reference au systemes ou galaxies que l'on va enlever
+    // si on reduit on doit supprimez toutes les entrÃ©es qui font reference au systemes ou galaxies que l'on va enlever
     if ($new_num_of_galaxies < intval($server_config['num_of_galaxies'])) {
         $db->sql_query("DELETE FROM " . TABLE_UNIVERSE . " WHERE galaxy > $new_num_of_galaxies");
         $db->sql_query("UPDATE " . TABLE_USER . " SET user_galaxy=1 WHERE user_galaxy > $new_num_of_galaxies");
@@ -834,7 +834,7 @@ function log_size_info()
     $logSize = 0;
     $res = opendir(PATH_LOG);
     $directory = array();
-    //Récupération de la liste des fichiers présents dans les répertoires répertoriés
+    //RÃ©cupÃ©ration de la liste des fichiers prÃ©sents dans les rÃ©pertoires rÃ©pertoriÃ©s
     while ($file = readdir($res)) {
         if ($file != "." && $file != "..") {
             if (is_dir(PATH_LOG . $file)) {
@@ -847,7 +847,7 @@ function log_size_info()
     foreach ($directory as $v) {
         $res = opendir($v);
         $directory = array();
-        //Récupération de la liste des fichiers présents dans les répertoires répertoriés
+        //RÃ©cupÃ©ration de la liste des fichiers prÃ©sents dans les rÃ©pertoires rÃ©pertoriÃ©s
         while ($file = readdir($res)) {
             if ($file != "." && $file != "..") {
                 $logSize += @filesize($v . "/" . $file);
@@ -885,7 +885,7 @@ function log_check_exist($date)
     $root = PATH_LOG;
     $path = opendir("$root");
 
-    //Récupération de la liste des répertoires correspondant à cette date
+    //RÃ©cupÃ©ration de la liste des rÃ©pertoires correspondant Ã  cette date
     while ($file = readdir($path)) {
         if ($file != "." && $file != "..") {
             if (is_dir($root . $file) && preg_match("/^" . $date . "/", $file))
@@ -940,7 +940,7 @@ function log_extractor()
     $path = opendir("$root");
 	unlink($zip_file);
 	
-    //Récupération de la liste des répertoires correspondant à cette date
+    //RÃ©cupÃ©ration de la liste des rÃ©pertoires correspondant Ã  cette date
     while ($file = readdir($path)) {
         if ($file != "." && $file != "..") {
             if (is_dir($root . $file) && preg_match("/^" . $pub_date . "/", $file))
@@ -971,7 +971,7 @@ function log_extractor()
         redirection("index.php?action=message&id_message=log_missing&info");
     }
 
-    // création d'un objet 'zipfile'
+    // crÃ©ation d'un objet 'zipfile'
 	
 	$zip = new ZipArchive;
 	$zip->open($zip_file, ZipArchive::CREATE);
@@ -984,9 +984,9 @@ function log_extractor()
 	// production de l'archive Zip
     $zip->close();
 
-    // entêtes HTTP
+    // entÃªtes HTTP
     header('Content-Type: application/x-zip');
-    // force le téléchargement
+    // force le tÃ©lÃ©chargement
     header('Content-disposition: attachment; filename=log_' . $pub_date . '.zip');
 	header('Content-Transfer-Encoding: binary');
 
@@ -1116,7 +1116,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
         //Pseudo ingame
         case "Pseudo_ingame": // caracteres autorises entre 3 et 20 ( interdit au 05/11/11 = > &"'()# `/,;+ ) 
-            if (!preg_match("#^[\w@äàçéèêëïîöôûü\^\{\}\[\]\.\*\-_~%§]{3,20}$#", $value)) {
+            if (!preg_match("#^[\w@Ã¤Ã Ã§Ã©Ã¨ÃªÃ«Ã¯Ã®Ã¶Ã´Ã»Ã¼\^\{\}\[\]\.\*\-_~%Â§]{3,20}$#", $value)) {
                 log_("check_var", array("Text", $value));
                 return false;
             }
@@ -1129,15 +1129,15 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-            //Chaîne de caractères avec espace
+            //ChaÃ®ne de caractÃ¨res avec espace
         case "Text":
-            if (!preg_match("#^[\w'äàçéèêëïîöôûü\s\.\*\-]+$#", $value)) {
+            if (!preg_match("#^[\w'Ã¤Ã Ã§Ã©Ã¨ÃªÃ«Ã¯Ã®Ã¶Ã´Ã»Ã¼\s\.\*\-]+$#", $value)) {
                 log_("check_var", array("Text", $value));
                 return false;
             }
             break;
 
-            //Chaîne de caractères et  chiffre
+            //ChaÃ®ne de caractÃ¨res et  chiffre
         case "CharNum":
             if (!preg_match("#^[\w\.\*\-\#]+$#", $value)) {
                 log_("check_var", array("CharNum", $value));
@@ -1145,7 +1145,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-            //Caractères
+            //CaractÃ¨res
         case "Char":
             if (!preg_match("#^[[:alpha:]_\.\*\-]+$#", $value)) {
                 log_("check_var", array("Char", $value));
@@ -1185,7 +1185,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-            //Planète, Joueur et alliance
+            //PlanÃ¨te, Joueur et alliance
         case "Galaxy":
             //		if (!preg_match("#^[\w\s\.\*\-]+$#", $value)) {
             //			log_("check_var", array("Galaxy", $value));
@@ -1201,7 +1201,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             //		}
             break;
 
-            //Masque paramétrable
+            //Masque paramÃ©trable
         case "Special":
             if (!preg_match($mask, $value)) {
                 log_("check_var", array("Special", $value));
@@ -1317,7 +1317,7 @@ function install_mod($mod_folder)
     }
 
 
-    // On récupère les données du fichier version.txt
+    // On rÃ©cupÃ¨re les donnÃ©es du fichier version.txt
     $mod_version = trim($file[1]);
     $mod_config = trim($file[2]);
 
@@ -1325,7 +1325,7 @@ function install_mod($mod_folder)
     $value_mod = explode(',', $mod_config);
 
 
-    // On vérifie si le mod est déjà installé""
+    // On vÃ©rifie si le mod est dÃ©jÃ  installÃ©""
     $check = "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] ."'";
     $query_check = $db->sql_query($check);
     $result_check = $db->sql_numrows($query_check);
@@ -1333,7 +1333,7 @@ function install_mod($mod_folder)
     if ($result_check != 0) {
     } else
         if (count($value_mod) == 7) {
-            // On vérifie le nombre de valeur de l'explode
+            // On vÃ©rifie le nombre de valeur de l'explode
             $query = "INSERT INTO " . TABLE_MOD .
                 " (title, menu, action, root, link, version, active,admin_only) VALUES ('" . $value_mod[0] .
                 "','" . $value_mod[1] . "','" . $value_mod[2] . "','" . $value_mod[3] . "','" .
@@ -1405,7 +1405,7 @@ function crypto($str)
  */
 function generate_key()
 {
-    //création de la clef
+    //crÃ©ation de la clef
     $str = "abcdefghijklmnopqrstuvwxyzABCDEVGHIJKLMOPQRSTUVWXYZ";
     srand((double)microtime() * 1000000);
     $pass = time();
@@ -1413,7 +1413,7 @@ function generate_key()
         $pass .= $str[rand() % strlen($str)];
     }
     $key = crypto($pass);
-    // création du path
+    // crÃ©ation du path
     $path = $_SERVER["SCRIPT_FILENAME"];;
 
 
@@ -1425,7 +1425,7 @@ function generate_key()
     $key_php[] = '';
     $key_php[] = 'if (!defined("IN_SPYOGAME")) die("Hacking attempt");';
     $key_php[] = '';
-    $key_php[] = '//Paramètres unique a ne pas communiquer';
+    $key_php[] = '//ParamÃ¨tres unique a ne pas communiquer';
     $key_php[] = '$serveur_key = "' . $key . '";';
     $key_php[] = '$serveur_date = "' . time() . '";';
     $key_php[] = '$serveur_path = "' . $path . '";';
@@ -1433,7 +1433,7 @@ function generate_key()
     $key_php[] = 'define("OGSPY_KEY", TRUE);';
     $key_php[] = '?>';
     if (!write_file("./parameters/key.php", "w", $key_php)) {
-        die("Echec , impossible de générer le fichier 'parameters/key.php'");
+        die("Echec , impossible de gÃ©nÃ©rer le fichier 'parameters/key.php'");
     }
 
 }

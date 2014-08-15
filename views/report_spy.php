@@ -24,7 +24,7 @@ $favorites = user_getfavorites_spy();
 
 require_once("views/page_header_2.php");
 if ( sizeof ( $reports ) == 0 ) {
-    echo '<p>Pas de rapport disponible pour cette planètre</p>';
+    echo '<p>Pas de rapport disponible pour cette planÃ¨tre</p>';
     echo '<script language="javascript">window.opener.location.href=window.opener.location.href;</script>';
 }
 else {
@@ -40,7 +40,7 @@ else {
        	$string_delfavorites = "window.location = 'index.php?action=del_favorite_spy&spy_id=".$spy_id."&galaxy=".$galaxy."&system=".$system."&row=".$row."&info=2';";
         $string_delspy = "window.location.href = 'index.php?action=del_spy&spy_id=".$spy_id."&galaxy=".$galaxy."&system=".$system."&row=".$row."&info=2';";
 
-       	echo "<center><b>Rapport d'espionnage envoyé par ".$sender."</b> le " . date ( 'd/m/Y', $v['dateRE'] ) . "</center>\n";
+       	echo "<center><b>Rapport d'espionnage envoyÃ© par ".$sender."</b> le " . date ( 'd/m/Y', $v['dateRE'] ) . "</center>\n";
    	    echo "<div align='right'>";
        	if (!isset($favorites[$spy_id]))echo "<input type='button' value='Ajouter aux favoris' onclick=\"$string_addfavorites\">";
    	    else echo "<input type='button' value='Supprimer des favoris' onclick=\"$string_delfavorites\">";

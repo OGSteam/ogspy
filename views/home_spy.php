@@ -25,7 +25,7 @@ else $sort2 = $sort2 != 0 ? 0 : 1;
 <td class="c" width="120"><a href="index.php?action=home&subaction=spy&sort=3&sort2=<?php echo $sort2;?>">Joueurs</a></td>
 <td class="c" width="20"><a href="index.php?action=home&subaction=spy&sort=4&sort2=<?php echo $sort2;?>">Lune</a></td>
 <td class="c" width="20">&nbsp;</td>
-<td class="c" width="250"><a href="index.php?action=home&subaction=spy&sort=5&sort2=<?php echo $sort2;?>">Mises à jour</a></td>
+<td class="c" width="250"><a href="index.php?action=home&subaction=spy&sort=5&sort2=<?php echo $sort2;?>">Mises Ã  jour</a></td>
 <td class="c" width="40">&nbsp;</td>
 <td class="c" width="120">&nbsp;</td></tr>
 <?php

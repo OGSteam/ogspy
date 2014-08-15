@@ -43,12 +43,12 @@ function check_password(form) {
 		return false;
 	}
 	if (old_password != "" && new_password != new_password2) {
-		alert("Le mot de passe saisie est différent de la confirmation");
+		alert("Le mot de passe saisie est diffÃ©rent de la confirmation");
 		return false;
 	}
 	if (old_password != "" && new_password != "" && new_password2 != "") {
 		if (new_password.length < 6 || new_password.length > 15) {
-			alert("Le mot de passe doit contenir entre 6 et 15 caractères");
+			alert("Le mot de passe doit contenir entre 6 et 15 caractÃ¨res");
 			return false;
 		}
 	}
@@ -90,7 +90,7 @@ function check_password(form) {
 	<td class="c" colspan="2">Informations du Jeu</td>
 </tr>
 <tr>
-	<th>Position de la planète principale&nbsp;<?php echo help("profile_main_planet");?></th>
+	<th>Position de la planÃ¨te principale&nbsp;<?php echo help("profile_main_planet");?></th>
 	<th>
 		<input name="galaxy" type="text" size="3" maxlength="2" value="<?php echo $user_galaxy;?>">&nbsp;
 		<input name="system" type="text" size="3" maxlength="3" value="<?php echo $user_system;?>">
@@ -118,7 +118,7 @@ function check_password(form) {
 	</th>
 </tr>
 <tr>
-	<th>Ingénieur:</th>
+	<th>IngÃ©nieur:</th>
 	<th>
 		<input name="off_ingenieur" value="1" type="checkbox" <?php echo $off_ingenieur;?>>
 	</th>
@@ -136,13 +136,13 @@ function check_password(form) {
 	<td class="c" colspan="2">Divers</td>
 </tr>
 <tr>
-	<th>Lien du skin utilisé&nbsp;<?php echo help("profile_skin");?></th>
+	<th>Lien du skin utilisÃ©&nbsp;<?php echo help("profile_skin");?></th>
 	<th>
 		<input name="skin" type="text" size="20" value="<?php echo $user_skin;?>">
 	</th>
 </tr>
 <tr>
-	<th>Désactiver la vérification de l'adresse IP&nbsp;<?php echo help("profile_disable_ip_check");?></th>
+	<th>DÃ©sactiver la vÃ©rification de l'adresse IP&nbsp;<?php echo help("profile_disable_ip_check");?></th>
 	<th>
 		<input name="disable_ip_check" value="1" type="checkbox" <?php echo $disable_ip_check;?>>
 	</th>

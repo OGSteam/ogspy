@@ -101,7 +101,7 @@ for ($system=1 ; $system<=intval($server_config['num_of_systems']) ; $system=$sy
 		foreach ($position as $ally_name) {
 			if ($galaxy_ally_position[$ally_name][$galaxy][$system]["planet"] > 0) {
 				$tooltip[$i] = "<table width=\'200\'>";
-				$tooltip[$i] .= "<tr><td class=\'c\' colspan=\'2\' align=\'center\'>Joueur(s) présent(s)</td></tr>";
+				$tooltip[$i] .= "<tr><td class=\'c\' colspan=\'2\' align=\'center\'>Joueur(s) prÃ©sent(s)</td></tr>";
 				$last_player = "";
 				foreach ($galaxy_ally_position[$ally_name][$galaxy][$system]["population"] as $value) {
 					$player = "";

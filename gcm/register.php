@@ -10,7 +10,7 @@
 	// Response json
 	$json = array();
 	
-	// Variable de sÈcuritÈ OGSPY
+	// Variable de s√©curit√© OGSPY
 	define('IN_SPYOGAME', true); // permet d'inclure les fichiers ogspy
 	define('IN_REGISTERING_GCM', true);
 	
@@ -20,21 +20,21 @@
 	require_once("../includes/functions.php");	
 	require_once("../includes/gcm/gcm.php");
 	
-	// Co ‡ la bdd
+	// Co √† la bdd
 	require_once("../includes/mysql.php");
 	
 	// attention penser a la supp 2 ouvertures faites
 	//appel co sql natif
 	$db = sql_db::getInstance($db_host, $db_user, $db_password, $db_database);
 	if (!$db->db_connect_id) {
-		die("Impossible de se connecter ‡ la base de donnÈes : '" . $db_host . "'");
+		die("Impossible de se connecter √† la base de donn√©es : '" . $db_host . "'");
 	}
 	// fin co ( $db est dispo dans tout ce qui va suivre ... )
 		
 	// Remplacement des fonctions centrales car on ne passe pas par index.php
 		
-	// RÈcuperation des variables $__get et $__post	
-	// RÈcupÈration des valeur GET, POST, COOKIE
+	// R√©cuperation des variables $__get et $__post	
+	// R√©cup√©ration des valeur GET, POST, COOKIE
 	extract($_GET,EXTR_PREFIX_ALL , "pub");
 	extract($_POST,EXTR_PREFIX_ALL , "pub");
 	extract($_COOKIE,EXTR_PREFIX_ALL , "pub");
@@ -53,7 +53,7 @@
 	}
 	// Utilisation possible de $pub_XXX
 	
-	// Astuce pour recupÈrer les donnÈes du serveur ( pas d appel bdd on va dans le cache ...)
+	// Astuce pour recup√©rer les donn√©es du serveur ( pas d appel bdd on va dans le cache ...)
 	// Load cached config
 	$filename = '../cache/cache_config.php';
 	if (file_exists($filename)) {
@@ -70,24 +70,24 @@
 		$date = date("d-m-Y");
 		$heure = date("G:i");
 		
-		// Assurons nous que le fichier est accessible en Ècriture
+		// Assurons nous que le fichier est accessible en √©criture
 		if (is_writable($filename)) {
 		    // Dans notre exemple, nous ouvrons le fichier $filename en mode d'ajout
-		    // Le pointeur de fichier est placÈ ‡ la fin du fichier
-		    // c'est l‡ que le texte sera placÈ
+		    // Le pointeur de fichier est plac√© √† la fin du fichier
+		    // c'est l√† que le texte sera plac√©
 		    if (!$handle = fopen($filename, 'a')) {
 		         //echo "Impossible d'ouvrir le fichier ($filename)";
 		         exit;
 		    }
 		    // Ecrivons quelque chose dans notre fichier.
 		    if (fwrite($handle, $date ." - " . $heure . " : " . $texte . "\n") === FALSE) {
-		        //echo "Impossible d'Ècrire dans le fichier ($filename)";
+		        //echo "Impossible d'√©crire dans le fichier ($filename)";
 		        exit;
 		    }
-		    //echo "L'Ècriture de ($texte) dans le fichier ($filename) a rÈussi";		
+		    //echo "L'√©criture de ($texte) dans le fichier ($filename) a r√©ussi";		
 		    fclose($handle);		
 		} else {
-		    //echo "Le fichier $filename n'est pas accessible en Ècriture.";
+		    //echo "Le fichier $filename n'est pas accessible en √©criture.";
 		}
 	}
 		
@@ -128,12 +128,12 @@
 				$result = $gcm->send_notification($registatoin_ids, $message);
 					
 				//echo $result;
-				writeLog("Notif envoyÈe : " . $result);
+				writeLog("Notif envoy√©e : " . $result);
 				echo $result;
 			} else if($res == 1) {
 				writeLog("Echec !");
 			} else if($res == -1) {
-				writeLog("DÈj‡ enregistrÈ !");
+				writeLog("D√©j√† enregistr√© !");
 			}
 			
 		} else {

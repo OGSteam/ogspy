@@ -137,7 +137,7 @@ class sql_db {
 * Overload the __clone function. To forbid the use of this function for this class.
 */    
     public function __clone(){  
-       throw new Exception('Cet objet ne peut pas être cloné');
+       throw new Exception('Cet objet ne peut pas Ãªtre clonÃ©');
        die();  
    }  
 

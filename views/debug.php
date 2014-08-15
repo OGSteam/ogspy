@@ -28,8 +28,8 @@ if (isset($HTTP_SESSION_VARS))
       echo "<tr bgcolor=\"#CCCCCC\"><td nowrap bgcolor=\"#CCCCFF\">$key</td><td>$value</td></tr>";
   }
 
-// Liste des variables passées dans l'URL. NB : Il n'y a pas de gestion des tableaux dans ce cas
-echo '<tr  bgcolor="#9999CC"><td class="c" colspan="2">Variables passées en URL</td></tr>';
+// Liste des variables passÃ©es dans l'URL. NB : Il n'y a pas de gestion des tableaux dans ce cas
+echo '<tr  bgcolor="#9999CC"><td class="c" colspan="2">Variables passÃ©es en URL</td></tr>';
 if (isset($HTTP_GET_VARS))
   foreach ($HTTP_GET_VARS as $key=>$value)
   {
@@ -37,7 +37,7 @@ if (isset($HTTP_GET_VARS))
   }
 
 // Liste des variables transmises par formulaire
-echo '<tr  bgcolor="#9999CC"><td class="c" colspan="2">Variables passées par formulaire</td></tr>';
+echo '<tr  bgcolor="#9999CC"><td class="c" colspan="2">Variables passÃ©es par formulaire</td></tr>';
 if (isset($HTTP_POST_VARS))
   foreach ($HTTP_POST_VARS as $key=>$value)
   {
