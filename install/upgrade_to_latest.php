@@ -22,6 +22,8 @@ if($pub_verbose == true){
 <html>
 <head>
 <title>Mise à jour OGSpy</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="language" content="fr" />
 <link rel="stylesheet" type="text/css" href="../skin/OGSpy_skin/formate.css" />
 </head>
 <body>
