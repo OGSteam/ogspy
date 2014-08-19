@@ -15,7 +15,6 @@ define("IN_SPYOGAME", true);
 
 //define("MODE_DEBUG", true);
 
-
 /**
  * Tout les includes se font à partir de là
  */
@@ -374,7 +373,4 @@ switch ($pub_action) {
 	} else require_once("views/galaxy.php");
 	break;
 }
-
-
-
 ?>
