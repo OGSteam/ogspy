@@ -143,7 +143,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 	}
 
 	$request = "insert into ".$sgbd_tableprefix."user (user_id, user_name, user_password, user_regdate, user_active, user_admin)".
-	" values (1, '".mysql_real_escape_string($admin_username)."', '".md5(sha1($admin_password))."', ".time().", '1', '1')";
+	" values (1, '".mysqli_real_escape_string($db->db_connect_id, $admin_username)."', '".md5(sha1($admin_password))."', ".time().", '1', '1')";
 	if (!($result = $db->sql_query($request, false, false))) {
 		$error = $db->sql_error($result);
 		print $request;

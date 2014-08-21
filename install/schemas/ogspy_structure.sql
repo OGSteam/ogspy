@@ -851,16 +851,16 @@ CREATE TABLE `ogspy_round_defense` (
   KEY `player` (`player`,`coordinates`)
 ) DEFAULT CHARSET=utf8;
 ## ########################################################
-
 ##
 ## Structure de la table `ogspy_gcm_users`
 ##
 CREATE TABLE IF NOT EXISTS `ogspy_gcm_users` (
 	`user_id` int(11) NOT NULL default '0',
-  	`gcm_regid` varchar(256) NOT NULL,
+  	`gcm_regid` varchar(128) NOT NULL,
   	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   	`version_android` varchar(50),
   	`version_ogspy` varchar(50),
   	`device` varchar(50),
   	PRIMARY KEY (`gcm_regid`)
 ) DEFAULT CHARSET=utf8;
+
