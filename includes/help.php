@@ -72,7 +72,7 @@ function help($key, $value = "", $prefixe = "") {
 	$text .= "<tr><th align=\"center\">".addslashes($value)."</th></tr>";
 	$text .= "</table>";
 
-	$text = htmlentities($text);
+	$text = htmlentities($text, ENT_COMPAT | ENT_HTML401, "UTF-8");
 	$text = "this.T_WIDTH=210;this.T_TEMP=0;return escape('".$text."')";
 
 	return "<img style=\"cursor:pointer\" src=\"".$prefixe."images/help_2.png\" onmouseover=\"".$text."\">";

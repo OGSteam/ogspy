@@ -1949,7 +1949,7 @@ function portee_missiles ( $galaxy, $system )
     $tooltip .= '<tr><td class="c" width="70">Nom : </td><th width="30">' . $nom_missil_joueur . '</th></tr>';
     $tooltip .= '<tr><td class="c" width="70">Nb de missiles dispo : </td><th width="30">' . $missil_dispo . '</th></tr>';
     $tooltip .= '</table>';
-    $tooltip = htmlentities ( $tooltip );
+    $tooltip = htmlentities ($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8" );
     // calcule la porté du silo
     $porte_missil = ( $niv_reac_impuls * 5 ) - 1;
     // calcul des écarts

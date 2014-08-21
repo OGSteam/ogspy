@@ -135,7 +135,7 @@ require_once 'views/page_header.php';
 	$legend .= '<tr><td class="c">Planètes mises à jour récemment</td><th style="color: lime; text-decoration: blink;"><b>xx</b></th></tr>';
 	$legend .= '</table>';
 	
-	$legend = htmlentities($legend);
+	$legend = htmlentities($legend,ENT_COMPAT | ENT_HTML401, "UTF-8");
 	
 	?>
 	
