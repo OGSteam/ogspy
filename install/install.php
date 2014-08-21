@@ -110,12 +110,13 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 	$db  = sql_db::getInstance($sgbd_server, $sgbd_username, $sgbd_password, $sgbd_dbname);
 	if (!$db->db_connect_id) error_sql("Impossible de se connecter à la base de données");
 
-	//Création de la structure de la base de données
+    $db->sql_query("ALTER DATABASE ".$sgbd_dbname." charset=utf8");
+    
+    //Création de la structure de la base de données
 	$sql_query = @fread(@fopen("schemas/ogspy_structure.sql", 'r'), @filesize("schemas/ogspy_structure.sql")) or die("<h1>Le script sql d'installation est introuvable</h1>");
 
 	$sql_query = preg_replace("#ogspy_#", $sgbd_tableprefix, $sql_query);
 	
-	//## nevada51
 	//Création de l'énumération des galaxies:
 	$galaxies_db_str = 'galaxy enum(';
 	for($i=1 ; $i<$num_of_galaxies ; $i++)

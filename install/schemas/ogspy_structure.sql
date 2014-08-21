@@ -13,7 +13,7 @@ CREATE TABLE ogspy_config (
   config_name varchar(255) NOT NULL default '',
   config_value varchar(255) NOT NULL default '',
   PRIMARY KEY  (config_name)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -37,7 +37,7 @@ CREATE TABLE ogspy_group (
   ogs_set_ranking enum('0','1') NOT NULL default '0',
   ogs_get_ranking enum('0','1') NOT NULL default '0',
   PRIMARY KEY  (group_id)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -61,7 +61,7 @@ CREATE TABLE ogspy_mod (
   UNIQUE KEY title (title),
   UNIQUE KEY menu (menu),
   UNIQUE KEY root (root)
-) ;
+) DEFAULT CHARSET=utf8;
 
 
 ## ########################################################
@@ -80,7 +80,7 @@ CREATE TABLE ogspy_rank_ally_economique (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,ally),
   KEY ally (ally)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -98,7 +98,7 @@ CREATE TABLE ogspy_rank_ally_technology (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,ally),
   KEY ally (ally)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -116,7 +116,7 @@ CREATE TABLE ogspy_rank_ally_military (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,ally),
   KEY ally (ally)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -134,7 +134,7 @@ CREATE TABLE ogspy_rank_ally_military_built (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,ally),
   KEY ally (ally)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -152,7 +152,7 @@ CREATE TABLE ogspy_rank_ally_military_loose (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,ally),
   KEY ally (ally)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -170,7 +170,7 @@ CREATE TABLE ogspy_rank_ally_military_destruct (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,ally),
   KEY ally (ally)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -188,7 +188,7 @@ CREATE TABLE ogspy_rank_ally_honor (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,ally),
   KEY ally (ally)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -207,7 +207,7 @@ CREATE TABLE ogspy_rank_ally_points (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,ally),
   KEY ally (ally)
-) ;
+) DEFAULT CHARSET=utf8;
 
 
 ## ########################################################
@@ -226,7 +226,7 @@ CREATE TABLE ogspy_rank_player_economique (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,player),
   KEY player (player)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -244,7 +244,7 @@ CREATE TABLE ogspy_rank_player_technology (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,player),
   KEY player (player)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -263,7 +263,7 @@ CREATE TABLE ogspy_rank_player_military (
   PRIMARY KEY (rank,datadate),
   KEY datadate (datadate,player),
   KEY player (player)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -281,7 +281,7 @@ CREATE TABLE ogspy_rank_player_military_built (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,player),
   KEY player (player)
-) ;
+) DEFAULT CHARSET=utf8;
 
 
 ## ########################################################
@@ -300,7 +300,7 @@ CREATE TABLE ogspy_rank_player_military_loose (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,player),
   KEY player (player)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -318,7 +318,7 @@ CREATE TABLE ogspy_rank_player_military_destruct (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,player),
   KEY player (player)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -336,7 +336,7 @@ CREATE TABLE ogspy_rank_player_honor (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,player),
   KEY player (player)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -355,7 +355,7 @@ CREATE TABLE ogspy_rank_player_points (
   PRIMARY KEY  (rank,datadate),
   KEY datadate (datadate,player),
   KEY player (player)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -372,7 +372,7 @@ CREATE TABLE ogspy_sessions (
   session_ogs enum('0','1') NOT NULL default '0',
   session_lastvisit int(11) NOT NULL default '0',
   UNIQUE KEY session_id (session_id,session_ip)
-) ;
+) DEFAULT CHARSET=utf8;
 
 
 
@@ -386,7 +386,7 @@ CREATE TABLE ogspy_statistics (
   statistic_name varchar(255) NOT NULL default '',
   statistic_value varchar(255) NOT NULL default '0',
   PRIMARY KEY  (statistic_name)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -410,20 +410,7 @@ CREATE TABLE ogspy_universe (
   last_update_user_id int(11) NOT NULL default '0',
   UNIQUE KEY univers (galaxy,system,`row`),
   KEY player (player)
-) ;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_universe_temporary`
-## 
-
-##CREATE TABLE ogspy_universe_temporary (
-##  player varchar(20) NOT NULL default '',
-##  ally varchar(20) NOT NULL default '',
-##  `status` varchar(5) NOT NULL,
-##  `timestamp` int(11) NOT NULL default '0'
-##) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 ## 
@@ -466,7 +453,7 @@ CREATE TABLE ogspy_user (
   off_technocrate enum('0','1') NOT NULL default '0',
   PRIMARY KEY  (user_id),
   UNIQUE KEY user_name (user_name)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -511,7 +498,7 @@ CREATE TABLE ogspy_user_building (
   Pha smallint(2) NOT NULL default '0',
   PoSa smallint(2) NOT NULL default '0',
   PRIMARY KEY  (user_id,planet_id)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -533,7 +520,7 @@ CREATE TABLE ogspy_user_defence (
   MIC smallint(3) NOT NULL default '0',
   MIP smallint(3) NOT NULL default '0',
   PRIMARY KEY  (user_id,planet_id)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -546,7 +533,7 @@ CREATE TABLE ogspy_user_favorite (
   GALAXY_ENUM
   system smallint(3) NOT NULL default '0',
   UNIQUE KEY user_id (user_id,galaxy,system)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -558,7 +545,7 @@ CREATE TABLE ogspy_user_group (
   group_id mediumint(8) NOT NULL default '0',
   user_id mediumint(8) NOT NULL default '0',
   UNIQUE KEY group_id (group_id,user_id)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
 
@@ -570,10 +557,9 @@ CREATE TABLE ogspy_user_spy (
   user_id int(11) NOT NULL default '0',
   spy_id int(11) NOT NULL default '0',
   PRIMARY KEY  (user_id,spy_id)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
-
 ## 
 ## Structure de la table `ogspy_user_technology`
 ## 
@@ -597,10 +583,9 @@ CREATE TABLE ogspy_user_technology (
   Graviton smallint(2) NOT NULL default '0',
   Astrophysique smallint(2) NOT NULL default '0',
   PRIMARY KEY  (user_id)
-) ;
+) DEFAULT CHARSET=utf8;
 
 ## ########################################################
-
 ##
 ## Structure de la table `ogspy_mod_config`
 ##
@@ -610,7 +595,7 @@ CREATE TABLE `ogspy_mod_config` (
   `config` varchar(255) NOT NULL DEFAULT '',
   `value` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY  (`mod`,`config`)
-);
+) DEFAULT CHARSET=utf8;
 ## ########################################################
 
 ## 
@@ -750,7 +735,7 @@ CREATE TABLE `ogspy_parsedspy` (
   `sender_id` int(11) NOT NULL,
   PRIMARY KEY  (`id_spy`),
   KEY `coordinates` (`coordinates`)
-);
+) DEFAULT CHARSET=utf8;
 ## ########################################################
 
 ##
@@ -773,7 +758,7 @@ CREATE TABLE `ogspy_parsedRC` (
   `lune` int(2) NOT NULL default '0',
   PRIMARY KEY  (`id_rc`),
   KEY `coordinatesrc` (`coordinates`)
-);
+) DEFAULT CHARSET=utf8;
 ## ########################################################
 
 ##
@@ -793,7 +778,7 @@ CREATE TABLE `ogspy_parsedRCRound` (
   PRIMARY KEY (id_rcround),
   KEY `rcround` (`id_rc`,`numround`),
   KEY `id_rc` (`id_rc`)
-);
+) DEFAULT CHARSET=utf8;
 ## ########################################################
 
 ##
@@ -824,7 +809,7 @@ CREATE TABLE `ogspy_round_attack` (
   PRIMARY KEY  (`id_roundattack`),
   KEY `id_rcround` (`id_rcround`),
   KEY `player` (`player`,`coordinates`)
-);
+) DEFAULT CHARSET=utf8;
 ## ########################################################
 
 ##
@@ -864,7 +849,7 @@ CREATE TABLE `ogspy_round_defense` (
   PRIMARY KEY  (`id_rounddefense`),
   KEY `id_rcround` (`id_rcround`),
   KEY `player` (`player`,`coordinates`)
-);
+) DEFAULT CHARSET=utf8;
 ## ########################################################
 
 ##
@@ -878,4 +863,4 @@ CREATE TABLE IF NOT EXISTS `ogspy_gcm_users` (
   	`version_ogspy` varchar(50),
   	`device` varchar(50),
   	PRIMARY KEY (`gcm_regid`)
-);
+) DEFAULT CHARSET=utf8;
