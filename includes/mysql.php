@@ -113,21 +113,17 @@ class sql_db {
     $this->server = $sqlserver;
     $this->dbname = $database;
 
-    $this->db_connect_id = @mysql_connect($this->server, $this->user, $this->password);
+    $this->db_connect_id = @new mysqli($this->server, $this->user, $this->password, $this->dbname);
 
     if($this->db_connect_id) {
-      if($database != "") {
-        $this->dbname = $database;
-        $dbselect = @mysql_select_db($this->dbname);
-        if(!$dbselect) {
-          @mysql_close($this->db_connect_id);
-          $this->db_connect_id = $dbselect;
-        }
-      }
+      if (!$this->db_connect_id->set_charset("utf8")) {
+            printf("Erreur lors du chargement du jeu de caractères utf8 : %s\n", $this->db_connect_id->error);
+      }  
       return $this->db_connect_id;
     }
-    else {
-      return false;
+    elseif ($mysqli->connect_errno) {
+         printf("Échec de la connexion : %s\n", $this->db_connect_id->connect_error);
+         return false;
     }
 
     $sql_timing += benchmark() - $sql_start;
@@ -146,7 +142,7 @@ class sql_db {
 */
   function sql_close() {
 		unset($this->result);
-		$result = @mysql_close($this->db_connect_id); //deconnection
+		$result = @mysqli_close($this->db_connect_id); //deconnection
 		self::$_instance=false;
   }
 /**
@@ -161,10 +157,10 @@ class sql_db {
     $sql_start = benchmark();
 
     if ($Auth_dieSQLError) {
-      $this->result = @mysql_query($query, $this->db_connect_id) or dieSQLError($query);
+      $this->result = $this->db_connect_id->query($query) or dieSQLError($query);
     }
     else {
-      $this->result = @mysql_query($query, $this->db_connect_id);
+      $this->result = $this->db_connect_id->query($query);
     }
 
     if ($save) {
@@ -194,7 +190,7 @@ class sql_db {
       $query_id = $this->result;
     }
     if($query_id) {
-      return @mysql_fetch_array($query_id,MYSQL_NUM);
+      return $query_id->fetch_array();
     }
     else {
       return false;
@@ -210,7 +206,7 @@ class sql_db {
       $query_id = $this->result;
     }
     if($query_id) {
-      return @mysql_fetch_assoc($query_id);
+      return $query_id->fetch_assoc();
     }
     else {
       return false;
@@ -226,7 +222,7 @@ class sql_db {
       $query_id = $this->result;
     }
     if($query_id) {
-      $result = @mysql_num_rows($query_id);
+      $result = $query_id->num_rows;
       return $result;
     }
     else {
@@ -239,7 +235,7 @@ class sql_db {
 */
   function sql_affectedrows() {
     if($this->db_connect_id) {
-      $result = @mysql_affected_rows($this->db_connect_id);
+      $result = $this->db_connect_id->affected_rows;
       return $result;
     }
     else {
@@ -252,7 +248,7 @@ class sql_db {
 */
   function sql_insertid(){
     if($this->db_connect_id) {
-      $result = @mysql_insert_id($this->db_connect_id);
+      $result = $this->db_connect_id->insert_id;
       return $result;
     }
     else {
@@ -272,8 +268,8 @@ class sql_db {
 * @return an array with the error code and the error message
 */
   function sql_error($query_id = 0) {
-    $result["message"] = @mysql_error($this->db_connect_id);
-    $result["code"] = @mysql_errno($this->db_connect_id);
+    $result["message"] = $this->db_connect_id->connect_error;
+    $result["code"] = $this->db_connect_id->connect_errno;
 
     return $result;
   }
@@ -293,7 +289,7 @@ class sql_db {
 */
   function sql_escape_string($str) {
     if(isset($str)) {
-     return  mysql_real_escape_string($str);
+     return  mysqli_real_escape_string($this->db_connect_id,$str);
     }
     else {
       return false;
