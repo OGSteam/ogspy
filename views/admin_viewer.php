@@ -162,7 +162,7 @@ echo "</tr>";
 <?php
 end($log);
 while ($line = current($log)) {
-	$line = trim(nl2br(htmlspecialchars($line)));
+	$line = trim(nl2br(htmlspecialchars($line, ENT_COMPAT | ENT_HTML401, "UTF-8")));
 	$line = preg_replace("#/\*(.*)\*/#", "<font color='orange'>$1 : </font>", $line);
 
 	echo $line;
