@@ -193,7 +193,7 @@ foreach ($population as $v) {
 		}
 		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=ally&string_search=".$ally."&strict=on\">Voir détail</a></td></tr>";
 		$tooltip .= "</table>";
-		$tooltip = htmlentities($tooltip);
+		$tooltip = htmlentities($tooltip,ENT_COMPAT | ENT_HTML401, "UTF-8");
 
 		$ally = "<a href='index.php?action=search&type_search=ally&string_search=".$ally."&strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$begin_allied.$begin_hided.$ally.$end_hided.$end_allied."</a>";
 	}
@@ -236,7 +236,7 @@ foreach ($population as $v) {
 		}
 		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=player&string_search=".$player."&strict=on\">Voir détail</a></td></tr>";
 		$tooltip .= "</table>";
-		$tooltip = htmlentities($tooltip);
+		$tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
 
 		$player = "<a href='index.php?action=search&type_search=player&string_search=".$player."&strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$begin_allied.$begin_hided.$player.$end_hided.$end_allied."</a>";
 	}
@@ -288,7 +288,7 @@ $legend .= "<tr><td class=\"c\">Rapports de combat</td><th>X RC</th></tr>";
 $legend .= "<tr><td class=\"c\">Joueur / Alliance allié</td><th><blink><a>abc</a></blink></th></tr>";
 $legend .= "<tr><td class=\"c\">Joueur / Alliance masqué</td><th><font color=\"lime\">abc</font></th></tr>";
 $legend .= "</table>";
-$legend = htmlentities($legend);
+$legend = htmlentities($legend, ENT_COMPAT | ENT_HTML401, "UTF-8");
 
 echo "<tr align='center'><td class='c' colspan='9'><a style='cursor:pointer' onmouseover=\"this.T_WIDTH=210;this.T_TEMP=0;return escape('".$legend."')\">Légende</a></td></tr>";
 echo "</table>";
@@ -328,7 +328,7 @@ if (sizeof($phalanx_list) > 0) {
 			}
 			$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=ally&string_search=".$value["ally"]."&strict=on\">Voir détail</a></td></tr>";
 			$tooltip .= "</table>";
-			$tooltip = htmlentities($tooltip);
+			$tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
 
 			echo "[<a href='index.php?action=search&type_search=ally&string_search=".$value["ally"]."&strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$value["ally"]."</a>]"." ";
 		}
@@ -353,7 +353,7 @@ if (sizeof($phalanx_list) > 0) {
 		}
 		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=player&string_search=".$value["player"]."&strict=on\">Voir détail</a></td></tr>";
 		$tooltip .= "</table>";
-		$tooltip = htmlentities($tooltip);
+		$tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
 		echo "<a href=\"index.php?action=search&type_search=player&string_search=".$value["player"]."&strict=on\" onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$value["player"]."</a> possède une lune avec phalange de niveau ".$value["phalanx"];
 		echo " en <a href='index.php?action=galaxy&galaxy=".$value["galaxy"]."&system=".$value["system"]."'>".$value["galaxy"].":".$value["system"].":".$value["row"]."</a> [<font color='orange'>".$value["galaxy"].":".$range_down." <-> ".$value["galaxy"].":".$range_up."</font>]";
 
@@ -383,10 +383,10 @@ for ($i=10 ; $i<=50 ; $i=$i+10) {
 	$tooltip_spy .= "<tr><th><a href=\"index.php?action=search&type_search=spy&galaxy_down=".$galaxy."&galaxy_up=".$galaxy."&system_down=".$down."&system_up=".$up."&row_down=&row_up=\">".$i." systèmes environnants</a></th></tr>";
 }
 
-$tooltip_colonization = htmlentities($tooltip_begin.$tooltip_colonization.$tooltip_end);
-$tooltip_moon = htmlentities($tooltip_begin.$tooltip_moon.$tooltip_end);
-$tooltip_away = htmlentities($tooltip_begin.$tooltip_away.$tooltip_end);
-$tooltip_spy = htmlentities($tooltip_begin.$tooltip_spy.$tooltip_end);
+$tooltip_colonization = htmlentities($tooltip_begin.$tooltip_colonization.$tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
+$tooltip_moon = htmlentities($tooltip_begin.$tooltip_moon.$tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
+$tooltip_away = htmlentities($tooltip_begin.$tooltip_away.$tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
+$tooltip_spy = htmlentities($tooltip_begin.$tooltip_spy.$tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
 
 echo "<br /><table width='860' border='1'>";
 echo "<tr><td class='c' align='center' colspan='4'>Recherches</td></tr>";
