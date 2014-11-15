@@ -26,6 +26,16 @@ if (!defined('IN_SPYOGAME')) {
 		<td class="c" width="50">Version</td>
 		<td class="c">Description</td>
 	</tr>
+    <tr>
+		<th>3.2.0</th>
+		<th style="text-align:left">
+			<ul>
+				<li>Passage en UTF-8 pour une meilleur gestion des caractères spéciaux</li>
+				<li>Compatibilité PHP 5.5</li>
+                <li>Sortie de OGSpy pour Android</li>				
+	       </ul>
+	  	</th>
+	</tr>
 	<tr>
 		<th>3.1.3</th>
 		<th style="text-align:left">
