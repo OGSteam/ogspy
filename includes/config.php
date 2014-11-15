@@ -29,7 +29,6 @@ if (!defined("INSTALL_IN_PROGRESS")) {
 	define("TABLE_SESSIONS", $table_prefix."sessions");
 	define("TABLE_STATISTIC", $table_prefix."statistics");
 	define("TABLE_UNIVERSE", $table_prefix."universe");
-	define("TABLE_UNIVERSE_TEMPORARY", $table_prefix."universe_temporary");
 	define("TABLE_USER", $table_prefix."user");
 	define("TABLE_USER_BUILDING", $table_prefix."user_building");
 	define("TABLE_USER_DEFENCE", $table_prefix."user_defence");
