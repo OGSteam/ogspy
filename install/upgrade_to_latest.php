@@ -47,233 +47,6 @@ list($ogsversion) = $db->sql_fetch_row($result);
 $requests = array();
 $up_to_date = false;
 switch ($ogsversion) {
-	case '3.06':
-		$requests[] = "ALTER TABLE ".TABLE_USER_TECHNOLOGY." CHANGE Expeditions Astrophysique SMALLINT(2) NOT NULL default '0'";
-		$requests[] = "ALTER TABLE ".TABLE_PARSEDSPY." CHANGE Expeditions Astrophysique SMALLINT(2) NOT NULL default '0'";
-		$requests[] = "ALTER TABLE ".TABLE_MOD." MODIFY version VARCHAR(10)";
-		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.0.7' WHERE config_name = 'version'";
-		$requests[] = "INSERT IGNORE INTO ".TABLE_CONFIG." (config_name, config_value) VALUES ('astro_strict','1')";
-        $requests[] = "UPDATE ".TABLE_USER_BUILDING." SET planet_id = (planet_id + 100) WHERE planet_id < 10";
-        $requests[] = "UPDATE ".TABLE_USER_BUILDING." SET planet_id = (planet_id + 191) WHERE planet_id > 9 and planet_id < 19 ";
-        $requests[] = "UPDATE ".TABLE_USER_DEFENCE." SET planet_id = (planet_id + 100) WHERE planet_id < 10";
-        $requests[] = "UPDATE ".TABLE_USER_DEFENCE." SET planet_id = (planet_id + 191) WHERE planet_id > 9 and planet_id < 19 ";
-        $ogsversion = '3.0.7';
-		$up_to_date = true;
-		//Pas de break pour faire toutes les mises à jour d'un coup !
-		
-	case '3.0.7':
-		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.0.8' WHERE config_name = 'version'";
-		$requests[] = "INSERT IGNORE INTO ".TABLE_CONFIG." (config_name, config_value) VALUES ('config_cache', '3600')";
-		$requests[] = "INSERT IGNORE INTO ".TABLE_CONFIG." (config_name, config_value) VALUES ('mod_cache', '604800')";
-        $ogsversion = '3.0.8';
-		$up_to_date = true;
-		//Pas de break pour faire toutes les mises à jour d'un coup !
-		
-	case '3.0.8':
-        // modif building
-	   $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.0' WHERE config_name = 'version'";
-       $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` ADD `CD` SMALLINT(2) NOT NULL default '0' AFTER `HD`"; // cache deut
-	   $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` ADD `CC` SMALLINT(2) NOT NULL default '0' AFTER `HD`"; // cache cristal
-	   $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` ADD `CM` SMALLINT(2) NOT NULL default '0' AFTER `HD`"; // cache metal
-	   $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY."` ADD `CD` SMALLINT(2) NOT NULL default '-1' AFTER `HD`"; // cache deut
-	   $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY."` ADD `CC` SMALLINT(2) NOT NULL default '-1' AFTER `HD`"; // cache cristal
-	   $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY."` ADD `CM` SMALLINT(2) NOT NULL default '-1' AFTER `HD`"; // cache metal
-        // fin modif building
-        
-        // ajout classement alliance //
-        // economique
-        $requests[] = "CREATE TABLE ".TABLE_RANK_ALLY_ECO." (".
-	        " datadate int(11) NOT NULL default '0',".
-	        " rank int(11) NOT NULL default '0',".
-	        " ally varchar(30) NOT NULL,".
-        	" number_member int(11) NOT NULL,".
-        	" points int(11) NOT NULL default '0',".
-        	" sender_id int(11) NOT NULL default '0',".
-        	" PRIMARY KEY  (rank,datadate),".
-        	" KEY datadate (datadate,ally),".
-        	" KEY ally (ally)".
-        	" )";
-        
-      // recherche
-        $requests[] = "CREATE TABLE ".TABLE_RANK_ALLY_TECHNOLOGY." (".
-	         " datadate int(11) NOT NULL default '0',".
-	         " rank int(11) NOT NULL default '0',".
-	        " ally varchar(30) NOT NULL,".
-        	" number_member int(11) NOT NULL,".
-        	" points int(11) NOT NULL default '0',".
-         	" sender_id int(11) NOT NULL default '0',".
-        	" PRIMARY KEY  (rank,datadate),".
-        	" KEY datadate (datadate,ally),".
-        	" KEY ally (ally)".
-        	" )";
-        
-     // militaire
-        $requests[] = "CREATE TABLE ".TABLE_RANK_ALLY_MILITARY." (".
-	         " datadate int(11) NOT NULL default '0',".
-	         " rank int(11) NOT NULL default '0',".
-	        " ally varchar(30) NOT NULL,".
-        	" number_member int(11) NOT NULL,".
-        	" points int(11) NOT NULL default '0',".
-        	" sender_id int(11) NOT NULL default '0',".
-        	" PRIMARY KEY  (rank,datadate),".
-        	" KEY datadate (datadate,ally),".
-        	" KEY ally (ally)".
-        	" )";
-        // militaire construit
-        $requests[] = "CREATE TABLE ".TABLE_RANK_ALLY_MILITARY_BUILT." (".
-        	         " datadate int(11) NOT NULL default '0',".
-        	         " rank int(11) NOT NULL default '0',".
-        	        " ally varchar(30) NOT NULL,".
-                	" number_member int(11) NOT NULL,".
-                	" points int(11) NOT NULL default '0',".
-                	" sender_id int(11) NOT NULL default '0',".
-                	" PRIMARY KEY  (rank,datadate),".
-                	" KEY datadate (datadate,ally),".
-                	" KEY ally (ally)".
-                	" )";
-    
-     // militaire perdu
-        $requests[] = "CREATE TABLE ".TABLE_RANK_ALLY_MILITARY_LOOSE." (".
-	         " datadate int(11) NOT NULL default '0',".
-	         " rank int(11) NOT NULL default '0',".
-	        " ally varchar(30) NOT NULL,".
-        	" number_member int(11) NOT NULL,".
-        	" points int(11) NOT NULL default '0',".
-        	" sender_id int(11) NOT NULL default '0',".
-        	" PRIMARY KEY  (rank,datadate),".
-        	" KEY datadate (datadate,ally),".
-        	" KEY ally (ally)".
-        	" )";
-        
-     // militaire detruit
-        $requests[] = "CREATE TABLE ".TABLE_RANK_ALLY_MILITARY_DESTRUCT." (".
-	         " datadate int(11) NOT NULL default '0',".
-	         " rank int(11) NOT NULL default '0',".
-	        " ally varchar(30) NOT NULL,".
-        	" number_member int(11) NOT NULL,".
-        	" points int(11) NOT NULL default '0',".
-        	" sender_id int(11) NOT NULL default '0',".
-        	" PRIMARY KEY  (rank,datadate),".
-        	" KEY datadate (datadate,ally),".
-        	" KEY ally (ally)".
-        	" )";
-        
-    // point honneur
-        $requests[] = "CREATE TABLE ".TABLE_RANK_ALLY_HONOR." (".
-	         " datadate int(11) NOT NULL default '0',".
-	         " rank int(11) NOT NULL default '0',".
-	        " ally varchar(30) NOT NULL,".
-        	" number_member int(11) NOT NULL,".
-        	" points int(11) NOT NULL default '0',".
-        	" sender_id int(11) NOT NULL default '0',".
-        	" PRIMARY KEY  (rank,datadate),".
-        	" KEY datadate (datadate,ally),".
-        	" KEY ally (ally)".
-        	" )";
-        
-    // fin classement alliance
-    
-   /// classement joueur
-            // economique
-        $requests[] = "CREATE TABLE ".TABLE_RANK_PLAYER_ECO." (".
-	        " datadate int(11) NOT NULL default '0',".
-	        " rank int(11) NOT NULL default '0',".
-	        " player varchar(30) NOT NULL,".
-        	" ally varchar(100) NOT NULL,".
-        	" points int(11) NOT NULL default '0',".
-        	" sender_id int(11) NOT NULL default '0',".
-        	" PRIMARY KEY  (rank,datadate),".
-        	" KEY datadate (datadate,player),".
-        	" KEY player (player)".
-        	" )";
-   
-   
-   // technologie
-        $requests[] = "CREATE TABLE ".TABLE_RANK_PLAYER_TECHNOLOGY." (".
-	        " datadate int(11) NOT NULL default '0',".
-	        " rank int(11) NOT NULL default '0',".
-	        " player varchar(30) NOT NULL,".
-        	" ally varchar(100) NOT NULL,".
-        	" points int(11) NOT NULL default '0',".
-        	" sender_id int(11) NOT NULL default '0',".
-        	" PRIMARY KEY  (rank,datadate),".
-        	" KEY datadate (datadate,player),".
-        	" KEY player (player)".
-        	" )";
-   
-   
-// militaire
-        $requests[] = "CREATE TABLE ".TABLE_RANK_PLAYER_MILITARY." (".
-	        " datadate int(11) NOT NULL default '0',".
-	        " rank int(11) NOT NULL default '0',".
-	        " player varchar(30) NOT NULL,".
-        	" ally varchar(100) NOT NULL,".
-        	" points int(11) NOT NULL default '0',".
-        	" sender_id int(11) NOT NULL default '0',".        	
-        	" PRIMARY KEY  (rank,datadate),".
-        	" KEY datadate (datadate,player),".
-        	" KEY player (player)".
-        	" )";
-        
-// militaire constuit
-        $requests[] = "CREATE TABLE ".TABLE_RANK_PLAYER_MILITARY_BUILT." (".
-        	        " datadate int(11) NOT NULL default '0',".
-        	        " rank int(11) NOT NULL default '0',".
-        	        " player varchar(30) NOT NULL,".
-                	" ally varchar(100) NOT NULL,".
-                	" points int(11) NOT NULL default '0',".
-                	" sender_id int(11) NOT NULL default '0',".
-                	" PRIMARY KEY  (rank,datadate),".
-                	" KEY datadate (datadate,player),".
-                	" KEY player (player)".
-                	" )";
-        
-   
-// militaire perdu
-        $requests[] = "CREATE TABLE ".TABLE_RANK_PLAYER_MILITARY_LOOSE." (".
-	        " datadate int(11) NOT NULL default '0',".
-	        " rank int(11) NOT NULL default '0',".
-	        " player varchar(30) NOT NULL,".
-        	" ally varchar(100) NOT NULL,".
-        	" points int(11) NOT NULL default '0',".
-        	" sender_id int(11) NOT NULL default '0',".
-        	" PRIMARY KEY  (rank,datadate),".
-        	" KEY datadate (datadate,player),".
-        	" KEY player (player)".
-        	" )";
-   
-   // militaire detruit
-        $requests[] = "CREATE TABLE ".TABLE_RANK_PLAYER_MILITARY_DESTRUCT." (".
-	        " datadate int(11) NOT NULL default '0',".
-	        " rank int(11) NOT NULL default '0',".
-	        " player varchar(30) NOT NULL,".
-        	" ally varchar(100) NOT NULL,".
-        	" points int(11) NOT NULL default '0',".
-        	" sender_id int(11) NOT NULL default '0',".
-        	" PRIMARY KEY  (rank,datadate),".
-        	" KEY datadate (datadate,player),".
-        	" KEY player (player)".
-        	" )";
-      
-
-    // militaire honneur
-        $requests[] = "CREATE TABLE ".TABLE_RANK_PLAYER_HONOR." (".
-	        " datadate int(11) NOT NULL default '0',".
-	        " rank int(11) NOT NULL default '0',".
-	        " player varchar(30) NOT NULL,".
-        	" ally varchar(100) NOT NULL,".
-        	" points int(11) NOT NULL default '0',".
-        	" sender_id int(11) NOT NULL default '0',".
-        	" PRIMARY KEY  (rank,datadate),".
-        	" KEY datadate (datadate,player),".
-        	" KEY player (player)".
-        	" )";
-
-    
-        $ogsversion = '3.1.0';
-		$up_to_date = true;
-		//Pas de break pour faire toutes les mises à jour d'un coup !
-		
 	case '3.1.0':
 		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.1' WHERE config_name = 'version'";
         // MODIF TABLE_USER
@@ -317,8 +90,46 @@ switch ($ogsversion) {
 		  			  "`version_ogspy` varchar(50), ".
 					  "`device` varchar(50), ".
   					  "PRIMARY KEY (`gcm_regid`) ".
-  					  ") ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1";
-		$ogsversion = '3.1.4';
+  					  ") ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";					  
+					  
+		//Passage des tables en UTF-8
+		$requests[] "ALTER TABLE ".TABLE_CONFIG." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_GROUP." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_SESSIONS." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_STATISTIC." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_UNIVERSE." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_USER." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_USER_BUILDING." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_USER_DEFENCE." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_USER_FAVORITE." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_USER_GROUP." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_USER_SPY." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_USER_TECHNOLOGY." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_MOD." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_MOD_CFG." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_PARSEDSPY." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_PARSEDRC." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_PARSEDRCROUND." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_ROUND_ATTACK." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_ROUND_DEFENSE." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_PLAYER_POINTS." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_PLAYER_ECO." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_PLAYER_TECHNOLOGY." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_PLAYER_MILITARY." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_PLAYER_MILITARY_BUILT." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_PLAYER_MILITARY_LOOSE." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_PLAYER_MILITARY_DESTRUCT." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_PLAYER_HONOR." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_ALLY_POINTS." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_ALLY_ECO." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_ALLY_TECHNOLOGY." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_ALLY_MILITARY." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_ALLY_MILITARY_BUILT." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_ALLY_MILITARY_LOOSE." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_ALLY_MILITARY_DESTRUCT." CONVERT TO CHARACTER SET utf8;"
+		$requests[] "ALTER TABLE ".TABLE_RANK_ALLY_HONOR." CONVERT TO CHARACTER SET utf8;"
+			
+		$ogsversion = '3.2.0';
 		$up_to_date = true;
 		break;
 	default:
