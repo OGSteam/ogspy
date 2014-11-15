@@ -84,7 +84,7 @@ switch ($ogsversion) {
 	case '3.1.3':
 		$requests[] = "CREATE TABLE IF NOT EXISTS `".TABLE_GCM_USERS."` ( ".
   					  "`user_id` int(11) NOT NULL default '0',".
-  					  "`gcm_regid` varchar(256) NOT NULL, ".
+  					  "`gcm_regid` varchar(255) NOT NULL, ".
   					  "`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, ".
 					  "`version_android` varchar(50), ".
 		  			  "`version_ogspy` varchar(50), ".
