@@ -128,7 +128,8 @@ switch ($ogsversion) {
 		$requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_MILITARY_LOOSE." CONVERT TO CHARACTER SET utf8";
 		$requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_MILITARY_DESTRUCT." CONVERT TO CHARACTER SET utf8";
 		$requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_HONOR." CONVERT TO CHARACTER SET utf8";
-			
+		
+		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.2.0' WHERE config_name = 'version'";
 		$ogsversion = '3.2.0';
 		$up_to_date = true;
 		break;
