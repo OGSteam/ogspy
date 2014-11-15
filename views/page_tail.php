@@ -31,7 +31,7 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 	<td>
 		<center>
 			<font size="2">
-				<i><b><a href="http://www.ogsteam.fr" target="_blank">OGSpy</a></b> is an <b>OGSteam Software</b> &copy; 2005-2013</i><br />v <?php echo $server_config["version"];?><br />
+				<i><b><a href="http://www.ogsteam.fr" target="_blank">OGSpy</a></b> is an <b>OGSteam Software</b> &copy; 2005-2014</i><br />v <?php echo $server_config["version"];?><br />
 			</font>
 			<font size="1">
 				<i>Temps de génération <?php echo round($php_timing+$sql_timing, 3);?> sec (<b>PHP</b> : <?php echo round($php_timing, 3);?> / <b>SQL</b> : <?php echo round($sql_timing, 3);?>) [<?php echo $nb_requete;?> requéte(s)]</i>
