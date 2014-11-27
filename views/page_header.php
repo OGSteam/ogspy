@@ -29,7 +29,7 @@ if ($link_css == "") {
 <script language="JavaScript" src="js/highcharts.js"></script>
 </head>
 <body>
-<table border="0" width="100%" cellpadding="10" cellspacing="0" align="center">
+<table id="maintable">
 <tr>
 	<td width="150" align="center" valign="top" rowspan="4"><?php require_once("menu.php");?></td>
 	<td height="70"><div align="center"><img src="<?php echo $server_config["default_skin"].$banner_selected;?>"></div></td>
