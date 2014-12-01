@@ -152,11 +152,11 @@ $colspan_planete = floor($colspan);
 $colspan_lune = ceil($colspan);
 
 if ($view == "planets") {
-	echo "<th colspan='$colspan_planete'><a>Planètes</a></th>";
+	echo "<th colspan='$colspan_planete'><a>Plan&egrave;tes</a></th>";
 	echo "<td class='c' align='center' colspan='$colspan_lune' onClick=\"window.location = 'index.php?action=home&view=moons';\"><a style='cursor:pointer'><font color='lime'>Lunes</font></a></td>";
 }
 else {
-	echo "<td class='c' align='center' colspan='$colspan_planete' onClick=\"window.location = 'index.php?action=home&view=planets';\"><a style='cursor:pointer'><font color='lime'>Planètes</font></a></td>";
+	echo "<td class='c' align='center' colspan='$colspan_planete' onClick=\"window.location = 'index.php?action=home&view=planets';\"><a style='cursor:pointer'><font color='lime'>Plan&egrave;tes</font></a></td>";
 	echo "<th colspan='$colspan_lune'><a>Lunes</a></th>";
 }
 ?>
@@ -208,7 +208,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<th><a>Coordonnées</a></th>
+	<th><a>Coordonn&eacute;es</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$coordinates = $user_building[$i]["coordinates"];
@@ -232,7 +232,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<th><a>Température Min.</a></th>
+	<th><a>Temp&eacute;rature Min.</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$temperature_min = $user_building[$i]["temperature_min"];
@@ -243,7 +243,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<th><a>Température Max.</a></th>
+	<th><a>Temp&eacute;rature Max.</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$temperature_max = $user_building[$i]["temperature_max"];
@@ -256,17 +256,17 @@ if($view == "planets") {
 ?>
 </tr>
 <tr>
-	<td class="c" colspan="<?php print ($nb_planete <10)?'10':$nb_planete +1 ?>">Production théorique</td>
+	<td class="c" colspan="<?php print ($nb_planete <10)?'10':$nb_planete +1 ?>">Production th&eacute;orique</td>
   </tr>
 <tr>
-	<th><a>Métal</a></th>
+	<th><a>M&eacute;tal</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$M = $user_building[$i]["M"];
 	if ($M != "") $production = production("M", $M, $user_data['off_geologue'], 0, 0, $user_technology['Plasma']);
 	else $production = "&nbsp";
 
-	echo "\t"."<th>".floor($production)."</th>"."\n";
+	echo "\t"."<th>".number_format(floor($production), 0, ',', ' ')."</th>"."\n";
 }
 ?>
 </tr>
@@ -278,12 +278,12 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	if ($C != "") $production = production("C", $C, $user_data['off_geologue'], 0, 0, $user_technology['Plasma']);
 	else $production = "&nbsp";
 
-	echo "\t"."<th>".floor($production)."</th>"."\n";
+	echo "\t"."<th>".number_format(floor($production), 0, ',', ' ')."</th>"."\n";
 }
 ?>
 </tr>
 <tr>
-	<th><a>Deutérium</a></th>
+	<th><a>Deut&eacute;rium</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$D = $user_building[$i]["D"];
@@ -293,12 +293,12 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	if ($D != "") $production = production("D", $D, $user_data['off_geologue'], $temperature_max) - $CEF_consumption;
 	else $production = "&nbsp";
 
-	echo "\t"."<th>".floor($production)."</th>"."\n";
+	echo "\t"."<th>".number_format(floor($production), 0, ',', ' ')."</th>"."\n";
 }
 ?>
 </tr>
 <tr>
-	<th><a>Energie</a></th>
+	<th><a>&Eacute;nergie</a></th>
 <?php
 //modif 3.0.7
 $product= array( "M" => 0, "C" => 0, "D" => 0,"ratio" => 1, "conso_E" => 0, "prod_E" => 0 );
@@ -312,7 +312,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
    
 
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
-    	echo "\t"."<th>".floor($ratio[$i]["prod_E"])."</th>\n\t";
+    	echo "\t"."<th>".number_format(floor($ratio[$i]["prod_E"]), 0, ',', ' ')."</th>\n\t";
 
 /// implementation vue reel prod si jamais ration inferieur a 1
 	//echo "\t"."<th>";
@@ -328,7 +328,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
  if ($view_ratio == true) {
     ?>
  <tr>
-	<td class="c" colspan="<?php print ($nb_planete <10)?'10':$nb_planete +1 ?>">Production Réelle</td>
+	<td class="c" colspan="<?php print ($nb_planete <10)?'10':$nb_planete +1 ?>">Production R&eacute;elle</td>
   </tr>
   
   
@@ -338,17 +338,17 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
    // ratio
    for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	echo "\t"."<th>";
-    echo ($ratio[$i]['ratio'] != 1) ? "<font color='red'>".round($ratio[$i]['ratio'], 3)."</font color]" :  "<font color='lime'>-</font color]" ; 
+    echo ($ratio[$i]['ratio'] != 1) ? "<font color='red'>".number_format(round($ratio[$i]['ratio'], 3), 0, ',', ' ')."</font color]" :  "<font color='lime'>-</font color]" ; 
      echo "</th>"."\n"; 
 
 } ?>
     
   <tr>
-	<th><a>Métal</a></th>
+	<th><a>M&eacute;tal</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	echo "\t"."<th>";
- echo ($ratio[$i]['ratio'] != 1) ? floor($ratio[$i]['M']) :  "-" ; 
+ echo ($ratio[$i]['ratio'] != 1) ? number_format(floor($ratio[$i]['M']), 0, ',', ' ') :  "-" ; 
     echo "</th>"."\n";
 }
 ?>
@@ -358,17 +358,17 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 		echo "\t"."<th>";
-    echo ($ratio[$i]['ratio'] != 1) ? floor($ratio[$i]['C']) :  "-" ; 
+    echo ($ratio[$i]['ratio'] != 1) ? number_format(floor($ratio[$i]['C']), 0, ',', ' ') :  "-" ; 
     echo "</th>"."\n";
 }
 ?>
 </tr>
 <tr>
-	<th><a>Deutérium</a></th>
+	<th><a>Deut&eacute;rium</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	echo "\t"."<th>";
-    echo ($ratio[$i]['ratio'] != 1) ? floor($ratio[$i]['D']) :  "-" ; 
+    echo ($ratio[$i]['ratio'] != 1) ? number_format(floor($ratio[$i]['D']), 0, ',', ' ') :  "-" ; 
     echo "</th>"."\n";
  }
 
@@ -377,10 +377,10 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<td class="c_batiments" colspan="<?php print ($nb_planete <10)?'10':$nb_planete +1 ?>">Bâtiments</td>
+	<td class="c_batiments" colspan="<?php print ($nb_planete <10)?'10':$nb_planete +1 ?>">B&acirc;timents</td>
  </tr>
 <tr>
-	<th><a>Mine de métal</a></th>
+	<th><a>Mine de m&eacute;tal</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$M = $user_building[$i]["M"];
@@ -402,7 +402,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<th><a>Synthétiseur de deutérium</a></th>
+	<th><a>Synth&eacute;tiseur de deut&eacute;rium</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$D = $user_building[$i]["D"];
@@ -413,7 +413,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<th><a>Centrale électrique solaire</a></th>
+	<th><a>Centrale &eacute;lectrique solaire</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$CES = $user_building[$i]["CES"];
@@ -424,7 +424,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<th><a>Centrale électrique de fusion</a></th>
+	<th><a>Centrale &eacute;lectrique de fusion</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$CEF = $user_building[$i]["CEF"];
@@ -479,7 +479,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<th><a>Hangar de métal</a></th>
+	<th><a>Hangar de m&eacute;tal</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$HM = $user_building[$i]["HM"];
@@ -501,7 +501,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<th><a>Réservoir de deutérium</a></th>
+	<th><a>R&eacute;servoir de deut&eacute;rium</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$HD = $user_building[$i]["HD"];
@@ -512,7 +512,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<th><a>Cachette de Métal</a></th>
+	<th><a>Cachette de M&eacute;tal</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$CM = $user_building[$i]["CM"];
@@ -534,7 +534,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<th><a>Cachette de Deutérium</a></th>
+	<th><a>Cachette de Deut&eacute;rium</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$CD = $user_building[$i]["CD"];
@@ -639,6 +639,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$Sat = $user_building[$i]["Sat"];
 	if ($Sat == "") $Sat = "&nbsp;";
+    else $Sat = number_format($Sat, 0, ',', ' ');
 
 	echo "\t"."<th><font color='lime' id='6".($i+1-$start)."'>".$Sat."</font></th>"."\n";
 }
@@ -785,7 +786,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<th><a>Technologie Energie</a></th>
+	<th><a>Technologie &Eacute;nergie</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$Lab = $user_building[$i]["Lab"];
@@ -839,7 +840,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<th><a>Réacteur à combustion</a></th>
+	<th><a>R&eacute;acteur &agrave; combustion</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$Lab = $user_building[$i]["Lab"];
@@ -866,7 +867,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<th><a>Réacteur à impulsion</a></th>
+	<th><a>R&eacute;acteur &agrave; impulsion</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$Lab = $user_building[$i]["Lab"];
@@ -999,7 +1000,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<th><a>Réseau de recherche intergalactique</a></th>
+	<th><a>R&eacute;seau de recherche intergalactique</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$Lab = $user_building[$i]["Lab"];
@@ -1082,7 +1083,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 ?>
 </tr>
 <tr>
-	<td class="c_defense" colspan="<?php print ($nb_planete <10)?'10':$nb_planete +1 ?>">Défenses</td>
+	<td class="c_defense" colspan="<?php print ($nb_planete <10)?'10':$nb_planete +1 ?>">D&eacute;fenses</td>
   
 </tr>
 <tr>
@@ -1091,17 +1092,19 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$LM = $user_defence[$i]["LM"];
 	if ($LM == "") $LM = "&nbsp;";
+    else $LM = number_format($LM, 0, ',', ' ');
 
 	echo "\t"."<th><font color='lime' id='7".($i+1-$start)."'>".$LM."</font></th>"."\n";
 }
 ?>
 </tr>
 <tr>
-	<th><a>Artillerie laser légère</a></th>
+	<th><a>Artillerie laser l&eacute;g&egrave;re</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$LLE = $user_defence[$i]["LLE"];
 	if ($LLE == "") $LLE = "&nbsp;";
+    else $LLE = number_format($LLE, 0, ',', ' ');
 
 	echo "\t"."<th><font color='lime' id='8".($i+1-$start)."'>".$LLE."</font></th>"."\n";
 }
@@ -1113,6 +1116,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$LLO = $user_defence[$i]["LLO"];
 	if ($LLO == "") $LLO = "&nbsp;";
+    else $LLO = number_format($LLO, 0, ',', ' ');
 
 	echo "\t"."<th><font color='lime' id='9".($i+1-$start)."'>".$LLO."</font></th>"."\n";
 }
@@ -1124,17 +1128,19 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$CG = $user_defence[$i]["CG"];
 	if ($CG == "") $CG = "&nbsp;";
+    else $CG = number_format($CG, 0, ',', ' ');
 
 	echo "\t"."<th><font color='lime' id='10".($i+1-$start)."'>".$CG."</font></th>"."\n";
 }
 ?>
 </tr>
 <tr>
-	<th><a>Artillerie à ions</a></th>
+	<th><a>Artillerie &agrave; ions</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$AI = $user_defence[$i]["AI"];
 	if ($AI == "") $AI = "&nbsp;";
+    else $AI = number_format($AI, 0, ',', ' ');
 
 	echo "\t"."<th><font color='lime' id='11".($i+1-$start)."'>".$AI."</font></th>"."\n";
 }
@@ -1146,6 +1152,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$LP = $user_defence[$i]["LP"];
 	if ($LP == "") $LP = "&nbsp;";
+    else $LP = number_format($LP, 0, ',', ' ');
 
 	echo "\t"."<th><font color='lime' id='12".($i+1-$start)."'>".$LP."</font></th>"."\n";
 }
@@ -1181,17 +1188,19 @@ if($view == "planets") {
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$MIC = $user_defence[$i]["MIC"];
 	if ($MIC == "") $MIC = "&nbsp;";
+    else $MIC = number_format($MIC, 0, ',', ' ');
 
 	echo "\t"."<th><font color='lime' id='19".($i+1-$start)."'>".$MIC."</font></th>"."\n";
 }
 ?>
 </tr>
 <tr>
-	<th><a>Missile Interplanétaire</a></th>
+	<th><a>Missile Interplan&eacute;taire</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	$MIP = $user_defence[$i]["MIP"];
 	if ($MIP == "") $MIP = "&nbsp;";
+    else $MIP = number_format($MIP, 0, ',', ' ');
 
 	echo "\t"."<th><font color='lime' id='18".($i+1-$start)."'>".$MIP."</font></th>"."\n";
 }

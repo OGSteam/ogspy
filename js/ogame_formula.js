@@ -72,8 +72,8 @@ function update_page () {
 		M_1_conso[i] = Math.round(consumption("M", M_1[i]) * M_1_percentage / 100);
 		M_1_prod[i] = Math.round(production("M", M_1[i], temperature_max_1, NRJ, Plasma) * M_1_percentage / 100);
 	
-		document.getElementById("M_" + i + "_conso").innerHTML = M_1_conso[i];
-		document.getElementById("M_" + i + "_prod").innerHTML = M_1_prod[i];
+		document.getElementById("M_" + i + "_conso").innerHTML = format(M_1_conso[i]);
+		document.getElementById("M_" + i + "_prod").innerHTML = format(M_1_prod[i]);
 	
 		//Cristal - Planète 1
 		C_1[i] = document.getElementById("C_" + i).value;
@@ -82,8 +82,8 @@ function update_page () {
 		C_1_conso[i] = Math.round(consumption("C", C_1[i]) * C_1_percentage / 100);
 		C_1_prod[i] = Math.round(production("C", C_1[i], temperature_max_1, NRJ, Plasma) * C_1_percentage / 100);
 	
-		document.getElementById("C_" + i + "_conso").innerHTML = C_1_conso[i];
-		document.getElementById("C_" + i + "_prod").innerHTML = C_1_prod[i];
+		document.getElementById("C_" + i + "_conso").innerHTML = format(C_1_conso[i]);
+		document.getElementById("C_" + i + "_prod").innerHTML = format(C_1_prod[i]);
 	
 		//CES - Planète 1
 		CES_1[i] = document.getElementById("CES_" + i).value;
@@ -109,27 +109,27 @@ function update_page () {
 		D_1_prod[i] = Math.round(production("D", D_1[i], temperature_max_1, NRJ) * D_1_percentage / 100) - Math.round(consumption("CEF", CEF_1[i]) * CEF_1_percentage / 100);
 
 		
-		document.getElementById("D_" + i + "_conso").innerHTML = D_1_conso[i];
-		document.getElementById("D_" + i + "_prod").innerHTML = D_1_prod[i];
+		document.getElementById("D_" + i + "_conso").innerHTML = format(D_1_conso[i]);
+		document.getElementById("D_" + i + "_prod").innerHTML = format(D_1_prod[i]);
 	
 		//Energie
 
 		NRJ_1[i] = Math.round(CES_1_production + CEF_1_production + Sat_1_production);
 		var NRJ_1_delta = NRJ_1[i] - (M_1_conso[i] + C_1_conso[i] + D_1_conso[i]);
 		if (NRJ_1_delta < 0) NRJ_1_delta = "<font color='red'>" + NRJ_1_delta + "</font>";
-		document.getElementById("NRJ_" + i).innerHTML = NRJ_1_delta + " / " + NRJ_1[i];
+		document.getElementById("NRJ_" + i).innerHTML = format(NRJ_1_delta) + " / " + format(NRJ_1[i]);
 	
 		//Ratio de consommation d'énergie
 		var ratio_conso = NRJ_1[i] / (M_1_conso[i] + C_1_conso[i] + D_1_conso[i]);
 		if (ratio_conso < 1) {
 			M_1_prod[i] = Math.round(M_1_prod[i] * ratio_conso);
-			document.getElementById("M_" + i + "_prod").innerHTML = M_1_prod[i];
+			document.getElementById("M_" + i + "_prod").innerHTML = format(M_1_prod[i]);
 	
 			C_1_prod[i] = Math.round(C_1_prod[i] * ratio_conso);
-			document.getElementById("C_" + i + "_prod").innerHTML = C_1_prod[i];
+			document.getElementById("C_" + i + "_prod").innerHTML = format(C_1_prod[i]);
 	
 			D_1_prod[i] = Math.round(D_1_prod[i] * ratio_conso);
-			document.getElementById("D_" + i + "_prod").innerHTML = D_1_prod[i];
+			document.getElementById("D_" + i + "_prod").innerHTML = format(D_1_prod[i]);
 		}
 	}
 
@@ -156,16 +156,16 @@ function update_page () {
 	}
 	
 	//Metal
-	document.getElementById("M_conso").innerHTML = M_conso;
-	document.getElementById("M_prod").innerHTML = M_prod;
+	document.getElementById("M_conso").innerHTML = format(M_conso);
+	document.getElementById("M_prod").innerHTML = format(M_prod);
 
 	//Cristal
-	document.getElementById("C_conso").innerHTML = C_conso;
-	document.getElementById("C_prod").innerHTML = C_prod;
+	document.getElementById("C_conso").innerHTML = format(C_conso);
+	document.getElementById("C_prod").innerHTML = format(C_prod);
 
 	//Deutérium
-	document.getElementById("D_conso").innerHTML = D_conso;
-	document.getElementById("D_prod").innerHTML = D_prod;
+	document.getElementById("D_conso").innerHTML = format(D_conso);
+	document.getElementById("D_prod").innerHTML = format(D_prod);
 
 	//Energie
 	var Delta_NRJ = NRJ - (M_conso + C_conso + D_conso);
@@ -173,7 +173,7 @@ function update_page () {
 	if (Delta_NRJ < 0) Delta_NRJ = "<font color='red'>"+Delta_NRJ+"</font>";
 	else Delta_NRJ = "<font color='lime'>"+Delta_NRJ+"</font>";
 	NRJ = "<font color='lime'>"+NRJ+"</font>"
-	document.getElementById("NRJ").innerHTML = Delta_NRJ + " / " + NRJ;
+	document.getElementById("NRJ").innerHTML = format(Delta_NRJ) + " / " + format(NRJ);
 
 	//
 	// Points
@@ -208,10 +208,10 @@ function update_page () {
 		total_pts_1[i] = b_pts_1;
 		total_b_pts += b_pts_1;
 		
-		document.getElementById("building_pts_" + i).innerHTML = Math.round(b_pts_1/1000);
+		document.getElementById("building_pts_" + i).innerHTML = format(Math.round(b_pts_1/1000));
 	}
 
-	document.getElementById("total_b_pts").innerHTML = Math.round(total_b_pts/1000);
+	document.getElementById("total_b_pts").innerHTML = format(Math.round(total_b_pts/1000));
 
 	init_d_prix = new Array(2000, 2000, 8000, 37000, 8000, 130000, 20000, 100000, 10000, 25000);
 
@@ -226,10 +226,10 @@ function update_page () {
 		}
 		total_pts_1[i] += d_pts_1;
 		total_d_pts += d_pts_1;
-		document.getElementById("defence_pts_" + i).innerHTML = Math.round(d_pts_1/1000);
+		document.getElementById("defence_pts_" + i).innerHTML = format(Math.round(d_pts_1/1000));
 	}
 
-	document.getElementById("total_d_pts").innerHTML = Math.round(total_d_pts/1000);
+	document.getElementById("total_d_pts").innerHTML = format(Math.round(total_d_pts/1000));
 
 	// Lunes de planetes
 	var total_lune_pts = 0;
@@ -247,10 +247,10 @@ function update_page () {
 			lune_pts_1[i] += init_d_prix[j] * lune_defence_1[j];
 		}
 		total_lune_pts += lune_pts_1[i];
-		document.getElementById("lune_pts_" + (i )).innerHTML = Math.round(lune_pts_1[i]/1000);
+		document.getElementById("lune_pts_" + (i )).innerHTML = format(Math.round(lune_pts_1[i]/1000));
 	}
 
-	document.getElementById("total_lune_pts").innerHTML = Math.round(total_lune_pts/1000);
+	document.getElementById("total_lune_pts").innerHTML = format(Math.round(total_lune_pts/1000));
 
 	// Sat planetes
 	var total_sat_pts = 0;
@@ -259,14 +259,14 @@ function update_page () {
 		var sat_lune_1 = document.getElementById("sat_lune_" + i).value;
 		sat_pts_1[i] = Math.round(Sat_1[i]*2.5+sat_lune_1*2.5);
 		total_sat_pts += sat_pts_1[i];
-		document.getElementById("sat_pts_" + i).innerHTML = "<font color='lime'>" + sat_pts_1[i] + "</font>";
+		document.getElementById("sat_pts_" + i).innerHTML = "<font color='lime'>" + format(sat_pts_1[i]) + "</font>";
 	}
 	
-	document.getElementById("total_sat_pts").innerHTML = total_sat_pts;
+	document.getElementById("total_sat_pts").innerHTML = format(total_sat_pts);
 	
 	for(i=101; i <= nombrePlanete+100; i++) {
 	    var j= i+100;
-		document.getElementById("total_pts_" + i).innerHTML = Math.round((total_pts_1[i] + lune_pts_1[j])/1000)+sat_pts_1[i];
+		document.getElementById("total_pts_" + i).innerHTML = format(Math.round((total_pts_1[i] + lune_pts_1[j])/1000)+sat_pts_1[i]);
 	}
 	
 	// Technologies planete avec le labo de plus au niveau
@@ -293,8 +293,20 @@ function update_page () {
 	}
 	techno_pts = techno_pts + techno_astro_pts;
 	// Cout Total Techno
-	document.getElementById("techno_pts").innerHTML = Math.round(techno_pts/1000);
+	document.getElementById("techno_pts").innerHTML = format(Math.round(techno_pts/1000));
 
 	// Cout Total
-	document.getElementById("total_pts").innerHTML = Math.round((total_b_pts + total_d_pts + total_lune_pts + techno_pts)/1000)+total_sat_pts;
+	document.getElementById("total_pts").innerHTML = format(Math.round((total_b_pts + total_d_pts + total_lune_pts + techno_pts)/1000)+total_sat_pts);
+}
+
+//Affiche les nombres sous format lisible (10 000 à la place de 10000)
+function format(x) {
+var signe = '';
+if (x < 0) {
+	x = Math.abs(x);
+	signe = '-';
+}
+var str = x.toString(), n = str.length;
+if (n < 4) return (signe + x);
+else return (signe + ((n % 3) ? str.substr(0, n % 3) + '&nbsp;' : '')) + str.substr(n % 3).match(new RegExp('[0-9]{3}', 'g')).join('&nbsp;');
 }
