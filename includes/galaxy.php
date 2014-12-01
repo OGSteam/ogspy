@@ -1483,7 +1483,7 @@ function galaxy_drop_ranking()
         
             foreach ($tables_ally as $table){
                     
-          $requests[] =  $requests[] = "delete from " . $tables_ally . " where datadate = " .
+          $requests[] = "delete from " . $table . " where datadate = " .
             intval($pub_datadate);
                  }
               foreach ($requests as $request) {
