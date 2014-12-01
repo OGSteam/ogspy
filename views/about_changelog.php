@@ -32,7 +32,10 @@ if (!defined('IN_SPYOGAME')) {
 			<ul>
 				<li>Passage en UTF-8 pour une meilleur gestion des caractères spéciaux</li>
 				<li>Compatibilité PHP 5.5</li>
-                <li>Sortie de OGSpy pour Android</li>				
+                <li>Sortie de OGSpy pour Android</li>
+                <li>Correction erreur de suppression classement alliance</li>
+                <li>Mise en forme de la présentation des nombres dans l'espace personnel</li>
+                
 	       </ul>
 	  	</th>
 	</tr>
