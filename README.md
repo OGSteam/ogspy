@@ -1,4 +1,4 @@
-# Projet OGSpy #
+# Dépôt principal du Projet OGSpy #
 
 Le projet crée en 2006 est une aide pour un jeu de gestion de vaisseaux spaciaux.
 
@@ -10,22 +10,20 @@ Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour e
 * Librairies externes comme JQuery
 * Accord de License
 
-### How do I get set up? ###
+### Comment installer OGSpy ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+Nous avons réalisé un wiki qui détaille l'installation de l'outil sur un serveur web. Mais il existe aussi des hébergeurs qui installent le site pour vous.
 
-### Contribution guidelines ###
+Vous touverez toutes ces informations sur le wiki : 
+
+[Wiki de l'OGSteam](http://wiki.ogsteam.fr/doku.php)
+
+### Pour contribuer au projet ###
 
 * Writing tests
 * Code review
 * Other guidelines
 
-### Who do I talk to? ###
+### Pour nous contacter ###
 
-* Repo owner or admin
-* Other community or team contact
+Notre forum : [Forum de l'OGSteam](http://forum.ogsteam.fr)
