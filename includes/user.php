@@ -863,6 +863,21 @@ function user_statistic()
     return $user_statistic;
 }
 /**
+ * Recuperation du nombres de comptes actifs
+ * @todo Query : x1
+ */
+function user_get_nb_active_users()
+{
+    global $db;
+
+    $request = "SELECT user_id, user_active";
+    $request .= " FROM ".TABLE_USER;
+    $result = $db->sql_query($request);
+    $number = $db->sql_numrows();
+    
+    return($number);
+}
+/**
  * Enregistrement des donnees Empires d'un utilisateur
  */
 function user_set_empire()
