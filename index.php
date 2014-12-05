@@ -13,8 +13,6 @@
  */
 define("IN_SPYOGAME", true);
 
-//define("MODE_DEBUG", true);
-
 /**
  * Tout les includes se font à partir de là
  */
@@ -34,7 +32,7 @@ $sql_timing = 0;
 if (!isset($pub_action)) {
 	$pub_action = "";
 }
-
+//Mode débug défini dans includes/config.php
 if (MODE_DEBUG) {
 	require_once("views/debug.php");
 }

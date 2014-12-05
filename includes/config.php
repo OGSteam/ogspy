@@ -15,7 +15,7 @@ if (!defined('IN_SPYOGAME')) {
 	die("Hacking attempt");
 }
 
-setlocale(LC_CTYPE, 'fr_FR.ISO-8859-1');
+setlocale(LC_CTYPE, 'fr_FR.UTF-8');
 
 if (version_compare(PHP_VERSION, "5.1.0RC1") >= 0) {
 	date_default_timezone_set("Europe/Paris");
@@ -74,7 +74,7 @@ if (!defined("INSTALL_IN_PROGRESS")) {
 define("COOKIE_NAME", "ogspy_id");
 
 //Activation du mode débuggage
-define("MODE_DEBUG", FALSE);
+define("MODE_DEBUG", TRUE);
 
 /*
 * Google API Key
