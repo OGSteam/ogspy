@@ -45,7 +45,11 @@ switch ($pub_id_message) {
 	$message .= "<font color='lime'><b>Création du compte de <a>".$user_info[0]["user_name"]."</a> réussie</b></font><br />";
 	$message .= "Transmettez lui ces informations :<br /><br />";
 	$message .= "- URL du serveur :<br /><a>http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."</a><br /><br />";
-	$message .= "- Mot de passe :<br /><a>".$password."</a>";
+	$message .= "- Mot de passe :<br /><a>".$password."</a><br /><br />";
+	$message .= "<font color='lime'><b>BBCode pour <a>".$user_info[0]["user_name"]."</a></b></font><br /><br />";
+	$message .= "[b]Utilisateur:[/b] [i]".$user_info[0]["user_name"]."[/i]<br />
+				[b]Lien vers les serveur:[/b] [url]http://".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."[/url]<br />
+				[b]Mot de passe :[/b] [i]".$password."[/i]";
 	$action = "action=administration&subaction=member";
 	break;
 
