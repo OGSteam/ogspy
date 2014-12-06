@@ -872,6 +872,7 @@ function user_get_nb_active_users()
 
     $request = "SELECT user_id, user_active";
     $request .= " FROM ".TABLE_USER;
+    $request .= " WHERE user_active='1'";
     $result = $db->sql_query($request);
     $number = $db->sql_numrows();
     
