@@ -23,6 +23,8 @@ if ($link_css == "") {
 <link rel="stylesheet" type="text/css" href="<?php echo $link_css;?>formate.css" />
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 <link rel="icon" href="favicon.ico" type="image/icon">
+<link rel="alternate" type="application/rss+xml" title="Flux RSS OGSpy" href="rss.xml" />  
+
 <!-- Ajout des scripts Graphique (highcharts), jquery et prototype-->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"> </script>
