@@ -26,7 +26,7 @@ Vous touverez toutes ces informations sur le wiki :
 
 ### Contributeurs au projet ###
 
-Responsable équipe : DarkNoon
+Responsable équipe : [DarkNoon](https://bitbucket.org/darknoon29)
 
 ####Développement####
 
