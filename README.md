@@ -24,6 +24,28 @@ Vous touverez toutes ces informations sur le wiki :
 * Code review
 * Other guidelines
 
+### Contributeurs au projet ###
+
+Responsable équipe : DarkNoon
+
+####Développement####
+
+* Machine
+* Jedinight
+* Superbox 
+* Pitch314
+* Shad
+* Xaviernuma
+* Ninety
+
+####Tests####
+
+* Vous tous !!
+
+####Graphismes####
+
+ Chris Alys 
+
 ### Pour nous contacter ###
 
 Notre forum : [Forum de l'OGSteam](http://forum.ogsteam.fr)
