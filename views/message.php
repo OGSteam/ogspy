@@ -194,7 +194,7 @@ switch ($pub_id_message) {
 
 	//
 	case "setting_server_view_failed" :
-	$message .= "<font color='red'><b>La configuration des paramètres d'affichage à echouée</b></font>";
+	$message .= "<font color='red'><b>La configuration des paramètres d'affichage a échouée</b></font>";
 	$action = "action=administration&subaction=affichage";
 	break;
 
@@ -212,7 +212,7 @@ switch ($pub_id_message) {
 
 	//
 	case "log_remove" :
-	$message .= "<font color='lime'><b>Le fichier log séléctionné a bien été supprimer</></font>";
+	$message .= "<font color='lime'><b>Le fichier log séléctionné a bien été supprimer</b></font>";
 	$action = "action=administration&subaction=viewer";
 	break;
 	
