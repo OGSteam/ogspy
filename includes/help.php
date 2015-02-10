@@ -46,6 +46,7 @@ $help["ratio_block"] = "Vous avez un ratio inferieur au seuil, vous ne pouvez pa
 $help["profile_speed_uni"] = "Indiquez le multiplicateur de vitesse de votre univers (1 par défaut)";
 $help["profile_ddr"] = "Cocher si le dépôt de ravitaillement est présent dans votre univers";
 $help["astro_strict"] = "Cocher si l'univers est ancien. Cela permet d'avoir 9 planetes sans avoir la technologie astrophysique correspondante.";
+$help["uni_arrondi"] = "Pour version Ogame >5.8.5 En cours de projet dans la Gameforge.&lt;br&gt; Exemple : Distance galaxie entre 1 et 9 = 1G (si arrondi); Distance systeme entre 1 et 499 = 1S (si arrondi).&lt;br&gt; Formule : dist(a,b)=||a-b|-unitMax|  (ou unitMax=499(system), unitMax=9(galaxy).";
 $help["config_cache"] = "Durée de vie du cache config en seconde.";
 $help["mod_cache"] = "Durée de vie du cache mod en seconde..";
 

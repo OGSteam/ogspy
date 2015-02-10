@@ -47,14 +47,16 @@ $ratio_limit = $server_config['ratio_limit'];
 $speed_uni = $server_config['speed_uni'];
 $ddr = $server_config['ddr'];
 $astro_strict = $server_config['astro_strict'];
+$uni_arrondi_galaxy = $server_config['uni_arrondi_galaxy'];
+$uni_arrondi_system = $server_config['uni_arrondi_system'];
 $config_cache = $server_config['config_cache'];
 $mod_cache = $server_config['mod_cache'];
 ?>
 
-<table width="100%">
 <form method="POST" action="index.php">
 <input type="hidden" name="action" value="set_serverconfig">
 <input name="max_battlereport" type="hidden" size="5" value="10">
+<table width="100%">
 <tr>
 	<td class="c_ogspy" colspan="2">Options générales du serveur</td>
 </tr>
@@ -168,10 +170,12 @@ $mod_cache = $server_config['mod_cache'];
 	<th><input name="ddr" value="1" type="checkbox"<?php print ($ddr==1)? ' checked':'' ?>></th>
 </tr>
 <tr>
-</tr>
-<tr>
 	<th width="60%">Technologie astrophysique stricte<?php echo help("astro_strict");?></th>
 	<th><input name="astro_strict" value="1" type="checkbox"<?php print ($astro_strict==1)? ' checked':'' ?>></th>
+</tr>
+<tr>
+	<th width="60%">Univers arrondi<?php echo help("uni_arrondi");?></th>
+	<th>Galaxies arrondies<input name="uni_arrondi_galaxy" value="1" type="checkbox"<?php print ($uni_arrondi_galaxy==1)? ' checked':'' ?>>&nbsp;&nbsp;Systèmes arrondis<input name="uni_arrondi_system" value="1" type="checkbox"<?php print ($uni_arrondi_system==1)? ' checked':'' ?>></th>
 </tr>
 <tr>
 <?php
@@ -219,5 +223,5 @@ $mod_cache = $server_config['mod_cache'];
 <tr>
 	<th colspan="2"><input type="submit" value="Valider">&nbsp;<input type="reset" value="Réinitialiser"></th>
 </tr>
-</form>
 </table>
+</form>
