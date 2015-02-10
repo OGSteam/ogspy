@@ -128,7 +128,9 @@ switch ($ogsversion) {
 		$requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_MILITARY_LOOSE." CONVERT TO CHARACTER SET utf8";
 		$requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_MILITARY_DESTRUCT." CONVERT TO CHARACTER SET utf8";
 		$requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_HONOR." CONVERT TO CHARACTER SET utf8";
-		
+		$requests[] = "ALTER TABLE `".TABLE_CONFIG."` ADD `uni_arrondi_galaxy` enum('0','1') NOT NULL default '0' AFTER `astro_strict`";
+        $requests[] = "ALTER TABLE `".TABLE_CONFIG."` ADD `uni_arrondi_system` enum('0','1') NOT NULL default '0' AFTER `astro_strict`";
+        
 		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.2.0' WHERE config_name = 'version'";
 		$ogsversion = '3.2.0';
 		$up_to_date = true;
