@@ -1510,4 +1510,37 @@ function getAllGCMUsersExceptMe($id) {
 			 " WHERE gcm_regid != '" . $id ."'";
 	return $db->sql_query($query);
 }
+
+/**
+ * Calcule la distance entre a et b, a - b ; en tenant en compte des univers arrondis.
+ * type = Représente le type de distance à calculer
+ *      0 : Galaxie
+ *      1 : Système
+ *      2 : Planète
+ * typeArrondi = true pour un univers arrondi selon le type donnée
+ */
+function calc_distance($a, $b, $type, $typeArrondi = false) {//a-b
+    global $server_config;
+    
+    $max_type = 0;
+    
+    switch($type){
+        case 0: //Galaxy
+            $max_type = $server_config['num_of_galaxies']; //9
+            break;
+        case 1: //System
+            $max_type = $server_config['num_of_systems']; //499
+            break;
+    }
+    if($typeArrondi) {
+        if(abs($a - $b) < $max_type/2) {
+            return abs($a - $b);//|a-b|
+        } else {
+            return abs(abs($a - $b) - $max_type); //||a-b| - base|
+        }
+    } else {
+        return abs($a - $b);//|a-b|
+    }
+}
+
 ?>
