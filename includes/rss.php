@@ -52,7 +52,7 @@ class rss_feed {
     
     public function generate_file(){
     
-    if(!file_exists("rss.xml")) unlink("rss.xml");
+    if(file_exists("rss.xml")) unlink("rss.xml");
   
         
         $xml = '<?xml version="1.0" encoding="UTF-8"?>';
@@ -89,8 +89,8 @@ class rss_feed {
         //On se connecte à notre base de données (pensez à mettre les bons logins)
         
         
-        $log_data[] = ['title' => "Bienvenue", 'link' => "http://ogsteam.fr", 'pubDate' => date(DATE_RFC2822), 'description'=> "Ce site est magnifique !"];
-        $log_data[] = ['title' => "Bienvenue2", 'link' => "http://ogsteam.fr", 'pubDate' => date(DATE_RFC2822), 'description'=> "Ce site est moyen !"];
+        $log_data = array('title' => "Bienvenue", 'link' => "http://ogsteam.fr", 'pubDate' => date(DATE_RFC2822), 'description'=> "Ce site est magnifique !");
+        $log_data = array('title' => "Bienvenue2", 'link' => "http://ogsteam.fr", 'pubDate' => date(DATE_RFC2822), 'description'=> "Ce site est moyen !");
         
 
         //Une fois les informations récupérées, on ajoute un à un les items à notre fichier

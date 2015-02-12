@@ -130,7 +130,8 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 	$sql_query[] = "INSERT INTO ".$sgbd_tableprefix."config (config_name, config_value) VALUES ('speed_uni','1')";
 	$sql_query[] = "INSERT INTO ".$sgbd_tableprefix."config (config_name, config_value) VALUES ('ddr','false')";
     $sql_query[] = "INSERT INTO ".$sgbd_tableprefix."config (config_name, config_value) VALUES ('astro_strict','1')";
-
+    $sql_query[] = "INSERT INTO ".$sgbd_tableprefix."config (config_name, config_value) VALUES ('uni_arrondi_galaxy','0')";
+    $sql_query[] = "INSERT INTO ".$sgbd_tableprefix."config (config_name, config_value) VALUES ('uni_arrondi_system','0')";
 
 	foreach ($sql_query as $request) {
 		if (trim($request) != "") {
