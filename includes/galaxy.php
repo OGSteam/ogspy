@@ -1968,7 +1968,7 @@ function portee_missiles ( $galaxy, $system )
     if($server_config['uni_arrondi_system']) {
         if($vari_missil_moins + intval($server_config['num_of_systems']) <= $system)
             $arrondi_correct = true;
-        if($vari_missil_plus - intval($server_config['num_of_systems']) => $system)
+        if($vari_missil_plus - intval($server_config['num_of_systems']) >= $system)
             $arrondi_correct = true;
     }
     if ( $galaxy == $galaxie_missil && ($system >= $vari_missil_moins && $system <= $vari_missil_plus || $arrondi_correct))
