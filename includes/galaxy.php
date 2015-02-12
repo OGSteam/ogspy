@@ -1520,13 +1520,13 @@ function galaxy_get_phalanx($galaxy, $system)
         TABLE_UNIVERSE . " WHERE galaxy = " . $galaxy .
         " AND moon = '1' AND phalanx > 0 AND ";
     if($server_config['uni_arrondi_system']) {
-        $req += "(system + (power(phalanx, 2) - 1) >= " . $system .
+        $req .= "(system + (power(phalanx, 2) - 1) >= " . $system .
         " AND system - (power(phalanx, 2) - 1) <= " . $system .
         " OR  system + (power(phalanx, 2) - 1) - ". intval($server_config['num_of_systems']) ." >= " . $system .
         " OR  system - (power(phalanx, 2) - 1) + ". intval($server_config['num_of_systems']) ." <= " . $system .
         ")";
     } else {
-        $req += "system + (power(phalanx, 2) - 1) >= " . $system .
+        $req .= "system + (power(phalanx, 2) - 1) >= " . $system .
         " AND system - (power(phalanx, 2) - 1) <= " . $system;
     }
     $result = $db->sql_query($req);

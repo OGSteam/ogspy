@@ -392,6 +392,8 @@ function set_server_view()
  * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_num_of_systems ." where config_name = 'num_of_systems'";
  * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $pub_ddr ."' where config_name = 'ddr'";
  * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $pub_astro_strict ."' where config_name = 'astro_strict'";
+ * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $pub_uni_arrondi_galaxy ."' where config_name = 'uni_arrondi_galaxy'";
+ * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $pub_uni_arrondi_system ."' where config_name = 'uni_arrondi_system'";
  * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_speed_uni ." where config_name = 'speed_uni'";
  * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_mod_cache ." where config_name = 'mod_cache'";
  * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_config_cache ." where config_name = 'config_cache'";
@@ -404,7 +406,7 @@ function set_serverconfig()
         $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
         $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
         $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit, $pub_speed_uni,
-        $pub_ddr, $pub_astro_strict, $pub_config_cache, $pub_mod_cache;
+        $pub_ddr, $pub_astro_strict, $pub_uni_arrondi_galaxy, $pub_uni_arrondi_system, $pub_config_cache, $pub_mod_cache;
 
 
     if (!isset($pub_num_of_galaxies))
@@ -665,11 +667,25 @@ function set_serverconfig()
 
     //
     if (!isset($pub_astro_strict) || !is_numeric($pub_astro_strict))
-        $pub_ddr = 0;
+        $pub_astro_strict = 0;
     $request = "update " . TABLE_CONFIG . " set config_value = '" . $pub_astro_strict .
         "' where config_name = 'astro_strict'";
     $db->sql_query($request);
 
+    //
+    if (!isset($pub_uni_arrondi_galaxy) || !is_numeric($pub_uni_arrondi_galaxy))
+        $pub_uni_arrondi_galaxy = 0;
+    $request = "update " . TABLE_CONFIG . " set config_value = '" . $pub_uni_arrondi_galaxy .
+        "' where config_name = 'uni_arrondi_galaxy'";
+    $db->sql_query($request);
+    
+    //
+    if (!isset($pub_uni_arrondi_system) || !is_numeric($pub_uni_arrondi_system))
+        $pub_uni_arrondi_system = 0;
+    $request = "update " . TABLE_CONFIG . " set config_value = '" . $pub_uni_arrondi_system .
+        "' where config_name = 'uni_arrondi_system'";
+    $db->sql_query($request);
+    
     //
     if (!is_numeric($pub_speed_uni) || $pub_speed_uni < 1)
         $pub_speed_uni = 1;
