@@ -95,9 +95,6 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     if (!$db->db_connect_id) {
         die("Impossible de se connecter à la base de données");
     }
-    //Génération du ficher RSS
-    $rss_stream = rss_feed::getInstance();
-    $rss_stream->generate_file();
 
     //Récupération et encodage de l'adresse ip
     $user_ip = $_SERVER['REMOTE_ADDR'];
