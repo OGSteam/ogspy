@@ -21,14 +21,16 @@ if (!defined('IN_SPYOGAME')) {
 function generate_config_cache()
 {
 	global $db , $table_prefix ,$server_config;
+    $output = NULL;
     
     $request = "select * from " . TABLE_CONFIG;
     $result = $db->sql_query($request);
     
     // Output config as PHP code
-    while ($cur_config_item = $db->sql_fetch_row($result))
-	$output[$cur_config_item[0]] = stripslashes($cur_config_item[1]);
-    	
+    while ($cur_config_item = $db->sql_fetch_row($result)) {
+        $output[$cur_config_item[0]] = stripslashes($cur_config_item[1]);
+    }
+    
     $fh = @fopen('cache/cache_config.php', 'wb');
 	if (!$fh) { 
 	           if (!defined('UPGRADE_IN_PROGRESS'))
@@ -58,12 +60,13 @@ function generate_config_cache()
 function generate_mod_cache()
 {
 	global $db , $table_prefix ,$server_config;
+    $mod = NULL;
     
    $query = "SELECT action ,  menu ,  root, link, admin_only FROM ".TABLE_MOD." WHERE active = '1' order by position, title";
    $result = $db->sql_query($query);
    
     while ($row = $db->sql_fetch_assoc($result)) {
-    $mod[$row['action']] = $row;
+        $mod[$row['action']] = $row;
     }
   
     $fh = @fopen('cache/cache_mod.php', 'wb');

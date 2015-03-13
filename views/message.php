@@ -30,9 +30,12 @@ switch ($pub_id_message) {
 
 	//
 	case "errorfatal" :
-	$message .= "<font color='red'><b>Interruption suite à une erreur fatale</b></font>";
+	$message .= "<font color='red'><b>Interruption suite à une erreur fatale.</b></font>";
 	break;
 
+    case "errormod" :
+        $message .= "<font color='red'><b>Problème pour installer ou mettre à jour le mod. Consultez le journal pour plus de détails.</b></font>";
+        break;
 	//
 	case "errordata" :
 	$message .= "<font color='red'><b>Les données transmises sont incorrectes</b></font>";
