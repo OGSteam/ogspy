@@ -114,7 +114,10 @@ function log_ ($parameter, $option=0) {
         case 'mod_erreur_txt_warning' :
 		$line = "[admin][mod_erreur] ".$member."  mod/".$option."/version.txt mal formé ";
 		break;
-        
+
+        case 'mod_erreur_txt_version' :
+            $line = "[admin][mod_erreur] ".$member."  mod/".$option." nécessite une version supérieure d'OGSpy";
+            break;
         
 		/* ----------- Gestion systèmes solaires et rapports ----------- */
 		case 'load_system' :
