@@ -310,3 +310,24 @@ var str = x.toString(), n = str.length;
 if (n < 4) return (signe + x);
 else return (signe + ((n % 3) ? str.substr(0, n % 3) + '&nbsp;' : '')) + str.substr(n % 3).match(new RegExp('[0-9]{3}', 'g')).join('&nbsp;');
 }
+
+/**
+ * Calcule la distance entre a et b, a - b ; en tenant en compte des univers arrondis.
+ * type = Représente le type de distance à calculer
+ *      0 : Galaxie
+ *      1 : Système
+ *      2 : Planète
+ * max_type = représente la valeur maximale pour le type donnée (ex. Galaxie=9; Système=499 ...)
+ * typeArrondi = true pour un univers arrondi selon le type donnée
+ */
+function calc_distance(a, b, type, max_type, typeArrondi) {//a-b
+    if(typeArrondi) {
+        if(Math.abs(a - b) < max_type/2) {
+            return Math.abs(a - b);//|a-b|
+        } else {
+            return Math.abs(Math.abs(a - b) - max_type); //||a-b| - base|
+        }
+    } else {
+        return Math.abs(a - b);//|a-b|
+    }
+}

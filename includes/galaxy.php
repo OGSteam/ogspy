@@ -1503,7 +1503,7 @@ function galaxy_drop_ranking()
  * @global array $server_config
  * @global array $user_data
  * @global array $user_auth
- * @todo Query : "select galaxy, system, row, phalanx, gate, name, ally, player from " .TABLE_UNIVERSE . " where galaxy = " . $galaxy . " and moon = '1' and phalanx > 0 and system + (power(phalanx, 2) - 1) >= " . $system . " and system - (power(phalanx, 2) - 1) <= " . $system
+ * @todo Query : "SELECT galaxy, system, row, phalanx, gate, name, ally, player FROM " .TABLE_UNIVERSE . " WHERE galaxy = " . $galaxy . " AND moon = '1' AND phalanx > 0 AND system + (power(phalanx, 2) - 1) >= " . $system . " AND system - (power(phalanx, 2) - 1) <= " . $system
  * @return array $phalanxer (galaxy, system, row, phalanx, gate, name, ally, player)
  */
 function galaxy_get_phalanx($galaxy, $system)
@@ -1516,11 +1516,19 @@ function galaxy_get_phalanx($galaxy, $system)
 
     $phalanxer = array();
 
-    $req = "select galaxy, system, row, phalanx, gate, name, ally, player from " .
-        TABLE_UNIVERSE . " where galaxy = " . $galaxy .
-        " and moon = '1' and phalanx > 0 and system + (power(phalanx, 2) - 1) >= " . $system .
-        " and system - (power(phalanx, 2) - 1) <= " . $system;
-
+    $req = "SELECT galaxy, system, row, phalanx, gate, name, ally, player FROM " .
+        TABLE_UNIVERSE . " WHERE galaxy = " . $galaxy .
+        " AND moon = '1' AND phalanx > 0 AND ";
+    if($server_config['uni_arrondi_system']) {
+        $req .= "(system + (power(phalanx, 2) - 1) >= " . $system .
+        " AND system - (power(phalanx, 2) - 1) <= " . $system .
+        " OR  system + (power(phalanx, 2) - 1) - ". intval($server_config['num_of_systems']) ." >= " . $system .
+        " OR  system - (power(phalanx, 2) - 1) + ". intval($server_config['num_of_systems']) ." <= " . $system .
+        ")";
+    } else {
+        $req .= "system + (power(phalanx, 2) - 1) >= " . $system .
+        " AND system - (power(phalanx, 2) - 1) <= " . $system;
+    }
     $result = $db->sql_query($req);
     while ($coordinates = $db->sql_fetch_assoc($result)) {
         if (!in_array($coordinates["ally"], $ally_protection) || $coordinates["ally"] ==
@@ -1914,7 +1922,7 @@ function UNparseRE($id_RE)
  */
 function portee_missiles ( $galaxy, $system )
 {
-  global $user_data,$db;
+  global $user_data,$server_config,$db;
   $retour = 0;
   $total_missil = 0;
   // recherche niveau missile
@@ -1956,7 +1964,14 @@ function portee_missiles ( $galaxy, $system )
     $vari_missil_moins = $sysSol_missil - $porte_missil;
     $vari_missil_plus = $sysSol_missil + $porte_missil;
     // création des textes si missil à portée
-    if ( $galaxy == $galaxie_missil && $system >= $vari_missil_moins && $system <= $vari_missil_plus )
+    $arrondi_correct = false;
+    if($server_config['uni_arrondi_system']) {
+        if($vari_missil_moins + intval($server_config['num_of_systems']) <= $system)
+            $arrondi_correct = true;
+        if($vari_missil_plus - intval($server_config['num_of_systems']) >= $system)
+            $arrondi_correct = true;
+    }
+    if ( $galaxy == $galaxie_missil && ($system >= $vari_missil_moins && $system <= $vari_missil_plus || $arrondi_correct))
     {
       if ( $retour == 11 )
       {

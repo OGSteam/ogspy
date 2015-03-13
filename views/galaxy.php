@@ -16,6 +16,7 @@ $info_system = galaxy_show(intval($server_config['num_of_galaxies']),intval($ser
 $population = $info_system["population"];
 $galaxy = $info_system["galaxy"];
 $system = $info_system["system"];
+$uni_arrondi_system = $server_config['uni_arrondi_system'];
 
 $phalanx_list = galaxy_get_phalanx($galaxy, $system);
 
@@ -299,10 +300,28 @@ echo "<br><table width='860' border='1'>";
 echo "<tr><td class='c' align='center'>Liste des phalanges hostiles dans le secteur&nbsp;".help("galaxy_phalanx")."</td></tr>";
 if (sizeof($phalanx_list) > 0) {
 	foreach ($phalanx_list as $value) {
-		$range_down = $value["system"] - (pow($value["phalanx"], 2) - 1);
-		if ($range_down < 1) $range_down = 1;
-		$range_up =  $value["system"] + (pow($value["phalanx"], 2) - 1);
-		if ($range_up > intval($server_config['num_of_systems'])) $range_up = intval($server_config['num_of_systems']);
+        $distance = pow($value["phalanx"], 2) - 1;
+        $range_down = $value["system"] - $distance;
+        $range_up   = $value["system"] + $distance;
+        
+        if($uni_arrondi_system == 1){ //Si arrondi
+            if ($range_down < 1) {//-a=x-d <-> x+d ==> 1 <-> x+d ; Smax-a <->Smax
+                $range_up   = intval($server_config['num_of_systems']) + $range_down;
+                $range_down = $value["system"] + $distance;
+            }
+            if ($range_up > intval($server_config['num_of_systems'])) {//x-d <-> x+d=Smax+A ==> 1 <-> A ; x-d <->Smax
+                $range_down = $range_up - intval($server_config['num_of_systems']);
+                $range_up   = $value["system"] - $distance;
+            }
+            //Le cas où down<1 et up>Smax, donc distance>N-1/2, est traité plus bas lors de l'affichage
+        } else {
+            if ($range_down < 1) {
+                $range_down = 1;            
+            }
+            if ($range_up > intval($server_config['num_of_systems'])) {
+                $range_up = intval($server_config['num_of_systems']);
+            }
+        }
 
 		echo "<tr align='left'><th>";
 
@@ -329,8 +348,7 @@ if (sizeof($phalanx_list) > 0) {
 			$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=ally&string_search=".$value["ally"]."&strict=on\">Voir détail</a></td></tr>";
 			$tooltip .= "</table>";
 			$tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
-
-			echo "[<a href='index.php?action=search&type_search=ally&string_search=".$value["ally"]."&strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$value["ally"]."</a>]"." ";
+            echo "[<a href='index.php?action=search&type_search=ally&string_search=".$value["ally"]."&strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$value["ally"]."</a>]"." ";
 		}
 
 		$individual_ranking = galaxy_show_ranking_unique_player($value["player"]);
@@ -355,7 +373,17 @@ if (sizeof($phalanx_list) > 0) {
 		$tooltip .= "</table>";
 		$tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
 		echo "<a href=\"index.php?action=search&type_search=player&string_search=".$value["player"]."&strict=on\" onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$value["player"]."</a> possède une lune avec phalange de niveau ".$value["phalanx"];
-		echo " en <a href='index.php?action=galaxy&galaxy=".$value["galaxy"]."&system=".$value["system"]."'>".$value["galaxy"].":".$value["system"].":".$value["row"]."</a> [<font color='orange'>".$value["galaxy"].":".$range_down." <-> ".$value["galaxy"].":".$range_up."</font>]";
+		echo " en <a href='index.php?action=galaxy&galaxy=".$value["galaxy"]."&system=".$value["system"]."'>".$value["galaxy"].":".$value["system"].":".$value["row"]."</a> [<font color='orange'>".$value["galaxy"].":";
+        
+        if($uni_arrondi_system == 1) {
+            if($distance >($server_config['num_of_systems'] - 1)/intval($server_config['num_of_systems'])) { //N-1/2
+                echo "1 <-> ".$value["galaxy"].":".intval($server_config['num_of_systems'])."</font>]";
+            } else {
+                echo "1 <-> ".$value["galaxy"].":".$range_down." ; ".$value["galaxy"].":".$range_up." <-> ".$value["galaxy"].":".intval($server_config['num_of_systems'])."</font>]";
+            }
+        } else {
+            echo $range_down." <-> ".$value["galaxy"].":".$range_up."</font>]";
+        }
 
 		if ($value["gate"] == "1") echo " avec une <font color='red'>porte spatiale</font>";
 		echo ".</th></tr>";
