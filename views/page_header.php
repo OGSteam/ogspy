@@ -15,6 +15,7 @@ if ($link_css == "") {
 	$link_css = $server_config["default_skin"];
 }
 ?>
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />

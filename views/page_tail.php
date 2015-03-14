@@ -29,6 +29,8 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 }
 ?>
 </table>
+</table>
+<table style="height: 30px;"><tr><td></td></tr></table> <!-- Place pour bas de pages -->
 <div id='barre'>
     <table style="width:100%">
         <tr><td></td></tr></td></tr></td></tr> <!-- Au cas où...-->
