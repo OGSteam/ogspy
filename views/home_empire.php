@@ -153,10 +153,10 @@ $colspan_lune = ceil($colspan);
 
 if ($view == "planets") {
 	echo "<th colspan='$colspan_planete'><a>Plan&egrave;tes</a></th>";
-	echo "<td class='c' align='center' colspan='$colspan_lune' onClick=\"window.location = 'index.php?action=home&view=moons';\"><a style='cursor:pointer'><font color='lime'>Lunes</font></a></td>";
+	echo "<td class='c' align='center' colspan='$colspan_lune' onClick=\"window.location = 'index.php?action=home&amp;view=moons';\"><a style='cursor:pointer'><font color='lime'>Lunes</font></a></td>";
 }
 else {
-	echo "<td class='c' align='center' colspan='$colspan_planete' onClick=\"window.location = 'index.php?action=home&view=planets';\"><a style='cursor:pointer'><font color='lime'>Plan&egrave;tes</font></a></td>";
+	echo "<td class='c' align='center' colspan='$colspan_planete' onClick=\"window.location = 'index.php?action=home&amp;view=planets';\"><a style='cursor:pointer'><font color='lime'>Plan&egrave;tes</font></a></td>";
 	echo "<th colspan='$colspan_lune'><a>Lunes</a></th>";
 }
 ?>
@@ -188,10 +188,10 @@ if (((find_nb_planete_user() > $astro ) || (find_nb_moon_user() > $astro)) && ($
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	echo "<th>";
 	if (!isset($pub_view) || $pub_view == "planets") {
-		echo "<input type='image' title='Déplacer la planète ".$user_building[$i]["planet_name"]." vers la gauche' src='images/previous.png' onclick=\"window.location = 'index.php?action=move_planet&planet_id=".$i."&view=".$view."&left';\">&nbsp;&nbsp";
-		echo "<input type='image' title='Supprimer la planète ".$user_building[$i]["planet_name"]."' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&planet_id=".$i."&view=".$view."';\">&nbsp;&nbsp;";
-		echo "<input type='image' title='Déplacer la planète ".$user_building[$i]["planet_name"]." vers la droite' src='images/next.png' onclick=\"window.location = 'index.php?action=move_planet&planet_id=".$i."&view=".$view."&right';\">";
-	} else echo "<input type='image' title='Supprimer la lune ".$user_building[$i]["planet_name"]."' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&planet_id=".$i."&view=".$view."';\">&nbsp;&nbsp;";
+		echo "<input type='image' title='Déplacer la planète ".$user_building[$i]["planet_name"]." vers la gauche' src='images/previous.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=".$i."&amp;view=".$view."&amp;left';\">&nbsp;&nbsp;";
+		echo "<input type='image' title='Supprimer la planète ".$user_building[$i]["planet_name"]."' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=".$i."&amp;view=".$view."';\">&nbsp;&nbsp;";
+		echo "<input type='image' title='Déplacer la planète ".$user_building[$i]["planet_name"]." vers la droite' src='images/next.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=".$i."&amp;view=".$view."&amp;right';\">";
+	} else echo "<input type='image' title='Supprimer la lune ".$user_building[$i]["planet_name"]."' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=".$i."&amp;view=".$view."';\">&nbsp;&nbsp;";
 	echo "</th>";
 }
 ?>
@@ -338,7 +338,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
    // ratio
    for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	echo "\t"."<th>";
-    echo ($ratio[$i]['ratio'] != 1) ? "<font color='red'>".number_format(round($ratio[$i]['ratio'], 3), 0, ',', ' ')."</font color]" :  "<font color='lime'>-</font color]" ; 
+    echo ($ratio[$i]['ratio'] != 1) ? "<font color='red'>".number_format(round($ratio[$i]['ratio'], 3), 0, ',', ' ')."</font>" :  "<font color='lime'>-</font>" ; 
      echo "</th>"."\n"; 
 
 } ?>

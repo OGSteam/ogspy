@@ -92,9 +92,9 @@ require_once 'views/page_header.php';
 			
 				if ($galaxy_statistic[$galaxy][$system]['planet'] > 0) {
 				
-					$link_colonized = 'onclick="window.location = \'index.php?action=galaxy_sector&';
-					$link_colonized .= 'galaxy='. $galaxy .'&';
-					$link_colonized .= 'system_down='. $system .'&system_up='. $up;
+					$link_colonized = 'onclick="window.location = \'index.php?action=galaxy_sector&amp;';
+					$link_colonized .= 'galaxy='. $galaxy .'&amp;';
+					$link_colonized .= 'system_down='. $system .'&amp;system_up='. $up;
 					$link_colonized .= '\';"';
 				
 					if ($galaxy_statistic[$galaxy][$system]['new']) {
@@ -107,9 +107,9 @@ require_once 'views/page_header.php';
 			
 				if ($galaxy_statistic[$galaxy][$system]['free'] > 0) {
 				
-					$link_free = 'onclick="window.location = \'index.php?action=search&type_search=colonization&';
-					$link_free .= 'galaxy_down='. $galaxy .'&galaxy_up='. $galaxy .'&';
-					$link_free .= 'system_down='. $system .'&system_up='. $up .'&';
+					$link_free = 'onclick="window.location = \'index.php?action=search&amp;type_search=colonization&amp;';
+					$link_free .= 'galaxy_down='. $galaxy .'&galaxy_up='. $galaxy .'&amp;';
+					$link_free .= 'system_down='. $system .'&system_up='. $up .'&amp;';
 					$link_free .= 'row_down&row_up';
 					$link_free .= '\';"';
 				

@@ -46,9 +46,9 @@ if ($search_result) {
 	}
 
 	if ($type_search != "colonization") {
-		$link_order_coordinates = "<a href='index.php?action=search&sort=1&sort2=".$new_sort2."&type_search=".$type_search."&page=".$page."&string_search=".$string_search.$strict_on."'>Coordonnées";
-		$link_order_ally = "<a href='index.php?action=search&sort=2&sort2=".$new_sort2."&type_search=".$type_search."&page=".$page."&string_search=".$string_search.$strict_on."'>Alliances";
-		$link_order_player = "<a href='index.php?action=search&sort=3&sort2=".$new_sort2."&type_search=".$type_search."&page=".$page."&string_search=".$string_search.$strict_on."'>Joueurs";
+		$link_order_coordinates = "<a href='index.php?action=search&amp;sort=1&amp;sort2=".$new_sort2."&amp;type_search=".$type_search."&amp;page=".$page."&amp;string_search=".$string_search.$strict_on."'>Coordonnées";
+		$link_order_ally = "<a href='index.php?action=search&amp;sort=2&amp;sort2=".$new_sort2."&amp;type_search=".$type_search."&amp;page=".$page."&amp;string_search=".$string_search.$strict_on."'>Alliances";
+		$link_order_player = "<a href='index.php?action=search&amp;sort=3&amp;sort2=".$new_sort2."&amp;type_search=".$type_search."&amp;page=".$page."&amp;string_search=".$string_search.$strict_on."'>Joueurs";
 
 		if ($sort2 == 0) {
 			switch ($sort) {
@@ -113,9 +113,9 @@ require_once("views/page_header.php");
 <table>
 <tr>
 	<td width="400" valign="top">
-		<table width="100%">
 		<form method="POSt" action="index.php">
 		<input type="hidden" name="action" value="search">
+		<table width="100%">
 		<tr>
 			<td class="c_recherche" colspan="3">Recherche globale</td>
 		</tr>
@@ -139,13 +139,13 @@ require_once("views/page_header.php");
 		<tr>
 			<th colspan="3"><input type="submit" value="Chercher"></th>
 		</tr>
-		</form>
 		</table>
+		</form>
 	</td>
 	<td width="400" valign="top">
-		<table width="100%">
 		<form method="POST" action="index.php">
 		<input type="hidden" name="action" value="search">
+		<table width="100%">
 		<tr>
 			<td class="c_recherche" colspan="4">Recherche spéciale</td>
 		</tr>
@@ -188,8 +188,8 @@ else echo "\t\t\t\t\t"."<option value='spy'>Planètes espionnées</option>";
 		<tr>
 			<th colspan="4"><input type="submit" value="Chercher"></th>
 		</tr>
-		</form>
 		</table>
+		</form>
 	</td>
 </tr>
 <tr><td colspan="3">&nbsp;</td></tr>
@@ -215,11 +215,11 @@ if ($total_page > 1) {
 		if ($row_active != "") $option .= "&row_active=on";
 	}
 
-	echo "\t\t\t"."<input type='button' value='<<' onclick=\"window.location = 'index.php?action=search&sort=".$sort."&sort2=".$sort2."&type_search=".$type_search."&page=1".$option."';\">&nbsp;";
-	echo "<input type='button' value='<' onclick=\"window.location = 'index.php?action=search&sort=".$sort."&sort2=".$sort2."&type_search=".$type_search."&page=".($page-1).$option."';\">&nbsp;";
+	echo "\t\t\t"."<input type='button' value='<<' onclick=\"window.location = 'index.php?action=search&amp;sort=".$sort."&amp;sort2=".$sort2."&amp;type_search=".$type_search."&amp;page=1".$option."';\">&nbsp;";
+	echo "<input type='button' value='<' onclick=\"window.location = 'index.php?action=search&amp;sort=".$sort."&amp;sort2=".$sort2."&amp;type_search=".$type_search."&amp;page=".($page-1).$option."';\">&nbsp;";
 
-	echo "<input type='button' value='>' onclick=\"window.location = 'index.php?action=search&sort=".$sort."&sort2=".$sort2."&type_search=".$type_search."&page=".($page+1).$option."';\">&nbsp;";
-	echo "<input type='button' value='>>' onclick=\"window.location = 'index.php?action=search&sort=".$sort."&sort2=".$sort2."&type_search=".$type_search."&page=".($total_page).$option."';\">"."\n";
+	echo "<input type='button' value='>' onclick=\"window.location = 'index.php?action=search&amp;sort=".$sort."&amp;sort2=".$sort2."&amp;type_search=".$type_search."&amp;page=".($page+1).$option."';\">&nbsp;";
+	echo "<input type='button' value='>>' onclick=\"window.location = 'index.php?action=search&amp;sort=".$sort."&amp;sort2=".$sort2."&amp;type_search=".$type_search."&amp;page=".($total_page).$option."';\">"."\n";
 }
 echo "\t\t\t"."</td>"."\n";
 
@@ -283,7 +283,7 @@ foreach ($search_result as $v) {
 	}
 
 	$coordinates = $v["galaxy"].":".$v["system"].":".$v["row"];
-	$coordinates = "<a href='index.php?action=galaxy&galaxy=".$v["galaxy"]."&system=".$v["system"]."'>".$coordinates."</a>";
+	$coordinates = "<a href='index.php?action=galaxy&amp;galaxy=".$v["galaxy"]."&amp;system=".$v["system"]."'>".$coordinates."</a>";
 
 	if ($v["ally"] == "") $ally = "&nbsp;";
 	else {
@@ -321,7 +321,7 @@ foreach ($search_result as $v) {
             
 			break;
 		}
-		$tooltip[$v["ally"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=ally&string_search=".$v["ally"]."&strict=on\">Voir détail</a></td></tr>";
+		$tooltip[$v["ally"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=".$v["ally"]."&amp;strict=on\">Voir détail</a></td></tr>";
 		$tooltip[$v["ally"]] .= "</table>";
         if (version_compare(phpversion(), '5.4.0', '>=')) {
             $tooltip[$v["ally"]] = htmlentities($tooltip[$v["ally"]],ENT_COMPAT | ENT_HTML401, "UTF-8");
@@ -330,7 +330,7 @@ foreach ($search_result as $v) {
         }
 		
 
-		$ally = "<a href='index.php?action=search&type_search=ally&string_search=".$v["ally"]."&strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip[$v["ally"]]."')\">".$begin_allied.$begin_hided.$v["ally"].$end_hided.$end_allied."</a>";
+		$ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=".$v["ally"]."&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip[$v["ally"]]."')\">".$begin_allied.$begin_hided.$v["ally"].$end_hided.$end_allied."</a>";
 	}
 
 	if ($v["player"] == "") $player = "&nbsp;";
@@ -368,7 +368,7 @@ foreach ($search_result as $v) {
                
 			break;
 			}
-			$tooltip[$v["player"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=player&string_search=".$v["player"]."&strict=on\">Voir détail</a></td></tr>";
+			$tooltip[$v["player"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=player&amp;string_search=".$v["player"]."&amp;strict=on\">Voir détail</a></td></tr>";
 			$tooltip[$v["player"]] .= "</table>";
             if (version_compare(phpversion(), '5.4.0', '>=')) {
                 $tooltip[$v["player"]] = htmlentities($tooltip[$v["player"]],ENT_COMPAT | ENT_HTML401, "UTF-8");
@@ -377,7 +377,7 @@ foreach ($search_result as $v) {
             }
 		}
 
-		$player = "<a href='index.php?action=search&type_search=player&string_search=".$v["player"]."'&strict=on onmouseover=\"this.T_WIDTH=260;return escape('".$tooltip[$v["player"]]."')\">".$begin_allied.$begin_hided.$v["player"].$end_hided.$end_allied."</a>";
+		$player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=".$v["player"]."'&amp;strict=on onmouseover=\"this.T_WIDTH=260;return escape('".$tooltip[$v["player"]]."')\">".$begin_allied.$begin_hided.$v["player"].$end_hided.$end_allied."</a>";
 	}
 
 	if ($v["status"] == "") $status = " &nbsp;";
@@ -396,7 +396,7 @@ foreach ($search_result as $v) {
 	}
 	else $moon = "&nbsp;";
 
-	if ($v["report_spy"] > 0) $report_spy = "<A HREF=\"#\" onClick=\"window.open('index.php?action=show_reportspy&galaxy=".$v["galaxy"]."&system=".$v["system"]."&row=".$v["row"]."','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">".$v["report_spy"]."E</A>";
+	if ($v["report_spy"] > 0) $report_spy = "<A HREF=\"#\" onClick=\"window.open('index.php?action=show_reportspy&amp;galaxy=".$v["galaxy"]."&amp;system=".$v["system"]."&amp;row=".$v["row"]."','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">".$v["report_spy"]."E</A>";
 	else $report_spy = "&nbsp;";
 
 	$timestamp = $v["timestamp"];
@@ -451,11 +451,11 @@ if ($total_page > 1) {
 		if ($row_active != "") $option .= "&row_active=on";
 	}
 
-	echo "\t\t\t"."<input type='button' value='<<' onclick=\"window.location = 'index.php?action=search&sort=".$sort."&sort2=".$sort2."&type_search=".$type_search."&page=1".$option."';\">&nbsp;";
-	echo "<input type='button' value='<' onclick=\"window.location = 'index.php?action=search&sort=".$sort."&sort2=".$sort2."&type_search=".$type_search."&page=".($page-1).$option."';\">&nbsp;";
+	echo "\t\t\t"."<input type='button' value='<<' onclick=\"window.location = 'index.php?action=search&amp;sort=".$sort."&amp;sort2=".$sort2."&amp;type_search=".$type_search."&amp;page=1".$option."';\">&nbsp;";
+	echo "<input type='button' value='<' onclick=\"window.location = 'index.php?action=search&amp;sort=".$sort."&amp;sort2=".$sort2."&amp;type_search=".$type_search."&amp;page=".($page-1).$option."';\">&nbsp;";
 
-	echo "<input type='button' value='>' onclick=\"window.location = 'index.php?action=search&sort=".$sort."&sort2=".$sort2."&type_search=".$type_search."&page=".($page+1).$option."';\">&nbsp;";
-	echo "<input type='button' value='>>' onclick=\"window.location = 'index.php?action=search&sort=".$sort."&sort2=".$sort2."&type_search=".$type_search."&page=".($total_page).$option."';\">"."\n";
+	echo "<input type='button' value='>' onclick=\"window.location = 'index.php?action=search&amp;sort=".$sort."&amp;sort2=".$sort2."&amp;type_search=".$type_search."&amp;page=".($page+1).$option."';\">&nbsp;";
+	echo "<input type='button' value='>>' onclick=\"window.location = 'index.php?action=search&amp;sort=".$sort."&amp;sort2=".$sort2."&amp;type_search=".$type_search."&amp;page=".($total_page).$option."';\">"."\n";
 }
 echo "\t\t\t"."</td>"."\n";
 

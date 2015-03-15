@@ -12,7 +12,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
-    redirection("index.php?action=message&id_message=forbidden&info");
+    redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 
 //Statistiques concernant la base de données
@@ -136,11 +136,11 @@ help("drop_sessions"); ?>)</th>
 	<th><?php echo formate_number($rankimport_ogs); ?> importations - <?php echo formate_number($rankexport_ogs); ?> exportations</th>
 </tr>
 <tr>
-	<td class="c" colspan="4">&nbsp;</th>
+	<td class="c" colspan="4">&nbsp;</td>
 </tr>
 <tr>
-	<th colspan="2"><a href="php/phpinfo.php" target="_blank"a>PHPInfo</a></th>
-	<th colspan="2"><a href="php/phpmodules.php" target="_blank"a>Modules PHP</a></th>
+	<th colspan="2"><a href="php/phpinfo.php" target="_blank">PHPInfo</a></th>
+	<th colspan="2"><a href="php/phpmodules.php" target="_blank">Modules PHP</a></th>
 </tr>
 </table>
 <br />

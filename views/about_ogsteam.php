@@ -48,7 +48,7 @@ if (!defined('IN_SPYOGAME')) {
 		<td class="c" width="100" height="100" align="center" valign="middle"><img src="http://forum.ogsteam.fr/index.php?action=dlattach;attach=76;type=avatar" width="80" title="Capi"></td>
 		<td class="l">
 			&nbsp;<a><font color="Yellow" size="2">Capi</font></a><br />
-			<center><b>Administrateur du Site<br />
+			<center><b>Développeur / Testeur<br />
 			<font color="orange">Capi capi, capo...</font></b></center><br />
 		</td>
 	</tr>
@@ -73,7 +73,8 @@ if (!defined('IN_SPYOGAME')) {
 	<tr>
 		<td class="c" width="100" height="100" align="center" valign="middle"><img src="http://ballonrond.passion.free.fr/Images/Forums/ogsteam_avatar_jedinight.png" width="80" title="Jedinight"></td>
 		<td class="l">
-			<b><font color="Yellow" size="2">Jedinight</font></b>
+			&nbsp;<b><font color="Yellow" size="2">Jedinight</font></b>
+			<center><b>Développeur - Débuggueur</b></center>
 			<br />
 			<ul>
 				<li><b>Développeur Xtense - <i>Module et Xtense for Firefox</i></b></li>
@@ -122,7 +123,14 @@ if (!defined('IN_SPYOGAME')) {
 		<td class="c" width="100" height="100" align="center" valign="middle"><img src="http://img57.xooimage.com/files/6/3/a/moe-148053-dxlsma..._200x200-3669dc4.jpg" width="80" title="pitch314"></td> 
 		<td class="l"> 
 			&nbsp;<b><font color="Yellow" size="2">Pitch314</font></b><br /> 
-			<center><b>Développeur</b></center><br />
+			<center><b>Développeur - Débuggueur</b></center>
+			<ul>
+				<li><b>Développeur OGSPY</b></li>
+                <li><b>Développeur module <i>Build.Tech HOF</i></b></li>
+				<li><b>Développeur module <i>Production</i></b></li>
+                <li><b>Développeur module <i>Qui me sonde</i></b></li>
+                <li><b>Développeur module <i>Temps de vols</i></b></li>
+			</ul>
 		</td> 
 	</tr> 
 	<tr>

@@ -18,7 +18,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
-	redirection("index.php?action=message&id_message=forbidden&info");
+	redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 
 /// pourquoi donc deux requetes identiques ????
@@ -66,9 +66,9 @@ function Set(ally) {
 	}
 }
 </script>
-<table width="100%">
 <form method="POST" action="index.php" name="view">
 <input type="hidden" name="action" value="set_server_view">
+<table width="100%">
 <tr>
 	<td class="c_ogspy" colspan="2">Option de la page: "Galaxie"</td>
 </tr>
@@ -106,7 +106,7 @@ function Set(ally) {
 <tr>
 	<th><font color="<?php echo $color_ally_e[$i-1];?>">Couleur de l'alliance <?php echo $i; ?></font>
 	<br /><div class="z"><i>Doit etre le nom d'une couleur en anglais ou sont code hexadécimal précédé d'un #</i></div></th>
-	<th><input name="color_ally[<?php echo $i; ?>]" id="color_ally[<?php echo $i; ?>]"type="text" size="15" maxlength="20" value="<?php echo $color_ally_e[$i-1];?>"> <?php echo help("color_picker".$i);?></th>
+	<th><input name="color_ally[<?php echo $i; ?>]" id="color_ally[<?php echo $i; ?>]" type="text" size="15" maxlength="20" value="<?php echo $color_ally_e[$i-1];?>"> <?php echo help("color_picker".$i);?></th>
 </tr>
 <?php } ?>
 <tr>
@@ -209,5 +209,5 @@ function Set(ally) {
 <tr>
 	<th colspan="2"><input type="submit" value="Valider">&nbsp;<input type="reset" value="Réinitialiser"></th>
 </tr>
-</form>
 </table>
+</form>
