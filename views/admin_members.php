@@ -73,7 +73,11 @@ foreach ($user_info as $v) {
 	$auth .= "<tr><th>Exportation de classements</th><th>".$YesNo[$user_auth["ogs_get_ranking"]]."</th></tr>";
 	$auth .= "</table>";
 
-	$auth = htmlentities($auth,ENT_COMPAT | ENT_HTML401, "UTF-8");
+    if (version_compare(phpversion(), '5.4.0', '>=')) {
+        $auth = htmlentities($auth,ENT_COMPAT | ENT_HTML401, "UTF-8");
+    } else {
+        $auth = htmlentities($auth,ENT_COMPAT, "UTF-8");
+    }
 
 	$name = $v["user_name"];
 

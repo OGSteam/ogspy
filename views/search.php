@@ -323,7 +323,12 @@ foreach ($search_result as $v) {
 		}
 		$tooltip[$v["ally"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=ally&string_search=".$v["ally"]."&strict=on\">Voir détail</a></td></tr>";
 		$tooltip[$v["ally"]] .= "</table>";
-		$tooltip[$v["ally"]] = htmlentities($tooltip[$v["ally"]],ENT_COMPAT | ENT_HTML401, "UTF-8");
+        if (version_compare(phpversion(), '5.4.0', '>=')) {
+            $tooltip[$v["ally"]] = htmlentities($tooltip[$v["ally"]],ENT_COMPAT | ENT_HTML401, "UTF-8");
+        } else {
+            $tooltip[$v["ally"]] = htmlentities($tooltip[$v["ally"]],ENT_COMPAT, "UTF-8");
+        }
+		
 
 		$ally = "<a href='index.php?action=search&type_search=ally&string_search=".$v["ally"]."&strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip[$v["ally"]]."')\">".$begin_allied.$begin_hided.$v["ally"].$end_hided.$end_allied."</a>";
 	}
@@ -365,7 +370,11 @@ foreach ($search_result as $v) {
 			}
 			$tooltip[$v["player"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=player&string_search=".$v["player"]."&strict=on\">Voir détail</a></td></tr>";
 			$tooltip[$v["player"]] .= "</table>";
-			$tooltip[$v["player"]] = htmlentities($tooltip[$v["player"]],ENT_COMPAT | ENT_HTML401, "UTF-8");
+            if (version_compare(phpversion(), '5.4.0', '>=')) {
+                $tooltip[$v["player"]] = htmlentities($tooltip[$v["player"]],ENT_COMPAT | ENT_HTML401, "UTF-8");
+            } else {
+                $tooltip[$v["player"]] = htmlentities($tooltip[$v["player"]],ENT_COMPAT, "UTF-8");
+            }
 		}
 
 		$player = "<a href='index.php?action=search&type_search=player&string_search=".$v["player"]."'&strict=on onmouseover=\"this.T_WIDTH=260;return escape('".$tooltip[$v["player"]]."')\">".$begin_allied.$begin_hided.$v["player"].$end_hided.$end_allied."</a>";
@@ -419,7 +428,11 @@ $legend .= "<tr><td class=\"c\">Rapport d\'espionnage</td><th>xE</th></tr>";
 $legend .= "<tr><td class=\"c\">Joueur / Alliance alliée</td><th><a><blink>abc</blink></a></th></tr>";
 $legend .= "<tr><td class=\"c\">Joueur / Alliance masquée</td><th><font color=\"lime\">abc</font></th></tr>";
 $legend .= "</table>";
-$legend = htmlentities($legend,ENT_COMPAT | ENT_HTML401, "UTF-8");
+if (version_compare(phpversion(), '5.4.0', '>=')) {
+    $legend = htmlentities($legend,ENT_COMPAT | ENT_HTML401, "UTF-8");
+} else {
+    $legend = htmlentities($legend,ENT_COMPAT, "UTF-8");
+}
 echo "<tr align='center'><td class='c' colspan='7'><a href='' onmouseover=\"this.T_WIDTH=210;this.T_TEMP=0;return escape('".$legend."')\">Légende</a></td></tr>";
 
 echo "\t\t\t"."<td colspan='3' align='left' width='50%'>"."\n";

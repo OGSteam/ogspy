@@ -69,11 +69,15 @@ function help($key, $value = "", $prefixe = "") {
 	}
 	
 	$text = "<table width=\"200\">";
-	$text .= "<tr><td align=\"center\" class=\"c\">Aide</td></tr>";
-	$text .= "<tr><th align=\"center\">".addslashes($value)."</th></tr>";
+	$text .= '<tr><td class="c" style="text-align:center;">Aide</td></tr>';
+	$text .= '<tr><th style="color:white; ">'.addslashes($value)."</th></tr>";
 	$text .= "</table>";
 
-	$text = htmlentities($text, ENT_COMPAT | ENT_HTML401, "UTF-8");
+	if (version_compare(phpversion(), '5.4.0', '>=')) {
+        $text = htmlentities($text, ENT_COMPAT | ENT_HTML401, "UTF-8");
+    } else {
+        $text = htmlentities($text, ENT_COMPAT, "UTF-8");
+    }
 	$text = "this.T_WIDTH=210;this.T_TEMP=0;return escape('".$text."')";
 
 	return "<img style=\"cursor:pointer\" src=\"".$prefixe."images/help_2.png\" onmouseover=\"".$text."\">";

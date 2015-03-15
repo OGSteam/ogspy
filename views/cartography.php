@@ -114,7 +114,11 @@ for ($system=1 ; $system<=intval($server_config['num_of_systems']) ; $system=$sy
 					$last_player = $value["player"];
 				}
 				$tooltip[$i] .= "</table>";
-				$tooltip[$i] = " onmouseover=\"this.T_WIDTH=210;this.T_TEMP=15000;return escape('".htmlentities($tooltip[$i], ENT_COMPAT | ENT_HTML401,"UTF-8")."')\"";
+				if (version_compare(phpversion(), '5.4.0', '>=')) {
+                    $tooltip[$i] = " onmouseover=\"this.T_WIDTH=210;this.T_TEMP=15000;return escape('".htmlentities($tooltip[$i], ENT_COMPAT | ENT_HTML401,"UTF-8")."')\"";
+                } else {
+                    $tooltip[$i] = " onmouseover=\"this.T_WIDTH=210;this.T_TEMP=15000;return escape('".htmlentities($tooltip[$i], ENT_COMPAT,"UTF-8")."')\"";
+                }
 
 				$nb_player[$i] = $galaxy_ally_position[$ally_name][$galaxy][$system]["planet"];
 			}
