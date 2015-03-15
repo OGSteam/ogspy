@@ -23,7 +23,7 @@ require_once("views/page_header.php");
 if (!isset($pub_subaction)) $pub_subaction = "empire";
 
 if ($pub_subaction != "empire") {
-	echo "\t\t\t"."<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&subaction=empire';\">";
+	echo "\t\t\t"."<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=empire';\">";
 	echo "<a style='cursor:pointer'><font color='lime'>Empire</font></a>";
 	echo "</td>";
 }
@@ -34,7 +34,7 @@ else {
 }
 
 if ($pub_subaction != "simulation") {
-	echo "\t\t\t"."<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&subaction=simulation';\">";
+	echo "\t\t\t"."<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=simulation';\">";
 	echo "<a style='cursor:pointer'><font color='lime'>Simulation</font></a>";
 	echo "</td>";
 }
@@ -45,7 +45,7 @@ else {
 }
 
 if ($pub_subaction != "spy") {
-	echo "\t\t\t"."<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&subaction=spy';\">";
+	echo "\t\t\t"."<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=spy';\">";
 	echo "<a style='cursor:pointer'><font color='lime'>Rapports d'espionnage</font></a>";
 	echo "</td>";
 }
@@ -56,7 +56,7 @@ else {
 }
 
 if ($pub_subaction != "stat") {
-	echo "\t\t\t"."<td class='c_stats' width='25%' onclick=\"window.location = 'index.php?action=home&subaction=stat';\">";
+	echo "\t\t\t"."<td class='c_stats' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=stat';\">";
 	echo "<a style='cursor:pointer'><font color='lime'>Statistiques</font></a>";
 	echo "</td>";
 }

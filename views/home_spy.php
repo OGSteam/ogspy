@@ -20,12 +20,12 @@ else $sort2 = $sort2 != 0 ? 0 : 1;
 ?>
 
 <table align="center"><tr>
-<td class="c" width="75"><a href="index.php?action=home&subaction=spy&sort=1&sort2=<?php echo $sort2;?>">Positions</a></td>
-<td class="c" width="120"><a href="index.php?action=home&subaction=spy&sort=2&sort2=<?php echo $sort2;?>">Alliances</a></td>
-<td class="c" width="120"><a href="index.php?action=home&subaction=spy&sort=3&sort2=<?php echo $sort2;?>">Joueurs</a></td>
-<td class="c" width="20"><a href="index.php?action=home&subaction=spy&sort=4&sort2=<?php echo $sort2;?>">Lune</a></td>
+<td class="c" width="75"><a href="index.php?action=home&amp;subaction=spy&amp;sort=1&amp;sort2=<?php echo $sort2;?>">Positions</a></td>
+<td class="c" width="120"><a href="index.php?action=home&amp;subaction=spy&amp;sort=2&amp;sort2=<?php echo $sort2;?>">Alliances</a></td>
+<td class="c" width="120"><a href="index.php?action=home&amp;subaction=spy&amp;sort=3&amp;sort2=<?php echo $sort2;?>">Joueurs</a></td>
+<td class="c" width="20"><a href="index.php?action=home&amp;subaction=spy&amp;sort=4&amp;sort2=<?php echo $sort2;?>">Lune</a></td>
 <td class="c" width="20">&nbsp;</td>
-<td class="c" width="250"><a href="index.php?action=home&subaction=spy&sort=5&sort2=<?php echo $sort2;?>">Mises à jour</a></td>
+<td class="c" width="250"><a href="index.php?action=home&amp;subaction=spy&amp;sort=5&amp;sort2=<?php echo $sort2;?>">Mises à jour</a></td>
 <td class="c" width="40">&nbsp;</td>
 <td class="c" width="120">&nbsp;</td></tr>
 <?php
@@ -46,10 +46,10 @@ foreach ($favorites as $v) {
 	}
 
 	if ($ally == "") $ally = "&nbsp;";
-	else $ally = "<a href='index.php?action=search&type_search=ally&string_search=".$ally."&strict=on'>".$ally."</a>";
+	else $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=".$ally."&strict=on'>".$ally."</a>";
 
 	if ($player == "") $player = "&nbsp;";
-	else $player = "<a href='index.php?action=search&type_search=player&string_search=".$player."&strict=on'>".$player."</a>";
+	else $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=".$player."&strict=on'>".$player."</a>";
 
 	if ($status == "") $status = " &nbsp;";
 
@@ -64,8 +64,8 @@ foreach ($favorites as $v) {
 	echo "<th>$status</th>";
 	echo "<th>$poster</th>";
 	$coords = explode(":",$row);
-	echo "<th><input type='button' value='Voir' onclick=\"window.open('index.php?action=show_reportspy&galaxy=$galaxy&system=$system&row=$row&spy_id=$spy_id','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\" /></th>";
-	echo "<th><input type='button' value='Supprimer des favoris' onclick=\"window.location = 'index.php?action=del_favorite_spy&spy_id=$spy_id&info=1';\" /></th>";
+	echo "<th><input type='button' value='Voir' onclick=\"window.open('index.php?action=show_reportspy&amp;galaxy=$galaxy&amp;system=$system&amp;row=$row&amp;spy_id=$spy_id','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\" /></th>";
+	echo "<th><input type='button' value='Supprimer des favoris' onclick=\"window.location = 'index.php?action=del_favorite_spy&amp;spy_id=$spy_id&amp;info=1';\" /></th>";
 	echo "</tr>";
 }
 ?>

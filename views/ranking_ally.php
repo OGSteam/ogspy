@@ -16,14 +16,14 @@ list($order, $ranking, $ranking_available, $maxrank) = galaxy_show_ranking_ally(
 $order_by = $pub_order_by;
 $interval = $pub_interval;
 
-$link_general = "<a href='index.php?action=ranking&subaction=ally&order_by=general'>Général</a>";
-$link_eco = "<a href='index.php?action=ranking&subaction=ally&order_by=eco'>Economique</a>";
-$link_techno = "<a href='index.php?action=ranking&subaction=ally&order_by=techno'>Recherche</a>";
-$link_military = "<a href='index.php?action=ranking&subaction=ally&order_by=military'>Militaire</a>";
-$link_military_b = "<a href='index.php?action=ranking&subaction=ally&order_by=military_b'>Mil. construit</a>";
-$link_military_l = "<a href='index.php?action=ranking&subaction=ally&order_by=military_l'>Mil. perdu</a>";
-$link_military_d = "<a href='index.php?action=ranking&subaction=ally&order_by=military_d'>Mil. détruit</a>";
-$link_honnor = "<a href='index.php?action=ranking&subaction=ally&order_by=honnor'>Mil. honneur</a>";
+$link_general = "<a href='index.php?action=ranking&amp;subaction=ally&amp;order_by=general'>Général</a>";
+$link_eco = "<a href='index.php?action=ranking&amp;subaction=ally&amp;order_by=eco'>Economique</a>";
+$link_techno = "<a href='index.php?action=ranking&amp;subaction=ally&amp;order_by=techno'>Recherche</a>";
+$link_military = "<a href='index.php?action=ranking&amp;subaction=ally&amp;order_by=military'>Militaire</a>";
+$link_military_b = "<a href='index.php?action=ranking&amp;subaction=ally&amp;order_by=military_b'>Mil. construit</a>";
+$link_military_l = "<a href='index.php?action=ranking&amp;subaction=ally&amp;order_by=military_l'>Mil. perdu</a>";
+$link_military_d = "<a href='index.php?action=ranking&amp;subaction=ally&amp;order_by=military_d'>Mil. détruit</a>";
+$link_honnor = "<a href='index.php?action=ranking&amp;subaction=ally&amp;order_by=honnor'>Mil. honneur</a>";
 
 switch ($order_by) {
 	case "general": $link_general = str_replace("Général", "<img src='images/asc.png'>&nbsp;Général&nbsp;<img src='images/asc.png'>", $link_general);break;
@@ -105,7 +105,7 @@ switch ($order_by) {
 <?php
 
 while ($value = current($order)) {
-	$ally = "<a href='index.php?action=search&type_search=ally&string_search=".$value."&strict=on'>";
+	$ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=".$value."&amp;strict=on'>";
 	$ally .= $value;
 	$ally .= "</a>";
 

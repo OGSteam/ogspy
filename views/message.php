@@ -237,7 +237,7 @@ switch ($pub_id_message) {
 	foreach ($reports as $v) {
 		list($added, $coordinates, $timestamp) = explode("~", $v);
 		list($galaxy, $system, $row) = explode(":", str_replace(array("[", "]"), "", $coordinates));
-		$message .= "<br />Rapport d'espionnage de la planète [<a href='index.php?galaxy=".$galaxy."&system=".$system."'><font color='lime'>".$coordinates."</font></a>] : ";
+		$message .= "<br />Rapport d'espionnage de la planète [<a href='index.php?galaxy=".$galaxy."&amp;system=".$system."'><font color='lime'>".$coordinates."</font></a>] : ";
 		$message .= $added ? "<font color='lime'>Chargé" : "<font color='orange'>Ignoré";
 		$message .= "</font>";
 	}

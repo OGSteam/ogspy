@@ -58,9 +58,9 @@ function check_password(form) {
 </script>
 <!-- FIN DU SCRIPT -->
 
-<table width="450">
 <form method="POST" action="index.php" onSubmit="return check_password(this);">
 <input name="action" type="hidden" value="member_modify_member">
+<table width="450">
 <tr>
 	<td class="c_user" colspan="2">Informations OGSpy</td>
 </tr>
@@ -133,6 +133,7 @@ function check_password(form) {
 		<input name="off_technocrate" value="1" type="checkbox" <?php echo $off_technocrate;?>>
 	</th>
 </tr>
+<tr>
 	<td class="c" colspan="2">Divers</td>
 </tr>
 <tr>
@@ -153,8 +154,8 @@ function check_password(form) {
 <tr>
 	<th colspan="2" align="center"><input type="submit" value="Valider"></th>
 </tr>
-</form>
 </table>
+</form>
 
 <?php
 require_once("views/page_tail.php");

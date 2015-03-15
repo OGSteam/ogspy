@@ -17,7 +17,7 @@ $system = $pub_system;
 $row = $pub_row;
 
 if ($reports === false) {
-	redirection("index.php?action=message&id_message=errorfatal&info");
+	redirection("index.php?action=message&amp;id_message=errorfatal&amp;info");
 }
 
 require_once("views/page_header_2.php");

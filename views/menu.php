@@ -121,7 +121,7 @@ window.onload = Biper;
 	
 	if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
 		echo "<tr>";
-		echo "<td><div align='center'><a href='index.php?action=administration' class='menu0'><img src='".$link_css."/transpa.gif' width='166' height='19'></a></font></div></td>";
+		echo "<td><div align='center'><a href='index.php?action=administration' class='menu0'><img src='".$link_css."/transpa.gif' width='166' height='19'></a></div></td>";
 		echo "</tr>";
 	}
 	
@@ -131,7 +131,7 @@ window.onload = Biper;
 		<td><div align="center"><a href="index.php?action=profile" class="menu1"><img src="<?php echo $link_css;?>/transpa.gif" width="166" height="19"></a></div></td>
 	</tr>
 	<tr>
-		<td><div align="center"><a href="index.php?action=home" class="menu2"><img src="<?php echo $link_css;?>/transpa.gif" width="166" height="19"></a></font></div></td>
+		<td><div align="center"><a href="index.php?action=home" class="menu2"><img src="<?php echo $link_css;?>/transpa.gif" width="166" height="19"></a></div></td>
 	</tr>
 	<tr>
 		<td><div align="center"><img src="<?php echo $link_css;?>/transpa.gif" width="0" height="17"></div></td>
@@ -174,7 +174,7 @@ window.onload = Biper;
 		
 		if ($db->sql_numrows($result)) {
 			while ($val = $db->sql_fetch_assoc($result)) {
-				echo '<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <a class="menu_mods" href="index.php?action='.$val['action'].'">'.$val['menu'].'</a></font></td></tr>'."\n";
+				echo '<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <a class="menu_mods" href="index.php?action='.$val['action'].'">'.$val['menu'].'</a></td></tr>'."\n";
 			}
 		}
 	}
@@ -237,5 +237,3 @@ window.onload = Biper;
 		<td><div align="center"><a href="index.php?action=about" class="menu12"><img src="<?php echo $link_css;?>/transpa.gif" width="166" height="19"></a></div></td>
 	</tr>
 </table>
-
-</div>
