@@ -39,7 +39,7 @@ $db->sql_close(); // fermeture de la connexion à la base de données
 			
 			<tr>
 				<td style="color: #ECFF00; text-align: center; font-size: 13px;">
-					<i><b><a href="http://www.ogsteam.fr" target="_blank">OGSpy</a></b> is an <b>OGSteam Software</b> &copy; 2005-2014</i><br />v <?php echo $server_config["version"];?><br />
+					<i><b><a href="http://www.ogsteam.fr" target="_blank">OGSpy</a></b> is an <b>OGSteam Software</b> &copy; 2005-2015</i><br />v <?php echo $server_config["version"];?><br />
 					<i>Temps de génération <?php echo round($php_timing+$sql_timing, 3);?> sec (<b>PHP</b> : <?php echo round($php_timing, 3);?> / <b>SQL</b> : <?php echo round($sql_timing, 3);?>)<br /></i>
 				</td>
 			</tr>

@@ -46,6 +46,8 @@ switch ($order_by) {
 	<td align="right">
 		<select name="date" onchange="this.form.submit();">
 			<?php
+            $date_selected="";
+            $datadate=0;
 			foreach ($ranking_available as $v) {
 				$selected = "";
 				if (!isset($pub_date_selected) && !isset($datadate)) {
