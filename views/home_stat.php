@@ -22,7 +22,7 @@ if (!isset($pub_zoom) || !isset($pub_user_stat_name) || !isset($pub_player_comp)
 }
 if (!check_var($pub_zoom, "Char") || !check_var($pub_player_comp, "Text") || !
     check_var($pub_user_stat_name, "Text")) {
-    redirection("index.php?action=message&id_message=errordata&info");
+    redirection("index.php?action=message&amp;id_message=errordata&amp;info");
 }
 
 $zoom = $pub_zoom;
@@ -37,7 +37,7 @@ if (!isset($player_comp))
     $player_comp = "";
 if (isset($user_stat_name) && $user_stat_name != "" && $user_stat_name != $user_data["user_stat_name"]) {
     user_set_stat_name($user_stat_name);
-    redirection("index.php?action=home&subaction=stat&zoom=" . $zoom .
+    redirection("index.php?action=home&amp;subaction=stat&amp;zoom=" . $zoom .
         "&player_comp=" . $player_comp);
 }
 

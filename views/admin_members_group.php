@@ -12,7 +12,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] != 1) {
-	redirection("index.php?action=message&id_message=forbidden&info");
+	redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 
 $usergroup_list = usergroup_get();
@@ -37,7 +37,7 @@ if (isset($pub_group_id)) {
 </tr>
 </form>
 <tr><td colspan="3">&nbsp;</td></tr>
-<form method="POST" action="index.php?action=administration&subaction=group">
+<form method="POST" action="index.php?action=administration&amp;subaction=group">
 <tr>
 	<td class="c" colspan="2">Permissions</td>
 	<td>&nbsp;</td>
@@ -76,7 +76,7 @@ if (sizeof($usergroup_member) > 0) {
 			$index = 0;
 			echo "</tr>"."\n"."<tr>";
 		}
-		echo "\t"."<form method='POST' action='index.php?action=usergroup_delmember&user_id=".$user["user_id"]."&group_id=".$group_id."' onsubmit=\"return confirm('Etes-vous sûr de vouloir supprimer ".$user["user_name"]." du groupe ?');\">"."\n";
+		echo "\t"."<form method='POST' action='index.php?action=usergroup_delmember&amp;user_id=".$user["user_id"]."&group_id=".$group_id."' onsubmit=\"return confirm('Etes-vous sûr de vouloir supprimer ".$user["user_name"]." du groupe ?');\">"."\n";
 		echo "\t"."<th width='175'>".$user["user_name"]."</th><th width='25'><input type='image' src='images/userdrop.png' title='Supprimer ".$user["user_name"]." du groupe'></th>";
 		echo "\t"."</form>"."\n";
 		$index++;

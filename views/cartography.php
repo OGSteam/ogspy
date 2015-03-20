@@ -41,8 +41,8 @@ require_once("views/page_header.php");
 ?>
 <script language="JavaScript" src="js/autocomplete.js"></script>
 
-<table>
 <form method="POST" action="index.php?action=cartography">
+<table>
 <tr>
 <?php for ($i = 1 ; $i <= $nb_colonnes_ally ; $i ++){
 	echo "<td class='c' align='center' colspan='2' width='300'><font color='".$color_ally[$i-1]."'>Alliance ".$i."</font></td>";
@@ -59,10 +59,10 @@ require_once("views/page_header.php");
 <tr>
 	<td class="c" colspan="<?php echo $nb_colonnes_ally*2; ?>" align="center"><input type="submit" value="Afficher les positions"></td>
 </tr>
-</form>
 </table>
+</form>
 <br />
-<table border=\'1\'>
+<table border='1'>
 <?php
 do{
 	$galaxy_up = $galaxy_down + $galaxy_step;
@@ -94,7 +94,7 @@ for ($system=1 ; $system<=intval($server_config['num_of_systems']) ; $system=$sy
 	//for ($galaxy=1 ; $galaxy<=intval($server_config['num_of_galaxies']) ; $galaxy++) {
 	for ($galaxy=$galaxy_down ; $galaxy<$galaxy_up ; $galaxy++) {
 		for ($i = 1 ; $i <= $nb_colonnes_ally ; $i ++){
-			$nb_player[$i-1] = "&nbsp" ;
+			$nb_player[$i-1] = "&nbsp;" ;
 			$tooltip[$i-1] = "" ;
 		}
 		$i=0;
@@ -106,15 +106,19 @@ for ($system=1 ; $system<=intval($server_config['num_of_systems']) ; $system=$sy
 				foreach ($galaxy_ally_position[$ally_name][$galaxy][$system]["population"] as $value) {
 					$player = "";
 					if ($last_player != $value["player"]) {
-						$player = "<a href=\"index.php?action=search&type_search=player&string_search=".$value["player"]."&strict=on\">".$value["player"]."</a>";
+						$player = "<a href=\"index.php?action=search&amp;type_search=player&amp;string_search=".$value["player"]."&strict=on\">".$value["player"]."</a>";
 					}
-					$row = "<a href=\"index.php?action=galaxy&galaxy=".$value["galaxy"]."&system=".$value["system"]."\">".$value["galaxy"].":".$value["system"].":".$value["row"]."</a>";
+					$row = "<a href=\"index.php?action=galaxy&amp;galaxy=".$value["galaxy"]."&system=".$value["system"]."\">".$value["galaxy"].":".$value["system"].":".$value["row"]."</a>";
 
 					$tooltip[$i] .= "<tr><td class=\'c\' align=\'center\'>".$player."</td><th>".$row."</th></tr>";
 					$last_player = $value["player"];
 				}
 				$tooltip[$i] .= "</table>";
-				$tooltip[$i] = " onmouseover=\"this.T_WIDTH=210;this.T_TEMP=15000;return escape('".htmlentities($tooltip[$i], ENT_COMPAT | ENT_HTML401,"UTF-8")."')\"";
+				if (version_compare(phpversion(), '5.4.0', '>=')) {
+                    $tooltip[$i] = " onmouseover=\"this.T_WIDTH=210;this.T_TEMP=15000;return escape('".htmlentities($tooltip[$i], ENT_COMPAT | ENT_HTML401,"UTF-8")."')\"";
+                } else {
+                    $tooltip[$i] = " onmouseover=\"this.T_WIDTH=210;this.T_TEMP=15000;return escape('".htmlentities($tooltip[$i], ENT_COMPAT,"UTF-8")."')\"";
+                }
 
 				$nb_player[$i] = $galaxy_ally_position[$ally_name][$galaxy][$system]["planet"];
 			}

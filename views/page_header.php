@@ -15,20 +15,21 @@ if ($link_css == "") {
 	$link_css = $server_config["default_skin"];
 }
 ?>
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="language" content="fr">
 <title><?php echo $server_config["servername"]." - OGSpy ".$server_config["version"];?></title>
 <link rel="stylesheet" type="text/css" href="<?php echo $link_css;?>formate.css" />
-<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-<link rel="icon" href="favicon.ico" type="image/icon">
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/icon" href="favicon.ico">
 <link rel="alternate" type="application/rss+xml" title="Flux RSS OGSpy" href="rss.xml" />  
 
 <!-- Ajout des scripts Graphique (highcharts), jquery et prototype-->
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"> </script>
-<script language="JavaScript" src="js/highcharts.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"> </script>
+<script type="text/javascript" src="js/highcharts.js"></script>
 </head>
 <body>
 <table id="maintable">

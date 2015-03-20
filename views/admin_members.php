@@ -12,7 +12,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] != 1) {
-	redirection("index.php?action=message&id_message=forbidden&info");
+	redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 
 $user_info = user_get();
@@ -73,7 +73,11 @@ foreach ($user_info as $v) {
 	$auth .= "<tr><th>Exportation de classements</th><th>".$YesNo[$user_auth["ogs_get_ranking"]]."</th></tr>";
 	$auth .= "</table>";
 
-	$auth = htmlentities($auth,ENT_COMPAT | ENT_HTML401, "UTF-8");
+    if (version_compare(phpversion(), '5.4.0', '>=')) {
+        $auth = htmlentities($auth,ENT_COMPAT | ENT_HTML401, "UTF-8");
+    } else {
+        $auth = htmlentities($auth,ENT_COMPAT, "UTF-8");
+    }
 
 	$name = $v["user_name"];
 
@@ -93,7 +97,7 @@ foreach ($user_info as $v) {
 
 	echo "<tr>"."\n";
 
-	echo "<form method='POST' action='index.php?action=admin_modify_member&user_id=".$user_id."'>"."\n";
+	echo "<form method='POST' action='index.php?action=admin_modify_member&amp;user_id=".$user_id."'>"."\n";
 	echo "\t"."<th><a onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$auth."')\">".$name."</a></th>"."\n";
 	echo "\t"."<th>".$reg_date."</th>"."\n";
 	echo "\t"."<th><select name='active'><option value='1'>Oui</option><option value='0'$active_off>Non</option></select></th>"."\n";
@@ -108,11 +112,11 @@ foreach ($user_info as $v) {
 	echo "\t"."<th><input type='image' src='images/usercheck.png' title='Valider les paramètres de ".$name."'></th>"."\n";
 	echo "</form>"."\n";
 
-	echo "<form method='POST' action='index.php?action=delete_member&user_id=".$user_id."' onsubmit=\"return confirm('Etes-vous sûr de vouloir supprimer ".$name."');\">"."\n";
+	echo "<form method='POST' action='index.php?action=delete_member&amp;user_id=".$user_id."' onsubmit=\"return confirm('Etes-vous sûr de vouloir supprimer ".$name."');\">"."\n";
 	echo "\t"."<th><input type='image' src='images/userdrop.png' title='Supprimer le compte de ".$name."'></th>"."\n";
 	echo "</form>"."\n";
 
-	echo "<form method='POST' action='index.php?action=new_password&user_id=".$user_id."' id=".$user_id.">"."\n";
+	echo "<form method='POST' action='index.php?action=new_password&amp;user_id=".$user_id."' id=".$user_id.">"."\n";
 	echo "\t"."<th><img style=\"cursor:pointer\" src='images/userpwd.png' title='Changer le mot de passe de ".$name."' onclick=\"if(confirm('Etes-vous sûr de vouloir changer le mot de passe de ".$name."')){document.all.pass_name.value='".$name."';document.all.pass_id.value='".$user_id."';document.getElementById('pass_new').value = '';document.getElementById('new_pass').style.visibility = 'visible';}\"><input type=\"hidden\" id=\"".$name."\" name=\"pass_".$user_id."\" value=\"\"></th>"."\n"; 
 	echo "</form>"."\n";
 	echo "</tr>"."\n";

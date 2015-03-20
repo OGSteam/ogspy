@@ -17,7 +17,7 @@ $system = $pub_system;
 $row = $pub_row;
 
 if ($reports === false) {
-	redirection("index.php?action=message&id_message=errorfatal&info");
+	redirection("index.php?action=message&amp;id_message=errorfatal&amp;info");
 }
 
 $favorites = user_getfavorites_spy();
@@ -33,12 +33,12 @@ else {
         $spy_id = $v["spy_id"];
        	$sender = $v["sender"];
         if (sizeof($favorites) < $server_config['max_favorites_spy'])
-   	        $string_addfavorites = "window.location = 'index.php?action=add_favorite_spy&spy_id=".$spy_id."&galaxy=".$galaxy."&system=".$system."&row=".$row."';";
+   	        $string_addfavorites = "window.location = 'index.php?action=add_favorite_spy&amp;spy_id=".$spy_id."&amp;galaxy=".$galaxy."&amp;system=".$system."&amp;row=".$row."';";
         else
            	$string_addfavorites = "alert('Vous avez atteint le nombre maximal de favoris permis (".$server_config['max_favorites_spy'].")')";
 
-       	$string_delfavorites = "window.location = 'index.php?action=del_favorite_spy&spy_id=".$spy_id."&galaxy=".$galaxy."&system=".$system."&row=".$row."&info=2';";
-        $string_delspy = "window.location.href = 'index.php?action=del_spy&spy_id=".$spy_id."&galaxy=".$galaxy."&system=".$system."&row=".$row."&info=2';";
+       	$string_delfavorites = "window.location = 'index.php?action=del_favorite_spy&amp;spy_id=".$spy_id."&amp;galaxy=".$galaxy."&amp;system=".$system."&amp;row=".$row."&amp;info=2';";
+        $string_delspy = "window.location.href = 'index.php?action=del_spy&amp;spy_id=".$spy_id."&amp;galaxy=".$galaxy."&amp;system=".$system."&amp;row=".$row."&amp;info=2';";
 
        	echo "<center><b>Rapport d'espionnage envoyé par ".$sender."</b> le " . date ( 'd/m/Y', $v['dateRE'] ) . "</center>\n";
    	    echo "<div align='right'>";

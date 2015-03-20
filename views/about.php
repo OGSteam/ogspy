@@ -29,7 +29,7 @@ if (!isset($pub_subaction)) $subaction = "ogsteam";
 else $subaction = $pub_subaction;
 
 if ($subaction != "ogsteam") {
-	echo "\t\t\t"."<td class='c' width='150' onclick=\"window.location = 'index.php?action=about&subaction=ogsteam';\">";
+	echo "\t\t\t"."<td class='c' width='150' onclick=\"window.location = 'index.php?action=about&amp;subaction=ogsteam';\">";
 	echo "<a style='cursor:pointer'><font color='lime'>OGS Team</font></a>";
 	echo "</td>";
 }
@@ -40,7 +40,7 @@ else {
 }
 
 if ($subaction != "changelog") {
-	echo "\t\t\t"."<td class='c' width='150' onclick=\"window.location = 'index.php?action=about&subaction=changelog';\">";
+	echo "\t\t\t"."<td class='c' width='150' onclick=\"window.location = 'index.php?action=about&amp;subaction=changelog';\">";
 	echo "<a style='cursor:pointer'><font color='lime'>Changelog</font></a>";
 	echo "</td>";
 }

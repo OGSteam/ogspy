@@ -12,7 +12,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
-	redirection("index.php?action=message&id_message=forbidden&info");
+	redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 
 //Définition de la date sélectionnée
@@ -53,7 +53,7 @@ echo "<a>Date sélectionnée : ".strftime("%d %b %Y", mktime(0, 0, 0, $show_mont
 
 <table width="100%">
 <tr>
-	<td class="c" colspan="12">Sélectionnez le mois</th>
+	<td class="c" colspan="12">Sélectionnez le mois</td>
 </tr>
 <?php
 $date = mktime(0, 0, 0, date("n"), 1) - 60*60*24*365;
@@ -65,18 +65,18 @@ for ($i=0 ; $i<12 ; $i++) {
 	if ($show == $show_year."~".$show_month."~".$show_day) {
 		if (log_check_exist(date("ym", $date))) {
 			echo "\t"."<th><a>".strftime("%B %Y", $date)."</a></th>"."\n";
-			echo "\t"."<th width='40px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&date=".date("ym", $date)."'\" title='Télécharger les logs de ".strftime("%B %Y", $date)."'><input type='image' src='images/drop.png' onclick=\"window.location = 'index.php?action=remove&date=".date("ym", $date).$show_day."&directory=TRUE'\" title='Effacer les logs de ".strftime("%B %Y", $date)."'>";
+			echo "\t"."<th width='40px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=".date("ym", $date)."'\" title='Télécharger les logs de ".strftime("%B %Y", $date)."'><input type='image' src='images/drop.png' onclick=\"window.location = 'index.php?action=remove&amp;date=".date("ym", $date).$show_day."&directory=TRUE'\" title='Effacer les logs de ".strftime("%B %Y", $date)."'>";
 		} else {
 			echo "\t"."<th colspan='2'><a>".strftime("%B %Y", $date)."</a></th>"."\n";
 		}
 		echo "</th>"."\n";
 	} else {
 		if (log_check_exist(date("ym", $date))) {
-		echo "\t"."<th onclick=\"window.location = 'index.php?action=administration&subaction=viewer&show=".$show."&typelog=".$typelog."';\">";
+		echo "\t"."<th onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=".$show."&amp;typelog=".$typelog."';\">";
 		echo "<a style='cursor:pointer'><font color='lime'>".strftime("%B %Y", $date)."</font></a></th>"."\n";
-			echo "\t"."<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&date=".date("ym", $date)."'\" title='Télécharger les logs de ".strftime("%B %Y", $date)."'></font>";
+			echo "\t"."<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=".date("ym", $date)."'\" title='Télécharger les logs de ".strftime("%B %Y", $date)."'></font>";
 		} else {
-			echo "\t"."<th colspan='2' onclick=\"window.location = 'index.php?action=administration&subaction=viewer&show=".$show."&typelog=".$typelog."';\">";
+			echo "\t"."<th colspan='2' onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=".$show."&amp;typelog=".$typelog."';\">";
 			echo "<a style='cursor:pointer'><font color='lime'>".strftime("%B %Y", $date)."</font></a></th>"."\n";
 		}
 	}
@@ -89,7 +89,7 @@ echo "</tr>";
 <br />
 <table width="100%">
 <tr>
-	<td class="c" colspan="20">Sélectionnez le jour</th>
+	<td class="c" colspan="20">Sélectionnez le jour</td>
 </tr>
 <?php
 $max_day = date("d");
@@ -106,18 +106,18 @@ for ($i=1 ; $i<=$max_day ; $i++) {
 
 		if (log_check_exist($show_year.$show_month.$day)) {
 			echo "\t"."<th><a>".$day."</a></th>";
-			echo "\t"."<th width='40px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&date=".$show_year.$show_month.$day."'\" title='Télécharger les logs de ".strftime("%d %B %Y", $date)."'><input type='image' src='images/drop.png' onclick=\"window.location = 'index.php?action=remove&date=".$show_year.$show_month.$day."'\" title='Effacer les logs de ".strftime("%d %B %Y", $date)."'>";
+			echo "\t"."<th width='40px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=".$show_year.$show_month.$day."'\" title='Télécharger les logs de ".strftime("%d %B %Y", $date)."'><input type='image' src='images/drop.png' onclick=\"window.location = 'index.php?action=remove&amp;date=".$show_year.$show_month.$day."'\" title='Effacer les logs de ".strftime("%d %B %Y", $date)."'>";
 		}
 		else echo "\t"."<th colspan='2'><a>".$day."</a></th>";
 		echo "</th>"."\n";
 	}
 	else {
 		if (log_check_exist($show_year.$show_month.$day)) {
-			echo "\t"."<th onclick=\"window.location='index.php?action=administration&subaction=viewer&show=".$show."&typelog=".$typelog."';\">";
+			echo "\t"."<th onclick=\"window.location='index.php?action=administration&amp;subaction=viewer&amp;show=".$show."&amp;typelog=".$typelog."';\">";
 			echo "<a style='cursor:pointer'><font color='lime'>".$day."</font></a></th>";
-			echo "\t"."<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&date=".$show_year.$show_month.$day."'\" title='Télécharger les logs de ".strftime("%d %B %Y", $date)."'>";
+			echo "\t"."<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=".$show_year.$show_month.$day."'\" title='Télécharger les logs de ".strftime("%d %B %Y", $date)."'>";
 		} else {
-			echo "\t"."<th colspan='2' onclick=\"window.location='index.php?action=administration&subaction=viewer&show=".$show."&typelog=".$typelog."';\">";
+			echo "\t"."<th colspan='2' onclick=\"window.location='index.php?action=administration&amp;subaction=viewer&amp;show=".$show."&amp;typelog=".$typelog."';\">";
 			echo "<a style='cursor:pointer'><font color='lime'>".$day."</font></a></th>";
 		}
 	}
@@ -141,11 +141,11 @@ echo "</tr>";
 $show = $show_year."~".$show_month."~".$show_day;
 echo "<tr>";
 if ($typelog == "log") {
-	echo "\t"."<th width='50%'><a>Log général</a></td>";
-	echo "\t"."<th width='50%' onclick=\"window.location = 'index.php?action=administration&subaction=viewer&show=".$show."&typelog=sql';\"><a style='cursor:pointer'><font color='lime'>Log SQL</font></a></td>";
+	echo "\t"."<th width='50%'><a>Log général</a></th>";
+	echo "\t"."<th width='50%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=".$show."&amp;typelog=sql';\"><a style='cursor:pointer'><font color='lime'>Log SQL</font></a></td>";
 }
 else {
-	echo "\t"."<th width='50%' onclick=\"window.location = 'index.php?action=administration&subaction=viewer&show=".$show."&typelog=log';\"><a style='cursor:pointer'><font color='lime'>Log général</font></a></td>";
+	echo "\t"."<th width='50%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=".$show."&amp;typelog=log';\"><a style='cursor:pointer'><font color='lime'>Log général</font></a></td>";
 	echo "\t"."<th width='50%'><a>Log SQL</a></td>";
 }
 echo "</tr>";
@@ -162,7 +162,11 @@ echo "</tr>";
 <?php
 end($log);
 while ($line = current($log)) {
-	$line = trim(nl2br(htmlspecialchars($line, ENT_COMPAT | ENT_HTML401, "UTF-8")));
+	if (version_compare(phpversion(), '5.4.0', '>=')) {
+        $line = trim(nl2br(htmlspecialchars($line, ENT_COMPAT | ENT_HTML401, "UTF-8")));
+    } else {
+        $line = trim(nl2br(htmlspecialchars($line, ENT_COMPAT, "UTF-8")));
+    }
 	$line = preg_replace("#/\*(.*)\*/#", "<font color='orange'>$1 : </font>", $line);
 
 	echo $line;
