@@ -1325,7 +1325,7 @@ function check_postvalue($secvalue)
  */
 function install_mod($mod_folder)
 {
-    global $db;
+    global $db,$server_config;
     $is_ok = false;
     $filename = 'mod/' . $mod_folder . '/version.txt';
     if (file_exists($filename)) {
@@ -1337,9 +1337,19 @@ function install_mod($mod_folder)
     $mod_version = trim($file[1]);
     $mod_config = trim($file[2]);
 
+    //Version Minimale OGSpy
+    /** @var string $mod_required_ogspy */
+    $mod_required_ogspy = trim($file[3]);
+    if(isset($mod_required_ogspy)){
+        if (version_compare($mod_required_ogspy,$server_config["version"]) > 0 ){
+            log_("mod_erreur_txt_version",$mod_folder);
+            redirection("index.php?action=message&id_message=errormod&info");
+            exit();
+        }
+    }
+
     // On explode la chaine d'information
     $value_mod = explode(',', $mod_config);
-
 
     // On vérifie si le mod est déjà installé""
     $check = "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] ."'";
@@ -1385,7 +1395,7 @@ function uninstall_mod($mod_uninstall_name, $mod_uninstall_table)
  */
 function update_mod($mod_folder, $mod_name)
 {
-    global $db;
+    global $db, $server_config;
     $is_oki = false;
     $filename = 'mod/' . $mod_folder . '/version.txt';
     if (file_exists($filename)) {
@@ -1395,6 +1405,18 @@ function update_mod($mod_folder, $mod_name)
     }
 
     $mod_version = trim($file[1]);
+
+    //Version Minimale OGSpy
+    /** @var string $mod_required_ogspy */
+    $mod_required_ogspy = trim($file[3]);
+    if(isset($mod_required_ogspy)){
+        if (version_compare($mod_required_ogspy,$server_config["version"]) > 0 ){
+            log_("mod_erreur_txt_version",$mod_folder);
+            redirection("index.php?action=message&id_message=errormod&info");
+            exit();
+        }
+    }
+
 
     $query = "UPDATE " . TABLE_MOD . " SET version='" . $mod_version .
         "' WHERE action='" . $mod_name . "'";

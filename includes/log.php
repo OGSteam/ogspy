@@ -116,7 +116,7 @@ function log_ ($parameter, $option=0) {
 		break;
 
         case 'mod_erreur_txt_version' :
-            $line = "[admin][mod_erreur] ".$member."  mod/".$option." nécessite une version supérieure d'OGSpy";
+            $line = "[admin][mod_erreur] Le mod ".$option." nécessite une version supérieure d'OGSpy";
             break;
         
 		/* ----------- Gestion systèmes solaires et rapports ----------- */

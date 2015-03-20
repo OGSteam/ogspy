@@ -123,7 +123,7 @@ function mod_check($check) {
 }
 
 /**
- * Installs a Mod from a mod folder name
+ * Installs a Mod from a mod folder name (Fonction utilisée par la partie admin)
  * @global $pub_directory
  * @todo Query : "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] .
  * @todo Query : "select id from ".TABLE_MOD." where root = '{$pub_directory}'"
@@ -189,12 +189,12 @@ function mod_install () {
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
     }
-    //Version Mini OGSpy
+    //Version Minimale OGSpy
     /** @var string $mod_required_ogspy */
     $mod_required_ogspy = trim($file[3]);
-    if(isset($mod_required_ogspy) && $mod_required_ogspy != ""){
-        if (version_compare($mod_required_ogspy,$server_config["version"]) < 1 ){
-            log_("mod_erreur_txt_version", $root);
+    if(isset($mod_required_ogspy)){
+        if (version_compare($mod_required_ogspy,$server_config["version"]) > 0 ){
+            log_("mod_erreur_txt_version",$pub_directory);
             redirection("index.php?action=message&id_message=errormod&info");
             exit();
         }
@@ -223,7 +223,7 @@ function mod_install () {
 }
 
 /**
- * mod_update : Updates a mod version
+ * mod_update (Fonction utilisée par la partie admin): Updates a mod version
  * @todo Query :  "select root from ".TABLE_MOD." where id = '{$pub_mod_id}'"
  * @todo Query :  "select title from ".TABLE_MOD." where id = '{$pub_mod_id}'"
  */
@@ -279,13 +279,12 @@ function mod_update () {
         exit();
     }
 
-    //Version Mini OGSpy
+    //Version Minimale OGSpy
     /** @var string $mod_required_ogspy */
     $mod_required_ogspy = trim($file[3]);
-
-    if(isset($mod_required_ogspy) && $mod_required_ogspy != ""){
-        if (version_compare($mod_required_ogspy,$server_config["version"]) < 1 ){
-            log_("mod_erreur_txt_version", $root);
+    if(isset($mod_required_ogspy)){
+        if (version_compare($mod_required_ogspy,$server_config["version"]) > 0 ){
+            log_("mod_erreur_txt_version",$root);
             redirection("index.php?action=message&id_message=errormod&info");
             exit();
         }
@@ -304,7 +303,7 @@ function mod_update () {
 }
 
 /**
- * mod_uninstall : Uninstall a mod from the database (Mod files are not deleted)
+ * mod_uninstall (Fonction utilisée par la partie admin): Uninstall a mod from the database (Mod files are not deleted)
  * @todo Query : "select root from ".TABLE_MOD." where id = '{$pub_mod_id}'"
  * @todo Query : "select title from ".TABLE_MOD." where id = '{$pub_mod_id}'"
  * @todo Query : "delete from ".TABLE_MOD." where id = '{$pub_mod_id}'"
@@ -334,6 +333,7 @@ function mod_uninstall () {
     generate_mod_cache();
     redirection("index.php?action=administration&subaction=mod");
 }
+
 
 /**
  * Mod Activation
