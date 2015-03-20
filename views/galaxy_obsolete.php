@@ -24,8 +24,8 @@ $typesearch = $pub_typesearch;
 require_once("views/page_header.php");
 ?>
 
-<table border="1">
 <form method="POST" action="index.php?action=galaxy_obsolete">
+<table border="1">
 <tr>
 	<td class="c" colspan="2">Recherche des systèmes solaires et lunes obsolètes</td>
 </tr>
@@ -34,9 +34,9 @@ require_once("views/page_header.php");
 		<select name="perimeter">
 			<?php 
 				for ($i=1; $i<=intval($server_config['num_of_galaxies']) ; $i++)
-					print "<option value=\"$i\"". ($perimeter == $i ? '"selected"' : '') .">Galaxie $i</option>"; 
+					print "<option value=\"$i\"". ($perimeter == $i ? ' selected' : '') .">Galaxie $i</option>"; 
 			?>
-			<option value="0" <?php if ($perimeter == 0) echo "selected";?>>Tout l'univers</option>
+			<option value="0" <?php if ($perimeter == 0) echo "selected";?>>Tout l''univers</option>
 		</select>
 		&nbsp;&nbsp;
 		depuis
@@ -57,8 +57,8 @@ require_once("views/page_header.php");
 	<th width="50%"><input type="radio" name="typesearch" value="M" <?php if ($typesearch == "M") echo "checked";?>> Afficher les lunes</th>
 </tr>
 <tr><th colspan="2"><input type="submit" value="Rechercher"></th></tr>
-</form>
 </table>
+</form>
 <br><br>
 <?php
 if ($since >= 56) {

@@ -18,7 +18,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
-	redirection("index.php?action=message&id_message=forbidden&info");
+	redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 
 $max_battlereport = $server_config['max_battlereport'];
@@ -133,7 +133,7 @@ $mod_cache = $server_config['mod_cache'];
 </tr>
 <tr>
 	<th width="60%">Durée de conservation des classements <a>[1-999 jours ou nombre]</a></th>
-	<th><input type="text" name="max_keeprank" maxlength="4" size="5" value="<?php echo $max_keeprank;?>">&nbsp;<select name="keeprank_criterion"><option value="quantity" <?php echo $keeprank_criterion == "quantity" ? "selected" : "";?>>Nombre</option><option value="day" <?php echo $keeprank_criterion == "day" ? "selected" : "";?>>Jours</option></th>
+	<th><input type="text" name="max_keeprank" maxlength="4" size="5" value="<?php echo $max_keeprank;?>">&nbsp;<select name="keeprank_criterion"><option value="quantity" <?php echo $keeprank_criterion == "quantity" ? "selected" : "";?>>Nombre</option><option value="day" <?php echo $keeprank_criterion == "day" ? "selected" : "";?>>Jours</option></select></th>
 </tr>
 <tr>
 	<th width="60%">Nombre maximal de rapports d'espionnage par planète <a>[1-50]</a></th>
@@ -189,7 +189,7 @@ $mod_cache = $server_config['mod_cache'];
 	<th><input name="regenere_cache" type="checkbox" value="0" /></th>
 </tr>
 <tr>
-	<th width="60%">Durée de conservation du cache "config" <?php echo help("config_cache");?> <br /><div class="z"><i>(Attention, peut impacter la mise a jour des statitistiques du serveur et le ratio .. )</i></div></a></th>
+	<th width="60%">Durée de conservation du cache "config" <?php echo help("config_cache");?> <br /><div class="z"><i>(Attention, peut impacter la mise a jour des statitistiques du serveur et le ratio .. )</i></div></th>
 	<th><input type="text" name="config_cache" maxlength="10" size="10" value="<?php echo $config_cache;?>"></th>
 </tr>
 <tr>

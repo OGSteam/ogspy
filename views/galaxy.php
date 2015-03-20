@@ -41,9 +41,9 @@ if ($db->sql_numrows($request_usergroup)){
 require_once("views/page_header.php");
 ?>
 
-<table border="0">
 <form>
 <input name="action" value="galaxy" type="hidden">
+<table border="0">
 <tr>
 	<td>
 		<table align="center">
@@ -51,9 +51,9 @@ require_once("views/page_header.php");
 				<td class="c" colspan="3">Galaxie</td>
 			</tr>
 			<tr>
-				<td class="l"><input type="button" value="<<<" onclick="window.location = 'index.php?action=galaxy&galaxy=<?php echo $galaxy_down;?>&system=<?php echo $system;?>';"></td>
-				<td class="l"><input type="text" name="galaxy" maxlength="3" size="5" value="<?php echo $galaxy;?>" tabindex="1"></th>
-				<td class="l"><input type="button" value=">>>" onclick="window.location = 'index.php?action=galaxy&galaxy=<?php echo $galaxy_up;?>&system=<?php echo $system;?>';"></td>
+				<td class="l"><input type="button" value="<<<" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy_down;?>&amp;system=<?php echo $system;?>';"></td>
+				<td class="l"><input type="text" name="galaxy" maxlength="3" size="5" value="<?php echo $galaxy;?>" tabindex="1"></td>
+				<td class="l"><input type="button" value=">>>" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy_up;?>&amp;system=<?php echo $system;?>';"></td>
 			</tr>
 		</table>
 	</td>
@@ -63,9 +63,9 @@ require_once("views/page_header.php");
 				<td class="c" colspan="3">Système solaire</td>
 			</tr>
 			<tr>
-				<td class="l"><input type="button" value="<<<" onclick="window.location = 'index.php?action=galaxy&galaxy=<?php echo $galaxy;?>&system=<?php echo $system_down;?>';"></td>
+				<td class="l"><input type="button" value="<<<" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy;?>&amp;system=<?php echo $system_down;?>';"></td>
 				<td class="l"><input type="text" name="system" maxlength="3" size="5" value="<?php echo $system;?>" tabindex="2"></td>
-				<td class="l"><input type="button" value=">>>" onclick="window.location = 'index.php?action=galaxy&galaxy=<?php echo $galaxy;?>&system=<?php echo $system_up;?>';"></td>
+				<td class="l"><input type="button" value=">>>" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy;?>&amp;system=<?php echo $system_up;?>';"></td>
 			</tr>
 		</table>
 	</td>
@@ -73,11 +73,11 @@ require_once("views/page_header.php");
 <tr align="center">
 	<td colspan="3"><input type="submit" value="Afficher"></td>
 </tr>
-</form>
 </table>
+</form>
+<form method="POST" action="index.php?action=galaxy">
 <table width="860">
 <tr>
-	<form method="POST" action="index.php?action=galaxy">
 	<td colspan="3" align="left">
 		<select name="coordinates" onchange="this.form.submit();" onkeyup="this.form.submit();">
 			<option>Liste des systèmes favoris</option>
@@ -89,16 +89,16 @@ foreach ($favorites as $v) {
 ?>
 		</select>
 	</td>
-	</form>
+	
 	<td colspan="6" align="right">
 <?php
 if (sizeof($favorites) < $server_config['max_favorites'])
-$string_addfavorites = "window.location = 'index.php?action=add_favorite&galaxy=".$galaxy."&system=".$system."';";
+$string_addfavorites = "window.location = 'index.php?action=add_favorite&amp;galaxy=".$galaxy."&amp;system=".$system."';";
 else
 $string_addfavorites = "alert('Vous avez atteint le nombre maximal de favoris permis (".$server_config['max_favorites'].")')";
 
 if (sizeof($favorites) > 0)
-$string_delfavorites = "window.location = 'index.php?action=del_favorite&galaxy=".$galaxy."&system=".$system."';";
+$string_delfavorites = "window.location = 'index.php?action=del_favorite&amp;galaxy=".$galaxy."&amp;system=".$system."';";
 else
 $string_delfavorites = "alert('Vous n\'avez pas de favoris')";
 ?>
@@ -153,7 +153,7 @@ foreach ($population as $v) {
 	}
 
 	if ($planet == "") $planet = "&nbsp;";
-	else $planet = "<a href='index.php?action=search&type_search=planet&string_search=".$planet."&strict=on'>".$begin_allied.$begin_hided.$planet.$end_hided.$end_allied."</a>";
+	else $planet = "<a href='index.php?action=search&amp;type_search=planet&amp;string_search=".$planet."&amp;strict=on'>".$begin_allied.$begin_hided.$planet.$end_hided.$end_allied."</a>";
 
 	if ($ally == "") $ally = "&nbsp;";
 	else {
@@ -192,11 +192,15 @@ foreach ($population as $v) {
 			$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">".formate_number($ranking["number_member"])." membre(s)</td></tr>";
 			break;
 		}
-		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=ally&string_search=".$ally."&strict=on\">Voir détail</a></td></tr>";
+		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=".$ally."&strict=on\">Voir détail</a></td></tr>";
 		$tooltip .= "</table>";
-		$tooltip = htmlentities($tooltip,ENT_COMPAT | ENT_HTML401, "UTF-8");
+        if (version_compare(phpversion(), '5.4.0', '>=')) {
+            $tooltip = htmlentities($tooltip,ENT_COMPAT | ENT_HTML401, "UTF-8");
+        } else {
+            $tooltip = htmlentities($tooltip,ENT_COMPAT, "UTF-8");
+        }
 
-		$ally = "<a href='index.php?action=search&type_search=ally&string_search=".$ally."&strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$begin_allied.$begin_hided.$ally.$end_hided.$end_allied."</a>";
+		$ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=".$ally."&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$begin_allied.$begin_hided.$ally.$end_hided.$end_allied."</a>";
 	}
 
 	if ($player == "") $player = "&nbsp;";
@@ -235,11 +239,15 @@ foreach ($population as $v) {
 			$tooltip .= "<tr><td class=\"c\">Honneur</td><th>".$honnor_rank."</th><th>".$honnor_points."</th></tr>";
 			break;
 		}
-		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=player&string_search=".$player."&strict=on\">Voir détail</a></td></tr>";
+		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=player&amp;string_search=".$player."&amp;strict=on\">Voir détail</a></td></tr>";
 		$tooltip .= "</table>";
-		$tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
+        if (version_compare(phpversion(), '5.4.0', '>=')) {
+            $tooltip = htmlentities($tooltip,ENT_COMPAT | ENT_HTML401, "UTF-8");
+        } else {
+            $tooltip = htmlentities($tooltip,ENT_COMPAT, "UTF-8");
+        }
 
-		$player = "<a href='index.php?action=search&type_search=player&string_search=".$player."&strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$begin_allied.$begin_hided.$player.$end_hided.$end_allied."</a>";
+		$player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=".$player."&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$begin_allied.$begin_hided.$player.$end_hided.$end_allied."</a>";
 	}
 
 	if ($status == "") $status = "&nbsp;";
@@ -257,10 +265,10 @@ foreach ($population as $v) {
 	}
 	else $moon = "&nbsp;";
 
-	if ($v["report_spy"] > 0) $spy = "<A HREF='#' onClick=\"window.open('index.php?action=show_reportspy&galaxy=$galaxy&system=$system&row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">RE</A>";
+	if ($v["report_spy"] > 0) $spy = "<A HREF='#' onClick=\"window.open('index.php?action=show_reportspy&amp;galaxy=$galaxy&amp;system=$system&amp;row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">RE</A>";
 	else $spy = "&nbsp;";
 
-	if (isset($v["report_rc"]) && $v["report_rc"] > 0) $rc = "<A HREF='#' onClick=\"window.open('index.php?action=show_reportrc&galaxy=$galaxy&system=$system&row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">".$v["report_rc"]."&nbsp;RC</A>";
+	if (isset($v["report_rc"]) && $v["report_rc"] > 0) $rc = "<A HREF='#' onClick=\"window.open('index.php?action=show_reportrc&amp;galaxy=$galaxy&amp;system=$system&amp;row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">".$v["report_rc"]."&nbsp;RC</A>";
 	else $rc = "&nbsp;";
 
 	echo "<tr>"."\n";
@@ -289,10 +297,14 @@ $legend .= "<tr><td class=\"c\">Rapports de combat</td><th>X RC</th></tr>";
 $legend .= "<tr><td class=\"c\">Joueur / Alliance allié</td><th><blink><a>abc</a></blink></th></tr>";
 $legend .= "<tr><td class=\"c\">Joueur / Alliance masqué</td><th><font color=\"lime\">abc</font></th></tr>";
 $legend .= "</table>";
-$legend = htmlentities($legend, ENT_COMPAT | ENT_HTML401, "UTF-8");
+if (version_compare(phpversion(), '5.4.0', '>=')) {
+    $legend = htmlentities($legend,ENT_COMPAT | ENT_HTML401, "UTF-8");
+} else {
+    $legend = htmlentities($legend,ENT_COMPAT, "UTF-8");
+}
 
 echo "<tr align='center'><td class='c' colspan='9'><a style='cursor:pointer' onmouseover=\"this.T_WIDTH=210;this.T_TEMP=0;return escape('".$legend."')\">Légende</a></td></tr>";
-echo "</table>";
+echo "</table></form>";
 
 
 //Phalange
@@ -345,10 +357,14 @@ if (sizeof($phalanx_list) > 0) {
 				$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">".formate_number($ranking["number_member"])." membre(s)</td></tr>";
 				break;
 			}
-			$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=ally&string_search=".$value["ally"]."&strict=on\">Voir détail</a></td></tr>";
+			$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=".$value["ally"]."&amp;strict=on\">Voir détail</a></td></tr>";
 			$tooltip .= "</table>";
-			$tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
-            echo "[<a href='index.php?action=search&type_search=ally&string_search=".$value["ally"]."&strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$value["ally"]."</a>]"." ";
+            if (version_compare(phpversion(), '5.4.0', '>=')) {
+                $tooltip = htmlentities($tooltip,ENT_COMPAT | ENT_HTML401, "UTF-8");
+            } else {
+                $tooltip = htmlentities($tooltip,ENT_COMPAT, "UTF-8");
+            }
+            echo "[<a href='index.php?action=search&&amp;type_search=ally&amp;string_search=".$value["ally"]."&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$value["ally"]."</a>]"." ";
 		}
 
 		$individual_ranking = galaxy_show_ranking_unique_player($value["player"]);
@@ -369,11 +385,15 @@ if (sizeof($phalanx_list) > 0) {
 			$tooltip .= "<tr><td class=\"c\">Recherche</td><th>".$research_rank."</th><th>".$research_points."</th></tr>";
 			break;
 		}
-		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&type_search=player&string_search=".$value["player"]."&strict=on\">Voir détail</a></td></tr>";
+		$tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=player&amp;string_search=".$value["player"]."&amp;strict=on\">Voir détail</a></td></tr>";
 		$tooltip .= "</table>";
-		$tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
-		echo "<a href=\"index.php?action=search&type_search=player&string_search=".$value["player"]."&strict=on\" onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$value["player"]."</a> possède une lune avec phalange de niveau ".$value["phalanx"];
-		echo " en <a href='index.php?action=galaxy&galaxy=".$value["galaxy"]."&system=".$value["system"]."'>".$value["galaxy"].":".$value["system"].":".$value["row"]."</a> [<font color='orange'>".$value["galaxy"].":";
+        if (version_compare(phpversion(), '5.4.0', '>=')) {
+            $tooltip = htmlentities($tooltip,ENT_COMPAT | ENT_HTML401, "UTF-8");
+        } else {
+            $tooltip = htmlentities($tooltip,ENT_COMPAT, "UTF-8");
+        }
+		echo "<a href=\"index.php?action=search&amp;type_search=player&amp;string_search=".$value["player"]."&amp;strict=on\" onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('".$tooltip."')\">".$value["player"]."</a> possède une lune avec phalange de niveau ".$value["phalanx"];
+		echo " en <a href='index.php?action=galaxy&amp;galaxy=".$value["galaxy"]."&amp;system=".$value["system"]."'>".$value["galaxy"].":".$value["system"].":".$value["row"]."</a> [<font color='orange'>".$value["galaxy"].":";
         
         if($uni_arrondi_system == 1) {
             if($distance >($server_config['num_of_systems'] - 1)/intval($server_config['num_of_systems'])) { //N-1/2
@@ -405,17 +425,24 @@ for ($i=10 ; $i<=50 ; $i=$i+10) {
 	if ($system + $i <= intval($server_config['num_of_systems'])) $up = $system+$i;
 	else $up = intval($server_config['num_of_systems']);
 
-	$tooltip_colonization .= "<tr><th><a href=\"index.php?action=search&type_search=colonization&galaxy_down=".$galaxy."&galaxy_up=".$galaxy."&system_down=".$down."&system_up=".$up."&row_down=&row_up=\">".$i." systèmes environnants</a></th></tr>";
-	$tooltip_moon .= "<tr><th><a href=\"index.php?action=search&type_search=moon&galaxy_down=".$galaxy."&galaxy_up=".$galaxy."&system_down=".$down."&system_up=".$up."&row_down=&row_up=\">".$i." systèmes environnants</a></th></tr>";
-	$tooltip_away .= "<tr><th><a href=\"index.php?action=search&type_search=away&galaxy_down=".$galaxy."&galaxy_up=".$galaxy."&system_down=".$down."&system_up=".$up."&row_down=&row_up=\">".$i." systèmes environnants</a></th></tr>";
-	$tooltip_spy .= "<tr><th><a href=\"index.php?action=search&type_search=spy&galaxy_down=".$galaxy."&galaxy_up=".$galaxy."&system_down=".$down."&system_up=".$up."&row_down=&row_up=\">".$i." systèmes environnants</a></th></tr>";
+	$tooltip_colonization .= "<tr><th><a href=\"index.php?action=search&amp;type_search=colonization&amp;galaxy_down=".$galaxy."&amp;galaxy_up=".$galaxy."&amp;system_down=".$down."&amp;system_up=".$up."&amp;row_down=&amp;row_up=\">".$i." systèmes environnants</a></th></tr>";
+	$tooltip_moon .= "<tr><th><a href=\"index.php?action=search&amp;type_search=moon&amp;galaxy_down=".$galaxy."&amp;galaxy_up=".$galaxy."&amp;system_down=".$down."&amp;system_up=".$up."&amp;row_down=&amp;row_up=\">".$i." systèmes environnants</a></th></tr>";
+	$tooltip_away .= "<tr><th><a href=\"index.php?action=search&amp;type_search=away&amp;galaxy_down=".$galaxy."&amp;galaxy_up=".$galaxy."&amp;system_down=".$down."&amp;system_up=".$up."&amp;row_down=&amp;row_up=\">".$i." systèmes environnants</a></th></tr>";
+	$tooltip_spy .= "<tr><th><a href=\"index.php?action=search&amp;type_search=spy&amp;galaxy_down=".$galaxy."&amp;galaxy_up=".$galaxy."&amp;system_down=".$down."&amp;system_up=".$up."&amp;row_down=&amp;row_up=\">".$i." systèmes environnants</a></th></tr>";
 }
 
-$tooltip_colonization = htmlentities($tooltip_begin.$tooltip_colonization.$tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
-$tooltip_moon = htmlentities($tooltip_begin.$tooltip_moon.$tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
-$tooltip_away = htmlentities($tooltip_begin.$tooltip_away.$tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
-$tooltip_spy = htmlentities($tooltip_begin.$tooltip_spy.$tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
+if (version_compare(phpversion(), '5.4.0', '>=')) {
+    $tooltip_colonization = htmlentities($tooltip_begin.$tooltip_colonization.$tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
+    $tooltip_moon = htmlentities($tooltip_begin.$tooltip_moon.$tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
+    $tooltip_away = htmlentities($tooltip_begin.$tooltip_away.$tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
+    $tooltip_spy = htmlentities($tooltip_begin.$tooltip_spy.$tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
+} else {
+    $tooltip_colonization = htmlentities($tooltip_begin.$tooltip_colonization.$tooltip_end, ENT_COMPAT, "UTF-8");
+    $tooltip_moon = htmlentities($tooltip_begin.$tooltip_moon.$tooltip_end, ENT_COMPAT, "UTF-8");
+    $tooltip_away = htmlentities($tooltip_begin.$tooltip_away.$tooltip_end, ENT_COMPAT, "UTF-8");
+    $tooltip_spy = htmlentities($tooltip_begin.$tooltip_spy.$tooltip_end, ENT_COMPAT, "UTF-8");
 
+}
 echo "<br /><table width='860' border='1'>";
 echo "<tr><td class='c' align='center' colspan='4'>Recherches</td></tr>";
 echo "<tr align='center'>";

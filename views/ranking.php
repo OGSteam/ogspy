@@ -24,7 +24,7 @@ if (!isset($pub_subaction)) $subaction = "player";
 else $subaction = $pub_subaction;
 
 if ($subaction != "player") {
-	echo "\t\t\t"."<td class='c' width='150' onclick=\"window.location = 'index.php?action=ranking&subaction=player';\">";
+	echo "\t\t\t"."<td class='c' width='150' onclick=\"window.location = 'index.php?action=ranking&amp;subaction=player';\">";
 	echo "<a style='cursor:pointer'><font color='lime'>Joueurs</font></a>";
 	echo "</td>";
 }
@@ -35,7 +35,7 @@ else {
 }
 
 if ($subaction != "ally") {
-	echo "\t\t\t"."<td class='c' width='150' onclick=\"window.location = 'index.php?action=ranking&subaction=ally';\">";
+	echo "\t\t\t"."<td class='c' width='150' onclick=\"window.location = 'index.php?action=ranking&amp;subaction=ally';\">";
 	echo "<a style='cursor:pointer'><font color='lime'>Alliances</font></a>";
 	echo "</td>";
 }

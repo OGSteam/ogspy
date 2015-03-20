@@ -100,7 +100,7 @@ function generate_all_cache()
         
         // on les génére a nouveau
         generate_config_cache();
-        generate_mod_cache;        
+        generate_mod_cache();        
 }
 
 ?>
