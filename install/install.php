@@ -335,7 +335,7 @@ isset($pub_admin_username) && isset($pub_admin_password) && isset($pub_admin_pas
 </tr>
 <tr align="center">
 	<td>
-		<center><font size="2"><i><b>OGSpy</b> is an <b>OGSteam Software</b> (c) 2005-2013</i><br />v <?php echo $install_version ;?></font></center>
+		<center><font size="2"><i><b>OGSpy</b> is an <b>OGSteam Software</b> (c) 2005-2015</i><br />v <?php echo $install_version ;?></font></center>
 	</td>
 </tr>
 </table>
