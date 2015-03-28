@@ -1574,17 +1574,19 @@ function user_set_defence($data, $planet_id, $planet_name, $fields, $coordinates
 
 /**
  * Récupération des données empire de l'utilisateur loggé
- * @comment On pourrait mettre un paramète $user_id optionnel
+ * @comment On pourrait mettre un paramètre $user_id optionnel
  */
 function user_get_empire()
 {
     global $db, $user_data;
 
     $planet = array(false, "user_id" => "", "planet_name" => "", "coordinates" => "",
-        "fields" => "", "fields_used" => "", "temperature_min" => "", "temperature_max" =>
-        "", "Sat" => "", "M" => 0, "C" => 0, "D" => 0, "CES" => 0, "CEF" => 0, "UdR" =>
-        0, "UdN" => 0, "CSp" => 0, "HM" => 0, "HC" => 0, "HD" => 0, "CM" => 0,"CC" => 0,"CD" => 0,
-        "Lab" => 0, "Ter" => 0, "Silo" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0);
+        "fields" => "", "fields_used" => "", "temperature_min" => "", "temperature_max" =>"",
+        "Sat" => 0, "Sat_percentage" => 1, "M" => 0, "M_percentage" => 1, "C" => 0,
+        "C_Percentage" => 1, "D" => 0, "D_percentage" =>1, "CES" => 0, "CES_percentage" => 1,
+        "CEF" => 0, "CEF_percentage" => 1, "UdR" => 0, "UdN" => 0, "CSp" => 0,
+        "HM" => 0, "HC" => 0, "HD" => 0, "CM" => 0,"CC" => 0,"CD" => 0, "Lab" => 0,
+        "Ter" => 0, "Silo" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0);
 
     $defence = array("LM" => 0, "LLE" => 0, "LLO" => 0, "CG" => 0, "AI" => 0, "LP" =>
         0, "PB" => 0, "GB" => 0, "MIC" => 0, "MIP" => 0);
@@ -1606,10 +1608,10 @@ function user_get_empire()
         $user_building[$i] = $planet;
     }
 
-    $request = "select planet_id, planet_name, `coordinates`, `fields`, temperature_min, temperature_max, Sat, M, C, D, CES, CEF, UdR, UdN, CSp, HM, HC, HD, CM, CC, CD, Lab, Ter, Silo, BaLu, Pha, PoSa, DdR";
-    $request .= " from " . TABLE_USER_BUILDING;
-    $request .= " where user_id = " . $user_data["user_id"];
-    $request .= " order by planet_id";
+    $request = "SELECT planet_id, planet_name, coordinates, fields, temperature_min, temperature_max, Sat, Sat_percentage, M, M_percentage, C, C_Percentage, D, D_percentage, CES, CES_percentage, CEF, CEF_percentage, UdR, UdN, CSp, HM, HC, HD, CM, CC, CD, Lab, Ter, Silo, BaLu, Pha, PoSa, DdR";
+    $request .= " FROM " . TABLE_USER_BUILDING;
+    $request .= " WHERE user_id = " . $user_data["user_id"];
+    $request .= " ORDER BY planet_id";
     $result = $db->sql_query($request);
 
 
@@ -1623,6 +1625,12 @@ function user_get_empire()
         unset($arr["temperature_min"]);
         unset($arr["temperature_max"]);
         unset($arr["Sat"]);
+        unset($arr["Sat_percentage"]);
+        unset($arr["M_percentage"]);
+        unset($arr["C_Percentage"]);
+        unset($arr["D_percentage"]);
+        unset($arr["CES_percentage"]);
+        unset($arr["CEF_percentage"]);
         $fields_used = array_sum(array_values($arr));
 
 
@@ -1632,17 +1640,17 @@ function user_get_empire()
     }
 
 
-    $request = "select Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique";
-    $request .= " from " . TABLE_USER_TECHNOLOGY;
-    $request .= " where user_id = " . $user_data["user_id"];
+    $request = "SELECT Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique";
+    $request .= " FROM " . TABLE_USER_TECHNOLOGY;
+    $request .= " WHERE user_id = " . $user_data["user_id"];
     $result = $db->sql_query($request);
 
     $user_technology = $db->sql_fetch_assoc($result);
 
-    $request = "select planet_id, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP";
-    $request .= " from " . TABLE_USER_DEFENCE;
-    $request .= " where user_id = " . $user_data["user_id"];
-    $request .= " order by planet_id";
+    $request = "SELECT planet_id, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP";
+    $request .= " FROM " . TABLE_USER_DEFENCE;
+    $request .= " WHERE user_id = " . $user_data["user_id"];
+    $request .= " ORDER BY planet_id";
     $result = $db->sql_query($request);
 
 
@@ -1676,11 +1684,11 @@ function find_nb_planete_user()
     global $db, $user_data;
 
 
-    $request = "select planet_id ";
-    $request .= " from " . TABLE_USER_BUILDING;
-    $request .= " where user_id = " . $user_data["user_id"];
-    $request .= " and planet_id < 199 ";
-    $request .= " order by planet_id";
+    $request = "SELECT planet_id ";
+    $request .= " FROM " . TABLE_USER_BUILDING;
+    $request .= " WHERE user_id = " . $user_data["user_id"];
+    $request .= " AND planet_id < 199 ";
+    $request .= " ORDER BY planet_id";
 
     $result = $db->sql_query($request);
 
