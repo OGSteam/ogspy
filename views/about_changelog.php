@@ -35,6 +35,7 @@ if (!defined('IN_SPYOGAME')) {
                 <li>Sortie de OGSpy pour Android</li>
                 <li>Correction erreur de suppression classement alliance</li>
                 <li>Mise en forme de la présentation des nombres dans l'espace personnel</li>
+                <li>BBCODE avec les identifiants à la création du nouvel utilisateur</li>
                 
 	       </ul>
 	  	</th>
