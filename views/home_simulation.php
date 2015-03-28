@@ -28,10 +28,14 @@ while ($row = $db->sql_fetch_assoc($quet)) {
 	$user_percentage[$row["planet_id"]] = $arr;
 }
 
-/// ajout de la vitesse uni pour gestion js ...
+// ajout infos pour gestion js ...
+$officier = $user_data['off_commandant'] + $user_data['off_amiral'] + $user_data['off_ingenieur']
+          + $user_data['off_geologue'] + $user_data['off_technocrate'];
+$off_full = ($officier == 5) ? '1' : '0';
 echo "<input type='hidden' id='vitesse_uni' size='2' maxlength='5' value='".$server_config['speed_uni']."'/>";
 echo "<input type='hidden' id='off_ingenieur' value='".$user_data["off_ingenieur"]."'/>";
 echo "<input type='hidden' id='off_geologue' value='".$user_data["off_geologue"]."'/>";
+echo "<input type='hidden' id='off_full' value='".$off_full."'/>";
 
 ?>
 
@@ -66,43 +70,54 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 <tr>
 	<th><a>Cases</a></th>
 <?php
+$sum_field = 0;
+$sum_filed_used = 0;
 for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	$fields = $user_building[$i]["fields"];
 	if ($fields == "0") $fields = "?";
 	$fields_used = $user_building[$i]["fields_used"];
-	if ($fields_used > 0) {
+	if ($fields_used >= 0) {
 		$fields = $fields_used." / ".$fields;
 	}
 	else $fields = "&nbsp;";
 
 	echo "\t"."<th colspan='2'>".$fields."</th>"."\n";
+    
+    if(is_numeric($user_building[$i]["fields"])) $sum_field += $user_building[$i]["fields"];
+    if(is_numeric($user_building[$i]["fields_used"])) $sum_filed_used += $user_building[$i]["fields_used"];
 }
+echo "\t<th><div id='T_cases'>".$sum_filed_used."/".$sum_field."</div></th>";
 ?>
-	<th></th>
 </tr>
 <tr>
 	<th><a>Température Min.</a></th>
 <?php
+$t_min = $user_building[101]["temperature_min"];
 for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	$temperature_min = $user_building[$i]["temperature_min"];
 	if ($temperature_min == "") $temperature_min = "&nbsp;";
-
 	echo "\t"."<th colspan='2'>".$temperature_min."<input id='temperature_min_".$i."' type='hidden' value='".$temperature_min."'></th>"."\n";
+    
+    if(is_numeric($user_building[$i]["temperature_min"]) && $user_building[$i]["temperature_min"] < $t_min)
+        $t_min = $user_building[$i]["temperature_min"];
 }
+echo "\t<th><div id='T_min'>".$t_min."</div></th>";
 ?>
-	<th></th>
 </tr>
 <tr>
 	<th><a>Température Max.</a></th>
 <?php
+$t_max = $user_building[101]["temperature_max"];
 for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	$temperature_max = $user_building[$i]["temperature_max"];
 	if ($temperature_max == "") $temperature_max = "&nbsp;";
-
 	echo "\t"."<th colspan='2'>".$temperature_max."<input id='temperature_max_".$i."' type='hidden' value='".$temperature_max."'></th>"."\n";
+    
+    if(is_numeric($user_building[$i]["temperature_max"]) && $user_building[$i]["temperature_max"] > $t_max)
+        $t_max = $user_building[$i]["temperature_max"];
 }
+echo "\t<th><div id='T_max'>".$t_max."</div></th>"; 
 ?>
-	<th></th>
 </tr>
 
 <!--
@@ -113,7 +128,10 @@ Energie
 	<td class="c">Énergies</td>
 	<td class="c" colspan="4">Technologie Énergie <input type="text" id="NRJ" size="2" maxlength="2" value="<?php print $user_technology['NRJ'] ?>" onchange='update_page();'></td>
     <td class="c" colspan="4">Technologie Plasma <input type="text" id="Plasma" size="2" maxlength="2" value="<?php print $user_technology['Plasma'] ?>" onchange='update_page();'></td>
-	<td class="c" colspan="<?php echo 2 * ($nb_planete + 1) - 5; ?>">&nbsp;</td>
+    <td class="c" colspan="2">Officier ingénieur <input type='checkbox' id='c_off_ingenieur' <?php print ($user_data["off_ingenieur"]==1) ? 'checked="checked"' : '' ?> onClick='javascript:update_page();'>
+    <td class="c" colspan="2">Officier géologue <input type='checkbox' id='c_off_geologue' <?php print ($user_data["off_geologue"]==1) ? 'checked="checked"' : '' ?> onClick='javascript:update_page();'>
+    <td class="c" colspan="2">Full officier <input type='checkbox' id='c_off_full' <?php print ($off_full==1) ? 'checked="checked"' : '' ?> onClick='javascript:update_page();'>
+	<td class="c" colspan="<?php echo 2 * ($nb_planete + 1) - 8; ?>">&nbsp;</td>
 </tr>
 <tr>
 	<th><a>CES</a></th>
@@ -180,7 +198,7 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	echo "\t"."<th colspan='2'><font color='lime'><div id='NRJ_".$i."'>-</div></font></th>"."\n";
 }
 ?>
-	<th></th>
+	<th><div id="E_NRJ">-</div></th>
 </tr>
 
 <!--
