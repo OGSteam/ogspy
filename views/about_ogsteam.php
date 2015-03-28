@@ -139,9 +139,10 @@ if (!defined('IN_SPYOGAME')) {
 			<b><font color="Yellow" size="2">Equipe de test</font></b>
 			<br />
 			<ul>
-				<li>Gilga</li>
-				<li>Elrond</li>
-				<li>Mascotte</li>
+				<li>Skyline-ch</li>
+				<li>Anubys</li>
+				<li>Néo32</li>
+				<li>Lorenzo</li>
 			</ul>
 		</td>
 	</tr>
