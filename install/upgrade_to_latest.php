@@ -129,8 +129,9 @@ switch ($ogsversion) {
 		$requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_MILITARY_DESTRUCT." CONVERT TO CHARACTER SET utf8";
 		$requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_HONOR." CONVERT TO CHARACTER SET utf8";
         
-    $requests[] = "INSERT INTO ".TABLE_CONFIG." (config_name, config_value) VALUES ('uni_arrondi_galaxy','0')";
-    $requests[] = "INSERT INTO ".TABLE_CONFIG." (config_name, config_value) VALUES ('uni_arrondi_system','0')";
+        $requests[] = "INSERT INTO ".TABLE_CONFIG." (config_name, config_value) VALUES ('uni_arrondi_galaxy','0')";
+        $requests[] = "INSERT INTO ".TABLE_CONFIG." (config_name, config_value) VALUES ('uni_arrondi_system','0')";
+        $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` ADD `boosters` VARCHAR(64) NOT NULL default 'm:0:0;c:0:0;d:0:0;p:0;m:0' AFTER `fields`";
 		        
 		$requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.2.0' WHERE config_name = 'version'";
 		$ogsversion = '3.2.0';
