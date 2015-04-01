@@ -1580,5 +1580,111 @@ function calc_distance($a, $b, $type, $typeArrondi = false) {//a-b
         return abs($a - $b);//|a-b|
     }
 }
+/********************************************************************************/
+/**                     Booster partie                                         **/
+/* Description :
+  "m:0:0;c:0:0;d:0:0;p:0;m:0" =>booster_m;booster_c;booster_d;extension_p;extension_moon
+  booster_x    => ressource:%:date_de_fin  (ressource= m|c|d)
+  extension_x  => type:+" (type= p|m)
+  "m:0:0;c:0:0;d:0:0;p:0;m:0" = string de stockage par défaut
+*/
+/*##Base de donnée  ##*/
+/* Lit les informations des objets Ogame dans la BDD et les transformes en un tableau
+ * @arg id_player id du joueur
+ * @arg id_planet id de la planète à rechercher
+ * @return tableau associatif des boosters ou NULL en cas d'échec
+ * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
+*/
+function booster_lire_bdd($id_player, $id_planet){
+    global $db;
+    $result = NULL;
 
+    $request = "SELECT boosters FROM ".TABLE_USER_BUILDING." WHERE user_id=".$id_player." AND planet_id=".$id_planet;
+    $res = $db->sql_query($request);
+    if($res) {
+        $str = $db->sql_fetch_row($res);
+        if($str){
+            return booster_decode($str[0]);
+        }
+    }
+    return $result;
+}
+/* Écrit la string de stockage des objets Ogame dans la BDD.
+ * @arg id_player   id du joueur
+ * @arg id_planet   id de la planète à rechercher
+ * @str_booster     string de stockage des boosters (donnée par les fonctions booster_encode() ou booster_encodev())
+ * @return FALSE en cas d'échec
+*/
+function booster_ecrire_bdd_str($id_player, $id_planet, $str_booster){
+    global $db;
+    
+    $request = "UPDATE ".TABLE_USER_BUILDING." SET boosters='".$str_booster."' WHERE user_id=".$id_player." AND planet_id=".$id_planet;
+    return $db->sql_query($request);
+}
+/* Écrit les informations des objets Ogame dans la BDD sous forme d'une string de stockage.
+ * @arg id_player   id du joueur
+ * @arg id_planet   id de la planète à rechercher
+ * @tab_booster     tableau infos des boosters (donnée par les fonctions booster_lire_bdd() ou booster_decode())
+ * @return FALSE en cas d'échec
+*/
+function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster){
+    return booster_ecrire_bdd_str($id_player, $id_planet, booster_encode($tab_booster));
+}
+
+/*##Lecture et modification poussées  ##*/
+/* Transforme en tableau les données des objets Ogame contenues dans une string de stockage.
+ * Si aucun argument n'ai donné alors elle renvoie les valeurs des objets par défaut.
+ * @param $str  string de stockage des objets Ogame
+ * @return      tableau contenant les informations des objets
+ * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
+*/
+function booster_decode($str=NULL, &$boosters=NULL) {
+    if($str) {
+        $a = preg_match("/m:(\d+):(\d+);c:(\d+):(\d+);d:(\d+):(\d+);p:(\d+);m:(\d+)/", $str, $boosters);
+        if($a) {
+            $i = 1;
+        return array('booster_m_val'=>intval($boosters[$i++]), 'booster_m_date'=>intval($boosters[$i++]),
+                     'booster_c_val'=>intval($boosters[$i++]), 'booster_c_date'=>intval($boosters[$i++]),
+                     'booster_d_val'=>intval($boosters[$i++]), 'booster_d_date'=>intval($boosters[$i++]),
+                     'extention_p'=>intval($boosters[$i++]), 'extention_m'=>intval($boosters[$i++]));
+        }
+    }    
+    return array('booster_m_val'=>0, 'booster_m_date'=>0,
+                 'booster_c_val'=>0, 'booster_c_date'=>0,
+                 'booster_d_val'=>0, 'booster_d_date'=>0,
+                 'extention_p'=>0, 'extention_m'=>0);
+}
+/* Transforme le tableau des informations des objets Ogame en une string de stockage.
+ * @b tableau associatif des infos array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
+ * @return objet sous format string de stockage ("m:0:0;c:0:0;d:0:0;p:0;m:0" si pas d'argument)
+*/
+function booster_encode($b=NULL) {
+    $str = '';
+    if($b){
+        $str .= 'm:'.$b['booster_m_val'].':'.$b['booster_m_date'].';';
+        $str .= 'c:'.$b['booster_c_val'].':'.$b['booster_c_date'].';';
+        $str .= 'd:'.$b['booster_d_val'].':'.$b['booster_d_date'].';';
+        $str .= 'p:'.$b['extention_p'].';';
+        $str .= 'm:'.$b['extention_m'];
+    } else {
+        $str = "m:0:0;c:0:0;d:0:0;p:0;m:0";
+    }
+    return $str;
+}
+/* Transforme les valeurs des objets Ogame en une string de stockage.
+ * string de stockage par défaut = m:0:0;c:0:0;d:0:0;p:0;m:0
+ * @return objet sous format string de stockage ("m:0:0;c:0:0;d:0:0;p:0;m:0" si pas d'argument)
+*/
+function booster_encodev($booster_m_val=0, $booster_m_date=0, $booster_c_val=0, $booster_c_date=0,
+                $booster_d_val=0, $booster_d_date=0, $extention_p=0, $extention_m=0) {
+    $str = '';
+    $str .= 'm:'.$booster_m_val.':'.$booster_m_date.';';
+    $str .= 'c:'.$booster_c_val.':'.$booster_c_date.';';
+    $str .= 'd:'.$booster_d_val.':'.$booster_d_date.';';
+    $str .= 'p:'.$extention_p.';';
+    $str .= 'm:'.$extention_m;
+    return $str;
+}
+/**                     Fin booster partie                                     **/
+/********************************************************************************/
 ?>
