@@ -37,6 +37,12 @@ echo "<input type='hidden' id='off_ingenieur' value='".$user_data["off_ingenieur
 echo "<input type='hidden' id='off_geologue' value='".$user_data["off_geologue"]."'/>";
 echo "<input type='hidden' id='off_full' value='".$off_full."'/>";
 
+//Calcul et correction boosters :
+for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
+ /*Boosters et extensions modification :*/
+    $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+    $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+}
 ?>
 
 <script src="js/ogame_formula.js" type="text/javascript"></script>
@@ -117,6 +123,21 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
         $t_max = $user_building[$i]["temperature_max"];
 }
 echo "\t<th><div id='T_max'>".$t_max."</div></th>"; 
+?>
+</tr>
+<tr style='font-style:italic;'>
+	<th><a>Extension</a></th>
+<?php
+for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
+    $booster = "&nbsp;";
+    
+    if($view == "planets") {
+        $booster = $booster_tab[$i]['extention_p'];
+    } else {
+        $booster = $booster_tab[$i]['extention_m'];
+    }
+    echo "\t"."<th colspan='2'>".$booster."<input id='extension".$i."' type='hidden' value='".$booster."'></th>"."</th>"."\n";
+}
 ?>
 </tr>
 
@@ -228,6 +249,23 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 ?>
 	<th></th>
 </tr>
+<tr style='font-style:italic;'>
+	<th><a>Booster métal</a></th>
+<?php
+
+for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
+	echo "\t"."<th colspan='2'>";
+	echo "<select id='booster_M_".$i."' onchange='update_page();' onKeyUp='update_page();'>"."\n";
+	for ($j=30 ; $j>=0 ; $j=$j-10) {
+		echo "\t\t"."<option value='".$j."'";
+		if ($booster_tab[$i]['booster_m_val'] == $j) echo " selected='selected'";
+		echo ">".$j."%</option>"."\n";
+	}
+	echo "</select></th>"."\n";
+}
+?>
+	<th></th>
+</tr>
 <tr>
 	<th><a>Consommation Energie</a></th>
 <?php
@@ -273,6 +311,23 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 ?>
 	<th></th>
 </tr>
+<tr style='font-style:italic;'>
+	<th><a>Booster cristal</a></th>
+<?php
+
+for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
+	echo "\t"."<th colspan='2'>";
+	echo "<select id='booster_C_".$i."' onchange='update_page();' onKeyUp='update_page();'>"."\n";
+	for ($j=30 ; $j>=0 ; $j=$j-10) {
+		echo "\t\t"."<option value='".$j."'";
+		if ($booster_tab[$i]['booster_c_val'] == $j) echo " selected='selected'";
+		echo ">".$j."%</option>"."\n";
+	}
+	echo "</select></th>"."\n";
+}
+?>
+	<th></th>
+</tr>
 <tr>
 	<th><a>Consommation Energie</a></th>
 <?php
@@ -311,6 +366,23 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	for ($j=100 ; $j>=0 ; $j=$j-10) {
 		echo "\t\t"."<option value='".$j."'";
 		if ($user_percentage[$i]['D_percentage'] == $j) echo " selected='selected'";
+		echo ">".$j."%</option>"."\n";
+	}
+	echo "</select></th>"."\n";
+}
+?>
+	<th></th>
+</tr>
+<tr style='font-style:italic;'>
+	<th><a>Booster deutérium</a></th>
+<?php
+
+for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
+	echo "\t"."<th colspan='2'>";
+	echo "<select id='booster_D_".$i."' onchange='update_page();' onKeyUp='update_page();'>"."\n";
+	for ($j=30 ; $j>=0 ; $j=$j-10) {
+		echo "\t\t"."<option value='".$j."'";
+		if ($booster_tab[$i]['booster_d_val'] == $j) echo " selected='selected'";
 		echo ">".$j."%</option>"."\n";
 	}
 	echo "</select></th>"."\n";
