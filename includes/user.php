@@ -1581,10 +1581,11 @@ function user_get_empire()
     global $db, $user_data;
 
     $planet = array(false, "user_id" => "", "planet_name" => "", "coordinates" => "",
-        "fields" => "", "fields_used" => "", "temperature_min" => "", "temperature_max" =>"",
-        "Sat" => 0, "Sat_percentage" => 1, "M" => 0, "M_percentage" => 1, "C" => 0,
-        "C_Percentage" => 1, "D" => 0, "D_percentage" =>1, "CES" => 0, "CES_percentage" => 1,
-        "CEF" => 0, "CEF_percentage" => 1, "UdR" => 0, "UdN" => 0, "CSp" => 0,
+        "fields" => "", "fields_used" => "", "boosters" => booster_encode(),
+        "temperature_min" => "", "temperature_max" =>"",
+        "Sat" => 0, "Sat_percentage" => 100, "M" => 0, "M_percentage" => 100, "C" => 0,
+        "C_Percentage" => 100, "D" => 0, "D_percentage" =>100, "CES" => 0, "CES_percentage" => 100,
+        "CEF" => 0, "CEF_percentage" => 100, "UdR" => 0, "UdN" => 0, "CSp" => 0,
         "HM" => 0, "HC" => 0, "HD" => 0, "CM" => 0,"CC" => 0,"CD" => 0, "Lab" => 0,
         "Ter" => 0, "Silo" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0);
 
@@ -1608,7 +1609,7 @@ function user_get_empire()
         $user_building[$i] = $planet;
     }
 
-    $request = "SELECT planet_id, planet_name, coordinates, fields, temperature_min, temperature_max, Sat, Sat_percentage, M, M_percentage, C, C_Percentage, D, D_percentage, CES, CES_percentage, CEF, CEF_percentage, UdR, UdN, CSp, HM, HC, HD, CM, CC, CD, Lab, Ter, Silo, BaLu, Pha, PoSa, DdR";
+    $request = "SELECT planet_id, planet_name, coordinates, fields, boosters, temperature_min, temperature_max, Sat, Sat_percentage, M, M_percentage, C, C_Percentage, D, D_percentage, CES, CES_percentage, CEF, CEF_percentage, UdR, UdN, CSp, HM, HC, HD, CM, CC, CD, Lab, Ter, Silo, BaLu, Pha, PoSa, DdR";
     $request .= " FROM " . TABLE_USER_BUILDING;
     $request .= " WHERE user_id = " . $user_data["user_id"];
     $request .= " ORDER BY planet_id";
@@ -1622,6 +1623,7 @@ function user_get_empire()
         unset($arr["planet_name"]);
         unset($arr["coordinates"]);
         unset($arr["fields"]);
+        unset($arr["boosters"]);
         unset($arr["temperature_min"]);
         unset($arr["temperature_max"]);
         unset($arr["Sat"]);

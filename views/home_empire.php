@@ -51,6 +51,10 @@ $nb_planete = find_nb_planete_user();
 
 $name = $coordinates = $fields = $temperature_min = $temperature_max = $satellite = "";
 for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
+ /*Boosters et extensions modification :*/
+    $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+    $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+    
 	$name .= "'".$user_building[$i]["planet_name"]."', ";
 	$coordinates .= "'".$user_building[$i]["coordinates"]."', ";
 	$fields .= "'".$user_building[$i]["fields"]."', ";
@@ -60,6 +64,10 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 }
 
 for ($i=201 ; $i<=$nb_planete+200 ; $i++) {
+ /*Boosters et extensions modification :*/
+    $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+    $user_building[$i]["fields"] += $booster_tab[$i]['extention_m'];
+    
 	$name .= "'Lune', ";
 	$coordinates .= "'', ";
 	$fields .= "'1', ";
@@ -250,6 +258,22 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 
 	echo "\t"."<th>".$temperature_max."</th>"."\n";
 }
+?>
+</tr>
+<tr style='font-style:italic;'>
+	<th><a>Extension</a></th>
+<?php
+for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
+	// $booster_tab = booster_decode($user_building[$i]["boosters"]);
+    $booster = "&nbsp;";
+    
+    if($view == "planets") {
+        $booster = $booster_tab[$i]['extention_p'];
+    } else {
+        $booster = $booster_tab[$i]['extention_m'];
+    }
+    echo "\t"."<th>".$booster."</th>"."\n";
+}
 
 if($view == "planets") {
 ?>
@@ -353,12 +377,13 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
     echo "</th>"."\n"; 
 }
 ?>
- <tr>
+</tr>
+<tr>
 	<th><a>M&eacute;tal</a></th>
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	if ($user_building[$i]["M"] != "") {
-        echo "\t"."<th>".number_format(floor($ratio[$i]['M']), 0, ',', ' ')."</th>"."\n";
+        echo "\t"."<th>".number_format(floor($ratio[$i]['M']*(1 + $booster_tab[$i]['booster_m_val']/100)), 0, ',', ' ')."</th>"."\n";
     } else {
         echo "\t"."<th>&nbsp</th>"."\n";
     }
@@ -370,7 +395,7 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	if ($user_building[$i]["C"] != "") {
-        echo "\t"."<th>".number_format(floor($ratio[$i]['C']), 0, ',', ' ')."</th>"."\n";
+        echo "\t"."<th>".number_format(floor($ratio[$i]['C']*(1 + $booster_tab[$i]['booster_c_val']/100)), 0, ',', ' ')."</th>"."\n";
     } else {
         echo "\t"."<th>&nbsp</th>"."\n";
     }
@@ -382,10 +407,19 @@ for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 <?php
 for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
 	if ($user_building[$i]["D"] != "") {
-        echo "\t"."<th>".number_format(floor($ratio[$i]['D']), 0, ',', ' ')."</th>"."\n";
+        echo "\t"."<th>".number_format(floor($ratio[$i]['D']*(1 + $booster_tab[$i]['booster_d_val']/100)), 0, ',', ' ')."</th>"."\n";
     } else {
         echo "\t"."<th>&nbsp</th>"."\n";
     }
+}
+?>
+</tr>
+<tr style='font-style:italic;'>
+	<th><a>Booster</a></th>
+<?php
+for ($i=$start ; $i<=$start+$nb_planete -1 ; $i++) {
+	// $booster_tab = booster_decode($user_building[$i]["boosters"]);
+    echo "\t"."<th>m:".$booster_tab[$i]['booster_m_val'].'%, c:'.$booster_tab[$i]['booster_c_val'].'%, d:'.$booster_tab[$i]['booster_d_val']."%</th>"."\n";
 }
 ?>
 </tr>
