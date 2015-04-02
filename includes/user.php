@@ -1637,6 +1637,7 @@ function user_get_empire()
 
 
         $row["fields_used"] = $fields_used;
+        $row["boosters"] = booster_verify_str($row["boosters"]);    //Correction et mise à jour booster from date
         $user_building[$row["planet_id"]] = $row;
         $user_building[$row["planet_id"]][0] = true;
     }

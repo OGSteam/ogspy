@@ -1631,6 +1631,32 @@ function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster){
     return booster_ecrire_bdd_str($id_player, $id_planet, booster_encode($tab_booster));
 }
 
+/* Contrôle la date de validité des boosters et reset si la date est dépassée
+ * @param $boosters     tableau infos des boosters (donnée par les fonctions booster_lire_bdd() ou booster_decode())
+ * @return tableau associatif des boosters mis à jour
+ * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'extention_p', 'extention_m')
+*/
+function booster_verify($boosters) {
+    $b_control = array('booster_m_', 'booster_c_', 'booster_d_');
+    $current_time = time();
+    
+    foreach($b_control as $b) {
+        if($boosters[$b.'date'] <= $current_time) {
+            $boosters[$b.'val'] = 0;
+            $boosters[$b.'date'] = 0;
+        }
+    }
+    return $boosters;
+}
+/* Contrôle la date de validité des boosters et reset si la date est dépassée
+ * @param $str     string de stockage des boosters (donnée par les fonctions booster_encode() ou booster_encodev() ou directement from BDD)
+ * @return tableau associatif des boosters mis à jour
+ * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'extention_p', 'extention_m')
+*/
+function booster_verify_str($str) {
+    return booster_encode(booster_verify(booster_decode($str)));
+}
+
 /*##Lecture et modification poussées  ##*/
 /* Transforme en tableau les données des objets Ogame contenues dans une string de stockage.
  * Si aucun argument n'ai donné alors elle renvoie les valeurs des objets par défaut.

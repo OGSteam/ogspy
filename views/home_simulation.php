@@ -255,7 +255,7 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 
 for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	echo "\t"."<th colspan='2'>";
-	echo "<select id='booster_M_".$i."' onchange='update_page();' onKeyUp='update_page();'>"."\n";
+	echo "<select id='M_".$i."_booster' onchange='update_page();' onKeyUp='update_page();'>"."\n";
 	for ($j=30 ; $j>=0 ; $j=$j-10) {
 		echo "\t\t"."<option value='".$j."'";
 		if ($booster_tab[$i]['booster_m_val'] == $j) echo " selected='selected'";
@@ -317,7 +317,7 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 
 for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	echo "\t"."<th colspan='2'>";
-	echo "<select id='booster_C_".$i."' onchange='update_page();' onKeyUp='update_page();'>"."\n";
+	echo "<select id='C_".$i."_booster' onchange='update_page();' onKeyUp='update_page();'>"."\n";
 	for ($j=30 ; $j>=0 ; $j=$j-10) {
 		echo "\t\t"."<option value='".$j."'";
 		if ($booster_tab[$i]['booster_c_val'] == $j) echo " selected='selected'";
@@ -379,7 +379,7 @@ for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 
 for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
 	echo "\t"."<th colspan='2'>";
-	echo "<select id='booster_D_".$i."' onchange='update_page();' onKeyUp='update_page();'>"."\n";
+	echo "<select id='D_".$i."_booster' onchange='update_page();' onKeyUp='update_page();'>"."\n";
 	for ($j=30 ; $j>=0 ; $j=$j-10) {
 		echo "\t\t"."<option value='".$j."'";
 		if ($booster_tab[$i]['booster_d_val'] == $j) echo " selected='selected'";
