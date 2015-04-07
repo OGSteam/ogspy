@@ -467,7 +467,7 @@ CREATE TABLE ogspy_user_building (
   planet_name varchar(20) NOT NULL default '',
   coordinates varchar(10) NOT NULL default '',
   `fields` smallint(3) NOT NULL default '0',
-  `boosters` varchar(64) NOT NULL default 'm:0:0;c:0:0;d:0:0;p:0;m:0'
+  `boosters` varchar(64) NOT NULL default 'm:0:0;c:0:0;d:0:0;p:0;m:0',
   temperature_min smallint(2) NOT NULL default '0',
   temperature_max smallint(2) NOT NULL default '0',
   Sat smallint(5) NOT NULL default '0',
