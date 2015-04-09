@@ -1631,6 +1631,7 @@ function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster){
     return booster_ecrire_bdd_str($id_player, $id_planet, booster_encode($tab_booster));
 }
 
+/*#######Contrôles et modifications poussées  #######*/
 /* Contrôle la date de validité des boosters et reset si la date est dépassée
  * @param $boosters     tableau infos des boosters (donnée par les fonctions booster_lire_bdd() ou booster_decode())
  * @return tableau associatif des boosters mis à jour
@@ -1656,8 +1657,99 @@ function booster_verify($boosters) {
 function booster_verify_str($str) {
     return booster_encode(booster_verify(booster_decode($str)));
 }
+/* donne des tableaux d'informations en relation avec les objets Ogame 
+ * @type    détermine les informations renvoyées
+ *      [Default] donne un tableau avec les uuid des objets Ogame
+ *      'definition' donne un tableau avec le nom de l'objet (ex. 'Booster de métal en or')
+ *      'array'      donne un tableau asso de tab uuid=>array('booster_x'|'extension_x', valeur)
+ *      'string'     donne un tableau asso de string uuid=>'x:valeur:0'|'x:valeur'
+ *      'full'       donne les tableaux simple : définition, uuid, string, array)
+ * @return  le tableau correspondant au type
+*/
+function booster_objets_tab($type='') {
+    $objet_str = array('Booster de métal en or'    ,'Booster de métal en argent'    ,'Booster de métal en bronze',
+                       'Booster de cristal en or'  ,'Booster de cristal en argent'  ,'Booster de cristal en bronze',
+                       'Booster de deutérium en or','Booster de deutérium en argent','Booster de deutérium en bronze',
+                       'Extension planétaire en or','Extension planétaire en argent','Extension planétaire en bronze',
+                       'Extension lunaire en or'   ,'Extension lunaire en argent'   ,'Extension lunaire en bronze');                    
+    $objet_uuid = array('05294270032e5dc968672425ab5611998c409166',//'Booster de métal +30%'
+                        'ba85cc2b8a5d986bbfba6954e2164ef71af95d4a',//'Booster de métal +20%'
+                        'de922af379061263a56d7204d1c395cefcfb7d75',//'Booster de métal +10%'
+                        '118d34e685b5d1472267696d1010a393a59aed03',//'Booster de cristal +30%'
+                        '422db99aac4ec594d483d8ef7faadc5d40d6f7d3',//'Booster de cristal +20%'
+                        '3c9f85221807b8d593fa5276cdf7af9913c4a35d',//'Booster de cristal +10%'
+                        '5560a1580a0330e8aadf05cb5bfe6bc3200406e2',//'Booster de deutérium +30%'
+                        'e4b78acddfa6fd0234bcb814b676271898b0dbb3',//'Booster de deutérium +20%'
+                        'd9fa5f359e80ff4f4c97545d07c66dbadab1d1be',//'Booster de deutérium +10%'
+                        '04e58444d6d0beb57b3e998edc34c60f8318825a',//'Extension planétaire +15'
+                        '0e41524dc46225dca21c9119f2fb735fd7ea5cb3',//'Extension planétaire +9'
+                        '16768164989dffd819a373613b5e1a52e226a5b0',//'Extension planétaire +4'
+                        '05ee9654bd11a261f1ff0e5d0e49121b5e7e4401',//'Extension lunaire +6'
+                        'c21ff33ba8f0a7eadb6b7d1135763366f0c4b8bf',//'Extension lunaire +4'
+                        'be67e009a5894f19bbf3b0c9d9b072d49040a2cc');//'Extension lunaire +2'
+    $objet_uuid_str = array('m:30:0','m:20:0','m:10:0','c:30:0','c:20:0','c:10:0','d:30:0','d:20:0','d:10:0','p:15','p:9','p:4','m:6','m:4','m:2');
+    $objet_uuid_tab = array(array('booster_m', 30),array('booster_m', 20),array('booster_m', 10),
+                        array('booster_c', 30),array('booster_c', 20),array('booster_c', 10),
+                        array('booster_d', 30),array('booster_d', 20),array('booster_d', 10),
+                        array('extention_p', 15),array('extention_p', 9),array('extention_p', 4),
+                        array('extention_m', 6),array('extention_m', 4),array('extention_m', 2));
 
-/*##Lecture et modification poussées  ##*/
+    switch($type) {
+        case 'definition':
+            return $objet_str;
+        case 'array':
+            $n = count($objet_uuid);
+            for($i=0 ; $i<$n ; $i++) {
+                $result[$objet_uuid[$i]] = $objet_uuid_tab[$i]; 
+            }
+            return $result;
+        case 'string':
+            $n = count($objet_uuid);
+            for($i=0 ; $i<$n ; $i++) {
+                $result[$objet_uuid[$i]] = $objet_uuid_str[$i]; 
+            }
+            return $result;
+        case 'full':
+            return array($objet_str, $objet_uuid, $objet_uuid_str, $objet_uuid_str);
+        default:
+            return $objet_uuid;
+    }
+}
+/* Indique si un uuid est enregistré dans OGSpy (il existe)
+ * @uuid    string uuid récupéré de la page Ogame
+*/
+function booster_is_uuid($uuid) {
+    return in_array($uuid, booster_objets_tab());
+}
+/* Mets à jour le tableau infos des boosters.
+ * @boosters tableau infos des boosters (donnée par les fonctions booster_lire_bdd() ou booster_decode())
+ * @uuid     string uuid de l'objet Ogame récupéré de la page Ogame
+ * @date     date de fin de l'objet Ogame. [defaut=0]
+ * return   le tableau à jour (par uuid et date)
+ *          si $boosters==NULL OU booster_uuid($b) sans uuid -> donne tableau avec valeurs par défaut (équivalent booster_decode())
+ *          NULL en cas d'erreur (uuid inconnu)
+*/
+function booster_uuid($boosters, $uuid='', $date=0) {
+    if($boosters==NULL || $uuid=='') {
+        $boosters = booster_decode();
+        return $boosters;
+    } else {
+        $objet_uuid = booster_objets_tab('array');
+        //if(isset($objet_uuid[$uuid]) || array_key_exists($uuid, $objet_uuid)) {
+        if(isset($objet_uuid[$uuid])) {
+            if($objet_uuid[$uuid][0][0] == 'b') {
+                $boosters[$objet_uuid[$uuid][0].'_val'] = $objet_uuid[$uuid][1];
+                $boosters[$objet_uuid[$uuid][0].'_date'] = $date;
+            } elseif($objet_uuid[$uuid][0][0] == 'e') {
+                $boosters[$objet_uuid[$uuid][0]] = $objet_uuid[$uuid][1];
+            } else { return NULL;} //Ne devrai jamais arriver si les tableaux dans booster_objets_tab() sont bien construit
+            return $boosters;
+        }
+    }
+    return NULL;
+}
+
+/*#######Lecture et modifications poussées  #######*/
 /* Transforme en tableau les données des objets Ogame contenues dans une string de stockage.
  * Si aucun argument n'ai donné alors elle renvoie les valeurs des objets par défaut.
  * @param $str  string de stockage des objets Ogame
