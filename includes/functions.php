@@ -1630,6 +1630,30 @@ function booster_ecrire_bdd_str($id_player, $id_planet, $str_booster){
 function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster){
     return booster_ecrire_bdd_str($id_player, $id_planet, booster_encode($tab_booster));
 }
+/* Mets à jour les boosters de tous les users en fonction de la date de fin dans la BDD
+ *
+*/
+function booster_maj_bdd(){
+    global $db;
+
+    $request = "SELECT user_id, planet_id, boosters FROM ".TABLE_USER_BUILDING;
+    $res = $db->sql_query($request);
+    if($res) {
+        $requests = array();
+        while($row = $db->sql_fetch_assoc($res)) {            
+            $tmp = booster_verify_str($row['boosters']);
+            if($tmp !== $row['boosters']) {
+                $row['boosters'] = $tmp;
+                $requests[] = "UPDATE ".TABLE_USER_BUILDING." SET boosters = '".$row['boosters']."' ".
+                             " WHERE user_id = ".$row['user_id'].
+                             " AND planet_id = ".$row['planet_id'];
+            }
+        }
+        foreach ($requests as $request) {
+            $db->sql_query($request);
+        }
+    }
+}
 
 /*#######Contrôles et modifications poussées  #######*/
 /* Contrôle la date de validité des boosters et reset si la date est dépassée
