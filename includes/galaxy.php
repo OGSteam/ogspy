@@ -325,13 +325,12 @@ function galaxy_show_sector()
         $pub_galaxy_down, $pub_galaxy_up, $pub_system_down, $pub_system_up, $pub_row_down,
         $pub_row_up, $pub_row_active, $pub_page;
 
-    if (!check_var($pub_string_search, "Text") || !check_var($pub_type_search,
-        "Char") || !check_var($pub_strict, "Char") || !check_var($pub_sort, "Num") || !
-        check_var($pub_sort2, "Num") || !check_var($pub_galaxy_down, "Num") || !
-        check_var($pub_galaxy_up, "Num") || !check_var($pub_system_down, "Num") || !
-        check_var($pub_system_up, "Num") || !check_var($pub_row_down, "Num") || !
-        check_var($pub_row_up, "Num") || !check_var($pub_row_active, "Char") || !
-        check_var($pub_page, "Num")) {
+    if (!check_var($pub_type_search,"Char") || !check_var($pub_strict, "Char") ||
+        !check_var($pub_sort, "Num") || !check_var($pub_sort2, "Num") ||
+        !check_var($pub_galaxy_down, "Num") || !check_var($pub_galaxy_up, "Num") ||
+        !check_var($pub_system_down, "Num") || !check_var($pub_system_up, "Num") ||
+        !check_var($pub_row_down, "Num") || !check_var($pub_row_up, "Num") ||
+        !check_var($pub_row_active, "Char") || !check_var($pub_page, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
