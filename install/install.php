@@ -83,6 +83,15 @@ if ($alerte) {
 require_once("../common.php");
 require_once("version.php");
 
+/**
+* Affiche une boite d'erreur d'installation et quitte le script
+* @var string $message Message d'erreur
+*/
+function error_sql($message) {
+	echo "<h3 align='center'><font color='red'>Erreur durant la procédure d'installation du serveur OGSpy</font></h3>";
+	echo "<center><b>- ".$message."</b></center>";
+	exit();
+}
 
 /**
 * Création de la structure de la base de donnée
@@ -99,7 +108,7 @@ require_once("version.php");
 function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $admin_username, $admin_password, $admin_password2, $num_of_galaxies, $num_of_systems) {
 	global $pub_directory;
 	$db  = sql_db::getInstance($sgbd_server, $sgbd_username, $sgbd_password, $sgbd_dbname);
-	if (!$db->db_connect_id) dieSQLError("Impossible de se connecter à la base de données");
+	if (!$db->db_connect_id) error_sql("Impossible de se connecter à la base de données");
 
     $db->sql_query("ALTER DATABASE ".$sgbd_dbname." charset=utf8");
     
@@ -115,7 +124,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 	$galaxies_db_str .= "'$num_of_galaxies') NOT NULL default '1',";
 	$sql_query = preg_replace("#GALAXY_ENUM#",  $galaxies_db_str, $sql_query);
 
-	$sql_query = explode(";", $sql_query);
+	$sql_query = explode(";\n", $sql_query);
 	$sql_query[] = "INSERT INTO ".$sgbd_tableprefix."config (config_name, config_value) VALUES ('num_of_galaxies','$num_of_galaxies')";
 	$sql_query[] = "INSERT INTO ".$sgbd_tableprefix."config (config_name, config_value) VALUES ('num_of_systems','$num_of_systems')";
 	$sql_query[] = "INSERT INTO ".$sgbd_tableprefix."config (config_name, config_value) VALUES ('speed_uni','1')";
@@ -127,8 +136,9 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 	foreach ($sql_query as $request) {
 		if (trim($request) != "") {
 			if (!($result = $db->sql_query($request, false, false))) {
-				$error = $db->sql_error();
+				$error = $db->sql_error($result);
 				print $request;
+				error_sql($error['message']);
 			}
 		}
 	}
@@ -136,14 +146,16 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 	$request = "insert into ".$sgbd_tableprefix."user (user_id, user_name, user_password, user_regdate, user_active, user_admin)".
 	" values (1, '".mysqli_real_escape_string($db->db_connect_id, $admin_username)."', '".md5(sha1($admin_password))."', ".time().", '1', '1')";
 	if (!($result = $db->sql_query($request, false, false))) {
-		$error = $db->sql_error();
+		$error = $db->sql_error($result);
 		print $request;
+		error_sql($error['message']);
 	}
 
 	$request = "insert into ".$sgbd_tableprefix."user_group (group_id, user_id) values (1, 1)";
 	if (!($result = $db->sql_query($request, false, false))) {
-		$error = $db->sql_error();
+		$error = $db->sql_error($result);
 		print $request;
+		error_sql($error['message']);
 	}
 	
 	// Ajout du mod_Xtense et du mod AutoUpdate
