@@ -5,6 +5,44 @@
 
 ## ########################################################
 
+DROP TABLE IF EXISTS ogspy_config;
+DROP TABLE IF EXISTS ogspy_group;
+DROP TABLE IF EXISTS ogspy_mod;
+DROP TABLE IF EXISTS ogspy_rank_ally_economique;
+DROP TABLE IF EXISTS ogspy_rank_ally_technology;
+DROP TABLE IF EXISTS ogspy_rank_ally_military;
+DROP TABLE IF EXISTS ogspy_rank_ally_military_built;
+DROP TABLE IF EXISTS ogspy_rank_ally_military_loose;
+DROP TABLE IF EXISTS ogspy_rank_ally_military_destruct;
+DROP TABLE IF EXISTS ogspy_rank_ally_honor;
+DROP TABLE IF EXISTS ogspy_rank_ally_points;
+DROP TABLE IF EXISTS ogspy_rank_player_economique;
+DROP TABLE IF EXISTS ogspy_rank_player_technology;
+DROP TABLE IF EXISTS ogspy_rank_player_military;
+DROP TABLE IF EXISTS ogspy_rank_player_military_built;
+DROP TABLE IF EXISTS ogspy_rank_player_military_built;
+DROP TABLE IF EXISTS ogspy_rank_player_military_destruct;
+DROP TABLE IF EXISTS ogspy_rank_player_military_loose;
+DROP TABLE IF EXISTS ogspy_rank_player_honor;
+DROP TABLE IF EXISTS ogspy_rank_player_points;
+DROP TABLE IF EXISTS ogspy_sessions;
+DROP TABLE IF EXISTS ogspy_statistics;
+DROP TABLE IF EXISTS ogspy_universe;
+DROP TABLE IF EXISTS ogspy_user;
+DROP TABLE IF EXISTS ogspy_user_building;
+DROP TABLE IF EXISTS ogspy_user_defence;
+DROP TABLE IF EXISTS ogspy_user_favorite;
+DROP TABLE IF EXISTS ogspy_user_group;
+DROP TABLE IF EXISTS ogspy_user_spy;
+DROP TABLE IF EXISTS ogspy_user_technology;
+DROP TABLE IF EXISTS ogspy_mod_config;
+DROP TABLE IF EXISTS ogspy_parsedspy;
+DROP TABLE IF EXISTS ogspy_parsedRC;
+DROP TABLE IF EXISTS ogspy_parsedRCRound;
+DROP TABLE IF EXISTS ogspy_round_attack;
+DROP TABLE IF EXISTS ogspy_round_defense;
+DROP TABLE IF EXISTS ogspy_gcm_users;
+
 ## 
 ## Structure de la table `ogspy_config`
 ## 
