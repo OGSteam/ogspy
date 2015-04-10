@@ -78,7 +78,11 @@ class sql_db {
 * @var int
 */
   var $nb_requete = 0;
-    
+  /**
+   * last query
+   * @var int
+   */
+  var $last_query;
 /**
 * Get the current class database instance. Creates it if dosen't exists (singleton)
 * @param string $sqlserver MySQL Server Name
@@ -160,6 +164,7 @@ class sql_db {
       $this->result = $this->db_connect_id->query($query) or dieSQLError($query);
     }
     else {
+      $this->last_query = $query;
       $this->result = $this->db_connect_id->query($query);
     }
 
@@ -270,8 +275,10 @@ class sql_db {
   function sql_error($query_id = 0) {
     $result["message"] = $this->db_connect_id->connect_error;
     $result["code"] = $this->db_connect_id->connect_errno;
-
-    return $result;
+    echo ("<h3 style='color: #FF0000;text-align: center'>Erreur lors de la requête MySQL</h3>");
+    echo ("<b>- ".$result["message"]."</b>");
+    echo ($this->last_query);
+    exit();
   }
   
  /**

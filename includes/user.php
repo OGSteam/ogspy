@@ -23,7 +23,7 @@ if (!defined('IN_SPYOGAME')) {
  */
 function user_check_auth($action, $user_id = null)
 {
-    global $user_data, $user_auth;
+    global $user_data;
 
     switch ($action) {
         case "user_create":
@@ -84,9 +84,9 @@ function user_login()
     if (!isset($pub_login) || !isset($pub_password)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     } else {
-        $request = "select user_id, user_active from " . TABLE_USER .
-            " where user_name = '" .  $db->sql_escape_string($pub_login) .
-            "' and user_password = '" . md5(sha1($pub_password)) . "'";
+        $request = "SELECT user_id, user_active FROM " . TABLE_USER .
+            " WHERE user_name = '" .  $db->sql_escape_string($pub_login) .
+            "' AND user_password = '" . md5(sha1($pub_password)) . "'";
         $result = $db->sql_query($request);
         if (list($user_id, $user_active) = $db->sql_fetch_row($result)) {
             if ($user_active == 1) {
@@ -130,7 +130,7 @@ function user_login()
 */
 function user_login_redirection()
 {
-	global $pub_login, $pub_password, $pub_goto, $url_append;
+	global $pub_goto, $url_append;
 	
 	if($pub_goto=='galaxy'){
 		global $pub_galaxy, $pub_system;
@@ -226,7 +226,6 @@ function admin_user_set()
  */
 function admin_regeneratepwd()
 {
-    global $user_data;
     global $pub_user_id; // $pub_new_pass;
     $pass_id = "pub_pass_" . $pub_user_id;
     global $$pass_id;
@@ -2740,8 +2739,7 @@ function insert_RC($rawRC)
         ',' . $parsedRC['gain_D'] . ',' . $parsedRC['debris_M'] . ',' . $parsedRC['debris_C'] .
         ',' . $parsedRC['lune'] . ',"' . $parsedRC['coordinates'] . '")';
     if (!$db->sql_query($query)) {
-        $error = $db->sql_error($result);
-        error_sql($error['message']);
+        $error = $db->sql_error();
     }
     $id_RC = $db->sql_insertid();
     for ($idx_round = 1; $idx_round <= $parsedRC['nb_rounds']; $idx_round++) {
@@ -2755,8 +2753,7 @@ function insert_RC($rawRC)
             '", "' . $parsedRC[$round]['defense_tir'] . '", "' . $parsedRC[$round]['defense_puissance'] .
             '", "' . $parsedRC[$round]['defense_bouclier'] . '")';
         if (!$db->sql_query($query)) {
-            $error = $db->sql_error($result);
-            error_sql($error['message']);
+            $error = $db->sql_error();
         }
         $id_parsedround = $db->sql_insertid();
         foreach ($parsedRC['attaquants'] as $opponent => $row) {
@@ -2774,8 +2771,7 @@ function insert_RC($rawRC)
                 '", "' . $parsedRC[$round][$pseudo]['Rip'] . '", "' . $parsedRC[$round][$pseudo]['Traqueur'] .
                 '")';
             if (!$db->sql_query($query)) {
-                $error = $db->sql_error($result);
-                error_sql($error['message']);
+                $error = $db->sql_error();
             }
         }
         foreach ($parsedRC['defenseurs'] as $opponent => $row) {
@@ -2798,8 +2794,7 @@ function insert_RC($rawRC)
                 '", "' . $parsedRC[$round][$pseudo]['Lanc.plasma'] . '", "' . $parsedRC[$round][$pseudo]['P.bouclier'] .
                 '", "' . $parsedRC[$round][$pseudo]['G.bouclier'] . '")';
             if (!$db->sql_query($query)) {
-                $error = $db->sql_error($result);
-                error_sql($error['message']);
+                $error = $db->sql_error();
             }
         }
     }
