@@ -124,7 +124,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 	$galaxies_db_str .= "'$num_of_galaxies') NOT NULL default '1',";
 	$sql_query = preg_replace("#GALAXY_ENUM#",  $galaxies_db_str, $sql_query);
 
-	$sql_query = explode(";\n", $sql_query);
+	$sql_query = explode(";", $sql_query);
 	$sql_query[] = "INSERT INTO ".$sgbd_tableprefix."config (config_name, config_value) VALUES ('num_of_galaxies','$num_of_galaxies')";
 	$sql_query[] = "INSERT INTO ".$sgbd_tableprefix."config (config_name, config_value) VALUES ('num_of_systems','$num_of_systems')";
 	$sql_query[] = "INSERT INTO ".$sgbd_tableprefix."config (config_name, config_value) VALUES ('speed_uni','1')";

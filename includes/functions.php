@@ -1583,10 +1583,10 @@ function calc_distance($a, $b, $type, $typeArrondi = false) {//a-b
 /********************************************************************************/
 /**                     Booster partie                                         **/
 /* Description :
-  "m:0:0;c:0:0;d:0:0;p:0;m:0" =>booster_m;booster_c;booster_d;extension_p;extension_moon
+  "m:0:0_c:0:0_d:0:0_p:0_m:0" =>booster_m;booster_c;booster_d;extension_p;extension_moon
   booster_x    => ressource:%:date_de_fin  (ressource= m|c|d)
   extension_x  => type:+" (type= p|m)
-  "m:0:0;c:0:0;d:0:0;p:0;m:0" = string de stockage par défaut
+  "m:0:0_c:0:0_d:0:0_p:0_m:0" = string de stockage par défaut
 */
 /*##Base de donnée  ##*/
 /* Lit les informations des objets Ogame dans la BDD et les transformes en un tableau
@@ -1688,6 +1688,8 @@ function booster_verify_str($str) {
  *      'array'      donne un tableau asso de tab uuid=>array('booster_x'|'extension_x', valeur)
  *      'string'     donne un tableau asso de string uuid=>'x:valeur:0'|'x:valeur'
  *      'full'       donne les tableaux simple : définition, uuid, string, array)
+ *      'separateur' donne le char qui sert de séparateur entre les objets Ogame
+ *      'default_str' donne la string de stockage par défaut : "m:0:0_c:0:0_d:0:0_p:0_m:0"
  * @return  le tableau correspondant au type
 */
 function booster_objets_tab($type='') {
@@ -1717,7 +1719,9 @@ function booster_objets_tab($type='') {
                         array('booster_d', 30),array('booster_d', 20),array('booster_d', 10),
                         array('extention_p', 15),array('extention_p', 9),array('extention_p', 4),
                         array('extention_m', 6),array('extention_m', 4),array('extention_m', 2));
-
+    $separateur = '_';
+    $default_str = array('m:0:0', 'c:0:0', 'd:0:0', 'p:0', 'm:0');
+    
     switch($type) {
         case 'definition':
             return $objet_str;
@@ -1735,6 +1739,10 @@ function booster_objets_tab($type='') {
             return $result;
         case 'full':
             return array($objet_str, $objet_uuid, $objet_uuid_str, $objet_uuid_str);
+        case 'separateur':
+            return $separateur;
+        case 'default_str':
+            return implode($separateur, $default_str);
         default:
             return $objet_uuid;
     }
@@ -1761,12 +1769,12 @@ function booster_uuid($boosters, $uuid='', $date=0) {
         $objet_uuid = booster_objets_tab('array');
         //if(isset($objet_uuid[$uuid]) || array_key_exists($uuid, $objet_uuid)) {
         if(isset($objet_uuid[$uuid])) {
-            if($objet_uuid[$uuid][0][0] == 'b') {
+            if($objet_uuid[$uuid][0][0] == 'b') { //1er lettre de booster
                 $boosters[$objet_uuid[$uuid][0].'_val'] = $objet_uuid[$uuid][1];
                 $boosters[$objet_uuid[$uuid][0].'_date'] = $date;
-            } elseif($objet_uuid[$uuid][0][0] == 'e') {
+            } elseif($objet_uuid[$uuid][0][0] == 'e') { //1er lettre de extension
                 $boosters[$objet_uuid[$uuid][0]] = $objet_uuid[$uuid][1];
-            } else { return NULL;} //Ne devrai jamais arriver si les tableaux dans booster_objets_tab() sont bien construit
+            } else { return NULL;} //Ne devrait jamais arriver si les tableaux dans booster_objets_tab() sont bien construit
             return $boosters;
         }
     }
@@ -1782,7 +1790,8 @@ function booster_uuid($boosters, $uuid='', $date=0) {
 */
 function booster_decode($str=NULL, &$boosters=NULL) {
     if($str) {
-        $a = preg_match("/m:(\d+):(\d+);c:(\d+):(\d+);d:(\d+):(\d+);p:(\d+);m:(\d+)/", $str, $boosters);
+        $s = booster_objets_tab('separateur');
+        $a = preg_match("/m:(\d+):(\d+)".$s."c:(\d+):(\d+)".$s."d:(\d+):(\d+)".$s."p:(\d+)".$s."m:(\d+)/", $str, $boosters);
         if($a) {
             $i = 1;
         return array('booster_m_val'=>intval($boosters[$i++]), 'booster_m_date'=>intval($boosters[$i++]),
@@ -1798,32 +1807,34 @@ function booster_decode($str=NULL, &$boosters=NULL) {
 }
 /* Transforme le tableau des informations des objets Ogame en une string de stockage.
  * @b tableau associatif des infos array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
- * @return objet sous format string de stockage ("m:0:0;c:0:0;d:0:0;p:0;m:0" si pas d'argument)
+ * @return objet sous format string de stockage ("m:0:0_c:0:0_d:0:0_p:0_m:0 si pas d'argument)
 */
 function booster_encode($b=NULL) {
     $str = '';
     if($b){
-        $str .= 'm:'.$b['booster_m_val'].':'.$b['booster_m_date'].';';
-        $str .= 'c:'.$b['booster_c_val'].':'.$b['booster_c_date'].';';
-        $str .= 'd:'.$b['booster_d_val'].':'.$b['booster_d_date'].';';
-        $str .= 'p:'.$b['extention_p'].';';
+        $separateur= booster_objets_tab('separateur');
+        $str .= 'm:'.$b['booster_m_val'].':'.$b['booster_m_date'].$separateur;
+        $str .= 'c:'.$b['booster_c_val'].':'.$b['booster_c_date'].$separateur;
+        $str .= 'd:'.$b['booster_d_val'].':'.$b['booster_d_date'].$separateur;
+        $str .= 'p:'.$b['extention_p'].$separateur;
         $str .= 'm:'.$b['extention_m'];
     } else {
-        $str = "m:0:0;c:0:0;d:0:0;p:0;m:0";
+        $str = booster_objets_tab('default_str');//"m:0:0_c:0:0_d:0:0_p:0_m:0";
     }
     return $str;
 }
 /* Transforme les valeurs des objets Ogame en une string de stockage.
- * string de stockage par défaut = m:0:0;c:0:0;d:0:0;p:0;m:0
- * @return objet sous format string de stockage ("m:0:0;c:0:0;d:0:0;p:0;m:0" si pas d'argument)
+ * string de stockage par défaut = m:0:0_c:0:0_d:0:0_p:0_m:0
+ * @return objet sous format string de stockage ("m:0:0_c:0:0_d:0:0_p:0_m:0" si pas d'argument)
 */
 function booster_encodev($booster_m_val=0, $booster_m_date=0, $booster_c_val=0, $booster_c_date=0,
                 $booster_d_val=0, $booster_d_date=0, $extention_p=0, $extention_m=0) {
+    $separateur= booster_objets_tab('separateur');
     $str = '';
-    $str .= 'm:'.$booster_m_val.':'.$booster_m_date.';';
-    $str .= 'c:'.$booster_c_val.':'.$booster_c_date.';';
-    $str .= 'd:'.$booster_d_val.':'.$booster_d_date.';';
-    $str .= 'p:'.$extention_p.';';
+    $str .= 'm:'.$booster_m_val.':'.$booster_m_date.$separateur;
+    $str .= 'c:'.$booster_c_val.':'.$booster_c_date.$separateur;
+    $str .= 'd:'.$booster_d_val.':'.$booster_d_date.$separateur;
+    $str .= 'p:'.$extention_p.$separateur;
     $str .= 'm:'.$extention_m;
     return $str;
 }
