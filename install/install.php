@@ -110,8 +110,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 	$db  = sql_db::getInstance($sgbd_server, $sgbd_username, $sgbd_password, $sgbd_dbname);
 	if (!$db->db_connect_id) error_sql("Impossible de se connecter à la base de données");
 
-    $db->sql_query("ALTER DATABASE ".$sgbd_dbname." charset=utf8");
-    
+
     //Création de la structure de la base de données
 	$sql_query = @fread(@fopen("schemas/ogspy_structure.sql", 'r'), @filesize("schemas/ogspy_structure.sql")) or die("<h1>Le script sql d'installation est introuvable</h1>");
 
@@ -132,6 +131,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
     $sql_query[] = "INSERT INTO ".$sgbd_tableprefix."config (config_name, config_value) VALUES ('astro_strict','1')";
     $sql_query[] = "INSERT INTO ".$sgbd_tableprefix."config (config_name, config_value) VALUES ('uni_arrondi_galaxy','0')";
     $sql_query[] = "INSERT INTO ".$sgbd_tableprefix."config (config_name, config_value) VALUES ('uni_arrondi_system','0')";
+	$sql_query[] = "ALTER DATABASE ".$sgbd_dbname." charset=utf8"; /*Passage de interclassement en utf8*/
 
 	foreach ($sql_query as $request) {
 		if (trim($request) != "") {
