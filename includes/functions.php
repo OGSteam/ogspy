@@ -1781,6 +1781,30 @@ function booster_uuid($boosters, $uuid='', $date=0) {
     return NULL;
 }
 
+/* Transforme la date Ogame de format "*s *j *h *m *s" en nombre de seconde
+ * @str string contenant le temps
+ * @return int nombre de seconde correspondant à $str. 0 si problème
+*/
+function booster_lire_date($str) {
+    static $tri = array(   's',   'j',   'h', 'm', 's');
+    static $num = array(604800, 86400,  3600,  60,  1);
+    static $n = 5;
+    $result = 0;
+    $j = $n-1;  //Lecture de droite à gauche on démarre par les secondes.
+    
+    $parts = sscanf($str, '%d%c %d%c %d%c %d%c %d%c');
+    for($i=$n-1 ; $i >= 0 ; $i--) {
+        $car = $parts[$i*2+1];  //%c
+        $valeur = $parts[$i*2]; //%d
+        if(!is_null($car)) {
+            if($car == $tri[$j]){
+                $result += $valeur * $num[$j--];
+            }
+        }
+    }
+    return $result;
+}
+
 /*#######Lecture et modifications poussées  #######*/
 /* Transforme en tableau les données des objets Ogame contenues dans une string de stockage.
  * Si aucun argument n'ai donné alors elle renvoie les valeurs des objets par défaut.
