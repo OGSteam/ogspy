@@ -1586,7 +1586,8 @@ function user_get_empire()
         "C_Percentage" => 100, "D" => 0, "D_percentage" =>100, "CES" => 0, "CES_percentage" => 100,
         "CEF" => 0, "CEF_percentage" => 100, "UdR" => 0, "UdN" => 0, "CSp" => 0,
         "HM" => 0, "HC" => 0, "HD" => 0, "CM" => 0,"CC" => 0,"CD" => 0, "Lab" => 0,
-        "Ter" => 0, "Silo" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0);
+        "Ter" => 0, "Silo" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0,
+        "C_percentage" => 100);
 
     $defence = array("LM" => 0, "LLE" => 0, "LLO" => 0, "CG" => 0, "AI" => 0, "LP" =>
         0, "PB" => 0, "GB" => 0, "MIC" => 0, "MIP" => 0);
@@ -1637,6 +1638,7 @@ function user_get_empire()
 
         $row["fields_used"] = $fields_used;
         $row["boosters"] = booster_verify_str($row["boosters"]);    //Correction et mise à jour booster from date
+        $row["C_percentage"] = $row["C_Percentage"];
         $user_building[$row["planet_id"]] = $row;
         $user_building[$row["planet_id"]][0] = true;
     }
