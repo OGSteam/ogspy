@@ -130,12 +130,9 @@ echo "\t<th><div id='T_max'>".$t_max."</div></th>";
 <?php
 for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
     $booster = "&nbsp;";
-    
-    if($view == "planets") {
-        $booster = $booster_tab[$i]['extention_p'];
-    } else {
-        $booster = $booster_tab[$i]['extention_m'];
-    }
+
+    $booster = $booster_tab[$i]['extention_p']; // La vue Lune n'existe pas sur la page simulation
+
     echo "\t"."<th colspan='2'>".$booster."<input id='extension".$i."' type='hidden' value='".$booster."'></th>"."</th>"."\n";
 }
 ?>
