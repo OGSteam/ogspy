@@ -1738,7 +1738,7 @@ function booster_objets_tab($type='') {
             }
             return $result;
         case 'full':
-            return array($objet_str, $objet_uuid, $objet_uuid_str, $objet_uuid_str);
+            return array($objet_str, $objet_uuid, $objet_uuid_str, $objet_uuid_tab);
         case 'separateur':
             return $separateur;
         case 'default_str':
