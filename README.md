@@ -6,7 +6,7 @@ Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour e
 
 ### Que contient ce dépôt ? ###
 
-* OGSpy Version 3.1.3
+* OGSpy Version 3.2.0
 * Librairies externes comme JQuery
 * Accord de License
 
