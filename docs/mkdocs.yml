@@ -1,1 +1,4 @@
 site_name: OGSpy Documentation
+pages:
+- Home: index.md
+- About: about.md
