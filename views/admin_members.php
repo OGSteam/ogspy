@@ -56,7 +56,7 @@ foreach ($user_info as $v) {
 	$YesNo = array("<font color=\"red\">Non</font>", "<font color=\"lime\">Oui</font>");
 	$user_auth = user_get_auth($user_id);
 
-	$auth = "<table width=\"100%\">";
+	$auth = "<table width=\"100%\" style=\"color:white;\">";
 	$auth .= "<tr><td class=\"c\" colspan=\"2\">Droits sur le serveur</td></tr>";
 	$auth .= "<tr><th>Ajout de systèmes solaires</th><th>".$YesNo[$user_auth["server_set_system"]]."</th></tr>";
 	$auth .= "<tr><th>Ajout de rapports d\'espionnage</th><th>".$YesNo[$user_auth["server_set_spy"]]."</th></tr>";

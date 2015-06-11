@@ -287,7 +287,7 @@ foreach ($search_result as $v) {
 
 	if ($v["ally"] == "") $ally = "&nbsp;";
 	else {
-		$tooltip[$v["ally"]] = "<table width=\"250\">";
+		$tooltip[$v["ally"]] = "<table width=\"250\" style=\"color:white;\">";
 		$tooltip[$v["ally"]] .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">Alliance ".$v["ally"]."</td></tr>";
 		$individual_ranking_ally = galaxy_show_ranking_unique_ally($v["ally"]);
 		while ($ranking = current($individual_ranking_ally)) {
@@ -336,7 +336,7 @@ foreach ($search_result as $v) {
 	if ($v["player"] == "") $player = "&nbsp;";
 	else {
 		if (!isset($tooltip[$v["player"]])) {
-			$tooltip[$v["player"]] = "<table width=\"250\">";
+			$tooltip[$v["player"]] = "<table width=\"250\" style=\"color:white;\">";
 			$tooltip[$v["player"]] .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">Joueur ".$v["player"]."</td></tr>";
 			$individual_ranking_player = galaxy_show_ranking_unique_player($v["player"]);
 			while ($ranking = current($individual_ranking_player)) {
