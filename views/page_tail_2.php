@@ -1,0 +1,49 @@
+<?php
+
+/***************************************************************************
+ * page_tail_2.php :  Footer des pages OGSpy
+ * @author Kyser - http://ogsteam.fr/
+ * @created  08/12/2005
+ * @package OGSpy
+ * @subpackage main
+ ***************************************************************************/
+
+if (!defined('IN_SPYOGAME')) {
+	die("Hacking attempt");
+}
+
+$php_end = benchmark();
+$php_timing = $php_end - $php_start - $sql_timing;
+$db->sql_close(); // fermeture de la connexion à la base de données
+
+?>
+
+				</td>
+			</tr>
+			
+			<?php
+			
+			global $ogspy_phperror;
+			
+			if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
+				echo "\n<tr>\n\t<td><table><tr><th>Erreurs php</th></tr>";
+				
+				foreach($ogspy_phperror as $line) {
+					echo "\n<tr><td>$line</td></tr>";
+				}
+				
+				echo "</table>\n\t</td>\n</tr>";
+			}
+			
+			?>
+			
+			<tr>
+				<td style="color: #ECFF00; text-align:center; font-size:13px; font-style:italic">
+					<a style="font-weight:bold;" href="http://www.ogsteam.fr">OGSpy</a> is an <span style="font-weight:bold;">OGSteam Software</span> &copy; 2005-2015<br />
+                    <span style="font-style:normal;">v <?php echo $server_config["version"];?></span><br />
+					Temps de génération <?php echo round($php_timing+$sql_timing, 3);?> sec (<span style="font-weight:bold;">PHP</span> : <?php echo round($php_timing, 3);?> / <span style="font-weight:bold;">SQL</span> : <?php echo round($sql_timing, 3);?>)<br />
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
