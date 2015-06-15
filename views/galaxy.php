@@ -157,7 +157,7 @@ foreach ($population as $v) {
 
 	if ($ally == "") $ally = "&nbsp;";
 	else {
-		$tooltip = "<table width=\"250\">";
+		$tooltip = "<table width=\"250\" style=\"color:white;\">";
 		$tooltip .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">Alliance ".$ally."</td></tr>";
 
 		$individual_ranking = galaxy_show_ranking_unique_ally($ally);
@@ -205,7 +205,7 @@ foreach ($population as $v) {
 
 	if ($player == "") $player = "&nbsp;";
 	else {
-		$tooltip = "<table width=\"250\">";
+		$tooltip = "<table width=\"250\" style=\"color:white;\">";
 		$tooltip .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">Joueur ".$player."</td></tr>";
 
 		$individual_ranking = galaxy_show_ranking_unique_player($player);
@@ -339,7 +339,7 @@ if (sizeof($phalanx_list) > 0) {
 
 		if ($value["ally"] != "") {
 			$individual_ranking = galaxy_show_ranking_unique_ally($value["ally"]);
-			$tooltip = "<table width=\"250\">";
+			$tooltip = "<table width=\"250\" style=\"color:white;\">";
 			$tooltip .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">Alliance ".$value["ally"]."</td></tr>";
 			while ($ranking = current($individual_ranking)) {
 				$datadate = strftime("%d %b %Y à %Hh", key($individual_ranking));
@@ -368,7 +368,7 @@ if (sizeof($phalanx_list) > 0) {
 		}
 
 		$individual_ranking = galaxy_show_ranking_unique_player($value["player"]);
-		$tooltip = "<table width=\"250\">";
+		$tooltip = "<table width=\"250\" style=\"color:white;\">";
 		$tooltip .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">Joueur ".$value["player"]."</td></tr>";
 		while ($ranking = current($individual_ranking)) {
 			$datadate = strftime("%d %b %Y à %Hh", key($individual_ranking));
