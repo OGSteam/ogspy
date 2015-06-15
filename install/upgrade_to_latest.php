@@ -34,8 +34,8 @@ if($pub_verbose == true){
 // on réinitialise la sequense config
 // evite d utiliser le cache ( qui sera périmé ))
 $request = "select * from " . TABLE_CONFIG;
-$result = mysql_query($request);
- while (list($name, $value) = mysql_fetch_row($result)) {
+$result = $db->sql_query($request);
+ while (list($name, $value) = $db->sql_fetch_row($result)) {
         $server_config[$name] = stripslashes($value);
     }
     
