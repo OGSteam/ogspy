@@ -29,16 +29,14 @@ function user_check_auth($action, $user_id = null)
         case "user_create":
         case "usergroup_manage":
             if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
-                1
-            )
+                1)
                 redirection("index.php?action=message&id_message=forbidden&info");
 
             break;
 
         case "user_update":
             if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
-                1
-            )
+                1)
                 redirection("index.php?action=message&id_message=forbidden&info");
 
             $info_user = user_get($user_id);
@@ -46,11 +44,10 @@ function user_check_auth($action, $user_id = null)
                 redirection("index.php?action=message&id_message=deleteuser_failed&info");
 
             if (($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
-                    1) || ($info_user[0]["user_admin"] == 1) || (($user_data["user_coadmin"] == 1) &&
-                    ($info_user[0]["user_coadmin"] == 1)) || (($user_data["user_coadmin"] != 1 && $user_data["management_user"] ==
-                        1) && ($info_user[0]["user_coadmin"] == 1 || $info_user[0]["management_user"] ==
-                        1))
-            ) {
+                1) || ($info_user[0]["user_admin"] == 1) || (($user_data["user_coadmin"] == 1) &&
+                ($info_user[0]["user_coadmin"] == 1)) || (($user_data["user_coadmin"] != 1 && $user_data["management_user"] ==
+                1) && ($info_user[0]["user_coadmin"] == 1 || $info_user[0]["management_user"] ==
+                1))) {
                 redirection("index.php?action=message&id_message=forbidden&info");
             }
 
@@ -61,15 +58,14 @@ function user_check_auth($action, $user_id = null)
             redirection("index.php?action=message&id_message=errorfatal&info");
     }
 }
-
 /**
  * Login d'un utilisateur
  * @global string $pub_login
  * @global string $pub_password
  * @global string $pub_goto
  * @todo Query : "select user_id, user_active from " . TABLE_USER .
- * " where user_name = '" .  $db->sql_escape_string($pub_login) .
- * "' and user_password = '" . md5(sha1($pub_password)) . "'";
+            " where user_name = '" .  $db->sql_escape_string($pub_login) .
+            "' and user_password = '" . md5(sha1($pub_password)) . "'";
  * @todo Query : "select user_lastvisit from " . TABLE_USER . " where user_id = " . $user_id;
  * @todo Query : "update " . TABLE_USER . " set user_lastvisit = " . time() ." where user_id = " . $user_id;
  * @todo Query : "update " . TABLE_STATISTIC ." set statistic_value = statistic_value + 1" " where statistic_name = 'connection_server'";
@@ -81,8 +77,7 @@ function user_login()
     global $pub_login, $pub_password, $pub_goto, $url_append;
 
     if (!check_var($pub_login, "Pseudo_Groupname") || !check_var($pub_password,
-            "Password") || !check_var($pub_goto, "Special", "#^[\w=&%+]+$#")
-    ) {
+        "Password") || !check_var($pub_goto, "Special", "#^[\w=&%+]+$#")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
@@ -90,7 +85,7 @@ function user_login()
         redirection("index.php?action=message&id_message=errorfatal&info");
     } else {
         $request = "SELECT user_id, user_active FROM " . TABLE_USER .
-            " WHERE user_name = '" . $db->sql_escape_string($pub_login) .
+            " WHERE user_name = '" .  $db->sql_escape_string($pub_login) .
             "' AND user_password = '" . md5(sha1($pub_password)) . "'";
         $result = $db->sql_query($request);
         if (list($user_id, $user_active) = $db->sql_fetch_row($result)) {
@@ -115,8 +110,8 @@ function user_login()
 
                 session_set_user_id($user_id, $lastvisit);
                 log_('login');
-                if (!isset($url_append)) {
-                    $url_append = "";
+                if(!isset($url_append)){
+                	$url_append="";
                 }
                 redirection("index.php?action=" . $pub_goto . "" . $url_append);
             } else {
@@ -127,24 +122,23 @@ function user_login()
         }
     }
 }
-
 /**
- * Login d'un utilisateur avec redirection
- * @global string $pub_login
- * @global string $pub_password
- * @global string $pub_goto
- */
+* Login d'un utilisateur avec redirection
+* @global string $pub_login
+* @global string $pub_password
+* @global string $pub_goto
+*/
 function user_login_redirection()
 {
-    global $pub_goto, $url_append;
+	global $pub_goto, $url_append;
 
-    if ($pub_goto == 'galaxy') {
-        global $pub_galaxy, $pub_system;
-        $url_append = "&galaxy=" . $pub_galaxy . "&system=" . $pub_system;
-        user_login();
-    } else {
-        user_login();
-    }
+	if($pub_goto=='galaxy'){
+		global $pub_galaxy, $pub_system;
+		$url_append="&galaxy=" . $pub_galaxy . "&system=" . $pub_system;
+		user_login();
+	} else {
+		user_login();
+	}
 }
 
 /**
@@ -156,7 +150,6 @@ function user_logout()
     session_close();
     redirection("index.php");
 }
-
 /**
  * Verification de la validite des inputs utilisateurs
  * @param string $type Type de variable verifie (pseudo,groupname,password,galaxy,system)
@@ -197,8 +190,7 @@ function admin_user_set()
 
     if (!check_var($pub_user_id, "Num") || !check_var($pub_active, "Num") || !
         check_var($pub_user_coadmin, "Num") || !check_var($pub_management_user, "Num") ||
-        !check_var($pub_management_ranking, "Num")
-    ) {
+        !check_var($pub_management_ranking, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
@@ -273,35 +265,30 @@ function member_user_set()
 {
     global $db, $user_data, $user_technology;
     global $pub_pseudo, $pub_old_password, $pub_new_password, $pub_new_password2, $pub_galaxy,
-           $pub_system, $pub_skin, $pub_disable_ip_check, $pub_off_commandant, $pub_off_amiral, $pub_off_ingenieur,
-           $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email;
+        $pub_system, $pub_disable_ip_check, $pub_off_commandant, $pub_off_amiral, $pub_off_ingenieur,
+        $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email;
 
     if (!check_var($pub_pseudo, "Text") || !check_var($pub_old_password, "Text") ||
         !check_var($pub_new_password, "Text") || !check_var($pub_new_password2,
-            "CharNum") || !check_var($pub_pseudo_email, "Email")
-        || !check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") ||
-        !check_var($pub_skin, "URL") || !check_var($pub_disable_ip_check, "Num") || !
-        check_var($pub_pseudo_ingame, "Pseudo_ingame")
-    ) {
+        "CharNum") || !check_var($pub_pseudo_email, "Email")
+		|| !check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_disable_ip_check, "Num") || !
+        check_var($pub_pseudo_ingame, "Pseudo_ingame")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
     $user_id = $user_data["user_id"];
     $user_info = user_get($user_id);
-    $user_empire = user_get_empire();
-    $user_technology = $user_empire["technology"];
+	$user_empire = user_get_empire();
+	$user_technology = $user_empire["technology"];
 
     $password_validated = null;
     if (!isset($pub_pseudo) || !isset($pub_old_password) || !isset($pub_new_password) ||
-        !isset($pub_new_password2) || !isset($pub_pseudo_email) || !isset($pub_galaxy) || !isset($pub_system) || !
-        isset($pub_skin)
-    ) {
+        !isset($pub_new_password2) || !isset($pub_pseudo_email) || !isset($pub_galaxy) || !isset($pub_system)) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed&info");
     }
 
     if ($pub_old_password != "" || $pub_new_password != "" || $pub_new_password2 !=
-        ""
-    ) {
+        "") {
         if ($pub_old_password == "" || $pub_new_password == "" || $pub_new_password != $pub_new_password2) {
             redirection("index.php?action=message&id_message=member_modifyuser_failed_passwordcheck&info");
         }
@@ -322,14 +309,13 @@ function member_user_set()
         user_set_stat_name($pub_pseudo_ingame);
     }
 
-    //compte Commandant
+	//compte Commandant
     if ($user_data['off_commandant'] == "0" && $pub_off_commandant == 1) {
         $db->sql_query("UPDATE " . TABLE_USER .
             " SET `off_commandant` = '1' WHERE `user_id` = " . $user_id);
     }
     if ($user_data['off_commandant'] == 1 && (is_null($pub_off_commandant) || $pub_off_commandant !=
-            1)
-    ) {
+        1)) {
         $db->sql_query("UPDATE " . TABLE_USER .
             " SET `off_commandant` = '0' WHERE `user_id` = " . $user_id);
     }
@@ -340,8 +326,7 @@ function member_user_set()
             " SET `off_amiral` = '1' WHERE `user_id` = " . $user_id);
     }
     if ($user_data['off_amiral'] == 1 && (is_null($pub_off_amiral) || $pub_off_amiral !=
-            1)
-    ) {
+        1)) {
         $db->sql_query("UPDATE " . TABLE_USER .
             " SET `off_amiral` = '0' WHERE `user_id` = " . $user_id);
     }
@@ -352,8 +337,7 @@ function member_user_set()
             " SET `off_ingenieur` = '1' WHERE `user_id` = " . $user_id);
     }
     if ($user_data['off_ingenieur'] == 1 && (is_null($pub_off_ingenieur) || $pub_off_ingenieur !=
-            1)
-    ) {
+        1)) {
         $db->sql_query("UPDATE " . TABLE_USER .
             " SET `off_ingenieur` = '0' WHERE `user_id` = " . $user_id);
     }
@@ -364,8 +348,7 @@ function member_user_set()
             " SET `off_geologue` = '1' WHERE `user_id` = " . $user_id);
     }
     if ($user_data['off_geologue'] == 1 && (is_null($pub_off_geologue) || $pub_off_geologue !=
-            1)
-    ) {
+        1)) {
         $db->sql_query("UPDATE " . TABLE_USER .
             " SET `off_geologue` = '0' WHERE `user_id` = " . $user_id);
     }
@@ -379,8 +362,7 @@ function member_user_set()
             " WHERE `user_id` = " . $user_id);
     }
     if ($user_data['off_technocrate'] == 1 && (is_null($pub_off_technocrate) || $pub_off_technocrate !=
-            1)
-    ) {
+        1)) {
         $db->sql_query("UPDATE " . TABLE_USER .
             " SET `off_technocrate` = '0' WHERE `user_id` = " . $user_id);
         $tech = $user_technology['Esp'] - 2;
@@ -390,7 +372,7 @@ function member_user_set()
 
     //Contrôle que le pseudo ne soit pas déjà utilisé
     $request = "select * from " . TABLE_USER . " where user_name = '" .
-        $db->sql_escape_string($pub_pseudo) . "' and user_id <> " . $user_id;
+         $db->sql_escape_string($pub_pseudo) . "' and user_id <> " . $user_id;
     $result = $db->sql_query($request);
     if ($db->sql_numrows($result) != 0) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudolocked&info");
@@ -400,7 +382,7 @@ function member_user_set()
         $pub_disable_ip_check = 0;
 
     user_set_general($user_id, $pub_pseudo, $pub_new_password, $pub_pseudo_email, null, $pub_galaxy, $pub_system,
-        $pub_skin, $pub_disable_ip_check);
+        $pub_disable_ip_check);
     redirection("index.php?action=profile");
 }
 
@@ -409,7 +391,7 @@ function member_user_set()
  * @todo Query x1
  */
 function user_set_general($user_id, $user_name = null, $user_password = null, $user_email = null, $user_lastvisit = null,
-                          $user_galaxy = null, $user_system = null, $user_skin = null, $disable_ip_check = null)
+    $user_galaxy = null, $user_system = null, $disable_ip_check = null)
 {
     global $db, $user_data, $server_config;
 
@@ -432,7 +414,7 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
 
     //Pseudo et mot de passe
     if (!empty($user_name))
-        $update .= "user_name = '" . $db->sql_escape_string($user_name) . "'";
+        $update .= "user_name = '" .  $db->sql_escape_string($user_name) . "'";
     if (!empty($user_password))
         $update .= ((strlen($update) > 0) ? ", " : "") . "user_password = '" . md5(sha1
             ($user_password)) . "'";
@@ -450,18 +432,10 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
         $update .= ((strlen($update) > 0) ? ", " : "") . "user_lastvisit = '" . $user_lastvisit .
             "'";
 
-    //Email
+   //Email
     if (!empty($user_email))
         $update .= ((strlen($update) > 0) ? ", " : "") . "user_email = '" . $user_email .
             "'";
-
-    //Skin
-    if (!is_null($user_skin)) {
-        if (strlen($user_skin) > 0 && substr($user_skin, strlen($user_skin) - 1) != "/")
-            $user_skin .= "/";
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_skin = '" .
-            $db->sql_escape_string($user_skin) . "'";
-    }
 
     //Désactivation de la vérification de l'adresse ip
     if (!is_null($disable_ip_check))
@@ -484,7 +458,7 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
  * @todo Query : x2
  */
 function user_set_grant($user_id, $user_admin = null, $user_active = null, $user_coadmin = null,
-                        $management_user = null, $management_ranking = null)
+    $management_user = null, $management_ranking = null)
 {
     global $db, $user_data;
 
@@ -535,14 +509,13 @@ function user_set_grant($user_id, $user_admin = null, $user_active = null, $user
         log_("modify_account_admin", $user_id);
     }
 }
-
 /**
  * Enregistrement des statistiques utilisateurs
  * @todo Query : x1
  */
 function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $search = null,
-                       $spy_added_web = null, $spy_added_ogs = null, $rank_added_web = null, $rank_added_ogs = null,
-                       $planet_exported = null, $spy_exported = null, $rank_exported = null)
+    $spy_added_web = null, $spy_added_ogs = null, $rank_added_web = null, $rank_added_ogs = null,
+    $planet_exported = null, $spy_exported = null, $rank_exported = null)
 {
     global $db, $user_data;
 
@@ -618,7 +591,6 @@ function user_get($user_id = false)
 
     return $info_users;
 }
-
 /**
  * Recuperation des droits d'un utilisateur
  * @param int $user_id Identificateur de l'utilisateur demande
@@ -634,7 +606,7 @@ function user_get_auth($user_id)
     if ($user_info["user_admin"] == 1 || $user_info["user_coadmin"] == 1) {
         $user_auth = array("server_set_system" => 1, "server_set_spy" => 1,
             "server_set_rc" => 1, "server_set_ranking" => 1, "server_show_positionhided" =>
-                1, "ogs_connection" => 1, "ogs_set_system" => 1, "ogs_get_system" => 1,
+            1, "ogs_connection" => 1, "ogs_set_system" => 1, "ogs_get_system" => 1,
             "ogs_set_spy" => 1, "ogs_get_spy" => 1, "ogs_set_ranking" => 1,
             "ogs_get_ranking" => 1);
 
@@ -651,7 +623,7 @@ function user_get_auth($user_id)
     if ($db->sql_numrows($result) > 0) {
         $user_auth = array("server_set_system" => 0, "server_set_spy" => 0,
             "server_set_rc" => 0, "server_set_ranking" => 0, "server_show_positionhided" =>
-                0, "ogs_connection" => 0, "ogs_set_system" => 0, "ogs_get_system" => 0,
+            0, "ogs_connection" => 0, "ogs_set_system" => 0, "ogs_get_system" => 0,
             "ogs_set_spy" => 0, "ogs_get_spy" => 0, "ogs_set_ranking" => 0,
             "ogs_get_ranking" => 0);
 
@@ -684,7 +656,7 @@ function user_get_auth($user_id)
     } else {
         $user_auth = array("server_set_system" => 0, "server_set_spy" => 0,
             "server_set_ranking" => 0, "server_show_positionhided" => 0, "ogs_connection" =>
-                0, "ogs_set_system" => 0, "ogs_get_system" => 0, "ogs_set_spy" => 0,
+            0, "ogs_set_system" => 0, "ogs_get_system" => 0, "ogs_set_spy" => 0,
             "ogs_get_spy" => 0, "ogs_set_ranking" => 0, "ogs_get_ranking" => 0);
     }
 
@@ -700,7 +672,7 @@ function user_create()
 {
     global $db, $user_data;
     global $pub_pseudo, $pub_user_id, $pub_active, $pub_user_coadmin, $pub_management_user,
-           $pub_management_ranking, $pub_group_id, $pub_pass;
+        $pub_management_ranking, $pub_group_id, $pub_pass;
 
     if (!check_var($pub_pseudo, "Pseudo_Groupname")) {
         redirection("index.php?action=message&id_message=errordata&info=1");
@@ -753,7 +725,6 @@ function user_create()
             $pub_pseudo);
     }
 }
-
 /**
  * Suppression d'un utilisateur ($pub_user_id)
  * @todo Query : x12
@@ -795,62 +766,61 @@ function user_delete()
     $request = "delete from " . TABLE_USER_TECHNOLOGY . " where user_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_POINTS . " set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_PLAYER_POINTS ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_ECO . " set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_PLAYER_ECO ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_TECHNOLOGY . " set sender_id = 0 where sender_id = " . $pub_user_id;
+	$request = "update " . TABLE_RANK_PLAYER_TECHNOLOGY ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY . " set sender_id = 0 where sender_id = " . $pub_user_id;
+	$request = "update " . TABLE_RANK_PLAYER_MILITARY ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_BUILT . " set sender_id = 0 where sender_id = " . $pub_user_id;
+	$request = "update " . TABLE_RANK_PLAYER_MILITARY_BUILT ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " set sender_id = 0 where sender_id = " . $pub_user_id;
+	$request = "update " . TABLE_RANK_PLAYER_MILITARY_LOOSE ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " set sender_id = 0 where sender_id = " . $pub_user_id;
+	$request = "update " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_HONOR . " set sender_id = 0 where sender_id = " . $pub_user_id;
+	$request = "update " . TABLE_RANK_PLAYER_HONOR ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_POINTS . " set sender_id = 0 where sender_id = " . $pub_user_id;
+	$request = "update " . TABLE_RANK_ALLY_POINTS ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_ECO . " set sender_id = 0 where sender_id = " . $pub_user_id;
+	$request = "update " . TABLE_RANK_ALLY_ECO ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_TECHNOLOGY . " set sender_id = 0 where sender_id = " . $pub_user_id;
+	$request = "update " . TABLE_RANK_ALLY_TECHNOLOGY ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_MILITARY . " set sender_id = 0 where sender_id = " . $pub_user_id;
+	$request = "update " . TABLE_RANK_ALLY_MILITARY ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_BUILT . " set sender_id = 0 where sender_id = " . $pub_user_id;
+	$request = "update " . TABLE_RANK_ALLY_MILITARY_BUILT ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_LOOSE . " set sender_id = 0 where sender_id = " . $pub_user_id;
+	$request = "update " . TABLE_RANK_ALLY_MILITARY_LOOSE ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " set sender_id = 0 where sender_id = " . $pub_user_id;
+	$request = "update " . TABLE_RANK_ALLY_MILITARY_DESTRUCT ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_HONOR . " set sender_id = 0 where sender_id = " . $pub_user_id;
+	$request = "update " . TABLE_RANK_ALLY_HONOR ." set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_UNIVERSE . " set last_update_user_id = 0 where last_update_user_id = " . $pub_user_id;
+    $request = "update " . TABLE_UNIVERSE ." set last_update_user_id = 0 where last_update_user_id = " . $pub_user_id;
     $db->sql_query($request);
 
     session_close($pub_user_id);
 
     redirection("index.php?action=administration&subaction=member");
 }
-
 /**
  * Recuperation des statistiques
  * @todo Query : x1
@@ -881,7 +851,6 @@ function user_statistic()
 
     return $user_statistic;
 }
-
 /**
  * Recuperation du nombres de comptes actifs
  * @todo Query : x1
@@ -891,21 +860,20 @@ function user_get_nb_active_users()
     global $db;
 
     $request = "SELECT user_id, user_active";
-    $request .= " FROM " . TABLE_USER;
+    $request .= " FROM ".TABLE_USER;
     $request .= " WHERE user_active='1'";
     $result = $db->sql_query($request);
     $number = $db->sql_numrows();
 
-    return ($number);
+    return($number);
 }
-
 /**
  * Enregistrement des donnees Empires d'un utilisateur
  */
 function user_set_empire()
 {
     global $pub_typedata, $pub_data, $pub_planet_id, $pub_planet_name, $pub_fields,
-           $pub_coordinates, $pub_temperature_min, $pub_temperature_max, $pub_satellite;
+        $pub_coordinates, $pub_temperature_min, $pub_temperature_max, $pub_satellite;
 
     if (!isset($pub_typedata) || !isset($pub_data)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
@@ -914,8 +882,7 @@ function user_set_empire()
     switch ($pub_typedata) {
         case "B":
             if (!isset($pub_planet_name) || !isset($pub_fields) || !isset($pub_coordinates) ||
-                !isset($pub_temperature_min) || !isset($pub_temperature_max) || !isset($pub_satellite)
-            ) {
+                !isset($pub_temperature_min) || !isset($pub_temperature_max) || !isset($pub_satellite)) {
                 redirection("index.php?action=message&id_message=errorfatal&info");
             }
             user_set_building($pub_data, $pub_planet_id, $pub_planet_name, $pub_fields, $pub_coordinates,
@@ -928,8 +895,7 @@ function user_set_empire()
 
         case "D":
             if (!isset($pub_planet_name) || !isset($pub_fields) || !isset($pub_coordinates) ||
-                !isset($pub_temperature_min) || !isset($pub_temperature_max) || !isset($pub_satellite)
-            ) {
+                !isset($pub_temperature_min) || !isset($pub_temperature_max) || !isset($pub_satellite)) {
                 redirection("index.php?action=message&id_message=errorfatal&info");
             }
             user_set_defence($pub_data, $pub_planet_id, $pub_planet_name, $pub_fields, $pub_coordinates,
@@ -948,7 +914,6 @@ function user_set_empire()
 
     redirection("index.php?action=home&subaction=empire");
 }
-
 /**
  * Enregistrement de toutes les donnees empires
  * @param array $data All data related to the empire
@@ -958,7 +923,7 @@ function user_set_all_empire($data)
 {
     global $db, $user_data;
     global $pub_view;
-    require_once("parameters/lang_empire.php");
+    require_once ("parameters/lang_empire.php");
 
     $data = str_replace("-", "0", $data);
     $data = str_replace(".", "", $data);
@@ -1003,8 +968,8 @@ function user_set_all_empire($data)
 
                 $link_defence = array($lang_defence["LM"] => "LM", $lang_defence["LLE"] => "LLE",
                     $lang_defence["LLO"] => "LLO", $lang_defence["CG"] => "CG", $lang_defence["AI"] =>
-                        "AI", $lang_defence["LP"] => "LP", $lang_defence["PB"] => "PB", $lang_defence["GB"] =>
-                        "GB", $lang_defence["MIC"] => "MIC", $lang_defence["MIP"] => "MIP");
+                    "AI", $lang_defence["LP"] => "LP", $lang_defence["PB"] => "PB", $lang_defence["GB"] =>
+                    "GB", $lang_defence["MIC"] => "MIC", $lang_defence["MIP"] => "MIP");
 
                 $defences = array("LM" => array_fill(0, $planetes_total_row, 0), "LLE" =>
                     array_fill(0, $planetes_total_row, 0), "LLO" => array_fill(0, $planetes_total_row,
@@ -1020,7 +985,7 @@ function user_set_all_empire($data)
                     "RI", $lang_technology["PH"] => "PH", $lang_technology["Laser"] => "Laser", $lang_technology["Ions"] =>
                     "Ions", $lang_technology["Plasma"] => "Plasma", $lang_technology["RRI"] => "RRI",
                     $lang_technology["Graviton"] => "Graviton", $lang_technology["Astrophysique"] =>
-                        "Astrophysique");
+                    "Astrophysique");
 
                 $technologies = array("Esp" => 0, "Ordi" => 0, "Armes" => 0, "Bouclier" => 0,
                     "Protection" => 0, "NRJ" => 0, "Hyp" => 0, "RC" => 0, "RI" => 0, "PH" => 0,
@@ -1262,7 +1227,6 @@ function user_set_all_empire_resync_moon()
     $db->sql_query($request);
 
 }
-
 /**
  * remise en ordre des planetes sans espaces vides ...
  * ( les id doivent se suivre 101,102,103 etc etc)
@@ -1291,7 +1255,7 @@ function user_set_all_empire_resync_planet()
 
         // planete
         $request = "update " . TABLE_USER_BUILDING . " set planet_id = " . $i .
-            " where planet_id = " . $valeur . " and user_id = " . $user_data["user_id"];
+            " where planet_id = " . $valeur ." and user_id = " . $user_data["user_id"];
         $db->sql_query($request);
         $request = "update " . TABLE_USER_DEFENCE . " set planet_id = " . $i .
             " where planet_id = " . $valeur . " and user_id = " . $user_data["user_id"];
@@ -1309,28 +1273,27 @@ function user_set_all_empire_resync_planet()
     $request .= " order by planet_id";
     $result = $db->sql_query($request);
 
-    if ($db->sql_numrows($result) != 0) {
+     if ($db->sql_numrows($result) != 0) {
 
-        // on remet en ordre moon
-        user_set_all_empire_resync_moon();
-        // todo : passer le result en paramettre ...
+    // on remet en ordre moon
+    user_set_all_empire_resync_moon();
+    // todo : passer le result en paramettre ...
 
 
     }
 
 }
-
 /**
  * Build the array with Empire data
  *
  * @todo Query : x3
  */
 function user_set_building($data, $planet_id, $planet_name, $fields, $coordinates,
-                           $temperature_min, $temperature_max, $satellite)
+    $temperature_min, $temperature_max, $satellite)
 {
     global $db, $user_data;
     global $pub_view, $server_config;
-    require_once("parameters/lang_empire.php");
+    require_once ("parameters/lang_empire.php");
 
     $planet_name = trim($planet_name) != "" ? trim($planet_name) : "Inconnu";
     if (!check_var($planet_name, "Galaxy"))
@@ -1342,16 +1305,14 @@ function user_set_building($data, $planet_id, $planet_name, $fields, $coordinate
     $satellite = intval($satellite);
     $coordinates_ok = "";
     if (sizeof(explode(":", $coordinates)) == 3 || sizeof(explode(".", $coordinates)) ==
-        3
-    ) {
+        3) {
         if (sizeof(explode(":", $coordinates)) == 3)
             @list($galaxy, $system, $row) = explode(":", $coordinates);
         if (sizeof(explode(".", $coordinates)) == 3)
             @list($galaxy, $system, $row) = explode(".", $coordinates);
         if (intval($galaxy) >= 1 && intval($galaxy) <= intval($server_config['num_of_galaxies']) &&
             intval($system) >= 1 && intval($system) <= intval($server_config['num_of_systems']) &&
-            intval($row) >= 1 && intval($row) <= 15
-        ) {
+            intval($row) >= 1 && intval($row) <= 15) {
             $coordinates_ok = $coordinates;
         }
     }
@@ -1361,8 +1322,7 @@ function user_set_building($data, $planet_id, $planet_name, $fields, $coordinate
     }
     $planet_id = intval($planet_id);
     if (($view == "planets" && ($planet_id < 1 || $planet_id > 9)) || ($view ==
-            "lunes" && ($planet_id < 10 || $planet_id > 18))
-    ) {
+        "lunes" && ($planet_id < 10 || $planet_id > 18))) {
         redirection("index.php?action=message&id_message=set_empire_failed_data&info");
     }
 
@@ -1411,7 +1371,7 @@ function user_set_building($data, $planet_id, $planet_name, $fields, $coordinate
         $request = "insert into " . TABLE_USER_BUILDING .
             " (user_id, planet_id, planet_name, coordinates, `fields`, temperature_min, temperature_max, Sat, M, C, D, CES, CEF, UdR, UdN, CSP, HM, HC, HD, Lab, Ter, Silo, BaLu, Pha, PoSa)";
         $request .= " values (" . $user_data["user_id"] . ", " . $planet_id . ", '" .
-            $db->sql_escape_string($planet_name) . "', '" . $coordinates_ok . "', " . $fields .
+             $db->sql_escape_string($planet_name) . "', '" . $coordinates_ok . "', " . $fields .
             ", " . $temperature_min . ", " . $satellite . ", " . $buildings["M"] . ", " . $buildings["C"] .
             "," . $buildings["D"] . ", " . $buildings["CES"] . ", " . $buildings["CEF"] .
             ", " . $buildings["UdR"] . ", " . $buildings["UdN"] . ", " . $buildings["CSp"] .
@@ -1424,7 +1384,7 @@ function user_set_building($data, $planet_id, $planet_name, $fields, $coordinate
         $request = "insert into " . TABLE_USER_BUILDING .
             " (user_id, planet_id, planet_name, coordinates, `fields`, temperature_min, temperature_max, Sat, M, C, D, CES, CEF, UdR, UdN, CSP, HM, HC, HD, Lab, Ter, Silo, BaLu, Pha, PoSa)";
         $request .= " values (" . $user_data["user_id"] . ", " . $planet_id . ", '" .
-            $db->sql_escape_string($planet_name) . "', '" . $coordinates_ok . "', " . $fields .
+             $db->sql_escape_string($planet_name) . "', '" . $coordinates_ok . "', " . $fields .
             ", " . $temperature_max . ", " . $satellite . ", " . $buildings["M"] . ", " . $buildings["C"] .
             "," . $buildings["D"] . ", " . $buildings["CES"] . ", " . $buildings["CEF"] .
             ", " . $buildings["UdR"] . ", " . $buildings["UdN"] . ", " . $buildings["CSp"] .
@@ -1435,7 +1395,7 @@ function user_set_building($data, $planet_id, $planet_name, $fields, $coordinate
         $db->sql_query($request);
     } else {
         $request = "update " . TABLE_USER_BUILDING . " set planet_name = '" .
-            $db->sql_escape_string($planet_name) . "', coordinates = '" . $coordinates_ok .
+             $db->sql_escape_string($planet_name) . "', coordinates = '" . $coordinates_ok .
             "', `fields` = " . $fields . ", temperature_min = " . $temperature_min .
             ", temperature_max = " . $temperature_max . ", Sat = " . $satellite .
             " where user_id = " . $user_data["user_id"] . " and planet_id = " . $planet_id;
@@ -1444,7 +1404,6 @@ function user_set_building($data, $planet_id, $planet_name, $fields, $coordinate
 
     redirection("index.php?action=home&subaction=empire&view=" . $pub_view);
 }
-
 /**
  * Build the array with technology data
  *
@@ -1453,7 +1412,7 @@ function user_set_building($data, $planet_id, $planet_name, $fields, $coordinate
 function user_set_technology($data)
 {
     global $db, $user_data;
-    require_once("parameters/lang_empire.php");
+    require_once ("parameters/lang_empire.php");
 
     $link_technology = array($lang_technology["Esp"] => "Esp", $lang_technology["Ordi"] =>
         "Ordi", $lang_technology["Armes"] => "Armes", $lang_technology["Bouclier"] =>
@@ -1462,7 +1421,7 @@ function user_set_technology($data)
         "RI", $lang_technology["PH"] => "PH", $lang_technology["Laser"] => "Laser", $lang_technology["Ions"] =>
         "Ions", $lang_technology["Plasma"] => "Plasma", $lang_technology["RRI"] => "RRI",
         $lang_technology["Graviton"] => "Graviton", $lang_technology["Astrophysique"] =>
-            "Astrophysique");
+        "Astrophysique");
 
     $technologies = array("Esp" => 0, "Ordi" => 0, "Armes" => 0, "Bouclier" => 0,
         "Protection" => 0, "NRJ" => 0, "Hyp" => 0, "RC" => 0, "RI" => 0, "PH" => 0,
@@ -1508,17 +1467,16 @@ function user_set_technology($data)
 
     redirection("index.php?action=home&subaction=empire");
 }
-
 /**
  * Enregistrement des defenses de l'utilisateurs
  * @todo Query : x3
  */
 function user_set_defence($data, $planet_id, $planet_name, $fields, $coordinates,
-                          $temperature_min, $temperature_max, $satellite)
+    $temperature_min, $temperature_max, $satellite)
 {
     global $db, $user_data;
     global $pub_view, $server_config;
-    require_once("parameters/lang_empire.php");
+    require_once ("parameters/lang_empire.php");
 
     $planet_name = trim($planet_name) != "" ? trim($planet_name) : "Inconnu";
     if (!check_var($planet_name, "Galaxy"))
@@ -1529,16 +1487,14 @@ function user_set_defence($data, $planet_id, $planet_name, $fields, $coordinates
     $satellite = intval($satellite);
     $coordinates_ok = "";
     if (sizeof(explode(":", $coordinates)) == 3 || sizeof(explode(".", $coordinates)) ==
-        3
-    ) {
+        3) {
         if (sizeof(explode(":", $coordinates)) == 3)
             @list($galaxy, $system, $row) = explode(":", $coordinates);
         if (sizeof(explode(".", $coordinates)) == 3)
             @list($galaxy, $system, $row) = explode(".", $coordinates);
         if (intval($galaxy) >= 1 && intval($galaxy) <= intval($server_config['num_of_galaxies']) &&
             intval($system) >= 1 && intval($system) <= intval($server_config['num_of_systems']) &&
-            intval($row) >= 1 && intval($row) <= 15
-        ) {
+            intval($row) >= 1 && intval($row) <= 15) {
             $coordinates_ok = $coordinates;
         }
     }
@@ -1548,15 +1504,14 @@ function user_set_defence($data, $planet_id, $planet_name, $fields, $coordinates
     }
     $planet_id = intval($planet_id);
     if (($pub_view == "planets" && ($planet_id < 1 || $planet_id > 9)) || ($pub_view ==
-            "lunes" && ($planet_id < 10 || $planet_id > 18))
-    ) {
+        "lunes" && ($planet_id < 10 || $planet_id > 18))) {
         redirection("index.php?action=message&id_message=set_empire_failed_data&info");
     }
 
     $link_defence = array($lang_defence["LM"] => "LM", $lang_defence["LLE"] => "LLE",
         $lang_defence["LLO"] => "LLO", $lang_defence["CG"] => "CG", $lang_defence["AI"] =>
-            "AI", $lang_defence["LP"] => "LP", $lang_defence["PB"] => "PB", $lang_defence["GB"] =>
-            "GB", $lang_defence["MIC"] => "MIC", $lang_defence["MIP"] => "MIP");
+        "AI", $lang_defence["LP"] => "LP", $lang_defence["PB"] => "PB", $lang_defence["GB"] =>
+        "GB", $lang_defence["MIC"] => "MIC", $lang_defence["MIP"] => "MIP");
 
     $defences = array("LM" => 0, "LLE" => 0, "LLO" => 0, "CG" => 0, "AI" => 0, "LP" =>
         0, "PB" => 0, "GB" => 0, "MIC" => 0, "MIP" => 0);
@@ -1596,7 +1551,7 @@ function user_set_defence($data, $planet_id, $planet_name, $fields, $coordinates
         $db->sql_query($request);
     } else {
         $request = "update " . TABLE_USER_BUILDING . " set planet_name = '" .
-            $db->sql_escape_string($planet_name) . "', coordinates = '" . $coordinates_ok .
+             $db->sql_escape_string($planet_name) . "', coordinates = '" . $coordinates_ok .
             "', `fields` = " . $fields . ", temperature_min = " . $temperature_min .
             ", temperature_max = " . $temperature_max . ", Sat = " . $satellite .
             " where user_id = " . $user_data["user_id"] . " and planet_id = " . $planet_id;
@@ -1616,11 +1571,11 @@ function user_get_empire()
 
     $planet = array(false, "user_id" => "", "planet_name" => "", "coordinates" => "",
         "fields" => "", "fields_used" => "", "boosters" => booster_encode(),
-        "temperature_min" => "", "temperature_max" => "",
+        "temperature_min" => "", "temperature_max" =>"",
         "Sat" => 0, "Sat_percentage" => 100, "M" => 0, "M_percentage" => 100, "C" => 0,
-        "C_Percentage" => 100, "D" => 0, "D_percentage" => 100, "CES" => 0, "CES_percentage" => 100,
+        "C_Percentage" => 100, "D" => 0, "D_percentage" =>100, "CES" => 0, "CES_percentage" => 100,
         "CEF" => 0, "CEF_percentage" => 100, "UdR" => 0, "UdN" => 0, "CSp" => 0,
-        "HM" => 0, "HC" => 0, "HD" => 0, "CM" => 0, "CC" => 0, "CD" => 0, "Lab" => 0,
+        "HM" => 0, "HC" => 0, "HD" => 0, "CM" => 0,"CC" => 0,"CD" => 0, "Lab" => 0,
         "Ter" => 0, "Silo" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0,
         "C_percentage" => 100);
 
@@ -1711,9 +1666,8 @@ function user_get_empire()
     }
 
     return array("building" => $user_building, "technology" => $user_technology,
-        "defence" => $user_defence,);
+        "defence" => $user_defence, );
 }
-
 /**
  * Récuperation du nombre de  planete de l utilisateur
  * TODO => cette fonction sera a mettre en adequation avec astro
@@ -1739,7 +1693,6 @@ function find_nb_planete_user()
     return $db->sql_numrows($result);
 
 }
-
 function find_nb_moon_user()
 {
     global $db, $user_data;
@@ -1808,7 +1761,6 @@ function user_del_building()
 
     redirection("index.php?action=home&subaction=empire&view=" . $pub_view);
 }
-
 /**
  * Déplacement des données de planète de la page empire
  */
@@ -1884,8 +1836,7 @@ function user_add_favorite()
         redirection("index.php");
     }
     if (intval($pub_galaxy) < 1 || intval($pub_galaxy) > intval($server_config['num_of_galaxies']) ||
-        intval($pub_system) < 1 || intval($pub_system) > intval($server_config['num_of_systems'])
-    ) {
+        intval($pub_system) < 1 || intval($pub_system) > intval($server_config['num_of_systems'])) {
         redirection("index.php?action=galaxy");
     }
 
@@ -1916,8 +1867,7 @@ function user_del_favorite()
         redirection("index.php");
     }
     if (intval($pub_galaxy) < 1 || intval($pub_galaxy) > intval($server_config['num_of_galaxies']) ||
-        intval($pub_system) < 1 || intval($pub_system) > intval($server_config['num_of_systems'])
-    ) {
+        intval($pub_system) < 1 || intval($pub_system) > intval($server_config['num_of_systems'])) {
         redirection("index.php?action=galaxy");
     }
     $request = "delete from " . TABLE_USER_FAVORITE . " where user_id = " . $user_data["user_id"] .
@@ -1994,7 +1944,7 @@ function user_getfavorites_spy()
         list($user_name) = $db->sql_fetch_row($result_2);
         $favorite[$spy_id] = array("spy_id" => $spy_id, "spy_galaxy" => substr($coordinates,
             0, strpos($coordinates, ':')), "spy_system" => substr($coordinates, strpos($coordinates,
-                ':') + 1, strrpos($coordinates, ':') - strpos($coordinates, ':') - 1), "spy_row" =>
+            ':') + 1, strrpos($coordinates, ':') - strpos($coordinates, ':') - 1), "spy_row" =>
             substr($coordinates, strrpos($coordinates, ':') + 1), "player" => $player,
             "ally" => $ally, "moon" => $moon, "status" => $status, "datadate" => $datadate,
             "poster" => $user_name);
@@ -2088,12 +2038,12 @@ function usergroup_create()
     }
 
     $request = "select group_id from " . TABLE_GROUP . " where group_name = '" .
-        $db->sql_escape_string($pub_groupname) . "'";
+         $db->sql_escape_string($pub_groupname) . "'";
     $result = $db->sql_query($request);
 
     if ($db->sql_numrows($result) == 0) {
         $request = "insert into " . TABLE_GROUP . " (group_name)" . " values ('" .
-            $db->sql_escape_string($pub_groupname) . "')";
+             $db->sql_escape_string($pub_groupname) . "')";
         $db->sql_query($request);
         $group_id = $db->sql_insertid();
 
@@ -2179,7 +2129,6 @@ function usergroup_get($group_id = false)
 
     return $info_usergroup;
 }
-
 /**
  * Enregistrement des droits d'un groupe utilisateurs
  */
@@ -2187,19 +2136,18 @@ function usergroup_setauth()
 {
     global $db, $user_data;
     global $pub_group_id, $pub_group_name, $pub_server_set_system, $pub_server_set_spy,
-           $pub_server_set_rc, $pub_server_set_ranking, $pub_server_show_positionhided, $pub_ogs_connection,
-           $pub_ogs_set_system, $pub_ogs_get_system, $pub_ogs_set_spy, $pub_ogs_get_spy, $pub_ogs_set_ranking,
-           $pub_ogs_get_ranking;
+        $pub_server_set_rc, $pub_server_set_ranking, $pub_server_show_positionhided, $pub_ogs_connection,
+        $pub_ogs_set_system, $pub_ogs_get_system, $pub_ogs_set_spy, $pub_ogs_get_spy, $pub_ogs_set_ranking,
+        $pub_ogs_get_ranking;
 
     if (!check_var($pub_group_id, "Num") || !check_var($pub_group_name,
-            "Pseudo_Groupname") || !check_var($pub_server_set_system, "Num") || !check_var($pub_server_set_spy,
-            "Num") || !check_var($pub_server_set_rc, "Num") || !check_var($pub_server_set_ranking,
-            "Num") || !check_var($pub_server_show_positionhided, "Num") || !check_var($pub_ogs_connection,
-            "Num") || !check_var($pub_ogs_set_system, "Num") || !check_var($pub_ogs_get_system,
-            "Num") || !check_var($pub_ogs_set_spy, "Num") || !check_var($pub_ogs_get_spy,
-            "Num") || !check_var($pub_ogs_set_ranking, "Num") || !check_var($pub_ogs_get_ranking,
-            "Num")
-    ) {
+        "Pseudo_Groupname") || !check_var($pub_server_set_system, "Num") || !check_var($pub_server_set_spy,
+        "Num") || !check_var($pub_server_set_rc, "Num") || !check_var($pub_server_set_ranking,
+        "Num") || !check_var($pub_server_show_positionhided, "Num") || !check_var($pub_ogs_connection,
+        "Num") || !check_var($pub_ogs_set_system, "Num") || !check_var($pub_ogs_get_system,
+        "Num") || !check_var($pub_ogs_set_spy, "Num") || !check_var($pub_ogs_get_spy,
+        "Num") || !check_var($pub_ogs_set_ranking, "Num") || !check_var($pub_ogs_get_ranking,
+        "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
@@ -2238,7 +2186,7 @@ function usergroup_setauth()
     log_("modify_usergroup", $pub_group_id);
 
     $request = "update " . TABLE_GROUP;
-    $request .= " set group_name = '" . $db->sql_escape_string($pub_group_name) .
+    $request .= " set group_name = '" .  $db->sql_escape_string($pub_group_name) .
         "',";
     $request .= " server_set_system = '" . intval($pub_server_set_system) .
         "', server_set_spy = '" . intval($pub_server_set_spy) . "', server_set_rc = '" .
@@ -2435,7 +2383,7 @@ function parseRC($rawRC)
     $return = array('dateRC' => '', 'nb_rounds' => 0, 'attaquants' => array(),
         'defenseur' => array(), 'victoire' => 'A', 'pertes_A' => 0, 'pertes_D' => 0,
         'gain_M' => -1, 'gain_C' => -1, 'gain_D' => -1, 'debris_M' => -1, 'debris_C' =>
-            -1, 'lune' => 0, 'coordinates' => '1:1:1');
+        -1, 'lune' => 0, 'coordinates' => '1:1:1');
 
     // Extraction du timestamp pour la date du RC
     preg_match('/affrontées le (\d*)-(\d*) (\d*):(\d*):(\d*) \.:/', $rawRC, $reg);
@@ -2527,7 +2475,7 @@ function parseRCround($rawRC, $nb_rounds, $opponents, $victoire)
         'Recycleur' => -1, 'Sonde' => -1, 'Bombardier' => -1, 'Destr.' => -1, 'Rip' => -
         1, 'Sat.sol.' => -1, 'Traqueur' => -1, 'Missile' => -1, 'L.léger.' => -1,
         'L.lourd' => -1, 'Can.Gauss' => -1, 'Art.ions' => -1, 'Lanc.plasma' => -1,
-        'P.bouclier' => -1, 'G.bouclier' => -1,);
+        'P.bouclier' => -1, 'G.bouclier' => -1, );
 
     $decoupe = explode('points de dégâts||', $rawRC);
     for ($idx_round = 0; $idx_round < $nb_rounds; $idx_round++) {
@@ -2584,21 +2532,21 @@ function UNparseRC($id_RC)
 
     $key_ships = array('PT' => 'P.transp.', 'GT' => 'G.transp.', 'CLE' => 'Ch.léger',
         'CLO' => 'Ch.lourd', 'CR' => 'Croiseur', 'VB' => 'V.bataille', 'VC' =>
-            'V.colonisation', 'REC' => 'Recycleur', 'SE' => 'Sonde', 'BMD' => 'Bombardier',
+        'V.colonisation', 'REC' => 'Recycleur', 'SE' => 'Sonde', 'BMD' => 'Bombardier',
         'DST' => 'Destr.', 'EDLM' => 'Rip', 'SAT' => 'Sat.sol.', 'TRA' => 'Traqueur');
     $key_defs = array('LM' => 'Missile', 'LLE' => 'L.léger.', 'LLO' => 'L.lourd',
         'CG' => 'Can.Gauss', 'AI' => 'Art.ions', 'LP' => 'Lanc.plasma', 'PB' =>
-            'P.bouclier', 'GB' => 'G.bouclier');
+        'P.bouclier', 'GB' => 'G.bouclier');
     $base_ships = array('PT' => array(4000, 10, 5), 'GT' => array(12000, 25, 5),
         'CLE' => array(4000, 10, 50), 'CLO' => array(10000, 25, 150), 'CR' => array(27000,
-            50, 400), 'VB' => array(60000, 200, 1000), 'VC' => array(30000, 100, 50), 'REC' =>
-            array(16000, 10, 1), 'SE' => array(1000, 0, 0), 'BMD' => array(75000, 500, 1000),
+        50, 400), 'VB' => array(60000, 200, 1000), 'VC' => array(30000, 100, 50), 'REC' =>
+        array(16000, 10, 1), 'SE' => array(1000, 0, 0), 'BMD' => array(75000, 500, 1000),
         'DST' => array(110000, 500, 2000), 'EDLM' => array(9000000, 50000, 200000),
         'SAT' => array(2000, 1, 1), 'TRA' => array(70000, 400, 700));
     $base_defs = array('LM' => array(2000, 20, 80), 'LLE' => array(2000, 25, 100),
         'LLO' => array(8000, 100, 250), 'CG' => array(35000, 200, 1100), 'AI' => array(8000,
-            500, 150), 'LP' => array(100000, 300, 3000), 'PB' => array(20000, 2000, 1), 'GB' =>
-            array(100000, 10000, 1));
+        500, 150), 'LP' => array(100000, 300, 3000), 'PB' => array(20000, 2000, 1), 'GB' =>
+        array(100000, 10000, 1));
 
     // Récupération des constantes du RC
     $query = 'SELECT dateRC, coordinates, nb_rounds, victoire, pertes_A, pertes_D, gain_M, gain_C, 
@@ -2619,20 +2567,20 @@ function UNparseRC($id_RC)
         $result_round = $db->sql_query($query);
         list($id_rcround, $attaque_tir, $attaque_puissance, $attaque_bouclier, $defense_tir,
             $defense_puissance, $defense_bouclier) = $db->sql_fetch_row($result_round);
-        // On formate les résultats
-        $nf_gain_M = number_format($gain_M, 0, ',', '.');
-        $nf_gain_C = number_format($gain_C, 0, ',', '.');
-        $nf_gain_D = number_format($gain_D, 0, ',', '.');
-        $nf_pertes_A = number_format($pertes_A, 0, ',', '.');
-        $nf_pertes_D = number_format($pertes_D, 0, ',', '.');
-        $nf_debris_M = number_format($debris_M, 0, ',', '.');
-        $nf_debris_C = number_format($debris_C, 0, ',', '.');
-        $nf_attaque_tir = number_format($attaque_tir, 0, ',', '.');
-        $nf_attaque_puissance = number_format($attaque_puissance, 0, ',', '.');
-        $nf_attaque_bouclier = number_format($attaque_bouclier, 0, ',', '.');
-        $nf_defense_tir = number_format($defense_tir, 0, ',', '.');
-        $nf_defense_puissance = number_format($defense_puissance, 0, ',', '.');
-        $nf_defense_bouclier = number_format($defense_bouclier, 0, ',', '.');
+		// On formate les résultats
+		$nf_gain_M = number_format($gain_M,0,',','.');
+		$nf_gain_C = number_format($gain_C,0,',','.');
+		$nf_gain_D = number_format($gain_D,0,',','.');
+		$nf_pertes_A = number_format($pertes_A,0,',','.');
+		$nf_pertes_D = number_format($pertes_D,0,',','.');
+		$nf_debris_M = number_format($debris_M,0,',','.');
+		$nf_debris_C = number_format($debris_C,0,',','.');
+		$nf_attaque_tir = number_format($attaque_tir,0,',','.');
+		$nf_attaque_puissance = number_format($attaque_puissance,0,',','.');
+		$nf_attaque_bouclier = number_format($attaque_bouclier,0,',','.');
+		$nf_defense_tir = number_format($defense_tir,0,',','.');
+		$nf_defense_puissance = number_format($defense_puissance,0,',','.');
+		$nf_defense_bouclier = number_format($defense_bouclier,0,',','.');
 
         // Récupération de chaque attaquant du RC
         $query = 'SELECT player, coordinates, Armes, Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, 
@@ -2654,19 +2602,20 @@ function UNparseRC($id_RC)
                 if (isset($$key) && $$key > 0) {
                     $vivant_att = true;
                     $ship_type .= "\t" . $ship;
-                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.');;
-                    $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
-                    $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
-                    $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
+                    $ship_nombre .= "\t" . number_format($$key,0,',','.');;
+                    $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10),0,',','.');
+                    $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)),0,',','.');
+                    $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)),0,',','.');
                 }
             }
             if ($vivant_att == true) {
-                $template .= ' [' . $coordinates . ']';
-                if ($idx == 1)
-                    $template .= ' Armes: ' . $Armes . '% Bouclier: ' . $Bouclier . '% Coques: ' . $Protection . '%';
-                $template .= "\n";
-                $template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
-            } else
+				$template .= ' [' . $coordinates . ']';
+				if($idx==1)
+					$template .= ' Armes: ' . $Armes . '% Bouclier: ' . $Bouclier . '% Coques: ' . $Protection . '%';
+				$template .="\n";
+				$template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
+			}
+            else
                 $template .= ' détruit.' . "\n\n";
         } // Fin récupération de chaque attaquant du RC
 
@@ -2692,29 +2641,30 @@ function UNparseRC($id_RC)
                 if (isset($$key) && $$key > 0) {
                     $vivant_def = true;
                     $ship_type .= "\t" . $ship;
-                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.');
-                    $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
-                    $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
-                    $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
+                    $ship_nombre .= "\t" . number_format($$key,0,',','.');
+                    $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10),0,',','.');
+                    $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)),0,',','.');
+                    $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)),0,',','.');
                 }
             }
             foreach ($key_defs as $key => $def) {
                 if (isset($$key) && $$key > 0) {
                     $vivant_def = true;
                     $ship_type .= "\t" . $def;
-                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.');
-                    $ship_protection .= "\t" . number_format(round(($base_defs[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
-                    $ship_bouclier .= "\t" . number_format(round($base_defs[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
-                    $ship_armes .= "\t" . number_format(round($base_defs[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
+                    $ship_nombre .= "\t" . number_format($$key,0,',','.');
+                    $ship_protection .= "\t" . number_format(round(($base_defs[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10),0,',','.');
+                    $ship_bouclier .= "\t" . number_format(round($base_defs[$key][1] * (($Bouclier / 10) * 0.1 + 1)),0,',','.');
+                    $ship_armes .= "\t" . number_format(round($base_defs[$key][2] * (($Armes / 10) * 0.1 + 1)),0,',','.');
                 }
             }
             if ($vivant_def == true) {
                 $template .= ' [' . $coordinates . ']';
-                if ($idx == 1)
-                    $template .= ' Armes: ' . $Armes . '% Bouclier: ' . $Bouclier . '% Coques: ' . $Protection . '%';
-                $template .= "\n";
-                $template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
-            } else
+				if($idx==1)
+					$template .= ' Armes: ' . $Armes . '% Bouclier: ' . $Bouclier . '% Coques: ' . $Protection . '%';
+				$template .="\n";
+				$template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
+			}
+            else
                 $template .= ' détruit.' . "\n\n";
         } // Fin récupération de chaque défenseur du RC
 
@@ -2731,7 +2681,7 @@ function UNparseRC($id_RC)
     } // Fin récupération de chaque round du RC
 
     // Qui a remporté le combat ?
-    switch ($victoire) {
+	    switch ($victoire) {
         case 'N':
             $template .= 'La bataille se termine par un match nul, les deux flottes rentrent vers leurs planètes respectives.' .
                 "\n\n";
@@ -2753,13 +2703,13 @@ function UNparseRC($id_RC)
         ' de métal et ' . $nf_debris_C . ' de cristal se forme dans l\'orbite de la planète.' .
         "\n";
 
-    $lunePourcent = floor(($debris_M + $debris_C) / 100000);
-    $lunePourcent = ($lunePourcent < 0 ? 0 : ($lunePourcent > 20 ? 20 : $lunePourcent));
-    if ($lunePourcent > 0)
-        $template .= 'La probabilité de création d\'une lune est de ' . $lunePourcent . ' %';
+	$lunePourcent = floor(($debris_M + $debris_C) / 100000);
+	$lunePourcent = ($lunePourcent<0 ? 0 : ($lunePourcent>20 ? 20 : $lunePourcent));
+	if ($lunePourcent>0)
+		$template .= 'La probabilité de création d\'une lune est de ' . $lunePourcent . ' %';
 
-    if ($lune == 1)
-        $template .= "\nLes quantités énormes de métal et de cristal s'attirent, formant ainsi une lune dans l'orbite de cette planète.";
+	if($lune==1)
+		$template .= "\nLes quantités énormes de métal et de cristal s'attirent, formant ainsi une lune dans l'orbite de cette planète.";
 
     return ($template);
 }
@@ -2867,7 +2817,7 @@ function ratio_calc($player)
     $request .= "from " . TABLE_USER;
     $resultat = $db->sql_query($request);
     list($planetimporttotal, $spyimporttotal, $rankimporttotal, $searchtotal) = $db->
-    sql_fetch_row($resultat);
+        sql_fetch_row($resultat);
     $query = "SELECT COUNT(user_id) as count FROM " . TABLE_USER;
     $result = $db->sql_query($query);
     if ($db->sql_numrows($result) > 0) {
@@ -2896,7 +2846,7 @@ function ratio_calc($player)
     $ratio_rank_penality = (($rank_added_web + $rank_added_ogs) - $rank_exported) /
         $rankimporttotal;
     $ratio_penality = ($ratio_planet_penality * 4 + $ratio_spy_penality * 2 + $ratio_rank_penality) / (4 +
-            2 + 1);
+        2 + 1);
 
     $ratio_search = $search / $searchtotal;
     $ratio_searchpenality = ($ratio - $ratio_search);
@@ -2923,8 +2873,7 @@ function ratio_is_ok()
         return $result;
     if (isset($server_config["block_ratio"]) && $server_config["block_ratio"] == 1) {
         if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] ==
-            1
-        ) {
+            1) {
             return true;
         } else {
             $result = ratio_calc($user_data['user_id']);
@@ -2935,5 +2884,4 @@ function ratio_is_ok()
         return true;
     }
 }
-
 ?>

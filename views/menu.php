@@ -104,7 +104,7 @@ if ($user_auth["server_set_ranking"] == 1 || $user_data["user_admin"] == 1 || $u
 
     <tr>
         <td>
-            <div><a href="index.php" class="menu"><img src="<?php echo $link_css; ?>/transpa.gif" width="166"
+            <div><a href="index.php" class="menu"><img src="./skin/OGSpy_skin/transpa.gif" width="166"
                                                        height="65" border="0"/></a></div>
         </td>
     </tr>
@@ -119,7 +119,7 @@ if ($user_auth["server_set_ranking"] == 1 || $user_data["user_admin"] == 1 || $u
 
     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
         echo "<tr>";
-        echo "<td><div align='center'><a href='index.php?action=administration' class='menu0'><img src='" . $link_css . "/transpa.gif' width='166' height='19'></a></div></td>";
+        echo "<td><div align='center'><a href='index.php?action=administration' class='menu0'><img src='./skin/OGSpy_skin/transpa.gif' width='166' height='19'></a></div></td>";
         echo "</tr>";
     }
 
@@ -128,69 +128,69 @@ if ($user_auth["server_set_ranking"] == 1 || $user_data["user_admin"] == 1 || $u
     <tr>
         <td>
             <div align="center"><a href="index.php?action=profile" class="menu1"><img
-                        src="<?php echo $link_css; ?>/transpa.gif" width="166" height="19"></a></div>
+                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
         </td>
     </tr>
     <tr>
         <td>
             <div align="center"><a href="index.php?action=home" class="menu2"><img
-                        src="<?php echo $link_css; ?>/transpa.gif" width="166" height="19"></a></div>
+                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
         </td>
     </tr>
     <tr>
         <td>
-            <div align="center"><img src="<?php echo $link_css; ?>/transpa.gif" width="0" height="17"></div>
+            <div align="center"><img src="./skin/OGSpy_skin/transpa.gif" width="0" height="17"></div>
         </td>
     </tr>
     <tr>
         <td>
             <div align="center"><a href="index.php?action=galaxy" class="menu3"><img
-                        src="<?php echo $link_css; ?>/transpa.gif" width="166" height="19"></a></div>
+                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
         </td>
     </tr>
     <tr>
         <td>
             <div align="center"><a href="index.php?action=cartography" class="menu4"><img
-                        src="<?php echo $link_css; ?>/transpa.gif" width="166" height="19"></a></div>
+                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
         </td>
     </tr>
     <tr>
         <td>
             <div align="center"><a href="index.php?action=search" class="menu5"><img
-                        src="<?php echo $link_css; ?>/transpa.gif" width="166" height="19"></a></div>
+                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
         </td>
     </tr>
     <tr>
         <td>
             <div align="center"><a href="index.php?action=ranking" class="menu6"><img
-                        src="<?php echo $link_css; ?>/transpa.gif" width="166" height="19"></a></div>
+                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
         </td>
     </tr>
     <tr>
         <td>
-            <div align="center"><img src="<?php echo $link_css; ?>/transpa.gif" width="0" height="17"></div>
+            <div align="center"><img src="./skin/OGSpy_skin/transpa.gif" width="0" height="17"></div>
         </td>
     </tr>
     <tr>
         <td>
             <div align="center"><a href="index.php?action=statistic" class="menu7"><img
-                        src="<?php echo $link_css; ?>/transpa.gif" width="166" height="19"></a></div>
+                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
         </td>
     </tr>
     <tr>
         <td>
             <div align="center"><a href="index.php?action=galaxy_obsolete" class="menu8"><img
-                        src="<?php echo $link_css; ?>/transpa.gif" width="166" height="19"></a></div>
+                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
         </td>
     </tr>
     <tr>
         <td>
-            <div align="center"><img src="<?php echo $link_css; ?>/transpa.gif" width="0" height="17"></div>
+            <div align="center"><img src="./skin/OGSpy_skin/transpa.gif" width="0" height="17"></div>
         </td>
     </tr>
     <tr>
         <td>
-            <div align="center"><img src="<?php echo $link_css; ?>/menu/mods.png" width="166" height="19"></div>
+            <div align="center"><img src="./skin/OGSpy_skin/menu/mods.png" width="166" height="19"></div>
         </td>
     </tr>
 
@@ -224,7 +224,7 @@ if ($user_auth["server_set_ranking"] == 1 || $user_data["user_admin"] == 1 || $u
         $result = $db->sql_query($request);
 
         if ($db->sql_numrows($result)) {
-            echo '<tr><td><div align="center"><img src="' . $link_css . 'transpa.gif" width="110" height="12"></div></td></tr>' . "\n";
+            echo '<tr><td><div align="center"><img src="./skin/OGSpy_skin/transpa.gif" width="110" height="12"></div></td></tr>' . "\n";
 
             while ($val = $db->sql_fetch_assoc($result)) {
                 echo '<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <a class="menu_mods" href="index.php?action=' . $val['action'] . '">' . $val['menu'] . '</a></td></tr>' . "\n";
@@ -238,18 +238,18 @@ if ($user_auth["server_set_ranking"] == 1 || $user_data["user_admin"] == 1 || $u
 
     <tr>
         <td>
-            <div align="center"><img src="<?php echo $link_css; ?>/transpa.gif" width="0" height="17"></div>
+            <div align="center"><img src="./skin/OGSpy_skin/transpa.gif" width="0" height="17"></div>
         </td>
     </tr>
     <tr>
         <td>
             <div align="center"><a href="index.php?action=logout" class="menu10"><img
-                        src="<?php echo $link_css; ?>/transpa.gif" width="166" height="19"></a></div>
+                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
         </td>
     </tr>
     <tr>
         <td>
-            <div align="center"><img src="<?php echo $link_css; ?>/transpa.gif" width="0" height="17"></div>
+            <div align="center"><img src="./skin/OGSpy_skin/transpa.gif" width="0" height="17"></div>
         </td>
     </tr>
 
@@ -262,7 +262,7 @@ if ($user_auth["server_set_ranking"] == 1 || $user_data["user_admin"] == 1 || $u
         <tr>
             <td>
                 <div align="center"><a href="<?php echo $server_config["url_forum"]; ?>" target="_blank" class="menu11"><img
-                            src="<?php echo $link_css; ?>/transpa.gif" width="166" height="19"></a></div>
+                            src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
             </td>
         </tr>
 
@@ -275,7 +275,7 @@ if ($user_auth["server_set_ranking"] == 1 || $user_data["user_admin"] == 1 || $u
     <tr>
         <td>
             <div align="center"><a href="index.php?action=about" class="menu12"><img
-                        src="<?php echo $link_css; ?>/transpa.gif" width="166" height="19"></a></div>
+                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
         </td>
     </tr>
 </table>

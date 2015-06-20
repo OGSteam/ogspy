@@ -13,7 +13,6 @@ if (!defined("IN_SPYOGAME")) {
 $user_name = $user_data["user_name"];
 $user_galaxy = $user_data["user_galaxy"];
 $user_system = $user_data["user_system"];
-$user_skin = $user_data["user_skin"];
 $user_email = $user_data["user_email"];
 $user_stat_name = $user_data["user_stat_name"];
 if ($server_config["disable_ip_check"] == 1) $disable_ip_check = $user_data["disable_ip_check"] == 1 ? "checked" : "";
@@ -137,12 +136,6 @@ require_once("views/page_header.php");
             </tr>
             <tr>
                 <td class="c" colspan="2">Divers</td>
-            </tr>
-            <tr>
-                <th>Lien du skin utilisé&nbsp;<?php echo help("profile_skin");?></th>
-                <th>
-                    <input name="skin" type="text" size="20" value="<?php echo $user_skin; ?>">
-                </th>
             </tr>
             <tr>
                 <th>Désactiver la vérification de l'adresse IP&nbsp;<?php echo help("profile_disable_ip_check");?></th>
