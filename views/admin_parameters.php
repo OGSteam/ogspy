@@ -27,7 +27,6 @@ $max_spyreport = $server_config['max_spyreport'];
 $server_active = $server_config['server_active'] == 1 ? "checked" : "";
 $session_time = $server_config['session_time'];
 $max_keeplog = $server_config['max_keeplog'];
-$default_skin = $server_config['default_skin'];
 $debug_log = $server_config['debug_log'] == 1 ? "checked" : "";
 $log_phperror = $server_config['log_phperror'] == 1 ? "checked" : "";
 $reason = $server_config['reason'];
@@ -78,13 +77,6 @@ $mod_cache = $server_config['mod_cache'];
         <tr>
             <th>Autoriser la désactivation du contrôle des adresses ip&nbsp;<?php echo help("admin_check_ip");?></th>
             <th><input name="disable_ip_check" type="checkbox" value="1" <?php echo $disable_ip_check;?>></th>
-        </tr>
-        <tr>
-            <th>Skin par défaut<br/>
-
-                <div class="z"><i>ex: http://80.237.203.201/download/use/epicblue/</i></div>
-            </th>
-            <th><input name="default_skin" type="text" size="60" value="<?php echo $default_skin; ?>"></th>
         </tr>
         <tr>
             <th>Nombre maximum de systèmes favoris autorisé <a>[0-99]</a></th>

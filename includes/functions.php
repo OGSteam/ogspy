@@ -411,7 +411,7 @@ function set_serverconfig()
 {
     global $db, $user_data, $server_config;
     global $pub_max_battlereport, $pub_max_favorites, $pub_max_favorites_spy, $pub_max_spyreport,
-           $pub_server_active, $pub_session_time, $pub_max_keeplog, $pub_default_skin, $pub_debug_log,
+           $pub_server_active, $pub_session_time, $pub_max_keeplog, $pub_debug_log,
            $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
            $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
            $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit, $pub_speed_uni,
@@ -427,8 +427,7 @@ function set_serverconfig()
             "Num") || !check_var($pub_max_favorites_spy, "Num") || !check_var($pub_ratio_limit,
             "Special", "#^[\w\s,\.\-]+$#") || !check_var($pub_max_spyreport, "Num") || !
         check_var($pub_server_active, "Num") || !check_var($pub_session_time, "Num") ||
-        !check_var($pub_max_keeplog, "Num") || !check_var($pub_default_skin, "URL") || !
-        check_var($pub_debug_log, "Num") || !check_var($pub_block_ratio, "Num") || !
+        !check_var($pub_max_keeplog, "Num") || !check_var($pub_debug_log, "Num") || !check_var($pub_block_ratio, "Num") || !
         check_var(stripslashes($pub_reason), "Text") || !check_var($pub_ally_protection,
             "Special", "#^[\w\s,\.\-]+$#") || !check_var($pub_url_forum, "URL") || !
         check_var($pub_max_keeprank, "Num") || !check_var($pub_keeprank_criterion,
@@ -446,7 +445,7 @@ function set_serverconfig()
 
     if (!isset($pub_max_battlereport) || !isset($pub_max_favorites) || !isset($pub_max_favorites_spy) ||
         !isset($pub_ratio_limit) || !isset($pub_max_spyreport) || !isset($pub_session_time) ||
-        !isset($pub_max_keeplog) || !isset($pub_default_skin) || !isset($pub_reason) ||
+        !isset($pub_max_keeplog) || !isset($pub_reason) ||
         !isset($pub_ally_protection) || !isset($pub_url_forum) || !isset($pub_max_keeprank) ||
         !isset($pub_keeprank_criterion) || !isset($pub_max_keepspyreport) || !isset($pub_servername) ||
         !isset($pub_allied) || !isset($pub_mod_cache) || !isset($pub_config_cache)
@@ -585,13 +584,6 @@ function set_serverconfig()
         $pub_max_keeplog = 365;
     $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_keeplog .
         " where config_name = 'max_keeplog'";
-    $db->sql_query($request);
-
-    //
-    if (substr($pub_default_skin, strlen($pub_default_skin) - 1) != "/")
-        $pub_default_skin .= "/";
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $db->
-        sql_escape_string($pub_default_skin) . "' where config_name = 'default_skin'";
     $db->sql_query($request);
 
     //

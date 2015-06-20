@@ -81,8 +81,6 @@ function session()
         $db->sql_query($request, true, false);
     }
 
-    $link_css = $server_config["default_skin"];
-
     //Récupération de l'id de session si cookie présent
     if (isset($HTTP_COOKIE_VARS[$cookie_name])) {
         $cookie_id = $HTTP_COOKIE_VARS[$cookie_name];
@@ -152,7 +150,7 @@ function session_set_user_id($user_id, $lastvisit = 0)
  * Set the user_data array according to the user parameters in the database
  * @param int $cookie_id The cookie id of the user
  * @todo Y a comme un probleme dans cette fonction... ne semble pas prendre de parametres alors que la fonction precedente lui en donne un...
- * @todo Query : "select user_id, user_name, user_admin, user_coadmin, user_galaxy, user_system, user_skin, session_lastvisit, user_stat_name, ";
+ * @todo Query : "select user_id, user_name, user_admin, user_coadmin, user_galaxy, user_system, session_lastvisit, user_stat_name, ";
  * $request .= "management_user, management_ranking, disable_ip_check, off_amiral, off_ingenieur, off_geologue, off_technocrate";
  * $request .= " from ".TABLE_USER." u, ".TABLE_SESSIONS." s";
  * $request .= " where u.user_id = s.session_user_id";
@@ -164,7 +162,7 @@ function session_set_user_data($cookie_id)
     global $db, $user_ip, $user_data, $user_auth, $server_config;
     global $link_css;
 
-    $request = "select user_id, user_name, user_admin, user_coadmin, user_email, user_galaxy, user_system, user_skin, session_lastvisit, user_stat_name, ";
+    $request = "select user_id, user_name, user_admin, user_coadmin, user_email, user_galaxy, user_system, session_lastvisit, user_stat_name, ";
     $request .= "management_user, management_ranking, disable_ip_check, off_commandant, off_amiral, off_ingenieur, off_geologue, off_technocrate";
     $request .= " from " . TABLE_USER . " u, " . TABLE_SESSIONS . " s";
     $request .= " where u.user_id = s.session_user_id";
@@ -174,10 +172,6 @@ function session_set_user_data($cookie_id)
 
     if ($db->sql_numrows($result) == 1) {
         $user_data = $db->sql_fetch_assoc($result);
-        if ($user_data["user_skin"] != "") $link_css = $user_data["user_skin"];
-        else
-            $link_css = $server_config["default_skin"];
-
         $user_auth = user_get_auth($user_data["user_id"]);
 
     } else {
