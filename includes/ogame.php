@@ -1,16 +1,16 @@
 <?php
 /**
-* OGame Games Formulas and Data
-* @package OGSpy
-* @subpackage Ogame Data
-* @author Kyser
-* @created 15/11/2005
-* @copyright Copyright &copy; 2012, http://ogsteam.fr/
-* @version 3.04b ($Rev: 7697 $)
-* @modified $Date: 2012-08-25 19:27:55 +0200 (Sat, 25 Aug 2012) $
-* @link $HeadURL: http://svn.ogsteam.fr/trunk/ogspy/includes/ogame.php $
-* $Id: ogame.php 7697 2012-08-25 17:27:55Z darknoon $
-*/
+ * OGame Games Formulas and Data
+ * @package OGSpy
+ * @subpackage Ogame Data
+ * @author Kyser
+ * @created 15/11/2005
+ * @copyright Copyright &copy; 2012, http://ogsteam.fr/
+ * @version 3.04b ($Rev: 7697 $)
+ * @modified $Date: 2012-08-25 19:27:55 +0200 (Sat, 25 Aug 2012) $
+ * @link $HeadURL: http://svn.ogsteam.fr/trunk/ogspy/includes/ogame.php $
+ * $Id: ogame.php 7697 2012-08-25 17:27:55Z darknoon $
+ */
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -19,22 +19,22 @@ if (!isset($server_config['speed_uni'])) {
 }
 
 /**
-* Gets the hourly production of a Mine or a solar plant.
-* @param string $building The building type
-* @param int $level The building level
-* @param int $officier Officer option enabled (=1) or not(=0) or full Officer(=2)
-* @param int $temperature_max Max temprature of the current planet
-* @param int $NRJ Current value of the user Energy Technology
-* @param int $Plasma Current value of the user Plasma Technology
-* @return the result of the production on the specified building.
-*/
+ * Gets the hourly production of a Mine or a solar plant.
+ * @param string $building The building type
+ * @param int $level The building level
+ * @param int $officier Officer option enabled (=1) or not(=0) or full Officer(=2)
+ * @param int $temperature_max Max temprature of the current planet
+ * @param int $NRJ Current value of the user Energy Technology
+ * @param int $Plasma Current value of the user Plasma Technology
+ * @return the result of the production on the specified building.
+ */
 function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ = 0, $Plasma = 0)
 {
     // attention officier
     // pour m / c / d => geologue
     // pour ces cef => ingenieur
     global $server_config;
-    
+
     //Valeur de l'officier en valeur ajouté.
     if ($officier == 0) {
         $geo = 0;
@@ -49,7 +49,7 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
     switch ($building) {
         case "M":
             $prod_base = 30;
-            $result =  30 * $level * pow(1.1, $level); // formule de base
+            $result = 30 * $level * pow(1.1, $level); // formule de base
             $result = $result * (1 + $geo + 0.01 * $Plasma);
             $result = round($result); // arrondi 
             $result = $result + $prod_base; // prod de base
@@ -57,7 +57,7 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
             break;
 
         case "C":
-            $prod_base = 15;    
+            $prod_base = 15;
             $result = 20 * $level * pow(1.1, $level); // formule de base
             $result = $result * (1 + $geo + 0.0066 * $Plasma);
             $result = round($result); // arrondi
@@ -93,11 +93,11 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
 }
 
 /**
-* Gets the energy production of satellites.
-* @param int $temperature_max Max temprature of the current planet
-* @param int $off_ing Officer ingenieur option enabled (=1) or not(=0) or full Officer(=2)
-* @return the result of the power production by sattelites.
-*/
+ * Gets the energy production of satellites.
+ * @param int $temperature_max Max temprature of the current planet
+ * @param int $off_ing Officer ingenieur option enabled (=1) or not(=0) or full Officer(=2)
+ * @return the result of the power production by sattelites.
+ */
 function production_sat($temperature_max, $off_ing = 0)
 {
     if ($off_ing == 0) {
@@ -113,11 +113,11 @@ function production_sat($temperature_max, $off_ing = 0)
 }
 
 /**
-* Gets the power consumption of the current building
-* @param string $building The building type
-* @param int $level Min The building Level
-* @return the building consumption
-*/
+ * Gets the power consumption of the current building
+ * @param string $building The building type
+ * @param int $level Min The building Level
+ * @return the building consumption
+ */
 function consumption($building, $level)
 {
     global $server_config;
@@ -147,26 +147,26 @@ function consumption($building, $level)
 }
 
 /**
-* Gets the production usage of the current planet
-* @param int $M Metal Mine Level
-* @param int $C Cristal Mine Level
-* @param int $D Deuterieum Mine Level
-* @param int $CES Solar Plant Level
-* @param int $CEF Fusion Plant Level
-* @param int $SAT Number of sattelites
-* @param int $temperature_max Max temprature of the current planet
-* @param int $off_ing Officer ingenieur option enabled (=1) or not(=0) or full Officer(=2)
-* @param int $NRJ Current value of the user Energy Technology
-* @param int $per_M Metal Mine production percent (0=0%, 1=100%)
-* @param int $per_C Cristal Mine production percent (0=0%, 1=100%)
-* @param int $per_D Deuterieum Mine production percent (0=0%, 1=100%)
-* @param int $per_CES Solar Plant production percent (0=0%, 1=100%)
-* @param int $per_CEF Fusion Plant production percent (0=0%, 1=100%)
-* @param int $per_SAT sattelites production percent (0=0%, 1=100%)
-* @return array("ratio", "conso_E", "prod_E", "prod_CES", "prod_CEF", "prod_SAT", "conso_M", "conso_C", "conso_D")
-*/
+ * Gets the production usage of the current planet
+ * @param int $M Metal Mine Level
+ * @param int $C Cristal Mine Level
+ * @param int $D Deuterieum Mine Level
+ * @param int $CES Solar Plant Level
+ * @param int $CEF Fusion Plant Level
+ * @param int $SAT Number of sattelites
+ * @param int $temperature_max Max temprature of the current planet
+ * @param int $off_ing Officer ingenieur option enabled (=1) or not(=0) or full Officer(=2)
+ * @param int $NRJ Current value of the user Energy Technology
+ * @param int $per_M Metal Mine production percent (0=0%, 1=100%)
+ * @param int $per_C Cristal Mine production percent (0=0%, 1=100%)
+ * @param int $per_D Deuterieum Mine production percent (0=0%, 1=100%)
+ * @param int $per_CES Solar Plant production percent (0=0%, 1=100%)
+ * @param int $per_CEF Fusion Plant production percent (0=0%, 1=100%)
+ * @param int $per_SAT sattelites production percent (0=0%, 1=100%)
+ * @return array("ratio", "conso_E", "prod_E", "prod_CES", "prod_CEF", "prod_SAT", "conso_M", "conso_C", "conso_D")
+ */
 function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
-               $per_M=1, $per_C=1, $per_D=1, $per_CES=1, $per_CEF=1, $per_SAT=1)
+               $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1)
 {
     $consommation_E = 0; // la consommation
     $conso_M = consumption("M", $M) * $per_M;
@@ -195,35 +195,35 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
 
 
 /**
-* Calculates the Production corresponding to the current ratio
-* @param int $M Metal Mine Level
-* @param int $C Cristal Mine Level
-* @param int $D Deuterieum Mine Level
-* @param int $CES Solar Plant Level
-* @param int $CEF Fusion Plant Level
-* @param int $SAT Number of sattelites
-* @param int $temperature_max Max temprature of the current planet
-* @param int $off_ing Officer ingenieur option enabled (=1) or not(=0)
-* @param int $off_geo Officer geologue option enabled (=1) or not(=0)
-* @param int $off_full full Officer enabled (=1) or not(=0)
-* @param int $NRJ Current value of the user Energy Technology
-* @param int $Plasma Current value of the user Plasma Technology
-* @param int $per_M Metal Mine production percent (0=0%, 1=100%)
-* @param int $per_C Cristal Mine production percent (0=0%, 1=100%)
-* @param int $per_D Deuterieum Mine production percent (0=0%, 1=100%)
-* @param int $per_CES Solar Plant production percent (0=0%, 1=100%)
-* @param int $per_CEF Fusion Plant production percent (0=0%, 1=100%)
-* @return array("M", "C", "D", "ratio", "conso_E", "prod_E", "prod_CES", "prod_CEF", "prod_SAT", "conso_M", "conso_C", "conso_D")
-*/
+ * Calculates the Production corresponding to the current ratio
+ * @param int $M Metal Mine Level
+ * @param int $C Cristal Mine Level
+ * @param int $D Deuterieum Mine Level
+ * @param int $CES Solar Plant Level
+ * @param int $CEF Fusion Plant Level
+ * @param int $SAT Number of sattelites
+ * @param int $temperature_max Max temprature of the current planet
+ * @param int $off_ing Officer ingenieur option enabled (=1) or not(=0)
+ * @param int $off_geo Officer geologue option enabled (=1) or not(=0)
+ * @param int $off_full full Officer enabled (=1) or not(=0)
+ * @param int $NRJ Current value of the user Energy Technology
+ * @param int $Plasma Current value of the user Plasma Technology
+ * @param int $per_M Metal Mine production percent (0=0%, 1=100%)
+ * @param int $per_C Cristal Mine production percent (0=0%, 1=100%)
+ * @param int $per_D Deuterieum Mine production percent (0=0%, 1=100%)
+ * @param int $per_CES Solar Plant production percent (0=0%, 1=100%)
+ * @param int $per_CEF Fusion Plant production percent (0=0%, 1=100%)
+ * @return array("M", "C", "D", "ratio", "conso_E", "prod_E", "prod_CES", "prod_CEF", "prod_SAT", "conso_M", "conso_C", "conso_D")
+ */
 function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing = 0, $off_geo = 0, $off_full = 0, $NRJ = 0, $Plasma = 0,
-               $per_M=1, $per_C=1, $per_D=1, $per_CES=1, $per_CEF=1, $per_SAT=1)
+                                $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1)
 {
 
-    if($off_full == 1){
+    if ($off_full == 1) {
         $off_ing = $off_geo = 2;
     }
     $tmp = ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
-                 $per_M, $per_C, $per_D, $per_CES, $per_CEF, $per_SAT);
+        $per_M, $per_C, $per_D, $per_CES, $per_CEF, $per_SAT);
     $ratio = $tmp["ratio"];
     $consommation_E = $tmp["conso_E"];
     $production_E = $tmp["prod_E"];
@@ -234,17 +234,17 @@ function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, 
     $conso_C = $tmp["conso_C"];
     $conso_D = $tmp["conso_D"];
 
-   if($ratio > 0) {
+    if ($ratio > 0) {
         //production de metal avec ratio
         $prod_M = production("M", $M, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_M;
         $prod_M *= $ratio;
         $prod_M = round($prod_M);
-        
+
         //production de cristal avec ratio
         $prod_C = production("C", $C, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_C;
         $prod_C *= $ratio;
         $prod_C = round($prod_C);
-        
+
         //production de deut avec ratio
         $prod_D = production("D", $D, $off_geo, $temperature_max) * $per_D;
         $prod_D *= $ratio;
@@ -264,10 +264,10 @@ function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, 
 
 
 /**
-* Calculates the Planet storage capacity (Taille Hangar)
-* @param int $level Storage building Level
-* @return the capacity
-*/
+ * Calculates the Planet storage capacity (Taille Hangar)
+ * @param int $level Storage building Level
+ * @return the capacity
+ */
 function depot_capacity($level)
 {
     // capacité par défaut
@@ -282,10 +282,10 @@ function depot_capacity($level)
 }
 
 /**
-* Returns the maximum numbers of planet slots available according to the Astrophysic level
-* @param int $level Astrophysic Level
-* @return the maximum number of planets
-*/
+ * Returns the maximum numbers of planet slots available according to the Astrophysic level
+ * @param int $level Astrophysic Level
+ * @return the maximum number of planets
+ */
 function astro_max_planete($level)
 {
     global $server_config;
@@ -293,11 +293,11 @@ function astro_max_planete($level)
 }
 
 /**
-* Calculates the price to upgrade a building to a defined level
-* @param int $level The wanted Level
-* @param string $building The building type
-* @return ressources required to upgrade the building
-*/
+ * Calculates the price to upgrade a building to a defined level
+ * @param int $level The wanted Level
+ * @param string $building The building type
+ * @return ressources required to upgrade the building
+ */
 function building_upgrade($building, $level)
 {
     switch ($building) {
@@ -377,27 +377,27 @@ function building_upgrade($building, $level)
             $D = 0;
             $NRJ = 0;
             break;
-            
+
         case "CM":
-        	$M = 2645 * pow(2.3, ($level - 1));
-        	$C = 0;
-        	$D = 0;
-        	$NRJ = 0;
-        	break;
-        	
+            $M = 2645 * pow(2.3, ($level - 1));
+            $C = 0;
+            $D = 0;
+            $NRJ = 0;
+            break;
+
         case "CC":
-        	$M = 2645 * pow(2.3, ($level - 1));
-        	$C = 1322 * pow(2.3, ($level - 1));
-        	$D = 0;
-        	$NRJ = 0;
-        	break;
-        	
+            $M = 2645 * pow(2.3, ($level - 1));
+            $C = 1322 * pow(2.3, ($level - 1));
+            $D = 0;
+            $NRJ = 0;
+            break;
+
         case "CD":
-        	$M = 2645 * pow(2.3, ($level - 1));
-        	$C = 2645 * pow(2.3, ($level - 1));
-        	$D = 0;
-        	$NRJ = 0;
-        	break;
+            $M = 2645 * pow(2.3, ($level - 1));
+            $C = 2645 * pow(2.3, ($level - 1));
+            $D = 0;
+            $NRJ = 0;
+            break;
         case "Lab":
             $M = 200 * pow(2, ($level - 1));
             $C = 400 * pow(2, ($level - 1));
@@ -571,11 +571,11 @@ function building_upgrade($building, $level)
 }
 
 /**
-* Calculates the price of the a building corresponding to it current level
-* @param int $level The current Level
-* @param string $building The building type
-* @return ressources used to reach this level
-*/
+ * Calculates the price of the a building corresponding to it current level
+ * @param int $level The current Level
+ * @param string $building The building type
+ * @return ressources used to reach this level
+ */
 function building_cumulate($building, $level)
 {
     switch ($building) {
@@ -627,10 +627,10 @@ function building_cumulate($building, $level)
 }
 
 /**
-* Calculates the price of all buildings
-* @param string $user_building The list of buildings with corresponding levels
-* @return the bild :-)
-*/
+ * Calculates the price of all buildings
+ * @param string $user_building The list of buildings with corresponding levels
+ * @return the bild :-)
+ */
 function all_building_cumulate($user_building)
 {
 
@@ -648,9 +648,10 @@ function all_building_cumulate($user_building)
 
             if ($key == "M" || $key == "C" || $key == "D" || $key == "CES" || $key == "CEF" ||
                 $key == "UdR" || $key == "UdN" || $key == "CSp" || $key == "HM" || $key == "HC" ||
-                $key == "HD" || $key == "CM" ||$key == "CC" ||$key == "CD" ||$key == "Lab" || 
-                $key == "Ter" || $key == "DdR" || $key == "Silo" ||	$key == "BaLu" || $key == "Pha" ||
-                $key == "PoSa") {
+                $key == "HD" || $key == "CM" || $key == "CC" || $key == "CD" || $key == "Lab" ||
+                $key == "Ter" || $key == "DdR" || $key == "Silo" || $key == "BaLu" || $key == "Pha" ||
+                $key == "PoSa"
+            ) {
                 list($M, $C, $D) = array_values(building_cumulate($key, $level));
                 $total += $M + $C + $D;
             }
@@ -663,10 +664,10 @@ function all_building_cumulate($user_building)
 }
 
 /**
-* Calculates the price of all buildings
-* @param string $user_defence The list of defenses with the number of each building
-* @return the bild :-)
-*/
+ * Calculates the price of all buildings
+ * @param string $user_defence The list of defenses with the number of each building
+ * @return the bild :-)
+ */
 function all_defence_cumulate($user_defence)
 {
 
@@ -682,7 +683,7 @@ function all_defence_cumulate($user_defence)
 
         for ($i = 0; $i < sizeof($init_d_prix); $i++) {
             $total += $init_d_prix[$keys[$i]] * ($data[$keys[$i]] != "" ? $data[$keys[$i]] :
-                0);
+                    0);
         }
 
         next($user_defence);
@@ -692,10 +693,10 @@ function all_defence_cumulate($user_defence)
 }
 
 /**
-* Calculates the price of all lunas
-* @param string $user_defence The list of buildings with corresponding levels on the luna
-* @return the bild :-)
-*/
+ * Calculates the price of all lunas
+ * @param string $user_defence The list of buildings with corresponding levels on the luna
+ * @return the bild :-)
+ */
 function all_lune_cumulate($user_building, $user_defence)
 {
 
@@ -705,10 +706,10 @@ function all_lune_cumulate($user_building, $user_defence)
 }
 
 /**
-* Calculates the price of all researches
-* @param string $user_defence The list of technologies with corresponding levels
-* @return the bild :-)
-*/
+ * Calculates the price of all researches
+ * @param string $user_defence The list of technologies with corresponding levels
+ * @return the bild :-)
+ */
 function all_technology_cumulate($user_technology)
 {
 
@@ -727,7 +728,7 @@ function all_technology_cumulate($user_technology)
 
         if ($keys[$i] != "Astrophysique") {
             $total += $init_t_prix[$keys[$i]] * (pow($pow, ($user_technology[$keys[$i]] !=
-                "") ? $user_technology[$keys[$i]] : 0) - 1);
+                        "") ? $user_technology[$keys[$i]] : 0) - 1);
         } else {
             $j = 0;
             $user_technology[$keys[$i]] = ($user_technology[$keys[$i]] != "") ? $user_technology[$keys[$i]] : 0;
@@ -743,4 +744,5 @@ function all_technology_cumulate($user_technology)
 
     return $total;
 }
+
 ?>
