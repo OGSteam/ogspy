@@ -2,9 +2,9 @@
 /** OGSpy Charts library (Hightcharts)
  * @package OGSpy
  * @subpackage Charts
- * @author Machine 
+ * @author Machine
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
- * @version 3.1.0 
+ * @version 3.1.0
  */
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
@@ -14,8 +14,8 @@ if (!defined('IN_SPYOGAME')) {
  * create_pie()
  * Generate the JS Code for a Pie chart
  * Graph Name = $conteneur
- * 
- * @param mixed $_data 
+ *
+ * @param mixed $_data
  * @param mixed $_legend
  * @param mixed $_title
  * @param mixed $conteneur
@@ -31,7 +31,8 @@ function create_pie($_data, $_legend, $_title, $conteneur, $theme = true)
 
     // test erreurs donnés
     if (!check_var($_data, "Special", "#^[0-9(_x_)]+$#") || !check_var($_legend,
-        "Text") || !check_var($_title, "Text") || !check_var($conteneur, "Text")) {
+            "Text") || !check_var($_title, "Text") || !check_var($conteneur, "Text")
+    ) {
         $retour .= affiche_error($conteneur, 'erreur 1');
         return $retour;
     }
@@ -72,7 +73,7 @@ $(document).ready(function() {
          plotShadow: false
       },
       credits: {
-        text: '<b>OGSteam Software</b> v ".$server_config["version"]." ',
+        text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
         href: 'http://www.ogsteam.fr'
     },
       title: {
@@ -118,6 +119,7 @@ $(document).ready(function() {
 
     return $retour;
 }
+
 /**
  * create_pie_numbers()
  * genere le script js d un camenbert
@@ -131,42 +133,43 @@ $(document).ready(function() {
  */
 function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true)
 {
-	global $server_config;
-	// todo voir si insertion possible que si on genere un graph ( test pas concluant)
-	//   $retour = import_js();
-	$retour = "";
+    global $server_config;
+    // todo voir si insertion possible que si on genere un graph ( test pas concluant)
+    //   $retour = import_js();
+    $retour = "";
 
-	// test erreurs donnés
-	if (!check_var($_data, "Special", "#^[0-9(_x_)]+$#") || !check_var($_legend,
-        "Text") || !check_var($_title, "Text") || !check_var($conteneur, "Text")) {
-	$retour .= affiche_error($conteneur, 'erreur 1');
-	return $retour;
-	}
-	//
-	//  recuperation des infos
-	$data = explode('_x_', $_data);
-	$legend = explode('_x_', $_legend);
-	$title = $_title;
+    // test erreurs donnés
+    if (!check_var($_data, "Special", "#^[0-9(_x_)]+$#") || !check_var($_legend,
+            "Text") || !check_var($_title, "Text") || !check_var($conteneur, "Text")
+    ) {
+        $retour .= affiche_error($conteneur, 'erreur 1');
+        return $retour;
+    }
+    //
+    //  recuperation des infos
+    $data = explode('_x_', $_data);
+    $legend = explode('_x_', $_legend);
+    $title = $_title;
 
-	// il doit y avoir autant de legende que de valeur
-	if (count($data) != count($legend)) {
-		$retour .= affiche_error($conteneur, 'erreur 2');
-		return $retour;
-	}
+    // il doit y avoir autant de legende que de valeur
+    if (count($data) != count($legend)) {
+        $retour .= affiche_error($conteneur, 'erreur 2');
+        return $retour;
+    }
 
-	// préparation des données
-	$i = 0;
-	$temp = array();
-	while ($i < count($data)) {
-		$temp[$i] = "['" . $legend[$i] . "'," . $data[$i] . " ]";
-		$i++;
-	}
-	// format hightchart
-	$format_data = implode(" , ", $temp);
+    // préparation des données
+    $i = 0;
+    $temp = array();
+    while ($i < count($data)) {
+        $temp[$i] = "['" . $legend[$i] . "'," . $data[$i] . " ]";
+        $i++;
+    }
+    // format hightchart
+    $format_data = implode(" , ", $temp);
 
 
-	// création du script
-	$retour .= "<script type=\"text/javascript\">
+    // création du script
+    $retour .= "<script type=\"text/javascript\">
 	var " . $conteneur . ";
 	$(document).ready(function() {
 
@@ -179,7 +182,7 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 			plotShadow: false
 		},
       	credits: {
-			text: '<b>OGSteam Software</b> v ".$server_config["version"]." ',
+			text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
         	href: 'http://www.ogsteam.fr'
 	  	},
 		title: {
@@ -210,10 +213,10 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 }); ";
 
 
-	// insertion du theme par defaut
-	if ($theme == true) {
-		$retour .= graph_theme();
-	}
+    // insertion du theme par defaut
+    if ($theme == true) {
+        $retour .= graph_theme();
+    }
 
     $retour .= "</script> ";
 
@@ -225,7 +228,7 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 /**
  * create_curves()
  * Generate the JS Code for a Curves chart
- * 
+ *
  * @param string $_player
  * @param int $_date_min
  * @param int $_date_max
@@ -233,13 +236,13 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
  * @return string the gerated JS Code
  * @todo Revoir les erreurs : la variable $conteneur semble incorrecte
  * @todo Query : "select datadate, rank, points";
-            $request .= " from " . $table;
-            $request .= " where player = '" . $db->sql_escape_string($player)
+ * $request .= " from " . $table;
+ * $request .= " where player = '" . $db->sql_escape_string($player)
  * @todo Query : $request = "select datadate, rank, points";
-            $request .= " from " . $table;
-            $request .= " where player = '" . $db->sql_escape_string($player_comp) .
-                "'";
-            $request .= " order by datadate desc";
+ * $request .= " from " . $table;
+ * $request .= " where player = '" . $db->sql_escape_string($player_comp) .
+ * "'";
+ * $request .= " order by datadate desc";
  */
 
 function create_curves($_player, $_date_min, $_date_max, $_comp)
@@ -253,7 +256,8 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
     }
 
     if (!isset($_date_min) || !is_numeric($_date_min) || !isset($_date_max) || !
-        is_numeric($_date_max)) {
+        is_numeric($_date_max)
+    ) {
         $retour .= affiche_error($conteneur, 'erreur 4');
         return $retour;
     }
@@ -287,67 +291,67 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
     // $i permet de correler $table et $name
     $i = 0;
 
-        foreach ($tables as $table) {
+    foreach ($tables as $table) {
 
-            $request = "select datadate, rank, points";
-            $request .= " from " . $table;
-            $request .= " where player = '" . $db->sql_escape_string($player) .
-                "'";
-            $request .= " order by datadate desc";
-            $result = $db->sql_query($request);
-            while ($row = $db->sql_fetch_assoc($result)) {
-                if ($row['datadate'] >= $date_min && $row['datadate'] <= $date_max) {
-                    //  $row[datadate]$row[rank]$row[rank]
-                    $time = $row['datadate'] * 1000;
-                    // rank
-                    $data['rank'][$name[$i]][] = "[" . $time . ", " . $row['rank'] . "]";
-                    // point
-                    $data['points'][$name[$i]][] = "[" . $time . ", " . $row['points'] . "]";
-                }
+        $request = "select datadate, rank, points";
+        $request .= " from " . $table;
+        $request .= " where player = '" . $db->sql_escape_string($player) .
+            "'";
+        $request .= " order by datadate desc";
+        $result = $db->sql_query($request);
+        while ($row = $db->sql_fetch_assoc($result)) {
+            if ($row['datadate'] >= $date_min && $row['datadate'] <= $date_max) {
+                //  $row[datadate]$row[rank]$row[rank]
+                $time = $row['datadate'] * 1000;
+                // rank
+                $data['rank'][$name[$i]][] = "[" . $time . ", " . $row['rank'] . "]";
+                // point
+                $data['points'][$name[$i]][] = "[" . $time . ", " . $row['points'] . "]";
             }
-
-            $i++;
         }
+
+        $i++;
+    }
 
 // on garde $i a la derniere valeur 
-     foreach ($tables as $table) {
+    foreach ($tables as $table) {
 
-            $request = "select datadate, rank, points";
-            $request .= " from " . $table;
-            $request .= " where player = '" . $db->sql_escape_string($player_comp) .
-                "'";
-            $request .= " order by datadate desc";
-            $result = $db->sql_query($request);
-            while ($row = $db->sql_fetch_assoc($result)) {
-                if ($row['datadate'] >= $date_min && $row['datadate'] <= $date_max) {
-                    //  $row[datadate]$row[rank]$row[rank]
-                    $time = $row['datadate'] * 1000;
-                    // rank
-                    $data['rank'][$name[$i]][] = "[" . $time . ", " . $row['rank'] . "]";
-                    // point
-                    $data['points'][$name[$i]][] = "[" . $time . ", " . $row['points'] . "]";
-                }
+        $request = "select datadate, rank, points";
+        $request .= " from " . $table;
+        $request .= " where player = '" . $db->sql_escape_string($player_comp) .
+            "'";
+        $request .= " order by datadate desc";
+        $result = $db->sql_query($request);
+        while ($row = $db->sql_fetch_assoc($result)) {
+            if ($row['datadate'] >= $date_min && $row['datadate'] <= $date_max) {
+                //  $row[datadate]$row[rank]$row[rank]
+                $time = $row['datadate'] * 1000;
+                // rank
+                $data['rank'][$name[$i]][] = "[" . $time . ", " . $row['rank'] . "]";
+                // point
+                $data['points'][$name[$i]][] = "[" . $time . ", " . $row['points'] . "]";
             }
-
-            $i++;
         }
 
-    
+        $i++;
+    }
 
-if(isset($data['points'])){  
-    $retour .= create_multi_curve("Points", $player, $data['points'], $name,
-        "points"); // points
-        }
-  
- if(isset($data['rank'])){  
-    $retour .= create_multi_curve("Classement", $player, $data['rank'], $name,
-        "rank"); // rank
 
-}
+    if (isset($data['points'])) {
+        $retour .= create_multi_curve("Points", $player, $data['points'], $name,
+            "points"); // points
+    }
+
+    if (isset($data['rank'])) {
+        $retour .= create_multi_curve("Classement", $player, $data['rank'], $name,
+            "rank"); // rank
+
+    }
     return $retour;
 
 
 }
+
 //
 //
 //function import_js()
@@ -372,8 +376,8 @@ if(isset($data['points'])){
 
 /**
  * affiche_error()
- * Displays an error message in the selected container 
- * 
+ * Displays an error message in the selected container
+ *
  * @param mixed $conteneur
  * @param mixed $error
  * @return string js
@@ -393,8 +397,8 @@ function affiche_error($conteneur, $error)
 
 /**
  * graph_theme()
- * Returns all the css for the OGSpy Graph 
- * 
+ * Returns all the css for the OGSpy Graph
+ *
  */
 function graph_theme()
 {
@@ -673,7 +677,7 @@ var highchartsOptions = Highcharts.setOptions(Highcharts.theme); ";
 /**
  * create_multi_curve()
  * Generate the JS Code for a Multiple Curves chart
- * 
+ *
  * @param string $titre
  * @param string $sous_titre
  * @param string $data
@@ -683,7 +687,7 @@ var highchartsOptions = Highcharts.setOptions(Highcharts.theme); ";
  */
 function create_multi_curve($titre, $sous_titre, $data, $names, $conteneur, $theme = true)
 {
-    global $zoom , $server_config; // on recupere le zoom s il existe
+    global $zoom, $server_config; // on recupere le zoom s il existe
 
     // traitement des datas recu
     foreach ($names as $name) {
@@ -719,7 +723,7 @@ $(document).ready(function() {
 
     
       credits: {
-        text: '<b>OGSteam Software</b> v ".$server_config["version"]." ',
+        text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
         href: 'http://www.ogsteam.fr'
     },
     

@@ -82,16 +82,16 @@ function write_file_gz($file, $mode, $text)
  * @param string $ip format xxx.xxx.xxx.xxx in IPv4 and xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx in IPv6
  * @return string IP in hex : HHHHHHHH for IPv4 and HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH for IPv6
  */
-function encode_ip ($ip)
+function encode_ip($ip)
 {
-	$d = explode('.', $ip);
-	if (count($d) == 4) return sprintf('%02x%02x%02x%02x', $d[0], $d[1], $d[2], $d[3]);
+    $d = explode('.', $ip);
+    if (count($d) == 4) return sprintf('%02x%02x%02x%02x', $d[0], $d[1], $d[2], $d[3]);
 
-	$d = explode(':', preg_replace('/(^:)|(:$)/', '', $ip));
-	$res = '';
-	foreach ($d as $x)
-	$res .= sprintf('%0'. ($x == '' ? (9 - count($d)) * 4 : 4) .'s', $x);
-	return $res;
+    $d = explode(':', preg_replace('/(^:)|(:$)/', '', $ip));
+    $res = '';
+    foreach ($d as $x)
+        $res .= sprintf('%0' . ($x == '' ? (9 - count($d)) * 4 : 4) . 's', $x);
+    return $res;
 }
 
 /**
@@ -100,31 +100,35 @@ function encode_ip ($ip)
  * @return string $ip format xxx.xxx.xxx.xxx in IPv4 and xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx in IPv6
  */
 function decode_ip($int_ip)
-{ 
+{
     if (strlen($int_ip) == 32) {
         $int_ip = substr(chunk_split($int_ip, 4, ':'), 0, 39);
-        $int_ip = ':'. implode(':', array_map("hexhex", explode(':',$int_ip))) .':';
+        $int_ip = ':' . implode(':', array_map("hexhex", explode(':', $int_ip))) . ':';
         preg_match_all("/(:0)+/", $int_ip, $zeros);
         if (count($zeros[0]) > 0) {
             $match = '';
-            foreach($zeros[0] as $zero)
+            foreach ($zeros[0] as $zero)
                 if (strlen($zero) > strlen($match))
                     $match = $zero;
-            $int_ip = preg_replace('/'. $match .'/', ':', $int_ip, 1);
+            $int_ip = preg_replace('/' . $match . '/', ':', $int_ip, 1);
         }
         return preg_replace('/(^:([^:]))|(([^:]):$)/', '$2$4', $int_ip);
     }
     $hexipbang = explode('.', chunk_split($int_ip, 2, '.'));
-    return hexdec($hexipbang[0]). '.' . hexdec($hexipbang[1]) . '.' . hexdec($hexipbang[2]) . '.' . hexdec($hexipbang[3]);
+    return hexdec($hexipbang[0]) . '.' . hexdec($hexipbang[1]) . '.' . hexdec($hexipbang[2]) . '.' . hexdec($hexipbang[3]);
 }
+
 /**
  * Converts a hex value to another hew value (depnding of the current php version on the server)
  * @param string $value The initial hexvalue
  * @return string the new hew value
  */
-function hexhex($value) {
-	return dechex(hexdec($value));
-};
+function hexhex($value)
+{
+    return dechex(hexdec($value));
+}
+
+;
 
 /**
  * Generates a random password with 6 chars
@@ -140,9 +144,10 @@ function password_generator()
     }
     return $password;
 }
+
 /**
  * Initialisation of the cache for all Mod settings
- * 
+ *
  * Generates a file which contains all configurations for different installed OGSpy Modules
  */
 function init_mod_cache()
@@ -171,7 +176,7 @@ function init_mod_cache()
 
 /**
  * Initialisation of the cache for all Server settings
- * 
+ *
  * Generates a file which contains all configurations for the OGSpy Server
  */
 function init_serverconfig()
@@ -197,6 +202,7 @@ function init_serverconfig()
     }
 
 }
+
 /**
  *  Updates in the database all configurations displayed in the display administration Page.
  * @todo Query: update  . TABLE_CONFIG .  set config_value =  . $pub_enable_portee_missil . where config_name = \'portee_missil\'
@@ -218,14 +224,15 @@ function set_server_view()
 {
     global $db, $user_data;
     global $pub_enable_portee_missil, $pub_enable_members_view, $pub_enable_stat_view,
-        $pub_galaxy_by_line_stat, $pub_system_by_line_stat, $pub_galaxy_by_line_ally, $pub_system_by_line_ally,
-        $pub_nb_colonnes_ally, $pub_color_ally, $pub_enable_register_view, $pub_register_alliance,
-        $pub_register_forum, $pub_open_user, $pub_open_admin;
+           $pub_galaxy_by_line_stat, $pub_system_by_line_stat, $pub_galaxy_by_line_ally, $pub_system_by_line_ally,
+           $pub_nb_colonnes_ally, $pub_color_ally, $pub_enable_register_view, $pub_register_alliance,
+           $pub_register_forum, $pub_open_user, $pub_open_admin;
 
     if (!check_var($pub_enable_members_view, "Num") || !check_var($pub_enable_stat_view,
-        "Num") || !check_var($pub_galaxy_by_line_stat, "Num") || !check_var($pub_system_by_line_stat,
-        "Num") || !check_var($pub_galaxy_by_line_ally, "Num") || !check_var($pub_system_by_line_ally,
-        "Num")) {
+            "Num") || !check_var($pub_galaxy_by_line_stat, "Num") || !check_var($pub_system_by_line_stat,
+            "Num") || !check_var($pub_galaxy_by_line_ally, "Num") || !check_var($pub_system_by_line_ally,
+            "Num")
+    ) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
     if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
@@ -233,7 +240,8 @@ function set_server_view()
     }
 
     if (!isset($pub_galaxy_by_line_stat) || !isset($pub_system_by_line_stat) || !
-        isset($pub_galaxy_by_line_ally) || !isset($pub_system_by_line_ally)) {
+        isset($pub_galaxy_by_line_ally) || !isset($pub_system_by_line_ally)
+    ) {
         redirection("index.php?action=message&id_message=setting_server_view_failed&info");
     }
 
@@ -365,6 +373,7 @@ function set_server_view()
     log_("set_server_view");
     redirection("index.php?action=administration&subaction=affichage");
 }
+
 /**
  *  Updates in the database all configurations displayed in the parameters administration Page.
  * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_server_active ." where config_name = 'server_active'";
@@ -402,11 +411,11 @@ function set_serverconfig()
 {
     global $db, $user_data, $server_config;
     global $pub_max_battlereport, $pub_max_favorites, $pub_max_favorites_spy, $pub_max_spyreport,
-        $pub_server_active, $pub_session_time, $pub_max_keeplog, $pub_default_skin, $pub_debug_log,
-        $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
-        $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
-        $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit, $pub_speed_uni,
-        $pub_ddr, $pub_astro_strict, $pub_uni_arrondi_galaxy, $pub_uni_arrondi_system, $pub_config_cache, $pub_mod_cache;
+           $pub_server_active, $pub_session_time, $pub_max_keeplog, $pub_default_skin, $pub_debug_log,
+           $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
+           $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
+           $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit, $pub_speed_uni,
+           $pub_ddr, $pub_astro_strict, $pub_uni_arrondi_galaxy, $pub_uni_arrondi_system, $pub_config_cache, $pub_mod_cache;
 
 
     if (!isset($pub_num_of_galaxies))
@@ -415,19 +424,20 @@ function set_serverconfig()
         $pub_num_of_systems = intval($server_config['num_of_systems']);
 
     if (!check_var($pub_max_battlereport, "Num") || !check_var($pub_max_favorites,
-        "Num") || !check_var($pub_max_favorites_spy, "Num") || !check_var($pub_ratio_limit,
-        "Special", "#^[\w\s,\.\-]+$#") || !check_var($pub_max_spyreport, "Num") || !
+            "Num") || !check_var($pub_max_favorites_spy, "Num") || !check_var($pub_ratio_limit,
+            "Special", "#^[\w\s,\.\-]+$#") || !check_var($pub_max_spyreport, "Num") || !
         check_var($pub_server_active, "Num") || !check_var($pub_session_time, "Num") ||
         !check_var($pub_max_keeplog, "Num") || !check_var($pub_default_skin, "URL") || !
         check_var($pub_debug_log, "Num") || !check_var($pub_block_ratio, "Num") || !
         check_var(stripslashes($pub_reason), "Text") || !check_var($pub_ally_protection,
-        "Special", "#^[\w\s,\.\-]+$#") || !check_var($pub_url_forum, "URL") || !
+            "Special", "#^[\w\s,\.\-]+$#") || !check_var($pub_url_forum, "URL") || !
         check_var($pub_max_keeprank, "Num") || !check_var($pub_keeprank_criterion,
-        "Char") || !check_var($pub_max_keepspyreport, "Num") || !check_var(stripslashes
+            "Char") || !check_var($pub_max_keepspyreport, "Num") || !check_var(stripslashes
         ($pub_servername), "Text") || !check_var($pub_allied, "Special", "#^[\w\s,\.\-]+$#") ||
         !check_var($pub_disable_ip_check, "Num") || !check_var($pub_num_of_galaxies,
-        "Galaxies") || !check_var($pub_num_of_systems, "Galaxies") || !check_var($pub_config_cache,
-        "Num") || !check_var($pub_mod_cache, "Num")) {
+            "Galaxies") || !check_var($pub_num_of_systems, "Galaxies") || !check_var($pub_config_cache,
+            "Num") || !check_var($pub_mod_cache, "Num")
+    ) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
     if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
@@ -439,7 +449,8 @@ function set_serverconfig()
         !isset($pub_max_keeplog) || !isset($pub_default_skin) || !isset($pub_reason) ||
         !isset($pub_ally_protection) || !isset($pub_url_forum) || !isset($pub_max_keeprank) ||
         !isset($pub_keeprank_criterion) || !isset($pub_max_keepspyreport) || !isset($pub_servername) ||
-        !isset($pub_allied) || !isset($pub_mod_cache) || !isset($pub_config_cache)) {
+        !isset($pub_allied) || !isset($pub_mod_cache) || !isset($pub_config_cache)
+    ) {
         redirection("index.php?action=message&id_message=setting_serverconfig_failed&info");
     }
 
@@ -488,7 +499,8 @@ function set_serverconfig()
     }
 
     if (($pub_num_of_galaxies != intval($server_config['num_of_galaxies'])) || ($pub_num_of_systems !=
-        intval($server_config['num_of_systems']))) {
+            intval($server_config['num_of_systems']))
+    ) {
         resize_db($pub_num_of_galaxies, $pub_num_of_systems);
     }
     //
@@ -678,14 +690,14 @@ function set_serverconfig()
     $request = "update " . TABLE_CONFIG . " set config_value = '" . $pub_uni_arrondi_galaxy .
         "' where config_name = 'uni_arrondi_galaxy'";
     $db->sql_query($request);
-    
+
     //
     if (!isset($pub_uni_arrondi_system) || !is_numeric($pub_uni_arrondi_system))
         $pub_uni_arrondi_system = 0;
     $request = "update " . TABLE_CONFIG . " set config_value = '" . $pub_uni_arrondi_system .
         "' where config_name = 'uni_arrondi_system'";
     $db->sql_query($request);
-    
+
     //
     if (!is_numeric($pub_speed_uni) || $pub_speed_uni < 1)
         $pub_speed_uni = 1;
@@ -709,6 +721,7 @@ function set_serverconfig()
     log_("set_serverconfig");
     redirection("index.php?action=administration&subaction=parameter");
 }
+
 /**
  * Returns the Status of the Database used size.
  * @return Array [Server], et [Total]
@@ -747,6 +760,7 @@ function db_size_info()
 
     return $dbSize_info;
 }
+
 /**
  * Function to Optimize all tables of the OGSpy Database
  * @param boolean $maintenance_action true if no url redirection is requested,false to redirect to another page
@@ -777,6 +791,7 @@ function db_optimize($maintenance_action = false)
             "¤" . $dbSize_after);
     }
 }
+
 /**
  * Adapt the database to fit on the number of galaxies and solar systems
  * @param int $new_num_of_galaxies Galaxy total
@@ -793,7 +808,7 @@ function db_optimize($maintenance_action = false)
  * @todo : Query : $request = "ALTER TABLE `" . TABLE_USER_FAVORITE ."` CHANGE `galaxy` `galaxy` ENUM(" -> Voir fonction
  * @todo : Query : "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('num_of_galaxies','$new_num_of_galaxies')";
  * @todo : Query : $requests = "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('num_of_systems','$new_num_of_systems')";
-*/
+ */
 function resize_db($new_num_of_galaxies, $new_num_of_systems)
 {
     global $db, $db_host, $db_user, $db_password, $db_database, $table_prefix, $server_config;
@@ -841,6 +856,7 @@ function resize_db($new_num_of_galaxies, $new_num_of_systems)
 
     log_("set_db_size");
 }
+
 /**
  * File Log size on the Server
  * @return Array tableau [type] and [size]
@@ -885,9 +901,10 @@ function log_size_info()
 
     return $log_size_info;
 }
+
 /**
  * Checks the availability of a log File
- * @param int $date Requested Date 
+ * @param int $date Requested Date
  * @return boolean true if the log file exists
  * @internal To be improved...
  */
@@ -934,6 +951,7 @@ function log_check_exist($date)
 
     return true;
 }
+
 /**
  * Sends a Compressed archive to the browser for a specific date
  * @global array $user_data
@@ -948,14 +966,14 @@ function log_extractor()
 
     if (!isset($pub_date))
         redirection("index.php?action=message&id_message=errorfatal&info");
-	
-	$typelog = array("sql", "log", "txt");
+
+    $typelog = array("sql", "log", "txt");
 
     $root = PATH_LOG;
-	$zip_file= $root."log.zip";
+    $zip_file = $root . "log.zip";
     $path = opendir("$root");
-	unlink($zip_file);
-	
+    unlink($zip_file);
+
     //Récupération de la liste des répertoires correspondant à cette date
     while ($file = readdir($path)) {
         if ($file != "." && $file != "..") {
@@ -988,27 +1006,27 @@ function log_extractor()
     }
 
     // création d'un objet 'zipfile'
-	
-	$zip = new ZipArchive;
-	$zip->open($zip_file, ZipArchive::CREATE);
+
+    $zip = new ZipArchive;
+    $zip->open($zip_file, ZipArchive::CREATE);
     foreach ($files as $filename) {
         // ajout du fichier dans cet objet
-        $zip->addFile($root.$filename);
-		log_('debug',"fichier dans archive:".$filename);
-		}
-	
-	// production de l'archive Zip
+        $zip->addFile($root . $filename);
+        log_('debug', "fichier dans archive:" . $filename);
+    }
+
+    // production de l'archive Zip
     $zip->close();
 
     // entêtes HTTP
     header('Content-Type: application/x-zip');
     // force le téléchargement
     header('Content-disposition: attachment; filename=log_' . $pub_date . '.zip');
-	header('Content-Transfer-Encoding: binary');
+    header('Content-Transfer-Encoding: binary');
 
     // envoi du fichier au navigateur
     flush();
-	readfile($zip_file);
+    readfile($zip_file);
 }
 
 /**
@@ -1079,6 +1097,7 @@ function log_purge()
         rmdir($root . $d);
     }
 }
+
 /**
  * Formats a number.
  * @param int $number The value to be converted
@@ -1102,11 +1121,12 @@ function maintenance_action()
         galaxy_purge_ranking();
         log_purge();
         galaxy_purge_spy();
-        
+
         $request = "update " . TABLE_CONFIG . " set config_value = '" . $time . "' where config_name = 'last_maintenance_action'";
         $db->sql_query($request);
     }
 }
+
 /**
  * Security Function : Variable Verification according the type(Pseudo, Password, string, number,...)
  * @param string $value Value of the data to check
@@ -1122,7 +1142,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
     }
 
     switch ($type_check) {
-            //Pseudo des membres
+        //Pseudo des membres
         case "Pseudo_Groupname":
             if (!preg_match("#^[\w\s\-]{3,15}$#", $value)) {
                 log_("check_var", array("Pseudo_Groupname", $value));
@@ -1138,14 +1158,14 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-            //Mot de passe des membres
+        //Mot de passe des membres
         case "Password":
             if (!preg_match("#^[\w\s\-]{6,20}$#", $value)) {
                 return false;
             }
             break;
 
-            //Chaîne de caractères avec espace
+        //Chaîne de caractères avec espace
         case "Text":
             if (!preg_match("#^[\w'äàçéèêëïîöôûü\s\.\*\-]+$#", $value)) {
                 log_("check_var", array("Text", $value));
@@ -1153,7 +1173,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-            //Chaîne de caractères et  chiffre
+        //Chaîne de caractères et  chiffre
         case "CharNum":
             if (!preg_match("#^[\w\.\*\-\#]+$#", $value)) {
                 log_("check_var", array("CharNum", $value));
@@ -1161,7 +1181,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-            //Caractères
+        //Caractères
         case "Char":
             if (!preg_match("#^[[:alpha:]_\.\*\-]+$#", $value)) {
                 log_("check_var", array("Char", $value));
@@ -1169,22 +1189,22 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-            //Chiffres
+        //Chiffres
         case "Num":
             if (!preg_match("#^[[:digit:]]+$#", $value)) {
                 log_("check_var", array("Num", $value));
                 return false;
             }
             break;
-		            //Chiffres
+        //Chiffres
         case "Email":
             if (!preg_match('#^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}$#', $value)) {
                 log_("check_var", array("Email", $value));
                 return false;
             }
-            break;	
+            break;
 
-            //Galaxies
+        //Galaxies
         case "Galaxies":
             if ($value < 1 || $value > 999) {
                 log_("check_var", array("Galaxy or system", $value));
@@ -1192,16 +1212,17 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-            //Adresse internet
+        //Adresse internet
         case "URL":
             if (!preg_match("#^(((?:http?)://)?(?(2)(www\.)?|(www\.){1})?[-a-z0-9~_]{2,}(\.[-a-z0-9~._]{2,})?[-a-z0-9~_\/&\?=.]{2,})$#i",
-                $value)) {
+                $value)
+            ) {
                 log_("check_var", array("URL", $value));
                 return false;
             }
             break;
 
-            //Planète, Joueur et alliance
+        //Planète, Joueur et alliance
         case "Galaxy":
             //		if (!preg_match("#^[\w\s\.\*\-]+$#", $value)) {
             //			log_("check_var", array("Galaxy", $value));
@@ -1209,7 +1230,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             //		}
             break;
 
-            //Rapport d'espionnage
+        //Rapport d'espionnage
         case "Spyreport":
             //		if (!preg_match("#^[\w\s\[\]\:\-'%\.\*]+$#", $value)) {
             //			log_("check_var", array("Spyreport", $value));
@@ -1217,7 +1238,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             //		}
             break;
 
-            //Masque paramétrable
+        //Masque paramétrable
         case "Special":
             if (!preg_match($mask, $value)) {
                 log_("check_var", array("Special", $value));
@@ -1231,6 +1252,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
     return true;
 }
+
 /**
  * Resets the User for imported datas.
  * @param boolean $maintenance_action If true the function does not redirect the user to the raz_ration Page
@@ -1240,7 +1262,8 @@ function admin_raz_ratio($maintenance_action = false)
     global $db, $user_data;
 
     if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
-        1) {
+        1
+    ) {
         die("Acces interdit");
     }
 
@@ -1251,6 +1274,7 @@ function admin_raz_ratio($maintenance_action = false)
         redirection("index.php?action=message&id_message=raz_ratio&info");
     }
 }
+
 /**
  *  Microtime Value formatted for benchmark functions
  * @return int Current microtime
@@ -1263,6 +1287,7 @@ function benchmark()
 
     return $mtime;
 }
+
 /**
  * Security : HTTP GET Data verifications
  * @param string $secvalue The value to be checked
@@ -1272,12 +1297,13 @@ function check_getvalue($secvalue)
 {
     if (!is_array($secvalue)) {
         if ((preg_match("/<[^>]*script*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*object*\"?[^>]*>/i",
-            $secvalue)) || (preg_match("/<[^>]*iframe*\"?[^>]*>/i", $secvalue)) || (preg_match
+                $secvalue)) || (preg_match("/<[^>]*iframe*\"?[^>]*>/i", $secvalue)) || (preg_match
             ("/<[^>]*applet*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*meta*\"?[^>]*>/i",
-            $secvalue)) || (preg_match("/<[^>]*style*\"?[^>]*>/i", $secvalue)) || (preg_match
+                $secvalue)) || (preg_match("/<[^>]*style*\"?[^>]*>/i", $secvalue)) || (preg_match
             ("/<[^>]*form*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*img*\"?[^>]*>/i",
-            $secvalue)) || (preg_match("/\([^>]*\"?[^)]*\)/i", $secvalue)) || (preg_match("/\"/i",
-            $secvalue))) {
+                $secvalue)) || (preg_match("/\([^>]*\"?[^)]*\)/i", $secvalue)) || (preg_match("/\"/i",
+                $secvalue))
+        ) {
             return false;
         }
     } else {
@@ -1288,6 +1314,7 @@ function check_getvalue($secvalue)
     }
     return true;
 }
+
 /**
  * Security : HTTP POST Data verifications
  * @param string $secvalue The value to be checked
@@ -1297,7 +1324,8 @@ function check_postvalue($secvalue)
 {
     if (!is_array($secvalue)) {
         if ((preg_match("/<[^>]*script*\"?[^>]*>/", $secvalue)) || (preg_match("/<[^>]*style*\"?[^>]*>/",
-            $secvalue))) {
+                $secvalue))
+        ) {
             return false;
         }
     } else {
@@ -1316,16 +1344,16 @@ function check_postvalue($secvalue)
  * @param string $mod_folder : Folder name which contains the mod
  * @todo Query: "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] ."'"."'"
  * @todo Query: "INSERT INTO " . TABLE_MOD .
-                " (title, menu, action, root, link, version, active,admin_only) VALUES ('" . $value_mod[0] .
-                "','" . $value_mod[1] . "','" . $value_mod[2] . "','" . $value_mod[3] . "','" .
-                $value_mod[4] . "','" . $mod_version . "','" . $value_mod[5] . "','" . $value_mod[6] .
-                "')"
+ * " (title, menu, action, root, link, version, active,admin_only) VALUES ('" . $value_mod[0] .
+ * "','" . $value_mod[1] . "','" . $value_mod[2] . "','" . $value_mod[3] . "','" .
+ * $value_mod[4] . "','" . $mod_version . "','" . $value_mod[5] . "','" . $value_mod[6] .
+ * "')"
  * @return boolean true if the mod has been correctly installed
  * @api
  */
 function install_mod($mod_folder)
 {
-    global $db,$server_config;
+    global $db, $server_config;
     $is_ok = false;
     $filename = 'mod/' . $mod_folder . '/version.txt';
     if (file_exists($filename)) {
@@ -1340,9 +1368,9 @@ function install_mod($mod_folder)
     //Version Minimale OGSpy
     /** @var string $mod_required_ogspy */
     $mod_required_ogspy = trim($file[3]);
-    if(isset($mod_required_ogspy)){
-        if (version_compare($mod_required_ogspy,$server_config["version"]) > 0 ){
-            log_("mod_erreur_txt_version",$mod_folder);
+    if (isset($mod_required_ogspy)) {
+        if (version_compare($mod_required_ogspy, $server_config["version"]) > 0) {
+            log_("mod_erreur_txt_version", $mod_folder);
             redirection("index.php?action=message&id_message=errormod&info");
             exit();
         }
@@ -1352,7 +1380,7 @@ function install_mod($mod_folder)
     $value_mod = explode(',', $mod_config);
 
     // On vérifie si le mod est déjà installé""
-    $check = "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] ."'";
+    $check = "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] . "'";
     $query_check = $db->sql_query($check);
     $result_check = $db->sql_numrows($query_check);
 
@@ -1370,6 +1398,7 @@ function install_mod($mod_folder)
         }
     return $is_ok;
 }
+
 /**
  * Function to uninstall an OGSpy Module
  * @param string $mod_uninstall_name : Mod name
@@ -1380,11 +1409,12 @@ function install_mod($mod_folder)
 function uninstall_mod($mod_uninstall_name, $mod_uninstall_table)
 {
     global $db;
-    $db->sql_query("DELETE FROM " . TABLE_MOD . " WHERE title='" . $mod_uninstall_name ."';");
+    $db->sql_query("DELETE FROM " . TABLE_MOD . " WHERE title='" . $mod_uninstall_name . "';");
     if (!empty($mod_uninstall_table)) {
         $db->sql_query("DROP TABLE IF EXISTS " . $mod_uninstall_table . "");
     }
 }
+
 /**
  * Fonction to update the OGSpy mod
  * @param string $mod_folder : Folder name which contains the mod
@@ -1409,9 +1439,9 @@ function update_mod($mod_folder, $mod_name)
     //Version Minimale OGSpy
     /** @var string $mod_required_ogspy */
     $mod_required_ogspy = trim($file[3]);
-    if(isset($mod_required_ogspy)){
-        if (version_compare($mod_required_ogspy,$server_config["version"]) > 0 ){
-            log_("mod_erreur_txt_version",$mod_folder);
+    if (isset($mod_required_ogspy)) {
+        if (version_compare($mod_required_ogspy, $server_config["version"]) > 0) {
+            log_("mod_erreur_txt_version", $mod_folder);
             redirection("index.php?action=message&id_message=errormod&info");
             exit();
         }
@@ -1484,69 +1514,73 @@ function generate_key()
 /** Storing new GCM user
  * @return : user true or false
  */
-function storeGCMUser($name,$gcm_regid) {	
-	global $db;
-	$user_id = "0";
-	$result = $db->sql_query("SELECT user_id FROM " . TABLE_USER . " WHERE user_name = '" . $name . "' OR user_stat_name = '" . $name . "'");
-	
-	$nbGcmUsers = $db->sql_numrows("SELECT * FROM " . TABLE_GCM_USERS . " WHERE gcm_regid = '" . $gcm_regid . "'");
-	
-	while (list($userid) = $db->sql_fetch_row($result))	{
-		$user_id = $userid;		
-	}
-	
-	//return "Nombre de users GCM = " . $nbGcmUsers;
-	
-	if($nbGcmUsers == 0){
-		// insert user into database
-		$result = $db->sql_query("INSERT INTO " . TABLE_GCM_USERS . "(user_id, gcm_regid, created_at) VALUES('" . $user_id ."' , '" . $gcm_regid . "', NOW())");
-		// check for successful store
-		if ($result) {
-			return 1;
-		} else {
-			return 0;
-		}
-	} else {
-		return -1;
-	}
+function storeGCMUser($name, $gcm_regid)
+{
+    global $db;
+    $user_id = "0";
+    $result = $db->sql_query("SELECT user_id FROM " . TABLE_USER . " WHERE user_name = '" . $name . "' OR user_stat_name = '" . $name . "'");
+
+    $nbGcmUsers = $db->sql_numrows("SELECT * FROM " . TABLE_GCM_USERS . " WHERE gcm_regid = '" . $gcm_regid . "'");
+
+    while (list($userid) = $db->sql_fetch_row($result)) {
+        $user_id = $userid;
+    }
+
+    //return "Nombre de users GCM = " . $nbGcmUsers;
+
+    if ($nbGcmUsers == 0) {
+        // insert user into database
+        $result = $db->sql_query("INSERT INTO " . TABLE_GCM_USERS . "(user_id, gcm_regid, created_at) VALUES('" . $user_id . "' , '" . $gcm_regid . "', NOW())");
+        // check for successful store
+        if ($result) {
+            return 1;
+        } else {
+            return 0;
+        }
+    } else {
+        return -1;
+    }
 }
 
 /** Storing new GCM user
-* @return : user true or false
-*/
-function deleteGCMUser($gcm_regid) {
-	global $db;
+ * @return : user true or false
+ */
+function deleteGCMUser($gcm_regid)
+{
+    global $db;
 
-	// delete user in database
-	$result = $db->sql_query("DELETE FROM " . TABLE_GCM_USERS . " WHERE gcm_regid = '" . $gcm_regid . "'");
-	// check for successful store
-	if ($result) {
-		return true;
-	} else {
-		return false;
-	}
+    // delete user in database
+    $result = $db->sql_query("DELETE FROM " . TABLE_GCM_USERS . " WHERE gcm_regid = '" . $gcm_regid . "'");
+    // check for successful store
+    if ($result) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**
  * Getting all GCM users
  */
-function getAllGCMUsers() {
-	global $db;
-	$query = "SELECT gcm.user_id AS user_id, users.user_name AS name, users.user_stat_name AS name2, users.user_email AS email, gcm.gcm_regid AS gcm_regid, gcm.created_at AS created_at, gcm.version_android AS version_android, gcm.version_ogspy AS version_ogspy, gcm.device AS device ".
-			 "FROM " . TABLE_GCM_USERS . " gcm ".
-			 "INNER JOIN " . TABLE_USER . " users ON users.user_id = gcm.user_id";
-	return $db->sql_query($query);
+function getAllGCMUsers()
+{
+    global $db;
+    $query = "SELECT gcm.user_id AS user_id, users.user_name AS name, users.user_stat_name AS name2, users.user_email AS email, gcm.gcm_regid AS gcm_regid, gcm.created_at AS created_at, gcm.version_android AS version_android, gcm.version_ogspy AS version_ogspy, gcm.device AS device " .
+        "FROM " . TABLE_GCM_USERS . " gcm " .
+        "INNER JOIN " . TABLE_USER . " users ON users.user_id = gcm.user_id";
+    return $db->sql_query($query);
 }
 
 /**
  * Getting all GCM users but not me
  */
-function getAllGCMUsersExceptMe($id) {
-	global $db;
-	$query = "SELECT gcm_regid ".
-			 "FROM " . TABLE_GCM_USERS .
-			 " WHERE gcm_regid != '" . $id ."'";
-	return $db->sql_query($query);
+function getAllGCMUsersExceptMe($id)
+{
+    global $db;
+    $query = "SELECT gcm_regid " .
+        "FROM " . TABLE_GCM_USERS .
+        " WHERE gcm_regid != '" . $id . "'";
+    return $db->sql_query($query);
 }
 
 /**
@@ -1557,12 +1591,13 @@ function getAllGCMUsersExceptMe($id) {
  *      2 : Planète
  * typeArrondi = true pour un univers arrondi selon le type donnée
  */
-function calc_distance($a, $b, $type, $typeArrondi = false) {//a-b
+function calc_distance($a, $b, $type, $typeArrondi = false)
+{//a-b
     global $server_config;
-    
+
     $max_type = 0;
-    
-    switch($type){
+
+    switch ($type) {
         case 0: //Galaxy
             $max_type = $server_config['num_of_galaxies']; //9
             break;
@@ -1570,8 +1605,8 @@ function calc_distance($a, $b, $type, $typeArrondi = false) {//a-b
             $max_type = $server_config['num_of_systems']; //499
             break;
     }
-    if($typeArrondi) {
-        if(abs($a - $b) < $max_type/2) {
+    if ($typeArrondi) {
+        if (abs($a - $b) < $max_type / 2) {
             return abs($a - $b);//|a-b|
         } else {
             return abs(abs($a - $b) - $max_type); //||a-b| - base|
@@ -1580,6 +1615,7 @@ function calc_distance($a, $b, $type, $typeArrondi = false) {//a-b
         return abs($a - $b);//|a-b|
     }
 }
+
 /********************************************************************************/
 /**                     Booster partie                                         **/
 /* Description :
@@ -1595,58 +1631,65 @@ function calc_distance($a, $b, $type, $typeArrondi = false) {//a-b
  * @return tableau associatif des boosters ou NULL en cas d'échec
  * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
 */
-function booster_lire_bdd($id_player, $id_planet){
+function booster_lire_bdd($id_player, $id_planet)
+{
     global $db;
     $result = NULL;
 
-    $request = "SELECT boosters FROM ".TABLE_USER_BUILDING." WHERE user_id=".$id_player." AND planet_id=".$id_planet;
+    $request = "SELECT boosters FROM " . TABLE_USER_BUILDING . " WHERE user_id=" . $id_player . " AND planet_id=" . $id_planet;
     $res = $db->sql_query($request);
-    if($res) {
+    if ($res) {
         $str = $db->sql_fetch_row($res);
-        if($str){
+        if ($str) {
             return booster_decode($str[0]);
         }
     }
     return $result;
 }
+
 /* Écrit la string de stockage des objets Ogame dans la BDD.
  * @arg id_player   id du joueur
  * @arg id_planet   id de la planète à rechercher
  * @str_booster     string de stockage des boosters (donnée par les fonctions booster_encode() ou booster_encodev())
  * @return FALSE en cas d'échec
 */
-function booster_ecrire_bdd_str($id_player, $id_planet, $str_booster){
+function booster_ecrire_bdd_str($id_player, $id_planet, $str_booster)
+{
     global $db;
-    
-    $request = "UPDATE ".TABLE_USER_BUILDING." SET boosters='".$str_booster."' WHERE user_id=".$id_player." AND planet_id=".$id_planet;
+
+    $request = "UPDATE " . TABLE_USER_BUILDING . " SET boosters='" . $str_booster . "' WHERE user_id=" . $id_player . " AND planet_id=" . $id_planet;
     return $db->sql_query($request);
 }
+
 /* Écrit les informations des objets Ogame dans la BDD sous forme d'une string de stockage.
  * @arg id_player   id du joueur
  * @arg id_planet   id de la planète à rechercher
  * @tab_booster     tableau infos des boosters (donnée par les fonctions booster_lire_bdd() ou booster_decode())
  * @return FALSE en cas d'échec
 */
-function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster){
+function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster)
+{
     return booster_ecrire_bdd_str($id_player, $id_planet, booster_encode($tab_booster));
 }
+
 /* Mets à jour les boosters de tous les users en fonction de la date de fin dans la BDD
  *
 */
-function booster_maj_bdd(){
+function booster_maj_bdd()
+{
     global $db;
 
-    $request = "SELECT user_id, planet_id, boosters FROM ".TABLE_USER_BUILDING;
+    $request = "SELECT user_id, planet_id, boosters FROM " . TABLE_USER_BUILDING;
     $res = $db->sql_query($request);
-    if($res) {
+    if ($res) {
         $requests = array();
-        while($row = $db->sql_fetch_assoc($res)) {            
+        while ($row = $db->sql_fetch_assoc($res)) {
             $tmp = booster_verify_str($row['boosters']);
-            if($tmp !== $row['boosters']) {
+            if ($tmp !== $row['boosters']) {
                 $row['boosters'] = $tmp;
-                $requests[] = "UPDATE ".TABLE_USER_BUILDING." SET boosters = '".$row['boosters']."' ".
-                             " WHERE user_id = ".$row['user_id'].
-                             " AND planet_id = ".$row['planet_id'];
+                $requests[] = "UPDATE " . TABLE_USER_BUILDING . " SET boosters = '" . $row['boosters'] . "' " .
+                    " WHERE user_id = " . $row['user_id'] .
+                    " AND planet_id = " . $row['planet_id'];
             }
         }
         foreach ($requests as $request) {
@@ -1661,27 +1704,31 @@ function booster_maj_bdd(){
  * @return tableau associatif des boosters mis à jour
  * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'extention_p', 'extention_m')
 */
-function booster_verify($boosters) {
+function booster_verify($boosters)
+{
     $b_control = array('booster_m_', 'booster_c_', 'booster_d_');
     $current_time = time();
-    
-    foreach($b_control as $b) {
-        if($boosters[$b.'date'] <= $current_time) {
-            $boosters[$b.'val'] = 0;
-            $boosters[$b.'date'] = 0;
+
+    foreach ($b_control as $b) {
+        if ($boosters[$b . 'date'] <= $current_time) {
+            $boosters[$b . 'val'] = 0;
+            $boosters[$b . 'date'] = 0;
         }
     }
     return $boosters;
 }
+
 /* Contrôle la date de validité des boosters et reset si la date est dépassée
  * @param $str     string de stockage des boosters (donnée par les fonctions booster_encode() ou booster_encodev() ou directement from BDD)
  * @return tableau associatif des boosters mis à jour
  * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'extention_p', 'extention_m')
 */
-function booster_verify_str($str) {
+function booster_verify_str($str)
+{
     return booster_encode(booster_verify(booster_decode($str)));
 }
-/* donne des tableaux d'informations en relation avec les objets Ogame 
+
+/* donne des tableaux d'informations en relation avec les objets Ogame
  * @type    détermine les informations renvoyées
  *      [Default] donne un tableau avec les uuid des objets Ogame
  *      'definition' donne un tableau avec le nom de l'objet (ex. 'Booster de métal en or')
@@ -1692,49 +1739,50 @@ function booster_verify_str($str) {
  *      'default_str' donne la string de stockage par défaut : "m:0:0_c:0:0_d:0:0_p:0_m:0"
  * @return  le tableau correspondant au type
 */
-function booster_objets_tab($type='') {
-    $objet_str = array('Booster de métal en or'    ,'Booster de métal en argent'    ,'Booster de métal en bronze',
-                       'Booster de cristal en or'  ,'Booster de cristal en argent'  ,'Booster de cristal en bronze',
-                       'Booster de deutérium en or','Booster de deutérium en argent','Booster de deutérium en bronze',
-                       'Extension planétaire en or','Extension planétaire en argent','Extension planétaire en bronze',
-                       'Extension lunaire en or'   ,'Extension lunaire en argent'   ,'Extension lunaire en bronze');                    
+function booster_objets_tab($type = '')
+{
+    $objet_str = array('Booster de métal en or', 'Booster de métal en argent', 'Booster de métal en bronze',
+        'Booster de cristal en or', 'Booster de cristal en argent', 'Booster de cristal en bronze',
+        'Booster de deutérium en or', 'Booster de deutérium en argent', 'Booster de deutérium en bronze',
+        'Extension planétaire en or', 'Extension planétaire en argent', 'Extension planétaire en bronze',
+        'Extension lunaire en or', 'Extension lunaire en argent', 'Extension lunaire en bronze');
     $objet_uuid = array('05294270032e5dc968672425ab5611998c409166',//'Booster de métal +30%'
-                        'ba85cc2b8a5d986bbfba6954e2164ef71af95d4a',//'Booster de métal +20%'
-                        'de922af379061263a56d7204d1c395cefcfb7d75',//'Booster de métal +10%'
-                        '118d34e685b5d1472267696d1010a393a59aed03',//'Booster de cristal +30%'
-                        '422db99aac4ec594d483d8ef7faadc5d40d6f7d3',//'Booster de cristal +20%'
-                        '3c9f85221807b8d593fa5276cdf7af9913c4a35d',//'Booster de cristal +10%'
-                        '5560a1580a0330e8aadf05cb5bfe6bc3200406e2',//'Booster de deutérium +30%'
-                        'e4b78acddfa6fd0234bcb814b676271898b0dbb3',//'Booster de deutérium +20%'
-                        'd9fa5f359e80ff4f4c97545d07c66dbadab1d1be',//'Booster de deutérium +10%'
-                        '04e58444d6d0beb57b3e998edc34c60f8318825a',//'Extension planétaire +15'
-                        '0e41524dc46225dca21c9119f2fb735fd7ea5cb3',//'Extension planétaire +9'
-                        '16768164989dffd819a373613b5e1a52e226a5b0',//'Extension planétaire +4'
-                        '05ee9654bd11a261f1ff0e5d0e49121b5e7e4401',//'Extension lunaire +6'
-                        'c21ff33ba8f0a7eadb6b7d1135763366f0c4b8bf',//'Extension lunaire +4'
-                        'be67e009a5894f19bbf3b0c9d9b072d49040a2cc');//'Extension lunaire +2'
-    $objet_uuid_str = array('m:30:0','m:20:0','m:10:0','c:30:0','c:20:0','c:10:0','d:30:0','d:20:0','d:10:0','p:15','p:9','p:4','m:6','m:4','m:2');
-    $objet_uuid_tab = array(array('booster_m', 30),array('booster_m', 20),array('booster_m', 10),
-                        array('booster_c', 30),array('booster_c', 20),array('booster_c', 10),
-                        array('booster_d', 30),array('booster_d', 20),array('booster_d', 10),
-                        array('extention_p', 15),array('extention_p', 9),array('extention_p', 4),
-                        array('extention_m', 6),array('extention_m', 4),array('extention_m', 2));
+        'ba85cc2b8a5d986bbfba6954e2164ef71af95d4a',//'Booster de métal +20%'
+        'de922af379061263a56d7204d1c395cefcfb7d75',//'Booster de métal +10%'
+        '118d34e685b5d1472267696d1010a393a59aed03',//'Booster de cristal +30%'
+        '422db99aac4ec594d483d8ef7faadc5d40d6f7d3',//'Booster de cristal +20%'
+        '3c9f85221807b8d593fa5276cdf7af9913c4a35d',//'Booster de cristal +10%'
+        '5560a1580a0330e8aadf05cb5bfe6bc3200406e2',//'Booster de deutérium +30%'
+        'e4b78acddfa6fd0234bcb814b676271898b0dbb3',//'Booster de deutérium +20%'
+        'd9fa5f359e80ff4f4c97545d07c66dbadab1d1be',//'Booster de deutérium +10%'
+        '04e58444d6d0beb57b3e998edc34c60f8318825a',//'Extension planétaire +15'
+        '0e41524dc46225dca21c9119f2fb735fd7ea5cb3',//'Extension planétaire +9'
+        '16768164989dffd819a373613b5e1a52e226a5b0',//'Extension planétaire +4'
+        '05ee9654bd11a261f1ff0e5d0e49121b5e7e4401',//'Extension lunaire +6'
+        'c21ff33ba8f0a7eadb6b7d1135763366f0c4b8bf',//'Extension lunaire +4'
+        'be67e009a5894f19bbf3b0c9d9b072d49040a2cc');//'Extension lunaire +2'
+    $objet_uuid_str = array('m:30:0', 'm:20:0', 'm:10:0', 'c:30:0', 'c:20:0', 'c:10:0', 'd:30:0', 'd:20:0', 'd:10:0', 'p:15', 'p:9', 'p:4', 'm:6', 'm:4', 'm:2');
+    $objet_uuid_tab = array(array('booster_m', 30), array('booster_m', 20), array('booster_m', 10),
+        array('booster_c', 30), array('booster_c', 20), array('booster_c', 10),
+        array('booster_d', 30), array('booster_d', 20), array('booster_d', 10),
+        array('extention_p', 15), array('extention_p', 9), array('extention_p', 4),
+        array('extention_m', 6), array('extention_m', 4), array('extention_m', 2));
     $separateur = '_';
     $default_str = array('m:0:0', 'c:0:0', 'd:0:0', 'p:0', 'm:0');
-    
-    switch($type) {
+
+    switch ($type) {
         case 'definition':
             return $objet_str;
         case 'array':
             $n = count($objet_uuid);
-            for($i=0 ; $i<$n ; $i++) {
-                $result[$objet_uuid[$i]] = $objet_uuid_tab[$i]; 
+            for ($i = 0; $i < $n; $i++) {
+                $result[$objet_uuid[$i]] = $objet_uuid_tab[$i];
             }
             return $result;
         case 'string':
             $n = count($objet_uuid);
-            for($i=0 ; $i<$n ; $i++) {
-                $result[$objet_uuid[$i]] = $objet_uuid_str[$i]; 
+            for ($i = 0; $i < $n; $i++) {
+                $result[$objet_uuid[$i]] = $objet_uuid_str[$i];
             }
             return $result;
         case 'full':
@@ -1747,12 +1795,15 @@ function booster_objets_tab($type='') {
             return $objet_uuid;
     }
 }
+
 /* Indique si un uuid est enregistré dans OGSpy (il existe)
  * @uuid    string uuid récupéré de la page Ogame
 */
-function booster_is_uuid($uuid) {
+function booster_is_uuid($uuid)
+{
     return in_array($uuid, booster_objets_tab());
 }
+
 /* Mets à jour le tableau infos des boosters.
  * @boosters tableau infos des boosters (donnée par les fonctions booster_lire_bdd() ou booster_decode())
  * @uuid     string uuid de l'objet Ogame récupéré de la page Ogame
@@ -1761,20 +1812,23 @@ function booster_is_uuid($uuid) {
  *          si $boosters==NULL OU booster_uuid($b) sans uuid -> donne tableau avec valeurs par défaut (équivalent booster_decode())
  *          NULL en cas d'erreur (uuid inconnu)
 */
-function booster_uuid($boosters, $uuid='', $date=0) {
-    if($boosters==NULL || $uuid=='') {
+function booster_uuid($boosters, $uuid = '', $date = 0)
+{
+    if ($boosters == NULL || $uuid == '') {
         $boosters = booster_decode();
         return $boosters;
     } else {
         $objet_uuid = booster_objets_tab('array');
         //if(isset($objet_uuid[$uuid]) || array_key_exists($uuid, $objet_uuid)) {
-        if(isset($objet_uuid[$uuid])) {
-            if($objet_uuid[$uuid][0][0] == 'b') { //1er lettre de booster
-                $boosters[$objet_uuid[$uuid][0].'_val'] = $objet_uuid[$uuid][1];
-                $boosters[$objet_uuid[$uuid][0].'_date'] = $date;
-            } elseif($objet_uuid[$uuid][0][0] == 'e') { //1er lettre de extension
+        if (isset($objet_uuid[$uuid])) {
+            if ($objet_uuid[$uuid][0][0] == 'b') { //1er lettre de booster
+                $boosters[$objet_uuid[$uuid][0] . '_val'] = $objet_uuid[$uuid][1];
+                $boosters[$objet_uuid[$uuid][0] . '_date'] = $date;
+            } elseif ($objet_uuid[$uuid][0][0] == 'e') { //1er lettre de extension
                 $boosters[$objet_uuid[$uuid][0]] = $objet_uuid[$uuid][1];
-            } else { return NULL;} //Ne devrait jamais arriver si les tableaux dans booster_objets_tab() sont bien construit
+            } else {
+                return NULL;
+            } //Ne devrait jamais arriver si les tableaux dans booster_objets_tab() sont bien construit
             return $boosters;
         }
     }
@@ -1785,19 +1839,20 @@ function booster_uuid($boosters, $uuid='', $date=0) {
  * @str string contenant le temps
  * @return int nombre de seconde correspondant à $str. 0 si problème
 */
-function booster_lire_date($str) {
-    static $tri = array(   's',   'j',   'h', 'm', 's');
-    static $num = array(604800, 86400,  3600,  60,  1);
+function booster_lire_date($str)
+{
+    static $tri = array('s', 'j', 'h', 'm', 's');
+    static $num = array(604800, 86400, 3600, 60, 1);
     static $n = 5;
     $result = 0;
-    $j = $n-1;  //Lecture de droite à gauche on démarre par les secondes.
-    
+    $j = $n - 1;  //Lecture de droite à gauche on démarre par les secondes.
+
     $parts = sscanf($str, '%d%c %d%c %d%c %d%c %d%c');
-    for($i=$n-1 ; $i >= 0 ; $i--) {
-        $car = $parts[$i*2+1];  //%c
-        $valeur = $parts[$i*2]; //%d
-        if(!is_null($car)) {
-            if($car == $tri[$j]){
+    for ($i = $n - 1; $i >= 0; $i--) {
+        $car = $parts[$i * 2 + 1];  //%c
+        $valeur = $parts[$i * 2]; //%d
+        if (!is_null($car)) {
+            if ($car == $tri[$j]) {
                 $result += $valeur * $num[$j--];
             }
         }
@@ -1812,56 +1867,62 @@ function booster_lire_date($str) {
  * @return      tableau contenant les informations des objets
  * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
 */
-function booster_decode($str=NULL, &$boosters=NULL) {
-    if($str) {
+function booster_decode($str = NULL, &$boosters = NULL)
+{
+    if ($str) {
         $s = booster_objets_tab('separateur');
-        $a = preg_match("/m:(\d+):(\d+)".$s."c:(\d+):(\d+)".$s."d:(\d+):(\d+)".$s."p:(\d+)".$s."m:(\d+)/", $str, $boosters);
-        if($a) {
+        $a = preg_match("/m:(\d+):(\d+)" . $s . "c:(\d+):(\d+)" . $s . "d:(\d+):(\d+)" . $s . "p:(\d+)" . $s . "m:(\d+)/", $str, $boosters);
+        if ($a) {
             $i = 1;
-        return array('booster_m_val'=>intval($boosters[$i++]), 'booster_m_date'=>intval($boosters[$i++]),
-                     'booster_c_val'=>intval($boosters[$i++]), 'booster_c_date'=>intval($boosters[$i++]),
-                     'booster_d_val'=>intval($boosters[$i++]), 'booster_d_date'=>intval($boosters[$i++]),
-                     'extention_p'=>intval($boosters[$i++]), 'extention_m'=>intval($boosters[$i++]));
+            return array('booster_m_val' => intval($boosters[$i++]), 'booster_m_date' => intval($boosters[$i++]),
+                'booster_c_val' => intval($boosters[$i++]), 'booster_c_date' => intval($boosters[$i++]),
+                'booster_d_val' => intval($boosters[$i++]), 'booster_d_date' => intval($boosters[$i++]),
+                'extention_p' => intval($boosters[$i++]), 'extention_m' => intval($boosters[$i++]));
         }
-    }    
-    return array('booster_m_val'=>0, 'booster_m_date'=>0,
-                 'booster_c_val'=>0, 'booster_c_date'=>0,
-                 'booster_d_val'=>0, 'booster_d_date'=>0,
-                 'extention_p'=>0, 'extention_m'=>0);
+    }
+    return array('booster_m_val' => 0, 'booster_m_date' => 0,
+        'booster_c_val' => 0, 'booster_c_date' => 0,
+        'booster_d_val' => 0, 'booster_d_date' => 0,
+        'extention_p' => 0, 'extention_m' => 0);
 }
+
 /* Transforme le tableau des informations des objets Ogame en une string de stockage.
  * @b tableau associatif des infos array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
  * @return objet sous format string de stockage ("m:0:0_c:0:0_d:0:0_p:0_m:0 si pas d'argument)
 */
-function booster_encode($b=NULL) {
+function booster_encode($b = NULL)
+{
     $str = '';
-    if($b){
-        $separateur= booster_objets_tab('separateur');
-        $str .= 'm:'.$b['booster_m_val'].':'.$b['booster_m_date'].$separateur;
-        $str .= 'c:'.$b['booster_c_val'].':'.$b['booster_c_date'].$separateur;
-        $str .= 'd:'.$b['booster_d_val'].':'.$b['booster_d_date'].$separateur;
-        $str .= 'p:'.$b['extention_p'].$separateur;
-        $str .= 'm:'.$b['extention_m'];
+    if ($b) {
+        $separateur = booster_objets_tab('separateur');
+        $str .= 'm:' . $b['booster_m_val'] . ':' . $b['booster_m_date'] . $separateur;
+        $str .= 'c:' . $b['booster_c_val'] . ':' . $b['booster_c_date'] . $separateur;
+        $str .= 'd:' . $b['booster_d_val'] . ':' . $b['booster_d_date'] . $separateur;
+        $str .= 'p:' . $b['extention_p'] . $separateur;
+        $str .= 'm:' . $b['extention_m'];
     } else {
         $str = booster_objets_tab('default_str');//"m:0:0_c:0:0_d:0:0_p:0_m:0";
     }
     return $str;
 }
+
 /* Transforme les valeurs des objets Ogame en une string de stockage.
  * string de stockage par défaut = m:0:0_c:0:0_d:0:0_p:0_m:0
  * @return objet sous format string de stockage ("m:0:0_c:0:0_d:0:0_p:0_m:0" si pas d'argument)
 */
-function booster_encodev($booster_m_val=0, $booster_m_date=0, $booster_c_val=0, $booster_c_date=0,
-                $booster_d_val=0, $booster_d_date=0, $extention_p=0, $extention_m=0) {
-    $separateur= booster_objets_tab('separateur');
+function booster_encodev($booster_m_val = 0, $booster_m_date = 0, $booster_c_val = 0, $booster_c_date = 0,
+                         $booster_d_val = 0, $booster_d_date = 0, $extention_p = 0, $extention_m = 0)
+{
+    $separateur = booster_objets_tab('separateur');
     $str = '';
-    $str .= 'm:'.$booster_m_val.':'.$booster_m_date.$separateur;
-    $str .= 'c:'.$booster_c_val.':'.$booster_c_date.$separateur;
-    $str .= 'd:'.$booster_d_val.':'.$booster_d_date.$separateur;
-    $str .= 'p:'.$extention_p.$separateur;
-    $str .= 'm:'.$extention_m;
+    $str .= 'm:' . $booster_m_val . ':' . $booster_m_date . $separateur;
+    $str .= 'c:' . $booster_c_val . ':' . $booster_c_date . $separateur;
+    $str .= 'd:' . $booster_d_val . ':' . $booster_d_date . $separateur;
+    $str .= 'p:' . $extention_p . $separateur;
+    $str .= 'm:' . $extention_m;
     return $str;
 }
+
 /**                     Fin booster partie                                     **/
 /********************************************************************************/
 ?>
