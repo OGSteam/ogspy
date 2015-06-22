@@ -9,10 +9,8 @@ ______________________________________________________________ */
     left: 0;
     right:0;
     max-width: 100%;
-    background-color: black;
-    background-image: url("images/toolbar.png");
-    background-repeat: repeat-x;
-    height: 30px;
+	background: url("img/toolbar.png") repeat-x;
+	height: 30px;
     font-size: small;
     color: #ECFF00
 }
