@@ -32,10 +32,6 @@ $sql_timing = 0;
 if (!isset($pub_action)) {
 	$pub_action = "";
 }
-//Mode débug défini dans includes/config.php
-if (MODE_DEBUG) {
-	require_once("views/debug.php");
-}
 
 if (is_dir("install") && $pub_action != "message") {
 	require_once("install/version.php");

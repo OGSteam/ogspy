@@ -4,7 +4,7 @@
 # Date : 08/01/2010
 # Version : 1.70
 
-$lang['menu_cdr'] = "Champs de ruines";
+$lang['INSTALL_WELCOME'] = "Bienvenue sur le Projet OGSpy";
 $lang['menu_option'] = "Option";
 $lang['coord'] = "Coordonnées";
 $lang['nb_recy'] = "Nombre de recycleurs";
