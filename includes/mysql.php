@@ -280,7 +280,7 @@ class sql_db
      * Free MySQL ressources on the latest Query result
      * @param int $query_id The Query id.
      */
-    function sql_free_result($query_result = 0)
+    function sql_free_result($query_id = 0)
     {
         mysqli_free_result($query_id);
     }
