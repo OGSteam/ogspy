@@ -122,17 +122,20 @@ class sql_db
         $this->server = $sqlserver;
         $this->dbname = $database;
 
-        $this->db_connect_id = @new mysqli($this->server, $this->user, $this->password, $this->dbname);
-
-        if ($this->db_connect_id) {
-            if (!$this->db_connect_id->set_charset("utf8")) {
-                printf("Erreur lors du chargement du jeu de caractères utf8 : %s\n", $this->db_connect_id->error);
-            }
-            return $this->db_connect_id;
-        } elseif ($mysqli->connect_errno) {
-            printf("Échec de la connexion : %s\n", $this->db_connect_id->connect_error);
-            return false;
-        }
+        $this->db_connect_id = new mysqli($this->server, $this->user, $this->password, $this->dbname);
+	
+		
+		/* Vérification de la connexion */
+		if ($this->db_connect_id->connect_errno) {
+			echo("Échec de la connexion : ".$this->db_connect_id->connect_error);
+			exit();
+		}
+		
+		if (!$this->db_connect_id->set_charset("utf8")) {
+			printf("Erreur lors du chargement du jeu de caractères utf8 : %s\n", $this->db_connect_id->error);
+		} else {
+			/*printf("Jeu de caractères courant : %s\n", $this->db_connect_id->character_set_name());*/
+		}
 
         $sql_timing += benchmark() - $sql_start;
     }
@@ -277,9 +280,9 @@ class sql_db
      * Free MySQL ressources on the latest Query result
      * @param int $query_id The Query id.
      */
-    function sql_free_result($query_id = 0)
+    function sql_free_result($query_result = 0)
     {
-        mysql_free_result($query_id);
+        mysqli_free_result($query_id);
     }
 
     /**
