@@ -44,7 +44,7 @@ if (isset($pub_redirection)) {
 	<td align="center">
 		<table>
 		<tr>
-			<td align="center"><font size="3"><b>Bienvenue sur le projet OGSpy</b></font></td>
+			<td align="center"><font size="3"><b><?php echo $lang['INSTALL_WELCOME']; ?></b></font></td>
 		</tr>
 		<tr><td>&nbsp;</td></tr>
 		<tr>	
