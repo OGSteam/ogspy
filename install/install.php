@@ -1,10 +1,10 @@
 <?php
 /**
- * Fichier d'installation d'ogspy : ROOT/install/install.php 
+ * Fichier d'installation d'OGSpy : ROOT/install/install.php
  * @package OGSpy
  * @subpackage install
  * @author Kyser
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright 2007, http://ogsteam.fr/
  * @version 3.04
  * @since 3.04 - 26 sept. 07
  */
@@ -26,17 +26,6 @@ define("INSTALL_IN_PROGRESS", true);
 @chmod("../journal",0777);
 @chmod("../mod",0777);
 @chmod("../mod/autoupdate/tmp",0777);
-
-if(!(version_compare(PHP_VERSION, "5.0.0") >= 0)){
-	echo "<br /><br />";
-	echo "<table align='center'><tr><th colspan ='2'><font color='red'>Installation impossible :</font></th><tr/>";
-	echo "<tr><td colspan='2'>Pour pouvoir effectuer une installation complète d'OGSpy,";
-	echo "<br/>votre hébergement doit être doté au minimum de la version 5 de PHP !";
-	echo "<br/><br/>Vous disposez actuellement de la version : " . PHP_VERSION;
-	echo "<tr align='center'><td colspan='2'><a href='install.php'>Rafraichir</a></td></tr>";
-	echo "</table>";
-	exit();	
-}
 
 /**
 * Affiche une boite d'erreur de permission
@@ -112,7 +101,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 
 
     //Création de la structure de la base de données
-	$sql_query = @fread(@fopen("schemas/ogspy_structure.sql", 'r'), @filesize("schemas/ogspy_structure.sql")) or die("<h1>Le script sql d'installation est introuvable</h1>");
+	$sql_query = @fread(@fopen("schemas/ogspy_structure.sql", 'r'), @filesize("schemas/ogspy_structure.sql")) or die("<h1>SQL structure file has not been found</h1>");
 
 	$sql_query = preg_replace("#ogspy_#", $sgbd_tableprefix, $sql_query);
 	
@@ -166,6 +155,12 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 		
 	generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $num_of_galaxies, $num_of_systems);
 
+	echo "<h3 align='center'><font color='yellow'>Installation du serveur OGSpy effectuée avec succès !</font></h3>";
+	echo "<center>";
+	echo "<b>Pensez à supprimer le dossier 'install'</b><br />";
+	echo "<a href='../index.php'>Retour</a>";
+	echo "</center>";
+	exit();
 }
 
 /**
@@ -199,13 +194,6 @@ function generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password,
 	if (!write_file("../parameters/id.php", "w", $id_php)) {
 		die("Echec installation, impossible de générer le fichier 'parameters/id.php'");
 	}
-
-	echo "<h3 align='center'><font color='yellow'>Installation du serveur OGSpy effectuée avec succès !</font></h3>";
-	echo "<center>";
-	echo "<b>Pensez à supprimer le dossier 'install'</b><br />";
-	echo "<a href='../index.php'>Retour</a>";
-	echo "</center>";
-	exit();
 }
 
 if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_username) && isset($pub_sgbd_password) && isset($pub_sgbd_tableprefix) &&
