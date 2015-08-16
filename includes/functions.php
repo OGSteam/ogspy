@@ -128,8 +128,6 @@ function hexhex($value)
     return dechex(hexdec($value));
 }
 
-;
-
 /**
  * Generates a random password with 6 chars
  * @return string $password The generated password

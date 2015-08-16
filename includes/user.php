@@ -1344,7 +1344,7 @@ function user_set_building($data, $planet_id, $planet_name, $fields, $coordinate
     foreach ($lines as $line) {
         $arr = array();
         $line = trim($line);
-        if (ereg("^(.*) \(Niveau ([[:digit:]]{1,3}).*\)$", $line, $arr)) {
+        if (preg_match("^(.*) \(Niveau ([[:digit:]]{1,3}).*\)$", $line, $arr)) {
             list($string, $building, $level) = $arr;
 
             $building = trim($building);
@@ -1434,7 +1434,7 @@ function user_set_technology($data)
     foreach ($lines as $line) {
         $arr = array();
         $line = trim($line);
-        if (ereg("^(.*) \(Niveau ([[:digit:]]{1,3}).*\)$", $line, $arr)) {
+        if (preg_match("^(.*) \(Niveau ([[:digit:]]{1,3}).*\)$", $line, $arr)) {
             list($string, $technology, $level) = $arr;
 
             $technology = trim($technology);
@@ -1523,7 +1523,7 @@ function user_set_defence($data, $planet_id, $planet_name, $fields, $coordinates
         $arr = array();
         $line = trim($line);
 
-        if (ereg("^(.*) \(([[:space:][:digit:]]{1,9}|[[:digit:]]{1,9}) disponible", $line,
+        if (preg_match("^(.*) \(([[:space:][:digit:]]{1,9}|[[:digit:]]{1,9}) disponible", $line,
             $arr)) {
             list($string, $defence, $level) = $arr;
 
