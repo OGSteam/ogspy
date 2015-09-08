@@ -5,6 +5,7 @@ $ui_lang="french";
 
 if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
 	require_once ("../lang/".$ui_lang."/lang_install.php");
+    require_once ("../lang/".$ui_lang."/lang_help.php");
 }else
 {
 	require_once ("./lang/".$ui_lang."/lang_about.php");
@@ -13,6 +14,7 @@ if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
     require_once ("./lang/".$ui_lang."/lang_galaxy.php");
     require_once ("./lang/".$ui_lang."/lang_gcm.php");
     require_once ("./lang/".$ui_lang."/lang_header_tail.php");
+    require_once ("./lang/".$ui_lang."/lang_help.php");
     require_once ("./lang/".$ui_lang."/lang_home.php");
     require_once ("./lang/".$ui_lang."/lang_login.php");
     require_once ("./lang/".$ui_lang."/lang_menu.php");
