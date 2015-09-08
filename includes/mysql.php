@@ -15,43 +15,6 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
-
-/**
- * Displays an Error message and exits OGSpy
- * @param string $query Faulty SQL Request
- */
-function DieSQLError($query)
-{
-    echo "<table align=center border=1>\n";
-    echo "<tr><td class='c' colspan='3'>Database MySQL Error</td></tr>\n";
-    echo "<tr><th colspan='3'>ErrNo:" . mysql_errno() . ":  " . mysql_error() . "</th></tr>\n";
-    echo "<tr><th colspan='3'><u>Query:</u><br>" . $query . "</th></tr>\n";
-    if (MODE_DEBUG) {
-        $i = 0;
-        foreach (debug_backtrace() as $v) {
-            echo "<tr><th width='50' align='center' rowspan='" . (isset($v['args']) ? sizeof($v['args']) + 1 : "") . "'>[" . $i . "]</th>";
-            echo "<th colspan='2'>";
-            echo "file => " . $v['file'] . "<br>";
-            echo "ligne => " . $v['line'] . "<br>";
-            echo "fonction => " . $v['function'];
-            echo "</th></tr>\n";
-            $j = 0;
-            if (isset($v['args'])) {
-                foreach ($v['args'] as $arg) {
-                    echo "<tr><th align='center'>[" . $j . "]</td><td>" . $arg . "</th></tr>\n";
-                    $j++;
-                }
-            }
-            $i++;
-        }
-    }
-
-    echo "</table>\n";
-
-    log_("mysql_error", array($query, mysql_errno(), mysql_error(), debug_backtrace()));
-    die();
-}
-
 /**
  * OGSpy MySQL Database Class
  * @package OGSpy
@@ -132,7 +95,7 @@ class sql_db
 		}
 		
 		if (!$this->db_connect_id->set_charset("utf8")) {
-			printf("Erreur lors du chargement du jeu de caractères utf8 : %s\n", $this->db_connect_id->error);
+			echo("Erreur lors du chargement du jeu de caractères utf8 : ".$this->db_connect_id->error);
 		} else {
 			/*printf("Jeu de caractères courant : %s\n", $this->db_connect_id->character_set_name());*/
 		}
@@ -172,7 +135,7 @@ class sql_db
         $sql_start = benchmark();
 
         if ($Auth_dieSQLError) {
-            $this->result = $this->db_connect_id->query($query) or dieSQLError($query);
+            $this->result = $this->db_connect_id->query($query) or $this->DieSQLError($query);
         } else {
             $this->last_query = $query;
             $this->result = $this->db_connect_id->query($query);
@@ -322,6 +285,43 @@ class sql_db
             return false;
         }
     }
+
+    /**
+     * Displays an Error message and exits OGSpy
+     * @param string $query Faulty SQL Request
+     */
+    function DieSQLError($query)
+    {
+        echo "<table align=center border=1>\n";
+        echo "<tr><td class='c' colspan='3'>Database MySQL Error</td></tr>\n";
+        echo "<tr><th colspan='3'>ErrNo:" . $this->db_connect_id->connect_errno . ":  " . $this->db_connect_id->connect_error . "</th></tr>\n";
+        echo "<tr><th colspan='3'><u>Query:</u><br>" . $query . "</th></tr>\n";
+        if (MODE_DEBUG) {
+            $i = 0;
+            foreach (debug_backtrace() as $v) {
+                echo "<tr><th width='50' align='center' rowspan='" . (isset($v['args']) ? sizeof($v['args']) + 1 : "") . "'>[" . $i . "]</th>";
+                echo "<th colspan='2'>";
+                echo "file => " . $v['file'] . "<br>";
+                echo "ligne => " . $v['line'] . "<br>";
+                echo "fonction => " . $v['function'];
+                echo "</th></tr>\n";
+                $j = 0;
+                if (isset($v['args'])) {
+                    foreach ($v['args'] as $arg) {
+                        echo "<tr><th align='center'>[" . $j . "]</td><td>" . $arg . "</th></tr>\n";
+                        $j++;
+                    }
+                }
+                $i++;
+            }
+        }
+
+        echo "</table>\n";
+
+        log_("mysql_error", array($query, $this->db_connect_id->connect_errno, $this->db_connect_id->connect_error, debug_backtrace()));
+        die();
+    }
+
 
 }
 
