@@ -30,21 +30,21 @@ require_once("views/page_header.php");
 
                     if ($subaction != "ogsteam") {
                         echo "\t\t\t" . "<td class='c' width='150' onclick=\"window.location = 'index.php?action=about&amp;subaction=ogsteam';\">";
-                        echo "<a style='cursor:pointer'><font color='lime'>OGS Team</font></a>";
+                        echo "<a style='cursor:pointer'><font color='lime'>".$lang['ABOUT_TEAM']."</font></a>";
                         echo "</td>";
                     } else {
                         echo "\t\t\t" . "<th width='150'>";
-                        echo "<a>OGS Team</a>";
+                        echo "<a>".$lang['ABOUT_TEAM']."</a>";
                         echo "</th>";
                     }
 
                     if ($subaction != "changelog") {
                         echo "\t\t\t" . "<td class='c' width='150' onclick=\"window.location = 'index.php?action=about&amp;subaction=changelog';\">";
-                        echo "<a style='cursor:pointer'><font color='lime'>Changelog</font></a>";
+                        echo "<a style='cursor:pointer'><font color='lime'>".$lang['ABOUT_CHANGELOG']."</font></a>";
                         echo "</td>";
                     } else {
                         echo "\t\t\t" . "<th width='150'>";
-                        echo "<a>Changelog</a>";
+                        echo "<a>".$lang['ABOUT_CHANGELOG']."</a>";
                         echo "</th>";
                     }
                     ?>
