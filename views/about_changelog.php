@@ -20,11 +20,11 @@ if (!defined('IN_SPYOGAME')) {
 
 <table width="70%" style="text-align:center;">
     <tr>
-        <td align="center" class="c" colspan="2"><font color="Yellow">Notes de version</font></td>
+        <td align="center" class="c" colspan="2"><font color="Yellow"><?php echo($lang['ABOUT_RELEASENOTE']); ?></font></td>
     </tr>
     <tr>
-        <td class="c" width="50">Version</td>
-        <td class="c">Description</td>
+        <td class="c" width="50"><?php echo($lang['ABOUT_VERSION']); ?></td>
+        <td class="c"><?php echo($lang['ABOUT_DESCRIPTION']); ?></td>
     </tr>
     <tr>
         <th>3.2.0</th>
