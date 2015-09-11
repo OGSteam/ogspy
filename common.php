@@ -38,6 +38,9 @@ if (file_exists("parameters/id.php")) {
         require_once ('../parameters/id.php');
 }
 
+//Language File
+require_once ("lang/lang_main.php");
+
 //Appel des fonctions
 require_once ("includes/config.php");
 require_once ("includes/functions.php");
@@ -51,10 +54,6 @@ require_once ("includes/mod.php");
 require_once ("includes/ogame.php");
 require_once ("includes/cache.php");
 require_once ("includes/chart_js.php");
-
-//Language File
-require_once ("lang/lang_main.php");
-
 
 //Récupération des valeur GET, POST, COOKIE
 extract($_GET,EXTR_PREFIX_ALL , "pub");
