@@ -194,6 +194,7 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
 }
 
 
+
 /**
  * Calculates the Production corresponding to the current ratio
  * @param int $M Metal Mine Level
@@ -216,51 +217,60 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
  * @return array("M", "C", "D", "ratio", "conso_E", "prod_E", "prod_CES", "prod_CEF", "prod_SAT", "conso_M", "conso_C", "conso_D")
  */
 function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing = 0, $off_geo = 0, $off_full = 0, $NRJ = 0, $Plasma = 0,
-                                $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1)
+$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1 , $booster  = NULL)
 {
 
-    if ($off_full == 1) {
-        $off_ing = $off_geo = 2;
-    }
-    $tmp = ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
-        $per_M, $per_C, $per_D, $per_CES, $per_CEF, $per_SAT);
-    $ratio = $tmp["ratio"];
-    $consommation_E = $tmp["conso_E"];
-    $production_E = $tmp["prod_E"];
-    $prod_CES = $tmp["prod_CES"];
-    $prod_CEF = $tmp["prod_CEF"];
-    $prod_SAT = $tmp["prod_SAT"];
-    $conso_M = $tmp["conso_M"];
-    $conso_C = $tmp["conso_C"];
-    $conso_D = $tmp["conso_D"];
+	if ($off_full == 1) {
+		$off_ing = $off_geo = 2;
+	}
+	$tmp = ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
+			$per_M, $per_C, $per_D, $per_CES, $per_CEF, $per_SAT);
+	$ratio = $tmp["ratio"];
+	$consommation_E = $tmp["conso_E"];
+	$production_E = $tmp["prod_E"];
+	$prod_CES = $tmp["prod_CES"];
+	$prod_CEF = $tmp["prod_CEF"];
+	$prod_SAT = $tmp["prod_SAT"];
+	$conso_M = $tmp["conso_M"];
+	$conso_C = $tmp["conso_C"];
+	$conso_D = $tmp["conso_D"];
 
-    if ($ratio > 0) {
-        //production de metal avec ratio
-        $prod_M = production("M", $M, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_M;
-        $prod_M *= $ratio;
-        $prod_M = round($prod_M);
+	if ($ratio > 0) {
+		//production de metal avec ratio
+		$prod_M = production("M", $M, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_M;
+		$prod_M *= $ratio;
+		$prod_M = round($prod_M);
 
-        //production de cristal avec ratio
-        $prod_C = production("C", $C, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_C;
-        $prod_C *= $ratio;
-        $prod_C = round($prod_C);
+		//production de cristal avec ratio
+		$prod_C = production("C", $C, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_C;
+		$prod_C *= $ratio;
+		$prod_C = round($prod_C);
 
-        //production de deut avec ratio
-        $prod_D = production("D", $D, $off_geo, $temperature_max) * $per_D;
-        $prod_D *= $ratio;
-        $prod_D -= consumption("CEF", $CEF) * $per_CEF; //on soustrait la conso de deut de la cef
-        $prod_D = round($prod_D);
-    } else {
-        $prod_M = production("M", 0);   //production de base
-        $prod_C = production("C", 0);   //production de base
-        $prod_D = production("D", 0);   //production de base
-    }
+		//production de deut avec ratio
+		$prod_D = production("D", $D, $off_geo, $temperature_max) * $per_D;
+		$prod_D *= $ratio;
+		$prod_D -= consumption("CEF", $CEF) * $per_CEF; //on soustrait la conso de deut de la cef
+		$prod_D = round($prod_D);
+	} else {
+		$prod_M = production("M", 0);   //production de base
+		$prod_C = production("C", 0);   //production de base
+		$prod_D = production("D", 0);   //production de base
+	}
 
-    return array("M" => $prod_M, "C" => $prod_C, "D" => $prod_D, "ratio" => $ratio,
-        "conso_E" => $consommation_E, "prod_E" => $production_E, "prod_CES" => $prod_CES,
-        "prod_CEF" => $prod_CEF, "prod_SAT" => $prod_SAT, "conso_M" => $conso_M,
-        "conso_C" => $conso_C, "conso_D" => $conso_D);
+	if($booster != NULL)
+	{
+		// si booster
+		$prod_M = $prod_M * (1 + $booster['booster_m_val'] / 100);
+		$prod_C = $prod_C * (1 + $booster['booster_c_val'] / 100);
+		$prod_D = $prod_D * (1 + $booster['booster_d_val'] / 100);
+	}
+	 
+	return array("M" => $prod_M, "C" => $prod_C, "D" => $prod_D, "ratio" => $ratio,
+			"conso_E" => $consommation_E, "prod_E" => $production_E, "prod_CES" => $prod_CES,
+			"prod_CEF" => $prod_CEF, "prod_SAT" => $prod_SAT, "conso_M" => $conso_M,
+			"conso_C" => $conso_C, "conso_D" => $conso_D);
 }
+
 
 
 /**
