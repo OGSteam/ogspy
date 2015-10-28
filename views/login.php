@@ -28,18 +28,18 @@ $enable_register_view = isset ($server_config['enable_register_view']) ? $server
 
     <table style="margin:0 auto; padding:0; border-collapse:separate; border-spacing:1px">
         <tr>
-            <td class="c" colspan="2" style="text-align:left">Paramètres de connexion</td>
+            <td class="c" colspan="2" style="text-align:left"><?php echo($lang['LOGIN_CONNEXION_PARAMETERS']); ?></td>
         </tr>
         <tr>
-            <th style="width:150px">Login :</th>
+            <th style="width:150px"><?php echo($lang['LOGIN_USER']); ?></th>
             <th style="width:150px"><input type='text' name='login'/></th>
         </tr>
         <tr>
-            <th style="width:150px">Mot de passe :</th>
+            <th style="width:150px"><?php echo($lang['LOGIN_PASSWORD']); ?></th>
             <th style="width:150px"><input type='password' name='password'/></th>
         </tr>
         <tr>
-            <th colspan='2'><input type='submit' value='Connexion'/></th>
+            <th colspan='2'><input type='submit' value='<?php echo($lang['LOGIN_CONNEXION_BUTTON']); ?>'/></th>
         </tr>
         <?php
 
@@ -47,16 +47,14 @@ $enable_register_view = isset ($server_config['enable_register_view']) ? $server
 
             ?>
             <tr>
-                <td class="c" colspan="2" style="text-align:left">Demande de compte OGSpy</td>
+                <td class="c" colspan="2" style="text-align:left"><?php echo($lang['LOGIN_ACCOUNT_REQUEST']); ?></td>
             </tr>
             <tr>
-                <th colspan='2'>Si vous ne disposez pas d'un compte, il faut <span
-                        style="color:red">obligatoirement</span> en demander un sur le forum
-                    de <?php echo $server_config['register_alliance']; ?>.
+                <th colspan='2'><?php echo($lang['LOGIN_ACCOUNT_REQUEST_DESC']); ?>
                 </th>
             </tr>
             <tr>
-                <th colspan='2'><input type="button" value="Demander un compte"
+                <th colspan='2'><input type="button" value="<?php echo($lang['LOGIN_ACCOUNT_REQUEST_BUTTON']); ?>"
                                        onclick="window.open('<?php echo $server_config['register_forum']; ?>');"/></th>
             </tr>
             <?php
