@@ -10,13 +10,13 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
-$user_empire = user_get_empire();
+$user_empire = user_get_empire($user_data['user_id']);
 $user_building = $user_empire["building"];
 $user_defence = $user_empire["defence"];
 if ($user_empire["technology"]) $user_technology = $user_empire["technology"];
 else $user_technology = '0';
 
-$nb_planete = find_nb_planete_user();
+$nb_planete = find_nb_planete_user($user_data['user_id']);
 
 // Recuperation des pourcentages
 $planet = array("planet_id" => "", "M_percentage" => 0, "C_percentage" => 0, "D_percentage" => 0, "CES_percentage" => 100, "CEF_percentage" => 100, "Sat_percentage" => 100);
@@ -38,11 +38,12 @@ echo "<input type='hidden' id='off_geologue' value='" . $user_data["off_geologue
 echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
 
 //Calcul et correction boosters :
-for ($i = 101; $i <= $nb_planete + 100; $i++) {
+//for ($i = 101; $i <= $nb_planete + 100; $i++) {
     /*Boosters et extensions modification :*/
-    $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-    $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
-}
+	//booster dans fonctions
+    //$booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+   // $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+//}
 ?>
 
 <script src="js/ogame_formula.js" type="text/javascript"></script>
@@ -130,7 +131,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $booster = "&nbsp;";
 
-            $booster = $booster_tab[$i]['extention_p']; // La vue Lune n'existe pas sur la page simulation
+            $booster = $user_building[$i]["booster_tab"]['extention_p']; // La vue Lune n'existe pas sur la page simulation
 
             echo "\t" . "<th colspan='2'>" . $booster . "<input id='extension" . $i . "' type='hidden' value='" . $booster . "'></th>" . "</th>" . "\n";
         }
@@ -266,7 +267,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
             echo "<select id='M_" . $i . "_booster' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 30; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
-                if ($booster_tab[$i]['booster_m_val'] == $j) echo " selected='selected'";
+                if ($user_building[$i]["booster_tab"]['booster_m_val'] == $j) echo " selected='selected'";
                 echo ">" . $j . "%</option>" . "\n";
             }
             echo "</select></th>" . "\n";
@@ -332,7 +333,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
             echo "<select id='C_" . $i . "_booster' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 30; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
-                if ($booster_tab[$i]['booster_c_val'] == $j) echo " selected='selected'";
+                if ($user_building[$i]["booster_tab"]['booster_c_val'] == $j) echo " selected='selected'";
                 echo ">" . $j . "%</option>" . "\n";
             }
             echo "</select></th>" . "\n";
@@ -398,7 +399,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
             echo "<select id='D_" . $i . "_booster' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 30; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
-                if ($booster_tab[$i]['booster_d_val'] == $j) echo " selected='selected'";
+                if ($user_building[$i]["booster_tab"]['booster_d_val'] == $j) echo " selected='selected'";
                 echo ">" . $j . "%</option>" . "\n";
             }
             echo "</select></th>" . "\n";
@@ -437,7 +438,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         $lab_max = 0;
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             echo "\t" . "<th colspan='2'><font color='lime'><div id='building_pts_" . $i . "'>-</div></font>" . "\n";
-            echo "\t<input type='hidden' id='building_" . $i . "' value='" . implode(array_slice($user_building[$i], 12, -2), "<>") . "' /></th>";
+            echo "\t<input type='hidden' id='building_" . $i . "' value='" . implode(array_slice($user_building[$i], 12, -3), "<>") . "' /></th>";
             if ($lab_max < $user_building[$i]["Lab"]) $lab_max = $user_building[$i]["Lab"];
         }
         ?>
@@ -459,7 +460,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         for ($i = 201; $i <= 200 + $nb_planete; $i++) {
             echo "\t<th colspan='2'><font color='lime'><div id='lune_pts_" . $i . "'>-</div></font>" . "\n";
             if ($user_building[$i]) {
-                echo "\t<input type='hidden' id='lune_b_" . $i . "' value='" . implode(array_slice($user_building[$i], 12, -2, true), "<>") . "' />";
+                echo "\t<input type='hidden' id='lune_b_" . $i . "' value='" . implode(array_slice($user_building[$i], 12, -3, true), "<>") . "' />";
             } else {
                 echo "\t<input type='hidden' id='lune_b_" . $i100 . "' value='0' />";
             }

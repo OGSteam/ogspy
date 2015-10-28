@@ -13,10 +13,13 @@ if (!defined('IN_SPYOGAME')) {
 
 require_once("includes/ogame.php");
 
-$user_empire = user_get_empire();
+$user_empire = user_get_empire($user_data['user_id']);
 $user_building = $user_empire["building"];
 $user_defence = $user_empire["defence"];
 $user_technology = $user_empire["technology"];
+$user_production = user_empire_production($user_empire,$user_data);
+
+
 if (!isset($pub_view) || $pub_view == "") $view = "planets";
 elseif ($pub_view == "planets" || $pub_view == "moons") $view = $pub_view;
 else $view = "planets";
@@ -47,13 +50,14 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
         <?php
         if(isset($pub_alert_empire) && $pub_alert_empire) echo 'message("Pensez à renseigner, si besoin est, les noms de planètes et les températures\nqui ne peuvent pas être récupérées par la page Empire d\'OGame.");';
 
-        $nb_planete = find_nb_planete_user();
+        $nb_planete = find_nb_planete_user($user_data['user_id']);
 
         $name = $coordinates = $fields = $temperature_min = $temperature_max = $satellite = "";
         for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
-         /*Boosters et extensions modification :*/
-            $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-            $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+          /*Boosters et extensions modification :
+           * => calcul effectué dans fonction  get empire*/
+        // $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+        //    $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
 
             $name .= "'".$user_building[$i]["planet_name"]."', ";
             $coordinates .= "'".$user_building[$i]["coordinates"]."', ";
@@ -65,8 +69,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
         for ($i=201 ; $i<=$nb_planete+200 ; $i++) {
          /*Boosters et extensions modification :*/
-            $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-            $user_building[$i]["fields"] += $booster_tab[$i]['extention_m'];
+        	//=> calcul effectué dans fonction  get empire*/
+           // $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+           // $user_building[$i]["fields"] += $booster_tab[$i]['extention_m'];
 
             $name .= "'Lune', ";
             $coordinates .= "'', ";
@@ -173,12 +178,12 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
         // verification de compte de planete/lune avec la technologie astro
         $astro = astro_max_planete($user_technology['Astrophysique']);
 
-        if (((find_nb_planete_user() > $astro) || (find_nb_moon_user() > $astro)) && ($user_technology != false)) {
+        if (((find_nb_planete_user($user_data['user_id']) > $astro) || (find_nb_moon_user($user_data['user_id']) > $astro)) && ($user_technology != false)) {
             echo '<tr>';
             echo '<td class="c" colspan="' . ($nb_planete < 10 ? '10' : $nb_planete + 1) . '">';
             echo 'Une incohérence a été trouvée dans votre espace personnel<br />';
-            echo (find_nb_planete_user() > $astro) ? 'En rapport avec le nombre de vos planetes<br />' : '';
-            echo (find_nb_moon_user() > $astro) ? 'En rapport avec le nombre de vos lunes<br />' : '';
+            echo (find_nb_planete_user($user_data['user_id']) > $astro) ? 'En rapport avec le nombre de vos planetes<br />' : '';
+            echo (find_nb_moon_user($user_data['user_id']) > $astro) ? 'En rapport avec le nombre de vos lunes<br />' : '';
             echo '</td>';
             echo '</tr>';
         }
@@ -194,6 +199,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <th>&nbsp;</th>
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
+            
                 echo "<th>";
                 if (!isset($pub_view) || $pub_view == "planets") {
                     echo "<input type='image' title='Déplacer la planète " . $user_building[$i]["planet_name"] . " vers la gauche' src='images/previous.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;left';\">&nbsp;&nbsp;";
@@ -269,9 +275,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                 $booster = "&nbsp;";
 
                 if ($view == "planets") {
-                    $booster = $booster_tab[$i]['extention_p'];
+                    $booster = $user_building[$i]['booster_tab']['extention_p'];
                 } else {
-                    $booster = $booster_tab[$i]['extention_m'];
+                    $booster = $user_building[$i]['booster_tab']['extention_m'];
                 }
                 echo "\t" . "<th>" . $booster . "</th>" . "\n";
             }
@@ -297,8 +303,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $M = $user_building[$i]["M"];
                 if ($M != "") {
-                    $production = production("M", $M, $officier, 0, 0, $user_technology['Plasma']);
-                    echo "\t" . "<th>" . number_format(floor($production), 0, ',', ' ') . "</th>" . "\n";
+                	echo "\t" . "<th>" . $user_production['theorique'][$i]['M'] . "</th>" . "\n";
                 } else {
                     echo "\t" . "<th>&nbsp</th>" . "\n";
                 }
@@ -312,9 +317,8 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $C = $user_building[$i]["C"];
                 if ($C != "") {
-                    $production = production("C", $C, $officier, 0, 0, $user_technology['Plasma']);
-                    echo "\t" . "<th>" . number_format(floor($production), 0, ',', ' ') . "</th>" . "\n";
-                } else {
+                  	echo "\t" . "<th>" . $user_production['theorique'][$i]['C'] . "</th>" . "\n";
+              } else {
                     echo "\t" . "<th>&nbsp</th>" . "\n";
                 }
             }
@@ -324,14 +328,10 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <th><a>Deut&eacute;rium</a></th>
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $D = $user_building[$i]["D"];
-                $temperature_max = $user_building[$i]["temperature_max"];
-                $CEF = $user_building[$i]["CEF"];
-                $CEF_consumption = consumption("CEF", $CEF);
+            	$D = $user_building[$i]["D"];
                 if ($D != "") {
-                    $production = production("D", $D, $officier, $temperature_max) - $CEF_consumption;
-                    echo "\t" . "<th>" . number_format(floor($production), 0, ',', ' ') . "</th>" . "\n";
-                } else {
+                        	echo "\t" . "<th>" . $user_production['theorique'][$i]['D'] . "</th>" . "\n";
+         		 } else {
                     echo "\t" . "<th>&nbsp</th>" . "\n";
                 }
             }
@@ -340,24 +340,10 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
         <tr>
             <th><a>&Eacute;nergie</a></th>
             <?php
-            //modif 3.0.7
-            $product = array("M" => 0, "C" => 0, "D" => 0, "ratio" => 1, "conso_E" => 0, "prod_E" => 0);
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $ratio[$i] = $product;
-                $NRJ = $user_technology["NRJ"] != "" ? $user_technology["NRJ"] : "0"; // pour deut !!!! erreur dans ancienne formule ou nrj etait pas prise en compte
-
-                $ratio[$i] = bilan_production_ratio($user_building[$i]["M"], $user_building[$i]["C"], $user_building[$i]["D"],
-                    $user_building[$i]["CES"], $user_building[$i]["CEF"], $user_building[$i]["Sat"],
-                    $user_building[$i]["temperature_max"], $user_data['off_ingenieur'], $user_data['off_geologue'], $off_full,
-                    $NRJ, $user_technology['Plasma'], $user_building[$i]["M_percentage"] / 100, $user_building[$i]["C_percentage"] / 100,
-                    $user_building[$i]["D_percentage"] / 100, $user_building[$i]["CES_percentage"] / 100, $user_building[$i]["CEF_percentage"] / 100,
-                    $user_building[$i]["Sat_percentage"] / 100);
-            }
 
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                echo "\t" . "<th>" . number_format(floor($ratio[$i]["prod_E"]), 0, ',', ' ') . "</th>\n\t";
-
-            }
+            	echo "\t" . "<th>" . $user_production['reel'][$i]['prod_E'] . "</th>" . "\n";
+                        }
             ?>
         <tr>
             <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">Production
@@ -370,13 +356,13 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             // ratio
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 echo "\t" . "<th style='font-weight:bold; color:";
-                if ($ratio[$i]['ratio'] != 1) {
+                if ($user_production['reel'][$i]['ratio'] != 1) {
                     echo "red";
                 } else {
                     echo "green";
                 }
                 echo ";'>";
-                echo number_format(round($ratio[$i]['ratio'], 3), 0, ',', ' ');
+                echo number_format(round($user_production['reel'][$i]['ratio'], 3), 0, ',', ' ');
                 echo "</th>" . "\n";
             }
             ?>
@@ -386,7 +372,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 if ($user_building[$i]["M"] != "") {
-                    echo "\t" . "<th>" . number_format(floor($ratio[$i]['M'] * (1 + $booster_tab[$i]['booster_m_val'] / 100)), 0, ',', ' ') . "</th>" . "\n";
+                    echo "\t" . "<th>" . number_format(floor($user_production['reel'][$i]['M']), 0, ',', ' ') . "</th>" . "\n";
                 } else {
                     echo "\t" . "<th>&nbsp</th>" . "\n";
                 }
@@ -398,7 +384,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 if ($user_building[$i]["C"] != "") {
-                    echo "\t" . "<th>" . number_format(floor($ratio[$i]['C'] * (1 + $booster_tab[$i]['booster_c_val'] / 100)), 0, ',', ' ') . "</th>" . "\n";
+                    echo "\t" . "<th>" . number_format(floor($user_production['reel'][$i]['C']), 0, ',', ' ') . "</th>" . "\n";
                 } else {
                     echo "\t" . "<th>&nbsp</th>" . "\n";
                 }
@@ -410,7 +396,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 if ($user_building[$i]["D"] != "") {
-                    echo "\t" . "<th>" . number_format(floor($ratio[$i]['D'] * (1 + $booster_tab[$i]['booster_d_val'] / 100)), 0, ',', ' ') . "</th>" . "\n";
+                    echo "\t" . "<th>" . number_format(floor($user_production['reel'][$i]['D']), 0, ',', ' ') . "</th>" . "\n";
                 } else {
                     echo "\t" . "<th>&nbsp</th>" . "\n";
                 }
@@ -422,7 +408,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 // $booster_tab = booster_decode($user_building[$i]["boosters"]);
-                echo "\t" . "<th>m:" . $booster_tab[$i]['booster_m_val'] . '%, c:' . $booster_tab[$i]['booster_c_val'] . '%, d:' . $booster_tab[$i]['booster_d_val'] . "%</th>" . "\n";
+                echo "\t" . "<th>m:" . $user_building[$i]['booster_tab']['booster_m_val'] . '%, c:' . $user_building[$i]['booster_tab']['booster_c_val'] . '%, d:' . $user_building[$i]['booster_tab']['booster_d_val'] . "%</th>" . "\n";
             }
             ?>
         </tr>

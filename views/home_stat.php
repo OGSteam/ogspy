@@ -397,12 +397,12 @@ if (sizeof($dates) > 0) {
     }
     echo "<tr><td class='c' colspan='2'>Divers " . help(null, $title) . "</td></tr>";
 
-    $user_empire = user_get_empire();
+    $user_empire = user_get_empire($user_data["user_id"]);
     $user_building = $user_empire["building"];
     $user_defence = $user_empire["defence"];
     $user_technology = $user_empire["technology"];
 
-    $nb_planete = find_nb_planete_user();
+    $nb_planete = find_nb_planete_user($user_data["user_id"]);
 
     $b = round(all_building_cumulate(array_slice($user_building, 0, $nb_planete)) /
         1000);
