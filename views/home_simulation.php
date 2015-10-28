@@ -152,13 +152,13 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
                                                             onchange='update_page();'></td>
         <td class="c" colspan="2">Officier ingénieur <input type='checkbox'
                                                             id='c_off_ingenieur' <?php print ($user_data["off_ingenieur"] == 1) ? 'checked="checked"' : '' ?>
-                                                            onClick='javascript:update_page();'>
+                                                            onClick='update_page();'>
         <td class="c" colspan="2">Officier géologue <input type='checkbox'
                                                            id='c_off_geologue' <?php print ($user_data["off_geologue"] == 1) ? 'checked="checked"' : '' ?>
-                                                           onClick='javascript:update_page();'>
+                                                           onClick='update_page();'>
         <td class="c" colspan="2">Full officier <input type='checkbox'
                                                        id='c_off_full' <?php print ($off_full == 1) ? 'checked="checked"' : '' ?>
-                                                       onClick='javascript:update_page();'>
+                                                       onClick='update_page();'>
         <td class="c" colspan="<?php echo 2 * ($nb_planete + 1) - 8; ?>">&nbsp;</td>
     </tr>
     <tr>

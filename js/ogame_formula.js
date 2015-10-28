@@ -85,22 +85,22 @@ function update_page() {
     //
     // Planètes
     //
-    var M_1_conso = new Array();
-    var M_1_prod = new Array();
-    var C_1_conso = new Array();
-    var C_1_prod = new Array();
-    var D_1_conso = new Array();
-    var D_1_prod = new Array();
+    var M_1_conso = [];
+    var M_1_prod = [];
+    var C_1_conso = [];
+    var C_1_prod = [];
+    var D_1_conso = [];
+    var D_1_prod = [];
 
-    var NRJ_1 = new Array();
+    var NRJ_1 = [];
 
-    var M_1 = new Array();
-    var C_1 = new Array();
-    var D_1 = new Array();
+    var M_1 = [];
+    var C_1 = [];
+    var D_1 = [];
 
-    var CES_1 = new Array();
-    var CEF_1 = new Array();
-    var Sat_1 = new Array();
+    var CES_1 = [];
+    var CEF_1 = [];
+    var Sat_1 = [];
 
     var nombrePlanete = parseInt(document.getElementById('simu').title); // on passe par le titre du tableau pour recuperer le nombre de planetes, la recuperation du nb de colonne ne marchant pas ...
 
@@ -207,11 +207,11 @@ function update_page() {
     //
     // Points
     //                      UdR, Nanites, CSp,   HM,   HC,   HD,    CM,    CC,    CD, Lab, TeraF, DepotR,  Silo, BaseL, Phalang, PdS
-    init_b_prix = new Array(720, 1600000, 700, 1000, 1500, 2000, 2645, 3967, 5290, 800, 150000, 41000, 80000, 80000, 8000000, 60000);
+    init_b_prix = [720, 1600000, 700, 1000, 1500, 2000, 2645, 3967, 5290, 800, 150000, 41000, 80000, 80000, 8000000, 60000];
 
     // Batiments planetes
     var total_b_pts = 0;
-    var total_pts_1 = new Array();
+    var total_pts_1 = [];
 
     j = 101;
     for (i = 0; i < nombrePlanete; i++) {
@@ -238,11 +238,11 @@ function update_page() {
     }
     document.getElementById("total_b_pts").innerHTML = format(Math.round(total_b_pts / 1000));
 
-    init_d_prix = new Array(2000, 2000, 8000, 37000, 8000, 130000, 20000, 100000, 10000, 25000);
+    init_d_prix = [2000, 2000, 8000, 37000, 8000, 130000, 20000, 100000, 10000, 25000];
 
     // Defences planetes
     var total_d_pts = 0;
-    j = 101
+    j = 101;
     for (i = 0; i < nombrePlanete; i++) {
         var defence_1 = document.getElementById("defence_" + j).value;
         defence_1 = defence_1.split('<>');
@@ -258,7 +258,7 @@ function update_page() {
     document.getElementById("total_d_pts").innerHTML = format(Math.round(total_d_pts / 1000));
 
     var total_lune_pts = 0;
-    var lune_pts_1 = new Array();
+    var lune_pts_1 = [];
     var t = 201;
     for (i = 0; i < nombrePlanete; i++) {
         var lune_b_1 = document.getElementById("lune_b_" + t).value;
@@ -281,7 +281,7 @@ function update_page() {
 
     // Sat planetes
     var total_sat_pts = 0;
-    var sat_pts_1 = new Array();
+    var sat_pts_1 = [];
     j = 101;
     for (i = 0; i < nombrePlanete; i++) {
         var sat_lune_1 = document.getElementById("sat_lune_" + j).value;
@@ -300,7 +300,7 @@ function update_page() {
     }
 
     // Technologies planete avec le labo de plus au niveau
-    init_t_prix = new Array(1400, 1000, 1000, 800, 1000, 1200, 6000, 1000, 6600, 36000, 300, 1400, 7000, 800000, 0, 16000);
+    init_t_prix = [1400, 1000, 1000, 800, 1000, 1200, 6000, 1000, 6600, 36000, 300, 1400, 7000, 800000, 0, 16000];
 
     var techno = document.getElementById("techno").value;
     techno = techno.split('<>');

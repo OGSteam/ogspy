@@ -42,8 +42,8 @@ if ($user_auth["server_set_ranking"] == 1 || $user_data["user_admin"] == 1 || $u
     var date = new Date;
     var delta = Math.round((<?php echo (time() * 1000);?> -date.getTime()) / 1000);
     function Timer() {
-        var days = new Array("Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam");
-        var months = new Array("Jan", "Fév", "Mar", "Avr", "Mai", "Jui", "Jui", "Aoû", "Sep", "oct", "nov", "déc");
+        var days = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
+        var months = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jui", "Jui", "Aoû", "Sep", "oct", "nov", "déc"];
 
         date = new Date;
         date.setTime(date.getTime() + delta * 1000);
@@ -64,7 +64,7 @@ if ($user_auth["server_set_ranking"] == 1 || $user_data["user_admin"] == 1 || $u
         }
     }
 
-    go_visibility = new Array;
+    go_visibility = [];
     function goblink() {
         if (document.getElementById && document.all) {
             blink_tab = document.getElementsByTagName('blink');
