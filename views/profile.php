@@ -29,9 +29,9 @@ require_once("views/page_header.php");
     <!-- DEBUT DU SCRIPT -->
     <script language="JavaScript">
         function check_password(form) {
-            var old_password = form.old_password.value
-            var new_password = form.new_password.value
-            var new_password2 = form.new_password2.value
+            var old_password = form.old_password.value;
+            var new_password = form.new_password.value;
+            var new_password2 = form.new_password2.value;
 
             if (old_password != "" && (new_password == "" || new_password2 == "")) {
                 alert("Saisissez le nouveau mot de passe et sa confirmation");
