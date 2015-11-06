@@ -38,4 +38,13 @@ $help["uni_arrondi"] = "Pour version Ogame >5.8.5 En cours de projet dans la Gam
 $help["config_cache"] = "Durée de vie du cache config en seconde.";
 $help["mod_cache"] = "Durée de vie du cache mod en seconde..";
 
-?>
+/* admin page */
+
+$help['display_mips'] = "Affiche ou cache les MIP des users de OGSpy, mais ne les affichent qu'a ceux qui peuvent voir les alliances protégées.";
+$help['member_stats'] = "Affiche ou cache le tableau de statistique des membres en bas de la page statistiques";
+$help['member_connected'] = "Affiche les (*) qui permettent de savoir qui est connecté<br />Désactivé si l'affichage des membres n'est pas activé";
+$help['member_registration'] = "Affiche ou cache le tableau contenan le lien du forum de cet OGSpy";
+$help['ally_name'] = "Nom de l'alliance de cet OGSpy";
+$help['forum_link'] = "Lien d'une section du forum, voir le PM de l'administrateur OGSpy";
+$help['first_displayed_module'] = "Module affiché lors de la connexion des utilisateurs à cet OGSpy";
+$help['first_displayed_module_admin'] = "Module affiché lors de la connexion des administrateurs de cet OGSpy";
