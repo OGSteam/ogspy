@@ -142,5 +142,3 @@ if (isset($pub_unregister) && isset($pub_regId)) {
         die("User details missing for registration !");
     }
 }
-
-?>
