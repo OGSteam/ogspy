@@ -78,7 +78,7 @@ if ($usergroup_info !== false) {
                     $index = 0;
                     echo "</tr>" . "\n" . "<tr>";
                 }
-                echo "\t" . "<form method='POST' action='index.php?action=usergroup_delmember&amp;user_id=" . $user["user_id"] . "&group_id=" . $group_id . "' onsubmit=\"return confirm('Etes-vous sûr de vouloir supprimer " . $user["user_name"] . " du groupe ?');\">" . "\n";
+                echo "\t" . "<form method='POST' action='index.php?action=usergroup_delmember&amp;user_id=" . $user["user_id"] . "&group_id=" . $group_id . "' onsubmit=\"return confirm('Etes-vous sûr de vouloir supprimer  du groupe l'utilisateur " . $user["user_name"] . " du groupe ?');\">" . "\n";
                 echo "\t" . "<th width='175'>" . $user["user_name"] . "</th><th width='25'><input type='image' src='images/userdrop.png' title='Supprimer " . $user["user_name"] . " du groupe'></th>";
                 echo "\t" . "</form>" . "\n";
                 $index++;
@@ -127,9 +127,8 @@ if ($usergroup_info !== false) {
                     <table align="center" width="100%">
                         <tr>
                             <td class="c" width="300">Nom du groupe
-                            </th>
-                            <td class="c" width="150" align="center"><input type="text" name="group_name"
-                                                                            value="<?php echo $usergroup_info["group_name"]; ?>">
+                            <th>
+                            <td class="c" width="150" align="center"><input type="text" name="group_name" value="<?php echo $usergroup_info["group_name"]; ?>">
                             </th>
                         </tr>
                         <tr>
