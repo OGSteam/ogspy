@@ -124,3 +124,12 @@ $lang['ADMIN_MEMBERS_POPUP_COADMIN'] = "co-administrateur : ";
 $lang['ADMIN_MEMBERS_POPUP_MGTMEMBERS'] = "Gestion des membres";
 $lang['ADMIN_MEMBERS_POPUP_MGTRANKS'] = "Gestion des classements ";
 $lang['ADMIN_MEMBERS_POPUP_GROUP'] = "Création d'un nouveau compte";
+
+/* admin_members_group.php*/
+
+$lang['ADMIN_GROUP_CREATE'] = "Création d'un groupe";
+$lang['ADMIN_GROUP_NAME'] = "Nom";
+$lang['ADMIN_GROUP_RIGHTS'] = "Permissions";
+$lang['ADMIN_GROUP_SELECT'] = "Sélectionnez un groupe";
+$lang['ADMIN_GROUP_SEEPERMISSIONS'] = "Voir les permissions";
+$lang['ADMIN_GROUP_MEMBERS'] = "Membre du groupe";
