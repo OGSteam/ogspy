@@ -129,7 +129,49 @@ $lang['ADMIN_MEMBERS_POPUP_GROUP'] = "Création d'un nouveau compte";
 
 $lang['ADMIN_GROUP_CREATE'] = "Création d'un groupe";
 $lang['ADMIN_GROUP_NAME'] = "Nom";
+$lang['ADMIN_GROUP_CREATENEW'] = "Créer nouveau groupe";
 $lang['ADMIN_GROUP_RIGHTS'] = "Permissions";
 $lang['ADMIN_GROUP_SELECT'] = "Sélectionnez un groupe";
 $lang['ADMIN_GROUP_SEEPERMISSIONS'] = "Voir les permissions";
 $lang['ADMIN_GROUP_MEMBERS'] = "Membre du groupe";
+$lang['ADMIN_GROUP_DELETE_CONFIRMATION'] = "Etes-vous sûr de vouloir supprimer du groupe l'utilisateur ";
+$lang['ADMIN_GROUP_DELETE'] = "Supprimer du groupe l'utilisateur ";
+$lang['ADMIN_GROUP_MEMBERLIST'] = "Liste des membres";
+$lang['ADMIN_GROUP_ADD'] = "Ajouter dans le groupe";
+$lang['ADMIN_GROUP_ADDALL'] = "Ajouter tous les membres";
+$lang['ADMIN_GROUP_DELETE'] = "Êtes-vous sûr de vouloir supprimer le groupe ?";
+$lang['ADMIN_GROUP_DELETE_BUTTON'] = "Supprimer le groupe";
+$lang['ADMIN_GROUP_NAME'] = "Nom du groupe";
+$lang['ADMIN_GROUP_SERVERRIGHTS'] = "Droits serveur OGSpy";
+$lang['ADMIN_GROUP_RIGHTS_ADDSYSTEMS'] = "Ajout et Mise à jour systèmes solaires";
+$lang['ADMIN_GROUP_RIGHTS_ADDCOMBAT'] = "Ajout rapport de combat";
+$lang['ADMIN_GROUP_RIGHTS_ADDSPY'] = "Ajout rapport espionnage";
+$lang['ADMIN_GROUP_RIGHTS_ADDRANK'] = "Ajout classement";
+$lang['ADMIN_GROUP_RIGHTS_PROTECTEDALLY'] = "Visualiser coordonnées alliances protégées";
+$lang['ADMIN_GROUP_RIGHTS_EXTCLIENTS'] = "Droits clients externes (Xtense GM)";
+$lang['ADMIN_GROUP_RIGHTS_CONNECT'] = "Connexion serveur";
+$lang['ADMIN_GROUP_EXTERNAL_ADDSYSTEM'] = "Importation de systèmes solaires";
+$lang['ADMIN_GROUP_EXTERNAL_GETSYSTEM'] = "Exportation de systèmes solaires";
+$lang['ADMIN_GROUP_EXTERNAL_ADDREPORT'] = "Importation de rapports d'espionnage";
+$lang['ADMIN_GROUP_EXTERNAL_GETREPORT'] = "Exportation de rapports d'espionnage";
+$lang['ADMIN_GROUP_EXTERNAL_ADDRANK'] = "Importation de classements";
+$lang['ADMIN_GROUP_EXTERNAL_GETRANK'] = "Exportation de classements";
+$lang['ADMIN_GROUP_EXTERNAL_VALIDATE'] = "Valider les permissions";
+
+
+ /*    filename    : admin_mod.php */
+
+$lang['ADMIN_MOD_LIST'] = "Mods installés actifs";
+$lang['ADMIN_MOD_LIST_INACTIVE'] = "Mods installés inactifs";
+$lang['ADMIN_MOD_NOT_INSTALLED'] = "Mods non installés";
+$lang['ADMIN_MOD_INVALID'] = "Mods invalides";
+
+$lang['ADMIN_MOD_USER'] = "Mods Normaux";
+$lang['ADMIN_MOD_MENUVIEW'] = "Vue du menu";
+$lang['ADMIN_MOD_DISABLE'] = "Désactiver";
+$lang['ADMIN_MOD_ENABLE'] = "Activer";
+$lang['ADMIN_MOD_INSTALL'] = "Installer";
+$lang['ADMIN_MOD_REMOVE'] = "Désinstaller";
+$lang['ADMIN_MOD_UPDATE'] = "Mettre à jour";
+$lang['ADMIN_MOD_NORMAL'] = "Normal";
+$lang['ADMIN_MOD_ADMIN'] = "Admin";
