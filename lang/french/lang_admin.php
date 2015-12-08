@@ -231,3 +231,13 @@ $lang['ADMIN_PARAMS_GOOGLE_CLOUD'] = "Utilisateurs Google Cloud Messaging";
 $lang['ADMIN_PARAMS_GOOGLE_NOTIF'] = "Nécessaire pour les notifications sur les appareils Android";
 $lang['ADMIN_PARAMS_VALIDATE'] = "Valider";
 $lang['ADMIN_PARAMS_CANCEL'] = "Réinitialiser";
+
+/* admin_viewer.php*/
+
+$lang['ADMIN_LOGS_NOLOGS'] = "Aucun log n'a été trouvé à cette date";
+$lang['ADMIN_LOGS_SELECTED_DATE'] = "Date sélectionnée : ";
+$lang['ADMIN_LOGS_SELECT_MONTH'] = "Sélectionnez le mois";
+$lang['ADMIN_LOGS_SELECT_DAY'] = "Sélectionnez le jour";
+$lang['ADMIN_LOGS_DOWNLOAD'] = "Télécharger les logs de ";
+$lang['ADMIN_LOGS_DELETE'] = "Effacer les logs de ";
+$lang['ADMIN_LOGS_SELECTTYPE'] = "Sélectionnez le type de log à visualiser";
