@@ -45,7 +45,7 @@ require_once("views/page_header.php");
     <table>
         <tr>
             <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
-                echo "<td class='c' align='center' colspan='2' width='300'><font color='" . $color_ally[$i - 1] . "'>Alliance " . $i . "</font></td>";
+                echo "<td class='c' align='center' colspan='2' width='300'><font color='" . $color_ally[$i - 1] . "'>" . $lang['CARTO_ALLY'] . $i . "</font></td>";
             }
             ?>
         </tr>
@@ -58,7 +58,7 @@ require_once("views/page_header.php");
         </tr>
         <tr>
             <td class="c" colspan="<?php echo $nb_colonnes_ally * 2; ?>" align="center"><input type="submit"
-                                                                                               value="Afficher les positions">
+                                                                                               value="<?php echo($lang['CARTO_DISPLAYPOSITIONS']); ?>">
             </td>
         </tr>
     </table>
@@ -86,14 +86,12 @@ require_once("views/page_header.php");
             <td class="c" width="45">&nbsp;</td>
         </tr>
         <?php
-//$system = 1;
         for ($system = 1; $system <= intval($server_config['num_of_systems']); $system = $system + $step) {
             $up = $system + $step - 1;
             if ($up > intval($server_config['num_of_systems'])) $up = intval($server_config['num_of_systems']);
 
             echo "<tr>" . "\n";
             echo "\t" . "<td class='c' align='center' nowrap>" . $system . " - " . $up . "</td>";
-            //for ($galaxy=1 ; $galaxy<=intval($server_config['num_of_galaxies']) ; $galaxy++) {
             for ($galaxy = $galaxy_down; $galaxy < $galaxy_up; $galaxy++) {
                 for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
                     $nb_player[$i - 1] = "&nbsp;";
@@ -103,7 +101,7 @@ require_once("views/page_header.php");
                 foreach ($position as $ally_name) {
                     if ($galaxy_ally_position[$ally_name][$galaxy][$system]["planet"] > 0) {
                         $tooltip[$i] = "<table width=\'200\'>";
-                        $tooltip[$i] .= "<tr><td class=\'c\' colspan=\'2\' align=\'center\'>Joueur(s) présent(s)</td></tr>";
+                        $tooltip[$i] .= "<tr><td class=\'c\' colspan=\'2\' align=\'center\'>".$lang['CARTO_PLAYER_POSITIONS']."</td></tr>";
                         $last_player = "";
                         foreach ($galaxy_ally_position[$ally_name][$galaxy][$system]["population"] as $value) {
                             $player = "";
