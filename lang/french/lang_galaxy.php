@@ -70,5 +70,21 @@ $lang['GALAXY_SEARCH_MOONS'] = "Lunes";
 $lang['GALAXY_SEARCH_INACTIVES'] = "Joueurs inactifs";
 $lang['GALAXY_SEARCH_SPYREPORTS'] = "Rapports d'espionnage";
 
+/* galaxy_obsolete.php */
 
-
+$lang['GALAXY_OLD_TITLE'] = "Recherche des systèmes solaires et lunes obsolètes";
+$lang['GALAXY_OLD_ALL'] = "Tout l'univers";
+$lang['GALAXY_OLD_SINCE'] = "depuis";
+$lang['GALAXY_OLD_WEEKS'] = "semaine(s)";
+$lang['GALAXY_OLD_DISPLAYPLANETS'] = "Afficher les planètes";
+$lang['GALAXY_OLD_DISPLAYMOONS'] = "Afficher les lunes";
+$lang['GALAXY_OLD_SEARCH'] = "Rechercher";
+$lang['GALAXY_OLD_OLDERTHAN_8WEEKS'] = "Plus de 8 semaines";
+$lang['GALAXY_OLD_OLDERTHAN_6WEEKS'] = "Plus de 6 semaines";
+$lang['GALAXY_OLD_OLDERTHAN_4WEEKS'] = "Plus de 4 semaines";
+$lang['GALAXY_OLD_OLDERTHAN_3WEEKS'] = "Plus de 3 semaines";
+$lang['GALAXY_OLD_OLDERTHAN_2WEEKS'] = "Plus de 2 semaines";
+$lang['GALAXY_OLD_OLDERTHAN_1WEEKS'] = "Plus de 1 semaines";
+$lang['GALAXY_OLD_SOLAR_SYSTEM'] = "Système solaire";
+$lang['GALAXY_OLD_LAST_UPDATE'] = "Date mise à jour";
+$lang['GALAXY_OLD_LIMITED_50SYSTEMS'] = ">Liste limitée à 50 systèmes";
