@@ -27,7 +27,7 @@ require_once("views/page_header.php");
     <form method="POST" action="index.php?action=galaxy_obsolete">
         <table border="1">
             <tr>
-                <td class="c" colspan="2">Recherche des systèmes solaires et lunes obsolètes</td>
+                <td class="c" colspan="2"><?php echo($lang['GALAXY_OLD_TITLE']); ?></td>
             </tr>
             <tr>
                 <th colspan="2">
@@ -36,32 +36,32 @@ require_once("views/page_header.php");
                         for ($i = 1; $i <= intval($server_config['num_of_galaxies']); $i++)
                             print "<option value=\"$i\"" . ($perimeter == $i ? ' selected' : '') . ">Galaxie $i</option>";
                         ?>
-                        <option value="0" <?php if ($perimeter == 0) echo "selected";?>>Tout l''univers</option>
+                        <option value="0" <?php if ($perimeter == 0) echo "selected";?>><?php echo($lang['GALAXY_OLD_ALL']); ?></option>
                     </select>
                     &nbsp;&nbsp;
-                    depuis
+                    <?php echo($lang['GALAXY_OLD_SINCE']); ?>
                     &nbsp;&nbsp;
                     <select name="since">
-                        <option value="56" <?php if ($since == 56) echo "selected";?>>8 semaines</option>
-                        <option value="42" <?php if ($since == 42) echo "selected";?>>6 semaines</option>
-                        <option value="28" <?php if ($since == 28) echo "selected";?>>4 semaines</option>
-                        <option value="21" <?php if ($since == 21) echo "selected";?>>3 semaines</option>
-                        <option value="14" <?php if ($since == 14) echo "selected";?>>2 semaines</option>
-                        <option value="7" <?php if ($since == 7) echo "selected";?>>1 semaine</option>
+                        <option value="56" <?php if ($since == 56) echo "selected";?>>8 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="42" <?php if ($since == 42) echo "selected";?>>6 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="28" <?php if ($since == 28) echo "selected";?>>4 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="21" <?php if ($since == 21) echo "selected";?>>3 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="14" <?php if ($since == 14) echo "selected";?>>2 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="7" <?php if ($since == 7) echo "selected";?>>1 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
                     </select>
                     &nbsp;&nbsp;
                 </th>
             </tr>
             <tr>
                 <th width="50%"><input type="radio" name="typesearch"
-                                       value="P" <?php if ($typesearch == "P") echo "checked";?>> Afficher les planètes
+                                       value="P" <?php if ($typesearch == "P") echo "checked";?>> <?php echo($lang['GALAXY_OLD_DISPLAYPLANETS']); ?>
                 </th>
                 <th width="50%"><input type="radio" name="typesearch"
-                                       value="M" <?php if ($typesearch == "M") echo "checked";?>> Afficher les lunes
+                                       value="M" <?php if ($typesearch == "M") echo "checked";?>> <?php echo($lang['GALAXY_OLD_DISPLAYMOONS']); ?>
                 </th>
             </tr>
             <tr>
-                <th colspan="2"><input type="submit" value="Rechercher"></th>
+                <th colspan="2"><input type="submit" value="<?php echo($lang['GALAXY_OLD_SEARCH']); ?>"></th>
             </tr>
         </table>
     </form>
@@ -71,17 +71,17 @@ if ($since >= 56) {
     ?>
     <table>
         <tr>
-            <td class="c" colspan="8">Plus de 8 semaines</td>
+            <td class="c" colspan="8"><?php echo($lang['GALAXY_OLD_OLDERTHAN_8WEEKS']); ?></td>
         </tr>
         <tr>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
         </tr>
         <?php
         if (isset($obsolete_listing[56])) {
@@ -104,7 +104,7 @@ if ($since >= 56) {
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><font color='orange'><i>Liste limitée à 50 systèmes</i></font></th>";
+                    echo "<th colspan='4'><font color='orange'><i>".$lang['GALAXY_OLD_LIMITED_50SYSTEMS']."</i></font></th>";
                     $i = 4;
                     break;
                 }
@@ -123,17 +123,17 @@ if ($since >= 42) {
     ?>
     <table>
         <tr>
-            <td class="c" colspan="8">Plus de 6 semaines</td>
+            <td class="c" colspan="8"><?php echo($lang['GALAXY_OLD_OLDERTHAN_6WEEKS']); ?></td>
         </tr>
         <tr>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
         </tr>
         <?php
         if (isset($obsolete_listing[42])) {
@@ -155,7 +155,7 @@ if ($since >= 42) {
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><font color='orange'><i>Liste limitée à 50 systèmes</i></font></th>";
+                    echo "<th colspan='4'><font color='orange'><i>".$lang['GALAXY_OLD_LIMITED_50SYSTEMS']."</i></font></th>";
                     $i = 4;
                     break;
                 }
@@ -174,17 +174,17 @@ if ($since >= 28) {
     ?>
     <table>
         <tr>
-            <td class="c" colspan="8">Plus de 4 semaines</td>
+            <td class="c" colspan="8"><?php echo($lang['GALAXY_OLD_OLDERTHAN_4WEEKS']); ?></td>
         </tr>
         <tr>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
         </tr>
         <?php
         if (isset($obsolete_listing[28])) {
@@ -206,7 +206,7 @@ if ($since >= 28) {
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><font color='orange'><i>Liste limitée à 50 systèmes</i></font></th>";
+                    echo "<th colspan='4'><font color='orange'><i>".$lang['GALAXY_OLD_LIMITED_50SYSTEMS']."</i></font></th>";
                     $i = 4;
                     break;
                 }
@@ -225,17 +225,17 @@ if ($since >= 21) {
     ?>
     <table>
         <tr>
-            <td class="c" colspan="8">Plus de 3 semaines</td>
+            <td class="c" colspan="8"><?php echo($lang['GALAXY_OLD_OLDERTHAN_3WEEKS']); ?></td>
         </tr>
         <tr>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
         </tr>
         <?php
         if (isset($obsolete_listing[21])) {
@@ -257,7 +257,7 @@ if ($since >= 21) {
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><font color='orange'><font color='orange'><i>Liste limitée à 50 systèmes</i></font></font></th>";
+                    echo "<th colspan='4'><font color='orange'><font color='orange'><i>".$lang['GALAXY_OLD_LIMITED_50SYSTEMS']."</i></font></font></th>";
                     $i = 4;
                     break;
                 }
@@ -276,17 +276,17 @@ if ($since >= 14) {
     ?>
     <table>
         <tr>
-            <td class="c" colspan="8">Plus de 2 semaines</td>
+            <td class="c" colspan="8"><?php echo($lang['GALAXY_OLD_OLDERTHAN_2WEEKS']); ?></td>
         </tr>
         <tr>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
         </tr>
         <?php
         if (isset($obsolete_listing[14])) {
@@ -308,7 +308,7 @@ if ($since >= 14) {
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><font color='orange'><i>Liste limitée à 50 systèmes</i></font></th>";
+                    echo "<th colspan='4'><font color='orange'><i>".$lang['GALAXY_OLD_LIMITED_50SYSTEMS']."</i></font></th>";
                     $i = 4;
                     break;
                 }
@@ -327,17 +327,17 @@ if ($since >= 7) {
     ?>
     <table>
         <tr>
-            <td class="c" colspan="8">Plus de 1 semaine</td>
+            <td class="c" colspan="8"><?php echo($lang['GALAXY_OLD_OLDERTHAN_1WEEKS']); ?></td>
         </tr>
         <tr>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
-            <td class="c" width="110">Système solaire</td>
-            <td class="c" width="110">Date mise à jour</td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
+            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
         </tr>
         <?php
         if (isset($obsolete_listing[7])) {
@@ -359,7 +359,7 @@ if ($since >= 7) {
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><font color='orange'><i>Liste limitée à 50 systèmes</i></font></th>";
+                    echo "<th colspan='4'><font color='orange'><i>".$lang['GALAXY_OLD_LIMITED_50SYSTEMS']."</i></font></th>";
                     $i = 4;
                     break;
                 }
