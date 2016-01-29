@@ -104,8 +104,7 @@ if (!defined('IN_SPYOGAME')) {
     ul.devices li .send_btn {
         background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFC775),
         to(#005DFF));
-        background: -webkit-linear-gradient(0% 0%, 0% 100%, from(#FFC775),
-        to(#005DFF));
+        background: -webkit-linear-gradient(0% 0%, 0% 100%, from(#FFC775),to(#005DFF));
         background: -moz-linear-gradient(center top, #0096FF, #FF9900);
         background: linear-gradient(#FFC775, #FF9900);
         text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
@@ -127,7 +126,7 @@ if ($users != false) {
 }
 ?>
 <div class="container">
-    <h1>Nombre d'utilisateurs enregistrés : <?php echo $no_of_users; ?></h1>
+    <h1><?php echo($lang['GCM_REGISTERED_USERS']); ?><?php echo $no_of_users; ?></h1>
     <hr/>
     <ul class="devices">
         <?php
@@ -148,32 +147,32 @@ if ($users != false) {
                 <li>
                     <form id="form<?php echo $userId;echo $i; ?>" name="form<?php echo $userId;echo $i; ?>"
                           method="post">
-                        <label>Membre : </label><span><?php echo $name; if (isset($pseudo)) {
+                        <label><?php echo($lang['GCM_MEMBER']); ?></label><span><?php echo $name; if (isset($pseudo)) {
                                 echo " <i>(" . $pseudo . ")</i>";
                             } ?></span>
 
                         <div class="clear"/>
-                        <label>Mail : </label><?php if (isset($email)) {
+                        <label><?php echo($lang['GCM_MAIL']); ?></label><?php if (isset($email)) {
                             echo "<span>" . $email . "</span>";
                         }?>
                         <div class="clear"/>
-                        <label>Enregistré le : </label><?php if (isset($created)) {
+                        <label<?php echo($lang['GCM_REGISTER_DATE']); ?></label><?php if (isset($created)) {
                             echo "<span>" . $created . "</span>";
                         }?>
                         <div class="clear"/>
-                        <label>OGSPY : </label><?php if (isset($ogspyVersion)) {
+                        <label><?php echo($lang['GCM_OGSPY']); ?></label><?php if (isset($ogspyVersion)) {
                             echo "<span>" . $ogspyVersion . "</span>";
                         } else {
                             echo '<span>nc</span>';
                         }?>
                         <div class="clear"/>
-                        <label>Android : </label><?php if (isset($androidVersion)) {
+                        <label><?php echo($lang['GCM_ANDROID']); ?></label><?php if (isset($androidVersion)) {
                             echo "<span>" . $androidVersion . "</span>";
                         } else {
                             echo '<span>nc</span>';
                         }?>
                         <div class="clear"/>
-                        <label>Appareil : </label><?php if (isset($deviceInformation)) {
+                        <label><?php echo($lang['GCM_DEVICE']); ?></label><?php if (isset($deviceInformation)) {
                             echo "<span>" . $deviceInformation . "</span>";
                         } else {
                             echo '<span>nc</span>';
@@ -192,7 +191,7 @@ if ($users != false) {
                 <?php
             }
         } else { ?>
-            <li>No Users Registered Yet!</li>
+            <li><?php echo($lang['GCM_NOBODY_REGISTERED']); ?></li>
         <?php } ?>
     </ul>
 </div>
