@@ -88,3 +88,9 @@ $lang['GALAXY_OLD_OLDERTHAN_1WEEKS'] = "Plus de 1 semaines";
 $lang['GALAXY_OLD_SOLAR_SYSTEM'] = "Système solaire";
 $lang['GALAXY_OLD_LAST_UPDATE'] = "Date mise à jour";
 $lang['GALAXY_OLD_LIMITED_50SYSTEMS'] = ">Liste limitée à 50 systèmes";
+
+/* galaxy_sector.php */
+
+$lang['GALAXY_SECTOR_PREVIOUS'] = "Précédent";
+$lang['GALAXY_SECTOR_NEXT'] = "Suivant";
+$lang['GALAXY_SECTOR_NAVIGATE'] = "Navigation";
