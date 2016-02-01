@@ -72,11 +72,11 @@ echo "<a>". $lang['ADMIN_LOGS_SELECTED_DATE'] . strftime("%d %b %Y", mktime(0, 0
         } else {
             if (log_check_exist(date("ym", $date))) {
                 echo "\t" . "<th onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=" . $typelog . "';\">";
-                echo "<a style='cursor:pointer'><font color='lime'>" . strftime("%B %Y", $date) . "</font></a></th>" . "\n";
-                echo "\t" . "<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . date("ym", $date) . "'\" title='".$lang['ADMIN_LOGS_DOWNLOAD']. strftime("%B %Y", $date) . "'></font>";
+                echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . strftime("%B %Y", $date) . "</span></a></th>" . "\n";
+                echo "\t" . "<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . date("ym", $date) . "'\" title='".$lang['ADMIN_LOGS_DOWNLOAD']. strftime("%B %Y", $date) . "'></th>";
             } else {
                 echo "\t" . "<th colspan='2' onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=" . $typelog . "';\">";
-                echo "<a style='cursor:pointer'><font color='lime'>" . strftime("%B %Y", $date) . "</font></a></th>" . "\n";
+                echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . strftime("%B %Y", $date) . "</span></a></th>" . "\n";
             }
         }
         if ($i == 5) echo "</tr>" . "\n" . "<tr>";
@@ -111,11 +111,11 @@ echo "<a>". $lang['ADMIN_LOGS_SELECTED_DATE'] . strftime("%d %b %Y", mktime(0, 0
         } else {
             if (log_check_exist($show_year . $show_month . $day)) {
                 echo "\t" . "<th onclick=\"window.location='index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=" . $typelog . "';\">";
-                echo "<a style='cursor:pointer'><font color='lime'>" . $day . "</font></a></th>";
+                echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $day . "</span></a></th>";
                 echo "\t" . "<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . $show_year . $show_month . $day . "'\" title='".$lang['ADMIN_LOGS_DOWNLOAD']. strftime("%d %B %Y", $date) . "'>";
             } else {
                 echo "\t" . "<th colspan='2' onclick=\"window.location='index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=" . $typelog . "';\">";
-                echo "<a style='cursor:pointer'><font color='lime'>" . $day . "</font></a></th>";
+                echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $day . "</span></a></th>";
             }
         }
         if ($i % 10 == 0) echo "</tr>" . "\n" . "<tr>";
@@ -139,22 +139,22 @@ echo "<a>". $lang['ADMIN_LOGS_SELECTED_DATE'] . strftime("%d %b %Y", mktime(0, 0
     echo "<tr>";
     if ($typelog == "log") {
         echo "\t" . "<th width='50%'><a>".$lang['ADMIN_LOGS_GENERAL']."</a></th>";
-        echo "\t" . "<th width='50%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=sql';\"><a style='cursor:pointer'><font color='lime'>".$lang['ADMIN_LOGS_SQL']."</font></a></td>";
+        echo "\t" . "<th width='50%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=sql';\"><a style='cursor:pointer'><span style=\"color: lime; \">".$lang['ADMIN_LOGS_SQL']."</span></a></td>";
     } else {
-        echo "\t" . "<th width='50%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=log';\"><a style='cursor:pointer'><font color='lime'>".$lang['ADMIN_LOGS_GENERAL']."</font></a></td>";
+        echo "\t" . "<th width='50%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=log';\"><a style='cursor:pointer'><span style=\"color: lime; \">".$lang['ADMIN_LOGS_GENERAL']."</span></a></td>";
         echo "\t" . "<th width='50%'><a>".$lang['ADMIN_LOGS_SQL']."</a></td>";
     }
     echo "</tr>";
     ?>
     <tr>
-        <td colspan='2'><font color="Red"><i><?php echo($lang['ADMIN_LOGS_SEE_TRANSACTIONALS']); ?></i></font></td>
+        <td colspan='2'><span style="color: Red; "><i><?php echo($lang['ADMIN_LOGS_SEE_TRANSACTIONALS']); ?></i></span></td>
     </tr>
 </table>
 
 <br/>
 <table width="100%">
     <tr>
-        <td class="l" colspan="3"><b><?php echo($lang['ADMIN_LOGS_VIEWER']); ?></b> <i><font color="red"><b><?php echo $typelog == "log" ? $lang['ADMIN_LOGS_GENERAL'] : $lang['ADMIN_LOGS_SQL'];?></b></font></i><br>
+        <td class="l" colspan="3"><b><?php echo($lang['ADMIN_LOGS_VIEWER']); ?></b> <i><span style="color: red; "><b><?php echo $typelog == "log" ? $lang['ADMIN_LOGS_GENERAL'] : $lang['ADMIN_LOGS_SQL'];?></b></span></i><br>
             <?php
             end($log);
             while ($line = current($log)) {
@@ -163,7 +163,7 @@ echo "<a>". $lang['ADMIN_LOGS_SELECTED_DATE'] . strftime("%d %b %Y", mktime(0, 0
                 } else {
                     $line = trim(nl2br(htmlspecialchars($line, ENT_COMPAT, "UTF-8")));
                 }
-                $line = preg_replace("#/\*(.*)\*/#", "<font color='orange'>$1 : </font>", $line);
+                $line = preg_replace("#/\*(.*)\*/#", "<span style=\"color: orange; \">$1 : </span>", $line);
 
                 echo $line;
                 prev($log);

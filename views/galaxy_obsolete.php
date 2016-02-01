@@ -104,7 +104,7 @@ if ($since >= 56) {
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><font color='orange'><i>".$lang['GALAXY_OLD_LIMITED_50SYSTEMS']."</i></font></th>";
+                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" .$lang['GALAXY_OLD_LIMITED_50SYSTEMS']. "</i></span></th>";
                     $i = 4;
                     break;
                 }
@@ -151,11 +151,11 @@ if ($since >= 42) {
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
                 if ($typesearch == "M") $coordinates .= ":" . $value["row"];
-                echo "<th><font color='" . $color . "'>" . $coordinates . "</font></th><th><font color='" . $color . "'>" . $date . "</font></th>";
+                echo "<th><span style=\"color:" . $color . "\">" . $coordinates . "</font></th><th><span style=\"color:" . $color . "\">" . $date . "</font></th>";
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><font color='orange'><i>".$lang['GALAXY_OLD_LIMITED_50SYSTEMS']."</i></font></th>";
+                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" .$lang['GALAXY_OLD_LIMITED_50SYSTEMS']. "</i></span></th>";
                     $i = 4;
                     break;
                 }
@@ -202,11 +202,11 @@ if ($since >= 28) {
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
                 if ($typesearch == "M") $coordinates .= ":" . $value["row"];
-                echo "<th><font color='" . $color . "'>" . $coordinates . "</font></th><th><font color='" . $color . "'>" . $date . "</font></th>";
+                echo "<th><span style=\"color:" . $color . "\">" . $coordinates . "</font></th><th><span style=\"color:" . $color . "\">" . $date . "</font></th>";
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><font color='orange'><i>".$lang['GALAXY_OLD_LIMITED_50SYSTEMS']."</i></font></th>";
+                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" .$lang['GALAXY_OLD_LIMITED_50SYSTEMS']. "</i></span></th>";
                     $i = 4;
                     break;
                 }
@@ -253,11 +253,11 @@ if ($since >= 21) {
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
                 if ($typesearch == "M") $coordinates .= ":" . $value["row"];
-                echo "<th><font color='" . $color . "'>" . $coordinates . "</font></th><th><font color='" . $color . "'>" . $date . "</font></th>";
+                echo "<th><span style=\"color:" . $color . "\">" . $coordinates . "</font></th><th><span style=\"color:" . $color . "\">" . $date . "</font></th>";
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><font color='orange'><font color='orange'><i>".$lang['GALAXY_OLD_LIMITED_50SYSTEMS']."</i></font></font></th>";
+                    echo "<th colspan='4'><span style=\"color: orange; \"><font color='orange'><i>" .$lang['GALAXY_OLD_LIMITED_50SYSTEMS']. "</i></font></span></th>";
                     $i = 4;
                     break;
                 }
@@ -304,11 +304,11 @@ if ($since >= 14) {
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
                 if ($typesearch == "M") $coordinates .= ":" . $value["row"];
-                echo "<th><font color='" . $color . "'>" . $coordinates . "</font></th><th><font color='" . $color . "'>" . $date . "</font></th>";
+                echo "<th><span style=\"color:" . $color . "\">" . $coordinates . "</font></th><th><span style=\"color:" . $color . "\">" . $date . "</font></th>";
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><font color='orange'><i>".$lang['GALAXY_OLD_LIMITED_50SYSTEMS']."</i></font></th>";
+                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" .$lang['GALAXY_OLD_LIMITED_50SYSTEMS']. "</i></span></th>";
                     $i = 4;
                     break;
                 }
@@ -355,11 +355,11 @@ if ($since >= 7) {
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
                 if ($typesearch == "M") $coordinates .= ":" . $value["row"];
-                echo "<th><font color='" . $color . "'>" . $coordinates . "</font></th><th><font color='" . $color . "'>" . $date . "</font></th>";
+                echo "<th><span style=\"color:" . $color . "\">" . $coordinates . "</font></th><th><span style=\"color:" . $color . "\">" . $date . "</font></th>";
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><font color='orange'><i>".$lang['GALAXY_OLD_LIMITED_50SYSTEMS']."</i></font></th>";
+                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" .$lang['GALAXY_OLD_LIMITED_50SYSTEMS']. "</i></span></th>";
                     $i = 4;
                     break;
                 }

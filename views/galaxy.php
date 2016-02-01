@@ -89,15 +89,17 @@ require_once("views/page_header.php");
     <table width="860">
         <tr>
             <td colspan="3" align="left">
-                <select name="coordinates" onchange="this.form.submit();" onkeyup="this.form.submit();">
-                    <option><?php echo($lang['GALAXY_FAVORITE_LIST']); ?></option>
-                    <?php
+                <label>
+                    <select name="coordinates" onchange="this.form.submit();" onkeyup="this.form.submit();">
+                        <option><?php echo($lang['GALAXY_FAVORITE_LIST']); ?></option>
+                        <?php
                     foreach ($favorites as $v) {
                         $coordinate = $v["galaxy"] . ":" . $v["system"];
                         echo "\t\t\t" . "<option value='" . $coordinate . "'>" . $coordinate . "</option>";
-                    }
-                    ?>
-                </select>
+                        }
+                        ?>
+                    </select>
+                </label>
             </td>
 
             <td colspan="6" align="right">
