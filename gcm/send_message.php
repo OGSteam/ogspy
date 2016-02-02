@@ -67,4 +67,3 @@ if (isset($regId) && isset($message)) {
 } else {
 
 }
-?>

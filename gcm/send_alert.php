@@ -94,4 +94,3 @@ if (isset($regId) && isset($message) && isset($username)) {
 } else {
     echo "hack";
 }
-?>
