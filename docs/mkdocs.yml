@@ -1,0 +1,4 @@
+site_name: OGSpy Documentation
+pages:
+- Accueil: index.md
+- A Propos: about.md
