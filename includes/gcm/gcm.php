@@ -13,9 +13,12 @@ class GCM {
     function __construct() {
  
     }
- 
+
     /**
      * Sending Push Notification
+     * @param $registatoin_ids
+     * @param $message
+     * @return mixed
      */
     function send_notification($registatoin_ids, $message) {
         // include config

@@ -129,6 +129,7 @@ $(document).ready(function() {
  * @param mixed $_legend
  * @param mixed $_title
  * @param mixed $conteneur
+ * @param bool $theme
  * @return string contenant script js
  */
 function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true)
@@ -683,6 +684,7 @@ var highchartsOptions = Highcharts.setOptions(Highcharts.theme); ";
  * @param string $data
  * @param string $names
  * @param string $conteneur
+ * @param bool $theme
  * @return string the gerated JS Code
  */
 function create_multi_curve($titre, $sous_titre, $data, $names, $conteneur, $theme = true)

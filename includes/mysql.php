@@ -55,6 +55,7 @@ class sql_db
      * @param string $sqluser MySQL User Name
      * @param string $sqlpassword MySQL User Password
      * @param string $database MySQL Database Name
+     * @return int|sql_db
      */
     public static function getInstance($sqlserver, $sqluser, $sqlpassword, $database)
     {
@@ -127,6 +128,7 @@ class sql_db
      * @param string $query The MySQL Query
      * @param boolean $Auth_dieSQLError True if a SQL error sneed to stop the application
      * @param boolean $save True to save the Query in the MySQL Logfile (if enabled)
+     * @return bool|mixed|mysqli_result
      */
     function sql_query($query = "", $Auth_dieSQLError = true, $save = true)
     {

@@ -20,7 +20,8 @@ if (!defined('IN_SPYOGAME')) {
 
 <table width="70%" border="1" cellpadding="0" cellspacing="5" align="center">
     <tr>
-        <td align="center" class="c" colspan="2"><font color="Yellow" size="3"><?php echo($lang['ABOUT_PROJECT_TEAM']); ?></font></td>
+        <td align="center" class="c" colspan="2"><span
+                style="color: Yellow; font-size: small; "><?php echo($lang['ABOUT_PROJECT_TEAM']); ?></span></td>
     </tr>
     <!--tr>
         <td width="100" height="100" align="center" valign="middle"><img src="http://board.ogsteam.fr/img/avatars/4.jpg"></td>

@@ -194,7 +194,6 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
 }
 
 
-
 /**
  * Calculates the Production corresponding to the current ratio
  * @param int $M Metal Mine Level
@@ -214,7 +213,9 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
  * @param int $per_D Deuterieum Mine production percent (0=0%, 1=100%)
  * @param int $per_CES Solar Plant production percent (0=0%, 1=100%)
  * @param int $per_CEF Fusion Plant production percent (0=0%, 1=100%)
- * @return array("M", "C", "D", "ratio", "conso_E", "prod_E", "prod_CES", "prod_CEF", "prod_SAT", "conso_M", "conso_C", "conso_D")
+ * @param int $per_SAT
+ * @param null $booster
+ * @return array
  */
 function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing = 0, $off_geo = 0, $off_full = 0, $NRJ = 0, $Plasma = 0,
 $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1 , $booster  = NULL)
@@ -704,6 +705,7 @@ function all_defence_cumulate($user_defence)
 
 /**
  * Calculates the price of all lunas
+ * @param $user_building
  * @param string $user_defence The list of buildings with corresponding levels on the luna
  * @return the bild :-)
  */
@@ -717,8 +719,9 @@ function all_lune_cumulate($user_building, $user_defence)
 
 /**
  * Calculates the price of all researches
- * @param string $user_defence The list of technologies with corresponding levels
+ * @param $user_technology
  * @return the bild :-)
+ * @internal param string $user_defence The list of technologies with corresponding levels
  */
 function all_technology_cumulate($user_technology)
 {

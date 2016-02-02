@@ -20,7 +20,7 @@ require_once("views/page_header.php");
             <td class="c">Le serveur est temporairement désactivé</td>
         </tr>
         <tr>
-            <th><font color="red"><?php echo $reason;?></font></th>
+            <th><span style="color: red; "><?php echo $reason;?></span></th>
         </tr>
     </table>
 

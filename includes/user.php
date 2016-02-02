@@ -389,6 +389,14 @@ function member_user_set()
 /**
  * Entree en BDD de donnees utilisateur
  * @todo Query x1
+ * @param $user_id
+ * @param null $user_name
+ * @param null $user_password
+ * @param null $user_email
+ * @param null $user_lastvisit
+ * @param null $user_galaxy
+ * @param null $user_system
+ * @param null $disable_ip_check
  */
 function user_set_general($user_id, $user_name = null, $user_password = null, $user_email = null, $user_lastvisit = null,
     $user_galaxy = null, $user_system = null, $disable_ip_check = null)
@@ -456,6 +464,12 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
 /**
  * Enregistrement des droits et status utilisateurs
  * @todo Query : x2
+ * @param $user_id
+ * @param null $user_admin
+ * @param null $user_active
+ * @param null $user_coadmin
+ * @param null $management_user
+ * @param null $management_ranking
  */
 function user_set_grant($user_id, $user_admin = null, $user_active = null, $user_coadmin = null,
     $management_user = null, $management_ranking = null)
@@ -509,9 +523,20 @@ function user_set_grant($user_id, $user_admin = null, $user_active = null, $user
         log_("modify_account_admin", $user_id);
     }
 }
+
 /**
  * Enregistrement des statistiques utilisateurs
  * @todo Query : x1
+ * @param null $planet_added_web
+ * @param null $planet_added_ogs
+ * @param null $search
+ * @param null $spy_added_web
+ * @param null $spy_added_ogs
+ * @param null $rank_added_web
+ * @param null $rank_added_ogs
+ * @param null $planet_exported
+ * @param null $spy_exported
+ * @param null $rank_exported
  */
 function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $search = null,
     $spy_added_web = null, $spy_added_ogs = null, $rank_added_web = null, $rank_added_ogs = null,
@@ -558,7 +583,7 @@ function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $sear
 
 /**
  * Recuperation d'une ligne d'information utilisateur
- * @param int $user_id Identificateur optionnel d'1 utilisateur specifique
+ * @param bool|int $user_id Identificateur optionnel d'1 utilisateur specifique
  * @return Array Liste des utilisateurs ou de l'utilisateur specifique
  * @comment Pourrait peut etre avantageusement remplace par select * from TABLE_USER
  * @comment pour les eventuels champs supplementaires
@@ -1283,10 +1308,19 @@ function user_set_all_empire_resync_planet()
     }
 
 }
+
 /**
  * Build the array with Empire data
  *
  * @todo Query : x3
+ * @param $data
+ * @param $planet_id
+ * @param $planet_name
+ * @param $fields
+ * @param $coordinates
+ * @param $temperature_min
+ * @param $temperature_max
+ * @param $satellite
  */
 function user_set_building($data, $planet_id, $planet_name, $fields, $coordinates,
     $temperature_min, $temperature_max, $satellite)
@@ -1404,10 +1438,12 @@ function user_set_building($data, $planet_id, $planet_name, $fields, $coordinate
 
     redirection("index.php?action=home&subaction=empire&view=" . $pub_view);
 }
+
 /**
  * Build the array with technology data
  *
  * @todo Query : x2
+ * @param $data
  */
 function user_set_technology($data)
 {
@@ -1467,9 +1503,19 @@ function user_set_technology($data)
 
     redirection("index.php?action=home&subaction=empire");
 }
+
 /**
  * Enregistrement des defenses de l'utilisateurs
  * @todo Query : x3
+ * @param $data
+ * @param $planet_id
+ * @param $planet_name
+ * @param $fields
+ * @param $coordinates
+ * @param $temperature_min
+ * @param $temperature_max
+ * @param $satellite
+ * @return int
  */
 function user_set_defence($data, $planet_id, $planet_name, $fields, $coordinates,
     $temperature_min, $temperature_max, $satellite)
@@ -1559,11 +1605,14 @@ function user_set_defence($data, $planet_id, $planet_name, $fields, $coordinates
     }
 
     redirection("index.php?action=home&subaction=empire&view=" . $pub_view);
+    return 0;
 }
 
 /**
  * Récupération des données empire de l'utilisateur loggé
  * @comment On pourrait mettre un paramètre $user_id optionnel
+ * @param $user_id
+ * @return array
  */
 function user_get_empire($user_id)
 {
@@ -1680,10 +1729,13 @@ function user_get_empire($user_id)
 	return array("building" => $user_building, "technology" => $user_technology,
 			"defence" => $user_defence, );
 }
+
 /**
  * Récuperation du nombre de  planete de l utilisateur
  * TODO => cette fonction sera a mettre en adequation avec astro
  * ( attention ancien uni techno a 1 planete mais utilisateur 9 possible  !!!!!)
+ * @param $id
+ * @return int|the
  */
 function find_nb_planete_user($id)
 {
@@ -1729,6 +1781,8 @@ function find_nb_moon_user($id)
 /**
  * Calcul production de l'empire
  * @param array $user_empire
+ * @param null $off
+ * @return array
  */
 function user_empire_production($user_empire, $off = NULL)
 {
@@ -2203,6 +2257,8 @@ function usergroup_delete()
 
 /**
  * Récupération des droits d'un groupe d'utilisateurs
+ * @param bool $group_id
+ * @return array|bool|the
  */
 function usergroup_get($group_id = false)
 {
@@ -2436,6 +2492,7 @@ function usergroup_delmember()
 /**
  * A quoi sert donc cette fonction ? :p
  * Reponse elle sert a mettre a jour le pseudo ingame afin d afficher les stats users dans son espace perso
+ * @param $user_stat_name
  */
 function user_set_stat_name($user_stat_name)
 {
@@ -2576,6 +2633,7 @@ function parseRC($rawRC)
  * @param string $rawRC RC à analyser
  * @param int $nb_rounds Nombre de round du RC à analyser
  * @param array $opponents Tableau contenant le nom de chaque joueur du RC
+ * @param $victoire
  * @return array $row_RC Tableau contenant pour chaque round du RC, les flottes/défenses de chaque joueur
  */
 function parseRCround($rawRC, $nb_rounds, $opponents, $victoire)

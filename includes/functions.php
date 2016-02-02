@@ -1502,7 +1502,9 @@ function generate_key()
  ***********************************************************************/
 
 /** Storing new GCM user
- * @return : user true or false
+ * @param $name
+ * @param $gcm_regid
+ * @return int : user true or false
  */
 function storeGCMUser($name, $gcm_regid)
 {
@@ -1533,7 +1535,8 @@ function storeGCMUser($name, $gcm_regid)
 }
 
 /** Storing new GCM user
- * @return : user true or false
+ * @param $gcm_regid
+ * @return bool : user true or false
  */
 function deleteGCMUser($gcm_regid)
 {
@@ -1563,6 +1566,8 @@ function getAllGCMUsers()
 
 /**
  * Getting all GCM users but not me
+ * @param $id
+ * @return bool|mixed|mysqli_result
  */
 function getAllGCMUsersExceptMe($id)
 {
@@ -1580,6 +1585,11 @@ function getAllGCMUsersExceptMe($id)
  *      1 : Système
  *      2 : Planète
  * typeArrondi = true pour un univers arrondi selon le type donnée
+ * @param $a
+ * @param $b
+ * @param $type
+ * @param bool $typeArrondi
+ * @return number
  */
 function calc_distance($a, $b, $type, $typeArrondi = false)
 {//a-b
@@ -1607,7 +1617,11 @@ function calc_distance($a, $b, $type, $typeArrondi = false)
 }
 
 /********************************************************************************/
-/**                     Booster partie                                         **/
+/**                     Booster partie                                         *
+ * @param $id_player
+ * @param $id_planet
+ * @return array|null
+ */
 /* Description :
   "m:0:0_c:0:0_d:0:0_p:0_m:0" =>booster_m;booster_c;booster_d;extension_p;extension_moon
   booster_x    => ressource:%:date_de_fin  (ressource= m|c|d)

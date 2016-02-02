@@ -808,11 +808,9 @@ function galaxy_getsource_error($datas)
 }
 
 
-
-
 /**
  * Recuperation des rapports d\'espionnage
- *
+ * @return array $reports
  * @global object mysql $db
  * @global array $server_config
  * @global int $pub_galaxy
@@ -824,7 +822,6 @@ function galaxy_getsource_error($datas)
  * @todo Query : "select id_spy, user_name, dateRE from " . TABLE_PARSEDSPY . " left join " . TABLE_USER ." on user_id = sender_id  where id_spy = " . intval($pub_spy_id) ."  and BaLu<=0 and Pha<=0 and PoSa<=0 and planet_name='" . $astre_name['name'] . "' order by dateRE desc LIMIT 1"
  * @todo Query : "select id_spy, user_name, dateRE from " . TABLE_PARSEDSPY . " left join " . TABLE_USER ." on user_id = sender_id where active = '1'  and coordinates = '" . intval($pub_galaxy) . ":" . intval($pub_system) . ":" . intval($pub_row) . "'  and M<=0 and C<=0 and D<=0 and CES<=0 and CEF<=0 and UdN<=0 and Lab<=0 and Ter<=0 and Silo<=0 and not planet_name='" . order by dateRE desc LIMIT 1"
  * @todo Query : "select id_spy, user_name, dateRE from " . TABLE_PARSEDSPY . " left join " . TABLE_USER ." on user_id = sender_id  where where id_spy = " . intval($pub_spy_id) and M<=0 and C<=0 and D<=0 and CES<=0 and CEF<=0 and UdN<=0 and Lab<=0 and Ter<=0 and Silo<=0 and not planet_name='" .$astre_name['name'] . "' order by dateRE desc LIMIT 1"
- * @return $reports
  */
 function galaxy_reportspy_show()
 {
@@ -1949,6 +1946,7 @@ function UNparseRE($id_RE)
  * @todo Query : 'SELECT RI FROM ' . TABLE_USER_TECHNOLOGY . ' where user_id = ' . $base_joueur
  * @todo Query : 'SELECT MIP FROM ' . TABLE_USER_DEFENCE . ' where user_id = ' . $base_joueur . ' AND planet_id = ' . $base_id_planet;
  *
+ * @return string
  */
 function portee_missiles($galaxy, $system)
 {

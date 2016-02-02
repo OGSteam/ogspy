@@ -26,6 +26,7 @@ if (!defined('IN_SPYOGAME')) {
  * @todo Query : "delete from ".TABLE_SESSIONS." where session_ip = '".$user_ip."' and session_ogs = '1'"
  * @todo Query : "insert into ".TABLE_SESSIONS." (session_id, session_user_id, session_start, session_expire, session_ip, session_ogs) values (";
  * $request .="'".$cookie_id."', 0, ".time().", ".$cookie_expire.", '".$user_ip."', '1')";
+ * @param $user_ip
  */
 function session_begin($user_ip)
 {

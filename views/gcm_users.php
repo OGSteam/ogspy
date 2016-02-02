@@ -152,33 +152,33 @@ if ($users != false) {
                                 echo " <i>(" . $pseudo . ")</i>";
                             } ?></span>
 
-                        <div class="clear"/>
+                        <div class="clear"></div>
                         <label>Mail : </label><?php if (isset($email)) {
                             echo "<span>" . $email . "</span>";
-                        }?>
-                        <div class="clear"/>
+                        }?></div>
+                        <div class="clear">
                         <label>Enregistré le : </label><?php if (isset($created)) {
                             echo "<span>" . $created . "</span>";
-                        }?>
-                        <div class="clear"/>
+                        }?></div>
+                        <div class="clear">
                         <label>OGSPY : </label><?php if (isset($ogspyVersion)) {
                             echo "<span>" . $ogspyVersion . "</span>";
                         } else {
                             echo '<span>nc</span>';
-                        }?>
-                        <div class="clear"/>
+                        }?></div>
+                        <div class="clear">
                         <label>Android : </label><?php if (isset($androidVersion)) {
                             echo "<span>" . $androidVersion . "</span>";
                         } else {
                             echo '<span>nc</span>';
-                        }?>
-                        <div class="clear"/>
+                        }?></div>
+                        <div class="clear">
                         <label>Appareil : </label><?php if (isset($deviceInformation)) {
                             echo "<span>" . $deviceInformation . "</span>";
                         } else {
                             echo '<span>nc</span>';
-                        }?>
-                        <div class="clear"/>
+                        }?></div>
+                        <div class="clear"></div>
                         <div class="send_container">
                             <textarea rows="3" id="message<?php echo $userId;echo $i; ?>" cols="25" class="txt_message"
                                       placeholder="Type message here"></textarea>
