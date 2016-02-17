@@ -73,9 +73,6 @@ if (!defined("INSTALL_IN_PROGRESS")) {
 //Paramètres session
 define("COOKIE_NAME", "ogspy_id");
 
-//Activation du mode débuggage
-define("MODE_DEBUG", FALSE);
-
 /*
 * Google API Key
 */
