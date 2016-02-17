@@ -127,7 +127,7 @@ switch ($order_by) {
     while ($value = current($order)) {
         $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $value . "&strict=on'>";
         if ($value == $user_data["user_name"]) {
-            $player .= "<font color='lime'>";
+            $player .= "<span style=\"color: lime; \">";
         }
         $player .= $value;
 

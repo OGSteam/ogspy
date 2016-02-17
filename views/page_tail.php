@@ -43,7 +43,7 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
             <td style="width:33%;text-align:left;font-size:11px;font-style:italic">
                 <a style="font-weight:bold;" href="http://www.ogsteam.fr"
                    target="_blank">OGSpy</a> <?php echo $server_config["version"];?> est un <span
-                    style="font-weight:bold;">OGSteam Software</span> &copy; 2005-2015<br/>
+                    style="font-weight:bold;">OGSteam Software</span> &copy; 2005-2016<br/>
             </td>
             <td style="width:34%;text-align:center;font-size:11px;font-style:italic;font-weight:bold;"><?php echo("<span id='nb_users'>" . $nb_users . "</span> contributeur" . (($nb_users > 1) ? "s" : "") . " sur le site"); ?></td>
             <td style="width:33%;text-align:right;font-size:11px;font-style:italic">

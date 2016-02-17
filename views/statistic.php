@@ -264,25 +264,16 @@ require_once 'views/page_header.php';
             <td class="c">Ratio</td>
             <td class="c">Xtense</td>
         </tr>
-
         <?php
-
     }
-
     if ($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) {
-
         ?>
-
         <tr>
-            <td colspan="7">(*) connecté sur le serveur<br/>(**) connecté avec Xtense ou GMXtense</td>
+            <td colspan="7">(*) connecté sur le serveur<br/>(**) connecté avec Xtense ou Xtense Chrome Plugin</td>
         </tr>
-
         <?php
-
     }
-
     ?>
 
 </table>
-
 <?php require_once 'views/page_tail.php'; ?>
