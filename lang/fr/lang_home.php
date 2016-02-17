@@ -127,3 +127,13 @@ $lang['HOME_SIMU_DEFENCES'] = "Défenses";
 $lang['HOME_SIMU_MOON'] = "Lunes";
 $lang['HOME_SIMU_SATS'] = "Satellites";
 $lang['HOME_SIMU_TECHNOLOGIES'] = "Technologies";
+
+/* home_spy.php */
+
+$lang['HOME_SPY_POSITIONS'] = "Positions";
+$lang['HOME_SPY_ALLIANCES'] = "Alliances";
+$lang['HOME_SPY_PLAYERS'] = "Joueurs";
+$lang['HOME_SPY_MOON'] = "Lune";
+$lang['HOME_SPY_UPDATE'] = "Mises à jour";
+$lang['HOME_SPY_SEE'] = "Voir";
+$lang['HOME_SPY_FAVDELETE'] = "Supprimer des favoris";
