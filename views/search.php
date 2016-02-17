@@ -123,7 +123,7 @@ require_once("views/page_header.php");
 <table>
     <tr>
         <td width="400" valign="top">
-            <form method="POSt" action="index.php">
+            <form method="POST" action="index.php">
                 <input type="hidden" name="action" value="search">
                 <table width="100%">
                     <tr>

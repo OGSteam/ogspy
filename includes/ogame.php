@@ -720,8 +720,7 @@ function all_lune_cumulate($user_building, $user_defence)
 /**
  * Calculates the price of all researches
  * @param $user_technology
- * @return the bild :-)
- * @internal param string $user_defence The list of technologies with corresponding levels
+ * @return the bild for all technologies :-)
  */
 function all_technology_cumulate($user_technology)
 {

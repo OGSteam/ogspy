@@ -90,7 +90,7 @@ if (sizeof($dates) > 0) {
                            value="<?php echo $user_data["user_stat_name"]; ?>"/> <input
                         type="submit" value="obtenir les statistiques"/>
                 </th>
-                <th rowspan="2"><U>intervalle d'étude</U> : du <input type="text"
+                <th rowspan="2"><span style="text-decoration: underline;">intervalle d'étude</span> : du <input type="text"
                                                                       size="10" maxlength="10" name="start_date"
                                                                       value="<?php echo strftime("%d/%m/%Y", $min_date + 60 * 60 * 2); ?>"/>
                     au <input type="text" size="10" maxlength="10" name="end_date"
@@ -298,14 +298,7 @@ if (sizeof($dates) > 0) {
 
     echo "<table width='1000'>";
 
-
-
-
-    ?>
-
-
-
-    <?php if ($player_comp != "" && isset($player_comp)): ?>
+if ($player_comp != "" && isset($player_comp)): ?>
         <tr>
             <td class='c' colspan='2'>Comparaison</td>
         </tr>
@@ -336,58 +329,6 @@ if (sizeof($dates) > 0) {
     $zoom = 'false';
     $curve = create_curves($user_data["user_stat_name"], $min_date, $max_date,
         $player_comp);
-
-
-    //echo "<table width=''><tr><td class='c' colspan='2'>Général</td></tr>";
-    //
-    //echo "<tr><td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=points_rank&titre=Classement par points&zoom=".$zoom."' alt='pas de graphique disponible' /></td> \n";
-    //
-    //echo "<td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=points_points&titre=Points total&zoom=".$zoom."' alt='pas de graphique disponible' /></td></tr>\n";
-    //
-    //echo "<tr><td class='c' colspan='2'>Economique</td></tr>";
-    //
-    //echo "<tr><td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=eco_rank&titre=Classement economique&zoom=".$zoom."' alt='pas de graphique disponible' /></td>\n";
-    //
-    //echo "<td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=eco_points&titre=Points economiques&zoom=".$zoom."' alt='pas de graphique disponible' /></td></tr>\n";
-    //
-    //echo "<tr><td class='c' colspan='2'>Technologies</td></tr>";
-    //
-    //echo "<tr><td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=techno_rank&titre=Classement par recherche&zoom=".$zoom."' alt='pas de graphique disponible' /></td>\n";
-    //
-    //echo "<td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=techno_points&titre=Points de recherche&zoom=".$zoom."' alt='pas de graphique disponible' /></td></tr>\n";
-    //
-    //echo "<tr><td class='c' colspan='2'>Militaire</td></tr>";
-    //
-    //echo "<tr><td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=military_rank&titre=Classement militaire&zoom=".$zoom."' alt='pas de graphique disponible' /></td>\n";
-    //
-    //echo "<td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=military_points&titre=Points militaires&zoom=".$zoom."' alt='pas de graphique disponible' /></td></tr>\n";
-    //
-    //echo "<tr><td class='c' colspan='2'>Points militaires construits</td></tr>";
-    //
-    //echo "<tr><td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=militaryb_rank&titre=Classement militaire construits&zoom=".$zoom."' alt='pas de graphique disponible' /></td>\n";
-    //
-    //echo "<td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=militaryb_points&titre=Points militaires contruits&zoom=".$zoom."' alt='pas de graphique disponible' /></td></tr>\n";
-    //
-    //echo "<tr><td class='c' colspan='2'>Perte militaire</td></tr>";
-    //
-    //echo "<tr><td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=militaryl_rank&titre=Classement pertes militaires&zoom=".$zoom."' alt='pas de graphique disponible' /></td>\n";
-    //
-    //echo "<td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=militaryl_points&titre=Points pertes militaires&zoom=".$zoom."' alt='pas de graphique disponible' /></td></tr>\n";
-    //
-    //echo "<tr><td class='c' colspan='2'>Destruction</td></tr>";
-    //
-    //echo "<tr><td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=militaryd_rank&titre=Classement destruction&zoom=".$zoom."' alt='pas de graphique disponible' /></td>\n";
-    //
-    //echo "<td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=militaryd_points&titre=Points destruction&zoom=".$zoom."' alt='pas de graphique disponible' /></td></tr>\n";
-    //
-    //echo "<tr><td class='c' colspan='2'>Honneur</td></tr>";
-    //
-    //echo "<tr><td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=techno_rank&titre=Classement honneur&zoom=".$zoom."' alt='pas de graphique disponible' /></td>\n";
-    //
-    //echo "<td><img src='index.php?action=graphic_curve&player=".$user_data["user_stat_name"]."&player_comp=".$player_comp."&start=".$min_date."&end=".$max_date."&graph=techno_points&titre=Points honnorifique&zoom=".$zoom."' alt='pas de graphique disponible' /></td></tr>\n";
-    //
-    //
-
 
     $title = "Basé sur vos données dans \"Empire\"";
     if (!empty($user_data["user_stat_name"])) {

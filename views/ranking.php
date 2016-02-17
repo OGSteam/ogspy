@@ -25,7 +25,7 @@ require_once("views/page_header.php");
 
                         if ($subaction != "player") {
                             echo "\t\t\t" . "<td class='c' width='150' onclick=\"window.location = 'index.php?action=ranking&amp;subaction=player';\">";
-                            echo "<a style='cursor:pointer'><font color='lime'>Joueurs</font></a>";
+                            echo "<a style='cursor:pointer'><span style=\"color: lime; \">Joueurs</span></a>";
                             echo "</td>";
                         } else {
                             echo "\t\t\t" . "<th width='150'>";
@@ -35,7 +35,7 @@ require_once("views/page_header.php");
 
                         if ($subaction != "ally") {
                             echo "\t\t\t" . "<td class='c' width='150' onclick=\"window.location = 'index.php?action=ranking&amp;subaction=ally';\">";
-                            echo "<a style='cursor:pointer'><font color='lime'>Alliances</font></a>";
+                            echo "<a style='cursor:pointer'><span style=\"color: lime; \">Alliances</span></a>";
                             echo "</td>";
                         } else {
                             echo "\t\t\t" . "<th width='150'>";
