@@ -119,10 +119,6 @@ define("COUNTER", _BBCLONE_DIR . "mark_page.php");
 if (is_readable(COUNTER))
     include_once (COUNTER);
 
-if (MODE_DEBUG) {
-    error_reporting(E_ALL);
-}
-
 if (isset($server_config["log_phperror"]) && $server_config["log_phperror"] == 1)
     set_error_handler('ogspy_error_handler');
 ?>
