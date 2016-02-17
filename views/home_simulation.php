@@ -223,7 +223,7 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         <?php
 
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><font color='lime'><div id='NRJ_" . $i . "'>-</div></font></th>" . "\n";
+            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='NRJ_" . $i . "'>-</div></span></th>" . "\n";
         }
         ?>
         <th>
@@ -279,7 +279,7 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         <th><a>Consommation Energie</a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><font color='lime'><div id='M_" . $i . "_conso'>-</div></font></th>" . "\n";
+            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='M_" . $i . "_conso'>-</div></span></th>" . "\n";
         }
         ?>
         <th>
@@ -290,7 +290,7 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         <th><a>Production</a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><font color='lime'><div id='M_" . $i . "_prod'>-</div></font></th>" . "\n";
+            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='M_" . $i . "_prod'>-</div></span></th>" . "\n";
         }
         ?>
         <th>
@@ -345,7 +345,7 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         <th><a>Consommation Energie</a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><font color='lime'><div id='C_" . $i . "_conso'>-</div></font></th>" . "\n";
+            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='C_" . $i . "_conso'>-</div></span></th>" . "\n";
         }
         ?>
         <th>
@@ -356,7 +356,7 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         <th><a>Production</a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><font color='lime'><div id='C_" . $i . "_prod'>-</div></font></th>" . "\n";
+            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='C_" . $i . "_prod'>-</div></span></th>" . "\n";
         }
         ?>
         <th>
@@ -411,7 +411,7 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         <th><a>Consommation Energie</a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><font color='lime'><div id='D_" . $i . "_conso'>-</div></font></th>" . "\n";
+            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='D_" . $i . "_conso'>-</div></span></th>" . "\n";
         }
         ?>
         <th>
@@ -422,7 +422,7 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         <th><a>Production</a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><font color='lime'><div id='D_" . $i . "_prod'>-</div></font></th>" . "\n";
+            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='D_" . $i . "_prod'>-</div></span></th>" . "\n";
         }
         ?>
         <th>
@@ -437,28 +437,28 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         <?php
         $lab_max = 0;
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><font color='lime'><div id='building_pts_" . $i . "'>-</div></font>" . "\n";
+            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='building_pts_" . $i . "'>-</div></span>" . "\n";
             echo "\t<input type='hidden' id='building_" . $i . "' value='" . implode(array_slice($user_building[$i], 12, -3), "<>") . "' /></th>";
             if ($lab_max < $user_building[$i]["Lab"]) $lab_max = $user_building[$i]["Lab"];
         }
         ?>
-        <th><font color='white'><span id='total_b_pts'>-</span></font></th>
+        <th><span style="color: white; "><span id='total_b_pts'>-</span></span></th>
     </tr>
     <tr>
         <th><a>Défenses</a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t<th colspan='2'><font color='lime'><div id='defence_pts_" . $i . "'>-</div></font>" . "\n";
+            echo "\t<th colspan='2'><span style=\"color: lime; \"><div id='defence_pts_" . $i . "'>-</div></span>" . "\n";
             echo "\t<input type='hidden' id='defence_" . $i . "' value='" . implode($user_defence[$i], "<>") . "' /></th>";
         }
         ?>
-        <th><font color='white'><span id='total_d_pts'>-</span></font></th>
+        <th><span style="color: white; "><span id='total_d_pts'>-</span></span></th>
     </tr>
     <tr>
         <th><a>Lunes</a></th>
         <?php
         for ($i = 201; $i <= 200 + $nb_planete; $i++) {
-            echo "\t<th colspan='2'><font color='lime'><div id='lune_pts_" . $i . "'>-</div></font>" . "\n";
+            echo "\t<th colspan='2'><span style=\"color: lime; \"><div id='lune_pts_" . $i . "'>-</div></span>" . "\n";
             if ($user_building[$i]) {
                 echo "\t<input type='hidden' id='lune_b_" . $i . "' value='" . implode(array_slice($user_building[$i], 12, -3, true), "<>") . "' />";
             } else {
@@ -467,13 +467,13 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
             echo "\t<input type='hidden' id='lune_d_" . $i . "' value='" . implode($user_defence[$i], "<>") . "' /></th>";
         }
         ?>
-        <th><font color='white'><span id='total_lune_pts'>-</span></font></th>
+        <th><span style="color: white; "><span id='total_lune_pts'>-</span></span></th>
     </tr>
     <tr>
         <th><a>Satellites</a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><font color='lime'><div id='sat_pts_" . $i . "'>-</div></font>" . "\n";
+            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='sat_pts_" . $i . "'>-</div></span>" . "\n";
             echo "\t<input type='hidden' id='sat_lune_" . $i . "' value=" . ($user_building[$i + 100]["Sat"] != "" ? $user_building[$i + 100]["Sat"] : 0) . " /></th>";
         }
         ?>
@@ -486,21 +486,21 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             if ($user_empire["technology"] != NULL && $user_building[$i]["Lab"] == $lab_max) {
-                echo "\t" . "<th colspan='2'><font color='lime'><div id='techno_pts'>-</div></font>" . "\n";
+                echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='techno_pts'>-</div></span>" . "\n";
                 echo "\t<input type='hidden' id='techno' value='" . implode($user_empire["technology"], "<>") . "' /></th>";
-            } else echo "<th colspan='2'><font color='lime'>-</font></th>";
+            } else echo "<th colspan='2'><span style=\"color: lime; \">-</span></th>";
         }
         ?>
         <th>-</th>
     </tr>
     <tr>
-        <th><a><font color='yellow'>Totaux</font></a></th>
+        <th><a><span style="color: yellow; ">Totaux</span></a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><font color='white'><div id='total_pts_" . $i . "'>-</div></font></th>" . "\n";
+            echo "\t" . "<th colspan='2'><span style=\"color:white;\"><div id='total_pts_" . $i . "'>-</div></span></th>" . "\n";
         }
         ?>
-        <th><font color='white'><span id='total_pts'>-</span></font></th>
+        <th><span style="color: white; "><span id='total_pts'>-</span></span></th>
     </tr>
     <tr>
         <td class="c">&nbsp;</td>
