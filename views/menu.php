@@ -11,31 +11,6 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-$items = array();
-if (($user_auth["server_set_system"] == 1 && $user_auth["server_set_spy"] == 1) || $user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-    $items[] = array("basic", "S. Solaire, R. Espionnage");
-} elseif ($user_auth["server_set_system"] == 1) {
-    $items[] = array("basic", "S. solaire");
-} elseif ($user_auth["server_set_spy"] == 1) {
-    $items[] = array("basic", "R. Espionnage");
-}
-if ($user_auth["server_set_rc"] == 1 || $user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-    $items[] = array("combat_report", "R. Combat");
-}
-
-if ($user_auth["server_set_ranking"] == 1 || $user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-    $items[] = array("none", "");
-    $items[] = array("none", "----Classement joueur----");
-    $items[] = array("general_player", "-> Général");
-    $items[] = array("fleet_player", "-> Flotte");
-    $items[] = array("research_player", "-> Recherche");
-    $items[] = array("none", "");
-    $items[] = array("none", "---Classement alliance---");
-    $items[] = array("general_ally", "-> Général");
-    $items[] = array("fleet_ally", "-> Flotte");
-    $items[] = array("research_ally", "-> Recherche");
-}
-
 ?>
 
 <script type="text/javascript">
