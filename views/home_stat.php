@@ -75,28 +75,28 @@ if (sizeof($dates) > 0) {
     $min_date = time();
 }
 ?>
-<center>
+<div style="text-align: center;">
     <form method="get" action="index.php">
         <input type="hidden" name="action" value="home"/> <input
             type="hidden" name="subaction" value="stat"/> <input type="hidden"
                                                                  name="zoom" value="<?php echo $zoom; ?>"/>
         <table>
             <tr>
-                <td class='c'>Les statistiques de :</td>
-                <td class='c' colspan='2'>Options :</td>
+                <td class='c'><?php echo($lang['HOME_STATS_STATISTICS']); ?></td>
+                <td class='c' colspan='2'><?php echo($lang['HOME_STATS_OPTIONS']); ?></td>
             </tr>
             <tr>
                 <th><input type="text" name="user_stat_name"
                            value="<?php echo $user_data["user_stat_name"]; ?>"/> <input
-                        type="submit" value="obtenir les statistiques"/>
+                        type="submit" value="<?php echo($lang['HOME_STATS_GETSTATS']); ?>"/>
                 </th>
-                <th rowspan="2"><span style="text-decoration: underline;">intervalle d'étude</span> : du <input type="text"
+                <th rowspan="2"><span style="text-decoration: underline;"><?php echo($lang['HOME_STATS_INTERVAL']); ?></span> : <?php echo($lang['HOME_STATS_FROM']); ?> <input type="text"
                                                                       size="10" maxlength="10" name="start_date"
                                                                       value="<?php echo strftime("%d/%m/%Y", $min_date + 60 * 60 * 2); ?>"/>
-                    au <input type="text" size="10" maxlength="10" name="end_date"
+                    <?php echo($lang['HOME_STATS_TO']); ?> <input type="text" size="10" maxlength="10" name="end_date"
                               value="<?php echo strftime("%d/%m/%Y", $max_date); ?>"/> <input
-                        type="submit" value="envoyer"/></th>
-                <th rowspan="2">zoom : <input type="image" align="absmiddle"
+                        type="submit" value="<?php echo($lang['HOME_STATS_SEND']); ?>"/></th>
+                <th rowspan="2"><?php echo($lang['HOME_STATS_ZOOM']); ?> : <input type="image" align="absmiddle"
                                               name="zoom_change"
                                               src="images/<?php echo($zoom == "true" ? "zoom_in.png" : "zoom_out.png"); ?>"
                                               alt="zoom"/>
@@ -105,14 +105,10 @@ if (sizeof($dates) > 0) {
             <tr>
                 <th><input type="text" name="player_comp"
                            value="<?php echo $player_comp; ?>"/> <input type="submit"
-                                                                        value="comparer avec"/></th>
+                                                                        value="<?php echo($lang['HOME_STATS_COMPARE']); ?>"/></th>
             </tr>
         </table>
     </form>
-
-
-
-
 
     <?php
     $first = array("general_pts" => -1, "eco_pts" => -1, "techno_pts" => -1,
@@ -293,34 +289,32 @@ if (sizeof($dates) > 0) {
         next($individual_ranking);
     }
 
-    echo "<p><b><u style='font-size:14px;'>Les statistiques de " . $user_data["user_stat_name"] .
+    echo "<p><b><u style='font-size:14px;'>".$lang['HOME_STATS_PALYERSTATS']." " . $user_data["user_stat_name"] .
         "</u></b></p>";
 
     echo "<table width='1000'>";
 
 if ($player_comp != "" && isset($player_comp)): ?>
         <tr>
-            <td class='c' colspan='2'>Comparaison</td>
+            <td class='c' colspan='2'><?php echo($lang['HOME_STATS_COMP']); ?></td>
         </tr>
     <?php else : ?>
         <tr>
-            <td class='c' colspan='2'>Classements</td>
+            <td class='c' colspan='2'><?php echo($lang['HOME_STATS_RANKINGS']); ?></td>
         </tr>
     <?php endif;
     // affichage du tableau avec conteur div
     ?>
     <tr>
         <th colspan='2'>
-            <div id="<?php echo "points"; ?>">pas de graphique disponible</div>
+            <div id="<?php echo "points"; ?>"><?php echo($lang['HOME_STATS_NOGRAPHIC']); ?></div>
         </th>
     </tr>
     <tr>
         <th colspan='2'>
-            <div id="<?php echo "rank"; ?>">pas de graphique disponible</div>
+            <div id="<?php echo "rank"; ?>"><?php echo($lang['HOME_STATS_NOGRAPHIC']); ?></div>
         </th>
     </tr>
-
-
 
 
     <?php
@@ -330,13 +324,13 @@ if ($player_comp != "" && isset($player_comp)): ?>
     $curve = create_curves($user_data["user_stat_name"], $min_date, $max_date,
         $player_comp);
 
-    $title = "Basé sur vos données dans \"Empire\"";
+    $title = $lang['HOME_STATS_GRAPHIC_TITLE'];
     if (!empty($user_data["user_stat_name"])) {
-        $title .= " et les stats de " . $user_data["user_stat_name"];
+        $title .= " ".$lang['HOME_STATS_GRAPHIC_TITLE2']." " . $user_data["user_stat_name"];
         if (!empty($last_date["general"]))
-            $title .= " du " . strftime("%d %b %Y %H:%M", $last_date["general"]);
+            $title .= " ".$lang['HOME_STATS_GRAPHIC_FROM']." " . strftime("%d %b %Y %H:%M", $last_date["general"]);
     }
-    echo "<tr><td class='c' colspan='2'>Divers " . help(null, $title) . "</td></tr>";
+    echo "<tr><td class='c' colspan='2'>".$lang['HOME_STATS_GRAPHIC_DIVERS']." " . help(null, $title) . "</td></tr>";
 
     $user_empire = user_get_empire($user_data["user_id"]);
     $user_building = $user_empire["building"];
@@ -363,17 +357,17 @@ if ($player_comp != "" && isset($player_comp)): ?>
     echo "<div id='pie_point'>";
     // pas d info
     if ($b == 0 && $d == 0 && $l == 0 && $t == 0)
-        echo "Pas de données dans l'empire";
+        echo $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'];
 
 // calcul impossible ( non connaissance du classement)
     elseif ($last["general_pts"] == 0)
-        echo "Pas de données sur le total de points";
+        echo $lang['HOME_STATS_GRAPHIC_NOSTATSDATA'];
 
 // autrement on affiche rien : on prepare juste l affichage du script
     else {
         $pie_point = create_pie($b . "_x_" . $d . "_x_" . $l . "_x_" . $f . "_x_" . $t,
             "Batiments_x_Défenses_x_Lunes_x_Flotte_x_Technologies",
-            "Dernière répartition des points connue", "pie_point");
+            $lang['HOME_STATS_GRAPHIC_LASTREPARTITION'], "pie_point");
     }
     echo "</div>";
     echo "</th>\n";
@@ -398,12 +392,12 @@ if ($player_comp != "" && isset($player_comp)): ?>
     echo "<div id='pie_empire'  width='400'>";
     // pas d info
     if ($b == 0 && $d == 0 && $l == 0 && $t == 0)
-        echo "Pas de données dans l'empire";
+        echo $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'];
 
 // autrement on affiche rien : on prepare juste l affichage du script
     else {
         $pie_empire = create_pie(implode($planet, "_x_"), implode($planet_name, "_x_"),
-            "Proportion des planètes - lunes comprises", "pie_empire");
+            $lang['HOME_STATS_GRAPHIC_REPARTITION'], "pie_empire");
     }
 
     echo "</div>";
@@ -418,25 +412,25 @@ if ($player_comp != "" && isset($player_comp)): ?>
 
     <table>
         <tr>
-            <td class="c" colspan="17">Classement de <a><?php echo $user_data["user_stat_name"]; ?></a></td>
+            <td class="c" colspan="17"><?php echo($lang['HOME_STATS_RANKING']); ?> <a><?php echo $user_data["user_stat_name"]; ?></a></td>
         </tr>
         <tr>
-            <td class="c" width="140">Date</td>
-            <td class="c_classement_points" colspan="2">Pts Général</td>
-            <td class="c" colspan="2">Pts Economique</td>
-            <td class="c_classement_recherche" colspan="2">Pts Recherche</td>
-            <td class="c_classement_flotte" colspan="2">Pts Militaire</td>
-            <td class="c_classement_flotte" colspan="2">Pts Militaire Construits</td>
-            <td class="c_classement_flotte" colspan="2">Pts Perte militaire</td>
-            <td class="c_classement_flotte" colspan="2">Pts destruction</td>
-            <td class="c" colspan="2">Pts honorifique</td>
+            <td class="c" width="140"><?php echo($lang['HOME_STATS_DATE']); ?></td>
+            <td class="c_classement_points" colspan="2"><?php echo($lang['HOME_STATS_PTS_GENERAL']); ?></td>
+            <td class="c" colspan="2"><?php echo($lang['HOME_STATS_PTS_ECO']); ?></td>
+            <td class="c_classement_recherche" colspan="2"><?php echo($lang['HOME_STATS_PTS_RESEARCH']); ?></td>
+            <td class="c_classement_flotte" colspan="2"><?php echo($lang['HOME_STATS_PTS_MILITARY']); ?></td>
+            <td class="c_classement_flotte" colspan="2"><?php echo($lang['HOME_STATS_PTS_MILITARYBUILT']); ?></td>
+            <td class="c_classement_flotte" colspan="2"><?php echo($lang['HOME_STATS_PTS_MILITARYLOST']); ?></td>
+            <td class="c_classement_flotte" colspan="2"><?php echo($lang['HOME_STATS_PTS_MILITARYDEST']); ?></td>
+            <td class="c" colspan="2"><?php echo($lang['HOME_STATS_PTS_HONOR']); ?></td>
 
         </tr>
         <?php
 
         echo $tab_rank;
         echo "\t\t" . "<tr>" . "\n";
-        echo "\t\t\t" . "<th width='150' style='border-color:#FF0000'><font color='yellow'>Progression moyenne par jour :</font></th>" .
+        echo "\t\t\t" . "<th width='150' style='border-color:#FF0000'><font color='yellow'>".$lang['HOME_STATS_PROGRESS_RATE']." :</font></th>" .
             "\n";
         echo "\t\t\t" . "<th width='70' style='border-color:#FF0000'>" . (($first["general_pts"] ==
                 -1 || $last_date["general"] == $first_date["general"]) ? "-" : round(($last["general_pts"] -
@@ -507,7 +501,7 @@ if ($player_comp != "" && isset($player_comp)): ?>
         ?>
 
     </table>
-</center>
+</div>
 
 <?php
 /// affichage des script de création graph
