@@ -247,4 +247,16 @@ function session_whois_online()
 
     return $online;
 }
+
+/**
+ * drop_sessions
+ * Clean All sessions
+ *
+ */
+function drop_sessions()
+{
+    global $db;
+    $db->sql_query("TRUNCATE TABLE " . TABLE_SESSIONS);
+}
+
 ?>
