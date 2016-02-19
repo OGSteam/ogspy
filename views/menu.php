@@ -53,12 +53,6 @@ if (!defined('IN_SPYOGAME')) {
         }
     }
 
-    function clear_box() {
-        if (document.post.data.value == "Système solaire & Rapport espionnage & Classement") {
-            document.post.data.value = "";
-        }
-    }
-
     function Biper() {
         Timer();
         goblink();
@@ -79,8 +73,7 @@ if (!defined('IN_SPYOGAME')) {
 
     <tr>
         <td>
-            <div><a href="index.php" class="menu"><img src="./skin/OGSpy_skin/transpa.gif" width="166"
-                                                       height="65" border="0"/></a></div>
+            <div><a href="index.php" class="menu"><img src="./skin/OGSpy_skin/transpa.gif" width="166" height="65" border="0"/></a></div>
         </td>
     </tr>
 
@@ -94,7 +87,7 @@ if (!defined('IN_SPYOGAME')) {
 
     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
         echo "<tr>";
-        echo "<td><div align='center'><a href='index.php?action=administration' class='menu0'><img src='./skin/OGSpy_skin/transpa.gif' width='166' height='19'></a></div></td>";
+        echo "<td><div align='left'>  * <a href='index.php?action=administration' class='menu0'>Adminstration</a></div></td>";
         echo "</tr>";
     }
 
@@ -183,7 +176,7 @@ if (!defined('IN_SPYOGAME')) {
             }
         }
     } else {
-        echo '<tr><td>- <font color="red">Mods<br />inaccessibles&nbsp;' . help("ratio_block") . '</font></td></tr>' . "\n";
+        echo '<tr><td>- <span style="color: red; ">Mods<br />inaccessibles&nbsp;' . help("ratio_block") . '</span></td></tr>' . "\n";
     }
 
     ?>
@@ -218,8 +211,7 @@ if (!defined('IN_SPYOGAME')) {
     </tr>
     <tr>
         <td>
-            <div align="center"><a href="index.php?action=logout" class="menu10"><img
-                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
+            <div align="center"><a href="index.php?action=logout" class="menu10"><img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
         </td>
     </tr>
     <tr>
@@ -236,8 +228,7 @@ if (!defined('IN_SPYOGAME')) {
 
         <tr>
             <td>
-                <div align="center"><a href="<?php echo $server_config["url_forum"]; ?>" target="_blank" class="menu11"><img
-                            src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
+                <div align="center"><a href="<?php echo $server_config["url_forum"]; ?>" target="_blank" class="menu11"><img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
             </td>
         </tr>
 
@@ -249,8 +240,26 @@ if (!defined('IN_SPYOGAME')) {
 
     <tr>
         <td>
-            <div align="center"><a href="index.php?action=about" class="menu12"><img
-                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
+            <div align="center"><a href="index.php?action=about" class="menu12"><img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
         </td>
     </tr>
 </table>
+
+<h2>Menu</h2>
+<ul style="width:100px;" class= "menu" id="menu">
+    <li>Administration</li>
+    <li>Item 2</li>
+    <li>Item 3
+        <ul>
+            <li>Item 3-1</li>
+            <li>Item 3-2</li>
+            <li>Item 3-3</li>
+            <li>Item 3-4</li>
+            <li>Item 3-5</li>
+        </ul>
+    </li>
+    <li>Item 4</li>
+    <li><a href="index.php?action=about">A PROPOS</a></li>
+</ul>
+
+<!--<script>$( "#menu" ).menu();</script>-->
