@@ -42,8 +42,7 @@ p td
     border-spacing:0px;
     border-collapse:collapse;
     border:0;
-    text-align:"center";
-    
+    text-align:center;
 }
 
 
@@ -463,13 +462,27 @@ a.menu
 
 a.menu0
 {
-	background-image: url("menu/admin0.png") ;
+	/*background-image: url("menu/admin0.png") ;*/
 	display: block;
+    color: #FFFFFF;
+    font-family: Verdana;
+    font-feature-settings: "'liga' 1";
+    font-kerning: auto;
+    font-style: normal;
+    font-size: 1em;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.5em;
+    text-align: left;
+    text-decoration: none;
+    text-transform: uppercase;
+    word-spacing: 0;
 }
 
 a.menu0:hover
 {
-	background-image: url("menu/admin1.png") ;
+	/*background-image: url("menu/admin1.png") ;*/
+    color: #26F33D;
 }
 
 a.menu1
@@ -481,6 +494,7 @@ a.menu1
 a.menu1:hover
 {
 	background-image: url("menu/profil1.png") ;
+    color: #26F33D;
 }
 
 a.menu2
@@ -492,6 +506,7 @@ a.menu2
 a.menu2:hover
 {
 	background-image: url("menu/espace_perso1.png") ;
+    color: #26F33D;
 }
 
 a.menu3
@@ -503,6 +518,7 @@ a.menu3
 a.menu3:hover
 {
 	background-image: url("menu/galaxie1.png") ;
+    color: #26F33D;
 }
 
 a.menu4
@@ -514,6 +530,7 @@ a.menu4
 a.menu4:hover
 {
 	background-image: url("menu/esp_alliances1.png") ;
+    color: #26F33D;
 }
 
 a.menu5
@@ -525,6 +542,7 @@ a.menu5
 a.menu5:hover
 {
 	background-image: url("menu/recherche1.png") ;
+    color: #26F33D;
 }
 
 a.menu6
@@ -536,6 +554,7 @@ a.menu6
 a.menu6:hover
 {
 	background-image: url("menu/classements1.png") ;
+    color: #26F33D;
 }
 
 a.menu7
@@ -547,6 +566,7 @@ a.menu7
 a.menu7:hover
 {
 	background-image: url("menu/cartographie1.png") ;
+    color: #26F33D;
 }
 
 a.menu8
@@ -558,6 +578,7 @@ a.menu8
 a.menu8:hover
 {
 	background-image: url("menu/syst_obsoletes1.png") ;
+    color: #26F33D;
 }
 
 a.menu10
@@ -569,6 +590,7 @@ a.menu10
 a.menu10:hover
 {
 	background-image: url("menu/logout1.png") ;
+    color: #26F33D;
 }
 
 a.menu11
@@ -580,6 +602,7 @@ a.menu11
 a.menu11:hover
 {
 	background-image: url("menu/forum1.png") ;
+    color: #26F33D;
 }
 
 a.menu12
@@ -591,6 +614,7 @@ a.menu12
 a.menu12:hover
 {
 	background-image: url("menu/apropos1.png") ;
+	color: #26F33D;
 }
 
 a.menu_mods
@@ -610,4 +634,12 @@ center
 	color: #ECFF00;
 }
 
-ul { list-style-image: url('../../images/list.png') }
+ul.menu {
+    list-style-image: url('../../images/list.png');
+    font-size : 12px;
+}
+
+ul.menu.hover {
+    color: #56F39F;
+    text-decoration: none;
+}
