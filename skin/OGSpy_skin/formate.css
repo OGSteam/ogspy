@@ -64,8 +64,8 @@ table table td /* police de la zone donnant les ressources sur chaque planète e
 body /* allg font etc. *//* option du fond et générales */
 {
 	color: #E4E4E4;
-	margin-top: 0px;
-	margin-left: 0px;
+	margin-top: 0;
+	margin-left: 0;
 	background: #000000;
 	background-image: url("fond_1.jpg");
 	background-position: left top;
@@ -460,9 +460,8 @@ a.menu
 	display: block;
 }
 
-a.menu0
+a.menu_items
 {
-	/*background-image: url("menu/admin0.png") ;*/
 	display: block;
     color: #FFFFFF;
     font-family: Verdana;
@@ -479,7 +478,7 @@ a.menu0
     word-spacing: 0;
 }
 
-a.menu0:hover
+a.menu:hover
 {
 	/*background-image: url("menu/admin1.png") ;*/
     color: #26F33D;
@@ -635,11 +634,17 @@ center
 }
 
 ul.menu {
-    list-style-image: url('../../images/list.png');
-    font-size : 12px;
+    list-style-image: url('./menu/list.png');
+    color:grey;
+    text-align: left;
+    text-decoration:none;
+    font-weight: bold;
+    font-size: 1em;
+    display: block;
+    line-height: 2;
 }
 
-ul.menu.hover {
+ul.menu.a.hover {
     color: #56F39F;
     text-decoration: none;
 }
