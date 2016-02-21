@@ -85,15 +85,49 @@ if (!defined('IN_SPYOGAME')) {
         echo "</tr>\n";
     }
 
-    if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
+   /* if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
         echo "<tr>";
         echo "<td><div align='left'>  * <a href='index.php?action=administration' class='menu0'>Adminstration</a></div></td>";
         echo "</tr>";
-    }
+    }*/
 
     ?>
+<tr>
+    <td><div style="text-align='left';">
 
-    <tr>
+        <ul style="width:100px;" class= "menu" id="menu">
+            <?php
+            if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
+                echo "<li><a href='index.php?action=administration' class='menu_items'>Administration</a></li>";
+            }
+            ?>
+            <li><a href='index.php?action=profile' class='menu_items'>Profil</a></li>
+            <li><a href='index.php?action=home' class='menu_items'>Espace Personnel</a></li>
+            <li><a href='index.php?action=galaxy' class='menu_items'>Galaxie</a></li>
+            <li><a href='index.php?action=cartography' class='menu_items'>Etat Cartographie</a></li>
+            <li><a href='index.php?action=search' class='menu_items'>Recherche</a></li>
+            <li><a href='index.php?action=ranking' class='menu_items'>Classements</a></li>
+            <li></li>
+            <li><a href='index.php?action=statistic' class='menu_items'>statistiques</a></li>
+            <li>Item 3
+                <ul>
+                    <li>Item 3-1</li>
+                    <li>Item 3-2</li>
+                    <li>Item 3-3</li>
+                    <li>Item 3-4</li>
+                    <li>Item 3-5</li>
+                </ul>
+            </li>
+            <li>Item 4</li>
+            <li><a href="index.php?action=about">A Propos</a></li>
+        </ul>
+
+</div>
+    </td>
+
+
+</tr>
+<!--    <tr>
         <td>
             <div align="center"><a href="index.php?action=profile" class="menu1"><img
                         src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
@@ -160,13 +194,13 @@ if (!defined('IN_SPYOGAME')) {
         <td>
             <div align="center"><img src="./skin/OGSpy_skin/menu/mods.png" width="166" height="19"></div>
         </td>
-    </tr>
+    </tr>-->
 
     <!-- Emplacement mod /-->
 
     <?php
 
-    if (ratio_is_ok()) {
+   /* if (ratio_is_ok()) {
         $request = "select action, menu from " . TABLE_MOD . " where active = 1 and `admin_only` = '0' order by position, title";
         $result = $db->sql_query($request);
 
@@ -178,7 +212,7 @@ if (!defined('IN_SPYOGAME')) {
     } else {
         echo '<tr><td>- <span style="color: red; ">Mods<br />inaccessibles&nbsp;' . help("ratio_block") . '</span></td></tr>' . "\n";
     }
-
+*/
     ?>
 
     <!-- Fin des mods /-->
@@ -186,7 +220,7 @@ if (!defined('IN_SPYOGAME')) {
     <!-- Emplacement mod  admin/-->
 
     <?php
-
+/*
     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
         $request = "select action, menu from " . TABLE_MOD . " where active = 1 and `admin_only` = '1' order by position, title";
         $result = $db->sql_query($request);
@@ -199,11 +233,11 @@ if (!defined('IN_SPYOGAME')) {
             }
         }
     }
-
+*/
     ?>
 
     <!-- Fin des mods  admin/-->
-
+<!--
     <tr>
         <td>
             <div align="center"><img src="./skin/OGSpy_skin/transpa.gif" width="0" height="17"></div>
@@ -219,9 +253,9 @@ if (!defined('IN_SPYOGAME')) {
             <div align="center"><img src="./skin/OGSpy_skin/transpa.gif" width="0" height="17"></div>
         </td>
     </tr>
-
+-->
     <?php
-
+/*
     if ($server_config["url_forum"] != "") {
 
         ?>
@@ -234,32 +268,18 @@ if (!defined('IN_SPYOGAME')) {
 
         <?php
 
-    }
+    }*/
 
     ?>
 
-    <tr>
+   <!-- <tr>
         <td>
             <div align="center"><a href="index.php?action=about" class="menu12"><img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
         </td>
-    </tr>
+    </tr>-->
 </table>
 
-<h2>Menu</h2>
-<ul style="width:100px;" class= "menu" id="menu">
-    <li>Administration</li>
-    <li>Item 2</li>
-    <li>Item 3
-        <ul>
-            <li>Item 3-1</li>
-            <li>Item 3-2</li>
-            <li>Item 3-3</li>
-            <li>Item 3-4</li>
-            <li>Item 3-5</li>
-        </ul>
-    </li>
-    <li>Item 4</li>
-    <li><a href="index.php?action=about">A PROPOS</a></li>
-</ul>
+<!--<h2>Menu</h2>-->
+
 
 <!--<script>$( "#menu" ).menu();</script>-->
