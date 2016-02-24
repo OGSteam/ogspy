@@ -3,469 +3,428 @@
 by Erreur32 for OGSpsy
 ______________________________________________________________ */
 
-#barre{
+#barre {
     position: fixed;
     bottom: 0;
     left: 0;
-    right:0;
+    right: 0;
     max-width: 100%;
-	background: url("img/toolbar.png") repeat-x;
-	height: 30px;
+    background: url("img/toolbar.png") repeat-x;
+    height: 30px;
     font-size: small;
     color: #ECFF00
 }
 
-img
-{
-	border: 0px;
+img {
+    border: 0px;
 }
 
-p table
-{
-	border: 0px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-size: 11px;
+p table {
+    border: 0px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 11px;
 }
 
-p td 
-{
-	text-align: center;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-size: 11px;
+p td {
+    text-align: center;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 11px;
 }
 
-#maintable
-{
-    border:0px;
-    width:100%; 
-    padding:10px;
-    border-spacing:0px;
-    border-collapse:collapse;
-    border:0;
-    text-align:center;
+#maintable {
+    border: 0px;
+    width: 100%;
+    padding: 10px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    border: 0;
+    text-align: center;
 }
-
-
 
 table table /* fond global des zones descriptifs et temps recherche, construction  et de la barre des ressources en haut au milieu*/
 {
-	border: 0px; 
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-size: 11px;
+    border: 0px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 11px;
 }
 
 table table td /* police de la zone donnant les ressources sur chaque planète en haut au milieu */
 {
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	color : #00FF0D;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    color: #00FF0D;
 }
 
 body /* allg font etc. *//* option du fond et générales */
 {
-	color: #E4E4E4;
-	margin-top: 0;
-	margin-left: 0;
-	background: #000000;
-	background-image: url("fond_1.jpg");
-	background-position: left top;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	text-align: left;  
-	font-size: 11px;
+    color: #E4E4E4;
+    margin-top: 0;
+    margin-left: 0;
+    background: #000000;
+    background-image: url("fond_1.jpg");
+    background-position: left top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    text-align: left;
+    font-size: 11px;
 }
 
 body.style /* paramétrage barre de menu sur le côté */
 {
-	color: #E4E4E4;
-	margin-top: 1px;
-	margin-left: 1px;
-	background-color: #000000;
-	background-image: url("img/pic.png");
-	background-repeat: no-repeat;
-	background-position: 14% 7%;
-	font-family: Tahoma, Helvetica, sans-serif;
-	font-size: 11px; 
-	text-align: left;  
-	width: 172px;     
+    color: #E4E4E4;
+    margin-top: 1px;
+    margin-left: 1px;
+    background-color: #000000;
+    background-image: url("img/pic.png");
+    background-repeat: no-repeat;
+    background-position: 14% 7%;
+    font-family: Tahoma, Helvetica, sans-serif;
+    font-size: 11px;
+    text-align: left;
+    width: 172px;
 }
 
-body form table th table input
-{
-	width: 60px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-size: 11px;
+body form table th table input {
+    width: 60px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 11px;
 }
 
-td.a, td.b, td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, td.c_batiments, td.c_satellite, td.c_defense, td.c_classement_points, td.c_classement_flotte, td.c_classement_recherche, td.f, input, select, td.g, td.h, td.i, td.j, td.k, td.l, td.m, td.n, td.o, td.q, td.r, td.v, .style td, textarea, p td, table.s th img
-{
-	border: 1px #F0ECED solid; 
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-size: 11px;
+td.a, td.b, td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, td.c_batiments, td.c_satellite, td.c_defense, td.c_classement_points, td.c_classement_flotte, td.c_classement_recherche, td.f, input, select, td.g, td.h, td.i, td.j, td.k, td.l, td.m, td.n, td.o, td.q, td.r, td.v, .style td, textarea, p td, table.s th img {
+    border: 1px #F0ECED solid;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 11px;
 }
 
-th, td.a,  td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, td.c_batiments, td.c_satellite, td.c_defense, td.c_classement_points, td.c_classement_flotte, td.c_classement_recherche, td.f, input, select, td.g, td.h, td.i, td.j, td.k, td.m, td.o, td.q, td.r, td.v, td.s, .style td, p td
-{
-	background-color: transparent;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-size: 11px;
+th, td.a, td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, td.c_batiments, td.c_satellite, td.c_defense, td.c_classement_points, td.c_classement_flotte, td.c_classement_recherche, td.f, input, select, td.g, td.h, td.i, td.j, td.k, td.m, td.o, td.q, td.r, td.v, td.s, .style td, p td {
+    background-color: transparent;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 11px;
 }
 
 td.b /* modifie le fond message */
 {
-	background-color: #232E30 ;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-size: 11px;
+    background-color: #232E30;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 11px;
 }
 
-th 
-{
-	border: 1px solid #3F2158;
-	text-align: center;
-	padding-left: 3px;
-	padding-right: 3px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	background-image: url("tableaux/th.png");
-	background-repeat: repeat;
+th {
+    border: 1px solid #3F2158;
+    text-align: center;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    background-image: url("tableaux/th.png");
+    background-repeat: repeat;
 }
 
-td.a
-{
-	height: 37px;
-	text-align: center;
+td.a {
+    height: 37px;
+    text-align: center;
 }
 
-td.b
-{
-	padding: 3px;
+td.b {
+    padding: 3px;
 }
 
-td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, td.c_batiments, td.c_satellite, td.c_defense, td.c_classement_points, td.c_classement_flotte, td.c_classement_recherche
-{
-	font-weight: bold;
-	color: #ffffff;
-	padding-left: 3px; 
-	height: 22px;
+td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, td.c_batiments, td.c_satellite, td.c_defense, td.c_classement_points, td.c_classement_flotte, td.c_classement_recherche {
+    font-weight: bold;
+    color: #ffffff;
+    padding-left: 3px;
+    height: 22px;
 }
 
 td.c /* modifie la police des noms de catégorie dans le menu recherche et des titres de certaines pages barress.PNG */
 {
-	background-image: url("tableaux/td_c.png");
-	background-position: right;
-	background-repeat: repeat-y;
+    background-image: url("tableaux/td_c.png");
+    background-position: right;
+    background-repeat: repeat-y;
 }
 
-td.c_tech
-{
-	background-image: url("tableaux/td_tech.png");
-	background-position: right;
-	background-repeat: no-repeat;
+td.c_tech {
+    background-image: url("tableaux/td_tech.png");
+    background-position: right;
+    background-repeat: no-repeat;
 }
 
-td.c_stats
-{
-	background-image: url("tableaux/td_stats.png");
-	background-position: right;
-	background-repeat: no-repeat;
+td.c_stats {
+    background-image: url("tableaux/td_stats.png");
+    background-position: right;
+    background-repeat: no-repeat;
 }
 
-td.c_recherche
-{
-	background-image: url("tableaux/td_recherche.png");
-	background-position: right;
-	background-repeat: no-repeat;
+td.c_recherche {
+    background-image: url("tableaux/td_recherche.png");
+    background-position: right;
+    background-repeat: no-repeat;
 }
 
-td.c_user
-{
-	background-image: url("tableaux/td_utilisateur.png");
-	background-position: right;
-	background-repeat: no-repeat;
+td.c_user {
+    background-image: url("tableaux/td_utilisateur.png");
+    background-position: right;
+    background-repeat: no-repeat;
 }
 
-td.c_ogspy
-{
-	background-image: url("tableaux/td_ogspy.png");
-	background-position: right;
-	background-repeat: no-repeat;
+td.c_ogspy {
+    background-image: url("tableaux/td_ogspy.png");
+    background-position: right;
+    background-repeat: no-repeat;
 }
 
-td.c_ogame
-{
-	background-image: url("tableaux/td_ogame.png");
-	background-position: right;
-	background-repeat: no-repeat;
+td.c_ogame {
+    background-image: url("tableaux/td_ogame.png");
+    background-position: right;
+    background-repeat: no-repeat;
 }
 
-td.c_batiments
-{
-	background-image: url("tableaux/td_batiments.png");
-	background-position: right;
-	background-repeat: no-repeat;
+td.c_batiments {
+    background-image: url("tableaux/td_batiments.png");
+    background-position: right;
+    background-repeat: no-repeat;
 }
 
-td.c_satellite
-{
-	background-image: url("tableaux/td_satellite.png");
-	background-position: right;
-	background-repeat: no-repeat;
+td.c_satellite {
+    background-image: url("tableaux/td_satellite.png");
+    background-position: right;
+    background-repeat: no-repeat;
 }
 
-td.c_defense
-{
-	background-image: url("tableaux/td_defense.png");
-	background-position: right;
-	background-repeat: no-repeat;
+td.c_defense {
+    background-image: url("tableaux/td_defense.png");
+    background-position: right;
+    background-repeat: no-repeat;
 }
 
-td.c_classement_points
-{
-	background-image: url("tableaux/td_classement_points.png");
-	background-position: right;
-	background-repeat: no-repeat;
+td.c_classement_points {
+    background-image: url("tableaux/td_classement_points.png");
+    background-position: right;
+    background-repeat: no-repeat;
 }
 
-td.c_classement_flotte
-{
-	background-image: url("tableaux/td_classement_flotte.png");
-	background-position: right;
-	background-repeat: no-repeat;
+td.c_classement_flotte {
+    background-image: url("tableaux/td_classement_flotte.png");
+    background-position: right;
+    background-repeat: no-repeat;
 }
 
-td.c_classement_recherche
-{
-	background-image: url("tableaux/td_classement_recherche.png");
-	background-position: right;
-	background-repeat: no-repeat;
+td.c_classement_recherche {
+    background-image: url("tableaux/td_classement_recherche.png");
+    background-position: right;
+    background-repeat: no-repeat;
 }
 
-td.f, input, select, textarea
-{
-	border: 1px solid #606060;
-	color: #ffffff;
-	background-color: #232425;
+td.f, input, select, textarea {
+    border: 1px solid #606060;
+    color: #ffffff;
+    background-color: #232425;
 }
 
 textarea /* couleur du fond lorsque vous écrivez un message */
 {
-	width: 100%;
+    width: 100%;
 }
 
-td.g
-{
-	text-align: right;
-	color: #B6C6E5;
+td.g {
+    text-align: right;
+    color: #B6C6E5;
 }
 
-td.h
-{
-	text-align: center;
-	color: #B6C6E5;
+td.h {
+    text-align: center;
+    color: #B6C6E5;
 }
 
-td.i
-{
-	text-align: center;
-	color: #000000;
+td.i {
+    text-align: center;
+    color: #000000;
 }
 
-td.j
-{
-	text-align: center;
-	color: #B6C6E5;
+td.j {
+    text-align: center;
+    color: #B6C6E5;
 }
 
 td.k, td.k input /* berechne calculer? button  background-image: url("img/bl01.PNG");*/
 {
-	background-image: url("img/barredroite.PNG");
-	background-color: transparent;
-	text-align: center;
-	color: #FFFFFF; 
-	background-repeat: no-repeat;
+    background-image: url("img/barredroite.PNG");
+    background-color: transparent;
+    text-align: center;
+    color: #FFFFFF;
+    background-repeat: no-repeat;
 }
 
 td.l /* police du texte de description des batiments, chantier spatial et recherche */
 {
-	background-color: #000000;
-	color: #FFFFFF;
-	vertical-align: top;
-	padding: 0px;
-	background-image: url("img/grandebarre.PNG") ;
-	background-repeat: no-repeat;
+    background-color: #000000;
+    color: #FFFFFF;
+    vertical-align: top;
+    padding: 0px;
+    background-image: url("img/grandebarre.PNG");
+    background-repeat: no-repeat;
 }
 
-td.m
-{
-	text-align: right;
-	width: 86px;
-	color: #B6C6E5;
+td.m {
+    text-align: right;
+    width: 86px;
+    color: #B6C6E5;
 }
 
-td.n
-{
-	font-weight: bold;
-	text-align: right;
-	width: 88px;
-	text-align: center;
-	color: #B6C6E5;
+td.n {
+    font-weight: bold;
+    text-align: right;
+    width: 88px;
+    text-align: center;
+    color: #B6C6E5;
 }
 
-td.o
-{
-	text-align: center;
-	color: #B6C6E5;
+td.o {
+    text-align: center;
+    color: #B6C6E5;
 }
 
-td.q
-{
-	font-weight: bold;
-	font-size: 11px;
-	text-align: center;
-	vertical-align: middle;
-	color: #B6C6E5;
+td.q {
+    font-weight: bold;
+    font-size: 11px;
+    text-align: center;
+    vertical-align: middle;
+    color: #B6C6E5;
 }
 
-td.r
-{
-	text-align: right;
-	color: #B6C6E5;
+td.r {
+    text-align: right;
+    color: #B6C6E5;
 }
 
-td.v
-{
-	text-align: right;
-	color: #B6C6E5;
-	font-weight: bold;
+td.v {
+    text-align: right;
+    color: #B6C6E5;
+    font-weight: bold;
 }
 
-td.s
-{
-	color: #B6C6E5;
+td.s {
+    color: #B6C6E5;
 }
 
-table.s th
-{
-	border: 0px;
+table.s th {
+    border: 0px;
 }
 
-table.s th img
-{
-	width: 60px;
-	height: 60px;
+table.s th img {
+    width: 60px;
+    height: 60px;
 }
 
 div.z /* réglage du format auquel s'affiche le temps de recherche et construction des batiments */
 {
-	font-weight: bold;
-	color: #FF6F3C;
+    font-weight: bold;
+    color: #FF6F3C;
 }
 
 a /* paramétrage des liens 00C8FF*/
 {
-	color: #5CCCE8;
-	text-decoration: none;
-	font-weight: bold;
+    color: #5CCCE8;
+    text-decoration: none;
+    font-weight: bold;
 }
 
-a.s
-{
-	color: #FFFFFF;
+a.s {
+    color: #FFFFFF;
 }
 
-a.t
-{
-	color: #FFFFFF;
+a.t {
+    color: #FFFFFF;
 }
 
 a:hover /* Planet Title hover */
 {
-	font-weight: bold;
-	color: #A8FF66;
-	text-decoration: underline;
+    font-weight: bold;
+    color: #A8FF66;
+    text-decoration: underline;
 }
 
 .style td /* taille cases barres latérales */
 {
-	color: #8A4FFF;
-	border-top: 0px; 
-	font-size: 11px;
-	font-family: Tahoma,sans-serif;
+    color: #8A4FFF;
+    border-top: 0px;
+    font-size: 11px;
+    font-family: Tahoma, sans-serif;
 }
 
 .style td:hover /*taille cases barres latérales */
 {
-	background-image: url("img/Mod01.jpg") ;
-	border-top: 0px; 
-	font-size: 11px;
-	font-family: Tahoma, Ringbearer, sans-serif;
+    background-image: url("img/Mod01.jpg");
+    border-top: 0px;
+    font-size: 11px;
+    font-family: Tahoma, Ringbearer, sans-serif;
 }
 
-.style div a
-{
-	height: 100%;
-	width: 100%;
-	font-size: 11px;
+.style div a {
+    height: 100%;
+    width: 100%;
+    font-size: 11px;
 }
 
 .style div a:link /* police lien internes dans les menus, tous sauf aide et forum */
 {
-	height: 100%;
-	width: 100%;
-	color: #FFFFFF;
-	font-size: 11px;
+    height: 100%;
+    width: 100%;
+    color: #FFFFFF;
+    font-size: 11px;
 }
 
 .style div a:visited /* barre de menu lien forum et aide */
 {
-	height: 100%;
-	width: 100%;
-	color: #FFFFFF;
-	font-size: 11px;
+    height: 100%;
+    width: 100%;
+    color: #FFFFFF;
+    font-size: 11px;
 }
 
 .style div a:hover /* barre de menu quand on est sur le lien */
 {
-	background-color: transparent;
-	height: 100%;
-	width: 100%;
-	text-decoration: none;
-	font-size: 11px;
-	color: #FFFFFF;
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    text-decoration: none;
+    font-size: 11px;
+    color: #FFFFFF;
 }
 
 .style /* navigation */
 {
-	margin-top: 5px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-size: 11px;
+    margin-top: 5px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 11px;
 }
 
 h1 /* titre (fenêtre batiments et recherche) */
 {
-	font-size: 12px;
-	border-bottom: 0px #2C2C2C solid;
-	width: 98%; 
-	text-align: right;
-	font-weight: bold;
-	color : #CC0000;
+    font-size: 12px;
+    border-bottom: 0px #2C2C2C solid;
+    width: 98%;
+    text-align: right;
+    font-weight: bold;
+    color: #CC0000;
 }
 
-a.menu
-{
-	background-image: url("menu/menu_title.png") ;
-	margin-top: 7px;
-	margin-bottom: 14px;
-	display: block;
+a.menu {
+    background-image: url("menu/menu_title.png");
+    margin-top: 7px;
+    margin-bottom: 14px;
+    display: block;
 }
 
-a.menu_items
-{
-	display: block;
+a.menu:hover {
+    color: #26F33D;
+}
+
+a.menu_items, p.menu_items {
+    display: block;
     color: #FFFFFF;
     font-family: Verdana;
-    font-feature-settings: "'liga' 1";
     font-kerning: auto;
     font-style: normal;
     font-size: 1em;
@@ -478,170 +437,53 @@ a.menu_items
     word-spacing: 0;
 }
 
-a.menu:hover
-{
-	/*background-image: url("menu/admin1.png") ;*/
+a.menu_items:hover {
+    color: lightseagreen;
+}
+
+ul.menu {
+    padding-left: 20px;
+}
+
+a.menu1 {
+    background-image: url("menu/profil0.png");
+    display: block;
+}
+
+a.menu1:hover {
+    background-image: url("menu/profil1.png");
     color: #26F33D;
 }
 
-a.menu1
-{
-	background-image: url("menu/profil0.png") ;
-	display: block;
+ul.menu_mods {
+    padding-left: 0;
+
 }
 
-a.menu1:hover
-{
-	background-image: url("menu/profil1.png") ;
+a.menu_mods {
     color: #26F33D;
+    text-decoration: none;
+    text-align: left;
+
 }
 
-a.menu2
-{
-	background-image: url("menu/espace_perso0.png") ;
-	display: block;
+ul.a.menu_mods:hover {
+    color: #56F39F;
+    text-decoration: none;
 }
 
-a.menu2:hover
-{
-	background-image: url("menu/espace_perso1.png") ;
-    color: #26F33D;
-}
-
-a.menu3
-{
-	background-image: url("menu/galaxie0.png") ;
-	display: block;
-}
-
-a.menu3:hover
-{
-	background-image: url("menu/galaxie1.png") ;
-    color: #26F33D;
-}
-
-a.menu4
-{
-	background-image: url("menu/esp_alliances0.png") ;
-	display: block;
-}
-
-a.menu4:hover
-{
-	background-image: url("menu/esp_alliances1.png") ;
-    color: #26F33D;
-}
-
-a.menu5
-{
-	background-image: url("menu/recherche0.png") ;
-	display: block;
-}
-
-a.menu5:hover
-{
-	background-image: url("menu/recherche1.png") ;
-    color: #26F33D;
-}
-
-a.menu6
-{
-	background-image: url("menu/classements0.png") ;
-	display: block;
-}
-
-a.menu6:hover
-{
-	background-image: url("menu/classements1.png") ;
-    color: #26F33D;
-}
-
-a.menu7
-{
-	background-image: url("menu/cartographie0.png") ;
-	display: block;
-}
-
-a.menu7:hover
-{
-	background-image: url("menu/cartographie1.png") ;
-    color: #26F33D;
-}
-
-a.menu8
-{
-	background-image: url("menu/syst_obsoletes0.png") ;
-	display: block;
-}
-
-a.menu8:hover
-{
-	background-image: url("menu/syst_obsoletes1.png") ;
-    color: #26F33D;
-}
-
-a.menu10
-{
-	background-image: url("menu/logout0.png") ;
-	display: block;
-}
-
-a.menu10:hover
-{
-	background-image: url("menu/logout1.png") ;
-    color: #26F33D;
-}
-
-a.menu11
-{
-	background-image: url("menu/forum0.png") ;
-	display: block;
-}
-
-a.menu11:hover
-{
-	background-image: url("menu/forum1.png") ;
-    color: #26F33D;
-}
-
-a.menu12
-{
-	background-image: url("menu/apropos0.png") ;
-	display: block;
-}
-
-a.menu12:hover
-{
-	background-image: url("menu/apropos1.png") ;
-	color: #26F33D;
-}
-
-a.menu_mods
-{
-	color: #26F33D;
-	text-decoration: none;
-}
-
-a.menu_mods:hover
-{
-	color: #56F39F;
-	text-decoration: none;
-}
-
-center
-{
-	color: #ECFF00;
+center {
+    color: #ECFF00;
 }
 
 ul.menu {
     list-style-image: url('./menu/list.png');
-    color:grey;
+    color: grey;
     text-align: left;
-    text-decoration:none;
+    text-decoration: none;
     font-weight: bold;
     font-size: 1em;
     display: block;
-    line-height: 2;
 }
 
 ul.menu.a.hover {

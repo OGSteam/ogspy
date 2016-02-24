@@ -85,12 +85,6 @@ if (!defined('IN_SPYOGAME')) {
         echo "</tr>\n";
     }
 
-   /* if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
-        echo "<tr>";
-        echo "<td><div align='left'>  * <a href='index.php?action=administration' class='menu0'>Adminstration</a></div></td>";
-        echo "</tr>";
-    }*/
-
     ?>
 <tr>
     <td><div style="text-align='left';">
@@ -102,184 +96,60 @@ if (!defined('IN_SPYOGAME')) {
             }
             ?>
             <li><a href='index.php?action=profile' class='menu_items'>Profil</a></li>
+            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
             <li><a href='index.php?action=home' class='menu_items'>Espace Personnel</a></li>
             <li><a href='index.php?action=galaxy' class='menu_items'>Galaxie</a></li>
-            <li><a href='index.php?action=cartography' class='menu_items'>Etat Cartographie</a></li>
+            <li><a href='index.php?action=cartography' class='menu_items'>Alliances</a></li>
             <li><a href='index.php?action=search' class='menu_items'>Recherche</a></li>
             <li><a href='index.php?action=ranking' class='menu_items'>Classements</a></li>
-            <li></li>
-            <li><a href='index.php?action=statistic' class='menu_items'>statistiques</a></li>
-            <li>Item 3
-                <ul>
-                    <li>Item 3-1</li>
-                    <li>Item 3-2</li>
-                    <li>Item 3-3</li>
-                    <li>Item 3-4</li>
-                    <li>Item 3-5</li>
+            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+            <li><a href='index.php?action=statistic' class='menu_items'>Etat Cartographie</a></li>
+            <li><p class='menu_items'>Modules</p>
+                <ul class='menu_mods'>
+<?php
+             $request = "SELECT action, menu FROM " . TABLE_MOD . " WHERE active = 1 AND `admin_only` = '0' order by position, title";
+             $result = $db->sql_query($request);
+
+             if ($db->sql_numrows($result)) {
+                 while ($val = $db->sql_fetch_assoc($result)) {
+                     echo '<span>&nbsp;&nbsp;- <a class=\'menu_mods\' href="index.php?action=' . $val['action'] . '">' . $val['menu'] . '</a></span>'.'<br>';
+                 }
+             }
+
+            if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
+                $request = "SELECT action, menu FROM " . TABLE_MOD . " WHERE active = 1 and `admin_only` = '1' order by position, title";
+                $result = $db->sql_query($request);
+
+                if ($db->sql_numrows($result)) {
+                    echo '<img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">';
+
+                    while ($val = $db->sql_fetch_assoc($result)) {
+                        echo '<span>&nbsp;&nbsp;- <a class="menu_mods" href="index.php?action=' . $val['action'] . '">' . $val['menu'] . '</a></span>' . '<br>';
+                    }
+                }
+            }
+
+?>
                 </ul>
             </li>
-            <li>Item 4</li>
-            <li><a href="index.php?action=about">A Propos</a></li>
+            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+            <?php
+            if ($server_config["url_forum"] != "") {
+                echo "<li><a href='" . $server_config["url_forum"] . "' class='menu_items'>FORUM ALLIANCE</a></li>";
+            }
+            ?>
+            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+            <li><a href="index.php?action=about" class='menu_items'>A Propos</a></li>
+            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+            <li><a href='index.php?action=logout' class='menu_items'>Deconnexion</a></li>
         </ul>
 
-</div>
+        </div><!---->
     </td>
 
 
 </tr>
-<!--    <tr>
-        <td>
-            <div align="center"><a href="index.php?action=profile" class="menu1"><img
-                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div align="center"><a href="index.php?action=home" class="menu2"><img
-                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div align="center"><img src="./skin/OGSpy_skin/transpa.gif" width="0" height="17"></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div align="center"><a href="index.php?action=galaxy" class="menu3"><img
-                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div align="center"><a href="index.php?action=cartography" class="menu4"><img
-                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div align="center"><a href="index.php?action=search" class="menu5"><img
-                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div align="center"><a href="index.php?action=ranking" class="menu6"><img
-                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div align="center"><img src="./skin/OGSpy_skin/transpa.gif" width="0" height="17"></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div align="center"><a href="index.php?action=statistic" class="menu7"><img
-                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div align="center"><a href="index.php?action=galaxy_obsolete" class="menu8"><img
-                        src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div align="center"><img src="./skin/OGSpy_skin/transpa.gif" width="0" height="17"></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div align="center"><img src="./skin/OGSpy_skin/menu/mods.png" width="166" height="19"></div>
-        </td>
-    </tr>-->
 
-    <!-- Emplacement mod /-->
-
-    <?php
-
-   /* if (ratio_is_ok()) {
-        $request = "select action, menu from " . TABLE_MOD . " where active = 1 and `admin_only` = '0' order by position, title";
-        $result = $db->sql_query($request);
-
-        if ($db->sql_numrows($result)) {
-            while ($val = $db->sql_fetch_assoc($result)) {
-                echo '<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <a class="menu_mods" href="index.php?action=' . $val['action'] . '">' . $val['menu'] . '</a></td></tr>' . "\n";
-            }
-        }
-    } else {
-        echo '<tr><td>- <span style="color: red; ">Mods<br />inaccessibles&nbsp;' . help("ratio_block") . '</span></td></tr>' . "\n";
-    }
-*/
-    ?>
-
-    <!-- Fin des mods /-->
-
-    <!-- Emplacement mod  admin/-->
-
-    <?php
-/*
-    if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-        $request = "select action, menu from " . TABLE_MOD . " where active = 1 and `admin_only` = '1' order by position, title";
-        $result = $db->sql_query($request);
-
-        if ($db->sql_numrows($result)) {
-            echo '<tr><td><div align="center"><img src="./skin/OGSpy_skin/transpa.gif" width="110" height="12"></div></td></tr>' . "\n";
-
-            while ($val = $db->sql_fetch_assoc($result)) {
-                echo '<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <a class="menu_mods" href="index.php?action=' . $val['action'] . '">' . $val['menu'] . '</a></td></tr>' . "\n";
-            }
-        }
-    }
-*/
-    ?>
-
-    <!-- Fin des mods  admin/-->
-<!--
-    <tr>
-        <td>
-            <div align="center"><img src="./skin/OGSpy_skin/transpa.gif" width="0" height="17"></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div align="center"><a href="index.php?action=logout" class="menu10"><img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div align="center"><img src="./skin/OGSpy_skin/transpa.gif" width="0" height="17"></div>
-        </td>
-    </tr>
--->
-    <?php
-/*
-    if ($server_config["url_forum"] != "") {
-
-        ?>
-
-        <tr>
-            <td>
-                <div align="center"><a href="<?php echo $server_config["url_forum"]; ?>" target="_blank" class="menu11"><img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
-            </td>
-        </tr>
-
-        <?php
-
-    }*/
-
-    ?>
-
-   <!-- <tr>
-        <td>
-            <div align="center"><a href="index.php?action=about" class="menu12"><img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19"></a></div>
-        </td>
-    </tr>-->
 </table>
 
-<!--<h2>Menu</h2>-->
-
-
-<!--<script>$( "#menu" ).menu();</script>-->
+<!--<script>$( "#menu" ).menu();</script> (Encore pas mal de travail pour mettre ce menu en place) -->
