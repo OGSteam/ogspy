@@ -66,8 +66,8 @@ if (!defined('IN_SPYOGAME')) {
 <table border="0" cellpadding="0" cellspacing="0">
     <tr align="center">
         <td>
-            <b>Heure serveur</b><br/>
-            <span id="datetime"><blink>En attente</blink></span>
+            <b><?php echo($lang['MENU_SERVER_TIME']); ?></b><br/>
+            <span id="datetime"><blink><?php echo($lang['MENU_WAITING']); ?></blink></span>
         </td>
     </tr>
 
@@ -81,7 +81,7 @@ if (!defined('IN_SPYOGAME')) {
 
     if ($server_config["server_active"] == 0) {
         echo "<tr>\n";
-        echo "\t" . "<td><div align='center'><font color='red'><b><blink>Serveur hors-ligne</blink></b></font></div></td>\n";
+        echo "\t" . "<td><div align='center'><font color='red'><b><blink>".$lang['MENU_SERVER_OFFLINE']."</blink></b></font></div></td>\n";
         echo "</tr>\n";
     }
 
@@ -92,19 +92,19 @@ if (!defined('IN_SPYOGAME')) {
         <ul style="width:100px;" class= "menu" id="menu">
             <?php
             if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
-                echo "<li><a href='index.php?action=administration' class='menu_items'>Administration</a></li>";
+                echo "<li><a href='index.php?action=administration' class='menu_items'>".$lang['MENU_ADMIN']."</a></li>";
             }
             ?>
-            <li><a href='index.php?action=profile' class='menu_items'>Profil</a></li>
+            <li><a href='index.php?action=profile' class='menu_items'><?php echo($lang['MENU_PROFILE']); ?></a></li>
             <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-            <li><a href='index.php?action=home' class='menu_items'>Espace Personnel</a></li>
-            <li><a href='index.php?action=galaxy' class='menu_items'>Galaxie</a></li>
-            <li><a href='index.php?action=cartography' class='menu_items'>Alliances</a></li>
-            <li><a href='index.php?action=search' class='menu_items'>Recherche</a></li>
-            <li><a href='index.php?action=ranking' class='menu_items'>Classements</a></li>
+            <li><a href='index.php?action=home' class='menu_items'><?php echo($lang['MENU_HOME']); ?></a></li>
+            <li><a href='index.php?action=galaxy' class='menu_items'><?php echo($lang['MENU_GALAXY']); ?></a></li>
+            <li><a href='index.php?action=cartography' class='menu_items'><?php echo($lang['MENU_ALLIANCES']); ?></a></li>
+            <li><a href='index.php?action=search' class='menu_items'><?php echo($lang['MENU_RESEARCH']); ?></a></li>
+            <li><a href='index.php?action=ranking' class='menu_items'><?php echo($lang['MENU_RANKINGS']); ?></a></li>
             <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-            <li><a href='index.php?action=statistic' class='menu_items'>Etat Cartographie</a></li>
-            <li><p class='menu_items'>Modules</p>
+            <li><a href='index.php?action=statistic' class='menu_items'><?php echo($lang['MENU_UPDATE_STATUS']); ?></a></li>
+            <li><p class='menu_items'><?php echo($lang['MENU_MODULES']); ?></p>
                 <ul class='menu_mods'>
 <?php
              $request = "SELECT action, menu FROM " . TABLE_MOD . " WHERE active = 1 AND `admin_only` = '0' order by position, title";
@@ -135,13 +135,13 @@ if (!defined('IN_SPYOGAME')) {
             <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
             <?php
             if ($server_config["url_forum"] != "") {
-                echo "<li><a href='" . $server_config["url_forum"] . "' class='menu_items'>FORUM ALLIANCE</a></li>";
+                echo "<li><a href='" . $server_config["url_forum"] . "' class='menu_items'>".$lang['MENU_FORUM']."</a></li>";
             }
             ?>
             <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-            <li><a href="index.php?action=about" class='menu_items'>A Propos</a></li>
+            <li><a href="index.php?action=about" class='menu_items'><?php echo($lang['MENU_ABOUT']); ?></a></li>
             <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-            <li><a href='index.php?action=logout' class='menu_items'>Deconnexion</a></li>
+            <li><a href='index.php?action=logout' class='menu_items'><?php echo($lang['MENU_LOGOUT']); ?></a></li>
         </ul>
 
         </div><!---->
