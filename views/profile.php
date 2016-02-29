@@ -34,20 +34,20 @@ require_once("views/page_header.php");
             var new_password2 = form.new_password2.value;
 
             if (old_password != "" && (new_password == "" || new_password2 == "")) {
-                alert("Saisissez le nouveau mot de passe et sa confirmation");
+                alert("<?php echo($lang['PROFILE_ERROR_RETRY']); ?>");
                 return false;
             }
             if (old_password == "" && (new_password != "" || new_password2 != "")) {
-                alert("Saisissez l'ancien mot de passe");
+                alert("<?php echo($lang['PROFILE_ERROR_OLDPWD']); ?>");
                 return false;
             }
             if (old_password != "" && new_password != new_password2) {
-                alert("Le mot de passe saisie est différent de la confirmation");
+                alert("<?php echo($lang['PROFILE_ERROR_ERROR']); ?>");
                 return false;
             }
             if (old_password != "" && new_password != "" && new_password2 != "") {
                 if (new_password.length < 6 || new_password.length > 15) {
-                    alert("Le mot de passe doit contenir entre 6 et 15 caractères");
+                    alert("<?php echo($lang['PROFILE_ERROR_ILLEGAL']); ?>");
                     return false;
                 }
             }
@@ -61,93 +61,121 @@ require_once("views/page_header.php");
         <input name="action" type="hidden" value="member_modify_member">
         <table width="450">
             <tr>
-                <td class="c_user" colspan="2">Informations OGSpy</td>
+                <td class="c_user" colspan="2"><?php echo($lang['PROFILE_TITLE']); ?></td>
             </tr>
             <tr>
-                <th>Pseudo&nbsp;<?php echo help("profile_login");?></th>
-                <th><input name="pseudo" type="text" size="20" maxlength="20" value="<?php echo $user_name; ?>"></th>
+                <th><?php echo $lang['PROFILE_PSEUDO'].help("profile_login"); ?></th>
+                <th><label>
+                        <input name="pseudo" type="text" size="20" maxlength="20" value="<?php echo $user_name; ?>">
+                    </label></th>
             </tr>
             <tr>
-                <th>Ancien mot de passe</th>
-                <th><input name="old_password" type="password" autocomplete="off" size="20" maxlength="15"></th>
+                <th><?php echo($lang['PROFILE_OLDPWD']); ?></th>
+                <th><label>
+                        <input name="old_password" type="password" autocomplete="off" size="20" maxlength="15">
+                    </label></th>
             </tr>
             <tr>
-                <th>Nouveau mot de passe&nbsp;<?php echo help("profile_password");?></th>
-                <th><input name="new_password" type="password" autocomplete="off" size="20" maxlength="15"></th>
+                <th><?php echo $lang['PROFILE_NEWPWD'].help("profile_password"); ?></th>
+                <th><label>
+                        <input name="new_password" type="password" autocomplete="off" size="20" maxlength="15">
+                    </label></th>
             </tr>
             <tr>
-                <th>Nouveau mot de passe [Confirmez]</th>
-                <th><input name="new_password2" type="password" autocomplete="off" size="20" maxlength="15"></th>
+                <th><?php echo($lang['PROFILE_NEWPWDAGAIN']); ?></th>
+                <th><label>
+                        <input name="new_password2" type="password" autocomplete="off" size="20" maxlength="15">
+                    </label></th>
             </tr>
             <tr>
-                <th>Adresse Email&nbsp;<?php echo help("profile_pseudo_email");?></th>
+                <th><?php echo $lang['PROFILE_EMAIL'].help("profile_pseudo_email"); ?></th>
                 <th>
-                    <input name="pseudo_email" type="text" size="30" value="<?php echo $user_email; ?>">
+                    <label>
+                        <input name="pseudo_email" type="text" size="30" value="<?php echo $user_email; ?>">
+                    </label>
                 </th>
             </tr>
             <tr>
-                <td class="c" colspan="2">Informations du Jeu</td>
+                <td class="c" colspan="2"><?php echo($lang['PROFILE_GAME']); ?></td>
             </tr>
             <tr>
-                <th>Position de la planète principale&nbsp;<?php echo help("profile_main_planet");?></th>
+                <th><?php echo $lang['PROFILE_MAINPLANET'].help("profile_main_planet"); ?></th>
                 <th>
-                    <input name="galaxy" type="text" size="3" maxlength="2" value="<?php echo $user_galaxy; ?>">&nbsp;
-                    <input name="system" type="text" size="3" maxlength="3" value="<?php echo $user_system; ?>">
+                    <label>
+                        <input name="galaxy" type="text" size="3" maxlength="2" value="<?php echo $user_galaxy; ?>">
+                    </label>&nbsp;
+                    <label>
+                        <input name="system" type="text" size="3" maxlength="3" value="<?php echo $user_system; ?>">
+                    </label>
                 </th>
             </tr>
             <tr>
-                <th>Pseudo dans le Jeu&nbsp;<?php echo help("profile_pseudo_ingame");?></th>
+                <th><?php echo $lang['PROFILE_PLAYERNAME'].help("profile_pseudo_ingame"); ?></th>
                 <th>
-                    <input name="pseudo_ingame" type="text" size="20" value="<?php echo $user_stat_name; ?>">
+                    <label>
+                        <input name="pseudo_ingame" type="text" size="20" value="<?php echo $user_stat_name; ?>">
+                    </label>
                 </th>
             </tr>
             <tr>
-                <td class="c" colspan="2">Comptes Officiers</td>
+                <td class="c" colspan="2"><?php echo($lang['PROFILE_OFFICERS']); ?></td>
             </tr>
             <tr>
-                <th>Commandant:</th>
+                <th><?php echo($lang['PROFILE_CODMANDER']); ?>:</th>
                 <th>
-                    <input name="off_commandant" value="1" type="checkbox" <?php echo $off_commandant;?>>
+                    <label>
+                        <input name="off_commandant" value="1" type="checkbox" <?php echo $off_commandant; ?>>
+                    </label>
                 </th>
             </tr>
             <tr>
-                <th>Amiral de flotte:</th>
+                <th><?php echo($lang['PROFILE_ADMIRAL']); ?>:</th>
                 <th>
-                    <input name="off_amiral" value="1" type="checkbox" <?php echo $off_amiral;?>>
+                    <label>
+                        <input name="off_amiral" value="1" type="checkbox" <?php echo $off_amiral; ?>>
+                    </label>
                 </th>
             </tr>
             <tr>
-                <th>Ingénieur:</th>
+                <th><?php echo($lang['PROFILE_ENGINEER']); ?>:</th>
                 <th>
-                    <input name="off_ingenieur" value="1" type="checkbox" <?php echo $off_ingenieur;?>>
+                    <label>
+                        <input name="off_ingenieur" value="1" type="checkbox" <?php echo $off_ingenieur; ?>>
+                    </label>
                 </th>
             </tr>
             <tr>
-                <th>Geologue:
+                <th><?php echo($lang['PROFILE_GEOLOGIST']); ?>:</th>
                 <th>
-                    <input name="off_geologue" value="1" type="checkbox" <?php echo $off_geologue;?>>
+                    <label>
+                        <input name="off_geologue" value="1" type="checkbox" <?php echo $off_geologue; ?>>
+                    </label>
                 </th>
             </tr>
             <tr>
-                <th>Technocrate:</th>
+                <th><?php echo($lang['PROFILE_TECHNOCRAT']); ?>:</th>
                 <th>
-                    <input name="off_technocrate" value="1" type="checkbox" <?php echo $off_technocrate;?>>
+                    <label>
+                        <input name="off_technocrate" value="1" type="checkbox" <?php echo $off_technocrate; ?>>
+                    </label>
                 </th>
             </tr>
             <tr>
-                <td class="c" colspan="2">Divers</td>
+                <td class="c" colspan="2"><?php echo($lang['PROFILE_OTHERS']); ?></td>
             </tr>
             <tr>
-                <th>Désactiver la vérification de l'adresse IP&nbsp;<?php echo help("profile_disable_ip_check");?></th>
+                <th><?php echo $lang['PROFILE_IPCHECK_DISABLE'].help("profile_disable_ip_check"); ?></th>
                 <th>
-                    <input name="disable_ip_check" value="1" type="checkbox" <?php echo $disable_ip_check;?>>
+                    <label>
+                        <input name="disable_ip_check" value="1" type="checkbox" <?php echo $disable_ip_check; ?>>
+                    </label>
                 </th>
             </tr>
             <tr>
                 <th colspan="2">&nbsp;</th>
             </tr>
             <tr>
-                <th colspan="2" align="center"><input type="submit" value="Valider"></th>
+                <th colspan="2" align="center"><input type="submit" value="<?php echo($lang['PROFILE_SAVE']); ?>"></th>
             </tr>
         </table>
     </form>
