@@ -127,8 +127,8 @@ require_once 'views/page_header.php';
 
     $legend = '<table width="225">';
     $legend .= '<tr><td class="c" colspan="2" align="center" width="150">Légende</td></tr>';
-    $legend .= '<tr><td class="c">Planètes répertoriées</td><th><font color="lime">xx</font></th></tr>';
-    $legend .= '<tr><td class="c">Planètes colonisables</td><th><font color="orange"><b>xx</b></font></th></tr>';
+    $legend .= '<tr><td class="c">Planètes répertoriées</td><th><span style="color: lime; ">xx</span></th></tr>';
+    $legend .= '<tr><td class="c">Planètes colonisables</td><th><span style="color: orange; "><b>xx</b></span></th></tr>';
     $legend .= '<tr><td class="c">Planètes mises à jour récemment</td><th style="color: lime; text-decoration: blink;"><b>xx</b></th></tr>';
     $legend .= '</table>';
 
