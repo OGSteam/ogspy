@@ -338,7 +338,7 @@ require_once("views/page_header.php");
 
                             break;
                         }
-                        $tooltip[$v["ally"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=" . $v["ally"] . "&amp;strict=on\">".lang['SEARCH_DETAILS']."</a></td></tr>";
+                        $tooltip[$v["ally"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=" . $v["ally"] . "&amp;strict=on\">".$lang['SEARCH_DETAILS']."</a></td></tr>";
                         $tooltip[$v["ally"]] .= "</table>";
                         if (version_compare(phpversion(), '5.4.0', '>=')) {
                             $tooltip[$v["ally"]] = htmlentities($tooltip[$v["ally"]], ENT_COMPAT | ENT_HTML401, "UTF-8");
