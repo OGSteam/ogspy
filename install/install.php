@@ -59,12 +59,12 @@ if (is_writable("../mod")) {
 
 if ($alerte) {
     echo "<br /><br />";
-    echo "<table align='center'><tr><th colspan ='2'><font color='red'>" . $lang['INSTALL_NOT_POSSIBLE_TITLE'] . "</font></th><tr/>";
+    echo "<table align='center'><tr><th colspan ='2'><span style=\"color: red; \">" . $lang['INSTALL_NOT_POSSIBLE_TITLE'] . "</span></th><tr/>";
     echo "<tr><td colspan='2'>" . $lang['INSTALL_NOT_POSSIBLE_LINE_1'] . "</td></tr>";
     echo $error;
-    echo "<tr><th colspan='2'><font color='red'>" . $lang['INSTALL_NOT_POSSIBLE_OPTIONAL'] . "</font></th><tr/>";
+    echo "<tr><th colspan='2'><span style=\"color: red; \">" . $lang['INSTALL_NOT_POSSIBLE_OPTIONAL'] . "</span></th><tr/>";
     echo "<tr><td colspan='2'>" . $lang['INSTALL_NOT_POSSIBLE_LINE_2'] . "<br>";
-    echo "<font color='red'><b>" . $lang['INSTALL_NOT_POSSIBLE_LINE_3'] . "</b></font></td></tr>";
+    echo "<span style=\"color: red; \"><b>" . $lang['INSTALL_NOT_POSSIBLE_LINE_3'] . "</b></span></td></tr>";
     echo $error2;
     echo "<tr align='center'><td colspan='2'><a href='install.php'>" . $lang['INSTALL_NOT_POSSIBLE_REFRESH'] . "</a></td></tr>";
     echo "</table>";
@@ -78,8 +78,8 @@ if ($alerte) {
 function error_sql($message)
 {
     global $lang;
-    echo "<h3 align='center'><font color='red'>" . $lang['INSTALL_SQL_ERROR'] . "</font></h3>";
-    echo "<center><b>- " . $message . "</b></center>";
+    echo "<h3 align='center'><span style=\"color: red; \">" . $lang['INSTALL_SQL_ERROR'] . "</span></h3>";
+    echo "<div style=\"text-align: center;\"><b>- " . $message . "</b></div>";
     exit();
 }
 
@@ -95,7 +95,7 @@ function error_sql($message)
  * @var int $num_of_galaxies Nombre de galaxies dans l'univers OGame de cet OGSpy
  * @var int $num_of_systems Nombre de systèmes dans l'univers OGame de cet OGSpy
  */
-function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $admin_username, $admin_password, $admin_password2, $num_of_galaxies, $num_of_systems)
+function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $admin_username, $admin_password, $admin_password2, $num_of_galaxies, $num_of_systems, $ui_lang)
 {
     global $lang;
     $db = sql_db::getInstance($sgbd_server, $sgbd_username, $sgbd_password, $sgbd_dbname);
@@ -155,13 +155,13 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
     define('TABLE_MOD_CONFIG', $sgbd_tableprefix . 'mod_config');
     define('TABLE_CONFIG', $sgbd_tableprefix . 'config');
 
-    generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $num_of_galaxies, $num_of_systems);
+    generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $num_of_galaxies, $num_of_systems,$ui_lang);
 
-    echo "<h3 align='center'><font color='yellow'>".$lang['INSTALL_SUCCESS']."</font></h3>";
-    echo "<center>";
+    echo "<h3 align='center'><span style=\"color: yellow; \">" .$lang['INSTALL_SUCCESS']. "</span></h3>";
+    echo "<div style=\"text-align: center;\">";
     echo "<b>".$lang['INSTALL_SUCCESS_REMOVE_FOLDER']."</b><br />";
     echo "<a href='../index.php'>".$lang['INSTALL_SUCCESS_BACK']."</a>";
-    echo "</center>";
+    echo "</div>";
     exit();
 }
 
@@ -172,7 +172,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
  * @var string $sgbd_password Mot de passe Base de donnée
  * @var string $sgbd_tableprefix Préfixe à utiliser pour les tables ogspy
  */
-function generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix)
+function generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $install_ui_lang)
 {
     global $lang;
 
@@ -191,6 +191,9 @@ function generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password,
     $id_php[] = '$db_user = "' . $sgbd_username . '";';
     $id_php[] = '$db_password = "' . $sgbd_password . '";';
     $id_php[] = '$db_database = "' . $sgbd_dbname . '";';
+    $id_php[] = '';
+    $id_php[] = '//OGSpy Language';
+    $id_php[] = '$ui_lang = "' . $install_ui_lang . '";';
     $id_php[] = '';
     $id_php[] = 'define("OGSPY_INSTALLED", TRUE);';
     $id_php[] = '?>';
@@ -212,14 +215,14 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
             $pub_error = $lang['INSTALL_FORM_ERROR_GALAXY'];
         } else {
             if ($pub_sgbd_server != "" && $pub_sgbd_dbname != "" && $pub_sgbd_username != "" && $pub_admin_username != "" && $pub_admin_password != "" && $pub_admin_password == $pub_admin_password2) {
-                installation_db($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_admin_username, $pub_admin_password, $pub_admin_password2, $pub_num_of_galaxies, $pub_num_of_systems);
+                installation_db($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_admin_username, $pub_admin_password, $pub_admin_password2, $pub_num_of_galaxies, $pub_num_of_systems,$ui_lang);
             } else {
                 $pub_error = $lang['INSTALL_FORM_ERROR_CONNECTION'];
             }
         }
     } elseif (isset($pub_file)) {
         if ($pub_sgbd_server != "" && $pub_sgbd_dbname != "" && $pub_sgbd_username != "") {
-            generate_id($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_num_of_galaxies, $pub_num_of_systems);
+            generate_id($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_num_of_galaxies, $pub_num_of_systems,$pub_lang);
         } else {
             $pub_error = $lang['INSTALL_FORM_ERROR_CONNECTION_PARAMS'];
         }
@@ -233,6 +236,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
     $admin_username = $pub_admin_username;
     $admin_password = $pub_admin_password;
     $admin_password2 = $pub_admin_password2;
+    $ui_lang = $pub_lang;
     $num_of_galaxies = (isset($pub_num_of_galaxies) && !empty($pub_num_of_galaxies)) ? $pub_num_of_galaxies : 9;
     $num_of_systems = (isset($pub_num_of_systems) && !empty($pub_num_of_systems)) ? $pub_num_of_systems : 9;
     $directory = $pub_directory;
@@ -249,14 +253,14 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
             <td align="center">
                 <table width="800">
                     <tr>
-                        <td colspan="2" align="center"><font size="3"><b><?php echo ($lang['INSTALL_VIEW_WELCOME'].$install_version); ?></b></font></td>
+                        <td colspan="2" align="center"><span style="font-size: small; "><b><?php echo ($lang['INSTALL_VIEW_WELCOME'].$install_version); ?></b></span></td>
                     </tr>
                     <tr>
                         <td colspan="2" align="center">&nbsp;</td>
                     </tr>
                     <tr>
-                        <td colspan="2" align="center"><font
-                                color="Red"><b><?php echo isset($pub_error) ? $pub_error : ""; ?></b></font></td>
+                        <td colspan="2" align="center"><span
+                                style="color: Red; "><b><?php echo isset($pub_error) ? $pub_error : ""; ?></b></span></td>
                     </tr>
 
                     <tr>
@@ -332,7 +336,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
                     <tr>
                         <td colspan="2" align="center">
                             <a target="_blank" href="http://www.ogsteam.fr/">
-                                <i><font color="orange"><?php echo $lang['INSTALL_VIEW_INSTALLHELP']; ?></font></i>
+                                <i><span style="color: orange; "><?php echo $lang['INSTALL_VIEW_INSTALLHELP']; ?></span></i>
                             </a>
                         </td>
                     </tr>
@@ -341,7 +345,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
         </tr>
         <tr align="center">
             <td>
-                <center><font size="2"><i><b>OGSpy</b> is an <b>OGSteam Software</b> (c)2005-2015</i><br/>v <?php echo $install_version; ?></font></center>
+                <div style="text-align: center;"><span style="font-size: x-small; "><i><b>OGSpy</b> is an <b>OGSteam Software</b> (c)2005-2015</i><br/>v <?php echo $install_version; ?></span></div>
             </td>
         </tr>
     </table>

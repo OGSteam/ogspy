@@ -165,7 +165,7 @@ if (count($files) > 0) {
 }
   
 ?>
-	<h3 align='center'><font color='yellow'>Mise à jour du serveur OGSpy vers la version <?php echo $ogsversion;?> effectuée avec succès</font></h3>
+	<h3 align='center'><span style="color: yellow; ">Mise à jour du serveur OGSpy vers la version <?php echo $ogsversion;?> effectuée avec succès</span></h3>
 	<center>
 	<br />
 <?php
