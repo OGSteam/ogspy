@@ -32,14 +32,11 @@ if (file_exists("parameters/id.php")) {
     require_once ("parameters/id.php");
 } else {
     if (!defined("OGSPY_INSTALLED") && !defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS")) {
-        header("Location: install/index.php");
+        header("Location: install/index.php?lang=fr");
         exit();
     } elseif (file_exists('../parameters/id.php'))
         require_once ('../parameters/id.php');
 }
-
-//Language File
-require_once ("lang/lang_main.php");
 
 //Appel des fonctions
 require_once ("includes/config.php");
@@ -72,6 +69,16 @@ foreach ($_POST as $secvalue) {
         die();
     }
 }
+
+//Language File
+if (!isset($ui_lang)) { // Checks the ui_lang value from parameters file
+    if (isset($pub_lang)) {
+        $ui_lang = $pub_lang; //This value is used during installation
+    } else
+        $ui_lang = "fr";
+    //If no language is available in id.php file we take fr by default
+}
+require_once ("lang/lang_main.php");
 
 // ajout fichier clef unique
 if (!defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS")) {
@@ -111,13 +118,6 @@ if (!defined("INSTALL_IN_PROGRESS")) {
         maintenance_action();
     }
 }
-
-//BBClone
-define("_BBC_PAGE_NAME", "OGSpy server");
-define("_BBCLONE_DIR", "bbclone/");
-define("COUNTER", _BBCLONE_DIR . "mark_page.php");
-if (is_readable(COUNTER))
-    include_once (COUNTER);
 
 if (isset($server_config["log_phperror"]) && $server_config["log_phperror"] == 1)
     set_error_handler('ogspy_error_handler');
