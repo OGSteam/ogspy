@@ -95,6 +95,7 @@ function error_sql($message)
  * @var int $num_of_galaxies Nombre de galaxies dans l'univers OGame de cet OGSpy
  * @var int $num_of_systems Nombre de systèmes dans l'univers OGame de cet OGSpy
  */
+
 function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $admin_username, $admin_password, $admin_password2, $num_of_galaxies, $num_of_systems, $ui_lang)
 {
     global $lang;
@@ -155,7 +156,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
     define('TABLE_MOD_CONFIG', $sgbd_tableprefix . 'mod_config');
     define('TABLE_CONFIG', $sgbd_tableprefix . 'config');
 
-    generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $num_of_galaxies, $num_of_systems,$ui_lang);
+    generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $ui_lang);
 
     echo "<h3 align='center'><span style=\"color: yellow; \">" .$lang['INSTALL_SUCCESS']. "</span></h3>";
     echo "<div style=\"text-align: center;\">";
@@ -203,7 +204,7 @@ function generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password,
 }
 
 if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_username) && isset($pub_sgbd_password) && isset($pub_sgbd_tableprefix) &&
-    isset($pub_admin_username) && isset($pub_admin_password) && isset($pub_admin_password2) && isset($pub_num_of_galaxies) && isset($pub_num_of_systems)
+    isset($pub_admin_username) && isset($pub_admin_password) && isset($pub_admin_password2) && isset($pub_num_of_galaxies) && isset($pub_num_of_systems) && isset($pub_lang)
 ) {
 
     if (isset($pub_complete)) {
@@ -214,15 +215,15 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
         } elseif (!check_var($pub_num_of_galaxies, "Galaxy", "", true) || !check_var($pub_num_of_systems, "Galaxy", "", true)) {
             $pub_error = $lang['INSTALL_FORM_ERROR_GALAXY'];
         } else {
-            if ($pub_sgbd_server != "" && $pub_sgbd_dbname != "" && $pub_sgbd_username != "" && $pub_admin_username != "" && $pub_admin_password != "" && $pub_admin_password == $pub_admin_password2) {
-                installation_db($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_admin_username, $pub_admin_password, $pub_admin_password2, $pub_num_of_galaxies, $pub_num_of_systems,$ui_lang);
+            if ($pub_sgbd_server != "" && $pub_sgbd_dbname != "" && $pub_sgbd_username != "" && $pub_admin_username != "" && $pub_admin_password != "" && $pub_admin_password == $pub_admin_password2 && $pub_num_of_galaxies != ""&& $pub_num_of_systems != "" && $pub_lang != "") {
+                installation_db($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_admin_username, $pub_admin_password, $pub_admin_password2, $pub_num_of_galaxies, $pub_num_of_systems, $pub_lang);
             } else {
                 $pub_error = $lang['INSTALL_FORM_ERROR_CONNECTION'];
             }
         }
     } elseif (isset($pub_file)) {
-        if ($pub_sgbd_server != "" && $pub_sgbd_dbname != "" && $pub_sgbd_username != "") {
-            generate_id($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_num_of_galaxies, $pub_num_of_systems,$pub_lang);
+        if ($pub_sgbd_server != "" && $pub_sgbd_dbname != "" && $pub_sgbd_username != "" && $pub_lang != "") {
+            generate_id($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_num_of_galaxies, $pub_num_of_systems, $pub_lang);
         } else {
             $pub_error = $lang['INSTALL_FORM_ERROR_CONNECTION_PARAMS'];
         }
@@ -236,13 +237,12 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
     $admin_username = $pub_admin_username;
     $admin_password = $pub_admin_password;
     $admin_password2 = $pub_admin_password2;
-    $ui_lang = $pub_lang;
     $num_of_galaxies = (isset($pub_num_of_galaxies) && !empty($pub_num_of_galaxies)) ? $pub_num_of_galaxies : 9;
     $num_of_systems = (isset($pub_num_of_systems) && !empty($pub_num_of_systems)) ? $pub_num_of_systems : 9;
     $directory = $pub_directory;
 }
 ?>
-<form method="POST" action="../install/install.php">
+<form method="POST" action="../install/install.php?lang=<?php echo $pub_lang; ?>">
     <table width="100%" align="center" cellpadding="20">
         <tr>
             <td height="70">
