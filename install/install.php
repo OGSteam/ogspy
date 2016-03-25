@@ -58,7 +58,7 @@ if (is_writable("../mod")) {
 
 
 if ($alerte) {
-    echo "<br /><br />";
+    echo "<br><br>";
     echo "<table align='center'><tr><th colspan ='2'><span style=\"color: red; \">" . $lang['INSTALL_NOT_POSSIBLE_TITLE'] . "</span></th><tr/>";
     echo "<tr><td colspan='2'>" . $lang['INSTALL_NOT_POSSIBLE_LINE_1'] . "</td></tr>";
     echo $error;
@@ -160,7 +160,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 
     echo "<h3 align='center'><span style=\"color: yellow; \">" .$lang['INSTALL_SUCCESS']. "</span></h3>";
     echo "<div style=\"text-align: center;\">";
-    echo "<b>".$lang['INSTALL_SUCCESS_REMOVE_FOLDER']."</b><br />";
+    echo "<b>".$lang['INSTALL_SUCCESS_REMOVE_FOLDER']."</b><br>";
     echo "<a href='../index.php'>".$lang['INSTALL_SUCCESS_BACK']."</a>";
     echo "</div>";
     exit();

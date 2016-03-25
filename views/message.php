@@ -20,7 +20,7 @@ if (!check_var($pub_id_message, "Char") || !check_var($pub_info, "Special", "#^[
 }
 
 $action = "";
-$message = "<b>".$lang['MSG_SYSTEM']."</b><br /><br />";
+$message = "<b>".$lang['MSG_SYSTEM']."</b><br><br>";
 
 switch ($pub_id_message) {
     //
@@ -45,15 +45,15 @@ switch ($pub_id_message) {
     case "createuser_success" :
         list($user_id, $password) = explode(":", $pub_info);
         $user_info = user_get($user_id);
-        $message .= "<span style=\"color: lime; \"><b>".$lang['MSG_CREATE_USER_TITLE']." <a>" . $user_info[0]["user_name"] . "</a></b></span><br />";
-        $message .= $lang['MSG_CREATE_USER_INFO']." :<br /><br />";
-        $message .= "- ".$lang['MSG_CREATE_USER_URL']." :<br /><a>https://" . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . "</a><br /><br />";
-        $message .= "- ".$lang['MSG_CREATE_USER_PASSWORD']." :<br /><a>" . $password . "</a><br /><br />";
-        $message .= "- ".$lang['MSG_CREATE_USER_XTENSE']." :<br /><a>https://" . str_replace('index.php', '', $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . 'mod/xtense/xtense.php') . "</a><br /><br />";
-        $message .= "<span style=\"color: lime; \"><b>".$lang['MSG_CREATE_USER_XTENSE']." <a>" . $user_info[0]["user_name"] . "</a></b></span><br /><br />";
-        $message .= "[b".$lang['MSG_CREATE_USER_BBCODE_USER'].":[/b] [i]" . $user_info[0]["user_name"] . "[/i]<br />
-				[b]".$lang['MSG_CREATE_USER_URL'].":[/b] [url]http://" . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . "[/url]<br />
-				[b]".$lang['MSG_CREATE_USER_XTENSE'].":[/b] [url]http://" . str_replace('index.php', '', $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . 'mod/xtense/xtense.php') . "[/url]<br />
+        $message .= "<span style=\"color: lime; \"><b>".$lang['MSG_CREATE_USER_TITLE']." <a>" . $user_info[0]["user_name"] . "</a></b></span><br>";
+        $message .= $lang['MSG_CREATE_USER_INFO']." :<br><br>";
+        $message .= "- ".$lang['MSG_CREATE_USER_URL']." :<br><a>https://" . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . "</a><br><br>";
+        $message .= "- ".$lang['MSG_CREATE_USER_PASSWORD']." :<br><a>" . $password . "</a><br><br>";
+        $message .= "- ".$lang['MSG_CREATE_USER_XTENSE']." :<br><a>https://" . str_replace('index.php', '', $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . 'mod/xtense/xtense.php') . "</a><br><br>";
+        $message .= "<span style=\"color: lime; \"><b>".$lang['MSG_CREATE_USER_XTENSE']." <a>" . $user_info[0]["user_name"] . "</a></b></span><br><br>";
+        $message .= "[b".$lang['MSG_CREATE_USER_BBCODE_USER'].":[/b] [i]" . $user_info[0]["user_name"] . "[/i]<br>
+				[b]".$lang['MSG_CREATE_USER_URL'].":[/b] [url]http://" . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . "[/url]<br>
+				[b]".$lang['MSG_CREATE_USER_XTENSE'].":[/b] [url]http://" . str_replace('index.php', '', $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . 'mod/xtense/xtense.php') . "[/url]<br>
 				[b]".$lang['MSG_CREATE_USER_PASSWORD']." :[/b] [i]" . $password . "[/i]";
         $action = "action=administration&subaction=member";
         break;
@@ -62,7 +62,7 @@ switch ($pub_id_message) {
     case "regeneratepwd_success" :
         list($user_id, $password) = explode(":", $pub_info);
         $user_info = user_get($user_id);
-        $message .= "<span style=\"color: lime; \"><b>".$lang['MSG_PWD_REGEN_OK']." <a>" . $user_info[0]["user_name"] . "</a></b></span><br />";
+        $message .= "<span style=\"color: lime; \"><b>".$lang['MSG_PWD_REGEN_OK']." <a>" . $user_info[0]["user_name"] . "</a></b></span><br>";
         $message .= $lang['MSG_PWD_REGEN_INFO']." : <a>" . $password . "</a>";
         $action = "action=administration&subaction=member";
         break;
@@ -75,28 +75,28 @@ switch ($pub_id_message) {
 
     //
     case "createuser_failed_pseudolocked" :
-        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_NEW_ACCOUNT_KO']."</b></span><br />";
+        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_NEW_ACCOUNT_KO']."</b></span><br>";
         $message .= "<i>".$lang['MSG_NEW_ACCOUNT_KO_NAME']." (".$pub_info.")</i>";
         $action = "action=administration&subaction=member";
         break;
 
     //
     case "createuser_failed_pseudo" :
-        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_NEW_ACCOUNT_KO']."</b></span><br />";
+        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_NEW_ACCOUNT_KO']."</b></span><br>";
         $message .= "<i>".$lang['MSG_NEW_ACCOUNT_KO_NAME_ILLEGAL']."</i></a>";
         $action = "action=administration&subaction=member";
         break;
 
     //
     case "createuser_failed_password" :
-        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_NEW_ACCOUNT_KO']."</b></span><br />";
+        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_NEW_ACCOUNT_KO']."</b></span><br>";
         $message .= "<i>".$lang['MSG_NEW_ACCOUNT_KO_PASSWORD_ILLEGAL']."</i>";
         $action = "action=administration&subaction=member";
         break;
 
     //
     case "createuser_failed_general" :
-        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_NEW_ACCOUNT_KO']."</a></b></span><br />";
+        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_NEW_ACCOUNT_KO']."</a></b></span><br>";
         $message .= "<i>".$lang['MSG_NEW_ACCOUNT_KO_OTHER']."</i></a>";
         $action = "action=administration&subaction=member";
         break;
@@ -128,28 +128,28 @@ switch ($pub_id_message) {
 
     //
     case "member_modifyuser_failed_passwordcheck" :
-        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_PROFILE_SAVE_KO']."</b></span><br />";
+        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_PROFILE_SAVE_KO']."</b></span><br>";
         $message .= $lang['MSG_PROFILE_SAVE_PWD'];
         $action = "action=profile";
         break;
 
     //
     case "member_modifyuser_failed_password" :
-        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_PROFILE_SAVE_KO']."</a></b></span><br />";
+        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_PROFILE_SAVE_KO']."</a></b></span><br>";
         $message .= $lang['MSG_PROFILE_SAVE_PWD_ILLEGAL'];
         $action = "action=profile";
         break;
 
     //
     case "member_modifyuser_failed_pseudolocked" :
-        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_PROFILE_SAVE_KO']."</b></span><br />";
+        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_PROFILE_SAVE_KO']."</b></span><br>";
         $message .= $lang['MSG_PROFILE_SAVE_NAME_INUSE'];
         $action = "action=profile";
         break;
 
     //
     case "member_modifyuser_failed_pseudo" :
-        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_PROFILE_SAVE_KO']."</b></span><br />";
+        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_PROFILE_SAVE_KO']."</b></span><br>";
         $message .= $lang['MSG_PROFILE_SAVE_NAME_ILLEGAL'];
         $action = "action=profile";
         break;
@@ -173,7 +173,7 @@ switch ($pub_id_message) {
 
     //
     case "account_lock" :
-        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_LOGIN_INACTIVE']."</b></span><br />";
+        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_LOGIN_INACTIVE']."</b></span><br>";
         $message .= $lang['MSG_LOGIN_INACTIVE_CONTACT'];
         break;
 
@@ -234,27 +234,27 @@ switch ($pub_id_message) {
     //
 
     case "createusergroup_success" :
-        $message .= "<span style=\"color: lime; \"><b>".$lang['MSG_GROUP_CREATE']."</b></span><br />";
+        $message .= "<span style=\"color: lime; \"><b>".$lang['MSG_GROUP_CREATE']."</b></span><br>";
         $action = "action=administration&subaction=group";
         break;
 
     //
     case "createusergroup_failed_groupnamelocked" :
-        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_GROUP_CREATE_FAILED']."</b></span><br />";
+        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_GROUP_CREATE_FAILED']."</b></span><br>";
         $message .= $lang['MSG_GROUP_CREATE_FAILED_NAME'];
         $action = "action=administration&subaction=group";
         break;
 
     //
     case "createusergroup_failed_groupname" :
-        $message .= "<span style=\"color: red; \"><b".$lang['MSG_GROUP_CREATE_FAILED']."</b></span><br />";
+        $message .= "<span style=\"color: red; \"><b".$lang['MSG_GROUP_CREATE_FAILED']."</b></span><br>";
         $message .= $lang['MSG_GROUP_CREATE_FAILED_ILLEGAL'];
         $action = "action=administration&subaction=group";
         break;
 
     //
     case "createusergroup_failed_general" :
-        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_GROUP_CREATE_FAILED']."</a></b></span><br />";
+        $message .= "<span style=\"color: red; \"><b>".$lang['MSG_GROUP_CREATE_FAILED']."</a></b></span><br>";
         $message .= $lang['MSG_GROUP_CREATE_FAILED_OTHER'];
         $action = "action=administration&subaction=group";
         break;
@@ -262,9 +262,9 @@ switch ($pub_id_message) {
     //
     case "db_optimize" :
         list($dbSize_before, $dbSize_after) = explode("¤", $pub_info);
-        $message .= "<span style=\"color: lime; \"><b>".$lang['MSG_DB_OPTIM_OK']."</b></span><br />";
-        $message .= $lang['MSG_DB_OPTIM_BEFORE']." : " . $dbSize_before . "<br />";
-        $message .= $lang['MSG_DB_OPTIM_AFTER']." : " . $dbSize_after . "<br /><br />";
+        $message .= "<span style=\"color: lime; \"><b>".$lang['MSG_DB_OPTIM_OK']."</b></span><br>";
+        $message .= $lang['MSG_DB_OPTIM_BEFORE']." : " . $dbSize_before . "<br>";
+        $message .= $lang['MSG_DB_OPTIM_AFTER']." : " . $dbSize_after . "<br><br>";
         $action = "action=administration&subaction=infoserver";
         break;
 
@@ -276,7 +276,7 @@ switch ($pub_id_message) {
 
     //
     case "raz_ratio" :
-        $message .= "<span style=\"color: lime; \"><b>".$lang['MSG_RATIO_RAZ']."</b></span><br />";
+        $message .= "<span style=\"color: lime; \"><b>".$lang['MSG_RATIO_RAZ']."</b></span><br>";
         $action = "action=statistic";
         break;
 
@@ -287,7 +287,7 @@ switch ($pub_id_message) {
 }
 
 $action = $action != "" ? "?" . $action : "";
-$message .= "<br /><br /><a href='index.php" . $action . "'>".$lang['MSG_BACK']."</a>";
+$message .= "<br><br><a href='index.php" . $action . "'>".$lang['MSG_BACK']."</a>";
 
 require_once("views/page_header_2.php"); ?>
 

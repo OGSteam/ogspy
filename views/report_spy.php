@@ -44,8 +44,8 @@ if (sizeof($reports) == 0) {
         else echo "<input type='button' value='".$lang['REPORT_REMOVEFROMFAV']."' onclick=\"$string_delfavorites\">";
         if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) echo "<input type='button' value='".$lang['REPORT_DELETE']."' onclick=\"$string_delspy\">";
         echo "</div>" . "\n";
-        echo "<br />";
-        echo $v["data"] . '<br /><br />' . "\n";
+        echo "<br>";
+        echo $v["data"] . '<br><br>' . "\n";
     }
 }
 require_once("views/page_tail_2.php");

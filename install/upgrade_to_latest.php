@@ -167,15 +167,15 @@ if (count($files) > 0) {
 ?>
 	<h3 align='center'><span style="color: yellow; ">Mise à jour du serveur OGSpy vers la version <?php echo $ogsversion;?> effectuée avec succès</span></h3>
 	<center>
-	<br />
+	<br>
 <?php
 if($pub_verbose == true){
 if ($up_to_date) {
-	echo "\t"."<b><i>Pensez à supprimer le dossier 'install'</i></b><br />"."\n";
-	echo "\t"."<br /><a href='../index.php'>Retour</a>"."\n";
+	echo "\t"."<b><i>Pensez à supprimer le dossier 'install'</i></b><br>"."\n";
+	echo "\t"."<br><a href='../index.php'>Retour</a>"."\n";
 }
 else {
-	echo "\t"."<br><font color='orange'><b>Cette version n'est pas la dernière en date, veuillez réexécuter le script</font><br />"."\n";
+	echo "\t"."<br><font color='orange'><b>Cette version n'est pas la dernière en date, veuillez réexécuter le script</font><br>"."\n";
 	echo "\t"."<a href=''>Recommencer l'opération</a>"."\n";
 }
 ?>

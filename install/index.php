@@ -62,7 +62,7 @@ if (isset($pub_redirection)) {
 						<span style="font-size: x-small; ">
 							<ul>
 								<li><?php echo $lang['INSTALL_PROJECT_L1']; ?></li>
-								<li><?php echo $lang['INSTALL_PROJECT_L2']; ?></li><br />
+								<li><?php echo $lang['INSTALL_PROJECT_L2']; ?></li><br>
                                 <ul>
 									<li type="disc"><?php echo $lang['INSTALL_PROJECT_L3']; ?></li>
 									<li type="disc"><?php echo $lang['INSTALL_PROJECT_L4']; ?></li>
@@ -103,7 +103,7 @@ if (isset($pub_redirection)) {
 	?>
 	<tr align="center">
 		<td>
-			<div style="text-align: center;font-size: x-small;"><i><b>OGSpy</b> is an <b>OGSteam Software</b> (c) 2005-2015</i><br />v <?php echo $install_version ;?></div>
+			<div style="text-align: center;font-size: x-small;"><i><b>OGSpy</b> is an <b>OGSteam Software</b> (c) 2005-2015</i><br>v <?php echo $install_version ;?></div>
 		</td>
 	</tr>
 </table>

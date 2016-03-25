@@ -39,7 +39,7 @@ if (($system_down + $totalsystem + 1) <= intval($server_config['num_of_systems']
 echo "<table>" . "\n";
 echo "<tr align='center'>" . "\n";
 echo "<td class='c''>" . $link_left1 . $lang['GALAXY_SECTOR_PREVIOUS']." -" . $link_left2 . "</td>";
-echo "<td class='c' colspan='3'>".$lang['GALAXY_SECTOR_NAVIGATE']."<br />" . $galaxy . ":" . $system_down . " - " . $galaxy . ":" . $system_up . "</td>";
+echo "<td class='c' colspan='3'>".$lang['GALAXY_SECTOR_NAVIGATE']."<br>" . $galaxy . ":" . $system_down . " - " . $galaxy . ":" . $system_up . "</td>";
 echo "<td class='c'>" . $link_right1 . $lang['GALAXY_SECTOR_NEXT']." +" . $link_right2 . "</td>" . "\n";
 echo "</tr>" . "\n";
 for ($lines = 0; $lines < ceil($totalsystem / 5); $lines++) {
@@ -54,7 +54,7 @@ for ($lines = 0; $lines < ceil($totalsystem / 5); $lines++) {
         echo "\t\t" . "<table width='190'>";
         echo "<tr align='center'>";
         echo "<td class='c' width='30'>&nbsp;</td>";
-        echo "<td class='c'><a href='index.php?action=galaxy&amp;galaxy=" . $galaxy . "&amp;system=" . $cols . "'>" . $galaxy . ":" . $cols . "</a><br />" . $last_update . "</td>";
+        echo "<td class='c'><a href='index.php?action=galaxy&amp;galaxy=" . $galaxy . "&amp;system=" . $cols . "'>" . $galaxy . ":" . $cols . "</a><br>" . $last_update . "</td>";
         echo "</tr>";
         for ($row = 1; $row <= 15; $row++) {
             $head = $row;
@@ -83,15 +83,15 @@ for ($lines = 0; $lines < ceil($totalsystem / 5); $lines++) {
                     }
                     if ($detail != "") $detail = " - " . $detail;
 
-                    $head .= "<br /><font color='lime'>M" . $detail . "</font>";
+                    $head .= "<br><font color='lime'>M" . $detail . "</font>";
                 }
                 if ($population[$cols][$row]["report_spy"] > 0) {
-                    $head .= "<br /><A HREF='#' onClick=\"window.open('index.php?action=show_reportspy&amp;galaxy=$galaxy&amp;system=$cols&amp;row=$row','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\"><font color='orange'>" . $population[$cols][$row]["report_spy"] . "E</font></a>";
+                    $head .= "<br><A HREF='#' onClick=\"window.open('index.php?action=show_reportspy&amp;galaxy=$galaxy&amp;system=$cols&amp;row=$row','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\"><font color='orange'>" . $population[$cols][$row]["report_spy"] . "E</font></a>";
                 }
-                $head .= "<br /><font color='red'>" . $population[$cols][$row]["status"] . "</font>";
+                $head .= "<br><font color='red'>" . $population[$cols][$row]["status"] . "</font>";
 
-                $box = $population[$cols][$row]["planet"] != "" ? "<a href='index.php?action=search&amp;type_search=planet&amp;string_search=" . $population[$cols][$row]["planet"] . "&amp;strict=on'><i><font color='orange'>" . $population[$cols][$row]["planet"] . "</font></i></a><br />" : "&nbsp;";
-                $box .= $population[$cols][$row]["player"] != "" ? $begin_allied . "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $population[$cols][$row]["player"] . "&amp;strict=on'>" . $begin_hided . $population[$cols][$row]["player"] . $end_hided . "</a>" . "<br />" : "&nbsp;";
+                $box = $population[$cols][$row]["planet"] != "" ? "<a href='index.php?action=search&amp;type_search=planet&amp;string_search=" . $population[$cols][$row]["planet"] . "&amp;strict=on'><i><font color='orange'>" . $population[$cols][$row]["planet"] . "</font></i></a><br>" : "&nbsp;";
+                $box .= $population[$cols][$row]["player"] != "" ? $begin_allied . "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $population[$cols][$row]["player"] . "&amp;strict=on'>" . $begin_hided . $population[$cols][$row]["player"] . $end_hided . "</a>" . "<br>" : "&nbsp;";
                 $box .= $population[$cols][$row]["ally"] != "" ? "[<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $population[$cols][$row]["ally"] . "&amp;strict=on'>" . $begin_hided . $population[$cols][$row]["ally"] . $end_hided . "</a>]" . $end_allied : "&nbsp;";
             }
 
@@ -110,7 +110,7 @@ for ($lines = 0; $lines < ceil($totalsystem / 5); $lines++) {
 }
 echo "<tr align='center'>" . "\n";
 echo "<td class='c'>" . $link_left1 . $lang['GALAXY_SECTOR_PREVIOUS']." -" . $link_left2 . "</td>";
-echo "<td class='c' colspan='3'>".$lang['GALAXY_SECTOR_NAVIGATE']."<br />" . $galaxy . ":" . $system_down . " - " . $galaxy . ":" . $system_up . "</td>";
+echo "<td class='c' colspan='3'>".$lang['GALAXY_SECTOR_NAVIGATE']."<br>" . $galaxy . ":" . $system_down . " - " . $galaxy . ":" . $system_up . "</td>";
 echo "<td class='c'>" . $link_right1 . $lang['GALAXY_SECTOR_NEXT']." +" . $link_right2 . "</td>" . "\n";
 echo "</tr>" . "\n";
 echo "<table>" . "\n";
