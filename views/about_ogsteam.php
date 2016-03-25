@@ -42,8 +42,8 @@ if (!defined('IN_SPYOGAME')) {
         <td class="c" width="100" height="100" align="center" valign="middle"><img
                 src="http://www.gravatar.com/avatar/201bc534b68afd93f7474a96a911effe.png" width="80" title="Aeris"></td>
         <td class="l">
-            &nbsp;<b><font color="Yellow" size="2">Aéris</font></b><br/>
-            <center><b><?php echo($lang['ABOUT_PROJECT_AERIS']); ?></b></center>
+            &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Aéris</span></b><br/>
+            <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_AERIS']); ?></b></div>
             <br/>
         </td>
     </tr>
@@ -52,9 +52,9 @@ if (!defined('IN_SPYOGAME')) {
                 src="http://forum.ogsteam.fr/index.php?action=dlattach;attach=76;type=avatar" width="80" title="Capi">
         </td>
         <td class="l">
-            &nbsp;<a><font color="Yellow" size="2">Capi</font></a><br/>
-            <center><b><?php echo($lang['ABOUT_PROJECT_CAPI']); ?><br/>
-                    <font color="orange">Capi capi, capo...</font></b></center>
+            &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Capi</span></a><br/>
+            <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_CAPI']); ?><br/>
+                    <span style="color: orange; ">Capi capi, capo...</span></b></div>
             <br/>
         </td>
     </tr>
@@ -62,8 +62,8 @@ if (!defined('IN_SPYOGAME')) {
         <td class="c" width="100" height="100" align="center" valign="middle"><img
                 src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Chris Alys"></td>
         <td class="l">
-            &nbsp;<b><font color="Yellow" size="2">Chris Alys</font></b><br/>
-            <center><b><?php echo($lang['ABOUT_PROJECT_CHRYS']); ?></b></center>
+            &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Chris Alys</span></b><br/>
+            <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_CHRYS']); ?></b></div>
             <br/>
         </td>
     </tr>
@@ -71,7 +71,7 @@ if (!defined('IN_SPYOGAME')) {
         <td class="c" width="100" height="100" align="center" valign="middle"><img
                 src="http://r27.imgfast.net/users/2712/34/86/71/avatars/207-55.gif" width="80" title="DarkNoon"></td>
         <td class="l">
-            &nbsp;<b><font color="Yellow" size="2">DarkNoon</font></b>
+            &nbsp;<b><span style="color: Yellow; font-size: x-small; ">DarkNoon</span></b>
             <br/>
             <ul>
                 <li><b><?php echo($lang['ABOUT_PROJECT_DARKNOON']); ?></b></li>
@@ -84,8 +84,8 @@ if (!defined('IN_SPYOGAME')) {
                 src="http://ballonrond.passion.free.fr/Images/Forums/ogsteam_avatar_jedinight.png" width="80"
                 title="Jedinight"></td>
         <td class="l">
-            &nbsp;<b><font color="Yellow" size="2">Jedinight</font></b>
-            <center><b><?php echo($lang['ABOUT_PROJECT_JEDINIGHT']); ?></b></center>
+            <b><span style="color: Yellow; font-size: x-small; ">Jedinight</span></b>
+            <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_JEDINIGHT']); ?></b></div>
             <br/>
             <ul>
                 <li><b><?php echo($lang['ABOUT_PROJECT_JEDINIGHT1']); ?></b></li>
@@ -96,8 +96,8 @@ if (!defined('IN_SPYOGAME')) {
         <td class="c" width="100" height="100" align="center" valign="middle"><img
                 src="http://www.mx2k.com/utilisateurphoto/65897-11022011-Bender.jpg" width="80" title="Machine"></td>
         <td class="l">
-            &nbsp;<b><font color="Yellow" size="2">Machine</font></b><br/>
-            <center><b><?php echo($lang['ABOUT_PROJECT_MACHINE']); ?></b></center>
+            <b><span style="color: Yellow; font-size: x-small; ">Machine</span></b><br/>
+            <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_MACHINE']); ?></b></div>
             <br/>
         </td>
     </tr>
@@ -105,8 +105,8 @@ if (!defined('IN_SPYOGAME')) {
         <td class="c" width="100" height="100" align="center" valign="middle"><img
                 src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Ninety"></td>
         <td class="l">
-            &nbsp;<b><font color="Yellow" size="2">Ninety</font></b><br/>
-            <center><b><?php echo($lang['ABOUT_PROJECT_NINETY']); ?></b></center>
+            &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Ninety</span></b><br/>
+            <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_NINETY']); ?></b></div>
             <br/>
         </td>
     </tr>
@@ -114,8 +114,8 @@ if (!defined('IN_SPYOGAME')) {
         <td class="c" width="100" height="100" align="center" valign="middle"><img
                 src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Shad"></td>
         <td class="l">
-            &nbsp;<b><font color="Yellow" size="2">Shad</font></b><br/>
-            <center><b><?php echo($lang['ABOUT_PROJECT_SHAD']); ?></b></center>
+            &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Shad</span></b><br/>
+            <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_SHAD']); ?></b></div>
             <br/>
         </td>
     </tr>
@@ -123,8 +123,8 @@ if (!defined('IN_SPYOGAME')) {
         <td class="c" width="100" height="100" align="center" valign="middle"><img
                 src="http://r27.imgfast.net/users/2712/24/28/03/avatars/165-4.gif" width="80" title="Superbox"></td>
         <td class="l">
-            &nbsp;<b><font color="Yellow" size="2">Superbox</font></b><br/>
-            <center><b><?php echo($lang['ABOUT_PROJECT_SUPERBOX']); ?></b></center>
+            &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Superbox</span></b><br/>
+            <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_SUPERBOX']); ?></b></div>
             <br/>
         </td>
     </tr>
@@ -132,8 +132,8 @@ if (!defined('IN_SPYOGAME')) {
         <td class="c" width="100" height="100" align="center" valign="middle"><img
                 src="http://board.ogame.fr/wcf/images/avatars/avatar-49964.jpg" width="80" title="Xaviernuma"></td>
         <td class="l">
-            &nbsp;<b><font color="Yellow" size="2">Xaviernuma</font></b><br/>
-            <center><b><?php echo($lang['ABOUT_PROJECT_XAVIERNUMA']); ?></b></center>
+            &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Xaviernuma</span></b><br/>
+            <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_XAVIERNUMA']); ?></b></div>
             <br/>
         </td>
     </tr>
@@ -142,8 +142,8 @@ if (!defined('IN_SPYOGAME')) {
                 src="http://img57.xooimage.com/files/6/3/a/moe-148053-dxlsma..._200x200-3669dc4.jpg" width="80"
                 title="pitch314"></td>
         <td class="l">
-            &nbsp;<b><font color="Yellow" size="2">Pitch314</font></b><br/>
-            <center><b><?php echo($lang['ABOUT_PROJECT_PITCH314']); ?></b></center>
+            &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Pitch314</span></b><br/>
+            <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_PITCH314']); ?></b></div>
             <ul>
                 <li><b><?php echo($lang['ABOUT_PROJECT_PITCH314_1']); ?></b></li>
                 <li><b><?php echo($lang['ABOUT_PROJECT_PITCH314_2']); ?></b></li>
@@ -154,7 +154,7 @@ if (!defined('IN_SPYOGAME')) {
         <td class="c" width="100" height="100" align="center" valign="middle"><img
                 src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Testeurs"></td>
         <td class="l">
-            <b><font color="Yellow" size="2"><?php echo($lang['ABOUT_TEST_TEAM']); ?></font></b>
+            <b><span style="color: Yellow; font-size: x-small; "><?php echo($lang['ABOUT_TEST_TEAM']); ?></span></b>
             <br/>
             <ul>
                 <li>Skyline-ch</li>

@@ -113,7 +113,7 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
         </tr>
         <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) { ?>
             <tr>
-                <th><font color="<?php echo $color_ally_e[$i - 1]; ?>"><?php echo($lang['ADMIN_DISPLAY_ALLY_COLOR']); ?><?php echo $i; ?></font>
+                <th><span style="color: <?php echo $color_ally_e[$i - 1]; ?>; "><?php echo($lang['ADMIN_DISPLAY_ALLY_COLOR']); ?><?php echo $i; ?></span>
                     <br/>
 
                     <div class="z"><i><?php echo($lang['ADMIN_DISPLAY_ALLY_COLORDESC']); ?></i></div>
