@@ -29,7 +29,7 @@ if (sizeof($reports) == 0) {
         echo "<table align='center'>" . "\n";
         echo "<tr><td class='c'>" . nl2br($v) . "</td></tr>" . "\n";
         echo "</table>";
-        echo "<br />";
+        echo "<br>";
     }
 }
 require_once("views/page_tail_2.php");

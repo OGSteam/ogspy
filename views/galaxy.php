@@ -453,7 +453,7 @@ require_once("views/page_header.php");
             $tooltip_spy = htmlentities($tooltip_begin . $tooltip_spy . $tooltip_end, ENT_COMPAT, "UTF-8");
 
         }
-        echo "<br /><table width='860' border='1'>";
+        echo "<br><table width='860' border='1'>";
         echo "<tr><td class='c' align='center' colspan='4'>".$lang['GALAXY_SEARCH']."</td></tr>";
         echo "<tr align='center'>";
         echo "<th width='25%' onmouseover=\"this.T_WIDTH=210;return escape('" . $tooltip_colonization . "')\">".$lang['GALAXY_SEARCH_PLANETS_AVAILABLE']."</th>";

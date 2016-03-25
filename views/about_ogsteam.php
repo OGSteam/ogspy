@@ -26,16 +26,16 @@ if (!defined('IN_SPYOGAME')) {
     <!--tr>
         <td width="100" height="100" align="center" valign="middle"><img src="http://board.ogsteam.fr/img/avatars/4.jpg"></td>
         <td class="l">
-            &nbsp;<a><font color="Yellow" size="2">Kyser</font></a><br />
-            <center><b>Concepteur du serveur d'alliance OGSpy</b><br /><br /></center>
+            &nbsp;<a><font color="Yellow" size="2">Kyser</font></a><br>
+            <center><b>Concepteur du serveur d'alliance OGSpy</b><br><br></center>
         </td>
     </tr>
     <tr>
         <td width="100" height="100" align="center" valign="middle"><img src="http://board.ogsteam.fr/img/avatars/2.jpg"></td>
         <td class="l">
-            &nbsp;<a><font color="Yellow" size="2">Rica</font></a><br />
+            &nbsp;<a><font color="Yellow" size="2">Rica</font></a><br>
             <center><b>Concepteur du client OGame Stratege (OGS)<br>
-            Concepteur de l'ancien serveur d'alliance OGame Stratege Serveur (OGSS)</b><br /></center>
+            Concepteur de l'ancien serveur d'alliance OGame Stratege Serveur (OGSS)</b><br></center>
         </td>
     </tr-->
     <tr>
