@@ -12,4 +12,4 @@
 
 /* serverdown.php */
 
-$lang['SERVERDOWN_TITLE'] = "The server is currently unavailable";
+$lang['SERVERDOWN_TITLE'] = "Le serveur est en maintenance";

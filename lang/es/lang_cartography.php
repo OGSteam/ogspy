@@ -13,6 +13,6 @@
 
 /* cartography.php */
 
-$lang['CARTO_ALLY'] = "Aliança";
-$lang['CARTO_DISPLAYPOSITIONS'] = "Visualizar as posições";
-$lang['CARTO_PLAYER_POSITIONS'] = "Jogador(es) presente(s)";
+$lang['CARTO_ALLY'] = "Alliance ";
+$lang['CARTO_DISPLAYPOSITIONS'] = "Afficher les positions";
+$lang['CARTO_PLAYER_POSITIONS'] = "Joueur(s) présent(s)";

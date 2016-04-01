@@ -12,11 +12,11 @@
 
 /* gcm_users.php */
 
-$lang['GCM_REGISTERED_USERS'] = "Nombre d'utilisateurs enregistrés : ";
-$lang['GCM_MEMBER'] = "Membre : ";
-$lang['GCM_MAIL'] = "Mail : ";
-$lang['GCM_REGISTER_DATE'] = "Enregistré le : ";
-$lang['GCM_OGSPY'] = "OGSPY : ";
-$lang['GCM_ANDROID'] = "Android : ";
-$lang['GCM_DEVICE'] = "Appareil : ";
-$lang['GCM_NOBODY_REGISTERED'] = "Auncun utilisateur enregistré";
+$lang['GCM_REGISTERED_USERS'] = "Número de usuários registrados :";
+$lang['GCM_MEMBER'] = "Membro :";
+$lang['GCM_MAIL'] = "E-mail :";
+$lang['GCM_REGISTER_DATE'] = "Registrado :";
+$lang['GCM_OGSPY'] = "OGSPY :";
+$lang['GCM_ANDROID'] = "Android :";
+$lang['GCM_DEVICE'] = "Aparelho :";
+$lang['GCM_NOBODY_REGISTERED'] = "Nenhum usuário registrado";

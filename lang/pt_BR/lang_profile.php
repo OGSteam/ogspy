@@ -13,28 +13,28 @@
 
 /* profile.php */
 
-$lang['PROFILE_ERROR_RETRY'] ="Saisissez le nouveau mot de passe et sa confirmation";
-$lang['PROFILE_ERROR_OLDPWD'] ="Saisissez l'ancien mot de passe";
-$lang['PROFILE_ERROR_ERROR'] = "Le mot de passe saisi est différent de la confirmation";
-$lang['PROFILE_ERROR_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 15 caractères";
+$lang['PROFILE_ERROR_RETRY'] ="Digite a nova senha e a confirmação";
+$lang['PROFILE_ERROR_OLDPWD'] ="Digite a senha antiga";
+$lang['PROFILE_ERROR_ERROR'] = "A senha digitada é diferente da confirmação";
+$lang['PROFILE_ERROR_ILLEGAL'] = "A senha deve conter entre 6 e 15 caracteres";
 
-$lang['PROFILE_TITLE'] = "Informations OGSpy";
-$lang['PROFILE_PSEUDO'] = "Pseudo";
-$lang['PROFILE_OLDPWD'] = "Ancien mot de passe";
-$lang['PROFILE_NEWPWD'] = "Nouveau mot de passe";
-$lang['PROFILE_NEWPWDAGAIN'] = "Nouveau mot de passe [Confirmez]";
-$lang['PROFILE_EMAIL'] = "Adresse Email";
-$lang['PROFILE_GAME'] = "Informations du Jeu";
-$lang['PROFILE_MAINPLANET'] = "Position de la planète principale";
-$lang['PROFILE_PLAYERNAME'] = "Pseudo dans le Jeu";
-$lang['PROFILE_OFFICERS'] = "Comptes Officiers";
-$lang['PROFILE_CODMANDER'] = "Commandant";
-$lang['PROFILE_ADMIRAL'] = "Amiral de flotte";
-$lang['PROFILE_ENGINEER'] = "Ingénieur";
-$lang['PROFILE_GEOLOGIST'] = "Géologue";
-$lang['PROFILE_TECHNOCRAT'] = "Technocrate";
-$lang['PROFILE_OTHERS'] = "Divers";
-$lang['PROFILE_IPCHECK_DISABLE'] = "Désactiver la vérification de l'adresse IP";
-$lang['PROFILE_SAVE'] = "Valider";
+$lang['PROFILE_TITLE'] = "Informações OGSpy";
+$lang['PROFILE_PSEUDO'] = "Apelido";
+$lang['PROFILE_OLDPWD'] = "Senha antiga";
+$lang['PROFILE_NEWPWD'] = "Nova senha";
+$lang['PROFILE_NEWPWDAGAIN'] = "Nova senha [Confirme]";
+$lang['PROFILE_EMAIL'] = "Endereço Email";
+$lang['PROFILE_GAME'] = "Informações do Jogador";
+$lang['PROFILE_MAINPLANET'] = "Posição do planeta principal";
+$lang['PROFILE_PLAYERNAME'] = "Apelido no jogo";
+$lang['PROFILE_OFFICERS'] = "Contas Oficiais";
+$lang['PROFILE_CODMANDER'] = "Comandante";
+$lang['PROFILE_ADMIRAL'] = "Almirante";
+$lang['PROFILE_ENGINEER'] = "Engenheiro";
+$lang['PROFILE_GEOLOGIST'] = "Geólogo";
+$lang['PROFILE_TECHNOCRAT'] = "Cientista";
+$lang['PROFILE_OTHERS'] = "Diversos";
+$lang['PROFILE_IPCHECK_DISABLE'] = "Desativar a verificação do endereço IP";
+$lang['PROFILE_SAVE'] = "Validar";
 
 
