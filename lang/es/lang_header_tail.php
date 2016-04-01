@@ -18,10 +18,10 @@ $lang['HEAD_RSS_STREAM'] = "Flux RSS OGSpy";
 
 /* page_tail.php */
 
-$lang['FOOTER_PHPERRORS'] = "Erros php";
-$lang['FOOTER_RENDERING'] = "Tempo de geração";
-$lang['FOOTER_OGSPY'] = "é uma ferramenta";
-$lang['FOOTER_CONTRIBUTORS'] = "contribuidor(es)";
-$lang['FOOTER_ON_SITE'] = "no site";
-$lang['FOOTER_QUERY'] = "consulta(s)";
+$lang['FOOTER_PHPERRORS'] = "Erreurs php";
+$lang['FOOTER_RENDERING'] = "Temps de génération";
+$lang['FOOTER_OGSPY'] = "est un outil";
+$lang['FOOTER_CONTRIBUTORS'] = "contributeur";
+$lang['FOOTER_ON_SITE'] = "sur le site";
+$lang['FOOTER_QUERY'] = "requête";
 

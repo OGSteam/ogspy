@@ -7,31 +7,31 @@
  */
 
 /* about.php */
-$lang['ABOUT_TEAM'] = "L'OGSteam";
-$lang['ABOUT_CHANGELOG'] = "Liste des modifications";
+$lang['ABOUT_TEAM'] = "O OGSteam";
+$lang['ABOUT_CHANGELOG'] = "Lista de modificações";
 
 /*about_changelog.php*/
 
-$lang['ABOUT_RELEASENOTE'] = "Notes de version";
-$lang['ABOUT_VERSION'] = "Version";
-$lang['ABOUT_DESCRIPTION'] = "Description";
+$lang['ABOUT_RELEASENOTE'] = "Notas da versão";
+$lang['ABOUT_VERSION'] = "Versão";
+$lang['ABOUT_DESCRIPTION'] = "Descrição";
 
 /*about_ogsteam.php*/
 
-$lang['ABOUT_PROJECT_TEAM'] = "Equipe Projet";
-$lang['ABOUT_PROJECT_AERIS'] = "Administrateur du Site OGSteam.fr";
-$lang['ABOUT_PROJECT_CAPI'] = "Développeur / Testeur";
-$lang['ABOUT_PROJECT_CHRYS'] = "Graphiste";
-$lang['ABOUT_PROJECT_DARKNOON'] = "Responsable Projet";
-$lang['ABOUT_PROJECT_DARKNOON1'] = "Développeur Xtense - Script GreaseMonkey";
-$lang['ABOUT_PROJECT_JEDINIGHT'] = "Développeur";
-$lang['ABOUT_PROJECT_JEDINIGHT1'] = "Développeur Modules - Xtense, Xtense Firefox, Hostiles";
-$lang['ABOUT_PROJECT_MACHINE'] = "Développeur";
-$lang['ABOUT_PROJECT_NINETY'] = "Développeur";
-$lang['ABOUT_PROJECT_SHAD'] = "Développeur";
-$lang['ABOUT_PROJECT_SUPERBOX'] = "Développeur";
-$lang['ABOUT_PROJECT_XAVIERNUMA'] = "Développeur";
-$lang['ABOUT_PROJECT_PITCH314'] = "Développeur";
-$lang['ABOUT_PROJECT_PITCH314_1'] = "Développeur OGSPY";
-$lang['ABOUT_PROJECT_PITCH314_2'] = "Développeur module - Build.Tech HOF, Production, Qui me sonde, Temps de vols";
-$lang['ABOUT_TEST_TEAM'] = "Equipe de test";
+$lang['ABOUT_PROJECT_TEAM'] = "Equipe de Projetos";
+$lang['ABOUT_PROJECT_AERIS'] = "Administrador do site OGSteam.fr";
+$lang['ABOUT_PROJECT_CAPI'] = "Desenvolvedor/Testador";
+$lang['ABOUT_PROJECT_CHRYS'] = "Designer Gráfico";
+$lang['ABOUT_PROJECT_DARKNOON'] = "Responsável pelo Projeto";
+$lang['ABOUT_PROJECT_DARKNOON1'] = "Desenvolvedor Xtense -  Script GreaseMonkey";
+$lang['ABOUT_PROJECT_JEDINIGHT'] = "Desenvolvedor";
+$lang['ABOUT_PROJECT_JEDINIGHT1'] = "Desenvolvedor dos módulos - Xtense, Xtense Firefox, Hostis";
+$lang['ABOUT_PROJECT_MACHINE'] = "Desenvolvedor";
+$lang['ABOUT_PROJECT_NINETY'] = "Desenvolvedor";
+$lang['ABOUT_PROJECT_SHAD'] = "Desenvolvedor";
+$lang['ABOUT_PROJECT_SUPERBOX'] = "Desenvolvedor";
+$lang['ABOUT_PROJECT_XAVIERNUMA'] = "Desenvolvedor";
+$lang['ABOUT_PROJECT_PITCH314'] = "Desenvolvedor";
+$lang['ABOUT_PROJECT_PITCH314_1'] = "Desenvolvedor OGSPY";
+$lang['ABOUT_PROJECT_PITCH314_2'] = "Desenvolvedor dos módulos - Build.Tech HOF, Produção, Quem me espia, Tempo de vôo";
+$lang['ABOUT_TEST_TEAM'] = "Equipe de teste";

@@ -13,20 +13,20 @@
 
 /* menu.php */
 
-$lang['MENU_SERVER_TIME'] = "Heure serveur";
-$lang['MENU_WAITING'] = "En attente";
-$lang['MENU_SERVER_OFFLINE'] = "Serveur hors-ligne";
-$lang['MENU_ADMIN'] = "Administration";
-$lang['MENU_PROFILE'] = "Profil";
-$lang['MENU_HOME'] = "Espace Personnel";
-$lang['MENU_GALAXY'] = "Galaxie";
-$lang['MENU_ALLIANCES'] = "Alliances";
-$lang['MENU_RESEARCH'] = "Recherche";
-$lang['MENU_RANKINGS'] = "Classements";
-$lang['MENU_UPDATE_STATUS'] = "Etat Cartographie";
-$lang['MENU_MODULES'] = "Modules";
-$lang['MENU_FORUM'] = "Forum Alliance";
-$lang['MENU_ABOUT'] = "A Propos";
-$lang['MENU_LOGOUT'] = "Déconnexion";
+$lang['MENU_SERVER_TIME'] = "Hora do servidor";
+$lang['MENU_WAITING'] = "Em espera";
+$lang['MENU_SERVER_OFFLINE'] = "Servidor offline";
+$lang['MENU_ADMIN'] = "Administração";
+$lang['MENU_PROFILE'] = "Perfil";
+$lang['MENU_HOME'] = "Espaço pessoal";
+$lang['MENU_GALAXY'] = "Galáxia";
+$lang['MENU_ALLIANCES'] = "Alianças";
+$lang['MENU_RESEARCH'] = "Pesquisa";
+$lang['MENU_RANKINGS'] = "Classificações";
+$lang['MENU_UPDATE_STATUS'] = "Estado Cartográfico";
+$lang['MENU_MODULES'] = "Módulos";
+$lang['MENU_FORUM'] = "Fórum Aliança";
+$lang['MENU_ABOUT'] = "Sobre";
+$lang['MENU_LOGOUT'] = "Desconectar";
 
 

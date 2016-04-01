@@ -7,13 +7,13 @@
  */
 
 /* login.php */
-$lang['LOGIN_CONNEXION_PARAMETERS'] = "Paramètres de connexion";
-$lang['LOGIN_USER'] = "Utilisateur";
-$lang['LOGIN_PASSWORD'] = "Mot de Passe";
-$lang['LOGIN_CONNEXION_BUTTON'] = "Connexion";
+$lang['LOGIN_CONNEXION_PARAMETERS'] = "Parâmetros de conexão";
+$lang['LOGIN_USER'] = "Usuário";
+$lang['LOGIN_PASSWORD'] = "Senha";
+$lang['LOGIN_CONNEXION_BUTTON'] = "Conexão";
 
-$lang['LOGIN_ACCOUNT_REQUEST'] = "Demande de compte OGSpy";
-$lang['LOGIN_ACCOUNT_REQUEST_DESC'] = "Si vous ne disposez pas d'un compte, <br> il faut en demander un sur votre forum d'alliance.";
-$lang['LOGIN_ACCOUNT_REQUEST_BUTTON'] = "Demander un compte";
+$lang['LOGIN_ACCOUNT_REQUEST'] = "Solicitação de conta OGSpy";
+$lang['LOGIN_ACCOUNT_REQUEST_DESC'] = "Se você não possui uma conta, <br> é necessário a solicitação ao administrador.";
+$lang['LOGIN_ACCOUNT_REQUEST_BUTTON'] = "Solicitar uma conta";
 
 
