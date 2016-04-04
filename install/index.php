@@ -40,15 +40,17 @@ if (isset($pub_redirection)) {
     <tr>
         <td height="70"><div align="center"><img src="../images/OgameSpy2.jpg"></div></td>
     </tr>
-    <tr>
-        <td height="50"><div align="center">
-                <a href="index.php?lang=fr"><img src="../images/i18n/France.png"></a>
-                <a href="index.php?lang=en"><img src="../images/i18n/United_Kingdom.png"></a>
-                <a href="index.php?lang=pt_BR"><img src="../images/i18n/Brazil.png"></a>
-                <a href="index.php?lang=es"><img src="../images/i18n/Spain.png"></a>
-            </div>
-        </td>
-    </tr>
+    <?php if(!isset($ui_lang)) { ?>
+        <tr>
+        <td height = "50" ><div align = "center" >
+                <a href = "index.php?lang=fr" ><img src = "../images/i18n/France.png" ></a >
+                <a href = "index.php?lang=en" ><img src = "../images/i18n/United_Kingdom.png" ></a >
+                <a href = "index.php?lang=pt_BR" ><img src = "../images/i18n/Brazil.png" ></a >
+                <a href = "index.php?lang=es" ><img src = "../images/i18n/Spain.png" ></a >
+            </div >
+        </td >
+    </tr >
+    <?php }?>
     <tr>
         <td align="center">
             <table>
