@@ -49,6 +49,7 @@ class sql_db
      */
     var $last_query;
 
+
     /**
      * Get the current class database instance. Creates it if dosen't exists (singleton)
      * @param string $sqlserver MySQL Server Name
@@ -76,7 +77,7 @@ class sql_db
      * @return True if the connection has been created sucessfully
      */
 
-    private function sql_db($sqlserver, $sqluser, $sqlpassword, $database)
+    private function __construct($sqlserver, $sqluser, $sqlpassword, $database)
     {
         global $sql_timing;
         $sql_start = benchmark();
