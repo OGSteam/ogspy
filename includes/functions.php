@@ -1062,7 +1062,7 @@ function log_purge()
     $path = opendir("$root");
     while ($file = readdir($path)) {
         if ($file != "." && $file != "..") {
-            if (is_dir($root . $file) && intval($file) < $limit && @ereg("[0-9]{6}", $file)) {
+            if (is_dir($root . $file) && intval($file) < $limit && @preg_match("/[0-9]{6}/", $file)) {
                 $directories[] = $file;
             }
         }
