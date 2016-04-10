@@ -401,7 +401,7 @@ require_once("views/page_header.php");
                     else $status = $v["status"];
 
                     if ($v["moon"] == 1) {
-                        $moon = "<img src=\"" . $link_css . "img/lune.png\">";
+                        $moon = "<img src=\"skin/OGSpy_skin/img/lune.png\">";
                         $detail = "";
                         if ($v["last_update_moon"] > 0) {
                             $detail .= $v["phalanx"];
@@ -439,7 +439,7 @@ require_once("views/page_header.php");
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_INACTIVE_7Days']."</td><th>".$lang['SEARCH_INACTIVE_7Days_SYMBOL']."</th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_INACTIVE_28Days']."</td><th>".$lang['SEARCH_INACTIVE_28Days_SYMBOL']."</th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_WEAK_PROTECTION']."</td><th>".$lang['SEARCH_WEAK_PROTECTION_SYMBOL']."</th></tr>";
-                $legend .= "<tr><td class=\"c\">".$lang['SEARCH_MOON']."<br><i>".$lang['SEARCH_MOON_PHALANX']."</i></td><th><img src=\"" . $link_css . "img/lune.png\">".$lang['SEARCH_MOON_PHALANX_SYMBOL']."</th></tr>";
+                $legend .= "<tr><td class=\"c\">".$lang['SEARCH_MOON']."<br><i>".$lang['SEARCH_MOON_PHALANX']."</i></td><th><img src=\"skin/OGSpy_skin/img/lune.png\">".$lang['SEARCH_MOON_PHALANX_SYMBOL']."</th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_SPYREPORT']."</td><th>".$lang['SEARCH_SPYREPORT_SYMBOL']."</th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_ALLY_FRIEND']."</td><th><a><blink>abc</blink></a></th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_ALLY_HIDDEN']. "</td><th><span style=\"color: lime; \">abc</span></th></tr>";
