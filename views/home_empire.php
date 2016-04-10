@@ -55,8 +55,8 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
         for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
           /*Boosters et extensions modification :
            * => calcul effectué dans fonction  get empire*/
-        // $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-        //    $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+         $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+         $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
 
             $name .= "'".$user_building[$i]["planet_name"]."', ";
             $coordinates .= "'".$user_building[$i]["coordinates"]."', ";
@@ -69,8 +69,8 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
         for ($i=201 ; $i<=$nb_planete+200 ; $i++) {
          /*Boosters et extensions modification :*/
         	//=> calcul effectué dans fonction  get empire*/
-           // $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-           // $user_building[$i]["fields"] += $booster_tab[$i]['extention_m'];
+           $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+           $user_building[$i]["fields"] += $booster_tab[$i]['extention_m'];
 
             $name .= "'Lune', ";
             $coordinates .= "'', ";
@@ -268,14 +268,18 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <th><a><?php echo($lang['HOME_EMPIRE_EXTENSION']); ?></a></th>
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                // $booster_tab = booster_decode($user_building[$i]["boosters"]);
+
                 $booster = "&nbsp;";
 
-                if ($view == "planets") {
-                    $booster = $user_building[$i]['booster_tab']['extention_p'];
-                } else {
-                    $booster = $user_building[$i]['booster_tab']['extention_m'];
-                }
+                    $booster_tab = booster_decode($user_building[$i]["boosters"]);
+
+                    if ($view == "planets") {
+                        $booster = $user_building[$i]['booster_tab']['extention_p'];
+                    } else {
+                        $booster = $user_building[$i]['booster_tab']['extention_m'];
+                    }
+
+
                 echo "\t" . "<th>" . $booster . "</th>" . "\n";
             }
 
@@ -404,7 +408,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <th><a><?php echo($lang['HOME_EMPIRE_BOOSTER']); ?></a></th>
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                // $booster_tab = booster_decode($user_building[$i]["boosters"]);
+                $booster_tab = booster_decode($user_building[$i]["boosters"]);
                 echo "\t" . "<th>m:" . $user_building[$i]['booster_tab']['booster_m_val'] . '%, c:' . $user_building[$i]['booster_tab']['booster_c_val'] . '%, d:' . $user_building[$i]['booster_tab']['booster_d_val'] . "%</th>" . "\n";
             }
             ?>

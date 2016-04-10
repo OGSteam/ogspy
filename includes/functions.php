@@ -1839,29 +1839,24 @@ function booster_uuid($boosters, $uuid = '', $date = 0)
     return NULL;
 }
 
-/* Transforme la date Ogame de format "*s *j *h *m *s" en nombre de seconde
+/* Transforme la date Ogame de format "*s *j *h" en nombre de seconde 6j 23h
  * @str string contenant le temps
  * @return int nombre de seconde correspondant à $str. 0 si problème
 */
 function booster_lire_date($str)
 {
-    static $tri = array('s', 'j', 'h', 'm', 's');
-    static $num = array(604800, 86400, 3600, 60, 1);
-    static $n = 5;
-    $result = 0;
-    $j = $n - 1;  //Lecture de droite à gauche on démarre par les secondes.
+    $time = 0;
 
-    $parts = sscanf($str, '%d%c %d%c %d%c %d%c %d%c');
-    for ($i = $n - 1; $i >= 0; $i--) {
-        $car = $parts[$i * 2 + 1];  //%c
-        $valeur = $parts[$i * 2]; //%d
-        if (!is_null($car)) {
-            if ($car == $tri[$j]) {
-                $result += $valeur * $num[$j--];
-            }
-        }
+    if(preg_match("/(\d+)s.(\d+)j.(\d+)h/", $str, $matches))
+    {
+       $time = ($matches[1]*604800 + $matches[2]* 86400 + $matches[3]*3600);
+
+    }elseif (preg_match("/(\d+)j.(\d+)h/", $str, $matches)){
+
+       $time= ($matches[1]* 86400 + $matches[2]*3600);
     }
-    return $result;
+
+    return $time;
 }
 
 /*#######Lecture et modifications poussées  #######*/
