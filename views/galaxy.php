@@ -138,8 +138,8 @@ require_once("views/page_header.php");
             $begin_hided = "";
             $end_hided = "";
             if ($v["hided"]) {
-                $begin_hided = "<font color='lime'>";
-                $end_hided = "</font>";
+                $begin_hided = "<span style=\"color: lime; \">";
+                $end_hided = "</span>";
             }
             $begin_allied = "";
             $end_allied = "";
@@ -416,7 +416,7 @@ require_once("views/page_header.php");
                     echo $range_down . " <-> " . $value["galaxy"] . ":" . $range_up . "</font>]";
                 }
 
-                if ($value["gate"] == "1") echo "<font color='red'> ".$lang['GALAXY_LUNA_GATE']." </font>";
+                if ($value["gate"] == "1") echo "<span style=\"color: red; \"> " .$lang['GALAXY_LUNA_GATE']. " </span>";
                 echo ".</th></tr>";
             }
         } else echo "<tr><th>".$lang['GALAXY_LUNA_NOPHALANX']."</th></tr>";

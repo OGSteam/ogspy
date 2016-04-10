@@ -145,14 +145,13 @@ class sql_db
         }
 
         if ($save) {
-            $type = substr($query, 0, 6);
+
             if ($server_config["debug_log"] == "1") {
-                if (!preg_match("/^select/i", $query) && !preg_match("/^show table status/i", $query)) {
                     $fichier = "sql_" . date("ymd") . ".sql";
                     $date = date("d/m/Y H:i:s");
                     $ligne = "/* " . $date . " - " . $_SERVER["REMOTE_ADDR"] . " */ " . $query . ";";
                     write_file(PATH_LOG_TODAY . $fichier, "a", $ligne);
-                }
+
             }
         }
 
