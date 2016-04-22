@@ -12,10 +12,10 @@
  */
 
 /* report_rc.php */
-$lang['REPORT_NOREPORTAVAILABLE'] = "Pas de rapport de combat disponible pour cette planètre";
-$lang['REPORT_MAXFAVORITES'] = "Vous avez atteint le nombre maximal de favoris permis";
-$lang['REPORT_RESENTBY'] = "Rapport d'espionnage envoyé par";
-$lang['REPORT_DATEFORMAT'] = "d/m/Y";
-$lang['REPORT_ADDTOFAV'] = "Ajouter aux favoris";
-$lang['REPORT_REMOVEFROMFAV'] = "Supprimer des favoris";
-$lang['REPORT_DELETE'] = "Supprimer le rapport";
+$lang['REPORT_NOREPORTAVAILABLE'] = "No hay reportes de combate de este planeta";
+$lang['REPORT_MAXFAVORITES'] = "Has alcanzado el número máximo permitido de favoritos";
+$lang['REPORT_RESENTBY'] = "Reporte de espionaje";
+$lang['REPORT_DATEFORMAT'] = "dia/mes/año";
+$lang['REPORT_ADDTOFAV'] = "Incluir en favoritos";
+$lang['REPORT_REMOVEFROMFAV'] = "Eliminar de favoritos";
+$lang['REPORT_DELETE'] = "Eliminar reporte";

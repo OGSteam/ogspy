@@ -152,13 +152,13 @@ $lang['HOME_STATS_COMPARE'] = "compare with";
 $lang['HOME_STATS_PALYERSTATS'] = "Display statistics from ";
 $lang['HOME_STATS_COMP'] = "Comparaison";
 $lang['HOME_STATS_RANKINGS'] = "Rankings";
-$lang['HOME_STATS_NOGRAPHIC'] = "pas de graphique disponible";
-$lang['HOME_STATS_GRAPHIC_TITLE'] = "Basé sur vos données dans \"Empire\"";
-$lang['HOME_STATS_GRAPHIC_TITLE2'] = "et les stats de";
+$lang['HOME_STATS_NOGRAPHIC'] = "No chart available";
+$lang['HOME_STATS_GRAPHIC_TITLE'] = "Based on data available in your \"Empire\"";
+$lang['HOME_STATS_GRAPHIC_TITLE2'] = "and stats from";
 $lang['HOME_STATS_GRAPHIC_FROM'] = "from";
 $lang['HOME_STATS_GRAPHIC_DIVERS'] = "
 Miscellaneous";
-$lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'] = "Pas de données dans l'empire";
+$lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'] = "No data available in Empire";
 $lang['HOME_STATS_GRAPHIC_NOSTATSDATA'] = "Pas de données sur le total de points";
 $lang['HOME_STATS_GRAPHIC_LASTREPARTITION'] = "Dernière répartition des points connue";
 $lang['HOME_STATS_GRAPHIC_REPARTITION'] = "Proportion des planètes - lunes comprises";

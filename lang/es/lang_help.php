@@ -8,14 +8,14 @@
 
 $help["admin_server_status"] = "Cuando el servidor esté desactivado sólo los miembros con privilegios de administrador tienen acceso a la funcionalidad de servidor";
 $help["admin_server_status_message"] = "El mensaje se mostrara a los miembros \" de base  \"mientras el servidor esté deshabilitado";
-$help["admin_save_transaction"] = "Les transactions correspondent aux :<br>- Systèmes solaires<br>- Rapports d'espionnage<br>- Classements joueurs et alliances";
+$help["admin_save_transaction"] = "Las transacciones se corresponden a:<br>- Sistemas solares<br>- Reportes de espionaje<br>- Ranking de jugadores y alianzas";
 $help["admin_member_manager"] = "Autoriza la creación, actualización y eliminación de usuarios";
 $help["admin_ranking_manager"] = "Autoriza la eliminación de los jugadores y alianzas";
-$help["admin_check_ip"] = "Certains utilisateurs subissent des déconnexions intempestives (AOL, Proxy, etc).<br>Activez cette option afin qu'ils puissent désactiver la vérification dans leur profil";
+$help["admin_check_ip"] = "Algunos jugadores sufren desconexiones de forma inesperada (AOL, Proxy, etc.) <br /> Activa esta opción para poder desctivar los controles en el perfil";
 $help["admin_session_infini"] = "Si eliges que las sesiones sean de forma indefinida, muchas personas no podrán utilizar la misma cuenta de forma simultánea";
 $help["drop_sessions"] = "Vacíe la tabla de sesiones, para liberar a la administración ero obliga a todos los usuarios a conectarse de nuevo.";
 
-$help["search_strict"] = "<font color=orange>Joueur recherché :</font><br><i>Liquid snake</i><br><font color=orange>Critère de recherche :</font><br><i>snake</i><br><br>=> <font color=lime>Résultat positif</font> si l'option \"strict\" est désactivée<br>=> <font color=red>Résultat négatif</font> si l'option \"strict\" est activée";
+$help["search_strict"] = "<font color=orange>Jugador buscado :</font><br /><i>Liquid snake</i><br /><font color=orange>Criterio de búsqueda: </font><br /><i>snake</i><br /><br />=> <font color=lime>Resultado positivo</font> Si la opción \\"strict\\" está desactivada<br />=> <font color=red>Resultado negativo</font> Si la opción \\"strict\\" está activada";
 
 $help["home_commandant"] = "Página de Imperio de la cuenta comandante";
 
@@ -23,8 +23,8 @@ $help["profile_login"] = "Debe contener entre 3 y 15 caracteres (no se aceptan l
 $help["profile_pseudo_email"] = "Si se completa, recibirá in correo de algunos módulos";
 $help["profile_main_planet"] = "La vista de galaxia se abrirá directamente en el sistema solar";
 $help["profile_password"] = "Debe contener entre 6 y 15 caracteres (no se admiten caracteres especiales)";
-$help["profile_galaxy"] = "Doit contenir un nombre<br> de 1 à 999";
-$help["profile_disable_ip_check"] = "La vérification de l'adresse IP permet de vous protéger contre le vol de session.<br><br>";
+$help["profile_galaxy"] = "Debe contener un número <br /> entre 1 y 999";
+$help["profile_disable_ip_check"] = "La verificación de la dirección IP permite proteger contra el robo de sesión. <br /> <br/>";
 $help["profile_disable_ip_check"] .= "Si vous êtes déconnecté régulièrement (AOL, Proxy, etc), désactivez la vérification.<br><br>";
 $help["profile_disable_ip_check"] .= "<i>L'option est disponible uniquement si l'administrateur l'a activée</i>";
 
@@ -40,11 +40,11 @@ $help["mod_cache"] = "Configuración en segundos del módulo de caché.";
 
 /* admin page */
 
-$help['display_mips'] = "Affiche ou cache les MIP des users de OGSpy, mais ne les affichent qu'a ceux qui peuvent voir les alliances protégées.";
-$help['member_stats'] = "Affiche ou cache le tableau de statistique des membres en bas de la page statistiques";
-$help['member_connected'] = "Affiche les (*) qui permettent de savoir qui est connecté<br>Désactivé si l'affichage des membres n'est pas activé";
-$help['member_registration'] = "Affiche ou cache le tableau contenan le lien du forum de cet OGSpy";
-$help['ally_name'] = "Nom de l'alliance de cet OGSpy";
-$help['forum_link'] = "Lien d'une section du forum, voir le PM de l'administrateur OGSpy";
-$help['first_displayed_module'] = "Module affiché lors de la connexion des utilisateurs à cet OGSpy";
-$help['first_displayed_module_admin'] = "Module affiché lors de la connexion des administrateurs de cet OGSpy";
+$help['display_mips'] = "Muestra u oculta la dirección IP de los usuarios de OGSpy pero no se visualizan las alianzas protegidas.";
+$help['member_stats'] = "Visualizar un tabla de estadísticas de los miembros en base a la página de estadísticas";
+$help['member_connected'] = "Visualizar los (*) que permiten saber quien está conectado<br>Desactivar si la visualización de los miembros no está activa.";
+$help['member_registration'] = "Visualizar en la caché una tabla que contiene el enlace a este foro OGSpy";
+$help['ally_name'] = "Nombre de la alianza en OGSpy";
+$help['forum_link'] = "Enlace a una sección del foro, ver el MP del administrador de OGSpy";
+$help['first_displayed_module'] = "Módulo que muestra cuando los usuarios acceden a OGSpy";
+$help['first_displayed_module_admin'] = "Módulo que aparece cuando la conexión de los administradores de OGSpy";
