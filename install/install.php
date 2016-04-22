@@ -326,7 +326,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
                         <td colspan="2">&nbsp;</td>
                     </tr>
                     <tr>
-                        <th colspan="2"><input name="complete" type="submit" value="<?php echo $lang['INSTALL_VIEW_INSTALLFULL']; ?>">&nbsp;ou&nbsp;<input
+                        <th colspan="2"><input name="complete" type="submit" value="<?php echo $lang['INSTALL_VIEW_INSTALLFULL']; ?>">&nbsp;/&nbsp;<input
                                 name="file" type="submit" value="<?php echo $lang['INSTALL_VIEW_INSTALLCONFIG']; ?>"></th>
                     </tr>
 

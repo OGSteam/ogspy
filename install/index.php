@@ -40,7 +40,6 @@ if (isset($pub_redirection)) {
     <tr>
         <td height="70"><div align="center"><img src="../images/OgameSpy2.jpg"></div></td>
     </tr>
-    <?php if(!isset($ui_lang)) { ?>
         <tr>
         <td height = "50" ><div align = "center" >
                 <a href = "index.php?lang=fr" ><img src = "../images/i18n/France.png" ></a >
@@ -50,7 +49,6 @@ if (isset($pub_redirection)) {
             </div >
         </td >
     </tr >
-    <?php }?>
     <tr>
         <td align="center">
             <table>
@@ -105,7 +103,7 @@ if (isset($pub_redirection)) {
     ?>
     <tr align="center">
         <td>
-            <div style="text-align: center;font-size: x-small;"><i><b>OGSpy</b> is an <b>OGSteam Software</b> (c) 2005-2015</i><br>v <?php echo $install_version ;?></div>
+            <div style="text-align: center;font-size: x-small;"><i><b>OGSpy</b> is an <b>OGSteam Software</b> (c) 2005-2016</i><br>v <?php echo $install_version ;?></div>
         </td>
     </tr>
 </table>
