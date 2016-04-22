@@ -13,18 +13,18 @@
 
 /* statistic.php */
 
-$lang['STATS_TITLE'] = "État de la cartographie";
-$lang['STATS_LEGEND'] = "Légende";
-$lang['STATS_KNOWN_PLANETS'] = "Planètes répertoriées";
-$lang['STATS_FREE_PLANETS'] = "Planètes colonisables";
-$lang['STATS_UPDATED_PLANETS'] = "Planètes mises à jour récemment";
-$lang['STATS_RAZ'] = "Remise à zéro";
-$lang['STATS_USERNAME'] = "Pseudos";
-$lang['STATS_PLANETS'] = "Planètes";
-$lang['STATS_SPY_REPORTS'] = "Rapports d'espionnage";
-$lang['STATS_RANKINGS'] = "Classement (lignes)";
-$lang['STATS_SEARCHINGS'] = "Recherches<br/>effectuées";
+$lang['STATS_TITLE'] = "Estado de la galaxia";
+$lang['STATS_LEGEND'] = "Leyenda";
+$lang['STATS_KNOWN_PLANETS'] = "Planetas enumerados";
+$lang['STATS_FREE_PLANETS'] = "Planetas colonizables";
+$lang['STATS_UPDATED_PLANETS'] = "Planetas recientemente actualizados";
+$lang['STATS_RAZ'] = "Reajustar";
+$lang['STATS_USERNAME'] = "Nicks";
+$lang['STATS_PLANETS'] = "Planetas";
+$lang['STATS_SPY_REPORTS'] = "Reportes de espionaje";
+$lang['STATS_RANKINGS'] = "Cantidad (líneas)";
+$lang['STATS_SEARCHINGS'] = "Búsquedas <br/> efectuadas";
 $lang['STATS_RATIO'] = "Ratio";
-$lang['STATS_XTENSE'] = "Xtense";
-$lang['STATS_CONNECTED'] = "connecté sur le serveur";
-$lang['STATS_CONNECTED_XTENSE'] = "connecté avec Xtense ou Xtense Chrome Plugin";
+$lang['STATS_XTENSE'] = "Xtenses";
+$lang['STATS_CONNECTED'] = "Conectar al servidor";
+$lang['STATS_CONNECTED_XTENSE'] = "Conectar con Xtense o el plugin de chrome de Xtense";

@@ -11,22 +11,22 @@
  */
 
 /* ranking.php */
-$lang['RANK_PLAYERS'] = "Joueurs";
-$lang['RANK_ALLIANCES'] = "Alliances";
+$lang['RANK_PLAYERS'] = "Jugadores";
+$lang['RANK_ALLIANCES'] = "Alianzas";
 
 /* ranking_ally.php */
 
-$lang['RANK_GENERAL'] = "Général";
-$lang['RANK_ECONOMY'] = "Economique";
-$lang['RANK_RESEARCH'] = "Recherche";
-$lang['RANK_MILITARY'] = "Militaire";
-$lang['RANK_MILITARY_BUILT'] = "Mil. construit";
-$lang['RANK_MILITARY_LOST'] = "Mil. perdu";
-$lang['RANK_MILITARY_DESTROYED'] = "Mil. détruit";
-$lang['RANK_MILITARY_HONOR'] = "Mil. honneur";
-$lang['RANK_DELETE_CONFIRMATION'] = "Etes-vous sûr de vouloir supprimer ce classement ?";
-$lang['RANK_DELETE'] = "Supprimer le classement du";
-$lang['RANK_ID'] = "Place";
-$lang['RANK_PLAYER'] = "Joueur";
-$lang['RANK_ALLY'] = "Alliance";
-$lang['RANK_MEMBER'] = "Memb.";
+$lang['RANK_GENERAL'] = "General";
+$lang['RANK_ECONOMY'] = "Economía";
+$lang['RANK_RESEARCH'] = "Investigación";
+$lang['RANK_MILITARY'] = "Militar";
+$lang['RANK_MILITARY_BUILT'] = "Militares construidos";
+$lang['RANK_MILITARY_LOST'] = "Militares perdidos";
+$lang['RANK_MILITARY_DESTROYED'] = "Militares destruidos";
+$lang['RANK_MILITARY_HONOR'] = "Honorables";
+$lang['RANK_DELETE_CONFIRMATION'] = "¿Estás seguro de querer borrar esta clasificación?";
+$lang['RANK_DELETE'] = "Eliminar tipo de clasificación";
+$lang['RANK_ID'] = "Lugar";
+$lang['RANK_PLAYER'] = "Jugador";
+$lang['RANK_ALLY'] = "Alianza";
+$lang['RANK_MEMBER'] = "Miembro";
