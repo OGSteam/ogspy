@@ -114,12 +114,12 @@ require_once("views/page_header.php");
                 else
                     $string_delfavorites = "alert('".$lang['GALAXY_NO_FAVORITES_MESSAGE']."')";
                 ?>
-                <input type="button" value="Ajouter aux favoris" onclick="<?php echo $string_addfavorites; ?>">
-                <input type="button" value="Supprimer des favoris" onclick="<?php echo $string_delfavorites; ?>">
+                <input type="button" value="<?php echo($lang['GALAXY_ADD_FAVORITES']); ?>" onclick="<?php echo $string_addfavorites; ?>">
+                <input type="button" value="<?php echo($lang['GALAXY_REMOVE_FAVORITES']); ?>" onclick="<?php echo $string_delfavorites; ?>">
             </td>
         </tr>
         <tr>
-            <td class="c" align="left" colspan="9"><?php echo($lang['GALAXY_SYSTEMS']); ?><?php echo $missil;?></td>
+            <td class="c" style="text-align: left" colspan="9"><?php echo($lang['GALAXY_SYSTEMS']); ?><?php echo $missil;?></td>
         </tr>
         <tr>
             <td class="c" width="25">&nbsp;</td>

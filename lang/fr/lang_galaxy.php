@@ -17,7 +17,7 @@ $lang['GALAXY_SELECT_SYSTEM'] = "Système solaire";
 $lang['GALAXY_DISPLAY'] = "Afficher";
 $lang['GALAXY_FAVORITE_LIST'] = "Liste des systèmes favoris";
 $lang['GALAXY_MAX_FAVORITES_MESSAGE'] = "Vous avez atteint le nombre maximal de favoris permis";
-$lang['GALAXY_NO_FAVORITES_MESSAGE'] = "Vous n\'avez pas de favoris";
+$lang['GALAXY_NO_FAVORITES_MESSAGE'] = "Vous n'avez pas de favoris";
 $lang['GALAXY_ADD_FAVORITES'] = "Ajouter aux favoris";
 $lang['GALAXY_REMOVE_FAVORITES'] = "Supprimer des favoris";
 $lang['GALAXY_SYSTEMS'] = "Système solaire ";
@@ -69,6 +69,18 @@ $lang['GALAXY_SEARCH_PLANETS_AVAILABLE'] = "Planètes colonisables";
 $lang['GALAXY_SEARCH_MOONS'] = "Lunes";
 $lang['GALAXY_SEARCH_INACTIVES'] = "Joueurs inactifs";
 $lang['GALAXY_SEARCH_SPYREPORTS'] = "Rapports d'espionnage";
+
+/* include/galaxy.php */
+
+$lang['GALAXY_MIP_UNKNOWN'] = "Non connu";
+$lang['GALAXY_MIP_TITLE'] = "MISSILE";
+$lang['GALAXY_MIP_NAME'] = "Nom";
+$lang['GALAXY_MIP_AVAILABLE_MISSILES'] = "Nb de missiles dispo";
+$lang['GALAXY_MIP_UNDERFIRE'] = "à portée du ou des Silo de missiles suivants";
+$lang['GALAXY_MIP_TOTAL'] = "Total";
+$lang['GALAXY_MIP_MIPS'] = "Missiles";
+$lang['GALAXY_MIP_NOMIPS_AROUND'] = " hors de portée des silos de missiles connu";
+
 
 /* galaxy_obsolete.php */
 
