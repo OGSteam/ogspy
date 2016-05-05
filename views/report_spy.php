@@ -49,4 +49,3 @@ if (sizeof($reports) == 0) {
     }
 }
 require_once("views/page_tail_2.php");
-?>

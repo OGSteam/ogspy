@@ -266,8 +266,10 @@ function log_($parameter, $option = 0)
             switch ($typerank2) {
                 case "player":
                     $typerank2 = "joueur";
+                    break;
                 case "ally":
                     $typerank2 = "alliance";
+                    break;
             }
             $date = strftime("%d %b %Y %Hh", $timestamp);
             $line = $member . " envoie le classement " . $typerank . " " . $typerank2 . " du " . $date . " via " . $support . " [" . $countrank . " lignes]";

@@ -757,4 +757,3 @@ function all_technology_cumulate($user_technology)
     return $total;
 }
 
-?>

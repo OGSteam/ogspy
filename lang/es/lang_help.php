@@ -11,11 +11,11 @@ $help["admin_server_status_message"] = "El mensaje se mostrara a los miembros \"
 $help["admin_save_transaction"] = "Las transacciones se corresponden a:<br>- Sistemas solares<br>- Reportes de espionaje<br>- Ranking de jugadores y alianzas";
 $help["admin_member_manager"] = "Autoriza la creación, actualización y eliminación de usuarios";
 $help["admin_ranking_manager"] = "Autoriza la eliminación de los jugadores y alianzas";
-$help["admin_check_ip"] = "Algunos jugadores sufren desconexiones de forma inesperada (AOL, Proxy, etc.) <br /> Activa esta opción para poder desctivar los controles en el perfil";
+$help["admin_check_ip"] = "Algunos jugadores sufren desconexiones de forma inesperada (AOL, Proxy, etc.) <br> Activa esta opción para poder desctivar los controles en el perfil";
 $help["admin_session_infini"] = "Si eliges que las sesiones sean de forma indefinida, muchas personas no podrán utilizar la misma cuenta de forma simultánea";
 $help["drop_sessions"] = "Vacíe la tabla de sesiones, para liberar a la administración ero obliga a todos los usuarios a conectarse de nuevo.";
 
-$help["search_strict"] = "<font color=orange>Jugador buscado :</font><br /><i>Liquid snake</i><br /><font color=orange>Criterio de búsqueda: </font><br /><i>snake</i><br /><br />=> <font color=lime>Resultado positivo</font> Si la opción \\"strict\\" está desactivada<br />=> <font color=red>Resultado negativo</font> Si la opción \\"strict\\" está activada";
+$help["search_strict"] = "<font color=orange>Jugador buscado :</font><br><i>Liquid snake</i><br><font color=orange>Criterio de búsqueda: </font><br><i>snake</i><br><br>=> <font color=lime>Resultado positivo</font> Si la opción \"strict\" está desactivada<br>=> <font color=red>Resultado negativo</font> Si la opción \"strict\" está activada";
 
 $help["home_commandant"] = "Página de Imperio de la cuenta comandante";
 
@@ -23,8 +23,8 @@ $help["profile_login"] = "Debe contener entre 3 y 15 caracteres (no se aceptan l
 $help["profile_pseudo_email"] = "Si se completa, recibirá in correo de algunos módulos";
 $help["profile_main_planet"] = "La vista de galaxia se abrirá directamente en el sistema solar";
 $help["profile_password"] = "Debe contener entre 6 y 15 caracteres (no se admiten caracteres especiales)";
-$help["profile_galaxy"] = "Debe contener un número <br /> entre 1 y 999";
-$help["profile_disable_ip_check"] = "La verificación de la dirección IP permite proteger contra el robo de sesión. <br /> <br/>";
+$help["profile_galaxy"] = "Debe contener un número <br> entre 1 y 999";
+$help["profile_disable_ip_check"] = "La verificación de la dirección IP permite proteger contra el robo de sesión. <br> <br/>";
 $help["profile_disable_ip_check"] .= "Si vous êtes déconnecté régulièrement (AOL, Proxy, etc), désactivez la vérification.<br><br>";
 $help["profile_disable_ip_check"] .= "<i>L'option est disponible uniquement si l'administrateur l'a activée</i>";
 

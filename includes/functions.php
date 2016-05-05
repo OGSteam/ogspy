@@ -896,7 +896,6 @@ function log_size_info()
  * Checks the availability of a log File
  * @param int $date Requested Date
  * @return boolean true if the log file exists
- * @internal To be improved...
  */
 function log_check_exist($date)
 {
@@ -1401,7 +1400,8 @@ function uninstall_mod($mod_uninstall_name, $mod_uninstall_table)
     global $db;
     $db->sql_query("DELETE FROM " . TABLE_MOD . " WHERE title='" . $mod_uninstall_name . "';");
     if (!empty($mod_uninstall_table)) {
-        $db->sql_query("DROP TABLE IF EXISTS " . $mod_uninstall_table . "");
+        log_("debug", "DROP TABLE IF EXISTS " . $mod_uninstall_table);
+        $db->sql_query("DROP TABLE IF EXISTS " . $mod_uninstall_table);
     }
 }
 
@@ -1924,4 +1924,3 @@ function booster_encodev($booster_m_val = 0, $booster_m_date = 0, $booster_c_val
 
 /**                     Fin booster partie                                     **/
 /********************************************************************************/
-?>

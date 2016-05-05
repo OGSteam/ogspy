@@ -16,11 +16,11 @@ ______________________________________________________________ */
 }
 
 img {
-    border: 0px;
+    border: 0;
 }
 
 p table {
-    border: 0px;
+    border: 0;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 11px;
 }
@@ -32,18 +32,17 @@ p td {
 }
 
 #maintable {
-    border: 0px;
+    border: 0;
     width: 100%;
     padding: 10px;
-    border-spacing: 0px;
+    border-spacing: 0;
     border-collapse: collapse;
-    border: 0;
     text-align: center;
 }
 
 table table /* fond global des zones descriptifs et temps recherche, construction  et de la barre des ressources en haut au milieu*/
 {
-    border: 0px;
+    border: 0;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 11px;
 }
@@ -60,11 +59,7 @@ body /* allg font etc. *//* option du fond et générales */
     color: #E4E4E4;
     margin-top: 0;
     margin-left: 0;
-    background: #000000;
-    background-image: url("fond_1.jpg");
-    background-position: left top;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background: #000000 url("fond_1.jpg") no-repeat fixed left top;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     text-align: left;
     font-size: 11px;
@@ -75,10 +70,7 @@ body.style /* paramétrage barre de menu sur le côté */
     color: #E4E4E4;
     margin-top: 1px;
     margin-left: 1px;
-    background-color: #000000;
-    background-image: url("img/pic.png");
-    background-repeat: no-repeat;
-    background-position: 14% 7%;
+    background: #000000 url("img/pic.png") no-repeat 14% 7%;
     font-family: Tahoma, Helvetica, sans-serif;
     font-size: 11px;
     text-align: left;
@@ -117,8 +109,7 @@ th {
     padding-right: 3px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 11px;
-    background-image: url("tableaux/th.png");
-    background-repeat: repeat;
+    background: url("tableaux/th.png") repeat;
 }
 
 td.a {
@@ -139,81 +130,55 @@ td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, 
 
 td.c /* modifie la police des noms de catégorie dans le menu recherche et des titres de certaines pages barress.PNG */
 {
-    background-image: url("tableaux/td_c.png");
-    background-position: right;
-    background-repeat: repeat-y;
+    background: url("tableaux/td_c.png") repeat-y right;
 }
 
 td.c_tech {
-    background-image: url("tableaux/td_tech.png");
-    background-position: right;
-    background-repeat: no-repeat;
+    background: url("tableaux/td_tech.png") no-repeat right;
 }
 
 td.c_stats {
-    background-image: url("tableaux/td_stats.png");
-    background-position: right;
-    background-repeat: no-repeat;
+    background: url("tableaux/td_stats.png") no-repeat right;
 }
 
 td.c_recherche {
-    background-image: url("tableaux/td_recherche.png");
-    background-position: right;
-    background-repeat: no-repeat;
+    background: url("tableaux/td_recherche.png") no-repeat right;
 }
 
 td.c_user {
-    background-image: url("tableaux/td_utilisateur.png");
-    background-position: right;
-    background-repeat: no-repeat;
+    background: url("tableaux/td_utilisateur.png") no-repeat right;
 }
 
 td.c_ogspy {
-    background-image: url("tableaux/td_ogspy.png");
-    background-position: right;
-    background-repeat: no-repeat;
+    background: url("tableaux/td_ogspy.png") no-repeat right;
 }
 
 td.c_ogame {
-    background-image: url("tableaux/td_ogame.png");
-    background-position: right;
-    background-repeat: no-repeat;
+    background: url("tableaux/td_ogame.png") no-repeat right;
 }
 
 td.c_batiments {
-    background-image: url("tableaux/td_batiments.png");
-    background-position: right;
-    background-repeat: no-repeat;
+    background: url("tableaux/td_batiments.png") no-repeat right;
 }
 
 td.c_satellite {
-    background-image: url("tableaux/td_satellite.png");
-    background-position: right;
-    background-repeat: no-repeat;
+    background: url("tableaux/td_satellite.png") no-repeat right;
 }
 
 td.c_defense {
-    background-image: url("tableaux/td_defense.png");
-    background-position: right;
-    background-repeat: no-repeat;
+    background: url("tableaux/td_defense.png") no-repeat right;
 }
 
 td.c_classement_points {
-    background-image: url("tableaux/td_classement_points.png");
-    background-position: right;
-    background-repeat: no-repeat;
+    background: url("tableaux/td_classement_points.png") no-repeat right;
 }
 
 td.c_classement_flotte {
-    background-image: url("tableaux/td_classement_flotte.png");
-    background-position: right;
-    background-repeat: no-repeat;
+    background: url("tableaux/td_classement_flotte.png") no-repeat right;
 }
 
 td.c_classement_recherche {
-    background-image: url("tableaux/td_classement_recherche.png");
-    background-position: right;
-    background-repeat: no-repeat;
+    background: url("tableaux/td_classement_recherche.png") no-repeat right;
 }
 
 td.f, input, select, textarea {
@@ -249,21 +214,17 @@ td.j {
 
 td.k, td.k input /* berechne calculer? button  background-image: url("img/bl01.PNG");*/
 {
-    background-image: url("img/barredroite.PNG");
-    background-color: transparent;
     text-align: center;
     color: #FFFFFF;
-    background-repeat: no-repeat;
+    background: transparent url("img/barredroite.PNG") no-repeat;
 }
 
 td.l /* police du texte de description des batiments, chantier spatial et recherche */
 {
-    background-color: #000000;
     color: #FFFFFF;
     vertical-align: top;
-    padding: 0px;
-    background-image: url("img/grandebarre.PNG");
-    background-repeat: no-repeat;
+    padding: 0;
+    background: #000000 url("img/grandebarre.PNG") no-repeat;
 }
 
 td.m {
@@ -274,7 +235,6 @@ td.m {
 
 td.n {
     font-weight: bold;
-    text-align: right;
     width: 88px;
     text-align: center;
     color: #B6C6E5;
@@ -309,7 +269,7 @@ td.s {
 }
 
 table.s th {
-    border: 0px;
+    border: 0;
 }
 
 table.s th img {
@@ -348,7 +308,7 @@ a:hover /* Planet Title hover */
 .style td /* taille cases barres latérales */
 {
     color: #8A4FFF;
-    border-top: 0px;
+    border-top: 0;
     font-size: 11px;
     font-family: Tahoma, sans-serif;
 }
@@ -356,7 +316,7 @@ a:hover /* Planet Title hover */
 .style td:hover /*taille cases barres latérales */
 {
     background-image: url("img/Mod01.jpg");
-    border-top: 0px;
+    border-top: 0;
     font-size: 11px;
     font-family: Tahoma, Ringbearer, sans-serif;
 }
@@ -403,7 +363,7 @@ a:hover /* Planet Title hover */
 h1 /* titre (fenêtre batiments et recherche) */
 {
     font-size: 12px;
-    border-bottom: 0px #2C2C2C solid;
+    border-bottom: 0 #2C2C2C solid;
     width: 98%;
     text-align: right;
     font-weight: bold;

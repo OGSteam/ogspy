@@ -12,7 +12,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 
-$info_system = galaxy_show(intval($server_config['num_of_galaxies']), intval($server_config['num_of_systems']));
+$info_system = galaxy_show();
 $population = $info_system["population"];
 $galaxy = $info_system["galaxy"];
 $system = $info_system["system"];

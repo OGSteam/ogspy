@@ -42,8 +42,8 @@ if (!defined('IN_SPYOGAME')) {
     go_visibility = [];
     function goblink() {
         if (document.getElementById && document.all) {
-            blink_tab = document.getElementsByTagName('blink');
-            for (a = 0; a < blink_tab.length; a++) {
+            var blink_tab = document.getElementsByTagName('blink');
+            for (var a = 0; a < blink_tab.length; a++) {
                 if (go_visibility[a] != "visible")
                     go_visibility[a] = "visible";
                 else

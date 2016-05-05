@@ -97,4 +97,3 @@ $banner[] = "logos/logo.png";
 srand(time());
 shuffle($banner);
 $banner_selected = $banner[0];
-?>

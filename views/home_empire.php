@@ -119,7 +119,6 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             document.getElementById('temperature_max').value = temperature_max[(planet_id - 1)];
             document.getElementById('satellite').value = satellite[(planet_id - 1)];
 
-            var i = 1;
             var lign = 0;
             var id = 0;
             var lim = <?php print ($server_config['ddr']==1)?'42':'41' ; ?>;
@@ -127,16 +126,16 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                 lim = 17;
                 planet_id -= 9;
             }
-            for (i = 1; i <= 9; i++) {
+            for (var i = 1; i <= 9; i++) {
                 for (lign = 1; lign <= lim; lign++) {
                     id = lign * 10 + i;
-                    document.getElementById(id).style.color = 'lime';
+                    document.getElementById(id.toString()).style.color = 'lime';
                 }
             }
 
             for (i = 1; i <= lim; i++) {
                 id = i * 10 + planet_id;
-                document.getElementById(id).style.color = 'yellow';
+                document.getElementById(id.toString()).style.color = 'yellow';
             }
 
             return (true);

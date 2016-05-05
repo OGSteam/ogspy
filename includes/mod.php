@@ -604,4 +604,3 @@ function mod_del_all_option()
     if (!$db->sql_query($query)) return false;
     return true;
 }
-?>
