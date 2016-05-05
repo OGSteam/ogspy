@@ -234,9 +234,9 @@ require_once("views/page_header.php");
                     }
 
                     echo "\t\t\t" . "<input type='button' value='<<' onclick=\"window.location = 'index.php?action=search&amp;sort=" . $sort . "&amp;sort2=" . $sort2 . "&amp;type_search=" . $type_search . "&amp;page=1" . $option . "';\">&nbsp;";
-                    echo "<input type='button' value='<' onclick=\"window.location = 'index.php?action=search&amp;sort=" . $sort . "&amp;sort2=" . $sort2 . "&amp;type_search=" . $type_search . "&amp;page=" . ($page - 1) . $option . "';\">&nbsp;";
+                    echo "<input type='button' value='<' onclick=\"window.location = 'index.php?action=search&amp;sort=" . $sort . "&amp;sort2=" . $sort2 . "&amp;type_search=" . $type_search . "&amp;page=" . (intval($page) - 1) . $option . "';\">&nbsp;";
 
-                    echo "<input type='button' value='>' onclick=\"window.location = 'index.php?action=search&amp;sort=" . $sort . "&amp;sort2=" . $sort2 . "&amp;type_search=" . $type_search . "&amp;page=" . ($page + 1) . $option . "';\">&nbsp;";
+                    echo "<input type='button' value='>' onclick=\"window.location = 'index.php?action=search&amp;sort=" . $sort . "&amp;sort2=" . $sort2 . "&amp;type_search=" . $type_search . "&amp;page=" . (intval($page) + 1) . $option . "';\">&nbsp;";
                     echo "<input type='button' value='>>' onclick=\"window.location = 'index.php?action=search&amp;sort=" . $sort . "&amp;sort2=" . $sort2 . "&amp;type_search=" . $type_search . "&amp;page=" . ($total_page) . $option . "';\">" . "\n";
                 }
                 echo "\t\t\t" . "</td>" . "\n";
