@@ -1203,6 +1203,11 @@ if($view == "planets") { ?>
     </table>
 
 <?php
+/**
+ * @param $txt
+ * @param $nb_planete
+ * @return string
+ */
 function read_th($txt, $nb_planete)
 {
     $retour = "";

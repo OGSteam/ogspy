@@ -20,6 +20,9 @@ if (!isset($message)) {
     $message = $_POST["message"];
 }
 
+/**
+ * @param $texte
+ */
 function writeLog($texte)
 {
     $filename = 'log_message.txt';

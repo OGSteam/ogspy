@@ -26,7 +26,7 @@ if (!isset($server_config['speed_uni'])) {
  * @param int $temperature_max Max temprature of the current planet
  * @param int $NRJ Current value of the user Energy Technology
  * @param int $Plasma Current value of the user Plasma Technology
- * @return the result of the production on the specified building.
+ * @return int the result of the production on the specified building.
  */
 function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ = 0, $Plasma = 0)
 {

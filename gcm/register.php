@@ -65,6 +65,9 @@ if (file_exists($filename)) {
 // je pense qu il y a moyen de passer par la session native d ogspy ...
 // mais bon ... :p ( regarde dans le common.php et include/user.php)
 
+/**
+ * @param $texte
+ */
 function writeLog($texte)
 {
     $filename = 'log.txt';

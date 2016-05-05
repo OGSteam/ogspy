@@ -18,7 +18,7 @@ if (!defined('IN_SPYOGAME')) {
 
 /**
  * Fetch the mod list (admin only)
- * @return The list of mods in an array.
+ * @return array $mod_list The list of mods in an array.
  * @todo Query : "select id, title, root, link, version, active, admin_only from ".TABLE_MOD." order by position, title";
  */
 function mod_list()

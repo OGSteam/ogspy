@@ -74,7 +74,6 @@ class sql_db
      * @param string $sqluser MySQL User Name
      * @param string $sqlpassword MySQL User Password
      * @param string $database MySQL Database Name
-     * @return True if the connection has been created sucessfully
      */
 
     private function __construct($sqlserver, $sqluser, $sqlpassword, $database)

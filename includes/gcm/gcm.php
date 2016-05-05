@@ -10,6 +10,9 @@
 class GCM {
  
     // Code here
+    /**
+     * GCM constructor.
+     */
     function __construct() {
  
     }
