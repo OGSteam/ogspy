@@ -30,7 +30,7 @@ if (!defined('IN_SPYOGAME')) {
  */
 function session_begin($user_ip)
 {
-    global $db, $cookie_id, $server_config;
+    global $db, $cookie_id, $server_config,$pub_toolbar_type;
 
     $cookie_name = COOKIE_NAME;
     $cookie_time = ($server_config["session_time"] == 0) ? 525600 : $server_config["session_time"];
@@ -38,7 +38,7 @@ function session_begin($user_ip)
 
     $cookie_expire = time() + $cookie_time * 60;
 
-    if (strstr($_SERVER['HTTP_USER_AGENT'], "OGSClient") === false) {
+    if (!isset($pub_toolbar_type)) {
         $request = "insert into " . TABLE_SESSIONS . " (session_id, session_user_id, session_start, session_expire, session_ip) values (";
         $request .= "'" . $cookie_id . "', 0, " . time() . ", " . $cookie_expire . ", '" . $user_ip . "')";
         $db->sql_query($request, true, false) or die("Impossible d'initialiser la session");
@@ -160,8 +160,7 @@ function session_set_user_id($user_id, $lastvisit = 0)
  */
 function session_set_user_data($cookie_id)
 {
-    global $db, $user_ip, $user_data, $user_auth, $server_config;
-    global $link_css;
+    global $db, $user_ip, $user_data, $user_auth;
 
     $request = "select user_id, user_name, user_admin, user_coadmin, user_email, user_galaxy, user_system, session_lastvisit, user_stat_name, ";
     $request .= "management_user, management_ranking, disable_ip_check, off_commandant, off_amiral, off_ingenieur, off_geologue, off_technocrate";
@@ -259,4 +258,4 @@ function drop_sessions()
     $db->sql_query("TRUNCATE TABLE " . TABLE_SESSIONS);
 }
 
-?>
+
