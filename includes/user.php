@@ -2052,6 +2052,7 @@ function user_getfavorites_spy()
     global $db, $user_data;
     global $sort, $sort2;
 
+
     if (!isset($sort) || !isset($sort2) || !is_numeric($sort) || !is_numeric($sort2)) {
         $orderby = "dateRE desc";
     } else {
@@ -2090,20 +2091,19 @@ function user_getfavorites_spy()
     $favorite = array();
 
     $request = "select " . TABLE_PARSEDSPY .
-        ".id_spy, coordinates, dateRE, sender_id, " . TABLE_UNIVERSE . ".moon, " .
-        TABLE_UNIVERSE . ".ally, " . TABLE_UNIVERSE . ".player, " . TABLE_UNIVERSE .
-        ".status";
-    $request .= " from " . TABLE_PARSEDSPY . ", " . TABLE_USER_SPY . ", " .
-        TABLE_UNIVERSE;
-    $request .= " where user_id = " . $user_data["user_id"] . " and CONCAT(" .
-        TABLE_UNIVERSE . ".galaxy,':'," . TABLE_UNIVERSE . ".system,':'," .
-        TABLE_UNIVERSE . ".row)=coordinates and " . TABLE_USER_SPY . ".spy_id=" .
-        TABLE_PARSEDSPY . ".id_spy";
+        ".id_spy, coordinates, dateRE, sender_id, " . TABLE_UNIVERSE . ".moon, " . TABLE_UNIVERSE . ".ally, " . TABLE_UNIVERSE . ".player, " . TABLE_UNIVERSE .".status";
+    $request .= " from " . TABLE_PARSEDSPY .  ", " .TABLE_UNIVERSE;
+    $request .= " where ".TABLE_PARSEDSPY.".sender_id = " . $user_data["user_id"] . " and CONCAT(" .TABLE_UNIVERSE . ".galaxy,':'," . TABLE_UNIVERSE . ".system,':'," .TABLE_UNIVERSE . ".row)=coordinates";
     $request .= " order by " . $orderby;
     $result = $db->sql_query($request);
 
-    while (list($spy_id, $coordinates, $datadate, $sender_id, $moon, $ally, $player,
-        $status) = $db->sql_fetch_row($result)) {
+    // select ogspy_parsedspy.id_spy, coordinates, dateRE, sender_id, ogspy_universe.moon, ogspy_universe.ally, ogspy_universe.player, ogspy_universe.status from ogspy_parsedspy, ogspy_user_spy, ogspy_universe
+    // where user_id = 1
+    // and CONCAT(ogspy_universe.galaxy,':',ogspy_universe.system,':',ogspy_universe.row)=coordinates
+    // and ogspy_user_spy.spy_id=ogspy_parsedspy.id_spy
+    // order by dateRE desc
+
+    while (list($spy_id, $coordinates, $datadate, $sender_id, $moon, $ally, $player, $status) = $db->sql_fetch_row($result)) {
         $request = "select user_name from " . TABLE_USER;
         $request .= " where user_id=" . $sender_id;
         $result_2 = $db->sql_query($request);
@@ -2166,8 +2166,7 @@ function user_del_favorite_spy()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $request = "delete from " . TABLE_USER_SPY . " where user_id = " . $user_data["user_id"] .
-        " and spy_id = '" . $pub_spy_id . "'";
+    $request = "delete from " . TABLE_PARSEDSPY . " where sender_id = " . $user_data["user_id"] . " and id_spy = '" . $pub_spy_id . "'";
     $db->sql_query($request);
 
     if (!isset($pub_info))
@@ -2175,10 +2174,11 @@ function user_del_favorite_spy()
 
     switch ($pub_info) {
         case 2:
-            redirection("index.php?action=show_reportspy&galaxy=" . $pub_galaxy . "&system=" .
-                $pub_system . "&row=" . $pub_row);
+            redirection("index.php?action=show_reportspy&galaxy=" . $pub_galaxy . "&system=" . $pub_system . "&row=" . $pub_row);
+            break;
         case 1:
             redirection("index.php?action=home&subaction=spy");
+            break;
         default:
             return true;
     }
@@ -2538,159 +2538,6 @@ function user_del_spy()
 }
 
 /**
- * Parsing des RC
- * @param string $rawRC RC à parser
- * @return int $return identifiant du RC
- */
-function parseRC($rawRC)
-{
-    // Suppression des '\', et gestion des retours charriots/sauts de ligne
-    $rawRC = str_replace('\\', '', ereg_replace("\n|\r|\r\n", " \n", $rawRC));
-    // Suppression des '.' dans les nombres
-    while (preg_match('/\d+\.\d+/', $rawRC))
-        $rawRC = preg_replace('/(\d+)\.(\d+)/', "$1$2", $rawRC);
-    $return = array('dateRC' => '', 'nb_rounds' => 0, 'attaquants' => array(),
-        'defenseur' => array(), 'victoire' => 'A', 'pertes_A' => 0, 'pertes_D' => 0,
-        'gain_M' => -1, 'gain_C' => -1, 'gain_D' => -1, 'debris_M' => -1, 'debris_C' =>
-        -1, 'lune' => 0, 'coordinates' => '1:1:1');
-
-    // Extraction du timestamp pour la date du RC
-    preg_match('/affrontées le (\d*)-(\d*) (\d*):(\d*):(\d*) \.:/', $rawRC, $reg);
-    $jourRC = trim($reg[2]);
-    $moisRC = trim($reg[1]);
-    $heureRC = trim($reg[3]);
-    $minutesRC = trim($reg[4]);
-    $secondesRC = trim($reg[5]);
-    $return['dateRC'] = mktime($heureRC, $minutesRC, $secondesRC, $moisRC, $jourRC,
-        date('Y'));
-
-    // Extraction du nom, des coordonnées et des techs de l'attaquant et du défenseur
-    $opponents = array();
-    preg_match_all('/Attaquant (.*) \(\[(.*)\]\)(\s*)Armes: (\d*)% Bouclier: (\d*)% Coque: (\d*)%/',
-        $rawRC, $reg);
-    for ($idx = 0; $idx < sizeof($reg[0]); $idx++) {
-        $return['attaquants'][] = array('pseudo' => $reg[1][$idx], 'coordinates' => $reg[2][$idx],
-            'armes' => $reg[4][$idx], 'bouclier' => $reg[5][$idx], 'protection' => $reg[6][$idx]);
-        $opponents[] = $reg[1][$idx];
-    }
-    preg_match_all('/D.fenseur (.*) \(\[(.*)\]\)(\s*)Armes: (\d*)% Bouclier: (\d*)% Coque: (\d*)%/',
-        $rawRC, $reg);
-    for ($idx = 0; $idx < sizeof($reg[0]); $idx++) {
-        if ($idx == 0)
-            $return['coordinates'] = $reg[2][$idx];
-        $return['defenseurs'][] = array('pseudo' => $reg[1][$idx], 'coordinates' => $reg[2][$idx],
-            'armes' => $reg[4][$idx], 'bouclier' => $reg[5][$idx], 'protection' => $reg[6][$idx]);
-        $opponents[] = $reg[1][$idx];
-    }
-
-    // Comptage du nombre de roungs
-    $return['nb_rounds'] = substr_count($rawRC, 'attaquante tire') + 1;
-
-    // Extraction des pertes
-    preg_match('/L\'attaquant a perdu au total (\d*) unit.s/', $rawRC, $reg);
-    $return['pertes_A'] = trim($reg[1]);
-    preg_match('/Le d.fenseur a perdu au total (\d*) unit.s/', $rawRC, $reg);
-    $return['pertes_D'] = trim($reg[1]);
-
-    // Extraction du champ de débris et du pourcentage de lune
-    preg_match('/Un champ de d.bris contenant (\d*) unit.s de m.tal et (\d*) unit.s de cristal(.*)/',
-        $rawRC, $reg);
-    $return['debris_M'] = trim($reg[1]);
-    $return['debris_C'] = trim($reg[2]);
-    if (preg_match('/une lune est de (\d*)( ?)%/', $rawRC, $reg))
-        $return['lune'] = trim($reg[1]);
-
-    // Extraction du résultat du RC
-    // A = victoire de l'attaquant
-    // D = victoire du défenseur
-    // N = match nul
-    if (preg_match('/L\'attaquant a gagn. la bataille/', $rawRC)) {
-        $return['victoire'] = 'A';
-        // Extraction des ressources gagnées
-        preg_match('/(\d*) unit.s de m.tal, (\d*) unit.s de cristal et (\d*) unit.s de deut.rium/',
-            $rawRC, $reg);
-        $return['gain_M'] = trim($reg[1]);
-        $return['gain_C'] = trim($reg[2]);
-        $return['gain_D'] = trim($reg[3]);
-    } elseif (preg_match('/Le d.fenseur a gagn. la bataille/', $rawRC))
-        $return['victoire'] = 'D';
-    else
-        $return['victoire'] = 'N';
-
-    $tmp = parseRCround($rawRC, $return['nb_rounds'], $opponents, $return['victoire']);
-
-    $idx = 1;
-    foreach ($tmp as $array) {
-        $return['round' . $idx] = $array;
-        $idx++;
-    }
-
-    return $return;
-}
-
-/**
- * Parsing de chaque round des RC
- * @param string $rawRC RC à analyser
- * @param int $nb_rounds Nombre de round du RC à analyser
- * @param array $opponents Tableau contenant le nom de chaque joueur du RC
- * @param $victoire
- * @return array $row_RC Tableau contenant pour chaque round du RC, les flottes/défenses de chaque joueur
- */
-function parseRCround($rawRC, $nb_rounds, $opponents, $victoire)
-{
-    $rawRC = preg_replace("/ \n/", '|', $rawRC);
-    $row_RC = array();
-    $row_RC_opponent = array('P.transp.' => -1, 'G.transp.' => -1, 'Ch.léger' => -1,
-        'Ch.lourd' => -1, 'Croiseur' => -1, 'V.bataille' => -1, 'V.colonisation' => -1,
-        'Recycleur' => -1, 'Sonde' => -1, 'Bombardier' => -1, 'Destr.' => -1, 'Rip' => -
-        1, 'Sat.sol.' => -1, 'Traqueur' => -1, 'Missile' => -1, 'L.léger.' => -1,
-        'L.lourd' => -1, 'Can.Gauss' => -1, 'Art.ions' => -1, 'Lanc.plasma' => -1,
-        'P.bouclier' => -1, 'G.bouclier' => -1, );
-
-    $decoupe = explode('points de dégâts||', $rawRC);
-    for ($idx_round = 0; $idx_round < $nb_rounds; $idx_round++) {
-        $row_RC[$idx_round] = array();
-        for ($idx_opp = 0; $idx_opp < sizeof($opponents); $idx_opp++) {
-            $row_RC[$idx_round][$opponents[$idx_opp]] = $row_RC_opponent;
-            $pattern = '/' . $opponents[$idx_opp] . ' \(\[.*?\]\)\|(Armes: \d*% Bouclier: \d*% Coque: \d*%\|)?Type[ \t](.*?)\|Nombre[ \t](.*?)\|/';
-            preg_match($pattern, $decoupe[$idx_round], $reg);
-            if (isset($reg[2])) {
-                $flotte = split("[ \t]", chop($reg[2]));
-                $nombre = split("[ \t]", chop($reg[3]));
-                foreach ($flotte as $key => $val)
-                    $row_RC[$idx_round][$opponents[$idx_opp]][$val] = $nombre[$key];
-            }
-        }
-        if ($idx_round < $nb_rounds) {
-            preg_match('/La flotte attaquante tire (\d*) fois avec une puissance totale de (-?\d*) sur le d.fenseur. Les boucliers du d.fenseur absorbent (\d*) points de d.g.ts/',
-                $decoupe[$idx_round], $reg);
-            if (isset($reg[1])) {
-                $row_RC[$idx_round]['attaque_tir'] = $reg[1];
-                $row_RC[$idx_round]['attaque_puissance'] = $reg[2];
-                $row_RC[$idx_round]['defense_bouclier'] = $reg[3];
-            } else {
-                $row_RC[$idx_round]['attaque_tir'] = 0;
-                $row_RC[$idx_round]['attaque_puissance'] = 0;
-                $row_RC[$idx_round]['defense_bouclier'] = 0;
-            }
-            preg_match("/La flotte d.fensive tire au total (\d*) fois avec une puissance totale de (-?\d*) sur l'attaquant. Les boucliers de l'attaquant absorbent (\d*)/",
-                $decoupe[$idx_round], $reg);
-            if (isset($reg[1])) {
-                $row_RC[$idx_round]['attaque_bouclier'] = $reg[3];
-                $row_RC[$idx_round]['defense_tir'] = $reg[1];
-                $row_RC[$idx_round]['defense_puissance'] = $reg[2];
-            } else {
-                $row_RC[$idx_round]['attaque_bouclier'] = 0;
-                $row_RC[$idx_round]['defense_tir'] = 0;
-                $row_RC[$idx_round]['defense_puissance'] = 0;
-            }
-        }
-    }
-
-    return ($row_RC);
-}
-
-/**
  * Reconstruction des RC
  * @global $db
  * @param int $id_RC RC à reconstituer
@@ -2885,85 +2732,6 @@ function UNparseRC($id_RC)
 }
 
 /**
- * Enregistrement des RC
- * @global $db
- * @param string $rawRC RC brut à analyser
- */
-function insert_RC($rawRC)
-{
-    global $db;
-    $parsedRC = parseRC($rawRC);
-    $query = 'INSERT IGNORE INTO ' . TABLE_PARSEDRC .
-        '(dateRC, nb_rounds, victoire, pertes_A, pertes_D, 
-    gain_M, gain_C, gain_D, debris_M, debris_C, lune, coordinates) VALUES (' . $parsedRC['dateRC'] .
-        ',' . $parsedRC['nb_rounds'] . ',"' . $parsedRC['victoire'] . '",' . $parsedRC['pertes_A'] .
-        ',' . $parsedRC['pertes_D'] . ',' . $parsedRC['gain_M'] . ',' . $parsedRC['gain_C'] .
-        ',' . $parsedRC['gain_D'] . ',' . $parsedRC['debris_M'] . ',' . $parsedRC['debris_C'] .
-        ',' . $parsedRC['lune'] . ',"' . $parsedRC['coordinates'] . '")';
-    if (!$db->sql_query($query)) {
-        $error = $db->sql_error();
-    }
-    $id_RC = $db->sql_insertid();
-    for ($idx_round = 1; $idx_round <= $parsedRC['nb_rounds']; $idx_round++) {
-        $round = 'round' . $idx_round;
-        log_('mod', ' enregistre le round ' . $idx_round);
-        $query = 'INSERT IGNORE INTO ' . TABLE_PARSEDRCROUND .
-            '(id_rc, numround, attaque_tir, attaque_puissance, 
-      attaque_bouclier, defense_tir, defense_puissance, defense_bouclier) VALUES(' .
-            $id_RC . ', ' . $idx_round . ', "' . $parsedRC[$round]['attaque_tir'] . '", "' .
-            $parsedRC[$round]['attaque_puissance'] . '", "' . $parsedRC[$round]['attaque_bouclier'] .
-            '", "' . $parsedRC[$round]['defense_tir'] . '", "' . $parsedRC[$round]['defense_puissance'] .
-            '", "' . $parsedRC[$round]['defense_bouclier'] . '")';
-        if (!$db->sql_query($query)) {
-            $error = $db->sql_error();
-        }
-        $id_parsedround = $db->sql_insertid();
-        foreach ($parsedRC['attaquants'] as $opponent => $row) {
-            $pseudo = $row['pseudo'];
-            $query = 'INSERT IGNORE INTO ' . TABLE_ROUND_ATTACK .
-                '(id_rcround, player, coordinates, Armes, 
-        Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, DST, EDLM, TRA) VALUES (' .
-                $id_parsedround . ', "' . $row['pseudo'] . '", "' . $row['coordinates'] . '", ' .
-                $row['armes'] . ', ' . $row['bouclier'] . ', ' . $row['protection'] . ', "' . $parsedRC[$round][$pseudo]['P.transp.'] .
-                '", "' . $parsedRC[$round][$pseudo]['G.transp.'] . '", "' . $parsedRC[$round][$pseudo]['Ch.léger'] .
-                '", "' . $parsedRC[$round][$pseudo]['Ch.lourd'] . '", "' . $parsedRC[$round][$pseudo]['Croiseur'] .
-                '", "' . $parsedRC[$round][$pseudo]['V.bataille'] . '", "' . $parsedRC[$round][$pseudo]['V.colonisation'] .
-                '", "' . $parsedRC[$round][$pseudo]['Recycleur'] . '", "' . $parsedRC[$round][$pseudo]['Sonde'] .
-                '", "' . $parsedRC[$round][$pseudo]['Bombardier'] . '", "' . $parsedRC[$round][$pseudo]['Destr.'] .
-                '", "' . $parsedRC[$round][$pseudo]['Rip'] . '", "' . $parsedRC[$round][$pseudo]['Traqueur'] .
-                '")';
-            if (!$db->sql_query($query)) {
-                $error = $db->sql_error();
-            }
-        }
-        foreach ($parsedRC['defenseurs'] as $opponent => $row) {
-            $pseudo = $row['pseudo'];
-            $query = 'INSERT IGNORE INTO ' . TABLE_ROUND_DEFENSE .
-                '(id_rcround, player, coordinates, Armes, 
-        Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, DST, EDLM, SAT, TRA, LM, LLE, LLO, 
-        CG, AI, LP, PB, GB) VALUES (' . $id_parsedround . ', "' . $row['pseudo'] .
-                '", "' . $row['coordinates'] . '", ' . $row['armes'] . ', ' . $row['bouclier'] .
-                ', ' . $row['protection'] . ', "' . $parsedRC[$round][$pseudo]['P.transp.'] .
-                '", "' . $parsedRC[$round][$pseudo]['G.transp.'] . '", "' . $parsedRC[$round][$pseudo]['Ch.léger'] .
-                '", "' . $parsedRC[$round][$pseudo]['Ch.lourd'] . '", "' . $parsedRC[$round][$pseudo]['Croiseur'] .
-                '", "' . $parsedRC[$round][$pseudo]['V.bataille'] . '", "' . $parsedRC[$round][$pseudo]['V.colonisation'] .
-                '", "' . $parsedRC[$round][$pseudo]['Recycleur'] . '", "' . $parsedRC[$round][$pseudo]['Sonde'] .
-                '", "' . $parsedRC[$round][$pseudo]['Bombardier'] . '", "' . $parsedRC[$round][$pseudo]['Destr.'] .
-                '", "' . $parsedRC[$round][$pseudo]['Rip'] . '", "' . $parsedRC[$round][$pseudo]['Sat.sol.'] .
-                '", "' . $parsedRC[$round][$pseudo]['Traqueur'] . '", "' . $parsedRC[$round][$pseudo]['Missile'] .
-                '", "' . $parsedRC[$round][$pseudo]['L.léger.'] . '", "' . $parsedRC[$round][$pseudo]['L.lourd'] .
-                '", "' . $parsedRC[$round][$pseudo]['Can.Gauss'] . '", "' . $parsedRC[$round][$pseudo]['Art.ions'] .
-                '", "' . $parsedRC[$round][$pseudo]['Lanc.plasma'] . '", "' . $parsedRC[$round][$pseudo]['P.bouclier'] .
-                '", "' . $parsedRC[$round][$pseudo]['G.bouclier'] . '")';
-            if (!$db->sql_query($query)) {
-                $error = $db->sql_error();
-            }
-        }
-    }
-    redirection('index.php');
-}
-
-/**
  * Fonction de calcul du ratio
  * @param int $player user_id ID du joueur
  * @return array ratio et divers calculs intermédiaires pour l'utilisateur en question
@@ -3054,4 +2822,3 @@ function ratio_is_ok()
         return true;
     }
 }
-?>
