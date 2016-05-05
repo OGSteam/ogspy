@@ -48,4 +48,3 @@ function help($key, $value = "", $prefixe = "")
 
     return "<img style=\"cursor:pointer\" src=\"" . $prefixe . "images/help_2.png\" onmouseover=\"" . $text . "\">";
 }
-?>

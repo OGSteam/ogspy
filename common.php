@@ -65,7 +65,7 @@ foreach ($_GET as $secvalue) {
 
 foreach ($_POST as $secvalue) {
     if (!check_postvalue($secvalue)) {
-        Header("Location: index.php");
+        header("Location: index.php");
         die();
     }
 }
@@ -121,4 +121,4 @@ if (!defined("INSTALL_IN_PROGRESS")) {
 
 if (isset($server_config["log_phperror"]) && $server_config["log_phperror"] == 1)
     set_error_handler('ogspy_error_handler');
-?>
+

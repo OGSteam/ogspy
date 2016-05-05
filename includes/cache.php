@@ -99,4 +99,3 @@ function generate_all_cache()
     generate_mod_cache();
 }
 
-?>

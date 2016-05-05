@@ -345,4 +345,3 @@ switch ($pub_action) {
         } else require_once("views/galaxy.php");
         break;
 }
-?>

@@ -207,7 +207,7 @@ function update_page() {
     //
     // Points
     //                      UdR, Nanites, CSp,   HM,   HC,   HD,    CM,    CC,    CD, Lab, TeraF, DepotR,  Silo, BaseL, Phalang, PdS
-    init_b_prix = [720, 1600000, 700, 1000, 1500, 2000, 2645, 3967, 5290, 800, 150000, 41000, 80000, 80000, 8000000, 60000];
+    var init_b_prix = [720, 1600000, 700, 1000, 1500, 2000, 2645, 3967, 5290, 800, 150000, 41000, 80000, 80000, 8000000, 60000];
 
     // Batiments planetes
     var total_b_pts = 0;
@@ -238,7 +238,7 @@ function update_page() {
     }
     document.getElementById("total_b_pts").innerHTML = format(Math.round(total_b_pts / 1000));
 
-    init_d_prix = [2000, 2000, 8000, 37000, 8000, 130000, 20000, 100000, 10000, 25000];
+    var init_d_prix = [2000, 2000, 8000, 37000, 8000, 130000, 20000, 100000, 10000, 25000];
 
     // Defences planetes
     var total_d_pts = 0;
@@ -300,7 +300,7 @@ function update_page() {
     }
 
     // Technologies planete avec le labo de plus au niveau
-    init_t_prix = [1400, 1000, 1000, 800, 1000, 1200, 6000, 1000, 6600, 36000, 300, 1400, 7000, 800000, 0, 16000];
+    var init_t_prix = [1400, 1000, 1000, 800, 1000, 1200, 6000, 1000, 6600, 36000, 300, 1400, 7000, 800000, 0, 16000];
 
     var techno = document.getElementById("techno").value;
     techno = techno.split('<>');

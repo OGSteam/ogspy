@@ -772,4 +772,3 @@ $(document).ready(function() {
     return $retour;
 }
 
-?>

@@ -47,7 +47,7 @@ foreach ($_GET as $secvalue) {
 
 foreach ($_POST as $secvalue) {
     if (!check_postvalue($secvalue)) {
-        Header("Location: index.php");
+        header("Location: index.php");
         die();
     }
 }

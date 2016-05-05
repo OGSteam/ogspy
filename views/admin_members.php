@@ -124,7 +124,7 @@ $usergroup_list = usergroup_get();
     }
     ?>
 </table>
-<div id="new_pass" style="visibility:hidden;position: fixed;    top: 300px;     left: 500;z-index: 100;">
+<div id="new_pass" style="visibility:hidden;position: fixed;    top: 300px;     left: 500px;z-index: 100;">
     <table width="200" style="border:1px #003399 solid;" cellpadding="3">
         <tr>
             <td align="center" class="c"><?php echo($lang['ADMIN_MEMBERS_NEWPASSWORD']); ?></td>

@@ -111,7 +111,6 @@ class sql_db
     public function __clone()
     {
         throw new Exception('Cet objet ne peut pas être cloné');
-        die();
     }
 
     /**
@@ -307,4 +306,3 @@ class sql_db
 
 }
 
-?>

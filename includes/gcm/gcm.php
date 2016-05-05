@@ -55,4 +55,3 @@ class GCM {
         return $result;
     }
 }
-?>

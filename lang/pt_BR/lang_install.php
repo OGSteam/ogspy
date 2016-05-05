@@ -62,4 +62,4 @@ $lang['INSTALL_VIEW_INSTALLFULL'] = "Iniciar a instalação completa";
 $lang['INSTALL_VIEW_INSTALLCONFIG'] = "Gerar o ficheiro 'id.php'";
 $lang['INSTALL_VIEW_INSTALLHELP'] = "Precisa de ajuda ?";
 
-?>
+
