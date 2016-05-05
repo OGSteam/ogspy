@@ -25,6 +25,9 @@ if (!isset($username)) {
     $username = $_POST["username"];
 }
 
+/**
+ * @param $texte
+ */
 function writeLog($texte)
 {
     $filename = 'log_alert.txt';

@@ -1757,6 +1757,11 @@ function find_nb_planete_user($id)
 	return $db->sql_numrows($result);
 
 }
+
+/**
+ * @param $id
+ * @return int|\the
+ */
 function find_nb_moon_user($id)
 {
 	global $db, $user_data;
@@ -2504,6 +2509,10 @@ function user_set_stat_name($user_stat_name)
 }
 
 //Suppression d'un rapport d'espionnage
+/**
+ * Deletes a Spy Report
+ * @return bool
+ */
 function user_del_spy()
 {
     global $db, $user_data;
@@ -2528,10 +2537,11 @@ function user_del_spy()
 
     switch ($pub_info) {
         case 2:
-            redirection("index.php?action=show_reportspy&galaxy=" . $pub_galaxy . "&system=" .
-                $pub_system . "&row=" . $pub_row);
+            redirection("index.php?action=show_reportspy&galaxy=" . $pub_galaxy . "&system=" . $pub_system . "&row=" . $pub_row);
+            break;
         case 1:
             redirection("index.php?action=home&subaction=spy");
+            break;
         default:
             return true;
     }
