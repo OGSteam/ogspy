@@ -692,11 +692,13 @@ function create_multi_curve($titre, $sous_titre, $data, $names, $conteneur, $the
     global $zoom, $server_config; // on recupere le zoom s il existe
 
     // traitement des datas recu
-    foreach ($names as $name) {
-        if (isset($data[$name])) { //au moins 2 résultats
-
-            $series[] = "{ name: '" . $name . "',data: [" . implode(',', $data[$name]) .
-                "]}";
+    if (isset($names)) {
+        foreach ($names as $name) {
+            if (isset($data[$name])) { //au moins 2 résultats
+    
+                $series[] = "{ name: '" . $name . "',data: [" . implode(',', $data[$name]) .
+                    "]}";
+            }
         }
     }
     // traitement final des données
