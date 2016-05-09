@@ -1,5 +1,4 @@
 <?php
-/** $Id: admin_parameters.php 7508 2012-01-30 21:59:01Z darknoon $ **/
 /**
  * Panneau d'Administration : paramètres et options du serveur
  * @package OGSpy
@@ -9,8 +8,6 @@
  * @created 15/12/2005
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @modified $Date: 2012-01-30 22:59:01 +0100 (Mon, 30 Jan 2012) $
- * @link $HeadURL: http://svn.ogsteam.fr/trunk/ogspy/views/admin_parameters.php $
  */
 
 if (!defined('IN_SPYOGAME')) {

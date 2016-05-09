@@ -1,11 +1,15 @@
 <?php
-/***************************************************************************
- *    filename    : serverdown.php
- *    desc.        :
- *    Author        : Kyser - http://ogsteam.fr/
- *    created        : 16/12/2005
- *    modified    : 30/07/2006 00:00:00
- ***************************************************************************/
+/**
+ * Server Down Page
+ * @package OGSpy
+ * @version 3.04b ($Rev: 7508 $)
+ * @subpackage views
+ * @author Kyser
+ * @created 15/12/2005
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
+
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");

@@ -1,11 +1,14 @@
 <?php
-/***************************************************************************
- *    filename    : viewer.php
- *    desc.        :
- *    Author        : Kyser - http://ogsteam.fr/
- *    created        : 16/12/2005
- *    modified    : 06/08/2006 11:40:18
- ***************************************************************************/
+/**
+ * Panneau d'Administration : Paramètres et affichage des Journaux
+ * @package OGSpy
+ * @version 3.04b ($Rev: 7508 $)
+ * @subpackage views
+ * @author Kyser
+ * @created 15/12/2005
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");

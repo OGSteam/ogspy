@@ -1,11 +1,14 @@
 <?php
-/***************************************************************************
- *    filename    : admin_mod.php
- *    desc.        :
- *    Author        : Aéris - http://ogsteam.fr/
- *    created        :
- *    modified    : 22/08/2006 00:00:00
- ***************************************************************************/
+/**
+ * Panneau administration des options Modules
+ * @package OGSpy
+ * @version 3.04b ($Rev: 7508 $)
+ * @subpackage views
+ * @author Aeris
+ * @created 07/04/2007
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
 
 if (!defined('IN_SPYOGAME')) die("Hacking attempt");
 

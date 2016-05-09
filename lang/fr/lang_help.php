@@ -1,11 +1,13 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: antho
- * Date: 05/08/2015
- * Time: 18:15
+ * Help Language File
+ * @package OGSpy
+ * @subpackage i18n
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.3.0
  */
-
 $help["admin_server_status"] = "Lorsque le serveur est désactivé, seul les membres avec le statut d'administrateur ont accès aux fonctionnalités du serveur";
 $help["admin_server_status_message"] = "Le message sera affiché aux membres \"de base\" lorsque le serveur sera désactivé";
 $help["admin_save_transaction"] = "Les transactions correspondent aux :<br>- Systèmes solaires<br>- Rapports d'espionnage<br>- Classements joueurs et alliances";

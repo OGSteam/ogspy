@@ -1,11 +1,14 @@
 <?php
-/***************************************************************************
- *    filename    : page_header.php
- *    desc.        :
- *    Author        : Kyser - http://ogsteam.fr/
- *    created        : 08/12/2005
- *    modified    : 08/04/2007 06:19:00
- ***************************************************************************/
+/**
+ * HTML Header
+ * @package OGSpy
+ * @version 3.04b ($Rev: 7508 $)
+ * @subpackage views
+ * @author Kyser
+ * @created 15/12/2005
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");

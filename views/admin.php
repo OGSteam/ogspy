@@ -9,8 +9,6 @@
  * @created 16/12/2005
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @modified $Date: 2012-03-25 18:10:55 +0200 (Sun, 25 Mar 2012) $
- * @link $HeadURL: http://svn.ogsteam.fr/trunk/ogspy/views/admin.php $
  */
 
 if (!defined('IN_SPYOGAME')) {

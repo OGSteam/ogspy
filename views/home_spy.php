@@ -1,12 +1,14 @@
 <?php
-/***************************************************************************
- *    filename    : home_spy.php
- *    desc.        :
- *    Author        : Ben.12 - http://ogsteam.fr/
- *    created        : 19/01/2006
- *    modified    : 22/06/2006 00:13:20
- *    modified    : 30/07/2006 00:00:00
- ***************************************************************************/
+/**
+ * Affichage Empire - Pages Espionnages favoris
+ * @package OGSpy
+ * @version 3.04b ($Rev: 7508 $)
+ * @subpackage views
+ * @author Ben.12
+ * @created 15/12/2005
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
