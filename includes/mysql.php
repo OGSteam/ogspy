@@ -6,10 +6,8 @@
  * @author Kyser
  * @created 15/11/2005
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04b ($Rev: 7692 $)
- * @modified $Date: 2012-08-19 23:54:07 +0200 (Sun, 19 Aug 2012) $
- * @link $HeadURL: http://svn.ogsteam.fr/trunk/ogspy/includes/mysql.php $
- * $Id: mysql.php 7692 2012-08-19 21:54:07Z darknoon $
  */
 
 if (!defined('IN_SPYOGAME')) {

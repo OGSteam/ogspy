@@ -1,12 +1,12 @@
 <?php
 /**
- * Fichier d'installation d'OGSpy : ROOT/install/install.php
+ * Fichier d'installation d'OGSpy : Script Installation
  * @package OGSpy
  * @subpackage install
  * @author Kyser
- * @copyright Copyright 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04
- * @since 3.04 - 26 sept. 07
  */
 ?>
 <html>

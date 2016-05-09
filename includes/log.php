@@ -5,10 +5,8 @@
  * @subpackage Log
  * @author Kyser
  * @copyright Copyright &copy; 2012, http://www.ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.1.1 ($Rev: 7690 $)
- * @modified $Date: 2012-08-19 21:49:20 +0200 (Sun, 19 Aug 2012) $
- * @link $HeadURL: http://svn.ogsteam.fr/trunk/ogspy/includes/log.php $
- * $Id: log.php 7690 2012-08-19 19:49:20Z darknoon $
  */
 
 if (!defined('IN_SPYOGAME')) {

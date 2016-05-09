@@ -5,8 +5,8 @@
  * @subpackage main
  * @author Kyser
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04
- * @since 3.03 - 21 sept. 07
  */
 
 if (!defined('IN_SPYOGAME')) {

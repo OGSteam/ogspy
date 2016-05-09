@@ -1,12 +1,12 @@
 <?php
 /**
- * Fichier d'installation d'ogspy : ROOT/install/index.php
+ * Fichier d'installation d'OGSpy
  * @package OGSpy
  * @subpackage install
  * @author Kyser
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04
- * @since 3.04 - 26 sept. 07
  */
 
 define("IN_SPYOGAME", true);

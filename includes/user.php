@@ -1,15 +1,13 @@
 <?php
 /**
  * user.php Fonctions concernant les utilisateurs
- * @author Kyser
  * @package OGSpy
  * @subpackage user
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
- * @modified $Date: 2012-11-05 13:04:30 +0100 (Mon, 05 Nov 2012) $
  * @author Kyser
- * @link $HeadURL: http://svn.ogsteam.fr/trunk/ogspy/includes/user.php $
- * @version 3.04b ( $Rev: 7752 $ )
- * $Id: user.php 7752 2012-11-05 12:04:30Z darknoon $
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.04b
+ * @created 06/12/2005
  */
 
 if (!defined('IN_SPYOGAME')) {

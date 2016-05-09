@@ -1,10 +1,12 @@
 <?php
-/***************************************************************************
-*	filename	: version.php
-*	desc.		:
-*	Author		: Kyser - http://ogsteam.fr/
-*	created		: 23/09/2007
-*	modified	: 23/09/2007 01:23:00
-***************************************************************************/
+/**
+ * OGSpy installation : Version number
+ * @package OGSpy
+ * @subpackage install
+ * @author Kyser
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.04
+ */
 $install_version = "3.3.0";
 ?>
