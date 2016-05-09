@@ -6,10 +6,8 @@
  * @subpackage galaxy
  * @author Kyser
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.05 ($Rev: 7699 $)
- * @modified $Date: 2012-08-27 15:41:54 +0200 (Mon, 27 Aug 2012) $
- * @link $HeadURL: http://svn.ogsteam.fr/trunk/ogspy/includes/galaxy.php $
- * $Id: galaxy.php 7699 2012-08-27 13:41:54Z machine $
  */
 
 if (!defined('IN_SPYOGAME')) {

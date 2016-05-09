@@ -4,6 +4,7 @@
  * @subpackage Charts
  * @author Machine
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.1.0
  */
 if (!defined('IN_SPYOGAME')) {

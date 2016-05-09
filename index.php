@@ -5,9 +5,10 @@
  * @subpackage main
  * @author Kyser
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.03
- * @since 3.03 - 21 sept. 07
  */
+
 /**
  * @abstract Utilisé dans les autres fichiers pour s'assurer qu'index.php est bien appelé
  */
@@ -17,7 +18,6 @@ define("IN_SPYOGAME", true);
  * Tout les includes se font à partir de là
  */
 require_once("common.php");
-
 
 /**
  * Repère de début de traitement par OGSpy

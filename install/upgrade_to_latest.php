@@ -1,12 +1,13 @@
 <?php
 /**
-* Mise à jour d'OGSpy : update_to_latest.php
-* @package OGSpy
-* @subpackage install
-* @created 28/11/2005
-* @modified 30/09/2007
-* @version 3.0.7
-*/
+ * OGSpy installation : Script Upgrade
+ * @package OGSpy
+ * @subpackage install
+ * @author Kyser
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.04
+ */
 
 define("IN_SPYOGAME", true);
 define("UPGRADE_IN_PROGRESS", true);

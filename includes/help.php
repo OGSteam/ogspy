@@ -1,16 +1,12 @@
 <?php
 /**
  * Functions which informs the user about an item using a pop-up.
- *
- * This function create a pop-up which informs the user about items in the user interface.
  * @package OGSpy
  * @subpackage Help
  * @author Kyser
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04b ($Rev: 7688 $)
- * @modified $Date: 2012-08-18 14:35:34 +0200 (Sat, 18 Aug 2012) $
- * @link $HeadURL: http://svn.ogsteam.fr/trunk/ogspy/includes/help.php $
- * $Id: help.php 7688 2012-08-18 12:35:34Z darknoon $
  */
 
 if (!defined('IN_SPYOGAME')) {

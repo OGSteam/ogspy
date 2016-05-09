@@ -4,12 +4,10 @@
  * @package OGSpy
  * @subpackage Ogame Data
  * @author Kyser
- * @created 15/11/2005
  * @copyright Copyright &copy; 2012, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04b ($Rev: 7697 $)
- * @modified $Date: 2012-08-25 19:27:55 +0200 (Sat, 25 Aug 2012) $
- * @link $HeadURL: http://svn.ogsteam.fr/trunk/ogspy/includes/ogame.php $
- * $Id: ogame.php 7697 2012-08-25 17:27:55Z darknoon $
+ * @created 15/11/2005
  */
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");

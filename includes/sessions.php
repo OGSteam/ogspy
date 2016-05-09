@@ -3,13 +3,11 @@
  * Fichier de gestion des sessions utilisateurs sur OGSpy
  * @package OGSpy
  * @subpackage Main
+ * @author Kyser 
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.04b
  * @created 06/12/2005
- * @modified $Date: 2012-08-29 00:22:35 +0200 (Wed, 29 Aug 2012) $
- * @author Kyser
- * @link $HeadURL: http://svn.ogsteam.fr/trunk/ogspy/includes/sessions.php $
- * @version 3.04b ( $Rev: 7700 $ )
- * $Id: sessions.php 7700 2012-08-28 22:22:35Z darknoon $
  */
 
 /**

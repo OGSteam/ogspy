@@ -3,12 +3,10 @@
  * Fichier de configuration communes
  * @package OGSpy
  * @subpackage Main
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
- * @modified $Date: 2012-01-06 21:28:54 +0100 (Fri, 06 Jan 2012) $
  * @author Kyser
- * @link $HeadURL: http://svn.ogsteam.fr/trunk/ogspy/includes/config.php $
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04b ( $Rev: 7388 $ )
- * $Id: config.php 7388 2012-01-06 20:28:54Z darknoon $
  */
 
 if (!defined('IN_SPYOGAME')) {

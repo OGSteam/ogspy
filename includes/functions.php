@@ -5,10 +5,8 @@
  * @subpackage Common
  * @author Kyser
  * @copyright Copyright &copy; 2012, http://www.ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.1.1 ($Rev: 7752 $)
- * @modified $Date: 2012-11-05 13:04:30 +0100 (Mon, 05 Nov 2012) $
- * @link $HeadURL: http://svn.ogsteam.fr/trunk/ogspy/includes/functions.php $
- * $Id: functions.php 7752 2012-11-05 12:04:30Z darknoon $
  */
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
