@@ -1,11 +1,14 @@
 <?php
-/***************************************************************************
- *    filename    : admin_infoserver.php
- *    desc.        :
- *    Author        : Kyser - http://ogsteam.fr/
- *    created        : 16/12/2005
- *    modified    : 04/11/2014 02:45:00
- ***************************************************************************/
+/**
+ * Panneau administration des options server
+ * @package OGSpy
+ * @version 3.04b ($Rev: 7508 $)
+ * @subpackage views
+ * @author Kyzer
+ * @created 07/04/2007
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");

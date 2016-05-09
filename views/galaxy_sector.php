@@ -1,11 +1,14 @@
 <?php
-/***************************************************************************
- *    filename    : galaxy_sector
- *    desc.        :
- *    Author        : Kyser - http://ogsteam.fr/
- *    created        : 11/01/2006
- *    modified    : 30/07/2006 00:00:00
- ***************************************************************************/
+/**
+ * Affichage Galaxie Sector
+ * @package OGSpy
+ * @version 3.04b ($Rev: 7508 $)
+ * @subpackage views
+ * @author Kyser
+ * @created 15/12/2005
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");

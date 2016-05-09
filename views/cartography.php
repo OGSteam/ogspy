@@ -1,11 +1,14 @@
 <?php
-/***************************************************************************
- *    filename    : cartography.php
- *    desc.        :
- *    Author        : Kyser - http://ogsteam.fr/
- *    created        : 17/02/2006
- *    modified    : 08/04/2007 04:44:00
- ***************************************************************************/
+/**
+ * Panneau d'Administration : Paramètres et affichage des Journaux
+ * @package OGSpy
+ * @version 3.04b ($Rev: 7508 $)
+ * @subpackage views
+ * @author Kyser
+ * @created 15/12/2005
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
