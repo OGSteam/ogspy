@@ -1,4 +1,13 @@
 <?php
+/**
+ * Language include file list
+ * @package OGSpy
+ * @subpackage i18n
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.3.0
+ */
 
 if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
 	require_once ("../lang/".$ui_lang."/lang_install.php");
@@ -9,6 +18,7 @@ if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
 	require_once ("./lang/".$ui_lang."/lang_admin.php");
     require_once ("./lang/".$ui_lang."/lang_cartography.php");
     require_once ("./lang/".$ui_lang."/lang_galaxy.php");
+    require_once ("./lang/".$ui_lang."/lang_game.php");
     require_once ("./lang/".$ui_lang."/lang_gcm.php");
     require_once ("./lang/".$ui_lang."/lang_header_tail.php");
     require_once ("./lang/".$ui_lang."/lang_help.php");
