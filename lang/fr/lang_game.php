@@ -16,6 +16,7 @@ $lang['GAME_RES_ENERGY'] = 'Energie';
 
 $lang['GAME_CAT_FLEET'] = 'Flotte';
 
+
 $lang['GAME_FLEET_PT'] = 'Petit transporteur';
 $lang['GAME_FLEET_GT'] = 'Grand transporteur';
 $lang['GAME_FLEET_CLE'] = 'Chasseur léger';
@@ -31,6 +32,22 @@ $lang['GAME_FLEET_EDLM'] = 'Étoile de la mort';
 $lang['GAME_FLEET_SAT'] = 'Satellite solaire';
 $lang['GAME_FLEET_TRA'] = 'Traqueur';
 
+// Short Format for RC rendering
+$lang['GAME_FLEET_PT_S'] = 'P.transp.';
+$lang['GAME_FLEET_GT_S'] = 'G.transp.';
+$lang['GAME_FLEET_CLE_S'] = 'Ch.léger';
+$lang['GAME_FLEET_CLO_S'] = 'Ch.lourd';
+$lang['GAME_FLEET_CR_S'] = 'Croiseur';
+$lang['GAME_FLEET_VB_S'] = 'V.bataille';
+$lang['GAME_FLEET_VC_S'] = 'V.colonisation';
+$lang['GAME_FLEET_REC_S'] = 'Recycleur';
+$lang['GAME_FLEET_SE_S'] = 'Sonde';
+$lang['GAME_FLEET_BMD_S'] = 'Bombardier';
+$lang['GAME_FLEET_DST_S'] = 'Destr.';
+$lang['GAME_FLEET_EDLM_S'] = 'Rip';
+$lang['GAME_FLEET_SAT_S'] = 'Sat.sol.';
+$lang['GAME_FLEET_TRA_S'] = 'Traqueur';
+
 $lang['GAME_CAT_DEF'] = 'Défense';
 
 $lang['GAME_DEF_LM'] = 'Lanceur de missiles';
@@ -43,6 +60,16 @@ $lang['GAME_DEF_PB'] = 'Petit bouclier';
 $lang['GAME_DEF_GB'] = 'Grand bouclier'; 
 $lang['GAME_DEF_MIC'] = 'Missile interception'; 
 $lang['GAME_DEF_MIP'] = 'Missile interplanétaire';
+
+// Short Format for RC rendering
+$lang['GAME_DEF_LM_S'] = 'Missile';
+$lang['GAME_DEF_LLE_S'] = 'L.léger.';
+$lang['GAME_DEF_LLO_S'] = 'L.lourd';
+$lang['GAME_DEF_CG_S'] = 'Can.Gauss';
+$lang['GAME_DEF_AI_S'] = 'Art.ions';
+$lang['GAME_DEF_LP_S'] = 'Lanc.plasma';
+$lang['GAME_DEF_PB_S'] = 'P.bouclier';
+$lang['GAME_DEF_GB_S'] = 'G.bouclier';
 
 $lang['GAME_CAT_BUILDINGS'] = 'Bâtiments';
 
@@ -90,3 +117,28 @@ $lang['GAME_SPYREPORT_ACTIVITY'] = 'Le scanner des sondes a détecté des anomal
 $lang['GAME_SPYREPORT_LASTMINUTES'] = 'dernières minutes';
 $lang['GAME_SPYREPORT_NOACTIVITY'] = 'Le scanner des sondes n\'a pas détecté d\'anomalies atmosphériques sur cette planète. Une activité sur cette planète dans la dernière heure peut quasiment être exclue.';
 $lang['GAME_SPYREPORT_PROBADEST'] = 'Probabilité de destruction de la flotte d\'espionnage';
+
+$lang['GAME_CREPORT_DATE'] = 'd.m.Y H:i:s';
+$lang['GAME_CREPORT_FIGHT'] = 'Les flottes suivantes s\'affrontent';
+$lang['GAME_CREPORT_ATT'] = 'Attaquant';
+$lang['GAME_CREPORT_DEF'] = 'Défenseur';
+$lang['GAME_CREPORT_TYPE'] = 'Type';
+$lang['GAME_CREPORT_NB'] = 'Nombre';
+$lang['GAME_CREPORT_WEAPONS'] = 'Armes';
+$lang['GAME_CREPORT_SHIELD'] = 'Bouclier';
+$lang['GAME_CREPORT_PROTECTION'] = 'Coque';
+$lang['GAME_CREPORT_DESTROYED'] = 'détruit';
+$lang['GAME_CREPORT_RESULT_FLEET'] = 'La flotte attaquante tire';
+$lang['GAME_CREPORT_RESULT_FLEET_1'] = 'fois avec une force totale de';
+$lang['GAME_CREPORT_RESULT_FLEET_2'] = 'sur le défenseur. Les boucliers du défenseur absorbent';
+$lang['GAME_CREPORT_RESULT_FLEET_3'] = 'points de dommage';
+$lang['GAME_CREPORT_RESULT_DEF'] = 'La flotte de défense tire';
+$lang['GAME_CREPORT_RESULT_DEF_1'] = 'fois sur l\'attaquant avec une force de';
+$lang['GAME_CREPORT_RESULT_DEF_2'] = 'Les boucliers de l\'attaquant absorbent';
+$lang['GAME_CREPORT_RESULT_DEF_3'] = 'points de dommage';
+$lang['GAME_CREPORT_RESULT_EVEN'] = 'La bataille se termine par un match nul, les deux flottes rentrent vers leurs planètes respectives';
+$lang['GAME_CREPORT_RESULT_WIN'] = 'L\'attaquant a gagné la bataille ! Il emporte';
+$lang['GAME_CREPORT_RESULT_WIN_1'] = 'unités de métal';
+$lang['GAME_CREPORT_RESULT_WIN_2'] = 'unités de cristal et';
+$lang['GAME_CREPORT_RESULT_WIN_3'] = 'unités de deutérium';
+$lang['GAME_CREPORT_RESULT_LOST'] = 'Le défenseur a gagné la bataille !';
