@@ -2553,15 +2553,15 @@ function user_del_spy()
  */
 function UNparseRC($id_RC)
 {
-    global $db;
+    global $db,$lang;
 
-    $key_ships = array('PT' => 'P.transp.', 'GT' => 'G.transp.', 'CLE' => 'Ch.léger',
-        'CLO' => 'Ch.lourd', 'CR' => 'Croiseur', 'VB' => 'V.bataille', 'VC' =>
-        'V.colonisation', 'REC' => 'Recycleur', 'SE' => 'Sonde', 'BMD' => 'Bombardier',
-        'DST' => 'Destr.', 'EDLM' => 'Rip', 'SAT' => 'Sat.sol.', 'TRA' => 'Traqueur');
-    $key_defs = array('LM' => 'Missile', 'LLE' => 'L.léger.', 'LLO' => 'L.lourd',
-        'CG' => 'Can.Gauss', 'AI' => 'Art.ions', 'LP' => 'Lanc.plasma', 'PB' =>
-        'P.bouclier', 'GB' => 'G.bouclier');
+    $key_ships = array('PT' => $lang['GAME_FLEET_PT_S'], 'GT' => $lang['GAME_FLEET_GT_S'], 'CLE' => $lang['GAME_FLEET_CLE_S'],
+        'CLO' => $lang['GAME_FLEET_CLO_S'], 'CR' => $lang['GAME_FLEET_CR_S'], 'VB' => $lang['GAME_FLEET_VB_S'], 'VC' =>
+            $lang['GAME_FLEET_VC_S'], 'REC' => $lang['GAME_FLEET_REC_S'], 'SE' => $lang['GAME_FLEET_SE_S'], 'BMD' => $lang['GAME_FLEET_BMD_S'],
+        'DST' => $lang['GAME_FLEET_DST_S'], 'EDLM' => $lang['GAME_FLEET_EDLM_S'], 'SAT' => $lang['GAME_FLEET_SAT_S'], 'TRA' => $lang['GAME_FLEET_TRA_S']);
+    $key_defs = array('LM' => $lang['GAME_DEF_LM_S'], 'LLE' => $lang['GAME_DEF_LLE_S'], 'LLO' => $lang['GAME_DEF_LLO_S'],
+        'CG' => $lang['GAME_DEF_CG_S'], 'AI' => $lang['GAME_DEF_AI_S'], 'LP' => $lang['GAME_DEF_LP_S'], 'PB' =>
+            $lang['GAME_DEF_PB_S'], 'GB' => $lang['GAME_DEF_GB_S']);
     $base_ships = array('PT' => array(4000, 10, 5), 'GT' => array(12000, 25, 5),
         'CLE' => array(4000, 10, 50), 'CLO' => array(10000, 25, 150), 'CR' => array(27000,
         50, 400), 'VB' => array(60000, 200, 1000), 'VC' => array(30000, 100, 50), 'REC' =>
