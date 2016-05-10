@@ -2054,7 +2054,7 @@ function user_getfavorites_spy()
 {
     global $db, $user_data;
     global $sort, $sort2;
-
+    $order = "";
 
     if (!isset($sort) || !isset($sort2) || !is_numeric($sort) || !is_numeric($sort2)) {
         $orderby = "dateRE desc";
