@@ -1412,12 +1412,12 @@ function galaxy_obsolete ()
  */
 function UNparseRE ($id_RE)
 {
-    global $table_prefix, $db;
+    global $table_prefix, $db, $lang;
     $show = array('flotte' => 0, 'defense' => 0, 'batiment' => 0, 'recherche' => 0);
-    $flotte = array('PT' => 'Petit transporteur', 'GT' => 'Grand transporteur', 'CLE' => 'Chasseur léger', 'CLO' => 'Chasseur lourd', 'CR' => 'Croiseur', 'VB' => 'Vaisseau de bataille', 'VC' => 'Vaisseau de colonisation', 'REC' => 'Recycleur', 'SE' => 'Sonde espionnage', 'BMD' => 'Bombardier', 'DST' => 'Destructeur', 'EDLM' => 'Étoile de la mort', 'SAT' => 'Satellite solaire', 'TRA' => 'Traqueur');
-    $defs = array('LM' => 'Lanceur de missiles', 'LLE' => 'Artillerie laser légère', 'LLO' => 'Artillerie laser lourde', 'CG' => 'Canon de Gauss', 'AI' => 'Artillerie à ions', 'LP' => 'Lanceur de plasma', 'PB' => 'Petit bouclier', 'GB' => 'Grand bouclier', 'MIC' => 'Missile interception', 'MIP' => 'Missile interplanétaire');
-    $bats = array('M' => 'Mine de métal', 'C' => 'Mine de cristal', 'D' => 'Synthétiseur de deutérium', 'CES' => 'Centrale électrique solaire', 'CEF' => 'Centrale électrique de fusion', 'UdR' => 'Usine de robots', 'UdN' => 'Usine de nanites', 'CSp' => 'Chantier spatial', 'HM' => 'Hangar de métal', 'HC' => 'Hangar de cristal', 'HD' => 'Réservoir de deutérium', 'Lab' => 'Laboratoire de recherche', 'Ter' => 'Terraformeur', 'DdR' => 'Dépôt de ravitaillement', 'Silo' => 'Silo de missiles', 'BaLu' => 'Base lunaire', 'Pha' => 'Phalange de capteur', 'PoSa' => 'Porte de saut spatial');
-    $techs = array('Esp' => 'Technologie Espionnage', 'Ordi' => 'Technologie Ordinateur', 'Armes' => 'Technologie Armes', 'Bouclier' => 'Technologie Bouclier', 'Protection' => 'Technologie Protection des vaisseaux spatiaux', 'NRJ' => 'Technologie Energie', 'Hyp' => 'Technologie Hyperespace', 'RC' => 'Technologie Réacteur à combustion', 'RI' => 'Technologie Réacteur à impulsion', 'PH' => 'Technologie Propulsion hyperespace', 'Laser' => 'Technologie Laser', 'Ions' => 'Technologie Ions', 'Plasma' => 'Technologie Plasma', 'RRI' => 'Réseau de recherche intergalactique', 'Graviton' => 'Technologie Graviton', 'Astrophysique' => 'Technologie Astrophysique');
+    $flotte = array('PT' => $lang['GAME_FLEET_PT'], 'GT' => $lang['GAME_FLEET_GT'], 'CLE' => $lang['GAME_FLEET_CLE'], 'CLO' => $lang['GAME_FLEET_CLO'], 'CR' => $lang['GAME_FLEET_CR'], 'VB' => $lang['GAME_FLEET_VB'], 'VC' => $lang['GAME_FLEET_VC'], 'REC' => $lang['GAME_FLEET_REC'], 'SE' => $lang['GAME_FLEET_SE'], 'BMD' => $lang['GAME_FLEET_BMD'], 'DST' => $lang['GAME_FLEET_DST'], 'EDLM' => $lang['GAME_FLEET_EDLM'], 'SAT' => $lang['GAME_FLEET_SAT'], 'TRA' => $lang['GAME_FLEET_TRA']);
+    $defs = array('LM' => $lang['GAME_DEF_LM'], 'LLE' => $lang['GAME_DEF_LLE'], 'LLO' => $lang['GAME_DEF_LLO'], 'CG' => $lang['GAME_DEF_CG'], 'AI' => $lang['GAME_DEF_AI'], 'LP' => $lang['GAME_DEF_LP'], 'PB' => $lang['GAME_DEF_PB'], 'GB' => $lang['GAME_DEF_GB'], 'MIC' => $lang['GAME_DEF_MIC'], 'MIP' => $lang['GAME_DEF_MIP']);
+    $bats = array('M' => $lang['GAME_BUILDING_M'], 'C' => $lang['GAME_BUILDING_C'], 'D' => $lang['GAME_BUILDING_D'], 'CES' => $lang['GAME_BUILDING_CES'], 'CEF' => $lang['GAME_BUILDING_CEF'], 'UdR' => $lang['GAME_BUILDING_UDR'], 'UdN' => $lang['GAME_BUILDING_UDN'], 'CSp' => $lang['GAME_BUILDING_CSP'], 'HM' => $lang['GAME_BUILDING_HM'], 'HC' => $lang['GAME_BUILDING_HC'], 'HD' => $lang['GAME_BUILDING_HD'], 'Lab' => $lang['GAME_BUILDING_LAB'], 'Ter' => $lang['GAME_BUILDING_TER'], 'DdR' => $lang['GAME_BUILDING_DDR'], 'Silo' => $lang['GAME_BUILDING_SILO'], 'BaLu' => $lang['GAME_BUILDING_BALU'], 'Pha' => $lang['GAME_BUILDING_PHA'], 'PoSa' => $lang['GAME_BUILDING_POSA']);
+    $techs = array('Esp' => $lang['GAME_TECH_ESP'], 'Ordi' => $lang['GAME_TECH_ORDI'], 'Armes' => $lang['GAME_TECH_WEAP'], 'Bouclier' => $lang['GAME_TECH_SHIELD'], 'Protection' => $lang['GAME_TECH_ARMOR'], 'NRJ' => $lang['GAME_TECH_ENERGY'], 'Hyp' => $lang['GAME_TECH_HYP'], 'RC' => $lang['GAME_TECH_CD'], 'RI' => $lang['GAME_TECH_ID'], 'PH' => $lang['GAME_TECH_HD'], 'Laser' => $lang['GAME_TECH_LASER'], 'Ions' => $lang['GAME_TECH_ION'], 'Plasma' => $lang['GAME_TECH_PLASMA'], 'RRI' => $lang['GAME_TECH_IRN'], 'Graviton' => $lang['GAME_TECH_GRAV'], 'Astrophysique' => $lang['GAME_TECH_ASTRO']);
     $query = 'SELECT planet_name, coordinates, metal, cristal, deuterium, energie, activite, M, C, D, CES, CEF, UdR, UdN, CSp, HM, HC, 
         HD, Lab, Ter, Silo, DdR, BaLu, Pha, PoSa, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, 
         DST, EDLM, SAT, TRA, Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique, 
@@ -1433,28 +1433,28 @@ function UNparseRE ($id_RE)
 
     if (preg_match('/\(Lune\)/', $row['planet_name'])) $moon = 1; else
         $moon = 0;
-    //	$dateRE = date ( 'd/m/Y H:i:s', $row['dateRE'] ); incompatible avec Speedsim
+
     $dateRE = date('m-d H:i:s', $row['dateRE']);
     $template = '<table border="0" cellpadding="2" cellspacing="0" align="center">
     <tr>
-        <td class="l" colspan="4" class="c">Ressources sur ' . $row['planet_name'] . ' [' . $row['coordinates'] . '] (joueur \'' . $rowPN['player'] . '\') le ' . $dateRE . '</td>
+        <td class="l" colspan="4" class="c">'.$lang['GAME_SPYREPORT_RES'].' ' . $row['planet_name'] . ' [' . $row['coordinates'] . '] ('.$lang['GAME_SPYREPORT_PLAYER'].' \'' . $rowPN['player'] . '\') le ' . $dateRE . '</td>
     </tr>
     <tr>
-        <td class="c" style="text-align:right;">Métal:</td>
+        <td class="c" style="text-align:right;">'.$lang['GAME_RES_METAL'].':</td>
         <th>' . number_format($row['metal'], 0, ',', $sep_mille) . '</th>
-        <td class="c" style="text-align:right;">Cristal:</td>
+        <td class="c" style="text-align:right;">'.$lang['GAME_RES_CRYSTAL'].':</td>
         <th>' . number_format($row['cristal'], 0, ',', $sep_mille) . '</th>
     </tr>
     <tr>
-        <td class="c" style="text-align:right;">Deutérium:</td>
+        <td class="c" style="text-align:right;">'.$lang['GAME_RES_DEUT'].':</td>
         <th>' . number_format($row['deuterium'], 0, ',', $sep_mille) . '</th>
-        <td class="c" style="text-align:right;">Energie:</td>
+        <td class="c" style="text-align:right;">'.$lang['GAME_RES_ENERGY'].':</td>
         <th>' . number_format($row['energie'], 0, ',', $sep_mille) . '</th>
     </tr>
     <tr>
         <th colspan="4">';
-    if ($row['activite'] > 0) $template .= 'Le scanner des sondes a détecté des anomalies dans l\'atmosphère de cette planète, indiquant qu\'il y a eu une activité sur cette planète dans les ' . $row['activite'] . ' dernières minutes.'; else
-        $template .= 'Le scanner des sondes n\'a pas détecté d\'anomalies atmosphériques sur cette planète. Une activité sur cette planète dans la dernière heure peut quasiment être exclue.';
+    if ($row['activite'] > 0) $template .= $lang['GAME_SPYREPORT_ACTIVITY'].' ' . $row['activite'] . ' '.$lang['GAME_SPYREPORT_LASTMINUTES'].'.'; else
+        $template .= $lang['GAME_SPYREPORT_NOACTIVITY'];
     $template .= '</th>
     </tr>' . "\n";
     foreach ($flotte as $key => $value) {
@@ -1535,7 +1535,7 @@ function UNparseRE ($id_RE)
     }
     if ($show['flotte'] == 1) {
         $template .= '  <tr>
-        <td class="l" colspan="4">Flotte</td>
+        <td class="l" colspan="4">'.$lang['GAME_CAT_FLEET'].'</td>
     </tr>
     <tr>' . "\n";
         $count = 0;
@@ -1558,7 +1558,7 @@ function UNparseRE ($id_RE)
     }
     if ($show['defense'] == 1) {
         $template .= '  <tr>
-        <td class="l" colspan="4">Défense</td>
+        <td class="l" colspan="4">'.$lang['GAME_CAT_DEF'].'</td>
     </tr>
     <tr>' . "\n";
         $count = 0;
@@ -1581,7 +1581,7 @@ function UNparseRE ($id_RE)
     }
     if ($show['batiment'] == 1) {
         $template .= '  <tr>
-        <td class="l" colspan="4">Bâtiments</td>
+        <td class="l" colspan="4">'.$lang['GAME_CAT_BUILDINGS'].'</td>
     </tr>
     <tr>' . "\n";
         $count = 0;
@@ -1604,7 +1604,7 @@ function UNparseRE ($id_RE)
     }
     if ($show['recherche'] == 1) {
         $template .= '  <tr>
-        <td class="l" colspan="4">Recherche</td>
+        <td class="l" colspan="4">'.$lang['GAME_CAT_LAB'].'</td>
     </tr>
     <tr>' . "\n";
         $count = 0;
@@ -1626,7 +1626,7 @@ function UNparseRE ($id_RE)
         $template .= '  </tr>' . "\n";
     }
     $template .= '  <tr>
-        <th colspan="4">Probabilité de destruction de la flotte d\'espionnage :' . $row['proba'] . '%</th>
+        <th colspan="4">'.$lang['GAME_SPYREPORT_PROBADEST'].' :' . $row['proba'] . '%</th>
     </tr>
 </table>';
     return ($template);
