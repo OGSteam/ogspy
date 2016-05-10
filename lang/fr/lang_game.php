@@ -142,3 +142,13 @@ $lang['GAME_CREPORT_RESULT_WIN_1'] = 'unités de métal';
 $lang['GAME_CREPORT_RESULT_WIN_2'] = 'unités de cristal et';
 $lang['GAME_CREPORT_RESULT_WIN_3'] = 'unités de deutérium';
 $lang['GAME_CREPORT_RESULT_LOST'] = 'Le défenseur a gagné la bataille !';
+$lang['GAME_CREPORT_RESULT_LOSTPOINTS_A'] = 'L\'attaquant a perdu au total';
+$lang['GAME_CREPORT_RESULT_LOSTPOINTS_D'] = 'Le défenseur a perdu au total';
+$lang['GAME_CREPORT_RESULT_UNITS'] = 'unités';
+$lang['GAME_CREPORT_RESULT_DEBRIS'] = 'Un champ de débris contenant';
+$lang['GAME_CREPORT_RESULT_DEBRIS_M'] = 'de métal et';
+$lang['GAME_CREPORT_RESULT_DEBRIS_C'] = 'de cristal se forme dans l\'orbite de la planète.';
+$lang['GAME_CREPORT_RESULT_NO_MOON'] = 'La probabilité de création d\'une lune est de';
+$lang['GAME_CREPORT_RESULT_MOON'] = 'Les quantités énormes de métal et de cristal s\'attirent, formant ainsi une lune dans l\'orbite de cette planète';
+
+
