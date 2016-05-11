@@ -893,6 +893,7 @@ function user_get_nb_active_users()
 /**
  * Enregistrement des donnees Empires d'un utilisateur
  */
+/*
 function user_set_empire()
 {
     global $pub_typedata, $pub_data, $pub_planet_id, $pub_planet_name, $pub_fields,
@@ -936,12 +937,13 @@ function user_set_empire()
     }
 
     redirection("index.php?action=home&subaction=empire");
-}
+}*/
 /**
  * Enregistrement de toutes les donnees empires
  * @param array $data All data related to the empire
  * @todo Query : x5
  */
+/*
 function user_set_all_empire($data)
 {
     global $db, $user_data;
@@ -971,6 +973,7 @@ function user_set_all_empire($data)
                 if ($planetes_total_row > 10)
                     return false;
 
+                $lang_building = array();
                 $link_building = array($lang_building["M"] => "M", $lang_building["C"] => "C", $lang_building["D"] =>
                     "D", $lang_building["CES"] => "CES", $lang_building["CEF"] => "CEF", $lang_building["UdR"] =>
                     "UdR", $lang_building["UdN"] => "UdN", $lang_building["CSp"] => "CSp", $lang_building["HM"] =>
@@ -989,6 +992,7 @@ function user_set_all_empire($data)
                     0), "Pha" => array_fill(0, $planetes_total_row, 0), "PoSa" => array_fill(0, $planetes_total_row,
                     0));
 
+                $lang_defence = array();
                 $link_defence = array($lang_defence["LM"] => "LM", $lang_defence["LLE"] => "LLE",
                     $lang_defence["LLO"] => "LLO", $lang_defence["CG"] => "CG", $lang_defence["AI"] =>
                     "AI", $lang_defence["LP"] => "LP", $lang_defence["PB"] => "PB", $lang_defence["GB"] =>
@@ -1001,6 +1005,7 @@ function user_set_all_empire($data)
                     0), "GB" => array_fill(0, $planetes_total_row, 0), "MIC" => array_fill(0, $planetes_total_row,
                     0), "MIP" => array_fill(0, $planetes_total_row, 0));
 
+                $lang_technology = array();
                 $link_technology = array($lang_technology["Esp"] => "Esp", $lang_technology["Ordi"] =>
                     "Ordi", $lang_technology["Armes"] => "Armes", $lang_technology["Bouclier"] =>
                     "Bouclier", $lang_technology["Protection"] => "Protection", $lang_technology["NRJ"] =>
@@ -1038,6 +1043,7 @@ function user_set_all_empire($data)
                     continue;
                 }
 
+                $lang_empire = array();
                 if (preg_match("#^(" . $lang_empire["Batiment"] . "|" . $lang_empire["Recherche"] .
                     "|" . $lang_empire["Vaisseaux"] . "|" . $lang_empire["Défense"] . ")$#", $line)) {
                     $etape = $line;
@@ -1188,7 +1194,7 @@ function user_set_all_empire($data)
     } else
         redirection("index.php?action=message&id_message=set_empire_failed_data&info");
 }
-
+*/
 
 /**
  * remise en ordre des lunes en fonctions des positions des planetes
@@ -1300,7 +1306,7 @@ function user_set_all_empire_resync_planet()
 
     // on remet en ordre moon
     user_set_all_empire_resync_moon();
-    // todo : passer le result en paramettre ...
+    // TODO : passer le result en parametre ...
 
 
     }
@@ -1320,12 +1326,12 @@ function user_set_all_empire_resync_planet()
  * @param $temperature_max
  * @param $satellite
  */
+/*
 function user_set_building($data, $planet_id, $planet_name, $fields, $coordinates,
     $temperature_min, $temperature_max, $satellite)
 {
     global $db, $user_data;
     global $pub_view, $server_config;
-    require_once ("parameters/lang_empire.php");
 
     $planet_name = trim($planet_name) != "" ? trim($planet_name) : "Inconnu";
     if (!check_var($planet_name, "Galaxy"))
@@ -1353,6 +1359,7 @@ function user_set_building($data, $planet_id, $planet_name, $fields, $coordinate
         redirection("index.php?action=message&id_message=set_empire_failed_data&info");
     }
     $planet_id = intval($planet_id);
+
     if (($view == "planets" && ($planet_id < 1 || $planet_id > 9)) || ($view ==
         "lunes" && ($planet_id < 10 || $planet_id > 18))) {
         redirection("index.php?action=message&id_message=set_empire_failed_data&info");
@@ -1435,7 +1442,7 @@ function user_set_building($data, $planet_id, $planet_name, $fields, $coordinate
     }
 
     redirection("index.php?action=home&subaction=empire&view=" . $pub_view);
-}
+}*/
 
 /**
  * Build the array with technology data
@@ -1443,6 +1450,7 @@ function user_set_building($data, $planet_id, $planet_name, $fields, $coordinate
  * @todo Query : x2
  * @param $data
  */
+/*
 function user_set_technology($data)
 {
     global $db, $user_data;
@@ -1501,6 +1509,7 @@ function user_set_technology($data)
 
     redirection("index.php?action=home&subaction=empire");
 }
+*/
 
 /**
  * Enregistrement des defenses de l'utilisateurs
@@ -1515,6 +1524,8 @@ function user_set_technology($data)
  * @param $satellite
  * @return int
  */
+
+/*
 function user_set_defence($data, $planet_id, $planet_name, $fields, $coordinates,
     $temperature_min, $temperature_max, $satellite)
 {
@@ -1604,7 +1615,7 @@ function user_set_defence($data, $planet_id, $planet_name, $fields, $coordinates
 
     redirection("index.php?action=home&subaction=empire&view=" . $pub_view);
     return 0;
-}
+}*/
 
 /**
  * Récupération des données empire de l'utilisateur loggé
@@ -1875,12 +1886,7 @@ function user_empire_production($user_empire, $off = NULL)
 		}
 		
 	}
-	
-		
-
 	return $prod;
-
-
 }
 
 /**

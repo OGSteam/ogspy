@@ -133,10 +133,6 @@ switch ($pub_action) {
         require_once("views/home.php");
         break;
 
-    case "set_empire" :
-        user_set_empire();
-        break;
-
     case "del_planet" :
         user_del_building();
         break;
