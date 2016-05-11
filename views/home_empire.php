@@ -276,9 +276,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     $booster_tab = booster_decode($user_building[$i]["boosters"]);
 
                     if ($view == "planets") {
-                        $booster = $user_building[$i]['booster_tab']['extention_p'];
+                        $booster = $booster_tab['extention_p'];
                     } else {
-                        $booster = $user_building[$i]['booster_tab']['extention_m'];
+                        $booster = $booster_tab['extention_m'];
                     }
 
 
@@ -411,7 +411,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $booster_tab = booster_decode($user_building[$i]["boosters"]);
-                echo "\t" . "<th>m:" . $user_building[$i]['booster_tab']['booster_m_val'] . '%, c:' . $user_building[$i]['booster_tab']['booster_c_val'] . '%, d:' . $user_building[$i]['booster_tab']['booster_d_val'] . "%</th>" . "\n";
+                echo "\t" . "<th>m:" . $booster_tab['booster_m_val'] . '%, c:' . $booster_tab['booster_c_val'] . '%, d:' . $booster_tab['booster_d_val'] . "%</th>" . "\n";
             }
             ?>
         </tr>
