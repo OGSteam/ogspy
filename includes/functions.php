@@ -1884,12 +1884,12 @@ function booster_lire_date($str)
  * @return      tableau contenant les informations des objets
  * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
 */
-function booster_decode($str = NULL, &$boosters = NULL)
+function booster_decode($str = NULL, $boosters = NULL)
 {
     if ($str) {
         $s = booster_objets_tab('separateur');
-        $a = preg_match("/m:(\d+):(\d+)" . $s . "c:(\d+):(\d+)" . $s . "d:(\d+):(\d+)" . $s . "p:(\d+)" . $s . "m:(\d+)/", $str, $boosters);
-        if ($a) {
+
+        if (preg_match("/m:(\\d+):(\\d+)" . $s . "c:(\\d+):(\\d+)" . $s . "d:(\\d+):(\\d+)" . $s . "p:(\\d+)" . $s . "m:(\\d+)/", $str, $boosters) === 1 ) {
             $i = 1;
             return array('booster_m_val' => intval($boosters[$i++]), 'booster_m_date' => intval($boosters[$i++]),
                 'booster_c_val' => intval($boosters[$i++]), 'booster_c_date' => intval($boosters[$i++]),
@@ -1897,7 +1897,7 @@ function booster_decode($str = NULL, &$boosters = NULL)
                 'extention_p' => intval($boosters[$i++]), 'extention_m' => intval($boosters[$i++]));
         }
     }
-    return array('booster_m_val' => 0, 'booster_m_date' => 0,
+        return array('booster_m_val' => 0, 'booster_m_date' => 0,
         'booster_c_val' => 0, 'booster_c_date' => 0,
         'booster_d_val' => 0, 'booster_d_date' => 0,
         'extention_p' => 0, 'extention_m' => 0);
