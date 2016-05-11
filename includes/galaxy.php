@@ -1649,7 +1649,7 @@ function UNparseRE ($id_RE)
 function portee_missiles ($galaxy, $system)
 {
     global $user_data, $server_config, $db;
-    $retour = 0;
+    $missil_ok = '';
     $total_missil = 0;
     // recherche niveau missile
     $request = 'SELECT user_id, planet_id, coordinates, Silo FROM ' . TABLE_USER_BUILDING . ' WHERE Silo >= 3';
