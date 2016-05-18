@@ -354,27 +354,6 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
 
 }
 
-//
-//
-//function import_js()
-//{
-//    global $server_config;
-//
-//    if (!isset($server_config['import_js']) || $server_config['import_js'] == false) {
-//        $retour = '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"> </script>';
-////        $retour .= '<script src="js/highcharts.js" type="text/javascript"></script>';
-//        // pour les charts
-//        $retour .= '<script type="text/javascript">jQuery.noConflict();</script>';
-//
-//        // on ajoute la valeur import_js
-//        $server_config['import_js'] = true;
-//
-//
-//        return $retour;
-//    }
-//    return "";
-//}
-//
 
 /**
  * affiche_error()

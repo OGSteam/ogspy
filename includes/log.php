@@ -352,3 +352,243 @@ function ogspy_error_handler($code, $message, $file, $line)
         if ($option[0] != 8) $ogspy_phperror[] = $line;
     }
 }
+
+/**
+ * File Log size on the Server
+ * @return Array tableau [type] and [size]
+ */
+function log_size_info()
+{
+    $logSize = 0;
+    $res = opendir(PATH_LOG);
+    $directory = array();
+    //Récupération de la liste des fichiers présents dans les répertoires répertoriés
+    while ($file = readdir($res)) {
+        if ($file != "." && $file != "..") {
+            if (is_dir(PATH_LOG . $file)) {
+                $directory[] = PATH_LOG . $file;
+            }
+        }
+    }
+    closedir($res);
+
+    foreach ($directory as $v) {
+        $res = opendir($v);
+        $directory = array();
+        //Récupération de la liste des fichiers présents dans les répertoires répertoriés
+        while ($file = readdir($res)) {
+            if ($file != "." && $file != "..") {
+                $logSize += @filesize($v . "/" . $file);
+            }
+        }
+        closedir($res);
+    }
+
+    $bytes = array('Octets', 'Ko', 'Mo', 'Go', 'To');
+
+    if ($logSize < 1024)
+        $logSize = 1;
+
+    for ($i = 0; $logSize > 1024; $i++)
+        $logSize /= 1024;
+
+    $log_size_info['size'] = round($logSize, 2);
+    $log_size_info['type'] = $bytes[$i];
+
+    return $log_size_info;
+}
+
+/**
+ * Checks the availability of a log File
+ * @param int $date Requested Date
+ * @return boolean true if the log file exists
+ */
+function log_check_exist($date)
+{
+    if (!isset($date))
+        redirection("index.php?action=message&id_message=errorfatal&info");
+
+    $typelog = array("sql", "log", "txt");
+
+    $root = PATH_LOG;
+    $path = opendir("$root");
+
+    //Récupération de la liste des répertoires correspondant à cette date
+    while ($file = readdir($path)) {
+        if ($file != "." && $file != "..") {
+            if (is_dir($root . $file) && preg_match("/^" . $date . "/", $file))
+                $directories[] = $file;
+        }
+    }
+    closedir($path);
+
+    if (!isset($directories)) {
+        return false;
+    }
+
+    foreach ($directories as $d) {
+        $path = opendir($root . $d);
+
+        while ($file = readdir($path)) {
+            if ($file != "." && $file != "..") {
+                $extension = substr($file, (strrpos($file, ".") + 1));
+                if (in_array($extension, $typelog)) {
+                    $files[] = $d . "/" . $file;
+                }
+            }
+        }
+        closedir($path);
+    }
+
+    if (!isset($files)) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Sends a Compressed archive to the browser for a specific date
+ * @global array $user_data
+ */
+function log_extractor()
+{
+    global $pub_date, $user_data;
+
+    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+        redirection("index.php?action=message&id_message=forbidden&info");
+    }
+
+    if (!isset($pub_date))
+        redirection("index.php?action=message&id_message=errorfatal&info");
+
+    $typelog = array("sql", "log", "txt");
+
+    $root = PATH_LOG;
+    $zip_file = $root . "log.zip";
+    $path = opendir("$root");
+    unlink($zip_file);
+
+    //Récupération de la liste des répertoires correspondant à cette date
+    while ($file = readdir($path)) {
+        if ($file != "." && $file != "..") {
+            if (is_dir($root . $file) && preg_match("/^" . $pub_date . "/", $file))
+                $directories[] = $file;
+        }
+    }
+    closedir($path);
+
+    if (!isset($directories)) {
+        redirection("index.php?action=message&id_message=log_missing&info");
+    }
+
+    foreach ($directories as $d) {
+        $path = opendir($root . $d);
+
+        while ($file = readdir($path)) {
+            if ($file != "." && $file != "..") {
+                $extension = substr($file, (strrpos($file, ".") + 1));
+                if (in_array($extension, $typelog)) {
+                    $files[] = $d . "/" . $file;
+                }
+            }
+        }
+        closedir($path);
+    }
+
+    if (!isset($files)) {
+        redirection("index.php?action=message&id_message=log_missing&info");
+    }
+
+    // création d'un objet 'zipfile'
+
+    $zip = new ZipArchive;
+    $zip->open($zip_file, ZipArchive::CREATE);
+    foreach ($files as $filename) {
+        // ajout du fichier dans cet objet
+        $zip->addFile($root . $filename);
+        log_('debug', "fichier dans archive:" . $filename);
+    }
+
+    // production de l'archive Zip
+    $zip->close();
+
+    // entêtes HTTP
+    header('Content-Type: application/x-zip');
+    // force le téléchargement
+    header('Content-disposition: attachment; filename=log_' . $pub_date . '.zip');
+    header('Content-Transfer-Encoding: binary');
+
+    // envoi du fichier au navigateur
+    flush();
+    readfile($zip_file);
+}
+
+/**
+ * Deletes a specified Log File
+ *
+ */
+function log_remove()
+{
+    global $pub_date, $user_data, $pub_directory;
+
+    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1)
+        redirection("index.php?action=message&id_message=forbidden&info");
+
+    if ($pub_directory == true) {
+        @unlink("journal/" . $pub_date . "/log_" . $pub_date . ".log");
+        @unlink("journal/" . $pub_date . "/index.htm");
+        if (rmdir("journal/" . $pub_date)) {
+            redirection("index.php?action=message&id_message=log_remove&info");
+        } else {
+            redirection("index.php?action=message&id_message=log_missing&info");
+        }
+    } else {
+        if (unlink("journal/" . $pub_date . "/log_" . $pub_date . ".log")) {
+            redirection("index.php?action=message&id_message=log_remove&info");
+        } else {
+            redirection("index.php?action=message&id_message=log_missing&info");
+        }
+    }
+}
+
+/**
+ * Log file cleaning according the the Server configuration
+ */
+function log_purge()
+{
+    global $server_config;
+
+    $time = $server_config["max_keeplog"];
+    $limit = time() - (60 * 60 * 24 * $time);
+    $limit = intval(date("ymd", $limit));
+
+    $root = PATH_LOG;
+    $path = opendir("$root");
+    while ($file = readdir($path)) {
+        if ($file != "." && $file != "..") {
+            if (is_dir($root . $file) && intval($file) < $limit && @preg_match("/[0-9]{6}/", $file)) {
+                $directories[] = $file;
+            }
+        }
+    }
+    closedir($path);
+
+    if (!isset($directories)) {
+        return;
+    }
+
+    $files = array();
+    foreach ($directories as $d) {
+        $path = opendir($root . $d);
+
+        while ($file = readdir($path)) {
+            if ($file != "." && $file != "..") {
+                $extension = substr($file, (strrpos($file, ".") + 1));
+                unlink($root . $d . "/" . $file);
+            }
+        }
+        closedir($path);
+        rmdir($root . $d);
+    }
+}
