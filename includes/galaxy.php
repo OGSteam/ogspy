@@ -633,22 +633,6 @@ function galaxy_ally_position ($step = 50)
 }
 
 /**
- * Enregistrement des donnees erronees envoyees via le navigateur dans les logs
- *
- * @param string $datas Donnees du navigateur
- */
-function galaxy_getsource_error ($datas)
-{
-    global $user_data, $server_config;
-
-    if ($server_config["debug_log"] == "1") {
-        $nomfichier = PATH_LOG_TODAY . date("ymd_His") . "_ID" . $user_data["user_id"] . "_Error.txt";
-        write_file($nomfichier, "w", $datas);
-    }
-}
-
-
-/**
  * Recuperation des rapports d\'espionnage
  *
  * @return array $reports
@@ -1175,15 +1159,9 @@ function galaxy_show_ranking_unique_ally ($ally, $last = false)
             $ranking[$row["datadate"]][$name[$i]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int)($row["points"] / $row["number_member"]));
             $ranking[$row["datadate"]]["number_member"] = $row["number_member"];
             if ($last) break;
-
-
         }
-
-
         $i++;
     }
-
-
     return $ranking;
 }
 

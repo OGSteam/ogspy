@@ -602,3 +602,121 @@ function mod_del_all_option()
     if (!$db->sql_query($query)) return false;
     return true;
 }
+
+//\\ fonctions utilisable pour les mods //\\
+/**
+ * Funtion to install a new mod in OGSpy
+ * @param string $mod_folder : Folder name which contains the mod
+ * @todo Query: "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] ."'"."'"
+ * @todo Query: "INSERT INTO " . TABLE_MOD .
+ * " (title, menu, action, root, link, version, active,admin_only) VALUES ('" . $value_mod[0] .
+ * "','" . $value_mod[1] . "','" . $value_mod[2] . "','" . $value_mod[3] . "','" .
+ * $value_mod[4] . "','" . $mod_version . "','" . $value_mod[5] . "','" . $value_mod[6] .
+ * "')"
+ * @return boolean true if the mod has been correctly installed
+ * @api
+ */
+function install_mod($mod_folder)
+{
+    global $db, $server_config;
+    $is_ok = false;
+    $filename = 'mod/' . $mod_folder . '/version.txt';
+    if (file_exists($filename)) {
+        $file = file($filename);
+    }
+
+
+    // On récupère les données du fichier version.txt
+    $mod_version = trim($file[1]);
+    $mod_config = trim($file[2]);
+
+    //Version Minimale OGSpy
+    /** @var string $mod_required_ogspy */
+    $mod_required_ogspy = trim($file[3]);
+    if (isset($mod_required_ogspy)) {
+        if (version_compare($mod_required_ogspy, $server_config["version"]) > 0) {
+            log_("mod_erreur_txt_version", $mod_folder);
+            redirection("index.php?action=message&id_message=errormod&info");
+            exit();
+        }
+    }
+
+    // On explode la chaine d'information
+    $value_mod = explode(',', $mod_config);
+
+    // On vérifie si le mod est déjà installé""
+    $check = "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] . "'";
+    $query_check = $db->sql_query($check);
+    $result_check = $db->sql_numrows($query_check);
+
+    if ($result_check != 0) {
+    } else
+        if (count($value_mod) == 7) {
+            // On vérifie le nombre de valeur de l'explode
+            $query = "INSERT INTO " . TABLE_MOD .
+                " (title, menu, action, root, link, version, active,admin_only) VALUES ('" . $value_mod[0] .
+                "','" . $value_mod[1] . "','" . $value_mod[2] . "','" . $value_mod[3] . "','" .
+                $value_mod[4] . "','" . $mod_version . "','" . $value_mod[5] . "','" . $value_mod[6] .
+                "')";
+            $db->sql_query($query);
+            $is_ok = true; /// tout c 'est bien passe'
+        }
+    return $is_ok;
+}
+
+/**
+ * Function to uninstall an OGSpy Module
+ * @param string $mod_uninstall_name : Mod name
+ * @param string $mod_uninstall_table : Name of the Database table used by the Mod that we need to remove
+ * @todo Query: "DELETE FROM " . TABLE_MOD . " WHERE title='" . $mod_uninstall_name ."'
+ * @api
+ */
+function uninstall_mod($mod_uninstall_name, $mod_uninstall_table)
+{
+    global $db;
+    $db->sql_query("DELETE FROM " . TABLE_MOD . " WHERE title='" . $mod_uninstall_name . "';");
+    if (!empty($mod_uninstall_table)) {
+        log_("debug", "DROP TABLE IF EXISTS " . $mod_uninstall_table);
+        $db->sql_query("DROP TABLE IF EXISTS " . $mod_uninstall_table);
+    }
+}
+
+/**
+ * Fonction to update the OGSpy mod
+ * @param string $mod_folder : Folder name which contains the mod
+ * @param string $mod_name : Mod name
+ * @todo Query: "UPDATE " . TABLE_MOD . " SET version='" . $mod_version ."' WHERE action='" . $mod_name . "'";
+ * @return boolean true if the mod has been correctly updated
+ * @api [Mod] Function to be called in the update.php file to set up the new version.
+ */
+function update_mod($mod_folder, $mod_name)
+{
+    global $db, $server_config;
+    $is_oki = false;
+    $filename = 'mod/' . $mod_folder . '/version.txt';
+    if (file_exists($filename)) {
+        $file = file($filename);
+    } else {
+        return $is_oki;
+    }
+
+    $mod_version = trim($file[1]);
+
+    //Version Minimale OGSpy
+    /** @var string $mod_required_ogspy */
+    $mod_required_ogspy = trim($file[3]);
+    if (isset($mod_required_ogspy)) {
+        if (version_compare($mod_required_ogspy, $server_config["version"]) > 0) {
+            log_("mod_erreur_txt_version", $mod_folder);
+            redirection("index.php?action=message&id_message=errormod&info");
+            exit();
+        }
+    }
+
+
+    $query = "UPDATE " . TABLE_MOD . " SET version='" . $mod_version .
+        "' WHERE action='" . $mod_name . "'";
+    $db->sql_query($query);
+    $is_oki = true;
+    return $is_oki;
+}
