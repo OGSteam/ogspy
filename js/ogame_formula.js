@@ -136,7 +136,7 @@ function update_page() {
 
         var NRJ_1_delta = NRJ_1[i] - energie_conso;
         if (NRJ_1_delta < 0) {
-            document.getElementById("NRJ_" + j).innerHTML = "<font color='red'>" + format(NRJ_1_delta) + "</font>" + " / " + format(NRJ_1[i]);
+            document.getElementById("NRJ_" + j).innerHTML = "<span style="color: red; ">" + format(NRJ_1_delta) + "</span>" + " / " + format(NRJ_1[i]);
         } else {
             document.getElementById("NRJ_" + j).innerHTML = format(NRJ_1_delta) + " / " + format(NRJ_1[i]);
         }
@@ -188,7 +188,7 @@ function update_page() {
         C_prod = C_prod + C_1_prod[i];
         D_conso = D_conso + D_1_conso[i];
         D_prod = D_prod + D_1_prod[i];
-        NRJ = NRJ + NRJ_1[i];
+        NRJ += NRJ_1[i];
     }
     document.getElementById("M_conso").innerHTML = format(M_conso);
     document.getElementById("M_prod").innerHTML = format(M_prod);
@@ -200,14 +200,14 @@ function update_page() {
     //Energie
     var Delta_NRJ = NRJ - (M_conso + C_conso + D_conso);
     var s_delta = "-";
-    if (Delta_NRJ < 0 || isNaN(Delta_NRJ)) s_delta = "<font color='red'>" + format(Delta_NRJ) + "</font>";
-    else s_delta = "<font color='lime'>" + format(Delta_NRJ) + "</font>";
-    document.getElementById("E_NRJ").innerHTML = s_delta + " / " + "<font color='lime'>" + format(NRJ) + "</font>";
+    if (Delta_NRJ < 0 || isNaN(Delta_NRJ)) s_delta = "<span style="color: red; ">" + format(Delta_NRJ) + "</span>";
+    else s_delta = "<span style="color: lime; ">" + format(Delta_NRJ) + "</span>";
+    document.getElementById("E_NRJ").innerHTML = s_delta + " / " + "<span style="color: lime; ">" + format(NRJ) + "</span>";
 
     //
     // Points
-    //                      UdR, Nanites, CSp,   HM,   HC,   HD,    CM,    CC,    CD, Lab, TeraF, DepotR,  Silo, BaseL, Phalang, PdS
-    var init_b_prix = [720, 1600000, 700, 1000, 1500, 2000, 2645, 3967, 5290, 800, 150000, 41000, 80000, 80000, 8000000, 60000];
+    //                 UdR, Nanites, CSp,   HM,   HC,   HD, Lab, TeraF, DepotR,  Silo, BaseL, Phalang, PdS
+    var init_b_prix = [720, 1600000, 700, 1000, 1500, 2000, 800, 150000, 41000, 80000, 80000, 8000000, 60000];
 
     // Batiments planetes
     var total_b_pts = 0;
@@ -287,7 +287,7 @@ function update_page() {
         var sat_lune_1 = document.getElementById("sat_lune_" + j).value;
         sat_pts_1[i] = Math.round(Sat_1[i] * 2.5 + sat_lune_1 * 2.5);
         total_sat_pts += sat_pts_1[i];
-        document.getElementById("sat_pts_" + j).innerHTML = "<font color='lime'>" + format(sat_pts_1[i]) + "</font>";
+        document.getElementById("sat_pts_" + j).innerHTML = "<span style="color: lime; ">" + format(sat_pts_1[i]) + "</span>";
         j++;
     }
     document.getElementById("total_sat_pts").innerHTML = format(total_sat_pts);
