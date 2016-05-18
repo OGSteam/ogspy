@@ -387,26 +387,6 @@ function building_upgrade($building, $level)
             $NRJ = 0;
             break;
 
-        case "CM":
-            $M = 2645 * pow(2.3, ($level - 1));
-            $C = 0;
-            $D = 0;
-            $NRJ = 0;
-            break;
-
-        case "CC":
-            $M = 2645 * pow(2.3, ($level - 1));
-            $C = 1322 * pow(2.3, ($level - 1));
-            $D = 0;
-            $NRJ = 0;
-            break;
-
-        case "CD":
-            $M = 2645 * pow(2.3, ($level - 1));
-            $C = 2645 * pow(2.3, ($level - 1));
-            $D = 0;
-            $NRJ = 0;
-            break;
         case "Lab":
             $M = 200 * pow(2, ($level - 1));
             $C = 400 * pow(2, ($level - 1));
@@ -657,7 +637,7 @@ function all_building_cumulate($user_building)
 
             if ($key == "M" || $key == "C" || $key == "D" || $key == "CES" || $key == "CEF" ||
                 $key == "UdR" || $key == "UdN" || $key == "CSp" || $key == "HM" || $key == "HC" ||
-                $key == "HD" || $key == "CM" || $key == "CC" || $key == "CD" || $key == "Lab" ||
+                $key == "HD" || $key == "Lab" ||
                 $key == "Ter" || $key == "DdR" || $key == "Silo" || $key == "BaLu" || $key == "Pha" ||
                 $key == "PoSa"
             ) {

@@ -147,6 +147,7 @@ switch ($ogsversion) {
 
     case '3.2.0':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.0' WHERE config_name = 'version'";
+        //TODO Supprimer Cachettes
         $ogsversion = '3.3.0';
         $up_to_date = true;
         break;
