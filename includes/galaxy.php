@@ -1639,39 +1639,105 @@ function portee_missiles ($galaxy, $system)
         $missil_coord = explode(':', $base_coord);
         $galaxie_missil = $missil_coord[0];
         $sysSol_missil = $missil_coord[1];
-        $planet_missil = $missil_coord[2];
+        $planet_missil = $missil_coord[2]; // Inutile ?
+
         // recherche le niveau du réacteur du joueur
         $request = 'SELECT RI FROM ' . TABLE_USER_TECHNOLOGY . ' where user_id = ' . $base_joueur;
         $req2 = $db->sql_query($request);
         list ($niv_reac_impuls) = $db->sql_fetch_row($req2);
-        // recherche du nombre de missile dispo
-        $request = 'SELECT MIP FROM ' . TABLE_USER_DEFENCE . ' where user_id = ' . $base_joueur . ' AND planet_id = ' . $base_id_planet;
-        $req2 = $db->sql_query($request);
-        list ($missil_dispo) = $db->sql_fetch_row($req2);
-       
-        // recherche le nom du joueur
-        $req3 = $db->sql_query('SELECT user_name FROM ' . TABLE_USER . ' where user_id = ' . $base_joueur);
-        list ($nom_missil_joueur) = $db->sql_fetch_row($req3);
 
-        // calcul de la porté du silo
-        $porte_missil = ($niv_reac_impuls * 5) - 1;
-        // calcul des écarts
-        $vari_missil_moins = $sysSol_missil - $porte_missil;
-        $vari_missil_plus = $sysSol_missil + $porte_missil;
-        
-        $arrondi_correct = false;
-        if ($server_config['uni_arrondi_system']) {
-            if ($vari_missil_moins + intval($server_config['num_of_systems']) <= $system) $arrondi_correct = true;
-            if ($vari_missil_plus - intval($server_config['num_of_systems']) >= $system) $arrondi_correct = true;
-        }
-        // création des textes si missil à portée
-        if ($galaxy == $galaxie_missil && ($system >= $vari_missil_moins && $system <= $vari_missil_plus || $arrondi_correct)) {
+        if($niv_reac_impuls > 0) {
 
-            $missil_ok = displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_missil, $base_coord, $ok_missil, $total_missil);
+            // recherche du nombre de missile dispo
+            $request = 'SELECT MIP FROM ' . TABLE_USER_DEFENCE . ' where user_id = ' . $base_joueur . ' AND planet_id = ' . $base_id_planet;
+            $req2 = $db->sql_query($request);
+            list ($missil_dispo) = $db->sql_fetch_row($req2);
+
+            // recherche le nom du joueur
+            $req3 = $db->sql_query('SELECT user_name FROM ' . TABLE_USER . ' where user_id = ' . $base_joueur);
+            list ($nom_missil_joueur) = $db->sql_fetch_row($req3);
+
+            // calcul de la porté du silo
+            $porte_missil = ($niv_reac_impuls * 5) - 1; // Portée : (Lvl 10 * 5) - 1 = 49
+
+            // calcul de la fenetre
+            $vari_missil_moins = system_rounded_calculation($galaxy, $system, '-', $porte_missil);
+            $vari_missil_plus  = system_rounded_calculation($galaxy, $system, '+', $porte_missil);
+
+            log_('debug', '['.$galaxy.':'.$system.'] Fenetre Basse MIP pour : ' . $vari_missil_moins['galaxy'] .':'.$vari_missil_moins['system'].', Fenetre Sup MIP: '.$vari_missil_plus['galaxy'] .':'.$vari_missil_plus['system']);
+
+            // création des textes si missil à portée
+            if (($galaxy >= $vari_missil_moins['galaxy'] && $galaxy <= $vari_missil_plus['galaxy']) && ($system >= $vari_missil_moins['system'] && $system <= $vari_missil_plus['system'])) {
+
+                $missil_ok = displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_missil, $base_coord, $ok_missil, $total_missil);
+            }
         }
     }
     return $missil_ok;
 }
+
+/**
+ * Function Calculate coordinate with rounded universes
+ * @param $nom_missil_joueur
+
+ * @return array
+ */
+function system_rounded_calculation ($origin_galaxy, $origin_system, $operation, $systems_shift)
+{
+    global $server_config;
+    $total_systems = $server_config['num_of_systems'];
+    $total_galaxys = $server_config['num_of_galaxies'];
+
+    switch ($operation){
+
+        case '+':
+            $galaxy = galaxy_rounded_calculation($origin_galaxy, '+', floor(($origin_system + $systems_shift) / $total_systems));
+            $system = ($origin_system + $systems_shift) % $total_systems;
+            break;
+        case '-':
+            $galaxy_unit = floor($systems_shift / $total_systems);
+            $galaxy_div = (($origin_system - $systems_shift) < 1 ? 1 : 0);
+            $galaxy = galaxy_rounded_calculation($origin_galaxy, '-', $galaxy_unit + $galaxy_div);
+            $system = ($origin_system - $systems_shift) % $total_systems;
+
+            break;
+            $galaxy = '' ;
+            $system = '' ;
+        default:
+
+    }
+
+        return(array('galaxy'=> $galaxy, 'system' => $system));
+
+}
+/**
+ * Function Calculate coordinate with rounded universes
+ * @param $nom_missil_joueur
+
+ * @return array
+ */
+function galaxy_rounded_calculation ($origin_galaxy, $operation, $galaxy_shift)
+{
+    global $server_config;
+    $total_galaxies = $server_config['num_of_galaxies'];
+
+    switch ($operation){
+        case '+':
+            $galaxy = ($origin_galaxy + $galaxy_shift) % $total_galaxies;
+
+            break;
+        case '-':
+            $galaxy = ($origin_galaxy - $galaxy_shift) % $total_galaxies;
+            break;
+        default:
+            $galaxy = '' ;
+    }
+
+    return($galaxy);
+
+}
+
+
 
 /**
  * @param $nom_missil_joueur
