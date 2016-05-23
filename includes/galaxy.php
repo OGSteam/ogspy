@@ -1415,23 +1415,23 @@ function UNparseRE ($id_RE)
     $dateRE = date('m-d H:i:s', $row['dateRE']);
     $template = '<table border="0" cellpadding="2" cellspacing="0" align="center">
     <tr>
-        <td class="l" colspan="4" class="c">'.$lang['GAME_SPYREPORT_RES'].' ' . $row['planet_name'] . ' [' . $row['coordinates'] . '] ('.$lang['GAME_SPYREPORT_PLAYER'].' \'' . $rowPN['player'] . '\') le ' . $dateRE . '</td>
+        <td class="l" colspan="4" class="c">' . $lang['GAME_SPYREPORT_RES'] . ' ' . $row['planet_name'] . ' [' . $row['coordinates'] . '] (' . $lang['GAME_SPYREPORT_PLAYER'] . ' \'' . $rowPN['player'] . '\') le ' . $dateRE . '</td>
     </tr>
     <tr>
-        <td class="c" style="text-align:right;">'.$lang['GAME_RES_METAL'].':</td>
+        <td class="c" style="text-align:right;">' . $lang['GAME_RES_METAL'] . ':</td>
         <th>' . number_format($row['metal'], 0, ',', $sep_mille) . '</th>
-        <td class="c" style="text-align:right;">'.$lang['GAME_RES_CRYSTAL'].':</td>
+        <td class="c" style="text-align:right;">' . $lang['GAME_RES_CRYSTAL'] . ':</td>
         <th>' . number_format($row['cristal'], 0, ',', $sep_mille) . '</th>
     </tr>
     <tr>
-        <td class="c" style="text-align:right;">'.$lang['GAME_RES_DEUT'].':</td>
+        <td class="c" style="text-align:right;">' . $lang['GAME_RES_DEUT'] . ':</td>
         <th>' . number_format($row['deuterium'], 0, ',', $sep_mille) . '</th>
-        <td class="c" style="text-align:right;">'.$lang['GAME_RES_ENERGY'].':</td>
+        <td class="c" style="text-align:right;">' . $lang['GAME_RES_ENERGY'] . ':</td>
         <th>' . number_format($row['energie'], 0, ',', $sep_mille) . '</th>
     </tr>
     <tr>
         <th colspan="4">';
-    if ($row['activite'] > 0) $template .= $lang['GAME_SPYREPORT_ACTIVITY'].' ' . $row['activite'] . ' '.$lang['GAME_SPYREPORT_LASTMINUTES'].'.'; else
+    if ($row['activite'] > 0) $template .= $lang['GAME_SPYREPORT_ACTIVITY'] . ' ' . $row['activite'] . ' ' . $lang['GAME_SPYREPORT_LASTMINUTES'] . '.'; else
         $template .= $lang['GAME_SPYREPORT_NOACTIVITY'];
     $template .= '</th>
     </tr>' . "\n";
@@ -1513,7 +1513,7 @@ function UNparseRE ($id_RE)
     }
     if ($show['flotte'] == 1) {
         $template .= '  <tr>
-        <td class="l" colspan="4">'.$lang['GAME_CAT_FLEET'].'</td>
+        <td class="l" colspan="4">' . $lang['GAME_CAT_FLEET'] . '</td>
     </tr>
     <tr>' . "\n";
         $count = 0;
@@ -1536,7 +1536,7 @@ function UNparseRE ($id_RE)
     }
     if ($show['defense'] == 1) {
         $template .= '  <tr>
-        <td class="l" colspan="4">'.$lang['GAME_CAT_DEF'].'</td>
+        <td class="l" colspan="4">' . $lang['GAME_CAT_DEF'] . '</td>
     </tr>
     <tr>' . "\n";
         $count = 0;
@@ -1559,7 +1559,7 @@ function UNparseRE ($id_RE)
     }
     if ($show['batiment'] == 1) {
         $template .= '  <tr>
-        <td class="l" colspan="4">'.$lang['GAME_CAT_BUILDINGS'].'</td>
+        <td class="l" colspan="4">' . $lang['GAME_CAT_BUILDINGS'] . '</td>
     </tr>
     <tr>' . "\n";
         $count = 0;
@@ -1582,7 +1582,7 @@ function UNparseRE ($id_RE)
     }
     if ($show['recherche'] == 1) {
         $template .= '  <tr>
-        <td class="l" colspan="4">'.$lang['GAME_CAT_LAB'].'</td>
+        <td class="l" colspan="4">' . $lang['GAME_CAT_LAB'] . '</td>
     </tr>
     <tr>' . "\n";
         $count = 0;
@@ -1604,7 +1604,7 @@ function UNparseRE ($id_RE)
         $template .= '  </tr>' . "\n";
     }
     $template .= '  <tr>
-        <th colspan="4">'.$lang['GAME_SPYREPORT_PROBADEST'].' :' . $row['proba'] . '%</th>
+        <th colspan="4">' . $lang['GAME_SPYREPORT_PROBADEST'] . ' :' . $row['proba'] . '%</th>
     </tr>
 </table>';
     return ($template);
@@ -1646,7 +1646,7 @@ function portee_missiles ($galaxy, $system)
         $req2 = $db->sql_query($request);
         list ($niv_reac_impuls) = $db->sql_fetch_row($req2);
 
-        if($niv_reac_impuls > 0) {
+        if ($niv_reac_impuls > 0) {
 
             // recherche du nombre de missile dispo
             $request = 'SELECT MIP FROM ' . TABLE_USER_DEFENCE . ' where user_id = ' . $base_joueur . ' AND planet_id = ' . $base_id_planet;
@@ -1661,83 +1661,21 @@ function portee_missiles ($galaxy, $system)
             $porte_missil = ($niv_reac_impuls * 5) - 1; // Portée : (Lvl 10 * 5) - 1 = 49
 
             // calcul de la fenetre
-            $vari_missil_moins = system_rounded_calculation($galaxy, $system, '-', $porte_missil);
-            $vari_missil_plus  = system_rounded_calculation($galaxy, $system, '+', $porte_missil);
+            $vari_missil_moins = abs($sysSol_missil - $porte_missil) % $server_config['num_of_systems'];
+            $vari_missil_plus = ($sysSol_missil + $porte_missil) % $server_config['num_of_systems'];
 
-            log_('debug', '['.$galaxy.':'.$system.'] Fenetre Basse MIP pour : ' . $vari_missil_moins['galaxy'] .':'.$vari_missil_moins['system'].', Fenetre Sup MIP: '.$vari_missil_plus['galaxy'] .':'.$vari_missil_plus['system']);
+
+            log_('debug', '[' . $galaxy . ':' . $system . '] Fenetre Basse MIP pour : ' . $galaxy . ':' . $vari_missil_moins . ', Fenetre Sup MIP: ' . $galaxy . ':' . $vari_missil_plus);
 
             // création des textes si missil à portée
-            if (($galaxy >= $vari_missil_moins['galaxy'] && $galaxy <= $vari_missil_plus['galaxy']) && ($system >= $vari_missil_moins['system'] && $system <= $vari_missil_plus['system'])) {
+            if ($galaxy == $galaxie_missil && $system >= $vari_missil_moins && $system <= $vari_missil_plus) {
 
-                $missil_ok = displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_missil, $base_coord, $ok_missil, $total_missil);
+                $missil_ok .= displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_missil, $base_coord, $ok_missil, $total_missil);
             }
         }
     }
     return $missil_ok;
 }
-
-/**
- * Function Calculate coordinate with rounded universes
- * @param $nom_missil_joueur
-
- * @return array
- */
-function system_rounded_calculation ($origin_galaxy, $origin_system, $operation, $systems_shift)
-{
-    global $server_config;
-    $total_systems = $server_config['num_of_systems'];
-    $total_galaxys = $server_config['num_of_galaxies'];
-
-    switch ($operation){
-
-        case '+':
-            $galaxy = galaxy_rounded_calculation($origin_galaxy, '+', floor(($origin_system + $systems_shift) / $total_systems));
-            $system = ($origin_system + $systems_shift) % $total_systems;
-            break;
-        case '-':
-            $galaxy_unit = floor($systems_shift / $total_systems);
-            $galaxy_div = (($origin_system - $systems_shift) < 1 ? 1 : 0);
-            $galaxy = galaxy_rounded_calculation($origin_galaxy, '-', $galaxy_unit + $galaxy_div);
-            $system = ($origin_system - $systems_shift) % $total_systems;
-
-            break;
-            $galaxy = '' ;
-            $system = '' ;
-        default:
-
-    }
-
-        return(array('galaxy'=> $galaxy, 'system' => $system));
-
-}
-/**
- * Function Calculate coordinate with rounded universes
- * @param $nom_missil_joueur
-
- * @return array
- */
-function galaxy_rounded_calculation ($origin_galaxy, $operation, $galaxy_shift)
-{
-    global $server_config;
-    $total_galaxies = $server_config['num_of_galaxies'];
-
-    switch ($operation){
-        case '+':
-            $galaxy = ($origin_galaxy + $galaxy_shift) % $total_galaxies;
-
-            break;
-        case '-':
-            $galaxy = ($origin_galaxy - $galaxy_shift) % $total_galaxies;
-            break;
-        default:
-            $galaxy = '' ;
-    }
-
-    return($galaxy);
-
-}
-
-
 
 /**
  * @param $nom_missil_joueur
@@ -1754,13 +1692,13 @@ function displayMIP ($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol
     global $lang;
 
     if (!$missil_dispo) $missil_dispo = $lang['GALAXY_MIP_UNKNOWN'];
-    
+
     $color_missil_ally1 = '<span style=\'color: #00FF00; \'>';
     $color_missil_ally2 = '</span>';
-    $tooltip =  '<table width=\'250\'>';
-    $tooltip .= '<tr><td colspan=\'2\' class=\'c\' align=\'center\'>'.$lang['GALAXY_MIP_TITLE'].'</td></tr>';
-    $tooltip .= '<tr><td class=\'c\' width=\'70\'>'.$lang['GALAXY_MIP_NAME'].' : </td><th width=\'30\'>' . $nom_missil_joueur . '</th></tr>';
-    $tooltip .= '<tr><td class=\'c\' width=\'70\'>'.$lang['GALAXY_MIP_AVAILABLE_MISSILES'].' : </td><th width=\'30\'>' . $missil_dispo . '</th></tr>';
+    $tooltip = '<table width=\'250\'>';
+    $tooltip .= '<tr><td colspan=\'2\' class=\'c\' align=\'center\'>' . $lang['GALAXY_MIP_TITLE'] . '</td></tr>';
+    $tooltip .= '<tr><td class=\'c\' width=\'70\'>' . $lang['GALAXY_MIP_NAME'] . ' : </td><th width=\'30\'>' . $nom_missil_joueur . '</th></tr>';
+    $tooltip .= '<tr><td class=\'c\' width=\'70\'>' . $lang['GALAXY_MIP_AVAILABLE_MISSILES'] . ' : </td><th width=\'30\'>' . $missil_dispo . '</th></tr>';
     $tooltip .= '</table>';
     if (version_compare(phpversion(), '5.4.0', '>=')) {
         $tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
@@ -1769,14 +1707,14 @@ function displayMIP ($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol
     }
     $door = '<a id="linkdoor" href="?action=galaxy&galaxy=' . $galaxie_missil . '&system=' . $sysSol_missil . '"';
     //$door .= ' onmouseover="this.T_WIDTH=260;this.T_TEMP=15000;return escape(' . $tooltip . ')"';
+    $total_missil += $missil_dispo;
+    $missil_ready = "<span style='color: #DBBADC; '> " . $total_missil . " " . $lang['GALAXY_MIP_MIPS'] . " </span>";
 
     //<a href="index.htm" onmouseover="return escape('Some text')">Homepage </a>
-    $ok_missil .= $door . $color_missil_ally1 . $base_coord . $color_missil_ally2;
-    $total_missil += $missil_dispo;
+    $ok_missil .= $door . $missil_ready. $color_missil_ally1 . $base_coord . $color_missil_ally2;
 
-    if ($ok_missil)
-        $missil_ok = "<span style='color: #FFFF66; '> ".$lang['GALAXY_MIP_UNDERFIRE']." : " . $ok_missil . "</span><br><span style='color: #DBBADC; '>".$lang['GALAXY_MIP_TOTAL']." : " . $total_missil . " ".$lang['GALAXY_MIP_MIPS']."</span>";
-    else
-        $missil_ok = "<span style='color: #FFFF66; '> ".$lang['GALAXY_MIP_NOMIPS_AROUND']."</span>";
+
+    if ($ok_missil) $missil_ok = "<br><span style='color: #FFFF66; '> " . $lang['GALAXY_MIP_UNDERFIRE'] . " : </span>" . $ok_missil . "</a>"; else
+        $missil_ok = "<span style='color: #FFFF66; '> " . $lang['GALAXY_MIP_NOMIPS_AROUND'] . "</span>";
     return $missil_ok;
 }
