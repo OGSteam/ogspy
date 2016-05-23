@@ -130,8 +130,6 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_MILITARY_DESTRUCT." CONVERT TO CHARACTER SET utf8";
         $requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_HONOR." CONVERT TO CHARACTER SET utf8";
         
-        $requests[] = "INSERT INTO ".TABLE_CONFIG." (config_name, config_value) VALUES ('uni_arrondi_galaxy','0')";
-        $requests[] = "INSERT INTO ".TABLE_CONFIG." (config_name, config_value) VALUES ('uni_arrondi_system','0')";
         $requests[] = "ALTER TABLE ".TABLE_USER_BUILDING." ADD `boosters` VARCHAR(64) NOT NULL default 'm:0:0_c:0:0_d:0:0_p:0_m:0' AFTER `fields`";
         $requests[] = "ALTER TABLE ".TABLE_PARSEDRC." MODIFY `pertes_A` BIGINT";
         $requests[] = "ALTER TABLE ".TABLE_PARSEDRC." MODIFY `pertes_D` BIGINT";
@@ -147,7 +145,7 @@ switch ($ogsversion) {
 
     case '3.2.0':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.0' WHERE config_name = 'version'";
-        //TODO Supprimer Cachettes
+        //TODO Supprimer Cachettes ?
         $ogsversion = '3.3.0';
         $up_to_date = true;
         break;

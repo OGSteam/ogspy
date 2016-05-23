@@ -9,4 +9,3 @@
  * @version 3.04
  */
 $install_version = "3.3.0";
-?>
