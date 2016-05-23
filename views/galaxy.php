@@ -19,7 +19,6 @@ $info_system = galaxy_show();
 $population = $info_system["population"];
 $galaxy = $info_system["galaxy"];
 $system = $info_system["system"];
-$uni_arrondi_system = $server_config['uni_arrondi_system'];
 
 $phalanx_list = galaxy_get_phalanx($galaxy, $system);
 
@@ -388,17 +387,10 @@ require_once("views/page_header.php");
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
                 echo "<a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $value["player"] . "&amp;strict=on\" onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $value["player"] . "</a> ".$lang['GALAXY_LUNA_PHALANX']." " . $value["phalanx"];
-                echo " en <a href='index.php?action=galaxy&amp;galaxy=" . $value["galaxy"] . "&amp;system=" . $value["system"] . "'>" . $value["galaxy"] . ":" . $value["system"] . ":" . $value["row"] . "</a> [<font color='orange'>" . $value["galaxy"] . ":";
+                echo " en <a href='index.php?action=galaxy&amp;galaxy=" . $value["galaxy"] . "&amp;system=" . $value["system"] . "'>" . $value["galaxy"] . ":" . $value["system"] . ":" . $value["row"] . "</a> [<span style=\"color: orange; \">" . $value["galaxy"] . ":";
 
-                if ($uni_arrondi_system == 1) {
-                    if ($distance > ($server_config['num_of_systems'] - 1) / intval($server_config['num_of_systems'])) { //N-1/2
-                        echo "1 <-> " . $value["galaxy"] . ":" . intval($server_config['num_of_systems']) . "</font>]";
-                    } else {
-                        echo "1 <-> " . $value["galaxy"] . ":" . $range_down . " ; " . $value["galaxy"] . ":" . $range_up . " <-> " . $value["galaxy"] . ":" . intval($server_config['num_of_systems']) . "</font>]";
-                    }
-                } else {
-                    echo $range_down . " <-> " . $value["galaxy"] . ":" . $range_up . "</font>]";
-                }
+
+                echo $range_down . " <-> " . $value["galaxy"] . ":" . $range_up . "</span>]";
 
                 if ($value["gate"] == "1") echo "<span style=\"color: red; \"> " .$lang['GALAXY_LUNA_GATE']. " </span>";
                 echo ".</th></tr>";
