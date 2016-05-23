@@ -1291,11 +1291,9 @@ function galaxy_get_phalanx ($galaxy, $system)
     $phalanxer = array();
 
     $req = "SELECT galaxy, system, row, phalanx, gate, name, ally, player FROM " . TABLE_UNIVERSE . " WHERE galaxy = " . $galaxy . " AND moon = '1' AND phalanx > 0 AND ";
-    if ($server_config['uni_arrondi_system']) {
-        $req .= "(system + (power(phalanx, 2) - 1) >= " . $system . " AND system - (power(phalanx, 2) - 1) <= " . $system . " OR  system + (power(phalanx, 2) - 1) - " . intval($server_config['num_of_systems']) . " >= " . $system . " OR  system - (power(phalanx, 2) - 1) + " . intval($server_config['num_of_systems']) . " <= " . $system . ")";
-    } else {
-        $req .= "system + (power(phalanx, 2) - 1) >= " . $system . " AND system - (power(phalanx, 2) - 1) <= " . $system;
-    }
+
+    $req .= "(system + (power(phalanx, 2) - 1)) % ".$server_config['num_of_systems']." >= " . $system . " AND ABS(system - (power(phalanx, 2) - 1)) % ".$server_config['num_of_systems']." <= " . $system;
+
     $result = $db->sql_query($req);
     while ($coordinates = $db->sql_fetch_assoc($result)) {
         if (!in_array($coordinates["ally"], $ally_protection) || $coordinates["ally"] == "" || $user_auth["server_show_positionhided"] == 1 || $user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) $phalanxer[] = $coordinates;
