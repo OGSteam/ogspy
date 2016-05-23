@@ -309,7 +309,7 @@ require_once("views/page_header.php");
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_SPYREPORT']."</td><th>".$lang['GALAXY_SPYREPORT_SYMBOL']."</th></tr>";
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_COMBATREPORT']."</td><th>".$lang['GALAXY_COMBATREPORT_SYMBOL']."</th></tr>";
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_ALLY_FRIEND']."</td><th><blink><a>abc</a></blink></th></tr>";
-        $legend .= "<tr><td class=\"c\">".$lang['GALAXY_ALLY_HIDDEN']."</td><th><font color=\"lime\">abc</font></th></tr>";
+        $legend .= "<tr><td class=\"c\">".$lang['GALAXY_ALLY_HIDDEN']. "</td><th><span style=\"color: lime; \">abc</span></th></tr>";
         $legend .= "</table>";
         if (version_compare(phpversion(), '5.4.0', '>=')) {
             $legend = htmlentities($legend, ENT_COMPAT | ENT_HTML401, "UTF-8");
@@ -327,27 +327,8 @@ require_once("views/page_header.php");
         if (sizeof($phalanx_list) > 0) {
             foreach ($phalanx_list as $value) {
                 $distance = pow($value["phalanx"], 2) - 1;
-                $range_down = $value["system"] - $distance;
-                $range_up = $value["system"] + $distance;
-
-                if ($uni_arrondi_system == 1) { //Si arrondi
-                    if ($range_down < 1) {//-a=x-d <-> x+d ==> 1 <-> x+d ; Smax-a <->Smax
-                        $range_up = intval($server_config['num_of_systems']) + $range_down;
-                        $range_down = $value["system"] + $distance;
-                    }
-                    if ($range_up > intval($server_config['num_of_systems'])) {//x-d <-> x+d=Smax+A ==> 1 <-> A ; x-d <->Smax
-                        $range_down = $range_up - intval($server_config['num_of_systems']);
-                        $range_up = $value["system"] - $distance;
-                    }
-                    //Le cas où down<1 et up>Smax, donc distance>N-1/2, est traité plus bas lors de l'affichage
-                } else {
-                    if ($range_down < 1) {
-                        $range_down = 1;
-                    }
-                    if ($range_up > intval($server_config['num_of_systems'])) {
-                        $range_up = intval($server_config['num_of_systems']);
-                    }
-                }
+                $range_down = abs($value["system"] - $distance) % $server_config['num_of_systems'];
+                $range_up = ($value["system"] + $distance) % $server_config['num_of_systems'];
 
                 echo "<tr align='left'><th>";
 
