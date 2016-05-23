@@ -43,8 +43,6 @@ $ratio_limit = $server_config['ratio_limit'];
 $speed_uni = $server_config['speed_uni'];
 $ddr = $server_config['ddr'];
 $astro_strict = $server_config['astro_strict'];
-$uni_arrondi_galaxy = $server_config['uni_arrondi_galaxy'];
-$uni_arrondi_system = $server_config['uni_arrondi_system'];
 $config_cache = $server_config['config_cache'];
 $mod_cache = $server_config['mod_cache'];
 ?>
@@ -200,11 +198,6 @@ $mod_cache = $server_config['mod_cache'];
             <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_ASTRO']); ?><?php echo help("astro_strict");?></th>
             <th><input name="astro_strict" value="1"
                        type="checkbox"<?php print ($astro_strict == 1) ? ' checked' : '' ?>></th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_CIRCULARUNI']); ?><?php echo help("uni_arrondi");?></th>
-            <th><?php echo($lang['ADMIN_PARAMS_GAME_CIRCULARGALAXY']); ?><input name="uni_arrondi_galaxy" value="1" type="checkbox"<?php print ($uni_arrondi_galaxy == 1) ? ' checked' : '' ?>>
-                <?php echo($lang['ADMIN_PARAMS_GAME_CIRCULARSYSTEMS']); ?> <input name="uni_arrondi_system" value="1" type="checkbox"<?php print ($uni_arrondi_system == 1) ? ' checked' : '' ?>></th>
         </tr>
         <tr>
             <?php
