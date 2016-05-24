@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: antho
- * Date: 05/08/2015
- * Time: 18:16
+ * Galaxy Language File
+ * @package OGSpy
+ * @subpackage i18n
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.3.0
  */
 /*
  * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
@@ -69,6 +72,17 @@ $lang['GALAXY_SEARCH_PLANETS_AVAILABLE'] = "Planetas colonizables";
 $lang['GALAXY_SEARCH_MOONS'] = "Lunas";
 $lang['GALAXY_SEARCH_INACTIVES'] = "Jugadores inactivos";
 $lang['GALAXY_SEARCH_SPYREPORTS'] = "Reportes de espionaje";
+
+/* include/galaxy.php */
+
+$lang['GALAXY_MIP_UNKNOWN'] = "Desconocido";
+$lang['GALAXY_MIP_TITLE'] = "Misil";
+$lang['GALAXY_MIP_NAME'] = "Numero";
+$lang['GALAXY_MIP_AVAILABLE_MISSILES'] = "Numero de misiles disponibles";
+$lang['GALAXY_MIP_UNDERFIRE'] = "sous le feu du silo avec";
+$lang['GALAXY_MIP_MIPS'] = "Missiles disponibles en";
+$lang['GALAXY_MIP_NOMIPS_AROUND'] = "Horas de distancia a los silos de misiles conocidos";
+
 
 /* galaxy_obsolete.php */
 

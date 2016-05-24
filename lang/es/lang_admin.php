@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: antho
- * Date: 05/08/2015
- * Time: 18:15
+ * Admin Language File
+ * @package OGSpy
+ * @subpackage i18n
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.3.0
  */
 
 /*
@@ -219,9 +222,6 @@ $lang['ADMIN_PARAMS_GAME_SPEED'] = "Velocidad del universo";
 $lang['ADMIN_PARAMS_GAME_SPEED_POPUP'] = "¿Está seguro de que desea cambiar la velocidad del juego?";
 $lang['ADMIN_PARAMS_GAME_DDR'] = "Depósito de suministros";
 $lang['ADMIN_PARAMS_GAME_ASTRO'] = "Tecnología de la astrofísica";
-$lang['ADMIN_PARAMS_GAME_CIRCULARUNI'] = "Universo circular";
-$lang['ADMIN_PARAMS_GAME_CIRCULARGALAXY'] = "Galaxias circulares";
-$lang['ADMIN_PARAMS_GAME_CIRCULARSYSTEMS'] = "Sistemas circulares";
 $lang['ADMIN_PARAMS_CACHE'] = "Opciones de caché";
 $lang['ADMIN_PARAMS_CACHE_RESET'] = "Regenerar todos los archivos de caché";
 $lang['ADMIN_PARAMS_CACHE_DURATION_CONFIG'] = "La vida útil de la caché 'config'";

@@ -1,8 +1,13 @@
 <?php
-# Langage : FR
-# Author : DarkNoon
-# Date : 08/01/2010
-# Version : 1.70
+/**
+ * Install Language File
+ * @package OGSpy
+ * @subpackage i18n
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.3.0
+ */
 
 /* File index.php*/
 
@@ -61,5 +66,4 @@ $lang['INSTALL_VIEW_ADMINPWD2'] = "Confirmar contraseña";
 $lang['INSTALL_VIEW_INSTALLFULL'] = "Iniciar la instalación";
 $lang['INSTALL_VIEW_INSTALLCONFIG'] = "Generar el fichero 'id.php'";
 $lang['INSTALL_VIEW_INSTALLHELP'] = "¿Necesita ayuda?";
-
 

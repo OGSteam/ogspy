@@ -1,11 +1,13 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: antho
- * Date: 05/08/2015
- * Time: 18:15
+ * Help Language File
+ * @package OGSpy
+ * @subpackage i18n
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.3.0
  */
-
 $help["admin_server_status"] = "When the server is disabled, only members with administrator privileges have access to server functionality";
 $help["admin_server_status_message"] = "The message will be displayed to the members \"basic\" when the server is disabled";
 $help["admin_save_transaction"] = "Transactions crresponds to :<br>- Solar systems<br>- Spy reports<br>- Player and ally rankings";
@@ -34,7 +36,6 @@ $help["ratio_block"] = "You have a lower ratio than the threshold, you can not a
 $help["profile_speed_uni"] = "Specify the speed multiplier of your universe (1 by default)";
 $help["profile_ddr"] = "Check whether the supply depot is present in your universe";
 $help["astro_strict"] = "Check if the universe is old. This is to have nine planets without the corresponding technology astrophysics.";
-$help["uni_arrondi"] = "For version Ogame> 5.8.5 In course project in the Gameforge.<br> Example: Distance galaxy between 1 and 9 =1G (if rounded); Remote system between 1 and 499 = 1S (if rounded).<br> Formula: dist(a,b) = ( (a,b)-unitMax ) (or unitMax = 499 (system), unitMax = 9 (galaxy).";
 $help["config_cache"] = "Life config cache in seconds.";
 $help["mod_cache"] = "Life mod cache second ..";
 

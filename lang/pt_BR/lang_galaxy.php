@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: antho
- * Date: 05/08/2015
- * Time: 18:16
+ * Galaxy Language File
+ * @package OGSpy
+ * @subpackage i18n
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.3.0
  */
 /*
  * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
@@ -17,7 +20,7 @@ $lang['GALAXY_SELECT_SYSTEM'] = "Sistema solar";
 $lang['GALAXY_DISPLAY'] = "Visualizar";
 $lang['GALAXY_FAVORITE_LIST'] = "Lista de sistemas favoritos";
 $lang['GALAXY_MAX_FAVORITES_MESSAGE'] = "Você atingiu o número máximo de favoritos permitido";
-$lang['GALAXY_NO_FAVORITES_MESSAGE'] = "Você não tem favoritos";
+$lang['GALAXY_NO_FAVORITES_MESSAGE'] = "Você não possui favoritos";
 $lang['GALAXY_ADD_FAVORITES'] = "Adicionar os favoritos";
 $lang['GALAXY_REMOVE_FAVORITES'] = "Deletar os favoritos";
 $lang['GALAXY_SYSTEMS'] = "Sistema solar";
@@ -69,6 +72,17 @@ $lang['GALAXY_SEARCH_PLANETS_AVAILABLE'] = "Planetas colonizáveis";
 $lang['GALAXY_SEARCH_MOONS'] = "Luas";
 $lang['GALAXY_SEARCH_INACTIVES'] = "Jogadores inativos";
 $lang['GALAXY_SEARCH_SPYREPORTS'] = "Relatórios de espionagem";
+
+/* include/galaxy.php */
+
+$lang['GALAXY_MIP_UNKNOWN'] = "Desconhecido";
+$lang['GALAXY_MIP_TITLE'] = "MÍSSIL";
+$lang['GALAXY_MIP_NAME'] = "Nome";
+$lang['GALAXY_MIP_AVAILABLE_MISSILES'] = "Nº de mísseis disp.";
+$lang['GALAXY_MIP_UNDERFIRE'] = "sous le feu du silo avec";
+$lang['GALAXY_MIP_MIPS'] = "Missiles disponibles en";
+$lang['GALAXY_MIP_NOMIPS_AROUND'] = "fora de alcance dos silos de mísseis conhecidos";
+
 
 /* galaxy_obsolete.php */
 
