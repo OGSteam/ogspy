@@ -26,6 +26,17 @@ if (!defined('IN_SPYOGAME')) {
         <td class="c"><?php echo($lang['ABOUT_DESCRIPTION']); ?></td>
     </tr>
     <tr>
+        <th>3.3.0</th>
+        <th style="text-align:left">
+            <ul>
+                <li>Internationalisation</li>
+                <li>Compatibilité PHP 7</li>
+                <li>Univers Circulaires</li>
+                <li>Corrections multiples</li>
+            </ul>
+        </th>
+    </tr>
+    <tr>
         <th>3.2.0</th>
         <th style="text-align:left">
             <ul>

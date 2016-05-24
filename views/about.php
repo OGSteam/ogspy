@@ -28,7 +28,7 @@ require_once("views/page_header.php");
 
                     if ($subaction != "ogsteam") {
                         echo "\t\t\t" . "<td class='c' width='150' onclick=\"window.location = 'index.php?action=about&amp;subaction=ogsteam';\">";
-                        echo "<a style='cursor:pointer'><font color='lime'>".$lang['ABOUT_TEAM']."</font></a>";
+                        echo "<a style='cursor:pointer'><span style=\"color: lime; \">" .$lang['ABOUT_TEAM']. "</span></a>";
                         echo "</td>";
                     } else {
                         echo "\t\t\t" . "<th width='150'>";
@@ -38,7 +38,7 @@ require_once("views/page_header.php");
 
                     if ($subaction != "changelog") {
                         echo "\t\t\t" . "<td class='c' width='150' onclick=\"window.location = 'index.php?action=about&amp;subaction=changelog';\">";
-                        echo "<a style='cursor:pointer'><font color='lime'>".$lang['ABOUT_CHANGELOG']."</font></a>";
+                        echo "<a style='cursor:pointer'><span style=\"color: lime; \">" .$lang['ABOUT_CHANGELOG']. "</span></a>";
                         echo "</td>";
                     } else {
                         echo "\t\t\t" . "<th width='150'>";
