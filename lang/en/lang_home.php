@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: antho
- * Date: 05/08/2015
- * Time: 18:17
+ * Home Language File
+ * @package OGSpy
+ * @subpackage i18n
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.3.0
  */
 
 /*
@@ -22,9 +25,9 @@ $lang['HOME_STATISTICS_TITLE'] = "Statistics";
 $lang['HOME_EMPIRE_TITLEDESC'] = "Empire & Buildings & Laboratory & Defenses";
 $lang['HOME_EMPIRE_PLANET'] = "Planets";
 $lang['HOME_EMPIRE_MOON'] = "Moons";
-$lang['HOME_EMPIRE_ERROR'] = "An inconsistency has been found in your personal space";
-$lang['HOME_EMPIRE_ERROR_PLANET'] = "due to your number of planets";
-$lang['HOME_EMPIRE_ERROR_MOON'] = "due to your number of moons";
+$lang['HOME_EMPIRE_ERROR'] = "An inconsistency was found in your personal space";
+$lang['HOME_EMPIRE_ERROR_PLANET'] = "in relation to the number of your planets";
+$lang['HOME_EMPIRE_ERROR_MOON'] = "in relation to the number of your moons";
 $lang['HOME_EMPIRE_SUMMARY'] = "Global empire view";
 $lang['HOME_EMPIRE_MOVELEFT'] = "Move the planet to left";
 $lang['HOME_EMPIRE_MOVERIGHT'] = "Move the planet to right";
@@ -159,17 +162,17 @@ $lang['HOME_STATS_GRAPHIC_FROM'] = "from";
 $lang['HOME_STATS_GRAPHIC_DIVERS'] = "
 Miscellaneous";
 $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'] = "No data available in Empire";
-$lang['HOME_STATS_GRAPHIC_NOSTATSDATA'] = "Pas de données sur le total de points";
-$lang['HOME_STATS_GRAPHIC_LASTREPARTITION'] = "Dernière répartition des points connue";
-$lang['HOME_STATS_GRAPHIC_REPARTITION'] = "Proportion des planètes - lunes comprises";
-$lang['HOME_STATS_RANKING'] = "Classement de ";
+$lang['HOME_STATS_GRAPHIC_NOSTATSDATA'] = "No data on the total points";
+$lang['HOME_STATS_GRAPHIC_LASTREPARTITION'] = "Last distribution of known point";
+$lang['HOME_STATS_GRAPHIC_REPARTITION'] = "Proportion of planets - including moons";
+$lang['HOME_STATS_RANKING'] = "ranking";
 $lang['HOME_STATS_DATE'] = "Date";
-$lang['HOME_STATS_PTS_GENERAL'] = "Pts Général";
-$lang['HOME_STATS_PTS_ECO'] = "Pts Economique";
+$lang['HOME_STATS_PTS_GENERAL'] = "General pts";
+$lang['HOME_STATS_PTS_ECO'] = "Economic pts";
 $lang['HOME_STATS_PTS_RESEARCH'] = "Research Pts";
-$lang['HOME_STATS_PTS_MILITARY'] = "Pts Militaire";
-$lang['HOME_STATS_PTS_MILITARYBUILT'] = "Pts Militaire Construits";
-$lang['HOME_STATS_PTS_MILITARYLOST'] = "Pts Perte militaire";
+$lang['HOME_STATS_PTS_MILITARY'] = "Military pts";
+$lang['HOME_STATS_PTS_MILITARYBUILT'] = "Pts Military Built";
+$lang['HOME_STATS_PTS_MILITARYLOST'] = "Pts military Loss";
 $lang['HOME_STATS_PTS_MILITARYDEST'] = "Pts destruction";
-$lang['HOME_STATS_PTS_HONOR'] = "Pts honorifique";
-$lang['HOME_STATS_PROGRESS_RATE'] = "Progression moyenne par jour";
+$lang['HOME_STATS_PTS_HONOR'] = "honorary pts";
+$lang['HOME_STATS_PROGRESS_RATE'] = "average growth per day";

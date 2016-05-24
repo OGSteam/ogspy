@@ -1,8 +1,13 @@
 <?php
-# Langage : FR
-# Author : DarkNoon
-# Date : 08/01/2010
-# Version : 1.70
+/**
+ * Install Language File
+ * @package OGSpy
+ * @subpackage i18n
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.3.0
+ */
 
 /* File index.php*/
 
@@ -27,7 +32,7 @@ $lang['INSTALL_ACTION_UPGRADE'] = "Update";
 $lang['INSTALL_WRITE_ALLOWED'] = "Writing autorized";
 $lang['INSTALL_WRITE_DENIED'] = "Writing impossible";
 $lang['INSTALL_NOT_POSSIBLE_TITLE'] = "Installation impossible :";
-$lang['INSTALL_NOT_POSSIBLE_LINE_1'] = "Pour le bon fonctionnement et une installation complète de OGSpy,<br>vous devez autoriser ces dossiers en écriture.";
+$lang['INSTALL_NOT_POSSIBLE_LINE_1'] = "For a best user experience and a full OGSpy install,<br>you need to set write mode (CHMOD) on following folders.";
 $lang['INSTALL_NOT_POSSIBLE_OPTIONAL'] = "Optional error :";
 $lang['INSTALL_NOT_POSSIBLE_LINE_2'] = "These folders are used by installation and to update OGSpy mods";
 $lang['INSTALL_NOT_POSSIBLE_LINE_3'] = "Theirs folders and files must be available in write";

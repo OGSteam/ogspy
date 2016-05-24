@@ -1,11 +1,13 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: antho
- * Date: 05/08/2015
- * Time: 18:15
+ * Help Language File
+ * @package OGSpy
+ * @subpackage i18n
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.3.0
  */
-
 $help["admin_server_status"] = "Quando o servidor está desativado, somente os membros com o status de administrador acessarão as funcionalidades do servidor";
 $help["admin_server_status_message"] = "A mensagem será visualizada pelos membros \"de base\" quando o servidor for desativado";
 $help["admin_save_transaction"] = "As transações correspondem aos :<br>- Sistemas Solares<br>- Relatórios de espionagem<br>- Classificação jogadores e alianças";
@@ -34,7 +36,6 @@ $help["ratio_block"] = "Você possui uma proporção inferior ao limite mínimo,
 $help["profile_speed_uni"] = "Indique o multiplicador de velocidade do seu universo (1 por padrão)";
 $help["profile_ddr"] = "Assinale se o depósito da aliança está presente no seu universo";
 $help["astro_strict"] = "Assinale se o universo é antigo. Isto permite possuir 9 planetas sem precisar da tecnologia astrofísica correspondente.";
-$help["uni_arrondi"] = "Para versão Ogame >5.8.5 Em curso de projeto na Gameforge.<br> Exemplo: Distância da galáxia entre 1 e 9 = 1G (se arredondado); Distância do sistema entre 1 e 499 = 1S (se arredondado).<br> Fórmula : dist(a,b)=||a-b|-unitMax| (ou unitMax=499(system), unitMax=9(galaxy).";
 $help["config_cache"] = "Duração da vida do cache configurado em segundos.";
 $help["mod_cache"] = "Duração da vida do cache mod em segundos.";
 

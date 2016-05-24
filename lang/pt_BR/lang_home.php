@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: antho
- * Date: 05/08/2015
- * Time: 18:17
+ * Home Language File
+ * @package OGSpy
+ * @subpackage i18n
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.3.0
  */
 
 /*
@@ -23,8 +26,8 @@ $lang['HOME_EMPIRE_TITLEDESC'] = "Império & Edifícios & Laboratório & Defesas
 $lang['HOME_EMPIRE_PLANET'] = "Planetas";
 $lang['HOME_EMPIRE_MOON'] = "Luas";
 $lang['HOME_EMPIRE_ERROR'] = "Uma incoerência foi encontrada no seu espaço pessoal";
-$lang['HOME_EMPIRE_ERROR_PLANET'] = "Em relação com o número dos seus planetas";
-$lang['HOME_EMPIRE_ERROR_MOON'] = "Em relação com o número de suas luas";
+$lang['HOME_EMPIRE_ERROR_PLANET'] = "relacionado com o número de seus planetas";
+$lang['HOME_EMPIRE_ERROR_MOON'] = "relacionado com o número de suas luas";
 $lang['HOME_EMPIRE_SUMMARY'] = "Vista do conjunto de seu império";
 $lang['HOME_EMPIRE_MOVELEFT'] = "Mover para a esquerda o planeta";
 $lang['HOME_EMPIRE_MOVERIGHT'] = "Mover para a direita o planeta";

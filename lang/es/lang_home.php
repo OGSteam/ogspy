@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: antho
- * Date: 05/08/2015
- * Time: 18:17
+ * Home Language File
+ * @package OGSpy
+ * @subpackage i18n
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.3.0
  */
 
 /*
@@ -22,9 +25,9 @@ $lang['HOME_STATISTICS_TITLE'] = "Estadísticas";
 $lang['HOME_EMPIRE_TITLEDESC'] = "Imperio & Edificios & Laboratorio & Defensas";
 $lang['HOME_EMPIRE_PLANET'] = "Planetas";
 $lang['HOME_EMPIRE_MOON'] = "Lunas";
-$lang['HOME_EMPIRE_ERROR'] = "Se encontró un problema en tu perfil";
-$lang['HOME_EMPIRE_ERROR_PLANET'] = "En relación con el número de sus planetas";
-$lang['HOME_EMPIRE_ERROR_MOON'] = "En relación al número de lunas";
+$lang['HOME_EMPIRE_ERROR'] = "Se ha encontrado un error en tu espacio personal";
+$lang['HOME_EMPIRE_ERROR_PLANET'] = "Reportes de tus planetas";
+$lang['HOME_EMPIRE_ERROR_MOON'] = "Reportes de tus lunas";
 $lang['HOME_EMPIRE_SUMMARY'] = "Visión general del imperio";
 $lang['HOME_EMPIRE_MOVELEFT'] = "Desplazar a la izquierda del planeta";
 $lang['HOME_EMPIRE_MOVERIGHT'] = "Desplazar a la derecha del planeta";

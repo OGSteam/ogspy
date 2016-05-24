@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: antho
- * Date: 05/08/2015
- * Time: 18:15
+ * Admin Language File
+ * @package OGSpy
+ * @subpackage i18n
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.3.0
  */
 
 /*
@@ -74,7 +77,7 @@ $lang['ADMIN_SERVER_RANKINGS'] = "Classificação (número de linhas)";
 $lang['ADMIN_SERVER_PHPINFO'] = "PHPinfo";
 $lang['ADMIN_SERVER_PHPMODULES'] = "Módulos PHP";
 $lang['ADMIN_SERVER_INFOVERSION'] = "Informação da versão";
-$lang['ADMIN_SERVER_INFOVERSION_DESC'] = "Obrigado por consultar o Fórum do OGSteam para conhecer a última versão do OGSpy: <a href='http://www.ogsteam.fr' target='_blank'>Forum</a>";
+$lang['ADMIN_SERVER_INFOVERSION_DESC'] = "Favor consultar o Fórum do OGSteam para conhecer a última versão do OGSpy: <a href='http://www.ogsteam.fr' target='_blank'>Forum</a>";
 
 $lang['ADMIN_SERVER_MEMBERNAME'] = "Nome do membro";
 $lang['ADMIN_SERVER_MEMBERCONNECTED'] = "Conexão";
@@ -216,9 +219,6 @@ $lang['ADMIN_PARAMS_GAME_SPEED'] = "Velocidade do universo";
 $lang['ADMIN_PARAMS_GAME_SPEED_POPUP'] = "Você gostaria de modificar a velocidade do jogo?";
 $lang['ADMIN_PARAMS_GAME_DDR'] = "Depósito da aliança";
 $lang['ADMIN_PARAMS_GAME_ASTRO'] = "Tecnologia astrofísica estrita";
-$lang['ADMIN_PARAMS_GAME_CIRCULARUNI'] = "Universo arredondado";
-$lang['ADMIN_PARAMS_GAME_CIRCULARGALAXY'] = "Galáxias arredondadas";
-$lang['ADMIN_PARAMS_GAME_CIRCULARSYSTEMS'] = "Sistemas arredondados";
 $lang['ADMIN_PARAMS_CACHE'] = "Opções de cache";
 $lang['ADMIN_PARAMS_CACHE_RESET'] = "Regenerar todos os arquivos cache";
 $lang['ADMIN_PARAMS_CACHE_DURATION_CONFIG'] = "Duração do armazenamento do cache 'config'";

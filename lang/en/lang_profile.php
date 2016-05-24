@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: antho
- * Date: 05/08/2015
- * Time: 18:20
+ * Profile Language File
+ * @package OGSpy
+ * @subpackage i18n
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.3.0
  */
 
 /*
@@ -13,29 +16,29 @@
 
 /* profile.php */
 
-$lang['PROFILE_ERROR_RETRY'] ="Saisissez le nouveau mot de passe et sa confirmation";
-$lang['PROFILE_ERROR_OLDPWD'] ="Saisissez l'ancien mot de passe";
-$lang['PROFILE_ERROR_ERROR'] = "Le mot de passe saisi est différent de la confirmation";
-$lang['PROFILE_ERROR_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 15 caractères";
+$lang['PROFILE_ERROR_RETRY'] ="Enter your new password with the confirmation";
+$lang['PROFILE_ERROR_OLDPWD'] ="Enter your previous password";
+$lang['PROFILE_ERROR_ERROR'] = "The entered password is not the identical to the password confirmation";
+$lang['PROFILE_ERROR_ILLEGAL'] = "The password must have at least 6 characters and less than 15 characters";
 
-$lang['PROFILE_TITLE'] = "Informations OGSpy";
-$lang['PROFILE_PSEUDO'] = "Pseudo";
-$lang['PROFILE_OLDPWD'] = "Ancien mot de passe";
+$lang['PROFILE_TITLE'] = "OGSpy Informations";
+$lang['PROFILE_PSEUDO'] = "Player name";
+$lang['PROFILE_OLDPWD'] = "Previous password";
 $lang['PROFILE_NEWPWD'] = "New password";
-$lang['PROFILE_NEWPWDAGAIN'] = "Nouveau mot de passe [Confirmez]";
-$lang['PROFILE_EMAIL'] = "Adresse Email";
-$lang['PROFILE_GAME'] = "Informations du Jeu";
-$lang['PROFILE_MAINPLANET'] = "Position de la planète principale";
-$lang['PROFILE_PLAYERNAME'] = "Pseudo dans le Jeu";
-$lang['PROFILE_OFFICERS'] = "Comptes Officiers";
-$lang['PROFILE_CODMANDER'] = "Commandant";
-$lang['PROFILE_ADMIRAL'] = "Amiral de flotte";
-$lang['PROFILE_ENGINEER'] = "Ingénieur";
-$lang['PROFILE_GEOLOGIST'] = "Géologue";
-$lang['PROFILE_TECHNOCRAT'] = "Technocrate";
+$lang['PROFILE_NEWPWDAGAIN'] = "New password [Confirmation]";
+$lang['PROFILE_EMAIL'] = "Email Address";
+$lang['PROFILE_GAME'] = "Game informations";
+$lang['PROFILE_MAINPLANET'] = "Main Planet position";
+$lang['PROFILE_PLAYERNAME'] = "Player Name";
+$lang['PROFILE_OFFICERS'] = "Officers";
+$lang['PROFILE_CODMANDER'] = "Comander";
+$lang['PROFILE_ADMIRAL'] = "Admiral";
+$lang['PROFILE_ENGINEER'] = "Engineer";
+$lang['PROFILE_GEOLOGIST'] = "Geologist";
+$lang['PROFILE_TECHNOCRAT'] = "Technocrat";
 $lang['PROFILE_OTHERS'] = "
 Miscellaneous";
-$lang['PROFILE_IPCHECK_DISABLE'] = "Désactiver la vérification de l'adresse IP";
-$lang['PROFILE_SAVE'] = "Validate";
+$lang['PROFILE_IPCHECK_DISABLE'] = "Disable the IP address verification";
+$lang['PROFILE_SAVE'] = "Save";
 
 
