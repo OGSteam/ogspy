@@ -803,15 +803,13 @@ function resize_db($new_num_of_galaxies, $new_num_of_systems)
     $request .= "'$new_num_of_galaxies') NOT NULL DEFAULT '1'";
     $db->sql_query($request);
 
-    $request = "ALTER TABLE `" . TABLE_USER .
-        "` CHANGE `user_galaxy` `user_galaxy` ENUM(";
+    $request = "ALTER TABLE `" . TABLE_USER ."` CHANGE `user_galaxy` `user_galaxy` ENUM(";
     for ($i = 1; $i < $new_num_of_galaxies; $i++)
         $request .= "'$i' , ";
     $request .= "'$new_num_of_galaxies') NOT NULL DEFAULT '1'";
     $db->sql_query($request);
 
-    $request = "ALTER TABLE `" . TABLE_USER_FAVORITE .
-        "` CHANGE `galaxy` `galaxy` ENUM(";
+    $request = "ALTER TABLE `" . TABLE_USER_FAVORITE . "` CHANGE `galaxy` `galaxy` ENUM(";
     for ($i = 1; $i < $new_num_of_galaxies; $i++)
         $request .= "'$i' , ";
     $request .= "'$new_num_of_galaxies') NOT NULL DEFAULT '1'";
