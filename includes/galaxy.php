@@ -1289,14 +1289,60 @@ function galaxy_get_phalanx ($galaxy, $system)
     if ($server_config["ally_protection"] != "") $ally_protection = explode(",", $server_config["ally_protection"]);
 
     $phalanxer = array();
+    $data_computed = array();
 
-    $req = "SELECT galaxy, system, row, phalanx, gate, name, ally, player FROM " . TABLE_UNIVERSE . " WHERE galaxy = " . $galaxy . " AND moon = '1' AND phalanx > 0 AND ";
-
-    $req .= "(system + (power(phalanx, 2) - 1)) % ".$server_config['num_of_systems']." >= " . $system . " AND ABS(system - (power(phalanx, 2) - 1)) % ".$server_config['num_of_systems']." <= " . $system;
+    $req = "SELECT galaxy, system, row, phalanx, gate, name, ally, player FROM " . TABLE_UNIVERSE . " WHERE galaxy = '".$galaxy."' AND moon = '1' AND phalanx > 0";
 
     $result = $db->sql_query($req);
-    while ($coordinates = $db->sql_fetch_assoc($result)) {
-        if (!in_array($coordinates["ally"], $ally_protection) || $coordinates["ally"] == "" || $user_auth["server_show_positionhided"] == 1 || $user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) $phalanxer[] = $coordinates;
+
+    //Construction liste phalanges
+    $idph = 0;
+    while ($row = $db->sql_fetch_assoc($result)) {
+        $data[$idph]['galaxy'] = $row["galaxy"];
+        $data[$idph]['system'] = $row["system"];
+        $data[$idph]['row'] = $row["row"];
+        $data[$idph]['name'] = $row["name"];
+        $data[$idph]['ally'] = $row["ally"];
+        $data[$idph]['player'] = $row["player"];
+        $data[$idph++]['level'] = $row["phalanx"];
+    }
+
+foreach ($data as $phalanx){
+    $arrondi_type = 0;
+    $phalanx_range = (pow($phalanx['level'],2) - 1);
+    $system_lower_range = $phalanx['system'] - $phalanx_range;
+    if($system_lower_range < 1 ) { $system_lower_range = $system_lower_range % $server_config['num_of_systems']; $arrondi_type = 1; }; //Partie négative : 1:490 -> 1:5
+    $system_higher_range = $phalanx['system'] + $phalanx_range;
+    if($system_higher_range > $server_config['num_of_systems'] ) { $system_higher_range = $system_higher_range % $server_config['num_of_systems']; $arrondi_type = 1; };
+
+    //Cas 1 : Dans la même galaxie
+
+        if($system >= $system_lower_range && $system <= $system_higher_range && $arrondi_type == 0){
+            $data_computed[] = array(
+                'galaxy' => $row["galaxy"],
+                'system' => $row["system"],
+                'row' => $row["row"],
+                'name' => $row["name"],
+                'ally' => $row["ally"],
+                'player' => $row["player"],
+                'level' => $row["phalanx"]
+            );
+        }elseif(!($system >= $system_lower_range && $system <= $system_higher_range) && $arrondi_type == 1){
+            $data_computed[] = array(
+                'galaxy' => $row["galaxy"],
+                'system' => $row["system"],
+                'row' => $row["row"],
+                'name' => $row["name"],
+                'ally' => $row["ally"],
+                'player' => $row["player"],
+                'level' => $row["phalanx"]
+            );
+        }
+    }
+
+    foreach ($data_computed as $phalange) { // Filtre alliance amies et masquées
+        if (!in_array($phalange["ally"], $ally_protection) || $phalange["ally"] == "" || $user_auth["server_show_positionhided"] == 1 || $user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1)
+            $phalanxer[] = $phalange;
     }
 
     return $phalanxer;
