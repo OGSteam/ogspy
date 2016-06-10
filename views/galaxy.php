@@ -325,9 +325,6 @@ require_once("views/page_header.php");
         echo "<tr><td class='c' align='center'>".$lang['GALAXY_PHALANX_LIST']. help("galaxy_phalanx") . "</td></tr>";
         if (sizeof($phalanx_list) > 0) {
             foreach ($phalanx_list as $value) {
-                $distance = pow($value["phalanx"], 2) - 1;
-                $range_down = abs($value["system"] - $distance) % $server_config['num_of_systems'];
-                $range_up = ($value["system"] + $distance) % $server_config['num_of_systems'];
 
                 echo "<tr align='left'><th>";
 
@@ -386,11 +383,11 @@ require_once("views/page_header.php");
                 } else {
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
-                echo "<a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $value["player"] . "&amp;strict=on\" onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $value["player"] . "</a> ".$lang['GALAXY_LUNA_PHALANX']." " . $value["phalanx"];
+                echo "<a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $value["player"] . "&amp;strict=on\" onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $value["player"] . "</a> ".$lang['GALAXY_LUNA_PHALANX']." " . $value["level"];
                 echo " en <a href='index.php?action=galaxy&amp;galaxy=" . $value["galaxy"] . "&amp;system=" . $value["system"] . "'>" . $value["galaxy"] . ":" . $value["system"] . ":" . $value["row"] . "</a> [<span style=\"color: orange; \">" . $value["galaxy"] . ":";
 
 
-                echo $range_down . " <-> " . $value["galaxy"] . ":" . $range_up . "</span>]";
+                echo $value['range_down'] . " <-> " . $value["galaxy"] . ":" . $value['range_up'] . "</span>]";
 
                 if ($value["gate"] == "1") echo "<span style=\"color: red; \"> " .$lang['GALAXY_LUNA_GATE']. " </span>";
                 echo ".</th></tr>";
