@@ -35,14 +35,14 @@ require_once("version.php");
  */
 $error = "";
 $alerte = FALSE;
-if (is_writable("../parameters")) {
+if (is_writeable("../parameters")) {
     $error .= "<tr><td width=\"250\">- \"parameters\" : </td><td><font color='green'>" . $lang['INSTALL_WRITE_ALLOWED'] . "</font></td></tr>";
 } else {
     $error .= "<tr><td width=\"250\">- \"parameters\" : </td><td><font color='red'>" . $lang['INSTALL_WRITE_DENIED'] . "</font></td></tr>";
     $alerte = TRUE;
 }
 
-if (is_writable("../journal")) {
+if (is_writeable("../journal")) {
     $error .= "<tr><td width=\"250\">- \"journal\" : </td><td><font color='green'>" . $lang['INSTALL_WRITE_ALLOWED'] . "</font></td></tr>";
 } else {
     $error .= "<tr><td width=\"250\">- \"journal\" : </td><td><font color='red'>" . $lang['INSTALL_WRITE_DENIED'] . "</font></td></tr>";
@@ -50,7 +50,7 @@ if (is_writable("../journal")) {
 }
 
 $error2 = "";
-if (is_writable("../mod")) {
+if (is_writeable("../mod")) {
     $error2 .= "<tr><td width=\"250\">- \"mod\" : </td><td><font color='green'>" . $lang['INSTALL_WRITE_ALLOWED'] . "</font></td></tr>";
 } else {
     $error2 .= "<tr><td width=\"250\">- \"mod\" : </td><td><font color='red'>" . $lang['INSTALL_WRITE_DENIED'] . "</font></td></tr>";
