@@ -1313,57 +1313,47 @@ function galaxy_get_phalanx($galaxy, $system)
             $phalanx_range = (pow($phalanx['level'], 2) - 1);
             $system_lower_range = $phalanx['system'] - $phalanx_range;
             if ($system_lower_range < 1) {
-                $system_lower_range += $system_lower_range + $server_config['num_of_systems'];
+                $system_lower_range = $system_lower_range + $server_config['num_of_systems'];
                 $arrondi_type = 1;
             }; //Partie négative : 1:490 -> 1:5
             $system_higher_range = $phalanx['system'] + $phalanx_range;
             if ($system_higher_range > $server_config['num_of_systems']) {
-                $system_higher_range -= $server_config['num_of_systems'];
+                $system_higher_range = $system_higher_range - $server_config['num_of_systems'];
                 $arrondi_type = 2;
             };
 
             //Cas 1 : Dans la même galaxie
 
             if ($system >= $system_lower_range && $system <= $system_higher_range && $arrondi_type == 0) {
-                $data_computed[] = array(
-                    'galaxy' => $phalanx["galaxy"],
-                    'system' => $phalanx["system"],
-                    'row' => $phalanx["row"],
-                    'name' => $phalanx["name"],
-                    'ally' => $phalanx["ally"],
-                    'player' => $phalanx["player"],
-                    'gate' => $phalanx["gate"],
-                    'level' => $phalanx["level"],
-                    'range_down' => $system_lower_range,
-                    'range_up' => $system_higher_range                    
-                );
-            } elseif ($system <=$system_higher_range  && $system <= $system_lower_range && $arrondi_type == 1) {
-                $data_computed[] = array(
-                    'galaxy' => $phalanx["galaxy"],
-                    'system' => $phalanx["system"],
-                    'row' => $phalanx["row"],
-                    'name' => $phalanx["name"],
-                    'ally' => $phalanx["ally"],
-                    'player' => $phalanx["player"],
-                    'gate' => $phalanx["gate"],
-                    'level' => $phalanx["level"],
-                    'range_down' => $system_lower_range,
-                    'range_up' => $system_higher_range
-                );
-            }elseif ($system >=$system_lower_range  && $system >= $system_higher_range && $arrondi_type == 2) {
-                $data_computed[] = array(
-                    'galaxy' => $phalanx["galaxy"],
-                    'system' => $phalanx["system"],
-                    'row' => $phalanx["row"],
-                    'name' => $phalanx["name"],
-                    'ally' => $phalanx["ally"],
-                    'player' => $phalanx["player"],
-                    'gate' => $phalanx["gate"],
-                    'level' => $phalanx["level"],
-                    'range_down' => $system_lower_range,
-                    'range_up' => $system_higher_range
-                );
+                $add_to_list = true;
+            //Cas 2 : Phanlange en début de galaxie -> 2 zones possibles : 1 en fin de galaxie et 1 en début
+            } elseif (($system <=$system_higher_range  && $system <= $system_lower_range && $arrondi_type == 1) ||
+            ($system >=$system_higher_range  && $system >= $system_lower_range && $arrondi_type == 1))
+            {
+                $add_to_list = true;
+            //Cas 3 : Phanlange en fin de galaxie -> 2 zones possibles : 1 en fin de galaxie et 1 en début
+            }elseif (($system >=$system_lower_range && $system >= $system_higher_range && $arrondi_type == 2) ||
+            ($system <=$system_lower_range && $system <= $system_higher_range && $arrondi_type == 2))
+            {
+                $add_to_list = true;
+            }else{
+                // Phalange non hostile
+                $add_to_list = false;
             }
+
+            if($add_to_list == true)
+                $data_computed[] = array(
+                    'galaxy' => $phalanx["galaxy"],
+                    'system' => $phalanx["system"],
+                    'row' => $phalanx["row"],
+                    'name' => $phalanx["name"],
+                    'ally' => $phalanx["ally"],
+                    'player' => $phalanx["player"],
+                    'gate' => $phalanx["gate"],
+                    'level' => $phalanx["level"],
+                    'range_down' => $system_lower_range,
+                    'range_up' => $system_higher_range
+                );
         }
 
         foreach ($data_computed as $phalange) { // Filtre alliance amies et masquées
