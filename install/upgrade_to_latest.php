@@ -157,10 +157,6 @@ switch ($ogsversion) {
 foreach ($requests as $request) {
     $db->sql_query($request);
 }
-
-if ( $ogsversion == '3.1.0' && function_exists ( 'import_RE' ) ) {
-    import_RE(); 
-    }
   
 // on supprime tous les fichiers du cache
 // pour prendre en compte toutes les modifications
