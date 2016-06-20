@@ -433,9 +433,9 @@ CREATE TABLE ogspy_statistics (
 ## 
 
 CREATE TABLE ogspy_universe (
-  GALAXY_ENUM
-  system smallint(3) NOT NULL default '0',
-  `row` enum('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15') NOT NULL default '1',
+  galaxy smallint(2) NOT NULL default '1',
+  system smallint(3) NOT NULL default '1',
+  `row` smallint(2) NOT NULL default '1',
   moon enum('0','1') NOT NULL default '0',
   phalanx tinyint(1) NOT NULL default '0',
   gate enum('0','1') NOT NULL default '0',
@@ -465,7 +465,7 @@ CREATE TABLE ogspy_user (
   user_active enum('0','1') NOT NULL default '0',
   user_regdate int(11) NOT NULL default '0',
   user_lastvisit int(11) NOT NULL default '0',
-  user_GALAXY_ENUM
+  user_galaxy smallint(2) NOT NULL default '1',
   user_system smallint(3) NOT NULL default '1',
   planet_added_web int(11) NOT NULL default '0',
   planet_added_ogs int(11) NOT NULL default '0',
@@ -566,7 +566,7 @@ CREATE TABLE ogspy_user_defence (
 
 CREATE TABLE ogspy_user_favorite (
   user_id int(11) NOT NULL default '0',
-  GALAXY_ENUM
+  galaxy smallint(2) NOT NULL default '1',
   system smallint(3) NOT NULL default '0',
   UNIQUE KEY user_id (user_id,galaxy,system)
 ) DEFAULT CHARSET=utf8;
@@ -660,7 +660,6 @@ INSERT INTO `ogspy_config` VALUES ('url_forum', 'http://www.ogsteam.fr/');
 INSERT INTO `ogspy_config` VALUES ('log_phperror', '0');
 INSERT INTO `ogspy_config` VALUES ('block_ratio', '0');
 INSERT INTO `ogspy_config` VALUES ('ratio_limit', '0');
-INSERT INTO `ogspy_config` VALUES ('version', '3.3.0');
 INSERT INTO `ogspy_config` VALUES ('config_cache', '3600');
 INSERT INTO `ogspy_config` VALUES ('mod_cache', '604800');
 
