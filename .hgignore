@@ -1,0 +1,6 @@
+syntax: glob
+cache/
+journal/
+mod/*
+parameters/
+.idea/
