@@ -30,7 +30,7 @@ function writeLog($texte)
     $heure = date("G:i");
 
     // Assurons nous que le fichier est accessible en écriture
-    if (is_writable($filename)) {
+    if (is_writeable($filename)) {
         // Dans notre exemple, nous ouvrons le fichier $filename en mode d'ajout
         // Le pointeur de fichier est placé à la fin du fichier
         // c'est là que le texte sera placé
