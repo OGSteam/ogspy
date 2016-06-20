@@ -98,7 +98,7 @@ function error_sql($message)
 
 function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $admin_username, $admin_password, $admin_password2, $num_of_galaxies, $num_of_systems, $ui_lang)
 {
-    global $lang;
+    global $lang, $install_version;
     $db = sql_db::getInstance($sgbd_server, $sgbd_username, $sgbd_password, $sgbd_dbname);
     if (!$db->db_connect_id) error_sql($lang['INSTALL_SQL_CONNECTION_ERROR']);
 
@@ -108,19 +108,13 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 
     $sql_query = preg_replace("#ogspy_#", $sgbd_tableprefix, $sql_query);
 
-    //Création de l'énumération des galaxies:
-    $galaxies_db_str = 'galaxy enum(';
-    for ($i = 1; $i < $num_of_galaxies; $i++)
-        $galaxies_db_str .= "'$i' , ";
-    $galaxies_db_str .= "'$num_of_galaxies') NOT NULL default '1',";
-    $sql_query = preg_replace("#GALAXY_ENUM#", $galaxies_db_str, $sql_query);
-
     $sql_query = explode(";", $sql_query);
     $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('num_of_galaxies','$num_of_galaxies')";
     $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('num_of_systems','$num_of_systems')";
     $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('speed_uni','1')";
     $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('ddr','false')";
     $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('astro_strict','1')";
+    $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('version','$install_version')";
     $sql_query[] = "ALTER DATABASE " . $sgbd_dbname . " charset=utf8"; /*Passage de interclassement en utf8*/
 
     foreach ($sql_query as $request) {
