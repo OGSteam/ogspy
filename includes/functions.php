@@ -775,9 +775,6 @@ function db_optimize($maintenance_action = false)
  * @todo : Query : sql_query("DELETE FROM " . TABLE_UNIVERSE . " WHERE system > $new_num_of_systems");
  * @todo : Query : sql_query("UPDATE " . TABLE_USER . " SET user_system=1 WHERE user_system > $new_num_of_systems");
  * @todo : Query : sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE system > $new_num_of_systems");
- * @todo : Query : "ALTER TABLE `" . TABLE_UNIVERSE . "` CHANGE `galaxy` `galaxy` ENUM("; -> Voir Fonction
- * @todo : Query : "ALTER TABLE `" . TABLE_USER ." CHANGE `user_galaxy` `user_galaxy` -> Voir fonction
- * @todo : Query : $request = "ALTER TABLE `" . TABLE_USER_FAVORITE ."` CHANGE `galaxy` `galaxy` ENUM(" -> Voir fonction
  * @todo : Query : "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('num_of_galaxies','$new_num_of_galaxies')";
  * @todo : Query : $requests = "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('num_of_systems','$new_num_of_systems')";
  */
@@ -797,30 +794,13 @@ function resize_db($new_num_of_galaxies, $new_num_of_systems)
         $db->sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE system > $new_num_of_systems");
     }
 
-    $request = "ALTER TABLE `" . TABLE_UNIVERSE . "` CHANGE `galaxy` `galaxy` ENUM(";
-    for ($i = 1; $i < $new_num_of_galaxies; $i++)
-        $request .= "'$i' , ";
-    $request .= "'$new_num_of_galaxies') NOT NULL DEFAULT '1'";
-    $db->sql_query($request);
+    $server_config['num_of_galaxies'] = $new_num_of_galaxies;
+    $server_config['num_of_systems'] = $new_num_of_systems;
 
-    $request = "ALTER TABLE `" . TABLE_USER ."` CHANGE `user_galaxy` `user_galaxy` ENUM(";
-    for ($i = 1; $i < $new_num_of_galaxies; $i++)
-        $request .= "'$i' , ";
-    $request .= "'$new_num_of_galaxies') NOT NULL DEFAULT '1'";
-    $db->sql_query($request);
-
-    $request = "ALTER TABLE `" . TABLE_USER_FAVORITE . "` CHANGE `galaxy` `galaxy` ENUM(";
-    for ($i = 1; $i < $new_num_of_galaxies; $i++)
-        $request .= "'$i' , ";
-    $request .= "'$new_num_of_galaxies') NOT NULL DEFAULT '1'";
-    $db->sql_query($request);
-
-    $server_config['num_of_galaxies'] = "$new_num_of_galaxies";
-    $server_config['num_of_systems'] = "$new_num_of_systems";
-    $requests = "REPLACE INTO " . TABLE_CONFIG .
+    $request = "REPLACE INTO " . TABLE_CONFIG .
         " (config_name, config_value) VALUES ('num_of_galaxies','$new_num_of_galaxies')";
     $db->sql_query($request);
-    $requests = "REPLACE INTO " . TABLE_CONFIG .
+    $request = "REPLACE INTO " . TABLE_CONFIG .
         " (config_name, config_value) VALUES ('num_of_systems','$new_num_of_systems')";
     $db->sql_query($request);
 
@@ -1116,8 +1096,6 @@ function generate_key()
     }
 
 }
-
-
 /***********************************************************************
  ************** Fonctions pour table Google Cloud Messaging ************
  ***********************************************************************/
