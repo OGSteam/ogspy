@@ -150,12 +150,12 @@ switch ($ogsversion) {
 
     case '3.3.0':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.1' WHERE config_name = 'version'";
-        $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING." DROP `CM`";
-        $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING." DROP `CC`";
-        $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING." DROP `CD`";
-        $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY." DROP `CM`";
-        $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY." DROP `CC`";
-        $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY." DROP `CD`";
+        $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` DROP `CM`";
+        $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` DROP `CC`";
+        $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` DROP `CD`";
+        $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY."` DROP `CM`";
+        $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY."` DROP `CC`";
+        $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY."` DROP `CD`";
         $requests[] = "ALTER TABLE `" . TABLE_UNIVERSE . "` MODIFY `galaxy` smallint(2)";
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` MODIFY `user_galaxy` smallint(2)";
         $requests[] = "ALTER TABLE `" . TABLE_USER_FAVORITE . "` MODIFY `galaxy` smallint(2)";
