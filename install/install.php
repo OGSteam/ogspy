@@ -15,6 +15,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="language" content="fr"/>
     <link rel="stylesheet" type="text/css" href="../skin/OGSpy_skin/formate.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/icon" href="../favicon.ico">
 </head>
 <body>
 
