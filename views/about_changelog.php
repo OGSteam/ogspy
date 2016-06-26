@@ -26,6 +26,17 @@ if (!defined('IN_SPYOGAME')) {
         <td class="c"><?php echo($lang['ABOUT_DESCRIPTION']); ?></td>
     </tr>
     <tr>
+        <th>3.3.1</th>
+        <th style="text-align:left">
+            <ul>
+                <li>Internationalisation - Anglais désormais complet</li>
+                <li>Phalanges Circulaires</li>
+                <li>Logo installation mis à jour</li>
+                <li>Mise à jour schéma BDD</li>
+            </ul>
+        </th>
+    </tr>
+    <tr>
         <th>3.3.0</th>
         <th style="text-align:left">
             <ul>
