@@ -38,7 +38,7 @@ if (isset($pub_redirection)) {
 
 <table width="100%" align="center" cellpadding="20">
     <tr>
-        <td height="70"><div align="center"><img src="../images/OgameSpy2.jpg"></div></td>
+        <td height="70"><div align="center"><img src="../skin/OGSpy_skin/logos/logo.png"></div></td>
     </tr>
         <tr>
         <td height = "50" ><div align = "center" >
