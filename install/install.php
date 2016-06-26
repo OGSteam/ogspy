@@ -238,7 +238,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
     <table width="100%" align="center" cellpadding="20">
         <tr>
             <td height="70">
-                <div align="center"><img src="../images/OgameSpy2.jpg"></div>
+                <div align="center"><img src="../skin/OGSpy_skin/logos/logo.png"></div>
             </td>
         </tr>
         <tr>
