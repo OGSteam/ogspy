@@ -140,7 +140,7 @@ class sql_db
             $this->result = $this->db_connect_id->query($query);
         }
 
-        if ($save) {
+        if ($save && isset($server_config["debug_log"])) {
 
             if ($server_config["debug_log"] == "1") {
                     $fichier = "sql_" . date("ymd") . ".sql";
