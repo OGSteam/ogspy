@@ -4,3 +4,5 @@ journal/
 mod/*
 parameters/
 .idea/
+/build.xml
+/ogspy.iml
