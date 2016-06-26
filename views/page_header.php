@@ -24,7 +24,6 @@ if (!defined('IN_SPYOGAME')) {
     <link rel="stylesheet" href="js/jquery-ui/jquery-ui.css" >
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/icon" href="favicon.ico">
-    <link rel="alternate" type="application/rss+xml" title="<?php echo($lang['HEAD_RSS_STREAM']); ?>" href="rss.xml"/>
 
     <!-- Ajout des scripts Graphique (highcharts), jquery et prototype-->
 
