@@ -79,8 +79,8 @@ $lang['GALAXY_MIP_UNKNOWN'] = "Desconocido";
 $lang['GALAXY_MIP_TITLE'] = "Misil";
 $lang['GALAXY_MIP_NAME'] = "Numero";
 $lang['GALAXY_MIP_AVAILABLE_MISSILES'] = "Numero de misiles disponibles";
-$lang['GALAXY_MIP_UNDERFIRE'] = "sous le feu du silo avec";
-$lang['GALAXY_MIP_MIPS'] = "Missiles disponibles en";
+$lang['GALAXY_MIP_UNDERFIRE'] = "Dentro del alcance del silo";
+$lang['GALAXY_MIP_MIPS'] = "Misiles disponibles";
 $lang['GALAXY_MIP_NOMIPS_AROUND'] = "Horas de distancia a los silos de misiles conocidos";
 
 
