@@ -1725,7 +1725,7 @@ function portee_missiles($galaxy, $system)
             $vari_missil_plus = ($sysSol_missil + $porte_missil) % $server_config['num_of_systems'];
 
 
-            log_('debug', '[' . $galaxy . ':' . $system . '] Fenetre Basse MIP pour : ' . $galaxy . ':' . $vari_missil_moins . ', Fenetre Sup MIP: ' . $galaxy . ':' . $vari_missil_plus);
+            //log_('debug', '[' . $galaxy . ':' . $system . '] Fenetre Basse MIP pour : ' . $galaxy . ':' . $vari_missil_moins . ', Fenetre Sup MIP: ' . $galaxy . ':' . $vari_missil_plus);
 
             // création des textes si missil à portée
             if ($galaxy == $galaxie_missil && $system >= $vari_missil_moins && $system <= $vari_missil_plus) {
