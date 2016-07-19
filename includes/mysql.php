@@ -85,8 +85,7 @@ class sql_db
         $this->dbname = $database;
 
         $this->db_connect_id = new mysqli($this->server, $this->user, $this->password, $this->dbname);
-	
-		
+
 		/* Vérification de la connexion */
 		if ($this->db_connect_id->connect_errno) {
 			echo("Échec de la connexion : ".$this->db_connect_id->connect_error);
@@ -134,7 +133,11 @@ class sql_db
         $sql_start = benchmark();
 
         if ($Auth_dieSQLError) {
-            $this->result = $this->db_connect_id->query($query) or $this->DieSQLError($query);
+            if(!($this->result = $this->db_connect_id->query($query))){
+
+                $this->DieSQLError($query);
+            }
+
         } else {
             $this->last_query = $query;
             $this->result = $this->db_connect_id->query($query);
@@ -292,11 +295,12 @@ class sql_db
     {
         echo "<table align=center border=1>\n";
         echo "<tr><td class='c' colspan='3'>Database MySQL Error</td></tr>\n";
-        echo "<tr><th colspan='3'>ErrNo:" . $this->db_connect_id->connect_errno . ":  " . $this->db_connect_id->connect_error . "</th></tr>\n";
+        echo "<tr><th colspan='3'>ErrNo:" . $this->db_connect_id->errno ."</th></tr>\n";
         echo "<tr><th colspan='3'><u>Query:</u><br>" . $query . "</th></tr>\n";
+        echo "<tr><th colspan='3'><u>Error:</u><br>" . $this->db_connect_id->error . "</th></tr>\n";
         echo "</table>\n";
 
-        log_("mysql_error", array($query, $this->db_connect_id->connect_errno, $this->db_connect_id->connect_error, debug_backtrace()));
+        log_("mysql_error", array($query, $this->db_connect_id->errno, $this->db_connect_id->error, debug_backtrace()));
         die();
     }
 
