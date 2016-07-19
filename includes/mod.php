@@ -62,8 +62,9 @@ function mod_list()
                 $line = file("mod/" . $root . "/version.txt");
                 $up_to_date = true;
                 if (isset($line[1])) {
+                    $current_mod_version = trim($line[1]);
                     if (file_exists("mod/" . $root . "/update.php")) {
-                        $up_to_date = (strcasecmp($version, trim($line[1])) >= 0) ? true : false;
+                        $up_to_date = version_compare($current_mod_version, $version, '<=');
                     }
                 }
 
