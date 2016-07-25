@@ -6,7 +6,7 @@ Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour e
 
 ### Que contient ce dépôt ? ###
 
-* OGSpy Version 3.2.0
+* OGSpy Version 3.3.1
 * Librairies externes comme JQuery
 * Accord de License
 
@@ -20,9 +20,12 @@ Vous touverez toutes ces informations sur le wiki :
 
 ### Pour contribuer au projet ###
 
-* Writing tests
-* Code review
-* Other guidelines
+* Vous pouvez nous aider sur le développement
+* Nous avons besoins de vos idées pour améliorer l'outil
+* Des volontaires pour la documentations dans toutes les langues connues
+* Traductions
+
+Vous pouvez nous poser toutes les questions nécessaires sur notre forum.
 
 ### Contributeurs au projet ###
 
