@@ -476,7 +476,7 @@ CREATE TABLE ogspy_user (
   spy_exported int(11) NOT NULL default '0',
   rank_added_web int(11) NOT NULL default '0',
   rank_added_ogs int(11) NOT NULL default '0',
-  xtense_type enum('FF','GMFF','GMGC','ANDROID'),
+  xtense_type enum('FF','GM-FF','GM-GC','ANDROID'),
   xtense_version varchar(10),
   rank_exported int(11) NOT NULL default '0',
   user_skin varchar(255) NOT NULL default '',
