@@ -162,6 +162,12 @@ switch ($ogsversion) {
         $ogsversion = '3.3.1';
         $up_to_date = true;
 
+     case '3.3.1':
+        $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.2' WHERE config_name = 'version'";
+        $requests[] = "ALTER TABLE `".TABLE_USER."` MODIFY `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP','ANDROID')";
+        $ogsversion = '3.3.2';
+        $up_to_date = true;
+
         break;
     default:
     die("Aucune mise … jour n'est disponible");
