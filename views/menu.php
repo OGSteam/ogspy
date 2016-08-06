@@ -76,7 +76,7 @@ if (!defined('IN_SPYOGAME')) {
 
     <tr>
         <td>
-            <div><a href="index.php" class="menu"><img src="./skin/OGSpy_skin/transpa.gif" width="166" height="65" border="0"/></a></div>
+            <div><a href="index.php" class="menu"><img src="./theme/default_skin/transpa.gif" width="166" height="65" border="0"/></a></div>
         </td>
     </tr>
 
@@ -99,13 +99,13 @@ if (!defined('IN_SPYOGAME')) {
             }
             ?>
             <li><a href='index.php?action=profile' class='menu_items'><?php echo($lang['MENU_PROFILE']); ?></a></li>
-            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+            <img src="./theme/default_skin/transpa.gif" width="166" height="19">
             <li><a href='index.php?action=home' class='menu_items'><?php echo($lang['MENU_HOME']); ?></a></li>
             <li><a href='index.php?action=galaxy' class='menu_items'><?php echo($lang['MENU_GALAXY']); ?></a></li>
             <li><a href='index.php?action=cartography' class='menu_items'><?php echo($lang['MENU_ALLIANCES']); ?></a></li>
             <li><a href='index.php?action=search' class='menu_items'><?php echo($lang['MENU_RESEARCH']); ?></a></li>
             <li><a href='index.php?action=ranking' class='menu_items'><?php echo($lang['MENU_RANKINGS']); ?></a></li>
-            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+            <img src="./theme/default_skin/transpa.gif" width="166" height="19">
             <li><a href='index.php?action=statistic' class='menu_items'><?php echo($lang['MENU_UPDATE_STATUS']); ?></a></li>
             <li><p class='menu_items'><?php echo($lang['MENU_MODULES']); ?></p>
                 <ul class='menu_mods'>
@@ -124,7 +124,7 @@ if (!defined('IN_SPYOGAME')) {
                 $result = $db->sql_query($request);
 
                 if ($db->sql_numrows($result)) {
-                    echo '<img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">';
+                    echo '<img src="./theme/default_skin/transpa.gif" width="166" height="19">';
 
                     while ($val = $db->sql_fetch_assoc($result)) {
                         echo '<span>&nbsp;&nbsp;- <a class="menu_mods" href="index.php?action=' . $val['action'] . '">' . $val['menu'] . '</a></span>' . '<br>';
@@ -135,15 +135,15 @@ if (!defined('IN_SPYOGAME')) {
 ?>
                 </ul>
             </li>
-            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+            <img src="./theme/default_skin/transpa.gif" width="166" height="19">
             <?php
             if ($server_config["url_forum"] != "") {
                 echo "<li><a href='" . $server_config["url_forum"] . "' class='menu_items'>".$lang['MENU_FORUM']."</a></li>";
             }
             ?>
-            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+            <img src="./theme/default_skin/transpa.gif" width="166" height="19">
             <li><a href="index.php?action=about" class='menu_items'><?php echo($lang['MENU_ABOUT']); ?></a></li>
-            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+            <img src="./theme/default_skin/transpa.gif" width="166" height="19">
             <li><a href='index.php?action=logout' class='menu_items'><?php echo($lang['MENU_LOGOUT']); ?></a></li>
         </ul>
 
