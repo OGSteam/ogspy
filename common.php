@@ -28,29 +28,29 @@ if (!isset($HTTP_POST_VARS) && isset($_POST)) {
 }
 
 //Récupération des paramètres de connexion à la base de données
-if (file_exists("parameters/id.php")) {
-    require_once ("parameters/id.php");
+if (file_exists("config/id.php")) {
+    require_once ("config/id.php");
 } else {
     if (!defined("OGSPY_INSTALLED") && !defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS")) {
         header("Location: install/index.php?lang=fr");
         exit();
-    } elseif (file_exists('../parameters/id.php'))
-        require_once ('../parameters/id.php');
+    } elseif (file_exists('../config/id.php'))
+        require_once ('../config/id.php');
 }
 
 //Appel des fonctions
-require_once ("includes/config.php");
-require_once ("includes/functions.php");
-require_once ("includes/mysql.php");
-require_once ("includes/log.php");
-require_once ("includes/galaxy.php");
-require_once ("includes/user.php");
-require_once ("includes/sessions.php");
-require_once ("includes/help.php");
-require_once ("includes/mod.php");
-require_once ("includes/ogame.php");
-require_once ("includes/cache.php");
-require_once ("includes/chart_js.php");
+require_once("core/config.php");
+require_once("core/functions.php");
+require_once("core/mysql.php");
+require_once("core/log.php");
+require_once("core/galaxy.php");
+require_once("core/user.php");
+require_once("core/sessions.php");
+require_once("core/help.php");
+require_once("core/mod.php");
+require_once("core/ogame.php");
+require_once("core/cache.php");
+require_once("core/chart_js.php");
 
 //Récupération des valeur GET, POST, COOKIE
 extract($_GET,EXTR_PREFIX_ALL , "pub");
@@ -82,8 +82,8 @@ require_once ("lang/lang_main.php");
 
 // ajout fichier clef unique
 if (!defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS")) {
-if (file_exists('parameters/key.php')) {
-    require_once ('parameters/key.php');
+if (file_exists('config/key.php')) {
+    require_once ('config/key.php');
     $dossierParent = (__FILE__);
     $path =  $_SERVER["SCRIPT_FILENAME"];;
     if ($path != $serveur_path) {

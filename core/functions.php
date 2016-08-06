@@ -1091,8 +1091,8 @@ function generate_key()
     $key_php[] = '';
     $key_php[] = 'define("OGSPY_KEY", TRUE);';
     $key_php[] = '?>';
-    if (!write_file("./parameters/key.php", "w", $key_php)) {
-        die("Echec , impossible de générer le fichier 'parameters/key.php'");
+    if (!write_file("./config/key.php", "w", $key_php)) {
+        die("Echec , impossible de générer le fichier 'config/key.php'");
     }
 
 }

@@ -32,7 +32,7 @@ if (isset($pub_redirection)) {
     <title>OGSpy</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="language" content="fr">
-    <link rel="stylesheet" type="text/css" href="../skin/OGSpy_skin/formate.css" />
+    <link rel="stylesheet" type="text/css" href="../theme/css/formate.css" />
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
     <link rel="icon" type="image/icon" href="../favicon.ico">
 </head>
@@ -40,14 +40,14 @@ if (isset($pub_redirection)) {
 
 <table width="100%" align="center" cellpadding="20">
     <tr>
-        <td height="70"><div align="center"><img src="../skin/OGSpy_skin/logos/logo.png"></div></td>
+        <td height="70"><div align="center"><img src="../theme/default_skin/logos/logo.png"></div></td>
     </tr>
         <tr>
         <td height = "50" ><div align = "center" >
-                <a href = "index.php?lang=fr" ><img src = "../images/i18n/France.png" ></a >
-                <a href = "index.php?lang=en" ><img src = "../images/i18n/United_Kingdom.png" ></a >
-                <a href = "index.php?lang=pt_BR" ><img src = "../images/i18n/Brazil.png" ></a >
-                <a href = "index.php?lang=es" ><img src = "../images/i18n/Spain.png" ></a >
+                <a href = "index.php?lang=fr" ><img src = "../theme/images/i18n/France.png" ></a >
+                <a href = "index.php?lang=en" ><img src = "../theme/images/i18n/United_Kingdom.png" ></a >
+                <a href = "index.php?lang=pt_BR" ><img src = "../theme/images/i18n/Brazil.png" ></a >
+                <a href = "index.php?lang=es" ><img src = "../theme/images/i18n/Spain.png" ></a >
             </div >
         </td >
     </tr >

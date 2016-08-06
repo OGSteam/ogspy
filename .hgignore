@@ -2,7 +2,7 @@ syntax: glob
 cache/
 journal/
 mod/*
-parameters/
+config/
 .idea/
 /build.xml
 /ogspy.iml

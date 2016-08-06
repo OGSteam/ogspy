@@ -14,7 +14,7 @@
     <title>Installation OGSpy</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="language" content="fr"/>
-    <link rel="stylesheet" type="text/css" href="../skin/OGSpy_skin/formate.css"/>
+    <link rel="stylesheet" type="text/css" href="../theme/css/formate.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
     <link rel="icon" type="image/icon" href="../favicon.ico">
 </head>
@@ -24,7 +24,7 @@
 define("IN_SPYOGAME", true);
 define("INSTALL_IN_PROGRESS", true);
 
-@chmod("../parameters", 0777);
+@chmod("../config", 0777);
 @chmod("../journal", 0777);
 @chmod("../mod", 0777);
 @chmod("../mod/autoupdate/tmp", 0777);
@@ -37,10 +37,10 @@ require_once("version.php");
  */
 $error = "";
 $alerte = FALSE;
-if (is_writeable("../parameters")) {
-    $error .= "<tr><td width=\"250\">- \"parameters\" : </td><td><font color='green'>" . $lang['INSTALL_WRITE_ALLOWED'] . "</font></td></tr>";
+if (is_writeable("../config")) {
+    $error .= "<tr><td width=\"250\">- \"config\" : </td><td><font color='green'>" . $lang['INSTALL_WRITE_ALLOWED'] . "</font></td></tr>";
 } else {
-    $error .= "<tr><td width=\"250\">- \"parameters\" : </td><td><font color='red'>" . $lang['INSTALL_WRITE_DENIED'] . "</font></td></tr>";
+    $error .= "<tr><td width=\"250\">- \"config\" : </td><td><font color='red'>" . $lang['INSTALL_WRITE_DENIED'] . "</font></td></tr>";
     $alerte = TRUE;
 }
 
@@ -192,7 +192,7 @@ function generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password,
     $id_php[] = '';
     $id_php[] = 'define("OGSPY_INSTALLED", TRUE);';
     $id_php[] = '?>';
-    if (!write_file("../parameters/id.php", "w", $id_php)) {
+    if (!write_file("../config/id.php", "w", $id_php)) {
         die($lang['INSTALL_IDFILE_ERROR']);
     }
 }
@@ -240,7 +240,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
     <table width="100%" align="center" cellpadding="20">
         <tr>
             <td height="70">
-                <div align="center"><img src="../skin/OGSpy_skin/logos/logo.png"></div>
+                <div align="center"><img src="../theme/default_skin/logos/logo.png"></div>
             </td>
         </tr>
         <tr>
@@ -345,5 +345,5 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
     </table>
 </form>
 </body>
-<script language="JavaScript" src="../js/wz_tooltip.js"></script>
+<script language="JavaScript" src="../theme/js/wz_tooltip.js"></script>
 </html>

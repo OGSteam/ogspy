@@ -9,7 +9,7 @@ ______________________________________________________________ */
     left: 0;
     right: 0;
     max-width: 100%;
-    background: url("img/toolbar.png") repeat-x;
+    background: url("../default_skin/img/toolbar.png") repeat-x;
     height: 30px;
     font-size: small;
     color: #ECFF00
@@ -59,7 +59,7 @@ body /* allg font etc. *//* option du fond et générales */
     color: #E4E4E4;
     margin-top: 0;
     margin-left: 0;
-    background: #000000 url("fond_1.jpg") no-repeat fixed left top;
+    background: #000000 url("../default_skin/fond_1.jpg") no-repeat fixed left top;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     text-align: left;
     font-size: 11px;
@@ -70,7 +70,7 @@ body.style /* paramétrage barre de menu sur le côté */
     color: #E4E4E4;
     margin-top: 1px;
     margin-left: 1px;
-    background: #000000 url("img/pic.png") no-repeat 14% 7%;
+    background: #000000 url("../default_skin/img/pic.png") no-repeat 14% 7%;
     font-family: Tahoma, Helvetica, sans-serif;
     font-size: 11px;
     text-align: left;
@@ -109,7 +109,7 @@ th {
     padding-right: 3px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 11px;
-    background: url("tableaux/th.png") repeat;
+    background: url("../default_skin/tableaux/th.png") repeat;
 }
 
 td.a {
@@ -130,55 +130,55 @@ td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, 
 
 td.c /* modifie la police des noms de catégorie dans le menu recherche et des titres de certaines pages barress.PNG */
 {
-    background: url("tableaux/td_c.png") repeat-y right;
+    background: url("../default_skin/tableaux/td_c.png") repeat-y right;
 }
 
 td.c_tech {
-    background: url("tableaux/td_tech.png") no-repeat right;
+    background: url("../default_skin/tableaux/td_tech.png") no-repeat right;
 }
 
 td.c_stats {
-    background: url("tableaux/td_stats.png") no-repeat right;
+    background: url("../default_skin/tableaux/td_stats.png") no-repeat right;
 }
 
 td.c_recherche {
-    background: url("tableaux/td_recherche.png") no-repeat right;
+    background: url("../default_skin/tableaux/td_recherche.png") no-repeat right;
 }
 
 td.c_user {
-    background: url("tableaux/td_utilisateur.png") no-repeat right;
+    background: url("../default_skin/tableaux/td_utilisateur.png") no-repeat right;
 }
 
 td.c_ogspy {
-    background: url("tableaux/td_ogspy.png") no-repeat right;
+    background: url("../default_skin/tableaux/td_ogspy.png") no-repeat right;
 }
 
 td.c_ogame {
-    background: url("tableaux/td_ogame.png") no-repeat right;
+    background: url("../default_skin/tableaux/td_ogame.png") no-repeat right;
 }
 
 td.c_batiments {
-    background: url("tableaux/td_batiments.png") no-repeat right;
+    background: url("../default_skin/tableaux/td_batiments.png") no-repeat right;
 }
 
 td.c_satellite {
-    background: url("tableaux/td_satellite.png") no-repeat right;
+    background: url("../default_skin/tableaux/td_satellite.png") no-repeat right;
 }
 
 td.c_defense {
-    background: url("tableaux/td_defense.png") no-repeat right;
+    background: url("../default_skin/tableaux/td_defense.png") no-repeat right;
 }
 
 td.c_classement_points {
-    background: url("tableaux/td_classement_points.png") no-repeat right;
+    background: url("../default_skin/tableaux/td_classement_points.png") no-repeat right;
 }
 
 td.c_classement_flotte {
-    background: url("tableaux/td_classement_flotte.png") no-repeat right;
+    background: url("../default_skin/tableaux/td_classement_flotte.png") no-repeat right;
 }
 
 td.c_classement_recherche {
-    background: url("tableaux/td_classement_recherche.png") no-repeat right;
+    background: url("../default_skin/tableaux/td_classement_recherche.png") no-repeat right;
 }
 
 td.f, input, select, textarea {
@@ -216,7 +216,7 @@ td.k, td.k input /* berechne calculer? button  background-image: url("img/bl01.P
 {
     text-align: center;
     color: #FFFFFF;
-    background: transparent url("img/barredroite.PNG") no-repeat;
+    background: transparent url("../default_skin/img/barredroite.PNG") no-repeat;
 }
 
 td.l /* police du texte de description des batiments, chantier spatial et recherche */
@@ -224,7 +224,7 @@ td.l /* police du texte de description des batiments, chantier spatial et recher
     color: #FFFFFF;
     vertical-align: top;
     padding: 0;
-    background: #000000 url("img/grandebarre.PNG") no-repeat;
+    background: #000000 url("../default_skin/img/grandebarre.PNG") no-repeat;
 }
 
 td.m {
@@ -315,7 +315,7 @@ a:hover /* Planet Title hover */
 
 .style td:hover /*taille cases barres latérales */
 {
-    background-image: url("img/Mod01.jpg");
+    background-image: url("../default_skin/img/Mod01.jpg");
     border-top: 0;
     font-size: 11px;
     font-family: Tahoma, Ringbearer, sans-serif;
@@ -371,7 +371,7 @@ h1 /* titre (fenêtre batiments et recherche) */
 }
 
 a.menu {
-    background-image: url("menu/menu_title.png");
+    background-image: url("../default_skin/menu/menu_title.png");
     margin-top: 7px;
     margin-bottom: 14px;
     display: block;
@@ -406,12 +406,12 @@ ul.menu {
 }
 
 a.menu1 {
-    background-image: url("menu/profil0.png");
+    background-image: url("../default_skin/menu/profil0.png");
     display: block;
 }
 
 a.menu1:hover {
-    background-image: url("menu/profil1.png");
+    background-image: url("../default_skin/menu/profil1.png");
     color: #26F33D;
 }
 
@@ -437,7 +437,7 @@ center {
 }
 
 ul.menu {
-    list-style-image: url('./menu/list.png');
+    list-style-image: url('../default_skin/menu/list.png');
     color: grey;
     text-align: left;
     text-decoration: none;
