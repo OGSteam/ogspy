@@ -1,0 +1,23 @@
+{
+  "name": "ogsteam/ogspy",
+  "description": "This is a tool to collect data from a game and provide statistics",
+  "minimum-stability": "stable",
+  "license": "GPL-2.0",
+  "authors": [
+      {
+      "name": "Anthony Chomat",
+      "email": "darknoon@darkcity.fr",
+      "homepage": "https://www.ogsteam.fr",
+      "role": "Project leader"
+      },
+      {
+      "name": "Kyser",
+      "role": "Author"
+      }
+  ],
+  "require" : {
+    "php" : "^5.5 || ^7.0",
+    "components/jquery" : "3.1.0"
+
+  }
+}

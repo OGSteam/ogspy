@@ -39,6 +39,7 @@ if (file_exists("config/id.php")) {
 }
 
 //Appel des fonctions
+require __DIR__ . '/vendor/autoload.php';
 require_once("core/config.php");
 require_once("core/functions.php");
 require_once("core/mysql.php");
