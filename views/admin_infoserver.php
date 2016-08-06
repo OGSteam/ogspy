@@ -155,10 +155,6 @@ $online = session_whois_online();
     <tr>
         <td class="c" colspan="4">&nbsp;</td>
     </tr>
-    <tr>
-        <th colspan="2"><a href="php/phpinfo.php" target="_blank"><?php echo($lang['ADMIN_SERVER_PHPINFO']); ?></a></th>
-        <th colspan="2"><a href="php/phpmodules.php" target="_blank"><?php echo($lang['ADMIN_SERVER_PHPMODULES']); ?></a></th>
-    </tr>
 </table>
 <br/>
 <table width="100%">

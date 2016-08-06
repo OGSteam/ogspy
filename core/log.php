@@ -292,17 +292,17 @@ function log_($parameter, $option = 0)
 
         /* ----------- cache ----------- */
         case 'erreur_config_cache' :
-            $line = $member . " Impossible d écrire sur le fichier donfig_cache. Vérifier les droits d acces au dossier  \'cache\' ";
+            $line = $member . " Impossible d écrire sur le fichier donfig_cache. Vérifier les droits d acces au dossier  'cache' ";
             break;
 
         case 'erreur_mod_cache' :
-            $line = $member . " Impossible d écrire sur le fichier mod_cache. Vérifier les droits d acces au dossier  \'cache\' ";
+            $line = $member . " Impossible d écrire sur le fichier mod_cache. Vérifier les droits d acces au dossier  'cache' ";
             break;
 
         /* ----------- cache ----------- */
 
         case 'key' :
-            $line = $member . " Impossible de retrouver le fichier key.php. Vérifier les droits d acces au dossier  \'parameters\' ";
+            $line = $member . " Impossible de retrouver le fichier key.php. Vérifier les droits d acces au dossier  'config' ";
             break;
 
         /* ----------------------------------------- */
