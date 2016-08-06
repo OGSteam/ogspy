@@ -674,7 +674,6 @@ CREATE TABLE `ogspy_mod_config` (
 INSERT INTO `ogspy_config` VALUES ('allied', '');
 INSERT INTO `ogspy_config` VALUES ('ally_protection', '');
 INSERT INTO `ogspy_config` VALUES ('debug_log', '0');
-INSERT INTO `ogspy_config` VALUES ('default_skin', 'skin/OGSpy_skin/');
 INSERT INTO `ogspy_config` VALUES ('disable_ip_check', '1');
 INSERT INTO `ogspy_config` VALUES ('keeprank_criterion', 'day');
 INSERT INTO `ogspy_config` VALUES ('last_maintenance_action', '0');

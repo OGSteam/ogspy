@@ -57,7 +57,7 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
     </table>
 
 </div>
-<script type="text/javascript" src="js/wz_tooltip.js"></script>
+<script type="text/javascript" src="theme/js/wz_tooltip.js"></script>
 
 </body>
 </html>
