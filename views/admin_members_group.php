@@ -82,7 +82,7 @@ if ($usergroup_info !== false) {
                     echo "</tr>" . "\n" . "<tr>";
                 }
                 echo "\t" . "<form method='POST' action='index.php?action=usergroup_delmember&amp;user_id=" . $user["user_id"] . "&group_id=" . $group_id . "' onsubmit=\"return confirm('".$lang['ADMIN_GROUP_DELETE_CONFIRMATION']. $user["user_name"] . " ?');\">" . "\n";
-                echo "\t" . "<th width='175'>" . $user["user_name"] . "</th><th width='25'><input type='image' src='theme/images/userdrop.png' title='". $lang['ADMIN_GROUP_DELETE'] . $user["user_name"] . " '></th>";
+                echo "\t" . "<th width='175'>" . $user["user_name"] . "</th><th width='25'><input type='image' src='assets/images/userdrop.png' title='". $lang['ADMIN_GROUP_DELETE'] . $user["user_name"] . " '></th>";
                 echo "\t" . "</form>" . "\n";
                 $index++;
             }

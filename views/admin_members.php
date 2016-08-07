@@ -113,15 +113,15 @@ $usergroup_list = usergroup_get();
         }
         echo "\t" . "<th><select name='management_ranking'><option value='1'>".$lang['ADMIN_MEMBERS_YES']."</option><option value='0'".$management_ranking_off.">".$lang['ADMIN_MEMBERS_NO']."</option></select></th>" . "\n";
         echo "\t" . "<th>" . $last_visit . "</th>" . "\n";
-        echo "\t" . "<th><input type='image' src='theme/images/usercheck.png' title='".$lang['ADMIN_MEMBERS_VALIDATE']. $name . "'></th>" . "\n";
+        echo "\t" . "<th><input type='image' src='assets/images/usercheck.png' title='".$lang['ADMIN_MEMBERS_VALIDATE']. $name . "'></th>" . "\n";
         echo "</form>" . "\n";
 
         echo "<form method='POST' action='index.php?action=delete_member&amp;user_id=" . $user_id . "' onsubmit=\"return confirm('".$lang['ADMIN_MEMBERS_DELETE_TITLE'] . $name . "');\">" . "\n";
-        echo "\t" . "<th><input type='image' src='theme/images/userdrop.png' title='".$lang['ADMIN_MEMBERS_DELETE'] . $name . "'></th>" . "\n";
+        echo "\t" . "<th><input type='image' src='assets/images/userdrop.png' title='".$lang['ADMIN_MEMBERS_DELETE'] . $name . "'></th>" . "\n";
         echo "</form>" . "\n";
 
         echo "<form method='POST' action='index.php?action=new_password&amp;user_id=" . $user_id . "' id=" . $user_id . ">" . "\n";
-        echo "\t" . "<th><img style=\"cursor:pointer\" src='theme/images/userpwd.png' title='".$lang['ADMIN_MEMBERS_PWDCHANGE_TITLE'] . $name . "' onclick=\"if(confirm('".$lang['ADMIN_MEMBERS_PWDCHANGE'] . $name . "')){document.all.pass_name.value='" . $name . "';document.all.pass_id.value='" . $user_id . "';document.getElementById('pass_new').value = '';document.getElementById('new_pass').style.visibility = 'visible';}\"><input type=\"hidden\" id=\"" . $name . "\" name=\"pass_" . $user_id . "\" value=\"\"></th>" . "\n";
+        echo "\t" . "<th><img style=\"cursor:pointer\" src='assets/images/userpwd.png' title='".$lang['ADMIN_MEMBERS_PWDCHANGE_TITLE'] . $name . "' onclick=\"if(confirm('".$lang['ADMIN_MEMBERS_PWDCHANGE'] . $name . "')){document.all.pass_name.value='" . $name . "';document.all.pass_id.value='" . $user_id . "';document.getElementById('pass_new').value = '';document.getElementById('new_pass').style.visibility = 'visible';}\"><input type=\"hidden\" id=\"" . $name . "\" name=\"pass_" . $user_id . "\" value=\"\"></th>" . "\n";
         echo "</form>" . "\n";
         echo "</tr>" . "\n";
     }

@@ -57,25 +57,25 @@ if ($search_result) {
         if ($sort2 == 0) {
             switch ($sort) {
                 case "1" :
-                    $link_order_coordinates = "<img src='theme/images/asc.png'>&nbsp;" . $link_order_coordinates . "&nbsp;<img src='theme/images/asc.png'>";
+                    $link_order_coordinates = "<img src='assets/images/asc.png'>&nbsp;" . $link_order_coordinates . "&nbsp;<img src='assets/images/asc.png'>";
                     break;
                 case "2" :
-                    $link_order_ally = "<img src='theme/images/asc.png'>&nbsp;" . $link_order_ally . "&nbsp;<img src='theme/images/asc.png'>";
+                    $link_order_ally = "<img src='assets/images/asc.png'>&nbsp;" . $link_order_ally . "&nbsp;<img src='assets/images/asc.png'>";
                     break;
                 case "3" :
-                    $link_order_player = "<img src='theme/images/asc.png'>&nbsp;" . $link_order_player . "&nbsp;<img src='theme/images/asc.png'>";
+                    $link_order_player = "<img src='assets/images/asc.png'>&nbsp;" . $link_order_player . "&nbsp;<img src='assets/images/asc.png'>";
                     break;
             }
         } else {
             switch ($sort) {
                 case "1" :
-                    $link_order_coordinates = "<img src='theme/images/desc.png'>&nbsp;" . $link_order_coordinates . "&nbsp;<img src='theme/images/desc.png'>";
+                    $link_order_coordinates = "<img src='assets/images/desc.png'>&nbsp;" . $link_order_coordinates . "&nbsp;<img src='assets/images/desc.png'>";
                     break;
                 case "2" :
-                    $link_order_ally = "<img src='theme/images/desc.png'>&nbsp;" . $link_order_ally . "&nbsp;<img src='theme/images/desc.png'>";
+                    $link_order_ally = "<img src='assets/images/desc.png'>&nbsp;" . $link_order_ally . "&nbsp;<img src='assets/images/desc.png'>";
                     break;
                 case "3" :
-                    $link_order_player = "<img src='theme/images/desc.png'>&nbsp;" . $link_order_player . "&nbsp;<img src='theme/images/desc.png'>";
+                    $link_order_player = "<img src='assets/images/desc.png'>&nbsp;" . $link_order_player . "&nbsp;<img src='assets/images/desc.png'>";
                     break;
             }
         }
@@ -405,7 +405,7 @@ require_once("views/page_header.php");
                     else $status = $v["status"];
 
                     if ($v["moon"] == 1) {
-                        $moon = "<img src=\"theme/default_skin/img/lune.png\">";
+                        $moon = "<img src=\"assets/default_skin/img/lune.png\">";
                         $detail = "";
                         if ($v["last_update_moon"] > 0) {
                             $detail .= $v["phalanx"];
@@ -443,7 +443,7 @@ require_once("views/page_header.php");
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_INACTIVE_7Days']."</td><th>".$lang['SEARCH_INACTIVE_7Days_SYMBOL']."</th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_INACTIVE_28Days']."</td><th>".$lang['SEARCH_INACTIVE_28Days_SYMBOL']."</th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_WEAK_PROTECTION']."</td><th>".$lang['SEARCH_WEAK_PROTECTION_SYMBOL']."</th></tr>";
-                $legend .= "<tr><td class=\"c\">".$lang['SEARCH_MOON']."<br><i>".$lang['SEARCH_MOON_PHALANX']."</i></td><th><img src=\"theme/default_skin/img/lune.png\">".$lang['SEARCH_MOON_PHALANX_SYMBOL']."</th></tr>";
+                $legend .= "<tr><td class=\"c\">".$lang['SEARCH_MOON']."<br><i>".$lang['SEARCH_MOON_PHALANX']."</i></td><th><img src=\"assets/default_skin/img/lune.png\">".$lang['SEARCH_MOON_PHALANX_SYMBOL']."</th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_SPYREPORT']."</td><th>".$lang['SEARCH_SPYREPORT_SYMBOL']."</th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_ALLY_FRIEND']."</td><th><a><blink>abc</blink></a></th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_ALLY_HIDDEN']. "</td><th><span style=\"color: lime; \">abc</span></th></tr>";

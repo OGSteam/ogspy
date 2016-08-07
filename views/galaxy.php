@@ -267,7 +267,7 @@ require_once("views/page_header.php");
             if ($status == "") $status = "&nbsp;";
 
             if ($moon == 1) {
-                $moon = '<img src="theme/default_skin/img/lune.png">';
+                $moon = '<img src="assets/default_skin/img/lune.png">';
                 $detail = "";
                 if ($last_update_moon > 0) {
                     $detail .= $phalanx;
@@ -304,7 +304,7 @@ require_once("views/page_header.php");
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_INACTIVE_28Days']."</td><th>".$lang['GALAXY_INACTIVE_28Days_SYMBOL']."</th></tr>";
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_HOLIDAYS']."</td><th>".$lang['GALAXY_HOLIDAYS_SYMBOL']."</th></tr>";
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_WEAK_PROTECTION']."</td><th>".$lang['GALAXY_WEAK_PROTECTION_SYMBOL']."</th></tr>";
-        $legend .= "<tr><td class=\"c\">".$lang['GALAXY_MOON']."<br><i>".$lang['GALAXY_MOON_PHALANX']."</i></td><th><img src=\"theme/default_skin/img/lune.png\">".$lang['GALAXY_MOON_PHALANX_SYMBOL']."</th></tr>";
+        $legend .= "<tr><td class=\"c\">".$lang['GALAXY_MOON']."<br><i>".$lang['GALAXY_MOON_PHALANX']."</i></td><th><img src=\"assets/default_skin/img/lune.png\">".$lang['GALAXY_MOON_PHALANX_SYMBOL']."</th></tr>";
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_SPYREPORT']."</td><th>".$lang['GALAXY_SPYREPORT_SYMBOL']."</th></tr>";
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_COMBATREPORT']."</td><th>".$lang['GALAXY_COMBATREPORT_SYMBOL']."</th></tr>";
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_ALLY_FRIEND']."</td><th><blink><a>abc</a></blink></th></tr>";

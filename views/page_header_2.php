@@ -22,7 +22,7 @@ if (!defined('IN_SPYOGAME')) {
     <meta name="language" content="fr"/>
     <title><?php echo $server_config["servername"] . " - OGSpy " . $server_config["version"];?></title>
 
-    <link rel="stylesheet" type="text/css" href="./theme/css/formate.css"/>
+    <link rel="stylesheet" type="text/css" href="./assets/css/formate.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
     <link rel="icon" type="image/icon" href="favicon.ico"/>
 </head>
@@ -32,7 +32,7 @@ if (!defined('IN_SPYOGAME')) {
     <tr>
         <td>
             <img style="margin-bottom:30px;" alt="Logo OGSpy"
-                 src="./theme/default_skin/<?php echo $banner_selected; ?>"/>
+                 src="./assets/default_skin/<?php echo $banner_selected; ?>"/>
         </td>
     </tr>
 

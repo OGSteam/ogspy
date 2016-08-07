@@ -42,5 +42,5 @@ function help($key, $value = "", $prefixe = "")
     }
     $text = "this.T_WIDTH=210;this.T_TEMP=0;return escape('" . $text . "')";
 
-    return "<img style=\"cursor:pointer\" src=\"" . $prefixe . "theme/images/help_2.png\" onmouseover=\"" . $text . "\">";
+    return "<img style=\"cursor:pointer\" src=\"" . $prefixe . "assets/images/help_2.png\" onmouseover=\"" . $text . "\">";
 }

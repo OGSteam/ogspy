@@ -58,7 +58,7 @@ if (!defined('IN_SPYOGAME')) {
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="theme/images/ogame-produktion.jpg" width="80" title="Chris Alys"></td>
+                src="assets/images/ogame-produktion.jpg" width="80" title="Chris Alys"></td>
         <td class="l">
             &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Chris Alys</span></b><br/>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_CHRYS']); ?></b></div>
@@ -101,7 +101,7 @@ if (!defined('IN_SPYOGAME')) {
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="theme/images/ogame-produktion.jpg" width="80" title="Ninety"></td>
+                src="assets/images/ogame-produktion.jpg" width="80" title="Ninety"></td>
         <td class="l">
             &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Ninety</span></b><br/>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_NINETY']); ?></b></div>
@@ -110,7 +110,7 @@ if (!defined('IN_SPYOGAME')) {
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="theme/images/ogame-produktion.jpg" width="80" title="Shad"></td>
+                src="assets/images/ogame-produktion.jpg" width="80" title="Shad"></td>
         <td class="l">
             &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Shad</span></b><br/>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_SHAD']); ?></b></div>
@@ -150,7 +150,7 @@ if (!defined('IN_SPYOGAME')) {
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="theme/images/ogame-produktion.jpg" width="80" title="Testeurs"></td>
+                src="assets/images/ogame-produktion.jpg" width="80" title="Testeurs"></td>
         <td class="l">
             <b><span style="color: Yellow; font-size: x-small; "><?php echo($lang['ABOUT_TEST_TEAM']); ?></span></b>
             <br/>
