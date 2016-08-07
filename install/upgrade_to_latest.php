@@ -25,7 +25,7 @@ if($pub_verbose == true){
 <title>Mise à jour OGSpy</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="language" content="fr" />
-<link rel="stylesheet" type="text/css" href="../theme/css/formate.css" />
+<link rel="stylesheet" type="text/css" href="../assets/css/formate.css" />
 </head>
 <body>
 

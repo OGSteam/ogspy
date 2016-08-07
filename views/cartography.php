@@ -42,7 +42,7 @@ foreach ($ally_list as $ally_name) {
 
 require_once("views/page_header.php");
 ?>
-<script language="JavaScript" src="theme/js/autocomplete.js"></script>
+<script language="JavaScript" src="assets/js/autocomplete.js"></script>
 
 <form method="POST" action="index.php?action=cartography">
     <table>

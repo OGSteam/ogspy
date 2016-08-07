@@ -14,7 +14,7 @@
     <title>Installation OGSpy</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="language" content="fr"/>
-    <link rel="stylesheet" type="text/css" href="../theme/css/formate.css"/>
+    <link rel="stylesheet" type="text/css" href="../assets/css/formate.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
     <link rel="icon" type="image/icon" href="../favicon.ico">
 </head>
@@ -240,7 +240,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
     <table width="100%" align="center" cellpadding="20">
         <tr>
             <td height="70">
-                <div align="center"><img src="../theme/default_skin/logos/logo.png"></div>
+                <div align="center"><img src="../assets/default_skin/logos/logo.png"></div>
             </td>
         </tr>
         <tr>
@@ -345,5 +345,5 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
     </table>
 </form>
 </body>
-<script language="JavaScript" src="../theme/js/wz_tooltip.js"></script>
+<script language="JavaScript" src="../assets/js/wz_tooltip.js"></script>
 </html>

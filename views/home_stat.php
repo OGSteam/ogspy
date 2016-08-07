@@ -101,7 +101,7 @@ if (sizeof($dates) > 0) {
                         type="submit" value="<?php echo($lang['HOME_STATS_SEND']); ?>"/></th>
                 <th rowspan="2"><?php echo($lang['HOME_STATS_ZOOM']); ?> : <input type="image" align="absmiddle"
                                               name="zoom_change"
-                                              src="theme/images/<?php echo($zoom == "true" ? "zoom_in.png" : "zoom_out.png"); ?>"
+                                              src="assets/images/<?php echo($zoom == "true" ? "zoom_in.png" : "zoom_out.png"); ?>"
                                               alt="zoom"/>
                 </th>
             </tr>
