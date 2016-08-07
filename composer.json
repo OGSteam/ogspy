@@ -2,6 +2,7 @@
   "name": "ogsteam/ogspy",
   "description": "This is a tool to collect data from a game and provide statistics",
   "minimum-stability": "stable",
+  "version": "3.4.0",
   "license": "GPL-2.0",
   "authors": [
       {

@@ -106,7 +106,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 
 
     //Création de la structure de la base de données
-    $sql_query = @fread(@fopen("schemas/ogspy_structure.sql", 'r'), @filesize("schemas/ogspy_structure.sql")) or die("<h1>SQL structure file has not been found</h1>");
+    $sql_query = @fread(@fopen("../model/schema/ogspy_structure.sql", 'r'), @filesize("../model/schema/ogspy_structure.sql")) or die("<h1>SQL structure file has not been found</h1>");
 
     $sql_query = preg_replace("#ogspy_#", $sgbd_tableprefix, $sql_query);
 
