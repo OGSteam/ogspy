@@ -1766,11 +1766,9 @@ function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_
         $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
     }
     $door = '<a id="linkdoor" href="?action=galaxy&galaxy=' . $galaxie_missil . '&system=' . $sysSol_missil . '"';
-    //$door .= ' onmouseover="this.T_WIDTH=260;this.T_TEMP=15000;return escape(' . $tooltip . ')"';
     $total_missil += $missil_dispo;
     $missil_ready = "<span style='color: #DBBADC; '> " . $total_missil . " " . $lang['GALAXY_MIP_MIPS'] . " </span>";
 
-    //<a href="index.htm" onmouseover="return escape('Some text')">Homepage </a>
     $ok_missil .= $door . $missil_ready . $color_missil_ally1 . $base_coord . $color_missil_ally2;
 
 

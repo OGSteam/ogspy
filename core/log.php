@@ -537,7 +537,6 @@ function log_remove()
 
     if ($pub_directory == true) {
         @unlink("journal/" . $pub_date . "/log_" . $pub_date . ".log");
-        @unlink("journal/" . $pub_date . "/index.htm");
         if (rmdir("journal/" . $pub_date)) {
             redirection("index.php?action=message&id_message=log_remove&info");
         } else {
