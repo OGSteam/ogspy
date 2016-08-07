@@ -169,7 +169,8 @@ switch ($ogsversion) {
         $up_to_date = true;
 
         break;
-    default:
+    case '3.3.x':
+        $requests[] = "DROP TABLE `".TABLE_GCM_USERS."`";					// GCM
     die("Aucune mise … jour n'est disponible");
 }
 
