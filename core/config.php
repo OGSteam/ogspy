@@ -84,7 +84,6 @@ $path_log_today = PATH_LOG . date("ymd") . "/";
 if (!is_dir($path_log_today)) {
     mkdir($path_log_today);
     chmod($path_log_today, 0777);
-    fclose(fopen("$path_log_today/index.htm", "a"));
 }
 define("PATH_LOG_TODAY", PATH_LOG . date("ymd") . "/");
 
