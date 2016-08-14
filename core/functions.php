@@ -8,6 +8,10 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.1.1 ($Rev: 7752 $)
  */
+namespace Ogsteam\Ogspy;
+
+use \IpUtils\Factory;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -82,6 +86,7 @@ function write_file_gz($file, $mode, $text)
  */
 function encode_ip($ip)
 {
+
     $d = explode('.', $ip);
     if (count($d) == 4) return sprintf('%02x%02x%02x%02x', $d[0], $d[1], $d[2], $d[3]);
 

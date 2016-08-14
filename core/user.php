@@ -10,6 +10,8 @@
  * @created 06/12/2005
  */
 
+namespace Ogsteam\Ogspy;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
