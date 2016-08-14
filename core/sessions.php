@@ -180,15 +180,9 @@ function session_set_user_data ($cookie_id)
  * Closing an user session
  *
  * @param boolean $user_id ID user session
- * @todo Query: "delete from ".TABLE_SESSIONS.
- * " where session_id = '".$cookie_id."'";
- * if ( isset ( $server_config["disable_ip_check"] ) && $server_config["disable_ip_check"] != 1 )
- * $request .= " and session_ip = '".$user_ip."'";
- * @todo Query: "delete from ".TABLE_SESSIONS." where session_user_id = ".$user_id;
  */
 function session_close ($user_id = false)
 {
-    global $db, $cookie_id;
     $data_sessions = new Sessions_Model();
     if (!$user_id) {
         $cookie_name = COOKIE_NAME;
