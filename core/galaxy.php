@@ -10,6 +10,8 @@
  * @version 3.05 ($Rev: 7699 $)
  */
 
+namespace Ogsteam\Ogspy;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }

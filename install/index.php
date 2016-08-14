@@ -9,6 +9,8 @@
  * @version 3.04
  */
 
+namespace Ogsteam\Ogspy;
+
 define("IN_SPYOGAME", true);
 define("INSTALL_IN_PROGRESS", true);
 

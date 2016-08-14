@@ -9,6 +9,10 @@
  * @version 3.04
  */
 
+namespace Ogsteam\Ogspy;
+
+use Ogsteam\Ogspy\Sql_Db;
+
 define("IN_SPYOGAME", true);
 define("UPGRADE_IN_PROGRESS", true);
 
@@ -64,15 +68,15 @@ switch ($ogsversion) {
         $requests[] = "DROP TABLE `".TABLE_RANK_ALLY_RESEARCH."`";	// ancien classement recherche
         $requests[] = "DROP TABLE `".TABLE_SPY."`";					// ancienne table des RE
         $requests[] = "DROP TABLE `".TABLE_UNIVERSE_TEMPORARY."`";	// ancienne table temporaire univers		
-        
+
         $ogsversion = '3.1.1';
-        $up_to_date = true;
-        //Pas de break pour faire toutes les mises à jour d'un coup !
+
+        break;
     case '3.1.1':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.2' WHERE config_name = 'version'";
         $ogsversion = '3.1.2';
-        $up_to_date = true;
-        //Pas de break pour faire toutes les mises à jour d'un coup !
+
+        break;
     case '3.1.2':
         $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` MODIFY `coordinates` VARCHAR(10)";
         $requests[] = "ALTER TABLE `".TABLE_UNIVERSE."` MODIFY `phalanx` tinyint(1) NOT NULL default '0'";
@@ -81,7 +85,7 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `".TABLE_USER."` ADD `off_commandant` enum('0','1') NOT NULL default '0' AFTER `disable_ip_check`";
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.3' WHERE config_name = 'version'";
         $ogsversion = '3.1.3';
-        $up_to_date = true;
+        break;
     case '3.1.3':
         $requests[] = "CREATE TABLE IF NOT EXISTS `".TABLE_GCM_USERS."` ( ".
                       "`user_id` int(11) NOT NULL default '0',".
@@ -141,7 +145,7 @@ switch ($ogsversion) {
                 
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.2.0' WHERE config_name = 'version'";
         $ogsversion = '3.2.0';
-        $up_to_date = true;
+        break;
 
     case '3.2.0':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.0' WHERE config_name = 'version'";
@@ -152,7 +156,7 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY."` DROP `CC`";
         $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY."` DROP `CD`";
         $ogsversion = '3.3.0';
-        $up_to_date = true;
+        break;
 
     case '3.3.0':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.1' WHERE config_name = 'version'";
@@ -160,18 +164,22 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` MODIFY `user_galaxy` smallint(2)";
         $requests[] = "ALTER TABLE `" . TABLE_USER_FAVORITE . "` MODIFY `galaxy` smallint(2)";
         $ogsversion = '3.3.1';
-        $up_to_date = true;
+        break;
 
      case '3.3.1':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.2' WHERE config_name = 'version'";
         $requests[] = "ALTER TABLE `".TABLE_USER."` MODIFY `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP','ANDROID')";
         $ogsversion = '3.3.2';
-        $up_to_date = true;
+         break;
 
+    case '3.4.0':
+        $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.4.0' WHERE config_name = 'version'";
+        $requests[] = "DROP TABLE `".TABLE_GCM_USERS."`";
+        $up_to_date = true;
         break;
-    case '3.3.x':
-        $requests[] = "DROP TABLE `".TABLE_GCM_USERS."`";					// GCM
-    die("Aucune mise … jour n'est disponible");
+
+    default:
+        die("Aucune mise … jour n'est disponible");
 }
 
 

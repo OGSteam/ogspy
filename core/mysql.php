@@ -10,6 +10,10 @@
  * @version 3.04b ($Rev: 7692 $)
  */
 
+namespace Ogsteam\Ogspy;
+
+use mysqli;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -18,34 +22,37 @@ if (!defined('IN_SPYOGAME')) {
  * @package OGSpy
  * @subpackage MySql
  */
-class sql_db
+class Sql_Db
 {
     /**
      * Instance variable
      * @access private
      * @var int
      */
-    private static $_instance = false; //(singleton)
+    protected static $_instance = false; //(singleton)
     /**
      * Connection ID
      * @var int
      */
-    var $db_connect_id;
+    public $db_connect_id;
     /**
      * DB Result
      * @var mixed
      */
-    var $result;
+    private $result;
     /**
      * Nb of Queries done
      * @var int
      */
-    var $nb_requete = 0;
+    public $nb_requete = 0;
     /**
      * last query
      * @var int
      */
-    var $last_query;
+    private $last_query;
+
+    /**
+
 
 
     /**

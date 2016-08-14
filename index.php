@@ -9,6 +9,9 @@
  * @version 3.03
  */
 
+namespace Ogsteam\Ogspy;
+use Ogsteam\Ogspy\Sql_Db;
+
 /**
  * @abstract Utilisé dans les autres fichiers pour s'assurer qu'index.php est bien appelé
  */
@@ -36,6 +39,7 @@ if (!isset($pub_action)) {
 if (is_dir("install") && $pub_action != "message") {
     require_once("install/version.php");
     if (version_compare($server_config["version"], $install_version, '<')) {
+
         redirection("install/index.php");
     } else {
         redirection("index.php?action=message&id_message=install_directory&info");
