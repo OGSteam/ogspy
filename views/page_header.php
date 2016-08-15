@@ -11,6 +11,7 @@
  */
 
 namespace Ogsteam\Ogspy;
+use Ghunti\HighchartsPHP;
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
@@ -27,9 +28,7 @@ if (!defined('IN_SPYOGAME')) {
     <link rel="icon" type="image/icon" href="favicon.ico">
 
     <!-- Ajout des scripts Graphique (highcharts), jquery-->
-
-    <script type="text/javascript" src="vendor/components/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/js/highcharts.js"></script>
+    <?php $chart = new HighchartsPHP\Highchart(); $chart->printScripts(); ?>
 </head>
 <body>
 <table id="maintable">
