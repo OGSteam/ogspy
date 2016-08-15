@@ -59,7 +59,6 @@ function session_begin ($user_ip)
 /**
  * Gets the current session and creates it if the session for the current user does not exists
  *
- * @todo Query : "delete from ".TABLE_SESSIONS." where session_expire < ".time()
  * @todo Query : "select session_id from ".TABLE_SESSIONS.
  * " where session_id = '".$cookie_id."'".
  * " and session_ip = '".$user_ip."'";
@@ -78,19 +77,17 @@ function session ()
     $cookie_name = COOKIE_NAME;
     $cookie_time = ($server_config["session_time"] == 0) ? 525600 : $server_config["session_time"];
 
+    $data_sessions = new Sessions_Model();
+
     //Purge des sessions expirées
-    if ($server_config["session_time"] != 0) {
-        $request = "delete from " . TABLE_SESSIONS . " where session_expire < " . time();
-        $db->sql_query($request, true, false);
-    }
+    if ($server_config["session_time"] != 0)  $data_sessions->clean_expired_sessions();
 
     //Récupération de l'id de session si cookie présent
     if (isset($_COOKIE[$cookie_name])) {
         $cookie_id = $_COOKIE[$cookie_name];
 
         //Vérification de la validité de le session
-        $request = "select session_id from " . TABLE_SESSIONS . " where session_id = '" . $cookie_id . "'" . " and session_ip = '" . $user_ip . "'";
-        $result = $db->sql_query($request);
+        $result = $data_sessions->get_session_id($cookie_id, $user_ip);
 
         if ($db->sql_numrows($result) != 1) {
             if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] == 1) {
@@ -127,17 +124,15 @@ function session ()
  *
  * @param int $user_id The current user
  * @param int $lastvisit Lastvisit timestamp
- * @todo Query : "update ".TABLE_SESSIONS." set session_user_id = ".$user_id.
- * ", session_lastvisit = ".$lastvisit.
- * " where session_id = '".$cookie_id."'";
  */
 function session_set_user_id ($user_id, $lastvisit = 0)
 {
-    global $db, $user_ip, $cookie_id, $server_config;
+    global $user_ip, $cookie_id, $server_config;
 
-    $request = "update " . TABLE_SESSIONS . " set session_user_id = " . $user_id . ", session_lastvisit = " . $lastvisit . " where session_id = '" . $cookie_id . "'";
-    if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) $request .= " and session_ip = '" . $user_ip . "'";
-    $db->sql_query($request);
+    if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] == 1)  $user_ip = '';
+
+    $data_sessions = new Sessions_Model();
+    $data_sessions->update_session($user_id, $lastvisit, $cookie_id, $user_ip);
 
     session_set_user_data($cookie_id);
 }
