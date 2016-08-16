@@ -30,7 +30,7 @@ if (!defined('IN_SPYOGAME')) {
  * $request .="'".$cookie_id."', 0, ".time().", ".$cookie_expire.", '".$user_ip."', '1')";
  * @param $user_ip
  */
-function session_begin ($user_ip)
+function session_begin($user_ip)
 {
     global $db, $cookie_id, $server_config, $pub_toolbar_type;
 
@@ -59,17 +59,8 @@ function session_begin ($user_ip)
 /**
  * Gets the current session and creates it if the session for the current user does not exists
  *
- * @todo Query : "select session_id from ".TABLE_SESSIONS.
- * " where session_id = '".$cookie_id."'".
- * " and session_ip = '".$user_ip."'";
- * @todo Query : "select session_id from ".TABLE_SESSIONS." left join ".TABLE_USER.
- * " on session_user_id = user_id".
- * " where session_id = '".$cookie_id."'".
- * " and disable_ip_check = '1'";
- * @todo Query : "update ".TABLE_SESSIONS." set session_ip = '".$user_ip."' where session_id = '".$cookie_id."'"
- * @todo Query : "update ".TABLE_SESSIONS." set session_expire = ".$cookie_expire." where session_id = '".$cookie_id."'"
  */
-function session ()
+function session()
 {
     global $db, $user_ip, $cookie_id, $server_config;
 
@@ -80,7 +71,7 @@ function session ()
     $data_sessions = new Sessions_Model();
 
     //Purge des sessions expirées
-    if ($server_config["session_time"] != 0)  $data_sessions->clean_expired_sessions();
+    if ($server_config["session_time"] != 0) $data_sessions->clean_expired_sessions();
 
     //Récupération de l'id de session si cookie présent
     if (isset($_COOKIE[$cookie_name])) {
@@ -91,29 +82,17 @@ function session ()
 
         if ($db->sql_numrows($result) != 1) {
             if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] == 1) {
-                //Mise à jour de l'adresse ip de session si le contrôle des ip est désactivé
-                $request = "select session_id from " . TABLE_SESSIONS . " left join " . TABLE_USER . " on session_user_id = user_id" . " where session_id = '" . $cookie_id . "'" . " and disable_ip_check = '1'";
-                $result = $db->sql_query($request);
-
-                if ($db->sql_numrows($result) > 0) {
-                    $request = "update " . TABLE_SESSIONS . " set session_ip = '" . $user_ip . "' where session_id = '" . $cookie_id . "'";
-                    $db->sql_query($request, true, false);
-                } else {
-                    $cookie_id = "";
-                }
+                $data_sessions->update_session_public_ip($cookie_id, $user_ip);
             } else {
                 $cookie_id = "";
-
             }
         }
     }
-
     if ($cookie_id == "") {
         session_begin($user_ip);
     } else {
         $cookie_expire = time() + $cookie_time * 60;
-        $request = "update " . TABLE_SESSIONS . " set session_expire = " . $cookie_expire . " where session_id = '" . $cookie_id . "'";
-        $db->sql_query($request, true, false);
+        $data_sessions->update_session_expiration_time($cookie_id, $cookie_expire);
     }
 
     session_set_user_data($cookie_id);
@@ -125,11 +104,11 @@ function session ()
  * @param int $user_id The current user
  * @param int $lastvisit Lastvisit timestamp
  */
-function session_set_user_id ($user_id, $lastvisit = 0)
+function session_set_user_id($user_id, $lastvisit = 0)
 {
     global $user_ip, $cookie_id, $server_config;
 
-    if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] == 1)  $user_ip = '';
+    if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] == 1) $user_ip = '';
 
     $data_sessions = new Sessions_Model();
     $data_sessions->update_session($user_id, $lastvisit, $cookie_id, $user_ip);
@@ -149,7 +128,7 @@ function session_set_user_id ($user_id, $lastvisit = 0)
  * $request .= " and session_id = '".$cookie_id."'";
  * $request .= " and session_ip = '".$user_ip."'";
  */
-function session_set_user_data ($cookie_id)
+function session_set_user_data($cookie_id)
 {
     global $db, $user_ip, $user_data, $user_auth;
 
@@ -176,7 +155,7 @@ function session_set_user_data ($cookie_id)
  *
  * @param boolean $user_id ID user session
  */
-function session_close ($user_id = false)
+function session_close($user_id = false)
 {
     $data_sessions = new Sessions_Model();
     if (!$user_id) {
@@ -192,7 +171,7 @@ function session_close ($user_id = false)
  * Who is Online ?
  *
  */
-function session_whois_online ()
+function session_whois_online()
 {
     global $db, $server_config;
 
@@ -223,7 +202,7 @@ function session_whois_online ()
  * Clean All sessions
  *
  */
-function drop_sessions ()
+function drop_sessions()
 {
     $data_sessions = new Sessions_Model();
     $data_sessions->drop_all();
