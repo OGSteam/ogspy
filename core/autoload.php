@@ -3,7 +3,7 @@
  * Class Autoloader
  * @package OGSpy
  * @subpackage Autoloader
- * @author DarkNoon
+ * @author DarkNoon based on PSR Work
  * @copyright Copyright &copy; 2016, http://ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.4.0
