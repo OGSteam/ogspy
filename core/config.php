@@ -38,6 +38,7 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     define("TABLE_USER_TECHNOLOGY", $table_prefix . "user_technology");
     define("TABLE_MOD", $table_prefix . "mod");
     define("TABLE_MOD_CFG", $table_prefix . "mod_config");
+    define("TABLE_MOD_USER_CFG", $table_prefix . "mod_user_config");
     define("TABLE_PARSEDSPY", $table_prefix . "parsedspy");
     define("TABLE_PARSEDRC", $table_prefix . "parsedRC");
     define("TABLE_PARSEDRCROUND", $table_prefix . "parsedRCRound");
