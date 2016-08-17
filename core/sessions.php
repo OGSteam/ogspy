@@ -23,16 +23,11 @@ if (!defined('IN_SPYOGAME')) {
 /**
  * Stating an user Session
  *
- * @todo Query : "insert into ".TABLE_SESSIONS." (session_id, session_user_id, session_start, session_expire, session_ip) values (";
- * $request .="'".$cookie_id."', 0, ".time().", ".$cookie_expire.", '".$user_ip."')";
- * @todo Query : "delete from ".TABLE_SESSIONS." where session_ip = '".$user_ip."' and session_ogs = '1'"
- * @todo Query : "insert into ".TABLE_SESSIONS." (session_id, session_user_id, session_start, session_expire, session_ip, session_ogs) values (";
- * $request .="'".$cookie_id."', 0, ".time().", ".$cookie_expire.", '".$user_ip."', '1')";
  * @param $user_ip
  */
 function session_begin($user_ip)
 {
-    global $db, $cookie_id, $server_config, $pub_toolbar_type;
+    global $server_config, $pub_toolbar_type;
 
     $cookie_name = COOKIE_NAME;
     $cookie_time = ($server_config["session_time"] == 0) ? 525600 : $server_config["session_time"];
@@ -40,17 +35,13 @@ function session_begin($user_ip)
 
     $cookie_expire = time() + $cookie_time * 60;
 
-    if (!isset($pub_toolbar_type)) {
-        $request = "insert into " . TABLE_SESSIONS . " (session_id, session_user_id, session_start, session_expire, session_ip) values (";
-        $request .= "'" . $cookie_id . "', 0, " . time() . ", " . $cookie_expire . ", '" . $user_ip . "')";
-        $db->sql_query($request, true, false) or die("Impossible d'initialiser la session");
-    } else {
-        $request = "delete from " . TABLE_SESSIONS . " where session_ip = '" . $user_ip . "' and session_ogs = '1'";
-        $db->sql_query($request, true, false) or die("Impossible d'initialiser la session");
+    $data_sessions = new Sessions_Model();
 
-        $request = "insert into " . TABLE_SESSIONS . " (session_id, session_user_id, session_start, session_expire, session_ip, session_ogs) values (";
-        $request .= "'" . $cookie_id . "', 0, " . time() . ", " . $cookie_expire . ", '" . $user_ip . "', '1')";
-        $db->sql_query($request, true, false) or die("Impossible d'initialiser la session");
+    if (!isset($pub_toolbar_type)) {
+        $data_sessions->add_user_session($cookie_id, $cookie_expire, $user_ip);
+    } else {
+        //Update Xtense Session
+        $data_sessions->insert_xtense_session($cookie_id, $cookie_expire, $user_ip);
     }
 
     setcookie($cookie_name, $cookie_id, 0);
@@ -120,25 +111,13 @@ function session_set_user_id($user_id, $lastvisit = 0)
  * Set the user_data array according to the user parameters in the database
  *
  * @param int $cookie_id The cookie id of the user
- * @todo Y a comme un probleme dans cette fonction... ne semble pas prendre de parametres alors que la fonction precedente lui en donne un...
- * @todo Query : "select user_id, user_name, user_admin, user_coadmin, user_galaxy, user_system, session_lastvisit, user_stat_name, ";
- * $request .= "management_user, management_ranking, disable_ip_check, off_amiral, off_ingenieur, off_geologue, off_technocrate";
- * $request .= " from ".TABLE_USER." u, ".TABLE_SESSIONS." s";
- * $request .= " where u.user_id = s.session_user_id";
- * $request .= " and session_id = '".$cookie_id."'";
- * $request .= " and session_ip = '".$user_ip."'";
  */
 function session_set_user_data($cookie_id)
 {
     global $db, $user_ip, $user_data, $user_auth;
 
-    $request = "select user_id, user_name, user_admin, user_coadmin, user_email, user_galaxy, user_system, session_lastvisit, user_stat_name, ";
-    $request .= "management_user, management_ranking, disable_ip_check, off_commandant, off_amiral, off_ingenieur, off_geologue, off_technocrate";
-    $request .= " from " . TABLE_USER . " u, " . TABLE_SESSIONS . " s";
-    $request .= " where u.user_id = s.session_user_id";
-    $request .= " and session_id = '" . $cookie_id . "'";
-    $request .= " and session_ip = '" . $user_ip . "'";
-    $result = $db->sql_query($request);
+    $data_sessions = new Sessions_Model();
+    $result = $data_sessions->select_user_data_session($cookie_id, $user_ip);
 
     if ($db->sql_numrows($result) == 1) {
         $user_data = $db->sql_fetch_assoc($result);
@@ -147,23 +126,6 @@ function session_set_user_data($cookie_id)
     } else {
         unset($user_data);
         unset($user_auth);
-    }
-}
-
-/**
- * Closing an user session
- *
- * @param boolean $user_id ID user session
- */
-function session_close($user_id = false)
-{
-    $data_sessions = new Sessions_Model();
-    if (!$user_id) {
-        $cookie_name = COOKIE_NAME;
-        $cookie_id = $_COOKIE [$cookie_name];
-        $data_sessions->close_session($cookie_id);
-    } else {
-        $data_sessions->close_user_session($user_id);
     }
 }
 
@@ -206,6 +168,23 @@ function drop_sessions()
 {
     $data_sessions = new Sessions_Model();
     $data_sessions->drop_all();
+}
+
+/**
+ * Closing an user session
+ *
+ * @param boolean $user_id ID user session
+ */
+function session_close($user_id = false)
+{
+    $data_sessions = new Sessions_Model();
+    if (!$user_id) {
+        $cookie_name = COOKIE_NAME;
+        $cookie_id = $_COOKIE [$cookie_name];
+        $data_sessions->close_session($cookie_id);
+    } else {
+        $data_sessions->close_user_session($user_id);
+    }
 }
 
 
