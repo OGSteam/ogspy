@@ -10,7 +10,7 @@
  */
 
 namespace Ogsteam\Ogspy;
-use Ogsteam\Ogspy\Sql_Db;
+
 
 /**
  * @abstract Utilisé dans les autres fichiers pour s'assurer qu'index.php est bien appelé
