@@ -38,6 +38,7 @@ if (file_exists("config/id.php")) {
 
 //Appel des fonctions
 require __DIR__ . '/vendor/autoload.php';
+require("core/autoload.php");
 require("core/config.php");
 require("core/functions.php");
 require("core/mysql.php");
@@ -119,10 +120,4 @@ if (!defined("INSTALL_IN_PROGRESS")) {
 }
 
 if (isset($server_config["log_phperror"]) && $server_config["log_phperror"] == 1) set_error_handler('ogspy_error_handler');
-
-//Autoloaders
-
-require __DIR__ . '/vendor/autoload.php';
-require("core/autoload.php");
-
 
