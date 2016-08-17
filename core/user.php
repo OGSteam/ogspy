@@ -312,8 +312,8 @@ function member_user_set()
         $data_user->set_player_officer($user_id, "off_technocrate", 0);
 
     //Contrôle que le pseudo ne soit pas déjà utilisé
-    $request = "select * from " . TABLE_USER . " where user_name = '" .
-        $db->sql_escape_string($pub_pseudo) . "' and user_id <> " . $user_id;
+    $request = "SELECT * FROM " . TABLE_USER . " WHERE user_name = '" .
+        $db->sql_escape_string($pub_pseudo) . "' AND user_id <> " . $user_id;
     $result = $db->sql_query($request);
     if ($db->sql_numrows($result) != 0) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudolocked&info");
