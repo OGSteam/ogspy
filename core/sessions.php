@@ -72,7 +72,7 @@ function session()
         $result = $data_sessions->get_session_id($cookie_id, $user_ip);
 
         if ($db->sql_numrows($result) != 1) {
-            if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] == 1) {
+            if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) {
                 $data_sessions->update_session_public_ip($cookie_id, $user_ip);
             } else {
                 $cookie_id = "";
@@ -99,7 +99,7 @@ function session_set_user_id($user_id, $lastvisit = 0)
 {
     global $user_ip, $cookie_id, $server_config;
 
-    if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] == 1) $user_ip = '';
+    if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) $user_ip = '';
 
     $data_sessions = new Sessions_Model();
     $data_sessions->update_session($user_id, $lastvisit, $cookie_id, $user_ip);

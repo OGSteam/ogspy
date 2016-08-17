@@ -158,6 +158,7 @@ class Sessions_Model
         $request .= " WHERE u.user_id = s.session_user_id";
         $request .= " AND session_id = '" . $cookie_id . "'";
         $request .= " AND session_ip = '" . $user_ip . "'";
+
         $result = $db->sql_query($request);
 
         return $result;
@@ -171,7 +172,7 @@ class Sessions_Model
     {
         global $db;
         $request = "SELECT `user_name`, `session_start`, `session_expire`, `session_ip`, `session_ogs`";
-        $request .= " FROM" . TABLE_SESSIONS . " LEFT JOIN " . TABLE_USER;
+        $request .= " FROM " . TABLE_SESSIONS . " LEFT JOIN " . TABLE_USER;
         $request .= " ON `session_user_id` = `user_id`";
         $request .= " ORDER BY `user_name`";
         $result = $db->sql_query($request);
