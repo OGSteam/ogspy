@@ -54,35 +54,40 @@ function mod_list()
 
 
     $mod_list = array("disabled" => array(), "actived" => array(), "wrong" => array(), "unknown" => array(), "install" => array());
+    $modModel = new Model\Mod_Model();
+    $mods = $modModel->find_by(null, array('position' => 'ASC', 'title' => 'ASC'));
 
-    $request = "select id, title, root, link, version, active, admin_only from " . TABLE_MOD . " order by position, title";
-    $result = $db->sql_query($request);
-    while (list($id, $title, $root, $link, $version, $active, $admin_only) = $db->sql_fetch_row($result)) {
-        if (isset($directories[$root])) { //Mod présent du répertoire "mod"
-            if (in_array($link, $directories[$root]) && in_array("version.txt", $directories[$root])) {
-                //Vérification disponibilité mise à jour de version
-                $line = file("mod/" . $root . "/version.txt");
-                $up_to_date = true;
-                if (isset($line[1])) {
-                    $current_mod_version = trim($line[1]);
-                    if (file_exists("mod/" . $root . "/update.php")) {
-                        $up_to_date = version_compare($current_mod_version, $version, '<=');
-                    }
-                }
-
-                if ($active == 0) { // Mod désactivé
-                    $mod_list["disabled"][] = array("id" => $id, "title" => $title, "version" => $version, "up_to_date" => $up_to_date);
-                } else { //Mod activé
-                    $mod_list["actived"][] = array("id" => $id, "title" => $title, "version" => $version, "up_to_date" => $up_to_date, "admin_only" => $admin_only);
-                }
-            } else { //Mod invalide
-                $mod_list["wrong"][] = array("id" => $id, "title" => $title);
-            }
-
-            unset($directories[$root]);
-        } else { //Mod absent du répertoire "mod"
-            $mod_list["wrong"][] = array("id" => $id, "title" => $title);
+    foreach ($mods as $mod) {
+        //Mod absent du répertoire "mod"
+        if (!isset($directories[$mod['root']])) {
+            $mod_list["wrong"][] = array("id" => $mod['id'], "title" => $mod['title']);
+            continue;
         }
+
+        // Mod invalide
+        $rootDirectory = $directories[$mod['root']];
+        if (!in_array($mod['link'], $rootDirectory) || !in_array("version.txt", $rootDirectory)) {
+            $mod_list["wrong"][] = array("id" => $mod['id'], "title" => $mod['title']);
+            continue;
+        }
+
+        //Vérification disponibilité mise à jour de version
+        $line = file("mod/" . $mod['root'] . "/version.txt");
+        $up_to_date = true;
+        if (isset($line[1])) {
+            $current_mod_version = trim($line[1]);
+            if (file_exists("mod/" . $mod['root'] . "/update.php")) {
+                $up_to_date = version_compare($current_mod_version, $mod['version'], '<=');
+            }
+        }
+
+        if ($mod['active'] == 0) { // Mod désactivé
+            $mod_list["disabled"][] = array("id" => $mod['id'], "title" => $mod['title'], "version" => $mod['version'], "up_to_date" => $up_to_date);
+        } else { //Mod activé
+            $mod_list["actived"][] = array("id" => $mod['id'], "title" => $mod['title'], "version" => $mod['version'], "up_to_date" => $up_to_date, "admin_only" => $mod['admin_only']);
+        }
+
+        unset($directories[$mod['root']]);
     }
 
     while ($files = @current($directories)) {
@@ -97,6 +102,7 @@ function mod_list()
 
     return $mod_list;
 }
+
 /**
  * Function mod_check : Checks if an unauthorized user tries to install a mod without being admin or with wrong parameters
  * @param string $check type of varaible to be checked
@@ -173,12 +179,9 @@ function mod_install()
     $value_mod = explode(',', $mod_config);
 
     // On vérifie si le mod est déjà installé""
-    $check = "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] .
-        "'";
-    $query_check = $db->sql_query($check);
-    $result_check = $db->sql_numrows($query_check);
-
-    if ($result_check != 0) {
+    $repo = new Model\Mod_Model();
+    $installedMods = $repo->find_by(array('title' => $value_mod[0]));
+    if (count($installedMods) != 0) {
 
         log_("mod_erreur_install_bis", $value_mod[0]);
         redirection("index.php?action=message&id_message=errormod&info");
@@ -432,6 +435,7 @@ function mod_normal()
     generate_mod_cache();
     redirection("index.php?action=administration&subaction=mod");
 }
+
 /**
  * Function to set the position of a mod into the mod list
  * @param string $order up or down according to the new desired postion.
@@ -481,6 +485,7 @@ function mod_sort($order)
     generate_mod_cache();
     redirection("index.php?action=administration&subaction=mod");
 }
+
 /**
  * Returns the version number of the current Mod.
  *
@@ -505,6 +510,7 @@ function mod_version()
     }
     return "(ModInconnu:'{$pub_action}')";
 }
+
 /**
  * Mod Configs: Add or updates a configuration option for the mod
  * @param string $param Name of the parameter
@@ -519,7 +525,7 @@ function mod_set_option($param, $value, $nom_mod = '')
 {
     $nom_mod = mod_get_nom();
     if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
-    $modModel = new Mod_Config_Model();
+    $modModel = new Model\Mod_Config_Model();
     return $modModel->set_mod_config($nom_mod, $param, $value);
 }
 
@@ -539,7 +545,7 @@ function mod_set_user_option($param, $user_id, $value, $nom_mod = '')
     if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
     if (!check_var($user_id, "Num")) redirection("index.php?action=message&id_message=errordata&info");
 
-    $modModel = new Mod_User_Config_Model();
+    $modModel = new Model\Mod_User_Config_Model();
     return $modModel->set_mod_config($nom_mod, $param, $user_id, $value);
 }
 
@@ -557,7 +563,7 @@ function mod_del_option($param)
 
     $nom_mod = mod_get_nom();
     if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
-    $modModel = new Mod_Config_Model();
+    $modModel = new Model\Mod_Config_Model();
     return $modModel->delete_mod_config($nom_mod, $param);
 }
 
@@ -575,7 +581,7 @@ function mod_del_user_option($param, $user_id)
     if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
     if (!check_var($user_id, "Num")) redirection("index.php?action=message&id_message=errordata&info");
 
-    $modModel = new Mod_User_Config_Model();
+    $modModel = new Model\Mod_User_Config_Model();
     return $modModel->delete_mod_config($nom_mod, $user_id, $param);
 }
 
@@ -592,9 +598,9 @@ function mod_get_option($param)
     $nom_mod = mod_get_nom();
     if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
 
-    $modModel = new Mod_Config_Model();
+    $modModel = new Model\Mod_Config_Model();
     $result = $modModel->get_mod_config($nom_mod, $param);
-    if(count($result) == 0)
+    if (count($result) == 0)
         return '-1';
 
     return $result;
@@ -614,7 +620,7 @@ function mod_get_user_option($user_id, $param = null)
     if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
     if (!check_var($user_id, "Num")) redirection("index.php?action=message&id_message=errordata&info");
 
-    $modModel = new Mod_User_Config_Model();
+    $modModel = new Model\Mod_User_Config_Model();
     $result = $modModel->get_mod_config($nom_mod, $user_id, $param);
 
     return $result;
@@ -660,7 +666,7 @@ function mod_del_all_option()
     global $db;
 
     $nom_mod = mod_get_nom();
-    $modModel = new Mod_Config_Model();
+    $modModel = new Model\Mod_Config_Model();
     return $modModel->delete_mod_config($nom_mod);
 }
 
@@ -674,7 +680,7 @@ function mod_del_all_user_option()
     global $db;
 
     $nom_mod = mod_get_nom();
-    $modModel = new Mod_User_Config_Model();
+    $modModel = new Model\Mod_User_Config_Model();
     return $modModel->delete_mod_config($nom_mod);
 }
 

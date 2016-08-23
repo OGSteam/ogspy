@@ -6,7 +6,7 @@
  * Time: 20:29
  */
 
-namespace Ogsteam\Ogspy;
+namespace Ogsteam\Ogspy\Model;
 
 /**
  * Classe permettant l'accès à la table de configuration des mods

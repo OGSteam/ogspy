@@ -35,7 +35,7 @@ function session_begin($user_ip)
 
     $cookie_expire = time() + $cookie_time * 60;
 
-    $data_sessions = new Sessions_Model();
+    $data_sessions = new Model\Sessions_Model();
 
     if (!isset($pub_toolbar_type)) {
         $data_sessions->add_user_session($cookie_id, $cookie_expire, $user_ip);
@@ -59,7 +59,7 @@ function session()
     $cookie_name = COOKIE_NAME;
     $cookie_time = ($server_config["session_time"] == 0) ? 525600 : $server_config["session_time"];
 
-    $data_sessions = new Sessions_Model();
+    $data_sessions = new Model\Sessions_Model();
 
     //Purge des sessions expirées
     if ($server_config["session_time"] != 0) $data_sessions->clean_expired_sessions();
@@ -101,7 +101,7 @@ function session_set_user_id($user_id, $lastvisit = 0)
 
     if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) $user_ip = '';
 
-    $data_sessions = new Sessions_Model();
+    $data_sessions = new Model\Sessions_Model();
     $data_sessions->update_session($user_id, $lastvisit, $cookie_id, $user_ip);
 
     session_set_user_data($cookie_id);
@@ -116,7 +116,7 @@ function session_set_user_data($cookie_id)
 {
     global $db, $user_ip, $user_data, $user_auth;
 
-    $data_sessions = new Sessions_Model();
+    $data_sessions = new Model\Sessions_Model();
     $result = $data_sessions->select_user_data_session($cookie_id, $user_ip);
 
     if ($db->sql_numrows($result) == 1) {
@@ -139,7 +139,7 @@ function session_whois_online()
 
     $cookie_time = ($server_config["session_time"] == 0) ? 525600 : $server_config["session_time"];
 
-    $data_sessions = new Sessions_Model();
+    $data_sessions = new Model\Sessions_Model();
     $result = $data_sessions->who_is_online();
 
     $guests = $members = array();
@@ -166,7 +166,7 @@ function session_whois_online()
  */
 function drop_sessions()
 {
-    $data_sessions = new Sessions_Model();
+    $data_sessions = new Model\Sessions_Model();
     $data_sessions->drop_all();
 }
 
@@ -177,7 +177,7 @@ function drop_sessions()
  */
 function session_close($user_id = false)
 {
-    $data_sessions = new Sessions_Model();
+    $data_sessions = new Model\Sessions_Model();
     if (!$user_id) {
         $cookie_name = COOKIE_NAME;
         $cookie_id = $_COOKIE [$cookie_name];

@@ -6,7 +6,7 @@
  * Time: 14:25
  */
 
-namespace Ogsteam\Ogspy;
+namespace Ogsteam\Ogspy\Model;
 
 
 class Sessions_Model

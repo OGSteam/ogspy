@@ -82,8 +82,8 @@ function user_login()
     if (!isset($pub_login) || !isset($pub_password)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     } else {
-        $data_user = new User_Model();
-        $data_statistics = new Statistics_Model();
+        $data_user = new Model\User_Model();
+        $data_statistics = new Model\Statistics_Model();
         $result = $data_user->select_user_login($pub_login,$pub_password);
 
         if (list($user_id, $user_active) = $db->sql_fetch_row($result)) {
@@ -239,7 +239,7 @@ function member_user_set()
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    $data_user = new User_Model();
+    $data_user = new Model\User_Model();
 
     $user_id = $user_data["user_id"];
     $user_info = user_get($user_id);

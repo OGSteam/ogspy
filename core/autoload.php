@@ -20,7 +20,7 @@ spl_autoload_register(function ($class) {
     $prefix = 'Ogsteam\\Ogspy\\';
 
     // base directory for the namespace prefix
-    $model_base_dir = __DIR__ . '/../model/';
+    $model_base_dir = __DIR__ . '/../';
 
     // does the class use the namespace prefix?
     $len = strlen($prefix);

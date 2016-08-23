@@ -6,7 +6,7 @@
  * Time: 14:27
  */
 
-namespace Ogsteam\Ogspy;
+namespace Ogsteam\Ogspy\Model;
 
 
 class Statistics_Model
