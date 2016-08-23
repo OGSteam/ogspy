@@ -175,6 +175,18 @@ switch ($ogsversion) {
     case '3.4.0':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.4.0' WHERE config_name = 'version'";
         $requests[] = "DROP TABLE `".TABLE_GCM_USERS."`";
+        $requests[] = "CREATE TABLE IF NOT EXISTS `" .TABLE_MOD_USER_CFG . "` (
+	                    `mod` VARCHAR(50) NOT NULL,
+	                    `config` VARCHAR(255) NOT NULL,
+	                    `user_id` INT(10) NOT NULL,
+	                    `value` VARCHAR(255) NOT NULL,
+	                    PRIMARY KEY (`mod`, `config`, `user_id`),
+	                    INDEX `fk_user_userid` (`user_id`),
+	                    CONSTRAINT `fk_user_userid` FOREIGN KEY (`user_id`) REFERENCES `ogspy_user` (`user_id`)
+                        )
+                        DEFAULT CHARSET = utf8
+                        ENGINE=InnoDB
+                        ;";
         $up_to_date = true;
         break;
 
