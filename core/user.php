@@ -193,6 +193,8 @@ function admin_regeneratepwd()
     global $$pass_id;
     $new_pass = $$pass_id;
 
+    $data_user = new User_Model();
+
     if (!check_var($pub_user_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
@@ -211,7 +213,7 @@ function admin_regeneratepwd()
     } else {
         $password = password_generator();
     }
-    user_set_general($pub_user_id, null, $password);
+    $data_user->set_user_password($pub_user_id,$password);
 
     $info = $pub_user_id . ":" . $password;
     log_("regeneratepwd", $pub_user_id);
@@ -273,7 +275,7 @@ function member_user_set()
 
     //pseudo ingame
     if ($user_data["user_stat_name"] !== $pub_pseudo_ingame) {
-        user_set_stat_name($pub_pseudo_ingame);
+        $data_user->set_game_account_name($user_id, $pub_pseudo_ingame);
     }
 
     //compte Commandant
@@ -312,9 +314,8 @@ function member_user_set()
         $data_user->set_player_officer($user_id, "off_technocrate", 0);
 
     //Contrôle que le pseudo ne soit pas déjà utilisé
-    $request = "SELECT * FROM " . TABLE_USER . " WHERE user_name = '" .
-        $db->sql_escape_string($pub_pseudo) . "' AND user_id <> " . $user_id;
-    $result = $db->sql_query($request);
+    $result = $data_user->select_user_name($user_id, $pub_pseudo);
+
     if ($db->sql_numrows($result) != 0) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudolocked&info");
     }
@@ -322,84 +323,14 @@ function member_user_set()
     if (is_null($pub_disable_ip_check) || $pub_disable_ip_check != 1)
         $pub_disable_ip_check = 0;
 
-    user_set_general($user_id, $pub_pseudo, $pub_new_password, $pub_pseudo_email, null, $pub_galaxy, $pub_system,
-        $pub_disable_ip_check);
+    if(isset($pub_pseudo)) $data_user->set_user_pseudo($user_id, $pub_pseudo);
+    if(isset($pub_new_password)) $data_user->set_user_password($user_id, $pub_new_password);
+    if(isset($pub_pesudo_email)) $data_user->set_user_email($user_id, $pub_pesudo_email);
+    if(isset($pub_galaxy)) $data_user->set_user_default_galaxy($user_id, $pub_galaxy);
+    if(isset($pub_system)) $data_user->set_user_default_system($user_id, $pub_system);
+    if(isset($pub_disable_ip_check)) $data_user->set_user_ip_check($user_id,$pub_disable_ip_check);
+
     redirection("index.php?action=profile");
-}
-
-/**
- * Entree en BDD de donnees utilisateur
- * @todo Query x1
- * @param $user_id
- * @param null $user_name
- * @param null $user_password
- * @param null $user_email
- * @param null $user_lastvisit
- * @param null $user_galaxy
- * @param null $user_system
- * @param null $disable_ip_check
- */
-function user_set_general($user_id, $user_name = null, $user_password = null, $user_email = null, $user_lastvisit = null,
-                          $user_galaxy = null, $user_system = null, $disable_ip_check = null)
-{
-    global $db, $user_data, $server_config;
-
-    if (!isset($user_id)) {
-        redirection("index.php?action=message&id_message=errorfatal&info");
-    }
-
-    if (!empty($user_galaxy)) {
-        $user_galaxy = intval($user_galaxy);
-        if ($user_galaxy < 1 || $user_galaxy > intval($server_config['num_of_galaxies']))
-            $user_galaxy = 1;
-    }
-    if (!empty($user_system)) {
-        $user_system = intval($user_system);
-        if ($user_system < 1 || $user_system > intval($server_config['num_of_systems']))
-            $user_system = 1;
-    }
-
-    $update = "";
-
-    //Pseudo et mot de passe
-    if (!empty($user_name))
-        $update .= "user_name = '" . $db->sql_escape_string($user_name) . "'";
-    if (!empty($user_password))
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_password = '" . md5(sha1
-            ($user_password)) . "'";
-
-    //Galaxy et système solaire du membre
-    if (!empty($user_galaxy))
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_galaxy = '" . $user_galaxy .
-            "'";
-    if (!empty($user_system))
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_system = '" . $user_system .
-            "'";
-
-    //Dernière visite
-    if (!empty($user_lastvisit))
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_lastvisit = '" . $user_lastvisit .
-            "'";
-
-    //Email
-    if (!empty($user_email))
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_email = '" . $user_email .
-            "'";
-
-    //Désactivation de la vérification de l'adresse ip
-    if (!is_null($disable_ip_check))
-        $update .= ((strlen($update) > 0) ? ", " : "") . "disable_ip_check = '" . $disable_ip_check .
-            "'";
-
-
-    $request = "update " . TABLE_USER . " set " . $update . " where user_id = " . $user_id;
-    $db->sql_query($request);
-
-    if ($user_id == $user_data['user_id']) {
-        log_("modify_account");
-    } else {
-        log_("modify_account_admin", $user_id);
-    }
 }
 
 /**
@@ -1818,20 +1749,6 @@ function usergroup_delmember()
     }
 
     redirection("index.php?action=administration&subaction=group&group_id=" . $pub_group_id);
-}
-
-/**
- * A quoi sert donc cette fonction ? :p
- * Reponse elle sert a mettre a jour le pseudo ingame afin d afficher les stats users dans son espace perso
- * @param $user_stat_name
- */
-function user_set_stat_name($user_stat_name)
-{
-    global $db, $user_data;
-
-    $request = "update " . TABLE_USER . " set user_stat_name = '" . $user_stat_name .
-        "' where user_id = " . $user_data['user_id'];
-    $db->sql_query($request);
 }
 
 //Suppression d'un rapport d'espionnage
