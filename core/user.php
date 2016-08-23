@@ -193,7 +193,7 @@ function admin_regeneratepwd()
     global $$pass_id;
     $new_pass = $$pass_id;
 
-    $data_user = new User_Model();
+    $data_user = new Model\User_Model();
 
     if (!check_var($pub_user_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
