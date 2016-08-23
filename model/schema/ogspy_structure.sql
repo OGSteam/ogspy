@@ -36,6 +36,7 @@ DROP TABLE IF EXISTS ogspy_user_group;
 DROP TABLE IF EXISTS ogspy_user_spy;
 DROP TABLE IF EXISTS ogspy_user_technology;
 DROP TABLE IF EXISTS ogspy_mod_config;
+DROP TABLE IF EXISTS ogspy_mod_user_config;
 DROP TABLE IF EXISTS ogspy_parsedspy;
 DROP TABLE IF EXISTS ogspy_parsedRC;
 DROP TABLE IF EXISTS ogspy_parsedRCRound;
@@ -666,6 +667,19 @@ CREATE TABLE `ogspy_mod_config` (
 )
   DEFAULT CHARSET = utf8;
 ## ########################################################
+
+## Structure de la table `ogspy_mod_user_config
+CREATE TABLE `ogspy_mod_user_config` (
+  `mod` VARCHAR(50) NOT NULL,
+  `config` VARCHAR(255) NOT NULL,
+  `user_id` INT(10) NOT NULL,
+  `value` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`mod`, `config`, `user_id`),
+  INDEX `fk_user_userid` (`user_id`),
+  CONSTRAINT `fk_user_userid` FOREIGN KEY (`user_id`) REFERENCES `ogspy_user` (`user_id`)
+)
+  DEFAULT CHARSET = utf8
+  ENGINE=InnoDB;
 
 ## 
 ## Contenu de la table `ogspy_config`

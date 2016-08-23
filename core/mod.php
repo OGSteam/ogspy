@@ -517,14 +517,32 @@ function mod_version()
  */
 function mod_set_option($param, $value, $nom_mod = '')
 {
-    global $db;
-
     $nom_mod = mod_get_nom();
     if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
-    $query = 'REPLACE INTO ' . TABLE_MOD_CFG . ' VALUES ("' . $nom_mod . '", "' . $param . '", "' . $value . '")';
-    if (!$db->sql_query($query)) return false;
-    return true;
+    $modModel = new Mod_Config_Model();
+    return $modModel->set_mod_config($nom_mod, $param, $value);
 }
+
+/**
+ * Mod Configs: Add or updates a configuration option for the mod
+ * @param string $param Name of the parameter
+ * @param integer $user_id Id of the user
+ * @param string $value Value of the parameter
+ * @param string $nom_mod Mod name
+ * @return bool returns true if the parameter is correctly saved. false in other cases.
+ * @global $db
+ * @api
+ */
+function mod_set_user_option($param, $user_id, $value, $nom_mod = '')
+{
+    $nom_mod = mod_get_nom();
+    if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
+    if (!check_var($user_id, "Num")) redirection("index.php?action=message&id_message=errordata&info");
+
+    $modModel = new Mod_User_Config_Model();
+    return $modModel->set_mod_config($nom_mod, $param, $user_id, $value);
+}
+
 /**
  * Mod Configs: Deletes a parameter for a mod
  * @param string $param Name of the parameter
@@ -539,10 +557,28 @@ function mod_del_option($param)
 
     $nom_mod = mod_get_nom();
     if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
-    $query = 'DELETE FROM ' . TABLE_MOD_CFG . ' WHERE `mod` = "' . $nom_mod . '" AND `config` = "' . $param . '"';
-    if (!$db->sql_query($query)) return false;
-    return true;
+    $modModel = new Mod_Config_Model();
+    return $modModel->delete_mod_config($nom_mod, $param);
 }
+
+/**
+ * Mod Configs: Deletes a parameter for a mod and a user
+ * @param string $param Name of the parameter
+ * @param $user_id Id of the user
+ * @return bool returns true if the parameter is correctly saved. false in other cases.
+ * @global $db
+ * @api
+ */
+function mod_del_user_option($param, $user_id)
+{
+    $nom_mod = mod_get_nom();
+    if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
+    if (!check_var($user_id, "Num")) redirection("index.php?action=message&id_message=errordata&info");
+
+    $modModel = new Mod_User_Config_Model();
+    return $modModel->delete_mod_config($nom_mod, $user_id, $param);
+}
+
 /**
  * Mod Configs : Reads a parameter value for the current mod
  * @param string $param Name of the parameter
@@ -553,15 +589,37 @@ function mod_del_option($param)
  */
 function mod_get_option($param)
 {
-    global $db;
-
     $nom_mod = mod_get_nom();
     if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
-    $query = 'SELECT value FROM ' . TABLE_MOD_CFG . ' WHERE `mod` = "' . $nom_mod . '" AND `config` = "' . $param . '"';
-    $result = $db->sql_query($query);
-    if (!list ($value) = $db->sql_fetch_row($result)) return '-1';
-    return $value;
+
+    $modModel = new Mod_Config_Model();
+    $result = $modModel->get_mod_config($nom_mod, $param);
+    if(count($result) == 0)
+        return '-1';
+
+    return $result;
 }
+
+/**
+ * Mod Configs : Reads a parameter value for the current mod and a specific user
+ * @param string $param Name of the parameter
+ * @param integer $user_id Id of the user
+ * @return array Returns an array with the value of the requested parameter
+ * @global $db
+ * @api
+ */
+function mod_get_user_option($user_id, $param = null)
+{
+    $nom_mod = mod_get_nom();
+    if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
+    if (!check_var($user_id, "Num")) redirection("index.php?action=message&id_message=errordata&info");
+
+    $modModel = new Mod_User_Config_Model();
+    $result = $modModel->get_mod_config($nom_mod, $user_id, $param);
+
+    return $result;
+}
+
 /**
  * Mod Configs : Gets the current mod name
  * @global $db
@@ -590,6 +648,7 @@ function mod_get_nom()
     }
     return $nom_mod;
 }
+
 /**
  * Deletes all configurations for the current mod
  * @global $db
@@ -601,9 +660,22 @@ function mod_del_all_option()
     global $db;
 
     $nom_mod = mod_get_nom();
-    $query = 'DELETE FROM ' . TABLE_MOD_CFG . ' WHERE `mod` = "' . $nom_mod . '"';
-    if (!$db->sql_query($query)) return false;
-    return true;
+    $modModel = new Mod_Config_Model();
+    return $modModel->delete_mod_config($nom_mod);
+}
+
+/**
+ * Deletes all user configurations for the current mod
+ * @global $db
+ * @return boolean Returns true if at least one entry has been deleted. False if nothing has been removed.
+ */
+function mod_del_all_user_option()
+{
+    global $db;
+
+    $nom_mod = mod_get_nom();
+    $modModel = new Mod_User_Config_Model();
+    return $modModel->delete_mod_config($nom_mod);
 }
 
 //\\ fonctions utilisable pour les mods //\\
