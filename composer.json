@@ -1,0 +1,30 @@
+{
+  "name": "ogsteam/ogspy",
+  "description": "This is a tool to collect data from a game and provide statistics",
+  "minimum-stability": "stable",
+  "version": "3.4.0",
+  "license": "GPL-2.0",
+  "authors": [
+      {
+      "name": "Anthony Chomat",
+      "email": "darknoon@darkcity.fr",
+      "homepage": "https://www.ogsteam.fr",
+      "role": "Project leader"
+      },
+      {
+      "name": "Kyser",
+      "role": "Author"
+      }
+  ],
+  "require" : {
+    "php" : "^5.5 || ^7.0",
+    "ghunti/highcharts-php": "v3.0.3"
+
+  },
+  "autoload": {
+    "psr-4": {
+      "Ogsteam\\Ogspy\\Model\\": "model/"
+    }
+  }
+
+}
