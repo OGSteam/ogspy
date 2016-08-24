@@ -12,6 +12,7 @@
  */
 
 namespace Ogsteam\Ogspy;
+use Ogsteam\Ogspy\Model\Sessions_Model;
 
 /**
  * Interdiction de l'appel direct
@@ -58,7 +59,6 @@ function session()
     $cookie_id = "";
     $cookie_name = COOKIE_NAME;
     $cookie_time = ($server_config["session_time"] == 0) ? 525600 : $server_config["session_time"];
-
     $data_sessions = new Sessions_Model();
 
     //Purge des sessions expirées

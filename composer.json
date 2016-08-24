@@ -20,5 +20,11 @@
     "php" : "^5.5 || ^7.0",
     "ghunti/highcharts-php": "v3.0.3"
 
+  },
+  "autoload": {
+    "psr-4": {
+      "Ogsteam\\Ogspy\\Model\\": "model/"
+    }
   }
+
 }

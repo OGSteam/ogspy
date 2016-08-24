@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInit7f8ed55ac5aa63c4f86a51e8a17b034a
 {
     public static $prefixLengthsPsr4 = array (
+        'O' => 
+        array (
+            'Ogsteam\\Ogspy\\Model\\' => 20,
+        ),
         'G' => 
         array (
             'Ghunti\\HighchartsPHP\\' => 21,
@@ -14,6 +18,10 @@ class ComposerStaticInit7f8ed55ac5aa63c4f86a51e8a17b034a
     );
 
     public static $prefixDirsPsr4 = array (
+        'Ogsteam\\Ogspy\\Model\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/model',
+        ),
         'Ghunti\\HighchartsPHP\\' => 
         array (
             0 => __DIR__ . '/..' . '/ghunti/highcharts-php/src',

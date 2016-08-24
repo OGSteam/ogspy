@@ -12,8 +12,6 @@
 
 namespace Ogsteam\Ogspy;
 
-use Ogsteam\Ogspy\Sql_Db;
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -37,8 +35,8 @@ if (file_exists("config/id.php")) {
 }
 
 //Appel des fonctions
+
 require __DIR__ . '/vendor/autoload.php';
-require("core/autoload.php");
 require("core/config.php");
 require("core/functions.php");
 require("core/mysql.php");

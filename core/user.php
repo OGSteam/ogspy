@@ -12,12 +12,15 @@
 
 namespace Ogsteam\Ogspy;
 
+use Ogsteam\Ogspy\Model\User_Model;
+use Ogsteam\Ogspy\Model\Statistics_Model;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
 /**
- * Verification des droits utilisateurs sur une action avec redirection le cas echeant
+ * Verification des droits utilisateurs sur une action avec redirection le cas écheant
  * @param string $action Action verifie
  * @param int $user_id identificateur optionnel de l'utilisateur teste
  */
