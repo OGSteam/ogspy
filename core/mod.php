@@ -12,6 +12,10 @@
 
 namespace Ogsteam\Ogspy;
 
+use Ogsteam\Ogspy\Model\Mod_Config_Model;
+use Ogsteam\Ogspy\Model\Mod_Model;
+use Ogsteam\Ogspy\Model\Mod_User_Config_Model;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -54,35 +58,40 @@ function mod_list()
 
 
     $mod_list = array("disabled" => array(), "actived" => array(), "wrong" => array(), "unknown" => array(), "install" => array());
+    $modModel = new Mod_Model();
+    $mods = $modModel->find_by(null, array('position' => 'ASC', 'title' => 'ASC'));
 
-    $request = "select id, title, root, link, version, active, admin_only from " . TABLE_MOD . " order by position, title";
-    $result = $db->sql_query($request);
-    while (list($id, $title, $root, $link, $version, $active, $admin_only) = $db->sql_fetch_row($result)) {
-        if (isset($directories[$root])) { //Mod présent du répertoire "mod"
-            if (in_array($link, $directories[$root]) && in_array("version.txt", $directories[$root])) {
-                //Vérification disponibilité mise à jour de version
-                $line = file("mod/" . $root . "/version.txt");
-                $up_to_date = true;
-                if (isset($line[1])) {
-                    $current_mod_version = trim($line[1]);
-                    if (file_exists("mod/" . $root . "/update.php")) {
-                        $up_to_date = version_compare($current_mod_version, $version, '<=');
-                    }
-                }
-
-                if ($active == 0) { // Mod désactivé
-                    $mod_list["disabled"][] = array("id" => $id, "title" => $title, "version" => $version, "up_to_date" => $up_to_date);
-                } else { //Mod activé
-                    $mod_list["actived"][] = array("id" => $id, "title" => $title, "version" => $version, "up_to_date" => $up_to_date, "admin_only" => $admin_only);
-                }
-            } else { //Mod invalide
-                $mod_list["wrong"][] = array("id" => $id, "title" => $title);
-            }
-
-            unset($directories[$root]);
-        } else { //Mod absent du répertoire "mod"
-            $mod_list["wrong"][] = array("id" => $id, "title" => $title);
+    foreach ($mods as $mod) {
+        //Mod absent du répertoire "mod"
+        if (!isset($directories[$mod['root']])) {
+            $mod_list["wrong"][] = array("id" => $mod['id'], "title" => $mod['title']);
+            continue;
         }
+
+        // Mod invalide
+        $rootDirectory = $directories[$mod['root']];
+        if (!in_array($mod['link'], $rootDirectory) || !in_array("version.txt", $rootDirectory)) {
+            $mod_list["wrong"][] = array("id" => $mod['id'], "title" => $mod['title']);
+            continue;
+        }
+
+        //Vérification disponibilité mise à jour de version
+        $line = file("mod/" . $mod['root'] . "/version.txt");
+        $up_to_date = true;
+        if (isset($line[1])) {
+            $current_mod_version = trim($line[1]);
+            if (file_exists("mod/" . $mod['root'] . "/update.php")) {
+                $up_to_date = version_compare($current_mod_version, $mod['version'], '<=');
+            }
+        }
+
+        if ($mod['active'] == 0) { // Mod désactivé
+            $mod_list["disabled"][] = array("id" => $mod['id'], "title" => $mod['title'], "version" => $mod['version'], "up_to_date" => $up_to_date);
+        } else { //Mod activé
+            $mod_list["actived"][] = array("id" => $mod['id'], "title" => $mod['title'], "version" => $mod['version'], "up_to_date" => $up_to_date, "admin_only" => $mod['admin_only']);
+        }
+
+        unset($directories[$mod['root']]);
     }
 
     while ($files = @current($directories)) {
@@ -97,6 +106,7 @@ function mod_list()
 
     return $mod_list;
 }
+
 /**
  * Function mod_check : Checks if an unauthorized user tries to install a mod without being admin or with wrong parameters
  * @param string $check type of varaible to be checked
@@ -173,12 +183,9 @@ function mod_install()
     $value_mod = explode(',', $mod_config);
 
     // On vérifie si le mod est déjà installé""
-    $check = "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] .
-        "'";
-    $query_check = $db->sql_query($check);
-    $result_check = $db->sql_numrows($query_check);
-
-    if ($result_check != 0) {
+    $modRepository = new Mod_Model();
+    $installedMods = $modRepository->find_by(array('title' => $value_mod[0]));
+    if (count($installedMods) != 0) {
 
         log_("mod_erreur_install_bis", $value_mod[0]);
         redirection("index.php?action=message&id_message=errormod&info");
@@ -200,24 +207,18 @@ function mod_install()
             exit();
         }
     }
+
+    $position = $modRepository->get_position_max() +1;
+
+    $mod = array_combine(array('title', 'menu', 'action', 'root', 'link', 'active', 'admin_only'), $value_mod);
+    $mod['version'] = $mod_version;
+    $mod['position'] = $position;
+    $modRepository->add($mod);
+
     // si on arrive jusque la on peut installer
     require_once("mod/" . $pub_directory . "/install.php");
 
-    $request = "select id from " . TABLE_MOD . " where root = '{$pub_directory}'";
-    $result = $db->sql_query($request);
-    list($mod_id) = $db->sql_fetch_row($result);
-
-    $request = "select max(position) from " . TABLE_MOD;
-    $result = $db->sql_query($request);
-    list($position) = $db->sql_fetch_row($result);
-
-    $request = "update " . TABLE_MOD . " set position = " . ($position + 1) . " where root = '{$pub_directory}'";
-    $db->sql_query($request);
-
-    $request = "select title from " . TABLE_MOD . " where id = '{$mod_id}'";
-    $result = $db->sql_query($request);
-    list($title) = $db->sql_fetch_row($result);
-    log_("mod_install", $title);
+    log_("mod_install", $mod['title']);
     generate_mod_cache();
 
     redirection("index.php?action=administration&subaction=mod");
@@ -230,44 +231,50 @@ function mod_install()
  */
 function mod_update()
 {
-    global $db, $pub_mod_id, $server_config;
-    global $pub_directory;
+    global $pub_mod_id, $server_config;
 
     mod_check("mod_id");
 
-    $request = "select root from " . TABLE_MOD . " where id = '{$pub_mod_id}'";
-    $result = $db->sql_query($request);
-    list($root) = $db->sql_fetch_row($result);
+    $modRepository = new Mod_Model();
+    $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
+    // Mod inconnu
+    if(count($mods) != 1)
+    {
+        log_("mod_erreur_unknown", $pub_mod_id);
+        redirection("index.php?action=message&id_message=errormod&info");
+        exit();
+    }
+    $mod = $mods[0];
 
     // modif pour 3.0.7
     // check d un mod " normalisé"
     // voir @ shad 
 
     // fichier mod_erreur_update non present
-    if (!file_exists("mod/" . $root . "/update.php")) {
-        log_("mod_erreur_update", $root);
+    if (!file_exists("mod/" . $mod['root'] . "/update.php")) {
+        log_("mod_erreur_update", $mod['root']);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
     }
 
     //fichier . txt non present 
-    if (!file_exists("mod/" . $root . "/version.txt")) {
-        log_("mod_erreur_install_txt", $root);
+    if (!file_exists("mod/" . $mod['root'] . "/version.txt")) {
+        log_("mod_erreur_install_txt", $mod['root']);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
     }
 
     //verification  presence de majuscule
-    if (!ctype_lower($root)) {
-        log_("mod_erreur_minuscule", $root);
+    if (!ctype_lower($mod['root'])) {
+        log_("mod_erreur_minuscule", $mod['root']);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
 
     }
 
     // verification sur le fichier .txt
-    $filename = 'mod/' . $root . '/version.txt';
+    $filename = 'mod/' . $mod['root'] . '/version.txt';
     // On récupère les données du fichier version.txt
     $file = file($filename);
     $mod_version = trim($file[1]);
@@ -275,7 +282,7 @@ function mod_update()
     // On explode la chaine d'information
     $value_mod = explode(',', $mod_config);
     if (count($value_mod) != 7) {
-        log_("mod_erreur_txt_warning", $root);
+        log_("mod_erreur_txt_warning", $mod['root']);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
     }
@@ -285,19 +292,18 @@ function mod_update()
     $mod_required_ogspy = trim($file[3]);
     if (isset($mod_required_ogspy)) {
         if (version_compare($mod_required_ogspy, $server_config["version"]) > 0) {
-            log_("mod_erreur_txt_version", $root);
+            log_("mod_erreur_txt_version", $mod['root']);
             redirection("index.php?action=message&id_message=errormod&info");
             exit();
         }
     }
 
-    if (file_exists("mod/" . $root . "/update.php")) {
-        require_once("mod/" . $root . "/update.php");
+    if (file_exists("mod/" . $mod['root'] . "/update.php")) {
+        require_once("mod/" . $mod['root'] . "/update.php");
 
-        $request = "select title from " . TABLE_MOD . " where id = '{$pub_mod_id}'";
-        $result = $db->sql_query($request);
-        list($title) = $db->sql_fetch_row($result);
-        log_("mod_update", $title);
+        $mod['version'] = $mod_version;
+        $modRepository->update($mod);
+        log_("mod_update", $mod['title']);
     }
     generate_mod_cache();
     redirection("index.php?action=administration&subaction=mod");
@@ -317,21 +323,30 @@ function mod_uninstall()
 
     mod_check("mod_id");
 
-    $request = "select root from " . TABLE_MOD . " where id = '{$pub_mod_id}'";
-    $result = $db->sql_query($request);
-    list($root) = $db->sql_fetch_row($result);
-    if (file_exists("mod/" . $root . "/uninstall.php")) {
-        require_once("mod/" . $root . "/uninstall.php");
+    $modRepository = new Mod_Model();
+    $mods = $modRepository->find_by(array('id' => $pub_mod_id));
+
+    if(count($mods) != 1)
+    {
+        log_("mod_erreur_unknown", $pub_mod_id);
+        redirection("index.php?action=message&id_message=errormod&info");
+        exit();
+    }
+    $mod = $mods[0];
+
+    if (file_exists("mod/" . $mod['root'] . "/uninstall.php")) {
+        require_once("mod/" . $mod['root'] . "/uninstall.php");
     }
 
-    $request = "select title from " . TABLE_MOD . " where id = '{$pub_mod_id}'";
-    $result = $db->sql_query($request);
-    list($title) = $db->sql_fetch_row($result);
+    //Suppression des paramètres du mod
+    mod_del_all_option();
+    // Suppression des paramètres utilisateur du mod
+    mod_del_all_user_option();
 
-    $request = "delete from " . TABLE_MOD . " where id = '{$pub_mod_id}'";
-    $db->sql_query($request);
+    $modRepository->delete($mod['id']);
 
-    log_("mod_uninstall", $title);
+
+    log_("mod_uninstall", $mod['title']);
     generate_mod_cache();
     redirection("index.php?action=administration&subaction=mod");
 }
@@ -349,13 +364,21 @@ function mod_active()
 
     mod_check("mod_id");
 
-    $request = "update " . TABLE_MOD . " set active='1' where id = '{$pub_mod_id}'";
-    $db->sql_query($request);
+    $modRepository = new Mod_Model();
+    $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
-    $request = "select title from " . TABLE_MOD . " where id = '{$pub_mod_id}'";
-    $result = $db->sql_query($request);
-    list($title) = $db->sql_fetch_row($result);
-    log_("mod_active", $title);
+    if(count($mods) != 1)
+    {
+        log_("mod_erreur_unknown", $pub_mod_id);
+        redirection("index.php?action=message&id_message=errormod&info");
+        exit();
+    }
+    $mod = $mods[0];
+
+    $mod['active'] = 1;
+    $modRepository->update($mod);
+
+    log_("mod_active", $mod['title']);
     generate_mod_cache();
     redirection("index.php?action=administration&subaction=mod");
 }
@@ -372,18 +395,24 @@ function mod_disable()
 
     mod_check("mod_id");
 
-    $request = "update " . TABLE_MOD . " set active='0' where id = '{$pub_mod_id}'";
-    $db->sql_query($request);
+    $modRepository = new Mod_Model();
+    $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
-    $request = "select title from " . TABLE_MOD . " where id = '{$pub_mod_id}'";
-    $result = $db->sql_query($request);
-    list($title) = $db->sql_fetch_row($result);
-    log_("mod_disable", $title);
+    if(count($mods) != 1)
+    {
+        log_("mod_erreur_unknown", $pub_mod_id);
+        redirection("index.php?action=message&id_message=errormod&info");
+        exit();
+    }
+    $mod = $mods[0];
+
+    $mod['active'] = 0;
+    $modRepository->update($mod);
+
+    log_("mod_disable", $mod['title']);
     generate_mod_cache();
     redirection("index.php?action=administration&subaction=mod");
 }
-
-// Modifs par naruto kun
 
 /**
  * Set the visibility of the mod (Admin)
@@ -397,14 +426,21 @@ function mod_admin()
 
     mod_check("mod_id");
 
-    $request = "update " . TABLE_MOD . " set admin_only='1' where id = '{$pub_mod_id}'";
-    $db->sql_query($request);
+    $modRepository = new Mod_Model();
+    $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
-    $request = "select title from " . TABLE_MOD . " where id = '{$pub_mod_id}'";
-    $result = $db->sql_query($request);
-    list($title) = $db->sql_fetch_row($result);
+    if(count($mods) != 1)
+    {
+        log_("mod_erreur_unknown", $pub_mod_id);
+        redirection("index.php?action=message&id_message=errormod&info");
+        exit();
+    }
+    $mod = $mods[0];
 
-    log_("mod_admin", $title);
+    $mod['admin_only'] = 1;
+    $modRepository->update($mod);
+
+    log_("mod_admin", $mod['title']);
     generate_mod_cache();
     redirection("index.php?action=administration&subaction=mod");
 }
@@ -421,17 +457,25 @@ function mod_normal()
 
     mod_check("mod_id");
 
-    $request = "update " . TABLE_MOD . " set admin_only='0' where id = '{$pub_mod_id}'";
-    $db->sql_query($request);
+    $modRepository = new Mod_Model();
+    $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
-    $request = "select title from " . TABLE_MOD . " where id = '{$pub_mod_id}'";
-    $result = $db->sql_query($request);
-    list($title) = $db->sql_fetch_row($result);
+    if(count($mods) != 1)
+    {
+        log_("mod_erreur_unknown", $pub_mod_id);
+        redirection("index.php?action=message&id_message=errormod&info");
+        exit();
+    }
+    $mod = $mods[0];
 
-    log_("mod_normal", $title);
+    $mod['admin_only'] = 0;
+    $modRepository->update($mod);
+
+    log_("mod_normal", $mod['title']);
     generate_mod_cache();
     redirection("index.php?action=administration&subaction=mod");
 }
+
 /**
  * Function to set the position of a mod into the mod list
  * @param string $order up or down according to the new desired postion.
@@ -446,41 +490,50 @@ function mod_sort($order)
 
     mod_check("mod_id");
 
-    $mods = array();
-    $request = "select id from " . TABLE_MOD . " order by position, title";
-    $result = $db->sql_query($request);
-    $i = 1;
-    while (list($id) = $db->sql_fetch_row($result)) {
-        $mods[$id] = $i;
-        $i++;
+    $modRepository = new Mod_Model();
+    // On récupère le mod souhaité
+    $mods = $modRepository->find_by(array('id' => $pub_mod_id));
+    if(count($mods) != 1)
+    {
+        log_("mod_erreur_unknown", $pub_mod_id);
+        redirection("index.php?action=message&id_message=errormod&info");
+        exit();
     }
+    $maxPosition = $modRepository->get_position_max();
 
-    //Parade pour éviter les mods qui aurait les même positions
+    $currentMod = $mods[0];
+    $oldPosition = $currentMod['position'];
+
     switch ($order) {
         case "up" :
-            $mods[$pub_mod_id] -= 1.5;
+            $newPosition =  max(1, $oldPosition-1);
             break;
         case "down" :
-            $mods[$pub_mod_id] += 1.5;
+            $newPosition =  min($maxPosition, $oldPosition+1);
             break;
     }
 
-    asort($mods);
-    $i = 1;
-    while (current($mods)) {
-        $request = "update " . TABLE_MOD . " set position = " . $i . " where id = " . key($mods);
-        $db->sql_query($request);
-        $i++;
-        next($mods);
+    // Pas de changement de position
+    if($newPosition == $oldPosition)
+    {
+        log_("mod_order", $currentMod['title']);
+        generate_mod_cache();
+        redirection("index.php?action=administration&subaction=mod");
     }
 
-    $request = "select title from " . TABLE_MOD . " where id = '{$pub_mod_id}'";
-    $result = $db->sql_query($request);
-    list($title) = $db->sql_fetch_row($result);
-    log_("mod_order", $title);
+    $currentMod['position'] = $newPosition;
+
+    $switchMod = $modRepository->find_by(array('position' => $newPosition))[0];
+    $switchMod['position'] = $oldPosition;
+
+    $modRepository->update($currentMod);
+    $modRepository->update($switchMod);
+
+    log_("mod_order", $currentMod['title']);
     generate_mod_cache();
     redirection("index.php?action=administration&subaction=mod");
 }
+
 /**
  * Returns the version number of the current Mod.
  *
@@ -492,19 +545,16 @@ function mod_sort($order)
  */
 function mod_version()
 {
-    global $db;
     global $pub_action;
 
+    $modsRepository = new Mod_Model();
+    $mods = $modsRepository->find_by(array('root' => $pub_action));
+    if(count($mods) == 1)
+        return $mods[0]['version'];
 
-    /** @var TYPE_NAME $request */
-    $request = "select `version` from " . TABLE_MOD . " where root = '{$pub_action}'";
-    $result = $db->sql_query($request);
-    if ($result) {
-        list($version) = $db->sql_fetch_row($result);
-        return $version;
-    }
     return "(ModInconnu:'{$pub_action}')";
 }
+
 /**
  * Mod Configs: Add or updates a configuration option for the mod
  * @param string $param Name of the parameter
@@ -594,7 +644,7 @@ function mod_get_option($param)
 
     $modModel = new Mod_Config_Model();
     $result = $modModel->get_mod_config($nom_mod, $param);
-    if(count($result) == 0)
+    if (count($result) == 0)
         return '-1';
 
     return $result;
@@ -640,9 +690,13 @@ function mod_get_nom()
         $nom_mod = $pub_directory;
     } elseif ($pub_action == 'mod_update' || $pub_action == 'mod_uninstall') {
         global $pub_mod_id;
-        $query = 'SELECT `action` FROM ' . TABLE_MOD . ' WHERE id=' . $pub_mod_id;
-        $result = $db->sql_query($query);
-        list ($nom_mod) = $db->sql_fetch_row($result);
+
+        $modsRepository = new Mod_Model();
+        $mods = $modsRepository->find_by(array('id' => $pub_mod_id));
+        if(count($mods) == 1)
+            $nom_mod = $mods[0]['action'];
+        else
+            $nom_mod = $pub_action;
     } else {
         $nom_mod = $pub_action;
     }
@@ -678,120 +732,17 @@ function mod_del_all_user_option()
     return $modModel->delete_mod_config($nom_mod);
 }
 
-//\\ fonctions utilisable pour les mods //\\
-/**
- * Funtion to install a new mod in OGSpy
- * @param string $mod_folder : Folder name which contains the mod
- * @todo Query: "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] ."'"."'"
- * @todo Query: "INSERT INTO " . TABLE_MOD .
- * " (title, menu, action, root, link, version, active,admin_only) VALUES ('" . $value_mod[0] .
- * "','" . $value_mod[1] . "','" . $value_mod[2] . "','" . $value_mod[3] . "','" .
- * $value_mod[4] . "','" . $mod_version . "','" . $value_mod[5] . "','" . $value_mod[6] .
- * "')"
- * @return boolean true if the mod has been correctly installed
- * @api
- */
-function install_mod($mod_folder)
-{
-    global $db, $server_config;
-    $is_ok = false;
-    $filename = 'mod/' . $mod_folder . '/version.txt';
-    if (file_exists($filename)) {
-        $file = file($filename);
-    }
-
-
-    // On récupère les données du fichier version.txt
-    $mod_version = trim($file[1]);
-    $mod_config = trim($file[2]);
-
-    //Version Minimale OGSpy
-    /** @var string $mod_required_ogspy */
-    $mod_required_ogspy = trim($file[3]);
-    if (isset($mod_required_ogspy)) {
-        if (version_compare($mod_required_ogspy, $server_config["version"]) > 0) {
-            log_("mod_erreur_txt_version", $mod_folder);
-            redirection("index.php?action=message&id_message=errormod&info");
-            exit();
-        }
-    }
-
-    // On explode la chaine d'information
-    $value_mod = explode(',', $mod_config);
-
-    // On vérifie si le mod est déjà installé""
-    $check = "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] . "'";
-    $query_check = $db->sql_query($check);
-    $result_check = $db->sql_numrows($query_check);
-
-    if ($result_check != 0) {
-    } else
-        if (count($value_mod) == 7) {
-            // On vérifie le nombre de valeur de l'explode
-            $query = "INSERT INTO " . TABLE_MOD .
-                " (title, menu, action, root, link, version, active,admin_only) VALUES ('" . $value_mod[0] .
-                "','" . $value_mod[1] . "','" . $value_mod[2] . "','" . $value_mod[3] . "','" .
-                $value_mod[4] . "','" . $mod_version . "','" . $value_mod[5] . "','" . $value_mod[6] .
-                "')";
-            $db->sql_query($query);
-            $is_ok = true; /// tout c 'est bien passe'
-        }
-    return $is_ok;
-}
-
 /**
  * Function to uninstall an OGSpy Module
- * @param string $mod_uninstall_name : Mod name
  * @param string $mod_uninstall_table : Name of the Database table used by the Mod that we need to remove
  * @todo Query: "DELETE FROM " . TABLE_MOD . " WHERE title='" . $mod_uninstall_name ."'
  * @api
  */
-function uninstall_mod($mod_uninstall_name, $mod_uninstall_table)
+function uninstall_mod($mod_uninstall_table)
 {
     global $db;
-    $db->sql_query("DELETE FROM " . TABLE_MOD . " WHERE title='" . $mod_uninstall_name . "';");
     if (!empty($mod_uninstall_table)) {
         log_("debug", "DROP TABLE IF EXISTS " . $mod_uninstall_table);
         $db->sql_query("DROP TABLE IF EXISTS " . $mod_uninstall_table);
     }
-}
-
-/**
- * Fonction to update the OGSpy mod
- * @param string $mod_folder : Folder name which contains the mod
- * @param string $mod_name : Mod name
- * @todo Query: "UPDATE " . TABLE_MOD . " SET version='" . $mod_version ."' WHERE action='" . $mod_name . "'";
- * @return boolean true if the mod has been correctly updated
- * @api [Mod] Function to be called in the update.php file to set up the new version.
- */
-function update_mod($mod_folder, $mod_name)
-{
-    global $db, $server_config;
-    $is_oki = false;
-    $filename = 'mod/' . $mod_folder . '/version.txt';
-    if (file_exists($filename)) {
-        $file = file($filename);
-    } else {
-        return $is_oki;
-    }
-
-    $mod_version = trim($file[1]);
-
-    //Version Minimale OGSpy
-    /** @var string $mod_required_ogspy */
-    $mod_required_ogspy = trim($file[3]);
-    if (isset($mod_required_ogspy)) {
-        if (version_compare($mod_required_ogspy, $server_config["version"]) > 0) {
-            log_("mod_erreur_txt_version", $mod_folder);
-            redirection("index.php?action=message&id_message=errormod&info");
-            exit();
-        }
-    }
-
-
-    $query = "UPDATE " . TABLE_MOD . " SET version='" . $mod_version .
-        "' WHERE action='" . $mod_name . "'";
-    $db->sql_query($query);
-    $is_oki = true;
-    return $is_oki;
 }
