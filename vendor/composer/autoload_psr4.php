@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Ogsteam\\Ogspy\\Views\\' => array($baseDir . '/views/Helper'),
     'Ogsteam\\Ogspy\\Model\\' => array($baseDir . '/model'),
     'Ghunti\\HighchartsPHP\\' => array($vendorDir . '/ghunti/highcharts-php/src'),
 );

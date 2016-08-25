@@ -23,7 +23,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Ogsteam\\Ogspy\\Model\\": "model/"
+      "Ogsteam\\Ogspy\\Model\\": "model/",
+      "Ogsteam\\Ogspy\\Views\\": "views/Helper"
     }
   }
 
