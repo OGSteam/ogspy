@@ -9,6 +9,7 @@ class ComposerStaticInit7f8ed55ac5aa63c4f86a51e8a17b034a
     public static $prefixLengthsPsr4 = array (
         'O' => 
         array (
+            'Ogsteam\\Ogspy\\Views\\' => 20,
             'Ogsteam\\Ogspy\\Model\\' => 20,
         ),
         'G' => 
@@ -18,6 +19,10 @@ class ComposerStaticInit7f8ed55ac5aa63c4f86a51e8a17b034a
     );
 
     public static $prefixDirsPsr4 = array (
+        'Ogsteam\\Ogspy\\Views\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/views/Helper',
+        ),
         'Ogsteam\\Ogspy\\Model\\' => 
         array (
             0 => __DIR__ . '/../..' . '/model',
