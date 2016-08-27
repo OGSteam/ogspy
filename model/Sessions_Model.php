@@ -19,10 +19,23 @@ class Sessions_Model
     public function get_session_id($cookie_id, $user_ip = '')
     {
         global $db;
-        $request = "SELECT session_id FROM " . TABLE_SESSIONS . " WHERE session_id = '" . $cookie_id . "'" . " AND session_ip = '" . $user_ip . "'";
+        $request = "SELECT `session_id` FROM " . TABLE_SESSIONS . " WHERE `session_id` = '" . $cookie_id . "'" . " AND `session_ip` = '" . $user_ip . "'";
         $result = $db->sql_query($request);
 
         return $result;
+    }
+
+    public function get_xtense_session ($user_id)
+    {
+        global $db;
+        $request = "SELECT `session_ogs` FROM " . TABLE_SESSIONS . " WHERE session_user_id = " . $user_id;
+        $result = $db->sql_query($request);
+
+        if ($db->sql_numrows($result) > 0) {
+            list($session_ogs) = $db->sql_fetch_row($result);
+            return $session_ogs;
+        } else
+            return -1;
     }
 
     /**
