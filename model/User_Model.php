@@ -58,6 +58,57 @@ class User_Model
 
     /**
      * @param $user_id
+     * @return mixed
+     */
+    public function select_user_data ($user_id)
+    {
+        global $db;
+        $request = "SELECT `user_id`, `user_name`, `user_password`, `user_email`, `user_active`, `user_regdate`, `user_lastvisit`," .
+            " `user_galaxy`, `user_system`, `user_admin`, `user_coadmin`, `management_user`, `management_ranking`, `disable_ip_check`," .
+            " `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate`" .
+            " FROM " . TABLE_USER;
+        $request .= " WHERE `user_id` = " . $user_id;
+        $request .= " ORDER BY `user_name`";
+        $result = $db->sql_query($request);
+
+        $info_users = array();
+        while ($row = $db->sql_fetch_assoc($result)) {
+            $info_users[] = $row;
+        }
+
+        if (count($info_users) == 0) {
+            return false;
+        }
+        return $info_users;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function select_all_user_data ()
+    {
+        global $db;
+        $request = "SELECT `user_id`, `user_name`, `user_password`, `user_email`, `user_active`, `user_regdate`, `user_lastvisit`," .
+            " `user_galaxy`, `user_system`, `user_admin`, `user_coadmin`, `management_user`, `management_ranking`, `disable_ip_check`," .
+            " `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate`" .
+            " FROM " . TABLE_USER;
+
+        $request .= " ORDER BY `user_name`";
+        $result = $db->sql_query($request);
+
+        $info_users = array();
+        while ($row = $db->sql_fetch_assoc($result)) {
+            $info_users[] = $row;
+        }
+
+        if (count($info_users) == 0) {
+            return false;
+        }
+        return $info_users;
+    }
+
+    /**
+     * @param $user_id
      */
     public function update_lastvisit_time ($user_id)
     {
@@ -137,6 +188,96 @@ class User_Model
     }
 
     /**
+     * @param $user_id
+     * @param $user_active boolean 1/0
+     */
+    public function set_user_active ($user_id, $value)
+    {
+        global $db;
+        $request = "UPDATE " . TABLE_USER . " SET `user_active` = '" . $value . "' WHERE `user_id` = " . $user_id;
+        $db->sql_query($request);
+    }
+
+    /**
+ * @param $user_id
+ * @param $value boolean 1/0
+ */
+    public function set_user_coadmin ($user_id, $value)
+    {
+        global $db;
+        $request = "UPDATE " . TABLE_USER . " SET `user_coadmin` = '" . $value . "' WHERE `user_id` = " . $user_id;
+        $db->sql_query($request);
+    }
+
+    /**
+     * @param $user_id
+     * @param $value boolean 1/0
+     */
+    public function set_user_management_user ($user_id, $value)
+    {
+        global $db;
+        $request = "UPDATE " . TABLE_USER . " SET `management_user` = '" . $value . "' WHERE `user_id` = " . $user_id;
+        $db->sql_query($request);
+    }
+
+    /**
+     * @param $user_id
+     * @param $value boolean 1/0
+     */
+    public function set_user_management_ranking ($user_id, $value)
+    {
+        global $db;
+        $request = "UPDATE " . TABLE_USER . " SET `management_ranking` = '" . $value . "' WHERE `user_id` = " . $user_id;
+        $db->sql_query($request);
+    }
+
+    /**
+     * @param $user_id
+     * @param $value boolean 1/0
+     */
+    public function add_stat_planet_inserted ($user_id, $value)
+    {
+        global $db;
+        $request = "UPDATE " . TABLE_USER . " SET `planet_added_xtense` = planet_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
+        $db->sql_query($request);
+    }
+    /**
+     * @param $user_id
+     * @param $value boolean 1/0
+     */
+    public function add_stat_spy_inserted ($user_id, $value)
+    {
+        global $db;
+        $request = "UPDATE " . TABLE_USER . " SET `spy_added_xtense` = spy_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
+        $db->sql_query($request);
+    }
+    /**
+     * @param $user_id
+     * @param $value boolean 1/0
+     */
+    public function add_stat_rank_inserted ($user_id, $value)
+    {
+        global $db;
+        $request = "UPDATE " . TABLE_USER . " SET `rank_added_xtense` = rank_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
+        $db->sql_query($request);
+    }
+
+    /**
+     * @param $user_id
+     * @param $value int
+     */
+    public function add_stat_search_made ($user_id, $value)
+    {
+        global $db;
+        $request = "UPDATE " . TABLE_USER . " SET `search` = search + '" . $value . "' WHERE `user_id` = " . $user_id;
+        $db->sql_query($request);
+    }
+
+
+
+    /* Fonctions concerning game account */
+
+    /**
      * A quoi sert donc cette fonction ? :p
      * Reponse elle sert a mettre a jour le pseudo ingame afin d afficher les stats users dans son espace perso
      *
@@ -149,8 +290,6 @@ class User_Model
         $request = "update " . TABLE_USER . " set user_stat_name = '" . $user_stat_name . "' where user_id = " . $user_id;
         $db->sql_query($request);
     }
-
-    /* Fonctions concerning game account */
 
     /**
      * @param $user_id
