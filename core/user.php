@@ -395,7 +395,6 @@ function user_set_grant($user_id, $user_active = null, $user_coadmin = null,
  * Recuperation d'une ligne d'information utilisateur
  * @param bool|int $user_id Identificateur optionnel d'1 utilisateur specifique
  * @return Array Liste des utilisateurs ou de l'utilisateur specifique
- * @comment Pourrait peut etre avantageusement remplace par select * from TABLE_USER
  */
 function user_get($user_id = null)
 {
@@ -417,66 +416,27 @@ function user_get($user_id = null)
  */
 function user_get_auth($user_id)
 {
-    global $db;
 
     $user_info = user_get($user_id);
     $user_info = $user_info[0];
     if ($user_info["user_admin"] == 1 || $user_info["user_coadmin"] == 1) {
-        $user_auth = array("server_set_system" => 1, "server_set_spy" => 1,
-            "server_set_rc" => 1, "server_set_ranking" => 1, "server_show_positionhided" =>
-                1, "ogs_connection" => 1, "ogs_set_system" => 1, "ogs_get_system" => 1,
-            "ogs_set_spy" => 1, "ogs_get_spy" => 1, "ogs_set_ranking" => 1,
+        $user_auth = array("server_set_system" => 1,
+            "server_set_spy" => 1,
+            "server_set_rc" => 1,
+            "server_set_ranking" => 1,
+            "server_show_positionhided" => 1,
+            "ogs_connection" => 1,
+            "ogs_set_system" => 1,
+            "ogs_get_system" => 1,
+            "ogs_set_spy" => 1,
+            "ogs_get_spy" => 1,
+            "ogs_set_ranking" => 1,
             "ogs_get_ranking" => 1);
 
         return $user_auth;
     }
-
-    $request = "select server_set_system, server_set_spy, server_set_rc, server_set_ranking, server_show_positionhided,";
-    $request .= " ogs_connection, ogs_set_system, ogs_get_system, ogs_set_spy, ogs_get_spy, ogs_set_ranking, ogs_get_ranking";
-    $request .= " from " . TABLE_GROUP . " g, " . TABLE_USER_GROUP . " u";
-    $request .= " where g.group_id = u.group_id";
-    $request .= " and user_id = " . $user_id;
-    $result = $db->sql_query($request);
-
-    if ($db->sql_numrows($result) > 0) {
-        $user_auth = array("server_set_system" => 0, "server_set_spy" => 0,
-            "server_set_rc" => 0, "server_set_ranking" => 0, "server_show_positionhided" =>
-                0, "ogs_connection" => 0, "ogs_set_system" => 0, "ogs_get_system" => 0,
-            "ogs_set_spy" => 0, "ogs_get_spy" => 0, "ogs_set_ranking" => 0,
-            "ogs_get_ranking" => 0);
-
-        while ($row = $db->sql_fetch_assoc($result)) {
-            if ($row["server_set_system"] == 1)
-                $user_auth["server_set_system"] = 1;
-            if ($row["server_set_spy"] == 1)
-                $user_auth["server_set_spy"] = 1;
-            if ($row["server_set_rc"] == 1)
-                $user_auth["server_set_rc"] = 1;
-            if ($row["server_set_ranking"] == 1)
-                $user_auth["server_set_ranking"] = 1;
-            if ($row["server_show_positionhided"] == 1)
-                $user_auth["server_show_positionhided"] = 1;
-            if ($row["ogs_connection"] == 1)
-                $user_auth["ogs_connection"] = 1;
-            if ($row["ogs_set_system"] == 1)
-                $user_auth["ogs_set_system"] = 1;
-            if ($row["ogs_get_system"] == 1)
-                $user_auth["ogs_get_system"] = 1;
-            if ($row["ogs_set_spy"] == 1)
-                $user_auth["ogs_set_spy"] = 1;
-            if ($row["ogs_get_spy"] == 1)
-                $user_auth["ogs_get_spy"] = 1;
-            if ($row["ogs_set_ranking"] == 1)
-                $user_auth["ogs_set_ranking"] = 1;
-            if ($row["ogs_get_ranking"] == 1)
-                $user_auth["ogs_get_ranking"] = 1;
-        }
-    } else {
-        $user_auth = array("server_set_system" => 0, "server_set_spy" => 0,
-            "server_set_ranking" => 0, "server_show_positionhided" => 0, "ogs_connection" =>
-                0, "ogs_set_system" => 0, "ogs_get_system" => 0, "ogs_set_spy" => 0,
-            "ogs_get_spy" => 0, "ogs_set_ranking" => 0, "ogs_get_ranking" => 0);
-    }
+    $data_user = new User_Model();
+    $user_auth = $data_user->select_user_rights($user_id);
 
     return $user_auth;
 }
@@ -643,29 +603,26 @@ function user_delete()
 
 /**
  * Recuperation des statistiques
- * @todo Query : x1
  */
 function user_statistic()
 {
     global $db;
 
-    $request = "select user_id, user_name, planet_added_xtense , search, spy_added_xtense, rank_added_xtense, xtense_type, xtense_version, user_active, user_admin";
-    $request .= " from " . TABLE_USER .
-        " order by (planet_added_xtense) desc";
-    $result = $db->sql_query($request);
+    $data_user = new User_Model();
+    $data_session = new Sessions_Model();
+    $result = $data_user->select_all_user_stats_data();
 
     $user_statistic = array();
     while ($row = $db->sql_fetch_assoc($result)) {
+        //Check if connected
         $here = "";
-        $request = "select session_ogs from " . TABLE_SESSIONS .
-            " where session_user_id = " . $row["user_id"];
-        $result_2 = $db->sql_query($request);
-        if ($db->sql_numrows($result_2) > 0) {
+        $session_type = $data_session->get_xtense_session($row["user_id"]);
+        //Check Session type
+        if ($session_type == 0)
             $here = "(*)";
-            list($session_ogs) = $db->sql_fetch_row($result_2);
-            if ($session_ogs == 1)
-                $here = "(**)";
-        }
+        elseif ($session_type == 1)
+            $here = "(**)";
+
         $user_statistic[] = array_merge($row, array("here" => $here));
     }
 
@@ -674,19 +631,11 @@ function user_statistic()
 
 /**
  * Recuperation du nombres de comptes actifs
- * @todo Query : x1
  */
 function user_get_nb_active_users()
 {
-    global $db;
-
-    $request = "SELECT user_id, user_active";
-    $request .= " FROM " . TABLE_USER;
-    $request .= " WHERE user_active='1'";
-    $result = $db->sql_query($request);
-    $number = $db->sql_numrows();
-
-    return ($number);
+    $data_users = new User_Model();
+    return ($data_users->get_nb_active_users());
 }
 
 /**
