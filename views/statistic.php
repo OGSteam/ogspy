@@ -236,7 +236,7 @@ require_once 'views/page_header.php';
                     $xtense_type = 'N/A (' . $v['xtense_type'] . ')';
             }
 
-            if ($v['user_active'] == "1" && $v['user_admin'] == "0") {
+            if ($v['user_active'] == "1") {
                 echo '<tr>';
                 echo '<th style="color: ' . $color . '">' . $v['user_name'] . (($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) ? ' ' . $v['here'] : '') . '</th>';
                 echo '<th>' . formate_number($v['planet_added_xtense']) . '</th>';
