@@ -325,7 +325,7 @@ class Sql_Db
         echo "</table>\n";
 
         log_("mysql_error", array($query, $this->db_connect_id->errno, $this->db_connect_id->error, debug_backtrace()));
-        die();
+        exit();
     }
 
 
