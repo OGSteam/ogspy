@@ -108,6 +108,57 @@ class User_Model
     }
 
     /**
+     * @return mixed
+     */
+    public function select_all_user_stats_data ()
+    {
+        global $db;
+
+        $request = "SELECT `user_id`, `user_name`, `planet_added_xtense`, `search`, `spy_added_xtense`, `rank_added_xtense`, `xtense_type`, `xtense_version`, `user_active`, `user_admin`";
+        $request .= " FROM " . TABLE_USER . " ORDER BY `planet_added_xtense` DESC";
+        $result = $db->sql_query($request);
+        return $result;
+    }
+
+    /**
+     * @param $user_id
+     * @return array
+     */
+    public function select_user_rights ($user_id)
+    {
+        global $db;
+
+        $request = "SELECT `server_set_system`, `server_set_spy`, `server_set_rc`, `server_set_ranking`, `server_show_positionhided`,";
+        $request .= " ogs_connection, ogs_set_system, ogs_get_system, ogs_set_spy, ogs_get_spy, ogs_set_ranking, ogs_get_ranking";
+        $request .= " from " . TABLE_GROUP . " g, " . TABLE_USER_GROUP . " u";
+        $request .= " where g.group_id = u.group_id";
+        $request .= " and user_id = " . $user_id;
+        $result = $db->sql_query($request);
+
+        if ($db->sql_numrows($result) == 1) { //Un seul retour possible ici
+            while ($row = $db->sql_fetch_assoc($result)) {
+                $user_auth = array("server_set_system" => $row['server_set_system'],
+                    "server_set_spy" => $row['server_set_spy'],
+                    "server_set_rc" => $row['server_set_rc'],
+                    "server_set_ranking" => $row['server_set_ranking'],
+                    "server_show_positionhided" => $row['server_show_positionhided'],
+                    "ogs_connection" => $row['ogs_connection'],
+                    "ogs_set_system" => $row['ogs_set_system'],
+                    "ogs_get_system" => $row['ogs_get_system'],
+                    "ogs_set_spy" => $row['ogs_set_spy'],
+                    "ogs_get_spy" => $row['ogs_get_spy'],
+                    "ogs_set_ranking" => $row['ogs_set_ranking'],
+                    "ogs_get_ranking" => $row['ogs_get_ranking']);
+            }
+        } else
+            //No rights
+            $user_auth = array("server_set_system" => 0, "server_set_spy" => 0, "server_set_rc" => 0, "server_set_ranking" => 0, "server_show_positionhided" => 0, "ogs_connection" => 0, "ogs_set_system" => 0, "ogs_get_system" => 0, "ogs_set_spy" => 0, "ogs_get_spy" => 0, "ogs_set_ranking" => 0, "ogs_get_ranking" => 0);
+
+        return $user_auth;
+    }
+
+
+    /**
      * @param $user_id
      */
     public function update_lastvisit_time ($user_id)
@@ -271,6 +322,14 @@ class User_Model
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `search` = search + '" . $value . "' WHERE `user_id` = " . $user_id;
         $db->sql_query($request);
+    }
+
+    public function get_nb_active_users(){
+
+            global $db;
+            $request = "SELECT `user_id` FROM " . TABLE_USER ." WHERE `user_active` = '1'";
+            $result = $db->sql_query($request);
+            return $number = $db->sql_numrows();
     }
 
 
