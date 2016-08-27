@@ -12,6 +12,7 @@
 
 namespace Ogsteam\Ogspy;
 
+use Ogsteam\Ogspy\Model\Sessions_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\Statistics_Model;
 
@@ -181,7 +182,7 @@ function admin_user_set()
     if (user_get($pub_user_id) === false) {
         redirection("index.php?action=message&id_message=admin_modifyuser_failed&info");
     }
-    user_set_grant($pub_user_id, null, $pub_active, $pub_user_coadmin, $pub_management_user,
+    user_set_grant($pub_user_id, $pub_active, $pub_user_coadmin, $pub_management_user,
         $pub_management_ranking);
     redirection("index.php?action=administration&subaction=member");
 }
@@ -338,18 +339,16 @@ function member_user_set()
 
 /**
  * Enregistrement des droits et status utilisateurs
- * @todo Query : x2
  * @param $user_id
- * @param null $user_admin
  * @param null $user_active
  * @param null $user_coadmin
  * @param null $management_user
  * @param null $management_ranking
  */
-function user_set_grant($user_id, $user_admin = null, $user_active = null, $user_coadmin = null,
+function user_set_grant($user_id, $user_active = null, $user_coadmin = null,
                         $management_user = null, $management_ranking = null)
 {
-    global $db, $user_data;
+    global $user_data;
 
     if (!isset($user_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
@@ -358,39 +357,32 @@ function user_set_grant($user_id, $user_admin = null, $user_active = null, $user
     //Vérification des droits
     user_check_auth("user_update", $user_id);
 
-    $update = "";
+
+    $data_user = new User_Model();
 
     //Activation membre
     if (!is_null($user_active)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_active = '" . intval($user_active) .
-            "'";
+        $data_user->set_user_active($user_id,intval($user_active));
         if (intval($user_active) == 0) {
-            $request = "delete from " . TABLE_SESSIONS . " where session_user_id = " . $user_id;
-            $db->sql_query($request);
+            $data_session = new Sessions_Model();
+            $data_session->close_user_session($user_id);
         }
     }
 
     //Co-administration
     if (!is_null($user_coadmin)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_coadmin = '" . intval($user_coadmin) .
-            "'";
+        $data_user->set_user_coadmin($user_id,intval($user_coadmin));
     }
 
     //Gestion des membres
     if (!is_null($management_user)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "management_user = '" . intval($management_user) .
-            "'";
+        $data_user->set_user_management_user($user_id,intval($management_user));
     }
 
     //Gestion des classements
     if (!is_null($management_ranking)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "management_ranking = '" .
-            intval($management_ranking) . "'";
+        $data_user->set_user_management_ranking($user_id,intval($management_ranking));
     }
-
-
-    $request = "update " . TABLE_USER . " set " . $update . " where user_id = " . $user_id;
-    $db->sql_query($request);
 
     if ($user_id == $user_data['user_id']) {
         log_("modify_account");
@@ -400,94 +392,19 @@ function user_set_grant($user_id, $user_admin = null, $user_active = null, $user
 }
 
 /**
- * Enregistrement des statistiques utilisateurs
- * @todo Query : x1
- * @param null $planet_added_web
- * @param null $planet_added_ogs
- * @param null $search
- * @param null $spy_added_web
- * @param null $spy_added_ogs
- * @param null $rank_added_web
- * @param null $rank_added_ogs
- * @param null $planet_exported
- * @param null $spy_exported
- * @param null $rank_exported
- */
-function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $search = null,
-                       $spy_added_web = null, $spy_added_ogs = null, $rank_added_web = null, $rank_added_ogs = null,
-                       $planet_exported = null, $spy_exported = null, $rank_exported = null)
-{
-    global $db, $user_data;
-
-    $update = "";
-
-    //Statistiques envoi systèmes solaires et rapports d'espionnage
-    if (!is_null($planet_added_web))
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "planet_added_web = planet_added_web + " . $planet_added_web;
-    if (!is_null($planet_added_ogs))
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "planet_added_ogs = planet_added_ogs + " . $planet_added_ogs;
-    if (!is_null($search))
-        $update .= ((strlen($update) > 0) ? ", " : "") . "search = search + " . $search;
-    if (!is_null($spy_added_web))
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "spy_added_web = spy_added_web + " . $spy_added_web;
-    if (!is_null($spy_added_ogs))
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "spy_added_ogs = spy_added_ogs + " . $spy_added_ogs;
-    if (!is_null($rank_added_web))
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "rank_added_web = rank_added_web + " . $rank_added_web;
-    if (!is_null($rank_added_ogs))
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "rank_added_ogs = rank_added_ogs + " . $rank_added_ogs;
-    if (!is_null($planet_exported))
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "planet_exported = planet_exported + " . $planet_exported;
-    if (!is_null($spy_exported))
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "spy_exported = spy_exported + " . $spy_exported;
-    if (!is_null($rank_exported))
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "rank_exported = rank_exported + " . $rank_exported;
-
-    $request = "update " . TABLE_USER . " set " . $update . " where user_id = " . $user_data["user_id"];
-    $db->sql_query($request);
-}
-
-/**
  * Recuperation d'une ligne d'information utilisateur
  * @param bool|int $user_id Identificateur optionnel d'1 utilisateur specifique
  * @return Array Liste des utilisateurs ou de l'utilisateur specifique
  * @comment Pourrait peut etre avantageusement remplace par select * from TABLE_USER
- * @comment pour les eventuels champs supplementaires
- * @todo Query : x1
  */
 function user_get($user_id = false)
 {
-    global $db;
+    $data_user = new User_Model();
 
-    $request = "select user_id, user_name, user_password, user_email, user_active, user_regdate, user_lastvisit," .
-        " user_galaxy, user_system, user_admin, user_coadmin, management_user, management_ranking, disable_ip_check," .
-        " off_commandant, off_amiral, off_ingenieur, off_geologue, off_technocrate" .
-        " from " . TABLE_USER;
-
-    if ($user_id !== false) {
-        $request .= " where user_id = " . $user_id;
-    }
-    $request .= " order by user_name";
-    $result = $db->sql_query($request);
-
-    $info_users = array();
-    while ($row = $db->sql_fetch_assoc($result)) {
-
-        $info_users[] = $row;
-    }
-
-    if (sizeof($info_users) == 0) {
-        return false;
-    }
+    if (isset($user_id))
+        $info_users = $data_user->select_user_data($user_id);
+    else
+        $info_users = $data_user->select_all_user_data();
 
     return $info_users;
 }
@@ -618,7 +535,7 @@ function user_create()
 
         $info = $user_id . ":" . $password;
         log_("create_account", $user_id);
-        user_set_grant($user_id, null, $pub_active, $pub_user_coadmin, $pub_management_user,
+        user_set_grant($user_id, $pub_active, $pub_user_coadmin, $pub_management_user,
             $pub_management_ranking);
         redirection("index.php?action=message&id_message=createuser_success&info=" . $info);
     } else {

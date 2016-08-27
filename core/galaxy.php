@@ -12,6 +12,8 @@
 
 namespace Ogsteam\Ogspy;
 
+use Ogsteam\Ogspy\Model\User_Model;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -264,7 +266,8 @@ function galaxy_search()
     if ($server_config["allied"] != "") $allied = explode(",", $server_config["allied"]);
 
     if (isset($pub_type_search) && (isset($pub_string_search) || (isset($pub_galaxy_down) && isset($pub_galaxy_up) && isset($pub_system_down) && isset($pub_system_up) && isset($pub_row_down) && isset($pub_row_up)))) {
-        user_set_stat(null, null, 1);
+        $data_user = new User_Model();
+        $data_user->add_stat_search_made($user_data['user_id'], 1);
 
         switch ($pub_type_search) {
             case "player":
@@ -629,7 +632,9 @@ function galaxy_ally_position($step = 50)
             }
         }
     }
-    user_set_stat(null, null, 1);
+    $data_user = new User_Model();
+    $data_user->add_stat_search_made($user_data['user_id'], 1);
+
 
     return $statistics;
 }

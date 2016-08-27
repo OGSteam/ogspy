@@ -482,39 +482,33 @@ CREATE TABLE ogspy_universe (
 ## 
 
 CREATE TABLE ogspy_user (
-  user_id            INT(11)         NOT NULL AUTO_INCREMENT,
-  user_name          VARCHAR(20)     NOT NULL DEFAULT '',
-  user_password      VARCHAR(32)     NOT NULL DEFAULT '',
-  user_email         VARCHAR(50)     NOT NULL DEFAULT '',
-  user_admin         ENUM ('0', '1') NOT NULL DEFAULT '0',
-  user_coadmin       ENUM ('0', '1') NOT NULL DEFAULT '0',
-  user_active        ENUM ('0', '1') NOT NULL DEFAULT '0',
-  user_regdate       INT(11)         NOT NULL DEFAULT '0',
-  user_lastvisit     INT(11)         NOT NULL DEFAULT '0',
-  user_galaxy        SMALLINT(2)     NOT NULL DEFAULT '1',
-  user_system        SMALLINT(3)     NOT NULL DEFAULT '1',
-  planet_added_web   INT(11)         NOT NULL DEFAULT '0',
-  planet_added_ogs   INT(11)         NOT NULL DEFAULT '0',
-  planet_exported    INT(11)         NOT NULL DEFAULT '0',
-  search             INT(11)         NOT NULL DEFAULT '0',
-  spy_added_web      INT(11)         NOT NULL DEFAULT '0',
-  spy_added_ogs      INT(11)         NOT NULL DEFAULT '0',
-  spy_exported       INT(11)         NOT NULL DEFAULT '0',
-  rank_added_web     INT(11)         NOT NULL DEFAULT '0',
-  rank_added_ogs     INT(11)         NOT NULL DEFAULT '0',
-  xtense_type        ENUM ('FF', 'GM-FF', 'GM-GC', 'ANDROID'),
-  xtense_version     VARCHAR(10),
-  rank_exported      INT(11)         NOT NULL DEFAULT '0',
-  user_skin          VARCHAR(255)    NOT NULL DEFAULT '',
-  user_stat_name     VARCHAR(50)     NOT NULL DEFAULT '',
-  management_user    ENUM ('0', '1') NOT NULL DEFAULT '0',
-  management_ranking ENUM ('0', '1') NOT NULL DEFAULT '0',
-  disable_ip_check   ENUM ('0', '1') NOT NULL DEFAULT '0',
-  off_commandant     ENUM ('0', '1') NOT NULL DEFAULT '0',
-  off_amiral         ENUM ('0', '1') NOT NULL DEFAULT '0',
-  off_ingenieur      ENUM ('0', '1') NOT NULL DEFAULT '0',
-  off_geologue       ENUM ('0', '1') NOT NULL DEFAULT '0',
-  off_technocrate    ENUM ('0', '1') NOT NULL DEFAULT '0',
+  user_id             INT(11)         NOT NULL AUTO_INCREMENT,
+  user_name           VARCHAR(20)     NOT NULL DEFAULT '',
+  user_password       VARCHAR(32)     NOT NULL DEFAULT '',
+  user_email          VARCHAR(50)     NOT NULL DEFAULT '',
+  user_admin          ENUM ('0', '1') NOT NULL DEFAULT '0',
+  user_coadmin        ENUM ('0', '1') NOT NULL DEFAULT '0',
+  user_active         ENUM ('0', '1') NOT NULL DEFAULT '0',
+  user_regdate        INT(11)         NOT NULL DEFAULT '0',
+  user_lastvisit      INT(11)         NOT NULL DEFAULT '0',
+  user_galaxy         SMALLINT(2)     NOT NULL DEFAULT '1',
+  user_system         SMALLINT(3)     NOT NULL DEFAULT '1',
+  planet_added_xtense INT(11)         NOT NULL DEFAULT '0',
+  search              INT(11)         NOT NULL DEFAULT '0',
+  spy_added_xtense    INT(11)         NOT NULL DEFAULT '0',
+  rank_added_xtense   INT(11)         NOT NULL DEFAULT '0',
+  xtense_type         ENUM ('FF', 'GM-FF', 'GM-GC', 'ANDROID'),
+  xtense_version      VARCHAR(10),
+  user_skin           VARCHAR(255)    NOT NULL DEFAULT '',
+  user_stat_name      VARCHAR(50)     NOT NULL DEFAULT '',
+  management_user     ENUM ('0', '1') NOT NULL DEFAULT '0',
+  management_ranking  ENUM ('0', '1') NOT NULL DEFAULT '0',
+  disable_ip_check    ENUM ('0', '1') NOT NULL DEFAULT '0',
+  off_commandant      ENUM ('0', '1') NOT NULL DEFAULT '0',
+  off_amiral          ENUM ('0', '1') NOT NULL DEFAULT '0',
+  off_ingenieur       ENUM ('0', '1') NOT NULL DEFAULT '0',
+  off_geologue        ENUM ('0', '1') NOT NULL DEFAULT '0',
+  off_technocrate     ENUM ('0', '1') NOT NULL DEFAULT '0',
   PRIMARY KEY (user_id),
   UNIQUE KEY user_name (user_name)
 )
@@ -670,16 +664,16 @@ CREATE TABLE `ogspy_mod_config` (
 
 ## Structure de la table `ogspy_mod_user_config
 CREATE TABLE `ogspy_mod_user_config` (
-  `mod` VARCHAR(50) NOT NULL,
-  `config` VARCHAR(255) NOT NULL,
-  `user_id` INT(10) NOT NULL,
-  `value` VARCHAR(255) NOT NULL,
+  `mod`     VARCHAR(50)  NOT NULL,
+  `config`  VARCHAR(255) NOT NULL,
+  `user_id` INT(10)      NOT NULL,
+  `value`   VARCHAR(255) NOT NULL,
   PRIMARY KEY (`mod`, `config`, `user_id`),
   INDEX `fk_user_userid` (`user_id`),
   CONSTRAINT `fk_user_userid` FOREIGN KEY (`user_id`) REFERENCES `ogspy_user` (`user_id`)
 )
   DEFAULT CHARSET = utf8
-  ENGINE=InnoDB;
+  ENGINE = InnoDB;
 
 ## 
 ## Contenu de la table `ogspy_config`

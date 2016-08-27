@@ -187,6 +187,16 @@ switch ($ogsversion) {
                         DEFAULT CHARSET = utf8
                         ENGINE=InnoDB
                         ;";
+        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `planet_exported`";
+        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `planet_added_ogs`";
+        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `spy_added_ogs`";
+        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `spy_exported`";
+        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `rank_added_ogs`";
+        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `rank_exported`";
+        $requests[] = "ALTER TABLE `".TABLE_USER."` CHANGE `planet_added_web` `planet_added_xtense`  INT(11) NOT NULL DEFAULT '0'";
+        $requests[] = "ALTER TABLE `".TABLE_USER."` CHANGE `spy_added_web` `spy_added_xtense`  INT(11) NOT NULL DEFAULT '0'";
+        $requests[] = "ALTER TABLE `".TABLE_USER."` CHANGE `rank_added_web` `rank_added_xtense`  INT(11) NOT NULL DEFAULT '0'";
+
         $up_to_date = true;
         break;
 
