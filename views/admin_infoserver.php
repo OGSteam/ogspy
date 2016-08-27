@@ -41,11 +41,8 @@ $users_info = sizeof(user_statistic());
 //Statistiques du serveur
 $connection_server = 0;
 $planetimport_ogs = 0;
-$planetexport_ogs = 0;
 $spyimport_ogs = 0;
-$spyexport_ogs = 0;
 $rankimport_ogs = 0;
-$rankexport_ogs = 0;
 $key = 'unknow';
 $paths = 'unknow';
 $since = 0;
@@ -63,35 +60,22 @@ while (list($statistic_name, $statistic_value) = $db->sql_fetch_row($result)) {
             $connection_server = $statistic_value;
             break;
 
-        case "planetimport_ogs":
+        case "planetimport_xtense":
             $planetimport_ogs = $statistic_value;
             break;
 
-        case "planetexport_ogs":
-            $planetexport_ogs = $statistic_value;
-            break;
-
-        case "spyimport_ogs":
+        case "spyimport_xtense":
             $spyimport_ogs = $statistic_value;
             break;
 
-        case "spyexport_ogs":
-            $spyexport_ogs = $statistic_value;
-            break;
-
-        case "rankimport_ogs":
+        case "rankimport_xtense":
             $rankimport_ogs = $statistic_value;
-            break;
-
-        case "rankexport_ogs":
-            $rankexport_ogs = $statistic_value;
             break;
     }
 }
 
 //on compte le nombre de personnes en ligne
-$connectes_req = $db->sql_query("SELECT COUNT(session_ip) FROM " .
-    TABLE_SESSIONS);
+$connectes_req = $db->sql_query("SELECT COUNT(session_ip) FROM " . TABLE_SESSIONS);
 list($connectes) = $db->sql_fetch_row($connectes_req);
 
 //Personne en ligne
@@ -132,7 +116,7 @@ $online = session_whois_online();
         <th colspan='2'></th>
     </tr>
     <tr>
-        <th colspan='4'></th>
+        <td class="c" colspan="4">&nbsp;</td>
     </tr>
     <tr>
         <th><a><?php echo($lang['ADMIN_SERVER_CONNEXIONS']); ?></a></th>
@@ -140,18 +124,15 @@ $online = session_whois_online();
 
         <th><a><?php echo($lang['ADMIN_SERVER_PLANETS']); ?></a></th>
         <th><?php echo formate_number($planetimport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?>
-            - <?php echo formate_number($planetexport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_EXPORT']); ?>
         </th>
     </tr>
     <tr>
         <th><a><?php echo($lang['ADMIN_SERVER_SPYREPORTS']); ?></a></th>
-        <th><?php echo formate_number($spyimport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?> - <?php echo formate_number($spyexport_ogs); ?>
-            <?php echo($lang['ADMIN_SERVER_ALL_EXPORT']); ?>
+        <th><?php echo formate_number($spyimport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?>
         </th>
 
         <th><a><?php echo($lang['ADMIN_SERVER_RANKINGS']); ?></a></th>
-        <th><?php echo formate_number($rankimport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?> - <?php echo formate_number($rankexport_ogs); ?>
-            <?php echo($lang['ADMIN_SERVER_ALL_EXPORT']); ?>
+        <th><?php echo formate_number($rankimport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?>
         </th>
     </tr>
     <tr>
