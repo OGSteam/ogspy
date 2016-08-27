@@ -397,7 +397,7 @@ function user_set_grant($user_id, $user_active = null, $user_coadmin = null,
  * @return Array Liste des utilisateurs ou de l'utilisateur specifique
  * @comment Pourrait peut etre avantageusement remplace par select * from TABLE_USER
  */
-function user_get($user_id = false)
+function user_get($user_id = null)
 {
     $data_user = new User_Model();
 
@@ -649,9 +649,9 @@ function user_statistic()
 {
     global $db;
 
-    $request = "select user_id, user_name, planet_added_web, planet_added_ogs, search, spy_added_web, spy_added_ogs, rank_added_web, rank_added_ogs, planet_exported, spy_exported, rank_exported, xtense_type, xtense_version, user_active, user_admin";
+    $request = "select user_id, user_name, planet_added_xtense , search, spy_added_xtense, rank_added_xtense, xtense_type, xtense_version, user_active, user_admin";
     $request .= " from " . TABLE_USER .
-        " order by (planet_added_web + planet_added_ogs) desc";
+        " order by (planet_added_xtense) desc";
     $result = $db->sql_query($request);
 
     $user_statistic = array();
@@ -1913,22 +1913,19 @@ function ratio_calc($player)
     global $db, $user_data;
 
     //récupération des données nécessaires
-    $sqlrecup = "SELECT planet_added_web, planet_added_ogs, planet_exported, search, spy_added_web, spy_added_ogs, spy_exported, rank_added_web, rank_added_ogs, rank_exported FROM " .
+    $sqlrecup = "SELECT planet_added_xtense, search, spy_added_xtense, rank_added_xtense FROM " .
         TABLE_USER . " WHERE user_id='" . $player . "'";
     $result = $db->sql_query($sqlrecup);
-    list($planet_added_web, $planet_added_ogs, $planet_exported, $search, $spy_added_web,
-        $spy_added_ogs, $spy_exported, $rank_added_web, $rank_added_ogs, $rank_exported) =
-        $db->sql_fetch_row($result);
-    $request = "select sum(planet_added_web + planet_added_ogs), ";
-    $request .= "sum(spy_added_web + spy_added_ogs), ";
-    $request .= "sum(rank_added_web + rank_added_ogs), ";
-    $request .= "sum(search) ";
+    list($planet_added_xtense, $search, $spy_added_xtense, $rank_added_xtense) = $db->sql_fetch_row($result);
+    $request = "select planet_added_xtense, spy_added_xtense, rank_added_xtense, search";
     $request .= "from " . TABLE_USER;
     $resultat = $db->sql_query($request);
-    list($planetimporttotal, $spyimporttotal, $rankimporttotal, $searchtotal) = $db->
-    sql_fetch_row($resultat);
+
+    list($planetimporttotal, $spyimporttotal, $rankimporttotal, $searchtotal) = $db->sql_fetch_row($resultat);
+
     $query = "SELECT COUNT(user_id) as count FROM " . TABLE_USER;
     $result = $db->sql_query($query);
+
     if ($db->sql_numrows($result) > 0) {
         $row = $db->sql_fetch_assoc($result);
         $max = $row['count'];
@@ -1944,16 +1941,14 @@ function ratio_calc($player)
         $searchtotal = 1;
 
     //et on commence le calcul
-    $ratio_planet = ($planet_added_web + $planet_added_ogs) / $planetimporttotal;
-    $ratio_spy = ($spy_added_web + $spy_added_ogs) / $spyimporttotal;
-    $ratio_rank = ($rank_added_web + $rank_added_ogs) / $rankimporttotal;
+    $ratio_planet = $planet_added_xtense / $planetimporttotal;
+    $ratio_spy = $spy_added_xtense / $spyimporttotal;
+    $ratio_rank = $rank_added_xtense / $rankimporttotal;
     $ratio = ($ratio_planet * 4 + $ratio_spy * 2 + $ratio_rank) / (4 + 2 + 1);
 
-    $ratio_planet_penality = ($planet_added_web + $planet_added_ogs - $planet_exported) /
-        $planetimporttotal;
-    $ratio_spy_penality = (($spy_added_web + $spy_added_ogs) - $spy_exported) / $spyimporttotal;
-    $ratio_rank_penality = (($rank_added_web + $rank_added_ogs) - $rank_exported) /
-        $rankimporttotal;
+    $ratio_planet_penality = $planet_added_xtense  / $planetimporttotal;
+    $ratio_spy_penality = $spy_added_xtense / $spyimporttotal;
+    $ratio_rank_penality = $rank_added_xtense /$rankimporttotal;
     $ratio_penality = ($ratio_planet_penality * 4 + $ratio_spy_penality * 2 + $ratio_rank_penality) / (4 +
             2 + 1);
 
