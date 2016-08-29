@@ -520,78 +520,10 @@ function user_delete()
 
     user_check_auth("user_update", $pub_user_id);
 
+    $data_user = new User_Model();
+    $data_user->delete_user($pub_user_id);
+
     log_("delete_account", $pub_user_id);
-    $request = "delete from " . TABLE_USER . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_GROUP . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_BUILDING . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_FAVORITE . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_DEFENCE . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_SPY . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_TECHNOLOGY . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_POINTS . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_ECO . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_TECHNOLOGY . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_BUILT . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_HONOR . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_POINTS . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_ECO . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_TECHNOLOGY . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_MILITARY . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_BUILT . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_LOOSE . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_HONOR . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_UNIVERSE . " set last_update_user_id = 0 where last_update_user_id = " . $pub_user_id;
-    $db->sql_query($request);
 
     session_close($pub_user_id);
 
