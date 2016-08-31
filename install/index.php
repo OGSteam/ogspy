@@ -48,6 +48,7 @@ if (isset($pub_redirection)) {
                 <a href = "index.php?lang=en" ><img src = "../images/i18n/United_Kingdom.png" ></a >
                 <a href = "index.php?lang=pt_BR" ><img src = "../images/i18n/Brazil.png" ></a >
                 <a href = "index.php?lang=es" ><img src = "../images/i18n/Spain.png" ></a >
+                <a href = "index.php?lang=it" ><img src = "../images/i18n/Italy.png" ></a >
             </div >
         </td >
     </tr >
