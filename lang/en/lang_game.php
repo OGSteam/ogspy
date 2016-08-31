@@ -113,21 +113,23 @@ $lang['GAME_TECH_ASTRO'] = 'Astrophysics';
 
 $lang['GAME_SPYREPORT_RES'] = 'Resources on';
 $lang['GAME_SPYREPORT_PLAYER'] = 'player';
-$lang['GAME_SPYREPORT_ACTIVITY'] = 'Le scanner des sondes a détecté des anomalies dans l\'atmosphère de cette planète, indiquant qu\'il y a eu une activité sur cette planète dans les';
-$lang['GAME_SPYREPORT_LASTMINUTES'] = 'dernières minutes';
-$lang['GAME_SPYREPORT_NOACTIVITY'] = 'Le scanner des sondes n\'a pas détecté d\'anomalies atmosphériques sur cette planète. Une activité sur cette planète dans la dernière heure peut quasiment être exclue.';
-$lang['GAME_SPYREPORT_PROBADEST'] = 'Probabilité de destruction de la flotte d\'espionnage';
+$lang['GAME_SPYREPORT_ACTIVITY'] = 'The scanner probes detected anomalies in the atmosphere of this planet, indicating that there has been activity on this planet in
+';
+$lang['GAME_SPYREPORT_LASTMINUTES'] = 'last minutes';
+$lang['GAME_SPYREPORT_NOACTIVITY'] = 'The scanner probes not detected atmospheric anomalies on this planet. Activity on this planet in the last hour can almost be excluded.
+';
+$lang['GAME_SPYREPORT_PROBADEST'] = 'Chance of counter-espionage';
 
 $lang['GAME_CREPORT_DATE'] = 'm.d.Y H:i:s';
-$lang['GAME_CREPORT_FIGHT'] = 'Les flottes suivantes s\'affrontent';
+$lang['GAME_CREPORT_FIGHT'] = 'Following fleets fighting';
 $lang['GAME_CREPORT_ATT'] = 'Attacker';
 $lang['GAME_CREPORT_DEF'] = 'Defender';
 $lang['GAME_CREPORT_TYPE'] = 'Type';
 $lang['GAME_CREPORT_NB'] = 'Number';
-$lang['GAME_CREPORT_WEAPONS'] = 'Armes';
-$lang['GAME_CREPORT_SHIELD'] = 'Bouclier';
-$lang['GAME_CREPORT_PROTECTION'] = 'Coque';
-$lang['GAME_CREPORT_DESTROYED'] = 'détruit';
+$lang['GAME_CREPORT_WEAPONS'] = 'Weapons';
+$lang['GAME_CREPORT_SHIELD'] = 'Shielding';
+$lang['GAME_CREPORT_PROTECTION'] = 'Armour';
+$lang['GAME_CREPORT_DESTROYED'] = 'destroyed';
 $lang['GAME_CREPORT_RESULT_FLEET'] = 'Attacker fires a total of';
 $lang['GAME_CREPORT_RESULT_FLEET_1'] = 'shots with a total strength of';
 $lang['GAME_CREPORT_RESULT_FLEET_2'] = 'at the Defender. The defender`s shields absorb';
@@ -136,19 +138,19 @@ $lang['GAME_CREPORT_RESULT_DEF'] = 'The Defender fires a total of';
 $lang['GAME_CREPORT_RESULT_DEF_1'] = 'shots at the Attacker with a total strength of';
 $lang['GAME_CREPORT_RESULT_DEF_2'] = 'The attacker`s shields absorb';
 $lang['GAME_CREPORT_RESULT_DEF_3'] = 'points of damage';
-$lang['GAME_CREPORT_RESULT_EVEN'] = 'La bataille se termine par un match nul, les deux flottes rentrent vers leurs planètes respectives';
-$lang['GAME_CREPORT_RESULT_WIN'] = 'L\'attaquant a gagné la bataille ! Il emporte';
-$lang['GAME_CREPORT_RESULT_WIN_1'] = 'unités de métal';
-$lang['GAME_CREPORT_RESULT_WIN_2'] = 'unités de cristal et';
-$lang['GAME_CREPORT_RESULT_WIN_3'] = 'unités de deutérium';
-$lang['GAME_CREPORT_RESULT_LOST'] = 'Le défenseur a gagné la bataille !';
-$lang['GAME_CREPORT_RESULT_LOSTPOINTS_A'] = 'L\'attaquant a perdu au total';
-$lang['GAME_CREPORT_RESULT_LOSTPOINTS_D'] = 'Le défenseur a perdu au total';
+$lang['GAME_CREPORT_RESULT_EVEN'] = 'The battle ends in a draw.';
+$lang['GAME_CREPORT_RESULT_WIN'] = 'The attacker has won the battle ! He wons';
+$lang['GAME_CREPORT_RESULT_WIN_1'] = 'metal units';
+$lang['GAME_CREPORT_RESULT_WIN_2'] = 'crystal units';
+$lang['GAME_CREPORT_RESULT_WIN_3'] = 'deuterium units';
+$lang['GAME_CREPORT_RESULT_LOST'] = 'The defender has won the battle !';
+$lang['GAME_CREPORT_RESULT_LOSTPOINTS_A'] = 'The attacker lost a total of';
+$lang['GAME_CREPORT_RESULT_LOSTPOINTS_D'] = 'The defender lost a total of';
 $lang['GAME_CREPORT_RESULT_UNITS'] = 'units';
-$lang['GAME_CREPORT_RESULT_DEBRIS'] = 'Un champ de débris contenant';
-$lang['GAME_CREPORT_RESULT_DEBRIS_M'] = 'de métal et';
-$lang['GAME_CREPORT_RESULT_DEBRIS_C'] = 'de cristal se forme dans l\'orbite de la planète.';
-$lang['GAME_CREPORT_RESULT_NO_MOON'] = 'La probabilité de création d\'une lune est de';
-$lang['GAME_CREPORT_RESULT_MOON'] = 'Les quantités énormes de métal et de cristal s\'attirent, formant ainsi une lune dans l\'orbite de cette planète';
+$lang['GAME_CREPORT_RESULT_DEBRIS'] = 'A debris field cantaining';
+$lang['GAME_CREPORT_RESULT_DEBRIS_M'] = 'metal units and';
+$lang['GAME_CREPORT_RESULT_DEBRIS_C'] = 'crystal units goes into the planet orbit.';
+$lang['GAME_CREPORT_RESULT_NO_MOON'] = 'The chance for a moon to be created from the debris was';
+$lang['GAME_CREPORT_RESULT_MOON'] = 'The enormous amounts of drifting metal and crystal particles attract each other and slowly form a lunar satellite in the orbit of the planet.';
 
 

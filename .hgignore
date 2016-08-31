@@ -7,3 +7,5 @@ config/
 /build.xml
 /ogspy.iml
 /composer.phar
+parameters\id.php
+parameters\key.php
