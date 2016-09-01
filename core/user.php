@@ -13,6 +13,8 @@
 namespace Ogsteam\Ogspy;
 
 use Ogsteam\Ogspy\Model\Sessions_Model;
+use Ogsteam\Ogspy\Model\User_Building_Model;
+use Ogsteam\Ogspy\Model\User_Defense_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\Statistics_Model;
 
@@ -569,121 +571,43 @@ function user_get_nb_active_users()
 
 /**
  * remise en ordre des lunes en fonctions des positions des planetes
- * @todo Query : x6
+ * @todo To be reworked
  */
-function user_set_all_empire_resync_moon()
+function user_set_all_empire_resync_id()
 {
-    global $db, $user_data;
+    global $user_data;
 
+    $data_user_building = new User_Building_Model();
+    $data_user_defense = new User_Defense_Model();
 
-    // lews planetes
-    $request = "select planet_id, coordinates";
-    $request .= " from " . TABLE_USER_BUILDING;
-    $request .= " where user_id = " . $user_data["user_id"];
-    $request .= " and planet_id <= 199";
-    $request .= " order by planet_id";
-    $result = $db->sql_query($request);
+    $planet_position = $data_user_building->get_planet_list($user_data["user_id"]);
 
-    while (list($planet_id, $coordinates) = $db->sql_fetch_row($result)) {
-        $planet_position[$coordinates] = $planet_id;
+    $moon_position = $data_user_building->get_moon_list($user_data["user_id"]);
+
+    //Resync Planets
+
+    $new_planet_id = 101;
+    foreach ($planet_position as $cle => $valeur) {
+
+        $data_user_building->update_planet_id($user_data["user_id"], $valeur, $new_planet_id);
+        $data_user_defense->update_planet_id($user_data["user_id"], $valeur, $new_planet_id);
+
+        $new_planet_id++;
     }
 
-    // les lunes
-    $request = "select planet_id, coordinates";
-    $request .= " from " . TABLE_USER_BUILDING;
-    $request .= " where user_id = " . $user_data["user_id"];
-    $request .= " and planet_id > 199";
-    $request .= " order by planet_id";
-    $result = $db->sql_query($request);
-
-    while (list($planet_id, $coordinates) = $db->sql_fetch_row($result)) {
-        $moon_position[$coordinates] = $planet_id;
-    }
-
+    //Resync moons
     // on ressort les complexes planete / lune ayant la meme cle
     $complexe = array_intersect_key($planet_position, $moon_position);
 
     /// on passe les id se modifiant a 300
     foreach ($complexe as $cle_com => $valeur_com) {
-        $nouvelle_valeur = $planet_position[$cle_com] + 200;
-        $request = "UPDATE " . TABLE_USER_DEFENCE . " SET planet_id  = " . $nouvelle_valeur .
-            " WHERE  planet_id = " . $moon_position[$cle_com] . " and user_id = " . $user_data["user_id"] .
-            "";
-        $db->sql_query($request);
-        $request = "UPDATE " . TABLE_USER_BUILDING . " SET planet_id  = " . $nouvelle_valeur .
-            " WHERE  planet_id = " . $moon_position[$cle_com] . " and user_id = " . $user_data["user_id"] .
-            "";
-        $db->sql_query($request);
-    }
 
-    /// on remet le tout a 200 pour lunes
-    $request = "UPDATE " . TABLE_USER_BUILDING .
-        " SET planet_id  = planet_id -100 WHERE  planet_id > 299 and user_id = " . $user_data["user_id"] .
-        "";
-    $db->sql_query($request);
-    $request = "UPDATE " . TABLE_USER_DEFENCE .
-        " SET planet_id  = planet_id -100 WHERE  planet_id > 299 and user_id = " . $user_data["user_id"] .
-        "";
-    $db->sql_query($request);
-
-}
-
-/**
- * remise en ordre des planetes sans espaces vides ...
- * ( les id doivent se suivre 101,102,103 etc etc)
- * @todo Query : x3
- */
-function user_set_all_empire_resync_planet()
-{
-    global $db, $user_data;
-
-    $nb_planete = find_nb_planete_user($user_data["user_id"]);
-
-    $request = "select planet_id, coordinates";
-    $request .= " from " . TABLE_USER_BUILDING;
-    $request .= " where user_id = " . $user_data["user_id"];
-    $request .= " and planet_id <= 199";
-    $request .= " order by planet_id";
-    $result = $db->sql_query($request);
-
-    while (list($planet_id, $coordinates) = $db->sql_fetch_row($result)) {
-        $planet_position[$coordinates] = $planet_id;
-    }
-
-
-    $i = 101;
-    foreach ($planet_position as $cle => $valeur) {
-
-        // planete
-        $request = "update " . TABLE_USER_BUILDING . " set planet_id = " . $i .
-            " where planet_id = " . $valeur . " and user_id = " . $user_data["user_id"];
-        $db->sql_query($request);
-        $request = "update " . TABLE_USER_DEFENCE . " set planet_id = " . $i .
-            " where planet_id = " . $valeur . " and user_id = " . $user_data["user_id"];
-        $db->sql_query($request);
-
-        $i++;
-
-    }
-
-    /// on lance le resync moon que si lune
-    $request = "select planet_id ";
-    $request .= " from " . TABLE_USER_BUILDING;
-    $request .= " where user_id = " . $user_data["user_id"];
-    $request .= " and planet_id > 199";
-    $request .= " order by planet_id";
-    $result = $db->sql_query($request);
-
-    if ($db->sql_numrows($result) != 0) {
-
-        // on remet en ordre moon
-        user_set_all_empire_resync_moon();
-        // TODO : passer le result en parametre ...
-
-
+        $data_user_defense->update_moon_id($user_data["user_id"],$moon_position[$cle_com],$planet_position[$cle_com] + 200);
+        $data_user_building->update_moon_id($user_data["user_id"],$moon_position[$cle_com],$planet_position[$cle_com] + 200);
     }
 
 }
+
 
 /**
  * Récupération des données empire de l'utilisateur loggé
@@ -984,7 +908,7 @@ function user_del_building()
     }
 
     // remise en ordre des planetes :
-    user_set_all_empire_resync_planet();
+    user_set_all_empire_resync_id();
 
     redirection("index.php?action=home&subaction=empire&view=" . $pub_view);
 }
@@ -1047,7 +971,7 @@ function user_move_empire()
 
 
     // remise en ordre des planetes :
-    user_set_all_empire_resync_planet();
+    user_set_all_empire_resync_id();
 
     redirection("index.php?action=home&subaction=empire");
 }
