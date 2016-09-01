@@ -15,6 +15,7 @@ namespace Ogsteam\Ogspy;
 use Ogsteam\Ogspy\Model\Sessions_Model;
 use Ogsteam\Ogspy\Model\User_Building_Model;
 use Ogsteam\Ogspy\Model\User_Defense_Model;
+use Ogsteam\Ogspy\Model\User_Favorites_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\Statistics_Model;
 use Ogsteam\Ogspy\Model\User_Technology_Model;
@@ -827,7 +828,7 @@ function user_empire_production($user_empire, $off = NULL)
  */
 function user_del_building()
 {
-    global $db, $user_data;
+    global $user_data;
     global $pub_planet_id, $pub_view;
 
     if (!check_var($pub_planet_id, "Num")) {
@@ -869,7 +870,7 @@ function user_del_building()
  */
 function user_move_empire()
 {
-    global $db, $user_data;
+    global $user_data;
     global $pub_planet_id, $pub_left, $pub_right;
 
     $nb_planete = find_nb_planete_user($user_data["user_id"]);
@@ -885,6 +886,8 @@ function user_move_empire()
     if ($pub_planet_id < 101 || $pub_planet_id > (100 + $nb_planete)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
+    $new_position = 0;
+
     if (isset($pub_left)) {
         if ($pub_planet_id == 101)
             redirection("index.php?action=home&subaction=empire");
@@ -895,31 +898,18 @@ function user_move_empire()
         $new_position = $pub_planet_id + 1;
     }
 
-    $request = "update " . TABLE_USER_BUILDING . " set planet_id = -" . $new_position .
-        " where user_id = " . $user_data["user_id"] . " and planet_id = " . $pub_planet_id;
-    $db->sql_query($request);
+    $data_user_building = new User_Building_Model();
+    $data_user_defense = new User_Defense_Model();
 
-    $request = "update " . TABLE_USER_BUILDING . " set planet_id = " . $pub_planet_id .
-        " where user_id = " . $user_data["user_id"] . " and planet_id = " . $new_position;
-    $db->sql_query($request);
+    $backup_id = 9999;
 
-    $request = "update " . TABLE_USER_BUILDING . " set planet_id = " . $new_position .
-        " where user_id = " . $user_data["user_id"] . " and planet_id = -" . $new_position;
-    $db->sql_query($request);
+    $data_user_building->update_planet_id($user_data["user_id"], $pub_planet_id, $backup_id);
+    $data_user_building->update_planet_id($user_data["user_id"], $new_position, $pub_planet_id);
+    $data_user_building->update_planet_id($user_data["user_id"], $backup_id, $new_position);
 
-
-    $request = "update " . TABLE_USER_DEFENCE . " set planet_id = -" . $new_position .
-        " where user_id = " . $user_data["user_id"] . " and planet_id = " . $pub_planet_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_USER_DEFENCE . " set planet_id = " . $pub_planet_id .
-        " where user_id = " . $user_data["user_id"] . " and planet_id = " . $new_position;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_USER_DEFENCE . " set planet_id = " . $new_position .
-        " where user_id = " . $user_data["user_id"] . " and planet_id = -" . $new_position;
-    $db->sql_query($request);
-
+    $data_user_defense->update_planet_id($user_data["user_id"], $pub_planet_id, $backup_id);
+    $data_user_defense->update_planet_id($user_data["user_id"], $new_position, $pub_planet_id);
+    $data_user_defense->update_planet_id($user_data["user_id"], $backup_id, $new_position);
 
     // remise en ordre des planetes :
     user_set_all_empire_resync_id();
@@ -932,7 +922,7 @@ function user_move_empire()
  */
 function user_add_favorite()
 {
-    global $db, $user_data, $server_config;
+    global $user_data, $server_config;
     global $pub_galaxy, $pub_system;
 
     if (!isset($pub_galaxy) || !isset($pub_system)) {
@@ -944,15 +934,14 @@ function user_add_favorite()
         redirection("index.php?action=galaxy");
     }
 
-    $request = "select * from " . TABLE_USER_FAVORITE . " where user_id = " . $user_data["user_id"];
-    $result = $db->sql_query($request);
-    $nb_favorites = $db->sql_numrows($result);
+    $data_user_favorites = new User_Favorites_Model();
+
+    $nb_favorites = $data_user_favorites->get_nb_user_favorites($user_data["user_id"]);
 
     if ($nb_favorites < $server_config["max_favorites"]) {
-        $request = "insert ignore into " . TABLE_USER_FAVORITE .
-            " (user_id, galaxy, system) values (" . $user_data["user_id"] . ", '" . $pub_galaxy .
-            "', " . $pub_system . ")";
-        $db->sql_query($request);
+
+        $data_user_favorites->set_user_favorites($user_data["user_id"],$pub_galaxy,$pub_system);
+
         redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system);
     } else {
         redirection("index.php?action=message&id_message=max_favorites&info");
@@ -964,7 +953,7 @@ function user_add_favorite()
  */
 function user_del_favorite()
 {
-    global $db, $user_data;
+    global $user_data;
     global $pub_galaxy, $pub_system, $server_config;
 
     if (!isset($pub_galaxy) || !isset($pub_system)) {
@@ -975,12 +964,12 @@ function user_del_favorite()
     ) {
         redirection("index.php?action=galaxy");
     }
-    $request = "delete from " . TABLE_USER_FAVORITE . " where user_id = " . $user_data["user_id"] .
-        " and galaxy = '" . $pub_galaxy . "' and system = " . $pub_system;
-    $db->sql_query($request);
 
-    redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system .
-        "");
+    $data_user_favorites = new User_Favorites_Model();
+
+    $data_user_favorites->delete_user_favorites($user_data["user_id"],$pub_galaxy,$pub_system);
+
+    redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system);
 }
 
 /**
@@ -993,7 +982,7 @@ function user_getfavorites_spy()
     $order = "";
 
     if (!isset($sort) || !isset($sort2) || !is_numeric($sort) || !is_numeric($sort2)) {
-        $orderby = "dateRE desc";
+        $ordered_by = "dateRE desc";
     } else {
         switch ($sort2) {
             case 0:
@@ -1008,22 +997,22 @@ function user_getfavorites_spy()
 
         switch ($sort) {
             case 1:
-                $orderby = "coordinates" . $order . "";
+                $ordered_by = "coordinates" . $order . "";
                 break;
             case 2:
-                $orderby = "ally " . $order;
+                $ordered_by = "ally " . $order;
                 break;
             case 3:
-                $orderby = "player " . $order;
+                $ordered_by = "player " . $order;
                 break;
             case 4:
-                $orderby = "moon " . $order;
+                $ordered_by = "moon " . $order;
                 break;
             case 5:
-                $orderby = "dateRE " . $order;
+                $ordered_by = "dateRE " . $order;
                 break;
             default:
-                $orderby = "dateRE " . $order;
+                $ordered_by = "dateRE " . $order;
         }
     }
 
@@ -1033,7 +1022,7 @@ function user_getfavorites_spy()
         ".id_spy, coordinates, dateRE, sender_id, " . TABLE_UNIVERSE . ".moon, " . TABLE_UNIVERSE . ".ally, " . TABLE_UNIVERSE . ".player, " . TABLE_UNIVERSE . ".status";
     $request .= " from " . TABLE_PARSEDSPY . ", " . TABLE_UNIVERSE;
     $request .= " where " . TABLE_PARSEDSPY . ".sender_id = " . $user_data["user_id"] . " and CONCAT(" . TABLE_UNIVERSE . ".galaxy,':'," . TABLE_UNIVERSE . ".system,':'," . TABLE_UNIVERSE . ".row)=coordinates";
-    $request .= " order by " . $orderby;
+    $request .= " order by " . $ordered_by;
     $result = $db->sql_query($request);
 
     while (list($spy_id, $coordinates, $datadate, $sender_id, $moon, $ally, $player, $status) = $db->sql_fetch_row($result)) {
