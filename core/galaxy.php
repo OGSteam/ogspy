@@ -128,8 +128,7 @@ function filter_system($system)
     if ($server_config["allied"] != "")
         $allied = explode(",", $server_config["allied"]);
 
-    for($row = 1; $row <= 15; $row++)
-    {
+    for ($row = 1; $row <= 15; $row++) {
         $planet = $system[$row];
         $coordinates = $planet['galaxy'] . ":" . $planet['system'] . ":" . $planet['row'];
 
@@ -147,8 +146,8 @@ function filter_system($system)
             || $planet['ally'] == ""
             || $user_auth["server_show_positionhided"] == 1
             || $user_data["user_admin"] == 1
-            || $user_data["user_coadmin"] == 1)
-        {
+            || $user_data["user_coadmin"] == 1
+        ) {
             $hided = $friend = false;
             if (in_array($planet['ally'], $ally_protection))
                 $hided = true;
@@ -157,13 +156,12 @@ function filter_system($system)
 
             $planet["report_spy"] = $report_spy;
             $planet["report_rc"] = $report_rc;
-            $planet["hided"]  = $hided;
+            $planet["hided"] = $hided;
             $planet["allied"] = $friend;
 
         } elseif (in_array($planet['ally'], $ally_protection)) {
-            foreach(array_keys($planet) as $key)
-            {
-                if($key == "timestamp" || $key == "poster")
+            foreach (array_keys($planet) as $key) {
+                if ($key == "timestamp" || $key == "poster")
                     continue;
                 $planet[$key] = "";
             }
@@ -210,7 +208,7 @@ function galaxy_show_sector()
 
     $universeRepository = new Universe_Model();
     $population = $universeRepository->get_system($pub_galaxy, $pub_system_down, $pub_system_up);
-    for($system = $pub_system_down; $system <= $pub_system_up; $system++) {
+    for ($system = $pub_system_down; $system <= $pub_system_up; $system++) {
         $population[$system] = filter_system($population[$system]);
         $population[$system]['timestamp'] = $population[$system][1]['timestamp'];
     }
@@ -517,31 +515,24 @@ function galaxy_statistic($step = 50)
 
     $nb_planets_total = 0;
     $nb_freeplanets_total = 0;
+
+    $universeRepository = new Universe_Model();
+
     for ($galaxy = 1; $galaxy <= intval($server_config['num_of_galaxies']); $galaxy++) {
         for ($system = 1; $system <= intval($server_config['num_of_systems']); $system = $system + $step) {
-            $request = "SELECT count(*) FROM " . TABLE_UNIVERSE;
-            $request .= " where galaxy = " . $galaxy;
-            $request .= " and system between " . $system . " and " . ($system + $step - 1);
-            $result = $db->sql_query($request);
-            list($nb_planet) = $db->sql_fetch_row($result);
-            $nb_planets_total += $nb_planet;
 
-            $request = "SELECT count(*) FROM " . TABLE_UNIVERSE;
-            $request .= " where player = ''";
-            $request .= " and galaxy = " . $galaxy;
-            $request .= " and system between " . $system . " and " . ($system + $step - 1);
-            $result = $db->sql_query($request);
-            list($nb_planet_free) = $db->sql_fetch_row($result);
-            $nb_freeplanets_total += $nb_planet_free;
+            $system_up = $system + $step - 1;
+
+            $nb_planet = $universeRepository->get_nb_planets($galaxy, $system, $system_up);
+            $nb_planet_free = $universeRepository->get_nb_empty_planets($galaxy, $system, $system_up);
 
             $new = false;
-            $request = "SELECT max(last_update) FROM " . TABLE_UNIVERSE;
-            $request .= " where galaxy = " . $galaxy;
-            $request .= " and system between " . $system . " and " . ($system + $step - 1);
-            $result = $db->sql_query($request);
-            list($last_update) = $db->sql_fetch_row($result);
-            if ($last_update > $user_data["session_lastvisit"]) $new = true;
+            $last_update = $universeRepository->get_last_update($galaxy, $system, $system_up);
+            if ($last_update > $user_data["session_lastvisit"])
+                $new = true;
 
+            $nb_planets_total += $nb_planet;
+            $nb_freeplanets_total += $nb_planet_free;
             $statictics[$galaxy][$system] = array("planet" => $nb_planet, "free" => $nb_planet_free, "new" => $new);
         }
     }
@@ -558,17 +549,8 @@ function galaxy_statistic($step = 50)
  */
 function galaxy_ally_listing()
 {
-    global $db;
-
-    $ally_list = array();
-
-    $request = "SELECT DISTINCT ally FROM " . TABLE_UNIVERSE . " ORDER BY ally";
-    $result = $db->sql_query($request);
-    while ($row = $db->sql_fetch_assoc($result)) {
-        if ($row["ally"] != "") $ally_list[] = $row["ally"];
-    }
-
-    return $ally_list;
+    $universeRepository = new Universe_Model();
+    return $universeRepository->get_ally_list();
 }
 
 /**
@@ -617,22 +599,14 @@ function galaxy_ally_position($step = 50)
         $friend = false;
         if (in_array($pub_ally_name, $allied)) $friend = true;
 
+        $universeRepository = new Universe_Model();
+
         for ($galaxy = 1; $galaxy <= intval($server_config['num_of_galaxies']); $galaxy++) {
             for ($system = 1; $system <= intval($server_config['num_of_systems']); $system = $system + $step) {
-                $request = "SELECT galaxy, system, row, player FROM " . TABLE_UNIVERSE;
-                $request .= " where galaxy = " . $galaxy;
-                $request .= " and system between " . $system . " and " . ($system + $step - 1);
-                $request .= " and ally like '" . $pub_ally_name . "'";
-                $request .= " order by player, galaxy, system, row";
-                $result = $db->sql_query($request);
-                $nb_planet = $db->sql_numrows($result);
+                $system_up = $system + $step - 1;
 
-                $population = array();
-                while (list($galaxy_, $system_, $row_, $player) = $db->sql_fetch_row($result)) {
-                    $population[] = array("galaxy" => $galaxy_, "system" => $system_, "row" => $row_, "player" => $player);
-                }
-
-                $statistics[$pub_ally_name][$galaxy][$system] = array("planet" => $nb_planet, "population" => $population);
+                $population = $universeRepository->get_ally_position($galaxy, $system, $system_up, $pub_ally_name);
+                $statistics[$pub_ally_name][$galaxy][$system] = array("planet" => count($population), "population" => $population);
             }
         }
     }
@@ -675,9 +649,8 @@ function galaxy_reportspy_show()
         return false;
     }
 
-    $request_astre_name = "SELECT name FROM " . TABLE_UNIVERSE . " WHERE galaxy = " . intval($pub_galaxy) . " AND system = " . intval($pub_system) . " AND row = " . intval($pub_row);
-    $result_astre_name = $db->sql_query($request_astre_name);
-    $astre_name = $db->sql_fetch_assoc($result_astre_name); //Récupère le nom de la planète
+    $universeRepository = new Universe_Model();
+    $astre_name = $universeRepository->get_planet_name($pub_galaxy, $pub_system, $pub_row);
 
     //RE planète
     $request = "select id_spy, user_name, dateRE";
@@ -1302,75 +1275,63 @@ function galaxy_get_phalanx($galaxy, $system)
     $phalanxer = array();
     $data_computed = array();
 
-    $req = "SELECT galaxy, system, row, phalanx, gate, name, ally, player FROM " . TABLE_UNIVERSE . " WHERE galaxy = '" . $galaxy . "' AND moon = '1' AND phalanx > 0";
+    $universeRepository = new Universe_Model();
+    $data = $universeRepository->get_phalanx($galaxy);
 
-    $result = $db->sql_query($req);
-    if ($db->sql_numrows() > 0) {
-    //Construction liste phalanges
-    $idph = 0;
-    while ($row = $db->sql_fetch_assoc($result)) {
-        $data[$idph]['galaxy'] = $row["galaxy"];
-        $data[$idph]['system'] = $row["system"];
-        $data[$idph]['row'] = $row["row"];
-        $data[$idph]['name'] = $row["name"];
-        $data[$idph]['ally'] = $row["ally"];
-        $data[$idph]['player'] = $row["player"];
-        $data[$idph]['gate'] = $row["gate"];
-        $data[$idph++]['level'] = $row["phalanx"];
-    }
-    
-        foreach ($data as $phalanx) {
-            $arrondi_type = 0;
-            $phalanx_range = (pow($phalanx['level'], 2) - 1);
-            $system_lower_range = $phalanx['system'] - $phalanx_range;
-            if ($system_lower_range < 1) {
-                $system_lower_range = $system_lower_range + $server_config['num_of_systems'];
-                $arrondi_type = 1;
-            }; //Partie négative : 1:490 -> 1:5
-            $system_higher_range = $phalanx['system'] + $phalanx_range;
-            if ($system_higher_range > $server_config['num_of_systems']) {
-                $system_higher_range = $system_higher_range - $server_config['num_of_systems'];
-                $arrondi_type = 2;
-            };
+    if (count($data) == 0)
+        return array();
 
-            //Cas 1 : Dans la même galaxie
+    foreach ($data as $phalanx) {
+        $arrondi_type = 0;
+        $phalanx_range = (pow($phalanx['level'], 2) - 1);
+        $system_lower_range = $phalanx['system'] - $phalanx_range;
+        if ($system_lower_range < 1) {
+            $system_lower_range = $system_lower_range + $server_config['num_of_systems'];
+            $arrondi_type = 1;
+        }; //Partie négative : 1:490 -> 1:5
+        $system_higher_range = $phalanx['system'] + $phalanx_range;
+        if ($system_higher_range > $server_config['num_of_systems']) {
+            $system_higher_range = $system_higher_range - $server_config['num_of_systems'];
+            $arrondi_type = 2;
+        };
 
-            if ($system >= $system_lower_range && $system <= $system_higher_range && $arrondi_type == 0) {
-                $add_to_list = true;
+        //Cas 1 : Dans la même galaxie
+
+        if ($system >= $system_lower_range && $system <= $system_higher_range && $arrondi_type == 0) {
+            $add_to_list = true;
             //Cas 2 : Phanlange en début de galaxie -> 2 zones possibles : 1 en fin de galaxie et 1 en début
-            } elseif (($system <=$system_higher_range  && $system <= $system_lower_range && $arrondi_type == 1) ||
-            ($system >=$system_higher_range  && $system >= $system_lower_range && $arrondi_type == 1))
-            {
-                $add_to_list = true;
+        } elseif (($system <= $system_higher_range && $system <= $system_lower_range && $arrondi_type == 1) ||
+            ($system >= $system_higher_range && $system >= $system_lower_range && $arrondi_type == 1)
+        ) {
+            $add_to_list = true;
             //Cas 3 : Phanlange en fin de galaxie -> 2 zones possibles : 1 en fin de galaxie et 1 en début
-            }elseif (($system >=$system_lower_range && $system >= $system_higher_range && $arrondi_type == 2) ||
-            ($system <=$system_lower_range && $system <= $system_higher_range && $arrondi_type == 2))
-            {
-                $add_to_list = true;
-            }else{
-                // Phalange non hostile
-                $add_to_list = false;
-            }
-
-            if($add_to_list == true)
-                $data_computed[] = array(
-                    'galaxy' => $phalanx["galaxy"],
-                    'system' => $phalanx["system"],
-                    'row' => $phalanx["row"],
-                    'name' => $phalanx["name"],
-                    'ally' => $phalanx["ally"],
-                    'player' => $phalanx["player"],
-                    'gate' => $phalanx["gate"],
-                    'level' => $phalanx["level"],
-                    'range_down' => $system_lower_range,
-                    'range_up' => $system_higher_range
-                );
+        } elseif (($system >= $system_lower_range && $system >= $system_higher_range && $arrondi_type == 2) ||
+            ($system <= $system_lower_range && $system <= $system_higher_range && $arrondi_type == 2)
+        ) {
+            $add_to_list = true;
+        } else {
+            // Phalange non hostile
+            $add_to_list = false;
         }
 
-        foreach ($data_computed as $phalange) { // Filtre alliance amies et masquées
-            if (!in_array($phalange["ally"], $ally_protection) || $phalange["ally"] == "" || $user_auth["server_show_positionhided"] == 1 || $user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1)
-                $phalanxer[] = $phalange;
-        }
+        if ($add_to_list == true)
+            $data_computed[] = array(
+                'galaxy' => $phalanx["galaxy"],
+                'system' => $phalanx["system"],
+                'row' => $phalanx["row"],
+                'name' => $phalanx["name"],
+                'ally' => $phalanx["ally"],
+                'player' => $phalanx["player"],
+                'gate' => $phalanx["gate"],
+                'level' => $phalanx["level"],
+                'range_down' => $system_lower_range,
+                'range_up' => $system_higher_range
+            );
+    }
+
+    foreach ($data_computed as $phalange) { // Filtre alliance amies et masquées
+        if (!in_array($phalange["ally"], $ally_protection) || $phalange["ally"] == "" || $user_auth["server_show_positionhided"] == 1 || $user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1)
+            $phalanxer[] = $phalange;
     }
     return $phalanxer;
 }
