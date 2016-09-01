@@ -1,0 +1,333 @@
+<?php
+/**
+ * MySql database Managment Class
+ *
+ * @package OGSpy
+ * @subpackage MySql
+ * @author Kyser
+ * @created 15/11/2005
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.04b ($Rev: 7692 $)
+ */
+
+namespace Ogsteam\Ogspy;
+
+use mysqli;
+
+if (!defined('IN_SPYOGAME')) {
+    die("Hacking attempt");
+}
+
+/**
+ * OGSpy MySQL Database Class
+ *
+ * @package OGSpy
+ * @subpackage MySql
+ */
+class Sql_Db
+{
+    /**
+     * Instance variable
+     *
+     * @access private
+     * @var int
+     */
+    private static $_instance = false; //(singleton)
+    /**
+     * Connection ID
+     *
+     * @var int
+     */
+    public $db_connect_id;
+    /**
+     * DB Result
+     *
+     * @var mixed
+     */
+    private $result;
+    /**
+     * Nb of Queries done
+     *
+     * @var int
+     */
+    public $nb_requete = 0;
+    /**
+     * last query
+     *
+     * @var int
+     */
+    private $last_query;
+
+    /**
+     * Get the current class database instance. Creates it if dosen't exists (singleton)
+     *
+     * @param string $sqlserver MySQL Server Name
+     * @param string $sqluser MySQL User Name
+     * @param string $sqlpassword MySQL User Password
+     * @param string $database MySQL Database Name
+     * @return int|sql_db
+     */
+    public static function getInstance ($sqlserver, $sqluser, $sqlpassword, $database)
+    {
+
+        if (self::$_instance === false) {
+            self::$_instance = new sql_db($sqlserver, $sqluser, $sqlpassword, $database);
+        }
+
+        return self::$_instance;
+    }
+
+    /**
+     * Class Constructor
+     *
+     * @param string $sqlserver MySQL Server Name
+     * @param string $sqluser MySQL User Name
+     * @param string $sqlpassword MySQL User Password
+     * @param string $database MySQL Database Name
+     */
+
+    private function __construct ($sqlserver, $sqluser, $sqlpassword, $database)
+    {
+        global $sql_timing;
+        $sql_start = benchmark();
+
+        $this->user = $sqluser;
+        $this->password = $sqlpassword;
+        $this->server = $sqlserver;
+        $this->dbname = $database;
+
+        $this->db_connect_id = new mysqli($this->server, $this->user, $this->password, $this->dbname);
+
+        /* Vérification de la connexion */
+        if ($this->db_connect_id->connect_errno) {
+            echo("Échec de la connexion : " . $this->db_connect_id->connect_error);
+            exit();
+        }
+
+        if (!$this->db_connect_id->set_charset("utf8")) {
+            echo("Erreur lors du chargement du jeu de caractères utf8 : " . $this->db_connect_id->error);
+        } else {
+            /*printf("Jeu de caractères courant : %s\n", $this->db_connect_id->character_set_name());*/
+        }
+
+        $sql_timing += benchmark() - $sql_start;
+    }
+
+    /**
+     * Overload the __clone function. To forbid the use of this function for this class.
+     */
+    public function __clone ()
+    {
+        throw new Exception('Cet objet ne peut pas être cloné');
+    }
+
+    /**
+     * Closing the Connection with the MySQL Server
+     */
+    function sql_close ()
+    {
+        unset($this->result);
+        $result = @mysqli_close($this->db_connect_id); //deconnection
+        self::$_instance = false;
+    }
+
+    /**
+     * MySQL Request Function
+     *
+     * @param string  $query The MySQL Query
+     * @param boolean $Auth_dieSQLError True if a SQL error sneed to stop the application
+     * @param boolean $save True to save the Query in the MySQL Logfile (if enabled)
+     * @return bool|mixed|mysqli_result
+     */
+    function sql_query ($query = "", $Auth_dieSQLError = true, $save = true)
+    {
+        global $sql_timing, $server_config;
+
+        $sql_start = benchmark();
+
+        if ($Auth_dieSQLError) {
+            if (!($this->result = $this->db_connect_id->query($query))) {
+
+                $this->DieSQLError($query);
+            }
+
+        } else {
+            $this->last_query = $query;
+            $this->result = $this->db_connect_id->query($query);
+        }
+
+        if ($save && isset($server_config["debug_log"])) {
+
+            if ($server_config["debug_log"] == "1") {
+                $fichier = "sql_" . date("ymd") . ".sql";
+                $date = date("d/m/Y H:i:s");
+                $ligne = "/* " . $date . " - " . $_SERVER["REMOTE_ADDR"] . " */ " . $query . ";";
+                write_file(PATH_LOG_TODAY . $fichier, "a", $ligne);
+
+            }
+        }
+
+        $sql_timing += benchmark() - $sql_start;
+
+        $this->nb_requete += 1;
+        return $this->result;
+    }
+
+    /**
+     * Gets the result of the Query and returns it in a simple array
+     *
+     * @param int $query_id The Query id.
+     * @return the array containing the Database result
+     */
+    function sql_fetch_row ($query_id = 0)
+    {
+        if (!$query_id) {
+            $query_id = $this->result;
+        }
+        if ($query_id) {
+            return $query_id->fetch_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Gets the result of the Query and returns it in a associative array
+     *
+     * @param int $query_id The Query id.
+     * @return the associative array containing the Database result
+     */
+    function sql_fetch_assoc ($query_id = 0)
+    {
+        if (!$query_id) {
+            $query_id = $this->result;
+        }
+        if ($query_id) {
+            return $query_id->fetch_assoc();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Gets the number of results returned by the Query
+     *
+     * @param int $query_id The Query id.
+     * @return the number of results
+     */
+    function sql_numrows ($query_id = 0)
+    {
+        if (!$query_id) {
+            $query_id = $this->result;
+        }
+        if ($query_id) {
+            $result = $query_id->num_rows;
+            return $result;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Gets the number of affected rows by the Query
+     *
+     * @return the number of affected rows
+     */
+    function sql_affectedrows ()
+    {
+        if ($this->db_connect_id) {
+            $result = $this->db_connect_id->affected_rows;
+            return $result;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Identifier of the last insertion Query
+     *
+     * @return Returs the id
+     */
+    function sql_insertid ()
+    {
+        if ($this->db_connect_id) {
+            $result = $this->db_connect_id->insert_id;
+            return $result;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Free MySQL ressources on the latest Query result
+     *
+     * @param int $query_id The Query id.
+     */
+    function sql_free_result ($query_id = 0)
+    {
+        mysqli_free_result($query_id);
+    }
+
+    /**
+     * Returns the latest Query Error.
+     *
+     * @param int $query_id The Query id.
+     * @return an array with the error code and the error message
+     */
+    function sql_error ($query_id = 0)
+    {
+        $result["message"] = $this->db_connect_id->connect_error;
+        $result["code"] = $this->db_connect_id->connect_errno;
+        echo("<h3 style='color: #FF0000;text-align: center'>Erreur lors de la requête MySQL</h3>");
+        echo("<b>- " . $result["message"] . "</b>");
+        echo($this->last_query);
+        exit();
+    }
+
+    /**
+     * Returns the number of queries done.
+     *
+     * @return The number of queries done.
+     */
+    function sql_nb_requete ()
+    {
+        return $this->nb_requete;
+    }
+
+    /**
+     * Escapes all characters to set up the Query
+     *
+     * @param string $str The string to escape
+     * @return the escaped string
+     */
+    function sql_escape_string ($str)
+    {
+        if (isset($str)) {
+            return mysqli_real_escape_string($this->db_connect_id, $str);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Displays an Error message and exits OGSpy
+     *
+     * @param string $query Faulty SQL Request
+     */
+    function DieSQLError ($query)
+    {
+        echo "<table align=center border=1>\n";
+        echo "<tr><td class='c' colspan='3'>Database MySQL Error</td></tr>\n";
+        echo "<tr><th colspan='3'>ErrNo:" . $this->db_connect_id->errno . "</th></tr>\n";
+        echo "<tr><th colspan='3'><u>Query:</u><br>" . $query . "</th></tr>\n";
+        echo "<tr><th colspan='3'><u>Error:</u><br>" . $this->db_connect_id->error . "</th></tr>\n";
+        echo "</table>\n";
+
+        log_("mysql_error", array($query, $this->db_connect_id->errno, $this->db_connect_id->error, debug_backtrace()));
+        exit();
+    }
+
+
+}
+

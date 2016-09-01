@@ -1,0 +1,9 @@
+syntax: glob
+cache/
+journal/
+mod/*
+config/
+.idea/
+/build.xml
+/ogspy.iml
+/composer.phar
