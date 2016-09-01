@@ -227,7 +227,6 @@ function admin_regeneratepwd()
 
 /**
  * Modification du profil par un utilisateur
- * @todo Query : x11
  */
 function member_user_set()
 {
@@ -318,7 +317,7 @@ function member_user_set()
         $data_user->set_player_officer($user_id, "off_technocrate", 0);
 
     //Contrôle que le pseudo ne soit pas déjà utilisé
-    $result = $data_user->select_user_name($user_id, $pub_pseudo);
+    $result = $data_user->select_user_name($pub_pseudo);
 
     if ($db->sql_numrows($result) != 0) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudolocked&info");
@@ -394,7 +393,7 @@ function user_set_grant($user_id, $user_active = null, $user_coadmin = null,
 /**
  * Recuperation d'une ligne d'information utilisateur
  * @param bool|int $user_id Identificateur optionnel d'1 utilisateur specifique
- * @return Array Liste des utilisateurs ou de l'utilisateur specifique
+ * @return array Liste des utilisateurs ou de l'utilisateur specifique
  */
 function user_get($user_id = null)
 {
@@ -411,8 +410,7 @@ function user_get($user_id = null)
 /**
  * Recuperation des droits d'un utilisateur
  * @param int $user_id Identificateur de l'utilisateur demande
- * @todo Query : x1
- * @return Array Tableau des droits
+ * @return array Tableau des droits
  */
 function user_get_auth($user_id)
 {
@@ -444,12 +442,11 @@ function user_get_auth($user_id)
 /**
  * Creation d'un utilisateur a partir des donnees du formulaire admin
  * @comment redirection si erreur de type de donnee
- * @todo Query : x3
  */
 function user_create()
 {
-    global $db, $user_data;
-    global $pub_pseudo, $pub_user_id, $pub_active, $pub_user_coadmin, $pub_management_user,
+    global $db;
+    global $pub_pseudo, $pub_active, $pub_user_coadmin, $pub_management_user,
            $pub_management_ranking, $pub_group_id, $pub_pass;
 
     if (!check_var($pub_pseudo, "Pseudo_Groupname")) {
@@ -478,25 +475,25 @@ function user_create()
     } else {
         $password = password_generator();
     }
-    //$request = "select user_id from ".TABLE_USER." where user_name = '". $db->sql_escape_string($pub_pseudo)."'";
-    $request = "select user_id from " . TABLE_USER . " where user_name = '" . $pub_pseudo .
-        "'";
-    $result = $db->sql_query($request);
-    if ($db->sql_numrows($result) == 0) {
-        $request = "insert into " . TABLE_USER .
-            " (user_name, user_password, user_regdate, user_active)" . " values ('" . $pub_pseudo .
-            "', '" . md5(sha1($password)) . "', " . time() . ", '1')";
-        $db->sql_query($request);
-        $user_id = $db->sql_insertid();
 
-        $request = "insert into " . TABLE_USER_GROUP . " (group_id, user_id) values (" .
-            $pub_group_id . ", " . $user_id . ")";
-        $db->sql_query($request);
+    $data_user = new User_Model();
+
+    //On vérifie que le nom n'existe pas
+
+    $result = $data_user->select_user_name($pub_pseudo);
+
+    //Création de l'utilisateur
+    if ($db->sql_numrows($result) == 0) {
+
+        $user_id = $data_user->add_new_user($pub_pseudo,$password);
+
+        // Insertion dans le groupe par défaut
+
+        $data_user->add_user_to_group($user_id, $pub_group_id);
 
         $info = $user_id . ":" . $password;
         log_("create_account", $user_id);
-        user_set_grant($user_id, $pub_active, $pub_user_coadmin, $pub_management_user,
-            $pub_management_ranking);
+        user_set_grant($user_id, $pub_active, $pub_user_coadmin, $pub_management_user, $pub_management_ranking);
         redirection("index.php?action=message&id_message=createuser_success&info=" . $info);
     } else {
         redirection("index.php?action=message&id_message=createuser_failed_pseudolocked&info=" .
@@ -510,7 +507,7 @@ function user_create()
  */
 function user_delete()
 {
-    global $db, $user_data;
+    global $db;
     global $pub_user_id;
 
     if (!check_var($pub_user_id, "Num")) {
@@ -523,78 +520,10 @@ function user_delete()
 
     user_check_auth("user_update", $pub_user_id);
 
+    $data_user = new User_Model();
+    $data_user->delete_user($pub_user_id);
+
     log_("delete_account", $pub_user_id);
-    $request = "delete from " . TABLE_USER . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_GROUP . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_BUILDING . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_FAVORITE . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_DEFENCE . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_SPY . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_TECHNOLOGY . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_POINTS . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_ECO . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_TECHNOLOGY . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_BUILT . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_HONOR . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_POINTS . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_ECO . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_TECHNOLOGY . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_MILITARY . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_BUILT . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_LOOSE . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_HONOR . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_UNIVERSE . " set last_update_user_id = 0 where last_update_user_id = " . $pub_user_id;
-    $db->sql_query($request);
 
     session_close($pub_user_id);
 

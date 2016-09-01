@@ -28,14 +28,15 @@ class User_Model
     }
 
     /**
-     * @param $user_id
      * @param $username
      * @return bool|mixed|\Ogsteam\Ogspy\mysqli_result
      */
-    public function select_user_name ($user_id, $username)
+    public function select_user_name ($username)
     {
         global $db;
-        $request = "SELECT * FROM " . TABLE_USER . " WHERE `user_name` = '" . $db->sql_escape_string($username) . "' AND `user_id` <> " . $user_id;
+        $request = "SELECT * FROM " . TABLE_USER . " WHERE `user_name` = '" .$username . "'";
+
+        $request = $db->sql_escape_string($request);
         $result = $db->sql_query($request);
 
         return $result;
@@ -49,7 +50,8 @@ class User_Model
     public function select_last_visit ($user_id)
     {
         global $db;
-        $request = "SELECT `user_lastvisit` FROM " . TABLE_USER . " WHERE `user_id` = " . $user_id;
+        $request = "SELECT `user_lastvisit` FROM " . TABLE_USER;
+        $request .= " WHERE `user_id` = '" . $user_id ."'";
         $result = $db->sql_query($request);
         list($lastvisit) = $db->sql_fetch_row($result);
 
@@ -128,6 +130,9 @@ class User_Model
     {
         global $db;
 
+        $user_auth = array("server_set_system" => 0, "server_set_spy" => 0, "server_set_rc" => 0, "server_set_ranking" => 0, "server_show_positionhided" => 0, "ogs_connection" => 0, "ogs_set_system" => 0, "ogs_get_system" => 0, "ogs_set_spy" => 0, "ogs_get_spy" => 0, "ogs_set_ranking" => 0, "ogs_get_ranking" => 0);
+
+
         $request = "SELECT `server_set_system`, `server_set_spy`, `server_set_rc`, `server_set_ranking`, `server_show_positionhided`,";
         $request .= " ogs_connection, ogs_set_system, ogs_get_system, ogs_set_spy, ogs_get_spy, ogs_set_ranking, ogs_get_ranking";
         $request .= " from " . TABLE_GROUP . " g, " . TABLE_USER_GROUP . " u";
@@ -150,9 +155,7 @@ class User_Model
                     "ogs_set_ranking" => $row['ogs_set_ranking'],
                     "ogs_get_ranking" => $row['ogs_get_ranking']);
             }
-        } else
-            //No rights
-            $user_auth = array("server_set_system" => 0, "server_set_spy" => 0, "server_set_rc" => 0, "server_set_ranking" => 0, "server_show_positionhided" => 0, "ogs_connection" => 0, "ogs_set_system" => 0, "ogs_get_system" => 0, "ogs_set_spy" => 0, "ogs_get_spy" => 0, "ogs_set_ranking" => 0, "ogs_get_ranking" => 0);
+        }
 
         return $user_auth;
     }
@@ -175,7 +178,8 @@ class User_Model
     public function set_user_pseudo ($user_id, $user_name)
     {
         global $db;
-        $request = "UPDATE " . TABLE_USER . " SET `user_name` = '" . $db->sql_escape_string($user_name) . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `user_name` = '" . $user_name . "' WHERE `user_id` = " . $user_id;
+        $request = $db->sql_escape_string($request);
         $db->sql_query($request);
 
     }
@@ -332,7 +336,113 @@ class User_Model
             return $number = $db->sql_numrows();
     }
 
+    /**
+     * @param $pseudo
+     * @param $password
+     * @return \Ogsteam\Ogspy\Returs
+     */
+    public function add_new_user($pseudo, $password){
 
+        global $db;
+        $request = "INSERT INTO " . TABLE_USER . " (user_name, user_password, user_regdate, user_active)"
+            . " VALUES ('" . $pseudo . "', '" . md5(sha1($password)) . "', " . time() . ", '1')";
+        $db->sql_query($request);
+
+        return $db->sql_insertid();
+    }
+
+    /**
+     * @param $user_id
+     * @param $group_id
+     */
+    public function add_user_to_group($user_id, $group_id){
+
+        global $db;
+        $request = "INSERT INTO " . TABLE_USER_GROUP . " (group_id, user_id) VALUES (" . $group_id . ", " . $user_id . ")";
+        $db->sql_query($request);
+    }
+
+    /**
+     * @param $user_id
+     */
+    public function delete_user($user_id)
+    {
+        global $db;
+        
+        $request = "DELETE FROM " . TABLE_USER . " WHERE `user_id` = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "DELETE FROM " . TABLE_USER_GROUP . " where user_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "DELETE FROM " . TABLE_USER_BUILDING . " where user_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "DELETE FROM " . TABLE_USER_FAVORITE . " where user_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "DELETE FROM " . TABLE_USER_DEFENCE . " where user_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "DELETE FROM " . TABLE_USER_SPY . " where user_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "DELETE FROM " . TABLE_USER_TECHNOLOGY . " where user_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_PLAYER_POINTS . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_PLAYER_ECO . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_PLAYER_TECHNOLOGY . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_PLAYER_MILITARY . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_PLAYER_MILITARY_BUILT . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_PLAYER_HONOR . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_ALLY_POINTS . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_ALLY_ECO . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_ALLY_TECHNOLOGY . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_ALLY_MILITARY . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_ALLY_MILITARY_BUILT . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_ALLY_MILITARY_LOOSE . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_RANK_ALLY_HONOR . " set sender_id = 0 where sender_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_UNIVERSE . " set last_update_user_id = 0 where last_update_user_id = " . $user_id;
+        $db->sql_query($request);
+        
+        
+    }
 
     /* Fonctions concerning game account */
 

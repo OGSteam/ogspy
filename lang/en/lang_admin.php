@@ -71,7 +71,6 @@ $lang['ADMIN_SERVER_SESSIONS_CLEAN'] = "Drain";
 $lang['ADMIN_SERVER_CONNEXIONS'] = "Server connections";
 $lang['ADMIN_SERVER_PLANETS'] = "Planets";
 $lang['ADMIN_SERVER_ALL_IMPORT'] = "importations";
-$lang['ADMIN_SERVER_ALL_EXPORT'] = "exportations";
 $lang['ADMIN_SERVER_SPYREPORTS'] = "Spy reports";
 $lang['ADMIN_SERVER_RANKINGS'] = "Ranking (number of lines)";
 $lang['ADMIN_SERVER_PHPINFO'] = "PHPInfo";
