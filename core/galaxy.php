@@ -12,6 +12,7 @@
 
 namespace Ogsteam\Ogspy;
 
+use Ogsteam\Ogspy\Model\Universe_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 
 if (!defined('IN_SPYOGAME')) {
@@ -99,10 +100,6 @@ function galaxy_show()
         if (intval($pub_system) > intval($server_config['num_of_systems'])) $pub_system = intval($server_config['num_of_systems']);
     }
 
-    $ally_protection = $allied = array();
-    if ($server_config["ally_protection"] != "") $ally_protection = explode(",", $server_config["ally_protection"]);
-    if ($server_config["allied"] != "") $allied = explode(",", $server_config["allied"]);
-
     if (!isset($pub_galaxy) || !isset($pub_system)) {
         $pub_galaxy = $user_data["user_galaxy"];
         $pub_system = $user_data["user_system"];
@@ -113,35 +110,68 @@ function galaxy_show()
         }
     }
 
-    $request = "select row, name, ally, player, moon, phalanx, gate, last_update_moon, status, last_update, user_name";
-    $request .= " from " . TABLE_UNIVERSE . " left join " . TABLE_USER;
-    $request .= " on user_id = last_update_user_id";
-    $request .= " where galaxy = $pub_galaxy and system = $pub_system order by row";
-    $result = $db->sql_query($request);
+    $universeRepository = new Universe_Model();
+    $population = $universeRepository->get_system($pub_galaxy, $pub_system, $pub_system);
 
-    $population = array_fill(1, 15, array("ally" => "", "player" => "", "moon" => "", "last_update_moon" => "", "phalanx" => "", "gate" => "", "planet" => "", "report_spy" => false, "status" => "", "timestamp" => "", "poster" => "", "hided" => "", "allied" => ""));
-    while (list($row, $planet, $ally, $player, $moon, $phalanx, $gate, $last_update_moon, $status, $timestamp, $poster) = $db->sql_fetch_row($result)) {
-        $report_spy = 0;
-        $request = "select id_spy from " . TABLE_PARSEDSPY . " where active = '1' and coordinates = '$pub_galaxy:$pub_system:$row'";
-        $result_2 = $db->sql_query($request);
-        if ($db->sql_numrows($result_2) > 0) $report_spy = $db->sql_numrows($result_2);
-        $report_rc = 0;
-        $request = "select id_rc from " . TABLE_PARSEDRC . " where coordinates = '$pub_galaxy:$pub_system:$row'";
-        $result_2 = $db->sql_query($request);
-        if ($db->sql_numrows($result_2) > 0) $report_rc = $db->sql_numrows($result_2);
-
-        if (!in_array($ally, $ally_protection) || $ally == "" || $user_auth["server_show_positionhided"] == 1 || $user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-            $hided = $friend = false;
-            if (in_array($ally, $ally_protection)) $hided = true;
-            if (in_array($ally, $allied)) $friend = true;
-
-            $population[$row] = array("ally" => $ally, "player" => $player, "moon" => $moon, "phalanx" => $phalanx, "gate" => $gate, "last_update_moon" => $last_update_moon, "planet" => $planet, "report_spy" => $report_spy, "status" => $status, "timestamp" => $timestamp, "poster" => $poster, "hided" => $hided, "allied" => $friend, "report_rc" => $report_rc);
-        } elseif (in_array($ally, $ally_protection)) {
-            $population[$row] = array("ally" => "", "player" => "", "moon" => "", "phalanx" => "", "gate" => "", "last_update_moon" => "", "planet" => "", "report_spy" => "", "status" => "", "timestamp" => $timestamp, "poster" => $poster, "hided" => "", "allied" => "", "report_rc" => $report_rc);
-        }
-    }
+    $population = filter_system($population[$pub_system]);
 
     return array("population" => $population, "galaxy" => $pub_galaxy, "system" => $pub_system);
+}
+
+function filter_system($system)
+{
+    global $db, $server_config, $user_auth, $user_data;
+
+    $ally_protection = $allied = array();
+    if ($server_config["ally_protection"] != "")
+        $ally_protection = explode(",", $server_config["ally_protection"]);
+    if ($server_config["allied"] != "")
+        $allied = explode(",", $server_config["allied"]);
+
+    for($row = 1; $row <= 15; $row++)
+    {
+        $planet = $system[$row];
+        $coordinates = $planet['galaxy'] . ":" . $planet['system'] . ":" . $planet['row'];
+
+        $request = "select count(id_spy) from " . TABLE_PARSEDSPY . " where active = '1' and coordinates = '$coordinates'";
+        $result = $db->sql_query($request);
+        list($report_spy) = $db->sql_fetch_row($result);
+
+        $request = "select count(id_rc) from " . TABLE_PARSEDRC . " where coordinates = '$coordinates'";
+        $result = $db->sql_query($request);
+        list($report_rc) = $db->sql_fetch_row($result);
+
+        $planet["report_spy"] = $planet["report_rc"] = $planet["hided"] = $planet["allied"] = "";
+
+        if (!in_array($planet['ally'], $ally_protection)
+            || $planet['ally'] == ""
+            || $user_auth["server_show_positionhided"] == 1
+            || $user_data["user_admin"] == 1
+            || $user_data["user_coadmin"] == 1)
+        {
+            $hided = $friend = false;
+            if (in_array($planet['ally'], $ally_protection))
+                $hided = true;
+            if (in_array($planet['ally'], $allied))
+                $friend = true;
+
+            $planet["report_spy"] = $report_spy;
+            $planet["report_rc"] = $report_rc;
+            $planet["hided"]  = $hided;
+            $planet["allied"] = $friend;
+
+        } elseif (in_array($planet['ally'], $ally_protection)) {
+            foreach(array_keys($planet) as $key)
+            {
+                if($key == "timestamp" || $key == "poster")
+                    continue;
+                $planet[$key] = "";
+            }
+        }
+        $system[$row] = $planet;
+    }
+
+    return $system;
 }
 
 /**
@@ -178,37 +208,11 @@ function galaxy_show_sector()
         $pub_system_up = 25;
     }
 
-    $ally_protection = $allied = array();
-    if ($server_config["ally_protection"] != "") $ally_protection = explode(",", $server_config["ally_protection"]);
-    if ($server_config["allied"] != "") $allied = explode(",", $server_config["allied"]);
-
-    $request = "select system, row, name, ally, player, moon, phalanx, gate, last_update_moon, status, last_update";
-    $request .= " from " . TABLE_UNIVERSE;
-    $request .= " where galaxy = $pub_galaxy and system between " . $pub_system_down . " and " . $pub_system_up;
-    $request .= " order by system, row";
-    $result = $db->sql_query($request);
-
-    $population = array_fill($pub_system_down, $pub_system_up, "");
-    while (list($system, $row, $planet, $ally, $player, $moon, $phalanx, $gate, $last_update_moon, $status, $update) = $db->sql_fetch_row($result)) {
-        if (!isset($last_update[$system])) $last_update[$system] = $update; elseif ($update < $last_update[$system]) $last_update[$system] = $update;
-
-        $report_spy = 0;
-        $request = "select * from " . TABLE_PARSEDSPY . " where active = '1' and coordinates = '$pub_galaxy:$system:$row'";
-        $result_2 = $db->sql_query($request);
-        if ($db->sql_numrows($result_2) > 0) $report_spy = $db->sql_numrows($result_2);
-
-        if (!in_array($ally, $ally_protection) || $ally == "" || $user_auth["server_show_positionhided"] == 1 || $user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-            $hided = $friend = false;
-            if (in_array($ally, $ally_protection)) $hided = true;
-            if (in_array($ally, $allied)) $friend = true;
-
-            $population[$system][$row] = array("ally" => $ally, "player" => $player, "moon" => $moon, "phalanx" => $phalanx, "gate" => $gate, "last_update_moon" => $last_update_moon, "planet" => $planet, "report_spy" => $report_spy, "status" => $status, "hided" => $hided, "allied" => $friend);
-        }
-    }
-
-    while ($value = @current($last_update)) {
-        $population[key($last_update)]["last_update"] = $value;
-        next($last_update);
+    $universeRepository = new Universe_Model();
+    $population = $universeRepository->get_system($pub_galaxy, $pub_system_down, $pub_system_up);
+    for($system = $pub_system_down; $system <= $pub_system_up; $system++) {
+        $population[$system] = filter_system($population[$system]);
+        $population[$system]['timestamp'] = $population[$system][1]['timestamp'];
     }
 
     return array("population" => $population, "galaxy" => $pub_galaxy, "system_down" => $pub_system_down, "system_up" => $pub_system_up);

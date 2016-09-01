@@ -11,6 +11,7 @@
 namespace Ogsteam\Ogspy;
 
 use \IpUtils\Factory;
+use Ogsteam\Ogspy\Model\Universe_Model;
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
@@ -785,16 +786,17 @@ function db_optimize($maintenance_action = false)
  */
 function resize_db($new_num_of_galaxies, $new_num_of_systems)
 {
-    global $db, $db_host, $db_user, $db_password, $db_database, $table_prefix, $server_config;
+    global $db, $server_config;
 
+    $universeRepository = new Universe_Model();
     // si on reduit on doit supprimez toutes les entrées qui font reference au systemes ou galaxies que l'on va enlever
+    $universeRepository->resize_universe($new_num_of_galaxies, $new_num_of_systems);
+
     if ($new_num_of_galaxies < intval($server_config['num_of_galaxies'])) {
-        $db->sql_query("DELETE FROM " . TABLE_UNIVERSE . " WHERE galaxy > $new_num_of_galaxies");
         $db->sql_query("UPDATE " . TABLE_USER . " SET user_galaxy=1 WHERE user_galaxy > $new_num_of_galaxies");
         $db->sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE galaxy > $new_num_of_galaxies");
     }
     if ($new_num_of_systems < intval($server_config['num_of_systems'])) {
-        $db->sql_query("DELETE FROM " . TABLE_UNIVERSE . " WHERE system > $new_num_of_systems");
         $db->sql_query("UPDATE " . TABLE_USER . " SET user_system=1 WHERE user_system > $new_num_of_systems");
         $db->sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE system > $new_num_of_systems");
     }
