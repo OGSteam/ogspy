@@ -83,4 +83,161 @@ class Universe_Model
 
         return $population;
     }
+
+
+    /**
+     * Obtiens le nombre de planètes présentes dans les systèmes demandés
+     * @param $galaxy
+     * @param $system_down
+     * @param $system_up
+     * @return integer Nombre de planètes
+     */
+    public function get_nb_planets($galaxy, $system_down, $system_up)
+    {
+        global $db;
+
+        $request = "SELECT count(*) FROM " . TABLE_UNIVERSE;
+        $request .= " where galaxy = " . $galaxy;
+        $request .= " and system between " . $system_down . " and " . ($system_up);
+
+        $result = $db->sql_query($request);
+        list($nb_planet) = $db->sql_fetch_row($result);
+
+        return $nb_planet;
+    }
+
+    /**
+     * Obtiens le nombre de planètes vides présentes dans les systèmes demandés
+     * @param $galaxy
+     * @param $system_down
+     * @param $system_up
+     * @return integer Nombre de planètes
+     */
+    public function get_nb_empty_planets($galaxy, $system_down, $system_up)
+    {
+        global $db;
+
+        $request = "SELECT count(*) FROM " . TABLE_UNIVERSE;
+        $request .= " WHERE player = '' AND galaxy = " . $galaxy;
+        $request .= " AND system BETWEEN " . $system_down . " AND " . ($system_up);
+
+        $result = $db->sql_query($request);
+        list($nb_planet) = $db->sql_fetch_row($result);
+
+        return $nb_planet;
+    }
+
+    /**
+     * Obtiens la date maximale de dernière mise à jour des systèmes demandés
+     * @param $galaxy
+     * @param $system_down
+     * @param $system_up
+     * @return mixed last_update
+     */
+    public function get_last_update($galaxy, $system_down, $system_up)
+    {
+        global $db;
+
+        $request = "SELECT MAX(last_update) FROM " . TABLE_UNIVERSE;
+        $request .= " WHERE galaxy = " . $galaxy;
+        $request .= " AND system BETWEEN " . $system_down . " AND " . ($system_up);
+
+        $result = $db->sql_query($request);
+        list($last_update) = $db->sql_fetch_row($result);
+
+        return $last_update;
+    }
+
+    /**
+     * Obtiens la liste des alliances
+     * @return array
+     */
+    public function get_ally_list()
+    {
+        global $db;
+
+        $ally_list = array();
+
+        $request = "SELECT DISTINCT ally FROM " . TABLE_UNIVERSE . " ORDER BY ally";
+        $result = $db->sql_query($request);
+        while ($row = $db->sql_fetch_assoc($result)) {
+            if ($row["ally"] != "") $ally_list[] = $row["ally"];
+        }
+
+        return $ally_list;
+    }
+
+    /**
+     * Obtiens la liste des joueurs d'une alliance
+     * @param $galaxy
+     * @param $system_down
+     * @param $system_up
+     * @param $ally_name
+     * @return array
+     */
+    public function get_ally_position($galaxy, $system_down, $system_up, $ally_name)
+    {
+        global $db;
+
+        $request = "SELECT galaxy, system, row, player FROM " . TABLE_UNIVERSE;
+        $request .= " where galaxy = " . $galaxy;
+        $request .= " and system between " . $system_down . " and " . ($system_up);
+        $request .= " and ally like '" . $ally_name . "'";
+        $request .= " order by player, galaxy, system, row";
+        $result = $db->sql_query($request);
+
+        $population = array();
+        while (list($galaxy_, $system_, $row_, $player) = $db->sql_fetch_row($result)) {
+            $population[] = array("galaxy" => $galaxy_, "system" => $system_, "row" => $row_, "player" => $player);
+        }
+
+        return $population;
+    }
+
+    /**
+     * Retourne le nom de la planète
+     * @param $galaxy
+     * @param $system
+     * @param $row
+     * @return mixed
+     */
+    public function get_planet_name($galaxy, $system, $row)
+    {
+        global $db;
+
+        $request_astre_name = "SELECT name FROM " . TABLE_UNIVERSE . " WHERE galaxy = " . intval($galaxy) . " AND system = " . intval($system) . " AND row = " . intval($row);
+        $result_astre_name = $db->sql_query($request_astre_name);
+        $astre_name = $db->sql_fetch_assoc($result_astre_name); //Récupère le nom de la planète
+
+        return $astre_name;
+    }
+
+    /**
+     * Retourne la liste des phalanges d'une galaxie
+     * @param $galaxy
+     */
+    public function get_phalanx($galaxy)
+    {
+        global $db;
+
+        $req = "SELECT galaxy, system, row, phalanx, gate, name, ally, player FROM " . TABLE_UNIVERSE . " WHERE galaxy = '" . $galaxy . "' AND moon = '1' AND phalanx > 0";
+
+        $result = $db->sql_query($req);
+        $data = array();
+            //Construction liste phalanges
+            while ($row = $db->sql_fetch_assoc($result)) {
+                $data[] = array('galaxy' => $row["galaxy"],
+                                'system' => $row["system"],
+                                'row' => $row["row"],
+                                'name' => $row["name"],
+                                'ally' => $row["ally"],
+                                'player' => $row["player"],
+                                'gate' => $row["gate"],
+                                'level' => $row["phalanx"]);
+            }
+
+        return $data;
+    }
+
+
 }
