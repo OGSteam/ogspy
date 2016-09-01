@@ -17,6 +17,7 @@ use Ogsteam\Ogspy\Model\User_Building_Model;
 use Ogsteam\Ogspy\Model\User_Defense_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\Statistics_Model;
+use Ogsteam\Ogspy\Model\User_Technology_Model;
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
@@ -505,11 +506,9 @@ function user_create()
 
 /**
  * Suppression d'un utilisateur ($pub_user_id)
- * @todo Query : x12
  */
 function user_delete()
 {
-    global $db;
     global $pub_user_id;
 
     if (!check_var($pub_user_id, "Num")) {
@@ -618,6 +617,9 @@ function user_set_all_empire_resync_id()
 function user_get_empire($user_id)
 {
     global $db;
+    $data_user_building = new User_Building_Model();
+    $data_user_technologies = new User_Technology_Model();
+    $data_user_defense = new User_Defense_Model();
 
     $planet = array(false, "user_id" => "", "planet_name" => "", "coordinates" => "",
         "fields" => "", "fields_used" => "", "boosters" => booster_encode(),
@@ -639,6 +641,8 @@ function user_get_empire($user_id)
         $nb_planete = find_nb_planete_user($user_id);
     }
 
+    $user_building = array();
+
     // on met les planete a 0
     for ($i = 101; $i <= ($nb_planete + 100); $i++) {
         $user_building[$i] = $planet;
@@ -649,16 +653,11 @@ function user_get_empire($user_id)
         $user_building[$i] = $planet;
     }
 
-    $request = "SELECT planet_id, planet_name, coordinates, fields, boosters, temperature_min, temperature_max, Sat, Sat_percentage, M, M_percentage, C, C_Percentage, D, D_percentage, CES, CES_percentage, CEF, CEF_percentage, UdR, UdN, CSp, HM, HC, HD, Lab, Ter, Silo, BaLu, Pha, PoSa, DdR";
-    $request .= " FROM " . TABLE_USER_BUILDING;
-    $request .= " WHERE user_id = " . $user_id;
-    $request .= " ORDER BY planet_id";
-    $result = $db->sql_query($request);
-
+    $result = $data_user_building->select_user_building_list($user_id);
 
     //	$user_building = array_fill(101,$nb_planete , $planet);
     while ($row = $db->sql_fetch_assoc($result)) {
-        $arr = $row;
+        $arr = $row; //TODO This is only to calculate $fields_used ??
         unset($arr["planet_id"]);
         unset($arr["planet_name"]);
         unset($arr["coordinates"]);
@@ -691,21 +690,11 @@ function user_get_empire($user_id)
         $user_building[$row["planet_id"]][0] = true;
     }
 
+    $user_technology = $data_user_technologies->select_user_technologies($user_id);
 
-    $request = "SELECT Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique";
-    $request .= " FROM " . TABLE_USER_TECHNOLOGY;
-    $request .= " WHERE user_id = " . $user_id;
-    $result = $db->sql_query($request);
+    $result_defense = $data_user_defense->select_user_defense($user_id);
 
-    $user_technology = $db->sql_fetch_assoc($result);
-
-    $request = "SELECT planet_id, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP";
-    $request .= " FROM " . TABLE_USER_DEFENCE;
-    $request .= " WHERE user_id = " . $user_id;
-    $request .= " ORDER BY planet_id";
-    $result = $db->sql_query($request);
-
-
+    $user_defence = array();
     // on met les def planete a 0
     for ($i = 101; $i <= ($nb_planete + 100); $i++) {
         $user_defence[$i] = $defence;
@@ -716,8 +705,7 @@ function user_get_empire($user_id)
         $user_defence[$i] = $defence;
     }
 
-    //$user_defence = array_fill(1, $nb_planete_lune, $defence);
-    while ($row = $db->sql_fetch_assoc($result)) {
+    while ($row = $db->sql_fetch_assoc($result_defense)) {
         $planet_id = $row["planet_id"];
         unset($row["planet_id"]);
         $user_defence[$planet_id] = $row;
@@ -729,55 +717,25 @@ function user_get_empire($user_id)
 
 /**
  * Récuperation du nombre de  planete de l utilisateur
- * TODO => cette fonction sera a mettre en adequation avec astro
- * ( attention ancien uni techno a 1 planete mais utilisateur 9 possible  !!!!!)
- * @param $id
- * @return int|the
+ * @param $user_id
+ * @return int
  */
-function find_nb_planete_user($id)
+function find_nb_planete_user($user_id)
 {
-    global $db, $user_data;
+    $data_user_buildings = new User_Building_Model();
 
-
-    $request = "SELECT planet_id ";
-    $request .= " FROM " . TABLE_USER_BUILDING;
-    $request .= " WHERE user_id = " . $user_data["user_id"];
-    $request .= " AND planet_id < 199 ";
-    $request .= " ORDER BY planet_id";
-
-    $result = $db->sql_query($request);
-
-    //mini 9 pour eviter bug affichage
-    if ($db->sql_numrows($result) <= 9)
-        return 9;
-
-    return $db->sql_numrows($result);
-
+    return $data_user_buildings->get_nb_planets($user_id);
 }
 
 /**
- * @param $id
- * @return int|\the
+ * @param $user_id
+ * @return int
  */
-function find_nb_moon_user($id)
+function find_nb_moon_user($user_id)
 {
-    global $db, $user_data;
+    $data_user_buildings = new User_Building_Model();
 
-
-    $request = "select planet_id ";
-    $request .= " from " . TABLE_USER_BUILDING;
-    $request .= " where user_id = " . $user_data["user_id"];
-    $request .= " and planet_id > 199 ";
-    $request .= " order by planet_id";
-
-    $result = $db->sql_query($request);
-
-    //mini 9 pour eviter bug affichage
-    if ($db->sql_numrows($result) <= 9)
-        return 9;
-
-    return $db->sql_numrows($result);
-
+    return $data_user_buildings->get_nb_moons($user_id);
 }
 
 /**
@@ -816,7 +774,6 @@ function user_empire_production($user_empire, $off = NULL)
     // prepa ration E
     $product = array("M" => 0, "C" => 0, "D" => 0, "ratio" => 1, "conso_E" => 0, "prod_E" => 0);
     $ratio = array();
-    $NRJ = $user_empire['technology']['NRJ'] != "" ? $user_empire['technology']['NRJ'] : "0";
     $temp_max = 0;
     // FIN prepa ration E
 
@@ -880,31 +837,25 @@ function user_del_building()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $request = "delete from " . TABLE_USER_BUILDING . " where user_id = " . $user_data["user_id"] .
-        " and planet_id = " . intval($pub_planet_id);
-    $db->sql_query($request);
+    $data_user_defense = new User_Defense_Model();
+    $data_user_building = new User_Building_Model();
+    $data_user_technologies = new User_Technology_Model();
 
-    $request = "delete from " . TABLE_USER_DEFENCE . " where user_id = " . $user_data["user_id"] .
-        " and planet_id = " . intval($pub_planet_id);
-    $db->sql_query($request);
+    $data_user_building->delete_user_aster($user_data["user_id"], $pub_planet_id);
+    $data_user_defense->delete_user_aster($user_data["user_id"], $pub_planet_id);
 
     // si on supprime une planete; la lune doit suivre
     if (intval($pub_planet_id) < 199) {
         $moon_id = (intval($pub_planet_id) + 100);
-        $request = "delete from " . TABLE_USER_BUILDING . " where user_id = " . $user_data["user_id"] .
-            " and planet_id = " . intval($moon_id);
-        $db->sql_query($request);
 
-        $request = "delete from " . TABLE_USER_DEFENCE . " where user_id = " . $user_data["user_id"] .
-            " and planet_id = " . intval($moon_id);
-        $db->sql_query($request);
+        $data_user_building->delete_user_aster($user_data["user_id"], $moon_id);
+        $data_user_defense->delete_user_aster($user_data["user_id"], $moon_id);
     }
 
-    $request = "select * from " . TABLE_USER_BUILDING . " where planet_id <= 199";
-    $result = $db->sql_query($request);
-    if ($db->sql_numrows($result) == 0) {
-        $request = "delete from " . TABLE_USER_TECHNOLOGY . " where user_id = " . $user_data["user_id"];
-        $db->sql_query($request);
+    $nb_planets_remaining = find_nb_planete_user($user_data["user_id"]);
+
+    if ($nb_planets_remaining == 0) {
+        $data_user_technologies->delete_user_technologies($user_data["user_id"]);
     }
 
     // remise en ordre des planetes :
