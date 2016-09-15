@@ -1167,52 +1167,15 @@ function usergroup_setauth()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    if (is_null($pub_server_set_system))
-        $pub_server_set_system = 0;
-    if (is_null($pub_server_set_spy))
-        $pub_server_set_spy = 0;
-    if (is_null($pub_server_set_rc))
-        $pub_server_set_rc = 0;
-    if (is_null($pub_server_set_ranking))
-        $pub_server_set_ranking = 0;
-    if (is_null($pub_server_show_positionhided))
-        $pub_server_show_positionhided = 0;
-    if (is_null($pub_ogs_connection))
-        $pub_ogs_connection = 0;
-    if (is_null($pub_ogs_set_system))
-        $pub_ogs_set_system = 0;
-    if (is_null($pub_ogs_get_system))
-        $pub_ogs_get_system = 0;
-    if (is_null($pub_ogs_set_spy))
-        $pub_ogs_set_spy = 0;
-    if (is_null($pub_ogs_get_spy))
-        $pub_ogs_get_spy = 0;
-    if (is_null($pub_ogs_set_ranking))
-        $pub_ogs_set_ranking = 0;
-    if (is_null($pub_ogs_get_ranking))
-        $pub_ogs_get_ranking = 0;
-
     //Vérification des droits
     user_check_auth("usergroup_manage");
 
     log_("modify_usergroup", $pub_group_id);
 
-    $request = "update " . TABLE_GROUP;
-    $request .= " set group_name = '" . $db->sql_escape_string($pub_group_name) .
-        "',";
-    $request .= " server_set_system = '" . intval($pub_server_set_system) .
-        "', server_set_spy = '" . intval($pub_server_set_spy) . "', server_set_rc = '" .
-        intval($pub_server_set_rc) . "', server_set_ranking = '" . intval($pub_server_set_ranking) .
-        "', server_show_positionhided = '" . intval($pub_server_show_positionhided) .
-        "',";
-    $request .= " ogs_connection = '" . intval($pub_ogs_connection) .
-        "', ogs_set_system = '" . intval($pub_ogs_set_system) . "', ogs_get_system = '" .
-        intval($pub_ogs_get_system) . "', ogs_set_spy = '" . intval($pub_ogs_set_spy) .
-        "', ogs_get_spy = '" . intval($pub_ogs_get_spy) . "', ogs_set_ranking = '" .
-        intval($pub_ogs_set_ranking) . "', ogs_get_ranking = '" . intval($pub_ogs_get_ranking) .
-        "'";
-    $request .= " where group_id = " . intval($pub_group_id);
-    $db->sql_query($request);
+    $data_group = new Group_Model();
+    $data_group->update_group($pub_group_id, $pub_group_name, $pub_server_set_system, $pub_server_set_spy, $pub_server_set_rc, $pub_server_set_ranking, $pub_server_show_positionhided,
+        $pub_ogs_connection, $pub_ogs_set_system, $pub_ogs_get_system, $pub_ogs_set_spy,
+        $pub_ogs_get_spy, $pub_ogs_set_ranking, $pub_ogs_get_ranking);
 
     redirection("index.php?action=administration&subaction=group&group_id=" . $pub_group_id);
 }
@@ -1220,29 +1183,16 @@ function usergroup_setauth()
 /**
  * Récupération des utilisateurs appartenant à un groupe
  * @param int $group_id Identificateur du groupe demandé
- * @return Array Liste des utilisateurs
+ * @return array Liste des utilisateurs
  */
 function usergroup_member($group_id)
 {
-    global $db;
-
     if (!isset($group_id) || !is_numeric($group_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
+    $data_group = new Group_Model();
 
-    $usergroup_member = array();
-
-    $request = "select u.user_id, u.user_name from " . TABLE_USER . " as  u, " .
-        TABLE_USER_GROUP . " as g";
-    $request .= " where u.user_id = g.user_id";
-    $request .= " and g.group_id = " . intval($group_id);
-    $request .= " order by user_name";
-    $result = $db->sql_query($request);
-    while ($row = $db->sql_fetch_assoc($result)) {
-        $usergroup_member[] = $row;
-    }
-
-    return $usergroup_member;
+    return $data_group->get_user_list($group_id);
 }
 
 /**
