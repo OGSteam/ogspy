@@ -12,12 +12,15 @@
 
 namespace Ogsteam\Ogspy;
 
+use Ogsteam\Ogspy\Model\Group_Model;
 use Ogsteam\Ogspy\Model\Sessions_Model;
+use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\User_Building_Model;
 use Ogsteam\Ogspy\Model\User_Defense_Model;
 use Ogsteam\Ogspy\Model\User_Favorites_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\Statistics_Model;
+use Ogsteam\Ogspy\Model\User_SpyFavorites_Model;
 use Ogsteam\Ogspy\Model\User_Technology_Model;
 
 if (!defined('IN_SPYOGAME')) {
@@ -977,68 +980,17 @@ function user_del_favorite()
  */
 function user_getfavorites_spy()
 {
-    global $db, $user_data;
+    global $user_data;
     global $sort, $sort2;
-    $order = "";
 
-    if (!isset($sort) || !isset($sort2) || !is_numeric($sort) || !is_numeric($sort2)) {
-        $ordered_by = "dateRE desc";
-    } else {
-        switch ($sort2) {
-            case 0:
-                $order .= " desc";
-                break;
-            case 1:
-                $order .= " asc";
-                break;
-            default:
-                $order .= " asc";
-        }
+    $data_spy = new Spy_Model();
 
-        switch ($sort) {
-            case 1:
-                $ordered_by = "coordinates" . $order . "";
-                break;
-            case 2:
-                $ordered_by = "ally " . $order;
-                break;
-            case 3:
-                $ordered_by = "player " . $order;
-                break;
-            case 4:
-                $ordered_by = "moon " . $order;
-                break;
-            case 5:
-                $ordered_by = "dateRE " . $order;
-                break;
-            default:
-                $ordered_by = "dateRE " . $order;
-        }
+    if(!is_numeric($sort) || !is_numeric($sort2)){
+        //Ordering by date Desc
+        $sort = 5 ;
+        $sort2 = 0;
     }
-
-    $favorite = array();
-
-    $request = "select " . TABLE_PARSEDSPY .
-        ".id_spy, coordinates, dateRE, sender_id, " . TABLE_UNIVERSE . ".moon, " . TABLE_UNIVERSE . ".ally, " . TABLE_UNIVERSE . ".player, " . TABLE_UNIVERSE . ".status";
-    $request .= " from " . TABLE_PARSEDSPY . ", " . TABLE_UNIVERSE;
-    $request .= " where " . TABLE_PARSEDSPY . ".sender_id = " . $user_data["user_id"] . " and CONCAT(" . TABLE_UNIVERSE . ".galaxy,':'," . TABLE_UNIVERSE . ".system,':'," . TABLE_UNIVERSE . ".row)=coordinates";
-    $request .= " order by " . $ordered_by;
-    $result = $db->sql_query($request);
-
-    while (list($spy_id, $coordinates, $datadate, $sender_id, $moon, $ally, $player, $status) = $db->sql_fetch_row($result)) {
-        $request = "select user_name from " . TABLE_USER;
-        $request .= " where user_id=" . $sender_id;
-        $result_2 = $db->sql_query($request);
-        list($user_name) = $db->sql_fetch_row($result_2);
-        $favorite[$spy_id] = array("spy_id" => $spy_id, "spy_galaxy" => substr($coordinates,
-            0, strpos($coordinates, ':')), "spy_system" => substr($coordinates, strpos($coordinates,
-                ':') + 1, strrpos($coordinates, ':') - strpos($coordinates, ':') - 1), "spy_row" =>
-            substr($coordinates, strrpos($coordinates, ':') + 1), "player" => $player,
-            "ally" => $ally, "moon" => $moon, "status" => $status, "datadate" => $datadate,
-            "poster" => $user_name);
-    }
-
-    return $favorite;
+    return $data_spy->get_favoriteSpyList($user_data["user_id"], $sort, $sort2);
 }
 
 /**
@@ -1046,7 +998,7 @@ function user_getfavorites_spy()
  */
 function user_add_favorite_spy()
 {
-    global $db, $user_data, $server_config;
+    global $user_data, $server_config;
     global $pub_spy_id, $pub_galaxy, $pub_system, $pub_row;
 
     if (!check_var($pub_spy_id, "Num")) {
@@ -1057,14 +1009,11 @@ function user_add_favorite_spy()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $request = "select * from " . TABLE_USER_SPY . " where user_id = " . $user_data["user_id"];
-    $result = $db->sql_query($request);
-    $nb_favorites = $db->sql_numrows($result);
+    $data_favorites = new User_SpyFavorites_Model();
+    $nb_favorites = $data_favorites->get_nb_spyfavorites($user_data["user_id"]);
 
     if ($nb_favorites < $server_config["max_favorites_spy"]) {
-        $request = "insert ignore into " . TABLE_USER_SPY .
-            " (user_id, spy_id) values (" . $user_data["user_id"] . ", " . $pub_spy_id . ")";
-        $db->sql_query($request);
+        $data_favorites->insert_spyfavorite($user_data["user_id"], $pub_spy_id);
         redirection("index.php?action=show_reportspy&galaxy=" . $pub_galaxy . "&system=" .
             $pub_system . "&row=" . $pub_row);
     } else {
@@ -1077,7 +1026,7 @@ function user_add_favorite_spy()
  */
 function user_del_favorite_spy()
 {
-    global $db, $user_data;
+    global $user_data;
     global $pub_spy_id, $pub_galaxy, $pub_system, $pub_row, $pub_info;
 
     if (!check_var($pub_spy_id, "Num")) {
@@ -1088,8 +1037,9 @@ function user_del_favorite_spy()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $request = "delete from " . TABLE_PARSEDSPY . " where sender_id = " . $user_data["user_id"] . " and id_spy = '" . $pub_spy_id . "'";
-    $db->sql_query($request);
+    $data_favorites = new User_SpyFavorites_Model();
+
+    $data_favorites->delete_spyfavorite($user_data["user_id"], $pub_spy_id);
 
     if (!isset($pub_info))
         $pub_info = 1;
@@ -1104,6 +1054,7 @@ function user_del_favorite_spy()
         default:
             return true;
     }
+    return false;
 }
 
 /**
@@ -1111,7 +1062,6 @@ function user_del_favorite_spy()
  */
 function usergroup_create()
 {
-    global $db, $user_data;
     global $pub_groupname;
 
     if (!isset($pub_groupname)) {
@@ -1125,16 +1075,10 @@ function usergroup_create()
         redirection("index.php?action=message&id_message=createusergroup_failed_groupname&info");
     }
 
-    $request = "select group_id from " . TABLE_GROUP . " where group_name = '" .
-        $db->sql_escape_string($pub_groupname) . "'";
-    $result = $db->sql_query($request);
+    $data_group = new Group_Model();
+    $group_id = $data_group->insert_group($pub_groupname);
 
-    if ($db->sql_numrows($result) == 0) {
-        $request = "insert into " . TABLE_GROUP . " (group_name)" . " values ('" .
-            $db->sql_escape_string($pub_groupname) . "')";
-        $db->sql_query($request);
-        $group_id = $db->sql_insertid();
-
+    if ($group_id !== FALSE) {
         log_("create_usergroup", $pub_groupname);
         redirection("index.php?action=administration&subaction=group&group_id=" . $group_id);
     } else {
@@ -1148,7 +1092,6 @@ function usergroup_create()
  */
 function usergroup_delete()
 {
-    global $db, $user_data;
     global $pub_group_id;
 
     if (!check_var($pub_group_id, "Num")) {
@@ -1168,11 +1111,8 @@ function usergroup_delete()
 
     log_("delete_usergroup", $pub_group_id);
 
-    $request = "delete from " . TABLE_USER_GROUP . " where group_id = " . intval($pub_group_id);
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_GROUP . " where group_id = " . intval($pub_group_id);
-    $db->sql_query($request);
+    $data_group = new Group_Model();
+    $data_group->delete_group($pub_group_id);
 
     redirection("index.php?action=administration&subaction=group");
 }
@@ -1184,38 +1124,18 @@ function usergroup_delete()
  */
 function usergroup_get($group_id = false)
 {
-    global $db, $user_data;
-
     //Vérification des droits
     user_check_auth("usergroup_manage");
 
-    $request = "select group_id, group_name, ";
-    $request .= " server_set_system, server_set_spy, server_set_rc, server_set_ranking, server_show_positionhided,";
-    $request .= " ogs_connection, ogs_set_system, ogs_get_system, ogs_set_spy, ogs_get_spy, ogs_set_ranking, ogs_get_ranking";
-    $request .= " from " . TABLE_GROUP;
+    $data_group = new Group_Model();
 
-    if ($group_id !== false) {
-        if (intval($group_id) == 0)
-            return false;
-        $request .= " where group_id = " . $group_id;
-    }
-    $request .= " order by group_name";
-    $result = $db->sql_query($request);
-
-    if (!$group_id) {
-        $info_usergroup = array();
-        while ($row = $db->sql_fetch_assoc()) {
-            $info_usergroup[] = $row;
-        }
-    } else {
-        while ($row = $db->sql_fetch_assoc()) {
-            $info_usergroup = $row;
-        }
+    if ($group_id == false) {
+        $info_usergroup = $data_group->get_group_list();
+    }else{
+        $info_usergroup = $data_group->get_group_rights($group_id);
     }
 
-    if (sizeof($info_usergroup) == 0) {
-        return false;
-    }
+    if (sizeof($info_usergroup) == 0) return false;
 
     return $info_usergroup;
 }
@@ -1225,7 +1145,7 @@ function usergroup_get($group_id = false)
  */
 function usergroup_setauth()
 {
-    global $db, $user_data;
+    global $db;
     global $pub_group_id, $pub_group_name, $pub_server_set_system, $pub_server_set_spy,
            $pub_server_set_rc, $pub_server_set_ranking, $pub_server_show_positionhided, $pub_ogs_connection,
            $pub_ogs_set_system, $pub_ogs_get_system, $pub_ogs_set_spy, $pub_ogs_get_spy, $pub_ogs_set_ranking,
@@ -1304,7 +1224,7 @@ function usergroup_setauth()
  */
 function usergroup_member($group_id)
 {
-    global $db, $user_data;
+    global $db;
 
     if (!isset($group_id) || !is_numeric($group_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
@@ -1318,7 +1238,7 @@ function usergroup_member($group_id)
     $request .= " and g.group_id = " . intval($group_id);
     $request .= " order by user_name";
     $result = $db->sql_query($request);
-    while ($row = $db->sql_fetch_assoc()) {
+    while ($row = $db->sql_fetch_assoc($result)) {
         $usergroup_member[] = $row;
     }
 
@@ -1330,7 +1250,7 @@ function usergroup_member($group_id)
  */
 function usergroup_newmember()
 {
-    global $db, $user_data;
+    global $db;
     global $pub_user_id, $pub_group_id, $pub_add_all;
 
     if ($pub_add_all == "Ajouter tout les membres") {
@@ -1372,7 +1292,7 @@ function usergroup_newmember()
         $request = "insert ignore into " . TABLE_USER_GROUP .
             " (group_id, user_id) values (" . intval($pub_group_id) . ", " . intval($pub_user_id) .
             ")";
-        $result = $db->sql_query($request);
+        $db->sql_query($request);
 
         if ($db->sql_affectedrows() > 0) {
             log_("add_usergroup", array($pub_group_id, $pub_user_id));
@@ -1389,7 +1309,7 @@ function usergroup_newmember()
  */
 function usergroup_delmember()
 {
-    global $db, $user_data;
+    global $db;
     global $pub_user_id, $pub_group_id;
 
     if (!isset($pub_user_id) || !isset($pub_group_id)) {
@@ -1404,7 +1324,7 @@ function usergroup_delmember()
 
     $request = "delete from " . TABLE_USER_GROUP . " where group_id = " . intval($pub_group_id) .
         " and user_id = " . intval($pub_user_id);
-    $result = $db->sql_query($request);
+    $db->sql_query($request);
 
     if ($db->sql_affectedrows() > 0) {
         log_("del_usergroup", array($pub_group_id, $pub_user_id));
@@ -1450,6 +1370,7 @@ function user_del_spy()
         default:
             return true;
     }
+    return false;
 }
 
 /**
