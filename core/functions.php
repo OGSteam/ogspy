@@ -11,6 +11,7 @@
 namespace Ogsteam\Ogspy;
 
 use \IpUtils\Factory;
+use Ogsteam\Ogspy\Model\Config_Model;
 use Ogsteam\Ogspy\Model\Universe_Model;
 
 if (!defined('IN_SPYOGAME')) {
@@ -224,7 +225,7 @@ function init_serverconfig()
  */
 function set_server_view()
 {
-    global $db, $user_data;
+    global $user_data;
     global $pub_enable_portee_missil, $pub_enable_members_view, $pub_enable_stat_view,
            $pub_galaxy_by_line_stat, $pub_system_by_line_stat, $pub_galaxy_by_line_ally, $pub_system_by_line_ally,
            $pub_nb_colonnes_ally, $pub_color_ally, $pub_enable_register_view, $pub_register_alliance,
@@ -278,97 +279,68 @@ function set_server_view()
         redirection("index.php?action=message&id_message=setting_server_view_failed&info");
     }
 
+    $configRepository = new Config_Model();
+
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_enable_portee_missil .
-        " where config_name = 'portee_missil'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'portee_missil', 'config_value' => $pub_enable_portee_missil));
 
     //
     if ($pub_galaxy_by_line_stat < 1)
         $pub_galaxy_by_line_stat = 1;
     if ($pub_galaxy_by_line_stat > 100)
         $pub_galaxy_by_line_stat = 100;
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_galaxy_by_line_stat .
-        " where config_name = 'galaxy_by_line_stat'";
-    $db->sql_query($request);
+
+    $configRepository->update(array('config_name' => 'galaxy_by_line_stat', 'config_value' => $pub_galaxy_by_line_stat));
 
     //
     if ($pub_system_by_line_stat < 1)
         $pub_system_by_line_stat = 1;
     if ($pub_system_by_line_stat > 100)
         $pub_system_by_line_stat = 100;
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_system_by_line_stat .
-        " where config_name = 'system_by_line_stat'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'system_by_line_stat', 'config_value' => $pub_system_by_line_stat));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $pub_open_user .
-        "' where config_name = 'open_user'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'open_user', 'config_value' => $pub_open_user));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $pub_open_admin .
-        "' where config_name = 'open_admin'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'open_admin', 'config_value' => $pub_open_admin));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_enable_stat_view .
-        " where config_name = 'enable_stat_view'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'enable_stat_view', 'config_value' => $pub_enable_stat_view));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_enable_members_view .
-        " where config_name = 'enable_members_view'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'enable_members_view', 'config_value' => $pub_enable_members_view));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $db->
-        sql_escape_string($pub_nb_colonnes_ally) .
-        "' where config_name = 'nb_colonnes_ally'";
-    $db->sql_query($request);
-
+    $configRepository->update(array('config_name' => 'nb_colonnes_ally', 'config_value' => $pub_nb_colonnes_ally));
 
     $array = $pub_color_ally; //die(var_dump($pub_color_ally));
     $color_ally = implode("_", $array);
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $db->
-        sql_escape_string($color_ally) . "' where config_name = 'color_ally'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'color_ally', 'config_value' => $color_ally));
 
     //
     if ($pub_galaxy_by_line_ally < 1)
         $pub_galaxy_by_line_ally = 1;
     if ($pub_galaxy_by_line_ally > 100)
         $pub_galaxy_by_line_ally = 100;
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_galaxy_by_line_ally .
-        " where config_name = 'galaxy_by_line_ally'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'galaxy_by_line_ally', 'config_value' => $pub_galaxy_by_line_ally));
 
     //
     if ($pub_system_by_line_ally < 1)
         $pub_system_by_line_ally = 1;
     if ($pub_system_by_line_ally > 100)
         $pub_system_by_line_ally = 100;
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_system_by_line_ally .
-        " where config_name = 'system_by_line_ally'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'system_by_line_ally', 'config_value' => $pub_system_by_line_ally));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $pub_enable_register_view .
-        "' where config_name = 'enable_register_view'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'enable_register_view', 'config_value' => $pub_enable_register_view));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $db->
-        sql_escape_string($pub_register_alliance) .
-        "' where config_name = 'register_alliance'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'register_alliance', 'config_value' => $pub_register_alliance));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $db->
-        sql_escape_string($pub_register_forum) .
-        "' where config_name = 'register_forum'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'register_forum', 'config_value' => $pub_register_forum));
 
     // mise a jour des caches avec les modifs
     generate_config_cache();
@@ -502,34 +474,28 @@ function set_serverconfig()
     ) {
         resize_db($pub_num_of_galaxies, $pub_num_of_systems);
     }
-    //
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_server_active .
-        " where config_name = 'server_active'";
-    $db->sql_query($request);
+
+    $configRepository = new Config_Model();
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_debug_log .
-        " where config_name = 'debug_log'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'server_active', 'config_value' => $pub_server_active));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_block_ratio .
-        " where config_name = 'block_ratio'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'debug_log', 'config_value' => $pub_debug_log));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_log_phperror .
-        " where config_name = 'log_phperror'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'block_ratio', 'config_value' => $pub_block_ratio));
+
+    //
+    $configRepository->update(array('config_name' => 'log_phperror', 'config_value' => $pub_log_phperror));
+
     //
     $pub_max_favorites = intval($pub_max_favorites);
     if ($pub_max_favorites < 0)
         $pub_max_favorites = 0;
     if ($pub_max_favorites > 99)
         $pub_max_favorites = 99;
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_favorites .
-        " where config_name = 'max_favorites'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'max_favorites', 'config_value' => $pub_max_favorites));
 
     //
     $pub_max_favorites_spy = intval($pub_max_favorites_spy);
@@ -537,14 +503,10 @@ function set_serverconfig()
         $pub_max_favorites_spy = 0;
     if ($pub_max_favorites_spy > 99)
         $pub_max_favorites_spy = 99;
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_favorites_spy .
-        " where config_name = 'max_favorites_spy'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'max_favorites_spy', 'config_value' => $pub_max_favorites_spy));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_ratio_limit .
-        " where config_name = 'ratio_limit'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'ratio_limit', 'config_value' => $pub_ratio_limit));
 
     //
     $pub_max_spyreport = intval($pub_max_spyreport);
@@ -552,9 +514,7 @@ function set_serverconfig()
         $pub_max_spyreport = 1;
     if ($pub_max_spyreport > 50)
         $pub_max_spyreport = 50;
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_spyreport .
-        " where config_name = 'max_spyreport'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'max_spyreport', 'config_value' => $pub_max_spyreport));
 
     //
     $pub_max_battlereport = intval($pub_max_battlereport);
@@ -562,9 +522,7 @@ function set_serverconfig()
         $pub_max_battlereport = 0;
     if ($pub_max_battlereport > 999)
         $pub_max_battlereport = 999;
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_battlereport .
-        " where config_name = 'max_battlereport'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'max_battlereport', 'config_value' => $pub_max_battlereport));
 
     //
     $pub_session_time = intval($pub_session_time);
@@ -572,9 +530,7 @@ function set_serverconfig()
         $pub_session_time = 5;
     if ($pub_session_time > 180)
         $pub_session_time = 180;
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_session_time .
-        " where config_name = 'session_time'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'session_time', 'config_value' => $pub_session_time));
 
     //
     $pub_max_keeplog = intval($pub_max_keeplog);
@@ -582,30 +538,21 @@ function set_serverconfig()
         $pub_max_keeplog = 0;
     if ($pub_max_keeplog > 365)
         $pub_max_keeplog = 365;
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_keeplog .
-        " where config_name = 'max_keeplog'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'max_keeplog', 'config_value' => $pub_max_keeplog));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $db->
-        sql_escape_string($pub_reason) . "' where config_name = 'reason'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'reason', 'config_value' => $pub_reason));
 
     //
     if (substr($pub_ally_protection, strlen($pub_ally_protection) - 1) == ",")
         $pub_ally_protection = substr($pub_ally_protection, 0, strlen($pub_ally_protection) -
             1);
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $db->
-        sql_escape_string($pub_ally_protection) .
-        "' where config_name = 'ally_protection'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'ally_protection', 'config_value' => $pub_ally_protection));
 
     //
     if ($pub_url_forum != "" && !preg_match("#^http://#", $pub_url_forum))
         $pub_url_forum = "http://" . $pub_url_forum;
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $db->
-        sql_escape_string($pub_url_forum) . "' where config_name = 'url_forum'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'url_forum', 'config_value' => $pub_url_forum));
 
     //
     $pub_max_keeprank = intval($pub_max_keeprank);
@@ -613,17 +560,12 @@ function set_serverconfig()
         $pub_max_keeprank = 1;
     if ($pub_max_keeprank > 999)
         $pub_max_keeprank = 999;
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_keeprank .
-        " where config_name = 'max_keeprank'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'max_keeprank', 'config_value' => $pub_max_keeprank));
 
     //
     if ($pub_keeprank_criterion != "quantity" && $pub_keeprank_criterion != "day")
         $pub_keeprank_criterion = "quantity";
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $db->
-        sql_escape_string($pub_keeprank_criterion) .
-        "' where config_name = 'keeprank_criterion'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'keeprank_criterion', 'config_value' => $pub_keeprank_criterion));
 
     //
     $pub_max_keepspyreport = intval($pub_max_keepspyreport);
@@ -631,68 +573,45 @@ function set_serverconfig()
         $pub_max_keepspyreport = 1;
     if ($pub_max_keepspyreport > 999)
         $pub_max_keepspyreport = 999;
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_max_keepspyreport .
-        " where config_name = 'max_keepspyreport'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'max_keepspyreport', 'config_value' => $pub_max_keepspyreport));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $db->
-        sql_escape_string($pub_servername) . "' where config_name = 'servername'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'servername', 'config_value' => $pub_servername));
 
     //
     if (substr($pub_allied, strlen($pub_allied) - 1) == ",")
         $pub_allied = substr($pub_allied, 0, strlen($pub_allied) - 1);
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $db->
-        sql_escape_string($pub_allied) . "' where config_name = 'allied'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'allied', 'config_value' => $pub_allied));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_disable_ip_check .
-        " where config_name = 'disable_ip_check'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'disable_ip_check', 'config_value' => $pub_disable_ip_check));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_num_of_galaxies .
-        " where config_name = 'num_of_galaxies'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'num_of_galaxies', 'config_value' => $pub_num_of_galaxies));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_num_of_systems .
-        " where config_name = 'num_of_systems'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'num_of_systems', 'config_value' => $pub_num_of_systems));
 
     //
     if (!isset($pub_ddr) || !is_numeric($pub_ddr))
         $pub_ddr = 0;
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $pub_ddr .
-        "' where config_name = 'ddr'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'ddr', 'config_value' => $pub_ddr));
 
     //
     if (!isset($pub_astro_strict) || !is_numeric($pub_astro_strict))
         $pub_astro_strict = 0;
-    $request = "update " . TABLE_CONFIG . " set config_value = '" . $pub_astro_strict .
-        "' where config_name = 'astro_strict'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'astro_strict', 'config_value' => $pub_astro_strict));
 
     //
     if (!is_numeric($pub_speed_uni) || $pub_speed_uni < 1)
         $pub_speed_uni = 1;
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_speed_uni .
-        " where config_name = 'speed_uni'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'speed_uni', 'config_value' => $pub_speed_uni));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_mod_cache .
-        " where config_name = 'mod_cache'";
-    $db->sql_query($request);
+    $configRepository->update(array('config_name' => 'mod_cache', 'config_value' => $pub_mod_cache));
 
     //
-    $request = "update " . TABLE_CONFIG . " set config_value = " . $pub_config_cache .
-        " where config_name = 'config_cache'";
-    $db->sql_query($request);
-
+    $configRepository->update(array('config_name' => 'config_cache', 'config_value' => $pub_config_cache));
 
     // mise a jour des caches avec les mofids
     generate_config_cache();
@@ -804,12 +723,11 @@ function resize_db($new_num_of_galaxies, $new_num_of_systems)
     $server_config['num_of_galaxies'] = $new_num_of_galaxies;
     $server_config['num_of_systems'] = $new_num_of_systems;
 
-    $request = "REPLACE INTO " . TABLE_CONFIG .
-        " (config_name, config_value) VALUES ('num_of_galaxies','$new_num_of_galaxies')";
-    $db->sql_query($request);
-    $request = "REPLACE INTO " . TABLE_CONFIG .
-        " (config_name, config_value) VALUES ('num_of_systems','$new_num_of_systems')";
-    $db->sql_query($request);
+    $configRepository = new Config_Model();
+
+    //
+    $configRepository->update(array('config_name' => 'num_of_galaxies', 'config_value' => $new_num_of_galaxies));
+    $configRepository->update(array('config_name' => 'num_of_systems', 'config_value' => $new_num_of_systems));
 
     log_("set_db_size");
 }
@@ -830,7 +748,7 @@ function formate_number($number, $decimal = 0)
  */
 function maintenance_action()
 {
-    global $db, $server_config;
+    global $server_config;
 
     $time = mktime(0, 0, 0);
     if (isset($server_config["last_maintenance_action"]) && $time > $server_config["last_maintenance_action"]) {
@@ -838,8 +756,8 @@ function maintenance_action()
         log_purge();
         galaxy_purge_spy();
 
-        $request = "update " . TABLE_CONFIG . " set config_value = '" . $time . "' where config_name = 'last_maintenance_action'";
-        $db->sql_query($request);
+        $repo = new Config_Model();
+        $repo->update(array('config_name' => 'last_maintenance_action', 'config_value' => $time));
     }
 }
 

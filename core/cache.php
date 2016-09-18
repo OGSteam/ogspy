@@ -11,6 +11,7 @@
 
 namespace Ogsteam\Ogspy;
 
+use Ogsteam\Ogspy\Model\Config_Model;
 use Ogsteam\Ogspy\Model\Mod_Model;
 
 if (!defined('IN_SPYOGAME')) {
@@ -27,13 +28,12 @@ function generate_config_cache()
     global $db, $table_prefix, $server_config;
     $output = NULL;
 
-    $request = "select * from " . TABLE_CONFIG;
-    $result = $db->sql_query($request);
+    $configRepository = new Config_Model();
+    $configs = $configRepository->find_by();
 
     // Output config as PHP code
-    while ($cur_config_item = $db->sql_fetch_row($result)) {
-        $output[$cur_config_item[0]] = stripslashes($cur_config_item[1]);
-    }
+    foreach($configs as $config)
+        $output[$config['config_name']] = stripslashes($config['config_value']);
 
     $fh = @fopen('cache/cache_config.php', 'wb');
     if (!$fh) {
@@ -48,7 +48,6 @@ function generate_config_cache()
         fclose($fh);
 
     }
-
 }
 
 
