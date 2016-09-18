@@ -139,17 +139,11 @@ require_once("views/page_header.php");
         <?php
         $i = 1;
         foreach ($population as $v) {
-            $begin_hided = "";
-            $end_hided = "";
-            if ($v["hided"]) {
-                $begin_hided = "<span style=\"color: lime; \">";
-                $end_hided = "</span>";
-            }
             $begin_allied = "";
             $end_allied = "";
             if ($v["allied"]) {
-                $begin_allied = "<blink>";
-                $end_allied = "</blink>";
+                $begin_allied = "<span style=\"color: lime; \">";
+                $end_allied = "</span>";
             }
 
             $id = $i;
@@ -169,7 +163,7 @@ require_once("views/page_header.php");
             }
 
             if ($planet == "") $planet = "&nbsp;";
-            else $planet = "<a href='index.php?action=search&amp;type_search=planet&amp;string_search=" . $planet . "&amp;strict=on'>" . $begin_allied . $begin_hided . $planet . $end_hided . $end_allied . "</a>";
+            else $planet = "<a href='index.php?action=search&amp;type_search=planet&amp;string_search=" . $planet . "&amp;strict=on'>" . $begin_allied . $planet . $end_allied . "</a>";
 
             if ($ally == "") $ally = "&nbsp;";
             else {
@@ -216,7 +210,7 @@ require_once("views/page_header.php");
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
 
-                $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $begin_allied . $begin_hided . $ally . $end_hided . $end_allied . "</a>";
+                $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $begin_allied . $ally  . $end_allied . "</a>";
             }
 
             if ($player == "") $player = "&nbsp;";
@@ -263,7 +257,7 @@ require_once("views/page_header.php");
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
 
-                $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $player . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $begin_allied . $begin_hided . $player . $end_hided . $end_allied . "</a>";
+                $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $player . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $begin_allied . $player . $end_allied . "</a>";
             }
 
             if ($status == "") $status = "&nbsp;";

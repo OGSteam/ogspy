@@ -12,6 +12,50 @@ namespace Ogsteam\Ogspy\Model;
 class Universe_Model
 {
     /**
+     * Mettre à jour une planète
+     * @param array $planet
+     */
+    public function update(array $planet)
+    {
+        global $db;
+
+        $query = 'UPDATE ' . TABLE_UNIVERSE . ' 
+                  SET name = "' . quote($planet['planet_name']) . '",
+                      player = "' . quote($planet['player_name']) . '",
+                      ally = "' . quote($planet['ally_tag']) . '",
+                      status = "' . $planet['status'] . '",
+                      moon = "' . $planet['moon'] . '",
+                      last_update = ' . $planet['last_update'] . ',
+                      last_update_user_id = ' . $planet['last_update_user_id']
+            . ' WHERE galaxy = ' . $planet['galaxy'] . ' AND system = ' . $planet['system'] . ' AND row = ' . $planet['row'];
+
+        $db->sql_query($query);
+    }
+
+    /**
+     * Ajouter une nouvelle planète
+     * @param array $planet
+     */
+    public function add(array $planet)
+    {
+        global $db;
+
+        $query = 'INSERT INTO ' . TABLE_UNIVERSE . ' (galaxy, system, row, name, player, ally, status, last_update, last_update_user_id, moon)
+                         VALUES (' . $planet['galaxy'] . ',
+                                 ' . $planet['system'] . ',
+                                 ' . $planet['row'] . ', 
+                                 "' . quote($planet['planet_name']) . '",
+                                 "' . quote($planet['player_name']) . '", 
+                                 "' . quote($planet['ally_tag']) . '", 
+                                 "' . $planet['status'] . '", 
+                                 ' . $planet['last_update'] . ', 
+                                 ' . $planet['last_update_user_id'] . ', 
+                                 "' . quote($planet['moon']) . '")';
+
+        $db->sql_query($query);
+    }
+
+    /**
      * Supprime les galaxies et les systèmes supérieurs aux nouvelles limites
      * @param $newGalaxy int nouveau nombre de galaxies
      * @param $newSystem int nouveau nombre de systèmes
@@ -215,6 +259,7 @@ class Universe_Model
     /**
      * Retourne la liste des phalanges d'une galaxie
      * @param $galaxy
+     * @return array
      */
     public function get_phalanx($galaxy)
     {
@@ -238,6 +283,7 @@ class Universe_Model
 
         return $data;
     }
+
 
 
 }

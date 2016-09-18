@@ -120,11 +120,9 @@ function galaxy_show()
 
 function filter_system($system)
 {
-    global $db, $server_config, $user_auth, $user_data;
+    global $db, $server_config;
 
-    $ally_protection = $allied = array();
-    if ($server_config["ally_protection"] != "")
-        $ally_protection = explode(",", $server_config["ally_protection"]);
+    $allied = array();
     if ($server_config["allied"] != "")
         $allied = explode(",", $server_config["allied"]);
 
@@ -142,30 +140,12 @@ function filter_system($system)
 
         $planet["report_spy"] = $planet["report_rc"] = $planet["hided"] = $planet["allied"] = "";
 
-        if (!in_array($planet['ally'], $ally_protection)
-            || $planet['ally'] == ""
-            || $user_auth["server_show_positionhided"] == 1
-            || $user_data["user_admin"] == 1
-            || $user_data["user_coadmin"] == 1
-        ) {
-            $hided = $friend = false;
-            if (in_array($planet['ally'], $ally_protection))
-                $hided = true;
-            if (in_array($planet['ally'], $allied))
-                $friend = true;
+        $friend = in_array($planet['ally'], $allied);
 
-            $planet["report_spy"] = $report_spy;
-            $planet["report_rc"] = $report_rc;
-            $planet["hided"] = $hided;
-            $planet["allied"] = $friend;
+        $planet["report_spy"] = $report_spy;
+        $planet["report_rc"] = $report_rc;
+        $planet["allied"] = $friend;
 
-        } elseif (in_array($planet['ally'], $ally_protection)) {
-            foreach (array_keys($planet) as $key) {
-                if ($key == "timestamp" || $key == "poster")
-                    continue;
-                $planet[$key] = "";
-            }
-        }
         $system[$row] = $planet;
     }
 
