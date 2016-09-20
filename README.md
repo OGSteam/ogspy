@@ -1,12 +1,12 @@
 # Dépôt principal du Projet OGSpy #
 
-Le projet crée en 2006 est une aide pour un jeu de gestion de vaisseaux spaciaux.
+Le projet crée en 2006 est une aide pour un jeu de gestion de vaisseaux spatiaux.
 
 Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour ensuite les regrouper et les exploiter.
 
 ### Que contient ce dépôt ? ###
 
-* OGSpy Version 3.3.1
+* OGSpy Version 3.3.2
 * Librairies externes comme JQuery
 * Accord de License
 
@@ -14,7 +14,7 @@ Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour e
 
 Nous avons réalisé un wiki qui détaille l'installation de l'outil sur un serveur web. Mais il existe aussi des hébergeurs qui installent le site pour vous.
 
-Vous touverez toutes ces informations sur le wiki : 
+Vous trouverez toutes ces informations sur le wiki : 
 
 [Wiki de l'OGSteam](http://wiki.ogsteam.fr/doku.php)
 
