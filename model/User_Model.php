@@ -18,10 +18,12 @@ class User_Model
      * @param $password
      * @return bool|mixed|mysqli_result
      */
-    public function select_user_login ($login, $password)
+    public function select_user_login ($login, $password, $salt = false)
     {
         global $db;
-        $request = "SELECT `user_id`, `user_active` FROM " . TABLE_USER . " WHERE `user_name` = '" . $db->sql_escape_string($login) . "' AND `user_password` = '" . md5(sha1($password)) . "'";
+        if($salt === false) $password = md5(sha1($password));
+
+        $request = "SELECT `user_id`, `user_active` FROM " . TABLE_USER . " WHERE `user_name` = '" . $db->sql_escape_string($login) . "' AND `user_password` = '" . $password . "'";
         $result = $db->sql_query($request);
 
         return $result;
@@ -40,6 +42,18 @@ class User_Model
         $result = $db->sql_query($request);
 
         return $result;
+    }
+
+    public function select_user_list(){
+
+        global $db;
+        $request = "SELECT `user_name` FROM " . TABLE_USER ;
+
+        $request = $db->sql_escape_string($request);
+        $result = $db->sql_query($request);
+        list($user_name) = $db->sql_fetch_row($result);
+        
+        return $user_name;
     }
 
 
