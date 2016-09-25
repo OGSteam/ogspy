@@ -440,6 +440,21 @@ CREATE TABLE ogspy_sessions (
 
 ## ########################################################
 
+##
+## Structure de la table `ogspy_apitokens`
+##
+
+CREATE TABLE ogspy_tokens (
+  token_id        CHAR(32)        NOT NULL DEFAULT '',
+  token_user_id   INT(11)         NOT NULL DEFAULT '0',
+  token_expire    INT(11)         NOT NULL DEFAULT '0',
+  token_type      VARCHAR(32)     NOT NULL DEFAULT '0',
+  UNIQUE KEY session_id (token_id, token_user_id)
+)
+  DEFAULT CHARSET = utf8;
+
+## ########################################################
+
 ## 
 ## Structure de la table `ogspy_statistics`
 ## 

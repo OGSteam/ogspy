@@ -148,7 +148,6 @@ class Sessions_Model
      */
     public function clean_expired_sessions()
     {
-
         global $db;
         $request = "DELETE FROM " . TABLE_SESSIONS . " WHERE session_expire < " . time();
         $db->sql_query($request, true, false);

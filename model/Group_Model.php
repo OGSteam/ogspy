@@ -9,9 +9,10 @@
 namespace Ogsteam\Ogspy\Model;
 
 
+use Ogsteam\Ogspy\Sql_Db;
+
 class Group_Model
 {
-
     /**
      * @param $group_id
      * @return \Ogsteam\Ogspy\the

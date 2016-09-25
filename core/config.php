@@ -27,6 +27,7 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     define("TABLE_CONFIG", $table_prefix . "config");
     define("TABLE_GROUP", $table_prefix . "group");
     define("TABLE_SESSIONS", $table_prefix . "sessions");
+    define("TABLE_TOKENS", $table_prefix . "tokens");
     define("TABLE_STATISTIC", $table_prefix . "statistics");
     define("TABLE_UNIVERSE", $table_prefix . "universe");
     define("TABLE_USER", $table_prefix . "user");

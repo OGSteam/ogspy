@@ -6,6 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Sinergi\\Token\\' => array($vendorDir . '/sinergi/token/src/Token'),
+    'Sabre\\Uri\\' => array($vendorDir . '/sabre/uri/lib'),
+    'Sabre\\HTTP\\' => array($vendorDir . '/sabre/http/lib'),
+    'Sabre\\Event\\' => array($vendorDir . '/sabre/event/lib'),
     'Ogsteam\\Ogspy\\Views\\' => array($baseDir . '/views/Helper'),
     'Ogsteam\\Ogspy\\Model\\' => array($baseDir . '/model'),
     'Ghunti\\HighchartsPHP\\' => array($vendorDir . '/ghunti/highcharts-php/src'),

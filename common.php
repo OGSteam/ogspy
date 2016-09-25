@@ -40,6 +40,7 @@ require __DIR__ . '/vendor/autoload.php';
 require("core/config.php");
 require("core/functions.php");
 require("core/mysql.php");
+require("core/Api_data.php");
 require("core/log.php");
 require("core/galaxy.php");
 require("core/user.php");
@@ -117,5 +118,5 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     }
 }
 
-if (isset($server_config["log_phperror"]) && $server_config["log_phperror"] == 1) set_error_handler('ogspy_error_handler');
+//if (isset($server_config["log_phperror"]) && $server_config["log_phperror"] == 1) set_error_handler('ogspy_error_handler');
 

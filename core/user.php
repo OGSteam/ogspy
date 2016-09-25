@@ -1201,9 +1201,9 @@ function usergroup_member($group_id)
 function usergroup_newmember()
 {
     global $db;
-    global $pub_user_id, $pub_group_id, $pub_add_all;
+    global $pub_user_id, $pub_group_id, $pub_add_all,$lang;
 
-    if ($pub_add_all == "Ajouter tout les membres") {
+    if ($pub_add_all == $lang['ADMIN_GROUP_ADDALL']) {
         $request = "SELECT user_id FROM " . TABLE_USER;
         $result = $db->sql_query($request);
 

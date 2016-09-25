@@ -97,7 +97,7 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
  * Gets the energy production of satellites.
  * @param int $temperature_max Max temprature of the current planet
  * @param int $off_ing Officer ingenieur option enabled (=1) or not(=0) or full Officer(=2)
- * @return the result of the power production by sattelites.
+ * @return float the result of the power production by sattelites.
  */
 function production_sat($temperature_max, $off_ing = 0)
 {
@@ -117,7 +117,7 @@ function production_sat($temperature_max, $off_ing = 0)
  * Gets the power consumption of the current building
  * @param string $building The building type
  * @param int $level Min The building Level
- * @return the building consumption
+ * @return int the building consumption
  */
 function consumption($building, $level)
 {
@@ -151,7 +151,7 @@ function consumption($building, $level)
  * Gets the production usage of the current planet
  * @param int $M Metal Mine Level
  * @param int $C Cristal Mine Level
- * @param int $D Deuterieum Mine Level
+ * @param int $D Deuterium Mine Level
  * @param int $CES Solar Plant Level
  * @param int $CEF Fusion Plant Level
  * @param int $SAT Number of sattelites
@@ -181,8 +181,8 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
     $prod_SAT = $SAT * production_sat($temperature_max, $off_ing) * $per_SAT;
     $production_E += $prod_CES + $prod_CEF + $prod_SAT;
 
-    $ratio = 1; // indique le pourcentage a appliquer sur la prod
-    $ratio_temp = 1;
+    /*$ratio = 1; // indique le pourcentage a appliquer sur la prod
+    $ratio_temp = 1;*/
     $ratio_temp = ($consommation_E == 0) ? 0 : ($production_E * 100 / $consommation_E) / 100; // fix division par 0
     $ratio = ($ratio_temp >= 1) ? 1 : $ratio_temp;
 
@@ -278,7 +278,7 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1 , $
 /**
  * Calculates the Planet storage capacity (Taille Hangar)
  * @param int $level Storage building Level
- * @return the capacity
+ * @return int the capacity
  */
 function depot_capacity($level)
 {
@@ -296,7 +296,7 @@ function depot_capacity($level)
 /**
  * Returns the maximum numbers of planet slots available according to the Astrophysic level
  * @param int $level Astrophysic Level
- * @return the maximum number of planets
+ * @return int the maximum number of planets
  */
 function astro_max_planete($level)
 {
@@ -308,7 +308,7 @@ function astro_max_planete($level)
  * Calculates the price to upgrade a building to a defined level
  * @param int $level The wanted Level
  * @param string $building The building type
- * @return ressources required to upgrade the building
+ * @return array ressources required to upgrade the building
  */
 function building_upgrade($building, $level)
 {
@@ -566,7 +566,7 @@ function building_upgrade($building, $level)
  * Calculates the price of the a building corresponding to it current level
  * @param int $level The current Level
  * @param string $building The building type
- * @return ressources used to reach this level
+ * @return array ressources used to reach this level
  */
 function building_cumulate($building, $level)
 {
@@ -621,7 +621,7 @@ function building_cumulate($building, $level)
 /**
  * Calculates the price of all buildings
  * @param string $user_building The list of buildings with corresponding levels
- * @return the bild :-)
+ * @return int the bild :-)
  */
 function all_building_cumulate($user_building)
 {
@@ -688,7 +688,7 @@ function all_defence_cumulate($user_defence)
  * Calculates the price of all lunas
  * @param $user_building
  * @param string $user_defence The list of buildings with corresponding levels on the luna
- * @return the bild :-)
+ * @return int $total the bild :-)
  */
 function all_lune_cumulate($user_building, $user_defence)
 {
@@ -701,7 +701,7 @@ function all_lune_cumulate($user_building, $user_defence)
 /**
  * Calculates the price of all researches
  * @param $user_technology
- * @return the bild for all technologies :-)
+ * @return int $total the bild for all technologies :-)
  */
 function all_technology_cumulate($user_technology)
 {
@@ -729,12 +729,8 @@ function all_technology_cumulate($user_technology)
                 $total += $init_t_prix[$keys[$i]] * (pow($pow, ($j - 1)));
                 $j++;
             }
-
         }
-
-
     }
-
     return $total;
 }
 
