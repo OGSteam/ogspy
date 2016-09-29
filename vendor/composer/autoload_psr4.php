@@ -12,5 +12,6 @@ return array(
     'Sabre\\Event\\' => array($vendorDir . '/sabre/event/lib'),
     'Ogsteam\\Ogspy\\Views\\' => array($baseDir . '/views/Helper'),
     'Ogsteam\\Ogspy\\Model\\' => array($baseDir . '/model'),
+    'Ogsteam\\Ogspy\\Entity\\' => array($baseDir . '/entity'),
     'Ghunti\\HighchartsPHP\\' => array($vendorDir . '/ghunti/highcharts-php/src'),
 );

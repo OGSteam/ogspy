@@ -191,4 +191,19 @@ class Sessions_Model
 
         return $result;
     }
+
+    /**
+     * Number of sessions
+     * @return int number of sessions
+     */
+    public function count_online()
+    {
+        global $db;
+
+        $request = "SELECT COUNT(session_ip) FROM " . TABLE_SESSIONS;
+        $connectes_req = $db->sql_query($request);
+        list($connectes) = $db->sql_fetch_row($connectes_req);
+
+        return $connectes;
+    }
 }

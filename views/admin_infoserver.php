@@ -12,6 +12,9 @@
 
 namespace Ogsteam\Ogspy;
 
+use Ogsteam\Ogspy\Model\Sessions_Model;
+use Ogsteam\Ogspy\Model\Statistics_Model;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -50,11 +53,10 @@ $nb_users = 0;
 $og_uni = 'unknow';
 $og_pays = 'unknow';
 
-$request = "select statistic_name, statistic_value from " . TABLE_STATISTIC;
-$result = $db->sql_query($request);
+$statRepository = new Statistics_Model();
+$stats = $statRepository->find();
 
-while (list($statistic_name, $statistic_value) = $db->sql_fetch_row($result)) {
-
+foreach($stats as $statistic_name => $statistic_value) {
     switch ($statistic_name) {
         case "connection_server":
             $connection_server = $statistic_value;
@@ -75,8 +77,8 @@ while (list($statistic_name, $statistic_value) = $db->sql_fetch_row($result)) {
 }
 
 //on compte le nombre de personnes en ligne
-$connectes_req = $db->sql_query("SELECT COUNT(session_ip) FROM " . TABLE_SESSIONS);
-list($connectes) = $db->sql_fetch_row($connectes_req);
+$sessionRepository = new Sessions_Model();
+$connectes = $sessionRepository->count_online();
 
 //Personne en ligne
 $online = session_whois_online();

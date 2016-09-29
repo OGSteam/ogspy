@@ -32,5 +32,24 @@ class Statistics_Model
         $db->sql_query($request);
     }
 
+    /**
+     * @return array
+     */
+    public function find()
+    {
+        global $db;
+
+        $request = "select statistic_name, statistic_value from " . TABLE_STATISTIC;
+        $result = $db->sql_query($request);
+
+        $stats = array();
+
+        while (list($statistic_name, $statistic_value) = $db->sql_fetch_row($result)) {
+            $stats[$statistic_name] = $statistic_value;
+        }
+
+        return $stats;
+    }
+
 
 }

@@ -12,6 +12,7 @@
 
 namespace Ogsteam\Ogspy;
 
+use Ogsteam\Ogspy\Entity\Universe\Search_Criteria;
 use Ogsteam\Ogspy\Model\Universe_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 
@@ -234,7 +235,7 @@ function galaxy_show_sector()
  */
 function galaxy_search()
 {
-    global $db, $user_data, $user_auth, $server_config;
+    global $db, $user_data, $server_config;
     global $pub_string_search, $pub_type_search, $pub_strict, $pub_sort, $pub_sort2, $pub_galaxy_down, $pub_galaxy_up, $pub_system_down, $pub_system_up, $pub_row_down, $pub_row_up, $pub_row_active, $pub_page;
 
     if (!check_var($pub_type_search, "Char") || !check_var($pub_strict, "Char") || !check_var($pub_sort, "Num") || !check_var($pub_sort2, "Num") || !check_var($pub_galaxy_down, "Num") || !check_var($pub_galaxy_up, "Num") || !check_var($pub_system_down, "Num") || !check_var($pub_system_up, "Num") || !check_var($pub_row_down, "Num") || !check_var($pub_row_up, "Num") || !check_var($pub_row_active, "Char") || !check_var($pub_page, "Num")) {
@@ -243,237 +244,137 @@ function galaxy_search()
 
     $search_result = array();
     $total_page = 0;
-    $ally_protection = $allied = array();
-    if ($server_config["ally_protection"] != "") $ally_protection = explode(",", $server_config["ally_protection"]);
+    $allied = array();
     if ($server_config["allied"] != "") $allied = explode(",", $server_config["allied"]);
 
-    if (isset($pub_type_search) && (isset($pub_string_search) || (isset($pub_galaxy_down) && isset($pub_galaxy_up) && isset($pub_system_down) && isset($pub_system_up) && isset($pub_row_down) && isset($pub_row_up)))) {
-        $data_user = new User_Model();
-        $data_user->add_stat_search_made($user_data['user_id'], 1);
+    if (!isset($pub_type_search) || (!isset($pub_string_search) && (!isset($pub_galaxy_down) || !isset($pub_galaxy_up) || !isset($pub_system_down) || !isset($pub_system_up) || !isset($pub_row_down) || !isset($pub_row_up))))
+        return array($search_result, $total_page);
 
-        switch ($pub_type_search) {
-            case "player":
-                if ($pub_string_search == "") break;
-                $search = isset($pub_strict) ? $pub_string_search : "%" . $pub_string_search . "%";
+    $data_user = new User_Model();
+    $data_user->add_stat_search_made($user_data['user_id'], 1);
 
-                $select = "select count(*)";
-                $request = " from " . TABLE_UNIVERSE . " left join " . TABLE_USER;
-                $request .= " on last_update_user_id = user_id";
-                $request .= " where player like '" . $db->sql_escape_string($search) . "'";
-                if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
-                    foreach ($ally_protection as $v) {
-                        $request .= " and ally <> '" . $db->sql_escape_string($v) . "'";
-                    }
-                }
+    $universeRepository = new Universe_Model();
+    $criteria = new Search_Criteria($server_config);
 
-                $result = $db->sql_query($select . $request);
-                list($total_row) = $db->sql_fetch_row($result);
-
-                $select = "select galaxy, system, row, moon, phalanx, gate, last_update_moon, ally, player, status, last_update, user_name";
-                $request = $select . $request;
-                break;
-
-            case "ally":
-                if ($pub_string_search == "") break;
-                $search = isset($pub_strict) ? $pub_string_search : "%" . $pub_string_search . "%";
-
-                $select = "select count(*)";
-                $request = " from " . TABLE_UNIVERSE . " left join " . TABLE_USER;
-                $request .= " on last_update_user_id = user_id";
-                $request .= " where ally like '" . $db->sql_escape_string($search) . "'";
-                if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
-                    foreach ($ally_protection as $v) {
-                        $request .= " and ally <> '" . $db->sql_escape_string($v) . "'";
-                    }
-                }
-
-                $result = $db->sql_query($select . $request);
-                list($total_row) = $db->sql_fetch_row($result);
-
-                $select = "select galaxy, system, row, moon, phalanx, gate, last_update_moon, ally, player, status, last_update, user_name";
-                $request = $select . $request;
-                break;
-
-            case "planet":
-                if ($pub_string_search == "") break;
-                $search = isset($pub_strict) ? $pub_string_search : "%" . $pub_string_search . "%";
-
-                $select = "select count(*)";
-                $request = " from " . TABLE_UNIVERSE . " left join " . TABLE_USER;
-                $request .= " on last_update_user_id = user_id";
-                $request .= " where name like '" . $db->sql_escape_string($search) . "'";
-                if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
-                    foreach ($ally_protection as $v) {
-                        $request .= " and ally <> '" . $db->sql_escape_string($v) . "'";
-                    }
-                }
-
-                $result = $db->sql_query($select . $request);
-                list($total_row) = $db->sql_fetch_row($result);
-
-                $select = "select galaxy, system, row, moon, phalanx, gate, last_update_moon, ally, player, status, last_update, user_name";
-                $request = $select . $request;
-                break;
-
-            case "colonization":
-                $galaxy_start = intval($pub_galaxy_down);
-                $galaxy_end = intval($pub_galaxy_up);
-                $system_start = intval($pub_system_down);
-                $system_end = intval($pub_system_up);
-                $row_start = intval($pub_row_down);
-                $row_end = intval($pub_row_up);
-
-                if ($galaxy_start < 1 || $galaxy_start > intval($server_config['num_of_galaxies']) || $galaxy_end < 1 || $galaxy_end > intval($server_config['num_of_galaxies'])) break;
-                if ($system_start < 1 || $system_start > intval($server_config['num_of_systems']) || $system_end < 1 || $system_end > intval($server_config['num_of_systems'])) break;
-                if ($pub_row_active) {
-                    if ($row_start < 1 || $row_start > 15 || $row_end < 1 || $row_end > 15) break;
-                }
-
-                $select = "select count(*)";
-                $request = " from " . TABLE_UNIVERSE . " left join " . TABLE_USER;
-                $request .= " on last_update_user_id = user_id";
-                $request .= " where player = ''";
-                $request .= " and galaxy between $galaxy_start and $galaxy_end";
-                $request .= " and system between $system_start and $system_end";
-                if ($pub_row_active) {
-                    $request .= " and row between $row_start and $row_end";
-                }
-
-                $result = $db->sql_query($select . $request);
-                list($total_row) = $db->sql_fetch_row($result);
-
-                $select = "select galaxy, system, row, moon, phalanx, gate, last_update_moon, ally, player, status, last_update, user_name";
-                $request = $select . $request;
-                break;
-
-            case "moon":
-                $galaxy_start = intval($pub_galaxy_down);
-                $galaxy_end = intval($pub_galaxy_up);
-                $system_start = intval($pub_system_down);
-                $system_end = intval($pub_system_up);
-                $row_start = intval($pub_row_down);
-                $row_end = intval($pub_row_up);
-
-                if ($galaxy_start < 1 || $galaxy_start > intval($server_config['num_of_galaxies']) || $galaxy_end < 1 || $galaxy_end > intval($server_config['num_of_galaxies'])) break;
-                if ($system_start < 1 || $system_start > intval($server_config['num_of_systems']) || $system_end < 1 || $system_end > intval($server_config['num_of_systems'])) break;
-                if ($pub_row_active) {
-                    if ($row_start < 1 || $row_start > 15 || $row_end < 1 || $row_end > 15) break;
-                }
-
-                $select = "select count(*)";
-                $request = " from " . TABLE_UNIVERSE . " left join " . TABLE_USER;
-                $request .= " on last_update_user_id = user_id";
-                $request .= " where moon = '1'";
-                $request .= " and galaxy between $galaxy_start and $galaxy_end";
-                $request .= " and system between $system_start and $system_end";
-                if ($pub_row_active) {
-                    $request .= " and row between $row_start and $row_end";
-                }
-                if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
-                    foreach ($ally_protection as $v) {
-                        $request .= " and ally <> '" . $db->sql_escape_string($v) . "'";
-                    }
-                }
-
-                $result = $db->sql_query($select . $request);
-                list($total_row) = $db->sql_fetch_row($result);
-
-                $select = "select galaxy, system, row, moon, phalanx, gate, last_update_moon, ally, player, status, last_update, user_name";
-                $request = $select . $request;
-                break;
-
-            case "away":
-                $galaxy_start = intval($pub_galaxy_down);
-                $galaxy_end = intval($pub_galaxy_up);
-                $system_start = intval($pub_system_down);
-                $system_end = intval($pub_system_up);
-                $row_start = intval($pub_row_down);
-                $row_end = intval($pub_row_up);
-
-                if ($galaxy_start < 1 || $galaxy_start > intval($server_config['num_of_galaxies']) || $galaxy_end < 1 || $galaxy_end > intval($server_config['num_of_galaxies'])) break;
-                if ($system_start < 1 || $system_start > intval($server_config['num_of_systems']) || $system_end < 1 || $system_end > intval($server_config['num_of_systems'])) break;
-                if ($pub_row_active) {
-                    if ($row_start < 1 || $row_start > 15 || $row_end < 1 || $row_end > 15) break;
-                }
-
-                $select = "select count(*)";
-                $request = " from " . TABLE_UNIVERSE . " left join " . TABLE_USER;
-                $request .= " on last_update_user_id = user_id";
-                $request .= " where status like ('%i%')";
-                $request .= " and galaxy between $galaxy_start and $galaxy_end";
-                $request .= " and system between $system_start and $system_end";
-                if ($pub_row_active) {
-                    $request .= " and row between $row_start and $row_end";
-                }
-                if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
-                    foreach ($ally_protection as $v) {
-                        $request .= " and ally <> '" . $db->sql_escape_string($v) . "'";
-                    }
-                }
-
-                $result = $db->sql_query($select . $request);
-                list($total_row) = $db->sql_fetch_row($result);
-
-                $select = "select galaxy, system, row, moon, phalanx, gate, last_update_moon, ally, player, status, last_update, user_name";
-                $request = $select . $request;
-                break;
-        }
-
-        if (isset($request)) {
-            $order = " order by galaxy, system, row";
-            $order2 = " asc";
-            if (isset($pub_sort) && isset($pub_sort2)) {
-                switch ($pub_sort2) {
-                    case "0":
-                        $order2 = " asc";
-                        break;
-
-                    case "1":
-                        $order2 = " desc";
-                        break;
-                }
-                switch ($pub_sort) {
-                    case "1":
-                        $order = " order by galaxy" . $order2 . ", system" . $order2 . ", row" . $order2 . "";
-                        break;
-
-                    case "2":
-                        $order = " order by ally" . $order2 . ", player" . $order2 . ", galaxy" . $order2 . ", system" . $order2 . ", row" . $order2 . "";
-                        break;
-
-                    case "3":
-                        $order = " order by player" . $order2 . ", galaxy" . $order2 . ", system" . $order2 . ", row" . $order2 . "";
-                        break;
-                }
-            }
-            $request .= $order;
-
-            if (!isset($pub_page)) {
-                $pub_page = 1;
-            }
-            $total_page = ceil($total_row / 30);
-            if ($pub_page > $total_page) $pub_page = $total_page;
-            $limit = intval($pub_page - 1) * 30;
-            if ($limit < 0) {
-                $limit = 0;
-                $pub_page = 1;
-            }
-            $request .= " LIMIT " . $limit . " , 30";
-
-            $result = $db->sql_query($request);
-            $search_result = array();
-            while ($row = $db->sql_fetch_assoc($result)) {
-                $hided = $friend = false;
-                if (in_array($row["ally"], $ally_protection)) $hided = true;
-                if (in_array($row["ally"], $allied)) $friend = true;
-
-                $request = "SELECT * FROM " . TABLE_PARSEDSPY . " WHERE active = '1' AND coordinates = '" . $row["galaxy"] . ":" . $row["system"] . ":" . $row["row"] . "'";
-                $result_2 = $db->sql_query($request);
-                $report_spy = $db->sql_numrows($result_2);
-                $search_result[] = array("galaxy" => $row["galaxy"], "system" => $row["system"], "row" => $row["row"], "phalanx" => $row["phalanx"], "gate" => $row["gate"], "last_update_moon" => $row["last_update_moon"], "moon" => $row["moon"], "ally" => $row["ally"], "player" => $row["player"], "report_spy" => $report_spy, "status" => $row["status"], "timestamp" => $row["last_update"], "poster" => $row["user_name"], "hided" => $hided, "allied" => $friend);
-            }
-        }
+    if (isset($pub_galaxy_down) && isset($pub_galaxy_up)) {
+        $criteria->setGalaxyDown(intval($pub_galaxy_down));
+        $criteria->setGalaxyUp(intval($pub_galaxy_up));
     }
+    if (isset($pub_system_down) && isset($pub_system_up)) {
+        $criteria->setSystemDown(intval($pub_system_down));
+        $criteria->setSystemUp(intval($pub_system_up));
+    }
+    if ($pub_row_active && isset($pub_row_down) && isset($pub_row_up)) {
+        $criteria->setRowDown(intval($pub_row_down));
+        $criteria->setRowUp(intval($pub_row_up));
+    }
+
+
+    switch ($pub_type_search) {
+        case "player":
+            if ($pub_string_search == "") break;
+            $search = isset($pub_strict) ? $pub_string_search : "%" . $pub_string_search . "%";
+
+            $criteria->setPlayerName($search);
+            break;
+
+        case "ally":
+            if ($pub_string_search == "") break;
+            $search = isset($pub_strict) ? $pub_string_search : "%" . $pub_string_search . "%";
+
+            $criteria->setAllyName($search);
+            break;
+
+        case "planet":
+            if ($pub_string_search == "") break;
+            $search = isset($pub_strict) ? $pub_string_search : "%" . $pub_string_search . "%";
+
+            $criteria->setPlanetName($search);
+            break;
+
+        case "colonization":
+            $criteria->setPlanetName("");
+            break;
+
+        case "moon":
+            $criteria->setIsMoon(true);
+            break;
+
+        case "away":
+            $criteria->setIsInactive(true);
+            break;
+    }
+
+    if (!$criteria->isValid())
+        return array($search_result, $total_page);
+
+    if (!isset($pub_sort2))
+        $pub_sort2 = "0";
+    switch ($pub_sort2) {
+        case "1":
+            $order2 = " DESC";
+            break;
+        default:
+            $order2 = " ASC";
+            break;
+    }
+
+    if (!isset($pub_sort))
+        $pub_sort = "1";
+
+    switch ($pub_sort) {
+        case "2":
+            $order = array('ally' => $order2, 'player' => $order2, 'galaxy' => $order2, 'system' => $order2, 'row' => $order2);
+            break;
+
+        case "3":
+            $order = array('player' => $order2, 'galaxy' => $order2, 'system' => $order2, 'row' => $order2);
+            break;
+        default:
+            $order = array('galaxy' => $order2, 'system' => $order2, 'row' => $order2);
+            break;
+    }
+
+    if (!isset($pub_page))
+        $pub_page = 1;
+
+    $number = 30;
+
+    $limit = intval($pub_page - 1) * $number;
+    if ($limit < 0) {
+        $limit = 0;
+        $pub_page = 1;
+    }
+
+    $result = $universeRepository->find($criteria, $order, $limit, $number);
+
+    $total_page = ceil($result['total_row'] / $number);
+
+    $search_result = array();
+    foreach($result['planets'] as $planet)
+    {
+        $friend = false;
+        if (in_array($planet["ally"], $allied)) $friend = true;
+
+        $request = "SELECT * FROM " . TABLE_PARSEDSPY . " WHERE active = '1' AND coordinates = '" . $planet["galaxy"] . ":" . $planet["system"] . ":" . $planet["row"] . "'";
+        $result_2 = $db->sql_query($request);
+        $report_spy = $db->sql_numrows($result_2);
+        $search_result[] = array("galaxy" => $planet["galaxy"],
+                                 "system" => $planet["system"],
+                                 "row" => $planet["row"],
+                                 "phalanx" => $planet["phalanx"],
+                                 "gate" => $planet["gate"],
+                                 "last_update_moon" => $planet["last_update_moon"],
+                                 "moon" => $planet["moon"],
+                                 "ally" => $planet["ally"],
+                                 "player" => $planet["player"],
+                                 "report_spy" => $report_spy,
+                                 "status" => $planet["status"],
+                                 "timestamp" => $planet["last_update"],
+                                 "poster" => $planet["user_name"],
+                                 "allied" => $friend);
+    }
+
     return array($search_result, $total_page);
 }
 

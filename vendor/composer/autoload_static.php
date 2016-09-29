@@ -26,6 +26,7 @@ class ComposerStaticInit7f8ed55ac5aa63c4f86a51e8a17b034a
         array (
             'Ogsteam\\Ogspy\\Views\\' => 20,
             'Ogsteam\\Ogspy\\Model\\' => 20,
+            'Ogsteam\\Ogspy\\Entity\\' => 21,
         ),
         'G' => 
         array (
@@ -57,6 +58,10 @@ class ComposerStaticInit7f8ed55ac5aa63c4f86a51e8a17b034a
         'Ogsteam\\Ogspy\\Model\\' => 
         array (
             0 => __DIR__ . '/../..' . '/model',
+        ),
+        'Ogsteam\\Ogspy\\Entity\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/entity',
         ),
         'Ghunti\\HighchartsPHP\\' => 
         array (

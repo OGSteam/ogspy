@@ -9,6 +9,8 @@
 namespace Ogsteam\Ogspy\Model;
 
 
+use Ogsteam\Ogspy\Entity\Universe\Search_Criteria;
+
 class Universe_Model
 {
     /**
@@ -282,6 +284,102 @@ class Universe_Model
             }
 
         return $data;
+    }
+
+    public function find(Search_Criteria $criteria, array $order_by = array(), $start, $number = 30)
+    {
+        global $db;
+
+        $select = "select galaxy, system, row, moon, phalanx, gate, last_update_moon, ally, player, status, last_update, user_name";
+        $request = " FROM " . TABLE_UNIVERSE . " LEFT JOIN " . TABLE_USER .
+                   "    ON last_update_user_id = user_id";
+
+        $where = "";
+        if($criteria->getPlayerName() != null) {
+            if($where != "")
+                $where .= " AND ";
+            $where .= " player LIKE '" . $db->sql_escape_string($criteria->getPlayerName()) . "'";
+        }
+
+        if($criteria->getAllyName() != null) {
+            if($where != "")
+                $where .= " AND ";
+            $where .= " ally LIKE '" . $db->sql_escape_string($criteria->getAllyName()) . "'";
+        }
+
+        if($criteria->getPlanetName() != null)
+        {
+            if($where != "")
+                $where .= " AND ";
+            $where .= " name LIKE '" . $db->sql_escape_string($criteria->getPlanetName()) . "'";
+        }
+
+        if($criteria->getGalaxyDown() != null && $criteria->getGalaxyUp() != null)
+        {
+            if($where != "")
+                $where .= " AND ";
+            $where .= " galaxy BETWEEN " . $criteria->getGalaxyDown() . " AND " . $criteria->getGalaxyUp();
+        }
+
+        if($criteria->getSystemDown() != null && $criteria->getSystemUp() != null)
+        {
+            if($where != "")
+                $where .= " AND ";
+            $where .= " system BETWEEN " . $criteria->getSystemDown() . " AND " . $criteria->getSystemUp();
+        }
+
+        if($criteria->getRowDown() != null && $criteria->getRowUp() != null)
+        {
+            if($where != "")
+                $where .= " AND ";
+            $where .= " row BETWEEN " . $criteria->getRowDown() . " AND " . $criteria->getRowUp();
+        }
+
+        if($criteria->getIsMoon())
+        {
+            if($where != "")
+                $where .= " AND ";
+            $where .= " moon = 1";
+        }
+
+        if($criteria->getIsInactive())
+        {
+            if($where != "")
+                $where .= " AND ";
+            $where .= " status LIKE ('%i%')";
+        }
+
+        $query = $select . $request;
+        if($where != "")
+            $query .= " WHERE " . $where;
+
+        $i = 0;
+        foreach ($order_by as $key => $value) {
+            if ($i == 0)
+                $query .= " ORDER BY ";
+            else
+                $query .= ", ";
+
+            $query .= $db->sql_escape_string($key);
+            if ($value == 'DESC')
+                $query .= ' DESC';
+            $i++;
+        }
+
+        $query .= " LIMIT $start, $number";
+
+        $queryCount = "SELECT count(*) " . $request;
+        if($where != "")
+            $queryCount .= " WHERE " . $where;
+        $result = $db->sql_query($queryCount);
+        list($total_row) = $db->sql_fetch_row($result);
+
+        $result = $db->sql_query($query);
+        $planets = array();
+        while ($planet = $db->sql_fetch_assoc($result))
+            $planets[] = $planet;
+
+        return array('total_row' => $total_row, 'planets' => $planets);
     }
 
 

@@ -25,7 +25,6 @@ if (!defined('IN_SPYOGAME')) {
  */
 function generate_config_cache()
 {
-    global $db, $table_prefix, $server_config;
     $output = NULL;
 
     $configRepository = new Config_Model();
@@ -59,7 +58,6 @@ function generate_config_cache()
  */
 function generate_mod_cache()
 {
-    global $db;
     $modExport = NULL;
 
     // On récupère les mods actifs

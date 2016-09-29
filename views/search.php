@@ -292,17 +292,11 @@ require_once("views/page_header.php");
                 </tr>
                 <?php
                 foreach ($search_result as $v) {
-                    $begin_hided = "";
-                    $end_hided = "";
-                    if ($v["hided"]) {
-                        $begin_hided = "<span style=\"color: lime; \">";
-                        $end_hided = "</span>";
-                    }
                     $begin_allied = "";
                     $end_allied = "";
                     if ($v["allied"]) {
-                        $begin_allied = "<blink>";
-                        $end_allied = "</blink>";
+                        $begin_allied = "<span style=\"color: lime; \">";
+                        $end_allied = "</span>";
                     }
 
                     $coordinates = $v["galaxy"] . ":" . $v["system"] . ":" . $v["row"];
@@ -352,7 +346,7 @@ require_once("views/page_header.php");
                         }
 
 
-                        $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $v["ally"] . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip[$v["ally"]] . "')\">" . $begin_allied . $begin_hided . $v["ally"] . $end_hided . $end_allied . "</a>";
+                        $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $v["ally"] . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip[$v["ally"]] . "')\">" . $begin_allied . $v["ally"] . $end_allied . "</a>";
                     }
 
                     if ($v["player"] == "") $player = "&nbsp;";
@@ -399,7 +393,7 @@ require_once("views/page_header.php");
                             }
                         }
 
-                        $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $v["player"] . "'&amp;strict=on onmouseover=\"this.T_WIDTH=260;return escape('" . $tooltip[$v["player"]] . "')\">" . $begin_allied . $begin_hided . $v["player"] . $end_hided . $end_allied . "</a>";
+                        $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $v["player"] . "'&amp;strict=on onmouseover=\"this.T_WIDTH=260;return escape('" . $tooltip[$v["player"]] . "')\">" . $begin_allied . $v["player"] . $end_allied . "</a>";
                     }
 
                     if ($v["status"] == "") $status = " &nbsp;";
