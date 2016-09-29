@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ghunti/highcharts-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sabre/event" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sabre/http" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sabre/uri" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sinergi/token" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="PHARS">
+        <CLASSES>
+          <root url="phar://$MODULE_DIR$/composer.phar/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="phar://$MODULE_DIR$/composer.phar/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="PHP">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/vendor/composer" />
+          <root url="file://$MODULE_DIR$/vendor/ghunti/highcharts-php" />
+          <root url="file://$MODULE_DIR$/vendor/sabre/event" />
+          <root url="file://$MODULE_DIR$/vendor/sabre/http" />
+          <root url="file://$MODULE_DIR$/vendor/sabre/uri" />
+          <root url="file://$MODULE_DIR$/vendor/sinergi/token" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/vendor/composer" />
+          <root url="file://$MODULE_DIR$/vendor/ghunti/highcharts-php" />
+          <root url="file://$MODULE_DIR$/vendor/sabre/event" />
+          <root url="file://$MODULE_DIR$/vendor/sabre/http" />
+          <root url="file://$MODULE_DIR$/vendor/sabre/uri" />
+          <root url="file://$MODULE_DIR$/vendor/sinergi/token" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>
