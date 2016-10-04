@@ -32,9 +32,9 @@ class Api_data
                 $data_token = new Tokens_Model();
                 $private_token = $data_token->add_token($generated_token, $user_id, time() + 3600, "android");
                 $this->authenticated_token = $private_token;
-                $this->send_response(json_encode(array('api_token' => $private_token)));
-            }
-
+                $this->send_response(array('status' => 'ok', 'api_token' => $private_token));
+            }else
+                return false; //On ne retourne rien pour masquer API
         }
     }
 
@@ -46,9 +46,11 @@ class Api_data
             $this->authenticated_token = $token;
             $this->user_id_token = $user_id;
             return true;
-        }else
+        }else{
+            $feedback = array('status' => 'error_auth');
+            $this->send_response($feedback);
+        }
             return false;
-
     }
 
 
