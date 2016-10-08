@@ -40,6 +40,7 @@ Responsable équipe : [DarkNoon](https://bitbucket.org/darknoon29)
 * Shad
 * Xaviernuma
 * Ninety
+* Itori
 
 ####Tests####
 
