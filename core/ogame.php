@@ -734,3 +734,194 @@ function all_technology_cumulate($user_technology)
     return $total;
 }
 
+/**
+ * Reconstruction des RC
+ * @global $db
+ * @param int $id_RC RC à reconstituer
+ * @return string $template_RC reconstitué
+ */
+function UNparseRC($id_RC)
+{
+    global $db, $lang;
+
+    $key_ships = array('PT' => $lang['GAME_FLEET_PT_S'], 'GT' => $lang['GAME_FLEET_GT_S'], 'CLE' => $lang['GAME_FLEET_CLE_S'],
+        'CLO' => $lang['GAME_FLEET_CLO_S'], 'CR' => $lang['GAME_FLEET_CR_S'], 'VB' => $lang['GAME_FLEET_VB_S'], 'VC' =>
+            $lang['GAME_FLEET_VC_S'], 'REC' => $lang['GAME_FLEET_REC_S'], 'SE' => $lang['GAME_FLEET_SE_S'], 'BMD' => $lang['GAME_FLEET_BMD_S'],
+        'DST' => $lang['GAME_FLEET_DST_S'], 'EDLM' => $lang['GAME_FLEET_EDLM_S'], 'SAT' => $lang['GAME_FLEET_SAT_S'], 'TRA' => $lang['GAME_FLEET_TRA_S']);
+    $key_defs = array('LM' => $lang['GAME_DEF_LM_S'], 'LLE' => $lang['GAME_DEF_LLE_S'], 'LLO' => $lang['GAME_DEF_LLO_S'],
+        'CG' => $lang['GAME_DEF_CG_S'], 'AI' => $lang['GAME_DEF_AI_S'], 'LP' => $lang['GAME_DEF_LP_S'], 'PB' =>
+            $lang['GAME_DEF_PB_S'], 'GB' => $lang['GAME_DEF_GB_S']);
+    $base_ships = array('PT' => array(4000, 10, 5), 'GT' => array(12000, 25, 5),
+        'CLE' => array(4000, 10, 50), 'CLO' => array(10000, 25, 150), 'CR' => array(27000,
+            50, 400), 'VB' => array(60000, 200, 1000), 'VC' => array(30000, 100, 50), 'REC' =>
+            array(16000, 10, 1), 'SE' => array(1000, 0, 0), 'BMD' => array(75000, 500, 1000),
+        'DST' => array(110000, 500, 2000), 'EDLM' => array(9000000, 50000, 200000),
+        'SAT' => array(2000, 1, 1), 'TRA' => array(70000, 400, 700));
+    $base_defs = array('LM' => array(2000, 20, 80), 'LLE' => array(2000, 25, 100),
+        'LLO' => array(8000, 100, 250), 'CG' => array(35000, 200, 1100), 'AI' => array(8000,
+            500, 150), 'LP' => array(100000, 300, 3000), 'PB' => array(20000, 2000, 1), 'GB' =>
+            array(100000, 10000, 1));
+
+    // Récupération des constantes du RC
+    $query = 'SELECT dateRC, coordinates, nb_rounds, victoire, pertes_A, pertes_D, gain_M, gain_C, 
+    gain_D, debris_M, debris_C, lune FROM ' . TABLE_PARSEDRC . ' WHERE id_rc = ' .
+        $id_RC;
+    $result = $db->sql_query($query);
+    list($dateRC, $coordinates, $nb_rounds, $victoire, $pertes_A, $pertes_D, $gain_M,
+        $gain_C, $gain_D, $debris_M, $debris_C, $lune) = $db->sql_fetch_row($result);
+    $dateRC = date($lang['GAME_CREPORT_DATE'], $dateRC);
+    $template = $lang['GAME_CREPORT_FIGHT'] . ' (' . $dateRC . "):\n\n";
+
+    // Récupération de chaque round du RC
+    for ($idx = 1; $idx <= $nb_rounds; $idx++) {
+        $query = 'SELECT id_rcround, attaque_tir, attaque_puissance, attaque_bouclier, defense_tir, 
+      defense_puissance, defense_bouclier FROM ' . TABLE_PARSEDRCROUND .
+            ' WHERE id_rc = ' . $id_RC . '
+     AND numround = ' . $idx;
+        $result_round = $db->sql_query($query);
+        list($id_rcround, $attaque_tir, $attaque_puissance, $attaque_bouclier, $defense_tir,
+            $defense_puissance, $defense_bouclier) = $db->sql_fetch_row($result_round);
+        // On formate les résultats
+        $nf_gain_M = number_format($gain_M, 0, ',', '.');
+        $nf_gain_C = number_format($gain_C, 0, ',', '.');
+        $nf_gain_D = number_format($gain_D, 0, ',', '.');
+        $nf_pertes_A = number_format($pertes_A, 0, ',', '.');
+        $nf_pertes_D = number_format($pertes_D, 0, ',', '.');
+        $nf_debris_M = number_format($debris_M, 0, ',', '.');
+        $nf_debris_C = number_format($debris_C, 0, ',', '.');
+        $nf_attaque_tir = number_format($attaque_tir, 0, ',', '.');
+        $nf_attaque_puissance = number_format($attaque_puissance, 0, ',', '.');
+        $nf_attaque_bouclier = number_format($attaque_bouclier, 0, ',', '.');
+        $nf_defense_tir = number_format($defense_tir, 0, ',', '.');
+        $nf_defense_puissance = number_format($defense_puissance, 0, ',', '.');
+        $nf_defense_bouclier = number_format($defense_bouclier, 0, ',', '.');
+
+        // Récupération de chaque attaquant du RC
+        $query = 'SELECT player, coordinates, Armes, Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, 
+      SE, BMD, DST, EDLM, TRA FROM ' . TABLE_ROUND_ATTACK .
+            ' WHERE id_rcround = ' . $id_rcround;
+        $result_attack = $db->sql_query($query);
+        while (list($player, $coordinates, $Armes, $Bouclier, $Protection, $PT, $GT, $CLE,
+            $CLO, $CR, $VB, $VC, $REC, $SE, $BMD, $DST, $EDLM, $TRA) = $db->sql_fetch_row($result_attack)) {
+            $key = '';
+            $ship = 0;
+            $vivant_att = false;
+            $template .= $lang['GAME_CREPORT_ATT'] . ' ' . $player;
+            $ship_type = $lang['GAME_CREPORT_TYPE'];
+            $ship_nombre = $lang['GAME_CREPORT_NB'];
+            $ship_armes = $lang['GAME_CREPORT_WEAPONS'];
+            $ship_bouclier = $lang['GAME_CREPORT_SHIELD'];
+            $ship_protection = $lang['GAME_CREPORT_PROTECTION'];
+            foreach ($key_ships as $key => $ship) {
+                if (isset($$key) && $$key > 0) {
+                    $vivant_att = true;
+                    $ship_type .= "\t" . $ship;
+                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.');;
+                    $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
+                    $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
+                    $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
+                }
+            }
+            if ($vivant_att == true) {
+                $template .= ' [' . $coordinates . ']';
+                if ($idx == 1)
+                    $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
+                $template .= "\n";
+                $template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
+            } else
+                $template .= ' détruit.' . "\n\n";
+        } // Fin récupération de chaque attaquant du RC
+
+        // Récupération de chaque défenseur du RC
+        $query = 'SELECT player, coordinates, Armes, Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, 
+      SE, BMD, SAT, DST, EDLM, TRA, LM, LLE, LLO, CG, AI, LP, PB, GB FROM ' .
+            TABLE_ROUND_DEFENSE . ' WHERE 
+      id_rcround = ' . $id_rcround;
+        $result_defense = $db->sql_query($query);
+        while (list($player, $coordinates, $Armes, $Bouclier, $Protection, $PT, $GT, $CLE,
+            $CLO, $CR, $VB, $VC, $REC, $SE, $BMD, $SAT, $DST, $EDLM, $TRA, $LM, $LLE, $LLO, $CG, $AI,
+            $LP, $PB, $GB) = $db->sql_fetch_row($result_defense)) {
+            $key = '';
+            $ship = 0;
+            $vivant_def = false;
+            $template .= $lang['GAME_CREPORT_DEF'] . ' ' . $player;
+            $ship_type = $lang['GAME_CREPORT_TYPE'];
+            $ship_nombre = $lang['GAME_CREPORT_NB'];
+            $ship_armes = $lang['GAME_CREPORT_WEAPONS'];
+            $ship_bouclier = $lang['GAME_CREPORT_SHIELD'];
+            $ship_protection = $lang['GAME_CREPORT_PROTECTION'];
+            foreach ($key_ships as $key => $ship) {
+                if (isset($$key) && $$key > 0) {
+                    $vivant_def = true;
+                    $ship_type .= "\t" . $ship;
+                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.');
+                    $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
+                    $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
+                    $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
+                }
+            }
+            foreach ($key_defs as $key => $def) {
+                if (isset($$key) && $$key > 0) {
+                    $vivant_def = true;
+                    $ship_type .= "\t" . $def;
+                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.');
+                    $ship_protection .= "\t" . number_format(round(($base_defs[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
+                    $ship_bouclier .= "\t" . number_format(round($base_defs[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
+                    $ship_armes .= "\t" . number_format(round($base_defs[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
+                }
+            }
+            if ($vivant_def == true) {
+                $template .= ' [' . $coordinates . ']';
+                if ($idx == 1)
+                    $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
+                $template .= "\n";
+                $template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
+            } else
+                $template .= ' ' . $lang['GAME_CREPORT_DESTROYED'] . ' ' . "\n\n";
+        } // Fin récupération de chaque défenseur du RC
+
+        // Résultat du round
+        if ($attaque_tir != 0 || $defense_tir != 0) {
+            $template .= $lang['GAME_CREPORT_RESULT_FLEET'] . ' ' . $nf_attaque_tir .
+                ' ' . $lang['GAME_CREPORT_RESULT_FLEET_1'] . ' ' . $nf_attaque_puissance .
+                ' ' . $lang['GAME_CREPORT_RESULT_FLEET_2'] . ' ' . $nf_defense_bouclier .
+                ' ' . $lang['GAME_CREPORT_RESULT_FLEET_3'] . ' ' . "\n\n";
+            $template .= $lang['GAME_CREPORT_RESULT_DEF'] . ' ' . $nf_defense_tir .
+                ' ' . $lang['GAME_CREPORT_RESULT_DEF_1'] . ' ' . $nf_defense_puissance . '. ' . $lang['GAME_CREPORT_RESULT_DEF_2'] . ' ' .
+                $nf_attaque_bouclier . ' ' . $lang['GAME_CREPORT_RESULT_DEF_3'] . '.' . "\n\n";
+        }
+    } // Fin récupération de chaque round du RC
+
+    // Qui a remporté le combat ?
+    switch ($victoire) {
+        case 'N':
+            $template .= $lang['GAME_CREPORT_RESULT_EVEN'] . '.' .
+                "\n\n";
+            break;
+        case 'A':
+            $template .= $lang['GAME_CREPORT_RESULT_WIN'] . ' ' .
+                $nf_gain_M . ' ' . $lang['GAME_CREPORT_RESULT_WIN_1'] . ', ' . $nf_gain_C . ' ' . $lang['GAME_CREPORT_RESULT_WIN_2'] . ' ' . $nf_gain_D .
+                ' ' . $lang['GAME_CREPORT_RESULT_WIN_3'] . '.' . "\n\n";
+            break;
+        case 'D':
+            $template .= $lang['GAME_CREPORT_RESULT_LOST'] . "\n\n";
+            break;
+    }
+
+    // Pertes et champs de débris
+    $template .= $lang['GAME_CREPORT_RESULT_LOSTPOINTS_A'] . ' ' . $nf_pertes_A . ' ' . $lang['GAME_CREPORT_RESULT_UNITS'] . '.' . "\n";
+    $template .= $lang['GAME_CREPORT_RESULT_LOSTPOINTS_D'] . ' ' . $nf_pertes_D . ' ' . $lang['GAME_CREPORT_RESULT_UNITS'] . '.' . "\n";
+    $template .= $lang['GAME_CREPORT_RESULT_DEBRIS'] . ' ' . $nf_debris_M .
+        ' ' . $lang['GAME_CREPORT_RESULT_DEBRIS_M'] . ' ' . $nf_debris_C . ' ' . $lang['GAME_CREPORT_RESULT_DEBRIS_C'] .
+        "\n";
+
+    $lunePourcent = floor(($debris_M + $debris_C) / 100000);
+    $lunePourcent = ($lunePourcent < 0 ? 0 : ($lunePourcent > 20 ? 20 : $lunePourcent));
+    if ($lunePourcent > 0)
+        $template .= $lang['GAME_CREPORT_RESULT_NO_MOON'] . ' ' . $lunePourcent . ' %';
+
+    if ($lune == 1)
+        $template .= "\n" . $lang['GAME_CREPORT_RESULT_MOON'] . ".";
+
+    return ($template);
+}

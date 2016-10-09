@@ -75,5 +75,15 @@ class Spy_Model
 
     }
 
+    /**
+     * @param $spy_id
+     */
+    public function delete_spy($spy_id){
+        global $db;
+
+        $request = "DELETE FROM " . TABLE_PARSEDSPY . " WHERE `spy_id` = '" . $spy_id . "'";
+        $db->sql_query($request);
+    }
+
 
 }

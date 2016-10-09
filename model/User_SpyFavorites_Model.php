@@ -42,7 +42,7 @@ class User_SpyFavorites_Model
     public function delete_spyfavorite($user_id, $spy_id){
         global $db;
 
-        $request = "DELETE FROM " . TABLE_PARSEDSPY . " WHERE `sender_id` = " . $user_id . " AND `id_spy` = '" . $spy_id . "'";
+        $request = "DELETE FROM " . TABLE_USER_SPY . " WHERE `user_id` = " . $user_id . " AND `spy_id` = '" . $spy_id . "'";
         $db->sql_query($request);
     }
 

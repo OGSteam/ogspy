@@ -1039,7 +1039,7 @@ function user_del_favorite_spy()
 
     $data_favorites = new User_SpyFavorites_Model();
 
-    $data_favorites->delete_spyfavorite($user_data["user_id"], $pub_spy_id);
+    $data_favorites->delete_spyfavorite($user_data["user_id"],$pub_spy_id);
 
     if (!isset($pub_info))
         $pub_info = 1;
@@ -1120,7 +1120,7 @@ function usergroup_delete()
 /**
  * Récupération des droits d'un groupe d'utilisateurs
  * @param bool $group_id
- * @return array|bool|the
+ * @return array|boolean
  */
 function usergroup_get($group_id = false)
 {
@@ -1145,8 +1145,7 @@ function usergroup_get($group_id = false)
  */
 function usergroup_setauth()
 {
-    global $db;
-    global $pub_group_id, $pub_group_name, $pub_server_set_system, $pub_server_set_spy,
+       global $pub_group_id, $pub_group_name, $pub_server_set_system, $pub_server_set_spy,
            $pub_server_set_rc, $pub_server_set_ranking, $pub_server_show_positionhided, $pub_ogs_connection,
            $pub_ogs_set_system, $pub_ogs_get_system, $pub_ogs_set_spy, $pub_ogs_get_spy, $pub_ogs_set_ranking,
            $pub_ogs_get_ranking;
@@ -1200,19 +1199,17 @@ function usergroup_member($group_id)
  */
 function usergroup_newmember()
 {
-    global $db;
     global $pub_user_id, $pub_group_id, $pub_add_all,$lang;
+    $data_user = new User_Model();
+    $data_group = new Group_Model();
 
-    if ($pub_add_all == $lang['ADMIN_GROUP_ADDALL']) {
-        $request = "SELECT user_id FROM " . TABLE_USER;
-        $result = $db->sql_query($request);
+    if ($pub_add_all == $lang['ADMIN_GROUP_ADDALL']) { //TODO Condition to be changed. Cannot Rely on a string
 
-        while ($res = $db->sql_fetch_assoc($result)) {
+        $res = $data_user->select_userid_list();
+
+        while ($res) {
             user_check_auth("usergroup_manage");
-            $request = "INSERT IGNORE INTO " . TABLE_USER_GROUP .
-                " (group_id, user_id) values (" . intval($pub_group_id) . ", " . intval($res["user_id"]) .
-                ")";
-            $db->sql_query($request);
+            $data_group->insert_user_togroup($res["user_id"], $pub_group_id);
         }
         redirection("index.php?action=administration&subaction=group");
     } else {
@@ -1227,24 +1224,9 @@ function usergroup_newmember()
         //Vérification des droits
         user_check_auth("usergroup_manage");
 
-        $request = "select group_id from " . TABLE_GROUP . " where group_id = " . intval($pub_group_id);
-        $result = $db->sql_query($request);
-        if ($db->sql_numrows($result) == 0) {
-            redirection("index.php?action=administration&subaction=group");
-        }
+        $result = $data_group->insert_user_togroup(intval($pub_user_id), intval($pub_group_id));
 
-        $request = "select user_id from " . TABLE_USER . " where user_id = " . intval($pub_user_id);
-        $result = $db->sql_query($request);
-        if ($db->sql_numrows($result) == 0) {
-            redirection("index.php?action=administration&subaction=group");
-        }
-
-        $request = "insert ignore into " . TABLE_USER_GROUP .
-            " (group_id, user_id) values (" . intval($pub_group_id) . ", " . intval($pub_user_id) .
-            ")";
-        $db->sql_query($request);
-
-        if ($db->sql_affectedrows() > 0) {
+        if ($result === true) {
             log_("add_usergroup", array($pub_group_id, $pub_user_id));
         }
 
@@ -1253,14 +1235,16 @@ function usergroup_newmember()
 }
 
 /**
- * Supression d'un utilisateur d'un groupe
+ * Suppression d'un utilisateur d'un groupe
  * @global int $pub_user_id Identificateur utilisateur
  * @global int $pub_group_id Identificateur du Groupe
+ * @return boolean
  */
 function usergroup_delmember()
 {
-    global $db;
     global $pub_user_id, $pub_group_id;
+
+    $data_group = new Group_Model();
 
     if (!isset($pub_user_id) || !isset($pub_group_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
@@ -1272,15 +1256,14 @@ function usergroup_delmember()
     //Vérification des droits
     user_check_auth("usergroup_manage");
 
-    $request = "delete from " . TABLE_USER_GROUP . " where group_id = " . intval($pub_group_id) .
-        " and user_id = " . intval($pub_user_id);
-    $db->sql_query($request);
+    $result = $data_group->delete_user_from_group($pub_user_id, $pub_group_id);
 
-    if ($db->sql_affectedrows() > 0) {
+    if ($result === true) {
         log_("del_usergroup", array($pub_group_id, $pub_user_id));
     }
 
     redirection("index.php?action=administration&subaction=group&group_id=" . $pub_group_id);
+    return $result;
 }
 
 //Suppression d'un rapport d'espionnage
@@ -1290,8 +1273,10 @@ function usergroup_delmember()
  */
 function user_del_spy()
 {
-    global $db, $user_data;
+    global $user_data;
     global $pub_spy_id, $pub_galaxy, $pub_system, $pub_row, $pub_info;
+
+    $data_spy = new Spy_Model();
 
     if (!check_var($pub_spy_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
@@ -1302,9 +1287,9 @@ function user_del_spy()
     }
 
     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-        $request = "delete from " . TABLE_PARSEDSPY . " where id_spy = '" . $pub_spy_id .
-            "'";
-        $db->sql_query($request);
+
+        $data_spy->delete_spy($pub_spy_id);
+
     }
 
     if (!isset($pub_info))
@@ -1323,197 +1308,6 @@ function user_del_spy()
     return false;
 }
 
-/**
- * Reconstruction des RC
- * @global $db
- * @param int $id_RC RC à reconstituer
- * @return string $template_RC reconstitué
- */
-function UNparseRC($id_RC)
-{
-    global $db, $lang;
-
-    $key_ships = array('PT' => $lang['GAME_FLEET_PT_S'], 'GT' => $lang['GAME_FLEET_GT_S'], 'CLE' => $lang['GAME_FLEET_CLE_S'],
-        'CLO' => $lang['GAME_FLEET_CLO_S'], 'CR' => $lang['GAME_FLEET_CR_S'], 'VB' => $lang['GAME_FLEET_VB_S'], 'VC' =>
-            $lang['GAME_FLEET_VC_S'], 'REC' => $lang['GAME_FLEET_REC_S'], 'SE' => $lang['GAME_FLEET_SE_S'], 'BMD' => $lang['GAME_FLEET_BMD_S'],
-        'DST' => $lang['GAME_FLEET_DST_S'], 'EDLM' => $lang['GAME_FLEET_EDLM_S'], 'SAT' => $lang['GAME_FLEET_SAT_S'], 'TRA' => $lang['GAME_FLEET_TRA_S']);
-    $key_defs = array('LM' => $lang['GAME_DEF_LM_S'], 'LLE' => $lang['GAME_DEF_LLE_S'], 'LLO' => $lang['GAME_DEF_LLO_S'],
-        'CG' => $lang['GAME_DEF_CG_S'], 'AI' => $lang['GAME_DEF_AI_S'], 'LP' => $lang['GAME_DEF_LP_S'], 'PB' =>
-            $lang['GAME_DEF_PB_S'], 'GB' => $lang['GAME_DEF_GB_S']);
-    $base_ships = array('PT' => array(4000, 10, 5), 'GT' => array(12000, 25, 5),
-        'CLE' => array(4000, 10, 50), 'CLO' => array(10000, 25, 150), 'CR' => array(27000,
-            50, 400), 'VB' => array(60000, 200, 1000), 'VC' => array(30000, 100, 50), 'REC' =>
-            array(16000, 10, 1), 'SE' => array(1000, 0, 0), 'BMD' => array(75000, 500, 1000),
-        'DST' => array(110000, 500, 2000), 'EDLM' => array(9000000, 50000, 200000),
-        'SAT' => array(2000, 1, 1), 'TRA' => array(70000, 400, 700));
-    $base_defs = array('LM' => array(2000, 20, 80), 'LLE' => array(2000, 25, 100),
-        'LLO' => array(8000, 100, 250), 'CG' => array(35000, 200, 1100), 'AI' => array(8000,
-            500, 150), 'LP' => array(100000, 300, 3000), 'PB' => array(20000, 2000, 1), 'GB' =>
-            array(100000, 10000, 1));
-
-    // Récupération des constantes du RC
-    $query = 'SELECT dateRC, coordinates, nb_rounds, victoire, pertes_A, pertes_D, gain_M, gain_C, 
-    gain_D, debris_M, debris_C, lune FROM ' . TABLE_PARSEDRC . ' WHERE id_rc = ' .
-        $id_RC;
-    $result = $db->sql_query($query);
-    list($dateRC, $coordinates, $nb_rounds, $victoire, $pertes_A, $pertes_D, $gain_M,
-        $gain_C, $gain_D, $debris_M, $debris_C, $lune) = $db->sql_fetch_row($result);
-    $dateRC = date($lang['GAME_CREPORT_DATE'], $dateRC);
-    $template = $lang['GAME_CREPORT_FIGHT'] . ' (' . $dateRC . "):\n\n";
-
-    // Récupération de chaque round du RC
-    for ($idx = 1; $idx <= $nb_rounds; $idx++) {
-        $query = 'SELECT id_rcround, attaque_tir, attaque_puissance, attaque_bouclier, defense_tir, 
-      defense_puissance, defense_bouclier FROM ' . TABLE_PARSEDRCROUND .
-            ' WHERE id_rc = ' . $id_RC . '
-     AND numround = ' . $idx;
-        $result_round = $db->sql_query($query);
-        list($id_rcround, $attaque_tir, $attaque_puissance, $attaque_bouclier, $defense_tir,
-            $defense_puissance, $defense_bouclier) = $db->sql_fetch_row($result_round);
-        // On formate les résultats
-        $nf_gain_M = number_format($gain_M, 0, ',', '.');
-        $nf_gain_C = number_format($gain_C, 0, ',', '.');
-        $nf_gain_D = number_format($gain_D, 0, ',', '.');
-        $nf_pertes_A = number_format($pertes_A, 0, ',', '.');
-        $nf_pertes_D = number_format($pertes_D, 0, ',', '.');
-        $nf_debris_M = number_format($debris_M, 0, ',', '.');
-        $nf_debris_C = number_format($debris_C, 0, ',', '.');
-        $nf_attaque_tir = number_format($attaque_tir, 0, ',', '.');
-        $nf_attaque_puissance = number_format($attaque_puissance, 0, ',', '.');
-        $nf_attaque_bouclier = number_format($attaque_bouclier, 0, ',', '.');
-        $nf_defense_tir = number_format($defense_tir, 0, ',', '.');
-        $nf_defense_puissance = number_format($defense_puissance, 0, ',', '.');
-        $nf_defense_bouclier = number_format($defense_bouclier, 0, ',', '.');
-
-        // Récupération de chaque attaquant du RC
-        $query = 'SELECT player, coordinates, Armes, Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, 
-      SE, BMD, DST, EDLM, TRA FROM ' . TABLE_ROUND_ATTACK .
-            ' WHERE id_rcround = ' . $id_rcround;
-        $result_attack = $db->sql_query($query);
-        while (list($player, $coordinates, $Armes, $Bouclier, $Protection, $PT, $GT, $CLE,
-            $CLO, $CR, $VB, $VC, $REC, $SE, $BMD, $DST, $EDLM, $TRA) = $db->sql_fetch_row($result_attack)) {
-            $key = '';
-            $ship = 0;
-            $vivant_att = false;
-            $template .= $lang['GAME_CREPORT_ATT'] . ' ' . $player;
-            $ship_type = $lang['GAME_CREPORT_TYPE'];
-            $ship_nombre = $lang['GAME_CREPORT_NB'];
-            $ship_armes = $lang['GAME_CREPORT_WEAPONS'];
-            $ship_bouclier = $lang['GAME_CREPORT_SHIELD'];
-            $ship_protection = $lang['GAME_CREPORT_PROTECTION'];
-            foreach ($key_ships as $key => $ship) {
-                if (isset($$key) && $$key > 0) {
-                    $vivant_att = true;
-                    $ship_type .= "\t" . $ship;
-                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.');;
-                    $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
-                    $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
-                    $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
-                }
-            }
-            if ($vivant_att == true) {
-                $template .= ' [' . $coordinates . ']';
-                if ($idx == 1)
-                    $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
-                $template .= "\n";
-                $template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
-            } else
-                $template .= ' détruit.' . "\n\n";
-        } // Fin récupération de chaque attaquant du RC
-
-        // Récupération de chaque défenseur du RC
-        $query = 'SELECT player, coordinates, Armes, Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, 
-      SE, BMD, SAT, DST, EDLM, TRA, LM, LLE, LLO, CG, AI, LP, PB, GB FROM ' .
-            TABLE_ROUND_DEFENSE . ' WHERE 
-      id_rcround = ' . $id_rcround;
-        $result_defense = $db->sql_query($query);
-        while (list($player, $coordinates, $Armes, $Bouclier, $Protection, $PT, $GT, $CLE,
-            $CLO, $CR, $VB, $VC, $REC, $SE, $BMD, $SAT, $DST, $EDLM, $TRA, $LM, $LLE, $LLO, $CG, $AI,
-            $LP, $PB, $GB) = $db->sql_fetch_row($result_defense)) {
-            $key = '';
-            $ship = 0;
-            $vivant_def = false;
-            $template .= $lang['GAME_CREPORT_DEF'] . ' ' . $player;
-            $ship_type = $lang['GAME_CREPORT_TYPE'];
-            $ship_nombre = $lang['GAME_CREPORT_NB'];
-            $ship_armes = $lang['GAME_CREPORT_WEAPONS'];
-            $ship_bouclier = $lang['GAME_CREPORT_SHIELD'];
-            $ship_protection = $lang['GAME_CREPORT_PROTECTION'];
-            foreach ($key_ships as $key => $ship) {
-                if (isset($$key) && $$key > 0) {
-                    $vivant_def = true;
-                    $ship_type .= "\t" . $ship;
-                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.');
-                    $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
-                    $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
-                    $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
-                }
-            }
-            foreach ($key_defs as $key => $def) {
-                if (isset($$key) && $$key > 0) {
-                    $vivant_def = true;
-                    $ship_type .= "\t" . $def;
-                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.');
-                    $ship_protection .= "\t" . number_format(round(($base_defs[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
-                    $ship_bouclier .= "\t" . number_format(round($base_defs[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
-                    $ship_armes .= "\t" . number_format(round($base_defs[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
-                }
-            }
-            if ($vivant_def == true) {
-                $template .= ' [' . $coordinates . ']';
-                if ($idx == 1)
-                    $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
-                $template .= "\n";
-                $template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
-            } else
-                $template .= ' ' . $lang['GAME_CREPORT_DESTROYED'] . ' ' . "\n\n";
-        } // Fin récupération de chaque défenseur du RC
-
-        // Résultat du round
-        if ($attaque_tir != 0 || $defense_tir != 0) {
-            $template .= $lang['GAME_CREPORT_RESULT_FLEET'] . ' ' . $nf_attaque_tir .
-                ' ' . $lang['GAME_CREPORT_RESULT_FLEET_1'] . ' ' . $nf_attaque_puissance .
-                ' ' . $lang['GAME_CREPORT_RESULT_FLEET_2'] . ' ' . $nf_defense_bouclier .
-                ' ' . $lang['GAME_CREPORT_RESULT_FLEET_3'] . ' ' . "\n\n";
-            $template .= $lang['GAME_CREPORT_RESULT_DEF'] . ' ' . $nf_defense_tir .
-                ' ' . $lang['GAME_CREPORT_RESULT_DEF_1'] . ' ' . $nf_defense_puissance . '. ' . $lang['GAME_CREPORT_RESULT_DEF_2'] . ' ' .
-                $nf_attaque_bouclier . ' ' . $lang['GAME_CREPORT_RESULT_DEF_3'] . '.' . "\n\n";
-        }
-    } // Fin récupération de chaque round du RC
-
-    // Qui a remporté le combat ?
-    switch ($victoire) {
-        case 'N':
-            $template .= $lang['GAME_CREPORT_RESULT_EVEN'] . '.' .
-                "\n\n";
-            break;
-        case 'A':
-            $template .= $lang['GAME_CREPORT_RESULT_WIN'] . ' ' .
-                $nf_gain_M . ' ' . $lang['GAME_CREPORT_RESULT_WIN_1'] . ', ' . $nf_gain_C . ' ' . $lang['GAME_CREPORT_RESULT_WIN_2'] . ' ' . $nf_gain_D .
-                ' ' . $lang['GAME_CREPORT_RESULT_WIN_3'] . '.' . "\n\n";
-            break;
-        case 'D':
-            $template .= $lang['GAME_CREPORT_RESULT_LOST'] . "\n\n";
-            break;
-    }
-
-    // Pertes et champs de débris
-    $template .= $lang['GAME_CREPORT_RESULT_LOSTPOINTS_A'] . ' ' . $nf_pertes_A . ' ' . $lang['GAME_CREPORT_RESULT_UNITS'] . '.' . "\n";
-    $template .= $lang['GAME_CREPORT_RESULT_LOSTPOINTS_D'] . ' ' . $nf_pertes_D . ' ' . $lang['GAME_CREPORT_RESULT_UNITS'] . '.' . "\n";
-    $template .= $lang['GAME_CREPORT_RESULT_DEBRIS'] . ' ' . $nf_debris_M .
-        ' ' . $lang['GAME_CREPORT_RESULT_DEBRIS_M'] . ' ' . $nf_debris_C . ' ' . $lang['GAME_CREPORT_RESULT_DEBRIS_C'] .
-        "\n";
-
-    $lunePourcent = floor(($debris_M + $debris_C) / 100000);
-    $lunePourcent = ($lunePourcent < 0 ? 0 : ($lunePourcent > 20 ? 20 : $lunePourcent));
-    if ($lunePourcent > 0)
-        $template .= $lang['GAME_CREPORT_RESULT_NO_MOON'] . ' ' . $lunePourcent . ' %';
-
-    if ($lune == 1)
-        $template .= "\n" . $lang['GAME_CREPORT_RESULT_MOON'] . ".";
-
-    return ($template);
-}
 
 /**
  * Fonction de calcul du ratio
@@ -1521,51 +1315,39 @@ function UNparseRC($id_RC)
  * @return array ratio et divers calculs intermédiaires pour l'utilisateur en question
  * @author Bousteur 25/11/2006
  */
-function ratio_calc($player)
+function user_ratio_calc($player)
 {
-    global $db, $user_data;
+    $data_user = new User_Model();
 
-    //récupération des données nécessaires
-    $sqlrecup = "SELECT planet_added_xtense, search, spy_added_xtense, rank_added_xtense FROM " .
-        TABLE_USER . " WHERE user_id='" . $player . "'";
-    $result = $db->sql_query($sqlrecup);
-    list($planet_added_xtense, $search, $spy_added_xtense, $rank_added_xtense) = $db->sql_fetch_row($result);
-    $request = "select planet_added_xtense, spy_added_xtense, rank_added_xtense, search";
-    $request .= "from " . TABLE_USER;
-    $resultat = $db->sql_query($request);
+    $user_stat = $data_user->select_user_stats_data($player);
 
-    list($planetimporttotal, $spyimporttotal, $rankimporttotal, $searchtotal) = $db->sql_fetch_row($resultat);
+    $total_user_stats = $data_user->select_user_stats_sum();
 
-    $query = "SELECT COUNT(user_id) as count FROM " . TABLE_USER;
-    $result = $db->sql_query($query);
+    //$total_users = $data_user->get_nb_users();
 
-    if ($db->sql_numrows($result) > 0) {
-        $row = $db->sql_fetch_assoc($result);
-        $max = $row['count'];
-    }
     //pour éviter la division par zéro
-    if ($planetimporttotal == 0)
-        $planetimporttotal = 1;
-    if ($spyimporttotal == 0)
-        $spyimporttotal = 1;
-    if ($rankimporttotal == 0)
-        $rankimporttotal = 1;
-    if ($searchtotal == 0)
-        $searchtotal = 1;
+    if ($total_user_stats["planetimporttotal"] == 0)
+        $total_user_stats["planetimporttotal"] = 1;
+    if ($total_user_stats["spyimporttotal"] == 0)
+        $total_user_stats["spyimporttotal"] = 1;
+    if ($total_user_stats["rankimporttotal"] == 0)
+        $total_user_stats["rankimporttotal"] = 1;
+    if ($total_user_stats["searchtotal"] == 0)
+        $total_user_stats["searchtotal"] = 1;
 
     //et on commence le calcul
-    $ratio_planet = $planet_added_xtense / $planetimporttotal;
-    $ratio_spy = $spy_added_xtense / $spyimporttotal;
-    $ratio_rank = $rank_added_xtense / $rankimporttotal;
+    $ratio_planet = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
+    $ratio_spy = $user_stat["spy_added_xtense"] / $total_user_stats["spyimporttotal"];
+    $ratio_rank = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
     $ratio = ($ratio_planet * 4 + $ratio_spy * 2 + $ratio_rank) / (4 + 2 + 1);
 
-    $ratio_planet_penality = $planet_added_xtense  / $planetimporttotal;
-    $ratio_spy_penality = $spy_added_xtense / $spyimporttotal;
-    $ratio_rank_penality = $rank_added_xtense /$rankimporttotal;
+    $ratio_planet_penality = $user_stat["planet_added_xtense"]  / $total_user_stats["planetimporttotal"];
+    $ratio_spy_penality = $user_stat["spy_added_xtense"] /  $total_user_stats["spyimporttotal"];
+    $ratio_rank_penality = $user_stat["rank_added_xtense"] /$total_user_stats["rankimporttotal"];
     $ratio_penality = ($ratio_planet_penality * 4 + $ratio_spy_penality * 2 + $ratio_rank_penality) / (4 +
             2 + 1);
 
-    $ratio_search = $search / $searchtotal;
+    $ratio_search = $user_stat["search"] / $total_user_stats["searchtotal"];
     $ratio_searchpenality = ($ratio - $ratio_search);
 
     $result = ($ratio + $ratio_penality + $ratio_searchpenality) * 1000;
@@ -1594,7 +1376,7 @@ function ratio_is_ok()
         ) {
             return true;
         } else {
-            $result = ratio_calc($user_data['user_id']);
+            $result = user_ratio_calc($user_data['user_id']);
             $result = $result[0] >= $server_config["ratio_limit"];
             return $result;
         }

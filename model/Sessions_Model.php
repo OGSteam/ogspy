@@ -90,8 +90,7 @@ class Sessions_Model
     public function add_user_session($cookie_id, $cookie_expire, $user_ip)
     {
         global $db;
-        $request = "INSERT INTO " . TABLE_SESSIONS . " (`session_id`, `session_user_id`, `session_start`, `session_expire`, `session_ip`) VALUES (";
-        $request .= "'" . $cookie_id . "', 0, " . time() . ", " . $cookie_expire . ", '" . $user_ip . "')";
+        $request = "INSERT INTO " . TABLE_SESSIONS . " (`session_id`, `session_user_id`, `session_start`, `session_expire`, `session_ip`) VALUES ('" . $cookie_id . "', 0, " . time() . ", " . $cookie_expire . ", '" . $user_ip . "')";
         $db->sql_query($request, true, false);
     }
 
@@ -107,8 +106,7 @@ class Sessions_Model
         $request = "DELETE FROM " . TABLE_SESSIONS . " WHERE `session_ip` = '" . $user_ip . "' AND `session_ogs` = '1'";
         $db->sql_query($request, true, false);
 
-        $request = "INSERT INTO " . TABLE_SESSIONS . " (`session_id`, `session_user_id`, `session_start`, `session_expire`, `session_ip`, `session_ogs`) VALUES (";
-        $request .= "'" . $cookie_id . "', 0, " . time() . ", " . $cookie_expire . ", '" . $user_ip . "', '1')";
+        $request = "INSERT INTO " . TABLE_SESSIONS . " (`session_id`, `session_user_id`, `session_start`, `session_expire`, `session_ip`, `session_ogs`) VALUES ('" . $cookie_id . "', 0, " . time() . ", " . $cookie_expire . ", '" . $user_ip . "', '1')";
         $db->sql_query($request, true, false);
 
     }

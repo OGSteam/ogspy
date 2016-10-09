@@ -52,10 +52,21 @@ class User_Model
         $request = $db->sql_escape_string($request);
         $result = $db->sql_query($request);
         list($user_name) = $db->sql_fetch_row($result);
-        
+
         return $user_name;
     }
 
+    public function select_userid_list(){
+
+        global $db;
+        $request = "SELECT `user_id` FROM " . TABLE_USER ;
+
+        $request = $db->sql_escape_string($request);
+        $result = $db->sql_query($request);
+        list($user_id) = $db->sql_fetch_row($result);
+
+        return $user_id;
+    }
 
     /**
      * @param $user_id
@@ -135,7 +146,36 @@ class User_Model
         $result = $db->sql_query($request);
         return $result;
     }
+    /**
+     * @return mixed
+     */
+    public function select_user_stats_data ($user_id)
+    {
+        global $db;
 
+        $request = "SELECT `user_id`, `user_name`, `planet_added_xtense`, `search`, `spy_added_xtense`, `rank_added_xtense`, `xtense_type`, `xtense_version`, `user_active`, `user_admin`";
+        $request .= " FROM " . TABLE_USER;
+        $request .= " WHERE user_id='" . $user_id . "'";
+        $result = $db->sql_query($request);
+
+        list($planet_added_xtense, $search, $spy_added_xtense, $rank_added_xtense) = $db->sql_fetch_row($result);
+
+        return array("planet_added_xtense" => $planet_added_xtense, "search" => $search, "spy_added_xtense" => $spy_added_xtense, "rank_added_xtense" => $rank_added_xtense);
+    }
+    public function select_user_stats_sum ()
+    {
+        global $db;
+        $request = "SELECT SUM(planet_added_xtense), SUM(spy_added_xtense), SUM(rank_added_xtense), SUM(search)";
+        $request .= "FROM " . TABLE_USER;
+        $resultat = $db->sql_query($request);
+
+        list($planetimporttotal, $spyimporttotal, $rankimporttotal, $searchtotal) = $db->sql_fetch_row($resultat);
+
+        return array("planetimporttotal" => $planetimporttotal,
+            "spyimporttotal" => $spyimporttotal,
+            "rankimporttotal" => $rankimporttotal,
+            "searchtotal" => $searchtotal);
+    }
     /**
      * @param $user_id
      * @return array
@@ -342,12 +382,26 @@ class User_Model
         $db->sql_query($request);
     }
 
+    /**
+     * @return \Ogsteam\Ogspy\the
+     */
     public function get_nb_active_users(){
 
-            global $db;
-            $request = "SELECT `user_id` FROM " . TABLE_USER ." WHERE `user_active` = '1'";
-            $result = $db->sql_query($request);
-            return $number = $db->sql_numrows();
+        global $db;
+        $request = "SELECT `user_id` FROM " . TABLE_USER ." WHERE `user_active` = '1'";
+        $result = $db->sql_query($request);
+        return $number = $db->sql_numrows();
+    }
+
+    /**
+     * @return \Ogsteam\Ogspy\the
+     */
+    public function get_nb_users(){
+
+        global $db;
+        $request = "SELECT `user_id` FROM " . TABLE_USER;
+        $db->sql_query($request);
+        return $number = $db->sql_numrows();
     }
 
     /**

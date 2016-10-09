@@ -127,8 +127,8 @@ function filter_system($system)
     if ($server_config["allied"] != "")
         $allied = explode(",", $server_config["allied"]);
 
-    for ($row = 1; $row <= 15; $row++) {
-        $planet = $system[$row];
+    foreach ($system as $planet){ //TODO Afficher message si systeme non rempli
+
         $coordinates = $planet['galaxy'] . ":" . $planet['system'] . ":" . $planet['row'];
 
         $request = "select count(id_spy) from " . TABLE_PARSEDSPY . " where active = '1' and coordinates = '$coordinates'";
@@ -147,7 +147,7 @@ function filter_system($system)
         $planet["report_rc"] = $report_rc;
         $planet["allied"] = $friend;
 
-        $system[$row] = $planet;
+        $system[$planet['row']] = $planet;
     }
 
     return $system;
