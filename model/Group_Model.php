@@ -98,6 +98,28 @@ class Group_Model
     }
 
     /**
+     * Adding an user into the group
+     * @param $user_id
+     * @param $group_id
+     * @return bool
+     * @internal param $name
+     */
+    public function insert_user_togroup($user_id, $group_id)
+    {
+        global $db;
+
+        $request = "SELECT $user_id FROM " . TABLE_USER_GROUP . " WHERE group_id = '" . $group_id . "'";
+        $result = $db->sql_query($request);
+
+        if ($db->sql_numrows($result) == 0) {
+            $request = "INSERT INTO " . TABLE_USER_GROUP . " (group_id, user_id)" . " VALUES (" . intval($group_id) . ", " . intval($user_id).")";
+            $db->sql_query($request);
+            return true;
+        } else
+            return false;
+    }
+
+    /**
      * @param $group_id
      * @param string $name
      * @param int $server_set_system
@@ -141,7 +163,23 @@ class Group_Model
         $request .= " WHERE group_id = " . $group_id;
         $db->sql_query($request);
     }
+    /**
+     * @param $group_id
+     * @param $user_id
+     */
+    public function delete_user_from_group($user_id,$group_id)
+    {
+        global $db;
+        $request = "DELETE FROM " . TABLE_USER_GROUP . " WHERE group_id = " . intval($group_id) .
+            " and user_id = " . intval($user_id);
+        $db->sql_query($request);
 
+        if ($db->sql_affectedrows() > 0)
+            return true;
+        else
+            return false;
+
+    }
     /**
      * @param $group_id
      */

@@ -81,10 +81,10 @@ class Universe_Model
     {
         global $db;
 
-        $request = "SELECT galaxy, system, row, name, ally, player, moon, phalanx, gate, last_update_moon, status, last_update, user_name
+        $request = "SELECT `galaxy`, `system`, `row`, `name`, `ally`, `player`, `moon`, `phalanx`, `gate`, `last_update_moon`, `status`, last_update, user_name
                     FROM " . TABLE_UNIVERSE . " 
                         LEFT JOIN " . TABLE_USER . " 
-                            ON user_id = last_update_user_id
+                            ON `user_id` = `last_update_user_id`
                     WHERE galaxy = $galaxy AND system BETWEEN $system_down AND $system_up 
                     ORDER BY system, row";
         $result = $db->sql_query($request);
@@ -110,21 +110,24 @@ class Universe_Model
             }
         }
 
-        while($row = $db->sql_fetch_assoc($result))
-        {
-            $population[$row['system']][$row['row']]['galaxy'] = $row['galaxy'];
-            $population[$row['system']][$row['row']]['system'] = $row['system'];
-            $population[$row['system']][$row['row']]['row'] = $row['row'];
-            $population[$row['system']][$row['row']]['planet'] = $row['name'];
-            $population[$row['system']][$row['row']]['ally'] = $row['ally'];
-            $population[$row['system']][$row['row']]['player'] = $row['player'];
-            $population[$row['system']][$row['row']]['moon'] = $row['moon'];
-            $population[$row['system']][$row['row']]['phalanx'] = $row['phalanx'];
-            $population[$row['system']][$row['row']]['gate'] = $row['gate'];
-            $population[$row['system']][$row['row']]['last_update_moon'] = $row['last_update_moon'];
-            $population[$row['system']][$row['row']]['status'] = $row['status'];
-            $population[$row['system']][$row['row']]['timestamp'] = $row['last_update'];
-            $population[$row['system']][$row['row']]['poster'] = $row['user_name'];
+        if ($db->sql_numrows($result) > 0){
+
+            while($row = $db->sql_fetch_assoc($result))
+            {
+                $population[$row['system']][$row['row']]['galaxy'] = $row['galaxy'];
+                $population[$row['system']][$row['row']]['system'] = $row['system'];
+                $population[$row['system']][$row['row']]['row'] = $row['row'];
+                $population[$row['system']][$row['row']]['planet'] = $row['name'];
+                $population[$row['system']][$row['row']]['ally'] = $row['ally'];
+                $population[$row['system']][$row['row']]['player'] = $row['player'];
+                $population[$row['system']][$row['row']]['moon'] = $row['moon'];
+                $population[$row['system']][$row['row']]['phalanx'] = $row['phalanx'];
+                $population[$row['system']][$row['row']]['gate'] = $row['gate'];
+                $population[$row['system']][$row['row']]['last_update_moon'] = $row['last_update_moon'];
+                $population[$row['system']][$row['row']]['status'] = $row['status'];
+                $population[$row['system']][$row['row']]['timestamp'] = $row['last_update'];
+                $population[$row['system']][$row['row']]['poster'] = $row['user_name'];
+            }
         }
 
         return $population;

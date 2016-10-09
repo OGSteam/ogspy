@@ -23,8 +23,7 @@ class Config_Model
         if($filter == null)
             $filter = array();
 
-        $query = "SELECT config_name, config_value
-                  FROM " . TABLE_CONFIG;
+        $query = "SELECT config_name, config_value FROM " . TABLE_CONFIG;
 
         $i = 0;
         foreach ($filter as $key => $value) {
