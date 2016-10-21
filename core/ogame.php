@@ -658,7 +658,7 @@ function all_building_cumulate($user_building)
 /**
  * Calculates the price of all buildings
  * @param string $user_defence The list of defenses with the number of each building
- * @return the bild :-)
+ * @return int the bild :-)
  */
 function all_defence_cumulate($user_defence)
 {

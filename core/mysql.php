@@ -178,7 +178,7 @@ class Sql_Db
      * Gets the result of the Query and returns it in a simple array
      *
      * @param int $query_id The Query id.
-     * @return the array containing the Database result
+     * @return array|bool the array containing the Database result
      */
     function sql_fetch_row ($query_id = 0)
     {
@@ -196,7 +196,7 @@ class Sql_Db
      * Gets the result of the Query and returns it in a associative array
      *
      * @param int $query_id The Query id.
-     * @return the associative array containing the Database result
+     * @return array|bool the associative array containing the Database result
      */
     function sql_fetch_assoc ($query_id = 0)
     {
@@ -214,7 +214,7 @@ class Sql_Db
      * Gets the number of results returned by the Query
      *
      * @param int $query_id The Query id.
-     * @return the number of results
+     * @return int|bool the number of results
      */
     function sql_numrows ($query_id = 0)
     {
@@ -232,7 +232,7 @@ class Sql_Db
     /**
      * Gets the number of affected rows by the Query
      *
-     * @return the number of affected rows
+     * @return int|bool the number of affected rows
      */
     function sql_affectedrows ()
     {
@@ -247,7 +247,7 @@ class Sql_Db
     /**
      * Identifier of the last insertion Query
      *
-     * @return Returs the id
+     * @return int|bool Returns the id
      */
     function sql_insertid ()
     {
@@ -273,12 +273,11 @@ class Sql_Db
      * Returns the latest Query Error.
      *
      * @param int $query_id The Query id.
-     * @return an array with the error code and the error message
      */
     function sql_error ($query_id = 0)
     {
-        $result["message"] = $this->db_connect_id->connect_error;
-        $result["code"] = $this->db_connect_id->connect_errno;
+        $result["message"] = $this->db_connect_id->error;
+        $result["code"] = $this->db_connect_id->errno;
         echo("<h3 style='color: #FF0000;text-align: center'>Erreur lors de la requête MySQL</h3>");
         echo("<b>- " . $result["message"] . "</b>");
         echo($this->last_query);
@@ -288,7 +287,7 @@ class Sql_Db
     /**
      * Returns the number of queries done.
      *
-     * @return The number of queries done.
+     * @return int The number of queries done.
      */
     function sql_nb_requete ()
     {
@@ -299,7 +298,7 @@ class Sql_Db
      * Escapes all characters to set up the Query
      *
      * @param string $str The string to escape
-     * @return the escaped string
+     * @return int|bool the escaped string
      */
     function sql_escape_string ($str)
     {
@@ -328,6 +327,67 @@ class Sql_Db
         exit();
     }
 
+    /**
+     * Returns the Status of the Database used size.
+     * @return array [Server], et [Total]
+     */
+    public function db_size_info()
+    {
+        global $table_prefix;
+
+        $dbSizeServer = 0;
+        $dbSizeTotal = 0;
+
+        $request = "SHOW TABLE STATUS";
+        $result = $this->sql_query($request);
+        while ($row = $this->sql_fetch_assoc($result)) {
+            $dbSizeTotal += $row['Data_length'] + $row['Index_length'];
+            if (preg_match("#^" . $table_prefix . ".*$#", $row['Name'])) {
+                $dbSizeServer += $row['Data_length'] + $row['Index_length'];
+            }
+        }
+
+        $bytes = array('Octets', 'Ko', 'Mo', 'Go', 'To');
+
+        if ($dbSizeServer < 1024)
+            $dbSizeServer = 1;
+        for ($i = 0; $dbSizeServer > 1024; $i++)
+            $dbSizeServer /= 1024;
+        $dbSize_info["Server"] = round($dbSizeServer, 2) . " " . $bytes[$i];
+
+        if ($dbSizeTotal < 1024)
+            $dbSizeTotal = 1;
+        for ($i = 0; $dbSizeTotal > 1024; $i++)
+            $dbSizeTotal /= 1024;
+        $dbSize_info["Total"] = round($dbSizeTotal, 2) . " " . $bytes[$i];
+
+        return $dbSize_info;
+    }
+
+    /**
+     * Function to Optimize all tables of the OGSpy Database
+     * @param boolean $maintenance_action true if no url redirection is requested,false to redirect to another page
+     */
+    function db_optimize($maintenance_action = false)
+    {
+        $dbSize_before = $this->db_size_info();
+        $dbSize_before = $dbSize_before["Total"];
+
+        $request = 'SHOW TABLES';
+        $res = $this->sql_query($request);
+        while (list($table) = $this->sql_fetch_row($res)) {
+            $request = 'OPTIMIZE TABLE ' . $table;
+            $this->sql_query($request);
+        }
+
+        $dbSize_after = $this->db_size_info();
+        $dbSize_after = $dbSize_after["Total"];
+
+        if (!$maintenance_action) {
+            redirection("index.php?action=message&id_message=db_optimize&info=" . $dbSize_before .
+                "¤" . $dbSize_after);
+        }
+    }
 
 }
 

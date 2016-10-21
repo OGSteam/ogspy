@@ -16,7 +16,6 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 setlocale(LC_CTYPE, 'fr_FR.UTF-8');
-
 if (version_compare(PHP_VERSION, "5.1.0RC1") >= 0) {
     date_default_timezone_set("Europe/Paris");
 }
@@ -75,11 +74,6 @@ if (!defined("INSTALL_IN_PROGRESS")) {
 //Paramètres session
 define("COOKIE_NAME", "ogspy_id");
 
-/*
-* Google API Key
-*/
-// For using Google Google Cloud Messaging and can push notifications on ogspy for android
-define("GOOGLE_API_KEY", "AIzaSyB5W5hiGP97Jh1e6s7c0vva0Hs_xSiGeQw");
 
 //Chemin d'accès aux ressources
 if (!defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS") && !defined("GRAPHIC")) define("PATH_LOG", "journal/");

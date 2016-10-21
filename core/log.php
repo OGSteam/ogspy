@@ -28,7 +28,7 @@ $ogspy_phperror = Array();
  */
 function log_($parameter, $option = 0)
 {
-    global $db, $user_data, $server_config, $pub_action;
+    global $user_data, $server_config, $pub_action;
 
     $member = "Inconnu";
     if (isset($user_data)) {
@@ -357,7 +357,7 @@ function ogspy_error_handler($code, $message, $file, $line)
 
 /**
  * File Log size on the Server
- * @return Array tableau [type] and [size]
+ * @return array tableau [type] and [size]
  */
 function log_size_info()
 {
@@ -376,7 +376,6 @@ function log_size_info()
 
     foreach ($directory as $v) {
         $res = opendir($v);
-        $directory = array();
         //Récupération de la liste des fichiers présents dans les répertoires répertoriés
         while ($file = readdir($res)) {
             if ($file != "." && $file != "..") {
@@ -579,7 +578,6 @@ function log_purge()
         return;
     }
 
-    $files = array();
     foreach ($directories as $d) {
         $path = opendir($root . $d);
 

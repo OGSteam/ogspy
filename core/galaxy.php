@@ -163,13 +163,11 @@ function filter_system($system)
  * @global array $user_data
  * @global array $user_auth
  * @global array $server_config
- * @todo Query : "select system, row, name, ally, player, moon, phalanx, gate, last_update_moon, status, last_update from " . TABLE_UNIVERSE . " where galaxy = $pub_galaxy and system between " . $pub_system_down . " and " . $pub_system_up . " order by system, row";
- * @todo Query : "select * from " . TABLE_PARSEDSPY . " where active = '1' and coordinates = '$pub_galaxy:$system:$row'";
  * @return array contenant les  systeme solaire compris entre $pub_system_down et $pub_system_up
  */
 function galaxy_show_sector()
 {
-    global $db, $server_config, $user_data, $user_auth;
+    global $server_config;
     global $pub_galaxy, $pub_system_down, $pub_system_up;
 
     if (isset($pub_galaxy) && isset($pub_system_down) && isset($pub_system_up)) {
@@ -217,18 +215,6 @@ function galaxy_show_sector()
  * @global int $pub_row_up
  * @global ??? $pub_row_active
  * @global int $pub_page page courante ( pagination )
- * @todo Query : "select count(*) from " . TABLE_UNIVERSE . " left join " . TABLE_USER on last_update_user_id = user_id where player like '" . $db->sql_escape_string($search) . "' if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {foreach ($ally_protection as $v) { and ally <> '" . $db->sql_escape_string($v) . "'";}
- * @todo Query : "select galaxy, system, row, moon, phalanx, gate, last_update_moon, ally, player, status, last_update, user_name from " . TABLE_UNIVERSE . " left join " . TABLE_USER on last_update_user_id = user_id where player like '" . $db->sql_escape_string($search) . "' if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {foreach ($ally_protection as $v) { and ally <> '" . $db->sql_escape_string($v) . "'";}
- * @todo Query : "select count(*) from " . TABLE_UNIVERSE . " left join " . TABLE_USER . " on last_update_user_id = user_id where ally like '" . $db->sql_escape_string($search) . "' if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) { foreach ($ally_protection as $v) { and ally <> '" . $db->sql_escape_string($v) . "' }}
- * @todo Query : "select galaxy, system, row, moon, phalanx, gate, last_update_moon, ally, player, status, last_update, user_name from " . TABLE_UNIVERSE . " left join " . TABLE_USER . " on last_update_user_id = user_id where ally like '" . $db->sql_escape_string($search) . "' if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) { foreach ($ally_protection as $v) { and ally <> '" . $db->sql_escape_string($v) . "' }}
- * @todo Query : "select count(*) from " . TABLE_UNIVERSE . " left join " . TABLE_USER . ' on last_update_user_id = user_id where name like '" . $db->sql_escape_string($search) . "' if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {foreach ($ally_protection as $v) { and ally <> '" . $db->sql_escape_string($v) . "' }}
- * @todo Query : "select galaxy, system, row, moon, phalanx, gate, last_update_moon, ally, player, status, last_update, user_name from " . TABLE_UNIVERSE . " left join " . TABLE_USER . ' on last_update_user_id = user_id where name like '" . $db->sql_escape_string($search) . "' if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {foreach ($ally_protection as $v) { and ally <> '" . $db->sql_escape_string($v) . "' }}
- * @todo Query : "select count(*) from " . TABLE_UNIVERSE . " left join " . TABLE_USER ." on last_update_user_id = user_id where player = '' and galaxy between $galaxy_start and $galaxy_end and system between $system_start and $system_end if ($pub_row_active) {and row between $row_start and $row_end }
- * @todo Query : "select galaxy, system, row, moon, phalanx, gate, last_update_moon, ally, player, status, last_update, user_name from " . TABLE_UNIVERSE . " left join " . TABLE_USER ." on last_update_user_id = user_id where player = '' and galaxy between $galaxy_start and $galaxy_end and system between $system_start and $system_end if ($pub_row_active) {and row between $row_start and $row_end }
- * @todo Query : "select count(*) from " . TABLE_UNIVERSE . " left join " . TABLE_USER . " on last_update_user_id = user_id  where moon = '1' and galaxy between $galaxy_start and $galaxy_end and system between $system_start and $system_end if ($pub_row_active) { and row between $row_start and $row_end } if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) { foreach ($ally_protection as $v) { and ally <> '" . $db->sql_escape_string($v) . "'  }}
- * @todo Query : "select galaxy, system, row, moon, phalanx, gate, last_update_moon, ally, player, status, last_update, user_name from " . TABLE_UNIVERSE . " left join " . TABLE_USER . " on last_update_user_id = user_id  where moon = '1' and galaxy between $galaxy_start and $galaxy_end and system between $system_start and $system_end if ($pub_row_active) { and row between $row_start and $row_end } if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) { foreach ($ally_protection as $v) { and ally <> '" . $db->sql_escape_string($v) . "'  }}
- * @todo Query : "select count(*) from " . TABLE_UNIVERSE . " left join " . TABLE_USER ." on last_update_user_id = user_id where status like ('%i%') and galaxy between $galaxy_start and $galaxy_end  and system between $system_start and $system_end if ($pub_row_active) { and row between $row_start and $row_end } if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) { foreach ($ally_protection as $v) { and ally <> '" . $db->sql_escape_string($v) . "'}}
- * @todo Query : "select galaxy, system, row, moon, phalanx, gate, last_update_moon, ally, player, status, last_update, user_name from " . TABLE_UNIVERSE . " left join " . TABLE_USER ." on last_update_user_id = user_id where status like ('%i%') and galaxy between $galaxy_start and $galaxy_end  and system between $system_start and $system_end if ($pub_row_active) { and row between $row_start and $row_end } if ($user_auth["server_show_positionhided"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) { foreach ($ally_protection as $v) { and ally <> '" . $db->sql_escape_string($v) . "'}}
  * @todo Query : pour toutes les requetes : voir $pub_sort et $pub_sort2 pour pour ordonnancement des resultats de la requete ($order =  "order by galaxy" . $order2 . ", system" . $order2 . ", row " . $order2 . "|" order by ally" . $order2 . ", player" . $order2 . ", galaxy" . $order2 . ", system" . $order2 . ", row" . $order2 . "|" order by player" . $order2 . ", galaxy" . $order2 . ", system" . $order2 . ", row" . $order2 . " )
  * @todo Query : "select * from " . TABLE_PARSEDSPY . " where active = '1' and coordinates = '" . $row["galaxy"] . ":" . $row["system"] . ":" . $row["row"] ."'"
  * @return array resultat de la recherche + numero de la page
@@ -382,17 +368,13 @@ function galaxy_search()
  * Recuperation des statistiques des galaxies
  *
  * @param int $step
- * @global       object mysql $db
  * @global array $user_data
  * @global array $server_config
- * @todo Query : "select count(*) from " . TABLE_UNIVERSE ." where galaxy = " . $galaxy . " and system between " . $system . " and " . ($system + $step - 1)
- * @todo Query : "select count(*) from " . TABLE_UNIVERSE . " where player = '' and galaxy = " . $galaxy . " and system between " . $system . " and " . ($system + $step - 1);
- * @todo Query : "select max(last_update) from " . TABLE_UNIVERSE ." where galaxy = " . $galaxy . " and system between " . $system . " and " . ($system + $step - 1);
  * @return array contenant planete colonise ou non, par galaxy / systems
  */
 function galaxy_statistic($step = 50)
 {
-    global $db, $user_data, $server_config;
+    global $user_data, $server_config;
 
     $nb_planets_total = 0;
     $nb_freeplanets_total = 0;
@@ -424,8 +406,6 @@ function galaxy_statistic($step = 50)
 /**
  * Listing des alliances
  *
- * @global object mysql $db
- * @todo Query : "select distinct ally from " . TABLE_UNIVERSE . " order by ally"
  * @return array contenant les noms des alliances
  */
 function galaxy_ally_listing()
@@ -438,19 +418,17 @@ function galaxy_ally_listing()
  * Recuperation positions alliance
  *
  * @param int $step
- * @global       object mysql $db
  * @global array $user_data
  * @global array $user_auth
  * @global array $server_config
  * @global array $pub_ally_
  * @global int $nb_colonnes_ally
- * @todo Query : "select galaxy, system, row, player from " . TABLE_UNIVERSE . " where galaxy = " . $galaxy . " and system between " . $system . " and " . ($system + $step - 1) . " and ally like '" . $pub_ally_name . "' order by player, galaxy, system, row";
  * @return array $statictics contenant la position de tous les joueurs de toutes les alliances non protegers par galaxie / systeme
  */
 function galaxy_ally_position($step = 50)
 {
-    global $db, $user_auth, $user_data, $server_config;
-    global $pub_ally_, $nb_colonnes_ally;
+    global $user_auth, $user_data, $server_config;
+    global $pub_ally_ , $pub_ally_name, $pub_ally_list, $pub_ally_protection, $nb_colonnes_ally;
 
     for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
         if (!check_var($pub_ally_[$i], "Text")) {
