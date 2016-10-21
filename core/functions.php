@@ -6,11 +6,10 @@
  * @author Kyser
  * @copyright Copyright &copy; 2012, http://www.ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 3.1.1 ($Rev: 7752 $)
+ * @version 3.1.1
  */
 namespace Ogsteam\Ogspy;
 
-use \IpUtils\Factory;
 use Ogsteam\Ogspy\Model\Config_Model;
 use Ogsteam\Ogspy\Model\Universe_Model;
 
@@ -155,14 +154,15 @@ function password_generator()
  */
 function init_mod_cache()
 {
-    global $cache_mod, $server_config;
+    global $server_config;
 
     // Load cached config
     $filename = 'cache/cache_mod.php';
 
     if (file_exists($filename)) {
+        /** @noinspection PhpIncludeInspection */
         include $filename;
-        // regeneration si besoin
+        // Regenerate the file if required
         if ((filemtime($filename) + $server_config['mod_cache']) < time()) {
             generate_mod_cache();
         }
@@ -170,7 +170,8 @@ function init_mod_cache()
     } else {
         generate_mod_cache();
         if (file_exists($filename)) {
-            include $filename; // on reinjecte le fichier s'il existe'
+            /** @noinspection PhpIncludeInspection */
+            include $filename; // Using the file if exits
         }
 
     }
@@ -190,8 +191,9 @@ function init_serverconfig()
     $filename = 'cache/cache_config.php';
 
     if (file_exists($filename)) {
+        /** @noinspection PhpIncludeInspection */
         include $filename;
-        // regeneration si besoin
+        // Regenerate the file if required
         if ((filemtime($filename) + $server_config['config_cache']) < time()) {
             generate_config_cache();
         }
@@ -199,30 +201,16 @@ function init_serverconfig()
     } else {
         generate_config_cache();
         if (file_exists($filename)) {
-            include $filename; // on reinjecte le fichier s'il existe'
+            /** @noinspection PhpIncludeInspection */
+            include $filename;
+            // Regenerate the file if required
         }
-
     }
-
 }
 
 /**
  *  Updates in the database all configurations displayed in the display administration Page.
- * @todo Query: update  . TABLE_CONFIG .  set config_value =  . $pub_enable_portee_missil . where config_name = \'portee_missil\'
- * @todo Query: "update " . TABLE_CONFIG . " set config_value = " . $pub_galaxy_by_line_stat . " where config_name = 'galaxy_by_line_stat'"
- * @todo Query: "update " . TABLE_CONFIG . " set config_value = " . $pub_system_by_line_stat . " where config_name = 'system_by_line_stat'"
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $pub_open_user ."' where config_name = 'open_user'"
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $pub_open_admin . "' where config_name = 'open_admin'"
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_enable_stat_view ." where config_name = 'enable_stat_view'"
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_enable_members_view ." where config_name = 'enable_members_view'"
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $db->sql_escape_string($pub_nb_colonnes_ally) ."' where config_name = 'nb_colonnes_ally'"
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $db->sql_escape_string($color_ally) . "' where config_name = 'color_ally'"
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_galaxy_by_line_ally ." where config_name = 'galaxy_by_line_ally'"
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_system_by_line_ally ." where config_name = 'system_by_line_ally'"
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $pub_enable_register_view ."' where config_name = 'enable_register_view'"
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $db->sql_escape_string($pub_register_alliance) ."' where config_name = 'register_alliance'"
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $db->sql_escape_string($pub_register_forum) ."' where config_name = 'register_forum'"
- */
+*/
 function set_server_view()
 {
     global $user_data;
@@ -350,38 +338,10 @@ function set_server_view()
 
 /**
  *  Updates in the database all configurations displayed in the parameters administration Page.
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_server_active ." where config_name = 'server_active'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_debug_log ." where config_name = 'debug_log'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_block_ratio ." where config_name = 'block_ratio'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_log_phperror ." where config_name = 'log_phperror'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_max_favorites ." where config_name = 'max_favorites'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_max_favorites_spy ." where config_name = 'max_favorites_spy'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_ratio_limit ." where config_name = 'ratio_limit'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_max_spyreport ." where config_name = 'max_spyreport'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_max_battlereport ." where config_name = 'max_battlereport'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_session_time ." where config_name = 'session_time'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_max_keeplog ." where config_name = 'max_keeplog'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $db->sql_escape_string($pub_default_skin) . "' where config_name = 'default_skin'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $db->sql_escape_string($pub_reason) . "' where config_name = 'reason'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $db->sql_escape_string($pub_ally_protection) ."' where config_name = 'ally_protection'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $db->sql_escape_string($pub_url_forum) . "' where config_name = 'url_forum'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_max_keeprank ." where config_name = 'max_keeprank'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $db->sql_escape_string($pub_keeprank_criterion) ."' where config_name = 'keeprank_criterion'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_max_keepspyreport ." where config_name = 'max_keepspyreport'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $db->sql_escape_string($pub_servername) . "' where config_name = 'servername'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $db->sql_escape_string($pub_allied) . "' where config_name = 'allied'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_disable_ip_check ." where config_name = 'disable_ip_check'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_num_of_galaxies ." where config_name = 'num_of_galaxies'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_num_of_systems ." where config_name = 'num_of_systems'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $pub_ddr ."' where config_name = 'ddr'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = '" . $pub_astro_strict ."' where config_name = 'astro_strict'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_speed_uni ." where config_name = 'speed_uni'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_mod_cache ." where config_name = 'mod_cache'";
- * @todo Query : "update " . TABLE_CONFIG . " set config_value = " . $pub_config_cache ." where config_name = 'config_cache'";
  */
 function set_serverconfig()
 {
-    global $db, $user_data, $server_config;
+    global $user_data, $server_config;
     global $pub_max_battlereport, $pub_max_favorites, $pub_max_favorites_spy, $pub_max_spyreport,
            $pub_server_active, $pub_session_time, $pub_max_keeplog, $pub_debug_log,
            $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
@@ -603,7 +563,7 @@ function set_serverconfig()
     $configRepository->update(array('config_name' => 'astro_strict', 'config_value' => $pub_astro_strict));
 
     //
-    if (!is_numeric($pub_speed_uni) || $pub_speed_uni < 1)
+    if (!is_numeric($pub_speed_uni) || 1 < $pub_speed_uni)
         $pub_speed_uni = 1;
     $configRepository->update(array('config_name' => 'speed_uni', 'config_value' => $pub_speed_uni));
 
@@ -617,76 +577,6 @@ function set_serverconfig()
     generate_config_cache();
     log_("set_serverconfig");
     redirection("index.php?action=administration&subaction=parameter");
-}
-
-/**
- * Returns the Status of the Database used size.
- * @return Array [Server], et [Total]
- * @todo : Query : "SHOW TABLE STATUS"
- */
-function db_size_info()
-{
-    global $db;
-    global $table_prefix;
-
-    $dbSizeServer = 0;
-    $dbSizeTotal = 0;
-
-    $request = "SHOW TABLE STATUS";
-    $result = $db->sql_query($request);
-    while ($row = $db->sql_fetch_assoc($result)) {
-        $dbSizeTotal += $row['Data_length'] + $row['Index_length'];
-        if (preg_match("#^" . $table_prefix . ".*$#", $row['Name'])) {
-            $dbSizeServer += $row['Data_length'] + $row['Index_length'];
-        }
-    }
-
-    $bytes = array('Octets', 'Ko', 'Mo', 'Go', 'To');
-
-    if ($dbSizeServer < 1024)
-        $dbSizeServer = 1;
-    for ($i = 0; $dbSizeServer > 1024; $i++)
-        $dbSizeServer /= 1024;
-    $dbSize_info["Server"] = round($dbSizeServer, 2) . " " . $bytes[$i];
-
-    if ($dbSizeTotal < 1024)
-        $dbSizeTotal = 1;
-    for ($i = 0; $dbSizeTotal > 1024; $i++)
-        $dbSizeTotal /= 1024;
-    $dbSize_info["Total"] = round($dbSizeTotal, 2) . " " . $bytes[$i];
-
-    return $dbSize_info;
-}
-
-/**
- * Function to Optimize all tables of the OGSpy Database
- * @param boolean $maintenance_action true if no url redirection is requested,false to redirect to another page
- * @todo : Query : "SHOW TABLES"
- */
-function db_optimize($maintenance_action = false)
-{
-    global $db;
-
-    $dbSize_before = db_size_info();
-    $dbSize_before = $dbSize_before["Total"];
-
-    $request = 'SHOW TABLES';
-    $res = $db->sql_query($request);
-    while (list($table) = $db->sql_fetch_row($res)) {
-        $request = 'OPTIMIZE TABLE ' . $table;
-        $db->sql_query($request);
-    }
-    // 09-07-2012 : Commenté car cette table n'est plus utilisée
-    //$request = 'TRUNCATE ' . TABLE_UNIVERSE_TEMPORARY;
-    //$db->sql_query($request);
-
-    $dbSize_after = db_size_info();
-    $dbSize_after = $dbSize_after["Total"];
-
-    if (!$maintenance_action) {
-        redirection("index.php?action=message&id_message=db_optimize&info=" . $dbSize_before .
-            "¤" . $dbSize_after);
-    }
 }
 
 /**

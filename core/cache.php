@@ -21,7 +21,6 @@ if (!defined('IN_SPYOGAME')) {
 /**
  * Function generate_config_cache()
  * Initialize the Cache filesystem
- * @todo Queries : "select * from " . TABLE_CONFIG,
  */
 function generate_config_cache()
 {
@@ -54,7 +53,6 @@ function generate_config_cache()
  * Function generate_mod_cache()
  *
  * Generates the mod cache file system
- * @todo Queries : "SELECT action ,  menu ,  root, link, admin_only FROM ".TABLE_MOD." WHERE active = '1' order by position, title"
  */
 function generate_mod_cache()
 {
@@ -84,9 +82,7 @@ function generate_mod_cache()
 
     } else {
         fwrite($fh, '<?php' . "\n\n" . 'define(\'OGSPY_MOD_LOADED\', 1);' . "\n\n" . '$cache_mod = ' . var_export($modExport, true) . ';' . "\n\n" . '?>');
-
         fclose($fh);
-
     }
 
 }

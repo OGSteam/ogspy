@@ -22,14 +22,14 @@ class Universe_Model
         global $db;
 
         $query = 'UPDATE ' . TABLE_UNIVERSE . ' 
-                  SET name = "' . quote($planet['planet_name']) . '",
-                      player = "' . quote($planet['player_name']) . '",
-                      ally = "' . quote($planet['ally_tag']) . '",
-                      status = "' . $planet['status'] . '",
-                      moon = "' . $planet['moon'] . '",
-                      last_update = ' . $planet['last_update'] . ',
-                      last_update_user_id = ' . $planet['last_update_user_id']
-            . ' WHERE galaxy = ' . $planet['galaxy'] . ' AND system = ' . $planet['system'] . ' AND row = ' . $planet['row'];
+                  SET `name` = "' . quote($planet['planet_name']) . '",
+                      `player` = "' . quote($planet['player_name']) . '",
+                      `ally` = "' . quote($planet['ally_tag']) . '",
+                      `status` = "' . $planet['status'] . '",
+                      `moon` = "' . $planet['moon'] . '",
+                      `last_update` = ' . $planet['last_update'] . ',
+                      `last_update_user_id` = ' . $planet['last_update_user_id']
+            . ' WHERE `galaxy` = ' . $planet['galaxy'] . ' AND `system` = ' . $planet['system'] . ' AND `row` = ' . $planet['row'];
 
         $db->sql_query($query);
     }
@@ -42,7 +42,7 @@ class Universe_Model
     {
         global $db;
 
-        $query = 'INSERT INTO ' . TABLE_UNIVERSE . ' (galaxy, system, row, name, player, ally, status, last_update, last_update_user_id, moon)
+        $query = 'INSERT INTO ' . TABLE_UNIVERSE . ' (`galaxy`, `system`, `row`, `name`, `player`, `ally`, `status`, `last_update`, `last_update_user_id`, `moon`)
                          VALUES (' . $planet['galaxy'] . ',
                                  ' . $planet['system'] . ',
                                  ' . $planet['row'] . ', 
@@ -66,7 +66,7 @@ class Universe_Model
     {
         global $db;
 
-        $query = "DELETE FROM `" . TABLE_UNIVERSE . "` WHERE galaxy > $newGalaxy OR system > $newSystem";
+        $query = "DELETE FROM `" . TABLE_UNIVERSE . "` WHERE `galaxy` > $newGalaxy OR `system` > $newSystem";
         $db->sql_query($query);
     }
 
@@ -85,8 +85,8 @@ class Universe_Model
                     FROM " . TABLE_UNIVERSE . " 
                         LEFT JOIN " . TABLE_USER . " 
                             ON `user_id` = `last_update_user_id`
-                    WHERE galaxy = $galaxy AND system BETWEEN $system_down AND $system_up 
-                    ORDER BY system, row";
+                    WHERE `galaxy` = $galaxy AND `system` BETWEEN $system_down AND $system_up 
+                    ORDER BY `system`, `row`";
         $result = $db->sql_query($request);
 
         $population = array();
@@ -146,8 +146,8 @@ class Universe_Model
         global $db;
 
         $request = "SELECT count(*) FROM " . TABLE_UNIVERSE;
-        $request .= " where galaxy = " . $galaxy;
-        $request .= " and system between " . $system_down . " and " . ($system_up);
+        $request .= " WHERE `galaxy` = " . $galaxy;
+        $request .= " AND `system between` " . $system_down . " AND " . ($system_up);
 
         $result = $db->sql_query($request);
         list($nb_planet) = $db->sql_fetch_row($result);
@@ -160,15 +160,15 @@ class Universe_Model
      * @param $galaxy
      * @param $system_down
      * @param $system_up
-     * @return integer Nombre de planètes
+     * @return integer Number of planets
      */
     public function get_nb_empty_planets($galaxy, $system_down, $system_up)
     {
         global $db;
 
         $request = "SELECT count(*) FROM " . TABLE_UNIVERSE;
-        $request .= " WHERE player = '' AND galaxy = " . $galaxy;
-        $request .= " AND system BETWEEN " . $system_down . " AND " . ($system_up);
+        $request .= " WHERE `player` = '' AND `galaxy` = " . $galaxy;
+        $request .= " AND `system` BETWEEN " . $system_down . " AND " . ($system_up);
 
         $result = $db->sql_query($request);
         list($nb_planet) = $db->sql_fetch_row($result);
@@ -187,9 +187,9 @@ class Universe_Model
     {
         global $db;
 
-        $request = "SELECT MAX(last_update) FROM " . TABLE_UNIVERSE;
-        $request .= " WHERE galaxy = " . $galaxy;
-        $request .= " AND system BETWEEN " . $system_down . " AND " . ($system_up);
+        $request = "SELECT MAX(`last_update`) FROM " . TABLE_UNIVERSE;
+        $request .= " WHERE `galaxy` = " . $galaxy;
+        $request .= " AND `system` BETWEEN " . $system_down . " AND " . ($system_up);
 
         $result = $db->sql_query($request);
         list($last_update) = $db->sql_fetch_row($result);
@@ -207,7 +207,7 @@ class Universe_Model
 
         $ally_list = array();
 
-        $request = "SELECT DISTINCT ally FROM " . TABLE_UNIVERSE . " ORDER BY ally";
+        $request = "SELECT DISTINCT `ally` FROM " . TABLE_UNIVERSE . " ORDER BY `ally`";
         $result = $db->sql_query($request);
         while ($row = $db->sql_fetch_assoc($result)) {
             if ($row["ally"] != "") $ally_list[] = $row["ally"];
@@ -228,11 +228,11 @@ class Universe_Model
     {
         global $db;
 
-        $request = "SELECT galaxy, system, row, player FROM " . TABLE_UNIVERSE;
-        $request .= " where galaxy = " . $galaxy;
-        $request .= " and system between " . $system_down . " and " . ($system_up);
-        $request .= " and ally like '" . $ally_name . "'";
-        $request .= " order by player, galaxy, system, row";
+        $request = "SELECT `galaxy`, `system`, `row`, `player` FROM " . TABLE_UNIVERSE;
+        $request .= " WHERE `galaxy` = " . $galaxy;
+        $request .= " AND `system` BETWEEN " . $system_down . " AND " . ($system_up);
+        $request .= " AND `ally` LIKE '" . $ally_name . "'";
+        $request .= " ORDER BY `player`, `galaxy`, `system`, `row`";
         $result = $db->sql_query($request);
 
         $population = array();
@@ -254,7 +254,7 @@ class Universe_Model
     {
         global $db;
 
-        $request_astre_name = "SELECT name FROM " . TABLE_UNIVERSE . " WHERE galaxy = " . intval($galaxy) . " AND system = " . intval($system) . " AND row = " . intval($row);
+        $request_astre_name = "SELECT `name` FROM " . TABLE_UNIVERSE . " WHERE `galaxy` = " . intval($galaxy) . " AND `system` = " . intval($system) . " AND `row` = " . intval($row);
         $result_astre_name = $db->sql_query($request_astre_name);
         $astre_name = $db->sql_fetch_assoc($result_astre_name); //Récupère le nom de la planète
 
@@ -293,63 +293,63 @@ class Universe_Model
     {
         global $db;
 
-        $select = "select galaxy, system, row, moon, phalanx, gate, last_update_moon, ally, player, status, last_update, user_name";
+        $select = "SELECT `galaxy`, `system`, `row`, `moon`, `phalanx`, `gate`, `last_update_moon`, `ally`, `player`, `status`, `last_update`, `user_name`";
         $request = " FROM " . TABLE_UNIVERSE . " LEFT JOIN " . TABLE_USER .
-                   "    ON last_update_user_id = user_id";
+                   "    ON `last_update_user_id` = `user_id`";
 
         $where = "";
         if($criteria->getPlayerName() != null) {
             if($where != "")
                 $where .= " AND ";
-            $where .= " player LIKE '" . $db->sql_escape_string($criteria->getPlayerName()) . "'";
+            $where .= " `player` LIKE '" . $db->sql_escape_string($criteria->getPlayerName()) . "'";
         }
 
         if($criteria->getAllyName() != null) {
             if($where != "")
                 $where .= " AND ";
-            $where .= " ally LIKE '" . $db->sql_escape_string($criteria->getAllyName()) . "'";
+            $where .= " `ally` LIKE '" . $db->sql_escape_string($criteria->getAllyName()) . "'";
         }
 
         if($criteria->getPlanetName() != null)
         {
             if($where != "")
                 $where .= " AND ";
-            $where .= " name LIKE '" . $db->sql_escape_string($criteria->getPlanetName()) . "'";
+            $where .= " `name` LIKE '" . $db->sql_escape_string($criteria->getPlanetName()) . "'";
         }
 
         if($criteria->getGalaxyDown() != null && $criteria->getGalaxyUp() != null)
         {
             if($where != "")
                 $where .= " AND ";
-            $where .= " galaxy BETWEEN " . $criteria->getGalaxyDown() . " AND " . $criteria->getGalaxyUp();
+            $where .= " `galaxy` BETWEEN " . $criteria->getGalaxyDown() . " AND " . $criteria->getGalaxyUp();
         }
 
         if($criteria->getSystemDown() != null && $criteria->getSystemUp() != null)
         {
             if($where != "")
                 $where .= " AND ";
-            $where .= " system BETWEEN " . $criteria->getSystemDown() . " AND " . $criteria->getSystemUp();
+            $where .= " `system` BETWEEN " . $criteria->getSystemDown() . " AND " . $criteria->getSystemUp();
         }
 
         if($criteria->getRowDown() != null && $criteria->getRowUp() != null)
         {
             if($where != "")
                 $where .= " AND ";
-            $where .= " row BETWEEN " . $criteria->getRowDown() . " AND " . $criteria->getRowUp();
+            $where .= " `row` BETWEEN " . $criteria->getRowDown() . " AND " . $criteria->getRowUp();
         }
 
         if($criteria->getIsMoon())
         {
             if($where != "")
                 $where .= " AND ";
-            $where .= " moon = 1";
+            $where .= " `moon` = 1";
         }
 
         if($criteria->getIsInactive())
         {
             if($where != "")
                 $where .= " AND ";
-            $where .= " status LIKE ('%i%')";
+            $where .= " `status` LIKE ('%i%')";
         }
 
         $query = $select . $request;

@@ -18,7 +18,12 @@ class Api_data
     private $authenticated_token = false;
     private $user_id_token = false;
 
-    public function authenticate_by_user($login,$password)
+    /**
+     * @param $login
+     * @param $password
+     * @return bool
+     */
+    public function authenticate_by_user($login, $password)
     {
 
         global $db;
@@ -34,10 +39,14 @@ class Api_data
                 $this->authenticated_token = $private_token;
                 $this->send_response(array('status' => 'ok', 'api_token' => $private_token));
             }else
-                return false; //On ne retourne rien pour masquer API
+                exit(); //On ne retourne rien pour masquer API
         }
     }
 
+    /**
+     * @param $token
+     * @return bool
+     */
     public function authenticate_by_token($token){
 
         $data_token = new Tokens_Model();
@@ -54,15 +63,30 @@ class Api_data
     }
 
 
+    /**
+     * Entry point for API commands
+     * This function will call the required and private function to get the requested data
+     * @param $data
+     */
     public function api_treat_command($data){
 
         $data_decoded = json_decode($data);
-
+        //print $data_decoded;
+        switch ($data_decoded['cmd']) {
+            case "ogspy_details" :
+                $this->api_send_ogspy_details();
+            break;
+            default:
+                break;
+        }
         //Cas envoyer liste paramètres utilisateurs.
-        $this->api_send_user_list();
+        //$this->api_send_user_list();
 
     }
 
+    /**
+     * Fonction test envoi de données
+     */
     private function api_send_user_list(){
 
         if($this->authenticated_token != null){
@@ -71,10 +95,25 @@ class Api_data
             $data = $data_user->select_all_user_data();
             $this->send_response($data);
         }
-
-
     }
 
+    /**
+     * Fonction test envoi de données
+     */
+    private function api_send_ogspy_details(){
+
+        if($this->authenticated_token != null){
+
+            /*$data_user = new User_Model();
+            $data = $data_user->select_all_user_data();
+            $this->send_response($data);*/
+        }
+    }
+
+    /**
+     * Function to send the http response
+     * @param $data
+     */
     private function send_response($data){
 
         $answer_data = json_encode($data);
@@ -87,12 +126,13 @@ class Api_data
         HTTP\Sapi::sendResponse($response);
     }
 
+    /**
+     * Use the String Generator Lib to generate a token
+     * @return string
+     */
     private function generate_token(){
 
         return StringGenerator::randomAlnum(128);
 
     }
-
-
-
 }
