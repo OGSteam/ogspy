@@ -77,7 +77,7 @@ $mod_cache = $server_config['mod_cache'];
             <th><input name="server_active" type="checkbox" value="1" <?php echo $server_active;?>></th>
         </tr>
         <tr>
-            <th width="60%"<?php echo($lang['ADMIN_PARAMS_OFFREASON']); ?><?php echo help("admin_server_status_message");?></th>
+            <th width="60%"><?php echo($lang['ADMIN_PARAMS_OFFREASON']); ?><?php echo help("admin_server_status_message");?></th>
             <th><input type="text" name="reason" size="60" value="<?php echo $reason; ?>"></th>
         </tr>
         <tr>
@@ -152,6 +152,13 @@ $mod_cache = $server_config['mod_cache'];
                 </select></th>
         </tr>
         <tr>
+            <td class="c_tech" colspan="2"><?php echo($lang['ADMIN_PARAMS_SESSIONS_TITLE']); ?></td>
+        </tr>
+        <tr>
+            <th><?php echo($lang['ADMIN_PARAMS_SESSIONS_DURATION']); ?><?php echo help("admin_session_infini");?></a></th>
+            <th><input name="session_time" type="text" size="5" maxlength="3" value="<?php echo $session_time; ?>"></th>
+        </tr>
+        <tr>
             <td class="c" colspan="2"><?php echo($lang['ADMIN_PARAMS_MEMBEROPTIONS']); ?></td>
         </tr>
         <tr>
@@ -167,13 +174,6 @@ $mod_cache = $server_config['mod_cache'];
             <th><?php echo($lang['ADMIN_PARAMS_MAXREFAVORITES']); ?></th>
             <th><input name="max_favorites_spy" type="text" size="5" maxlength="2"
                        value="<?php echo $max_favorites_spy; ?>"></th>
-        </tr>
-        <tr>
-            <td class="c_tech" colspan="2"><?php echo($lang['ADMIN_PARAMS_SESSIONS_TITLE']); ?></td>
-        </tr>
-        <tr>
-            <th><?php echo($lang['ADMIN_PARAMS_SESSIONS_DURATION']); ?><?php echo help("admin_session_infini");?></a></th>
-            <th><input name="session_time" type="text" size="5" maxlength="3" value="<?php echo $session_time; ?>"></th>
         </tr>
         <tr>
             <td class="c" colspan="2"><?php echo($lang['ADMIN_PARAMS_ALLYPROTECT']); ?></td>
@@ -192,19 +192,61 @@ $mod_cache = $server_config['mod_cache'];
             </th>
             <th><input type="text" size="60" name="allied" value="<?php echo $allied; ?>"></th>
         </tr>
+        <?php
+        if ($user_data["user_admin"] == 1) {
+            ?>
+            <tr>
+                <td class="c_ogame" colspan="2"><?php echo($lang['ADMIN_PARAMS_GAME_OPTIONS']); ?></td>
+            </tr>
+            <tr>
+                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_GALAXIES']); ?><?php echo help("profile_galaxy");?></th>
+                <th><input name="num_of_galaxies" id="galaxies" type="text" size="5" maxlength="3"
+                           value="<?php echo $num_of_galaxies; ?>"
+                           onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_GALAXIES_POPUP']); ?>')){document.getElementById('galaxies').value='<?php echo $num_of_galaxies; ?>';}"
+                           readonly="readonly">(<input name="enable_input_num_galaxies"
+                                                       type="checkbox"
+                                                       onClick="(this.checked)? document.getElementById('galaxies').readOnly=false : document.getElementById('galaxies').readOnly=true;">)
+                </th>
+            </tr>
+            <tr>
+                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SYSTEMS']); ?><?php echo help("profile_galaxy");?></th>
+                <th><input name="num_of_systems" id="systems" type="text" size="5" maxlength="3"
+                           value="<?php echo $num_of_systems; ?>"
+                           onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_SYSTEMS_POPUP']); ?>')){document.getElementById('systems').value='<?php echo $num_of_systems; ?>';}"
+                           readonly="readonly">(<input name="enable_input_num_systems"
+                                                       type="checkbox"
+                                                       onClick="(this.checked)? document.getElementById('systems').readOnly=false : document.getElementById('systems').readOnly=true;">)
+                </th>
+            </tr>
+            <tr>
+                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SPEED']); ?><?php echo help("profile_speed_uni");?></th>
+                <th><input name="speed_uni" id="speed_uni" type="text" size="5" maxlength="2"
+                           value="<?php echo $speed_uni; ?>"
+                           onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_SPEED_POPUP']); ?>\n')){document.getElementById('speed_uni').value='<?php echo $speed_uni; ?>';}"
+                           readonly="readonly">(<input name="enable_input_speed_uni"
+                                                       type="checkbox"
+                                                       onClick="(this.checked)? document.getElementById('speed_uni').readOnly=false : document.getElementById('speed_uni').readOnly=true;">)
+                </th>
+            </tr>
+            <tr>
+                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_DDR']); ?><?php echo help("profile_ddr");?></th>
+                <th><input name="ddr" value="1" type="checkbox"<?php print ($ddr == 1) ? ' checked' : '' ?>></th>
+            </tr>
+            <tr>
+                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_ASTRO']); ?><?php echo help("astro_strict");?></th>
+                <th><input name="astro_strict" value="1"
+                           type="checkbox"<?php print ($astro_strict == 1) ? ' checked' : '' ?>></th>
+            </tr>
+
+            <?php
+        }
+        ?>
         <tr>
             <td class="c" colspan="2"><?php echo($lang['ADMIN_PARAMS_OTHER']); ?></td>
         </tr>
         <tr>
             <th width="60%"><?php echo($lang['ADMIN_PARAMS_FORUMLINK']); ?></th>
             <th><input type="text" size="60" name="url_forum" value="<?php echo $url_forum; ?>"></th>
-        </tr>
-        <tr>
-            <th><?php echo($lang['ADMIN_PARAMS_DEBUGSQL']); ?><?php echo help("admin_save_transaction");?><br/>
-
-                <div class="z"><i><?php echo($lang['ADMIN_PARAMS_DEBUGSQLALERT']); ?></i></div>
-            </th>
-            <th><input name="debug_log" type="checkbox" value="1" <?php echo $debug_log;?>></th>
         </tr>
         <tr>
             <th><?php echo($lang['ADMIN_PARAMS_RATIOMOD']); ?></th>
@@ -239,55 +281,6 @@ $mod_cache = $server_config['mod_cache'];
             <th width="60%"><?php echo($lang['ADMIN_PARAMS_DURATION_LOGS']); ?></th>
             <th><input name="max_keeplog" type="text" size="5" maxlength="3" value="<?php echo $max_keeplog; ?>"></th>
         </tr>
-        <?php
-        if ($user_data["user_admin"] == 1) {
-    ?>
-        <tr>
-            <td class="c_ogame" colspan="2"><?php echo($lang['ADMIN_PARAMS_GAME_OPTIONS']); ?></td>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_GALAXIES']); ?><?php echo help("profile_galaxy");?></th>
-            <th><input name="num_of_galaxies" id="galaxies" type="text" size="5" maxlength="3"
-                       value="<?php echo $num_of_galaxies; ?>"
-                       onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_GALAXIES_POPUP']); ?>')){document.getElementById('galaxies').value='<?php echo $num_of_galaxies; ?>';}"
-                       readonly="readonly">(<input name="enable_input_num_galaxies"
-                                                                                  type="checkbox"
-                                                                                  onClick="(this.checked)? document.getElementById('galaxies').readOnly=false : document.getElementById('galaxies').readOnly=true;">)
-            </th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SYSTEMS']); ?><?php echo help("profile_galaxy");?></th>
-            <th><input name="num_of_systems" id="systems" type="text" size="5" maxlength="3"
-                       value="<?php echo $num_of_systems; ?>"
-                       onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_SYSTEMS_POPUP']); ?>')){document.getElementById('systems').value='<?php echo $num_of_systems; ?>';}"
-                       readonly="readonly">(<input name="enable_input_num_systems"
-                                                                                  type="checkbox"
-                                                                                  onClick="(this.checked)? document.getElementById('systems').readOnly=false : document.getElementById('systems').readOnly=true;">)
-            </th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SPEED']); ?><?php echo help("profile_speed_uni");?></th>
-            <th><input name="speed_uni" id="speed_uni" type="text" size="5" maxlength="2"
-                       value="<?php echo $speed_uni; ?>"
-                       onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_SPEED_POPUP']); ?>\n')){document.getElementById('speed_uni').value='<?php echo $speed_uni; ?>';}"
-                       readonly="readonly">(<input name="enable_input_speed_uni"
-                                                                                  type="checkbox"
-                                                                                  onClick="(this.checked)? document.getElementById('speed_uni').readOnly=false : document.getElementById('speed_uni').readOnly=true;">)
-            </th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_DDR']); ?><?php echo help("profile_ddr");?></th>
-            <th><input name="ddr" value="1" type="checkbox"<?php print ($ddr == 1) ? ' checked' : '' ?>></th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_ASTRO']); ?><?php echo help("astro_strict");?></th>
-            <th><input name="astro_strict" value="1"
-                       type="checkbox"<?php print ($astro_strict == 1) ? ' checked' : '' ?>></th>
-        </tr>
-        <tr>
-            <?php
-            }
-            ?>
         <tr>
             <td class="c_tech" colspan="2"><?php echo($lang['ADMIN_PARAMS_CACHE']); ?></td>
         </tr>
@@ -318,6 +311,13 @@ $mod_cache = $server_config['mod_cache'];
             </th>
             <th><input name="log_phperror" type="checkbox" value="1" <?php echo $log_phperror;?>></th>
 
+        </tr>
+        <tr>
+            <th><?php echo($lang['ADMIN_PARAMS_DEBUGSQL']); ?><?php echo help("admin_save_transaction");?><br/>
+
+                <div class="z"><i><?php echo($lang['ADMIN_PARAMS_DEBUGSQLALERT']); ?></i></div>
+            </th>
+            <th><input name="debug_log" type="checkbox" value="1" <?php echo $debug_log;?>></th>
         </tr>
         <tr>
             <td>&nbsp;</td>
