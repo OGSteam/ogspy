@@ -24,7 +24,7 @@ if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
 }
 
 //Statistiques concernant la base de données
-$db_size_info = db_size_info();
+$db_size_info = $db->db_size_info();
 if ($db_size_info["Server"] == $db_size_info["Total"]) {
     $db_size_info = $db_size_info["Server"];
 } else {
