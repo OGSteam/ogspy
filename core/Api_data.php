@@ -8,7 +8,6 @@
 
 namespace Ogsteam\Ogspy\Api;
 use Ogsteam\Ogspy\Model\Config_Model;
-use Ogsteam\Ogspy\Model\Statistics_Model;
 use Ogsteam\Ogspy\Model\Tokens_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Sinergi\Token\StringGenerator;
@@ -23,7 +22,6 @@ class Api_data
     /**
      * @param $login
      * @param $password
-     * @return bool
      */
     public function authenticate_by_user($login, $password)
     {
@@ -43,6 +41,7 @@ class Api_data
             }else
                 exit(); //On ne retourne rien pour masquer API
         }
+        exit();
     }
 
     /**
