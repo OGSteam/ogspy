@@ -271,7 +271,7 @@ function member_user_set()
         if ($pub_old_password == "" || $pub_new_password == "" || $pub_new_password != $pub_new_password2) {
             redirection("index.php?action=message&id_message=member_modifyuser_failed_passwordcheck&info");
         }
-        if (md5(sha1($pub_old_password)) != $user_info[0]["user_password"]) {
+        if (crypto($pub_old_password) != $user_info[0]["user_password"]) {
             redirection("index.php?action=message&id_message=member_modifyuser_failed_passwordcheck&info");
         }
         if (!check_var($pub_new_password, "Password")) {
