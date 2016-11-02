@@ -1,18 +1,19 @@
 <?php
 /**
- * Fonctions relatives aux donnees galaxies/planetes
+ * Fonctions relatives aux données galaxies/planètes
  *
  * @package OGSpy
  * @subpackage galaxy
  * @author Kyser
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 3.05 ($Rev: 7699 $)
+ * @version 3.05
  */
 
 namespace Ogsteam\Ogspy;
 
 use Ogsteam\Ogspy\Entity\Universe\Search_Criteria;
+use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Universe_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 
@@ -22,7 +23,8 @@ if (!defined('IN_SPYOGAME')) {
 
 /**
  * Vérification des droits OGSpy
- *
+ * @global $user_data
+ * @global $user_auth
  * @param string $action Droit interrogé
  */
 
@@ -82,9 +84,6 @@ function galaxy_check_auth($action)
  * @global array $user_data
  * @global array $user_auth
  * @global array $server_config
- * @todo Query : "select row, name, ally, player, moon, phalanx, gate, last_update_moon, status, last_update, user_name from " . TABLE_UNIVERSE . " left join " . TABLE_USER . " on user_id = last_update_user_id  where galaxy = $pub_galaxy and system = $pub_system order by row"
- * @todo Query : "select id_spy from " . TABLE_PARSEDSPY . " where active = '1' and coordinates = '$pub_galaxy:$pub_system:$row'"
- * @todo Query : "select id_rc from " . TABLE_PARSEDRC . " where coordinates = '$pub_galaxy:$pub_system:$row'"
  * @return array contenant un systeme solaire correspondant a $pub_galaxy et $pub_system
  */
 function galaxy_show()
@@ -119,6 +118,10 @@ function galaxy_show()
     return array("population" => $population, "galaxy" => $pub_galaxy, "system" => $pub_system);
 }
 
+/**
+ * @param $system
+ * @return mixed
+ */
 function filter_system($system)
 {
     global $db, $server_config;
@@ -215,8 +218,6 @@ function galaxy_show_sector()
  * @global int $pub_row_up
  * @global ??? $pub_row_active
  * @global int $pub_page page courante ( pagination )
- * @todo Query : pour toutes les requetes : voir $pub_sort et $pub_sort2 pour pour ordonnancement des resultats de la requete ($order =  "order by galaxy" . $order2 . ", system" . $order2 . ", row " . $order2 . "|" order by ally" . $order2 . ", player" . $order2 . ", galaxy" . $order2 . ", system" . $order2 . ", row" . $order2 . "|" order by player" . $order2 . ", galaxy" . $order2 . ", system" . $order2 . ", row" . $order2 . " )
- * @todo Query : "select * from " . TABLE_PARSEDSPY . " where active = '1' and coordinates = '" . $row["galaxy"] . ":" . $row["system"] . ":" . $row["row"] ."'"
  * @return array resultat de la recherche + numero de la page
  */
 function galaxy_search()
@@ -342,9 +343,9 @@ function galaxy_search()
         $friend = false;
         if (in_array($planet["ally"], $allied)) $friend = true;
 
-        $request = "SELECT * FROM " . TABLE_PARSEDSPY . " WHERE active = '1' AND coordinates = '" . $planet["galaxy"] . ":" . $planet["system"] . ":" . $planet["row"] . "'";
-        $result_2 = $db->sql_query($request);
-        $report_spy = $db->sql_numrows($result_2);
+        $data_spy = new Spy_Model();
+        $nb_spy_reports = $data_spy->get_nb_spy_by_coords($planet["galaxy"], $planet["system"], $planet["row"]);
+
         $search_result[] = array("galaxy" => $planet["galaxy"],
                                  "system" => $planet["system"],
                                  "row" => $planet["row"],
@@ -354,7 +355,7 @@ function galaxy_search()
                                  "moon" => $planet["moon"],
                                  "ally" => $planet["ally"],
                                  "player" => $planet["player"],
-                                 "report_spy" => $report_spy,
+                                 "report_spy" => $nb_spy_reports,
                                  "status" => $planet["status"],
                                  "timestamp" => $planet["last_update"],
                                  "poster" => $planet["user_name"],
@@ -378,6 +379,7 @@ function galaxy_statistic($step = 50)
 
     $nb_planets_total = 0;
     $nb_freeplanets_total = 0;
+    $statistics = array();
 
     $universeRepository = new Universe_Model();
 
@@ -396,11 +398,11 @@ function galaxy_statistic($step = 50)
 
             $nb_planets_total += $nb_planet;
             $nb_freeplanets_total += $nb_planet_free;
-            $statictics[$galaxy][$system] = array("planet" => $nb_planet, "free" => $nb_planet_free, "new" => $new);
+            $statistics[$galaxy][$system] = array("planet" => $nb_planet, "free" => $nb_planet_free, "new" => $new);
         }
     }
 
-    return array("map" => $statictics, "nb_planets" => $nb_planets_total, "nb_planets_free" => $nb_freeplanets_total);
+    return array("map" => $statistics, "nb_planets" => $nb_planets_total, "nb_planets_free" => $nb_freeplanets_total);
 }
 
 /**
@@ -479,7 +481,7 @@ function galaxy_ally_position($step = 50)
 /**
  * Recuperation des rapports d\'espionnage
  *
- * @return array $reports
+ * @return array|bool $reports
  * @global       object mysql $db
  * @global array $server_config
  * @global int $pub_galaxy
@@ -559,7 +561,7 @@ function galaxy_reportspy_show()
  * @global int $pub_rc_id
  * @todo Query : "select id_rc from " . TABLE_PARSEDRC . " where coordinates = '" . intval($pub_galaxy) . ':' . intval($pub_system) .:' . intval($pub_row) . "' order by dateRC desc";"
  * @todo Query : "select id_rc from " . TABLE_PARSEDRC . " where id_rc = " . intval($pub_rc_id);
- * @return array $reports contenant les rc mis en forme
+ * @return array|boolean $reports contenant les rc mis en forme
  */
 function galaxy_reportrc_show()
 {
@@ -1121,12 +1123,11 @@ function galaxy_drop_ranking()
  * @global array $server_config
  * @global array $user_data
  * @global array $user_auth
- * @todo Query : "SELECT galaxy, system, row, phalanx, gate, name, ally, player FROM " .TABLE_UNIVERSE . " WHERE galaxy = " . $galaxy . " AND moon = '1' AND phalanx > 0 AND system + (power(phalanx, 2) - 1) >= " . $system . " AND system - (power(phalanx, 2) - 1) <= " . $system
  * @return array $phalanxer (galaxy, system, row, phalanx, gate, name, ally, player)
  */
 function galaxy_get_phalanx($galaxy, $system)
 {
-    global $db, $server_config, $user_data, $user_auth;
+    global $server_config, $user_data, $user_auth;
 
     $ally_protection = array();
     if ($server_config["ally_protection"] != "") $ally_protection = explode(",", $server_config["ally_protection"]);

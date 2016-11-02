@@ -11,6 +11,12 @@ namespace Ogsteam\Ogspy\Model;
 
 class Spy_Model
 {
+    /**
+     * @param $user_id
+     * @param int $sort
+     * @param int $sort2
+     * @return array
+     */
     public function get_favoriteSpyList($user_id, $sort = 5 , $sort2 = 0){
 
         global $db;
@@ -69,10 +75,23 @@ class Spy_Model
                 "ally" => $ally, "moon" => $moon, "status" => $status, "datadate" => $datadate,
                 "poster" => $user_name);
         }
-
         return $favorite;
+    }
 
+    /**
+     * @param int $galaxy
+     * @param int $system
+     * @param int $row
+     * @return int $nb_spy
+     */
+    public function get_nb_spy_by_coords ($galaxy, $system, $row){
+        global $db;
 
+        $request = "SELECT * FROM " . TABLE_PARSEDSPY . " WHERE `active` = '1' AND `coordinates` = '" . $galaxy . ":" . $system . ":" . $row . "'";
+        $result = $db->sql_query($request);
+        $nb_spy = $db->sql_numrows($result);
+
+        return $nb_spy;
     }
 
     /**
