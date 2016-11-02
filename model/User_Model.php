@@ -7,6 +7,7 @@
  */
 
 namespace Ogsteam\Ogspy\Model;
+use Ogsteam\Ogspy;
 
 
 class User_Model
@@ -21,7 +22,7 @@ class User_Model
     public function select_user_login ($login, $password, $salt = false)
     {
         global $db;
-        if($salt === false) $password = md5(sha1($password));
+        if($salt === false) $password = Ogspy\crypto($password);
 
         $request = "SELECT `user_id`, `user_active` FROM " . TABLE_USER . " WHERE `user_name` = '" . $db->sql_escape_string($login) . "' AND `user_password` = '" . $password . "'";
         $result = $db->sql_query($request);
@@ -245,7 +246,8 @@ class User_Model
     public function set_user_password ($user_id, $user_password)
     {
         global $db;
-        $request = "UPDATE " . TABLE_USER . " SET `user_password` = '" . md5(sha1($user_password)) . "' WHERE `user_id` = " . $user_id;
+        $encrypted_password = crypto($user_password);
+        $request = "UPDATE " . TABLE_USER . " SET `user_password` = '" . $encrypted_password . "' WHERE `user_id` = " . $user_id;
         $db->sql_query($request);
 
     }
@@ -271,8 +273,22 @@ class User_Model
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `user_galaxy` = '" . $default_galaxy . "' WHERE `user_id` = " . $user_id;
         $db->sql_query($request);
-
+        //Nettoyage Préventif
+        $request = $db->sql_query("UPDATE " . TABLE_USER . " SET user_galaxy=1 WHERE user_galaxy > $new_num_of_galaxies");
+        $db->sql_query($request);
     }
+
+    /**
+     * Utilisé après un redimensionement de l'univers
+     * @param $int $nb_galaxy
+     */
+    public function set_default_galaxy_after_resize ($nb_galaxy)
+    {
+        global $db;
+        $request = $db->sql_query("UPDATE " . TABLE_USER . " SET `user_galaxy` = 1 WHERE `user_galaxy` > $nb_galaxy");
+        $db->sql_query($request);
+    }
+
 
     /**
      * @param $user_id
@@ -282,6 +298,17 @@ class User_Model
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `user_system` = '" . $default_system . "' WHERE `user_id` = " . $user_id;
+        $db->sql_query($request);
+    }
+
+    /**
+     * Utilisé après un redimensionement de l'univers
+     * @param $int $nb_systems
+     */
+    public function set_default_system_after_resize ($nb_systems)
+    {
+        global $db;
+        $request = $db->sql_query("UPDATE " . TABLE_USER . " SET `usersystem` = 1 WHERE `user_system` > $nb_systems");
         $db->sql_query($request);
     }
 

@@ -56,6 +56,17 @@ class User_Favorites_Model
         $request = "delete from " . TABLE_USER_FAVORITE . " where user_id = " . $user_id .
             " and galaxy = '" . $galaxy . "' and system = " . $system;
         $db->sql_query($request);
+    }
 
+    /**
+     * Supprime les Favoris qui ne sont plus accessibles après redimensionnement de univers
+     * @param $nb_galaxies
+     * @param $nb_system
+     */
+    public function delete_favorites_after_resize($nb_galaxies, $nb_system)
+    {
+        global $db;
+        $db->sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE `galaxy` > $nb_galaxies");
+        $db->sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE `system` > $nb_system");
     }
 }
