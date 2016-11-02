@@ -12,6 +12,8 @@ namespace Ogsteam\Ogspy;
 
 use Ogsteam\Ogspy\Model\Config_Model;
 use Ogsteam\Ogspy\Model\Universe_Model;
+use Ogsteam\Ogspy\Model\User_Favorites_Model;
+use Ogsteam\Ogspy\Model\User_Model;
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
@@ -583,38 +585,30 @@ function set_serverconfig()
  * Adapt the database to fit on the number of galaxies and solar systems
  * @param int $new_num_of_galaxies Galaxy total
  * @param int $new_num_of_systems Solar Systems total
- * @return null
- * @todo : Query : sql_query("DELETE FROM " . TABLE_UNIVERSE . " WHERE galaxy > $new_num_of_galaxies");
- * @todo : Query : sql_query("UPDATE " . TABLE_USER . " SET user_galaxy=1 WHERE user_galaxy > $new_num_of_galaxies");
- * @todo : Query : sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE galaxy > $new_num_of_galaxies");
- * @todo : Query : sql_query("DELETE FROM " . TABLE_UNIVERSE . " WHERE system > $new_num_of_systems");
- * @todo : Query : sql_query("UPDATE " . TABLE_USER . " SET user_system=1 WHERE user_system > $new_num_of_systems");
- * @todo : Query : sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE system > $new_num_of_systems");
- * @todo : Query : "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('num_of_galaxies','$new_num_of_galaxies')";
- * @todo : Query : $requests = "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('num_of_systems','$new_num_of_systems')";
  */
 function resize_db($new_num_of_galaxies, $new_num_of_systems)
 {
-    global $db, $server_config;
+    global $server_config;
 
     $universeRepository = new Universe_Model();
+    $data_user = new User_Model();
+    $data_user_favorites = new User_Favorites_Model();
+    $configRepository = new Config_Model();
+
     // si on reduit on doit supprimez toutes les entrées qui font reference au systemes ou galaxies que l'on va enlever
     $universeRepository->resize_universe($new_num_of_galaxies, $new_num_of_systems);
 
     if ($new_num_of_galaxies < intval($server_config['num_of_galaxies'])) {
-        $db->sql_query("UPDATE " . TABLE_USER . " SET user_galaxy=1 WHERE user_galaxy > $new_num_of_galaxies");
-        $db->sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE galaxy > $new_num_of_galaxies");
+        $data_user->set_default_galaxy_after_resize($new_num_of_galaxies);
+        $data_user_favorites->delete_favorites_after_resize($new_num_of_galaxies, $new_num_of_systems);
     }
     if ($new_num_of_systems < intval($server_config['num_of_systems'])) {
-        $db->sql_query("UPDATE " . TABLE_USER . " SET user_system=1 WHERE user_system > $new_num_of_systems");
-        $db->sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE system > $new_num_of_systems");
+        $data_user->set_default_system_after_resize($new_num_of_systems);
+        $data_user_favorites->delete_favorites_after_resize($new_num_of_galaxies, $new_num_of_systems);
     }
 
     $server_config['num_of_galaxies'] = $new_num_of_galaxies;
     $server_config['num_of_systems'] = $new_num_of_systems;
-
-    $configRepository = new Config_Model();
-
     //
     $configRepository->update(array('config_name' => 'num_of_galaxies', 'config_value' => $new_num_of_galaxies));
     $configRepository->update(array('config_name' => 'num_of_systems', 'config_value' => $new_num_of_systems));
@@ -911,86 +905,6 @@ function generate_key()
     }
 
 }
-/***********************************************************************
- ************** Fonctions pour table Google Cloud Messaging ************
- ***********************************************************************/
-
-/** Storing new GCM user
- * @param $name
- * @param $gcm_regid
- * @return int : user true or false
- */
-function storeGCMUser($name, $gcm_regid)
-{
-    global $db;
-    $user_id = "0";
-    $result = $db->sql_query("SELECT user_id FROM " . TABLE_USER . " WHERE user_name = '" . $name . "' OR user_stat_name = '" . $name . "'");
-
-    $nbGcmUsers = $db->sql_numrows("SELECT * FROM " . TABLE_GCM_USERS . " WHERE gcm_regid = '" . $gcm_regid . "'");
-
-    while (list($userid) = $db->sql_fetch_row($result)) {
-        $user_id = $userid;
-    }
-
-    //return "Nombre de users GCM = " . $nbGcmUsers;
-
-    if ($nbGcmUsers == 0) {
-        // insert user into database
-        $result = $db->sql_query("INSERT INTO " . TABLE_GCM_USERS . "(user_id, gcm_regid, created_at) VALUES('" . $user_id . "' , '" . $gcm_regid . "', NOW())");
-        // check for successful store
-        if ($result) {
-            return 1;
-        } else {
-            return 0;
-        }
-    } else {
-        return -1;
-    }
-}
-
-/** Storing new GCM user
- * @param $gcm_regid
- * @return bool : user true or false
- */
-function deleteGCMUser($gcm_regid)
-{
-    global $db;
-
-    // delete user in database
-    $result = $db->sql_query("DELETE FROM " . TABLE_GCM_USERS . " WHERE gcm_regid = '" . $gcm_regid . "'");
-    // check for successful store
-    if ($result) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-/**
- * Getting all GCM users
- */
-function getAllGCMUsers()
-{
-    global $db;
-    $query = "SELECT gcm.user_id AS user_id, users.user_name AS name, users.user_stat_name AS name2, users.user_email AS email, gcm.gcm_regid AS gcm_regid, gcm.created_at AS created_at, gcm.version_android AS version_android, gcm.version_ogspy AS version_ogspy, gcm.device AS device " .
-        "FROM " . TABLE_GCM_USERS . " gcm " .
-        "INNER JOIN " . TABLE_USER . " users ON users.user_id = gcm.user_id";
-    return $db->sql_query($query);
-}
-
-/**
- * Getting all GCM users but not me
- * @param $id
- * @return bool|mixed|mysqli_result
- */
-function getAllGCMUsersExceptMe($id)
-{
-    global $db;
-    $query = "SELECT gcm_regid " .
-        "FROM " . TABLE_GCM_USERS .
-        " WHERE gcm_regid != '" . $id . "'";
-    return $db->sql_query($query);
-}
 
 /**
  * Calcule la distance entre a et b, a - b ; en tenant en compte des univers arrondis.
@@ -1031,7 +945,7 @@ function calc_distance($a, $b, $type, $typeArrondi = true)
 }
 
 /********************************************************************************/
-/**                     Booster partie                                         *
+/**  Booster partie                                         *
  * @param $id_player
  * @param $id_planet
  * @return array|null
