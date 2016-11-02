@@ -439,8 +439,9 @@ class User_Model
     public function add_new_user($pseudo, $password){
 
         global $db;
+        $encrypted_password = Ogspy\crypto($password);
         $request = "INSERT INTO " . TABLE_USER . " (user_name, user_password, user_regdate, user_active)"
-            . " VALUES ('" . $pseudo . "', '" . md5(sha1($password)) . "', " . time() . ", '1')";
+            . " VALUES ('" . $pseudo . "', '" .$encrypted_password . "', " . time() . ", '1')";
         $db->sql_query($request);
 
         return $db->sql_insertid();
