@@ -12,6 +12,8 @@
 
 namespace Ogsteam\Ogspy;
 
+use Ogsteam\Ogspy\Model\Mod_Model;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -19,6 +21,15 @@ if (!defined('IN_SPYOGAME')) {
 if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
     redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
+
+$modRepository = new Mod_Model();
+$mods = $modRepository->find_by(array('active' => '1'), array('position' => 'ASC'));
+
+$enable_register_view = $server_config['enable_register_view'] == 1 ? "checked" : "";
+$register_forum = $server_config['register_forum'];
+$register_alliance = $server_config['register_alliance'];
+$open_user = $server_config['open_user'];
+$open_admin = $server_config['open_admin'];
 
 $max_battlereport = $server_config['max_battlereport'];
 $max_favorites = $server_config['max_favorites'];
@@ -47,6 +58,7 @@ $ddr = $server_config['ddr'];
 $astro_strict = $server_config['astro_strict'];
 $config_cache = $server_config['config_cache'];
 $mod_cache = $server_config['mod_cache'];
+
 ?>
 
 <form method="POST" action="index.php">
@@ -67,6 +79,77 @@ $mod_cache = $server_config['mod_cache'];
         <tr>
             <th width="60%"<?php echo($lang['ADMIN_PARAMS_OFFREASON']); ?><?php echo help("admin_server_status_message");?></th>
             <th><input type="text" name="reason" size="60" value="<?php echo $reason; ?>"></th>
+        </tr>
+        <tr>
+            <td class="c_ogspy" colspan="2"><?php echo($lang['ADMIN_DISPLAY_LOGIN_TITLE']); ?></td>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_REGISTER']); ?><?php echo help("member_registration"); ?></th>
+            <th><input name="enable_register_view" type="checkbox" value="1" <?php echo $enable_register_view; ?>
+                       onClick="if (view.enable_register_view.checked == false)view.enable_members_view.checked=false;">
+            </th>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_ALLYNAME']); ?><?php echo help("ally_name"); ?></th>
+            <th><input type="text" size="60" name="register_alliance" value="<?php echo $register_alliance; ?>"></th>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_FORUM']); ?><?php echo help("forum_link"); ?></th>
+            <th><input type="text" size="60" name="register_forum" value="<?php echo $register_forum; ?>"></th>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_MODULE']); ?><?php echo help("first_displayed_module"); ?></th>
+            <th><select name="open_user">
+                    <option>------</option>
+                    <?php
+                    echo Views\ViewHelper::get_option($open_user, "./views/profile.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_PROFILE']);
+                    echo Views\ViewHelper::get_option($open_user, "./views/home.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_ACCOUNT']);
+                    echo Views\ViewHelper::get_option($open_user, "./views/galaxy.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_GALAXY']);
+                    echo Views\ViewHelper::get_option($open_user, "./views/cartography.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_ALLY']);
+                    echo Views\ViewHelper::get_option($open_user, "./views/search.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_SEARCH']);
+                    echo Views\ViewHelper::get_option($open_user, "./views/ranking.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_RANKINGS']);
+                    echo Views\ViewHelper::get_option($open_user, "./views/statistic.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_STATS']);
+                    echo Views\ViewHelper::get_option($open_user, "./views/galaxy_obsolete.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_TOBEUPDATED']);
+
+                    if(count($mods)) {
+                        echo '<option>------</option>';
+                        foreach ($mods as $mod) {
+                            if ($mod["admin_only"] == 1)
+                                continue;
+
+                            echo Views\ViewHelper::get_option($open_user, "./mod/" . $mod['root'] . "/" . $mod['link'], $mod["title"]);
+                        }
+                    } ?>
+                </select></th>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_ADMINMODULE']); ?><?php echo help("first_displayed_module_admin"); ?></th>
+            <th><select name="open_admin">
+                    <option>------</option>
+                    <?php
+                    echo Views\ViewHelper::get_option($open_admin, "./views/profile.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_PROFILE']);
+                    echo Views\ViewHelper::get_option($open_admin, "./views/home.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_ACCOUNT']);
+                    echo Views\ViewHelper::get_option($open_admin, "./views/galaxy.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_GALAXY']);
+                    echo Views\ViewHelper::get_option($open_admin, "./views/cartography.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_ALLY']);
+                    echo Views\ViewHelper::get_option($open_admin, "./views/search.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_SEARCH']);
+                    echo Views\ViewHelper::get_option($open_admin, "./views/ranking.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_RANKINGS']);
+                    echo Views\ViewHelper::get_option($open_admin, "./views/statistic.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_STATS']);
+                    echo Views\ViewHelper::get_option($open_admin, "./views/galaxy_obsolete.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_TOBEUPDATED']);
+
+                    if (count($mods > 0)) {
+                        // On affichage les mods accessible à tous, puis ceux réservés aux admins
+                        for ($i = 0; $i <= 1; $i++) {
+                            echo "<option>------</option>";
+                            foreach ($mods as $mod) {
+                                if ($mod["admin_only"] != $i)
+                                    continue;
+
+                                echo Views\ViewHelper::get_option($open_admin, "./mod/" . $mod['root'] . "/" . $mod['link'], $mod['title']);
+                            }
+                        }
+                    }
+                    ?>
+                </select></th>
         </tr>
         <tr>
             <td class="c" colspan="2"><?php echo($lang['ADMIN_PARAMS_MEMBEROPTIONS']); ?></td>
