@@ -7,6 +7,8 @@
  */
 
 namespace Ogsteam\Ogspy\Api;
+use Ogsteam\Ogspy\Model\Config_Model;
+use Ogsteam\Ogspy\Model\Statistics_Model;
 use Ogsteam\Ogspy\Model\Tokens_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Sinergi\Token\StringGenerator;
@@ -73,9 +75,15 @@ class Api_data
         $data_decoded = json_decode($data);
         //print $data_decoded;
         switch ($data_decoded['cmd']) {
-            case "ogspy_details" :
-                $this->api_send_ogspy_details();
+            case "ogspy_server_details" :
+                $this->api_send_ogspy_server_details();
             break;
+            case "ogspy_ally_details" :
+                $this->api_send_ogspy_ally_details();
+                break;
+            case "ogspy_user_details" :
+                $this->api_send_ogspy_player_details();
+                break;
             default:
                 break;
         }
@@ -87,12 +95,13 @@ class Api_data
     /**
      * Fonction test envoi de données
      */
-    private function api_send_user_list(){
+    private function api_send_ogspy_server_details(){
 
         if($this->authenticated_token != null){
 
-            $data_user = new User_Model();
-            $data = $data_user->select_all_user_data();
+            $data_config = new Config_Model();
+            $data_config = $data_config->find_by(array("servername","register_alliance","allied","url_forum"));
+            $data =  array('status' => 'error_auth', 'content' =>$data_config);
             $this->send_response($data);
         }
     }
@@ -100,13 +109,26 @@ class Api_data
     /**
      * Fonction test envoi de données
      */
-    private function api_send_ogspy_details(){
+    private function api_send_ogspy_ally_details(){
 
         if($this->authenticated_token != null){
 
-            /*$data_user = new User_Model();
-            $data = $data_user->select_all_user_data();
-            $this->send_response($data);*/
+            //$data_ally = new Statistics_Model();
+            //$data_config
+            $data =  array('status' => 'not implemented', 'content' => null);
+            $this->send_response($data);
+        }
+    }
+
+    /**
+     * Fonction test envoi de données
+     */
+    private function api_send_ogspy_player_details(){
+
+        if($this->authenticated_token != null){
+
+            $data =  array('status' => 'not implemented', 'content' => null);
+            $this->send_response($data);
         }
     }
 
