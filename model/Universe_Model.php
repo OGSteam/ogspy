@@ -147,7 +147,7 @@ class Universe_Model
 
         $request = "SELECT count(*) FROM " . TABLE_UNIVERSE;
         $request .= " WHERE `galaxy` = " . $galaxy;
-        $request .= " AND `system between` " . $system_down . " AND " . ($system_up);
+        $request .= " AND `system` BETWEEN " . $system_down . " AND " . ($system_up);
 
         $result = $db->sql_query($request);
         list($nb_planet) = $db->sql_fetch_row($result);
