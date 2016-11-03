@@ -157,7 +157,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
     echo "<h3 align='center'><span style=\"color: yellow; \">" .$lang['INSTALL_SUCCESS']. "</span></h3>";
     echo "<div style=\"text-align: center;\">";
     echo "<b>".$lang['INSTALL_SUCCESS_REMOVE_FOLDER']."</b><br>";
-    echo "<a href='../index.php'>".$lang['INSTALL_SUCCESS_BACK']."</a>";
+    echo "<a href='../index.php?action=rm_install'>".$lang['INSTALL_SUCCESS_BACK']."</a>";
     echo "</div>";
     exit();
 }
