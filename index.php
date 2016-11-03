@@ -56,7 +56,6 @@ if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "log
     if ($pub_action == "message") {
         require("views/message.php");
     } elseif ($pub_action == "api") {
-
         $api = new Api_data();
         if (isset($pub_login) && isset($pub_password)) {
             $api->authenticate_by_user($pub_login, $pub_password);
@@ -67,7 +66,11 @@ if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "log
                 $api->api_treat_command($pub_data);
         }
 
-    } else {
+
+    } elseif ($pub_action == "rm_install") {
+        rrmdir("./install");
+
+    }else {
         if (preg_match("#^action=(.*)#", $_SERVER['QUERY_STRING'], $matches)) {
             $goto = $matches[1];
         }
