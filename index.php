@@ -68,6 +68,7 @@ if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "log
 
 
     } elseif ($pub_action == "rm_install") {
+        chdir('..');
         rrmdir("./install");
 
     }else {
