@@ -65,12 +65,6 @@ if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "log
 
                 $api->api_treat_command($pub_data);
         }
-
-
-    } elseif ($pub_action == "rm_install") {
-        chdir('..');
-        rrmdir("./install");
-
     }else {
         if (preg_match("#^action=(.*)#", $_SERVER['QUERY_STRING'], $matches)) {
             $goto = $matches[1];
