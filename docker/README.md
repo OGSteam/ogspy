@@ -7,15 +7,15 @@ https://github.com/tutumcloud/lamp
 
 Usage :
 
-1. Get the image:
+- Get the image:
 
 docker pull ogsteam/ogspy
 
-2. Run the image:
+- Run the image:
 
 docker run -d -p80:80 --name ogspy_container ogsteam/ogspy
 
-3. Install OGSpy with Database settings:
+- Install OGSpy with Database settings:
 
 Open with your browser http://127.0.0.1 (The page could appear after some time corresponding to the service startup time)
 
@@ -23,7 +23,7 @@ Database : ogspy
 user : admin
 Password : ogsteam
 
-4. When installation is finished remove install Folder:
+- When installation is finished remove install Folder:
 
 docker exec ogspy_container rm -Rf /app/install
 
