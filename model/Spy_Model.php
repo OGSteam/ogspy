@@ -84,7 +84,7 @@ class Spy_Model
      * @param int $row
      * @return int $nb_spy
      */
-    public function get_nb_spy_by_coords ($galaxy, $system, $row){
+    public function get_nb_spy_by_planet ($galaxy, $system, $row){
         global $db;
 
         $request = "SELECT * FROM " . TABLE_PARSEDSPY . " WHERE `active` = '1' AND `coordinates` = '" . $galaxy . ":" . $system . ":" . $row . "'";
