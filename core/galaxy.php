@@ -13,6 +13,7 @@
 namespace Ogsteam\Ogspy;
 
 use Ogsteam\Ogspy\Entity\Universe\Search_Criteria;
+use Ogsteam\Ogspy\Model\Combat_Report_Model;
 use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Universe_Model;
 use Ogsteam\Ogspy\Model\User_Model;
@@ -80,15 +81,13 @@ function galaxy_check_auth($action)
  * @global int $pub_galaxy
  * @global int $pub_system
  * @global string $pub_coordinates
- * @global        object mysql $db
  * @global array $user_data
- * @global array $user_auth
  * @global array $server_config
  * @return array contenant un systeme solaire correspondant a $pub_galaxy et $pub_system
  */
 function galaxy_show()
 {
-    global $db, $user_data, $user_auth, $server_config;
+    global $user_data, $server_config;
     global $pub_galaxy, $pub_system, $pub_coordinates;
     if (isset($pub_coordinates)) {
         @list($pub_galaxy, $pub_system) = explode(":", $pub_coordinates);
@@ -124,33 +123,30 @@ function galaxy_show()
  */
 function filter_system($system)
 {
-    global $db, $server_config;
+    global $server_config;
+
+    $data_spy = new Spy_Model();
+    $data_rc = new Combat_Report_Model();
 
     $allied = array();
     if ($server_config["allied"] != "")
         $allied = explode(",", $server_config["allied"]);
 
-    foreach ($system as $planet){ //TODO Afficher message si systeme non rempli
+    foreach ($system as $planet){
 
-        $coordinates = $planet['galaxy'] . ":" . $planet['system'] . ":" . $planet['row'];
+    $report_spy = $data_spy->get_nb_spy_by_planet($planet['galaxy'],$planet['system'],$planet['row']);
+    $report_rc = $data_rc->get_nb_combat_report_by_planet($planet['galaxy'],$planet['system'],$planet['row']);
 
-        $request = "select count(id_spy) from " . TABLE_PARSEDSPY . " where active = '1' and coordinates = '$coordinates'";
-        $result = $db->sql_query($request);
-        list($report_spy) = $db->sql_fetch_row($result);
+    $planet["report_spy"] = $planet["report_rc"] = $planet["hided"] = $planet["allied"] = "";
 
-        $request = "select count(id_rc) from " . TABLE_PARSEDRC . " where coordinates = '$coordinates'";
-        $result = $db->sql_query($request);
-        list($report_rc) = $db->sql_fetch_row($result);
+    $friend = in_array($planet['ally'], $allied);
 
-        $planet["report_spy"] = $planet["report_rc"] = $planet["hided"] = $planet["allied"] = "";
+    $planet["report_spy"] = $report_spy;
+    $planet["report_rc"] = $report_rc;
+    $planet["allied"] = $friend;
 
-        $friend = in_array($planet['ally'], $allied);
+    $system[$planet['row']] = $planet;
 
-        $planet["report_spy"] = $report_spy;
-        $planet["report_rc"] = $report_rc;
-        $planet["allied"] = $friend;
-
-        $system[$planet['row']] = $planet;
     }
 
     return $system;
@@ -162,7 +158,6 @@ function filter_system($system)
  * @global int $pub_galaxy
  * @global int $pub_system_down
  * @global int $pub_system_up
- * @global       object mysql $db
  * @global array $user_data
  * @global array $user_auth
  * @global array $server_config
@@ -201,7 +196,6 @@ function galaxy_show_sector()
 /**
  * Fonctions de recherches
  *
- * @global        object mysql $db
  * @global array $user_data
  * @global array $user_auth
  * @global array $server_config
@@ -222,7 +216,7 @@ function galaxy_show_sector()
  */
 function galaxy_search()
 {
-    global $db, $user_data, $server_config;
+    global $user_data, $server_config;
     global $pub_string_search, $pub_type_search, $pub_strict, $pub_sort, $pub_sort2, $pub_galaxy_down, $pub_galaxy_up, $pub_system_down, $pub_system_up, $pub_row_down, $pub_row_up, $pub_row_active, $pub_page;
 
     if (!check_var($pub_type_search, "Char") || !check_var($pub_strict, "Char") || !check_var($pub_sort, "Num") || !check_var($pub_sort2, "Num") || !check_var($pub_galaxy_down, "Num") || !check_var($pub_galaxy_up, "Num") || !check_var($pub_system_down, "Num") || !check_var($pub_system_up, "Num") || !check_var($pub_row_down, "Num") || !check_var($pub_row_up, "Num") || !check_var($pub_row_active, "Char") || !check_var($pub_page, "Num")) {
@@ -344,7 +338,7 @@ function galaxy_search()
         if (in_array($planet["ally"], $allied)) $friend = true;
 
         $data_spy = new Spy_Model();
-        $nb_spy_reports = $data_spy->get_nb_spy_by_coords($planet["galaxy"], $planet["system"], $planet["row"]);
+        $nb_spy_reports = $data_spy->get_nb_spy_by_planet($planet["galaxy"], $planet["system"], $planet["row"]);
 
         $search_result[] = array("galaxy" => $planet["galaxy"],
                                  "system" => $planet["system"],
@@ -425,7 +419,7 @@ function galaxy_ally_listing()
  * @global array $server_config
  * @global array $pub_ally_
  * @global int $nb_colonnes_ally
- * @return array $statictics contenant la position de tous les joueurs de toutes les alliances non protegers par galaxie / systeme
+ * @return array $statistics contenant la position de tous les joueurs de toutes les alliances non protegers par galaxie / systeme
  */
 function galaxy_ally_position($step = 50)
 {
@@ -444,7 +438,6 @@ function galaxy_ally_position($step = 50)
 
     $pub_ally_protection = $allied = array();
     if ($server_config["ally_protection"] != "") $pub_ally_protection = explode(",", $server_config["ally_protection"]);
-    if ($server_config["allied"] != "") $allied = explode(",", $server_config["allied"]);
 
     $statistics = array();
     for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
@@ -457,9 +450,6 @@ function galaxy_ally_position($step = 50)
             $statistics[$pub_ally_name][0][0] = null;
             continue;
         }
-        $friend = false;
-        if (in_array($pub_ally_name, $allied)) $friend = true;
-
         $universeRepository = new Universe_Model();
 
         for ($galaxy = 1; $galaxy <= intval($server_config['num_of_galaxies']); $galaxy++) {
@@ -482,7 +472,7 @@ function galaxy_ally_position($step = 50)
  * Recuperation des rapports d\'espionnage
  *
  * @return array|bool $reports
- * @global       object mysql $db
+ * @global       Sql_Db $db
  * @global array $server_config
  * @global int $pub_galaxy
  * @global int $pub_system
