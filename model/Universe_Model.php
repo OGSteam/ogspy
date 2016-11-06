@@ -92,8 +92,7 @@ class Universe_Model
         $population = array();
         for($system = $system_down; $system <= $system_up; $system++)
         {
-            for($row = 1; $row <= 15; $row++) {
-                $population[$system] = array();
+            foreach(range(1,15) as $row) {
                 $population[$system][$row] =  array("galaxy" => $galaxy,
                     "system" => $system,
                     "row" => $row,
