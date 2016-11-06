@@ -295,48 +295,57 @@ switch ($pub_action) {
     //----------------------------------------//
     case "mod_disable" :
         mod_disable();
+        redirection("index.php?action=administration&subaction=mod");
         break;
 
     //
     case "mod_uninstall" :
-        mod_uninstall();
+        mod_uninstall(mod_get_nom($pub_mod_id));
+        redirection("index.php?action=administration&subaction=mod");
         break;
 
     //
     case "mod_active" :
         mod_active();
+        redirection("index.php?action=administration&subaction=mod");
         break;
 
     //
     case "mod_admin" :
         mod_admin();
+        redirection("index.php?action=administration&subaction=mod");
         break;
 
     //
     case "mod_normal" :
         mod_normal();
+        redirection("index.php?action=administration&subaction=mod");
         break;
 
     //
     case "mod_install" :
-        mod_install();
+        mod_install($pub_directory);
+        redirection("index.php?action=administration&subaction=mod");
         break;
 
     //
     case "mod_update" :
         mod_update();
+        redirection("index.php?action=administration&subaction=mod");
         break;
 
 
     //
     case "mod_up" :
         mod_sort("up");
+        redirection("index.php?action=administration&subaction=mod");
         break;
 
 
     //
     case "mod_down" :
         mod_sort("down");
+        redirection("index.php?action=administration&subaction=mod");
         break;
 
 

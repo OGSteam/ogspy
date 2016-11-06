@@ -110,23 +110,20 @@ function mod_list()
  * Function mod_check : Checks if an unauthorized user tries to install a mod without being admin or with wrong parameters
  * @param string $check type of varaible to be checked
  */
-function mod_check($check)
+function mod_check($check_type , $data)
 {
     global $user_data;
-    global $pub_mod_id, $pub_directory;
 
     if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1)
         redirection("index.php?action=message&id_message=forbidden&info");
 
-    switch ($check) {
+    switch ($check_type) {
         case "mod_id" :
-            if (!check_var($pub_mod_id, "Num")) redirection("index.php?action=message&id_message=errordata&info");
-            if (!isset($pub_mod_id)) redirection("index.php?action=message&id_message=errorfatal&info");
+            if (!check_var($data, "Num")) redirection("index.php?action=message&id_message=errordata&info");
             break;
 
         case "directory" :
-            if (!check_var($pub_directory, "Text")) redirection("index.php?action=message&id_message=errordata&info");
-            if (!isset($pub_directory)) redirection("index.php?action=message&id_message=errorfatal&info");
+            if (!check_var($data, "Text")) redirection("index.php?action=message&id_message=errordata&info");
             break;
     }
 }
@@ -134,39 +131,39 @@ function mod_check($check)
 /**
  * Installs a Mod from a mod folder name (Fonction utilisée par la partie admin)
  * @global $pub_directory
+ * @return bool
+ * @global $pub_directory
+ *
  */
-function mod_install()
+function mod_install($mod_folder_name)
 {
-    global $pub_directory, $server_config;
+    global $server_config;
 
-    mod_check("directory");
-    // modif pour 3.0.7 
-    // check d un mod " normalisé"
-    // voir @ shad 
+    mod_check("directory", $mod_folder_name);
 
     // fichier install non present
-    if (!file_exists("mod/" . $pub_directory . "/install.php")) {
-        log_("mod_erreur_install_php", $pub_directory);
+    if (!file_exists("mod/" . $mod_folder_name . "/install.php")) {
+        log_("mod_erreur_install_php", $mod_folder_name);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
     }
 
     //fichier . txt non present 
-    if (!file_exists("mod/" . $pub_directory . "/version.txt")) {
-        log_("mod_erreur_install_txt", $pub_directory);
+    if (!file_exists("mod/" . $mod_folder_name . "/version.txt")) {
+        log_("mod_erreur_install_txt", $mod_folder_name);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
     }
 
     //verification  presence de majuscule
-    if (!ctype_lower($pub_directory)) {
-        log_("mod_erreur_minuscule", $pub_directory);
+    if (!ctype_lower($mod_folder_name)) {
+        log_("mod_erreur_minuscule", $mod_folder_name);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
     }
 
     // verification sur le fichier .txt
-    $filename = 'mod/' . $pub_directory . '/version.txt';
+    $filename = 'mod/' . $mod_folder_name . '/version.txt';
     // On récupère les données du fichier version.txt
     $file = file($filename);
     $mod_version = trim($file[1]);
@@ -185,7 +182,7 @@ function mod_install()
     }
     if (count($value_mod) != 7) {
 
-        log_("mod_erreur_txt_warning", $pub_directory);
+        log_("mod_erreur_txt_warning", $mod_folder_name);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
     }
@@ -194,7 +191,7 @@ function mod_install()
     $mod_required_ogspy = trim($file[3]);
     if (isset($mod_required_ogspy)) {
         if (version_compare($mod_required_ogspy, $server_config["version"]) > 0) {
-            log_("mod_erreur_txt_version", $pub_directory);
+            log_("mod_erreur_txt_version", $mod_folder_name);
             redirection("index.php?action=message&id_message=errormod&info");
             exit();
         }
@@ -208,12 +205,12 @@ function mod_install()
     $modRepository->add($mod);
 
     // si on arrive jusque la on peut installer
-    require_once("mod/" . $pub_directory . "/install.php");
+    require_once("mod/" . $mod_folder_name . "/install.php");
 
-    log_("mod_install", $mod['title']);
     generate_mod_cache();
+    log_("mod_install", $mod['title']);
 
-    redirection("index.php?action=administration&subaction=mod");
+    return true;
 }
 
 /**
@@ -223,7 +220,7 @@ function mod_update()
 {
     global $pub_mod_id, $server_config;
 
-    mod_check("mod_id");
+    mod_check("mod_id", $pub_mod_id);
 
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
@@ -302,18 +299,16 @@ function mod_update()
 /**
  * mod_uninstall (Fonction utilisée par la partie admin): Uninstall a mod from the database (Mod files are not deleted)
  */
-function mod_uninstall()
+function mod_uninstall($mod_folder_name = "" , $mod_uninstall_table = '')
 {
-     global $pub_mod_id;
-
-    mod_check("mod_id");
+    mod_check("Directory", $mod_folder_name);
 
     $modRepository = new Mod_Model();
-    $mods = $modRepository->find_by(array('id' => $pub_mod_id));
+    $mods = $modRepository->find_by(array('root' => $mod_folder_name));
 
     if(count($mods) != 1)
     {
-        log_("mod_erreur_unknown", $pub_mod_id);
+        log_("mod_erreur_unknown", $mod_folder_name);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
     }
@@ -327,6 +322,11 @@ function mod_uninstall()
     mod_del_all_option();
     // Suppression des paramètres utilisateur du mod
     mod_del_all_user_option();
+    //Supression des tables du mod
+    foreach ($mod_uninstall_table as $item){
+
+        mod_remove_table($item);
+    }
 
     $modRepository->delete($mod['id']);
 
@@ -344,7 +344,7 @@ function mod_active()
 {
     global $pub_mod_id;
 
-    mod_check("mod_id");
+    mod_check("mod_id", $pub_mod_id);
 
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
@@ -372,7 +372,7 @@ function mod_disable()
 {
     global $pub_mod_id;
 
-    mod_check("mod_id");
+    mod_check("mod_id", $pub_mod_id);
 
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
@@ -390,7 +390,7 @@ function mod_disable()
 
     log_("mod_disable", $mod['title']);
     generate_mod_cache();
-    redirection("index.php?action=administration&subaction=mod");
+    return true;
 }
 
 /**
@@ -400,7 +400,7 @@ function mod_admin()
 {
     global $pub_mod_id;
 
-    mod_check("mod_id");
+    mod_check("mod_id", $pub_mod_id);
 
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
@@ -418,7 +418,7 @@ function mod_admin()
 
     log_("mod_admin", $mod['title']);
     generate_mod_cache();
-    redirection("index.php?action=administration&subaction=mod");
+    return true;
 }
 
 /**
@@ -428,7 +428,7 @@ function mod_normal()
 {
     global $pub_mod_id;
 
-    mod_check("mod_id");
+    mod_check("mod_id", $pub_mod_id);
 
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
@@ -446,7 +446,7 @@ function mod_normal()
 
     log_("mod_normal", $mod['title']);
     generate_mod_cache();
-    redirection("index.php?action=administration&subaction=mod");
+    return true;
 }
 
 /**
@@ -457,7 +457,7 @@ function mod_sort($order)
 {
     global $pub_mod_id;
 
-    mod_check("mod_id");
+    mod_check("mod_id", $pub_mod_id);
 
     $modRepository = new Mod_Model();
     // On récupère le mod souhaité
@@ -500,7 +500,7 @@ function mod_sort($order)
 
     log_("mod_order", $currentMod['title']);
     generate_mod_cache();
-    redirection("index.php?action=administration&subaction=mod");
+    return true;
 }
 
 /**
@@ -624,25 +624,22 @@ function mod_get_user_option($user_id, $param = null)
 
 /**
  * Mod Configs : Gets the current mod name
- * @global $db
  * @global $pub_action
  * @global $directory
  * @global $mod_id
  * @return string Returns the current mod name
  */
-function mod_get_nom()
+function mod_get_nom($mod_id = null)
 {
     global $pub_action;
 
-    $nom_mod = '';
     if ($pub_action == 'mod_install') {
         global $pub_directory;
         $nom_mod = $pub_directory;
     } elseif ($pub_action == 'mod_update' || $pub_action == 'mod_uninstall') {
-        global $pub_mod_id;
 
         $modsRepository = new Mod_Model();
-        $mods = $modsRepository->find_by(array('id' => $pub_mod_id));
+        $mods = $modsRepository->find_by(array('id' => $mod_id));
         if(count($mods) == 1)
             $nom_mod = $mods[0]['action'];
         else
@@ -680,7 +677,7 @@ function mod_del_all_user_option()
  * Deletes tables provided by the uninstall.php file
  * @param string $mod_uninstall_table : Name of the Database table used by the Mod that we need to remove
  */
-function uninstall_mod($mod_uninstall_table)
+function mod_remove_table($mod_uninstall_table)
 {
     global $db;
     if (!empty($mod_uninstall_table)) {

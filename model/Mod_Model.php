@@ -21,10 +21,10 @@ class Mod_Model
     {
         global $db;
 
-        if ($filter == null)
+/*        if ($filter == null)
             $filter = array();
         if ($orderBy == null)
-            $orderBy = array();
+            $orderBy = array();*/
 
         $query = "SELECT `id`, 
                              `title`, 
