@@ -1,11 +1,14 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Itori
- * Date: 29/09/2016
- * Time: 19:55
+ * Entity Universe
+ *
+ * @package OGSpy
+ * @subpackage Entity\Universe
+ * @author Itori
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.4.0
  */
-
 namespace Ogsteam\Ogspy\Entity\Universe;
 
 

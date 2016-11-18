@@ -2,9 +2,12 @@
 /**
  * Model class used by the API Data to manage connected user tokens
  *  This is a rewriting of the Session Model and will replace it in the future
- * User: DarkNoon
- * Date: 24/09/2016
- * Time: 20:37
+ * @package OGSpy
+ * @subpackage Model
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.4.0
  */
 
 namespace Ogsteam\Ogspy\Model;
