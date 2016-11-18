@@ -472,20 +472,13 @@ function galaxy_ally_position($step = 50)
  * Recuperation des rapports d\'espionnage
  *
  * @return array|bool $reports
- * @global       Sql_Db $db
  * @global array $server_config
  * @global int $pub_galaxy
  * @global int $pub_system
  * @global int $pub_row
- * @todo Query : "select name from " . TABLE_UNIVERSE . " where galaxy = " .intval($pub_galaxy) . " and system = " . intval($pub_system) . " and row = " .  intval($pub_row)
- * @todo Query : "select id_spy, user_name, dateRE from " . TABLE_PARSEDSPY . " left join " . TABLE_USER ." on user_id = sender_id where active = '1'  and coordinates = '" . intval($pub_galaxy) . ":" . intval($pub_system) . ":" . intval($pub_row) . "'  and BaLu<=0 and Pha<=0 and PoSa<=0 and planet_name='" . $astre_name['name'] . "' order by dateRE desc LIMIT 1"
- * @todo Query : "select id_spy, user_name, dateRE from " . TABLE_PARSEDSPY . " left join " . TABLE_USER ." on user_id = sender_id  where id_spy = " . intval($pub_spy_id) ."  and BaLu<=0 and Pha<=0 and PoSa<=0 and planet_name='" . $astre_name['name'] . "' order by dateRE desc LIMIT 1"
- * @todo Query : "select id_spy, user_name, dateRE from " . TABLE_PARSEDSPY . " left join " . TABLE_USER ." on user_id = sender_id where active = '1'  and coordinates = '" . intval($pub_galaxy) . ":" . intval($pub_system) . ":" . intval($pub_row) . "'  and M<=0 and C<=0 and D<=0 and CES<=0 and CEF<=0 and UdN<=0 and Lab<=0 and Ter<=0 and Silo<=0 and not planet_name='" . order by dateRE desc LIMIT 1"
- * @todo Query : "select id_spy, user_name, dateRE from " . TABLE_PARSEDSPY . " left join " . TABLE_USER ." on user_id = sender_id  where where id_spy = " . intval($pub_spy_id) and M<=0 and C<=0 and D<=0 and CES<=0 and CEF<=0 and UdN<=0 and Lab<=0 and Ter<=0 and Silo<=0 and not planet_name='" .$astre_name['name'] . "' order by dateRE desc LIMIT 1"
  */
 function galaxy_reportspy_show()
 {
-    global $db;
     global $pub_galaxy, $pub_system, $pub_row, $server_config;
 
     if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_row, "Num")) {
@@ -499,15 +492,11 @@ function galaxy_reportspy_show()
         return false;
     }
 
-    //RE List for each planet
-    $request = "SELECT `id_spy`, `user_name`, `dateRE`, `is_moon`";
-    $request .= " FROM " . TABLE_PARSEDSPY . " LEFT JOIN " . TABLE_USER . " ON `user_id` = `sender_id`";
-    $request .= " WHERE `active` = '1'  AND `coordinates` = '" . intval($pub_galaxy) . ":" . intval($pub_system) . ":" . intval($pub_row) . "'";
-    $request .= " ORDER BY `dateRE` DESC";
-    $result = $db->sql_query($request);
+    $data_spy_reports = new Spy_Model();
+    $spy_list = $data_spy_reports->get_spy_id_list_by_planet(intval($pub_galaxy), intval($pub_system), intval($pub_row));
 
     $reports = array();
-    while ($row = $db->sql_fetch_assoc($result)) {
+    foreach ($spy_list as $row) {
         $data = UNparseRE($row["id_spy"]);
         $reports[] = array("spy_id" => $row["id_spy"], "sender" => $row["user_name"], "data" => $data, "moon" => $row['is_moon'], "dateRE" => $row['$dateRE']);
     }
