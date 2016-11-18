@@ -507,20 +507,15 @@ function galaxy_reportspy_show()
 /**
  * Recuperation des rapports de combat
  *
- * @global       object Sql_Db $db
  * @global array $server_config
  * @global int $pub_galaxy
  * @global int $pub_system
  * @global int $pub_row
- * @global int $pub_rc_id
- * @todo Query : "select id_rc from " . TABLE_PARSEDRC . " where coordinates = '" . intval($pub_galaxy) . ':' . intval($pub_system) .:' . intval($pub_row) . "' order by dateRC desc";"
- * @todo Query : "select id_rc from " . TABLE_PARSEDRC . " where id_rc = " . intval($pub_rc_id);
  * @return array|boolean $reports contenant les rc mis en forme
  */
 function galaxy_reportrc_show()
 {
-    global $db;
-    global $pub_galaxy, $pub_system, $pub_row, $pub_rc_id, $server_config;
+    global $pub_galaxy, $pub_system, $pub_row, $server_config;
 
     if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_row, "Num")) {
         return false;
@@ -533,17 +528,14 @@ function galaxy_reportrc_show()
         return false;
     }
 
-    $request = "SELECT id_rc FROM " . TABLE_PARSEDRC;
-    if (!isset($pub_rc_id)) {
-        $request .= " where coordinates = '" . intval($pub_galaxy) . ':' . intval($pub_system) . ':' . intval($pub_row) . "'";
-        $request .= " order by dateRC desc";
-    } else {
-        $request .= " where id_rc = " . intval($pub_rc_id);
-    }
-    $result = $db->sql_query($request);
+    $data_combat_report = new Combat_Report_Model();
+    $report_list = $data_combat_report->get_cr_id_list_by_planet(intval($pub_galaxy), intval($pub_system), intval($pub_row));
 
     $reports = array();
-    while (list($pub_rc_id) = $db->sql_fetch_row($result)) $reports[] = UNparseRC($pub_rc_id);
+    foreach($report_list['id_rc'] as $report_id)
+    {
+        $reports[] = UNparseRC($report_id);
+    }
 
     return $reports;
 }
@@ -684,7 +676,7 @@ function galaxy_show_ranking_player()
 
 
     $i = 0;
-
+    //Récupération de la dernière date de classement
     if (!isset($pub_date)) {
         $request = "SELECT max(datadate) FROM " . $table[$i]["tablename"];
         $result = $db->sql_query($request);
@@ -930,8 +922,7 @@ function galaxy_show_ranking_unique_player($player, $last = false)
 }
 
 /**
- * Affichage classement d\'une ally particuliere
- *
+ * Affichage classement d\'une alliance
  * @param string $ally nom de l alliance recherche
  * @param boolean $last le dernier classement ou tous les classements
  * @global        object mysql $db

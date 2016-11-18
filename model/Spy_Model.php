@@ -98,7 +98,7 @@ class Spy_Model
      * @param int $galaxy
      * @param int $system
      * @param int $row
-     * @return int $nb_spy
+     * @return array $tResult
      */
     public function get_spy_id_list_by_planet ($galaxy, $system, $row){
         global $db;
@@ -108,8 +108,14 @@ class Spy_Model
         $request .= " WHERE `active` = '1'  AND `coordinates` = '" . $galaxy . ":" . $system . ":" . $row . "'";
         $request .= " ORDER BY `dateRE` DESC";
         $result = $db->sql_query($request);
-
-        return $row = $db->sql_fetch_assoc($result);
+        $tResult = array();
+        while ($row = $db->sql_fetch_assoc($result)) {
+            $tResult[] = array("id_spy" => $row['id_spy'],
+                "user_name" => $row['user_name'],
+                "dateRE" => $row['dateRE'],
+                "is_moon" => $row['is_moon']);
+    }
+        return $tResult;
     }
 
 
