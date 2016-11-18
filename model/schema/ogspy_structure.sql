@@ -745,7 +745,6 @@ INSERT INTO `ogspy_config` VALUES ('open_admin', '');
 INSERT INTO `ogspy_group` VALUES (1, 'Standard', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
 
 ## ########################################################
-
 ##
 ## Structure de la table `ogspy_parsedspy`
 ##
@@ -754,6 +753,7 @@ CREATE TABLE `ogspy_parsedspy` (
   `id_spy`        INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `planet_name`   VARCHAR(20)  NOT NULL DEFAULT '',
   `coordinates`   VARCHAR(9)   NOT NULL DEFAULT '',
+  `is_moon`       ENUM ('0', '1') NOT NULL DEFAULT '0',
   `metal`         INT(7)                DEFAULT NULL,
   `cristal`       INT(7)                DEFAULT NULL,
   `deuterium`     INT(7)                DEFAULT NULL,
