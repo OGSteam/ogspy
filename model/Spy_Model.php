@@ -95,6 +95,25 @@ class Spy_Model
     }
 
     /**
+     * @param int $galaxy
+     * @param int $system
+     * @param int $row
+     * @return int $nb_spy
+     */
+    public function get_spy_id_list_by_planet ($galaxy, $system, $row){
+        global $db;
+
+        $request = "SELECT `id_spy`, `user_name`, `dateRE`, `is_moon`";
+        $request .= " FROM " . TABLE_PARSEDSPY . " LEFT JOIN " . TABLE_USER . " ON `user_id` = `sender_id`";
+        $request .= " WHERE `active` = '1'  AND `coordinates` = '" . $galaxy . ":" . $system . ":" . $row . "'";
+        $request .= " ORDER BY `dateRE` DESC";
+        $result = $db->sql_query($request);
+
+        return $row = $db->sql_fetch_assoc($result);
+    }
+
+
+    /**
      * @param $spy_id
      */
     public function delete_spy($spy_id){
