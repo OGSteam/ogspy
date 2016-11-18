@@ -53,7 +53,6 @@ class Universe_Model
                                  ' . $planet['last_update'] . ', 
                                  ' . $planet['last_update_user_id'] . ', 
                                  "' . quote($planet['moon']) . '")';
-
         $db->sql_query($query);
     }
 

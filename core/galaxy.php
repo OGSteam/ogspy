@@ -477,7 +477,6 @@ function galaxy_ally_position($step = 50)
  * @global int $pub_galaxy
  * @global int $pub_system
  * @global int $pub_row
- * @global int $pub_spy_id
  * @todo Query : "select name from " . TABLE_UNIVERSE . " where galaxy = " .intval($pub_galaxy) . " and system = " . intval($pub_system) . " and row = " .  intval($pub_row)
  * @todo Query : "select id_spy, user_name, dateRE from " . TABLE_PARSEDSPY . " left join " . TABLE_USER ." on user_id = sender_id where active = '1'  and coordinates = '" . intval($pub_galaxy) . ":" . intval($pub_system) . ":" . intval($pub_row) . "'  and BaLu<=0 and Pha<=0 and PoSa<=0 and planet_name='" . $astre_name['name'] . "' order by dateRE desc LIMIT 1"
  * @todo Query : "select id_spy, user_name, dateRE from " . TABLE_PARSEDSPY . " left join " . TABLE_USER ." on user_id = sender_id  where id_spy = " . intval($pub_spy_id) ."  and BaLu<=0 and Pha<=0 and PoSa<=0 and planet_name='" . $astre_name['name'] . "' order by dateRE desc LIMIT 1"
@@ -487,7 +486,7 @@ function galaxy_ally_position($step = 50)
 function galaxy_reportspy_show()
 {
     global $db;
-    global $pub_galaxy, $pub_system, $pub_row, $pub_spy_id, $server_config;
+    global $pub_galaxy, $pub_system, $pub_row, $server_config;
 
     if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_row, "Num")) {
         return false;
@@ -500,41 +499,17 @@ function galaxy_reportspy_show()
         return false;
     }
 
-    $universeRepository = new Universe_Model();
-    $astre_name = $universeRepository->get_planet_name($pub_galaxy, $pub_system, $pub_row);
-
-    //RE planète
-    $request = "select id_spy, user_name, dateRE";
-    $request .= " from " . TABLE_PARSEDSPY . " left join " . TABLE_USER . " on user_id = sender_id";
-    if (!isset($pub_spy_id)) {
-        $request .= " where active = '1'  and coordinates = '" . intval($pub_galaxy) . ":" . intval($pub_system) . ":" . intval($pub_row) . "'";
-    } else {
-        $request .= " where id_spy = " . intval($pub_spy_id);
-    }
-    $request .= " and BaLu<=0 and Pha<=0 and PoSa<=0 and planet_name='" . $astre_name['name'] . "'";
-    $request .= " order by dateRE desc LIMIT 1";
+    //RE List for each planet
+    $request = "SELECT `id_spy`, `user_name`, `dateRE`, `is_moon`";
+    $request .= " FROM " . TABLE_PARSEDSPY . " LEFT JOIN " . TABLE_USER . " ON `user_id` = `sender_id`";
+    $request .= " WHERE `active` = '1'  AND `coordinates` = '" . intval($pub_galaxy) . ":" . intval($pub_system) . ":" . intval($pub_row) . "'";
+    $request .= " ORDER BY `dateRE` DESC";
     $result = $db->sql_query($request);
 
     $reports = array();
-    while (list($pub_spy_id, $user_name, $dateRE) = $db->sql_fetch_row($result)) {
-        $data = UNparseRE($pub_spy_id);
-        $reports[] = array("spy_id" => $pub_spy_id, "sender" => $user_name, "data" => $data, "moon" => 0, "dateRE" => $dateRE);
-    }
-
-    $request = "select id_spy, user_name, dateRE";
-    $request .= " from " . TABLE_PARSEDSPY . " left join " . TABLE_USER . " on user_id = sender_id";
-    if (!isset($pub_spy_id)) {
-        $request .= " where active = '1'  and coordinates = '" . intval($pub_galaxy) . ":" . intval($pub_system) . ":" . intval($pub_row) . "'";
-    } else {
-        $request .= " where id_spy = " . intval($pub_spy_id);
-    }
-    $request .= " and M<=0 and C<=0 and D<=0 and CES<=0 and CEF<=0 and UdN<=0 and Lab<=0 and Ter<=0 and Silo<=0 and not planet_name='" . $astre_name['name'] . "'";
-    $request .= " order by dateRE desc LIMIT 1";
-    $result = $db->sql_query($request);
-
-    while (list($pub_spy_id, $user_name, $dateRE) = $db->sql_fetch_row($result)) {
-        $data = UNparseRE($pub_spy_id);
-        $reports[] = array("spy_id" => $pub_spy_id, "sender" => $user_name, "data" => $data, "moon" => 1, "dateRE" => $dateRE);
+    while ($row = $db->sql_fetch_assoc($result)) {
+        $data = UNparseRE($row["id_spy"]);
+        $reports[] = array("spy_id" => $row["id_spy"], "sender" => $row["user_name"], "data" => $data, "moon" => $row['is_moon'], "dateRE" => $row['$dateRE']);
     }
 
     return $reports;
@@ -543,7 +518,7 @@ function galaxy_reportspy_show()
 /**
  * Recuperation des rapports de combat
  *
- * @global       object mysql $db
+ * @global       object Sql_Db $db
  * @global array $server_config
  * @global int $pub_galaxy
  * @global int $pub_system
@@ -1272,7 +1247,7 @@ function galaxy_obsolete()
  */
 function UNparseRE($id_RE)
 {
-    global $table_prefix, $db, $lang;
+    global $db, $lang;
     $show = array('flotte' => 0, 'defense' => 0, 'batiment' => 0, 'recherche' => 0);
     $flotte = array('PT' => $lang['GAME_FLEET_PT'], 'GT' => $lang['GAME_FLEET_GT'], 'CLE' => $lang['GAME_FLEET_CLE'], 'CLO' => $lang['GAME_FLEET_CLO'], 'CR' => $lang['GAME_FLEET_CR'], 'VB' => $lang['GAME_FLEET_VB'], 'VC' => $lang['GAME_FLEET_VC'], 'REC' => $lang['GAME_FLEET_REC'], 'SE' => $lang['GAME_FLEET_SE'], 'BMD' => $lang['GAME_FLEET_BMD'], 'DST' => $lang['GAME_FLEET_DST'], 'EDLM' => $lang['GAME_FLEET_EDLM'], 'SAT' => $lang['GAME_FLEET_SAT'], 'TRA' => $lang['GAME_FLEET_TRA']);
     $defs = array('LM' => $lang['GAME_DEF_LM'], 'LLE' => $lang['GAME_DEF_LLE'], 'LLO' => $lang['GAME_DEF_LLO'], 'CG' => $lang['GAME_DEF_CG'], 'AI' => $lang['GAME_DEF_AI'], 'LP' => $lang['GAME_DEF_LP'], 'PB' => $lang['GAME_DEF_PB'], 'GB' => $lang['GAME_DEF_GB'], 'MIC' => $lang['GAME_DEF_MIC'], 'MIP' => $lang['GAME_DEF_MIP']);
