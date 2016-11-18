@@ -1,9 +1,13 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Itori
- * Date: 17/08/2016
- * Time: 21:26
+ * Database Model
+ *
+ * @package OGSpy
+ * @subpackage Model
+ * @author Itori
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.4.0
  */
 
 namespace Ogsteam\Ogspy\Model;

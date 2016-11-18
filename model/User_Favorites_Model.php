@@ -1,9 +1,13 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: Anthony
- * Date: 01/09/2016
- * Time: 20:34
+ * Database Model
+ *
+ * @package OGSpy
+ * @subpackage Model
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 3.4.0
  */
 
 namespace Ogsteam\Ogspy\Model;
