@@ -2,7 +2,7 @@
 /**
  * Affichage Empire - Pages Espionnages favoris
  * @package OGSpy
- * @version 3.04b ($Rev: 7508 $)
+ * @version 3.04b
  * @subpackage views
  * @author Ben.12
  * @created 15/12/2005

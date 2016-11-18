@@ -1,5 +1,4 @@
 <?php
-/** $Id: about.php 7508 2012-01-30 21:59:01Z darknoon $ **/
 /**
  * Panneau d'affichage About
  * @package OGSpy

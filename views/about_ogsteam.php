@@ -1,5 +1,4 @@
 <?php
-/** $Id: about_ogsteam.php 7665 2012-07-09 14:44:26Z luke_skywalker $ **/
 /**
  *  Panneau d'affichage: A propos de l'OGsteam et des contributeurs à OGSpy
  * @package OGSpy

@@ -1,5 +1,4 @@
 <?php
-/** $Id: about_changelog.php 7665 2012-07-09 14:44:26Z luke_skywalker $ **/
 /**
  * Affichage du Changelog d'OGSpy : Changements version après version
  * @package OGSpy
