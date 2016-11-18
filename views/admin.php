@@ -1,5 +1,4 @@
 <?php
-/** $Id: admin.php 7596 2012-03-25 16:10:55Z ninety $ **/
 /**
  * Fonctions d'administrations
  * @package OGSpy
