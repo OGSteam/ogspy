@@ -28,6 +28,34 @@ class Combat_Report_Model
     }
 
     /**
+     * @param int $galaxy
+     * @param int $system
+     * @param int $row
+     * @return array $tResult
+     */
+    public function get_cr_id_list_by_planet ($galaxy, $system, $row){
+        global $db;
+
+        $request = "SELECT `id_rc` FROM " . TABLE_PARSEDRC;
+        $request .= " WHERE `coordinates` = '" . $galaxy . ':' .$system . ':' . $row . "'";
+        $request .= " ORDER BY `dateRC` DESC";
+        $result = $db->sql_query($request);
+
+        $tResult = array();
+        while ($row = $db->sql_fetch_assoc($result)) {
+            $tResult[] = $row["id_rc"];
+        }
+        return $tResult;
+    }
+
+
+
+
+
+
+
+
+    /**
      * @param $id_rc
      */
     public function delete_combat_report($id_rc){
