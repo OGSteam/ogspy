@@ -44,7 +44,7 @@ RUN a2enmod rewrite
 
 # Configure /app folder with sample app
 RUN hg clone https://bitbucket.org/ogsteam/ogspy /app
-RUN hg clone https://bitbucket.org/ogsteam/mod-autoupdate /app/mod/autoupdate
+RUN hg clone https://bitbucket.org/ogsteam/mod-autoupdate /app/mod/autoupdate -r develop
 RUN chown -R www-data:www-data /app
 RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
 
