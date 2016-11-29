@@ -42,6 +42,13 @@ Responsable équipe : [DarkNoon](https://bitbucket.org/darknoon29)
 * Ninety
 * Itori
 
+#### Branches organization####
+
+
+* master - is the main branch, only used to merge in a "final release"
+* development - is the branch where the development of the "next" version/s happens
+* release-3.2.X - is the branch where bug fixes for the version 3.2.X are applied
+
 ####Tests####
 
 * Vous tous !!
