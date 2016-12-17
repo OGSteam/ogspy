@@ -6,7 +6,7 @@ Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour e
 
 ### Que contient ce dépôt ? ###
 
-* OGSpy Version 3.3.2
+* OGSpy Version 3.4.0
 * Librairies externes comme JQuery
 * Accord de License
 
@@ -41,6 +41,13 @@ Responsable équipe : [DarkNoon](https://bitbucket.org/darknoon29)
 * Xaviernuma
 * Ninety
 * Itori
+
+#### Branches organization####
+
+
+* master - is the main branch, only used to merge in a "final release"
+* development - is the branch where the development of the "next" version/s happens
+* release-3.2.X - is the branch where bug fixes for the version 3.2.X are applied
 
 ####Tests####
 
