@@ -37,7 +37,10 @@ class Mod_Config_Model
         while($value = $db->sql_fetch_row($queryResult))
             $values[] = $value[0];
 
-        return $values;
+        if (count($values) == 1)
+            return $values[0];
+        else
+            return $values;
     }
 
     /**
