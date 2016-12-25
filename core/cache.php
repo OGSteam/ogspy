@@ -41,8 +41,7 @@ function generate_config_cache()
         }
 
     } else {
-        fwrite($fh, '<?php' . "\n\n" . 'define(\'OGSPY_CONFIG_LOADED\', 1);' . "\n\n" . '$server_config = ' . var_export($output, true) . ';' . "\n\n" . '?>');
-
+        fwrite($fh, '<?php' . "\n\n" . 'define(\'OGSPY_CONFIG_LOADED\', 1);' . "\n\n" . '$server_config = ' . var_export($output, true) . ';' . "\n\n");
         fclose($fh);
 
     }
@@ -81,7 +80,7 @@ function generate_mod_cache()
         }
 
     } else {
-        fwrite($fh, '<?php' . "\n\n" . 'define(\'OGSPY_MOD_LOADED\', 1);' . "\n\n" . '$cache_mod = ' . var_export($modExport, true) . ';' . "\n\n" . '?>');
+        fwrite($fh, '<?php' . "\n\n" . 'define(\'OGSPY_MOD_LOADED\', 1);' . "\n\n" . '$cache_mod = ' . var_export($modExport, true) . ';' . "\n\n");
         fclose($fh);
     }
 
