@@ -348,6 +348,7 @@ class Sql_Db
         }
 
         $bytes = array('Octets', 'Ko', 'Mo', 'Go', 'To');
+        $dbSize_info = array();
 
         if ($dbSizeServer < 1024)
             $dbSizeServer = 1;
