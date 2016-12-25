@@ -156,7 +156,7 @@ function password_generator()
  */
 function init_mod_cache()
 {
-    global $server_config;
+    global $server_config, $cache_mod; //$cache_mod en global pour retrouver les variables
 
     // Load cached config
     $filename = 'cache/cache_mod.php';
@@ -175,9 +175,7 @@ function init_mod_cache()
             /** @noinspection PhpIncludeInspection */
             include $filename; // Using the file if exits
         }
-
     }
-
 }
 
 /**
