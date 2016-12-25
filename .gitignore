@@ -30,3 +30,5 @@ $RECYCLE.BIN/
 
 mod/
 config/
+journal/
+cache/
