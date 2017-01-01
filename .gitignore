@@ -32,3 +32,6 @@ mod/
 config/
 journal/
 cache/
+
+### Votre dossier install
+install22/

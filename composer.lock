@@ -50,7 +50,7 @@
                 "javascript",
                 "php"
             ],
-            "time": "2016-01-24 11:57:43"
+            "time": "2016-01-24T11:57:43+00:00"
         },
         {
             "name": "sabre/event",
@@ -107,7 +107,7 @@
                 "promise",
                 "signal"
             ],
-            "time": "2015-11-05 20:14:39"
+            "time": "2015-11-05T20:14:39+00:00"
         },
         {
             "name": "sabre/http",
@@ -162,20 +162,20 @@
             "keywords": [
                 "http"
             ],
-            "time": "2016-01-06 23:00:08"
+            "time": "2016-01-06T23:00:08+00:00"
         },
         {
             "name": "sabre/uri",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruux/sabre-uri.git",
-                "reference": "9012116434d84ef6e5e37a89dfdbfbe2204a8704"
+                "reference": "8545a3335f741d4b7700bb14efb41b4c03775dcd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-uri/zipball/9012116434d84ef6e5e37a89dfdbfbe2204a8704",
-                "reference": "9012116434d84ef6e5e37a89dfdbfbe2204a8704",
+                "url": "https://api.github.com/repos/fruux/sabre-uri/zipball/8545a3335f741d4b7700bb14efb41b4c03775dcd",
+                "reference": "8545a3335f741d4b7700bb14efb41b4c03775dcd",
                 "shasum": ""
             },
             "require": {
@@ -183,7 +183,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "*",
-                "sabre/cs": "~0.0.1"
+                "sabre/cs": "~1.0.0"
             },
             "type": "library",
             "autoload": {
@@ -213,7 +213,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2016-03-08 02:29:27"
+            "time": "2016-12-07T01:17:59+00:00"
         },
         {
             "name": "sinergi/token",
@@ -262,7 +262,7 @@
                 "token",
                 "uuid"
             ],
-            "time": "2014-05-24 13:27:57"
+            "time": "2014-05-24T13:27:57+00:00"
         }
     ],
     "packages-dev": [],
