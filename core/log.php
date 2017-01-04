@@ -410,6 +410,7 @@ function log_check_exist($date)
         redirection("index.php?action=message&id_message=errorfatal&info");
 
     $typelog = array("sql", "log", "txt");
+    $directories = array();
 
     $root = PATH_LOG;
     $path = opendir("$root");
@@ -464,6 +465,7 @@ function log_extractor()
         redirection("index.php?action=message&id_message=errorfatal&info");
 
     $typelog = array("sql", "log", "txt");
+    $directories = array();
 
     $root = PATH_LOG;
     $zip_file = $root . "log.zip";
@@ -559,6 +561,7 @@ function log_purge()
 {
     global $server_config;
 
+    $directories = array();
     $time = $server_config["max_keeplog"];
     $limit = time() - (60 * 60 * 24 * $time);
     $limit = intval(date("ymd", $limit));
