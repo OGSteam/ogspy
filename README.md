@@ -4,6 +4,11 @@ Le projet crée en 2006 est une aide pour un jeu de gestion de vaisseaux spatiau
 
 Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour ensuite les regrouper et les exploiter.
 
+### Indicateurs Qualité ###
+
+Master : [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/OGSteam/ogspy/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/OGSteam/ogspy/?branch=master)
+Develop : [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/OGSteam/ogspy/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/OGSteam/ogspy/?branch=develop)
+
 ### Que contient ce dépôt ? ###
 
 * OGSpy Version 3.4.0
