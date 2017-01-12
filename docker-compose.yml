@@ -1,0 +1,16 @@
+apache:
+    image: php:apache
+    volumes:
+    - ".:/var/www/html"
+    links:
+    - mysql
+    ports:
+    - "8080:80"
+    privileged: true
+mysql:
+    image: mysql:latest
+    environment:
+        - MYSQL_ROOT_PASSWORD=ogsteam
+        - MYSQL_DATABASE=ogspy
+        - MYSQL_USER=ogspy
+        - MYSQL_PASSWORD=ogsteam
