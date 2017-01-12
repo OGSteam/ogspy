@@ -322,14 +322,8 @@ function mod_uninstall($mod_folder_name = "" , $mod_uninstall_table = '')
     mod_del_all_option();
     // Suppression des paramètres utilisateur du mod
     mod_del_all_user_option();
-    //Supression des tables du mod
-    foreach ($mod_uninstall_table as $item){
-
-        mod_remove_table($item);
-    }
 
     $modRepository->delete($mod['id']);
-
 
     log_("mod_uninstall", $mod['title']);
     generate_mod_cache();
@@ -672,16 +666,33 @@ function mod_del_all_user_option()
     return $modModel->delete_mod_config($nom_mod);
 }
 
+
+/**
+ * Function to uninstall an OGSpy Module
+ * Add tables provided by the install.php or update.php file
+ * @param string $sql_script : Script to create the table
+ */
+function mod_create_table($table_name, $sql_script)
+{
+    global $db;
+    log_("debug", "CREATE TABLE  " . $table_name);
+    $db->sql_query($sql_script);
+
+
+}
+
 /**
  * Function to uninstall an OGSpy Module
  * Deletes tables provided by the uninstall.php file
- * @param string $mod_uninstall_table : Name of the Database table used by the Mod that we need to remove
+ * @param array $mod_uninstall_tables : List of Database tables to be removed
  */
-function mod_remove_table($mod_uninstall_table)
+function mod_remove_tables($mod_uninstall_tables)
 {
     global $db;
-    if (!empty($mod_uninstall_table)) {
-        log_("debug", "DROP TABLE IF EXISTS " . $mod_uninstall_table);
-        $db->sql_query("DROP TABLE IF EXISTS " . $mod_uninstall_table);
+    if (!empty($mod_uninstall_tables)) {
+        foreach ($mod_uninstall_tables as $item) {
+            log_("debug", "DROP TABLE IF EXISTS " . $item);
+            $db->sql_query("DROP TABLE IF EXISTS " . $item);
+        }
     }
 }
