@@ -446,6 +446,7 @@ function mod_normal()
 /**
  * Function to set the position of a mod into the mod list
  * @param string $order up or down according to the new desired postion.
+ * @return bool
  */
 function mod_sort($order)
 {
@@ -501,29 +502,27 @@ function mod_sort($order)
  * Returns the version number of the current Mod.
  *
  * The function uses the $pub_action value to know what is the current mod
- * @global $pub_action
+ * @param string $mod_name
  * @return string Current mod version number
  */
-function mod_version()
+function mod_version($mod_name)
 {
-    global $pub_action;
-
     $modsRepository = new Mod_Model();
-    $mods = $modsRepository->find_by(array('root' => $pub_action));
+    $mods = $modsRepository->find_by(array('root' => $mod_name));
+
     if(count($mods) == 1)
         return $mods[0]['version'];
 
-    return "(ModInconnu:'{$pub_action}')";
+    return "(ModInconnu:'{$mod_name}')";
 }
 
 /**
  * Mod Configs: Add or updates a configuration option for the mod
  * @param string $param Name of the parameter
  * @param string $value Value of the parameter
- * @param string $nom_mod Mod name
  * @return boolean returns true if the parameter is correctly saved. false in other cases.
  */
-function mod_set_option($param, $value, $nom_mod = '')
+function mod_set_option($param, $value)
 {
     $nom_mod = mod_get_nom();
     if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
@@ -536,10 +535,9 @@ function mod_set_option($param, $value, $nom_mod = '')
  * @param string $param Name of the parameter
  * @param integer $user_id Id of the user
  * @param string $value Value of the parameter
- * @param string $nom_mod Mod name
  * @return bool returns true if the parameter is correctly saved. false in other cases.
  */
-function mod_set_user_option($param, $user_id, $value, $nom_mod = '')
+function mod_set_user_option($param, $user_id, $value)
 {
     $nom_mod = mod_get_nom();
     if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
@@ -670,6 +668,7 @@ function mod_del_all_user_option()
 /**
  * Function to uninstall an OGSpy Module
  * Add tables provided by the install.php or update.php file
+ * @param $table_name
  * @param string $sql_script : Script to create the table
  */
 function mod_create_table($table_name, $sql_script)
@@ -677,8 +676,6 @@ function mod_create_table($table_name, $sql_script)
     global $db;
     log_("debug", "CREATE TABLE  " . $table_name);
     $db->sql_query($sql_script);
-
-
 }
 
 /**
