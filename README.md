@@ -54,6 +54,13 @@ Responsable équipe : [DarkNoon](https://bitbucket.org/darknoon29)
 * development - is the branch where the development of the "next" version/s happens
 * release-3.2.X - is the branch where bug fixes for the version 3.2.X are applied
 
+#### Docker Compose Developpeurs ####
+
+It is possible to run OGSpy into a container using docker-compose.
+After have installed the tool https://docs.docker.com/compose/install/
+
+Run : sudo docker-compose -f docker-compose.yml up
+
 ####Tests####
 
 * Vous tous !!
