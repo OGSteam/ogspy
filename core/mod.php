@@ -688,7 +688,7 @@ function mod_remove_tables($mod_uninstall_tables)
     global $db;
     if (!empty($mod_uninstall_tables)) {
         foreach ($mod_uninstall_tables as $item) {
-            log_("debug", "DROP TABLE IF EXISTS " . $item);
+            log_("debug", "Deleting table named: " . $item);
             $db->sql_query("DROP TABLE IF EXISTS " . $item);
         }
     }
