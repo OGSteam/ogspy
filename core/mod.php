@@ -28,8 +28,9 @@ function mod_list()
 {
     global $user_data;
 
-    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1)
-        redirection("index.php?action=message&id_message=forbidden&info");
+    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+            redirection("index.php?action=message&id_message=forbidden&info");
+    }
 
     //Listing des mod présents dans le répertoire "mod"
     $path = opendir("mod/");
@@ -38,7 +39,9 @@ function mod_list()
     $directories = array();
     while ($file = readdir($path)) {
         if ($file != "." && $file != "..") {
-            if (is_dir("mod/" . $file)) $directories[$file] = array();
+            if (is_dir("mod/" . $file)) {
+                $directories[$file] = array();
+            }
         }
     }
     closedir($path);
@@ -52,7 +55,9 @@ function mod_list()
             }
         }
         closedir($path);
-        if (sizeof($directories[$d]) == 0) unset ($directories[$d]);
+        if (sizeof($directories[$d]) == 0) {
+            unset ($directories[$d]);
+        }
     }
 
 
@@ -114,16 +119,21 @@ function mod_check($check_type, $data)
 {
     global $user_data;
 
-    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1)
-        redirection("index.php?action=message&id_message=forbidden&info");
+    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+            redirection("index.php?action=message&id_message=forbidden&info");
+    }
 
     switch ($check_type) {
         case "mod_id" :
-            if (!check_var($data, "Num")) redirection("index.php?action=message&id_message=errordata&info");
+            if (!check_var($data, "Num")) {
+                redirection("index.php?action=message&id_message=errordata&info");
+            }
             break;
 
         case "directory" :
-            if (!check_var($data, "Text")) redirection("index.php?action=message&id_message=errordata&info");
+            if (!check_var($data, "Text")) {
+                redirection("index.php?action=message&id_message=errordata&info");
+            }
             break;
     }
 }
@@ -510,8 +520,9 @@ function mod_version($mod_name)
     $modsRepository = new Mod_Model();
     $mods = $modsRepository->find_by(array('root' => $mod_name));
 
-    if (count($mods) == 1)
-        return $mods[0]['version'];
+    if (count($mods) == 1) {
+            return $mods[0]['version'];
+    }
 
     return "(ModInconnu:'{$mod_name}')";
 }
@@ -525,7 +536,9 @@ function mod_version($mod_name)
 function mod_set_option($param, $value)
 {
     $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
+    if (!check_var($param, "Text")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
     $modModel = new Mod_Config_Model();
     return $modModel->set_mod_config($nom_mod, $param, $value);
 }
@@ -540,8 +553,12 @@ function mod_set_option($param, $value)
 function mod_set_user_option($param, $user_id, $value)
 {
     $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
-    if (!check_var($user_id, "Num")) redirection("index.php?action=message&id_message=errordata&info");
+    if (!check_var($param, "Text")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
+    if (!check_var($user_id, "Num")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
 
     $modModel = new Mod_User_Config_Model();
     return $modModel->set_mod_config($nom_mod, $param, $user_id, $value);
@@ -556,7 +573,9 @@ function mod_set_user_option($param, $user_id, $value)
 function mod_del_option($param)
 {
     $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
+    if (!check_var($param, "Text")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
     $modModel = new Mod_Config_Model();
     return $modModel->delete_mod_config($nom_mod, $param);
 }
@@ -570,8 +589,12 @@ function mod_del_option($param)
 function mod_del_user_option($param, $user_id)
 {
     $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
-    if (!check_var($user_id, "Num")) redirection("index.php?action=message&id_message=errordata&info");
+    if (!check_var($param, "Text")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
+    if (!check_var($user_id, "Num")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
 
     $modModel = new Mod_User_Config_Model();
     return $modModel->delete_mod_config($nom_mod, $user_id, $param);
@@ -586,12 +609,15 @@ function mod_del_user_option($param, $user_id)
 function mod_get_option($param)
 {
     $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
+    if (!check_var($param, "Text")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
 
     $modModel = new Mod_Config_Model();
     $result = $modModel->get_mod_config($nom_mod, $param);
-    if (count($result) == 0)
-        return '-1';
+    if (count($result) == 0) {
+            return '-1';
+    }
 
     return $result;
 }
@@ -605,8 +631,12 @@ function mod_get_option($param)
 function mod_get_user_option($user_id, $param = null)
 {
     $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
-    if (!check_var($user_id, "Num")) redirection("index.php?action=message&id_message=errordata&info");
+    if (!check_var($param, "Text")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
+    if (!check_var($user_id, "Num")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
 
     $modModel = new Mod_User_Config_Model();
     $result = $modModel->get_mod_config($nom_mod, $user_id, $param);
@@ -632,10 +662,11 @@ function mod_get_nom($mod_id = null)
 
         $modsRepository = new Mod_Model();
         $mods = $modsRepository->find_by(array('id' => $mod_id));
-        if (count($mods) == 1)
-            $nom_mod = $mods[0]['action'];
-        else
-            $nom_mod = $pub_action;
+        if (count($mods) == 1) {
+                    $nom_mod = $mods[0]['action'];
+        } else {
+                    $nom_mod = $pub_action;
+        }
     } else {
         $nom_mod = $pub_action;
     }
