@@ -110,7 +110,7 @@ function mod_list()
  * Function mod_check : Checks if an unauthorized user tries to install a mod without being admin or with wrong parameters
  * @param string $check type of varaible to be checked
  */
-function mod_check($check_type , $data)
+function mod_check($check_type, $data)
 {
     global $user_data;
 
@@ -197,7 +197,7 @@ function mod_install($mod_folder_name)
         }
     }
 
-    $position = $modRepository->get_position_max() +1;
+    $position = $modRepository->get_position_max() + 1;
 
     $mod = array_combine(array('title', 'menu', 'action', 'root', 'link', 'active', 'admin_only'), $value_mod);
     $mod['version'] = $mod_version;
@@ -226,7 +226,7 @@ function mod_update()
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
     // Mod inconnu
-    if(count($mods) != 1)
+    if (count($mods) != 1)
     {
         log_("mod_erreur_unknown", $pub_mod_id);
         redirection("index.php?action=message&id_message=errormod&info");
@@ -299,14 +299,14 @@ function mod_update()
 /**
  * mod_uninstall (Fonction utilisée par la partie admin): Uninstall a mod from the database (Mod files are not deleted)
  */
-function mod_uninstall($mod_folder_name = "" , $mod_uninstall_table = '')
+function mod_uninstall($mod_folder_name = "", $mod_uninstall_table = '')
 {
     mod_check("Directory", $mod_folder_name);
 
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('root' => $mod_folder_name));
 
-    if(count($mods) != 1)
+    if (count($mods) != 1)
     {
         log_("mod_erreur_unknown", $mod_folder_name);
         redirection("index.php?action=message&id_message=errormod&info");
@@ -343,7 +343,7 @@ function mod_active()
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
-    if(count($mods) != 1)
+    if (count($mods) != 1)
     {
         log_("mod_erreur_unknown", $pub_mod_id);
         redirection("index.php?action=message&id_message=errormod&info");
@@ -371,7 +371,7 @@ function mod_disable()
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
-    if(count($mods) != 1)
+    if (count($mods) != 1)
     {
         log_("mod_erreur_unknown", $pub_mod_id);
         redirection("index.php?action=message&id_message=errormod&info");
@@ -399,7 +399,7 @@ function mod_admin()
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
-    if(count($mods) != 1)
+    if (count($mods) != 1)
     {
         log_("mod_erreur_unknown", $pub_mod_id);
         redirection("index.php?action=message&id_message=errormod&info");
@@ -427,7 +427,7 @@ function mod_normal()
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
-    if(count($mods) != 1)
+    if (count($mods) != 1)
     {
         log_("mod_erreur_unknown", $pub_mod_id);
         redirection("index.php?action=message&id_message=errormod&info");
@@ -457,7 +457,7 @@ function mod_sort($order)
     $modRepository = new Mod_Model();
     // On récupère le mod souhaité
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
-    if(count($mods) != 1)
+    if (count($mods) != 1)
     {
         log_("mod_erreur_unknown", $pub_mod_id);
         redirection("index.php?action=message&id_message=errormod&info");
@@ -470,15 +470,15 @@ function mod_sort($order)
 
     switch ($order) {
         case "up" :
-            $newPosition =  max(1, $oldPosition-1);
+            $newPosition = max(1, $oldPosition - 1);
             break;
         case "down" :
-            $newPosition =  min($maxPosition, $oldPosition+1);
+            $newPosition = min($maxPosition, $oldPosition + 1);
             break;
     }
 
     // Pas de changement de position
-    if($newPosition == $oldPosition)
+    if ($newPosition == $oldPosition)
     {
         log_("mod_order", $currentMod['title']);
         generate_mod_cache();
@@ -510,7 +510,7 @@ function mod_version($mod_name)
     $modsRepository = new Mod_Model();
     $mods = $modsRepository->find_by(array('root' => $mod_name));
 
-    if(count($mods) == 1)
+    if (count($mods) == 1)
         return $mods[0]['version'];
 
     return "(ModInconnu:'{$mod_name}')";
@@ -632,7 +632,7 @@ function mod_get_nom($mod_id = null)
 
         $modsRepository = new Mod_Model();
         $mods = $modsRepository->find_by(array('id' => $mod_id));
-        if(count($mods) == 1)
+        if (count($mods) == 1)
             $nom_mod = $mods[0]['action'];
         else
             $nom_mod = $pub_action;
