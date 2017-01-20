@@ -4,7 +4,7 @@ Le projet crée en 2006 est une aide pour un jeu de gestion de vaisseaux spatiau
 
 Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour ensuite les regrouper et les exploiter.
 
-[![Gitter chat](https://badges.gitter.im/OGSteam/gitter.png)](https://gitter.im/OGSteam/gitter)
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/OGSteam/Support)
 
 ### Indicateurs Qualité ###
 
