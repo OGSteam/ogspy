@@ -188,7 +188,7 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 		},
       	credits: {
 			text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
-        	href: 'http://www.ogsteam.fr'
+        	href: 'https://www.ogsteam.fr'
 	  	},
 		title: {
 			text: '" . $title . "'
