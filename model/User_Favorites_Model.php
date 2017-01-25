@@ -15,9 +15,27 @@ namespace Ogsteam\Ogspy\Model;
 
 class User_Favorites_Model
 {
+    /**
+     * Gets the favorite system list for the defined user
+     * @param $user_id
+     * @return array $favorite Liste des systèmes favoris
+     */
     public function select_user_favorites($user_id)
     {
-        //Empty for the moment
+        global $db;
+
+        $favorite = array();
+
+        $request = "SELECT galaxy, system FROM " . TABLE_USER_FAVORITE;
+        $request .= " where user_id = " . $user_id;
+        $request .= " order by galaxy, system";
+        $result = $db->sql_query($request);
+
+        while (list($galaxy, $system) = $db->sql_fetch_row($result)) {
+            $favorite[] = array("galaxy" => $galaxy, "system" => $system);
+        }
+
+        return $favorite;
     }
 
     /**

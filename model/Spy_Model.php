@@ -122,7 +122,6 @@ class Spy_Model
         return $tResult;
     }
 
-
     /**
      * @param $spy_id
      */
@@ -133,5 +132,15 @@ class Spy_Model
         $db->sql_query($request);
     }
 
+    /**
+     * This function deletes expired Spy records from the database
+     * @param $limit_time
+     */
+    public function delete_expired_spies($limit_time){
+        global $db;
+
+        $request = "DELETE FROM " . TABLE_PARSEDSPY . " WHERE `active` = '0' OR `dateRE` < " . $limit_time;
+        $db->sql_query($request);
+    }
 
 }

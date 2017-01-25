@@ -136,7 +136,7 @@ switch ($order_by) {
         $player .= $value;
 
         if ($value == $user_data["user_name"]) {
-            $player .= "</font>";
+            $player .= "</span>";
         }
         $player .= "</a>";
 
@@ -199,21 +199,21 @@ switch ($order_by) {
         echo "\t" . "<th>" . $player . "</th>";
         echo "\t" . "<th>" . $ally . "</th>";
         echo "\t" . "<th width='70'>" . $general_pts . "</th>";
-        echo "\t" . "<th width='40'><font color='lime'><i>" . $general_rank . "</i></font></th>";
+        echo "\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $general_rank . "</i></span></th>";
         echo "\t" . "<th width='70'>" . $eco_pts . "</th>";
-        echo "\t" . "<th width='40'><font color='lime'><i>" . $eco_rank . "</i></font></th>";
+        echo "\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $eco_rank . "</i></span></th>";
         echo "\t" . "<th width='70'>" . $techno_pts . "</th>";
-        echo "\t" . "<th width='40'><font color='lime'><i>" . $techno_rank . "</i></font></th>";
+        echo "\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $techno_rank . "</i></span></th>";
         echo "\t" . "<th width='70'>" . $military_pts . "</th>";
-        echo "\t" . "<th width='40'><font color='lime'><i>" . $military_rank . "</i></font></th>";
+        echo "\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $military_rank . "</i></span></th>";
         echo "\t" . "<th width='70'>" . $military_b_pts . "</th>";
-        echo "\t" . "<th width='40'><font color='lime'><i>" . $military_b_rank . "</i></font></th>";
+        echo "\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $military_b_rank . "</i></span></th>";
         echo "\t" . "<th width='70'>" . $military_l_pts . "</th>";
-        echo "\t" . "<th width='40'><font color='lime'><i>" . $military_l_rank . "</i></font></th>";
+        echo "\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $military_l_rank . "</i></span></th>";
         echo "\t" . "<th width='70'>" . $military_d_pts . "</th>";
-        echo "\t" . "<th width='40'><font color='lime'><i>" . $military_d_rank . "</i></font></th>";
+        echo "\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $military_d_rank . "</i></span></th>";
         echo "\t" . "<th width='70'>" . $honnor_pts . "</th>";
-        echo "\t" . "<th width='40'><font color='lime'><i>" . $honnor_rank . "</i></font></th>";
+        echo "\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $honnor_rank . "</i></span></th>";
         echo "</tr>";
 
         next($order);

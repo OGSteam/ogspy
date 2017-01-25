@@ -14,8 +14,10 @@ namespace Ogsteam\Ogspy;
 
 use Ogsteam\Ogspy\Entity\Universe\Search_Criteria;
 use Ogsteam\Ogspy\Model\Combat_Report_Model;
+use Ogsteam\Ogspy\Model\Rankings_Model;
 use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Universe_Model;
+use Ogsteam\Ogspy\Model\User_Favorites_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 
 if (!defined('IN_SPYOGAME')) {
@@ -419,7 +421,7 @@ function galaxy_ally_listing()
  * @global array $server_config
  * @global array $pub_ally_
  * @global int $nb_colonnes_ally
- * @return array $statistics contenant la position de tous les joueurs de toutes les alliances non protegers par galaxie / systeme
+ * @return array $statistics contenant la position de tous les joueurs de toutes les alliances non protegees par galaxie / systeme
  */
 function galaxy_ally_position($step = 50)
 {
@@ -543,59 +545,37 @@ function galaxy_reportrc_show()
 /**
  * Purge des rapports d\'espionnage
  *
- * @global       object mysql $db
  * @global array $server_config
- * @todo Query : "select id_spy from " . TABLE_PARSEDSPY . " where active = '0' or dateRE < " . (time() - 60 * 60 * 24 * $max_keepspyreport)"
- * @todo Query : "select * from " . TABLE_USER_SPY . " where spy_id = " . $spy_id"
- * @todo Query : "delete from " . TABLE_PARSEDSPY . " where id_spy = " . $spy_id;
  *
  */
 function galaxy_purge_spy()
 {
-    global $db, $server_config;
+    global $server_config;
 
     if (!is_numeric($server_config["max_keepspyreport"])) {
         return;
     }
     $max_keepspyreport = intval($server_config["max_keepspyreport"]);
 
-    $request = "SELECT id_spy FROM " . TABLE_PARSEDSPY . " WHERE active = '0' OR dateRE < " . (time() - 60 * 60 * 24 * $max_keepspyreport);
-    $result = $db->sql_query($request);
+    $data_spy = new Spy_Model();
+    $data_spy->delete_expired_spies((time() - 60 * 60 * 24 * $max_keepspyreport));
 
-    while (list($spy_id) = $db->sql_fetch_row($result)) {
-        $request = "SELECT * FROM " . TABLE_USER_SPY . " WHERE spy_id = " . $spy_id;
-        $result2 = $db->sql_query($request);
-        if ($db->sql_numrows($result2) == 0) {
-            $request = "DELETE FROM " . TABLE_PARSEDSPY . " WHERE id_spy = " . $spy_id;
-            $db->sql_query($request);
-        }
-    }
 }
 
 /**
  * Recuperation des systemes favoris
  *
- * @global       object mysql $db
  * @global array $user_data
- * @todo Query : "select galaxy, system from " . TABLE_USER_FAVORITE ." where user_id = " . $user_data["user_id"] . " order by galaxy, system";"
  * @return array $favorite (galaxy/system)
  */
 function galaxy_getfavorites()
 {
-    global $db, $user_data;
+    global $user_data;
 
-    $favorite = array();
+    $data_user_fav= new User_Favorites_Model();
+    $favorites = $data_user_fav->select_user_favorites($user_data["user_id"]);
 
-    $request = "SELECT galaxy, system FROM " . TABLE_USER_FAVORITE;
-    $request .= " where user_id = " . $user_data["user_id"];
-    $request .= " order by galaxy, system";
-    $result = $db->sql_query($request);
-
-    while (list($galaxy, $system) = $db->sql_fetch_row($result)) {
-        $favorite[] = array("galaxy" => $galaxy, "system" => $system);
-    }
-
-    return $favorite;
+    return $favorites;
 }
 
 /**
@@ -616,6 +596,8 @@ function galaxy_getfavorites()
  */
 function galaxy_show_ranking_player()
 {
+    //TODO Fonction à jeter : elle est à refaire avec la page HTML
+
     global $db;
     global $pub_order_by, $pub_date, $pub_interval;
 
@@ -623,28 +605,20 @@ function galaxy_show_ranking_player()
         $pub_order_by = "general";
     }
 
-    $tables = array(TABLE_RANK_PLAYER_POINTS, TABLE_RANK_PLAYER_ECO, TABLE_RANK_PLAYER_TECHNOLOGY, TABLE_RANK_PLAYER_MILITARY, TABLE_RANK_PLAYER_MILITARY_BUILT, TABLE_RANK_PLAYER_MILITARY_LOOSE, TABLE_RANK_PLAYER_MILITARY_DESTRUCT, TABLE_RANK_PLAYER_HONOR);
     $name = array('general', 'eco', 'techno', 'military', 'military_b', 'military_l', 'military_d', 'honnor');
+    $tables = array(TABLE_RANK_PLAYER_POINTS, TABLE_RANK_PLAYER_ECO, TABLE_RANK_PLAYER_TECHNOLOGY, TABLE_RANK_PLAYER_MILITARY, TABLE_RANK_PLAYER_MILITARY_BUILT, TABLE_RANK_PLAYER_MILITARY_LOOSE, TABLE_RANK_PLAYER_MILITARY_DESTRUCT, TABLE_RANK_PLAYER_HONOR);
+
+
+    // Récupération de la taille max des tableaux
+    $data_rankings = new Rankings_Model();
+    $maxrank = $data_rankings->select_max_rank_row();
 
     // verification de la variable pub_order
     if (!in_array($pub_order_by, $name)) {
         $pub_order_by = "general";
     }
 
-    // selection du max rank
-    $maxrank = array();
-    $i = 0;
-    foreach ($tables as $table) {
-        $request = "SELECT rank FROM `" . $table . "` ORDER BY `rank` DESC LIMIT 0,1";
-        $result = $db->sql_query($request);
-        $max = $db->sql_fetch_row($result);
-        $maxrank[$i] = $max[0];
-        $i++;
-
-    }
-
-    // selection de rank max !
-    $maxrank = max($maxrank);
+    //Définition intervalle d'affichage
 
     if (!isset($pub_interval)) {
         $pub_interval = 1;
@@ -673,7 +647,6 @@ function galaxy_show_ranking_player()
         }
 
     }
-
 
     $i = 0;
     //Récupération de la dernière date de classement
@@ -757,6 +730,7 @@ function galaxy_show_ranking_player()
  */
 function galaxy_show_ranking_ally()
 {
+    //TODO Fonction à jeter : elle est à refaire avec la page HTML
     global $db;
     global $pub_order_by, $pub_date, $pub_interval, $pub_suborder;
 
