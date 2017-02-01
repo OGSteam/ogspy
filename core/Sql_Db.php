@@ -15,10 +15,6 @@ namespace Ogsteam\Ogspy;
 
 use mysqli;
 
-if (!defined('IN_SPYOGAME')) {
-    die("Hacking attempt");
-}
-
 /**
  * OGSpy MySQL Database Class
  *
