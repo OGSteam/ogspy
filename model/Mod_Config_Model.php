@@ -11,6 +11,7 @@
  */
 
 namespace Ogsteam\Ogspy\Model;
+use Ogsteam\Ogspy\Sql_Db;
 
 /**
  * Classe permettant l'accès à la table de configuration des mods

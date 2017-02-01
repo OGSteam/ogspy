@@ -16,9 +16,6 @@ use Ogsteam\Ogspy\Model\Mod_Config_Model;
 use Ogsteam\Ogspy\Model\Mod_Model;
 use Ogsteam\Ogspy\Model\Mod_User_Config_Model;
 
-if (!defined('IN_SPYOGAME')) {
-    die("Hacking attempt");
-}
 
 /**
  * Fetch the mod list (admin only)
@@ -29,7 +26,7 @@ function mod_list()
     global $user_data;
 
     if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
-            redirection("index.php?action=message&id_message=forbidden&info");
+        redirection("index.php?action=message&id_message=forbidden&info");
     }
 
     //Listing des mod présents dans le répertoire "mod"
@@ -120,7 +117,7 @@ function mod_check($check_type, $data)
     global $user_data;
 
     if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
-            redirection("index.php?action=message&id_message=forbidden&info");
+        redirection("index.php?action=message&id_message=forbidden&info");
     }
 
     switch ($check_type) {
@@ -158,7 +155,7 @@ function mod_install($mod_folder_name)
         exit();
     }
 
-    //fichier . txt non present 
+    //fichier . txt non present
     if (!file_exists("mod/" . $mod_folder_name . "/version.txt")) {
         log_("mod_erreur_install_txt", $mod_folder_name);
         redirection("index.php?action=message&id_message=errormod&info");
@@ -236,8 +233,7 @@ function mod_update()
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
     // Mod inconnu
-    if (count($mods) != 1)
-    {
+    if (count($mods) != 1) {
         log_("mod_erreur_unknown", $pub_mod_id);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
@@ -246,7 +242,7 @@ function mod_update()
 
     // modif pour 3.0.7
     // check d un mod " normalisé"
-    // voir @ shad 
+    // voir @ shad
 
     // fichier mod_erreur_update non present
     if (!file_exists("mod/" . $mod['root'] . "/update.php")) {
@@ -255,7 +251,7 @@ function mod_update()
         exit();
     }
 
-    //fichier . txt non present 
+    //fichier . txt non present
     if (!file_exists("mod/" . $mod['root'] . "/version.txt")) {
         log_("mod_erreur_install_txt", $mod['root']);
         redirection("index.php?action=message&id_message=errormod&info");
@@ -316,8 +312,7 @@ function mod_uninstall($mod_folder_name = "", $mod_uninstall_table = '')
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('root' => $mod_folder_name));
 
-    if (count($mods) != 1)
-    {
+    if (count($mods) != 1) {
         log_("mod_erreur_unknown", $mod_folder_name);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
@@ -328,10 +323,11 @@ function mod_uninstall($mod_folder_name = "", $mod_uninstall_table = '')
         require_once("mod/" . $mod['root'] . "/uninstall.php");
     }
 
+    $mod_tools = new Mod_DevTools($mod['root']);
     //Suppression des paramètres du mod
-    mod_del_all_option();
+    $mod_tools->mod_del_all_option();
     // Suppression des paramètres utilisateur du mod
-    mod_del_all_user_option();
+    $mod_tools->mod_del_all_user_option();
 
     $modRepository->delete($mod['id']);
 
@@ -339,7 +335,6 @@ function mod_uninstall($mod_folder_name = "", $mod_uninstall_table = '')
     generate_mod_cache();
     redirection("index.php?action=administration&subaction=mod");
 }
-
 
 /**
  * Mod Activation
@@ -353,8 +348,7 @@ function mod_active()
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
-    if (count($mods) != 1)
-    {
+    if (count($mods) != 1) {
         log_("mod_erreur_unknown", $pub_mod_id);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
@@ -381,8 +375,7 @@ function mod_disable()
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
-    if (count($mods) != 1)
-    {
+    if (count($mods) != 1) {
         log_("mod_erreur_unknown", $pub_mod_id);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
@@ -409,8 +402,7 @@ function mod_admin()
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
-    if (count($mods) != 1)
-    {
+    if (count($mods) != 1) {
         log_("mod_erreur_unknown", $pub_mod_id);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
@@ -437,8 +429,7 @@ function mod_normal()
     $modRepository = new Mod_Model();
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
 
-    if (count($mods) != 1)
-    {
+    if (count($mods) != 1) {
         log_("mod_erreur_unknown", $pub_mod_id);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
@@ -467,8 +458,7 @@ function mod_sort($order)
     $modRepository = new Mod_Model();
     // On récupère le mod souhaité
     $mods = $modRepository->find_by(array('id' => $pub_mod_id));
-    if (count($mods) != 1)
-    {
+    if (count($mods) != 1) {
         log_("mod_erreur_unknown", $pub_mod_id);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
@@ -488,8 +478,7 @@ function mod_sort($order)
     }
 
     // Pas de changement de position
-    if ($newPosition == $oldPosition)
-    {
+    if ($newPosition == $oldPosition) {
         log_("mod_order", $currentMod['title']);
         generate_mod_cache();
         redirection("index.php?action=administration&subaction=mod");
@@ -506,142 +495,6 @@ function mod_sort($order)
     log_("mod_order", $currentMod['title']);
     generate_mod_cache();
     return true;
-}
-
-/**
- * Returns the version number of the current Mod.
- *
- * The function uses the $pub_action value to know what is the current mod
- * @param string $mod_name
- * @return string Current mod version number
- */
-function mod_version($mod_name)
-{
-    $modsRepository = new Mod_Model();
-    $mods = $modsRepository->find_by(array('root' => $mod_name));
-
-    if (count($mods) == 1) {
-            return $mods[0]['version'];
-    }
-
-    return "(ModInconnu:'{$mod_name}')";
-}
-
-/**
- * Mod Configs: Add or updates a configuration option for the mod
- * @param string $param Name of the parameter
- * @param string $value Value of the parameter
- * @return boolean returns true if the parameter is correctly saved. false in other cases.
- */
-function mod_set_option($param, $value)
-{
-    $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) {
-        redirection("index.php?action=message&id_message=errordata&info");
-    }
-    $modModel = new Mod_Config_Model();
-    return $modModel->set_mod_config($nom_mod, $param, $value);
-}
-
-/**
- * Mod Configs: Add or updates a configuration option for the mod
- * @param string $param Name of the parameter
- * @param integer $user_id Id of the user
- * @param string $value Value of the parameter
- * @return bool returns true if the parameter is correctly saved. false in other cases.
- */
-function mod_set_user_option($param, $user_id, $value)
-{
-    $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) {
-        redirection("index.php?action=message&id_message=errordata&info");
-    }
-    if (!check_var($user_id, "Num")) {
-        redirection("index.php?action=message&id_message=errordata&info");
-    }
-
-    $modModel = new Mod_User_Config_Model();
-    return $modModel->set_mod_config($nom_mod, $param, $user_id, $value);
-}
-
-/**
- * Mod Configs: Deletes a parameter for a mod
- * @param string $param Name of the parameter
- * @global $db
- * @return boolean returns true if the parameter is correctly saved. false in other cases.
- */
-function mod_del_option($param)
-{
-    $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) {
-        redirection("index.php?action=message&id_message=errordata&info");
-    }
-    $modModel = new Mod_Config_Model();
-    return $modModel->delete_mod_config($nom_mod, $param);
-}
-
-/**
- * Mod Configs: Deletes a parameter for a mod and a user
- * @param string $param Name of the parameter
- * @param $user_id
- * @return bool returns true if the parameter is correctly saved. false in other cases.
- */
-function mod_del_user_option($param, $user_id)
-{
-    $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) {
-        redirection("index.php?action=message&id_message=errordata&info");
-    }
-    if (!check_var($user_id, "Num")) {
-        redirection("index.php?action=message&id_message=errordata&info");
-    }
-
-    $modModel = new Mod_User_Config_Model();
-    return $modModel->delete_mod_config($nom_mod, $user_id, $param);
-}
-
-/**
- * Mod Configs : Reads a parameter value for the current mod
- * @param string $param Name of the parameter
- * @global $db
- * @return string Returns the value of the requested parameter
- */
-function mod_get_option($param)
-{
-    $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) {
-        redirection("index.php?action=message&id_message=errordata&info");
-    }
-
-    $modModel = new Mod_Config_Model();
-    $result = $modModel->get_mod_config($nom_mod, $param);
-    if (count($result) == 0) {
-            return '-1';
-    }
-
-    return $result;
-}
-
-/**
- * Mod Configs : Reads a parameter value for the current mod and a specific user
- * @param string $param Name of the parameter
- * @param integer $user_id Id of the user
- * @return array Returns an array with the value of the requested parameter
- */
-function mod_get_user_option($user_id, $param = null)
-{
-    $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) {
-        redirection("index.php?action=message&id_message=errordata&info");
-    }
-    if (!check_var($user_id, "Num")) {
-        redirection("index.php?action=message&id_message=errordata&info");
-    }
-
-    $modModel = new Mod_User_Config_Model();
-    $result = $modModel->get_mod_config($nom_mod, $user_id, $param);
-
-    return $result;
 }
 
 /**
@@ -663,64 +516,12 @@ function mod_get_nom($mod_id = null)
         $modsRepository = new Mod_Model();
         $mods = $modsRepository->find_by(array('id' => $mod_id));
         if (count($mods) == 1) {
-                    $nom_mod = $mods[0]['action'];
+            $nom_mod = $mods[0]['action'];
         } else {
-                    $nom_mod = $pub_action;
+            $nom_mod = $pub_action;
         }
     } else {
         $nom_mod = $pub_action;
     }
     return $nom_mod;
-}
-
-/**
- * Deletes all configurations for the current mod
- * @return boolean Returns true if at least one entry has been deleted. False if nothing has been removed.
- */
-function mod_del_all_option()
-{
-    $nom_mod = mod_get_nom();
-    $modModel = new Mod_Config_Model();
-    return $modModel->delete_mod_config($nom_mod);
-}
-
-/**
- * Deletes all user configurations for the current mod
- * @return boolean Returns true if at least one entry has been deleted. False if nothing has been removed.
- */
-function mod_del_all_user_option()
-{
-    $nom_mod = mod_get_nom();
-    $modModel = new Mod_User_Config_Model();
-    return $modModel->delete_mod_config($nom_mod);
-}
-
-
-/**
- * Function to uninstall an OGSpy Module
- * Add tables provided by the install.php or update.php file
- * @param $table_name
- * @param string $sql_script : Script to create the table
- */
-function mod_create_table($table_name, $sql_script)
-{
-    global $db;
-    log_("debug", "CREATE TABLE  " . $table_name);
-    $db->sql_query($sql_script);
-}
-
-/**
- * Function to uninstall an OGSpy Module
- * Deletes tables provided by the uninstall.php file
- * @param array $mod_uninstall_tables : List of Database tables to be removed
- */
-function mod_remove_tables($mod_uninstall_tables)
-{
-    global $db;
-    if (!empty($mod_uninstall_tables)) {
-        foreach ($mod_uninstall_tables as $item) {
-            log_("debug", "Deleting table named: " . $item);
-            $db->sql_query("DROP TABLE IF EXISTS " . $item);
-        }
-    }
 }

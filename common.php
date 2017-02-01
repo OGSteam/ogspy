@@ -39,13 +39,14 @@ if (file_exists("config/id.php")) {
 require __DIR__ . '/vendor/autoload.php';
 require("core/config.php");
 require("core/functions.php");
-require("core/mysql.php");
+require("core/Sql_Db.php");
 require("core/Api_data.php");
 require("core/log.php");
 require("core/galaxy.php");
 require("core/user.php");
 require("core/sessions.php");
 require("core/help.php");
+require("core/Mod_DevTools.php");
 require("core/mod.php");
 require("core/ogame.php");
 require("core/cache.php");
