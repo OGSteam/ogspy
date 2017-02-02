@@ -21,7 +21,7 @@ class Spy_Model
      * @param int $sort2
      * @return array
      */
-    public function get_favoriteSpyList($user_id, $sort = 5 , $sort2 = 0){
+    public function get_favoriteSpyList($user_id, $sort = 5, $sort2 = 0) {
 
         global $db;
 
@@ -88,7 +88,7 @@ class Spy_Model
      * @param int $row
      * @return int $nb_spy
      */
-    public function get_nb_spy_by_planet ($galaxy, $system, $row){
+    public function get_nb_spy_by_planet($galaxy, $system, $row) {
         global $db;
 
         $request = "SELECT * FROM " . TABLE_PARSEDSPY . " WHERE `active` = '1' AND `coordinates` = '" . $galaxy . ":" . $system . ":" . $row . "'";
@@ -104,7 +104,7 @@ class Spy_Model
      * @param int $row
      * @return array $tResult
      */
-    public function get_spy_id_list_by_planet ($galaxy, $system, $row){
+    public function get_spy_id_list_by_planet($galaxy, $system, $row) {
         global $db;
 
         $request = "SELECT `id_spy`, `user_name`, `dateRE`, `is_moon`";
@@ -125,7 +125,7 @@ class Spy_Model
     /**
      * @param $spy_id
      */
-    public function delete_spy($spy_id){
+    public function delete_spy($spy_id) {
         global $db;
 
         $request = "DELETE FROM " . TABLE_PARSEDSPY . " WHERE `spy_id` = '" . $spy_id . "'";
@@ -136,7 +136,7 @@ class Spy_Model
      * This function deletes expired Spy records from the database
      * @param $limit_time
      */
-    public function delete_expired_spies($limit_time){
+    public function delete_expired_spies($limit_time) {
         global $db;
 
         $request = "DELETE FROM " . TABLE_PARSEDSPY . " WHERE `active` = '0' OR `dateRE` < " . $limit_time;

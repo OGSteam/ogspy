@@ -346,16 +346,20 @@ class Sql_Db
         $bytes = array('Octets', 'Ko', 'Mo', 'Go', 'To');
         $dbSize_info = array();
 
-        if ($dbSizeServer < 1024)
-            $dbSizeServer = 1;
-        for ($i = 0; $dbSizeServer > 1024; $i++)
-            $dbSizeServer /= 1024;
+        if ($dbSizeServer < 1024) {
+                    $dbSizeServer = 1;
+        }
+        for ($i = 0; $dbSizeServer > 1024; $i++) {
+                    $dbSizeServer /= 1024;
+        }
         $dbSize_info["Server"] = round($dbSizeServer, 2) . " " . $bytes[$i];
 
-        if ($dbSizeTotal < 1024)
-            $dbSizeTotal = 1;
-        for ($i = 0; $dbSizeTotal > 1024; $i++)
-            $dbSizeTotal /= 1024;
+        if ($dbSizeTotal < 1024) {
+                    $dbSizeTotal = 1;
+        }
+        for ($i = 0; $dbSizeTotal > 1024; $i++) {
+                    $dbSizeTotal /= 1024;
+        }
         $dbSize_info["Total"] = round($dbSizeTotal, 2) . " " . $bytes[$i];
 
         return $dbSize_info;

@@ -91,7 +91,9 @@ switch ($order_by) {
                     if (sizeof($ranking_available) > 0) {
                         for ($i = 1; $i <= $maxrank; $i = $i + 100) {
                             $selected = "";
-                            if ($i == $interval) $selected = "selected";
+                            if ($i == $interval) {
+                                $selected = "selected";
+                            }
                             echo "\t\t\t" . "<option value='" . $i . "' " . $selected . ">" . $i . " - " . ($i + 99) . "</option>" . "\n";
                         }
                     }

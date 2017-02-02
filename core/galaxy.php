@@ -134,10 +134,10 @@ function filter_system($system)
     if ($server_config["allied"] != "")
         $allied = explode(",", $server_config["allied"]);
 
-    foreach ($system as $planet){
+    foreach ($system as $planet) {
 
-    $report_spy = $data_spy->get_nb_spy_by_planet($planet['galaxy'],$planet['system'],$planet['row']);
-    $report_rc = $data_rc->get_nb_combat_report_by_planet($planet['galaxy'],$planet['system'],$planet['row']);
+    $report_spy = $data_spy->get_nb_spy_by_planet($planet['galaxy'], $planet['system'], $planet['row']);
+    $report_rc = $data_rc->get_nb_combat_report_by_planet($planet['galaxy'], $planet['system'], $planet['row']);
 
     $planet["report_spy"] = $planet["report_rc"] = $planet["hided"] = $planet["allied"] = "";
 
@@ -334,7 +334,7 @@ function galaxy_search()
     $total_page = ceil($result['total_row'] / $number);
 
     $search_result = array();
-    foreach($result['planets'] as $planet)
+    foreach ($result['planets'] as $planet)
     {
         $friend = false;
         if (in_array($planet["ally"], $allied)) $friend = true;
@@ -343,19 +343,19 @@ function galaxy_search()
         $nb_spy_reports = $data_spy->get_nb_spy_by_planet($planet["galaxy"], $planet["system"], $planet["row"]);
 
         $search_result[] = array("galaxy" => $planet["galaxy"],
-                                 "system" => $planet["system"],
-                                 "row" => $planet["row"],
-                                 "phalanx" => $planet["phalanx"],
-                                 "gate" => $planet["gate"],
-                                 "last_update_moon" => $planet["last_update_moon"],
-                                 "moon" => $planet["moon"],
-                                 "ally" => $planet["ally"],
-                                 "player" => $planet["player"],
-                                 "report_spy" => $nb_spy_reports,
-                                 "status" => $planet["status"],
-                                 "timestamp" => $planet["last_update"],
-                                 "poster" => $planet["user_name"],
-                                 "allied" => $friend);
+                                    "system" => $planet["system"],
+                                    "row" => $planet["row"],
+                                    "phalanx" => $planet["phalanx"],
+                                    "gate" => $planet["gate"],
+                                    "last_update_moon" => $planet["last_update_moon"],
+                                    "moon" => $planet["moon"],
+                                    "ally" => $planet["ally"],
+                                    "player" => $planet["player"],
+                                    "report_spy" => $nb_spy_reports,
+                                    "status" => $planet["status"],
+                                    "timestamp" => $planet["last_update"],
+                                    "poster" => $planet["user_name"],
+                                    "allied" => $friend);
     }
 
     return array($search_result, $total_page);
@@ -426,7 +426,7 @@ function galaxy_ally_listing()
 function galaxy_ally_position($step = 50)
 {
     global $user_auth, $user_data, $server_config;
-    global $pub_ally_ , $pub_ally_name, $pub_ally_list, $pub_ally_protection, $nb_colonnes_ally;
+    global $pub_ally_, $pub_ally_name, $pub_ally_list, $pub_ally_protection, $nb_colonnes_ally;
 
     for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
         if (!check_var($pub_ally_[$i], "Text")) {
@@ -534,7 +534,7 @@ function galaxy_reportrc_show()
     $report_list = $data_combat_report->get_cr_id_list_by_planet(intval($pub_galaxy), intval($pub_system), intval($pub_row));
 
     $reports = array();
-    foreach($report_list['id_rc'] as $report_id)
+    foreach ($report_list['id_rc'] as $report_id)
     {
         $reports[] = UNparseRC($report_id);
     }
@@ -572,7 +572,7 @@ function galaxy_getfavorites()
 {
     global $user_data;
 
-    $data_user_fav= new User_Favorites_Model();
+    $data_user_fav = new User_Favorites_Model();
     $favorites = $data_user_fav->select_user_favorites($user_data["user_id"]);
 
     return $favorites;
@@ -812,7 +812,7 @@ function galaxy_show_ranking_ally()
     $result = $db->sql_query($request);
 
     while ($row = $db->sql_fetch_assoc($result)) {
-        $ranking[$row["ally"]][$table[$i]["arrayname"]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int)($row["points"] / $row["number_member"]));
+        $ranking[$row["ally"]][$table[$i]["arrayname"]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int) ($row["points"] / $row["number_member"]));
         $ranking[$row["ally"]]["number_member"] = $row["number_member"];
         $ranking[$row["ally"]]["sender"] = $row["user_name"];
 
@@ -840,7 +840,7 @@ function galaxy_show_ranking_ally()
             $result = $db->sql_query($request);
 
             while ($row = $db->sql_fetch_assoc($result)) {
-                $ranking[$row["ally"]][$table[$i]["arrayname"]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int)($row["points"] / $row["number_member"]));
+                $ranking[$row["ally"]][$table[$i]["arrayname"]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int) ($row["points"] / $row["number_member"]));
                 $ranking[$row["ally"]]["number_member"] = $row["number_member"];
                 $ranking[$row["ally"]]["sender"] = $row["user_name"];
 
@@ -920,7 +920,7 @@ function galaxy_show_ranking_unique_ally($ally, $last = false)
         $request .= " order by datadate desc";
         $result = $db->sql_query($request);
         while ($row = $db->sql_fetch_assoc($result)) {
-            $ranking[$row["datadate"]][$name[$i]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int)($row["points"] / $row["number_member"]));
+            $ranking[$row["datadate"]][$name[$i]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int) ($row["points"] / $row["number_member"]));
             $ranking[$row["datadate"]]["number_member"] = $row["number_member"];
             if ($last) break;
         }
@@ -1141,12 +1141,12 @@ function galaxy_obsolete()
         $since = array(0, 7, 14, 21, 28, 42, 56, $timestamp - 1);
 
         // on regarde l existence de la variable
-        if (!in_array((int)$pub_since, $since)) {
+        if (!in_array((int) $pub_since, $since)) {
             return $obsolete;
         }
 
         // on recupere l indice de recherche
-        $indice = array_search((int)$pub_since, $since);
+        $indice = array_search((int) $pub_since, $since);
 
         // l indice ne peut pas etre le premier ou le dernier
         if ($indice == 0 || $indice == (sizeof($since) - 1)) {

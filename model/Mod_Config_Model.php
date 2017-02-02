@@ -11,7 +11,6 @@
  */
 
 namespace Ogsteam\Ogspy\Model;
-use Ogsteam\Ogspy\Sql_Db;
 
 /**
  * Classe permettant l'accès à la table de configuration des mods
@@ -29,13 +28,13 @@ class Mod_Config_Model
     {
         global $db;
         $request = "SELECT `value` FROM `" . TABLE_MOD_CFG . "` WHERE `mod` = '" . $module . "'";
-         if($config != null)
+         if ($config != null)
             $request .= " AND `config` = '" . $config . "'";
 
         $queryResult = $db->sql_query($request);
 
         $values = array();
-        while($value = $db->sql_fetch_row($queryResult))
+        while ($value = $db->sql_fetch_row($queryResult))
             $values[] = $value[0];
 
         if (count($values) == 1)
@@ -54,10 +53,10 @@ class Mod_Config_Model
     {
         global $db;
         $query = "DELETE FROM `" . TABLE_MOD_CFG . "` WHERE `mod` = '" . $module . "'";
-        if($config != null)
+        if ($config != null)
             $query .= " AND `config` = '" . $config . "'";
 
-        if(!$db->sql_query($query))
+        if (!$db->sql_query($query))
             return false;
 
         return true;
