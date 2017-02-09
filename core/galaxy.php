@@ -37,39 +37,57 @@ function galaxy_check_auth($action)
 
     switch ($action) {
         case "import_planet":
-            if ($user_auth["ogs_set_system"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour exporter des systèmes solaires -->" . "\n");
+            if ($user_auth["ogs_set_system"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+                die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour exporter des systèmes solaires -->" . "\n");
+            }
             break;
 
         case "export_planet":
-            if ($user_auth["ogs_get_system"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour importer des systèmes solaires -->" . "\n");
+            if ($user_auth["ogs_get_system"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+                die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour importer des systèmes solaires -->" . "\n");
+            }
             break;
 
         case "import_spy":
-            if ($user_auth["ogs_set_spy"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour exporter des rapports d'espionnage -->" . "\n");
+            if ($user_auth["ogs_set_spy"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+                die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour exporter des rapports d'espionnage -->" . "\n");
+            }
             break;
 
         case "export_spy":
-            if ($user_auth["ogs_get_spy"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour importer des rapports d'espionnage -->" . "\n");
+            if ($user_auth["ogs_get_spy"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+                die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour importer des rapports d'espionnage -->" . "\n");
+            }
             break;
 
         case "import_ranking":
-            if ($user_auth["ogs_set_ranking"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour exporter des classements -->" . "\n");
+            if ($user_auth["ogs_set_ranking"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+                die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour exporter des classements -->" . "\n");
+            }
             break;
 
         case "export_ranking":
-            if ($user_auth["ogs_get_ranking"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour importer des classements -->" . "\n");
+            if ($user_auth["ogs_get_ranking"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+                die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour importer des classements -->" . "\n");
+            }
             break;
 
         case "drop_ranking":
-            if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_ranking"] != 1) redirection("index.php?action=message&id_message=forbidden&info");
+            if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_ranking"] != 1) {
+                redirection("index.php?action=message&id_message=forbidden&info");
+            }
             break;
 
         case "set_ranking":
-            if (($user_auth["server_set_ranking"] != 1) && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) redirection("index.php?action=message&id_message=forbidden&info");
+            if (($user_auth["server_set_ranking"] != 1) && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+                redirection("index.php?action=message&id_message=forbidden&info");
+            }
             break;
 
         case "set_rc":
-            if (($user_auth["server_set_rc"] != 1) && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) redirection("index.php?action=message&id_message=forbidden&info");
+            if (($user_auth["server_set_rc"] != 1) && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+                redirection("index.php?action=message&id_message=forbidden&info");
+            }
             break;
 
         default:
@@ -95,10 +113,18 @@ function galaxy_show()
         @list($pub_galaxy, $pub_system) = explode(":", $pub_coordinates);
     }
     if (isset($pub_galaxy) && isset($pub_system)) {
-        if (intval($pub_galaxy) < 1) $pub_galaxy = 1;
-        if (intval($pub_galaxy) > intval($server_config['num_of_galaxies'])) $pub_galaxy = intval($server_config['num_of_galaxies']);
-        if (intval($pub_system) < 1) $pub_system = 1;
-        if (intval($pub_system) > intval($server_config['num_of_systems'])) $pub_system = intval($server_config['num_of_systems']);
+        if (intval($pub_galaxy) < 1) {
+            $pub_galaxy = 1;
+        }
+        if (intval($pub_galaxy) > intval($server_config['num_of_galaxies'])) {
+            $pub_galaxy = intval($server_config['num_of_galaxies']);
+        }
+        if (intval($pub_system) < 1) {
+            $pub_system = 1;
+        }
+        if (intval($pub_system) > intval($server_config['num_of_systems'])) {
+            $pub_system = intval($server_config['num_of_systems']);
+        }
     }
 
     if (!isset($pub_galaxy) || !isset($pub_system)) {
@@ -131,8 +157,9 @@ function filter_system($system)
     $data_rc = new Combat_Report_Model();
 
     $allied = array();
-    if ($server_config["allied"] != "")
-        $allied = explode(",", $server_config["allied"]);
+    if ($server_config["allied"] != "") {
+            $allied = explode(",", $server_config["allied"]);
+    }
 
     foreach ($system as $planet) {
 
@@ -171,12 +198,24 @@ function galaxy_show_sector()
     global $pub_galaxy, $pub_system_down, $pub_system_up;
 
     if (isset($pub_galaxy) && isset($pub_system_down) && isset($pub_system_up)) {
-        if (intval($pub_galaxy) < 1) $pub_galaxy = 1;
-        if (intval($pub_galaxy) > intval($server_config['num_of_galaxies'])) $pub_galaxy = intval($server_config['num_of_galaxies']);
-        if (intval($pub_system_down) < 1) $pub_system_down = 1;
-        if (intval($pub_system_down) > intval($server_config['num_of_systems'])) $pub_system_down = intval($server_config['num_of_systems']);
-        if (intval($pub_system_up) < 1) $pub_system_up = 1;
-        if (intval($pub_system_up) > intval($server_config['num_of_systems'])) $pub_system_up = intval($server_config['num_of_systems']);
+        if (intval($pub_galaxy) < 1) {
+            $pub_galaxy = 1;
+        }
+        if (intval($pub_galaxy) > intval($server_config['num_of_galaxies'])) {
+            $pub_galaxy = intval($server_config['num_of_galaxies']);
+        }
+        if (intval($pub_system_down) < 1) {
+            $pub_system_down = 1;
+        }
+        if (intval($pub_system_down) > intval($server_config['num_of_systems'])) {
+            $pub_system_down = intval($server_config['num_of_systems']);
+        }
+        if (intval($pub_system_up) < 1) {
+            $pub_system_up = 1;
+        }
+        if (intval($pub_system_up) > intval($server_config['num_of_systems'])) {
+            $pub_system_up = intval($server_config['num_of_systems']);
+        }
     }
 
     if (!isset($pub_galaxy) || !isset($pub_system_down) || !isset($pub_system_up)) {
@@ -228,10 +267,13 @@ function galaxy_search()
     $search_result = array();
     $total_page = 0;
     $allied = array();
-    if ($server_config["allied"] != "") $allied = explode(",", $server_config["allied"]);
+    if ($server_config["allied"] != "") {
+        $allied = explode(",", $server_config["allied"]);
+    }
 
-    if (!isset($pub_type_search) || (!isset($pub_string_search) && (!isset($pub_galaxy_down) || !isset($pub_galaxy_up) || !isset($pub_system_down) || !isset($pub_system_up) || !isset($pub_row_down) || !isset($pub_row_up))))
-        return array($search_result, $total_page);
+    if (!isset($pub_type_search) || (!isset($pub_string_search) && (!isset($pub_galaxy_down) || !isset($pub_galaxy_up) || !isset($pub_system_down) || !isset($pub_system_up) || !isset($pub_row_down) || !isset($pub_row_up)))) {
+            return array($search_result, $total_page);
+    }
 
     $data_user = new User_Model();
     $data_user->add_stat_search_made($user_data['user_id'], 1);
@@ -255,21 +297,27 @@ function galaxy_search()
 
     switch ($pub_type_search) {
         case "player":
-            if ($pub_string_search == "") break;
+            if ($pub_string_search == "") {
+                break;
+            }
             $search = isset($pub_strict) ? $pub_string_search : "%" . $pub_string_search . "%";
 
             $criteria->setPlayerName($search);
             break;
 
         case "ally":
-            if ($pub_string_search == "") break;
+            if ($pub_string_search == "") {
+                break;
+            }
             $search = isset($pub_strict) ? $pub_string_search : "%" . $pub_string_search . "%";
 
             $criteria->setAllyName($search);
             break;
 
         case "planet":
-            if ($pub_string_search == "") break;
+            if ($pub_string_search == "") {
+                break;
+            }
             $search = isset($pub_strict) ? $pub_string_search : "%" . $pub_string_search . "%";
 
             $criteria->setPlanetName($search);
@@ -288,11 +336,13 @@ function galaxy_search()
             break;
     }
 
-    if (!$criteria->isValid())
-        return array($search_result, $total_page);
+    if (!$criteria->isValid()) {
+            return array($search_result, $total_page);
+    }
 
-    if (!isset($pub_sort2))
-        $pub_sort2 = "0";
+    if (!isset($pub_sort2)) {
+            $pub_sort2 = "0";
+    }
     switch ($pub_sort2) {
         case "1":
             $order2 = " DESC";
@@ -302,8 +352,9 @@ function galaxy_search()
             break;
     }
 
-    if (!isset($pub_sort))
-        $pub_sort = "1";
+    if (!isset($pub_sort)) {
+            $pub_sort = "1";
+    }
 
     switch ($pub_sort) {
         case "2":
@@ -318,8 +369,9 @@ function galaxy_search()
             break;
     }
 
-    if (!isset($pub_page))
-        $pub_page = 1;
+    if (!isset($pub_page)) {
+            $pub_page = 1;
+    }
 
     $number = 30;
 
@@ -337,7 +389,9 @@ function galaxy_search()
     foreach ($result['planets'] as $planet)
     {
         $friend = false;
-        if (in_array($planet["ally"], $allied)) $friend = true;
+        if (in_array($planet["ally"], $allied)) {
+            $friend = true;
+        }
 
         $data_spy = new Spy_Model();
         $nb_spy_reports = $data_spy->get_nb_spy_by_planet($planet["galaxy"], $planet["system"], $planet["row"]);
@@ -389,8 +443,9 @@ function galaxy_statistic($step = 50)
 
             $new = false;
             $last_update = $universeRepository->get_last_update($galaxy, $system, $system_up);
-            if ($last_update > $user_data["session_lastvisit"])
-                $new = true;
+            if ($last_update > $user_data["session_lastvisit"]) {
+                            $new = true;
+            }
 
             $nb_planets_total += $nb_planet;
             $nb_freeplanets_total += $nb_planet_free;
@@ -439,7 +494,9 @@ function galaxy_ally_position($step = 50)
     }
 
     $pub_ally_protection = $allied = array();
-    if ($server_config["ally_protection"] != "") $pub_ally_protection = explode(",", $server_config["ally_protection"]);
+    if ($server_config["ally_protection"] != "") {
+        $pub_ally_protection = explode(",", $server_config["ally_protection"]);
+    }
 
     $statistics = array();
     for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
@@ -447,7 +504,9 @@ function galaxy_ally_position($step = 50)
     }
 
     foreach ($pub_ally_list as $pub_ally_name) {
-        if ($pub_ally_name == "") continue;
+        if ($pub_ally_name == "") {
+            continue;
+        }
         if (in_array($pub_ally_name, $pub_ally_protection) && $user_auth["server_show_positionhided"] == 0 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {
             $statistics[$pub_ally_name][0][0] = null;
             continue;
@@ -654,8 +713,9 @@ function galaxy_show_ranking_player()
         $request = "SELECT max(datadate) FROM " . $table[$i]["tablename"];
         $result = $db->sql_query($request);
         list($last_ranking) = $db->sql_fetch_row($result);
-    } else
-        $last_ranking = $pub_date;
+    } else {
+            $last_ranking = $pub_date;
+    }
 
     $request = "select rank, player, ally, points, user_name";
     $request .= " from " . $table[$i]["tablename"] . " left join " . TABLE_USER;
@@ -762,8 +822,11 @@ function galaxy_show_ranking_ally()
     // selection de rank max !
     $maxrank = max($maxrank);
 
-    if (isset($pub_suborder) && $pub_suborder == "member") $pub_order_by2 = "points_per_member desc"; else
-        $pub_order_by2 = "rank";
+    if (isset($pub_suborder) && $pub_suborder == "member") {
+        $pub_order_by2 = "points_per_member desc";
+    } else {
+            $pub_order_by2 = "rank";
+    }
 
     if (!isset($pub_interval)) {
         $pub_interval = 1;
@@ -799,8 +862,9 @@ function galaxy_show_ranking_ally()
         $request = "SELECT max(datadate) FROM " . $table[$i]["tablename"];
         $result = $db->sql_query($request);
         list($last_ranking) = $db->sql_fetch_row($result);
-    } else
-        $last_ranking = $pub_date;
+    } else {
+            $last_ranking = $pub_date;
+    }
 
     $request = "select rank, ally, number_member, points,  user_name";
     $request .= " from " . $table[$i]["tablename"] . " left join " . TABLE_USER;
@@ -884,7 +948,9 @@ function galaxy_show_ranking_unique_player($player, $last = false)
         $result = $db->sql_query($request);
         while (list($datadate, $rank, $points) = $db->sql_fetch_row($result)) {
             $ranking[$datadate][$name[$i]] = array("rank" => $rank, "points" => $points);
-            if ($last) break;
+            if ($last) {
+                break;
+            }
         }
 
 
@@ -922,7 +988,9 @@ function galaxy_show_ranking_unique_ally($ally, $last = false)
         while ($row = $db->sql_fetch_assoc($result)) {
             $ranking[$row["datadate"]][$name[$i]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int) ($row["points"] / $row["number_member"]));
             $ranking[$row["datadate"]]["number_member"] = $row["number_member"];
-            if ($last) break;
+            if ($last) {
+                break;
+            }
         }
         $i++;
     }
@@ -1049,7 +1117,9 @@ function galaxy_get_phalanx($galaxy, $system)
     global $server_config, $user_data, $user_auth;
 
     $ally_protection = array();
-    if ($server_config["ally_protection"] != "") $ally_protection = explode(",", $server_config["ally_protection"]);
+    if ($server_config["ally_protection"] != "") {
+        $ally_protection = explode(",", $server_config["ally_protection"]);
+    }
 
     $phalanxer = array();
     $data_computed = array();
@@ -1057,8 +1127,9 @@ function galaxy_get_phalanx($galaxy, $system)
     $universeRepository = new Universe_Model();
     $data = $universeRepository->get_phalanx($galaxy);
 
-    if (count($data) == 0)
-        return array();
+    if (count($data) == 0) {
+            return array();
+    }
 
     foreach ($data as $phalanx) {
         $arrondi_type = 0;
@@ -1093,8 +1164,8 @@ function galaxy_get_phalanx($galaxy, $system)
             $add_to_list = false;
         }
 
-        if ($add_to_list == true)
-            $data_computed[] = array(
+        if ($add_to_list == true) {
+                    $data_computed[] = array(
                 'galaxy' => $phalanx["galaxy"],
                 'system' => $phalanx["system"],
                 'row' => $phalanx["row"],
@@ -1106,11 +1177,13 @@ function galaxy_get_phalanx($galaxy, $system)
                 'range_down' => $system_lower_range,
                 'range_up' => $system_higher_range
             );
+        }
     }
 
     foreach ($data_computed as $phalange) { // Filtre alliance amies et masquées
-        if (!in_array($phalange["ally"], $ally_protection) || $phalange["ally"] == "" || $user_auth["server_show_positionhided"] == 1 || $user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1)
-            $phalanxer[] = $phalange;
+        if (!in_array($phalange["ally"], $ally_protection) || $phalange["ally"] == "" || $user_auth["server_show_positionhided"] == 1 || $user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
+                    $phalanxer[] = $phalange;
+        }
     }
     return $phalanxer;
 }
@@ -1133,7 +1206,9 @@ function galaxy_obsolete()
 
     $obsolete = array();
     if (isset($pub_perimeter) && isset($pub_since) && is_numeric($pub_perimeter) && is_numeric($pub_since)) {
-        if (!isset($pub_typesearch) || ($pub_typesearch != "M" && $pub_typesearch != "P")) $pub_typesearch = "P";
+        if (!isset($pub_typesearch) || ($pub_typesearch != "M" && $pub_typesearch != "P")) {
+            $pub_typesearch = "P";
+        }
 
 
         $timestamp = time();
@@ -1169,7 +1244,9 @@ function galaxy_obsolete()
 
 
         $request = "select distinct galaxy, system" . $row_field . " from " . TABLE_UNIVERSE . " where moon = '" . $moon . "' and " . $field . " between " . $indice_sup . " and " . $indice_inf;
-        if ($pub_perimeter != 0) $request .= " and galaxy = " . intval($pub_perimeter);
+        if ($pub_perimeter != 0) {
+            $request .= " and galaxy = " . intval($pub_perimeter);
+        }
         $request .= " order by galaxy, system, row limit 0, 51";
         $result = $db->sql_query($request);
 
@@ -1220,8 +1297,11 @@ function UNparseRE($id_RE)
 
     $sep_mille = ".";
 
-    if (preg_match('/\(Lune\)/', $row['planet_name'])) $moon = 1; else
-        $moon = 0;
+    if (preg_match('/\(Lune\)/', $row['planet_name'])) {
+        $moon = 1;
+    } else {
+            $moon = 0;
+    }
 
     $dateRE = date('m-d H:i:s', $row['dateRE']);
     $template = '<table border="0" cellpadding="2" cellspacing="0" align="center">
@@ -1242,8 +1322,11 @@ function UNparseRE($id_RE)
     </tr>
     <tr>
         <th colspan="4">';
-    if ($row['activite'] > 0) $template .= $lang['GAME_SPYREPORT_ACTIVITY'] . ' ' . $row['activite'] . ' ' . $lang['GAME_SPYREPORT_LASTMINUTES'] . '.'; else
-        $template .= $lang['GAME_SPYREPORT_NOACTIVITY'];
+    if ($row['activite'] > 0) {
+        $template .= $lang['GAME_SPYREPORT_ACTIVITY'] . ' ' . $row['activite'] . ' ' . $lang['GAME_SPYREPORT_LASTMINUTES'] . '.';
+    } else {
+            $template .= $lang['GAME_SPYREPORT_NOACTIVITY'];
+    }
     $template .= '</th>
     </tr>' . "\n";
     foreach ($flotte as $key => $value) {
@@ -1341,8 +1424,10 @@ function UNparseRE($id_RE)
                 }
             }
         }
-        if ($count == 1) $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
+        if ($count == 1) {
+            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
         <th>&nbsp;</th>' . "\n";
+        }
         $template .= '  </tr>' . "\n";
     }
     if ($show['defense'] == 1) {
@@ -1364,8 +1449,10 @@ function UNparseRE($id_RE)
                 }
             }
         }
-        if ($count == 1) $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
+        if ($count == 1) {
+            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
         <th>&nbsp;</th>' . "\n";
+        }
         $template .= '  </tr>' . "\n";
     }
     if ($show['batiment'] == 1) {
@@ -1387,8 +1474,10 @@ function UNparseRE($id_RE)
                 }
             }
         }
-        if ($count == 1) $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
+        if ($count == 1) {
+            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
         <th>&nbsp;</th>' . "\n";
+        }
         $template .= '  </tr>' . "\n";
     }
     if ($show['recherche'] == 1) {
@@ -1410,8 +1499,10 @@ function UNparseRE($id_RE)
                 }
             }
         }
-        if ($count == 1) $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
+        if ($count == 1) {
+            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
         <th>&nbsp;</th>' . "\n";
+        }
         $template .= '  </tr>' . "\n";
     }
     $template .= '  <tr>
@@ -1502,7 +1593,9 @@ function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_
 {
     global $lang;
 
-    if (!$missil_dispo) $missil_dispo = $lang['GALAXY_MIP_UNKNOWN'];
+    if (!$missil_dispo) {
+        $missil_dispo = $lang['GALAXY_MIP_UNKNOWN'];
+    }
 
     $color_missil_ally1 = '<span style=\'color: #00FF00; \'>';
     $color_missil_ally2 = '</span>';
@@ -1523,7 +1616,10 @@ function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_
     $ok_missil .= $door . $missil_ready . $color_missil_ally1 . $base_coord . $color_missil_ally2;
 
 
-    if ($ok_missil) $missil_ok = "<br><span style='color: #FFFF66; '> " . $lang['GALAXY_MIP_UNDERFIRE'] . " : </span>" . $ok_missil . "</a>"; else
-        $missil_ok = "<span style='color: #FFFF66; '> " . $lang['GALAXY_MIP_NOMIPS_AROUND'] . "</span>";
+    if ($ok_missil) {
+        $missil_ok = "<br><span style='color: #FFFF66; '> " . $lang['GALAXY_MIP_UNDERFIRE'] . " : </span>" . $ok_missil . "</a>";
+    } else {
+            $missil_ok = "<span style='color: #FFFF66; '> " . $lang['GALAXY_MIP_NOMIPS_AROUND'] . "</span>";
+    }
     return $missil_ok;
 }
