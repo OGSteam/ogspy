@@ -219,7 +219,7 @@ class Mod_DevTools
     /**
      * Function Register Xtense Callback
      */
-    function mod_register_xtense_callback(){
+    function mod_register_xtense_callback() {
 
         //TODO
     }
@@ -227,7 +227,7 @@ class Mod_DevTools
     /**
      * Function Register Xtense Callback
      */
-    function mod_unregister_xtense_callback(){
+    function mod_unregister_xtense_callback() {
 
         //TODO
     }

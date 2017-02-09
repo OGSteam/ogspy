@@ -12,9 +12,7 @@
 
 namespace Ogsteam\Ogspy;
 
-use Ogsteam\Ogspy\Model\Mod_Config_Model;
 use Ogsteam\Ogspy\Model\Mod_Model;
-use Ogsteam\Ogspy\Model\Mod_User_Config_Model;
 
 
 /**
@@ -110,7 +108,6 @@ function mod_list()
 
 /**
  * Function mod_check : Checks if an unauthorized user tries to install a mod without being admin or with wrong parameters
- * @param string $check type of varaible to be checked
  */
 function mod_check($check_type, $data)
 {
@@ -138,7 +135,7 @@ function mod_check($check_type, $data)
 /**
  * Installs a Mod from a mod folder name (Fonction utilisée par la partie admin)
  * @global $pub_directory
- * @return bool
+ * @return null|boolean
  * @global $pub_directory
  *
  */
@@ -447,7 +444,7 @@ function mod_normal()
 /**
  * Function to set the position of a mod into the mod list
  * @param string $order up or down according to the new desired postion.
- * @return bool
+ * @return null|boolean
  */
 function mod_sort($order)
 {
