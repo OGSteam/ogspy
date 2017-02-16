@@ -445,7 +445,7 @@ CREATE TABLE ogspy_sessions (
 ##
 
 CREATE TABLE ogspy_tokens (
-  token_id      CHAR(32)     NOT NULL DEFAULT '',
+  token_id      CHAR(64)     NOT NULL DEFAULT '',
   token_user_id INT UNSIGNED NOT NULL DEFAULT '0',
   token_expire  INT UNSIGNED NOT NULL DEFAULT '0',
   token_type    VARCHAR(32)  NOT NULL DEFAULT '0',
