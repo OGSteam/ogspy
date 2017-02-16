@@ -130,7 +130,8 @@ switch ($pub_action) {
         break;
 
     case "db_optimize" :
-        db_optimize();
+        global $db;
+        $db->db_optimize();
         break;
 
     case "drop_sessions" :
