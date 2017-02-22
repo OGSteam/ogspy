@@ -28,7 +28,7 @@ class Mod_Config_Model
     {
         global $db;
         $request = "SELECT `value` FROM `" . TABLE_MOD_CFG . "` WHERE `mod` = '" . $module . "'";
-         if ($config != null)
+            if ($config != null)
             $request .= " AND `config` = '" . $config . "'";
 
         $queryResult = $db->sql_query($request);
@@ -53,11 +53,13 @@ class Mod_Config_Model
     {
         global $db;
         $query = "DELETE FROM `" . TABLE_MOD_CFG . "` WHERE `mod` = '" . $module . "'";
-        if ($config != null)
-            $query .= " AND `config` = '" . $config . "'";
+        if ($config != null) {
+                    $query .= " AND `config` = '" . $config . "'";
+        }
 
-        if (!$db->sql_query($query))
-            return false;
+        if (!$db->sql_query($query)) {
+                    return false;
+        }
 
         return true;
     }
@@ -75,7 +77,9 @@ class Mod_Config_Model
 
         $query = 'REPLACE INTO `' . TABLE_MOD_CFG . '` VALUES ("' . $module . '", "' . $config . '", "' . $db->sql_escape_string($value) . '")';
 
-        if (!$db->sql_query($query)) return false;
+        if (!$db->sql_query($query)) {
+            return false;
+        }
         return true;
     }
 }
