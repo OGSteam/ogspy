@@ -3,49 +3,55 @@
 # Novembre 2016
 # 
 
-## ########################################################
+## Droping OGSpy Tables
 
 DROP TABLE IF EXISTS ogspy_config;
 DROP TABLE IF EXISTS ogspy_group;
 DROP TABLE IF EXISTS ogspy_mod;
-DROP TABLE IF EXISTS ogspy_rank_ally_economique;
-DROP TABLE IF EXISTS ogspy_rank_ally_technology;
-DROP TABLE IF EXISTS ogspy_rank_ally_military;
-DROP TABLE IF EXISTS ogspy_rank_ally_military_built;
-DROP TABLE IF EXISTS ogspy_rank_ally_military_loose;
-DROP TABLE IF EXISTS ogspy_rank_ally_military_destruct;
-DROP TABLE IF EXISTS ogspy_rank_ally_honor;
-DROP TABLE IF EXISTS ogspy_rank_ally_points;
-DROP TABLE IF EXISTS ogspy_rank_player_economique;
-DROP TABLE IF EXISTS ogspy_rank_player_technology;
-DROP TABLE IF EXISTS ogspy_rank_player_military;
-DROP TABLE IF EXISTS ogspy_rank_player_military_built;
-DROP TABLE IF EXISTS ogspy_rank_player_military_built;
-DROP TABLE IF EXISTS ogspy_rank_player_military_destruct;
-DROP TABLE IF EXISTS ogspy_rank_player_military_loose;
-DROP TABLE IF EXISTS ogspy_rank_player_honor;
-DROP TABLE IF EXISTS ogspy_rank_player_points;
+DROP TABLE IF EXISTS ogspy_mod_config;
+DROP TABLE IF EXISTS ogspy_mod_user_config;
 DROP TABLE IF EXISTS ogspy_sessions;
 DROP TABLE IF EXISTS ogspy_statistics;
-DROP TABLE IF EXISTS ogspy_universe;
-DROP TABLE IF EXISTS ogspy_mod_user_config;
+DROP TABLE IF EXISTS ogspy_tokens;
 DROP TABLE IF EXISTS ogspy_user;
-DROP TABLE IF EXISTS ogspy_user_building;
-DROP TABLE IF EXISTS ogspy_user_defence;
 DROP TABLE IF EXISTS ogspy_user_favorite;
 DROP TABLE IF EXISTS ogspy_user_group;
-DROP TABLE IF EXISTS ogspy_user_spy;
-DROP TABLE IF EXISTS ogspy_user_technology;
-DROP TABLE IF EXISTS ogspy_mod_config;
-DROP TABLE IF EXISTS ogspy_parsedspy;
-DROP TABLE IF EXISTS ogspy_parsedRC;
-DROP TABLE IF EXISTS ogspy_parsedRCRound;
-DROP TABLE IF EXISTS ogspy_round_attack;
-DROP TABLE IF EXISTS ogspy_round_defense;
-DROP TABLE IF EXISTS ogspy_gcm_users;
-DROP TABLE IF EXISTS ogspy_tokens;
 
-## 
+## Droping Game related tables
+
+DROP TABLE IF EXISTS ogspy_game_cr;
+DROP TABLE IF EXISTS ogspy_game_cr_round;
+DROP TABLE IF EXISTS ogspy_game_cr_round_attack;
+DROP TABLE IF EXISTS ogspy_game_cr_round_defense;
+DROP TABLE IF EXISTS ogspy_game_debris_fields;
+DROP TABLE IF EXISTS ogspy_game_ennemy_spyers;
+DROP TABLE IF EXISTS ogspy_game_rank_ally_economique;
+DROP TABLE IF EXISTS ogspy_game_rank_ally_technology;
+DROP TABLE IF EXISTS ogspy_game_rank_ally_military;
+DROP TABLE IF EXISTS ogspy_game_rank_ally_military_built;
+DROP TABLE IF EXISTS ogspy_game_rank_ally_military_loose;
+DROP TABLE IF EXISTS ogspy_game_rank_ally_military_destruct;
+DROP TABLE IF EXISTS ogspy_game_rank_ally_honor;
+DROP TABLE IF EXISTS ogspy_game_rank_ally_points;
+DROP TABLE IF EXISTS ogspy_game_rank_player_economique;
+DROP TABLE IF EXISTS ogspy_game_rank_player_technology;
+DROP TABLE IF EXISTS ogspy_game_rank_player_military;
+DROP TABLE IF EXISTS ogspy_game_rank_player_military_built;
+DROP TABLE IF EXISTS ogspy_game_rank_player_military_built;
+DROP TABLE IF EXISTS ogspy_game_rank_player_military_destruct;
+DROP TABLE IF EXISTS ogspy_game_rank_player_military_loose;
+DROP TABLE IF EXISTS ogspy_game_rank_player_honor;
+DROP TABLE IF EXISTS ogspy_game_rank_player_points;
+DROP TABLE IF EXISTS ogspy_game_spy;
+DROP TABLE IF EXISTS ogspy_game_player_building;
+DROP TABLE IF EXISTS ogspy_game_player_defence;
+DROP TABLE IF EXISTS ogspy_game_player_spy;
+DROP TABLE IF EXISTS ogspy_game_player_technology;
+DROP TABLE IF EXISTS ogspy_game_universe;
+
+## Tables used byt the OGSpy tool
+
+##
 ## Structure de la table `ogspy_config`
 ## 
 
@@ -56,9 +62,7 @@ CREATE TABLE ogspy_config (
 )
   DEFAULT CHARSET = utf8;
 
-## ########################################################
-
-## 
+##
 ## Structure de la table `ogspy_group`
 ## 
 
@@ -81,9 +85,7 @@ CREATE TABLE ogspy_group (
 )
   DEFAULT CHARSET = utf8;
 
-## ########################################################
-
-## 
+##
 ## Structure de la table `ogspy_mod`
 ## 
 
@@ -114,317 +116,36 @@ CREATE TABLE ogspy_mod (
 )
   DEFAULT CHARSET = utf8;
 
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_ally_economique`
-## 
-
-CREATE TABLE ogspy_rank_ally_economique (
-  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
-  rank          INT UNSIGNED NOT NULL DEFAULT '0',
-  ally          VARCHAR(255) NOT NULL,
-  number_member INT UNSIGNED NOT NULL,
-  points        INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, ally),
-  KEY ally (ally)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_ally_technology`
-## 
-
-CREATE TABLE ogspy_rank_ally_technology (
-  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
-  rank          INT UNSIGNED NOT NULL DEFAULT '0',
-  ally          VARCHAR(255) NOT NULL,
-  number_member INT UNSIGNED NOT NULL,
-  points        INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, ally),
-  KEY ally (ally)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_ally_military`
-## 
-
-CREATE TABLE ogspy_rank_ally_military (
-  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
-  rank          INT UNSIGNED NOT NULL DEFAULT '0',
-  ally          VARCHAR(255) NOT NULL,
-  number_member INT UNSIGNED NOT NULL,
-  points        INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, ally),
-  KEY ally (ally)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_ally_military_built`
-## 
-
-CREATE TABLE ogspy_rank_ally_military_built (
-  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
-  rank          INT UNSIGNED NOT NULL DEFAULT '0',
-  ally          VARCHAR(255) NOT NULL,
-  number_member INT UNSIGNED NOT NULL,
-  points        INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, ally),
-  KEY ally (ally)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_ally_military_loose`
-## 
-
-CREATE TABLE ogspy_rank_ally_military_loose (
-  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
-  rank          INT UNSIGNED NOT NULL DEFAULT '0',
-  ally          VARCHAR(255) NOT NULL,
-  number_member INT UNSIGNED NOT NULL,
-  points        INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, ally),
-  KEY ally (ally)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_ally_military_destruct`
-## 
-
-CREATE TABLE ogspy_rank_ally_military_destruct (
-  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
-  rank          INT UNSIGNED NOT NULL DEFAULT '0',
-  ally          VARCHAR(255) NOT NULL,
-  number_member INT UNSIGNED NOT NULL,
-  points        INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, ally),
-  KEY ally (ally)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_ally_honor`
-## 
-
-CREATE TABLE ogspy_rank_ally_honor (
-  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
-  rank          INT UNSIGNED NOT NULL DEFAULT '0',
-  ally          VARCHAR(255) NOT NULL,
-  number_member INT UNSIGNED NOT NULL,
-  points        INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, ally),
-  KEY ally (ally)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_ally_points`
-## 
-
-CREATE TABLE ogspy_rank_ally_points (
-  datadate          INT UNSIGNED NOT NULL DEFAULT '0',
-  rank              INT UNSIGNED NOT NULL DEFAULT '0',
-  ally              VARCHAR(255) NOT NULL,
-  number_member     INT UNSIGNED NOT NULL,
-  points            INT UNSIGNED NOT NULL DEFAULT '0',
-  points_per_member INT UNSIGNED NOT NULL,
-  sender_id         INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, ally),
-  KEY ally (ally)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_player_economique`
-## 
-
-CREATE TABLE ogspy_rank_player_economique (
-  datadate  INT UNSIGNED NOT NULL DEFAULT '0',
-  rank      INT UNSIGNED NOT NULL DEFAULT '0',
-  player    VARCHAR(255) NOT NULL DEFAULT '',
-  ally      VARCHAR(255) NOT NULL DEFAULT '',
-  points    INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, player),
-  KEY player (player)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_player_technology`
-## 
-
-CREATE TABLE ogspy_rank_player_technology (
-  datadate  INT UNSIGNED NOT NULL DEFAULT '0',
-  rank      INT UNSIGNED NOT NULL DEFAULT '0',
-  player    VARCHAR(255) NOT NULL DEFAULT '',
-  ally      VARCHAR(255) NOT NULL DEFAULT '',
-  points    INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, player),
-  KEY player (player)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_player_military`
-## 
-
-CREATE TABLE ogspy_rank_player_military (
-  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
-  rank          INT UNSIGNED NOT NULL DEFAULT '0',
-  player        VARCHAR(255) NOT NULL DEFAULT '',
-  ally          VARCHAR(255) NOT NULL DEFAULT '',
-  points        INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
-  nb_spacecraft INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, player),
-  KEY player (player)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_player_military_built`
-## 
-
-CREATE TABLE ogspy_rank_player_military_built (
-  datadate  INT UNSIGNED NOT NULL DEFAULT '0',
-  rank      INT UNSIGNED NOT NULL DEFAULT '0',
-  player    VARCHAR(255) NOT NULL DEFAULT '',
-  ally      VARCHAR(255) NOT NULL DEFAULT '',
-  points    INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, player),
-  KEY player (player)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_rank_player_military_loose`
-## 
-
-CREATE TABLE ogspy_rank_player_military_loose (
-  datadate  INT UNSIGNED NOT NULL DEFAULT '0',
-  rank      INT UNSIGNED NOT NULL DEFAULT '0',
-  player    VARCHAR(255) NOT NULL DEFAULT '',
-  ally      VARCHAR(255) NOT NULL DEFAULT '',
-  points    INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, player),
-  KEY player (player)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
 ##
-## Structure de la table `ogspy_rank_player_military_destruct`
-## 
+## Structure de la table `ogspy_mod_config`
+##
 
-CREATE TABLE ogspy_rank_player_military_destruct (
-  datadate  INT UNSIGNED NOT NULL DEFAULT '0',
-  rank      INT UNSIGNED NOT NULL DEFAULT '0',
-  player    VARCHAR(255) NOT NULL DEFAULT '',
-  ally      VARCHAR(255) NOT NULL DEFAULT '',
-  points    INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, player),
-  KEY player (player)
+CREATE TABLE `ogspy_mod_config` (
+  `mod`    VARCHAR(50)  NOT NULL DEFAULT '',
+  `config` VARCHAR(255) NOT NULL DEFAULT '',
+  `value`  VARCHAR(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`mod`, `config`)
 )
   DEFAULT CHARSET = utf8;
 
-## ########################################################
+##
+## Structure de la table ogspy_mod_user_config
+##
 
-## 
-## Structure de la table `ogspy_rank_player_honor`
-## 
-
-CREATE TABLE ogspy_rank_player_honor (
-  datadate  INT UNSIGNED NOT NULL DEFAULT '0',
-  rank      INT UNSIGNED NOT NULL DEFAULT '0',
-  player    VARCHAR(255) NOT NULL DEFAULT '',
-  ally      VARCHAR(255) NOT NULL DEFAULT '',
-  points    INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, player),
-  KEY player (player)
+CREATE TABLE `ogspy_mod_user_config` (
+  `mod`     VARCHAR(50)  NOT NULL,
+  `config`  VARCHAR(255) NOT NULL,
+  `user_id` INT UNSIGNED NOT NULL,
+  `value`   VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`mod`, `config`, `user_id`),
+  INDEX `fk_user_userid` (`user_id`),
+  CONSTRAINT `fk_user_userid` FOREIGN KEY (`user_id`) REFERENCES ogspy_user (`user_id`)
 )
   DEFAULT CHARSET = utf8;
 
-## ########################################################
-
-
-## 
-## Structure de la table `ogspy_rank_player_points`
-## 
-
-CREATE TABLE ogspy_rank_player_points (
-  datadate  INT UNSIGNED NOT NULL DEFAULT '0',
-  rank      INT UNSIGNED NOT NULL DEFAULT '0',
-  player    VARCHAR(255) NOT NULL DEFAULT '',
-  ally      VARCHAR(255) NOT NULL DEFAULT '',
-  points    INT UNSIGNED NOT NULL DEFAULT '0',
-  sender_id INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (rank, datadate),
-  KEY datadate (datadate, player),
-  KEY player (player)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
+##
 ## Structure de la table `ogspy_sessions`
-## 
+##
 
 CREATE TABLE ogspy_sessions (
   session_id        CHAR(32)        NOT NULL DEFAULT '',
@@ -438,10 +159,19 @@ CREATE TABLE ogspy_sessions (
 )
   DEFAULT CHARSET = utf8;
 
-## ########################################################
+##
+## Structure de la table `ogspy_statistics`
+##
+
+CREATE TABLE ogspy_statistics (
+  statistic_name  VARCHAR(255) NOT NULL DEFAULT '',
+  statistic_value VARCHAR(255) NOT NULL DEFAULT '0',
+  PRIMARY KEY (statistic_name)
+)
+  DEFAULT CHARSET = utf8;
 
 ##
-## Structure de la table `ogspy_apitokens`
+## Structure de la table `ogspy_tokens`
 ##
 
 CREATE TABLE ogspy_tokens (
@@ -453,48 +183,9 @@ CREATE TABLE ogspy_tokens (
 )
   DEFAULT CHARSET = utf8;
 
-## ########################################################
-
-## 
-## Structure de la table `ogspy_statistics`
-## 
-
-CREATE TABLE ogspy_statistics (
-  statistic_name  VARCHAR(255) NOT NULL DEFAULT '',
-  statistic_value VARCHAR(255) NOT NULL DEFAULT '0',
-  PRIMARY KEY (statistic_name)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_universe`
-## 
-
-CREATE TABLE ogspy_universe (
-  galaxy              SMALLINT(2)     NOT NULL DEFAULT '1',
-  system              SMALLINT(3)     NOT NULL DEFAULT '1',
-  `row`               SMALLINT(2)     NOT NULL DEFAULT '1',
-  moon                ENUM ('0', '1') NOT NULL DEFAULT '0',
-  phalanx             TINYINT(1)      NOT NULL DEFAULT '0',
-  gate                ENUM ('0', '1') NOT NULL DEFAULT '0',
-  `name`              VARCHAR(20)     NOT NULL DEFAULT '',
-  ally                VARCHAR(20)              DEFAULT NULL,
-  player              VARCHAR(20)              DEFAULT NULL,
-  `status`            VARCHAR(5)      NOT NULL,
-  last_update         INT UNSIGNED    NOT NULL DEFAULT '0',
-  last_update_moon    INT UNSIGNED    NOT NULL DEFAULT '0',
-  last_update_user_id INT UNSIGNED    NOT NULL DEFAULT '0',
-  UNIQUE KEY univers (galaxy, system, `row`),
-  KEY player (player)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-## 
+##
 ## Structure de la table `ogspy_user`
-## 
+##
 
 CREATE TABLE ogspy_user (
   `user_id`             INT UNSIGNED    NOT NULL AUTO_INCREMENT,
@@ -530,78 +221,9 @@ CREATE TABLE ogspy_user (
   ENGINE = INNODB
   DEFAULT CHARSET = utf8;
 
-## ########################################################
-
-## 
-## Structure de la table `ogspy_user_building`
-## 
-
-CREATE TABLE ogspy_user_building (
-  user_id         INT UNSIGNED NOT NULL DEFAULT '0',
-  planet_id       INT UNSIGNED NOT NULL DEFAULT '0',
-  planet_name     VARCHAR(20)  NOT NULL DEFAULT '',
-  coordinates     VARCHAR(10)  NOT NULL DEFAULT '',
-  `fields`        SMALLINT(3)  NOT NULL DEFAULT '0',
-  `boosters`      VARCHAR(64)  NOT NULL DEFAULT 'm:0:0_c:0:0_d:0:0_p:0_m:0',
-  temperature_min SMALLINT(2)  NOT NULL DEFAULT '0',
-  temperature_max SMALLINT(2)  NOT NULL DEFAULT '0',
-  Sat             SMALLINT(5)  NOT NULL DEFAULT '0',
-  Sat_percentage  SMALLINT(3)  NOT NULL DEFAULT '100',
-  M               SMALLINT(2)  NOT NULL DEFAULT '0',
-  M_percentage    SMALLINT(3)  NOT NULL DEFAULT '100',
-  C               SMALLINT(2)  NOT NULL DEFAULT '0',
-  C_Percentage    SMALLINT(3)  NOT NULL DEFAULT '100',
-  D               SMALLINT(2)  NOT NULL DEFAULT '0',
-  D_percentage    SMALLINT(3)  NOT NULL DEFAULT '100',
-  CES             SMALLINT(2)  NOT NULL DEFAULT '0',
-  CES_percentage  SMALLINT(3)  NOT NULL DEFAULT '100',
-  CEF             SMALLINT(2)  NOT NULL DEFAULT '0',
-  CEF_percentage  SMALLINT(3)  NOT NULL DEFAULT '100',
-  UdR             SMALLINT(2)  NOT NULL DEFAULT '0',
-  UdN             SMALLINT(2)  NOT NULL DEFAULT '0',
-  CSp             SMALLINT(2)  NOT NULL DEFAULT '0',
-  HM              SMALLINT(2)  NOT NULL DEFAULT '0',
-  HC              SMALLINT(2)  NOT NULL DEFAULT '0',
-  HD              SMALLINT(2)  NOT NULL DEFAULT '0',
-  Lab             SMALLINT(2)  NOT NULL DEFAULT '0',
-  Ter             SMALLINT(2)  NOT NULL DEFAULT '0',
-  DdR             SMALLINT(2)  NOT NULL DEFAULT '0',
-  Silo            SMALLINT(2)  NOT NULL DEFAULT '0',
-  BaLu            SMALLINT(2)  NOT NULL DEFAULT '0',
-  Pha             SMALLINT(2)  NOT NULL DEFAULT '0',
-  PoSa            SMALLINT(2)  NOT NULL DEFAULT '0',
-  PRIMARY KEY (user_id, planet_id)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
-## Structure de la table `ogspy_user_defence`
-## 
-
-CREATE TABLE ogspy_user_defence (
-  user_id   INT UNSIGNED NOT NULL DEFAULT '0',
-  planet_id INT UNSIGNED NOT NULL DEFAULT '0',
-  LM        INT UNSIGNED NOT NULL DEFAULT '0',
-  LLE       INT UNSIGNED NOT NULL DEFAULT '0',
-  LLO       INT UNSIGNED NOT NULL DEFAULT '0',
-  CG        INT UNSIGNED NOT NULL DEFAULT '0',
-  AI        INT UNSIGNED NOT NULL DEFAULT '0',
-  LP        INT UNSIGNED NOT NULL DEFAULT '0',
-  PB        SMALLINT(1)  NOT NULL DEFAULT '0',
-  GB        SMALLINT(1)  NOT NULL DEFAULT '0',
-  MIC       SMALLINT(3)  NOT NULL DEFAULT '0',
-  MIP       SMALLINT(3)  NOT NULL DEFAULT '0',
-  PRIMARY KEY (user_id, planet_id)
-)
-  DEFAULT CHARSET = utf8;
-
-## ########################################################
-
-## 
+##
 ## Structure de la table `ogspy_user_favorite`
-## 
+##
 
 CREATE TABLE ogspy_user_favorite (
   user_id INT UNSIGNED NOT NULL DEFAULT '0',
@@ -611,11 +233,9 @@ CREATE TABLE ogspy_user_favorite (
 )
   DEFAULT CHARSET = utf8;
 
-## ########################################################
-
-## 
+##
 ## Structure de la table `ogspy_user_group`
-## 
+##
 
 CREATE TABLE ogspy_user_group (
   group_id MEDIUMINT(8) NOT NULL DEFAULT '0',
@@ -624,132 +244,433 @@ CREATE TABLE ogspy_user_group (
 )
   DEFAULT CHARSET = utf8;
 
-## ########################################################
+############## Game related tables #############
 
-## 
-## Structure de la table `ogspy_user_spy`
-## 
+##
+## Structure de la table `ogspy_game_cr`
+##
 
-CREATE TABLE ogspy_user_spy (
-  user_id INT UNSIGNED NOT NULL DEFAULT '0',
-  spy_id  INT UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (user_id, spy_id)
+CREATE TABLE `ogspy_game_cr` (
+  `id_rc`       INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `dateRC`      INT UNSIGNED NOT NULL DEFAULT '0',
+  `coordinates` VARCHAR(255) NOT NULL DEFAULT '',
+  `nb_rounds`   TINYINT(2)   NOT NULL DEFAULT '0',
+  `victoire`    CHAR         NOT NULL DEFAULT 'A',
+  `pertes_A`    BIGINT       NOT NULL DEFAULT '0',
+  `pertes_D`    BIGINT       NOT NULL DEFAULT '0',
+  `gain_M`      BIGINT                DEFAULT NULL,
+  `gain_C`      BIGINT                DEFAULT NULL,
+  `gain_D`      BIGINT                DEFAULT NULL,
+  `debris_M`    BIGINT                DEFAULT NULL,
+  `debris_C`    BIGINT                DEFAULT NULL,
+  `lune`        TINYINT(2)   NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id_rc`),
+  KEY `coordinatesrc` (`coordinates`)
 )
   DEFAULT CHARSET = utf8;
 
-## ########################################################
-## 
-## Structure de la table `ogspy_user_technology`
-## 
+##
+## Structure de la table `ogspy_game_cr_rounds`
+##
 
-CREATE TABLE ogspy_user_technology (
-  user_id       INT UNSIGNED NOT NULL DEFAULT '0',
-  Esp           SMALLINT(2)  NOT NULL DEFAULT '0',
-  Ordi          SMALLINT(2)  NOT NULL DEFAULT '0',
-  Armes         SMALLINT(2)  NOT NULL DEFAULT '0',
-  Bouclier      SMALLINT(2)  NOT NULL DEFAULT '0',
-  Protection    SMALLINT(2)  NOT NULL DEFAULT '0',
-  NRJ           SMALLINT(2)  NOT NULL DEFAULT '0',
-  Hyp           SMALLINT(2)  NOT NULL DEFAULT '0',
-  RC            SMALLINT(2)  NOT NULL DEFAULT '0',
-  RI            SMALLINT(2)  NOT NULL DEFAULT '0',
-  PH            SMALLINT(2)  NOT NULL DEFAULT '0',
-  Laser         SMALLINT(2)  NOT NULL DEFAULT '0',
-  Ions          SMALLINT(2)  NOT NULL DEFAULT '0',
-  Plasma        SMALLINT(2)  NOT NULL DEFAULT '0',
-  RRI           SMALLINT(2)  NOT NULL DEFAULT '0',
-  Graviton      SMALLINT(2)  NOT NULL DEFAULT '0',
-  Astrophysique SMALLINT(2)  NOT NULL DEFAULT '0',
-  PRIMARY KEY (user_id)
+CREATE TABLE `ogspy_game_cr_rounds` (
+  `id_rcround`        INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_rc`             INT UNSIGNED NOT NULL,
+  `numround`          TINYINT(2)   NOT NULL,
+  `attaque_tir`       INT UNSIGNED NOT NULL,
+  `attaque_puissance` INT UNSIGNED NOT NULL,
+  `defense_bouclier`  INT UNSIGNED NOT NULL,
+  `attaque_bouclier`  INT UNSIGNED NOT NULL,
+  `defense_tir`       INT UNSIGNED NOT NULL,
+  `defense_puissance` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_rcround),
+  KEY `rcround` (`id_rc`, `numround`),
+  KEY `id_rc` (`id_rc`)
 )
   DEFAULT CHARSET = utf8;
 
-## ########################################################
 ##
-## Structure de la table `ogspy_mod_config`
+## Structure de la table `ogspy_game_cr_round_attack`
 ##
 
-CREATE TABLE `ogspy_mod_config` (
-  `mod`    VARCHAR(50)  NOT NULL DEFAULT '',
-  `config` VARCHAR(255) NOT NULL DEFAULT '',
-  `value`  VARCHAR(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`mod`, `config`)
+CREATE TABLE `ogspy_game_cr_round_attack` (
+  `id_roundattack` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_rcround`     INT UNSIGNED NOT NULL,
+  `player`         VARCHAR(255) NOT NULL,
+  `coordinates`    VARCHAR(9)   NOT NULL,
+  `Armes`          SMALLINT(2)  NOT NULL,
+  `Bouclier`       SMALLINT(2)  NOT NULL,
+  `Protection`     SMALLINT(2)  NOT NULL,
+  `PT`             INT UNSIGNED          DEFAULT NULL,
+  `GT`             INT UNSIGNED          DEFAULT NULL,
+  `CLE`            INT UNSIGNED          DEFAULT NULL,
+  `CLO`            INT UNSIGNED          DEFAULT NULL,
+  `CR`             INT UNSIGNED          DEFAULT NULL,
+  `VB`             INT UNSIGNED          DEFAULT NULL,
+  `VC`             INT UNSIGNED          DEFAULT NULL,
+  `REC`            INT UNSIGNED          DEFAULT NULL,
+  `SE`             INT UNSIGNED          DEFAULT NULL,
+  `BMD`            INT UNSIGNED          DEFAULT NULL,
+  `DST`            INT UNSIGNED          DEFAULT NULL,
+  `EDLM`           INT UNSIGNED          DEFAULT NULL,
+  `TRA`            INT UNSIGNED          DEFAULT NULL,
+  PRIMARY KEY (`id_roundattack`),
+  KEY `id_rcround` (`id_rcround`),
+  KEY `player` (`player`, `coordinates`)
 )
   DEFAULT CHARSET = utf8;
-## ########################################################
-## Structure de la table `ogspy_mod_user_config
+
 ##
-CREATE TABLE `ogspy_mod_user_config` (
-  `mod`     VARCHAR(50)  NOT NULL,
-  `config`  VARCHAR(255) NOT NULL,
-  `user_id` INT UNSIGNED NOT NULL,
-  `value`   VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`mod`, `config`, `user_id`),
-  INDEX `fk_user_userid` (`user_id`),
-  CONSTRAINT `fk_user_userid` FOREIGN KEY (`user_id`) REFERENCES ogspy_user (`user_id`)
+## Structure de la table `ogspy_game_cr_round_defense`
+##
+
+CREATE TABLE `ogspy_game_cr_round_defense` (
+  `id_rounddefense` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_rcround`      INT UNSIGNED NOT NULL,
+  `player`          VARCHAR(255) NOT NULL,
+  `coordinates`     VARCHAR(9)   NOT NULL,
+  `Armes`           SMALLINT(2)  NOT NULL,
+  `Bouclier`        SMALLINT(2)  NOT NULL,
+  `Protection`      SMALLINT(2)  NOT NULL,
+  `PT`              INT UNSIGNED          DEFAULT NULL,
+  `GT`              INT UNSIGNED          DEFAULT NULL,
+  `CLE`             INT UNSIGNED          DEFAULT NULL,
+  `CLO`             INT UNSIGNED          DEFAULT NULL,
+  `CR`              INT UNSIGNED          DEFAULT NULL,
+  `VB`              INT UNSIGNED          DEFAULT NULL,
+  `VC`              INT UNSIGNED          DEFAULT NULL,
+  `REC`             INT UNSIGNED          DEFAULT NULL,
+  `SE`              INT UNSIGNED          DEFAULT NULL,
+  `BMD`             INT UNSIGNED          DEFAULT NULL,
+  `DST`             INT UNSIGNED          DEFAULT NULL,
+  `EDLM`            INT UNSIGNED          DEFAULT NULL,
+  `SAT`             INT UNSIGNED          DEFAULT NULL,
+  `TRA`             INT UNSIGNED          DEFAULT NULL,
+  `LM`              INT UNSIGNED          DEFAULT NULL,
+  `LLE`             INT UNSIGNED          DEFAULT NULL,
+  `LLO`             INT UNSIGNED          DEFAULT NULL,
+  `CG`              INT UNSIGNED          DEFAULT NULL,
+  `AI`              INT UNSIGNED          DEFAULT NULL,
+  `LP`              INT UNSIGNED          DEFAULT NULL,
+  `PB`              SMALLINT(1)           DEFAULT NULL,
+  `GB`              SMALLINT(1)           DEFAULT NULL,
+  PRIMARY KEY (`id_rounddefense`),
+  KEY `id_rcround` (`id_rcround`),
+  KEY `player` (`player`, `coordinates`)
 )
-  DEFAULT CHARSET = utf8
-  ENGINE = InnoDB;
+  DEFAULT CHARSET = utf8;
 
-## 
-## Contenu de la table `ogspy_config`
-## 
-
-INSERT INTO `ogspy_config` VALUES ('allied', '');
-INSERT INTO `ogspy_config` VALUES ('ally_protection', '');
-INSERT INTO `ogspy_config` VALUES ('debug_log', '0');
-INSERT INTO `ogspy_config` VALUES ('disable_ip_check', '1');
-INSERT INTO `ogspy_config` VALUES ('keeprank_criterion', 'day');
-INSERT INTO `ogspy_config` VALUES ('last_maintenance_action', '0');
-INSERT INTO `ogspy_config` VALUES ('max_battlereport', '10');
-INSERT INTO `ogspy_config` VALUES ('max_favorites', '20');
-INSERT INTO `ogspy_config` VALUES ('max_favorites_spy', '10');
-INSERT INTO `ogspy_config` VALUES ('max_keeplog', '7');
-INSERT INTO `ogspy_config` VALUES ('max_keeprank', '30');
-INSERT INTO `ogspy_config` VALUES ('max_keepspyreport', '30');
-INSERT INTO `ogspy_config` VALUES ('max_spyreport', '10');
-INSERT INTO `ogspy_config` VALUES ('reason', '');
-INSERT INTO `ogspy_config` VALUES ('servername', 'Cartographie');
-INSERT INTO `ogspy_config` VALUES ('server_active', '1');
-INSERT INTO `ogspy_config` VALUES ('session_time', '30');
-INSERT INTO `ogspy_config` VALUES ('url_forum', 'http://www.ogsteam.fr/');
-INSERT INTO `ogspy_config` VALUES ('log_phperror', '0');
-INSERT INTO `ogspy_config` VALUES ('block_ratio', '0');
-INSERT INTO `ogspy_config` VALUES ('ratio_limit', '0');
-INSERT INTO `ogspy_config` VALUES ('config_cache', '3600');
-INSERT INTO `ogspy_config` VALUES ('mod_cache', '604800');
-
-## Partie affichage
-
-INSERT INTO `ogspy_config` VALUES ('enable_stat_view', '1');
-INSERT INTO `ogspy_config` VALUES ('enable_members_view', '0');
-INSERT INTO `ogspy_config` VALUES ('portee_missil', '1');
-INSERT INTO `ogspy_config` VALUES ('enable_register_view', '0');
-INSERT INTO `ogspy_config` VALUES ('register_forum', '');
-INSERT INTO `ogspy_config` VALUES ('register_alliance', '');
-INSERT INTO `ogspy_config` VALUES ('galaxy_by_line_stat', '9');
-INSERT INTO `ogspy_config` VALUES ('system_by_line_stat', '10');
-INSERT INTO `ogspy_config` VALUES ('galaxy_by_line_ally', '9');
-INSERT INTO `ogspy_config` VALUES ('system_by_line_ally', '10');
-INSERT INTO `ogspy_config` VALUES ('color_ally', 'Magenta_Yellow_Red');
-INSERT INTO `ogspy_config` VALUES ('nb_colonnes_ally', '3');
-INSERT INTO `ogspy_config` VALUES ('open_user', '');
-INSERT INTO `ogspy_config` VALUES ('open_admin', '');
-
-## ########################################################
-
-## 
-## Contenu de la table `ogspy_group`
-## 
-
-INSERT INTO `ogspy_group` VALUES (1, 'Standard', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
-
-## ########################################################
 ##
-## Structure de la table `ogspy_parsedspy`
+## Structure de la table `ogspy_game_debris_fields`
 ##
 
-CREATE TABLE `ogspy_parsedspy` (
+CREATE TABLE `ogspy_game_debris_fields` (
+			`id_rec` INT( 255 ) NOT NULL AUTO_INCREMENT ,
+			`dateRec` INT( 11 ) NOT NULL ,
+			`coordinates` VARCHAR( 9 ) NOT NULL ,
+			`nbRec` INT( 11 ) NOT NULL ,
+			`M_total` INT( 11 ) NOT NULL ,
+			`C_total` INT( 11 ) NOT NULL ,
+			`M_recovered` INT( 11 ) NOT NULL ,
+			`C_recovered` INT( 11 ) NOT NULL ,
+			`sender_id` INT( 11 ) NOT NULL ,
+			PRIMARY KEY ( `id_rec` )
+		) DEFAULT CHARSET=utf8;
+
+##
+## Structure de la table `ogspy_game_ennemy_spyers`
+##
+
+CREATE TABLE `ogspy_game_ennemy_spyers` (
+            `spy_id` INT( 255 ) NOT NULL AUTO_INCREMENT ,
+            `dateSpy` INT( 11 ) NOT NULL ,
+            `from` VARCHAR( 9 ) NOT NULL ,
+            `to` VARCHAR( 9 ) NOT NULL ,
+            `proba` INT( 3 ) NOT NULL ,
+            `sender_id` INT( 11 ) NOT NULL ,
+            PRIMARY KEY ( `spy_id` )
+        )DEFAULT CHARSET=utf8;
+
+## 
+## Structure de la table `ogspy_game_rank_ally_economique`
+## 
+
+CREATE TABLE ogspy_game_rank_ally_economique (
+  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
+  rank          INT UNSIGNED NOT NULL DEFAULT '0',
+  ally          VARCHAR(255) NOT NULL,
+  number_member INT UNSIGNED NOT NULL,
+  points        INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, ally),
+  KEY ally (ally)
+)
+  DEFAULT CHARSET = utf8;
+
+##
+## Structure de la table `ogspy_game_rank_ally_technology`
+## 
+
+CREATE TABLE ogspy_game_rank_ally_technology (
+  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
+  rank          INT UNSIGNED NOT NULL DEFAULT '0',
+  ally          VARCHAR(255) NOT NULL,
+  number_member INT UNSIGNED NOT NULL,
+  points        INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, ally),
+  KEY ally (ally)
+)
+  DEFAULT CHARSET = utf8;
+
+##
+## Structure de la table `ogspy_game_rank_ally_military`
+## 
+
+CREATE TABLE ogspy_game_rank_ally_military (
+  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
+  rank          INT UNSIGNED NOT NULL DEFAULT '0',
+  ally          VARCHAR(255) NOT NULL,
+  number_member INT UNSIGNED NOT NULL,
+  points        INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, ally),
+  KEY ally (ally)
+)
+  DEFAULT CHARSET = utf8;
+
+##
+## Structure de la table `ogspy_game_rank_ally_military_built`
+## 
+
+CREATE TABLE ogspy_game_rank_ally_military_built (
+  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
+  rank          INT UNSIGNED NOT NULL DEFAULT '0',
+  ally          VARCHAR(255) NOT NULL,
+  number_member INT UNSIGNED NOT NULL,
+  points        INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, ally),
+  KEY ally (ally)
+)
+  DEFAULT CHARSET = utf8;
+
+##
+## Structure de la table `ogspy_game_rank_ally_military_loose`
+## 
+
+CREATE TABLE ogspy_game_rank_ally_military_loose (
+  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
+  rank          INT UNSIGNED NOT NULL DEFAULT '0',
+  ally          VARCHAR(255) NOT NULL,
+  number_member INT UNSIGNED NOT NULL,
+  points        INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, ally),
+  KEY ally (ally)
+)
+  DEFAULT CHARSET = utf8;
+
+##
+## Structure de la table `ogspy_game_rank_ally_military_destruct`
+## 
+
+CREATE TABLE ogspy_game_rank_ally_military_destruct (
+  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
+  rank          INT UNSIGNED NOT NULL DEFAULT '0',
+  ally          VARCHAR(255) NOT NULL,
+  number_member INT UNSIGNED NOT NULL,
+  points        INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, ally),
+  KEY ally (ally)
+)
+  DEFAULT CHARSET = utf8;
+
+##
+## Structure de la table `ogspy_game_rank_ally_honor`
+## 
+
+CREATE TABLE ogspy_game_rank_ally_honor (
+  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
+  rank          INT UNSIGNED NOT NULL DEFAULT '0',
+  ally          VARCHAR(255) NOT NULL,
+  number_member INT UNSIGNED NOT NULL,
+  points        INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, ally),
+  KEY ally (ally)
+)
+  DEFAULT CHARSET = utf8;
+
+## 
+## Structure de la table `ogspy_game_rank_ally_points`
+## 
+
+CREATE TABLE ogspy_game_rank_ally_points (
+  datadate          INT UNSIGNED NOT NULL DEFAULT '0',
+  rank              INT UNSIGNED NOT NULL DEFAULT '0',
+  ally              VARCHAR(255) NOT NULL,
+  number_member     INT UNSIGNED NOT NULL,
+  points            INT UNSIGNED NOT NULL DEFAULT '0',
+  points_per_member INT UNSIGNED NOT NULL,
+  sender_id         INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, ally),
+  KEY ally (ally)
+)
+  DEFAULT CHARSET = utf8;
+
+##
+## Structure de la table `ogspy_game_rank_player_economique`
+## 
+
+CREATE TABLE ogspy_game_rank_player_economique (
+  datadate  INT UNSIGNED NOT NULL DEFAULT '0',
+  rank      INT UNSIGNED NOT NULL DEFAULT '0',
+  player    VARCHAR(255) NOT NULL DEFAULT '',
+  ally      VARCHAR(255) NOT NULL DEFAULT '',
+  points    INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, player),
+  KEY player (player)
+)
+  DEFAULT CHARSET = utf8;
+
+
+## 
+## Structure de la table `ogspy_game_rank_player_technology`
+## 
+
+CREATE TABLE ogspy_game_rank_player_technology (
+  datadate  INT UNSIGNED NOT NULL DEFAULT '0',
+  rank      INT UNSIGNED NOT NULL DEFAULT '0',
+  player    VARCHAR(255) NOT NULL DEFAULT '',
+  ally      VARCHAR(255) NOT NULL DEFAULT '',
+  points    INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, player),
+  KEY player (player)
+)
+  DEFAULT CHARSET = utf8;
+
+##
+## Structure de la table `ogspy_game_rank_player_military`
+## 
+
+CREATE TABLE ogspy_game_rank_player_military (
+  datadate      INT UNSIGNED NOT NULL DEFAULT '0',
+  rank          INT UNSIGNED NOT NULL DEFAULT '0',
+  player        VARCHAR(255) NOT NULL DEFAULT '',
+  ally          VARCHAR(255) NOT NULL DEFAULT '',
+  points        INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id     INT UNSIGNED NOT NULL DEFAULT '0',
+  nb_spacecraft INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, player),
+  KEY player (player)
+)
+  DEFAULT CHARSET = utf8;
+
+##
+## Structure de la table `ogspy_game_rank_player_military_built`
+## 
+
+CREATE TABLE ogspy_game_rank_player_military_built (
+  datadate  INT UNSIGNED NOT NULL DEFAULT '0',
+  rank      INT UNSIGNED NOT NULL DEFAULT '0',
+  player    VARCHAR(255) NOT NULL DEFAULT '',
+  ally      VARCHAR(255) NOT NULL DEFAULT '',
+  points    INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, player),
+  KEY player (player)
+)
+  DEFAULT CHARSET = utf8;
+
+##
+## Structure de la table `ogspy_game_rank_player_military_loose`
+## 
+
+CREATE TABLE ogspy_game_rank_player_military_loose (
+  datadate  INT UNSIGNED NOT NULL DEFAULT '0',
+  rank      INT UNSIGNED NOT NULL DEFAULT '0',
+  player    VARCHAR(255) NOT NULL DEFAULT '',
+  ally      VARCHAR(255) NOT NULL DEFAULT '',
+  points    INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, player),
+  KEY player (player)
+)
+  DEFAULT CHARSET = utf8;
+
+##
+## Structure de la table `ogspy_game_rank_player_military_destruct`
+## 
+
+CREATE TABLE ogspy_game_rank_player_military_destruct (
+  datadate  INT UNSIGNED NOT NULL DEFAULT '0',
+  rank      INT UNSIGNED NOT NULL DEFAULT '0',
+  player    VARCHAR(255) NOT NULL DEFAULT '',
+  ally      VARCHAR(255) NOT NULL DEFAULT '',
+  points    INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, player),
+  KEY player (player)
+)
+  DEFAULT CHARSET = utf8;
+
+##
+## Structure de la table `ogspy_game_rank_player_honor`
+## 
+
+CREATE TABLE ogspy_game_rank_player_honor (
+  datadate  INT UNSIGNED NOT NULL DEFAULT '0',
+  rank      INT UNSIGNED NOT NULL DEFAULT '0',
+  player    VARCHAR(255) NOT NULL DEFAULT '',
+  ally      VARCHAR(255) NOT NULL DEFAULT '',
+  points    INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, player),
+  KEY player (player)
+)
+  DEFAULT CHARSET = utf8;
+
+## 
+## Structure de la table `ogspy_game_rank_player_points`
+## 
+
+CREATE TABLE ogspy_game_rank_player_points (
+  datadate  INT UNSIGNED NOT NULL DEFAULT '0',
+  rank      INT UNSIGNED NOT NULL DEFAULT '0',
+  player    VARCHAR(255) NOT NULL DEFAULT '',
+  ally      VARCHAR(255) NOT NULL DEFAULT '',
+  points    INT UNSIGNED NOT NULL DEFAULT '0',
+  sender_id INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (rank, datadate),
+  KEY datadate (datadate, player),
+  KEY player (player)
+)
+  DEFAULT CHARSET = utf8;
+
+##
+## Structure de la table `ogspy_game_spy`
+##
+
+CREATE TABLE `ogspy_game_spy` (
   `id_spy`        INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `planet_name`   VARCHAR(20)  NOT NULL DEFAULT '',
   `coordinates`   VARCHAR(9)   NOT NULL DEFAULT '',
@@ -825,123 +746,187 @@ CREATE TABLE `ogspy_parsedspy` (
   KEY `coordinates` (`coordinates`)
 )
   DEFAULT CHARSET = utf8;
-## ########################################################
 
 ##
-## Structure de la table `ogspy_parsedRC`
-##
+## Structure de la table `ogspy_game_player_building`
+## 
 
-CREATE TABLE `ogspy_parsedRC` (
-  `id_rc`       INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `dateRC`      INT UNSIGNED NOT NULL DEFAULT '0',
-  `coordinates` VARCHAR(255) NOT NULL DEFAULT '',
-  `nb_rounds`   TINYINT(2)   NOT NULL DEFAULT '0',
-  `victoire`    CHAR         NOT NULL DEFAULT 'A',
-  `pertes_A`    BIGINT       NOT NULL DEFAULT '0',
-  `pertes_D`    BIGINT       NOT NULL DEFAULT '0',
-  `gain_M`      BIGINT                DEFAULT NULL,
-  `gain_C`      BIGINT                DEFAULT NULL,
-  `gain_D`      BIGINT                DEFAULT NULL,
-  `debris_M`    BIGINT                DEFAULT NULL,
-  `debris_C`    BIGINT                DEFAULT NULL,
-  `lune`        TINYINT(2)   NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id_rc`),
-  KEY `coordinatesrc` (`coordinates`)
+CREATE TABLE ogspy_game_player_building (
+  user_id         INT UNSIGNED NOT NULL DEFAULT '0',
+  planet_id       INT UNSIGNED NOT NULL DEFAULT '0',
+  planet_name     VARCHAR(20)  NOT NULL DEFAULT '',
+  coordinates     VARCHAR(10)  NOT NULL DEFAULT '',
+  `fields`        SMALLINT(3)  NOT NULL DEFAULT '0',
+  `boosters`      VARCHAR(64)  NOT NULL DEFAULT 'm:0:0_c:0:0_d:0:0_p:0_m:0',
+  temperature_min SMALLINT(2)  NOT NULL DEFAULT '0',
+  temperature_max SMALLINT(2)  NOT NULL DEFAULT '0',
+  Sat             SMALLINT(5)  NOT NULL DEFAULT '0',
+  Sat_percentage  SMALLINT(3)  NOT NULL DEFAULT '100',
+  M               SMALLINT(2)  NOT NULL DEFAULT '0',
+  M_percentage    SMALLINT(3)  NOT NULL DEFAULT '100',
+  C               SMALLINT(2)  NOT NULL DEFAULT '0',
+  C_Percentage    SMALLINT(3)  NOT NULL DEFAULT '100',
+  D               SMALLINT(2)  NOT NULL DEFAULT '0',
+  D_percentage    SMALLINT(3)  NOT NULL DEFAULT '100',
+  CES             SMALLINT(2)  NOT NULL DEFAULT '0',
+  CES_percentage  SMALLINT(3)  NOT NULL DEFAULT '100',
+  CEF             SMALLINT(2)  NOT NULL DEFAULT '0',
+  CEF_percentage  SMALLINT(3)  NOT NULL DEFAULT '100',
+  UdR             SMALLINT(2)  NOT NULL DEFAULT '0',
+  UdN             SMALLINT(2)  NOT NULL DEFAULT '0',
+  CSp             SMALLINT(2)  NOT NULL DEFAULT '0',
+  HM              SMALLINT(2)  NOT NULL DEFAULT '0',
+  HC              SMALLINT(2)  NOT NULL DEFAULT '0',
+  HD              SMALLINT(2)  NOT NULL DEFAULT '0',
+  Lab             SMALLINT(2)  NOT NULL DEFAULT '0',
+  Ter             SMALLINT(2)  NOT NULL DEFAULT '0',
+  DdR             SMALLINT(2)  NOT NULL DEFAULT '0',
+  Silo            SMALLINT(2)  NOT NULL DEFAULT '0',
+  BaLu            SMALLINT(2)  NOT NULL DEFAULT '0',
+  Pha             SMALLINT(2)  NOT NULL DEFAULT '0',
+  PoSa            SMALLINT(2)  NOT NULL DEFAULT '0',
+  PRIMARY KEY (user_id, planet_id)
 )
   DEFAULT CHARSET = utf8;
-## ########################################################
 
 ##
-## Structure de la table `ogspy_parsedRCRound`
-##
+## Structure de la table `ogspy_game_player_defence`
+## 
 
-CREATE TABLE `ogspy_parsedRCRound` (
-  `id_rcround`        INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `id_rc`             INT UNSIGNED NOT NULL,
-  `numround`          TINYINT(2)   NOT NULL,
-  `attaque_tir`       INT UNSIGNED NOT NULL,
-  `attaque_puissance` INT UNSIGNED NOT NULL,
-  `defense_bouclier`  INT UNSIGNED NOT NULL,
-  `attaque_bouclier`  INT UNSIGNED NOT NULL,
-  `defense_tir`       INT UNSIGNED NOT NULL,
-  `defense_puissance` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (id_rcround),
-  KEY `rcround` (`id_rc`, `numround`),
-  KEY `id_rc` (`id_rc`)
+CREATE TABLE ogspy_game_player_defence (
+  user_id   INT UNSIGNED NOT NULL DEFAULT '0',
+  planet_id INT UNSIGNED NOT NULL DEFAULT '0',
+  LM        INT UNSIGNED NOT NULL DEFAULT '0',
+  LLE       INT UNSIGNED NOT NULL DEFAULT '0',
+  LLO       INT UNSIGNED NOT NULL DEFAULT '0',
+  CG        INT UNSIGNED NOT NULL DEFAULT '0',
+  AI        INT UNSIGNED NOT NULL DEFAULT '0',
+  LP        INT UNSIGNED NOT NULL DEFAULT '0',
+  PB        SMALLINT(1)  NOT NULL DEFAULT '0',
+  GB        SMALLINT(1)  NOT NULL DEFAULT '0',
+  MIC       SMALLINT(3)  NOT NULL DEFAULT '0',
+  MIP       SMALLINT(3)  NOT NULL DEFAULT '0',
+  PRIMARY KEY (user_id, planet_id)
 )
   DEFAULT CHARSET = utf8;
-## ########################################################
 
 ##
-## Structure de la table `ogspy_round_attack`
-##
+## Structure de la table `ogspy_game_player_spy`
+## 
 
-CREATE TABLE `ogspy_round_attack` (
-  `id_roundattack` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `id_rcround`     INT UNSIGNED NOT NULL,
-  `player`         VARCHAR(255) NOT NULL,
-  `coordinates`    VARCHAR(9)   NOT NULL,
-  `Armes`          SMALLINT(2)  NOT NULL,
-  `Bouclier`       SMALLINT(2)  NOT NULL,
-  `Protection`     SMALLINT(2)  NOT NULL,
-  `PT`             INT UNSIGNED          DEFAULT NULL,
-  `GT`             INT UNSIGNED          DEFAULT NULL,
-  `CLE`            INT UNSIGNED          DEFAULT NULL,
-  `CLO`            INT UNSIGNED          DEFAULT NULL,
-  `CR`             INT UNSIGNED          DEFAULT NULL,
-  `VB`             INT UNSIGNED          DEFAULT NULL,
-  `VC`             INT UNSIGNED          DEFAULT NULL,
-  `REC`            INT UNSIGNED          DEFAULT NULL,
-  `SE`             INT UNSIGNED          DEFAULT NULL,
-  `BMD`            INT UNSIGNED          DEFAULT NULL,
-  `DST`            INT UNSIGNED          DEFAULT NULL,
-  `EDLM`           INT UNSIGNED          DEFAULT NULL,
-  `TRA`            INT UNSIGNED          DEFAULT NULL,
-  PRIMARY KEY (`id_roundattack`),
-  KEY `id_rcround` (`id_rcround`),
-  KEY `player` (`player`, `coordinates`)
+CREATE TABLE ogspy_game_player_spy (
+  user_id INT UNSIGNED NOT NULL DEFAULT '0',
+  spy_id  INT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (user_id, spy_id)
 )
   DEFAULT CHARSET = utf8;
-## ########################################################
 
 ##
-## Structure de la table `ogspy_round_defense`
-##
+## Structure de la table `ogspy_game_player_technology`
+## 
 
-CREATE TABLE `ogspy_round_defense` (
-  `id_rounddefense` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `id_rcround`      INT UNSIGNED NOT NULL,
-  `player`          VARCHAR(255) NOT NULL,
-  `coordinates`     VARCHAR(9)   NOT NULL,
-  `Armes`           SMALLINT(2)  NOT NULL,
-  `Bouclier`        SMALLINT(2)  NOT NULL,
-  `Protection`      SMALLINT(2)  NOT NULL,
-  `PT`              INT UNSIGNED          DEFAULT NULL,
-  `GT`              INT UNSIGNED          DEFAULT NULL,
-  `CLE`             INT UNSIGNED          DEFAULT NULL,
-  `CLO`             INT UNSIGNED          DEFAULT NULL,
-  `CR`              INT UNSIGNED          DEFAULT NULL,
-  `VB`              INT UNSIGNED          DEFAULT NULL,
-  `VC`              INT UNSIGNED          DEFAULT NULL,
-  `REC`             INT UNSIGNED          DEFAULT NULL,
-  `SE`              INT UNSIGNED          DEFAULT NULL,
-  `BMD`             INT UNSIGNED          DEFAULT NULL,
-  `DST`             INT UNSIGNED          DEFAULT NULL,
-  `EDLM`            INT UNSIGNED          DEFAULT NULL,
-  `SAT`             INT UNSIGNED          DEFAULT NULL,
-  `TRA`             INT UNSIGNED          DEFAULT NULL,
-  `LM`              INT UNSIGNED          DEFAULT NULL,
-  `LLE`             INT UNSIGNED          DEFAULT NULL,
-  `LLO`             INT UNSIGNED          DEFAULT NULL,
-  `CG`              INT UNSIGNED          DEFAULT NULL,
-  `AI`              INT UNSIGNED          DEFAULT NULL,
-  `LP`              INT UNSIGNED          DEFAULT NULL,
-  `PB`              SMALLINT(1)           DEFAULT NULL,
-  `GB`              SMALLINT(1)           DEFAULT NULL,
-  PRIMARY KEY (`id_rounddefense`),
-  KEY `id_rcround` (`id_rcround`),
-  KEY `player` (`player`, `coordinates`)
+CREATE TABLE ogspy_game_player_technology (
+  user_id       INT UNSIGNED NOT NULL DEFAULT '0',
+  Esp           SMALLINT(2)  NOT NULL DEFAULT '0',
+  Ordi          SMALLINT(2)  NOT NULL DEFAULT '0',
+  Armes         SMALLINT(2)  NOT NULL DEFAULT '0',
+  Bouclier      SMALLINT(2)  NOT NULL DEFAULT '0',
+  Protection    SMALLINT(2)  NOT NULL DEFAULT '0',
+  NRJ           SMALLINT(2)  NOT NULL DEFAULT '0',
+  Hyp           SMALLINT(2)  NOT NULL DEFAULT '0',
+  RC            SMALLINT(2)  NOT NULL DEFAULT '0',
+  RI            SMALLINT(2)  NOT NULL DEFAULT '0',
+  PH            SMALLINT(2)  NOT NULL DEFAULT '0',
+  Laser         SMALLINT(2)  NOT NULL DEFAULT '0',
+  Ions          SMALLINT(2)  NOT NULL DEFAULT '0',
+  Plasma        SMALLINT(2)  NOT NULL DEFAULT '0',
+  RRI           SMALLINT(2)  NOT NULL DEFAULT '0',
+  Graviton      SMALLINT(2)  NOT NULL DEFAULT '0',
+  Astrophysique SMALLINT(2)  NOT NULL DEFAULT '0',
+  PRIMARY KEY (user_id)
 )
   DEFAULT CHARSET = utf8;
+
+##
+## Structure de la table `ogspy_game_universe`
+##
+
+CREATE TABLE ogspy_game_universe (
+  galaxy              SMALLINT(2)     NOT NULL DEFAULT '1',
+  system              SMALLINT(3)     NOT NULL DEFAULT '1',
+  `row`               SMALLINT(2)     NOT NULL DEFAULT '1',
+  moon                ENUM ('0', '1') NOT NULL DEFAULT '0',
+  phalanx             TINYINT(1)      NOT NULL DEFAULT '0',
+  gate                ENUM ('0', '1') NOT NULL DEFAULT '0',
+  `name`              VARCHAR(20)     NOT NULL DEFAULT '',
+  ally                VARCHAR(20)              DEFAULT NULL,
+  player              VARCHAR(20)              DEFAULT NULL,
+  `status`            VARCHAR(5)      NOT NULL,
+  last_update         INT UNSIGNED    NOT NULL DEFAULT '0',
+  last_update_moon    INT UNSIGNED    NOT NULL DEFAULT '0',
+  last_update_user_id INT UNSIGNED    NOT NULL DEFAULT '0',
+  UNIQUE KEY univers (galaxy, system, `row`),
+  KEY player (player)
+)
+  DEFAULT CHARSET = utf8;
+
+##
+## Insertion des donées en BDD
+##
+
+
+## 
+## Contenu de la table `ogspy_config`
+## 
+
+INSERT INTO `ogspy_config` VALUES ('allied', '');
+INSERT INTO `ogspy_config` VALUES ('ally_protection', '');
+INSERT INTO `ogspy_config` VALUES ('debug_log', '0');
+INSERT INTO `ogspy_config` VALUES ('disable_ip_check', '1');
+INSERT INTO `ogspy_config` VALUES ('keeprank_criterion', 'day');
+INSERT INTO `ogspy_config` VALUES ('last_maintenance_action', '0');
+INSERT INTO `ogspy_config` VALUES ('max_battlereport', '10');
+INSERT INTO `ogspy_config` VALUES ('max_favorites', '20');
+INSERT INTO `ogspy_config` VALUES ('max_favorites_spy', '10');
+INSERT INTO `ogspy_config` VALUES ('max_keeplog', '7');
+INSERT INTO `ogspy_config` VALUES ('max_keeprank', '30');
+INSERT INTO `ogspy_config` VALUES ('max_keepspyreport', '30');
+INSERT INTO `ogspy_config` VALUES ('max_spyreport', '10');
+INSERT INTO `ogspy_config` VALUES ('reason', '');
+INSERT INTO `ogspy_config` VALUES ('servername', 'Cartographie');
+INSERT INTO `ogspy_config` VALUES ('server_active', '1');
+INSERT INTO `ogspy_config` VALUES ('session_time', '30');
+INSERT INTO `ogspy_config` VALUES ('url_forum', 'http://www.ogsteam.fr/');
+INSERT INTO `ogspy_config` VALUES ('log_phperror', '0');
+INSERT INTO `ogspy_config` VALUES ('block_ratio', '0');
+INSERT INTO `ogspy_config` VALUES ('ratio_limit', '0');
+INSERT INTO `ogspy_config` VALUES ('config_cache', '3600');
+INSERT INTO `ogspy_config` VALUES ('mod_cache', '604800');
+
+## Partie affichage
+
+INSERT INTO `ogspy_config` VALUES ('enable_stat_view', '1');
+INSERT INTO `ogspy_config` VALUES ('enable_members_view', '0');
+INSERT INTO `ogspy_config` VALUES ('portee_missil', '1');
+INSERT INTO `ogspy_config` VALUES ('enable_register_view', '0');
+INSERT INTO `ogspy_config` VALUES ('register_forum', '');
+INSERT INTO `ogspy_config` VALUES ('register_alliance', '');
+INSERT INTO `ogspy_config` VALUES ('galaxy_by_line_stat', '9');
+INSERT INTO `ogspy_config` VALUES ('system_by_line_stat', '10');
+INSERT INTO `ogspy_config` VALUES ('galaxy_by_line_ally', '9');
+INSERT INTO `ogspy_config` VALUES ('system_by_line_ally', '10');
+INSERT INTO `ogspy_config` VALUES ('color_ally', 'Magenta_Yellow_Red');
+INSERT INTO `ogspy_config` VALUES ('nb_colonnes_ally', '3');
+INSERT INTO `ogspy_config` VALUES ('open_user', '');
+INSERT INTO `ogspy_config` VALUES ('open_admin', '');
+
+## ########################################################
+
+## 
+## Contenu de la table `ogspy_group`
+## 
+
+INSERT INTO `ogspy_group` VALUES (1, 'Standard', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+
 
 
