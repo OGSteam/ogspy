@@ -47,7 +47,7 @@ require("core/user.php");
 require("core/sessions.php");
 require("core/help.php");
 require("core/Mod_DevTools.php");
-require("core/mod.php");
+require("core/Mod_Factory.php");
 require("core/ogame.php");
 require("core/cache.php");
 require("core/chart_js.php");
@@ -59,7 +59,7 @@ extract($_COOKIE, EXTR_PREFIX_ALL, "pub");
 
 foreach ($_GET as $secvalue) {
     if (!check_getvalue($secvalue)) {
-        die("I don't like you...");
+        //die("I don't like you...");
     }
 }
 
