@@ -171,9 +171,8 @@ class Mod_DevTools
      */
     function mod_del_all_option()
     {
-        $nom_mod = mod_get_nom();
         $modModel = new Mod_Config_Model();
-        return $modModel->delete_mod_config($nom_mod);
+        return $modModel->delete_mod_config($this->current_mod_name);
     }
 
     /**
@@ -182,11 +181,9 @@ class Mod_DevTools
      */
     function mod_del_all_user_option()
     {
-        $nom_mod = mod_get_nom();
         $modModel = new Mod_User_Config_Model();
-        return $modModel->delete_mod_config($nom_mod);
+        return $modModel->delete_mod_config($this->current_mod_name);
     }
-
 
     /**
      * Function to uninstall an OGSpy Module
