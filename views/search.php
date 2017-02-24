@@ -19,19 +19,19 @@ if (!defined('IN_SPYOGAME')) {
 $search_result = array();
 list($search_result, $total_page) = galaxy_search();
 
-@$string_search = $pub_string_search;
-@$type_search = $pub_type_search;
-@$strict = $pub_strict;
-@$sort = $pub_sort;
-@$sort2 = $pub_sort2;
-@$galaxy_down = $pub_galaxy_down;
-@$galaxy_up = $pub_galaxy_up;
-@$system_down = $pub_system_down;
-@$system_up = $pub_system_up;
-@$row_down = $pub_row_down;
-@$row_up = $pub_row_up;
-@$row_active = $pub_row_active;
-@$page = $pub_page;
+$string_search = $pub_string_search;
+$type_search = $pub_type_search;
+$strict = $pub_strict;
+$sort = $pub_sort;
+$sort2 = $pub_sort2;
+$galaxy_down = $pub_galaxy_down;
+$galaxy_up = $pub_galaxy_up;
+$system_down = $pub_system_down;
+$system_up = $pub_system_up;
+$row_down = $pub_row_down;
+$row_up = $pub_row_up;
+$row_active = $pub_row_active;
+$page = $pub_page;
 
 $link_order_coordinates = "";
 $link_order_ally = "";

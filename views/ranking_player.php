@@ -16,7 +16,7 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-list($order, $ranking, $ranking_available, $maxrank) = galaxy_show_ranking_player();
+list($order, $ranking, $ranking_available, $maxrank) = galaxy_show_ranking();
 
 $order_by = $pub_order_by;
 $interval = $pub_interval;
