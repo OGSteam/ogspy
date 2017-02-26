@@ -57,18 +57,8 @@ extract($_GET, EXTR_PREFIX_ALL, "pub");
 extract($_POST, EXTR_PREFIX_ALL, "pub");
 extract($_COOKIE, EXTR_PREFIX_ALL, "pub");
 
-foreach ($_GET as $secvalue) {
-    if (!check_getvalue($secvalue)) {
-        //die("I don't like you...");
-    }
-}
-
-foreach ($_POST as $secvalue) {
-    if (!check_postvalue($secvalue)) {
-        header("Location: index.php");
-        die();
-    }
-}
+foreach ($_GET as $secvalue) { check_getvalue($secvalue); }
+foreach ($_POST as $secvalue) { check_postvalue($secvalue); }
 
 //Language File
 if (!isset($ui_lang)) { // Checks the ui_lang value from parameters file

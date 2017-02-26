@@ -510,8 +510,8 @@ function set_serverconfig()
     $configRepository->update(array('config_name' => 'ally_protection', 'config_value' => $pub_ally_protection));
 
     //
-    if ($pub_url_forum != "" && !preg_match("#^http://#", $pub_url_forum))
-        $pub_url_forum = "http://" . $pub_url_forum;
+    if ($pub_url_forum != "" && !preg_match("#^https://#", $pub_url_forum))
+        $pub_url_forum = "https://" . $pub_url_forum;
     $configRepository->update(array('config_name' => 'url_forum', 'config_value' => $pub_url_forum));
 
     //
@@ -812,20 +812,10 @@ function benchmark()
 function check_getvalue($secvalue)
 {
     if (!is_array($secvalue)) {
-        if ((preg_match("/<[^>]*script*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*object*\"?[^>]*>/i",
-                $secvalue)) || (preg_match("/<[^>]*iframe*\"?[^>]*>/i", $secvalue)) || (preg_match
-            ("/<[^>]*applet*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*meta*\"?[^>]*>/i",
-                $secvalue)) || (preg_match("/<[^>]*style*\"?[^>]*>/i", $secvalue)) || (preg_match
-            ("/<[^>]*form*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*img*\"?[^>]*>/i",
-                $secvalue)) || (preg_match("/\([^>]*\"?[^)]*\)/i", $secvalue)) || (preg_match("/\"/i",
-                $secvalue))
-        ) {
-            return false;
-        }
+        filter_input(INPUT_GET, $secvalue, FILTER_SANITIZE_URL);
     } else {
         foreach ($secvalue as $subsecvalue) {
-            if (!check_getvalue($subsecvalue))
-                return false;
+            check_getvalue($subsecvalue);
         }
     }
     return true;
@@ -839,15 +829,10 @@ function check_getvalue($secvalue)
 function check_postvalue($secvalue)
 {
     if (!is_array($secvalue)) {
-        if ((preg_match("/<[^>]*script*\"?[^>]*>/", $secvalue)) || (preg_match("/<[^>]*style*\"?[^>]*>/",
-                $secvalue))
-        ) {
-            return false;
-        }
+        filter_input(INPUT_POST, $secvalue, FILTER_SANITIZE_URL);
     } else {
         foreach ($secvalue as $subsecvalue) {
-            if (!check_postvalue($subsecvalue))
-                return false;
+            check_postvalue($subsecvalue);
         }
     }
     return true;
