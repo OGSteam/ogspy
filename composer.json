@@ -2,7 +2,6 @@
   "name": "ogsteam/ogspy",
   "description": "This is a tool to collect data from a game and provide statistics",
   "minimum-stability": "stable",
-  "version": "3.4.0",
   "license": "GPL-2.0",
   "authors": [
       {
@@ -18,9 +17,10 @@
   ],
   "require" : {
     "php" : "^5.5 || ^7.0",
-    "ghunti/highcharts-php": "~3.0",
     "sinergi/token": "0.1.0",
-    "sabre/http": "^4.2"
+    "sabre/http": "^4.2",
+    "datatables/datatables": "^1.10",
+    "ghunti/highcharts-php": "^3.0"
 
   },
   "autoload": {
@@ -29,6 +29,9 @@
       "Ogsteam\\Ogspy\\Views\\": "views/Helper",
       "Ogsteam\\Ogspy\\Entity\\": "entity/"
     }
+  },
+  "config": {
+    "preferred-install": "dist"
   }
 
 }

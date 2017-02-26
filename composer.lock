@@ -4,8 +4,31 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc04c74c2edeef6ffdba7a4d6236c385",
+    "content-hash": "3e8243df4bf4b1d860f8317c496dca74",
     "packages": [
+        {
+            "name": "datatables/datatables",
+            "version": "1.10.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DataTables/DataTables.git",
+                "reference": "403128c42f7b263a0563e862decbe69734b834e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DataTables/DataTables/zipball/403128c42f7b263a0563e862decbe69734b834e8",
+                "reference": "403128c42f7b263a0563e862decbe69734b834e8",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, which will add advanced interaction controls to any HTML table.",
+            "homepage": "http://www.datatables.net/",
+            "time": "2016-12-06T19:40:44+00:00"
+        },
         {
             "name": "ghunti/highcharts-php",
             "version": "v3.0.3",

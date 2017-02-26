@@ -29,6 +29,8 @@ if (!defined('IN_SPYOGAME')) {
 
     <!-- Ajout des scripts Graphique (highcharts), jquery-->
     <?php $chart = new HighchartsPHP\Highchart(); $chart->printScripts(); ?>
+    <script type="text/javascript" src="./vendor/datatables/datatables/media/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" type="text/css" href="./vendor/datatables/datatables/media/css/jquery.dataTables.css"/>
 </head>
 <body>
 <table id="maintable">
