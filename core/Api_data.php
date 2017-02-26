@@ -147,7 +147,7 @@ class Api_data
             $data_rank = new Rankings_Model();
             $last_rank_date = $data_rank->get_rank_latest_table_date($type);
 
-            $rankings = $data_rank->get_ranktable_bydate($type, $higher_rank, $lower_rank, $last_rank_date);
+            $rankings = $data_rank->get_ranktable_bydate($type, $last_rank_date, $higher_rank, $lower_rank);
 
             $data =  array('status' => 'ok', 'content' => $rankings);
             $this->send_response($data);

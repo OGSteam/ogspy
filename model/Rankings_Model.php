@@ -88,13 +88,13 @@ class Rankings_Model
         return $max;
     }
 
-    public function get_ranktable_bydate($rank_type, $higher_rank = 1, $lower_rank = 100, $datadate){
+    public function get_ranktable_bydate($rank_type, $datadate, $higher_rank = 1, $lower_rank = 100){
 
         global $db;
 
         $request = "SELECT * FROM `" . $this->get_rank_type_tablename($rank_type) . "`".
                     "WHERE `datadate` = '".$datadate."'".
-        "AND `rank` >= '".$higher_rank ."' AND `rank` <= '".$lower_rank."'";
+        " AND `rank` >= '".$higher_rank ."' AND `rank` <= '".$lower_rank."'";
 
         $result = $db->sql_query($request);
 
