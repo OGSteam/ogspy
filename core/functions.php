@@ -109,7 +109,7 @@ function decode_ip($int_ip)
 {
     if (strlen($int_ip) == 32) {
         $int_ip = substr(chunk_split($int_ip, 4, ':'), 0, 39);
-        $int_ip = ':' . implode(':', array_map("hexhex", explode(':', $int_ip))) . ':';
+        $int_ip = ':' . implode(':', array_map(__NAMESPACE__.'\hexhex', explode(':', $int_ip))) . ':';
         preg_match_all("/(:0)+/", $int_ip, $zeros);
         if (count($zeros[0]) > 0) {
             $match = '';
