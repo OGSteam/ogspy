@@ -1,6 +1,6 @@
 OGSpy
 ============
-[![GitHub Stars](https://img.shields.io/github/stars/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/stargazers) [![GitHub Issues](https://img.shields.io/github/issues/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/issues) [![Version Courante](https://img.shields.io/badge/version-3.3.2-green.svg)](https://github.com/OGSTeam/ogspy) [![Demo](https://img.shields.io/badge/demo-online-green.svg)](http://host.darkcity.fr/~demo/ogspy) [![Gitter](https://img.shields.io/gitter/room/gitterHQ/gitter.svg)](https://gitter.im/OGSteam/Support)
+[![GitHub Stars](https://img.shields.io/github/stars/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/stargazers) [![GitHub Issues](https://img.shields.io/github/issues/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/issues) [![Version Courante](https://img.shields.io/badge/version-3.3.2-green.svg)](https://github.com/OGSTeam/ogspy) [![Demo](https://img.shields.io/badge/demo-online-green.svg)](http://host.darkcity.fr/~demo/ogspy) [![Gitter](https://img.shields.io/gitter/room/gitterHQ/gitter.svg)](https://gitter.im/OGSteam/Support)[![Build Status](https://scrutinizer-ci.com/g/OGSteam/ogspy/badges/build.png?b=master)](https://scrutinizer-ci.com/g/OGSteam/ogspy/build-status/master)[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/OGSteam/ogspy/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/OGSteam/ogspy/?branch=master)
 
 Le projet crée en 2006 est une aide pour un jeu de gestion de vaisseaux spatiaux.
 Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour ensuite les regrouper et les exploiter.
@@ -8,7 +8,7 @@ Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour e
 ## Démo
 Vous pouvez tester un serveur OGSpy, une démo est disponible:
 
-- Serveur de test : http://host.darkcity.fr/~demo/ogspy
+- Serveur de test : https://host.darkcity.fr/~demo/ogspy
 - Nom d'utilisateur : demo
 - Mot de passe : ogsteam
 
@@ -49,22 +49,23 @@ Vous pouvez nous poser toutes les questions nécessaires sur notre forum.
 
 ## Equipe projet
 
-Responsable équipe : [DarkNoon](https://bitbucket.org/darknoon29)
+Responsable équipe : [DarkNoon](https://github.com/darknoon29)
 
 ### Développement
 
 * Machine
-* Jedinight
+* [Jedinight](https://github.com/jedi-night)
 * Superbox 
-* Pitch314
+* [Pitch314](https://github.com/pitch314)
 * Shad
 * Xaviernuma
 * Ninety
-* Itori
+* [Itori](https://github.com/Itori)
+* [Mascotte](https://github.com/mascotte88)
 
 #### Tests
 
-* Vous tous !!
+* [Roms0406](https://github.com/Roms0406)
 
 ### Graphismes
 
@@ -74,10 +75,13 @@ Responsable équipe : [DarkNoon](https://bitbucket.org/darknoon29)
 
 ### Branches de travail
 
-
 * master - is the main branch, only used to merge in a "final release"
 * development - is the branch where the development of the "next" version/s happens
-* release-3.2.X - is the branch where bug fixes for the version 3.2.X are applied
+* release-3.3.X - is the branch where bug fixes for the version 3.3.X are applied
+
+### Statut de la branche de développement
+
+[![Build Status](https://scrutinizer-ci.com/g/OGSteam/ogspy/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/OGSteam/ogspy/build-status/develop)[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/OGSteam/ogspy/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/OGSteam/ogspy/?branch=develop)
 
 ---
 ## License
