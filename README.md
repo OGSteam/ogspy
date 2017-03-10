@@ -25,16 +25,12 @@ Vous pouvez tester un serveur OGSpy, une démo est disponible:
 
 ---
 
-## Installation
+## Installation et Usages
 Nous avons réalisé un wiki qui détaille l'installation de l'outil sur un serveur web. Mais il existe aussi des hébergeurs qui installent le site pour vous.
 
 Vous trouverez toutes ces informations sur le wiki : 
 
 [Wiki de l'OGSteam](https://wiki.ogsteam.fr/doku.php)
-
----
-
-## Usage
 
 ---
 
@@ -70,8 +66,6 @@ Responsable équipe : [DarkNoon](https://github.com/darknoon29)
 ### Graphismes
 
  Chris Alys 
-
----
 
 ### Branches de travail
 
