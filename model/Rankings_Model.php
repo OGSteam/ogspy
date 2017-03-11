@@ -92,7 +92,7 @@ class Rankings_Model
 
         global $db;
 
-        $request = "SELECT * FROM `" . $this->get_rank_type_tablename($rank_type) . "`".
+        $request = "SELECT `rank`,`player`,`ally`,`points` FROM `" . $this->get_rank_type_tablename($rank_type) . "`".
                     "WHERE `datadate` = '".$datadate."'".
         " AND `rank` >= '".$higher_rank ."' AND `rank` <= '".$lower_rank."'";
 
