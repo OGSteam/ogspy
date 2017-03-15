@@ -68,10 +68,4 @@ $enable_register_view = isset ($server_config['enable_register_view']) ? $server
         ?>
     </table>
 </form>
-
-<p style="text-align:right;">
-    <a href="https://validator.w3.org/check?uri=referer">
-        <img src="https://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Strict" height="31" width="88"/>
-    </a>
-</p>
 <?php require_once("views/page_tail_2.php"); ?>

@@ -59,7 +59,7 @@ body /* allg font etc. *//* option du fond et générales */
     color: #E4E4E4;
     margin-top: 0;
     margin-left: 0;
-    background: #000000 url("../default_skin/fond_1.jpg") no-repeat fixed left top;
+    background: #000000 url("../default_skin/fond_3.jpg") no-repeat fixed left top;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     text-align: left;
     font-size: 11px;
@@ -87,6 +87,7 @@ td.a, td.b, td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, 
     border: 1px #F0ECED solid;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 11px;
+    border-radius: 5px;
 }
 
 th, td.a, td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, td.c_batiments, td.c_satellite, td.c_defense, td.c_classement_points, td.c_classement_flotte, td.c_classement_recherche, td.f, input, select, td.g, td.h, td.i, td.j, td.k, td.m, td.o, td.q, td.r, td.v, td.s, .style td, p td {
@@ -406,12 +407,10 @@ ul.menu {
 }
 
 a.menu1 {
-    background-image: url("../default_skin/menu/profil0.png");
     display: block;
 }
 
 a.menu1:hover {
-    background-image: url("../default_skin/menu/profil1.png");
     color: #26F33D;
 }
 
