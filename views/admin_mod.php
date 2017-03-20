@@ -14,7 +14,8 @@ namespace Ogsteam\Ogspy;
 
 if (!defined('IN_SPYOGAME')) die("Hacking attempt");
 
-$mod_list = mod_list();
+$mod_factory = new Mod_Factory();
+$mod_list = $mod_factory->mod_list();
 ?>
 <table align="center">
     <tr>

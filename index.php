@@ -87,6 +87,8 @@ if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
     }
 }
 
+$mod_factory_helper = new Mod_Factory();
+
 
 switch ($pub_action) {
     //----------------------------------------//
@@ -289,63 +291,61 @@ switch ($pub_action) {
         user_del_spy();
         break;
 
-
-
     //----------------------------------------//
     //--- ---//
     //----------------------------------------//
     case "mod_disable" :
-        mod_disable();
+        $mod_factory_helper->mod_disable($pub_mod_id);
         redirection("index.php?action=administration&subaction=mod");
         break;
 
     //
     case "mod_uninstall" :
-        mod_uninstall(mod_get_nom($pub_mod_id));
+        $mod_factory_helper->mod_uninstall($mod_factory_helper->mod_get_nom($pub_mod_id));
         redirection("index.php?action=administration&subaction=mod");
         break;
 
     //
     case "mod_active" :
-        mod_active();
+        $mod_factory_helper->mod_active($pub_mod_id);
         redirection("index.php?action=administration&subaction=mod");
         break;
 
     //
     case "mod_admin" :
-        mod_admin();
+        $mod_factory_helper->mod_admin($pub_mod_id);
         redirection("index.php?action=administration&subaction=mod");
         break;
 
     //
     case "mod_normal" :
-        mod_normal();
+        $mod_factory_helper->mod_normal($pub_mod_id);
         redirection("index.php?action=administration&subaction=mod");
         break;
 
     //
     case "mod_install" :
-        mod_install($pub_directory);
+        $mod_factory_helper->mod_install($pub_directory);
         redirection("index.php?action=administration&subaction=mod");
         break;
 
     //
     case "mod_update" :
-        mod_update();
+        $mod_factory_helper->mod_update($pub_mod_id);
         redirection("index.php?action=administration&subaction=mod");
         break;
 
 
     //
     case "mod_up" :
-        mod_sort("up");
+        $mod_factory_helper->mod_sort($pub_mod_id,"up");
         redirection("index.php?action=administration&subaction=mod");
         break;
 
 
     //
     case "mod_down" :
-        mod_sort("down");
+        $mod_factory_helper->mod_sort($pub_mod_id,"down");
         redirection("index.php?action=administration&subaction=mod");
         break;
 

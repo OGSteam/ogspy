@@ -116,8 +116,10 @@ class Mod_Factory
 
     /**
      * Function mod_check : Checks if an unauthorized user tries to install a mod without being admin or with wrong parameters
+     * @param $check_type
+     * @param $data
      */
-    function mod_check($check_type, $data)
+    private function mod_check($check_type, $data)
     {
         global $user_data;
 
@@ -143,15 +145,15 @@ class Mod_Factory
     /**
      * Installs a Mod from a mod folder name (Fonction utilisée par la partie admin)
      * @global $pub_directory
-     * @return null|boolean
+     * @return bool|null
      * @global $pub_directory
-     *
+     * @global $pub_directory
      */
     function mod_install($mod_folder_name)
     {
         global $server_config;
 
-        mod_check("directory", $mod_folder_name);
+        $this->mod_check("directory", $mod_folder_name);
 
         // fichier install non present
         if (!file_exists("mod/" . $mod_folder_name . "/install.php")) {
@@ -228,18 +230,18 @@ class Mod_Factory
     /**
      * mod_update (Fonction utilisée par la partie admin): Updates a mod version
      */
-    function mod_update()
+    function mod_update($mod_id)
     {
-        global $pub_mod_id, $server_config;
+        global $server_config;
 
-        mod_check("mod_id", $pub_mod_id);
+        $this->mod_check("mod_id", $mod_id);
 
         $modRepository = new Mod_Model();
-        $mods = $modRepository->find_by(array('id' => $pub_mod_id));
+        $mods = $modRepository->find_by(array('id' => $mod_id));
 
         // Mod inconnu
         if (count($mods) != 1) {
-            log_("mod_erreur_unknown", $pub_mod_id);
+            log_("mod_erreur_unknown", $mod_id);
             redirection("index.php?action=message&id_message=errormod&info");
             exit();
         }
@@ -309,10 +311,12 @@ class Mod_Factory
 
     /**
      * mod_uninstall (Fonction utilisée par la partie admin): Uninstall a mod from the database (Mod files are not deleted)
+     * @param string $mod_folder_name
+     * @param string $mod_uninstall_table
      */
     function mod_uninstall($mod_folder_name = "", $mod_uninstall_table = '')
     {
-        mod_check("Directory", $mod_folder_name);
+        $this->mod_check("Directory", $mod_folder_name);
 
         $modRepository = new Mod_Model();
         $mods = $modRepository->find_by(array('root' => $mod_folder_name));
@@ -344,17 +348,16 @@ class Mod_Factory
     /**
      * Mod Activation
      */
-    function mod_active()
+    function mod_active($mod_id)
     {
-        global $pub_mod_id;
 
-        mod_check("mod_id", $pub_mod_id);
+        $this->mod_check("mod_id", $mod_id);
 
         $modRepository = new Mod_Model();
-        $mods = $modRepository->find_by(array('id' => $pub_mod_id));
+        $mods = $modRepository->find_by(array('id' => $mod_id));
 
         if (count($mods) != 1) {
-            log_("mod_erreur_unknown", $pub_mod_id);
+            log_("mod_erreur_unknown", $mod_id);
             redirection("index.php?action=message&id_message=errormod&info");
             exit();
         }
@@ -370,18 +373,18 @@ class Mod_Factory
 
     /**
      * Disables a Mod
+     * @param $mod_id
+     * @return bool
      */
-    function mod_disable()
+    function mod_disable($mod_id)
     {
-        global $pub_mod_id;
-
-        mod_check("mod_id", $pub_mod_id);
+        $this->mod_check("mod_id", $mod_id);
 
         $modRepository = new Mod_Model();
-        $mods = $modRepository->find_by(array('id' => $pub_mod_id));
+        $mods = $modRepository->find_by(array('id' => $mod_id));
 
         if (count($mods) != 1) {
-            log_("mod_erreur_unknown", $pub_mod_id);
+            log_("mod_erreur_unknown", $mod_id);
             redirection("index.php?action=message&id_message=errormod&info");
             exit();
         }
@@ -397,18 +400,19 @@ class Mod_Factory
 
     /**
      * Set the visibility of the mod (Admin)
+     * @param $mod_id
+     * @return bool
      */
-    function mod_admin()
+    function mod_admin($mod_id)
     {
-        global $pub_mod_id;
 
-        mod_check("mod_id", $pub_mod_id);
+        $this->mod_check("mod_id", $mod_id);
 
         $modRepository = new Mod_Model();
-        $mods = $modRepository->find_by(array('id' => $pub_mod_id));
+        $mods = $modRepository->find_by(array('id' => $mod_id));
 
         if (count($mods) != 1) {
-            log_("mod_erreur_unknown", $pub_mod_id);
+            log_("mod_erreur_unknown", $mod_id);
             redirection("index.php?action=message&id_message=errormod&info");
             exit();
         }
@@ -424,18 +428,19 @@ class Mod_Factory
 
     /**
      * Set the visibility of the mod (User)
+     * @param $mod_id
+     * @return bool
      */
-    function mod_normal()
+    function mod_normal($mod_id)
     {
-        global $pub_mod_id;
 
-        mod_check("mod_id", $pub_mod_id);
+        $this->mod_check("mod_id", $mod_id);
 
         $modRepository = new Mod_Model();
-        $mods = $modRepository->find_by(array('id' => $pub_mod_id));
+        $mods = $modRepository->find_by(array('id' => $mod_id));
 
         if (count($mods) != 1) {
-            log_("mod_erreur_unknown", $pub_mod_id);
+            log_("mod_erreur_unknown", $mod_id);
             redirection("index.php?action=message&id_message=errormod&info");
             exit();
         }
@@ -451,20 +456,19 @@ class Mod_Factory
 
     /**
      * Function to set the position of a mod into the mod list
+     * @param $mod_id
      * @param string $order up or down according to the new desired postion.
-     * @return null|boolean
+     * @return bool|null
      */
-    function mod_sort($order)
+    function mod_sort($mod_id, $order)
     {
-        global $pub_mod_id;
-
-        mod_check("mod_id", $pub_mod_id);
+        $this->mod_check("mod_id", $mod_id);
 
         $modRepository = new Mod_Model();
         // On récupère le mod souhaité
-        $mods = $modRepository->find_by(array('id' => $pub_mod_id));
+        $mods = $modRepository->find_by(array('id' => $mod_id));
         if (count($mods) != 1) {
-            log_("mod_erreur_unknown", $pub_mod_id);
+            log_("mod_erreur_unknown", $mod_id);
             redirection("index.php?action=message&id_message=errormod&info");
             exit();
         }
