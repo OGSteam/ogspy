@@ -16,17 +16,24 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-$data_general = galaxy_show_ranking('player_points_rank');
+$data_general = galaxy_show_ranking();
 
 ?>
 <br><br>
 <table id='player_rankings' class='display' width='100%'>
     <thead>
     <tr>
-        <th>Position</th>
-        <th>Joueur</th>
-        <th>Alliance</th>
-        <th>Points</th>
+        <th class="c">Position</th>
+        <th class="c">Joueur</th>
+        <th class="c">Alliance</th>
+        <th class="c">Points</th>
+        <th class="c">Points Eco.</th>
+        <th class="c">Points Tech.</th>
+        <th class="c">Points Mil.</th>
+        <th class="c">Points Mil. Construits</th>
+        <th class="c">Points Mil. Perdus</th>
+        <th class="c">Points Mil. Détruits</th>
+        <th class="c">Points Honneur</th>
     </tr>
     </thead>
     <!--<tfoot>

@@ -583,7 +583,7 @@ function galaxy_getfavorites()
  *
  *
  */
-function galaxy_show_ranking($ranking_type = 'player_points_rank', $date = null)
+function galaxy_show_ranking($ranking_table = TABLE_RANK_PLAYER_POINTS, $date = null)
 {
     global $pub_date;
 
@@ -593,13 +593,13 @@ function galaxy_show_ranking($ranking_type = 'player_points_rank', $date = null)
 
     //Récupération de la dernière date de classement
     if ($date == null) {
-        $last_ranking = $data_rankings->get_rank_latest_table_date($ranking_type);
+        $last_ranking = $data_rankings->get_rank_latest_table_date($ranking_table);
     } else
         $last_ranking = $pub_date;
 
     if($last_ranking == null) return -1; // Pas de classement disponible
 
-     $ranking = $data_rankings->get_ranktable_bydate($ranking_type, $last_ranking);
+     $ranking = $data_rankings->get_all_player_ranktable_bydate($last_ranking);
 
     return $ranking;
 }

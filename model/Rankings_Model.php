@@ -39,67 +39,81 @@ class Rankings_Model
         return max($max_rank);
     }
 
-    private function get_rank_type_tablename($rank_type){
-
-        if(!isset($rank_type)) return -1;
-
-        switch($rank_type){
-            case 'player_points_rank' :
-                $table = TABLE_RANK_PLAYER_POINTS;
-                break;
-            case 'player_eco_rank' :
-                $table = TABLE_RANK_PLAYER_ECO;
-                break;
-            case 'player_techno_rank' :
-                $table = TABLE_RANK_PLAYER_TECHNOLOGY;
-                break;
-            case 'player_military_rank' :
-                $table = TABLE_RANK_PLAYER_MILITARY;
-                break;
-            case 'player_military_built_rank' :
-                $table = TABLE_RANK_PLAYER_MILITARY;
-                break;
-            case 'player_military_lost_rank' :
-                $table = TABLE_RANK_PLAYER_MILITARY_LOOSE;
-                break;
-            case 'player_military_destroyed_rank' :
-                $table = TABLE_RANK_PLAYER_MILITARY_DESTRUCT;
-                break;
-            case 'player_honor_rank' :
-                $table = TABLE_RANK_PLAYER_HONOR;
-                break;
-            default:
-                $table = TABLE_RANK_PLAYER_POINTS;
-        }
-        return $table;
-    }
-
     /**
-     * @param $rank_type
+     * @param $rank_table
      */
-    public function get_rank_latest_table_date($rank_type){
+    public function get_rank_latest_table_date($rank_table){
 
         global $db;
 
-        $request = "SELECT MAX(`datadate`) FROM `" . $this->get_rank_type_tablename($rank_type) . "`".
-        " LIMIT 0,1";
+        $request = "SELECT MAX(`datadate`) FROM `" .$rank_table . "`". " LIMIT 0,1";
         $result = $db->sql_query($request);
         list($max) = $db->sql_fetch_row($result);
         return $max;
     }
 
-    public function get_ranktable_bydate($rank_type, $datadate, $higher_rank = 1, $lower_rank = 100){
+    /**
+     * Gets the Selected Ranktable
+     * @param $rank_table
+     * @param $datadate
+     * @param int $higher_rank
+     * @param int $lower_rank
+     * @return array
+     */
+    public function get_ranktable_bydate($rank_table, $datadate, $higher_rank = 1, $lower_rank = 100){
 
         global $db;
-
-        $request = "SELECT `rank`,`player`,`ally`,`points` FROM `" . $this->get_rank_type_tablename($rank_type) . "`".
-                    "WHERE `datadate` = '".$datadate."'".
-        " AND `rank` >= '".$higher_rank ."' AND `rank` <= '".$lower_rank."'";
+        $request  = "SELECT `rank`,`player`,`ally`,`points`";
+        $request .= " FROM `" . $rank_table . "`";
+        $request .= " WHERE `datadate` = '".$datadate."'"." AND `rank` >= '".$higher_rank ."' AND `rank` <= '".$lower_rank."'";
 
         $result = $db->sql_query($request);
 
         while ($row = $db->sql_fetch_assoc($result)) {
             $ranking_content[] = $row;
+        }
+        return $ranking_content;
+    }
+
+    /**
+     * @param $datadate
+     * @param int $higher_rank
+     * @param int $lower_rank
+     * @return array
+     */
+    public function get_all_player_ranktable_bydate($datadate, $higher_rank = 1, $lower_rank = 100){
+
+        global $db;
+        $request  = "SELECT ref_points.rank, ref_points.player, ref_points.ally, ref_points.points, ref_eco.points, ref_tech.points, ref_mil.points, ref_milb.points, ref_mill.points, ref_mild.points, ref_milh.points";
+        $request .= " FROM `" . TABLE_RANK_PLAYER_POINTS . "` AS ref_points";
+        $request .= " LEFT JOIN ". TABLE_RANK_PLAYER_ECO." AS ref_eco ON ref_points.player = ref_eco.player AND ref_eco.`datadate` = '".$datadate."'";
+        $request .= " LEFT JOIN ". TABLE_RANK_PLAYER_TECHNOLOGY." AS ref_tech ON ref_points.player = ref_tech.player AND ref_tech.`datadate` = '".$datadate."'";
+        $request .= " LEFT JOIN ". TABLE_RANK_PLAYER_MILITARY." AS ref_mil ON ref_points.player = ref_mil.player  AND ref_mil.`datadate` = '".$datadate."'";
+        $request .= " LEFT JOIN ". TABLE_RANK_PLAYER_MILITARY_BUILT." AS ref_milb ON ref_points.player = ref_milb.player AND ref_milb.`datadate` = '".$datadate."'";
+        $request .= " LEFT JOIN ". TABLE_RANK_PLAYER_MILITARY_LOOSE." AS ref_mill ON ref_points.player = ref_mill.player  AND ref_mill.`datadate` = '".$datadate."'";
+        $request .= " LEFT JOIN ". TABLE_RANK_PLAYER_MILITARY_DESTRUCT." AS ref_mild ON ref_points.player = ref_mild.player AND ref_mild.`datadate` = '".$datadate."'";
+        $request .= " LEFT JOIN ". TABLE_RANK_PLAYER_HONOR." AS ref_milh ON ref_points.player = ref_milh.player AND ref_milh.`datadate` = '".$datadate."'";
+        $request .= " WHERE ref_points.`datadate` = '".$datadate."'";
+        $request .= " AND ref_points.`rank` >= '".$higher_rank ."'";
+        $request .= " AND ref_points.`rank` <= '".$lower_rank."'";
+
+        $result = $db->sql_query($request);
+
+        //Remplissage du ranking content. Toutes les valeurs doivent être présentes dans l'array sous peine de soucis d'affichages
+        $ranking_content = array ();
+        $row = 0;
+        while (list($position, $player_name, $ally_name, $general_pts, $eco_pts, $tech_pts, $mil_pts, $milb_pts, $mill_pts, $mild_pts, $milh_pts ) = $db->sql_fetch_row($result)) {
+            $ranking_content[$row]['postion'] = $position;
+            $ranking_content[$row]['player_name'] = $player_name;
+            $ranking_content[$row]['ally_name'] = $ally_name;
+            $ranking_content[$row]['general_pts'] = $general_pts;
+            $ranking_content[$row]['eco_pts'] = $eco_pts;
+            $ranking_content[$row]['tech_pts'] = $tech_pts;
+            $ranking_content[$row]['mil_pts'] = $mil_pts;
+            $ranking_content[$row]['milb_pts'] = $milb_pts;
+            $ranking_content[$row]['mill_pts'] = $mill_pts;
+            $ranking_content[$row]['mild_pts'] = $mild_pts;
+            $ranking_content[$row++]['milh_pts'] = $milh_pts;
         }
         return $ranking_content;
     }
