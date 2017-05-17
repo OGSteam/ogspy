@@ -86,6 +86,44 @@ CREATE TABLE ogspy_group (
   DEFAULT CHARSET = utf8;
 
 ##
+## Structure de la table `ogspy_user`
+##
+
+CREATE TABLE ogspy_user (
+  `user_id`             INT UNSIGNED    NOT NULL AUTO_INCREMENT,
+  `user_name`           VARCHAR(255)    NOT NULL DEFAULT '',
+  `user_password`       VARCHAR(255)    NOT NULL DEFAULT '',
+  `user_email`          VARCHAR(255)    NOT NULL DEFAULT '',
+  `user_admin`          ENUM ('0', '1') NOT NULL DEFAULT '0',
+  `user_coadmin`        ENUM ('0', '1') NOT NULL DEFAULT '0',
+  `user_active`         ENUM ('0', '1') NOT NULL DEFAULT '0',
+  `user_regdate`        INT UNSIGNED    NOT NULL DEFAULT '0',
+  `user_lastvisit`      INT UNSIGNED    NOT NULL DEFAULT '0',
+  `user_galaxy`         SMALLINT(2)     NOT NULL DEFAULT '1',
+  `user_system`         SMALLINT(3)     NOT NULL DEFAULT '1',
+  `planet_added_xtense` INT UNSIGNED    NOT NULL DEFAULT '0',
+  `search`              INT UNSIGNED    NOT NULL DEFAULT '0',
+  `spy_added_xtense`    INT UNSIGNED    NOT NULL DEFAULT '0',
+  `rank_added_xtense`   INT UNSIGNED    NOT NULL DEFAULT '0',
+  `xtense_type`         ENUM ('FF', 'GM-FF', 'GM-GC', 'ANDROID'),
+  `xtense_version`      VARCHAR(255),
+  `user_skin`           VARCHAR(255)    NOT NULL DEFAULT '',
+  `user_stat_name`      VARCHAR(255)    NOT NULL DEFAULT '',
+  `management_user`     ENUM ('0', '1') NOT NULL DEFAULT '0',
+  `management_ranking`  ENUM ('0', '1') NOT NULL DEFAULT '0',
+  `disable_ip_check`    ENUM ('0', '1') NOT NULL DEFAULT '0',
+  `off_commandant`      ENUM ('0', '1') NOT NULL DEFAULT '0',
+  `off_amiral`          ENUM ('0', '1') NOT NULL DEFAULT '0',
+  `off_ingenieur`       ENUM ('0', '1') NOT NULL DEFAULT '0',
+  `off_geologue`        ENUM ('0', '1') NOT NULL DEFAULT '0',
+  `off_technocrate`     ENUM ('0', '1') NOT NULL DEFAULT '0',
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY user_name (`user_name`)
+)
+  ENGINE = INNODB
+  DEFAULT CHARSET = utf8;
+
+##
 ## Structure de la table `ogspy_mod`
 ## 
 
@@ -183,43 +221,6 @@ CREATE TABLE ogspy_tokens (
 )
   DEFAULT CHARSET = utf8;
 
-##
-## Structure de la table `ogspy_user`
-##
-
-CREATE TABLE ogspy_user (
-  `user_id`             INT UNSIGNED    NOT NULL AUTO_INCREMENT,
-  `user_name`           VARCHAR(255)    NOT NULL DEFAULT '',
-  `user_password`       VARCHAR(255)    NOT NULL DEFAULT '',
-  `user_email`          VARCHAR(255)    NOT NULL DEFAULT '',
-  `user_admin`          ENUM ('0', '1') NOT NULL DEFAULT '0',
-  `user_coadmin`        ENUM ('0', '1') NOT NULL DEFAULT '0',
-  `user_active`         ENUM ('0', '1') NOT NULL DEFAULT '0',
-  `user_regdate`        INT UNSIGNED    NOT NULL DEFAULT '0',
-  `user_lastvisit`      INT UNSIGNED    NOT NULL DEFAULT '0',
-  `user_galaxy`         SMALLINT(2)     NOT NULL DEFAULT '1',
-  `user_system`         SMALLINT(3)     NOT NULL DEFAULT '1',
-  `planet_added_xtense` INT UNSIGNED    NOT NULL DEFAULT '0',
-  `search`              INT UNSIGNED    NOT NULL DEFAULT '0',
-  `spy_added_xtense`    INT UNSIGNED    NOT NULL DEFAULT '0',
-  `rank_added_xtense`   INT UNSIGNED    NOT NULL DEFAULT '0',
-  `xtense_type`         ENUM ('FF', 'GM-FF', 'GM-GC', 'ANDROID'),
-  `xtense_version`      VARCHAR(255),
-  `user_skin`           VARCHAR(255)    NOT NULL DEFAULT '',
-  `user_stat_name`      VARCHAR(255)    NOT NULL DEFAULT '',
-  `management_user`     ENUM ('0', '1') NOT NULL DEFAULT '0',
-  `management_ranking`  ENUM ('0', '1') NOT NULL DEFAULT '0',
-  `disable_ip_check`    ENUM ('0', '1') NOT NULL DEFAULT '0',
-  `off_commandant`      ENUM ('0', '1') NOT NULL DEFAULT '0',
-  `off_amiral`          ENUM ('0', '1') NOT NULL DEFAULT '0',
-  `off_ingenieur`       ENUM ('0', '1') NOT NULL DEFAULT '0',
-  `off_geologue`        ENUM ('0', '1') NOT NULL DEFAULT '0',
-  `off_technocrate`     ENUM ('0', '1') NOT NULL DEFAULT '0',
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY user_name (`user_name`)
-)
-  ENGINE = INNODB
-  DEFAULT CHARSET = utf8;
 
 ##
 ## Structure de la table `ogspy_user_favorite`
