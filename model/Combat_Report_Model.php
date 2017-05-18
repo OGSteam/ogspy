@@ -52,6 +52,29 @@ class Combat_Report_Model
         return $tResult;
     }
 
+    public function get_combat_report($id_rc)
+    {
+        global $db;
+
+        $query = 'SELECT dateRC, coordinates, nb_rounds, victoire, pertes_A, pertes_D, gain_M, gain_C, gain_D, debris_M, debris_C, lune FROM ' . TABLE_PARSEDRC . ' WHERE id_rc = ' . $id_rc;
+        $result = $db->sql_query($query);
+
+        $report = $db->sql_fetch_assoc($result);
+
+        $rounds = array();
+        $query = 'SELECT id_rcround, id_rc, numround, attaque_tir, attaque_puissance, attaque_bouclier, defense_tir, defense_puissance, defense_bouclier FROM ' . TABLE_PARSEDRCROUND . ' WHERE id_rc = ' . $id_rc . ' ORDER BY numround';
+        $result_round = $db->sql_query($query);
+        while($round = $db->sql_fetch_assoc($result_round))
+            $rounds[] = $round;
+        $report['rounds'] = $rounds;
+
+
+
+
+
+        return $report;
+    }
+
 
 
 

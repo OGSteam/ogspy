@@ -39,7 +39,7 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     //Game
 
     define("TABLE_PARSEDRC", $table_prefix . "game_cr");
-    define("TABLE_PARSEDRCROUND", $table_prefix . "game_cr_round");
+    define("TABLE_PARSEDRCROUND", $table_prefix . "game_cr_rounds");
     define("TABLE_ROUND_ATTACK", $table_prefix . "game_cr_round_attack");
     define("TABLE_ROUND_DEFENSE", $table_prefix . "game_cr_round_defense");
     define("TABLE_DEBRIS_FIELD", $table_prefix . "game_debris_fields");

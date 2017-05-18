@@ -534,7 +534,7 @@ function galaxy_reportrc_show()
     $report_list = $data_combat_report->get_cr_id_list_by_planet(intval($pub_galaxy), intval($pub_system), intval($pub_row));
 
     $reports = array();
-    foreach ($report_list['id_rc'] as $report_id)
+    foreach ($report_list as $report_id)
     {
         $reports[] = UNparseRC($report_id);
     }
