@@ -24,7 +24,6 @@ $user_defence = $user_empire["defence"];
 $user_technology = $user_empire["technology"];
 $user_production = user_empire_production($user_empire,$user_data);
 
-
 if (!isset($pub_view) || $pub_view == "") $view = "planets";
 elseif ($pub_view == "planets" || $pub_view == "moons") $view = $pub_view;
 else $view = "planets";
@@ -48,13 +47,14 @@ $technology_requirement["RRI"] = array(10, "Ordi" => 8, "Hyp" => 8);
 $technology_requirement["Graviton"] = array(12);
 $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
+
+$nb_planete = find_nb_planete_user($user_data['user_id']);
+
 ?>
 
     <!-- DEBUT DU SCRIPT -->
     <script language="JavaScript">
         <?php
-
-        $nb_planete = find_nb_planete_user($user_data['user_id']);
 
         $name = $coordinates = $fields = $temperature_min = $temperature_max = $satellite = "";
         for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
@@ -345,10 +345,12 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
         <tr>
             <th><a><?php echo($lang['HOME_EMPIRE_ENERGY']); ?></a></th>
             <?php
-
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
+                if(isset($user_production['reel'][$i]))
             	echo "\t" . "<th>" . $user_production['reel'][$i]['prod_E'] . "</th>" . "\n";
-                        }
+                else
+                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                }
             ?>
         <tr>
             <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">Production
@@ -360,15 +362,19 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             // ratio
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                echo "\t" . "<th style='font-weight:bold; color:";
-                if ($user_production['reel'][$i]['ratio'] != 1) {
-                    echo "red";
+                if(isset($user_production['reel'][$i])) {
+                    echo "\t" . "<th style='font-weight:bold; color:";
+                    if ($user_production['reel'][$i]['ratio'] != 1) {
+                        echo "red";
+                    } else {
+                        echo "green";
+                    }
+                    echo ";'>";
+                    echo number_format(round($user_production['reel'][$i]['ratio'], 3), 0, ',', ' ');
+                    echo "</th>" . "\n";
                 } else {
-                    echo "green";
+                    echo "\t" . "<th>&nbsp</th>" . "\n";
                 }
-                echo ";'>";
-                echo number_format(round($user_production['reel'][$i]['ratio'], 3), 0, ',', ' ');
-                echo "</th>" . "\n";
             }
             ?>
         </tr>

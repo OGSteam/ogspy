@@ -75,8 +75,8 @@ class User_Building_Model
         $result = $db->sql_query($request);
 
         //mini 9 pour eviter bug affichage
-        if ($db->sql_numrows($result) <= 9)
-            return 9;
+        /*if ($db->sql_numrows($result) <= 9)
+            return 9;*/
 
         return $db->sql_numrows($result);
 
