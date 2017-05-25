@@ -20,7 +20,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4"
         },
-        "time": "2014-05-24T13:27:57+00:00",
+        "time": "2014-05-24 13:27:57",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -72,7 +72,7 @@
             "phpunit/phpunit": "*",
             "sabre/cs": "~0.0.4"
         },
-        "time": "2015-11-05T20:14:39+00:00",
+        "time": "2015-11-05 20:14:39",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -138,7 +138,7 @@
         "suggest": {
             "ext-curl": " to make http requests with the Client class"
         },
-        "time": "2017-01-02T19:38:42+00:00",
+        "time": "2017-01-02 19:38:42",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -189,7 +189,7 @@
             "phpunit/phpunit": ">=4.0,<6.0",
             "sabre/cs": "~1.0.0"
         },
-        "time": "2017-02-20T19:59:28+00:00",
+        "time": "2017-02-20 19:59:28",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -221,31 +221,6 @@
         ]
     },
     {
-        "name": "datatables/datatables",
-        "version": "1.10.13",
-        "version_normalized": "1.10.13.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/DataTables/DataTables.git",
-            "reference": "403128c42f7b263a0563e862decbe69734b834e8"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/DataTables/DataTables/zipball/403128c42f7b263a0563e862decbe69734b834e8",
-            "reference": "403128c42f7b263a0563e862decbe69734b834e8",
-            "shasum": ""
-        },
-        "time": "2016-12-06T19:40:44+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "description": "DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, which will add advanced interaction controls to any HTML table.",
-        "homepage": "http://www.datatables.net/"
-    },
-    {
         "name": "ghunti/highcharts-php",
         "version": "v3.0.3",
         "version_normalized": "3.0.3.0",
@@ -263,7 +238,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-01-24T11:57:43+00:00",
+        "time": "2016-01-24 11:57:43",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -292,5 +267,30 @@
             "javascript",
             "php"
         ]
+    },
+    {
+        "name": "datatables/datatables",
+        "version": "1.10.15",
+        "version_normalized": "1.10.15.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/DataTables/DataTables.git",
+            "reference": "7494262db18b1cbc69dcc1d64a5a8d0cd757d58c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/DataTables/DataTables/zipball/7494262db18b1cbc69dcc1d64a5a8d0cd757d58c",
+            "reference": "7494262db18b1cbc69dcc1d64a5a8d0cd757d58c",
+            "shasum": ""
+        },
+        "time": "2017-04-18 08:24:18",
+        "type": "library",
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, which will add advanced interaction controls to any HTML table.",
+        "homepage": "http://www.datatables.net/"
     }
 ]

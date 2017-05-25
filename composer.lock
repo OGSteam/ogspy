@@ -4,20 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+    "hash": "d8e73362131d0b958ad3c2a7cfad608c",
     "content-hash": "3e8243df4bf4b1d860f8317c496dca74",
     "packages": [
         {
             "name": "datatables/datatables",
-            "version": "1.10.13",
+            "version": "1.10.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DataTables/DataTables.git",
-                "reference": "403128c42f7b263a0563e862decbe69734b834e8"
+                "reference": "7494262db18b1cbc69dcc1d64a5a8d0cd757d58c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataTables/DataTables/zipball/403128c42f7b263a0563e862decbe69734b834e8",
-                "reference": "403128c42f7b263a0563e862decbe69734b834e8",
+                "url": "https://api.github.com/repos/DataTables/DataTables/zipball/7494262db18b1cbc69dcc1d64a5a8d0cd757d58c",
+                "reference": "7494262db18b1cbc69dcc1d64a5a8d0cd757d58c",
                 "shasum": ""
             },
             "type": "library",
@@ -27,7 +28,7 @@
             ],
             "description": "DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, which will add advanced interaction controls to any HTML table.",
             "homepage": "http://www.datatables.net/",
-            "time": "2016-12-06T19:40:44+00:00"
+            "time": "2017-04-18 08:24:18"
         },
         {
             "name": "ghunti/highcharts-php",
@@ -73,7 +74,7 @@
                 "javascript",
                 "php"
             ],
-            "time": "2016-01-24T11:57:43+00:00"
+            "time": "2016-01-24 11:57:43"
         },
         {
             "name": "sabre/event",
@@ -130,7 +131,7 @@
                 "promise",
                 "signal"
             ],
-            "time": "2015-11-05T20:14:39+00:00"
+            "time": "2015-11-05 20:14:39"
         },
         {
             "name": "sabre/http",
@@ -186,7 +187,7 @@
             "keywords": [
                 "http"
             ],
-            "time": "2017-01-02T19:38:42+00:00"
+            "time": "2017-01-02 19:38:42"
         },
         {
             "name": "sabre/uri",
@@ -237,7 +238,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-02-20T19:59:28+00:00"
+            "time": "2017-02-20 19:59:28"
         },
         {
             "name": "sinergi/token",
@@ -286,7 +287,7 @@
                 "token",
                 "uuid"
             ],
-            "time": "2014-05-24T13:27:57+00:00"
+            "time": "2014-05-24 13:27:57"
         }
     ],
     "packages-dev": [],
