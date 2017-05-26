@@ -8,7 +8,7 @@ Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour e
 ## Démo
 Vous pouvez tester un serveur OGSpy, une démo est disponible:
 
-- Serveur de test : https://host.darkcity.fr/~demo/ogspy
+- Serveur de test : https://ogspy.fr/demo
 - Nom d'utilisateur : demo
 - Mot de passe : ogsteam
 
@@ -69,9 +69,9 @@ Responsable équipe : [DarkNoon](https://github.com/darknoon29)
 
 ### Branches de travail
 
-* master - is the main branch, only used to merge in a "final release"
-* development - is the branch where the development of the "next" version/s happens
-* release-3.3.X - is the branch where bug fixes for the version 3.3.X are applied
+* master - Branche Principale, utilisée uniquement pour publier les versions finales de nos outils.
+* development - branche qui contient les développements pour les futures versions
+* release-3.X.Y - Branche contenant les correctifs pour une future version
 
 ### Statut de la branche de développement
 
