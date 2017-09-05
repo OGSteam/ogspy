@@ -23,45 +23,47 @@ require_once("views/page_header.php");
                 <table width="100%">
                     <tr align="center">
                         <?php
-                        if (!isset($pub_subaction)) $pub_subaction = "empire";
+                        if (!isset($pub_subaction)) {
+                            $pub_subaction = "empire";
+                        }
 
                         if ($pub_subaction != "empire") {
                             echo "\t\t\t" . "<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=empire';\">";
-                            echo "<a style='cursor:pointer'><span style=\"color: lime; \">" .$lang['HOME_EMPIRE_TITLE']. "</span></a>";
+                            echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['HOME_EMPIRE_TITLE'] . "</span></a>";
                             echo "</td>";
                         } else {
                             echo "\t\t\t" . "<th width='25%'>";
-                            echo "<a>".$lang['HOME_EMPIRE_TITLE']."</a>";
+                            echo "<a>" . $lang['HOME_EMPIRE_TITLE'] . "</a>";
                             echo "</th>";
                         }
 
                         if ($pub_subaction != "simulation") {
                             echo "\t\t\t" . "<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=simulation';\">";
-                            echo "<a style='cursor:pointer'><span style=\"color: lime; \">" .$lang['HOME_SIMULATION_TITLE']. "</span></a>";
+                            echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['HOME_SIMULATION_TITLE'] . "</span></a>";
                             echo "</td>";
                         } else {
                             echo "\t\t\t" . "<th width='150'>";
-                            echo "<a>".$lang['HOME_SIMULATION_TITLE']."</a>";
+                            echo "<a>" . $lang['HOME_SIMULATION_TITLE'] . "</a>";
                             echo "</th>";
                         }
 
                         if ($pub_subaction != "spy") {
                             echo "\t\t\t" . "<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=spy';\">";
-                            echo "<a style='cursor:pointer'><span style=\"color: lime; \">" .$lang['HOME_REPORTS_TITLE']. "</span></a>";
+                            echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['HOME_REPORTS_TITLE'] . "</span></a>";
                             echo "</td>";
                         } else {
                             echo "\t\t\t" . "<th width='25%'>";
-                            echo "<a>".$lang['HOME_REPORTS_TITLE']."</a>";
+                            echo "<a>" . $lang['HOME_REPORTS_TITLE'] . "</a>";
                             echo "</th>";
                         }
 
                         if ($pub_subaction != "stat") {
                             echo "\t\t\t" . "<td class='c_stats' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=stat';\">";
-                            echo "<a style='cursor:pointer'><span style=\"color: lime; \">" .$lang['HOME_STATISTICS_TITLE']. "</span></a>";
+                            echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['HOME_STATISTICS_TITLE'] . "</span></a>";
                             echo "</td>";
                         } else {
                             echo "\t\t\t" . "<th width='25%'>";
-                            echo "<a>".$lang['HOME_STATISTICS_TITLE']."</a>";
+                            echo "<a>" . $lang['HOME_STATISTICS_TITLE'] . "</a>";
                             echo "</th>";
                         }
                         ?>

@@ -34,9 +34,10 @@ if (file_exists("parameters/id.php")) {
     if (!defined("OGSPY_INSTALLED") && !defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS")) {
         header("Location: install/index.php?lang=fr");
         exit();
-    } elseif (file_exists('../parameters/id.php'))
-        require_once ('../parameters/id.php');
-}
+    } elseif (file_exists('../parameters/id.php')) {
+            require_once ('../parameters/id.php');
+    }
+    }
 
 //Appel des fonctions
 require_once ("includes/config.php");
@@ -53,9 +54,9 @@ require_once ("includes/cache.php");
 require_once ("includes/chart_js.php");
 
 //Récupération des valeur GET, POST, COOKIE
-extract($_GET,EXTR_PREFIX_ALL , "pub");
-extract($_POST,EXTR_PREFIX_ALL , "pub");
-extract($_COOKIE,EXTR_PREFIX_ALL , "pub");
+extract($_GET, EXTR_PREFIX_ALL, "pub");
+extract($_POST, EXTR_PREFIX_ALL, "pub");
+extract($_COOKIE, EXTR_PREFIX_ALL, "pub");
 
 foreach ($_GET as $secvalue) {
     if (!check_getvalue($secvalue)) {
@@ -74,8 +75,9 @@ foreach ($_POST as $secvalue) {
 if (!isset($ui_lang)) { // Checks the ui_lang value from parameters file
     if (isset($pub_lang)) {
         $ui_lang = $pub_lang; //This value is used during installation
-    } else
-        $ui_lang = "fr";
+    } else {
+            $ui_lang = "fr";
+    }
     //If no language is available in id.php file we take fr by default
 }
 require_once ("lang/lang_main.php");
@@ -85,7 +87,7 @@ if (!defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS")) {
 if (file_exists('parameters/key.php')) {
     require_once ('parameters/key.php');
     $dossierParent = (__FILE__);
-    $path =  $_SERVER["SCRIPT_FILENAME"];;
+    $path = $_SERVER["SCRIPT_FILENAME"]; ;
     if ($path != $serveur_path) {
         generate_key();
     } // regenere que si incoherence d url
@@ -119,6 +121,7 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     }
 }
 
-if (isset($server_config["log_phperror"]) && $server_config["log_phperror"] == 1)
+if (isset($server_config["log_phperror"]) && $server_config["log_phperror"] == 1) {
     set_error_handler('ogspy_error_handler');
+}
 

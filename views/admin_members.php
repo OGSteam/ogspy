@@ -42,9 +42,9 @@ $usergroup_list = usergroup_get();
             <td class="c" width="120"><?php echo($lang['ADMIN_MEMBERS_COADMIN']); ?></td>
         <?php }
         if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) { ?>
-            <td class="c" width="120"><?php echo($lang['ADMIN_MEMBERS_MGMEMBERS']); ?><?php echo help("admin_member_manager");?></td>
+            <td class="c" width="120"><?php echo($lang['ADMIN_MEMBERS_MGMEMBERS']); ?><?php echo help("admin_member_manager"); ?></td>
         <?php }?>
-        <td class="c" width="120"><?php echo($lang['ADMIN_MEMBERS_MGRANKS']); ?><?php echo help("admin_ranking_manager");?></td>
+        <td class="c" width="120"><?php echo($lang['ADMIN_MEMBERS_MGRANKS']); ?><?php echo help("admin_ranking_manager"); ?></td>
         <td class="c" width="120"><?php echo($lang['ADMIN_MEMBERS_LASTCONNECT']); ?></td>
         <td class="c" colspan="3">&nbsp;</td>
     </tr>
@@ -58,24 +58,24 @@ $usergroup_list = usergroup_get();
             continue;
         }
 
-        $YesNo = array("<font color=\"red\">".$lang['ADMIN_MEMBERS_NO']."</font>", "<font color=\"lime\">".$lang['ADMIN_MEMBERS_YES']."</font>");
+        $YesNo = array("<font color=\"red\">" . $lang['ADMIN_MEMBERS_NO'] . "</font>", "<font color=\"lime\">" . $lang['ADMIN_MEMBERS_YES'] . "</font>");
         $user_auth = user_get_auth($user_id);
 
         $auth = "<table width=\"100%\" style=\"color:white;\">";
-        $auth .= "<tr><td class=\"c\" colspan=\"2\">".$lang['ADMIN_MEMBERS_SERVER_RIGHTS']."</td></tr>";
-        $auth .= "<tr><th>".$lang['ADMIN_MEMBERS_SERVER_ADDSYSTEM']."</th><th>" . $YesNo[$user_auth["server_set_system"]] . "</th></tr>";
-        $auth .= "<tr><th>".$lang['ADMIN_MEMBERS_SERVER_ADDREPORT']."</th><th>" . $YesNo[$user_auth["server_set_spy"]] . "</th></tr>";
-        $auth .= "<tr><th>".$lang['ADMIN_MEMBERS_SERVER_ADDRANK']."</th><th>" . $YesNo[$user_auth["server_set_ranking"]] . "</th></tr>";
-        $auth .= "<tr><th>".$lang['ADMIN_MEMBERS_SERVER_ADDHIDDEN']."</th><th>" . $YesNo[$user_auth["server_show_positionhided"]] . "</th></tr>";
+        $auth .= "<tr><td class=\"c\" colspan=\"2\">" . $lang['ADMIN_MEMBERS_SERVER_RIGHTS'] . "</td></tr>";
+        $auth .= "<tr><th>" . $lang['ADMIN_MEMBERS_SERVER_ADDSYSTEM'] . "</th><th>" . $YesNo[$user_auth["server_set_system"]] . "</th></tr>";
+        $auth .= "<tr><th>" . $lang['ADMIN_MEMBERS_SERVER_ADDREPORT'] . "</th><th>" . $YesNo[$user_auth["server_set_spy"]] . "</th></tr>";
+        $auth .= "<tr><th>" . $lang['ADMIN_MEMBERS_SERVER_ADDRANK'] . "</th><th>" . $YesNo[$user_auth["server_set_ranking"]] . "</th></tr>";
+        $auth .= "<tr><th>" . $lang['ADMIN_MEMBERS_SERVER_ADDHIDDEN'] . "</th><th>" . $YesNo[$user_auth["server_show_positionhided"]] . "</th></tr>";
 
-        $auth .= "<tr><td class=\"c\" colspan=\"2\">".$lang['ADMIN_MEMBERS_EXTERNAL_RIGHTS']."</td></tr>";
-        $auth .= "<tr><th>".$lang['ADMIN_MEMBERS_EXTERNAL_CONNECT']."</th><th>" . $YesNo[$user_auth["ogs_connection"]] . "</th></tr>";
-        $auth .= "<tr><th>".$lang['ADMIN_MEMBERS_EXTERNAL_ADDSYSTEM']."</th><th>" . $YesNo[$user_auth["ogs_set_system"]] . "</th></tr>";
-        $auth .= "<tr><th>".$lang['ADMIN_MEMBERS_EXTERNAL_GETSYSTEM']."</th><th>" . $YesNo[$user_auth["ogs_get_system"]] . "</th></tr>";
-        $auth .= "<tr><th>".$lang['ADMIN_MEMBERS_EXTERNAL_ADDREPORT']."</th><th>" . $YesNo[$user_auth["ogs_set_spy"]] . "</th></tr>";
-        $auth .= "<tr><th>".$lang['ADMIN_MEMBERS_EXTERNAL_GETREPORT']."</th><th>" . $YesNo[$user_auth["ogs_get_spy"]] . "</th></tr>";
-        $auth .= "<tr><th>".$lang['ADMIN_MEMBERS_EXTERNAL_ADDRANK']."</th><th>" . $YesNo[$user_auth["ogs_set_ranking"]] . "</th></tr>";
-        $auth .= "<tr><th>".$lang['ADMIN_MEMBERS_EXTERNAL_GETRANK']."</th><th>" . $YesNo[$user_auth["ogs_get_ranking"]] . "</th></tr>";
+        $auth .= "<tr><td class=\"c\" colspan=\"2\">" . $lang['ADMIN_MEMBERS_EXTERNAL_RIGHTS'] . "</td></tr>";
+        $auth .= "<tr><th>" . $lang['ADMIN_MEMBERS_EXTERNAL_CONNECT'] . "</th><th>" . $YesNo[$user_auth["ogs_connection"]] . "</th></tr>";
+        $auth .= "<tr><th>" . $lang['ADMIN_MEMBERS_EXTERNAL_ADDSYSTEM'] . "</th><th>" . $YesNo[$user_auth["ogs_set_system"]] . "</th></tr>";
+        $auth .= "<tr><th>" . $lang['ADMIN_MEMBERS_EXTERNAL_GETSYSTEM'] . "</th><th>" . $YesNo[$user_auth["ogs_get_system"]] . "</th></tr>";
+        $auth .= "<tr><th>" . $lang['ADMIN_MEMBERS_EXTERNAL_ADDREPORT'] . "</th><th>" . $YesNo[$user_auth["ogs_set_spy"]] . "</th></tr>";
+        $auth .= "<tr><th>" . $lang['ADMIN_MEMBERS_EXTERNAL_GETREPORT'] . "</th><th>" . $YesNo[$user_auth["ogs_get_spy"]] . "</th></tr>";
+        $auth .= "<tr><th>" . $lang['ADMIN_MEMBERS_EXTERNAL_ADDRANK'] . "</th><th>" . $YesNo[$user_auth["ogs_set_ranking"]] . "</th></tr>";
+        $auth .= "<tr><th>" . $lang['ADMIN_MEMBERS_EXTERNAL_GETRANK'] . "</th><th>" . $YesNo[$user_auth["ogs_get_ranking"]] . "</th></tr>";
         $auth .= "</table>";
 
         if (version_compare(phpversion(), '5.4.0', '>=')) {
@@ -104,24 +104,24 @@ $usergroup_list = usergroup_get();
         echo "<form method='POST' action='index.php?action=admin_modify_member&amp;user_id=" . $user_id . "'>" . "\n";
         echo "\t" . "<th><a onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $auth . "')\">" . $name . "</a></th>" . "\n";
         echo "\t" . "<th>" . $reg_date . "</th>" . "\n";
-        echo "\t" . "<th><select name='active'><option value='1'>".$lang['ADMIN_MEMBERS_YES']."</option><option value='0'".$active_off.">".$lang['ADMIN_MEMBERS_NO']."</option></select></th>" . "\n";
+        echo "\t" . "<th><select name='active'><option value='1'>" . $lang['ADMIN_MEMBERS_YES'] . "</option><option value='0'" . $active_off . ">" . $lang['ADMIN_MEMBERS_NO'] . "</option></select></th>" . "\n";
         if ($user_data["user_admin"] == 1) {
-            echo "\t" . "<th><select name='user_coadmin'><option value='1'>".$lang['ADMIN_MEMBERS_YES']."</option><option value='0'".$user_coadmin_off.">".$lang['ADMIN_MEMBERS_NO']."</option></select></th>" . "\n";
+            echo "\t" . "<th><select name='user_coadmin'><option value='1'>" . $lang['ADMIN_MEMBERS_YES'] . "</option><option value='0'" . $user_coadmin_off . ">" . $lang['ADMIN_MEMBERS_NO'] . "</option></select></th>" . "\n";
         }
         if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-            echo "\t" . "<th><select name='management_user'><option value='1'>".$lang['ADMIN_MEMBERS_YES']."</option><option value='0'".$management_user_off.">".$lang['ADMIN_MEMBERS_NO']."</option></select></th>" . "\n";
+            echo "\t" . "<th><select name='management_user'><option value='1'>" . $lang['ADMIN_MEMBERS_YES'] . "</option><option value='0'" . $management_user_off . ">" . $lang['ADMIN_MEMBERS_NO'] . "</option></select></th>" . "\n";
         }
-        echo "\t" . "<th><select name='management_ranking'><option value='1'>".$lang['ADMIN_MEMBERS_YES']."</option><option value='0'".$management_ranking_off.">".$lang['ADMIN_MEMBERS_NO']."</option></select></th>" . "\n";
+        echo "\t" . "<th><select name='management_ranking'><option value='1'>" . $lang['ADMIN_MEMBERS_YES'] . "</option><option value='0'" . $management_ranking_off . ">" . $lang['ADMIN_MEMBERS_NO'] . "</option></select></th>" . "\n";
         echo "\t" . "<th>" . $last_visit . "</th>" . "\n";
-        echo "\t" . "<th><input type='image' src='images/usercheck.png' title='".$lang['ADMIN_MEMBERS_VALIDATE']. $name . "'></th>" . "\n";
+        echo "\t" . "<th><input type='image' src='images/usercheck.png' title='" . $lang['ADMIN_MEMBERS_VALIDATE'] . $name . "'></th>" . "\n";
         echo "</form>" . "\n";
 
-        echo "<form method='POST' action='index.php?action=delete_member&amp;user_id=" . $user_id . "' onsubmit=\"return confirm('".$lang['ADMIN_MEMBERS_DELETE_TITLE'] . $name . "');\">" . "\n";
-        echo "\t" . "<th><input type='image' src='images/userdrop.png' title='".$lang['ADMIN_MEMBERS_DELETE'] . $name . "'></th>" . "\n";
+        echo "<form method='POST' action='index.php?action=delete_member&amp;user_id=" . $user_id . "' onsubmit=\"return confirm('" . $lang['ADMIN_MEMBERS_DELETE_TITLE'] . $name . "');\">" . "\n";
+        echo "\t" . "<th><input type='image' src='images/userdrop.png' title='" . $lang['ADMIN_MEMBERS_DELETE'] . $name . "'></th>" . "\n";
         echo "</form>" . "\n";
 
         echo "<form method='POST' action='index.php?action=new_password&amp;user_id=" . $user_id . "' id=" . $user_id . ">" . "\n";
-        echo "\t" . "<th><img style=\"cursor:pointer\" src='images/userpwd.png' title='".$lang['ADMIN_MEMBERS_PWDCHANGE_TITLE'] . $name . "' onclick=\"if(confirm('".$lang['ADMIN_MEMBERS_PWDCHANGE'] . $name . "')){document.all.pass_name.value='" . $name . "';document.all.pass_id.value='" . $user_id . "';document.getElementById('pass_new').value = '';document.getElementById('new_pass').style.visibility = 'visible';}\"><input type=\"hidden\" id=\"" . $name . "\" name=\"pass_" . $user_id . "\" value=\"\"></th>" . "\n";
+        echo "\t" . "<th><img style=\"cursor:pointer\" src='images/userpwd.png' title='" . $lang['ADMIN_MEMBERS_PWDCHANGE_TITLE'] . $name . "' onclick=\"if(confirm('" . $lang['ADMIN_MEMBERS_PWDCHANGE'] . $name . "')){document.all.pass_name.value='" . $name . "';document.all.pass_id.value='" . $user_id . "';document.getElementById('pass_new').value = '';document.getElementById('new_pass').style.visibility = 'visible';}\"><input type=\"hidden\" id=\"" . $name . "\" name=\"pass_" . $user_id . "\" value=\"\"></th>" . "\n";
         echo "</form>" . "\n";
         echo "</tr>" . "\n";
     }
@@ -168,12 +168,12 @@ $usergroup_list = usergroup_get();
                             <th align="center">
                                 <?php
                                 if ($user_data["user_admin"] == 1) {
-                                    echo "\t" . $lang['ADMIN_MEMBERS_POPUP_MGTMEMBERS']." : <select name='user_coadmin'><option value='1'>".$lang['ADMIN_MEMBERS_YES']."</option><option value='0'selected='selected' ".$user_coadmin_off.">".$lang['ADMIN_MEMBERS_NO']."</option></select><br>" . "\n";
+                                    echo "\t" . $lang['ADMIN_MEMBERS_POPUP_MGTMEMBERS'] . " : <select name='user_coadmin'><option value='1'>" . $lang['ADMIN_MEMBERS_YES'] . "</option><option value='0'selected='selected' " . $user_coadmin_off . ">" . $lang['ADMIN_MEMBERS_NO'] . "</option></select><br>" . "\n";
                                 }
                                 if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-                                    echo "\t" . $lang['ADMIN_MEMBERS_POPUP_MGTRANKS'] . help('admin_member_manager') . " : <select name='management_user'><option value='1'>".$lang['ADMIN_MEMBERS_YES']."</option><option value='0'".$management_user_off.">".$lang['ADMIN_MEMBERS_NO']."</option></select><br>" . "\n";
+                                    echo "\t" . $lang['ADMIN_MEMBERS_POPUP_MGTRANKS'] . help('admin_member_manager') . " : <select name='management_user'><option value='1'>" . $lang['ADMIN_MEMBERS_YES'] . "</option><option value='0'" . $management_user_off . ">" . $lang['ADMIN_MEMBERS_NO'] . "</option></select><br>" . "\n";
                                 }
-                                echo "\t" . $lang['ADMIN_MEMBERS_POPUP_GROUP'] . help('admin_ranking_manager') . " : <select name='management_ranking'><option value='1'>".$lang['ADMIN_MEMBERS_YES']."</option><option value='0'".$management_ranking_off.">".$lang['ADMIN_MEMBERS_NO']."</option></select><br>" . "\n";?>
+                                echo "\t" . $lang['ADMIN_MEMBERS_POPUP_GROUP'] . help('admin_ranking_manager') . " : <select name='management_ranking'><option value='1'>" . $lang['ADMIN_MEMBERS_YES'] . "</option><option value='0'" . $management_ranking_off . ">" . $lang['ADMIN_MEMBERS_NO'] . "</option></select><br>" . "\n"; ?>
                             </th>
                         </tr>
                         <tr>
