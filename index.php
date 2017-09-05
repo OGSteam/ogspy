@@ -333,11 +333,19 @@ switch ($pub_action) {
 
         default:
             if ($server_config['open_user'] != "" && $user_data['user_admin'] != 1 && $user_data['user_coadmin'] != 1) {
-                if (file_exists($server_config['open_user'])) require_once($server_config['open_user']);
-                else require_once("views/galaxy.php");
+                if (file_exists($server_config['open_user'])) {
+                    require_once($server_config['open_user']);
+                } else {
+                    require_once("views/galaxy.php");
+                }
             } elseif ($server_config['open_admin'] != "" && ($user_data['user_admin'] == 1 || $user_data['user_coadmin'] == 1)) {
-                if (file_exists($server_config['open_admin'])) require_once($server_config['open_admin']);
-                else require_once("views/galaxy.php");
-            } else require_once("views/galaxy.php");
+                if (file_exists($server_config['open_admin'])) {
+                    require_once($server_config['open_admin']);
+                } else {
+                    require_once("views/galaxy.php");
+                }
+            } else {
+                require_once("views/galaxy.php");
+            }
             break;
 }

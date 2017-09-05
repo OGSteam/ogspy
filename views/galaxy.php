@@ -106,15 +106,17 @@ require_once("views/page_header.php");
 
             <td colspan="6" align="right">
                 <?php
-                if (sizeof($favorites) < $server_config['max_favorites'])
-                    $string_addfavorites = "window.location = 'index.php?action=add_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "';";
-                else
-                    $string_addfavorites = "alert('" . $lang['GALAXY_MAX_FAVORITES_MESSAGE'] . " (" . $server_config['max_favorites'] . ")')";
+                if (sizeof($favorites) < $server_config['max_favorites']) {
+                                    $string_addfavorites = "window.location = 'index.php?action=add_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "';";
+                } else {
+                                    $string_addfavorites = "alert('" . $lang['GALAXY_MAX_FAVORITES_MESSAGE'] . " (" . $server_config['max_favorites'] . ")')";
+                }
 
-                if (sizeof($favorites) > 0)
-                    $string_delfavorites = "window.location = 'index.php?action=del_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "';";
-                else
-                    $string_delfavorites = "alert('" . $lang['GALAXY_NO_FAVORITES_MESSAGE'] . "')";
+                if (sizeof($favorites) > 0) {
+                                    $string_delfavorites = "window.location = 'index.php?action=del_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "';";
+                } else {
+                                    $string_delfavorites = "alert('" . $lang['GALAXY_NO_FAVORITES_MESSAGE'] . "')";
+                }
                 ?>
                 <input type="button" value="<?php echo($lang['GALAXY_ADD_FAVORITES']); ?>" onclick="<?php echo $string_addfavorites; ?>">
                 <input type="button" value="<?php echo($lang['GALAXY_REMOVE_FAVORITES']); ?>" onclick="<?php echo $string_delfavorites; ?>">
@@ -282,14 +284,24 @@ require_once("views/page_header.php");
                 if ($gate == 1) {
                     $detail .= "P";
                 }
-                if ($detail != "") $moon .= " - " . $detail;
-            } else $moon = "&nbsp;";
+                if ($detail != "") {
+                    $moon .= " - " . $detail;
+                }
+            } else {
+                $moon = "&nbsp;";
+            }
 
-            if ($v["report_spy"] > 0) $spy = "<a href='#' onClick=\"window.open('index.php?action=show_reportspy&amp;galaxy=$galaxy&amp;system=$system&amp;row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">" . $lang['GALAXY_SR'] . "</a>";
-            else $spy = "&nbsp;";
+            if ($v["report_spy"] > 0) {
+                $spy = "<a href='#' onClick=\"window.open('index.php?action=show_reportspy&amp;galaxy=$galaxy&amp;system=$system&amp;row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">" . $lang['GALAXY_SR'] . "</a>";
+            } else {
+                $spy = "&nbsp;";
+            }
 
-            if (isset($v["report_rc"]) && $v["report_rc"] > 0) $rc = "<a href='#' onClick=\"window.open('index.php?action=show_reportrc&amp;galaxy=$galaxy&amp;system=$system&amp;row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">" . $v["report_rc"] . $lang['GALAXY_CR'] . "</a>";
-            else $rc = "&nbsp;";
+            if (isset($v["report_rc"]) && $v["report_rc"] > 0) {
+                $rc = "<a href='#' onClick=\"window.open('index.php?action=show_reportrc&amp;galaxy=$galaxy&amp;system=$system&amp;row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">" . $v["report_rc"] . $lang['GALAXY_CR'] . "</a>";
+            } else {
+                $rc = "&nbsp;";
+            }
 
             echo "<tr>" . "\n";
             echo "\t" . "<th>" . $id . "</th>" . "\n";
@@ -396,10 +408,14 @@ require_once("views/page_header.php");
 
                 echo $value['range_down'] . " <-> " . $value["galaxy"] . ":" . $value['range_up'] . "</span>]";
 
-                if ($value["gate"] == "1") echo "<span style=\"color: red; \"> " . $lang['GALAXY_LUNA_GATE'] . " </span>";
+                if ($value["gate"] == "1") {
+                    echo "<span style=\"color: red; \"> " . $lang['GALAXY_LUNA_GATE'] . " </span>";
+                }
                 echo ".</th></tr>";
             }
-        } else echo "<tr><th>" . $lang['GALAXY_LUNA_NOPHALANX'] . "</th></tr>";
+        } else {
+            echo "<tr><th>" . $lang['GALAXY_LUNA_NOPHALANX'] . "</th></tr>";
+        }
         echo "</table>";
 
 

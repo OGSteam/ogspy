@@ -90,7 +90,9 @@ $mod_list = mod_list();
         echo "<th width='100'><a href='index.php?action=mod_uninstall&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_REMOVE'] . "</a></th>";
         if (!$mod["up_to_date"]) {
             echo "<th width='100'><a href='index.php?action=mod_update&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_UPDATE'] . "</a></th>";
-        } else echo "<th width='100'>&nbsp;</th>";
+        } else {
+            echo "<th width='100'>&nbsp;</th>";
+        }
         echo "<th width='100'>&nbsp;</th>";
         echo "</tr>";
         echo "\n";

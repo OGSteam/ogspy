@@ -111,8 +111,8 @@ function user_login()
 
                 session_set_user_id($user_id, $lastvisit);
                 log_('login');
-                if(!isset($url_append)){
-                    $url_append="";
+                if (!isset($url_append)) {
+                    $url_append = "";
                 }
                 redirection("index.php?action=" . $pub_goto . "" . $url_append);
             } else {
@@ -133,9 +133,9 @@ function user_login_redirection()
 {
     global $pub_goto, $url_append;
 
-    if($pub_goto=='galaxy'){
+    if ($pub_goto == 'galaxy') {
         global $pub_galaxy, $pub_system;
-        $url_append="&galaxy=" . $pub_galaxy . "&system=" . $pub_system;
+        $url_append = "&galaxy=" . $pub_galaxy . "&system=" . $pub_system;
         user_login();
     } else {
         user_login();
@@ -242,8 +242,7 @@ function member_user_set()
     if (!check_var($pub_pseudo, "Text") || !check_var($pub_old_password, "Text") ||
         !check_var($pub_new_password, "Text") || !check_var($pub_new_password2,
         "CharNum") || !check_var($pub_pseudo_email, "Email")
-        || !check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_disable_ip_check, "Num") || !
-        check_var($pub_pseudo_ingame, "Pseudo_ingame")) {
+        || !check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_disable_ip_check, "Num") || !check_var($pub_pseudo_ingame, "Pseudo_ingame")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
@@ -381,45 +380,54 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
 
     if (!empty($user_galaxy)) {
         $user_galaxy = intval($user_galaxy);
-        if ($user_galaxy < 1 || $user_galaxy > intval($server_config['num_of_galaxies']))
-            $user_galaxy = 1;
+        if ($user_galaxy < 1 || $user_galaxy > intval($server_config['num_of_galaxies'])) {
+                    $user_galaxy = 1;
+        }
     }
     if (!empty($user_system)) {
         $user_system = intval($user_system);
-        if ($user_system < 1 || $user_system > intval($server_config['num_of_systems']))
-            $user_system = 1;
+        if ($user_system < 1 || $user_system > intval($server_config['num_of_systems'])) {
+                    $user_system = 1;
+        }
     }
 
     $update = "";
 
     //Pseudo et mot de passe
-    if (!empty($user_name))
-        $update .= "user_name = '" . $db->sql_escape_string($user_name) . "'";
-    if (!empty($user_password))
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_password = '" . md5(sha1($user_password)) . "'";
+    if (!empty($user_name)) {
+            $update .= "user_name = '" . $db->sql_escape_string($user_name) . "'";
+    }
+    if (!empty($user_password)) {
+            $update .= ((strlen($update) > 0) ? ", " : "") . "user_password = '" . md5(sha1($user_password)) . "'";
+    }
 
     //Galaxy et système solaire du membre
-    if (!empty($user_galaxy))
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_galaxy = '" . $user_galaxy .
+    if (!empty($user_galaxy)) {
+            $update .= ((strlen($update) > 0) ? ", " : "") . "user_galaxy = '" . $user_galaxy .
             "'";
-    if (!empty($user_system))
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_system = '" . $user_system .
+    }
+    if (!empty($user_system)) {
+            $update .= ((strlen($update) > 0) ? ", " : "") . "user_system = '" . $user_system .
             "'";
+    }
 
     //Dernière visite
-    if (!empty($user_lastvisit))
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_lastvisit = '" . $user_lastvisit .
+    if (!empty($user_lastvisit)) {
+            $update .= ((strlen($update) > 0) ? ", " : "") . "user_lastvisit = '" . $user_lastvisit .
             "'";
+    }
 
     //Email
-    if (!empty($user_email))
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_email = '" . $user_email .
+    if (!empty($user_email)) {
+            $update .= ((strlen($update) > 0) ? ", " : "") . "user_email = '" . $user_email .
             "'";
+    }
 
     //Désactivation de la vérification de l'adresse ip
-    if (!is_null($disable_ip_check))
-        $update .= ((strlen($update) > 0) ? ", " : "") . "disable_ip_check = '" . $disable_ip_check .
+    if (!is_null($disable_ip_check)) {
+            $update .= ((strlen($update) > 0) ? ", " : "") . "disable_ip_check = '" . $disable_ip_check .
             "'";
+    }
 
 
     $request = "update " . TABLE_USER . " set " . $update . " where user_id = " . $user_id;
@@ -784,55 +792,55 @@ function user_delete()
     $request = "delete from " . TABLE_USER_TECHNOLOGY . " where user_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_POINTS ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_PLAYER_POINTS . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_ECO ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_PLAYER_ECO . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_TECHNOLOGY ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_PLAYER_TECHNOLOGY . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_PLAYER_MILITARY . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_BUILT ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_PLAYER_MILITARY_BUILT . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_LOOSE ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_PLAYER_HONOR ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_PLAYER_HONOR . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_POINTS ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_ALLY_POINTS . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_ECO ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_ALLY_ECO . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_TECHNOLOGY ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_ALLY_TECHNOLOGY . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_MILITARY ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_ALLY_MILITARY . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_BUILT ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_ALLY_MILITARY_BUILT . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_LOOSE ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_ALLY_MILITARY_LOOSE . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_DESTRUCT ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_RANK_ALLY_HONOR ." set sender_id = 0 where sender_id = " . $pub_user_id;
+    $request = "update " . TABLE_RANK_ALLY_HONOR . " set sender_id = 0 where sender_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "update " . TABLE_UNIVERSE ." set last_update_user_id = 0 where last_update_user_id = " . $pub_user_id;
+    $request = "update " . TABLE_UNIVERSE . " set last_update_user_id = 0 where last_update_user_id = " . $pub_user_id;
     $db->sql_query($request);
 
     session_close($pub_user_id);
@@ -1072,14 +1080,13 @@ function user_get_empire($user_id)
 
 
         $row["fields_used"] = $fields_used;
-        $row["boosters"] = booster_verify_str($row["boosters"]);    //Correction et mise à jour booster from date
-        $row["booster_tab"] = booster_decode($row["boosters"]);	// ajout booster dans get_empire
+        $row["boosters"] = booster_verify_str($row["boosters"]); //Correction et mise à jour booster from date
+        $row["booster_tab"] = booster_decode($row["boosters"]); // ajout booster dans get_empire
         // incrémentation field
-        if($row["planet_id"]>200)
+        if ($row["planet_id"] > 200)
         {
             $row["fields"] += $row["booster_tab"]["extention_p"]; 
-        }
-        else
+        } else
         {
             $row["fields"] += $row["booster_tab"]["extention_m"];
         }
@@ -1123,7 +1130,7 @@ function user_get_empire($user_id)
     }
 
     return array("building" => $user_building, "technology" => $user_technology,
-            "defence" => $user_defence, );
+            "defence" => $user_defence,);
 }
 
 /**
@@ -1147,8 +1154,9 @@ function find_nb_planete_user($id)
     $result = $db->sql_query($request);
 
     //mini 9 pour eviter bug affichage
-    if ($db->sql_numrows($result) <= 9)
-        return 9;
+    if ($db->sql_numrows($result) <= 9) {
+            return 9;
+    }
 
     return $db->sql_numrows($result);
 
@@ -1172,8 +1180,9 @@ function find_nb_moon_user($id)
     $result = $db->sql_query($request);
 
     //mini 9 pour eviter bug affichage
-    if ($db->sql_numrows($result) <= 9)
-        return 9;
+    if ($db->sql_numrows($result) <= 9) {
+            return 9;
+    }
 
     return $db->sql_numrows($result);
 
@@ -1192,7 +1201,7 @@ function user_empire_production($user_empire, $off = NULL)
     if ($off == NULL)
     {
         $off['off_commandant'] = 0;
-        $off['off_amiral']  = 0;
+        $off['off_amiral'] = 0;
         $off['off_ingenieur'] = 0;
         $off['off_geologue']  = 0;
         $off['off_technocrate'] = 0;
@@ -1224,11 +1233,11 @@ function user_empire_production($user_empire, $off = NULL)
 
     foreach ($user_empire["building"] as  $content)
     {
-        if (isset($content["planet_id"]) && $content["planet_id"] < 200 )
+        if (isset($content["planet_id"]) && $content["planet_id"] < 200)
         {// parcours des planetes ( < 200 )
 			
             // les different type de prod (generique)
-            $type = array("M","C","D");
+            $type = array("M", "C", "D");
             foreach ($type as $mine)
             {
                 $level = $content[$mine] != "" ? $content[$mine] : "0";
@@ -1243,12 +1252,11 @@ function user_empire_production($user_empire, $off = NULL)
                     { // specificité deut puisque les cef pompe la prod
                         $CEF = $content["CEF"];
                         $CEF_consumption = consumption("CEF", $CEF);
-                        $tmp =  production($mine, $level, $officier, $temp_max, $NRJ, $plasma) -$CEF_consumption ;
+                        $tmp = production($mine, $level, $officier, $temp_max, $NRJ, $plasma) - $CEF_consumption;
                         $prod["theorique"][$content["planet_id"]][$mine] = number_format(floor($tmp), 0, ',', ' ');
-                    }
-                    else
+                    } else
                     {
-                        $tmp =  production($mine, $level, $officier, $temp_max, $NRJ, $plasma) ;
+                        $tmp = production($mine, $level, $officier, $temp_max, $NRJ, $plasma);
                         $prod["theorique"][$content["planet_id"]][$mine] = number_format(floor($tmp), 0, ',', ' ');
                     }
                 }
@@ -1262,10 +1270,10 @@ function user_empire_production($user_empire, $off = NULL)
                 // calcul ratio
             $ratio[$content["planet_id"]] = $product;
             $ratio[$content["planet_id"]] = bilan_production_ratio($content["M"], $content["C"], $content["D"],
-                    $content["CES"], $content["CEF"], $content["Sat"],$content["temperature_max"], $off['off_ingenieur'], $off['off_geologue'], $off_full,
+                    $content["CES"], $content["CEF"], $content["Sat"], $content["temperature_max"], $off['off_ingenieur'], $off['off_geologue'], $off_full,
                     $NRJ, $plasma, $content["M_percentage"] / 100, $content["C_percentage"] / 100,
                     $content["D_percentage"] / 100, $content["CES_percentage"] / 100, $content["CEF_percentage"] / 100,
-                    $content["Sat_percentage"] / 100,$content["booster_tab"]);
+                    $content["Sat_percentage"] / 100, $content["booster_tab"]);
 			
             $prod["reel"][$content["planet_id"]] = $ratio[$content["planet_id"]];
             }
@@ -1997,19 +2005,19 @@ function UNparseRC($id_RC)
         list($id_rcround, $attaque_tir, $attaque_puissance, $attaque_bouclier, $defense_tir,
             $defense_puissance, $defense_bouclier) = $db->sql_fetch_row($result_round);
         // On formate les résultats
-        $nf_gain_M = number_format($gain_M,0,',','.');
-        $nf_gain_C = number_format($gain_C,0,',','.');
-        $nf_gain_D = number_format($gain_D,0,',','.');
-        $nf_pertes_A = number_format($pertes_A,0,',','.');
-        $nf_pertes_D = number_format($pertes_D,0,',','.');
-        $nf_debris_M = number_format($debris_M,0,',','.');
-        $nf_debris_C = number_format($debris_C,0,',','.');
-        $nf_attaque_tir = number_format($attaque_tir,0,',','.');
-        $nf_attaque_puissance = number_format($attaque_puissance,0,',','.');
-        $nf_attaque_bouclier = number_format($attaque_bouclier,0,',','.');
-        $nf_defense_tir = number_format($defense_tir,0,',','.');
-        $nf_defense_puissance = number_format($defense_puissance,0,',','.');
-        $nf_defense_bouclier = number_format($defense_bouclier,0,',','.');
+        $nf_gain_M = number_format($gain_M, 0, ',', '.');
+        $nf_gain_C = number_format($gain_C, 0, ',', '.');
+        $nf_gain_D = number_format($gain_D, 0, ',', '.');
+        $nf_pertes_A = number_format($pertes_A, 0, ',', '.');
+        $nf_pertes_D = number_format($pertes_D, 0, ',', '.');
+        $nf_debris_M = number_format($debris_M, 0, ',', '.');
+        $nf_debris_C = number_format($debris_C, 0, ',', '.');
+        $nf_attaque_tir = number_format($attaque_tir, 0, ',', '.');
+        $nf_attaque_puissance = number_format($attaque_puissance, 0, ',', '.');
+        $nf_attaque_bouclier = number_format($attaque_bouclier, 0, ',', '.');
+        $nf_defense_tir = number_format($defense_tir, 0, ',', '.');
+        $nf_defense_puissance = number_format($defense_puissance, 0, ',', '.');
+        $nf_defense_bouclier = number_format($defense_bouclier, 0, ',', '.');
 
         // Récupération de chaque attaquant du RC
         $query = 'SELECT player, coordinates, Armes, Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, 
@@ -2031,17 +2039,17 @@ function UNparseRC($id_RC)
                 if (isset($$key) && $$key > 0) {
                     $vivant_att = true;
                     $ship_type .= "\t" . $ship;
-                    $ship_nombre .= "\t" . number_format($$key,0,',','.');;
-                    $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10),0,',','.');
-                    $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)),0,',','.');
-                    $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)),0,',','.');
+                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.'); ;
+                    $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
+                    $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
+                    $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
                 }
             }
             if ($vivant_att == true) {
                 $template .= ' [' . $coordinates . ']';
-                if($idx==1)
-                    $template .= ' '.$lang['GAME_CREPORT_WEAPONS'].': ' . $Armes . '% '.$lang['GAME_CREPORT_SHIELD'].': ' . $Bouclier . '% '.$lang['GAME_CREPORT_PROTECTION'].': ' . $Protection . '%';
-                $template .="\n";
+                if ($idx == 1)
+                    $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
+                $template .= "\n";
                 $template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
             }
             else
@@ -2088,13 +2096,14 @@ function UNparseRC($id_RC)
             }
             if ($vivant_def == true) {
                 $template .= ' [' . $coordinates . ']';
-                if($idx==1)
-                    $template .= ' '.$lang['GAME_CREPORT_WEAPONS'].': ' . $Armes . '% '.$lang['GAME_CREPORT_SHIELD'].': ' . $Bouclier . '% '.$lang['GAME_CREPORT_PROTECTION'].': ' . $Protection . '%';
+                if($idx==1) {
+                                    $template .= ' '.$lang['GAME_CREPORT_WEAPONS'].': ' . $Armes . '% '.$lang['GAME_CREPORT_SHIELD'].': ' . $Bouclier . '% '.$lang['GAME_CREPORT_PROTECTION'].': ' . $Protection . '%';
+                }
                 $template .="\n";
                 $template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
+            } else {
+                            $template .= ' '.$lang['GAME_CREPORT_DESTROYED'].' '. "\n\n";
             }
-            else
-                $template .= ' '.$lang['GAME_CREPORT_DESTROYED'].' '. "\n\n";
         } // Fin récupération de chaque défenseur du RC
 
         // Résultat du round
@@ -2111,34 +2120,34 @@ function UNparseRC($id_RC)
 
     // Qui a remporté le combat ?
         switch ($victoire) {
-        case 'N':
-            $template .= $lang['GAME_CREPORT_RESULT_EVEN'].'.' .
-                "\n\n";
-            break;
-        case 'A':
-            $template .= $lang['GAME_CREPORT_RESULT_WIN'].' ' .
-                $nf_gain_M . ' '.$lang['GAME_CREPORT_RESULT_WIN_1'].', ' . $nf_gain_C . ' '.$lang['GAME_CREPORT_RESULT_WIN_2'].' ' . $nf_gain_D .
-                ' '.$lang['GAME_CREPORT_RESULT_WIN_3'].'.' . "\n\n";
-            break;
-        case 'D':
-            $template .= $lang['GAME_CREPORT_RESULT_LOST'] . "\n\n";
-            break;
+            case 'N':
+                $template .= $lang['GAME_CREPORT_RESULT_EVEN'].'.' .
+                    "\n\n";
+                break;
+            case 'A':
+                $template .= $lang['GAME_CREPORT_RESULT_WIN'].' ' .
+                    $nf_gain_M . ' '.$lang['GAME_CREPORT_RESULT_WIN_1'].', ' . $nf_gain_C . ' '.$lang['GAME_CREPORT_RESULT_WIN_2'].' ' . $nf_gain_D .
+                    ' '.$lang['GAME_CREPORT_RESULT_WIN_3'].'.' . "\n\n";
+                break;
+            case 'D':
+                $template .= $lang['GAME_CREPORT_RESULT_LOST'] . "\n\n";
+                break;
     }
 
     // Pertes et champs de débris
-    $template .= $lang['GAME_CREPORT_RESULT_LOSTPOINTS_A'].' ' . $nf_pertes_A . ' '.$lang['GAME_CREPORT_RESULT_UNITS'].'.' . "\n";
-    $template .= $lang['GAME_CREPORT_RESULT_LOSTPOINTS_D'].' ' . $nf_pertes_D . ' '.$lang['GAME_CREPORT_RESULT_UNITS'].'.' . "\n";
-    $template .= $lang['GAME_CREPORT_RESULT_DEBRIS'].' ' . $nf_debris_M .
-        ' '.$lang['GAME_CREPORT_RESULT_DEBRIS_M'].' ' . $nf_debris_C . ' '.$lang['GAME_CREPORT_RESULT_DEBRIS_C'] .
+    $template .= $lang['GAME_CREPORT_RESULT_LOSTPOINTS_A'] . ' ' . $nf_pertes_A . ' ' . $lang['GAME_CREPORT_RESULT_UNITS'] . '.' . "\n";
+    $template .= $lang['GAME_CREPORT_RESULT_LOSTPOINTS_D'] . ' ' . $nf_pertes_D . ' ' . $lang['GAME_CREPORT_RESULT_UNITS'] . '.' . "\n";
+    $template .= $lang['GAME_CREPORT_RESULT_DEBRIS'] . ' ' . $nf_debris_M .
+        ' ' . $lang['GAME_CREPORT_RESULT_DEBRIS_M'] . ' ' . $nf_debris_C . ' ' . $lang['GAME_CREPORT_RESULT_DEBRIS_C'] .
         "\n";
 
     $lunePourcent = floor(($debris_M + $debris_C) / 100000);
-    $lunePourcent = ($lunePourcent<0 ? 0 : ($lunePourcent>20 ? 20 : $lunePourcent));
-    if ($lunePourcent>0)
-        $template .= $lang['GAME_CREPORT_RESULT_NO_MOON'].' ' . $lunePourcent . ' %';
+    $lunePourcent = ($lunePourcent < 0 ? 0 : ($lunePourcent > 20 ? 20 : $lunePourcent));
+    if ($lunePourcent > 0)
+        $template .= $lang['GAME_CREPORT_RESULT_NO_MOON'] . ' ' . $lunePourcent . ' %';
 
-    if($lune==1)
-        $template .= "\n".$lang['GAME_CREPORT_RESULT_MOON'].".";
+    if ($lune == 1)
+        $template .= "\n" . $lang['GAME_CREPORT_RESULT_MOON'] . ".";
 
     return ($template);
 }

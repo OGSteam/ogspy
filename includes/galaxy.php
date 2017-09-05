@@ -1455,7 +1455,7 @@ function galaxy_get_phalanx($galaxy, $system)
             {
                 $add_to_list = true;
             //Cas 3 : Phanlange en fin de galaxie -> 2 zones possibles : 1 en fin de galaxie et 1 en début
-            }elseif (($system >= $system_lower_range && $system >= $system_higher_range && $arrondi_type == 2) ||
+            } elseif (($system >= $system_lower_range && $system >= $system_higher_range && $arrondi_type == 2) ||
             ($system <= $system_lower_range && $system <= $system_higher_range && $arrondi_type == 2))
             {
                 $add_to_list = true;
@@ -1464,8 +1464,8 @@ function galaxy_get_phalanx($galaxy, $system)
                 $add_to_list = false;
             }
 
-            if ($add_to_list == true)
-                $data_computed[] = array(
+            if ($add_to_list == true) {
+                            $data_computed[] = array(
                     'galaxy' => $phalanx["galaxy"],
                     'system' => $phalanx["system"],
                     'row' => $phalanx["row"],
@@ -1477,6 +1477,7 @@ function galaxy_get_phalanx($galaxy, $system)
                     'range_down' => $system_lower_range,
                     'range_up' => $system_higher_range
                 );
+            }
             }
         }
 
