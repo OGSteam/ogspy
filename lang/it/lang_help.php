@@ -8,44 +8,44 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.0
  */
-$help["admin_server_status"] = "Lorsque le serveur est désactivé, seul les membres avec le statut d'administrateur ont accès aux fonctionnalités du serveur";
-$help["admin_server_status_message"] = "Le message sera affiché aux membres \"de base\" lorsque le serveur sera désactivé";
-$help["admin_save_transaction"] = "Les transactions correspondent aux :<br>- Systèmes solaires<br>- Rapports d'espionnage<br>- Classements joueurs et alliances";
-$help["admin_member_manager"] = "Autorise la création, la mise à jour et la suppression des utilisateurs";
-$help["admin_ranking_manager"] = "Autorise la suppression des classements joueurs et alliances";
-$help["admin_check_ip"] = "Certains utilisateurs subissent des déconnexions intempestives (AOL, Proxy, etc).<br>Activez cette option afin qu'ils puissent désactiver la vérification dans leur profil";
-$help["admin_session_infini"] = "Si vous choisissez des sessions indéfinies dans le temps, plusieurs individus ne pourront plus utiliser le même compte en même temps";
-$help["drop_sessions"] = "Vide la table des sessions, cela allége l'administration mais oblige tout les utilisateurs à se reconnecter.";
+$help["admin_server_status"] = "Poiché il server è stato disattivato, solo i membri con ruolo di amministratore hanno accesso alle funzionalità del server";
+$help["admin_server_status_message"] = "Il messaggio sarà mostrato ai membri \"base\" finché il server sara disattivato";
+$help["admin_save_transaction"] = "Le modifiche sono riferite a : <br>- Sistemi solari <br> - Rapporti di spionaggio <br> - Classifiche giocatori ed alleanze";
+$help["admin_member_manager"] = "Autorizza la creazione, l'aggiornamento e la rimozione degli utenti";
+$help["admin_ranking_manager"] = "Autorizza la cancellazione delle classifiche giocatori ed alleanze";
+$help["admin_check_ip"] = "Alcuni utenti a volte subiscono delle disconnessioni impreviste (AOL, Proxy, etc). <br> Abilita questa opzione in modo da poter disattivare la verifica del profilo ed evitare tali disconnessioni";
+$help["admin_session_infini"] = "Se selezioni l'opzione sessioni infinite, altri non potranno utilizzare lo stesso account allo stesso tempo ";
+$help["drop_sessions"] = "Svuota la tabella delle connessioni, in questo modo il carico del server sarà inferiore ma tutti gli utenti saranno obbligati a riconnettersi.";
 
-$help["search_strict"] = "<font color=orange>Joueur recherché :</font><br><i>Liquid snake</i><br><font color=orange>Critère de recherche :</font><br><i>snake</i><br><br>=> <font color=lime>Résultat positif</font> si l'option \"strict\" est désactivée<br>=> <font color=red>Résultat négatif</font> si l'option \"strict\" est activée";
+$help["search_strict"] = "<font color=orange>Giocatore ricercato :</font> <br><i>Liquid snake</i><br><font color=orange> Parola chiave </font><br><i>snake</i><br><br> => <font color=lime>Esito positivo</font> se l'opzione \"strict\" è disattivata <br> => <font color=red>Risultato negativo</font> se l'opzione \"strict\" è attivata";
 
-$help["home_commandant"] = "Page empire du compte commandant";
+$help["home_commandant"] = "Pagina dell'impero dell'account amministratore";
 
-$help["profile_login"] = "Doit contenir entre 3 et 15 caractères (les caractères spéciaux ne sont pas acceptés)";
-$help["profile_pseudo_email"] = "Si rempli, vous recevrez des mails de la part de certains mods";
-$help["profile_main_planet"] = "La vue Galaxie sera ouverte directement sur ce système solaire";
-$help["profile_password"] = "Doit contenir entre 6 et 15 caractères (les caractères spéciaux ne sont pas acceptés)";
-$help["profile_galaxy"] = "Doit contenir un nombre<br> de 1 à 999";
-$help["profile_disable_ip_check"] = "La vérification de l'adresse IP permet de vous protéger contre le vol de session.<br><br>";
+$help["profile_login"] = "Deve contenere tra i 3 ed i 15 caratteri (i caratteri speciali non sono accettati)";
+$help["profile_pseudo_email"] = "Se presente, riceverete delle email da parte dei moderatori";
+$help["profile_main_planet"] = "La vista Galassia sarà aperta direttamente su questo sistema solare";
+$help["profile_password"] = "Deve contenere tra i 6 ed i 15 caratteri (i caratteri speciali non sono ammessi)";
+$help["profile_galaxy"] = "Deve contenere un numero<br> da 1 a 999";
+$help["profile_disable_ip_check"] = "La verifica dell'indirizzo IP vi permette di proteggervi contro il furto di sessione. <br><br>";
 $help["profile_disable_ip_check"] .= "Si vous êtes déconnecté régulièrement (AOL, Proxy, etc), désactivez la vérification.<br><br>";
 $help["profile_disable_ip_check"] .= "<i>L'option est disponible uniquement si l'administrateur l'a activée</i>";
 
-$help["galaxy_phalanx"] = "Chargez des rapports d'espionnage pour afficher les phalanges hostiles";
+$help["galaxy_phalanx"] = "Caricare i rapporti di spionaggio per mostrare le falangi nemiche";
 
-$help["ratio_block"] = "Vous avez un ratio inferieur au seuil, vous ne pouvez pas accéder aux mods";
-$help["profile_speed_uni"] = "Indiquez le multiplicateur de vitesse de votre univers (1 par défaut)";
-$help["profile_ddr"] = "Cocher si le dépôt de ravitaillement est présent dans votre univers";
-$help["astro_strict"] = "Cocher si l'univers est ancien. Cela permet d'avoir 9 planetes sans avoir la technologie astrophysique correspondante.";
-$help["config_cache"] = "Durée de vie du cache config en seconde.";
-$help["mod_cache"] = "Durée de vie du cache mod en seconde..";
+$help["ratio_block"] = "Avete un ratio inferiore al minimo, non potete accedere alle mod";
+$help["profile_speed_uni"] = "Indicare il moltiplicatore velocità del vostro universo (1 per il default)";
+$help["profile_ddr"] = "Verificare se la base di appoggio è presente nel vostro universo";
+$help["astro_strict"] = "Verificare se l'universo è old style. Questo permette di avere 9 pianeti senza avere la tecnologia astrofisica necessaria";
+$help["config_cache"] = "Durata della cache in secondi";
+$help["mod_cache"] = "Durata della cache in secondi";
 
 /* admin page */
 
-$help['display_mips'] = "Affiche ou cache les MIP des users de OGSpy, mais ne les affichent qu'a ceux qui peuvent voir les alliances protégées.";
-$help['member_stats'] = "Affiche ou cache le tableau de statistique des membres en bas de la page statistiques";
-$help['member_connected'] = "Affiche les (*) qui permettent de savoir qui est connecté<br>Désactivé si l'affichage des membres n'est pas activé";
-$help['member_registration'] = "Affiche ou cache le tableau contenan le lien du forum de cet OGSpy";
-$help['ally_name'] = "Nom de l'alliance de cet OGSpy";
-$help['forum_link'] = "Lien d'une section du forum, voir le PM de l'administrateur OGSpy";
-$help['first_displayed_module'] = "Module affiché lors de la connexion des utilisateurs à cet OGSpy";
-$help['first_displayed_module_admin'] = "Module affiché lors de la connexion des administrateurs de cet OGSpy";
+$help['display_mips'] = "Mostra o nasconde il MIP degli utenti di OGSpy, ma viene mostrato solo a coloro che possono vedere le alleanze nascoste";
+$help['member_stats'] = "Mostra o nasconde la tabella delle statistiche dei membri in basso alla pagina delle statistiche";
+$help['member_connected'] = "Mostra gli (*) che permettono di sapere chi è connesso<br> Disattivare se lo visualizzazione dei membri non è attiva";
+$help['member_registration'] = "Mostra o nasconde la tabella contenente i link del forum di questo OGSpy";
+$help['ally_name'] = "Nome dell'alleanza di questo OGSpy";
+$help['forum_link'] = "Link di una sezione del forum, vedere il PM dell'amministratore OGSpy";
+$help['first_displayed_module'] = "Modulo mostrato quando un utente entra in questo OGSpy";
+$help['first_displayed_module_admin'] = "Modulo mostrato a coloro che entrano con un profilo di amministratore di questo OGSpy";
