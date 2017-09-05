@@ -88,12 +88,12 @@ class sql_db
 
         /* Vérification de la connexion */
         if ($this->db_connect_id->connect_errno) {
-            echo("Échec de la connexion : ".$this->db_connect_id->connect_error);
+            echo("Échec de la connexion : " . $this->db_connect_id->connect_error);
             exit();
         }
 		
         if (!$this->db_connect_id->set_charset("utf8")) {
-            echo("Erreur lors du chargement du jeu de caractères utf8 : ".$this->db_connect_id->error);
+            echo("Erreur lors du chargement du jeu de caractères utf8 : " . $this->db_connect_id->error);
         } else {
             /*printf("Jeu de caractères courant : %s\n", $this->db_connect_id->character_set_name());*/
         }

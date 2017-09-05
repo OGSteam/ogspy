@@ -107,7 +107,7 @@ if (isset($pub_redirection)) {
     <tr align="center">
         <td>
             <div style="text-align: center;font-size: x-small;"><i><b>OGSpy</b> is an <b>OGSteam Software</b>
-                    (c) 2005-2017</i><br>v <?php echo $install_version ;?></div>
+                    (c) 2005-2017</i><br>v <?php echo $install_version; ?></div>
         </td>
     </tr>
 </table>

@@ -115,7 +115,7 @@ if (!defined('IN_SPYOGAME')) {
 
                 if ($db->sql_numrows($result)) {
                     while ($val = $db->sql_fetch_assoc($result)) {
-                        echo '<span>&nbsp;&nbsp;- <a class=\'menu_mods\' href="index.php?action=' . $val['action'] . '">' . $val['menu'] . '</a></span>'.'<br>';
+                        echo '<span>&nbsp;&nbsp;- <a class=\'menu_mods\' href="index.php?action=' . $val['action'] . '">' . $val['menu'] . '</a></span>' . '<br>';
                     }
                 }
 

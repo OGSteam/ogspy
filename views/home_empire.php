@@ -59,21 +59,21 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
         $nb_planete = find_nb_planete_user($user_data['user_id']);
 
         $name = $coordinates = $fields = $temperature_min = $temperature_max = $satellite = "";
-        for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
+        for ($i = 101; $i <= $nb_planete + 100; $i++) {
             /*Boosters et extensions modification :
            * => calcul effectué dans fonction  get empire*/
             $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
             $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
 
-            $name .= "'".$user_building[$i]["planet_name"]."', ";
-            $coordinates .= "'".$user_building[$i]["coordinates"]."', ";
-            $fields .= "'".$user_building[$i]["fields"]."', ";
-            $temperature_min .= "'".$user_building[$i]["temperature_min"]."', ";
-            $temperature_max .= "'".$user_building[$i]["temperature_max"]."', ";
-            $satellite .= "'".$user_building[$i]["Sat"]."', ";
+            $name .= "'" . $user_building[$i]["planet_name"] . "', ";
+            $coordinates .= "'" . $user_building[$i]["coordinates"] . "', ";
+            $fields .= "'" . $user_building[$i]["fields"] . "', ";
+            $temperature_min .= "'" . $user_building[$i]["temperature_min"] . "', ";
+            $temperature_max .= "'" . $user_building[$i]["temperature_max"] . "', ";
+            $satellite .= "'" . $user_building[$i]["Sat"] . "', ";
         }
 
-        for ($i=201 ; $i<=$nb_planete+200 ; $i++) {
+        for ($i = 201; $i <= $nb_planete + 200; $i++) {
             /*Boosters et extensions modification :*/
             //=> calcul effectué dans fonction  get empire*/
             $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
@@ -208,7 +208,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     echo "<input type='image' title='" . $lang['HOME_EMPIRE_MOVELEFT'] . " " . $user_building[$i]["planet_name"] . "' src='images/previous.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;left';\">&nbsp;&nbsp;";
                     echo "<input type='image' title='" . $lang['HOME_EMPIRE_DELETE_PLANET'] . " " . $user_building[$i]["planet_name"] . "' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "';\">&nbsp;&nbsp;";
                     echo "<input type='image' title='" . $lang['HOME_EMPIRE_MOVERIGHT'] . " " . $user_building[$i]["planet_name"] . "' src='images/next.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;right';\">";
-                } else echo "<input type='image' title='" . $lang['HOME_EMPIRE_DELETE_MOON'] . " " . $user_building[$i]["planet_name"] . "' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "';\">&nbsp;&nbsp;";
+                } else {
+                    echo "<input type='image' title='" . $lang['HOME_EMPIRE_DELETE_MOON'] . " " . $user_building[$i]["planet_name"] . "' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "';\">&nbsp;&nbsp;";
+                }
                 echo "</th>";
             }
             ?>

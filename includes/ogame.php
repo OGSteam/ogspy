@@ -216,7 +216,7 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
  * @return array
  */
 function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing = 0, $off_geo = 0, $off_full = 0, $NRJ = 0, $Plasma = 0,
-$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $booster  = NULL)
+$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $booster = NULL)
 {
 
     if ($off_full == 1) {
@@ -251,12 +251,12 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
         $prod_D -= consumption("CEF", $CEF) * $per_CEF; //on soustrait la conso de deut de la cef
         $prod_D = round($prod_D);
     } else {
-        $prod_M = production("M", 0);   //production de base
-        $prod_C = production("C", 0);   //production de base
-        $prod_D = production("D", 0);   //production de base
+        $prod_M = production("M", 0); //production de base
+        $prod_C = production("C", 0); //production de base
+        $prod_D = production("D", 0); //production de base
     }
 
-    if($booster != NULL)
+    if ($booster != NULL)
     {
         // si booster
         $prod_M = $prod_M * (1 + $booster['booster_m_val'] / 100);

@@ -128,7 +128,9 @@ echo "<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] . strftime("%d %b %Y", mktime(0, 
             if (log_check_exist($show_year . $show_month . $day)) {
                 echo "\t" . "<th><a>" . $day . "</a></th>";
                 echo "\t" . "<th width='40px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . $show_year . $show_month . $day . "'\" title='" . $lang['ADMIN_LOGS_DOWNLOAD'] . strftime("%d %B %Y", $date) . "'><input type='image' src='images/drop.png' onclick=\"window.location = 'index.php?action=remove&amp;date=" . $show_year . $show_month . $day . "'\" title='" . $lang['ADMIN_LOGS_DELETE'] . strftime("%d %B %Y", $date) . "'>";
-            } else echo "\t" . "<th colspan='2'><a>" . $day . "</a></th>";
+            } else {
+                echo "\t" . "<th colspan='2'><a>" . $day . "</a></th>";
+            }
             echo "</th>" . "\n";
         } else {
             if (log_check_exist($show_year . $show_month . $day)) {

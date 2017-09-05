@@ -111,8 +111,9 @@ function decode_ip($int_ip)
         if (count($zeros[0]) > 0) {
             $match = '';
             foreach ($zeros[0] as $zero) {
-                            if (strlen($zero) > strlen($match))
-                    $match = $zero;
+                            if (strlen($zero) > strlen($match)) {
+                                                $match = $zero;
+                            }
             }
             $int_ip = preg_replace('/' . $match . '/', ':', $int_ip, 1);
         }
@@ -1531,13 +1532,13 @@ function booster_lire_date($str)
 {
     $time = 0;
 
-    if(preg_match("/(\d+)s.(\d+)j.(\d+)h/", $str, $matches))
+    if (preg_match("/(\d+)s.(\d+)j.(\d+)h/", $str, $matches))
     {
-        $time = ($matches[1]*604800 + $matches[2]* 86400 + $matches[3]*3600);
+        $time = ($matches[1] * 604800 + $matches[2] * 86400 + $matches[3] * 3600);
 
-    } elseif (preg_match("/(\d+)j.(\d+)h/", $str, $matches)){
+    } elseif (preg_match("/(\d+)j.(\d+)h/", $str, $matches)) {
 
-        $time= ($matches[1]* 86400 + $matches[2]*3600);
+        $time = ($matches[1] * 86400 + $matches[2] * 3600);
     }
 
     return $time;
