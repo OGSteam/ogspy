@@ -21,14 +21,12 @@ if (!defined('IN_SPYOGAME')) {
     <meta name="language" content="<?php echo($lang['HEAD_LANGUAGE']); ?>">
     <title><?php echo $server_config["servername"] . " - OGSpy " . $server_config["version"];?></title>
     <link rel="stylesheet" type="text/css" href="./skin/OGSpy_skin/formate.css"/>
-    <link rel="stylesheet" href="js/jquery-ui/jquery-ui.css" >
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/icon" href="favicon.ico">
 
     <!-- Ajout des scripts Graphique (highcharts), jquery et prototype-->
 
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/highcharts.js"></script>
 </head>
 <body>

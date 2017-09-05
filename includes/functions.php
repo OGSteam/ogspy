@@ -923,7 +923,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
         //Adresse internet
         case "URL":
-            if (!preg_match("#^(((?:http?)://)?(?(2)(www\.)?|(www\.){1})?[-a-z0-9~_]{2,}(\.[-a-z0-9~._]{2,})?[-a-z0-9~_\/&\?=.]{2,})$#i",
+            if (!preg_match("#^(((?:http|https?):\/\/)?(?(2)(www\.)?|(www\.){1})?[-a-z0-9~_]{2,}(\.[-a-z0-9~._]{2,})?[-a-z0-9~_\/&\?=.]{2,})$#i",
                 $value)
             ) {
                 log_("check_var", array("URL", $value));
