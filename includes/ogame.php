@@ -37,9 +37,9 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
     if ($officier == 0) {
         $geo = 0;
     } elseif ($officier == 1) {
-        $geo = 0.10;    //+10%
+        $geo = 0.10; //+10%
     } elseif ($officier == 2) {
-        $geo = 0.12;    //+12%
+        $geo = 0.12; //+12%
     } else {
         $geo = 0;
     }
@@ -73,13 +73,13 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
         case "CES":
             $result = 20 * $level * pow(1.1, $level);
             $result = $result * (1 + $ing); // ingenieur
-            $result = floor($result);   // troncature inférieure
+            $result = floor($result); // troncature inférieure
             break;
 
         case "CEF":
             $result = 30 * $level * pow((1.05 + $NRJ * 0.01), $level);
             $result = $result * (1 + $ing); // ingenieur
-            $result = floor($result);   // troncature inférieure
+            $result = floor($result); // troncature inférieure
             break;
 
         default:
@@ -94,16 +94,16 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
  * Gets the energy production of satellites.
  * @param int $temperature_max Max temprature of the current planet
  * @param int $off_ing Officer ingenieur option enabled (=1) or not(=0) or full Officer(=2)
- * @return the result of the power production by sattelites.
+ * @return double result of the power production by sattelites.
  */
 function production_sat($temperature_max, $off_ing = 0)
 {
     if ($off_ing == 0) {
         $ing = 1;
     } elseif ($off_ing == 1) {
-        $ing = 1.10;    //110%
+        $ing = 1.10; //110%
     } elseif ($off_ing == 2) {
-        $ing = 1.12;    //112%
+        $ing = 1.12; //112%
     } else {
         $ing = 1;
     }
@@ -123,12 +123,12 @@ function consumption($building, $level)
         case "M":   //no break
         case "C":
             $result = 10 * $level * pow(1.1, $level);
-            $result = ceil($result);    //troncature supérieure
+            $result = ceil($result); //troncature supérieure
             break;
 
         case "D":
             $result = 20 * $level * pow(1.1, $level);
-            $result = ceil($result);    //troncature supérieure
+            $result = ceil($result); //troncature supérieure
             break;
 
         case "CEF":
@@ -164,7 +164,7 @@ function consumption($building, $level)
  * @return array("ratio", "conso_E", "prod_E", "prod_CES", "prod_CEF", "prod_SAT", "conso_M", "conso_C", "conso_D")
  */
 function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
-               $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1)
+                $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1)
 {
     $consommation_E = 0; // la consommation
     $conso_M = consumption("M", $M) * $per_M;
@@ -216,58 +216,58 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
  * @return array
  */
 function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing = 0, $off_geo = 0, $off_full = 0, $NRJ = 0, $Plasma = 0,
-$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1 , $booster  = NULL)
+$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $booster  = NULL)
 {
 
-	if ($off_full == 1) {
-		$off_ing = $off_geo = 2;
-	}
-	$tmp = ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
-			$per_M, $per_C, $per_D, $per_CES, $per_CEF, $per_SAT);
-	$ratio = $tmp["ratio"];
-	$consommation_E = $tmp["conso_E"];
-	$production_E = $tmp["prod_E"];
-	$prod_CES = $tmp["prod_CES"];
-	$prod_CEF = $tmp["prod_CEF"];
-	$prod_SAT = $tmp["prod_SAT"];
-	$conso_M = $tmp["conso_M"];
-	$conso_C = $tmp["conso_C"];
-	$conso_D = $tmp["conso_D"];
+    if ($off_full == 1) {
+        $off_ing = $off_geo = 2;
+    }
+    $tmp = ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
+            $per_M, $per_C, $per_D, $per_CES, $per_CEF, $per_SAT);
+    $ratio = $tmp["ratio"];
+    $consommation_E = $tmp["conso_E"];
+    $production_E = $tmp["prod_E"];
+    $prod_CES = $tmp["prod_CES"];
+    $prod_CEF = $tmp["prod_CEF"];
+    $prod_SAT = $tmp["prod_SAT"];
+    $conso_M = $tmp["conso_M"];
+    $conso_C = $tmp["conso_C"];
+    $conso_D = $tmp["conso_D"];
 
-	if ($ratio > 0) {
-		//production de metal avec ratio
-		$prod_M = production("M", $M, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_M;
-		$prod_M *= $ratio;
-		$prod_M = round($prod_M);
+    if ($ratio > 0) {
+        //production de metal avec ratio
+        $prod_M = production("M", $M, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_M;
+        $prod_M *= $ratio;
+        $prod_M = round($prod_M);
 
-		//production de cristal avec ratio
-		$prod_C = production("C", $C, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_C;
-		$prod_C *= $ratio;
-		$prod_C = round($prod_C);
+        //production de cristal avec ratio
+        $prod_C = production("C", $C, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_C;
+        $prod_C *= $ratio;
+        $prod_C = round($prod_C);
 
-		//production de deut avec ratio
-		$prod_D = production("D", $D, $off_geo, $temperature_max) * $per_D;
-		$prod_D *= $ratio;
-		$prod_D -= consumption("CEF", $CEF) * $per_CEF; //on soustrait la conso de deut de la cef
-		$prod_D = round($prod_D);
-	} else {
-		$prod_M = production("M", 0);   //production de base
-		$prod_C = production("C", 0);   //production de base
-		$prod_D = production("D", 0);   //production de base
-	}
+        //production de deut avec ratio
+        $prod_D = production("D", $D, $off_geo, $temperature_max) * $per_D;
+        $prod_D *= $ratio;
+        $prod_D -= consumption("CEF", $CEF) * $per_CEF; //on soustrait la conso de deut de la cef
+        $prod_D = round($prod_D);
+    } else {
+        $prod_M = production("M", 0);   //production de base
+        $prod_C = production("C", 0);   //production de base
+        $prod_D = production("D", 0);   //production de base
+    }
 
-	if($booster != NULL)
-	{
-		// si booster
-		$prod_M = $prod_M * (1 + $booster['booster_m_val'] / 100);
-		$prod_C = $prod_C * (1 + $booster['booster_c_val'] / 100);
-		$prod_D = $prod_D * (1 + $booster['booster_d_val'] / 100);
-	}
+    if($booster != NULL)
+    {
+        // si booster
+        $prod_M = $prod_M * (1 + $booster['booster_m_val'] / 100);
+        $prod_C = $prod_C * (1 + $booster['booster_c_val'] / 100);
+        $prod_D = $prod_D * (1 + $booster['booster_d_val'] / 100);
+    }
 	 
-	return array("M" => $prod_M, "C" => $prod_C, "D" => $prod_D, "ratio" => $ratio,
-			"conso_E" => $consommation_E, "prod_E" => $production_E, "prod_CES" => $prod_CES,
-			"prod_CEF" => $prod_CEF, "prod_SAT" => $prod_SAT, "conso_M" => $conso_M,
-			"conso_C" => $conso_C, "conso_D" => $conso_D);
+    return array("M" => $prod_M, "C" => $prod_C, "D" => $prod_D, "ratio" => $ratio,
+            "conso_E" => $consommation_E, "prod_E" => $production_E, "prod_CES" => $prod_CES,
+            "prod_CEF" => $prod_CEF, "prod_SAT" => $prod_SAT, "conso_M" => $conso_M,
+            "conso_C" => $conso_C, "conso_D" => $conso_D);
 }
 
 
@@ -275,7 +275,7 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1 , $
 /**
  * Calculates the Planet storage capacity (Taille Hangar)
  * @param int $level Storage building Level
- * @return the capacity
+ * @return double capacity
  */
 function depot_capacity($level)
 {
@@ -618,7 +618,7 @@ function building_cumulate($building, $level)
 /**
  * Calculates the price of all buildings
  * @param string $user_building The list of buildings with corresponding levels
- * @return the bild :-)
+ * @return integer bild :-)
  */
 function all_building_cumulate($user_building)
 {
@@ -632,8 +632,9 @@ function all_building_cumulate($user_building)
         foreach ($bats as $key) {
 
             $level = $data[$key];
-            if ($level == "")
-                $level = 0;
+            if ($level == "") {
+                            $level = 0;
+            }
 
             if ($key == "M" || $key == "C" || $key == "D" || $key == "CES" || $key == "CEF" ||
                 $key == "UdR" || $key == "UdN" || $key == "CSp" || $key == "HM" || $key == "HC" ||
@@ -667,12 +668,12 @@ function all_defence_cumulate($user_defence)
     $keys = array_keys($init_d_prix);
 
     while ($data = current($user_defence)) {
-        if (sizeof($init_d_prix) != sizeof($keys))
-            continue;
+        if (sizeof($init_d_prix) != sizeof($keys)) {
+                    continue;
+        }
 
         for ($i = 0; $i < sizeof($init_d_prix); $i++) {
-            $total += $init_d_prix[$keys[$i]] * ($data[$keys[$i]] != "" ? $data[$keys[$i]] :
-                    0);
+            $total += $init_d_prix[$keys[$i]] * ($data[$keys[$i]] != "" ? $data[$keys[$i]] : 0);
         }
 
         next($user_defence);
@@ -685,7 +686,7 @@ function all_defence_cumulate($user_defence)
  * Calculates the price of all lunas
  * @param $user_building
  * @param string $user_defence The list of buildings with corresponding levels on the luna
- * @return the bild :-)
+ * @return double bild :-)
  */
 function all_lune_cumulate($user_building, $user_defence)
 {
@@ -710,8 +711,9 @@ function all_technology_cumulate($user_technology)
         800000, "Graviton" => 0, "Astrophysique" => 16000);
     $keys = array_keys($init_t_prix);
 
-    if (sizeof($init_t_prix) != sizeof($user_technology))
-        return 0;
+    if (sizeof($init_t_prix) != sizeof($user_technology)) {
+            return 0;
+    }
 
     for ($i = 0; $i < sizeof($init_t_prix); $i++) {
         $pow = ($keys[$i] != "Astrophysique") ? 2 : 1.75; // puissance change a cause de l astro ...

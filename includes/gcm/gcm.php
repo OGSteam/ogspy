@@ -29,7 +29,7 @@ class GCM {
  
         // Set POST variables
         $url = 'https://android.googleapis.com/gcm/send'; 
-        $fields = array('registration_ids' => $registatoin_ids,'data' => $message); 
+        $fields = array('registration_ids' => $registatoin_ids, 'data' => $message); 
         $headers = array('Authorization: key=' . GOOGLE_API_KEY, 'Content-Type: application/json');
         
         // Open connection

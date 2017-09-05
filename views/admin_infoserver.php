@@ -180,8 +180,9 @@ $online = session_whois_online();
     <?php
     foreach ($online as $v) {
         $user = $v["user"];
-        if ($v['time_start'] == 0)
-            $v['time_start'] = $v["time_lastactivity"];
+        if ($v['time_start'] == 0) {
+                    $v['time_start'] = $v["time_lastactivity"];
+        }
         $time_start = strftime("%d %b %Y %H:%M:%S", $v["time_start"]);
         $time_lastactivity = strftime("%d %b %Y %H:%M:%S", $v["time_lastactivity"]);
         $ip = $v["ip"];

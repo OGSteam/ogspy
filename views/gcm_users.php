@@ -150,7 +150,7 @@ if ($users != false) {
                 $deviceInformation = $row[8];
                 ?>
                 <li>
-                    <form id="form<?php echo $userId;echo $i; ?>" name="form<?php echo $userId;echo $i; ?>"
+                    <form id="form<?php echo $userId; echo $i; ?>" name="form<?php echo $userId; echo $i; ?>"
                           method="post">
                         <label>Membre : </label><span><?php echo $name; if (isset($pseudo)) {
                                 echo " <i>(" . $pseudo . ")</i>";
@@ -184,12 +184,12 @@ if ($users != false) {
                         }?></div>
                         <div class="clear"></div>
                         <div class="send_container">
-                            <textarea rows="3" id="message<?php echo $userId;echo $i; ?>" cols="25" class="txt_message"
+                            <textarea rows="3" id="message<?php echo $userId; echo $i; ?>" cols="25" class="txt_message"
                                       placeholder="Type message here"></textarea>
-                            <input type="hidden" id="regId<?php echo $userId;echo $i; ?>"
+                            <input type="hidden" id="regId<?php echo $userId; echo $i; ?>"
                                    value="<?php echo $gcmRegid; ?>"/>
                             <input type="button" class="send_btn" value="Envoyer"
-                                   onclick="sendPushNotification('<?php echo $userId;echo $i; ?>')"/>
+                                   onclick="sendPushNotification('<?php echo $userId; echo $i; ?>')"/>
                         </div>
                     </form>
                 </li>

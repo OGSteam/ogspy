@@ -16,8 +16,11 @@ if (!defined('IN_SPYOGAME')) {
 
 $favorites = user_getfavorites_spy();
 
-if (!isset($sort2)) $sort2 = 0;
-else $sort2 = $sort2 != 0 ? 0 : 1;
+if (!isset($sort2)) {
+    $sort2 = 0;
+} else {
+    $sort2 = $sort2 != 0 ? 0 : 1;
+}
 ?>
 
 <table align="center">
@@ -56,16 +59,27 @@ else $sort2 = $sort2 != 0 ? 0 : 1;
             $poster = $timestamp . " - " . $v["poster"];
         }
 
-        if ($ally == "") $ally = "&nbsp;";
-        else $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&strict=on'>" . $ally . "</a>";
+        if ($ally == "") {
+            $ally = "&nbsp;";
+        } else {
+            $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&strict=on'>" . $ally . "</a>";
+        }
 
-        if ($player == "") $player = "&nbsp;";
-        else $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $player . "&strict=on'>" . $player . "</a>";
+        if ($player == "") {
+            $player = "&nbsp;";
+        } else {
+            $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $player . "&strict=on'>" . $player . "</a>";
+        }
 
-        if ($status == "") $status = " &nbsp;";
+        if ($status == "") {
+            $status = " &nbsp;";
+        }
 
-        if ($moon == 1) $moon = " M";
-        else $moon = "&nbsp;";
+        if ($moon == 1) {
+            $moon = " M";
+        } else {
+            $moon = "&nbsp;";
+        }
 
         echo "<tr>";
         echo "<th>$galaxy:$system:$row</th>";
@@ -75,8 +89,8 @@ else $sort2 = $sort2 != 0 ? 0 : 1;
         echo "<th>$status</th>";
         echo "<th>$poster</th>";
         $coords = explode(":", $row);
-        echo "<th><input type='button' value='".$lang['HOME_SPY_SEE']."' onclick=\"window.open('index.php?action=show_reportspy&amp;galaxy=$galaxy&amp;system=$system&amp;row=$row&amp;spy_id=$spy_id','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\" /></th>";
-        echo "<th><input type='button' value='".$lang['HOME_SPY_FAVDELETE']."' onclick=\"window.location = 'index.php?action=del_favorite_spy&amp;spy_id=$spy_id&amp;info=1';\" /></th>";
+        echo "<th><input type='button' value='" . $lang['HOME_SPY_SEE'] . "' onclick=\"window.open('index.php?action=show_reportspy&amp;galaxy=$galaxy&amp;system=$system&amp;row=$row&amp;spy_id=$spy_id','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\" /></th>";
+        echo "<th><input type='button' value='" . $lang['HOME_SPY_FAVDELETE'] . "' onclick=\"window.location = 'index.php?action=del_favorite_spy&amp;spy_id=$spy_id&amp;info=1';\" /></th>";
         echo "</tr>";
     }
     ?>

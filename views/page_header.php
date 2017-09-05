@@ -19,7 +19,7 @@ if (!defined('IN_SPYOGAME')) {
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="language" content="<?php echo($lang['HEAD_LANGUAGE']); ?>">
-    <title><?php echo $server_config["servername"] . " - OGSpy " . $server_config["version"];?></title>
+    <title><?php echo $server_config["servername"] . " - OGSpy " . $server_config["version"]; ?></title>
     <link rel="stylesheet" type="text/css" href="./skin/OGSpy_skin/formate.css"/>
     <link rel="stylesheet" href="js/jquery-ui/jquery-ui.css" >
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
@@ -34,7 +34,7 @@ if (!defined('IN_SPYOGAME')) {
 <body>
 <table id="maintable">
     <tr>
-        <td width="180" align="center" valign="top" rowspan="4"><?php require_once("menu.php");?></td>
+        <td width="180" align="center" valign="top" rowspan="4"><?php require_once("menu.php"); ?></td>
         <td height="70">
             <div align="center"><img src="./skin/OGSpy_skin/<?php echo  $banner_selected; ?>"></div>
         </td>

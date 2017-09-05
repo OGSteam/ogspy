@@ -10,12 +10,12 @@
  */
 
 if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
-	require_once ("../lang/".$ui_lang."/lang_install.php");
+    require_once ("../lang/".$ui_lang."/lang_install.php");
     require_once ("../lang/".$ui_lang."/lang_help.php");
-}else
+} else
 {
-	require_once ("./lang/".$ui_lang."/lang_about.php");
-	require_once ("./lang/".$ui_lang."/lang_admin.php");
+    require_once ("./lang/".$ui_lang."/lang_about.php");
+    require_once ("./lang/".$ui_lang."/lang_admin.php");
     require_once ("./lang/".$ui_lang."/lang_cartography.php");
     require_once ("./lang/".$ui_lang."/lang_galaxy.php");
     require_once ("./lang/".$ui_lang."/lang_game.php");

@@ -14,7 +14,9 @@ define("UPGRADE_IN_PROGRESS", true);
 
 require_once("../common.php");
 
-if(!isset($pub_verbose)) $pub_verbose = true;
+if(!isset($pub_verbose)) {
+    $pub_verbose = true;
+}
 
 
 if($pub_verbose == true){
@@ -36,12 +38,12 @@ if($pub_verbose == true){
 // evite d utiliser le cache ( qui sera périmé ))
 $request = "select * from " . TABLE_CONFIG;
 $result = $db->sql_query($request);
- while (list($name, $value) = $db->sql_fetch_row($result)) {
+    while (list($name, $value) = $db->sql_fetch_row($result)) {
         $server_config[$name] = stripslashes($value);
     }
     
 
-$request = "SELECT config_value FROM ".TABLE_CONFIG." WHERE config_name = 'version'";
+$request = "SELECT config_value FROM " . TABLE_CONFIG . " WHERE config_name = 'version'";
 $result = $db->sql_query($request);
 list($ogsversion) = $db->sql_fetch_row($result);
 
@@ -84,14 +86,14 @@ switch ($ogsversion) {
         $up_to_date = true;
     case '3.1.3':
         $requests[] = "CREATE TABLE IF NOT EXISTS `".TABLE_GCM_USERS."` ( ".
-                      "`user_id` int(11) NOT NULL default '0',".
-                      "`gcm_regid` varchar(255) NOT NULL, ".
-                      "`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, ".
-                      "`version_android` varchar(50), ".
-                      "`version_ogspy` varchar(50), ".
-                      "`device` varchar(50), ".
-                      "PRIMARY KEY (`gcm_regid`) ".
-                      ") ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";					  
+                        "`user_id` int(11) NOT NULL default '0',".
+                        "`gcm_regid` varchar(255) NOT NULL, ".
+                        "`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, ".
+                        "`version_android` varchar(50), ".
+                        "`version_ogspy` varchar(50), ".
+                        "`device` varchar(50), ".
+                        "PRIMARY KEY (`gcm_regid`) ".
+                        ") ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";					  
                       
         //Passage des tables en UTF-8
         $requests[] = "ALTER TABLE ".TABLE_CONFIG." CONVERT TO CHARACTER SET utf8";
@@ -162,7 +164,7 @@ switch ($ogsversion) {
         $ogsversion = '3.3.1';
         $up_to_date = true;
 
-     case '3.3.1':
+        case '3.3.1':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.2' WHERE config_name = 'version'";
         $requests[] = "ALTER TABLE `".TABLE_USER."` MODIFY `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP','ANDROID')";
         $ogsversion = '3.3.2';
@@ -194,8 +196,7 @@ if($pub_verbose == true){
 if ($up_to_date) {
     echo "\t"."<b><i>Pensez à supprimer le dossier 'install'</i></b><br>"."\n";
     echo "\t"."<br><a href='../index.php'>Retour</a>"."\n";
-}
-else {
+} else {
     echo "\t"."<br><font color='orange'><b>Cette version n'est pas la dernière en date, veuillez relancer le script</font><br>"."\n";
     echo "\t"."<a href=''>Recommencer l'opération</a>"."\n";
 }

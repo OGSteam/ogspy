@@ -47,7 +47,7 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
     var colors;
     function View(color) {
         colors = color;
-        <?php for ($i = 1 ; $i <= $nb_colonnes_ally ; $i ++){ ?>
+        <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) { ?>
         document.getElementById('ColorPreview<?php echo $i; ?>').style.backgroundColor = colors;
         <?php } ?>
 
@@ -55,7 +55,7 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
 
     function Set(ally) {
         switch (ally) {
-            <?php for ($i = 1 ; $i <= $nb_colonnes_ally ; $i ++){  ?>
+            <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) {  ?>
             case <?php echo $i; ?>:
                 document.getElementById('color_ally[<?php echo $i; ?>]').value = colors;
                 break;
@@ -70,8 +70,8 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
             <td class="c_ogspy" colspan="2"><?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?></td>
         </tr>
         <tr>
-            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_GALAXY_MIPS']); ?><?php echo help("display_mips");?></th>
-            <th><input name="enable_portee_missil" type="checkbox" value="1" <?php echo $enable_portee_missil;?>
+            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_GALAXY_MIPS']); ?><?php echo help("display_mips"); ?></th>
+            <th><input name="enable_portee_missil" type="checkbox" value="1" <?php echo $enable_portee_missil; ?>
                        onClick="if (view.enable_portee_missil.checked == false)view.enable_portee_missil.checked=false;">
             </th>
         </tr>
@@ -79,14 +79,14 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
             <td class="c_ogspy" colspan="2"><?php echo($lang['ADMIN_DISPLAY_STATS_TITLE']); ?></td>
         </tr>
         <tr>
-            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_STATS_MEMBER']); ?><?php echo help("member_stats");?></th>
-            <th><input name="enable_stat_view" type="checkbox" value="1" <?php echo $enable_stat_view;?>
+            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_STATS_MEMBER']); ?><?php echo help("member_stats"); ?></th>
+            <th><input name="enable_stat_view" type="checkbox" value="1" <?php echo $enable_stat_view; ?>
                        onClick="if (view.enable_stat_view.checked == false)view.enable_members_view.checked=false;">
             </th>
         </tr>
         <tr>
-            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_STATS_CONNECTED']); ?><?php echo help("member_connected");?></th>
-            <th><input name="enable_members_view" type="checkbox" value="1" <?php echo $enable_members_view;?>
+            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_STATS_CONNECTED']); ?><?php echo help("member_connected"); ?></th>
+            <th><input name="enable_members_view" type="checkbox" value="1" <?php echo $enable_members_view; ?>
                        onClick="if (view.enable_stat_view.checked == false)view.enable_members_view.checked=false;">
             </th>
         </tr>
@@ -117,7 +117,7 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
                 </th>
                 <th><input name="color_ally[<?php echo $i; ?>]" id="color_ally[<?php echo $i; ?>]" type="text" size="15"
                            maxlength="20"
-                           value="<?php echo $color_ally_e[$i - 1]; ?>"> <?php echo help("color_picker" . $i);?></th>
+                           value="<?php echo $color_ally_e[$i - 1]; ?>"> <?php echo help("color_picker" . $i); ?></th>
             </tr>
         <?php } ?>
         <tr>
@@ -134,46 +134,46 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
             <td class="c_ogspy" colspan="2"><?php echo($lang['ADMIN_DISPLAY_LOGIN_TITLE']); ?></td>
         </tr>
         <tr>
-            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_REGISTER']); ?><?php echo help("member_registration");?></th>
-            <th><input name="enable_register_view" type="checkbox" value="1" <?php echo $enable_register_view;?>
+            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_REGISTER']); ?><?php echo help("member_registration"); ?></th>
+            <th><input name="enable_register_view" type="checkbox" value="1" <?php echo $enable_register_view; ?>
                        onClick="if (view.enable_register_view.checked == false)view.enable_members_view.checked=false;">
             </th>
         </tr>
         <tr>
-            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_ALLYNAME']); ?><?php echo help("ally_name");?></th>
+            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_ALLYNAME']); ?><?php echo help("ally_name"); ?></th>
             <th><input type="text" size="60" name="register_alliance" value="<?php echo $register_alliance; ?>"></th>
         </tr>
         <tr>
-            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_FORUM']); ?><?php echo help("forum_link");?></th>
+            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_FORUM']); ?><?php echo help("forum_link"); ?></th>
             <th><input type="text" size="60" name="register_forum" value="<?php echo $register_forum; ?>"></th>
         </tr>
         <tr>
-            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_MODULE']); ?><?php echo help("first_displayed_module");?></th>
+            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_MODULE']); ?><?php echo help("first_displayed_module"); ?></th>
             <th><select name="open_user">
                     <option>------</option>
-                    <?php if ($open_user == "./views/profile.php") echo '<option selected value="./views/profile.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_PROFILE'].'</option>';
-                    else echo '<option value="./views/profile.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_PROFILE'].'</option>';
+                    <?php if ($open_user == "./views/profile.php") echo '<option selected value="./views/profile.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_PROFILE'] . '</option>';
+                    else echo '<option value="./views/profile.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_PROFILE'] . '</option>';
 
-                    if ($open_user == "./views/home.php") echo '<option selected value="./views/home.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_ACCOUNT'].'</option>';
-                    else echo '<option value="./views/home.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_ACCOUNT'].'</option>';
+                    if ($open_user == "./views/home.php") echo '<option selected value="./views/home.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_ACCOUNT'] . '</option>';
+                    else echo '<option value="./views/home.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_ACCOUNT'] . '</option>';
 
-                    if ($open_user == "./views/galaxy.php") echo '<option selected value="./views/galaxy.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_GALAXY'].'</option>';
-                    else echo '<option value="./views/galaxy.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_GALAXY'].'</option>';
+                    if ($open_user == "./views/galaxy.php") echo '<option selected value="./views/galaxy.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_GALAXY'] . '</option>';
+                    else echo '<option value="./views/galaxy.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_GALAXY'] . '</option>';
 
-                    if ($open_user == "./views/cartography.php") echo '<option selected value="./views/cartography.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_ALLY'].'</option>';
-                    else echo '<option value="./views/cartography.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_ALLY'].'</option>';
+                    if ($open_user == "./views/cartography.php") echo '<option selected value="./views/cartography.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_ALLY'] . '</option>';
+                    else echo '<option value="./views/cartography.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_ALLY'] . '</option>';
 
-                    if ($open_user == "./views/search.php") echo '<option selected value="./views/search.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_SEARCH'].'</option>';
-                    else echo '<option value="./views/search.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_SEARCH'].'</option>';
+                    if ($open_user == "./views/search.php") echo '<option selected value="./views/search.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_SEARCH'] . '</option>';
+                    else echo '<option value="./views/search.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_SEARCH'] . '</option>';
 
-                    if ($open_user == "./views/ranking.php") echo '<option selected value="./views/ranking.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_RANKINGS'].'</option>';
-                    else echo '<option value="./views/ranking.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_RANKINGS'].'</option>';
+                    if ($open_user == "./views/ranking.php") echo '<option selected value="./views/ranking.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_RANKINGS'] . '</option>';
+                    else echo '<option value="./views/ranking.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_RANKINGS'] . '</option>';
 
-                    if ($open_user == "./views/statistic.php") echo '<option selected value="./views/statistic.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_STATS'].'</option>';
-                    else echo '<option value="./views/statistic.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_STATS'].'</option>';
+                    if ($open_user == "./views/statistic.php") echo '<option selected value="./views/statistic.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_STATS'] . '</option>';
+                    else echo '<option value="./views/statistic.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_STATS'] . '</option>';
 
-                    if ($open_user == "./views/galaxy_obsolete.php") echo '<option selected value="./views/galaxy_obsolete.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_TOBEUPDATED'].'</option>';
-                    else echo '<option value="./views/galaxy_obsolete.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_TOBEUPDATED'].'</option>';
+                    if ($open_user == "./views/galaxy_obsolete.php") echo '<option selected value="./views/galaxy_obsolete.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_TOBEUPDATED'] . '</option>';
+                    else echo '<option value="./views/galaxy_obsolete.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_TOBEUPDATED'] . '</option>';
                     ?>
                     <option>------</option>
                     <?php while ($mod = $db->sql_fetch_assoc($mod_user)) {
@@ -185,34 +185,34 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
                 </select></th>
         </tr>
         <tr>
-            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_ADMINMODULE']); ?><?php echo help("first_displayed_module_admin");?></th>
+            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_ADMINMODULE']); ?><?php echo help("first_displayed_module_admin"); ?></th>
             <th><select name="open_admin">
                     <option>------</option>
-                    <?php if ($open_admin == "./views/admin.php") echo '<option selected value="./views/admin.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_ADMIN'].'</option>';
-                    else echo '<option value="./views/admin.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_ADMIN'].'</option>';
+                    <?php if ($open_admin == "./views/admin.php") echo '<option selected value="./views/admin.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_ADMIN'] . '</option>';
+                    else echo '<option value="./views/admin.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_ADMIN'] . '</option>';
 
-                    if ($open_admin == "./views/profile.php") echo '<option selected value="./views/profile.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_PROFILE'].'</option>';
-                    else echo '<option value="./views/profile.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_PROFILE'].'</option>';
+                    if ($open_admin == "./views/profile.php") echo '<option selected value="./views/profile.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_PROFILE'] . '</option>';
+                    else echo '<option value="./views/profile.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_PROFILE'] . '</option>';
 
-                    if ($open_admin == "./views/home.php") echo '<option selected value="./views/home.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_ACCOUNT'].'</option>';
-                    else echo '<option value="./views/home.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_ACCOUNT'].'</option>';
+                    if ($open_admin == "./views/home.php") echo '<option selected value="./views/home.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_ACCOUNT'] . '</option>';
+                    else echo '<option value="./views/home.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_ACCOUNT'] . '</option>';
 
-                    if ($open_admin == "./views/galaxy.php") echo '<option selected value="./views/galaxy.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_GALAXY'].'</option>';
-                    else echo '<option value="./views/galaxy.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_GALAXY'].'</option>';
+                    if ($open_admin == "./views/galaxy.php") echo '<option selected value="./views/galaxy.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_GALAXY'] . '</option>';
+                    else echo '<option value="./views/galaxy.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_GALAXY'] . '</option>';
 
-                    if ($open_admin == "./views/cartography.php") echo '<option selected value="./views/cartography.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_ALLY'].'</option>';
-                    else echo '<option value="./views/cartography.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_ALLY'].'</option>';
+                    if ($open_admin == "./views/cartography.php") echo '<option selected value="./views/cartography.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_ALLY'] . '</option>';
+                    else echo '<option value="./views/cartography.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_ALLY'] . '</option>';
 
-                    if ($open_admin == "./views/search.php") echo '<option selected value="./views/search.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_SEARCH'].'</option>';
-                    else echo '<option value="./views/search.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_SEARCH'].'</option>';
+                    if ($open_admin == "./views/search.php") echo '<option selected value="./views/search.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_SEARCH'] . '</option>';
+                    else echo '<option value="./views/search.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_SEARCH'] . '</option>';
 
-                    if ($open_admin == "./views/ranking.php") echo '<option selected value="./views/ranking.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_RANKINGS'].'</option>';
-                    else echo '<option value="./views/ranking.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_RANKINGS'].'</option>';
+                    if ($open_admin == "./views/ranking.php") echo '<option selected value="./views/ranking.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_RANKINGS'] . '</option>';
+                    else echo '<option value="./views/ranking.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_RANKINGS'] . '</option>';
 
-                    if ($open_admin == "./views/statistic.php") echo '<option selected value="./views/statistic.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_STATS'].'</option>';
-                    else echo '<option value="./views/statistic.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_STATS'].'</option>';
-                    if ($open_admin == "./views/galaxy_obsolete.php") echo '<option selected value="./views/galaxy_obsolete.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_TOBEUPDATED'].'</option>';
-                    else echo '<option value="./views/galaxy_obsolete.php">'.$lang['ADMIN_DISPLAY_LOGIN_MODULE_TOBEUPDATED'].'</option>';
+                    if ($open_admin == "./views/statistic.php") echo '<option selected value="./views/statistic.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_STATS'] . '</option>';
+                    else echo '<option value="./views/statistic.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_STATS'] . '</option>';
+                    if ($open_admin == "./views/galaxy_obsolete.php") echo '<option selected value="./views/galaxy_obsolete.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_TOBEUPDATED'] . '</option>';
+                    else echo '<option value="./views/galaxy_obsolete.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_TOBEUPDATED'] . '</option>';
                     ?>
                     <option>------</option>
                     <?php while ($mod = $db->sql_fetch_assoc($mod_admin)) {
