@@ -10,7 +10,6 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace Ogsteam\Ogspy;
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
@@ -58,25 +57,25 @@ if ($search_result) {
         if ($sort2 == 0) {
             switch ($sort) {
                 case "1" :
-                    $link_order_coordinates = "<img src='assets/images/asc.png'>&nbsp;" . $link_order_coordinates . "&nbsp;<img src='assets/images/asc.png'>";
+                    $link_order_coordinates = "<img src='images/asc.png'>&nbsp;" . $link_order_coordinates . "&nbsp;<img src='images/asc.png'>";
                     break;
                 case "2" :
-                    $link_order_ally = "<img src='assets/images/asc.png'>&nbsp;" . $link_order_ally . "&nbsp;<img src='assets/images/asc.png'>";
+                    $link_order_ally = "<img src='images/asc.png'>&nbsp;" . $link_order_ally . "&nbsp;<img src='images/asc.png'>";
                     break;
                 case "3" :
-                    $link_order_player = "<img src='assets/images/asc.png'>&nbsp;" . $link_order_player . "&nbsp;<img src='assets/images/asc.png'>";
+                    $link_order_player = "<img src='images/asc.png'>&nbsp;" . $link_order_player . "&nbsp;<img src='images/asc.png'>";
                     break;
             }
         } else {
             switch ($sort) {
                 case "1" :
-                    $link_order_coordinates = "<img src='assets/images/desc.png'>&nbsp;" . $link_order_coordinates . "&nbsp;<img src='assets/images/desc.png'>";
+                    $link_order_coordinates = "<img src='images/desc.png'>&nbsp;" . $link_order_coordinates . "&nbsp;<img src='images/desc.png'>";
                     break;
                 case "2" :
-                    $link_order_ally = "<img src='assets/images/desc.png'>&nbsp;" . $link_order_ally . "&nbsp;<img src='assets/images/desc.png'>";
+                    $link_order_ally = "<img src='images/desc.png'>&nbsp;" . $link_order_ally . "&nbsp;<img src='images/desc.png'>";
                     break;
                 case "3" :
-                    $link_order_player = "<img src='assets/images/desc.png'>&nbsp;" . $link_order_player . "&nbsp;<img src='assets/images/desc.png'>";
+                    $link_order_player = "<img src='images/desc.png'>&nbsp;" . $link_order_player . "&nbsp;<img src='images/desc.png'>";
                     break;
             }
         }
@@ -292,11 +291,17 @@ require_once("views/page_header.php");
                 </tr>
                 <?php
                 foreach ($search_result as $v) {
+                    $begin_hided = "";
+                    $end_hided = "";
+                    if ($v["hided"]) {
+                        $begin_hided = "<span style=\"color: lime; \">";
+                        $end_hided = "</span>";
+                    }
                     $begin_allied = "";
                     $end_allied = "";
                     if ($v["allied"]) {
-                        $begin_allied = "<span style=\"color: lime; \">";
-                        $end_allied = "</span>";
+                        $begin_allied = "<blink>";
+                        $end_allied = "</blink>";
                     }
 
                     $coordinates = $v["galaxy"] . ":" . $v["system"] . ":" . $v["row"];
@@ -346,7 +351,7 @@ require_once("views/page_header.php");
                         }
 
 
-                        $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $v["ally"] . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip[$v["ally"]] . "')\">" . $begin_allied . $v["ally"] . $end_allied . "</a>";
+                        $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $v["ally"] . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip[$v["ally"]] . "')\">" . $begin_allied . $begin_hided . $v["ally"] . $end_hided . $end_allied . "</a>";
                     }
 
                     if ($v["player"] == "") $player = "&nbsp;";
@@ -393,14 +398,14 @@ require_once("views/page_header.php");
                             }
                         }
 
-                        $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $v["player"] . "'&amp;strict=on onmouseover=\"this.T_WIDTH=260;return escape('" . $tooltip[$v["player"]] . "')\">" . $begin_allied . $v["player"] . $end_allied . "</a>";
+                        $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $v["player"] . "'&amp;strict=on onmouseover=\"this.T_WIDTH=260;return escape('" . $tooltip[$v["player"]] . "')\">" . $begin_allied . $begin_hided . $v["player"] . $end_hided . $end_allied . "</a>";
                     }
 
                     if ($v["status"] == "") $status = " &nbsp;";
                     else $status = $v["status"];
 
                     if ($v["moon"] == 1) {
-                        $moon = "<img src=\"assets/default_skin/img/lune.png\">";
+                        $moon = "<img src=\"skin/OGSpy_skin/img/lune.png\">";
                         $detail = "";
                         if ($v["last_update_moon"] > 0) {
                             $detail .= $v["phalanx"];
@@ -438,7 +443,7 @@ require_once("views/page_header.php");
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_INACTIVE_7Days']."</td><th>".$lang['SEARCH_INACTIVE_7Days_SYMBOL']."</th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_INACTIVE_28Days']."</td><th>".$lang['SEARCH_INACTIVE_28Days_SYMBOL']."</th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_WEAK_PROTECTION']."</td><th>".$lang['SEARCH_WEAK_PROTECTION_SYMBOL']."</th></tr>";
-                $legend .= "<tr><td class=\"c\">".$lang['SEARCH_MOON']."<br><i>".$lang['SEARCH_MOON_PHALANX']."</i></td><th><img src=\"assets/default_skin/img/lune.png\">".$lang['SEARCH_MOON_PHALANX_SYMBOL']."</th></tr>";
+                $legend .= "<tr><td class=\"c\">".$lang['SEARCH_MOON']."<br><i>".$lang['SEARCH_MOON_PHALANX']."</i></td><th><img src=\"skin/OGSpy_skin/img/lune.png\">".$lang['SEARCH_MOON_PHALANX_SYMBOL']."</th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_SPYREPORT']."</td><th>".$lang['SEARCH_SPYREPORT_SYMBOL']."</th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_ALLY_FRIEND']."</td><th><a><blink>abc</blink></a></th></tr>";
                 $legend .= "<tr><td class=\"c\">".$lang['SEARCH_ALLY_HIDDEN']. "</td><th><span style=\"color: lime; \">abc</span></th></tr>";

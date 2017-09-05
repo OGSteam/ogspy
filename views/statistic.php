@@ -10,7 +10,6 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace Ogsteam\Ogspy;
 
 if (!defined('IN_SPYOGAME')) {
     exit('Hacking attempt');
@@ -179,7 +178,13 @@ require_once 'views/page_header.php';
     <?php
 
     // Statistiques participation des membres actifs
-    $query = 'SELECT planet_added_xtense, spy_added_xtense, rank_added_xtense, search  FROM ' . TABLE_USER;
+    $query = 'SELECT
+				SUM(planet_added_web + planet_added_ogs),
+				SUM(spy_added_web + spy_added_ogs),
+				SUM(rank_added_web + rank_added_ogs),
+				SUM(search)
+			  FROM ' . TABLE_USER;
+
     $result = $db->sql_query($query);
     list($planetimport, $spyimport, $rankimport, $search) = $db->sql_fetch_row($result);
 
@@ -190,14 +195,14 @@ require_once 'views/page_header.php';
 
     foreach ($user_statistic as $v) {
 
-        $ratio_planet = $v['planet_added_xtense'] / $planetimport;
-        $ratio_spy = $v['spy_added_xtense']/ $spyimport;
-        $ratio_rank = $v['rank_added_xtense'] / $rankimport;
+        $ratio_planet = ($v['planet_added_web'] + $v['planet_added_ogs']) / $planetimport;
+        $ratio_spy = ($v['spy_added_web'] + $v['spy_added_ogs']) / $spyimport;
+        $ratio_rank = ($v['rank_added_web'] + $v['rank_added_ogs']) / $rankimport;
         $ratio = (3 * $ratio_planet + 2 * $ratio_spy + $ratio_rank) / 6;
 
-        $ratio_planet_penality = $v['planet_added_xtense'] / $planetimport;
-        $ratio_spy_penality = $v['spy_added_xtense']  / $spyimport;
-        $ratio_rank_penality = $v['rank_added_xtense'] / $rankimport;
+        $ratio_planet_penality = ($v['planet_added_web'] + $v['planet_added_ogs'] - $v['planet_exported']) / $planetimport;
+        $ratio_spy_penality = (($v['spy_added_web'] + $v['spy_added_ogs']) - $v['spy_exported']) / $spyimport;
+        $ratio_rank_penality = (($v['rank_added_web'] + $v['rank_added_ogs']) - $v['rank_exported']) / $rankimport;
         $ratio_penality = (3 * $ratio_planet_penality + 2 * $ratio_spy_penality + $ratio_rank_penality) / 6;
 
         $ratio_search = $v['search'] / $search;
@@ -224,24 +229,24 @@ require_once 'views/page_header.php';
                     $xtense_type = 'Firefox (' . $v['xtense_version'] . ')';
                     break;
                 case 'GM-FF':
-                    $xtense_type = 'Xtense Firefox (' . $v['xtense_version'] . ')';
+                    $xtense_type = 'GreaseMonkey Firefox (' . $v['xtense_version'] . ')';
                     break;
                 case 'GM-GC':
-                    $xtense_type = 'Xtense Google Chrome (' . $v['xtense_version'] . ')';
+                    $xtense_type = 'GreaseMonkey Google Chrome (' . $v['xtense_version'] . ')';
                     break;
                 case 'GM-OP':
-                    $xtense_type = 'Xtense Opéra (' . $v['xtense_version'] . ')';
+                    $xtense_type = 'GreaseMonkey Opéra (' . $v['xtense_version'] . ')';
                     break;
                 default:
                     $xtense_type = 'N/A (' . $v['xtense_type'] . ')';
             }
 
-            if ($v['user_active'] == "1") {
+            if ($v['user_active'] == "1" && $v['user_admin'] == "0") {
                 echo '<tr>';
                 echo '<th style="color: ' . $color . '">' . $v['user_name'] . (($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) ? ' ' . $v['here'] : '') . '</th>';
-                echo '<th>' . formate_number($v['planet_added_xtense']) . '</th>';
-                echo '<th>' . formate_number($v['spy_added_xtense']) . '</th>';
-                echo '<th>' . formate_number($v['rank_added_xtense']) . '</th>';
+                echo '<th>' . formate_number($v['planet_added_ogs']) . '</th>';
+                echo '<th>' . formate_number($v['spy_added_ogs']) . '</th>';
+                echo '<th>' . formate_number($v['rank_added_ogs']) . '</th>';
                 echo '<th>' . formate_number($v['search']) . '</th>';
                 echo '<th style="color: ' . $color . '">' . formate_number($result) . '</th>';
                 echo '<th>' . $xtense_type . '</th>';
@@ -268,7 +273,8 @@ require_once 'views/page_header.php';
     if ($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) {
         ?>
         <tr>
-            <td colspan="7">(*) <?php echo($lang['STATS_CONNECTED']); ?><br/>(**) <?php echo($lang['STATS_CONNECTED_XTENSE']); ?></td>
+            <td colspan="7">(*) <?php echo($lang['STATS_CONNECTED']); ?><br/>(**) <?php echo($lang['STATS_CONNECTED_XTENSE
+            ']); ?></td>
         </tr>
         <?php
     }

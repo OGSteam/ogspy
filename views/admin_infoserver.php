@@ -10,11 +10,6 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace Ogsteam\Ogspy;
-
-use Ogsteam\Ogspy\Model\Sessions_Model;
-use Ogsteam\Ogspy\Model\Statistics_Model;
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -24,7 +19,7 @@ if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
 }
 
 //Statistiques concernant la base de données
-$db_size_info = $db->db_size_info();
+$db_size_info = db_size_info();
 if ($db_size_info["Server"] == $db_size_info["Total"]) {
     $db_size_info = $db_size_info["Server"];
 } else {
@@ -44,8 +39,11 @@ $users_info = sizeof(user_statistic());
 //Statistiques du serveur
 $connection_server = 0;
 $planetimport_ogs = 0;
+$planetexport_ogs = 0;
 $spyimport_ogs = 0;
+$spyexport_ogs = 0;
 $rankimport_ogs = 0;
+$rankexport_ogs = 0;
 $key = 'unknow';
 $paths = 'unknow';
 $since = 0;
@@ -53,32 +51,46 @@ $nb_users = 0;
 $og_uni = 'unknow';
 $og_pays = 'unknow';
 
-$statRepository = new Statistics_Model();
-$stats = $statRepository->find();
+$request = "select statistic_name, statistic_value from " . TABLE_STATISTIC;
+$result = $db->sql_query($request);
 
-foreach($stats as $statistic_name => $statistic_value) {
+while (list($statistic_name, $statistic_value) = $db->sql_fetch_row($result)) {
+
     switch ($statistic_name) {
         case "connection_server":
             $connection_server = $statistic_value;
             break;
 
-        case "planetimport_xtense":
+        case "planetimport_ogs":
             $planetimport_ogs = $statistic_value;
             break;
 
-        case "spyimport_xtense":
+        case "planetexport_ogs":
+            $planetexport_ogs = $statistic_value;
+            break;
+
+        case "spyimport_ogs":
             $spyimport_ogs = $statistic_value;
             break;
 
-        case "rankimport_xtense":
+        case "spyexport_ogs":
+            $spyexport_ogs = $statistic_value;
+            break;
+
+        case "rankimport_ogs":
             $rankimport_ogs = $statistic_value;
+            break;
+
+        case "rankexport_ogs":
+            $rankexport_ogs = $statistic_value;
             break;
     }
 }
 
 //on compte le nombre de personnes en ligne
-$sessionRepository = new Sessions_Model();
-$connectes = $sessionRepository->count_online();
+$connectes_req = $db->sql_query("SELECT COUNT(session_ip) FROM " .
+    TABLE_SESSIONS);
+list($connectes) = $db->sql_fetch_row($connectes_req);
 
 //Personne en ligne
 $online = session_whois_online();
@@ -118,7 +130,7 @@ $online = session_whois_online();
         <th colspan='2'></th>
     </tr>
     <tr>
-        <td class="c" colspan="4">&nbsp;</td>
+        <th colspan='4'></th>
     </tr>
     <tr>
         <th><a><?php echo($lang['ADMIN_SERVER_CONNEXIONS']); ?></a></th>
@@ -126,19 +138,26 @@ $online = session_whois_online();
 
         <th><a><?php echo($lang['ADMIN_SERVER_PLANETS']); ?></a></th>
         <th><?php echo formate_number($planetimport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?>
+            - <?php echo formate_number($planetexport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_EXPORT']); ?>
         </th>
     </tr>
     <tr>
         <th><a><?php echo($lang['ADMIN_SERVER_SPYREPORTS']); ?></a></th>
-        <th><?php echo formate_number($spyimport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?>
+        <th><?php echo formate_number($spyimport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?> - <?php echo formate_number($spyexport_ogs); ?>
+            <?php echo($lang['ADMIN_SERVER_ALL_EXPORT']); ?>
         </th>
 
         <th><a><?php echo($lang['ADMIN_SERVER_RANKINGS']); ?></a></th>
-        <th><?php echo formate_number($rankimport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?>
+        <th><?php echo formate_number($rankimport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?> - <?php echo formate_number($rankexport_ogs); ?>
+            <?php echo($lang['ADMIN_SERVER_ALL_EXPORT']); ?>
         </th>
     </tr>
     <tr>
         <td class="c" colspan="4">&nbsp;</td>
+    </tr>
+    <tr>
+        <th colspan="2"><a href="php/phpinfo.php" target="_blank"><?php echo($lang['ADMIN_SERVER_PHPINFO']); ?></a></th>
+        <th colspan="2"><a href="php/phpmodules.php" target="_blank"><?php echo($lang['ADMIN_SERVER_PHPMODULES']); ?></a></th>
     </tr>
 </table>
 <br/>

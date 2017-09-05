@@ -10,11 +10,10 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace Ogsteam\Ogspy;
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
+
 
 $info_sector = galaxy_show_sector();
 
@@ -50,8 +49,8 @@ for ($lines = 0; $lines < ceil($totalsystem / 5); $lines++) {
     echo "<tr>" . "\n";
     for ($cols = $system; $cols < $system + 5; $cols++) {
         $last_update = "&nbsp;";
-        if (isset($population[$cols]["timestamp"])) {
-            $last_update = strftime("%d %b %Y %H:%M", $population[$cols]["timestamp"]);
+        if (isset($population[$cols]["last_update"])) {
+            $last_update = strftime("%d %b %Y %H:%M", $population[$cols]["last_update"]);
         }
 
         echo "\t" . "<td valign='top'>" . "\n";

@@ -8,6 +8,4 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04
  */
-namespace Ogsteam\Ogspy;
-
-$install_version = "3.4.0";
+$install_version = "3.3.2";

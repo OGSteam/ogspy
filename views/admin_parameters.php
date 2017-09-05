@@ -10,10 +10,6 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace Ogsteam\Ogspy;
-
-use Ogsteam\Ogspy\Model\Mod_Model;
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -21,15 +17,6 @@ if (!defined('IN_SPYOGAME')) {
 if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
     redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
-
-$modRepository = new Mod_Model();
-$mods = $modRepository->find_by(array('active' => '1'), array('position' => 'ASC'));
-
-$enable_register_view = $server_config['enable_register_view'] == 1 ? "checked" : "";
-$register_forum = $server_config['register_forum'];
-$register_alliance = $server_config['register_alliance'];
-$open_user = $server_config['open_user'];
-$open_admin = $server_config['open_admin'];
 
 $max_battlereport = $server_config['max_battlereport'];
 $max_favorites = $server_config['max_favorites'];
@@ -58,7 +45,6 @@ $ddr = $server_config['ddr'];
 $astro_strict = $server_config['astro_strict'];
 $config_cache = $server_config['config_cache'];
 $mod_cache = $server_config['mod_cache'];
-
 ?>
 
 <form method="POST" action="index.php">
@@ -77,86 +63,8 @@ $mod_cache = $server_config['mod_cache'];
             <th><input name="server_active" type="checkbox" value="1" <?php echo $server_active;?>></th>
         </tr>
         <tr>
-            <th width="60%"><?php echo($lang['ADMIN_PARAMS_OFFREASON']); ?><?php echo help("admin_server_status_message");?></th>
+            <th width="60%"<?php echo($lang['ADMIN_PARAMS_OFFREASON']); ?><?php echo help("admin_server_status_message");?></th>
             <th><input type="text" name="reason" size="60" value="<?php echo $reason; ?>"></th>
-        </tr>
-        <tr>
-            <td class="c_ogspy" colspan="2"><?php echo($lang['ADMIN_DISPLAY_LOGIN_TITLE']); ?></td>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_REGISTER']); ?><?php echo help("member_registration"); ?></th>
-            <th><input name="enable_register_view" type="checkbox" value="1" <?php echo $enable_register_view; ?>
-                       onClick="if (view.enable_register_view.checked == false)view.enable_members_view.checked=false;">
-            </th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_ALLYNAME']); ?><?php echo help("ally_name"); ?></th>
-            <th><input type="text" size="60" name="register_alliance" value="<?php echo $register_alliance; ?>"></th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_FORUM']); ?><?php echo help("forum_link"); ?></th>
-            <th><input type="text" size="60" name="register_forum" value="<?php echo $register_forum; ?>"></th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_MODULE']); ?><?php echo help("first_displayed_module"); ?></th>
-            <th><select name="open_user">
-                    <option>------</option>
-                    <?php
-                    echo Views\ViewHelper::get_option($open_user, "./views/profile.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_PROFILE']);
-                    echo Views\ViewHelper::get_option($open_user, "./views/home.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_ACCOUNT']);
-                    echo Views\ViewHelper::get_option($open_user, "./views/galaxy.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_GALAXY']);
-                    echo Views\ViewHelper::get_option($open_user, "./views/cartography.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_ALLY']);
-                    echo Views\ViewHelper::get_option($open_user, "./views/search.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_SEARCH']);
-                    echo Views\ViewHelper::get_option($open_user, "./views/ranking.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_RANKINGS']);
-                    echo Views\ViewHelper::get_option($open_user, "./views/statistic.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_STATS']);
-                    echo Views\ViewHelper::get_option($open_user, "./views/galaxy_obsolete.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_TOBEUPDATED']);
-
-                    if(count($mods)) {
-                        echo '<option>------</option>';
-                        foreach ($mods as $mod) {
-                            if ($mod["admin_only"] == 1)
-                                continue;
-
-                            echo Views\ViewHelper::get_option($open_user, "./mod/" . $mod['root'] . "/" . $mod['link'], $mod["title"]);
-                        }
-                    } ?>
-                </select></th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo($lang['ADMIN_DISPLAY_LOGIN_ADMINMODULE']); ?><?php echo help("first_displayed_module_admin"); ?></th>
-            <th><select name="open_admin">
-                    <option>------</option>
-                    <?php
-                    echo Views\ViewHelper::get_option($open_admin, "./views/profile.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_PROFILE']);
-                    echo Views\ViewHelper::get_option($open_admin, "./views/home.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_ACCOUNT']);
-                    echo Views\ViewHelper::get_option($open_admin, "./views/galaxy.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_GALAXY']);
-                    echo Views\ViewHelper::get_option($open_admin, "./views/cartography.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_ALLY']);
-                    echo Views\ViewHelper::get_option($open_admin, "./views/search.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_SEARCH']);
-                    echo Views\ViewHelper::get_option($open_admin, "./views/ranking.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_RANKINGS']);
-                    echo Views\ViewHelper::get_option($open_admin, "./views/statistic.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_STATS']);
-                    echo Views\ViewHelper::get_option($open_admin, "./views/galaxy_obsolete.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_TOBEUPDATED']);
-
-                    if (count($mods > 0)) {
-                        // On affichage les mods accessible à tous, puis ceux réservés aux admins
-                        for ($i = 0; $i <= 1; $i++) {
-                            echo "<option>------</option>";
-                            foreach ($mods as $mod) {
-                                if ($mod["admin_only"] != $i)
-                                    continue;
-
-                                echo Views\ViewHelper::get_option($open_admin, "./mod/" . $mod['root'] . "/" . $mod['link'], $mod['title']);
-                            }
-                        }
-                    }
-                    ?>
-                </select></th>
-        </tr>
-        <tr>
-            <td class="c_tech" colspan="2"><?php echo($lang['ADMIN_PARAMS_SESSIONS_TITLE']); ?></td>
-        </tr>
-        <tr>
-            <th><?php echo($lang['ADMIN_PARAMS_SESSIONS_DURATION']); ?><?php echo help("admin_session_infini");?></a></th>
-            <th><input name="session_time" type="text" size="5" maxlength="3" value="<?php echo $session_time; ?>"></th>
         </tr>
         <tr>
             <td class="c" colspan="2"><?php echo($lang['ADMIN_PARAMS_MEMBEROPTIONS']); ?></td>
@@ -176,6 +84,13 @@ $mod_cache = $server_config['mod_cache'];
                        value="<?php echo $max_favorites_spy; ?>"></th>
         </tr>
         <tr>
+            <td class="c_tech" colspan="2"><?php echo($lang['ADMIN_PARAMS_SESSIONS_TITLE']); ?></td>
+        </tr>
+        <tr>
+            <th><?php echo($lang['ADMIN_PARAMS_SESSIONS_DURATION']); ?><?php echo help("admin_session_infini");?></a></th>
+            <th><input name="session_time" type="text" size="5" maxlength="3" value="<?php echo $session_time; ?>"></th>
+        </tr>
+        <tr>
             <td class="c" colspan="2"><?php echo($lang['ADMIN_PARAMS_ALLYPROTECT']); ?></td>
         </tr>
         <tr>
@@ -192,61 +107,19 @@ $mod_cache = $server_config['mod_cache'];
             </th>
             <th><input type="text" size="60" name="allied" value="<?php echo $allied; ?>"></th>
         </tr>
-        <?php
-        if ($user_data["user_admin"] == 1) {
-            ?>
-            <tr>
-                <td class="c_ogame" colspan="2"><?php echo($lang['ADMIN_PARAMS_GAME_OPTIONS']); ?></td>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_GALAXIES']); ?><?php echo help("profile_galaxy");?></th>
-                <th><input name="num_of_galaxies" id="galaxies" type="text" size="5" maxlength="3"
-                           value="<?php echo $num_of_galaxies; ?>"
-                           onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_GALAXIES_POPUP']); ?>')){document.getElementById('galaxies').value='<?php echo $num_of_galaxies; ?>';}"
-                           readonly="readonly">(<input name="enable_input_num_galaxies"
-                                                       type="checkbox"
-                                                       onClick="(this.checked)? document.getElementById('galaxies').readOnly=false : document.getElementById('galaxies').readOnly=true;">)
-                </th>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SYSTEMS']); ?><?php echo help("profile_galaxy");?></th>
-                <th><input name="num_of_systems" id="systems" type="text" size="5" maxlength="3"
-                           value="<?php echo $num_of_systems; ?>"
-                           onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_SYSTEMS_POPUP']); ?>')){document.getElementById('systems').value='<?php echo $num_of_systems; ?>';}"
-                           readonly="readonly">(<input name="enable_input_num_systems"
-                                                       type="checkbox"
-                                                       onClick="(this.checked)? document.getElementById('systems').readOnly=false : document.getElementById('systems').readOnly=true;">)
-                </th>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SPEED']); ?><?php echo help("profile_speed_uni");?></th>
-                <th><input name="speed_uni" id="speed_uni" type="text" size="5" maxlength="2"
-                           value="<?php echo $speed_uni; ?>"
-                           onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_SPEED_POPUP']); ?>\n')){document.getElementById('speed_uni').value='<?php echo $speed_uni; ?>';}"
-                           readonly="readonly">(<input name="enable_input_speed_uni"
-                                                       type="checkbox"
-                                                       onClick="(this.checked)? document.getElementById('speed_uni').readOnly=false : document.getElementById('speed_uni').readOnly=true;">)
-                </th>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_DDR']); ?><?php echo help("profile_ddr");?></th>
-                <th><input name="ddr" value="1" type="checkbox"<?php print ($ddr == 1) ? ' checked' : '' ?>></th>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_ASTRO']); ?><?php echo help("astro_strict");?></th>
-                <th><input name="astro_strict" value="1"
-                           type="checkbox"<?php print ($astro_strict == 1) ? ' checked' : '' ?>></th>
-            </tr>
-
-            <?php
-        }
-        ?>
         <tr>
             <td class="c" colspan="2"><?php echo($lang['ADMIN_PARAMS_OTHER']); ?></td>
         </tr>
         <tr>
             <th width="60%"><?php echo($lang['ADMIN_PARAMS_FORUMLINK']); ?></th>
             <th><input type="text" size="60" name="url_forum" value="<?php echo $url_forum; ?>"></th>
+        </tr>
+        <tr>
+            <th><?php echo($lang['ADMIN_PARAMS_DEBUGSQL']); ?><?php echo help("admin_save_transaction");?><br/>
+
+                <div class="z"><i><?php echo($lang['ADMIN_PARAMS_DEBUGSQLALERT']); ?></i></div>
+            </th>
+            <th><input name="debug_log" type="checkbox" value="1" <?php echo $debug_log;?>></th>
         </tr>
         <tr>
             <th><?php echo($lang['ADMIN_PARAMS_RATIOMOD']); ?></th>
@@ -281,6 +154,55 @@ $mod_cache = $server_config['mod_cache'];
             <th width="60%"><?php echo($lang['ADMIN_PARAMS_DURATION_LOGS']); ?></th>
             <th><input name="max_keeplog" type="text" size="5" maxlength="3" value="<?php echo $max_keeplog; ?>"></th>
         </tr>
+        <?php
+        if ($user_data["user_admin"] == 1) {
+    ?>
+        <tr>
+            <td class="c_ogame" colspan="2"><?php echo($lang['ADMIN_PARAMS_GAME_OPTIONS']); ?></td>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_GALAXIES']); ?><?php echo help("profile_galaxy");?></th>
+            <th><input name="num_of_galaxies" id="galaxies" type="text" size="5" maxlength="3"
+                       value="<?php echo $num_of_galaxies; ?>"
+                       onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_GALAXIES_POPUP']); ?>')){document.getElementById('galaxies').value='<?php echo $num_of_galaxies; ?>';}"
+                       readonly="readonly">(<input name="enable_input_num_galaxies"
+                                                                                  type="checkbox"
+                                                                                  onClick="(this.checked)? document.getElementById('galaxies').readOnly=false : document.getElementById('galaxies').readOnly=true;">)
+            </th>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SYSTEMS']); ?><?php echo help("profile_galaxy");?></th>
+            <th><input name="num_of_systems" id="systems" type="text" size="5" maxlength="3"
+                       value="<?php echo $num_of_systems; ?>"
+                       onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_SYSTEMS_POPUP']); ?>')){document.getElementById('systems').value='<?php echo $num_of_systems; ?>';}"
+                       readonly="readonly">(<input name="enable_input_num_systems"
+                                                                                  type="checkbox"
+                                                                                  onClick="(this.checked)? document.getElementById('systems').readOnly=false : document.getElementById('systems').readOnly=true;">)
+            </th>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SPEED']); ?><?php echo help("profile_speed_uni");?></th>
+            <th><input name="speed_uni" id="speed_uni" type="text" size="5" maxlength="2"
+                       value="<?php echo $speed_uni; ?>"
+                       onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_SPEED_POPUP']); ?>\n')){document.getElementById('speed_uni').value='<?php echo $speed_uni; ?>';}"
+                       readonly="readonly">(<input name="enable_input_speed_uni"
+                                                                                  type="checkbox"
+                                                                                  onClick="(this.checked)? document.getElementById('speed_uni').readOnly=false : document.getElementById('speed_uni').readOnly=true;">)
+            </th>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_DDR']); ?><?php echo help("profile_ddr");?></th>
+            <th><input name="ddr" value="1" type="checkbox"<?php print ($ddr == 1) ? ' checked' : '' ?>></th>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_ASTRO']); ?><?php echo help("astro_strict");?></th>
+            <th><input name="astro_strict" value="1"
+                       type="checkbox"<?php print ($astro_strict == 1) ? ' checked' : '' ?>></th>
+        </tr>
+        <tr>
+            <?php
+            }
+            ?>
         <tr>
             <td class="c_tech" colspan="2"><?php echo($lang['ADMIN_PARAMS_CACHE']); ?></td>
         </tr>
@@ -312,13 +234,20 @@ $mod_cache = $server_config['mod_cache'];
             <th><input name="log_phperror" type="checkbox" value="1" <?php echo $log_phperror;?>></th>
 
         </tr>
-        <tr>
-            <th><?php echo($lang['ADMIN_PARAMS_DEBUGSQL']); ?><?php echo help("admin_save_transaction");?><br/>
-
-                <div class="z"><i><?php echo($lang['ADMIN_PARAMS_DEBUGSQLALERT']); ?></i></div>
-            </th>
-            <th><input name="debug_log" type="checkbox" value="1" <?php echo $debug_log;?>></th>
-        </tr>
+        <?php
+        if ($user_data["user_admin"] == 1) {
+            ?>
+            <tr>
+                <td class="c_ogame" colspan="2"><?php echo($lang['ADMIN_PARAMS_GOOGLE_CLOUD']); ?>
+                    <div class="z"><i><?php echo($lang['ADMIN_PARAMS_GOOGLE_NOTIF']); ?></i></div>
+                </td>
+            </tr>
+            <tr>
+                <th colspan="2"><?php require_once 'gcm_users.php';?></th>
+            </tr>
+            <?php
+        }
+        ?>
         <tr>
             <td>&nbsp;</td>
         </tr>

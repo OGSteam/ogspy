@@ -10,8 +10,6 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace Ogsteam\Ogspy;
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -69,7 +67,7 @@ echo "<a>". $lang['ADMIN_LOGS_SELECTED_DATE'] . strftime("%d %b %Y", mktime(0, 0
         if ($show == $show_year . "~" . $show_month . "~" . $show_day) {
             if (log_check_exist(date("ym", $date))) {
                 echo "\t" . "<th><a>" . strftime("%B %Y", $date) . "</a></th>" . "\n";
-                echo "\t" . "<th width='40px'><input type='image' src='assets/images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . date("ym", $date) . "'\" title='".$lang['ADMIN_LOGS_DOWNLOAD']. strftime("%B %Y", $date) . "'><input type='image' src='assets/images/drop.png' onclick=\"window.location = 'index.php?action=remove&amp;date=" . date("ym", $date) . $show_day . "&directory=TRUE'\" title='".$lang['ADMIN_LOGS_DELETE'] . strftime("%B %Y", $date) . "'>";
+                echo "\t" . "<th width='40px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . date("ym", $date) . "'\" title='".$lang['ADMIN_LOGS_DOWNLOAD']. strftime("%B %Y", $date) . "'><input type='image' src='images/drop.png' onclick=\"window.location = 'index.php?action=remove&amp;date=" . date("ym", $date) . $show_day . "&directory=TRUE'\" title='".$lang['ADMIN_LOGS_DELETE'] . strftime("%B %Y", $date) . "'>";
             } else {
                 echo "\t" . "<th colspan='2'><a>" . strftime("%B %Y", $date) . "</a></th>" . "\n";
             }
@@ -78,7 +76,7 @@ echo "<a>". $lang['ADMIN_LOGS_SELECTED_DATE'] . strftime("%d %b %Y", mktime(0, 0
             if (log_check_exist(date("ym", $date))) {
                 echo "\t" . "<th onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=" . $typelog . "';\">";
                 echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . strftime("%B %Y", $date) . "</span></a></th>" . "\n";
-                echo "\t" . "<th width='16px'><input type='image' src='assets/images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . date("ym", $date) . "'\" title='".$lang['ADMIN_LOGS_DOWNLOAD']. strftime("%B %Y", $date) . "'></th>";
+                echo "\t" . "<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . date("ym", $date) . "'\" title='".$lang['ADMIN_LOGS_DOWNLOAD']. strftime("%B %Y", $date) . "'></th>";
             } else {
                 echo "\t" . "<th colspan='2' onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=" . $typelog . "';\">";
                 echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . strftime("%B %Y", $date) . "</span></a></th>" . "\n";
@@ -110,14 +108,14 @@ echo "<a>". $lang['ADMIN_LOGS_SELECTED_DATE'] . strftime("%d %b %Y", mktime(0, 0
 
             if (log_check_exist($show_year . $show_month . $day)) {
                 echo "\t" . "<th><a>" . $day . "</a></th>";
-                echo "\t" . "<th width='40px'><input type='image' src='assets/images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . $show_year . $show_month . $day . "'\" title='".$lang['ADMIN_LOGS_DOWNLOAD']. strftime("%d %B %Y", $date) . "'><input type='image' src='assets/images/drop.png' onclick=\"window.location = 'index.php?action=remove&amp;date=" . $show_year . $show_month . $day . "'\" title='".$lang['ADMIN_LOGS_DELETE']. strftime("%d %B %Y", $date) . "'>";
+                echo "\t" . "<th width='40px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . $show_year . $show_month . $day . "'\" title='".$lang['ADMIN_LOGS_DOWNLOAD']. strftime("%d %B %Y", $date) . "'><input type='image' src='images/drop.png' onclick=\"window.location = 'index.php?action=remove&amp;date=" . $show_year . $show_month . $day . "'\" title='".$lang['ADMIN_LOGS_DELETE']. strftime("%d %B %Y", $date) . "'>";
             } else echo "\t" . "<th colspan='2'><a>" . $day . "</a></th>";
             echo "</th>" . "\n";
         } else {
             if (log_check_exist($show_year . $show_month . $day)) {
                 echo "\t" . "<th onclick=\"window.location='index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=" . $typelog . "';\">";
                 echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $day . "</span></a></th>";
-                echo "\t" . "<th width='16px'><input type='image' src='assets/images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . $show_year . $show_month . $day . "'\" title='".$lang['ADMIN_LOGS_DOWNLOAD']. strftime("%d %B %Y", $date) . "'>";
+                echo "\t" . "<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . $show_year . $show_month . $day . "'\" title='".$lang['ADMIN_LOGS_DOWNLOAD']. strftime("%d %B %Y", $date) . "'>";
             } else {
                 echo "\t" . "<th colspan='2' onclick=\"window.location='index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=" . $typelog . "';\">";
                 echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $day . "</span></a></th>";

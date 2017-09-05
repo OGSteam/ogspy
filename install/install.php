@@ -8,15 +8,13 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04
  */
-
-namespace Ogsteam\Ogspy;
 ?>
 <html>
 <head>
     <title>Installation OGSpy</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="language" content="fr"/>
-    <link rel="stylesheet" type="text/css" href="../assets/css/formate.css"/>
+    <link rel="stylesheet" type="text/css" href="../skin/OGSpy_skin/formate.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
     <link rel="icon" type="image/icon" href="../favicon.ico">
 </head>
@@ -26,7 +24,7 @@ namespace Ogsteam\Ogspy;
 define("IN_SPYOGAME", true);
 define("INSTALL_IN_PROGRESS", true);
 
-@chmod("../config", 0777);
+@chmod("../parameters", 0777);
 @chmod("../journal", 0777);
 @chmod("../mod", 0777);
 @chmod("../mod/autoupdate/tmp", 0777);
@@ -39,10 +37,10 @@ require_once("version.php");
  */
 $error = "";
 $alerte = FALSE;
-if (is_writeable("../config")) {
-    $error .= "<tr><td width=\"250\">- \"config\" : </td><td><font color='green'>" . $lang['INSTALL_WRITE_ALLOWED'] . "</font></td></tr>";
+if (is_writeable("../parameters")) {
+    $error .= "<tr><td width=\"250\">- \"parameters\" : </td><td><font color='green'>" . $lang['INSTALL_WRITE_ALLOWED'] . "</font></td></tr>";
 } else {
-    $error .= "<tr><td width=\"250\">- \"config\" : </td><td><font color='red'>" . $lang['INSTALL_WRITE_DENIED'] . "</font></td></tr>";
+    $error .= "<tr><td width=\"250\">- \"parameters\" : </td><td><font color='red'>" . $lang['INSTALL_WRITE_DENIED'] . "</font></td></tr>";
     $alerte = TRUE;
 }
 
@@ -108,7 +106,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 
 
     //Création de la structure de la base de données
-    $sql_query = @fread(@fopen("../model/schema/ogspy_structure.sql", 'r'), @filesize("../model/schema/ogspy_structure.sql")) or die("<h1>SQL structure file has not been found</h1>");
+    $sql_query = @fread(@fopen("schemas/ogspy_structure.sql", 'r'), @filesize("schemas/ogspy_structure.sql")) or die("<h1>SQL structure file has not been found</h1>");
 
     $sql_query = preg_replace("#ogspy_#", $sgbd_tableprefix, $sql_query);
 
@@ -157,7 +155,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
     echo "<h3 align='center'><span style=\"color: yellow; \">" .$lang['INSTALL_SUCCESS']. "</span></h3>";
     echo "<div style=\"text-align: center;\">";
     echo "<b>".$lang['INSTALL_SUCCESS_REMOVE_FOLDER']."</b><br>";
-    echo "<a href='../index.php?action=rm_install'>".$lang['INSTALL_SUCCESS_BACK']."</a>";
+    echo "<a href='../index.php'>".$lang['INSTALL_SUCCESS_BACK']."</a>";
     echo "</div>";
     exit();
 }
@@ -194,7 +192,7 @@ function generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password,
     $id_php[] = '';
     $id_php[] = 'define("OGSPY_INSTALLED", TRUE);';
     $id_php[] = '?>';
-    if (!write_file("../config/id.php", "w", $id_php)) {
+    if (!write_file("../parameters/id.php", "w", $id_php)) {
         die($lang['INSTALL_IDFILE_ERROR']);
     }
 }
@@ -242,7 +240,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
     <table width="100%" align="center" cellpadding="20">
         <tr>
             <td height="70">
-                <div align="center"><img src="../assets/default_skin/logos/logo.png"></div>
+                <div align="center"><img src="../skin/OGSpy_skin/logos/logo.png"></div>
             </td>
         </tr>
         <tr>
@@ -347,5 +345,5 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
     </table>
 </form>
 </body>
-<script language="JavaScript" src="../assets/js/wz_tooltip.js"></script>
+<script language="JavaScript" src="../js/wz_tooltip.js"></script>
 </html>

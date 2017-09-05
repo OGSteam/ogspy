@@ -10,8 +10,6 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace Ogsteam\Ogspy;
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -139,11 +137,17 @@ require_once("views/page_header.php");
         <?php
         $i = 1;
         foreach ($population as $v) {
+            $begin_hided = "";
+            $end_hided = "";
+            if ($v["hided"]) {
+                $begin_hided = "<span style=\"color: lime; \">";
+                $end_hided = "</span>";
+            }
             $begin_allied = "";
             $end_allied = "";
             if ($v["allied"]) {
-                $begin_allied = "<span style=\"color: lime; \">";
-                $end_allied = "</span>";
+                $begin_allied = "<blink>";
+                $end_allied = "</blink>";
             }
 
             $id = $i;
@@ -163,7 +167,7 @@ require_once("views/page_header.php");
             }
 
             if ($planet == "") $planet = "&nbsp;";
-            else $planet = "<a href='index.php?action=search&amp;type_search=planet&amp;string_search=" . $planet . "&amp;strict=on'>" . $begin_allied . $planet . $end_allied . "</a>";
+            else $planet = "<a href='index.php?action=search&amp;type_search=planet&amp;string_search=" . $planet . "&amp;strict=on'>" . $begin_allied . $begin_hided . $planet . $end_hided . $end_allied . "</a>";
 
             if ($ally == "") $ally = "&nbsp;";
             else {
@@ -210,7 +214,7 @@ require_once("views/page_header.php");
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
 
-                $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $begin_allied . $ally  . $end_allied . "</a>";
+                $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $begin_allied . $begin_hided . $ally . $end_hided . $end_allied . "</a>";
             }
 
             if ($player == "") $player = "&nbsp;";
@@ -257,13 +261,13 @@ require_once("views/page_header.php");
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
 
-                $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $player . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $begin_allied . $player . $end_allied . "</a>";
+                $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $player . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $begin_allied . $begin_hided . $player . $end_hided . $end_allied . "</a>";
             }
 
             if ($status == "") $status = "&nbsp;";
 
             if ($moon == 1) {
-                $moon = '<img src="assets/default_skin/img/lune.png">';
+                $moon = '<img src="skin/OGSpy_skin/img/lune.png">';
                 $detail = "";
                 if ($last_update_moon > 0) {
                     $detail .= $phalanx;
@@ -300,7 +304,7 @@ require_once("views/page_header.php");
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_INACTIVE_28Days']."</td><th>".$lang['GALAXY_INACTIVE_28Days_SYMBOL']."</th></tr>";
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_HOLIDAYS']."</td><th>".$lang['GALAXY_HOLIDAYS_SYMBOL']."</th></tr>";
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_WEAK_PROTECTION']."</td><th>".$lang['GALAXY_WEAK_PROTECTION_SYMBOL']."</th></tr>";
-        $legend .= "<tr><td class=\"c\">".$lang['GALAXY_MOON']."<br><i>".$lang['GALAXY_MOON_PHALANX']."</i></td><th><img src=\"assets/default_skin/img/lune.png\">".$lang['GALAXY_MOON_PHALANX_SYMBOL']."</th></tr>";
+        $legend .= "<tr><td class=\"c\">".$lang['GALAXY_MOON']."<br><i>".$lang['GALAXY_MOON_PHALANX']."</i></td><th><img src=\"skin/OGSpy_skin/img/lune.png\">".$lang['GALAXY_MOON_PHALANX_SYMBOL']."</th></tr>";
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_SPYREPORT']."</td><th>".$lang['GALAXY_SPYREPORT_SYMBOL']."</th></tr>";
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_COMBATREPORT']."</td><th>".$lang['GALAXY_COMBATREPORT_SYMBOL']."</th></tr>";
         $legend .= "<tr><td class=\"c\">".$lang['GALAXY_ALLY_FRIEND']."</td><th><blink><a>abc</a></blink></th></tr>";

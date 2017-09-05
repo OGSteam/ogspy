@@ -10,8 +10,6 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace Ogsteam\Ogspy;
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -51,7 +49,7 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
 //}
 ?>
 
-<script src="assets/js/ogame_formula.js" type="text/javascript"></script>
+<script src="js/ogame_formula.js" type="text/javascript"></script>
 
 <table id="simu" width="100%" title="<?php echo $nb_planete; ?>">
     <tr>

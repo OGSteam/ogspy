@@ -10,13 +10,11 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace Ogsteam\Ogspy;
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-require_once("core/ogame.php");
+require_once("includes/ogame.php");
 
 $user_empire = user_get_empire($user_data['user_id']);
 $user_building = $user_empire["building"];
@@ -203,10 +201,10 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             
                 echo "<th>";
                 if (!isset($pub_view) || $pub_view == "planets") {
-                    echo "<input type='image' title='".$lang['HOME_EMPIRE_MOVELEFT']." " . $user_building[$i]["planet_name"] . "' src='assets/images/previous.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;left';\">&nbsp;&nbsp;";
-                    echo "<input type='image' title='".$lang['HOME_EMPIRE_DELETE_PLANET']." " . $user_building[$i]["planet_name"] . "' src='assets/images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "';\">&nbsp;&nbsp;";
-                    echo "<input type='image' title='".$lang['HOME_EMPIRE_MOVERIGHT']." " . $user_building[$i]["planet_name"] . "' src='assets/images/next.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;right';\">";
-                } else echo "<input type='image' title='".$lang['HOME_EMPIRE_DELETE_MOON']." " . $user_building[$i]["planet_name"] . "' src='assets/images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "';\">&nbsp;&nbsp;";
+                    echo "<input type='image' title='".$lang['HOME_EMPIRE_MOVELEFT']." " . $user_building[$i]["planet_name"] . "' src='images/previous.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;left';\">&nbsp;&nbsp;";
+                    echo "<input type='image' title='".$lang['HOME_EMPIRE_DELETE_PLANET']." " . $user_building[$i]["planet_name"] . "' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "';\">&nbsp;&nbsp;";
+                    echo "<input type='image' title='".$lang['HOME_EMPIRE_MOVERIGHT']." " . $user_building[$i]["planet_name"] . "' src='images/next.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;right';\">";
+                } else echo "<input type='image' title='".$lang['HOME_EMPIRE_DELETE_MOON']." " . $user_building[$i]["planet_name"] . "' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "';\">&nbsp;&nbsp;";
                 echo "</th>";
             }
             ?>

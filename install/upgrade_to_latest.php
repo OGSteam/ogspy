@@ -9,10 +9,6 @@
  * @version 3.04
  */
 
-namespace Ogsteam\Ogspy;
-
-use Ogsteam\Ogspy\Sql_Db;
-
 define("IN_SPYOGAME", true);
 define("UPGRADE_IN_PROGRESS", true);
 
@@ -29,7 +25,7 @@ if($pub_verbose == true){
 <title>Mise à jour OGSpy</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="language" content="fr" />
-<link rel="stylesheet" type="text/css" href="../assets/css/formate.css" />
+<link rel="stylesheet" type="text/css" href="../skin/OGSpy_skin/formate.css" />
 </head>
 <body>
 
@@ -68,15 +64,15 @@ switch ($ogsversion) {
         $requests[] = "DROP TABLE `".TABLE_RANK_ALLY_RESEARCH."`";	// ancien classement recherche
         $requests[] = "DROP TABLE `".TABLE_SPY."`";					// ancienne table des RE
         $requests[] = "DROP TABLE `".TABLE_UNIVERSE_TEMPORARY."`";	// ancienne table temporaire univers		
-
+        
         $ogsversion = '3.1.1';
-
-        break;
+        $up_to_date = true;
+        //Pas de break pour faire toutes les mises à jour d'un coup !
     case '3.1.1':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.2' WHERE config_name = 'version'";
         $ogsversion = '3.1.2';
-
-        break;
+        $up_to_date = true;
+        //Pas de break pour faire toutes les mises à jour d'un coup !
     case '3.1.2':
         $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` MODIFY `coordinates` VARCHAR(10)";
         $requests[] = "ALTER TABLE `".TABLE_UNIVERSE."` MODIFY `phalanx` tinyint(1) NOT NULL default '0'";
@@ -85,7 +81,7 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `".TABLE_USER."` ADD `off_commandant` enum('0','1') NOT NULL default '0' AFTER `disable_ip_check`";
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.3' WHERE config_name = 'version'";
         $ogsversion = '3.1.3';
-        break;
+        $up_to_date = true;
     case '3.1.3':
         $requests[] = "CREATE TABLE IF NOT EXISTS `".TABLE_GCM_USERS."` ( ".
                       "`user_id` int(11) NOT NULL default '0',".
@@ -145,7 +141,7 @@ switch ($ogsversion) {
                 
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.2.0' WHERE config_name = 'version'";
         $ogsversion = '3.2.0';
-        break;
+        $up_to_date = true;
 
     case '3.2.0':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.0' WHERE config_name = 'version'";
@@ -156,7 +152,7 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY."` DROP `CC`";
         $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY."` DROP `CD`";
         $ogsversion = '3.3.0';
-        break;
+        $up_to_date = true;
 
     case '3.3.0':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.1' WHERE config_name = 'version'";
@@ -164,44 +160,17 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` MODIFY `user_galaxy` smallint(2)";
         $requests[] = "ALTER TABLE `" . TABLE_USER_FAVORITE . "` MODIFY `galaxy` smallint(2)";
         $ogsversion = '3.3.1';
-        break;
+        $up_to_date = true;
 
      case '3.3.1':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.2' WHERE config_name = 'version'";
         $requests[] = "ALTER TABLE `".TABLE_USER."` MODIFY `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP','ANDROID')";
         $ogsversion = '3.3.2';
-         break;
-
-    case '3.4.0':
-        $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.4.0' WHERE config_name = 'version'";
-        $requests[] = "DROP TABLE `".TABLE_GCM_USERS."`";
-        $requests[] = "CREATE TABLE IF NOT EXISTS `" .TABLE_MOD_USER_CFG . "` (
-	                    `mod` VARCHAR(50) NOT NULL,
-	                    `config` VARCHAR(255) NOT NULL,
-	                    `user_id` INT(10) NOT NULL,
-	                    `value` VARCHAR(255) NOT NULL,
-	                    PRIMARY KEY (`mod`, `config`, `user_id`),
-	                    INDEX `fk_user_userid` (`user_id`),
-	                    CONSTRAINT `fk_user_userid` FOREIGN KEY (`user_id`) REFERENCES `ogspy_user` (`user_id`)
-                        )
-                        DEFAULT CHARSET = utf8
-                        ENGINE=InnoDB
-                        ;";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `planet_exported`";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `planet_added_ogs`";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `spy_added_ogs`";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `spy_exported`";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `rank_added_ogs`";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `rank_exported`";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` CHANGE `planet_added_web` `planet_added_xtense`  INT(11) NOT NULL DEFAULT '0'";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` CHANGE `spy_added_web` `spy_added_xtense`  INT(11) NOT NULL DEFAULT '0'";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` CHANGE `rank_added_web` `rank_added_xtense`  INT(11) NOT NULL DEFAULT '0'";
-
         $up_to_date = true;
-        break;
 
+        break;
     default:
-        die("Aucune mise … jour n'est disponible");
+    die("Aucune mise … jour n'est disponible");
 }
 
 

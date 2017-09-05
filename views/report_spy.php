@@ -10,7 +10,6 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace Ogsteam\Ogspy;
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");

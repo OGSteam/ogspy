@@ -10,8 +10,6 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace Ogsteam\Ogspy;
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -44,7 +42,7 @@ foreach ($ally_list as $ally_name) {
 
 require_once("views/page_header.php");
 ?>
-<script language="JavaScript" src="assets/js/autocomplete.js"></script>
+<script language="JavaScript" src="js/autocomplete.js"></script>
 
 <form method="POST" action="index.php?action=cartography">
     <table>

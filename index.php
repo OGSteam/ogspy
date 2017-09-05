@@ -9,14 +9,9 @@
  * @version 3.03
  */
 
-namespace Ogsteam\Ogspy;
-
-
 /**
  * @abstract Utilisé dans les autres fichiers pour s'assurer qu'index.php est bien appelé
  */
-use Ogsteam\Ogspy\Api\Api_data;
-
 define("IN_SPYOGAME", true);
 
 /**
@@ -41,7 +36,6 @@ if (!isset($pub_action)) {
 if (is_dir("install") && $pub_action != "message") {
     require_once("install/version.php");
     if (version_compare($server_config["version"], $install_version, '<')) {
-
         redirection("install/index.php");
     } else {
         redirection("index.php?action=message&id_message=install_directory&info");
@@ -55,23 +49,13 @@ if ($server_config["server_active"] == 0 && $pub_action != "login_web" && $pub_a
 if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "login_web")) {
     if ($pub_action == "message") {
         require("views/message.php");
-    } elseif ($pub_action == "api") {
-        $api = new Api_data();
-        if (isset($pub_login) && isset($pub_password)) {
-            $api->authenticate_by_user($pub_login, $pub_password);
-
-        } elseif (isset($pub_token) && isset($pub_data)) {
-            if($api->authenticate_by_token($pub_token) === true )
-
-                $api->api_treat_command($pub_data);
-        }
-    }else {
+    } else {
         if (preg_match("#^action=(.*)#", $_SERVER['QUERY_STRING'], $matches)) {
             $goto = $matches[1];
         }
         require_once("views/login.php");
     }
-        exit();
+    exit();
 }
 
 
@@ -343,7 +327,6 @@ switch ($pub_action) {
     //----------------------------------------//
     //--- ---//
     //----------------------------------------//
-
     case "server_close":
         require_once("views/serverdown.php");
         break;

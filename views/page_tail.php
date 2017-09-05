@@ -9,9 +9,6 @@
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
-
-namespace Ogsteam\Ogspy;
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -60,7 +57,7 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
     </table>
 
 </div>
-<script type="text/javascript" src="assets/js/wz_tooltip.js"></script>
+<script type="text/javascript" src="js/wz_tooltip.js"></script>
 
 </body>
 </html>
