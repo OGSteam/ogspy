@@ -44,7 +44,8 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
         </tr>
         <tr>
             <td style="width:33%;text-align:left;font-size:11px;font-style:italic">
-                <a style="font-weight:bold;font-size: 12px" href="http://www.ogsteam.fr" target="_blank">OGSpy</a> <?php echo $server_config["version"] . " " . $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2016<br/>
+                <a style="font-weight:bold;font-size: 12px" href="http://www.ogsteam.fr"
+                   target="_blank">OGSpy</a> <?php echo $server_config["version"]." ".$lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2017<br/>
             </td>
             <td style="width:34%;text-align:center;font-size:11px;font-style:italic;font-weight:bold;"><?php echo("<span id='nb_users'>" . $nb_users . "</span> " . $lang['FOOTER_CONTRIBUTORS'] . (($nb_users > 1) ? "s" : "") . " " . $lang['FOOTER_ON_SITE']); ?></td>
             <td style="width:33%;text-align:right;font-size:11px;font-style:italic">
