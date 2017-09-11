@@ -1478,7 +1478,6 @@ function galaxy_get_phalanx($galaxy, $system)
                     'range_up' => $system_higher_range
                 );
             }
-            }
         }
 
         foreach ($data_computed as $phalange) { // Filtre alliance amies et masquées
