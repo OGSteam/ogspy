@@ -4,21 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d8e73362131d0b958ad3c2a7cfad608c",
     "content-hash": "3e8243df4bf4b1d860f8317c496dca74",
     "packages": [
         {
             "name": "datatables/datatables",
-            "version": "1.10.15",
+            "version": "1.10.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DataTables/DataTables.git",
-                "reference": "7494262db18b1cbc69dcc1d64a5a8d0cd757d58c"
+                "reference": "75a665f64f02982c0f4666b15a25c4670e5e6b18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataTables/DataTables/zipball/7494262db18b1cbc69dcc1d64a5a8d0cd757d58c",
-                "reference": "7494262db18b1cbc69dcc1d64a5a8d0cd757d58c",
+                "url": "https://api.github.com/repos/DataTables/DataTables/zipball/75a665f64f02982c0f4666b15a25c4670e5e6b18",
+                "reference": "75a665f64f02982c0f4666b15a25c4670e5e6b18",
                 "shasum": ""
             },
             "type": "library",
@@ -28,7 +27,7 @@
             ],
             "description": "DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, which will add advanced interaction controls to any HTML table.",
             "homepage": "http://www.datatables.net/",
-            "time": "2017-04-18 08:24:18"
+            "time": "2017-08-31T13:52:17+00:00"
         },
         {
             "name": "ghunti/highcharts-php",
@@ -74,7 +73,7 @@
                 "javascript",
                 "php"
             ],
-            "time": "2016-01-24 11:57:43"
+            "time": "2016-01-24T11:57:43+00:00"
         },
         {
             "name": "sabre/event",
@@ -131,20 +130,20 @@
                 "promise",
                 "signal"
             ],
-            "time": "2015-11-05 20:14:39"
+            "time": "2015-11-05T20:14:39+00:00"
         },
         {
             "name": "sabre/http",
-            "version": "4.2.2",
+            "version": "4.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruux/sabre-http.git",
-                "reference": "dd50e7260356f4599d40270826f9548b23efa204"
+                "reference": "0295f9a3ee39be97e0898592fc19e42421e0cd93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-http/zipball/dd50e7260356f4599d40270826f9548b23efa204",
-                "reference": "dd50e7260356f4599d40270826f9548b23efa204",
+                "url": "https://api.github.com/repos/fruux/sabre-http/zipball/0295f9a3ee39be97e0898592fc19e42421e0cd93",
+                "reference": "0295f9a3ee39be97e0898592fc19e42421e0cd93",
                 "shasum": ""
             },
             "require": {
@@ -187,7 +186,7 @@
             "keywords": [
                 "http"
             ],
-            "time": "2017-01-02 19:38:42"
+            "time": "2017-06-12T07:53:04+00:00"
         },
         {
             "name": "sabre/uri",
@@ -238,7 +237,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-02-20 19:59:28"
+            "time": "2017-02-20T19:59:28+00:00"
         },
         {
             "name": "sinergi/token",
@@ -287,7 +286,7 @@
                 "token",
                 "uuid"
             ],
-            "time": "2014-05-24 13:27:57"
+            "time": "2014-05-24T13:27:57+00:00"
         }
     ],
     "packages-dev": [],

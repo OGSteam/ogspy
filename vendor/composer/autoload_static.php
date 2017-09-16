@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit7f8ed55ac5aa63c4f86a51e8a17b034a
+class ComposerStaticInit6f6851a1dac9fd5a0426a8fa7ddbdacd
 {
     public static $files = array (
         '2b9d0f43f9552984cfa82fee95491826' => __DIR__ . '/..' . '/sabre/event/lib/coroutine.php',
@@ -72,8 +72,8 @@ class ComposerStaticInit7f8ed55ac5aa63c4f86a51e8a17b034a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit7f8ed55ac5aa63c4f86a51e8a17b034a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit7f8ed55ac5aa63c4f86a51e8a17b034a::$prefixDirsPsr4;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit6f6851a1dac9fd5a0426a8fa7ddbdacd::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit6f6851a1dac9fd5a0426a8fa7ddbdacd::$prefixDirsPsr4;
 
         }, null, ClassLoader::class);
     }
