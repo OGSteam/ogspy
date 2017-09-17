@@ -12,15 +12,20 @@
 
 namespace Ogsteam\Ogspy;
 
+use Ogsteam\Ogspy\datatable_js;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+$idHtmlTable = "player_rankings";
 $data_general = galaxy_show_ranking();
+$datatable = new \Ogsteam\Ogspy\datatable_js($idHtmlTable)
+
 
 ?>
 <br><br>
-<table id='player_rankings' class='display' width='100%'>
+<table id='<?php echo $idHtmlTable;?>' class='display' width='100%'>
     <thead>
     <tr>
         <th class="c">Position</th>
@@ -46,29 +51,19 @@ $data_general = galaxy_show_ranking();
     </tfoot> -->
     <tbody>
 
-<?php
-    foreach($data_general as $v){
-    echo "<tr>";
-        foreach($v as $vv){
-        echo "<td>{$vv}</td>";
-        }
-        echo "</tr>";
-        }
-        ?>
-    </tbody>
-</table>
-
-<script>
-    $(document).ready(function() {
-        $('#player_rankings').DataTable({
-            "language": {
-                "url": "./assets/js/dataTables.french.lang.json"
-            }
+    <?php foreach ($data_general as $v) : ?>
+        <tr>
+            <?php foreach ($v as $vv):?>
+                <td>
+                    <?php echo $vv;?>
+                </td>
+            <?php endforeach ;?>
+        </tr>
+    <?php endforeach ; ?>
 
 
-        });
-    } );
-</script>
+<?php echo $datatable->getHtml(); ?>
+
 
 
 

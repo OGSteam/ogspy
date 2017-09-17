@@ -51,6 +51,7 @@ require("core/Mod_Factory.php");
 require("core/ogame.php");
 require("core/cache.php");
 require("core/chart_js.php");
+require("core/datatable_js.php");
 
 //Récupération des valeur GET, POST, COOKIE
 extract($_GET, EXTR_PREFIX_ALL, "pub");
