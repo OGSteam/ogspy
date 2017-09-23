@@ -16,8 +16,8 @@
 
 /* profile.php */
 
-$lang['PROFILE_ERROR_RETRY'] ="Inserire la nuova password e la sua conferma";
-$lang['PROFILE_ERROR_OLDPWD'] ="Inserire la precedente password";
+$lang['PROFILE_ERROR_RETRY'] = "Inserire la nuova password e la sua conferma";
+$lang['PROFILE_ERROR_OLDPWD'] = "Inserire la precedente password";
 $lang['PROFILE_ERROR_ERROR'] = "La password inserita è diversa dalla conferma";
 $lang['PROFILE_ERROR_ILLEGAL'] = "La password deve contenere tra i 6 ed i 15 caratteri";
 
