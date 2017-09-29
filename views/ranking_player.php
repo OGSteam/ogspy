@@ -18,27 +18,52 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-$idHtmlTable = "player_rankings";
 $data_general = galaxy_show_ranking();
-$datatable = new \Ogsteam\Ogspy\datatable_js($idHtmlTable)
+
+
+$idHtmlTable = "player_rankings";
+$datatable = new \Ogsteam\Ogspy\datatable_js($idHtmlTable);
+
+// activation ou desactivation des options
+$datatable->enableFeatures(array("AutoWidth","Info", "LengthChange","Ordering","Paging","Searching"));
+$datatable->disableFeatures(array("ScrollX","ScrollY"));
 
 
 ?>
+
 <br><br>
 <table id='<?php echo $idHtmlTable;?>' class='display' width='100%'>
     <thead>
     <tr>
-        <th class="c">Position</th>
-        <th class="c">Joueur</th>
-        <th class="c">Alliance</th>
+        <th rowspan="2" class="c">Position</th>
+        <th rowspan="2" class="c">Joueur</th>
+        <th rowspan="2" class="c">Alliance</th>
+        <th colspan="2" class="c">Points</th>
+        <th colspan="2" class="c">Points Eco.</th>
+        <th colspan="2" class="c">Points Tech.</th>
+        <th colspan="2"class="c">Points Mil.</th>
+        <th colspan="2" class="c">Points Mil. Construits</th>
+        <th colspan="2" class="c">Points Mil. Perdus</th>
+        <th colspan="2"class="c">Points Mil. Détruits</th>
+        <th colspan="2"class="c">Points Honneur</th>
+    </tr>
+    <tr>
+        <th class="c">Rank</th>
         <th class="c">Points</th>
-        <th class="c">Points Eco.</th>
-        <th class="c">Points Tech.</th>
-        <th class="c">Points Mil.</th>
-        <th class="c">Points Mil. Construits</th>
-        <th class="c">Points Mil. Perdus</th>
-        <th class="c">Points Mil. Détruits</th>
-        <th class="c">Points Honneur</th>
+        <th class="c">Rank </th>
+        <th class="c">Points</th>
+        <th class="c">Rank</th>
+        <th class="c">Points</th>
+        <th class="c">Rank</th>
+        <th class="c">Points</th>
+        <th class="c">Rank</th>
+        <th class="c">Points</th>
+        <th class="c">Rank</th>
+        <th class="c">Points</th>
+        <th class="c">Rank</th>
+        <th class="c">Points</th>
+        <th class="c">Rank</th>
+        <th class="c">Points</th>
     </tr>
     </thead>
     <!--<tfoot>
@@ -50,21 +75,15 @@ $datatable = new \Ogsteam\Ogspy\datatable_js($idHtmlTable)
     </tr>
     </tfoot> -->
     <tbody>
-
-    <?php foreach ($data_general as $v) : ?>
+    <?php foreach ($data_general as $row) : ?>
         <tr>
-            <?php foreach ($v as $vv):?>
+            <?php foreach ($row as $cell):?>
                 <td>
-                    <?php echo $vv;?>
+                    <?php echo $cell;?>
                 </td>
-            <?php endforeach ;?>
+                 <?php endforeach ;?>
         </tr>
     <?php endforeach ; ?>
 
-
-<?php echo $datatable->getHtml(); ?>
-
-
-
-
+<?php  echo $datatable->getHtml(); ?>
 

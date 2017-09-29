@@ -599,7 +599,7 @@ function galaxy_show_ranking($ranking_table = TABLE_RANK_PLAYER_POINTS, $date = 
 
     if($last_ranking == null) return -1; // Pas de classement disponible
 
-     $ranking = $data_rankings->get_all_player_ranktable_bydate($last_ranking);
+     $ranking = $data_rankings->get_all_player_ranktable_bydate($last_ranking,1,99999);
 
     return $ranking;
 }
