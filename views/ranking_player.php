@@ -27,18 +27,34 @@ $datatable = new \Ogsteam\Ogspy\datatable_js($idHtmlTable);
 // activation ou desactivation des options
 $datatable->enableFeatures(array("AutoWidth","Info", "LengthChange","Ordering","Paging","Searching"));
 $datatable->disableFeatures(array("ScrollX","ScrollY"));
-
+$datatable->setFormatNumber(true);
+$datatable->toggleVisibility("datatable-toggle-vis","data-column");
 
 ?>
 
 <br><br>
+<select name="date" onchange="this.form.submit();">
+    <option value="1506463200">27 Sep 2017 00h</option>
+</select>
+<!-- vicsibilité colonne ou non ($datatable->toggleVisibility) -->
+<a class="datatable-toggle-vis" data-column="2">Alliance</a> |
+<a class="datatable-toggle-vis" data-column="3|4">Points</a> |
+<a class="datatable-toggle-vis" data-column="5|6">Points Eco</a> |
+<a class="datatable-toggle-vis" data-column="7|8">Points Tech.</a> |
+<a class="datatable-toggle-vis" data-column="9|10">Points Mil.</a> |
+<a class="datatable-toggle-vis" data-column="11|12">Points Mil. Construits</a> |
+<a class="datatable-toggle-vis" data-column="13|14">Points Mil. Perdus</a> |
+<a class="datatable-toggle-vis" data-column="15|16">Points Mil. Détruits</a> |
+<a class="datatable-toggle-vis" data-column="17|18">Points Honneur</a> <br />
+<!-- fin vicsibilité colonne ou non -->
+
 <table id='<?php echo $idHtmlTable;?>' class='display' width='100%'>
     <thead>
     <tr>
         <th rowspan="2" class="c">Position</th>
         <th rowspan="2" class="c">Joueur</th>
         <th rowspan="2" class="c">Alliance</th>
-        <th colspan="2" class="c">Points</th>
+        <th colspan="2"  class="c">Points</th>
         <th colspan="2" class="c">Points Eco.</th>
         <th colspan="2" class="c">Points Tech.</th>
         <th colspan="2"class="c">Points Mil.</th>
@@ -85,5 +101,6 @@ $datatable->disableFeatures(array("ScrollX","ScrollY"));
         </tr>
     <?php endforeach ; ?>
 
-<?php  echo $datatable->getHtml(); ?>
+<?php echo $datatable->getHtml(); ?>
+
 
