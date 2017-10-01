@@ -18,11 +18,17 @@ if (!defined('IN_SPYOGAME')) {
 class datatable_js
 {
 
+
     private $tableId = '';
     private $features;
     private $formatNumber;
     private $toggleVisibility;
 
+
+    /**
+     * datatable_js constructor.
+     * @param $idHtmlTable
+     */
     public function __construct($idHtmlTable)
     {
         $this->tableId = $idHtmlTable;
@@ -46,13 +52,7 @@ class datatable_js
         $script .= "var $this->tableId =    $('#" . $this->tableId . "').DataTable({\n";
 
         $script .= $this->getScriptFormatNumber();
-
-        $script .= "            \"language\": {\n";
-        $script .= "                \"url\": \"./assets/js/dataTables.french.lang.json\",\n";//todo a faire i18
-
-
-//todo a faire separateur (fonction format to a priori) / si gereé via php plus consideré comme des nombres (fn de tri + espace vide !!!!!)
-        $script .= "            },\n";
+        $script .= $this->getScriptLangage();
         $script .= $this->getScriptFeatures();
 
         $script .=          "\"lengthMenu\": [[100, 500, 1000, -1], [100, 500, 1000, \"All\"]]"; //todo a faire gestion pagination
@@ -67,12 +67,15 @@ class datatable_js
 
         return $script;
 
-
-
-
-        //todo dynamiquement cacher une colonne
     }
 
+    /**
+     * active et parametrage du formatage nombre
+     * @param bool $enabled
+     * @param string $thousandSeparator
+     * @param string $decimalSeparator
+     * @param string $decimalPrecision
+     */
     public function setFormatNumber($enabled = true, $thousandSeparator = " ", $decimalSeparator = ".", $decimalPrecision = "0")
     {
         $this->formatNumber = array(
@@ -83,6 +86,12 @@ class datatable_js
         );
     }
 
+    /**
+     * mise en place de l'affichage ou non de cononne dynamiquement
+     * via lien html
+     * @param $datatableToggleVis
+     * @param $dataColumn
+     */
     public function toggleVisibility($datatableToggleVis , $dataColumn)
     {
         $this->toggleVisibility = array(
@@ -92,7 +101,10 @@ class datatable_js
     }
 
 
-
+    /**
+     * retourne la partie du script JS gérant le formatage des nombres
+     * @return string
+     */
     private function getScriptFormatNumber()
     {
         // sera a approfondir
@@ -109,6 +121,10 @@ class datatable_js
         return $script;
     }
 
+    /**
+     * retourne la partie du script JS gérant dynamiquement l'affichage ou non des colonnes
+     * @return string
+     */
     private function getScriptToggleVis()
     {
         $script = "";
@@ -153,12 +169,34 @@ class datatable_js
         return $script;
     }
 
-    public function setLangage($lang)
+    private function getScriptLangage()
     {
-        $tab = array("english", "french", "german", "italian", "spanish");
-        //todo voir composer pour ajouter js lang et supprimer celle du dossier js
+        global $lang; //import variable i18
 
-
+        $script = "";
+        $script .= "            \"language\": {\n";
+        $script .= "                \"sProcessing\":     \"".$lang['DATATABLE_JS_sProcessing']."\",\n";
+        $script .= "                \"sSearch\":         \"".$lang['DATATABLE_JS_sSearch']."\",\n";
+        $script .= "                \"sLengthMenu\":     \"".$lang['DATATABLE_JS_sLengthMenu']."\",\n";
+        $script .= "                \"sInfo\":           \"".$lang['DATATABLE_JS_sInfo']."\",\n";
+        $script .= "                \"sInfoEmpty\":      \"".$lang['DATATABLE_JS_sInfoEmpty']."\",\n";
+        $script .= "                \"sInfoFiltered\":   \"".$lang['DATATABLE_JS_sInfoFiltered']."\",\n";
+        $script .= "                \"sInfoPostFix\":    \"".$lang['DATATABLE_JS_sInfoPostFix']."\",\n";
+        $script .= "                \"sLoadingRecords\": \"".$lang['DATATABLE_JS_sLoadingRecords']."\",\n";
+        $script .= "                \"sZeroRecords\":    \"".$lang['DATATABLE_JS_sZeroRecords']."\",\n";
+        $script .= "                \"sEmptyTable\":     \"".$lang['DATATABLE_JS_sEmptyTable']."\",\n";
+        $script .= "                \"oPaginate\": {\n";
+        $script .= "                    \"sFirst\":      \"".$lang['DATATABLE_JS_sFirst']."\",\n";
+        $script .= "                    \"sPrevious\":   \"".$lang['DATATABLE_JS_sPrevious']."\",\n";
+        $script .= "                    \"sNext\":       \"".$lang['DATATABLE_JS_sNext']."\",\n";
+        $script .= "                    \"sLast\":       \"".$lang['DATATABLE_JS_sLast']."\"\n";
+        $script .= "                    },\n";
+        $script .= "                \"oAria\": {\n";
+        $script .= "                    \"sSortAscending\":  \"".$lang['DATATABLE_JS_sSortAscending']."\",\n";
+        $script .= "                    \"sSortDescending\": \"".$lang['DATATABLE_JS_sSortDescending']."\"\n";
+        $script .= "                    }\n";
+        $script .= "            },\n";
+        return $script;
     }
 
     public function disableFeatures($names)

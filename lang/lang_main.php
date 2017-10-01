@@ -32,6 +32,7 @@ if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
     require_once ("./lang/".$ui_lang."/lang_search.php");
     require_once ("./lang/".$ui_lang."/lang_serverdown.php");
     require_once ("./lang/".$ui_lang."/lang_statistic.php");
+    require_once ("./lang/".$ui_lang."/lang_datatable_js.php");
 }
 
 
