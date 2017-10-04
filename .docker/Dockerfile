@@ -43,14 +43,14 @@ ADD apache_default /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
 # Configure /app folder with sample app
-RUN hg clone https://bitbucket.org/ogsteam/ogspy /app
-RUN hg clone https://bitbucket.org/ogsteam/mod-autoupdate /app/mod/autoupdate -r develop
+RUN git clone -b develop https://github.com/ogsteam/ogspy /app
+RUN git clone -b develop https://github.com/ogsteam/mod-autoupdate /app/mod/autoupdate
 RUN chown -R www-data:www-data /app
 RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
 
 #Environment variables to configure php
-ENV PHP_UPLOAD_MAX_FILESIZE 10M
-ENV PHP_POST_MAX_SIZE 10M
+ENV PHP_UPLOAD_MAX_FILESIZE 128M
+ENV PHP_POST_MAX_SIZE 32M
 
 # Add volumes for MySQL 
 VOLUME  ["/etc/mysql", "/var/lib/mysql","/app" ]
