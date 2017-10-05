@@ -128,4 +128,24 @@ class Rankings_Model
         }
         return $ranking_content;
     }
+
+
+    /**
+     * get distinct datatable available
+     *
+     * @return array
+     */
+    public function get_all_player_distinct_date_ranktable()
+    {
+        global $db;
+        $request = "SELECT DISTINCT datadate FROM " . TABLE_RANK_PLAYER_POINTS . " ORDER BY datadate DESC";
+        $result = $db->sql_query($request);
+        while ($row = $db->sql_fetch_assoc($result)) {
+            $ranking_available[] = $row["datadate"];
+        }
+
+        return $ranking_available;
+    }
+
+
 }

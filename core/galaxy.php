@@ -578,6 +578,20 @@ function galaxy_getfavorites()
     return $favorites;
 }
 
+
+/**
+ * retourne la liste des dates de classement disponibles
+ *
+ *
+ */
+function get_all_player_distinct_date_ranktable()
+{
+    $data_rankings = new Rankings_Model();
+    $ranks = $data_rankings->get_all_player_distinct_date_ranktable();
+    return $ranks;
+}
+
+
 /**
  * Affichage classement des joueurs
  *

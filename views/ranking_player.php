@@ -30,12 +30,34 @@ $datatable->disableFeatures(array("ScrollX","ScrollY"));
 $datatable->setFormatNumber(true);
 $datatable->toggleVisibility("datatable-toggle-vis","data-column");
 
+$availableDatatade = get_all_player_distinct_date_ranktable();
+
 ?>
 
 <br><br>
-<select name="date" onchange="this.form.submit();">
-    <option value="1506463200">27 Sep 2017 00h</option>
-</select>
+<form method="POST" action="index.php">
+    <input type="hidden" name="action" value="ranking">
+    <input type="hidden" name="subaction" value="player">
+    <select name="date" onchange="this.form.submit();">
+        <?php $date_selected = "";  ?>
+        <?php $datadate = 0; ?>
+        <?php foreach ($availableDatatade as $date) : ?>
+            <?php $selected = "";?>
+            <?php if (!isset($pub_date_selected) && !isset($datadate)) :?>
+                <?php $datadate = $date; ?>
+                <?php $date_selected = strftime("%d %b %Y %Hh", $date); ?>
+            <?php endif; ?>
+            <?php if ($pub_date == $date):?>
+                <?php $selected = " selected "; ?>
+                <?php $datadate = $date; ?>
+                <?php $date_selected = strftime("%d %b %Y %Hh", $date); ?>
+            <?php endif; ?>
+            <option value="<?php echo $date;?>" <?php echo $selected ;?>>
+                <?php echo strftime("%d %b %Y %Hh", $date);?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</form>
 <!-- vicsibilité colonne ou non ($datatable->toggleVisibility) -->
 <a class="datatable-toggle-vis" data-column="2">Alliance</a> |
 <a class="datatable-toggle-vis" data-column="3|4">Points</a> |
@@ -47,6 +69,7 @@ $datatable->toggleVisibility("datatable-toggle-vis","data-column");
 <a class="datatable-toggle-vis" data-column="15|16">Points Mil. Détruits</a> |
 <a class="datatable-toggle-vis" data-column="17|18">Points Honneur</a> <br />
 <!-- fin vicsibilité colonne ou non -->
+</div>
 
 <table id='<?php echo $idHtmlTable;?>' class='display' width='100%'>
     <thead>
