@@ -6,7 +6,43 @@
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.4.0
- */
+ *
+ *
+ * usage
+ * $idHtmlTable = "IDtABLE";     //html id from table
+  *$datatable = new \Ogsteam\Ogspy\datatable_js($idHtmlTable); // create object
+ * Enjoy
+ *
+ * More confirguration :
+ *
+ *
+ * --- features---
+ * -activate-
+ * $datatable->enableFeatures(array("AutoWidth","Info"));
+ * -desactivate
+ * disableFeatures(array("AutoWidth","Info"));
+ * by default activate : "AutoWidth","Info", "LengthChange","Ordering","Paging","Searching",   desactivate "ScrollX","ScrollY"
+ * list of feature : "AutoWidth", "Info", "LengthChange", "Ordering", "Paging", "ScrollX", "ScrollY", "Searching"
+ *
+ * --setFormatNumber--
+ * $datatable->$this->setFormatNumber(true); // by default is true
+ *
+ * --setFormatNumber--
+ *  * $datatable->setPaginate(array(100, 500, 1000, -1));; // by default array(100, 500, 1000, -1)
+ * if "-1", all rows visible
+ *
+ *
+ * --toggleVisibility--
+ * you can hide or unhide colomn with <a> link
+ * $datatable->toggleVisibility("datatable-toggle-vis","data-column");
+ * -html code-
+ * <a class="datatable-toggle-vis" data-column="2">colonne a effacer</a>
+ * for multiple colomn
+ * <a class="datatable-toggle-vis" data-column="2|3">colonnes a effacer</a>
+ *
+ * cf. https://datatables.net/
+ *
+  */
 
 namespace Ogsteam\Ogspy;
 
@@ -23,6 +59,7 @@ class datatable_js
     private $features;
     private $formatNumber;
     private $toggleVisibility;
+    private $arrayPages;
 
 
     /**
@@ -37,6 +74,7 @@ class datatable_js
         $this->enableFeatures(array("AutoWidth","Info", "LengthChange","Ordering","Paging","Searching"));
         $this->disableFeatures(array("ScrollX","ScrollY"));
         $this->setFormatNumber(true);
+        $this->setPaginate(array(100, 500, 1000, -1));
         $this->toggleVisibility= null;
 
     }
@@ -54,13 +92,10 @@ class datatable_js
         $script .= $this->getScriptFormatNumber();
         $script .= $this->getScriptLangage();
         $script .= $this->getScriptFeatures();
-
-        $script .=          "\"lengthMenu\": [[100, 500, 1000, -1], [100, 500, 1000, \"All\"]]"; //todo a faire gestion pagination
+        $script .= $this->getScriptPaginate();
         $script .= "        });\n";
 
-
-
-        $script .=  $this->getScriptToggleVis();
+         $script .=  $this->getScriptToggleVis();
         $script .= "    } );\n";
 
         $script .= "</script>\n";
@@ -85,6 +120,22 @@ class datatable_js
             "decimalPrecision" => $decimalPrecision,
         );
     }
+
+
+     public function setPaginate($arrayPages)
+        {
+            $return = array();
+            if (is_array($arrayPages))
+            {
+                foreach ($arrayPages as $pages)
+                {
+                    $return[] = (int)$pages;
+                }
+
+            }
+            $this->arrayPages= $return;
+        }
+
 
     /**
      * mise en place de l'affichage ou non de cononne dynamiquement
@@ -153,6 +204,20 @@ class datatable_js
 
         }
 
+        return $script;
+    }
+
+    /**
+    * mise en place de la pagination
+    *
+    * @param $datatableToggleVis
+    * @param $dataColumn
+    */
+private function getScriptPaginate()
+    {
+
+        $script = "";
+        $script .=          "\"lengthMenu\": [[".implode(" , " , $this->arrayPages)."], [".implode(" , " , str_replace('-1', '"All"', $this->arrayPages))."]]"; //todo a faire gestion pagination
         return $script;
     }
 
