@@ -29,7 +29,7 @@ $datatable->enableFeatures(array("AutoWidth","Info", "LengthChange","Ordering","
 $datatable->disableFeatures(array("ScrollX","ScrollY"));
 $datatable->setFormatNumber(true);
 $datatable->toggleVisibility("datatable-toggle-vis","data-column");
-$datatable->setPaginate(array(100, 250, 500 , 1000, -1));
+$datatable->setPaginate(array(100, 500, 1000, -1));
 
 $availableDatatade = get_all_player_distinct_date_ranktable();
 

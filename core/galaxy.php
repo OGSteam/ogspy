@@ -15,6 +15,7 @@ namespace Ogsteam\Ogspy;
 use Ogsteam\Ogspy\Entity\Universe\Search_Criteria;
 use Ogsteam\Ogspy\Model\Combat_Report_Model;
 use Ogsteam\Ogspy\Model\Rankings_Model;
+use Ogsteam\Ogspy\Model\Rankings_Player_Model;
 use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Universe_Model;
 use Ogsteam\Ogspy\Model\User_Favorites_Model;
@@ -586,8 +587,8 @@ function galaxy_getfavorites()
  */
 function get_all_player_distinct_date_ranktable()
 {
-    $data_rankings = new Rankings_Model();
-    $ranks = $data_rankings->get_all_player_distinct_date_ranktable();
+    $data_rankings = new Rankings_Player_Model();
+    $ranks = $data_rankings->get_all_distinct_date_ranktable();
     return $ranks;
 }
 
@@ -602,7 +603,7 @@ function galaxy_show_ranking($ranking_table = TABLE_RANK_PLAYER_POINTS, $date = 
     global $pub_date;
 
     // Récupération de la taille max des tableaux
-    $data_rankings = new Rankings_Model();
+    $data_rankings = new Rankings_Player_Model();
     $maxrank = $data_rankings->select_max_rank_row();
 
     //Récupération de la dernière date de classement

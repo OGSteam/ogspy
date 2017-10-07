@@ -8,7 +8,7 @@
 
 namespace Ogsteam\Ogspy\Api;
 use Ogsteam\Ogspy\Model\Config_Model;
-use Ogsteam\Ogspy\Model\Rankings_Model;
+use Ogsteam\Ogspy\Model\Rankings_Player_Model;
 use Ogsteam\Ogspy\Model\Tokens_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Sinergi\Token\StringGenerator;
@@ -84,8 +84,10 @@ class Api_data
             case "ogspy_user_details" :
                 $this->api_send_ogspy_player_details();
                 break;
-            case "ogspy_rank" :
-                $this->api_send_ogspy_rank($data_decoded['type'],$data_decoded['higher_rank'],$data_decoded['lower_rank']);
+            case "ogspy_rank_by_date" :
+                $this->api_send_ogspy_rank_by_date($data_decoded['type'],$data_decoded['higher_rank'],$data_decoded['lower_rank']);
+            case "ogspy_rank_all" :
+                $this->api_send_ogspy_all_rank($data_decoded['type']);
             default:
                 break;
         }
@@ -135,19 +137,38 @@ class Api_data
     }
 
     /**
-     * Fonction test envoi de données Classements
+     * Fonction test envoi de données Classements par date
      * @param $type
      * @param $higher_rank
      * @param $lower_rank
      */
-    private function api_send_ogspy_rank($type, $higher_rank, $lower_rank){
+    private function api_send_ogspy_rank_by_date($type, $higher_rank, $lower_rank){
 
         if($this->authenticated_token != null){
 
-            $data_rank = new Rankings_Model();
+            $data_rank = new Rankings_Player_Model();
             $last_rank_date = $data_rank->get_rank_latest_table_date($type);
 
-            $rankings = $data_rank->get_ranktable_bydate($type, $last_rank_date, $higher_rank, $lower_rank);
+            $rankings = $data_rank->get_ranktable($type, $last_rank_date, true, $higher_rank, $lower_rank);
+
+            $data =  array('status' => 'ok', 'content' => $rankings);
+            $this->send_response($data);
+        }
+    }
+    /**
+     * Fonction test envoi de données Classements par date
+     * @param $type
+     * @param $higher_rank
+     * @param $lower_rank
+     */
+    private function api_send_ogspy_all_rank($type){
+
+        if($this->authenticated_token != null){
+
+            $data_rank = new Rankings_Player_Model();
+            $last_rank_date = $data_rank->get_rank_latest_table_date($type);
+
+            $rankings = $data_rank->get_ranktable($type, $last_rank_date);
 
             $data =  array('status' => 'ok', 'content' => $rankings);
             $this->send_response($data);
