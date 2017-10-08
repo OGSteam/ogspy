@@ -62,6 +62,7 @@ abstract class Rankings_Model
     public function get_all_distinct_date_ranktable()
     {
         global $db;
+        $ranking_available = array();
         $request = "SELECT DISTINCT datadate FROM " . $this->rank_tables[0] . " ORDER BY datadate DESC";
         $result = $db->sql_query($request);
         while ($row = $db->sql_fetch_assoc($result)) {
@@ -98,5 +99,13 @@ abstract class Rankings_Model
         }
         return $ranking_content;
     }
+
+    /**
+     * @param $datadate
+     * @param int $higher_rank
+     * @param int $lower_rank
+     * @return array
+     */
+    abstract public function get_all_ranktable_bydate($datadate, $higher_rank = 1, $lower_rank = 100);
 
 }

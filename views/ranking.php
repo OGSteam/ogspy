@@ -57,11 +57,20 @@ require_once("views/page_header.php");
                 <?php
                 switch ($subaction) {
                     case "player" :
-                        require_once("ranking_player.php");
+                        // data necssaire
+                        $data_general = galaxy_show_ranking_player();
+                        $availableDatatade = get_all_ally_distinct_date_ranktable();
+                        $is_player = true;
+                        require_once("rankings.php");
                         break;
 
                     case "ally" :
-                        require_once("ranking_ally.php");
+                        // data necssaire
+                        $data_general = galaxy_show_ranking_ally();
+                        $availableDatatade = get_all_ally_distinct_date_ranktable();
+                        $is_player = false;
+
+                        require_once("rankings.php");
                         break;
                 }
                 ?>

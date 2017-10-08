@@ -29,7 +29,7 @@ class Rankings_Player_Model extends Rankings_Model
      * @param int $lower_rank
      * @return array
      */
-    public function get_all_player_ranktable_bydate($datadate, $higher_rank = 1, $lower_rank = 100){
+    public function get_all_ranktable_bydate($datadate, $higher_rank = 1, $lower_rank = 100){
 
         global $db;
         $request  = "SELECT ref_points.rank, ref_points.player, ref_points.ally, ref_points.rank, ref_points.points, ref_eco.rank, ref_eco.points, ref_tech.rank, ref_tech.points, ref_mil.rank, ref_mil.points, ref_milb.rank, ref_milb.points, ref_mill.rank, ref_mill.points, ref_mild.rank, ref_mild.points, ref_milh.rank, ref_milh.points";
@@ -56,8 +56,6 @@ class Rankings_Player_Model extends Rankings_Model
             $ranking_content[$row]['ally_name'] = $ally_name;
             $ranking_content[$row]['general_rank'] = $general_rank;
             $ranking_content[$row]['general_pts'] = $general_pts;
-            $ranking_content[$row]['tech_rank'] = $tech_rank;
-            $ranking_content[$row]['tech_pts'] = $tech_pts;
             $ranking_content[$row]['eco_rank'] = $eco_rank;
             $ranking_content[$row]['eco_pts'] = $eco_pts;
             $ranking_content[$row]['tech_rank'] = $tech_rank;

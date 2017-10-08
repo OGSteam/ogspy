@@ -16,6 +16,7 @@ use Ogsteam\Ogspy\Entity\Universe\Search_Criteria;
 use Ogsteam\Ogspy\Model\Combat_Report_Model;
 use Ogsteam\Ogspy\Model\Rankings_Model;
 use Ogsteam\Ogspy\Model\Rankings_Player_Model;
+use Ogsteam\Ogspy\Model\Rankings_Ally_Model;
 use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Universe_Model;
 use Ogsteam\Ogspy\Model\User_Favorites_Model;
@@ -594,17 +595,29 @@ function get_all_player_distinct_date_ranktable()
 
 
 /**
- * Affichage classement des joueurs
+ * retourne la liste des dates de classement disponibles
  *
  *
  */
-function galaxy_show_ranking($ranking_table = TABLE_RANK_PLAYER_POINTS, $date = null)
+function get_all_ally_distinct_date_ranktable()
+{
+    $data_rankings = new Rankings_Ally_Model();
+    $ranks = $data_rankings->get_all_distinct_date_ranktable();
+    return $ranks;
+}
+
+
+/**
+ * Affichage classement
+ *
+ *
+ */
+function galaxy_show_ranking($model , $ranking_table , $date = null)
 {
     global $pub_date;
 
     // Récupération de la taille max des tableaux
-    $data_rankings = new Rankings_Player_Model();
-    $maxrank = $data_rankings->select_max_rank_row();
+    $data_rankings = $model;
 
     //Récupération de la dernière date de classement
     if ($date == null) {
@@ -614,9 +627,35 @@ function galaxy_show_ranking($ranking_table = TABLE_RANK_PLAYER_POINTS, $date = 
 
     if($last_ranking == null) return -1; // Pas de classement disponible
 
-     $ranking = $data_rankings->get_all_player_ranktable_bydate($last_ranking,1,99999);
+    $ranking = $data_rankings->get_all_ranktable_bydate($last_ranking,1,99999);
 
     return $ranking;
+
+}
+
+
+
+/**
+ * Affichage classement des joueurs
+ *
+ *
+ */
+function galaxy_show_ranking_ally($ranking_table = TABLE_RANK_ALLY_POINTS, $date = null)
+{
+    return galaxy_show_ranking(new Rankings_Ally_Model(),$ranking_table,$date);
+}
+
+
+
+/**
+ * Affichage classement des joueurs
+ *
+ *
+ */
+function galaxy_show_ranking_player($ranking_table = TABLE_RANK_PLAYER_POINTS, $date = null)
+{
+    return galaxy_show_ranking(new Rankings_Player_Model(),$ranking_table,$date);
+
 }
 
 /**
