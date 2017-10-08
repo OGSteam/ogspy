@@ -17,7 +17,8 @@ libapache2-mod-php \
 mariadb-server \
 php-mysql \
 pwgen \
-php-mcrypt
+php-mcrypt \
+php7.0-zip
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
