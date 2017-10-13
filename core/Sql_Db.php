@@ -56,6 +56,21 @@ class Sql_Db
     private $last_query;
 
     /**
+     * last sql timing
+     *
+     * @var int
+     */
+    private $sql_timing = 0;
+
+    /**
+     * @return int
+     */
+    public function getSqlTiming ()
+    {
+        return $this->sql_timing;
+    }
+
+    /**
      * Get the current class database instance. Creates it if dosen't exists (singleton)
      *
      * @param string $sqlserver MySQL Server Name
@@ -85,7 +100,6 @@ class Sql_Db
 
     private function __construct($sqlserver, $sqluser, $sqlpassword, $database)
     {
-        global $sql_timing;
         $sql_start = benchmark();
 
         $this->user = $sqluser;
@@ -107,7 +121,7 @@ class Sql_Db
             /*printf("Jeu de caractères courant : %s\n", $this->db_connect_id->character_set_name());*/
         }
 
-        $sql_timing += benchmark() - $sql_start;
+        $this->sql_timing += benchmark() - $sql_start;
     }
 
     /**
@@ -121,7 +135,7 @@ class Sql_Db
     /**
      * Closing the Connection with the MySQL Server
      */
-    function sql_close()
+    public function sql_close()
     {
         unset($this->result);
         $result = @mysqli_close($this->db_connect_id); //deconnection
@@ -136,9 +150,9 @@ class Sql_Db
      * @param boolean $save True to save the Query in the MySQL Logfile (if enabled)
      * @return bool|mixed|mysqli_result
      */
-    function sql_query($query = "", $Auth_dieSQLError = true, $save = true)
+    public function sql_query($query = "", $Auth_dieSQLError = true, $save = true)
     {
-        global $sql_timing, $server_config;
+        global $server_config;
 
         $sql_start = benchmark();
 
@@ -164,7 +178,7 @@ class Sql_Db
             }
         }
 
-        $sql_timing += benchmark() - $sql_start;
+        $this->sql_timing += benchmark() - $sql_start;
 
         $this->nb_requete += 1;
         return $this->result;
@@ -176,7 +190,7 @@ class Sql_Db
      * @param int $query_id The Query id.
      * @return array|bool the array containing the Database result
      */
-    function sql_fetch_row($query_id = 0)
+    public function sql_fetch_row($query_id = 0)
     {
         if (!$query_id) {
             $query_id = $this->result;
@@ -194,7 +208,7 @@ class Sql_Db
      * @param int $query_id The Query id.
      * @return array|bool the associative array containing the Database result
      */
-    function sql_fetch_assoc($query_id = 0)
+    public function sql_fetch_assoc($query_id = 0)
     {
         if (!$query_id) {
             $query_id = $this->result;
@@ -212,7 +226,7 @@ class Sql_Db
      * @param int $query_id The Query id.
      * @return int|bool the number of results
      */
-    function sql_numrows($query_id = 0)
+    public function sql_numrows($query_id = 0)
     {
         if (!$query_id) {
             $query_id = $this->result;
@@ -230,7 +244,7 @@ class Sql_Db
      *
      * @return int|bool the number of affected rows
      */
-    function sql_affectedrows()
+    public function sql_affectedrows()
     {
         if ($this->db_connect_id) {
             $result = $this->db_connect_id->affected_rows;
@@ -245,7 +259,7 @@ class Sql_Db
      *
      * @return int|bool Returns the id
      */
-    function sql_insertid()
+    public function sql_insertid()
     {
         if ($this->db_connect_id) {
             $result = $this->db_connect_id->insert_id;
@@ -260,7 +274,7 @@ class Sql_Db
      *
      * @param int $query_id The Query id.
      */
-    function sql_free_result($query_id = 0)
+    public function sql_free_result($query_id = 0)
     {
         mysqli_free_result($query_id);
     }
@@ -270,7 +284,7 @@ class Sql_Db
      *
      * @param int $query_id The Query id.
      */
-    function sql_error($query_id = 0)
+    public function sql_error($query_id = 0)
     {
         $result["message"] = $this->db_connect_id->error;
         $result["code"] = $this->db_connect_id->errno;
@@ -285,7 +299,7 @@ class Sql_Db
      *
      * @return int The number of queries done.
      */
-    function sql_nb_requete()
+    public function sql_nb_requete()
     {
         return $this->nb_requete;
     }
@@ -296,7 +310,7 @@ class Sql_Db
      * @param string $str The string to escape
      * @return int|bool the escaped string
      */
-    function sql_escape_string($str)
+    public function sql_escape_string($str)
     {
         if (isset($str)) {
             return mysqli_real_escape_string($this->db_connect_id, $str);
@@ -310,7 +324,7 @@ class Sql_Db
      *
      * @param string $query Faulty SQL Request
      */
-    function DieSQLError($query)
+    private function DieSQLError($query)
     {
         echo "<table align=center border=1>\n";
         echo "<tr><td class='c' colspan='3'>Database MySQL Error</td></tr>\n";
@@ -369,7 +383,7 @@ class Sql_Db
      * Function to Optimize all tables of the OGSpy Database
      * @param boolean $maintenance_action true if no url redirection is requested,false to redirect to another page
      */
-    function db_optimize($maintenance_action = false)
+    public function db_optimize($maintenance_action = false)
     {
         $dbSize_before = $this->db_size_info();
         $dbSize_before = $dbSize_before["Total"];

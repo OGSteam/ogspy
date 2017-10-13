@@ -29,7 +29,6 @@ require_once("common.php");
  * @name $php_start
  */
 $php_start = benchmark();
-$sql_timing = 0;
 
 /**
  * @global string $pub_action

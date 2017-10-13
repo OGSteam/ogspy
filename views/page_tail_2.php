@@ -17,7 +17,8 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 $php_end = benchmark();
-$php_timing = $php_end - $php_start - $sql_timing;
+$sql_timing = $db->getSqlTiming();
+$php_timing = $php_end - $php_start;
 $db->sql_close(); // fermeture de la connexion à la base de données
 
 ?>
