@@ -93,10 +93,10 @@ class Universe_Model
         $result = $db->sql_query($request);
 
         $population = array();
-        for($system = $system_down; $system <= $system_up; $system++)
+        for ($system = $system_down; $system <= $system_up; $system++)
         {
-            foreach(range(1,15) as $row) {
-                $population[$system][$row] =  array("galaxy" => $galaxy,
+            foreach (range(1, 15) as $row) {
+                $population[$system][$row] = array("galaxy" => $galaxy,
                     "system" => $system,
                     "row" => $row,
                     "ally" => "",
@@ -112,9 +112,9 @@ class Universe_Model
             }
         }
 
-        if ($db->sql_numrows($result) > 0){
+        if ($db->sql_numrows($result) > 0) {
 
-            while($row = $db->sql_fetch_assoc($result))
+            while ($row = $db->sql_fetch_assoc($result))
             {
                 $population[$row['system']][$row['row']]['galaxy'] = $row['galaxy'];
                 $population[$row['system']][$row['row']]['system'] = $row['system'];
@@ -212,7 +212,9 @@ class Universe_Model
         $request = "SELECT DISTINCT `ally` FROM " . TABLE_UNIVERSE . " ORDER BY `ally`";
         $result = $db->sql_query($request);
         while ($row = $db->sql_fetch_assoc($result)) {
-            if ($row["ally"] != "") $ally_list[] = $row["ally"];
+            if ($row["ally"] != "") {
+                $ally_list[] = $row["ally"];
+            }
         }
 
         return $ally_list;
@@ -297,92 +299,105 @@ class Universe_Model
 
         $select = "SELECT `galaxy`, `system`, `row`, `moon`, `phalanx`, `gate`, `last_update_moon`, `ally`, `player`, `status`, `last_update`, `user_name`";
         $request = " FROM " . TABLE_UNIVERSE . " LEFT JOIN " . TABLE_USER .
-                   "    ON `last_update_user_id` = `user_id`";
+                    "    ON `last_update_user_id` = `user_id`";
 
         $where = "";
         if($criteria->getPlayerName() != null) {
-            if($where != "")
-                $where .= " AND ";
+            if($where != "") {
+                            $where .= " AND ";
+            }
             $where .= " `player` LIKE '" . $db->sql_escape_string($criteria->getPlayerName()) . "'";
         }
 
         if($criteria->getAllyName() != null) {
-            if($where != "")
-                $where .= " AND ";
+            if($where != "") {
+                            $where .= " AND ";
+            }
             $where .= " `ally` LIKE '" . $db->sql_escape_string($criteria->getAllyName()) . "'";
         }
 
         if($criteria->getPlanetName() != null)
         {
-            if($where != "")
-                $where .= " AND ";
+            if($where != "") {
+                            $where .= " AND ";
+            }
             $where .= " `name` LIKE '" . $db->sql_escape_string($criteria->getPlanetName()) . "'";
         }
 
         if($criteria->getGalaxyDown() != null && $criteria->getGalaxyUp() != null)
         {
-            if($where != "")
-                $where .= " AND ";
+            if($where != "") {
+                            $where .= " AND ";
+            }
             $where .= " `galaxy` BETWEEN " . $criteria->getGalaxyDown() . " AND " . $criteria->getGalaxyUp();
         }
 
         if($criteria->getSystemDown() != null && $criteria->getSystemUp() != null)
         {
-            if($where != "")
-                $where .= " AND ";
+            if($where != "") {
+                            $where .= " AND ";
+            }
             $where .= " `system` BETWEEN " . $criteria->getSystemDown() . " AND " . $criteria->getSystemUp();
         }
 
         if($criteria->getRowDown() != null && $criteria->getRowUp() != null)
         {
-            if($where != "")
-                $where .= " AND ";
+            if($where != "") {
+                            $where .= " AND ";
+            }
             $where .= " `row` BETWEEN " . $criteria->getRowDown() . " AND " . $criteria->getRowUp();
         }
 
         if($criteria->getIsMoon())
         {
-            if($where != "")
-                $where .= " AND ";
+            if($where != "") {
+                            $where .= " AND ";
+            }
             $where .= " `moon` = 1";
         }
 
         if($criteria->getIsInactive())
         {
-            if($where != "")
-                $where .= " AND ";
+            if($where != "") {
+                            $where .= " AND ";
+            }
             $where .= " `status` LIKE ('%i%')";
         }
 
         $query = $select . $request;
-        if($where != "")
-            $query .= " WHERE " . $where;
+        if($where != "") {
+                    $query .= " WHERE " . $where;
+        }
 
         $i = 0;
         foreach ($order_by as $key => $value) {
-            if ($i == 0)
-                $query .= " ORDER BY ";
-            else
-                $query .= ", ";
+            if ($i == 0) {
+                            $query .= " ORDER BY ";
+            } else {
+                            $query .= ", ";
+            }
 
             $query .= $db->sql_escape_string($key);
-            if ($value == 'DESC')
-                $query .= ' DESC';
+            if ($value == 'DESC') {
+                            $query .= ' DESC';
+            }
             $i++;
         }
 
         $query .= " LIMIT $start, $number";
 
         $queryCount = "SELECT count(*) " . $request;
-        if($where != "")
-            $queryCount .= " WHERE " . $where;
+        if($where != "") {
+                    $queryCount .= " WHERE " . $where;
+        }
         $result = $db->sql_query($queryCount);
         list($total_row) = $db->sql_fetch_row($result);
 
         $result = $db->sql_query($query);
         $planets = array();
-        while ($planet = $db->sql_fetch_assoc($result))
-            $planets[] = $planet;
+        while ($planet = $db->sql_fetch_assoc($result)) {
+                    $planets[] = $planet;
+        }
 
         return array('total_row' => $total_row, 'planets' => $planets);
     }

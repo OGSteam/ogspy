@@ -20,7 +20,7 @@ class Group_Model
      * @param $group_id
      * @return \Ogsteam\Ogspy\the
      */
-    public function get_group_rights($group_id){
+    public function get_group_rights($group_id) {
 
         global $db;
         $request = "select group_id, group_name, ";
@@ -42,7 +42,7 @@ class Group_Model
     /**
      * @return array
      */
-    public function get_group_list(){
+    public function get_group_list() {
         global $db;
         $request = "select group_id, group_name ";
         $request .= " from " . TABLE_GROUP;
@@ -96,8 +96,9 @@ class Group_Model
             $db->sql_query($request);
             $group_id = $db->sql_insertid();
             return $group_id;
-        } else
-            return false;
+        } else {
+                    return false;
+        }
     }
 
     /**
@@ -115,11 +116,12 @@ class Group_Model
         $result = $db->sql_query($request);
 
         if ($db->sql_numrows($result) == 0) {
-            $request = "INSERT INTO " . TABLE_USER_GROUP . " (group_id, user_id)" . " VALUES (" . intval($group_id) . ", " . intval($user_id).")";
+            $request = "INSERT INTO " . TABLE_USER_GROUP . " (group_id, user_id)" . " VALUES (" . intval($group_id) . ", " . intval($user_id) . ")";
             $db->sql_query($request);
             return true;
-        } else
-            return false;
+        } else {
+                    return false;
+        }
     }
 
     /**
@@ -139,9 +141,9 @@ class Group_Model
      * @param int $ogs_get_ranking
      */
     public function update_group($group_id, $name, $server_set_system = 0, $server_set_spy = 0,
-                                 $server_set_rc = 0, $server_set_ranking = 0, $server_show_positionhided = 0,
-                                 $ogs_connection = 0, $ogs_set_system = 0, $ogs_get_system = 0, $ogs_set_spy = 0,
-                                 $ogs_get_spy = 0, $ogs_set_ranking = 0, $ogs_get_ranking = 0)
+                                    $server_set_rc = 0, $server_set_ranking = 0, $server_show_positionhided = 0,
+                                    $ogs_connection = 0, $ogs_set_system = 0, $ogs_get_system = 0, $ogs_set_spy = 0,
+                                    $ogs_get_spy = 0, $ogs_set_ranking = 0, $ogs_get_ranking = 0)
     {
         global $db;
 
@@ -152,7 +154,7 @@ class Group_Model
             "',";
         $request .= " server_set_system = '" . $server_set_system .
             "', server_set_spy = '" . $server_set_spy .
-            "', server_set_rc = '" .  $server_set_rc .
+            "', server_set_rc = '" . $server_set_rc .
             "', server_set_ranking = '" . $server_set_ranking .
             "', server_show_positionhided = '" . $server_show_positionhided .
             "', ogs_connection = '" . $ogs_connection .
@@ -170,17 +172,18 @@ class Group_Model
      * @param $group_id
      * @param $user_id
      */
-    public function delete_user_from_group($user_id,$group_id)
+    public function delete_user_from_group($user_id, $group_id)
     {
         global $db;
         $request = "DELETE FROM " . TABLE_USER_GROUP . " WHERE group_id = " . intval($group_id) .
             " and user_id = " . intval($user_id);
         $db->sql_query($request);
 
-        if ($db->sql_affectedrows() > 0)
-            return true;
-        else
-            return false;
+        if ($db->sql_affectedrows() > 0) {
+                    return true;
+        } else {
+                    return false;
+        }
 
     }
     /**

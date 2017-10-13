@@ -41,20 +41,23 @@ function user_check_auth($action, $user_id = null)
         case "usergroup_manage":
             if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
                 1
-            )
-                redirection("index.php?action=message&id_message=forbidden&info");
+            ) {
+                            redirection("index.php?action=message&id_message=forbidden&info");
+            }
 
             break;
 
         case "user_update":
             if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
                 1
-            )
-                redirection("index.php?action=message&id_message=forbidden&info");
+            ) {
+                            redirection("index.php?action=message&id_message=forbidden&info");
+            }
 
             $info_user = user_get($user_id);
-            if ($info_user === false)
-                redirection("index.php?action=message&id_message=deleteuser_failed&info");
+            if ($info_user === false) {
+                            redirection("index.php?action=message&id_message=deleteuser_failed&info");
+            }
 
             if (($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
                     1) || ($info_user[0]["user_admin"] == 1) || (($user_data["user_coadmin"] == 1) &&
@@ -95,7 +98,7 @@ function user_login()
     } else {
         $data_user = new User_Model();
         $data_statistics = new Statistics_Model();
-        $result = $data_user->select_user_login($pub_login,$pub_password);
+        $result = $data_user->select_user_login($pub_login, $pub_password);
 
         if (list($user_id, $user_active) = $db->sql_fetch_row($result)) {
             if ($user_active == 1) {
@@ -160,8 +163,7 @@ function admin_user_set()
     global $user_data;
     global $pub_user_id, $pub_active, $pub_user_coadmin, $pub_management_user, $pub_management_ranking;
 
-    if (!check_var($pub_user_id, "Num") || !check_var($pub_active, "Num") || !
-        check_var($pub_user_coadmin, "Num") || !check_var($pub_management_user, "Num") ||
+    if (!check_var($pub_user_id, "Num") || !check_var($pub_active, "Num") || !check_var($pub_user_coadmin, "Num") || !check_var($pub_management_user, "Num") ||
         !check_var($pub_management_ranking, "Num")
     ) {
         redirection("index.php?action=message&id_message=errordata&info");
@@ -224,7 +226,7 @@ function admin_regeneratepwd()
     } else {
         $password = password_generator();
     }
-    $data_user->set_user_password($pub_user_id,$password);
+    $data_user->set_user_password($pub_user_id, $password);
 
     $info = $pub_user_id . ":" . $password;
     log_("regeneratepwd", $pub_user_id);
@@ -239,14 +241,13 @@ function member_user_set()
 {
     global $db, $user_data, $user_technology;
     global $pub_pseudo, $pub_old_password, $pub_new_password, $pub_new_password2, $pub_galaxy,
-           $pub_system, $pub_disable_ip_check, $pub_off_commandant, $pub_off_amiral, $pub_off_ingenieur,
-           $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email;
+            $pub_system, $pub_disable_ip_check, $pub_off_commandant, $pub_off_amiral, $pub_off_ingenieur,
+            $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email;
 
     if (!check_var($pub_pseudo, "Text") || !check_var($pub_old_password, "Text") ||
         !check_var($pub_new_password, "Text") || !check_var($pub_new_password2,
             "CharNum") || !check_var($pub_pseudo_email, "Email")
-        || !check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_disable_ip_check, "Num") || !
-        check_var($pub_pseudo_ingame, "Pseudo_ingame")
+        || !check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_disable_ip_check, "Num") || !check_var($pub_pseudo_ingame, "Pseudo_ingame")
     ) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
@@ -289,39 +290,49 @@ function member_user_set()
     }
 
     //compte Commandant
-    if ($user_data['off_commandant'] == "0" && $pub_off_commandant == 1)
-        $data_user->set_player_officer($user_id, "off_commandant", 1);
+    if ($user_data['off_commandant'] == "0" && $pub_off_commandant == 1) {
+            $data_user->set_player_officer($user_id, "off_commandant", 1);
+    }
 
-    if ($user_data['off_commandant'] == 1 && (is_null($pub_off_commandant) || $pub_off_commandant != 1))
-        $data_user->set_player_officer($user_id, "off_commandant", 0);
+    if ($user_data['off_commandant'] == 1 && (is_null($pub_off_commandant) || $pub_off_commandant != 1)) {
+            $data_user->set_player_officer($user_id, "off_commandant", 0);
+    }
 
     //compte amiral
-    if ($user_data['off_amiral'] == "0" && $pub_off_amiral == 1)
-        $data_user->set_player_officer($user_id, "off_amiral", 1);
+    if ($user_data['off_amiral'] == "0" && $pub_off_amiral == 1) {
+            $data_user->set_player_officer($user_id, "off_amiral", 1);
+    }
 
-    if ($user_data['off_amiral'] == 1 && (is_null($pub_off_amiral) || $pub_off_amiral != 1))
-        $data_user->set_player_officer($user_id, "off_amiral", 0);
+    if ($user_data['off_amiral'] == 1 && (is_null($pub_off_amiral) || $pub_off_amiral != 1)) {
+            $data_user->set_player_officer($user_id, "off_amiral", 0);
+    }
 
     //compte ingenieur
-    if ($user_data['off_ingenieur'] == "0" && $pub_off_ingenieur == 1)
-        $data_user->set_player_officer($user_id, "off_ingenieur", 1);
+    if ($user_data['off_ingenieur'] == "0" && $pub_off_ingenieur == 1) {
+            $data_user->set_player_officer($user_id, "off_ingenieur", 1);
+    }
 
-    if ($user_data['off_ingenieur'] == 1 && (is_null($pub_off_ingenieur) || $pub_off_ingenieur != 1))
-        $data_user->set_player_officer($user_id, "off_ingenieur", 0);
+    if ($user_data['off_ingenieur'] == 1 && (is_null($pub_off_ingenieur) || $pub_off_ingenieur != 1)) {
+            $data_user->set_player_officer($user_id, "off_ingenieur", 0);
+    }
 
     //compte geologue
-    if ($user_data['off_geologue'] == "0" && $pub_off_geologue == 1)
-        $data_user->set_player_officer($user_id, "off_geologue", 1);
+    if ($user_data['off_geologue'] == "0" && $pub_off_geologue == 1) {
+            $data_user->set_player_officer($user_id, "off_geologue", 1);
+    }
 
-    if ($user_data['off_geologue'] == 1 && (is_null($pub_off_geologue) || $pub_off_geologue != 1))
-        $data_user->set_player_officer($user_id, "off_geologue", 0);
+    if ($user_data['off_geologue'] == 1 && (is_null($pub_off_geologue) || $pub_off_geologue != 1)) {
+            $data_user->set_player_officer($user_id, "off_geologue", 0);
+    }
 
     //compte technocrate
-    if ($user_data['off_technocrate'] == "0" && $pub_off_technocrate == 1)
-        $data_user->set_player_officer($user_id, "off_technocrate", 1);
+    if ($user_data['off_technocrate'] == "0" && $pub_off_technocrate == 1) {
+            $data_user->set_player_officer($user_id, "off_technocrate", 1);
+    }
 
-    if ($user_data['off_technocrate'] == 1 && (is_null($pub_off_technocrate) || $pub_off_technocrate != 1))
-        $data_user->set_player_officer($user_id, "off_technocrate", 0);
+    if ($user_data['off_technocrate'] == 1 && (is_null($pub_off_technocrate) || $pub_off_technocrate != 1)) {
+            $data_user->set_player_officer($user_id, "off_technocrate", 0);
+    }
 
     //Contrôle que le pseudo ne soit pas déjà utilisé
     $result = $data_user->select_user_name($pub_pseudo);
@@ -333,12 +344,12 @@ function member_user_set()
     if (is_null($pub_disable_ip_check) || $pub_disable_ip_check != 1)
         $pub_disable_ip_check = 0;
 
-    if(isset($pub_pseudo)) $data_user->set_user_pseudo($user_id, $pub_pseudo);
-    if(isset($pub_new_password)) $data_user->set_user_password($user_id, $pub_new_password);
-    if(isset($pub_pesudo_email)) $data_user->set_user_email($user_id, $pub_pesudo_email);
-    if(isset($pub_galaxy)) $data_user->set_user_default_galaxy($user_id, $pub_galaxy);
-    if(isset($pub_system)) $data_user->set_user_default_system($user_id, $pub_system);
-    if(isset($pub_disable_ip_check)) $data_user->set_user_ip_check($user_id,$pub_disable_ip_check);
+    if (isset($pub_pseudo)) $data_user->set_user_pseudo($user_id, $pub_pseudo);
+    if (isset($pub_new_password)) $data_user->set_user_password($user_id, $pub_new_password);
+    if (isset($pub_pesudo_email)) $data_user->set_user_email($user_id, $pub_pesudo_email);
+    if (isset($pub_galaxy)) $data_user->set_user_default_galaxy($user_id, $pub_galaxy);
+    if (isset($pub_system)) $data_user->set_user_default_system($user_id, $pub_system);
+    if (isset($pub_disable_ip_check)) $data_user->set_user_ip_check($user_id, $pub_disable_ip_check);
 
     redirection("index.php?action=profile");
 }
@@ -368,7 +379,7 @@ function user_set_grant($user_id, $user_active = null, $user_coadmin = null,
 
     //Activation membre
     if (!is_null($user_active)) {
-        $data_user->set_user_active($user_id,intval($user_active));
+        $data_user->set_user_active($user_id, intval($user_active));
         if (intval($user_active) == 0) {
             $data_session = new Sessions_Model();
             $data_session->close_user_session($user_id);
@@ -377,17 +388,17 @@ function user_set_grant($user_id, $user_active = null, $user_coadmin = null,
 
     //Co-administration
     if (!is_null($user_coadmin)) {
-        $data_user->set_user_coadmin($user_id,intval($user_coadmin));
+        $data_user->set_user_coadmin($user_id, intval($user_coadmin));
     }
 
     //Gestion des membres
     if (!is_null($management_user)) {
-        $data_user->set_user_management_user($user_id,intval($management_user));
+        $data_user->set_user_management_user($user_id, intval($management_user));
     }
 
     //Gestion des classements
     if (!is_null($management_ranking)) {
-        $data_user->set_user_management_ranking($user_id,intval($management_ranking));
+        $data_user->set_user_management_ranking($user_id, intval($management_ranking));
     }
 
     if ($user_id == $user_data['user_id']) {
@@ -406,10 +417,11 @@ function user_get($user_id = null)
 {
     $data_user = new User_Model();
 
-    if (isset($user_id))
-        $info_users = $data_user->select_user_data($user_id);
-    else
-        $info_users = $data_user->select_all_user_data();
+    if (isset($user_id)) {
+            $info_users = $data_user->select_user_data($user_id);
+    } else {
+            $info_users = $data_user->select_all_user_data();
+    }
 
     return $info_users;
 }
@@ -454,7 +466,7 @@ function user_create()
 {
     global $db;
     global $pub_pseudo, $pub_active, $pub_user_coadmin, $pub_management_user,
-           $pub_management_ranking, $pub_group_id, $pub_pass;
+            $pub_management_ranking, $pub_group_id, $pub_pass;
 
     if (!check_var($pub_pseudo, "Pseudo_Groupname")) {
         redirection("index.php?action=message&id_message=errordata&info=1");
@@ -492,7 +504,7 @@ function user_create()
     //Création de l'utilisateur
     if ($db->sql_numrows($result) == 0) {
 
-        $user_id = $data_user->add_new_user($pub_pseudo,$password);
+        $user_id = $data_user->add_new_user($pub_pseudo, $password);
 
         // Insertion dans le groupe par défaut
 
@@ -552,10 +564,11 @@ function user_statistic()
         $here = "";
         $session_type = $data_session->get_xtense_session($row["user_id"]);
         //Check Session type
-        if ($session_type == 0)
-            $here = "(*)";
-        elseif ($session_type == 1)
-            $here = "(**)";
+        if ($session_type == 0) {
+                    $here = "(*)";
+        } elseif ($session_type == 1) {
+                    $here = "(**)";
+        }
 
         $user_statistic[] = array_merge($row, array("here" => $here));
     }
@@ -605,8 +618,8 @@ function user_set_all_empire_resync_id()
     /// on passe les id se modifiant a 300
     foreach ($complexe as $cle_com => $valeur_com) {
 
-        $data_user_defense->update_moon_id($user_data["user_id"],$moon_position[$cle_com],$planet_position[$cle_com] + 200);
-        $data_user_building->update_moon_id($user_data["user_id"],$moon_position[$cle_com],$planet_position[$cle_com] + 200);
+        $data_user_defense->update_moon_id($user_data["user_id"], $moon_position[$cle_com], $planet_position[$cle_com] + 200);
+        $data_user_building->update_moon_id($user_data["user_id"], $moon_position[$cle_com], $planet_position[$cle_com] + 200);
     }
 
 }
@@ -680,8 +693,8 @@ function user_get_empire($user_id)
 
 
         $row["fields_used"] = $fields_used;
-        $row["boosters"] = booster_verify_str($row["boosters"]);    //Correction et mise à jour booster from date
-        $row["booster_tab"] = booster_decode($row["boosters"]);    // ajout booster dans get_empire
+        $row["boosters"] = booster_verify_str($row["boosters"]); //Correction et mise à jour booster from date
+        $row["booster_tab"] = booster_decode($row["boosters"]); // ajout booster dans get_empire
         // incrémentation field
         if ($row["planet_id"] > 200) {
             $row["fields"] += $row["booster_tab"]["extention_p"];
@@ -892,12 +905,14 @@ function user_move_empire()
     $new_position = 0;
 
     if (isset($pub_left)) {
-        if ($pub_planet_id == 101)
-            redirection("index.php?action=home&subaction=empire");
+        if ($pub_planet_id == 101) {
+                    redirection("index.php?action=home&subaction=empire");
+        }
         $new_position = $pub_planet_id - 1;
     } elseif (isset($pub_right)) {
-        if ($pub_planet_id == (100 + $nb_planete))
-            redirection("index.php?action=home&subaction=empire");
+        if ($pub_planet_id == (100 + $nb_planete)) {
+                    redirection("index.php?action=home&subaction=empire");
+        }
         $new_position = $pub_planet_id + 1;
     }
 
@@ -943,7 +958,7 @@ function user_add_favorite()
 
     if ($nb_favorites < $server_config["max_favorites"]) {
 
-        $data_user_favorites->set_user_favorites($user_data["user_id"],$pub_galaxy,$pub_system);
+        $data_user_favorites->set_user_favorites($user_data["user_id"], $pub_galaxy, $pub_system);
 
         redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system);
     } else {
@@ -970,7 +985,7 @@ function user_del_favorite()
 
     $data_user_favorites = new User_Favorites_Model();
 
-    $data_user_favorites->delete_user_favorites($user_data["user_id"],$pub_galaxy,$pub_system);
+    $data_user_favorites->delete_user_favorites($user_data["user_id"], $pub_galaxy, $pub_system);
 
     redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system);
 }
@@ -985,9 +1000,9 @@ function user_getfavorites_spy()
 
     $data_spy = new Spy_Model();
 
-    if(!is_numeric($sort) || !is_numeric($sort2)){
+    if (!is_numeric($sort) || !is_numeric($sort2)) {
         //Ordering by date Desc
-        $sort = 5 ;
+        $sort = 5;
         $sort2 = 0;
     }
     return $data_spy->get_favoriteSpyList($user_data["user_id"], $sort, $sort2);
@@ -1039,10 +1054,11 @@ function user_del_favorite_spy()
 
     $data_favorites = new User_SpyFavorites_Model();
 
-    $data_favorites->delete_spyfavorite($user_data["user_id"],$pub_spy_id);
+    $data_favorites->delete_spyfavorite($user_data["user_id"], $pub_spy_id);
 
-    if (!isset($pub_info))
-        $pub_info = 1;
+    if (!isset($pub_info)) {
+            $pub_info = 1;
+    }
 
     switch ($pub_info) {
         case 2:
@@ -1131,7 +1147,7 @@ function usergroup_get($group_id = false)
 
     if ($group_id == false) {
         $info_usergroup = $data_group->get_group_list();
-    }else{
+    } else {
         $info_usergroup = $data_group->get_group_rights($group_id);
     }
 
@@ -1145,10 +1161,10 @@ function usergroup_get($group_id = false)
  */
 function usergroup_setauth()
 {
-       global $pub_group_id, $pub_group_name, $pub_server_set_system, $pub_server_set_spy,
-           $pub_server_set_rc, $pub_server_set_ranking, $pub_server_show_positionhided, $pub_ogs_connection,
-           $pub_ogs_set_system, $pub_ogs_get_system, $pub_ogs_set_spy, $pub_ogs_get_spy, $pub_ogs_set_ranking,
-           $pub_ogs_get_ranking;
+        global $pub_group_id, $pub_group_name, $pub_server_set_system, $pub_server_set_spy,
+            $pub_server_set_rc, $pub_server_set_ranking, $pub_server_show_positionhided, $pub_ogs_connection,
+            $pub_ogs_set_system, $pub_ogs_get_system, $pub_ogs_set_spy, $pub_ogs_get_spy, $pub_ogs_set_ranking,
+            $pub_ogs_get_ranking;
 
     if (!check_var($pub_group_id, "Num") || !check_var($pub_group_name,
             "Pseudo_Groupname") || !check_var($pub_server_set_system, "Num") || !check_var($pub_server_set_spy,
@@ -1199,7 +1215,7 @@ function usergroup_member($group_id)
  */
 function usergroup_newmember()
 {
-    global $pub_user_id, $pub_group_id, $pub_add_all,$lang;
+    global $pub_user_id, $pub_group_id, $pub_add_all, $lang;
     $data_user = new User_Model();
     $data_group = new Group_Model();
 
@@ -1292,8 +1308,9 @@ function user_del_spy()
 
     }
 
-    if (!isset($pub_info))
-        $pub_info = 1;
+    if (!isset($pub_info)) {
+            $pub_info = 1;
+    }
 
     switch ($pub_info) {
         case 2:
@@ -1326,14 +1343,18 @@ function user_ratio_calc($player)
     //$total_users = $data_user->get_nb_users();
 
     //pour éviter la division par zéro
-    if ($total_user_stats["planetimporttotal"] == 0)
-        $total_user_stats["planetimporttotal"] = 1;
-    if ($total_user_stats["spyimporttotal"] == 0)
-        $total_user_stats["spyimporttotal"] = 1;
-    if ($total_user_stats["rankimporttotal"] == 0)
-        $total_user_stats["rankimporttotal"] = 1;
-    if ($total_user_stats["searchtotal"] == 0)
-        $total_user_stats["searchtotal"] = 1;
+    if ($total_user_stats["planetimporttotal"] == 0) {
+            $total_user_stats["planetimporttotal"] = 1;
+    }
+    if ($total_user_stats["spyimporttotal"] == 0) {
+            $total_user_stats["spyimporttotal"] = 1;
+    }
+    if ($total_user_stats["rankimporttotal"] == 0) {
+            $total_user_stats["rankimporttotal"] = 1;
+    }
+    if ($total_user_stats["searchtotal"] == 0) {
+            $total_user_stats["searchtotal"] = 1;
+    }
 
     //et on commence le calcul
     $ratio_planet = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
@@ -1341,9 +1362,9 @@ function user_ratio_calc($player)
     $ratio_rank = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
     $ratio = ($ratio_planet * 4 + $ratio_spy * 2 + $ratio_rank) / (4 + 2 + 1);
 
-    $ratio_planet_penality = $user_stat["planet_added_xtense"]  / $total_user_stats["planetimporttotal"];
-    $ratio_spy_penality = $user_stat["spy_added_xtense"] /  $total_user_stats["spyimporttotal"];
-    $ratio_rank_penality = $user_stat["rank_added_xtense"] /$total_user_stats["rankimporttotal"];
+    $ratio_planet_penality = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
+    $ratio_spy_penality = $user_stat["spy_added_xtense"] / $total_user_stats["spyimporttotal"];
+    $ratio_rank_penality = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
     $ratio_penality = ($ratio_planet_penality * 4 + $ratio_spy_penality * 2 + $ratio_rank_penality) / (4 +
             2 + 1);
 
@@ -1368,8 +1389,9 @@ function ratio_is_ok()
     global $user_data, $server_config;
     static $result;
 
-    if ($result != null)
-        return $result;
+    if ($result != null) {
+            return $result;
+    }
     if (isset($server_config["block_ratio"]) && $server_config["block_ratio"] == 1) {
         if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] ==
             1

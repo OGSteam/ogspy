@@ -19,7 +19,7 @@ class User_Technology_Model
      * @param $user_id
      * @return array
      */
-    public function select_user_technologies($user_id){
+    public function select_user_technologies($user_id) {
 
         global $db;
         $request = "SELECT Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique";
@@ -33,7 +33,7 @@ class User_Technology_Model
     /**
      * @param $user_id
      */
-    public function delete_user_technologies($user_id){
+    public function delete_user_technologies($user_id) {
 
         global $db;
         $request = "DELETE FROM " . TABLE_USER_TECHNOLOGY . " WHERE `user_id` = " . $user_id;

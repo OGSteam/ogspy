@@ -21,7 +21,7 @@ class Combat_Report_Model
      * @param int $row
      * @return int $nb_spy
      */
-    public function get_nb_combat_report_by_planet ($galaxy, $system, $row){
+    public function get_nb_combat_report_by_planet($galaxy, $system, $row) {
         global $db;
 
         $request = "SELECT * FROM " . TABLE_PARSEDRC . " WHERE `coordinates` = '" . $galaxy . ":" . $system . ":" . $row . "'";
@@ -37,11 +37,11 @@ class Combat_Report_Model
      * @param int $row
      * @return array $tResult
      */
-    public function get_cr_id_list_by_planet ($galaxy, $system, $row){
+    public function get_cr_id_list_by_planet($galaxy, $system, $row) {
         global $db;
 
         $request = "SELECT `id_rc` FROM " . TABLE_PARSEDRC;
-        $request .= " WHERE `coordinates` = '" . $galaxy . ':' .$system . ':' . $row . "'";
+        $request .= " WHERE `coordinates` = '" . $galaxy . ':' . $system . ':' . $row . "'";
         $request .= " ORDER BY `dateRC` DESC";
         $result = $db->sql_query($request);
 
@@ -64,7 +64,7 @@ class Combat_Report_Model
         $rounds = array();
         $query = 'SELECT id_rcround, id_rc, numround, attaque_tir, attaque_puissance, attaque_bouclier, defense_tir, defense_puissance, defense_bouclier FROM ' . TABLE_PARSEDRCROUND . ' WHERE id_rc = ' . $id_rc . ' ORDER BY numround';
         $result_round = $db->sql_query($query);
-        while($round = $db->sql_fetch_assoc($result_round))
+        while ($round = $db->sql_fetch_assoc($result_round))
             $rounds[] = $round;
         $report['rounds'] = $rounds;
 
@@ -85,7 +85,7 @@ class Combat_Report_Model
     /**
      * @param $id_rc
      */
-    public function delete_combat_report($id_rc){
+    public function delete_combat_report($id_rc) {
         global $db;
 
         $request = "DELETE FROM " . TABLE_PARSEDRC . " WHERE `id_rc` = '" . $id_rc . "'";

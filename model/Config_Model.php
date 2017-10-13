@@ -24,7 +24,7 @@ class Config_Model
     {
         global $db;
 
-        if($filter == null)
+        if ($filter == null)
             $filter = array();
 
         $query = "SELECT config_name, config_value FROM " . TABLE_CONFIG;
@@ -42,8 +42,9 @@ class Config_Model
 
         $result = $db->sql_query($query);
         $configs = array();
-        while ($config = $db->sql_fetch_assoc($result))
-            $configs[] = $config;
+        while ($config = $db->sql_fetch_assoc($result)) {
+                    $configs[] = $config;
+        }
 
         return $configs;
     }

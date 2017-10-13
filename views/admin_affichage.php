@@ -41,7 +41,7 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
     var colors;
     function View(color) {
         colors = color;
-        <?php for ($i = 1 ; $i <= $nb_colonnes_ally ; $i++){ ?>
+        <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) { ?>
         document.getElementById('ColorPreview<?php echo $i; ?>').style.backgroundColor = colors;
         <?php } ?>
 
@@ -49,7 +49,7 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
 
     function Set(ally) {
         switch (ally) {
-        <?php for ($i = 1 ; $i <= $nb_colonnes_ally ; $i++){  ?>
+        <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) {  ?>
             case <?php echo $i; ?>:
                 document.getElementById('color_ally[<?php echo $i; ?>]').value = colors;
                 break;

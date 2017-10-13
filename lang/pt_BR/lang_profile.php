@@ -16,8 +16,8 @@
 
 /* profile.php */
 
-$lang['PROFILE_ERROR_RETRY'] ="Digite a nova senha e a confirmação";
-$lang['PROFILE_ERROR_OLDPWD'] ="Digite a senha antiga";
+$lang['PROFILE_ERROR_RETRY'] = "Digite a nova senha e a confirmação";
+$lang['PROFILE_ERROR_OLDPWD'] = "Digite a senha antiga";
 $lang['PROFILE_ERROR_ERROR'] = "A senha digitada é diferente da confirmação";
 $lang['PROFILE_ERROR_ILLEGAL'] = "A senha deve conter entre 6 e 15 caracteres";
 

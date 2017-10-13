@@ -64,7 +64,7 @@ class Sql_Db
      * @param string $database MySQL Database Name
      * @return int|sql_db
      */
-    public static function getInstance ($sqlserver, $sqluser, $sqlpassword, $database)
+    public static function getInstance($sqlserver, $sqluser, $sqlpassword, $database)
     {
 
         if (self::$_instance === false) {
@@ -83,7 +83,7 @@ class Sql_Db
      * @param string $database MySQL Database Name
      */
 
-    private function __construct ($sqlserver, $sqluser, $sqlpassword, $database)
+    private function __construct($sqlserver, $sqluser, $sqlpassword, $database)
     {
         global $sql_timing;
         $sql_start = benchmark();
@@ -113,7 +113,7 @@ class Sql_Db
     /**
      * Overload the __clone function. To forbid the use of this function for this class.
      */
-    public function __clone ()
+    public function __clone()
     {
         throw new Exception('Cet objet ne peut pas être cloné');
     }
@@ -121,7 +121,7 @@ class Sql_Db
     /**
      * Closing the Connection with the MySQL Server
      */
-    function sql_close ()
+    function sql_close()
     {
         unset($this->result);
         $result = @mysqli_close($this->db_connect_id); //deconnection
@@ -136,7 +136,7 @@ class Sql_Db
      * @param boolean $save True to save the Query in the MySQL Logfile (if enabled)
      * @return bool|mixed|mysqli_result
      */
-    function sql_query ($query = "", $Auth_dieSQLError = true, $save = true)
+    function sql_query($query = "", $Auth_dieSQLError = true, $save = true)
     {
         global $sql_timing, $server_config;
 
@@ -176,7 +176,7 @@ class Sql_Db
      * @param int $query_id The Query id.
      * @return array|bool the array containing the Database result
      */
-    function sql_fetch_row ($query_id = 0)
+    function sql_fetch_row($query_id = 0)
     {
         if (!$query_id) {
             $query_id = $this->result;
@@ -194,7 +194,7 @@ class Sql_Db
      * @param int $query_id The Query id.
      * @return array|bool the associative array containing the Database result
      */
-    function sql_fetch_assoc ($query_id = 0)
+    function sql_fetch_assoc($query_id = 0)
     {
         if (!$query_id) {
             $query_id = $this->result;
@@ -212,7 +212,7 @@ class Sql_Db
      * @param int $query_id The Query id.
      * @return int|bool the number of results
      */
-    function sql_numrows ($query_id = 0)
+    function sql_numrows($query_id = 0)
     {
         if (!$query_id) {
             $query_id = $this->result;
@@ -230,7 +230,7 @@ class Sql_Db
      *
      * @return int|bool the number of affected rows
      */
-    function sql_affectedrows ()
+    function sql_affectedrows()
     {
         if ($this->db_connect_id) {
             $result = $this->db_connect_id->affected_rows;
@@ -245,7 +245,7 @@ class Sql_Db
      *
      * @return int|bool Returns the id
      */
-    function sql_insertid ()
+    function sql_insertid()
     {
         if ($this->db_connect_id) {
             $result = $this->db_connect_id->insert_id;
@@ -260,7 +260,7 @@ class Sql_Db
      *
      * @param int $query_id The Query id.
      */
-    function sql_free_result ($query_id = 0)
+    function sql_free_result($query_id = 0)
     {
         mysqli_free_result($query_id);
     }
@@ -270,7 +270,7 @@ class Sql_Db
      *
      * @param int $query_id The Query id.
      */
-    function sql_error ($query_id = 0)
+    function sql_error($query_id = 0)
     {
         $result["message"] = $this->db_connect_id->error;
         $result["code"] = $this->db_connect_id->errno;
@@ -285,7 +285,7 @@ class Sql_Db
      *
      * @return int The number of queries done.
      */
-    function sql_nb_requete ()
+    function sql_nb_requete()
     {
         return $this->nb_requete;
     }
@@ -296,7 +296,7 @@ class Sql_Db
      * @param string $str The string to escape
      * @return int|bool the escaped string
      */
-    function sql_escape_string ($str)
+    function sql_escape_string($str)
     {
         if (isset($str)) {
             return mysqli_real_escape_string($this->db_connect_id, $str);
@@ -310,7 +310,7 @@ class Sql_Db
      *
      * @param string $query Faulty SQL Request
      */
-    function DieSQLError ($query)
+    function DieSQLError($query)
     {
         echo "<table align=center border=1>\n";
         echo "<tr><td class='c' colspan='3'>Database MySQL Error</td></tr>\n";

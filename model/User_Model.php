@@ -23,10 +23,10 @@ class User_Model
      * @param $password
      * @return bool|mixed|mysqli_result
      */
-    public function select_user_login ($login, $password, $salt = false)
+    public function select_user_login($login, $password, $salt = false)
     {
         global $db;
-        if($salt === false) $password = Ogspy\crypto($password);
+        if ($salt === false) $password = Ogspy\crypto($password);
 
         $request = "SELECT `user_id`, `user_active` FROM " . TABLE_USER . " WHERE `user_name` = '" . $db->sql_escape_string($login) . "' AND `user_password` = '" . $password . "'";
         $result = $db->sql_query($request);
@@ -38,10 +38,10 @@ class User_Model
      * @param $username
      * @return bool|mixed|\Ogsteam\Ogspy\mysqli_result
      */
-    public function select_user_name ($username)
+    public function select_user_name($username)
     {
         global $db;
-        $request = "SELECT * FROM " . TABLE_USER . " WHERE `user_name` = '" .$username . "'";
+        $request = "SELECT * FROM " . TABLE_USER . " WHERE `user_name` = '" . $username . "'";
 
         $request = $db->sql_escape_string($request);
         $result = $db->sql_query($request);
@@ -49,10 +49,10 @@ class User_Model
         return $result;
     }
 
-    public function select_user_list(){
+    public function select_user_list() {
 
         global $db;
-        $request = "SELECT `user_name` FROM " . TABLE_USER ;
+        $request = "SELECT `user_name` FROM " . TABLE_USER;
 
         $request = $db->sql_escape_string($request);
         $result = $db->sql_query($request);
@@ -61,10 +61,10 @@ class User_Model
         return $user_name;
     }
 
-    public function select_userid_list(){
+    public function select_userid_list() {
 
         global $db;
-        $request = "SELECT `user_id` FROM " . TABLE_USER ;
+        $request = "SELECT `user_id` FROM " . TABLE_USER;
 
         $request = $db->sql_escape_string($request);
         $result = $db->sql_query($request);
@@ -77,11 +77,11 @@ class User_Model
      * @param $user_id
      * @return mixed
      */
-    public function select_last_visit ($user_id)
+    public function select_last_visit($user_id)
     {
         global $db;
         $request = "SELECT `user_lastvisit` FROM " . TABLE_USER;
-        $request .= " WHERE `user_id` = '" . $user_id ."'";
+        $request .= " WHERE `user_id` = '" . $user_id . "'";
         $result = $db->sql_query($request);
         list($lastvisit) = $db->sql_fetch_row($result);
 
@@ -92,7 +92,7 @@ class User_Model
      * @param $user_id
      * @return mixed
      */
-    public function select_user_data ($user_id)
+    public function select_user_data($user_id)
     {
         global $db;
         $request = "SELECT `user_id`, `user_name`, `user_password`, `user_email`, `user_active`, `user_regdate`, `user_lastvisit`," .
@@ -117,7 +117,7 @@ class User_Model
     /**
      * @return mixed
      */
-    public function select_all_user_data ()
+    public function select_all_user_data()
     {
         global $db;
         $request = "SELECT `user_id`, `user_name`, `user_password`, `user_email`, `user_active`, `user_regdate`, `user_lastvisit`," .
@@ -142,7 +142,7 @@ class User_Model
     /**
      * @return mixed
      */
-    public function select_all_user_stats_data ()
+    public function select_all_user_stats_data()
     {
         global $db;
 
@@ -154,7 +154,7 @@ class User_Model
     /**
      * @return mixed
      */
-    public function select_user_stats_data ($user_id)
+    public function select_user_stats_data($user_id)
     {
         global $db;
 
@@ -167,7 +167,7 @@ class User_Model
 
         return array("planet_added_xtense" => $planet_added_xtense, "search" => $search, "spy_added_xtense" => $spy_added_xtense, "rank_added_xtense" => $rank_added_xtense);
     }
-    public function select_user_stats_sum ()
+    public function select_user_stats_sum()
     {
         global $db;
         $request = "SELECT SUM(planet_added_xtense), SUM(spy_added_xtense), SUM(rank_added_xtense), SUM(search)";
@@ -185,7 +185,7 @@ class User_Model
      * @param $user_id
      * @return array
      */
-    public function select_user_rights ($user_id)
+    public function select_user_rights($user_id)
     {
         global $db;
 
@@ -223,7 +223,7 @@ class User_Model
     /**
      * @param $user_id
      */
-    public function update_lastvisit_time ($user_id)
+    public function update_lastvisit_time($user_id)
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `user_lastvisit` = " . time() . " WHERE `user_id` = " . $user_id;
@@ -234,7 +234,7 @@ class User_Model
      * @param $user_id
      * @param $user_name
      */
-    public function set_user_pseudo ($user_id, $user_name)
+    public function set_user_pseudo($user_id, $user_name)
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `user_name` = '" . $user_name . "' WHERE `user_id` = " . $user_id;
@@ -247,7 +247,7 @@ class User_Model
      * @param $user_id
      * @param $user_password
      */
-    public function set_user_password ($user_id, $user_password)
+    public function set_user_password($user_id, $user_password)
     {
         global $db;
         $encrypted_password = crypto($user_password);
@@ -260,7 +260,7 @@ class User_Model
      * @param $user_id
      * @param $user_email
      */
-    public function set_user_email ($user_id, $user_email)
+    public function set_user_email($user_id, $user_email)
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `user_email` = '" . $user_email . "' WHERE `user_id` = " . $user_id;
@@ -272,7 +272,7 @@ class User_Model
      * @param $user_id
      * @param $default_galaxy
      */
-    public function set_user_default_galaxy ($user_id, $default_galaxy)
+    public function set_user_default_galaxy($user_id, $default_galaxy)
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `user_galaxy` = '" . $default_galaxy . "' WHERE `user_id` = " . $user_id;
@@ -286,7 +286,7 @@ class User_Model
      * Utilisé après un redimensionement de l'univers
      * @param $int $nb_galaxy
      */
-    public function set_default_galaxy_after_resize ($nb_galaxy)
+    public function set_default_galaxy_after_resize($nb_galaxy)
     {
         global $db;
         $request = $db->sql_query("UPDATE " . TABLE_USER . " SET `user_galaxy` = 1 WHERE `user_galaxy` > $nb_galaxy");
@@ -298,7 +298,7 @@ class User_Model
      * @param $user_id
      * @param $default_system
      */
-    public function set_user_default_system ($user_id, $default_system)
+    public function set_user_default_system($user_id, $default_system)
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `user_system` = '" . $default_system . "' WHERE `user_id` = " . $user_id;
@@ -309,7 +309,7 @@ class User_Model
      * Utilisé après un redimensionement de l'univers
      * @param $int $nb_systems
      */
-    public function set_default_system_after_resize ($nb_systems)
+    public function set_default_system_after_resize($nb_systems)
     {
         global $db;
         $request = $db->sql_query("UPDATE " . TABLE_USER . " SET `usersystem` = 1 WHERE `user_system` > $nb_systems");
@@ -320,7 +320,7 @@ class User_Model
      * @param $user_id
      * @param $disable_ip_check
      */
-    public function set_user_ip_check ($user_id, $disable_ip_check)
+    public function set_user_ip_check($user_id, $disable_ip_check)
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `disable_ip_check` = '" . $disable_ip_check . "' WHERE `user_id` = " . $user_id;
@@ -331,7 +331,7 @@ class User_Model
      * @param $user_id
      * @param $user_active boolean 1/0
      */
-    public function set_user_active ($user_id, $value)
+    public function set_user_active($user_id, $value)
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `user_active` = '" . $value . "' WHERE `user_id` = " . $user_id;
@@ -339,9 +339,9 @@ class User_Model
     }
 
     /**
- * @param $user_id
- * @param $value boolean 1/0
- */
+     * @param $user_id
+     * @param $value boolean 1/0
+     */
     public function set_user_coadmin ($user_id, $value)
     {
         global $db;
@@ -353,7 +353,7 @@ class User_Model
      * @param $user_id
      * @param $value boolean 1/0
      */
-    public function set_user_management_user ($user_id, $value)
+    public function set_user_management_user($user_id, $value)
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `management_user` = '" . $value . "' WHERE `user_id` = " . $user_id;
@@ -364,7 +364,7 @@ class User_Model
      * @param $user_id
      * @param $value boolean 1/0
      */
-    public function set_user_management_ranking ($user_id, $value)
+    public function set_user_management_ranking($user_id, $value)
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `management_ranking` = '" . $value . "' WHERE `user_id` = " . $user_id;
@@ -375,7 +375,7 @@ class User_Model
      * @param $user_id
      * @param $value boolean 1/0
      */
-    public function add_stat_planet_inserted ($user_id, $value)
+    public function add_stat_planet_inserted($user_id, $value)
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `planet_added_xtense` = planet_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
@@ -385,7 +385,7 @@ class User_Model
      * @param $user_id
      * @param $value boolean 1/0
      */
-    public function add_stat_spy_inserted ($user_id, $value)
+    public function add_stat_spy_inserted($user_id, $value)
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `spy_added_xtense` = spy_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
@@ -395,7 +395,7 @@ class User_Model
      * @param $user_id
      * @param $value boolean 1/0
      */
-    public function add_stat_rank_inserted ($user_id, $value)
+    public function add_stat_rank_inserted($user_id, $value)
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `rank_added_xtense` = rank_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
@@ -406,7 +406,7 @@ class User_Model
      * @param $user_id
      * @param $value int
      */
-    public function add_stat_search_made ($user_id, $value)
+    public function add_stat_search_made($user_id, $value)
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `search` = search + '" . $value . "' WHERE `user_id` = " . $user_id;
@@ -416,10 +416,10 @@ class User_Model
     /**
      * @return \Ogsteam\Ogspy\the
      */
-    public function get_nb_active_users(){
+    public function get_nb_active_users() {
 
         global $db;
-        $request = "SELECT `user_id` FROM " . TABLE_USER ." WHERE `user_active` = '1'";
+        $request = "SELECT `user_id` FROM " . TABLE_USER . " WHERE `user_active` = '1'";
         $result = $db->sql_query($request);
         return $number = $db->sql_numrows();
     }
@@ -427,7 +427,7 @@ class User_Model
     /**
      * @return \Ogsteam\Ogspy\the
      */
-    public function get_nb_users(){
+    public function get_nb_users() {
 
         global $db;
         $request = "SELECT `user_id` FROM " . TABLE_USER;
@@ -440,12 +440,12 @@ class User_Model
      * @param $password
      * @return \Ogsteam\Ogspy\Returs
      */
-    public function add_new_user($pseudo, $password){
+    public function add_new_user($pseudo, $password) {
 
         global $db;
         $encrypted_password = Ogspy\crypto($password);
         $request = "INSERT INTO " . TABLE_USER . " (user_name, user_password, user_regdate, user_active)"
-            . " VALUES ('" . $pseudo . "', '" .$encrypted_password . "', " . time() . ", '1')";
+            . " VALUES ('" . $pseudo . "', '" . $encrypted_password . "', " . time() . ", '1')";
         $db->sql_query($request);
 
         return $db->sql_insertid();
@@ -455,7 +455,7 @@ class User_Model
      * @param $user_id
      * @param $group_id
      */
-    public function add_user_to_group($user_id, $group_id){
+    public function add_user_to_group($user_id, $group_id) {
 
         global $db;
         $request = "INSERT INTO " . TABLE_USER_GROUP . " (group_id, user_id) VALUES (" . $group_id . ", " . $user_id . ")";
@@ -552,7 +552,7 @@ class User_Model
      *
      * @param $user_stat_name
      */
-    public function set_game_account_name ($user_id, $user_stat_name)
+    public function set_game_account_name($user_id, $user_stat_name)
     {
         global $db;
 
@@ -565,7 +565,7 @@ class User_Model
      * @param $officer
      * @param $value
      */
-    public function set_player_officer ($user_id, $officer, $value)
+    public function set_player_officer($user_id, $officer, $value)
     {
         global $db;
         switch ($officer) {

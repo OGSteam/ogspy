@@ -19,7 +19,7 @@ class User_Building_Model
      * @param $user_id
      * @return mixed
      */
-    public function get_planet_list($user_id){
+    public function get_planet_list($user_id) {
 
         global $db;
         $request = "select planet_id, coordinates";
@@ -41,7 +41,7 @@ class User_Building_Model
      * @param $user_id
      * @return mixed
      */
-    public function get_moon_list($user_id){
+    public function get_moon_list($user_id) {
 
         global $db;
         // les lunes
@@ -63,7 +63,7 @@ class User_Building_Model
      * @param $user_id
      * @return int|\Ogsteam\Ogspy\the
      */
-    public function get_nb_planets($user_id){
+    public function get_nb_planets($user_id) {
 
         global $db;
         $request = "SELECT planet_id ";
@@ -98,8 +98,9 @@ class User_Building_Model
         $result = $db->sql_query($request);
 
         //mini 9 pour eviter bug affichage
-        if ($db->sql_numrows($result) <= 9)
-            return 9;
+        if ($db->sql_numrows($result) <= 9) {
+                    return 9;
+        }
 
         return $db->sql_numrows($result);
     }
@@ -108,7 +109,7 @@ class User_Building_Model
      * @param $user_id
      * @return bool|mixed|\Ogsteam\Ogspy\mysqli_result
      */
-    public function select_user_building_list($user_id){
+    public function select_user_building_list($user_id) {
         global $db;
         $request = "SELECT planet_id, planet_name, coordinates, fields, boosters, temperature_min, temperature_max, Sat, Sat_percentage, M, M_percentage, C, C_Percentage, D, D_percentage, CES, CES_percentage, CEF, CEF_percentage, UdR, UdN, CSp, HM, HC, HD, Lab, Ter, Silo, BaLu, Pha, PoSa, DdR";
         $request .= " FROM " . TABLE_USER_BUILDING;
@@ -125,7 +126,7 @@ class User_Building_Model
      * @param $previous_id
      * @param $new_id
      */
-    public function update_moon_id($user_id, $previous_id, $new_id){
+    public function update_moon_id($user_id, $previous_id, $new_id) {
 
         global $db;
         $request = "UPDATE " . TABLE_USER_BUILDING . " SET planet_id  = " . $new_id .
@@ -143,7 +144,7 @@ class User_Building_Model
      * @param $previous_id
      * @param $new_id
      */
-    public function update_planet_id($user_id, $previous_id, $new_id){
+    public function update_planet_id($user_id, $previous_id, $new_id) {
 
         global $db;
         $request = "UPDATE " . TABLE_USER_BUILDING . " SET planet_id  = " . $new_id .
@@ -155,7 +156,7 @@ class User_Building_Model
      * @param $user_id
      * @param $aster_id Planet or moon to be deleted
      */
-    public function delete_user_aster($user_id, $aster_id){
+    public function delete_user_aster($user_id, $aster_id) {
 
         global $db;
         $request = "DELETE FROM " . TABLE_USER_BUILDING . " WHERE `user_id` = " . $user_id . " AND `planet_id` = " . intval($aster_id);

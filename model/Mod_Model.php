@@ -25,10 +25,12 @@ class Mod_Model
     {
         global $db;
 
-        if ($filter == null)
-            $filter = array();
-        if ($orderBy == null)
-            $orderBy = array();
+        if ($filter == null) {
+                    $filter = array();
+        }
+        if ($orderBy == null) {
+                    $orderBy = array();
+        }
 
         $query = "SELECT `id`, 
                              `title`, 
@@ -44,10 +46,11 @@ class Mod_Model
 
         $i = 0;
         foreach ($filter as $key => $value) {
-            if ($i == 0)
-                $query .= " WHERE ";
-            else
-                $query .= " AND ";
+            if ($i == 0) {
+                            $query .= " WHERE ";
+            } else {
+                            $query .= " AND ";
+            }
 
             $query .= "`" . $db->sql_escape_string($key) . "` = '" . $db->sql_escape_string($value) . "'";
             $i++;
@@ -55,21 +58,24 @@ class Mod_Model
 
         $i = 0;
         foreach ($orderBy as $key => $value) {
-            if ($i == 0)
-                $query .= " ORDER BY ";
-            else
-                $query .= ", ";
+            if ($i == 0) {
+                            $query .= " ORDER BY ";
+            } else {
+                            $query .= ", ";
+            }
 
             $query .= $db->sql_escape_string($key);
-            if ($value == 'DESC')
-                $query .= ' DESC';
+            if ($value == 'DESC') {
+                            $query .= ' DESC';
+            }
             $i++;
         }
 
         $result = $db->sql_query($query);
         $mods = array();
-        while ($mod = $db->sql_fetch_assoc($result))
-            $mods[] = $mod;
+        while ($mod = $db->sql_fetch_assoc($result)) {
+                    $mods[] = $mod;
+        }
 
         return $mods;
     }
@@ -80,7 +86,7 @@ class Mod_Model
     public function add(array $mod)
     {
         global $db;
-        if($mod == null || count($mod) != 9)
+        if ($mod == null || count($mod) != 9)
             throw new \Exception('Invalid parameter');
 
         // On vérifie le nombre de valeur de l'explode

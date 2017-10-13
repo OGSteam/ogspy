@@ -42,9 +42,9 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
     if ($officier == 0) {
         $geo = 0;
     } elseif ($officier == 1) {
-        $geo = 0.10;    //+10%
+        $geo = 0.10; //+10%
     } elseif ($officier == 2) {
-        $geo = 0.12;    //+12%
+        $geo = 0.12; //+12%
     } else {
         $geo = 0;
     }
@@ -78,13 +78,13 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
         case "CES":
             $result = 20 * $level * pow(1.1, $level);
             $result = $result * (1 + $ing); // ingenieur
-            $result = floor($result);   // troncature inférieure
+            $result = floor($result); // troncature inférieure
             break;
 
         case "CEF":
             $result = 30 * $level * pow((1.05 + $NRJ * 0.01), $level);
             $result = $result * (1 + $ing); // ingenieur
-            $result = floor($result);   // troncature inférieure
+            $result = floor($result); // troncature inférieure
             break;
 
         default:
@@ -106,9 +106,9 @@ function production_sat($temperature_max, $off_ing = 0)
     if ($off_ing == 0) {
         $ing = 1;
     } elseif ($off_ing == 1) {
-        $ing = 1.10;    //110%
+        $ing = 1.10; //110%
     } elseif ($off_ing == 2) {
-        $ing = 1.12;    //112%
+        $ing = 1.12; //112%
     } else {
         $ing = 1;
     }
@@ -128,12 +128,12 @@ function consumption($building, $level)
         case "M":   //no break
         case "C":
             $result = 10 * $level * pow(1.1, $level);
-            $result = ceil($result);    //troncature supérieure
+            $result = ceil($result); //troncature supérieure
             break;
 
         case "D":
             $result = 20 * $level * pow(1.1, $level);
-            $result = ceil($result);    //troncature supérieure
+            $result = ceil($result); //troncature supérieure
             break;
 
         case "CEF":
@@ -169,7 +169,7 @@ function consumption($building, $level)
  * @return array("ratio", "conso_E", "prod_E", "prod_CES", "prod_CEF", "prod_SAT", "conso_M", "conso_C", "conso_D")
  */
 function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
-               $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1)
+                $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1)
 {
     $consommation_E = 0; // la consommation
     $conso_M = consumption("M", $M) * $per_M;
@@ -221,58 +221,58 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
  * @return array
  */
 function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing = 0, $off_geo = 0, $off_full = 0, $NRJ = 0, $Plasma = 0,
-$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1 , $booster  = NULL)
+$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $booster  = NULL)
 {
 
-	if ($off_full == 1) {
-		$off_ing = $off_geo = 2;
-	}
-	$tmp = ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
-			$per_M, $per_C, $per_D, $per_CES, $per_CEF, $per_SAT);
-	$ratio = $tmp["ratio"];
-	$consommation_E = $tmp["conso_E"];
-	$production_E = $tmp["prod_E"];
-	$prod_CES = $tmp["prod_CES"];
-	$prod_CEF = $tmp["prod_CEF"];
-	$prod_SAT = $tmp["prod_SAT"];
-	$conso_M = $tmp["conso_M"];
-	$conso_C = $tmp["conso_C"];
-	$conso_D = $tmp["conso_D"];
+    if ($off_full == 1) {
+        $off_ing = $off_geo = 2;
+    }
+    $tmp = ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
+            $per_M, $per_C, $per_D, $per_CES, $per_CEF, $per_SAT);
+    $ratio = $tmp["ratio"];
+    $consommation_E = $tmp["conso_E"];
+    $production_E = $tmp["prod_E"];
+    $prod_CES = $tmp["prod_CES"];
+    $prod_CEF = $tmp["prod_CEF"];
+    $prod_SAT = $tmp["prod_SAT"];
+    $conso_M = $tmp["conso_M"];
+    $conso_C = $tmp["conso_C"];
+    $conso_D = $tmp["conso_D"];
 
-	if ($ratio > 0) {
-		//production de metal avec ratio
-		$prod_M = production("M", $M, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_M;
-		$prod_M *= $ratio;
-		$prod_M = round($prod_M);
+    if ($ratio > 0) {
+        //production de metal avec ratio
+        $prod_M = production("M", $M, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_M;
+        $prod_M *= $ratio;
+        $prod_M = round($prod_M);
 
-		//production de cristal avec ratio
-		$prod_C = production("C", $C, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_C;
-		$prod_C *= $ratio;
-		$prod_C = round($prod_C);
+        //production de cristal avec ratio
+        $prod_C = production("C", $C, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_C;
+        $prod_C *= $ratio;
+        $prod_C = round($prod_C);
 
-		//production de deut avec ratio
-		$prod_D = production("D", $D, $off_geo, $temperature_max) * $per_D;
-		$prod_D *= $ratio;
-		$prod_D -= consumption("CEF", $CEF) * $per_CEF; //on soustrait la conso de deut de la cef
-		$prod_D = round($prod_D);
-	} else {
-		$prod_M = production("M", 0);   //production de base
-		$prod_C = production("C", 0);   //production de base
-		$prod_D = production("D", 0);   //production de base
-	}
+        //production de deut avec ratio
+        $prod_D = production("D", $D, $off_geo, $temperature_max) * $per_D;
+        $prod_D *= $ratio;
+        $prod_D -= consumption("CEF", $CEF) * $per_CEF; //on soustrait la conso de deut de la cef
+        $prod_D = round($prod_D);
+    } else {
+        $prod_M = production("M", 0);   //production de base
+        $prod_C = production("C", 0);   //production de base
+        $prod_D = production("D", 0);   //production de base
+    }
 
-	if($booster != NULL)
-	{
-		// si booster
-		$prod_M = $prod_M * (1 + $booster['booster_m_val'] / 100);
-		$prod_C = $prod_C * (1 + $booster['booster_c_val'] / 100);
-		$prod_D = $prod_D * (1 + $booster['booster_d_val'] / 100);
-	}
+    if($booster != NULL)
+    {
+        // si booster
+        $prod_M = $prod_M * (1 + $booster['booster_m_val'] / 100);
+        $prod_C = $prod_C * (1 + $booster['booster_c_val'] / 100);
+        $prod_D = $prod_D * (1 + $booster['booster_d_val'] / 100);
+    }
 	 
-	return array("M" => $prod_M, "C" => $prod_C, "D" => $prod_D, "ratio" => $ratio,
-			"conso_E" => $consommation_E, "prod_E" => $production_E, "prod_CES" => $prod_CES,
-			"prod_CEF" => $prod_CEF, "prod_SAT" => $prod_SAT, "conso_M" => $conso_M,
-			"conso_C" => $conso_C, "conso_D" => $conso_D);
+    return array("M" => $prod_M, "C" => $prod_C, "D" => $prod_D, "ratio" => $ratio,
+            "conso_E" => $consommation_E, "prod_E" => $production_E, "prod_CES" => $prod_CES,
+            "prod_CEF" => $prod_CEF, "prod_SAT" => $prod_SAT, "conso_M" => $conso_M,
+            "conso_C" => $conso_C, "conso_D" => $conso_D);
 }
 
 
@@ -637,8 +637,9 @@ function all_building_cumulate($user_building)
         foreach ($bats as $key) {
 
             $level = $data[$key];
-            if ($level == "")
-                $level = 0;
+            if ($level == "") {
+                            $level = 0;
+            }
 
             if ($key == "M" || $key == "C" || $key == "D" || $key == "CES" || $key == "CEF" ||
                 $key == "UdR" || $key == "UdN" || $key == "CSp" || $key == "HM" || $key == "HC" ||
@@ -672,12 +673,12 @@ function all_defence_cumulate($user_defence)
     $keys = array_keys($init_d_prix);
 
     while ($data = current($user_defence)) {
-        if (sizeof($init_d_prix) != sizeof($keys))
-            continue;
+        if (sizeof($init_d_prix) != sizeof($keys)) {
+                    continue;
+        }
 
         for ($i = 0; $i < sizeof($init_d_prix); $i++) {
-            $total += $init_d_prix[$keys[$i]] * ($data[$keys[$i]] != "" ? $data[$keys[$i]] :
-                    0);
+            $total += $init_d_prix[$keys[$i]] * ($data[$keys[$i]] != "" ? $data[$keys[$i]] : 0);
         }
 
         next($user_defence);
@@ -715,8 +716,9 @@ function all_technology_cumulate($user_technology)
         800000, "Graviton" => 0, "Astrophysique" => 16000);
     $keys = array_keys($init_t_prix);
 
-    if (sizeof($init_t_prix) != sizeof($user_technology))
-        return 0;
+    if (sizeof($init_t_prix) != sizeof($user_technology)) {
+            return 0;
+    }
 
     for ($i = 0; $i < sizeof($init_t_prix); $i++) {
         $pow = ($keys[$i] != "Astrophysique") ? 2 : 1.75; // puissance change a cause de l astro ...
@@ -782,7 +784,7 @@ function UNparseRC($id_RC)
 
 
     // Récupération de chaque round du RC
-    foreach($report['rounds'] as $round){
+    foreach ($report['rounds'] as $round) {
 
         $nf_attaque_tir = number_format($round['attaque_tir'], 0, ',', '.');
         $nf_attaque_puissance = number_format($round['attaque_puissance'], 0, ',', '.');
@@ -811,7 +813,7 @@ function UNparseRC($id_RC)
                 if (isset($$key) && $$key > 0) {
                     $vivant_att = true;
                     $ship_type .= "\t" . $ship;
-                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.');;
+                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.'); ;
                     $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
                     $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
                     $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
@@ -819,12 +821,14 @@ function UNparseRC($id_RC)
             }
             if ($vivant_att == true) {
                 $template .= ' [' . $coordinates . ']';
-                if ($round['numround'] == 1)
-                    $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
+                if ($round['numround'] == 1) {
+                                    $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
+                }
                 $template .= "\n";
                 $template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
-            } else
-                $template .= ' détruit.' . "\n\n";
+            } else {
+                            $template .= ' détruit.' . "\n\n";
+            }
         } // Fin récupération de chaque attaquant du RC
 
         // Récupération de chaque défenseur du RC
@@ -867,12 +871,14 @@ function UNparseRC($id_RC)
             }
             if ($vivant_def == true) {
                 $template .= ' [' . $coordinates . ']';
-                if ($round['numround'] == 1)
-                    $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
+                if ($round['numround'] == 1) {
+                                    $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
+                }
                 $template .= "\n";
                 $template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
-            } else
-                $template .= ' ' . $lang['GAME_CREPORT_DESTROYED'] . ' ' . "\n\n";
+            } else {
+                            $template .= ' ' . $lang['GAME_CREPORT_DESTROYED'] . ' ' . "\n\n";
+            }
         } // Fin récupération de chaque défenseur du RC
 
         // Résultat du round
@@ -912,11 +918,13 @@ function UNparseRC($id_RC)
 
     $lunePourcent = floor(($report['debris_M'] + $report['debris_C']) / 100000);
     $lunePourcent = ($lunePourcent < 0 ? 0 : ($lunePourcent > 20 ? 20 : $lunePourcent));
-    if ($lunePourcent > 0)
-        $template .= $lang['GAME_CREPORT_RESULT_NO_MOON'] . ' ' . $lunePourcent . ' %';
+    if ($lunePourcent > 0) {
+            $template .= $lang['GAME_CREPORT_RESULT_NO_MOON'] . ' ' . $lunePourcent . ' %';
+    }
 
-    if ($report['lune'] == 1)
-        $template .= "\n" . $lang['GAME_CREPORT_RESULT_MOON'] . ".";
+    if ($report['lune'] == 1) {
+            $template .= "\n" . $lang['GAME_CREPORT_RESULT_MOON'] . ".";
+    }
 
     return ($template);
 }

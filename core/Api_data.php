@@ -39,8 +39,10 @@ class Api_data
                 $private_token = $data_token->add_token($generated_token, $user_id, time() + 3600, "android");
                 $this->authenticated_token = $private_token;
                 $this->send_response(array('status' => 'ok', 'api_token' => $private_token));
-            }else
-                exit(); //On ne retourne rien pour masquer API
+            } else {
+                            exit();
+            }
+            //On ne retourne rien pour masquer API
         }
         exit();
     }
@@ -57,7 +59,7 @@ class Api_data
             $this->authenticated_token = $token;
             $this->user_id_token = $user_id;
             return true;
-        }else{
+        } else{
             $feedback = array('status' => 'error_auth');
             $this->send_response($feedback);
         }
@@ -70,7 +72,7 @@ class Api_data
      * This function will call the required and private function to get the requested data
      * @param $data
      */
-    public function api_treat_command($data){
+    public function api_treat_command($data) {
 
         $data_decoded = json_decode($data, true);
         //print_r($data_decoded); //stdClass Object ( [cmd] => ogspy_server_details )
@@ -85,7 +87,7 @@ class Api_data
                 $this->api_send_ogspy_player_details();
                 break;
             case "ogspy_rank_by_date" :
-                $this->api_send_ogspy_rank_by_date($data_decoded['type'],$data_decoded['higher_rank'],$data_decoded['lower_rank']);
+                $this->api_send_ogspy_rank_by_date($data_decoded['type'], $data_decoded['higher_rank'], $data_decoded['lower_rank']);
             case "ogspy_rank_all" :
                 $this->api_send_ogspy_all_rank($data_decoded['type']);
             default:
@@ -99,13 +101,13 @@ class Api_data
     /**
      * Fonction test envoi de données
      */
-    private function api_send_ogspy_server_details(){
+    private function api_send_ogspy_server_details() {
 
-        if($this->authenticated_token != null){
+        if ($this->authenticated_token != null) {
 
             $data_config = new Config_Model();
-            $data_config = $data_config->find_by(array("servername","register_alliance","allied","url_forum"));
-            $data =  array('status' => 'error_auth', 'content' =>$data_config);
+            $data_config = $data_config->find_by(array("servername", "register_alliance", "allied", "url_forum"));
+            $data = array('status' => 'error_auth', 'content' =>$data_config);
             $this->send_response($data);
         }
     }
@@ -113,13 +115,13 @@ class Api_data
     /**
      * Fonction test envoi de données
      */
-    private function api_send_ogspy_ally_details(){
+    private function api_send_ogspy_ally_details() {
 
-        if($this->authenticated_token != null){
+        if ($this->authenticated_token != null) {
 
             //$data_ally = new Statistics_Model();
             //$data_config
-            $data =  array('status' => 'not implemented', 'content' => null);
+            $data = array('status' => 'not implemented', 'content' => null);
             $this->send_response($data);
         }
     }
@@ -127,11 +129,11 @@ class Api_data
     /**
      * Fonction test envoi de données
      */
-    private function api_send_ogspy_player_details(){
+    private function api_send_ogspy_player_details() {
 
-        if($this->authenticated_token != null){
+        if ($this->authenticated_token != null) {
 
-            $data =  array('status' => 'not implemented', 'content' => null);
+            $data = array('status' => 'not implemented', 'content' => null);
             $this->send_response($data);
         }
     }
@@ -142,16 +144,16 @@ class Api_data
      * @param $higher_rank
      * @param $lower_rank
      */
-    private function api_send_ogspy_rank_by_date($type, $higher_rank, $lower_rank){
+    private function api_send_ogspy_rank_by_date($type, $higher_rank, $lower_rank) {
 
-        if($this->authenticated_token != null){
+        if ($this->authenticated_token != null) {
 
             $data_rank = new Rankings_Player_Model();
             $last_rank_date = $data_rank->get_rank_latest_table_date($type);
 
             $rankings = $data_rank->get_ranktable($type, $last_rank_date, true, $higher_rank, $lower_rank);
 
-            $data =  array('status' => 'ok', 'content' => $rankings);
+            $data = array('status' => 'ok', 'content' => $rankings);
             $this->send_response($data);
         }
     }
@@ -161,16 +163,16 @@ class Api_data
      * @param $higher_rank
      * @param $lower_rank
      */
-    private function api_send_ogspy_all_rank($type){
+    private function api_send_ogspy_all_rank($type) {
 
-        if($this->authenticated_token != null){
+        if ($this->authenticated_token != null) {
 
             $data_rank = new Rankings_Player_Model();
             $last_rank_date = $data_rank->get_rank_latest_table_date($type);
 
             $rankings = $data_rank->get_ranktable($type, $last_rank_date);
 
-            $data =  array('status' => 'ok', 'content' => $rankings);
+            $data = array('status' => 'ok', 'content' => $rankings);
             $this->send_response($data);
         }
     }
@@ -178,7 +180,7 @@ class Api_data
      * Function to send the http response
      * @param $data
      */
-    private function send_response($data){
+    private function send_response($data) {
 
         $answer_data = json_encode($data);
 
@@ -194,7 +196,7 @@ class Api_data
      * Use the String Generator Lib to generate a token
      * @return string
      */
-    private function generate_token(){
+    private function generate_token() {
 
         return StringGenerator::randomAlnum(64);
 

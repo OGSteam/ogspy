@@ -73,11 +73,11 @@ $mod_cache = $server_config['mod_cache'];
             <th><input type="text" name="servername" size="60" value="<?php echo $servername; ?>"></th>
         </tr>
         <tr>
-            <th width="60%"><?php echo($lang['ADMIN_PARAMS_ACTIVATESERVER']); ?><?php echo help("admin_server_status");?></th>
-            <th><input name="server_active" type="checkbox" value="1" <?php echo $server_active;?>></th>
+            <th width="60%"><?php echo($lang['ADMIN_PARAMS_ACTIVATESERVER']); ?><?php echo help("admin_server_status"); ?></th>
+            <th><input name="server_active" type="checkbox" value="1" <?php echo $server_active; ?>></th>
         </tr>
         <tr>
-            <th width="60%"><?php echo($lang['ADMIN_PARAMS_OFFREASON']); ?><?php echo help("admin_server_status_message");?></th>
+            <th width="60%"><?php echo($lang['ADMIN_PARAMS_OFFREASON']); ?><?php echo help("admin_server_status_message"); ?></th>
             <th><input type="text" name="reason" size="60" value="<?php echo $reason; ?>"></th>
         </tr>
         <tr>
@@ -111,11 +111,12 @@ $mod_cache = $server_config['mod_cache'];
                     echo Views\ViewHelper::get_option($open_user, "./views/statistic.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_STATS']);
                     echo Views\ViewHelper::get_option($open_user, "./views/galaxy_obsolete.php", $lang['ADMIN_DISPLAY_LOGIN_MODULE_TOBEUPDATED']);
 
-                    if(count($mods)) {
+                    if (count($mods)) {
                         echo '<option>------</option>';
                         foreach ($mods as $mod) {
-                            if ($mod["admin_only"] == 1)
-                                continue;
+                            if ($mod["admin_only"] == 1) {
+                                                            continue;
+                            }
 
                             echo Views\ViewHelper::get_option($open_user, "./mod/" . $mod['root'] . "/" . $mod['link'], $mod["title"]);
                         }
@@ -141,8 +142,9 @@ $mod_cache = $server_config['mod_cache'];
                         for ($i = 0; $i <= 1; $i++) {
                             echo "<option>------</option>";
                             foreach ($mods as $mod) {
-                                if ($mod["admin_only"] != $i)
-                                    continue;
+                                if ($mod["admin_only"] != $i) {
+                                                                    continue;
+                                }
 
                                 echo Views\ViewHelper::get_option($open_admin, "./mod/" . $mod['root'] . "/" . $mod['link'], $mod['title']);
                             }
@@ -155,15 +157,15 @@ $mod_cache = $server_config['mod_cache'];
             <td class="c_tech" colspan="2"><?php echo($lang['ADMIN_PARAMS_SESSIONS_TITLE']); ?></td>
         </tr>
         <tr>
-            <th><?php echo($lang['ADMIN_PARAMS_SESSIONS_DURATION']); ?><?php echo help("admin_session_infini");?></a></th>
+            <th><?php echo($lang['ADMIN_PARAMS_SESSIONS_DURATION']); ?><?php echo help("admin_session_infini"); ?></a></th>
             <th><input name="session_time" type="text" size="5" maxlength="3" value="<?php echo $session_time; ?>"></th>
         </tr>
         <tr>
             <td class="c" colspan="2"><?php echo($lang['ADMIN_PARAMS_MEMBEROPTIONS']); ?></td>
         </tr>
         <tr>
-            <th><?php echo($lang['ADMIN_PARAMS_ALLOW_IPCHECKDISABLING']); ?><?php echo help("admin_check_ip");?></th>
-            <th><input name="disable_ip_check" type="checkbox" value="1" <?php echo $disable_ip_check;?>></th>
+            <th><?php echo($lang['ADMIN_PARAMS_ALLOW_IPCHECKDISABLING']); ?><?php echo help("admin_check_ip"); ?></th>
+            <th><input name="disable_ip_check" type="checkbox" value="1" <?php echo $disable_ip_check; ?>></th>
         </tr>
         <tr>
             <th><?php echo($lang['ADMIN_PARAMS_MAXSSFAVORITES']); ?></th>
@@ -199,7 +201,7 @@ $mod_cache = $server_config['mod_cache'];
                 <td class="c_ogame" colspan="2"><?php echo($lang['ADMIN_PARAMS_GAME_OPTIONS']); ?></td>
             </tr>
             <tr>
-                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_GALAXIES']); ?><?php echo help("profile_galaxy");?></th>
+                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_GALAXIES']); ?><?php echo help("profile_galaxy"); ?></th>
                 <th><input name="num_of_galaxies" id="galaxies" type="text" size="5" maxlength="3"
                            value="<?php echo $num_of_galaxies; ?>"
                            onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_GALAXIES_POPUP']); ?>')){document.getElementById('galaxies').value='<?php echo $num_of_galaxies; ?>';}"
@@ -209,7 +211,7 @@ $mod_cache = $server_config['mod_cache'];
                 </th>
             </tr>
             <tr>
-                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SYSTEMS']); ?><?php echo help("profile_galaxy");?></th>
+                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SYSTEMS']); ?><?php echo help("profile_galaxy"); ?></th>
                 <th><input name="num_of_systems" id="systems" type="text" size="5" maxlength="3"
                            value="<?php echo $num_of_systems; ?>"
                            onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_SYSTEMS_POPUP']); ?>')){document.getElementById('systems').value='<?php echo $num_of_systems; ?>';}"
@@ -219,7 +221,7 @@ $mod_cache = $server_config['mod_cache'];
                 </th>
             </tr>
             <tr>
-                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SPEED']); ?><?php echo help("profile_speed_uni");?></th>
+                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SPEED']); ?><?php echo help("profile_speed_uni"); ?></th>
                 <th><input name="speed_uni" id="speed_uni" type="text" size="5" maxlength="2"
                            value="<?php echo $speed_uni; ?>"
                            onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_SPEED_POPUP']); ?>\n')){document.getElementById('speed_uni').value='<?php echo $speed_uni; ?>';}"
@@ -229,11 +231,11 @@ $mod_cache = $server_config['mod_cache'];
                 </th>
             </tr>
             <tr>
-                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_DDR']); ?><?php echo help("profile_ddr");?></th>
+                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_DDR']); ?><?php echo help("profile_ddr"); ?></th>
                 <th><input name="ddr" value="1" type="checkbox"<?php print ($ddr == 1) ? ' checked' : '' ?>></th>
             </tr>
             <tr>
-                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_ASTRO']); ?><?php echo help("astro_strict");?></th>
+                <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_ASTRO']); ?><?php echo help("astro_strict"); ?></th>
                 <th><input name="astro_strict" value="1"
                            type="checkbox"<?php print ($astro_strict == 1) ? ' checked' : '' ?>></th>
             </tr>
@@ -250,7 +252,7 @@ $mod_cache = $server_config['mod_cache'];
         </tr>
         <tr>
             <th><?php echo($lang['ADMIN_PARAMS_RATIOMOD']); ?></th>
-            <th><input name="block_ratio" type="checkbox" value="1" <?php echo $block_ratio;?>></th>
+            <th><input name="block_ratio" type="checkbox" value="1" <?php echo $block_ratio; ?>></th>
         </tr>
         <tr>
             <th><?php echo($lang['ADMIN_PARAMS_RATIOBLIMIT']); ?></th>
@@ -263,8 +265,8 @@ $mod_cache = $server_config['mod_cache'];
             <th width="60%"><?php echo($lang['ADMIN_PARAMS_DURATION_RANKS']); ?></th>
             <th><input type="text" name="max_keeprank" maxlength="4" size="5" value="<?php echo $max_keeprank; ?>">&nbsp;<select
                     name="keeprank_criterion">
-                    <option value="quantity" <?php echo $keeprank_criterion == "quantity" ? "selected" : "";?>><?php echo($lang['ADMIN_PARAMS_DURATION_NUMBER']); ?></option>
-                    <option value="day" <?php echo $keeprank_criterion == "day" ? "selected" : "";?>><?php echo($lang['ADMIN_PARAMS_DURATION_DAYS']); ?></option>
+                    <option value="quantity" <?php echo $keeprank_criterion == "quantity" ? "selected" : ""; ?>><?php echo($lang['ADMIN_PARAMS_DURATION_NUMBER']); ?></option>
+                    <option value="day" <?php echo $keeprank_criterion == "day" ? "selected" : ""; ?>><?php echo($lang['ADMIN_PARAMS_DURATION_DAYS']); ?></option>
                 </select></th>
         </tr>
         <tr>
@@ -289,7 +291,7 @@ $mod_cache = $server_config['mod_cache'];
             <th><input name="regenere_cache" type="checkbox" value="0"/></th>
         </tr>
         <tr>
-            <th width="60%"><?php echo($lang['ADMIN_PARAMS_CACHE_DURATION_CONFIG']); ?> <?php echo help("config_cache");?> <br/>
+            <th width="60%"><?php echo($lang['ADMIN_PARAMS_CACHE_DURATION_CONFIG']); ?> <?php echo help("config_cache"); ?> <br/>
 
                 <div class="z"><i><?php echo($lang['ADMIN_PARAMS_CACHE_DURATION_NOTICE']); ?></i></div>
             </th>
@@ -309,15 +311,15 @@ $mod_cache = $server_config['mod_cache'];
 
                 <div class="z"><i><?php echo($lang['ADMIN_PARAMS_DEBUG_PHP_NOTICE']); ?></i></div>
             </th>
-            <th><input name="log_phperror" type="checkbox" value="1" <?php echo $log_phperror;?>></th>
+            <th><input name="log_phperror" type="checkbox" value="1" <?php echo $log_phperror; ?>></th>
 
         </tr>
         <tr>
-            <th><?php echo($lang['ADMIN_PARAMS_DEBUGSQL']); ?><?php echo help("admin_save_transaction");?><br/>
+            <th><?php echo($lang['ADMIN_PARAMS_DEBUGSQL']); ?><?php echo help("admin_save_transaction"); ?><br/>
 
                 <div class="z"><i><?php echo($lang['ADMIN_PARAMS_DEBUGSQLALERT']); ?></i></div>
             </th>
-            <th><input name="debug_log" type="checkbox" value="1" <?php echo $debug_log;?>></th>
+            <th><input name="debug_log" type="checkbox" value="1" <?php echo $debug_log; ?>></th>
         </tr>
         <tr>
             <td>&nbsp;</td>

@@ -19,7 +19,7 @@ class User_Defense_Model
      * @param $user_id
      * @return bool|mixed|\Ogsteam\Ogspy\mysqli_result
      */
-    public function select_user_defense($user_id){
+    public function select_user_defense($user_id) {
 
         global $db;
         $request = "SELECT planet_id, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP";
@@ -37,7 +37,7 @@ class User_Defense_Model
      * @param $new_id
      * @todo Could we do that in one request ?
      */
-    public function update_moon_id($user_id, $previous_id, $new_id){
+    public function update_moon_id($user_id, $previous_id, $new_id) {
 
         global $db;
         $request = "UPDATE " . TABLE_USER_DEFENCE . " SET planet_id  = " . $new_id .
@@ -57,7 +57,7 @@ class User_Defense_Model
      * @param $previous_id
      * @param $new_id
      */
-    public function update_planet_id($user_id, $previous_id, $new_id){
+    public function update_planet_id($user_id, $previous_id, $new_id) {
 
         global $db;
         $request = "UPDATE " . TABLE_USER_DEFENCE . " SET planet_id  = " . $new_id .
@@ -69,7 +69,7 @@ class User_Defense_Model
      * @param $user_id
      * @param $aster_id Planet or moon to be deleted
      */
-    public function delete_user_aster($user_id, $aster_id){
+    public function delete_user_aster($user_id, $aster_id) {
 
         global $db;
         $request = "DELETE FROM " . TABLE_USER_DEFENCE . " WHERE `user_id` = " . $user_id . " AND `planet_id` = " . intval($aster_id);

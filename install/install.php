@@ -104,7 +104,9 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 {
     global $lang, $install_version;
     $db = sql_db::getInstance($sgbd_server, $sgbd_username, $sgbd_password, $sgbd_dbname);
-    if (!$db->db_connect_id) error_sql($lang['INSTALL_SQL_CONNECTION_ERROR']);
+    if (!$db->db_connect_id) {
+        error_sql($lang['INSTALL_SQL_CONNECTION_ERROR']);
+    }
 
 
     //Création de la structure de la base de données
@@ -154,10 +156,10 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 
     generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $ui_lang);
 
-    echo "<h3 align='center'><span style=\"color: yellow; \">" .$lang['INSTALL_SUCCESS']. "</span></h3>";
+    echo "<h3 align='center'><span style=\"color: yellow; \">" . $lang['INSTALL_SUCCESS'] . "</span></h3>";
     echo "<div style=\"text-align: center;\">";
-    echo "<b>".$lang['INSTALL_SUCCESS_REMOVE_FOLDER']."</b><br>";
-    echo "<a href='../index.php?action=rm_install'>".$lang['INSTALL_SUCCESS_BACK']."</a>";
+    echo "<b>" . $lang['INSTALL_SUCCESS_REMOVE_FOLDER'] . "</b><br>";
+    echo "<a href='../index.php?action=rm_install'>" . $lang['INSTALL_SUCCESS_BACK'] . "</a>";
     echo "</div>";
     exit();
 }
@@ -211,7 +213,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
         } elseif (!check_var($pub_num_of_galaxies, "Galaxy", "", true) || !check_var($pub_num_of_systems, "Galaxy", "", true)) {
             $pub_error = $lang['INSTALL_FORM_ERROR_GALAXY'];
         } else {
-            if ($pub_sgbd_server != "" && $pub_sgbd_dbname != "" && $pub_sgbd_username != "" && $pub_admin_username != "" && $pub_admin_password != "" && $pub_admin_password == $pub_admin_password2 && $pub_num_of_galaxies != ""&& $pub_num_of_systems != "" && $pub_lang != "") {
+            if ($pub_sgbd_server != "" && $pub_sgbd_dbname != "" && $pub_sgbd_username != "" && $pub_admin_username != "" && $pub_admin_password != "" && $pub_admin_password == $pub_admin_password2 && $pub_num_of_galaxies != "" && $pub_num_of_systems != "" && $pub_lang != "") {
                 installation_db($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_admin_username, $pub_admin_password, $pub_admin_password2, $pub_num_of_galaxies, $pub_num_of_systems, $pub_lang);
             } else {
                 $pub_error = $lang['INSTALL_FORM_ERROR_CONNECTION'];
@@ -249,7 +251,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
             <td align="center">
                 <table width="800">
                     <tr>
-                        <td colspan="2" align="center"><span style="font-size: small; "><b><?php echo ($lang['INSTALL_VIEW_WELCOME'].$install_version); ?></b></span></td>
+                        <td colspan="2" align="center"><span style="font-size: small; "><b><?php echo ($lang['INSTALL_VIEW_WELCOME'] . $install_version); ?></b></span></td>
                     </tr>
                     <tr>
                         <td colspan="2" align="center">&nbsp;</td>

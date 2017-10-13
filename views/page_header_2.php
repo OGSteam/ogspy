@@ -22,7 +22,7 @@ if (!defined('IN_SPYOGAME')) {
 <head>
     <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8"/>
     <meta name="language" content="fr"/>
-    <title><?php echo $server_config["servername"] . " - OGSpy " . $server_config["version"];?></title>
+    <title><?php echo $server_config["servername"] . " - OGSpy " . $server_config["version"]; ?></title>
 
     <link rel="stylesheet" type="text/css" href="./assets/css/formate.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>

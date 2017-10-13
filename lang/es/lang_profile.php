@@ -16,8 +16,8 @@
 
 /* profile.php */
 
-$lang['PROFILE_ERROR_RETRY'] ="Introducir la nueva contraseña y confirmar";
-$lang['PROFILE_ERROR_OLDPWD'] ="Introducir la contraseña antigua";
+$lang['PROFILE_ERROR_RETRY'] = "Introducir la nueva contraseña y confirmar";
+$lang['PROFILE_ERROR_OLDPWD'] = "Introducir la contraseña antigua";
 $lang['PROFILE_ERROR_ERROR'] = "La contraseña introducida es diferente a la de la confirmación";
 $lang['PROFILE_ERROR_ILLEGAL'] = "La contraseña debe tener entre 6 y 15 caractéres";
 

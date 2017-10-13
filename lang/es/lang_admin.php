@@ -162,7 +162,7 @@ $lang['ADMIN_GROUP_EXTERNAL_GETRANK'] = "Exportación de ranking ";
 $lang['ADMIN_GROUP_EXTERNAL_VALIDATE'] = "Validar permisos";
 
 
- /*    filename    : admin_mod.php */
+    /*    filename    : admin_mod.php */
 
 $lang['ADMIN_MOD_LIST'] = "Mods instalados y activos ";
 $lang['ADMIN_MOD_LIST_INACTIVE'] = "Mods instalados e inactivos";
