@@ -42,9 +42,9 @@ if (($system_down + $totalsystem + 1) <= intval($server_config['num_of_systems']
 
 echo "<table>" . "\n";
 echo "<tr align='center'>" . "\n";
-echo "<td class='c''>" . $link_left1 . $lang['GALAXY_SECTOR_PREVIOUS']." -" . $link_left2 . "</td>";
-echo "<td class='c' colspan='3'>".$lang['GALAXY_SECTOR_NAVIGATE']."<br>" . $galaxy . ":" . $system_down . " - " . $galaxy . ":" . $system_up . "</td>";
-echo "<td class='c'>" . $link_right1 . $lang['GALAXY_SECTOR_NEXT']." +" . $link_right2 . "</td>" . "\n";
+echo "<td class='c''>" . $link_left1 . $lang['GALAXY_SECTOR_PREVIOUS'] . " -" . $link_left2 . "</td>";
+echo "<td class='c' colspan='3'>" . $lang['GALAXY_SECTOR_NAVIGATE'] . "<br>" . $galaxy . ":" . $system_down . " - " . $galaxy . ":" . $system_up . "</td>";
+echo "<td class='c'>" . $link_right1 . $lang['GALAXY_SECTOR_NEXT'] . " +" . $link_right2 . "</td>" . "\n";
 echo "</tr>" . "\n";
 for ($lines = 0; $lines < ceil($totalsystem / 5); $lines++) {
     echo "<tr>" . "\n";
@@ -85,7 +85,9 @@ for ($lines = 0; $lines < ceil($totalsystem / 5); $lines++) {
                     if ($population[$cols][$row]["gate"] == 1) {
                         $detail .= "P";
                     }
-                    if ($detail != "") $detail = " - " . $detail;
+                    if ($detail != "") {
+                        $detail = " - " . $detail;
+                    }
 
                     $head .= "<br><font color='lime'>M" . $detail . "</font>";
                 }
@@ -113,9 +115,9 @@ for ($lines = 0; $lines < ceil($totalsystem / 5); $lines++) {
     echo "</tr>" . "\n";
 }
 echo "<tr align='center'>" . "\n";
-echo "<td class='c'>" . $link_left1 . $lang['GALAXY_SECTOR_PREVIOUS']." -" . $link_left2 . "</td>";
-echo "<td class='c' colspan='3'>".$lang['GALAXY_SECTOR_NAVIGATE']."<br>" . $galaxy . ":" . $system_down . " - " . $galaxy . ":" . $system_up . "</td>";
-echo "<td class='c'>" . $link_right1 . $lang['GALAXY_SECTOR_NEXT']." +" . $link_right2 . "</td>" . "\n";
+echo "<td class='c'>" . $link_left1 . $lang['GALAXY_SECTOR_PREVIOUS'] . " -" . $link_left2 . "</td>";
+echo "<td class='c' colspan='3'>" . $lang['GALAXY_SECTOR_NAVIGATE'] . "<br>" . $galaxy . ":" . $system_down . " - " . $galaxy . ":" . $system_up . "</td>";
+echo "<td class='c'>" . $link_right1 . $lang['GALAXY_SECTOR_NEXT'] . " +" . $link_right2 . "</td>" . "\n";
 echo "</tr>" . "\n";
 echo "<table>" . "\n";
 ?>

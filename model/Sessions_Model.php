@@ -29,7 +29,7 @@ class Sessions_Model
         return $result;
     }
 
-    public function get_xtense_session ($user_id)
+    public function get_xtense_session($user_id)
     {
         global $db;
         $request = "SELECT `session_ogs` FROM " . TABLE_SESSIONS . " WHERE session_user_id = " . $user_id;
@@ -38,8 +38,9 @@ class Sessions_Model
         if ($db->sql_numrows($result) > 0) {
             list($session_ogs) = $db->sql_fetch_row($result);
             return $session_ogs;
-        } else
-            return -1;
+        } else {
+                    return -1;
+        }
     }
 
     /**

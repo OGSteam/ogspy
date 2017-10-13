@@ -62,7 +62,9 @@ function session()
     $data_sessions = new Sessions_Model();
 
     //Purge des sessions expirées
-    if ($server_config["session_time"] != 0) $data_sessions->clean_expired_sessions();
+    if ($server_config["session_time"] != 0) {
+        $data_sessions->clean_expired_sessions();
+    }
 
     //Récupération de l'id de session si cookie présent
     if (isset($_COOKIE[$cookie_name])) {
@@ -99,7 +101,9 @@ function session_set_user_id($user_id, $lastvisit = 0)
 {
     global $user_ip, $cookie_id, $server_config;
 
-    if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) $user_ip = '';
+    if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) {
+        $user_ip = '';
+    }
 
     $data_sessions = new Sessions_Model();
     $data_sessions->update_session($user_id, $lastvisit, $cookie_id, $user_ip);

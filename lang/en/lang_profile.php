@@ -16,8 +16,8 @@
 
 /* profile.php */
 
-$lang['PROFILE_ERROR_RETRY'] ="Enter your new password with the confirmation";
-$lang['PROFILE_ERROR_OLDPWD'] ="Enter your previous password";
+$lang['PROFILE_ERROR_RETRY'] = "Enter your new password with the confirmation";
+$lang['PROFILE_ERROR_OLDPWD'] = "Enter your previous password";
 $lang['PROFILE_ERROR_ERROR'] = "The entered password is not the identical to the password confirmation";
 $lang['PROFILE_ERROR_ILLEGAL'] = "The password must have at least 6 characters and less than 15 characters";
 

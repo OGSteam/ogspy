@@ -19,7 +19,7 @@ class User_SpyFavorites_Model
      * @param $user_id
      * @return integer $nb_favorites
      */
-    public function get_nb_spyfavorites($user_id){
+    public function get_nb_spyfavorites($user_id) {
 
         global $db;
 
@@ -34,7 +34,7 @@ class User_SpyFavorites_Model
      * @param $user_id
      * @param $spy_id
      */
-    public function insert_spyfavorite($user_id, $spy_id){
+    public function insert_spyfavorite($user_id, $spy_id) {
 
     global $db;
 
@@ -43,7 +43,7 @@ class User_SpyFavorites_Model
 
     }
 
-    public function delete_spyfavorite($user_id, $spy_id){
+    public function delete_spyfavorite($user_id, $spy_id) {
         global $db;
 
         $request = "DELETE FROM " . TABLE_USER_SPY . " WHERE `user_id` = " . $user_id . " AND `spy_id` = '" . $spy_id . "'";

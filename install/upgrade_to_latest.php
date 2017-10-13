@@ -18,10 +18,10 @@ define("UPGRADE_IN_PROGRESS", true);
 
 require_once("../common.php");
 
-if(!isset($pub_verbose)) $pub_verbose = true;
+if (!isset($pub_verbose)) $pub_verbose = true;
 
 
-if($pub_verbose == true){
+if ($pub_verbose == true) {
 ?>
 
 <html>
@@ -40,12 +40,12 @@ if($pub_verbose == true){
 // evite d utiliser le cache ( qui sera périmé ))
 $request = "select * from " . TABLE_CONFIG;
 $result = $db->sql_query($request);
- while (list($name, $value) = $db->sql_fetch_row($result)) {
+    while (list($name, $value) = $db->sql_fetch_row($result)) {
         $server_config[$name] = stripslashes($value);
     }
     
 
-$request = "SELECT config_value FROM ".TABLE_CONFIG." WHERE config_name = 'version'";
+$request = "SELECT config_value FROM " . TABLE_CONFIG . " WHERE config_name = 'version'";
 $result = $db->sql_query($request);
 list($ogsversion) = $db->sql_fetch_row($result);
 
@@ -88,14 +88,14 @@ switch ($ogsversion) {
         break;
     case '3.1.3':
         $requests[] = "CREATE TABLE IF NOT EXISTS `".TABLE_GCM_USERS."` ( ".
-                      "`user_id` int(11) NOT NULL default '0',".
-                      "`gcm_regid` varchar(255) NOT NULL, ".
-                      "`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, ".
-                      "`version_android` varchar(50), ".
-                      "`version_ogspy` varchar(50), ".
-                      "`device` varchar(50), ".
-                      "PRIMARY KEY (`gcm_regid`) ".
-                      ") ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";					  
+                        "`user_id` int(11) NOT NULL default '0',".
+                        "`gcm_regid` varchar(255) NOT NULL, ".
+                        "`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, ".
+                        "`version_android` varchar(50), ".
+                        "`version_ogspy` varchar(50), ".
+                        "`device` varchar(50), ".
+                        "PRIMARY KEY (`gcm_regid`) ".
+                        ") ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";					  
                       
         //Passage des tables en UTF-8
         $requests[] = "ALTER TABLE ".TABLE_CONFIG." CONVERT TO CHARACTER SET utf8";
@@ -166,11 +166,11 @@ switch ($ogsversion) {
         $ogsversion = '3.3.1';
         break;
 
-     case '3.3.1':
+        case '3.3.1':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.2' WHERE config_name = 'version'";
         $requests[] = "ALTER TABLE `".TABLE_USER."` MODIFY `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP','ANDROID')";
         $ogsversion = '3.3.2';
-         break;
+            break;
 
     case '3.4.0':
         $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.4.0' WHERE config_name = 'version'";
@@ -187,15 +187,15 @@ switch ($ogsversion) {
                         DEFAULT CHARSET = utf8
                         ENGINE=InnoDB
                         ;";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `planet_exported`";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `planet_added_ogs`";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `spy_added_ogs`";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `spy_exported`";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `rank_added_ogs`";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` DROP `rank_exported`";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` CHANGE `planet_added_web` `planet_added_xtense`  INT(11) NOT NULL DEFAULT '0'";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` CHANGE `spy_added_web` `spy_added_xtense`  INT(11) NOT NULL DEFAULT '0'";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` CHANGE `rank_added_web` `rank_added_xtense`  INT(11) NOT NULL DEFAULT '0'";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` DROP `planet_exported`";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` DROP `planet_added_ogs`";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` DROP `spy_added_ogs`";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` DROP `spy_exported`";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` DROP `rank_added_ogs`";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` DROP `rank_exported`";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` CHANGE `planet_added_web` `planet_added_xtense`  INT(11) NOT NULL DEFAULT '0'";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` CHANGE `spy_added_web` `spy_added_xtense`  INT(11) NOT NULL DEFAULT '0'";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` CHANGE `rank_added_web` `rank_added_xtense`  INT(11) NOT NULL DEFAULT '0'";
 
         $up_to_date = true;
         break;
@@ -213,22 +213,22 @@ foreach ($requests as $request) {
 // pour prendre en compte toutes les modifications
 $files = glob('../cache/*.php');
 if (count($files) > 0) {
-    foreach ($files as $filename){unlink($filename);} 
+    foreach ($files as $filename) {unlink($filename); } 
 }
   
 ?>
-    <h3 align='center'><span style="color: yellow; ">Mise à jour du serveur OGSpy vers la version <?php echo $ogsversion;?> effectuée avec succès</span></h3>
+    <h3 align='center'><span style="color: yellow; ">Mise à jour du serveur OGSpy vers la version <?php echo $ogsversion; ?> effectuée avec succès</span></h3>
     <div style="text-align: center;">
     <br>
 <?php
-if($pub_verbose == true){
+if ($pub_verbose == true) {
 if ($up_to_date) {
-    echo "\t"."<b><i>Pensez à supprimer le dossier 'install'</i></b><br>"."\n";
-    echo "\t"."<br><a href='../index.php'>Retour</a>"."\n";
+    echo "\t" . "<b><i>Pensez à supprimer le dossier 'install'</i></b><br>" . "\n";
+    echo "\t" . "<br><a href='../index.php'>Retour</a>" . "\n";
 }
 else {
-    echo "\t"."<br><font color='orange'><b>Cette version n'est pas la dernière en date, veuillez relancer le script</font><br>"."\n";
-    echo "\t"."<a href=''>Recommencer l'opération</a>"."\n";
+    echo "\t" . "<br><font color='orange'><b>Cette version n'est pas la dernière en date, veuillez relancer le script</font><br>" . "\n";
+    echo "\t" . "<a href=''>Recommencer l'opération</a>" . "\n";
 }
 ?>
     </div>

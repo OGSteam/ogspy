@@ -20,7 +20,7 @@ class ViewHelper
     public static function get_option($selectedValue, $value, $text)
     {
         $return = '<option value="' . $value . '" ';
-        if($value == $selectedValue)
+        if ($value == $selectedValue)
             $return .= 'selected="selected"';
         $return .= '>' . $text . '</option>\n';
 

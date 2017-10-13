@@ -25,7 +25,7 @@ require_once("views/page_header.php");
             <td class="c"><?php echo($lang['SERVERDOWN_TITLE']); ?></td>
         </tr>
         <tr>
-            <th><span style="color: red; "><?php echo $reason;?></span></th>
+            <th><span style="color: red; "><?php echo $reason; ?></span></th>
         </tr>
     </table>
 

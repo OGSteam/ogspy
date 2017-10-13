@@ -18,8 +18,11 @@ if (!defined('IN_SPYOGAME')) {
 $user_empire = user_get_empire($user_data['user_id']);
 $user_building = $user_empire["building"];
 $user_defence = $user_empire["defence"];
-if ($user_empire["technology"]) $user_technology = $user_empire["technology"];
-else $user_technology = '0';
+if ($user_empire["technology"]) {
+    $user_technology = $user_empire["technology"];
+} else {
+    $user_technology = '0';
+}
 
 $nb_planete = find_nb_planete_user($user_data['user_id']);
 
@@ -45,9 +48,9 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
 //Calcul et correction boosters :
 //for ($i = 101; $i <= $nb_planete + 100; $i++) {
     /*Boosters et extensions modification :*/
-	//booster dans fonctions
+    //booster dans fonctions
     //$booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-   // $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+    // $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
 //}
 ?>
 
@@ -59,7 +62,9 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $name = $user_building[$i]["planet_name"];
-            if ($name == "") $name = "xxx";
+            if ($name == "") {
+                $name = "xxx";
+            }
 
             echo "\t" . "<td class='c' colspan='2'><a>" . $name . "</a></td>" . "\n";
         }
@@ -71,8 +76,11 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $coordinates = $user_building[$i]["coordinates"];
-            if ($coordinates == "") $coordinates = "&nbsp;";
-            else $coordinates = "[" . $coordinates . "]";
+            if ($coordinates == "") {
+                $coordinates = "&nbsp;";
+            } else {
+                $coordinates = "[" . $coordinates . "]";
+            }
 
             echo "\t" . "<th colspan='2'>" . $coordinates . "</th>" . "\n";
         }
@@ -86,16 +94,24 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         $sum_filed_used = 0;
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $fields = $user_building[$i]["fields"];
-            if ($fields == "0") $fields = "?";
+            if ($fields == "0") {
+                $fields = "?";
+            }
             $fields_used = $user_building[$i]["fields_used"];
             if ($fields_used >= 0) {
                 $fields = $fields_used . " / " . $fields;
-            } else $fields = "&nbsp;";
+            } else {
+                $fields = "&nbsp;";
+            }
 
             echo "\t" . "<th colspan='2'>" . $fields . "</th>" . "\n";
 
-            if (is_numeric($user_building[$i]["fields"])) $sum_field += $user_building[$i]["fields"];
-            if (is_numeric($user_building[$i]["fields_used"])) $sum_filed_used += $user_building[$i]["fields_used"];
+            if (is_numeric($user_building[$i]["fields"])) {
+                $sum_field += $user_building[$i]["fields"];
+            }
+            if (is_numeric($user_building[$i]["fields_used"])) {
+                $sum_filed_used += $user_building[$i]["fields_used"];
+            }
         }
         echo "\t<th><div id='T_cases'>" . $sum_filed_used . "/" . $sum_field . "</div></th>";
         ?>
@@ -106,11 +122,14 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         $t_min = $user_building[101]["temperature_min"];
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $temperature_min = $user_building[$i]["temperature_min"];
-            if ($temperature_min == "") $temperature_min = "&nbsp;";
+            if ($temperature_min == "") {
+                $temperature_min = "&nbsp;";
+            }
             echo "\t" . "<th colspan='2'>" . $temperature_min . "<input id='temperature_min_" . $i . "' type='hidden' value='" . $temperature_min . "'></th>" . "\n";
 
-            if (is_numeric($user_building[$i]["temperature_min"]) && $user_building[$i]["temperature_min"] < $t_min)
-                $t_min = $user_building[$i]["temperature_min"];
+            if (is_numeric($user_building[$i]["temperature_min"]) && $user_building[$i]["temperature_min"] < $t_min) {
+                            $t_min = $user_building[$i]["temperature_min"];
+            }
         }
         echo "\t<th><div id='T_min'>" . $t_min . "</div></th>";
         ?>
@@ -121,11 +140,14 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         $t_max = $user_building[101]["temperature_max"];
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $temperature_max = $user_building[$i]["temperature_max"];
-            if ($temperature_max == "") $temperature_max = "&nbsp;";
+            if ($temperature_max == "") {
+                $temperature_max = "&nbsp;";
+            }
             echo "\t" . "<th colspan='2'>" . $temperature_max . "<input id='temperature_max_" . $i . "' type='hidden' value='" . $temperature_max . "'></th>" . "\n";
 
-            if (is_numeric($user_building[$i]["temperature_max"]) && $user_building[$i]["temperature_max"] > $t_max)
-                $t_max = $user_building[$i]["temperature_max"];
+            if (is_numeric($user_building[$i]["temperature_max"]) && $user_building[$i]["temperature_max"] > $t_max) {
+                            $t_max = $user_building[$i]["temperature_max"];
+            }
         }
         echo "\t<th><div id='T_max'>" . $t_max . "</div></th>";
         ?>
@@ -177,7 +199,9 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
             echo "<select id='CES_" . $i . "_percentage' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 100; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
-                if ($user_percentage[$i]['CES_percentage'] == $j) echo " selected='selected'";
+                if ($user_percentage[$i]['CES_percentage'] == $j) {
+                    echo " selected='selected'";
+                }
                 echo ">" . $j . "%</option>" . "\n";
             }
             echo "</select></th>" . "\n";
@@ -196,7 +220,9 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
             echo "<select id='CEF_" . $i . "_percentage' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 100; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
-                if ($user_percentage[$i]['CEF_percentage'] == $j) echo " selected='selected'";
+                if ($user_percentage[$i]['CEF_percentage'] == $j) {
+                    echo " selected='selected'";
+                }
                 echo ">" . $j . "%</option>" . "\n";
             }
             echo "</select></th>" . "\n";
@@ -215,7 +241,9 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
             echo "<select id='Sat_" . $i . "_percentage' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 100; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
-                if ($user_percentage[$i]['Sat_percentage'] == $j) echo " selected='selected'";
+                if ($user_percentage[$i]['Sat_percentage'] == $j) {
+                    echo " selected='selected'";
+                }
                 echo ">" . $j . "%</option>" . "\n";
             }
             echo "</select></th>" . "\n";
@@ -255,7 +283,9 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
             echo "<select id='M_" . $i . "_percentage' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 100; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
-                if ($user_percentage[$i]['M_percentage'] == $j) echo " selected='selected'";
+                if ($user_percentage[$i]['M_percentage'] == $j) {
+                    echo " selected='selected'";
+                }
                 echo ">" . $j . "%</option>" . "\n";
             }
             echo "</select></th>" . "\n";
@@ -272,7 +302,9 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
             echo "<select id='M_" . $i . "_booster' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 30; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
-                if ($user_building[$i]["booster_tab"]['booster_m_val'] == $j) echo " selected='selected'";
+                if ($user_building[$i]["booster_tab"]['booster_m_val'] == $j) {
+                    echo " selected='selected'";
+                }
                 echo ">" . $j . "%</option>" . "\n";
             }
             echo "</select></th>" . "\n";
@@ -321,7 +353,9 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
             echo "<select id='C_" . $i . "_percentage' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 100; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
-                if ($user_percentage[$i]['C_percentage'] == $j) echo " selected='selected'";
+                if ($user_percentage[$i]['C_percentage'] == $j) {
+                    echo " selected='selected'";
+                }
                 echo ">" . $j . "%</option>" . "\n";
             }
             echo "</select></th>" . "\n";
@@ -338,7 +372,9 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
             echo "<select id='C_" . $i . "_booster' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 30; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
-                if ($user_building[$i]["booster_tab"]['booster_c_val'] == $j) echo " selected='selected'";
+                if ($user_building[$i]["booster_tab"]['booster_c_val'] == $j) {
+                    echo " selected='selected'";
+                }
                 echo ">" . $j . "%</option>" . "\n";
             }
             echo "</select></th>" . "\n";
@@ -387,7 +423,9 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
             echo "<select id='D_" . $i . "_percentage' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 100; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
-                if ($user_percentage[$i]['D_percentage'] == $j) echo " selected='selected'";
+                if ($user_percentage[$i]['D_percentage'] == $j) {
+                    echo " selected='selected'";
+                }
                 echo ">" . $j . "%</option>" . "\n";
             }
             echo "</select></th>" . "\n";
@@ -404,7 +442,9 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
             echo "<select id='D_" . $i . "_booster' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 30; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
-                if ($user_building[$i]["booster_tab"]['booster_d_val'] == $j) echo " selected='selected'";
+                if ($user_building[$i]["booster_tab"]['booster_d_val'] == $j) {
+                    echo " selected='selected'";
+                }
                 echo ">" . $j . "%</option>" . "\n";
             }
             echo "</select></th>" . "\n";
@@ -444,7 +484,9 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='building_pts_" . $i . "'>-</div></span>" . "\n";
             echo "\t<input type='hidden' id='building_" . $i . "' value='" . implode(array_slice($user_building[$i], 12, -3), "<>") . "' /></th>";
-            if ($lab_max < $user_building[$i]["Lab"]) $lab_max = $user_building[$i]["Lab"];
+            if ($lab_max < $user_building[$i]["Lab"]) {
+                $lab_max = $user_building[$i]["Lab"];
+            }
         }
         ?>
         <th><span style="color: white; "><span id='total_b_pts'>-</span></span></th>
@@ -493,7 +535,9 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
             if ($user_empire["technology"] != NULL && $user_building[$i]["Lab"] == $lab_max) {
                 echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='techno_pts'>-</div></span>" . "\n";
                 echo "\t<input type='hidden' id='techno' value='" . implode($user_empire["technology"], "<>") . "' /></th>";
-            } else echo "<th colspan='2'><span style=\"color: lime; \">-</span></th>";
+            } else {
+                echo "<th colspan='2'><span style=\"color: lime; \">-</span></th>";
+            }
         }
         ?>
         <th>-</th>
@@ -512,7 +556,9 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $name = $user_building[$i]["planet_name"];
-            if ($name == "") $name = "xxx";
+            if ($name == "") {
+                $name = "xxx";
+            }
 
             echo "\t" . "<td class='c' colspan='2'><a>" . $name . "</a></td>" . "\n";
         }

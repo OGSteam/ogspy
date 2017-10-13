@@ -53,9 +53,10 @@ function write_file($file, $mode, $text)
         }
         fclose($fp);
         return true;
-    } else
-        return false;
-}
+    } else {
+            return false;
+    }
+    }
 
 /**
  * Write a text or a table in a gz compressed file
@@ -78,9 +79,10 @@ function write_file_gz($file, $mode, $text)
         }
         gzclose($fp);
         return true;
-    } else
-        return false;
-}
+    } else {
+            return false;
+    }
+    }
 
 /**
  * Convert an IP in Hex Format
@@ -91,12 +93,15 @@ function encode_ip($ip)
 {
 
     $d = explode('.', $ip);
-    if (count($d) == 4) return sprintf('%02x%02x%02x%02x', $d[0], $d[1], $d[2], $d[3]);
+    if (count($d) == 4) {
+        return sprintf('%02x%02x%02x%02x', $d[0], $d[1], $d[2], $d[3]);
+    }
 
     $d = explode(':', preg_replace('/(^:)|(:$)/', '', $ip));
     $res = '';
-    foreach ($d as $x)
-        $res .= sprintf('%0' . ($x == '' ? (9 - count($d)) * 4 : 4) . 's', $x);
+    foreach ($d as $x) {
+            $res .= sprintf('%0' . ($x == '' ? (9 - count($d)) * 4 : 4) . 's', $x);
+    }
     return $res;
 }
 
@@ -109,13 +114,14 @@ function decode_ip($int_ip)
 {
     if (strlen($int_ip) == 32) {
         $int_ip = substr(chunk_split($int_ip, 4, ':'), 0, 39);
-        $int_ip = ':' . implode(':', array_map(__NAMESPACE__.'\hexhex', explode(':', $int_ip))) . ':';
+        $int_ip = ':' . implode(':', array_map(__NAMESPACE__ . '\hexhex', explode(':', $int_ip))) . ':';
         preg_match_all("/(:0)+/", $int_ip, $zeros);
         if (count($zeros[0]) > 0) {
             $match = '';
-            foreach ($zeros[0] as $zero)
-                if (strlen($zero) > strlen($match))
+            foreach ($zeros[0] as $zero) {
+                            if (strlen($zero) > strlen($match))
                     $match = $zero;
+            }
             $int_ip = preg_replace('/' . $match . '/', ':', $int_ip, 1);
         }
         return preg_replace('/(^:([^:]))|(([^:]):$)/', '$2$4', $int_ip);
@@ -141,7 +147,7 @@ function hexhex($value)
 function password_generator()
 {
     $string = "abBDEFcdefghijkmnPQRSTUVWXYpqrst23456789";
-    srand((double)microtime() * 1000000);
+    srand((double) microtime() * 1000000);
     $password = '';
     for ($i = 0; $i < 6; $i++) {
         $password .= $string[rand() % strlen($string)];
@@ -215,9 +221,9 @@ function set_server_view()
 {
     global $user_data;
     global $pub_enable_portee_missil, $pub_enable_members_view, $pub_enable_stat_view,
-           $pub_galaxy_by_line_stat, $pub_system_by_line_stat, $pub_galaxy_by_line_ally, $pub_system_by_line_ally,
-           $pub_nb_colonnes_ally, $pub_color_ally, $pub_enable_register_view, $pub_register_alliance,
-           $pub_register_forum, $pub_open_user, $pub_open_admin;
+            $pub_galaxy_by_line_stat, $pub_system_by_line_stat, $pub_galaxy_by_line_ally, $pub_system_by_line_ally,
+            $pub_nb_colonnes_ally, $pub_color_ally, $pub_enable_register_view, $pub_register_alliance,
+            $pub_register_forum, $pub_open_user, $pub_open_admin;
 
     if (!check_var($pub_enable_members_view, "Num") || !check_var($pub_enable_stat_view,
             "Num") || !check_var($pub_galaxy_by_line_stat, "Num") || !check_var($pub_system_by_line_stat,
@@ -230,38 +236,48 @@ function set_server_view()
         redirection("planetindex.php?action=message&id_message=forbidden&info");
     }
 
-    if (!isset($pub_galaxy_by_line_stat) || !isset($pub_system_by_line_stat) || !
-        isset($pub_galaxy_by_line_ally) || !isset($pub_system_by_line_ally)
+    if (!isset($pub_galaxy_by_line_stat) || !isset($pub_system_by_line_stat) || !isset($pub_galaxy_by_line_ally) || !isset($pub_system_by_line_ally)
     ) {
         redirection("index.php?action=message&id_message=setting_server_view_failed&info");
     }
 
-    if (is_null($pub_enable_portee_missil))
-        $pub_enable_portee_missil = 0;
-    if (is_null($pub_enable_stat_view))
-        $pub_enable_stat_view = 0;
-    if (is_null($pub_enable_members_view))
-        $pub_enable_members_view = 0;
+    if (is_null($pub_enable_portee_missil)) {
+            $pub_enable_portee_missil = 0;
+    }
+    if (is_null($pub_enable_stat_view)) {
+            $pub_enable_stat_view = 0;
+    }
+    if (is_null($pub_enable_members_view)) {
+            $pub_enable_members_view = 0;
+    }
 
     $break = false;
 
 
-    if (!is_numeric($pub_galaxy_by_line_stat))
-        $break = true;
-    if (!is_numeric($pub_system_by_line_stat))
-        $break = true;
-    if ($pub_enable_stat_view != 0 && $pub_enable_stat_view != 1)
-        $break = true;
-    if ($pub_enable_members_view != 0 && $pub_enable_members_view != 1)
-        $break = true;
-    if (!is_numeric($pub_galaxy_by_line_ally))
-        $break = true;
-    if (!is_numeric($pub_system_by_line_ally))
-        $break = true;
-    if ($pub_nb_colonnes_ally == 0 || $pub_nb_colonnes_ally > 9 || !is_numeric($pub_nb_colonnes_ally))
-        $break = true;
-    if ($pub_enable_register_view != 0 && $pub_enable_register_view != 1)
-        $break = true;
+    if (!is_numeric($pub_galaxy_by_line_stat)) {
+            $break = true;
+    }
+    if (!is_numeric($pub_system_by_line_stat)) {
+            $break = true;
+    }
+    if ($pub_enable_stat_view != 0 && $pub_enable_stat_view != 1) {
+            $break = true;
+    }
+    if ($pub_enable_members_view != 0 && $pub_enable_members_view != 1) {
+            $break = true;
+    }
+    if (!is_numeric($pub_galaxy_by_line_ally)) {
+            $break = true;
+    }
+    if (!is_numeric($pub_system_by_line_ally)) {
+            $break = true;
+    }
+    if ($pub_nb_colonnes_ally == 0 || $pub_nb_colonnes_ally > 9 || !is_numeric($pub_nb_colonnes_ally)) {
+            $break = true;
+    }
+    if ($pub_enable_register_view != 0 && $pub_enable_register_view != 1) {
+            $break = true;
+    }
 
     if ($break) {
         redirection("index.php?action=message&id_message=setting_server_view_failed&info");
@@ -273,18 +289,22 @@ function set_server_view()
     $configRepository->update(array('config_name' => 'portee_missil', 'config_value' => $pub_enable_portee_missil));
 
     //
-    if ($pub_galaxy_by_line_stat < 1)
-        $pub_galaxy_by_line_stat = 1;
-    if ($pub_galaxy_by_line_stat > 100)
-        $pub_galaxy_by_line_stat = 100;
+    if ($pub_galaxy_by_line_stat < 1) {
+            $pub_galaxy_by_line_stat = 1;
+    }
+    if ($pub_galaxy_by_line_stat > 100) {
+            $pub_galaxy_by_line_stat = 100;
+    }
 
     $configRepository->update(array('config_name' => 'galaxy_by_line_stat', 'config_value' => $pub_galaxy_by_line_stat));
 
     //
-    if ($pub_system_by_line_stat < 1)
-        $pub_system_by_line_stat = 1;
-    if ($pub_system_by_line_stat > 100)
-        $pub_system_by_line_stat = 100;
+    if ($pub_system_by_line_stat < 1) {
+            $pub_system_by_line_stat = 1;
+    }
+    if ($pub_system_by_line_stat > 100) {
+            $pub_system_by_line_stat = 100;
+    }
     $configRepository->update(array('config_name' => 'system_by_line_stat', 'config_value' => $pub_system_by_line_stat));
 
     //
@@ -308,17 +328,21 @@ function set_server_view()
     $configRepository->update(array('config_name' => 'color_ally', 'config_value' => $color_ally));
 
     //
-    if ($pub_galaxy_by_line_ally < 1)
-        $pub_galaxy_by_line_ally = 1;
-    if ($pub_galaxy_by_line_ally > 100)
-        $pub_galaxy_by_line_ally = 100;
+    if ($pub_galaxy_by_line_ally < 1) {
+            $pub_galaxy_by_line_ally = 1;
+    }
+    if ($pub_galaxy_by_line_ally > 100) {
+            $pub_galaxy_by_line_ally = 100;
+    }
     $configRepository->update(array('config_name' => 'galaxy_by_line_ally', 'config_value' => $pub_galaxy_by_line_ally));
 
     //
-    if ($pub_system_by_line_ally < 1)
-        $pub_system_by_line_ally = 1;
-    if ($pub_system_by_line_ally > 100)
-        $pub_system_by_line_ally = 100;
+    if ($pub_system_by_line_ally < 1) {
+            $pub_system_by_line_ally = 1;
+    }
+    if ($pub_system_by_line_ally > 100) {
+            $pub_system_by_line_ally = 100;
+    }
     $configRepository->update(array('config_name' => 'system_by_line_ally', 'config_value' => $pub_system_by_line_ally));
 
     //
@@ -343,28 +367,26 @@ function set_serverconfig()
 {
     global $user_data, $server_config;
     global $pub_max_battlereport, $pub_max_favorites, $pub_max_favorites_spy, $pub_max_spyreport,
-           $pub_server_active, $pub_session_time, $pub_max_keeplog, $pub_debug_log,
-           $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
-           $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
-           $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit, $pub_speed_uni,
-           $pub_ddr, $pub_astro_strict, $pub_config_cache, $pub_mod_cache;
+            $pub_server_active, $pub_session_time, $pub_max_keeplog, $pub_debug_log,
+            $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
+            $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
+            $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit, $pub_speed_uni,
+            $pub_ddr, $pub_astro_strict, $pub_config_cache, $pub_mod_cache;
 
 
-    if (!isset($pub_num_of_galaxies))
-        $pub_num_of_galaxies = intval($server_config['num_of_galaxies']);
-    if (!isset($pub_num_of_systems))
-        $pub_num_of_systems = intval($server_config['num_of_systems']);
+    if (!isset($pub_num_of_galaxies)) {
+            $pub_num_of_galaxies = intval($server_config['num_of_galaxies']);
+    }
+    if (!isset($pub_num_of_systems)) {
+            $pub_num_of_systems = intval($server_config['num_of_systems']);
+    }
 
     if (!check_var($pub_max_battlereport, "Num") || !check_var($pub_max_favorites,
             "Num") || !check_var($pub_max_favorites_spy, "Num") || !check_var($pub_ratio_limit,
-            "Special", "#^[\w\s,\.\-]+$#") || !check_var($pub_max_spyreport, "Num") || !
-        check_var($pub_server_active, "Num") || !check_var($pub_session_time, "Num") ||
-        !check_var($pub_max_keeplog, "Num") || !check_var($pub_debug_log, "Num") || !check_var($pub_block_ratio, "Num") || !
-        check_var(stripslashes($pub_reason), "Text") || !check_var($pub_ally_protection,
-            "Special", "#^[\w\s,\.\-]+$#") || !check_var($pub_url_forum, "URL") || !
-        check_var($pub_max_keeprank, "Num") || !check_var($pub_keeprank_criterion,
-            "Char") || !check_var($pub_max_keepspyreport, "Num") || !check_var(stripslashes
-        ($pub_servername), "Text") || !check_var($pub_allied, "Special", "#^[\w\s,\.\-]+$#") ||
+            "Special", "#^[\w\s,\.\-]+$#") || !check_var($pub_max_spyreport, "Num") || !check_var($pub_server_active, "Num") || !check_var($pub_session_time, "Num") ||
+        !check_var($pub_max_keeplog, "Num") || !check_var($pub_debug_log, "Num") || !check_var($pub_block_ratio, "Num") || !check_var(stripslashes($pub_reason), "Text") || !check_var($pub_ally_protection,
+            "Special", "#^[\w\s,\.\-]+$#") || !check_var($pub_url_forum, "URL") || !check_var($pub_max_keeprank, "Num") || !check_var($pub_keeprank_criterion,
+            "Char") || !check_var($pub_max_keepspyreport, "Num") || !check_var(stripslashes($pub_servername), "Text") || !check_var($pub_allied, "Special", "#^[\w\s,\.\-]+$#") ||
         !check_var($pub_disable_ip_check, "Num") || !check_var($pub_num_of_galaxies,
             "Galaxies") || !check_var($pub_num_of_systems, "Galaxies") || !check_var($pub_config_cache,
             "Num") || !check_var($pub_mod_cache, "Num")
@@ -385,45 +407,62 @@ function set_serverconfig()
         redirection("index.php?action=message&id_message=setting_serverconfig_failed&info");
     }
 
-    if (is_null($pub_server_active))
-        $pub_server_active = 0;
-    if (is_null($pub_disable_ip_check))
-        $pub_disable_ip_check = 0;
-    if (is_null($pub_log_phperror))
-        $pub_log_phperror = 0;
+    if (is_null($pub_server_active)) {
+            $pub_server_active = 0;
+    }
+    if (is_null($pub_disable_ip_check)) {
+            $pub_disable_ip_check = 0;
+    }
+    if (is_null($pub_log_phperror)) {
+            $pub_log_phperror = 0;
+    }
 
-    if (is_null($pub_debug_log))
-        $pub_debug_log = 0;
-    if (is_null($pub_block_ratio))
-        $pub_block_ratio = 0;
+    if (is_null($pub_debug_log)) {
+            $pub_debug_log = 0;
+    }
+    if (is_null($pub_block_ratio)) {
+            $pub_block_ratio = 0;
+    }
 
     $break = false;
 
 
-    if ($pub_server_active != 0 && $pub_server_active != 1)
-        $break = true;
-    if ($pub_debug_log != 0 && $pub_debug_log != 1)
-        $break = true;
-    if ($pub_block_ratio != 0 && $pub_block_ratio != 1)
-        $break = true;
-    if (!is_numeric($pub_max_favorites))
-        $break = true;
-    if (!is_numeric($pub_max_favorites_spy))
-        $break = true;
-    if (!is_numeric($pub_ratio_limit))
-        $break = true;
-    if (!is_numeric($pub_max_spyreport))
-        $break = true;
-    if (!is_numeric($pub_max_battlereport))
-        $break = true;
-    if (!is_numeric($pub_session_time))
-        $break = true;
-    if (!is_numeric($pub_max_keeplog))
-        $break = true;
-    if ($pub_disable_ip_check != 0 && $pub_disable_ip_check != 1)
-        $break = true;
-    if ($pub_log_phperror != 0 && $pub_log_phperror != 1)
-        $break = true;
+    if ($pub_server_active != 0 && $pub_server_active != 1) {
+            $break = true;
+    }
+    if ($pub_debug_log != 0 && $pub_debug_log != 1) {
+            $break = true;
+    }
+    if ($pub_block_ratio != 0 && $pub_block_ratio != 1) {
+            $break = true;
+    }
+    if (!is_numeric($pub_max_favorites)) {
+            $break = true;
+    }
+    if (!is_numeric($pub_max_favorites_spy)) {
+            $break = true;
+    }
+    if (!is_numeric($pub_ratio_limit)) {
+            $break = true;
+    }
+    if (!is_numeric($pub_max_spyreport)) {
+            $break = true;
+    }
+    if (!is_numeric($pub_max_battlereport)) {
+            $break = true;
+    }
+    if (!is_numeric($pub_session_time)) {
+            $break = true;
+    }
+    if (!is_numeric($pub_max_keeplog)) {
+            $break = true;
+    }
+    if ($pub_disable_ip_check != 0 && $pub_disable_ip_check != 1) {
+            $break = true;
+    }
+    if ($pub_log_phperror != 0 && $pub_log_phperror != 1) {
+            $break = true;
+    }
 
     if ($break) {
         redirection("index.php?action=message&id_message=setting_serverconfig_failed&info");
@@ -451,18 +490,22 @@ function set_serverconfig()
 
     //
     $pub_max_favorites = intval($pub_max_favorites);
-    if ($pub_max_favorites < 0)
-        $pub_max_favorites = 0;
-    if ($pub_max_favorites > 99)
-        $pub_max_favorites = 99;
+    if ($pub_max_favorites < 0) {
+            $pub_max_favorites = 0;
+    }
+    if ($pub_max_favorites > 99) {
+            $pub_max_favorites = 99;
+    }
     $configRepository->update(array('config_name' => 'max_favorites', 'config_value' => $pub_max_favorites));
 
     //
     $pub_max_favorites_spy = intval($pub_max_favorites_spy);
-    if ($pub_max_favorites_spy < 0)
-        $pub_max_favorites_spy = 0;
-    if ($pub_max_favorites_spy > 99)
-        $pub_max_favorites_spy = 99;
+    if ($pub_max_favorites_spy < 0) {
+            $pub_max_favorites_spy = 0;
+    }
+    if ($pub_max_favorites_spy > 99) {
+            $pub_max_favorites_spy = 99;
+    }
     $configRepository->update(array('config_name' => 'max_favorites_spy', 'config_value' => $pub_max_favorites_spy));
 
     //
@@ -470,77 +513,93 @@ function set_serverconfig()
 
     //
     $pub_max_spyreport = intval($pub_max_spyreport);
-    if ($pub_max_spyreport < 1)
-        $pub_max_spyreport = 1;
-    if ($pub_max_spyreport > 50)
-        $pub_max_spyreport = 50;
+    if ($pub_max_spyreport < 1) {
+            $pub_max_spyreport = 1;
+    }
+    if ($pub_max_spyreport > 50) {
+            $pub_max_spyreport = 50;
+    }
     $configRepository->update(array('config_name' => 'max_spyreport', 'config_value' => $pub_max_spyreport));
 
     //
     $pub_max_battlereport = intval($pub_max_battlereport);
-    if ($pub_max_battlereport < 0)
-        $pub_max_battlereport = 0;
-    if ($pub_max_battlereport > 999)
-        $pub_max_battlereport = 999;
+    if ($pub_max_battlereport < 0) {
+            $pub_max_battlereport = 0;
+    }
+    if ($pub_max_battlereport > 999) {
+            $pub_max_battlereport = 999;
+    }
     $configRepository->update(array('config_name' => 'max_battlereport', 'config_value' => $pub_max_battlereport));
 
     //
     $pub_session_time = intval($pub_session_time);
-    if ($pub_session_time < 5 && $pub_session_time != 0)
-        $pub_session_time = 5;
-    if ($pub_session_time > 180)
-        $pub_session_time = 180;
+    if ($pub_session_time < 5 && $pub_session_time != 0) {
+            $pub_session_time = 5;
+    }
+    if ($pub_session_time > 180) {
+            $pub_session_time = 180;
+    }
     $configRepository->update(array('config_name' => 'session_time', 'config_value' => $pub_session_time));
 
     //
     $pub_max_keeplog = intval($pub_max_keeplog);
-    if ($pub_max_keeplog < 0)
-        $pub_max_keeplog = 0;
-    if ($pub_max_keeplog > 365)
-        $pub_max_keeplog = 365;
+    if ($pub_max_keeplog < 0) {
+            $pub_max_keeplog = 0;
+    }
+    if ($pub_max_keeplog > 365) {
+            $pub_max_keeplog = 365;
+    }
     $configRepository->update(array('config_name' => 'max_keeplog', 'config_value' => $pub_max_keeplog));
 
     //
     $configRepository->update(array('config_name' => 'reason', 'config_value' => $pub_reason));
 
     //
-    if (substr($pub_ally_protection, strlen($pub_ally_protection) - 1) == ",")
-        $pub_ally_protection = substr($pub_ally_protection, 0, strlen($pub_ally_protection) -
+    if (substr($pub_ally_protection, strlen($pub_ally_protection) - 1) == ",") {
+            $pub_ally_protection = substr($pub_ally_protection, 0, strlen($pub_ally_protection) -
             1);
+    }
     $configRepository->update(array('config_name' => 'ally_protection', 'config_value' => $pub_ally_protection));
 
     //
-    if ($pub_url_forum != "" && !preg_match("#^https://#", $pub_url_forum))
-        $pub_url_forum = "https://" . $pub_url_forum;
+    if ($pub_url_forum != "" && !preg_match("#^https://#", $pub_url_forum)) {
+            $pub_url_forum = "https://" . $pub_url_forum;
+    }
     $configRepository->update(array('config_name' => 'url_forum', 'config_value' => $pub_url_forum));
 
     //
     $pub_max_keeprank = intval($pub_max_keeprank);
-    if ($pub_max_keeprank < 1)
-        $pub_max_keeprank = 1;
-    if ($pub_max_keeprank > 999)
-        $pub_max_keeprank = 999;
+    if ($pub_max_keeprank < 1) {
+            $pub_max_keeprank = 1;
+    }
+    if ($pub_max_keeprank > 999) {
+            $pub_max_keeprank = 999;
+    }
     $configRepository->update(array('config_name' => 'max_keeprank', 'config_value' => $pub_max_keeprank));
 
     //
-    if ($pub_keeprank_criterion != "quantity" && $pub_keeprank_criterion != "day")
-        $pub_keeprank_criterion = "quantity";
+    if ($pub_keeprank_criterion != "quantity" && $pub_keeprank_criterion != "day") {
+            $pub_keeprank_criterion = "quantity";
+    }
     $configRepository->update(array('config_name' => 'keeprank_criterion', 'config_value' => $pub_keeprank_criterion));
 
     //
     $pub_max_keepspyreport = intval($pub_max_keepspyreport);
-    if ($pub_max_keepspyreport < 1)
-        $pub_max_keepspyreport = 1;
-    if ($pub_max_keepspyreport > 999)
-        $pub_max_keepspyreport = 999;
+    if ($pub_max_keepspyreport < 1) {
+            $pub_max_keepspyreport = 1;
+    }
+    if ($pub_max_keepspyreport > 999) {
+            $pub_max_keepspyreport = 999;
+    }
     $configRepository->update(array('config_name' => 'max_keepspyreport', 'config_value' => $pub_max_keepspyreport));
 
     //
     $configRepository->update(array('config_name' => 'servername', 'config_value' => $pub_servername));
 
     //
-    if (substr($pub_allied, strlen($pub_allied) - 1) == ",")
-        $pub_allied = substr($pub_allied, 0, strlen($pub_allied) - 1);
+    if (substr($pub_allied, strlen($pub_allied) - 1) == ",") {
+            $pub_allied = substr($pub_allied, 0, strlen($pub_allied) - 1);
+    }
     $configRepository->update(array('config_name' => 'allied', 'config_value' => $pub_allied));
 
     //
@@ -553,18 +612,21 @@ function set_serverconfig()
     $configRepository->update(array('config_name' => 'num_of_systems', 'config_value' => $pub_num_of_systems));
 
     //
-    if (!isset($pub_ddr) || !is_numeric($pub_ddr))
-        $pub_ddr = 0;
+    if (!isset($pub_ddr) || !is_numeric($pub_ddr)) {
+            $pub_ddr = 0;
+    }
     $configRepository->update(array('config_name' => 'ddr', 'config_value' => $pub_ddr));
 
     //
-    if (!isset($pub_astro_strict) || !is_numeric($pub_astro_strict))
-        $pub_astro_strict = 0;
+    if (!isset($pub_astro_strict) || !is_numeric($pub_astro_strict)) {
+            $pub_astro_strict = 0;
+    }
     $configRepository->update(array('config_name' => 'astro_strict', 'config_value' => $pub_astro_strict));
 
     //
-    if (!is_numeric($pub_speed_uni) || 1 < $pub_speed_uni)
-        $pub_speed_uni = 1;
+    if (!is_numeric($pub_speed_uni) || 1 < $pub_speed_uni) {
+            $pub_speed_uni = 1;
+    }
     $configRepository->update(array('config_name' => 'speed_uni', 'config_value' => $pub_speed_uni));
 
     //
@@ -857,14 +919,14 @@ function generate_key()
 {
     //création de la clef
     $str = "abcdefghijklmnopqrstuvwxyzABCDEVGHIJKLMOPQRSTUVWXYZ";
-    srand((double)microtime() * 1000000);
+    srand((double) microtime() * 1000000);
     $pass = time();
     for ($i = 0; $i < 20; $i++) {
         $pass .= $str[rand() % strlen($str)];
     }
     $key = crypto($pass);
     // création du path
-    $path = $_SERVER["SCRIPT_FILENAME"];;
+    $path = $_SERVER["SCRIPT_FILENAME"]; ;
 
 
     $key_php[] = '<?php';
@@ -917,12 +979,12 @@ function calc_distance($a, $b, $type, $typeArrondi = true)
     }
     if ($typeArrondi) {
         if (abs($a - $b) < $max_type / 2) {
-            return abs($a - $b);//|a-b|
+            return abs($a - $b); //|a-b|
         } else {
             return abs(abs($a - $b) - $max_type); //||a-b| - base|
         }
     } else {
-        return abs($a - $b);//|a-b|
+        return abs($a - $b); //|a-b|
     }
 }
 
@@ -1075,21 +1137,21 @@ function booster_objets_tab($type = '')
         'Booster de deutérium en or', 'Booster de deutérium en argent', 'Booster de deutérium en bronze',
         'Extension planétaire en or', 'Extension planétaire en argent', 'Extension planétaire en bronze',
         'Extension lunaire en or', 'Extension lunaire en argent', 'Extension lunaire en bronze');
-    $objet_uuid = array('05294270032e5dc968672425ab5611998c409166',//'Booster de métal +30%'
-        'ba85cc2b8a5d986bbfba6954e2164ef71af95d4a',//'Booster de métal +20%'
-        'de922af379061263a56d7204d1c395cefcfb7d75',//'Booster de métal +10%'
-        '118d34e685b5d1472267696d1010a393a59aed03',//'Booster de cristal +30%'
-        '422db99aac4ec594d483d8ef7faadc5d40d6f7d3',//'Booster de cristal +20%'
-        '3c9f85221807b8d593fa5276cdf7af9913c4a35d',//'Booster de cristal +10%'
-        '5560a1580a0330e8aadf05cb5bfe6bc3200406e2',//'Booster de deutérium +30%'
-        'e4b78acddfa6fd0234bcb814b676271898b0dbb3',//'Booster de deutérium +20%'
-        'd9fa5f359e80ff4f4c97545d07c66dbadab1d1be',//'Booster de deutérium +10%'
-        '04e58444d6d0beb57b3e998edc34c60f8318825a',//'Extension planétaire +15'
-        '0e41524dc46225dca21c9119f2fb735fd7ea5cb3',//'Extension planétaire +9'
-        '16768164989dffd819a373613b5e1a52e226a5b0',//'Extension planétaire +4'
-        '05ee9654bd11a261f1ff0e5d0e49121b5e7e4401',//'Extension lunaire +6'
-        'c21ff33ba8f0a7eadb6b7d1135763366f0c4b8bf',//'Extension lunaire +4'
-        'be67e009a5894f19bbf3b0c9d9b072d49040a2cc');//'Extension lunaire +2'
+    $objet_uuid = array('05294270032e5dc968672425ab5611998c409166', //'Booster de métal +30%'
+        'ba85cc2b8a5d986bbfba6954e2164ef71af95d4a', //'Booster de métal +20%'
+        'de922af379061263a56d7204d1c395cefcfb7d75', //'Booster de métal +10%'
+        '118d34e685b5d1472267696d1010a393a59aed03', //'Booster de cristal +30%'
+        '422db99aac4ec594d483d8ef7faadc5d40d6f7d3', //'Booster de cristal +20%'
+        '3c9f85221807b8d593fa5276cdf7af9913c4a35d', //'Booster de cristal +10%'
+        '5560a1580a0330e8aadf05cb5bfe6bc3200406e2', //'Booster de deutérium +30%'
+        'e4b78acddfa6fd0234bcb814b676271898b0dbb3', //'Booster de deutérium +20%'
+        'd9fa5f359e80ff4f4c97545d07c66dbadab1d1be', //'Booster de deutérium +10%'
+        '04e58444d6d0beb57b3e998edc34c60f8318825a', //'Extension planétaire +15'
+        '0e41524dc46225dca21c9119f2fb735fd7ea5cb3', //'Extension planétaire +9'
+        '16768164989dffd819a373613b5e1a52e226a5b0', //'Extension planétaire +4'
+        '05ee9654bd11a261f1ff0e5d0e49121b5e7e4401', //'Extension lunaire +6'
+        'c21ff33ba8f0a7eadb6b7d1135763366f0c4b8bf', //'Extension lunaire +4'
+        'be67e009a5894f19bbf3b0c9d9b072d49040a2cc'); //'Extension lunaire +2'
     $objet_uuid_str = array('m:30:0', 'm:20:0', 'm:10:0', 'c:30:0', 'c:20:0', 'c:10:0', 'd:30:0', 'd:20:0', 'd:10:0', 'p:15', 'p:9', 'p:4', 'm:6', 'm:4', 'm:2');
     $objet_uuid_tab = array(array('booster_m', 30), array('booster_m', 20), array('booster_m', 10),
         array('booster_c', 30), array('booster_c', 20), array('booster_c', 10),
@@ -1178,11 +1240,11 @@ function booster_lire_date($str)
 
     if(preg_match("/(\d+)s.(\d+)j.(\d+)h/", $str, $matches))
     {
-       $time = ($matches[1]*604800 + $matches[2]* 86400 + $matches[3]*3600);
+        $time = ($matches[1]*604800 + $matches[2]* 86400 + $matches[3]*3600);
 
-    }elseif (preg_match("/(\d+)j.(\d+)h/", $str, $matches)){
+    } elseif (preg_match("/(\d+)j.(\d+)h/", $str, $matches)){
 
-       $time= ($matches[1]* 86400 + $matches[2]*3600);
+        $time= ($matches[1]* 86400 + $matches[2]*3600);
     }
 
     return $time;
@@ -1201,7 +1263,7 @@ function booster_decode($str = NULL, $boosters = NULL)
     if ($str) {
         $s = booster_objets_tab('separateur');
 
-        if (preg_match("/m:(\\d+):(\\d+)" . $s . "c:(\\d+):(\\d+)" . $s . "d:(\\d+):(\\d+)" . $s . "p:(\\d+)" . $s . "m:(\\d+)/", $str, $boosters) === 1 ) {
+        if (preg_match("/m:(\\d+):(\\d+)" . $s . "c:(\\d+):(\\d+)" . $s . "d:(\\d+):(\\d+)" . $s . "p:(\\d+)" . $s . "m:(\\d+)/", $str, $boosters) === 1) {
             $i = 1;
             return array('booster_m_val' => intval($boosters[$i++]), 'booster_m_date' => intval($boosters[$i++]),
                 'booster_c_val' => intval($boosters[$i++]), 'booster_c_date' => intval($boosters[$i++]),
@@ -1231,7 +1293,7 @@ function booster_encode($b = NULL)
         $str .= 'p:' . $b['extention_p'] . $separateur;
         $str .= 'm:' . $b['extention_m'];
     } else {
-        $str = booster_objets_tab('default_str');//"m:0:0_c:0:0_d:0:0_p:0_m:0";
+        $str = booster_objets_tab('default_str'); //"m:0:0_c:0:0_d:0:0_p:0_m:0";
     }
     return $str;
 }
@@ -1242,7 +1304,7 @@ function booster_encode($b = NULL)
  * @return objet sous format string de stockage ("m:0:0_c:0:0_d:0:0_p:0_m:0" si pas d'argument)
 */
 function booster_encodev($booster_m_val = 0, $booster_m_date = 0, $booster_c_val = 0, $booster_c_date = 0,
-                         $booster_d_val = 0, $booster_d_date = 0, $extention_p = 0, $extention_m = 0)
+                            $booster_d_val = 0, $booster_d_date = 0, $extention_p = 0, $extention_m = 0)
 {
     $separateur = booster_objets_tab('separateur');
     $str = '';

@@ -241,28 +241,28 @@ class Search_Criteria
      */
     public function isValid()
     {
-        if($this->galaxy_up != null || $this->galaxy_down != null) {
+        if ($this->galaxy_up != null || $this->galaxy_down != null) {
             if (!is_int($this->galaxy_up) || $this->galaxy_up < 1 || $this->galaxy_up > $this->server_config['num_of_galaxies'])
                 return false;
             if (!is_int($this->galaxy_down) || $this->galaxy_down < 1 || $this->galaxy_down > $this->server_config['num_of_galaxies'])
                 return false;
         }
-        if($this->system_up != null || $this->system_down != null) {
+        if ($this->system_up != null || $this->system_down != null) {
             if (!is_int($this->system_up) || $this->system_up < 1 || $this->system_up > $this->server_config['num_of_systems'])
                 return false;
             if (!is_int($this->system_down) || $this->system_down < 1 || $this->system_down > $this->server_config['num_of_systems'])
                 return false;
         }
-        if($this->row_down != null || $this->row_up != null) {
+        if ($this->row_down != null || $this->row_up != null) {
             if (!is_int($this->row_down) || $this->row_down < 1 || $this->row_down > 15)
                 return false;
             if (!is_int($this->row_up) || $this->row_up < 1 || $this->row_up > 15)
                 return false;
         }
 
-        if(!is_bool($this->is_moon))
+        if (!is_bool($this->is_moon))
             return false;
-        if(!is_bool($this->is_inactive))
+        if (!is_bool($this->is_inactive))
             return false;
 
         return true;

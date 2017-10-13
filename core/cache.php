@@ -30,7 +30,7 @@ function generate_config_cache()
     $configs = $configRepository->find_by();
 
     // Output config as PHP code
-    foreach($configs as $config)
+    foreach ($configs as $config)
         $output[$config['config_name']] = stripslashes($config['config_value']);
 
     $fh = @fopen('cache/cache_config.php', 'wb');
@@ -62,13 +62,13 @@ function generate_mod_cache()
     $mods = $modModel->find_by(array('active' => 1), array('position' => 'ASC', 'title' => 'ASC'));
 
     // On extrait les propriétés souhaitées
-    foreach($mods as $mod)
+    foreach ($mods as $mod)
     {
         $modExport[$mod['action']] = array('action' => $mod['action'],
-                                           'menu' => $mod['menu'],
-                                           'root' => $mod['root'],
-                                           'link' => $mod['link'],
-                                           'admin_only' => $mod['admin_only']
+                                            'menu' => $mod['menu'],
+                                            'root' => $mod['root'],
+                                            'link' => $mod['link'],
+                                            'admin_only' => $mod['admin_only']
         );
     }
 

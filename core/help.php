@@ -28,7 +28,7 @@ function help($key, $value = "", $prefixe = "")
 
     if (isset($help[$key])) {
         $value = $help[$key];
-    }else{
+    } else {
         $value = "Aide Introuvable";
     }
 

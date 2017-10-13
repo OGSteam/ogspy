@@ -26,13 +26,13 @@ class Mod_User_Config_Model
     {
         global $db;
         $request = "SELECT `config`, `value` FROM `" . TABLE_MOD_USER_CFG . "` WHERE `mod` = '" . $module . "' AND `user_id` = " . $user_id;
-        if($config != null)
+        if ($config != null)
             $request .= " AND `config` = '" . $config . "'";
 
         $queryResult = $db->sql_query($request);
 
         $values = array();
-        while($value = $db->sql_fetch_row($queryResult)) {
+        while ($value = $db->sql_fetch_row($queryResult)) {
             $values[$value[0]] = $value[1];
         }
 
@@ -50,12 +50,12 @@ class Mod_User_Config_Model
     {
         global $db;
         $query = "DELETE FROM `" . TABLE_MOD_USER_CFG . "` WHERE `mod` = '" . $module . "'";
-        if($user_id != null)
+        if ($user_id != null)
             $query .= " AND `user_id` = " . $user_id;
-        if($config != null)
+        if ($config != null)
             $query .= " AND `config` = '" . $config . "'";
 
-        if(!$db->sql_query($query))
+        if (!$db->sql_query($query))
             return false;
 
         return true;
@@ -75,7 +75,9 @@ class Mod_User_Config_Model
 
         $query = 'REPLACE INTO `' . TABLE_MOD_USER_CFG . '` VALUES ("' . $module . '", "' . $config . '", ' . $user_id . ',"' . $value . '")';
 
-        if (!$db->sql_query($query)) return false;
+        if (!$db->sql_query($query)) {
+            return false;
+        }
         return true;
     }
 }

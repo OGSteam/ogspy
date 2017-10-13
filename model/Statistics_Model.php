@@ -15,7 +15,7 @@ namespace Ogsteam\Ogspy\Model;
 
 class Statistics_Model
 {
-    public function add_user_connection(){
+    public function add_user_connection() {
         global $db;
         $request = "UPDATE " . TABLE_STATISTIC .
             " SET statistic_value = statistic_value + 1";
@@ -29,10 +29,10 @@ class Statistics_Model
 
     }
 
-    private function add_statistic_name($name){
+    private function add_statistic_name($name) {
         global $db;
         $request = "INSERT IGNORE INTO " . TABLE_STATISTIC .
-            " VALUES ('".$name."', '1')";
+            " VALUES ('" . $name . "', '1')";
         $db->sql_query($request);
     }
 

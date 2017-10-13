@@ -10,7 +10,7 @@
  *
  * usage
  * $idHtmlTable = "IDtABLE";     //html id from table
-  *$datatable = new \Ogsteam\Ogspy\datatable_js($idHtmlTable); // create object
+ *$datatable = new \Ogsteam\Ogspy\datatable_js($idHtmlTable); // create object
  * Enjoy
  *
  * More confirguration :
@@ -42,7 +42,7 @@
  *
  * cf. https://datatables.net/
  *
-  */
+ */
 
 namespace Ogsteam\Ogspy;
 
@@ -71,11 +71,11 @@ class datatable_js
         $this->tableId = $idHtmlTable;
 
         //default config
-        $this->enableFeatures(array("AutoWidth","Info", "LengthChange","Ordering","Paging","Searching"));
-        $this->disableFeatures(array("ScrollX","ScrollY"));
+        $this->enableFeatures(array("AutoWidth", "Info", "LengthChange", "Ordering", "Paging", "Searching"));
+        $this->disableFeatures(array("ScrollX", "ScrollY"));
         $this->setFormatNumber(true);
         $this->setPaginate(array(100, 500, 1000, -1));
-        $this->toggleVisibility= null;
+        $this->toggleVisibility = null;
 
     }
 
@@ -95,7 +95,7 @@ class datatable_js
         $script .= $this->getScriptPaginate();
         $script .= "        });\n";
 
-         $script .=  $this->getScriptToggleVis();
+            $script .=  $this->getScriptToggleVis();
         $script .= "    } );\n";
 
         $script .= "</script>\n";
@@ -122,18 +122,18 @@ class datatable_js
     }
 
 
-     public function setPaginate($arrayPages)
+        public function setPaginate($arrayPages)
         {
             $return = array();
             if (is_array($arrayPages))
             {
                 foreach ($arrayPages as $pages)
                 {
-                    $return[] = (int)$pages;
+                    $return[] = (int) $pages;
                 }
 
             }
-            $this->arrayPages= $return;
+            $this->arrayPages = $return;
         }
 
 
@@ -143,7 +143,7 @@ class datatable_js
      * @param $datatableToggleVis
      * @param $dataColumn
      */
-    public function toggleVisibility($datatableToggleVis , $dataColumn)
+    public function toggleVisibility($datatableToggleVis, $dataColumn)
     {
         $this->toggleVisibility = array(
             "datatableToggleVis" => $datatableToggleVis,
@@ -160,7 +160,7 @@ class datatable_js
     {
         // sera a approfondir
         $script = "";
-        if ($this->formatNumber["enable"] == true )
+        if ($this->formatNumber["enable"] == true)
         {
             $script .= "    \"columnDefs\": [\n";
             $script .= "        {\n";
@@ -179,10 +179,10 @@ class datatable_js
     private function getScriptToggleVis()
     {
         $script = "";
-        if(is_array($this->toggleVisibility))
+        if (is_array($this->toggleVisibility))
         {
             $script .= "\n";
-            $script .= "$('a.".$this->toggleVisibility["datatableToggleVis"]."').on( 'click', function (e) {\n";
+            $script .= "$('a." . $this->toggleVisibility["datatableToggleVis"] . "').on( 'click', function (e) {\n";
             $script .= "    e.preventDefault();\n";
             $script .= "    //switch <del></del>\n";
             $script .= "    if ( $(this).css('text-decoration') != 'line-through' )\n";
@@ -193,9 +193,9 @@ class datatable_js
             $script .= "    {\n";
             $script .= "        $(this).attr('style','none');\n";
             $script .= "    }\n";
-            $script .= "    var idColumn = $(this).attr('".$this->toggleVisibility["dataColumn"]."').split(\"|\");\n";
+            $script .= "    var idColumn = $(this).attr('" . $this->toggleVisibility["dataColumn"] . "').split(\"|\");\n";
             $script .= "    for (i = 0; i < idColumn.length; i++) {\n";
-            $script .= "        var column = ".$this->tableId.".column(idColumn[i]);\n";
+            $script .= "        var column = " . $this->tableId . ".column(idColumn[i]);\n";
             $script .= "        // Toggle the visibility\n";
             $script .= "        column.visible( ! column.visible() );\n";
             $script .= "        }\n";
@@ -208,16 +208,16 @@ class datatable_js
     }
 
     /**
-    * mise en place de la pagination
-    *
-    * @param $datatableToggleVis
-    * @param $dataColumn
-    */
+     * mise en place de la pagination
+     *
+     * @param $datatableToggleVis
+     * @param $dataColumn
+     */
 private function getScriptPaginate()
     {
 
         $script = "";
-        $script .=          "\"lengthMenu\": [[".implode(" , " , $this->arrayPages)."], [".implode(" , " , str_replace('-1', '"All"', $this->arrayPages))."]]"; //todo a faire gestion pagination
+        $script .= "\"lengthMenu\": [[" . implode(" , ", $this->arrayPages) . "], [" . implode(" , ", str_replace('-1', '"All"', $this->arrayPages)) . "]]"; //todo a faire gestion pagination
         return $script;
     }
 
@@ -240,25 +240,25 @@ private function getScriptPaginate()
 
         $script = "";
         $script .= "            \"language\": {\n";
-        $script .= "                \"sProcessing\":     \"".$lang['DATATABLE_JS_sProcessing']."\",\n";
-        $script .= "                \"sSearch\":         \"".$lang['DATATABLE_JS_sSearch']."\",\n";
-        $script .= "                \"sLengthMenu\":     \"".$lang['DATATABLE_JS_sLengthMenu']."\",\n";
-        $script .= "                \"sInfo\":           \"".$lang['DATATABLE_JS_sInfo']."\",\n";
-        $script .= "                \"sInfoEmpty\":      \"".$lang['DATATABLE_JS_sInfoEmpty']."\",\n";
-        $script .= "                \"sInfoFiltered\":   \"".$lang['DATATABLE_JS_sInfoFiltered']."\",\n";
-        $script .= "                \"sInfoPostFix\":    \"".$lang['DATATABLE_JS_sInfoPostFix']."\",\n";
-        $script .= "                \"sLoadingRecords\": \"".$lang['DATATABLE_JS_sLoadingRecords']."\",\n";
-        $script .= "                \"sZeroRecords\":    \"".$lang['DATATABLE_JS_sZeroRecords']."\",\n";
-        $script .= "                \"sEmptyTable\":     \"".$lang['DATATABLE_JS_sEmptyTable']."\",\n";
+        $script .= "                \"sProcessing\":     \"" . $lang['DATATABLE_JS_sProcessing'] . "\",\n";
+        $script .= "                \"sSearch\":         \"" . $lang['DATATABLE_JS_sSearch'] . "\",\n";
+        $script .= "                \"sLengthMenu\":     \"" . $lang['DATATABLE_JS_sLengthMenu'] . "\",\n";
+        $script .= "                \"sInfo\":           \"" . $lang['DATATABLE_JS_sInfo'] . "\",\n";
+        $script .= "                \"sInfoEmpty\":      \"" . $lang['DATATABLE_JS_sInfoEmpty'] . "\",\n";
+        $script .= "                \"sInfoFiltered\":   \"" . $lang['DATATABLE_JS_sInfoFiltered'] . "\",\n";
+        $script .= "                \"sInfoPostFix\":    \"" . $lang['DATATABLE_JS_sInfoPostFix'] . "\",\n";
+        $script .= "                \"sLoadingRecords\": \"" . $lang['DATATABLE_JS_sLoadingRecords'] . "\",\n";
+        $script .= "                \"sZeroRecords\":    \"" . $lang['DATATABLE_JS_sZeroRecords'] . "\",\n";
+        $script .= "                \"sEmptyTable\":     \"" . $lang['DATATABLE_JS_sEmptyTable'] . "\",\n";
         $script .= "                \"oPaginate\": {\n";
-        $script .= "                    \"sFirst\":      \"".$lang['DATATABLE_JS_sFirst']."\",\n";
-        $script .= "                    \"sPrevious\":   \"".$lang['DATATABLE_JS_sPrevious']."\",\n";
-        $script .= "                    \"sNext\":       \"".$lang['DATATABLE_JS_sNext']."\",\n";
-        $script .= "                    \"sLast\":       \"".$lang['DATATABLE_JS_sLast']."\"\n";
+        $script .= "                    \"sFirst\":      \"" . $lang['DATATABLE_JS_sFirst'] . "\",\n";
+        $script .= "                    \"sPrevious\":   \"" . $lang['DATATABLE_JS_sPrevious'] . "\",\n";
+        $script .= "                    \"sNext\":       \"" . $lang['DATATABLE_JS_sNext'] . "\",\n";
+        $script .= "                    \"sLast\":       \"" . $lang['DATATABLE_JS_sLast'] . "\"\n";
         $script .= "                    },\n";
         $script .= "                \"oAria\": {\n";
-        $script .= "                    \"sSortAscending\":  \"".$lang['DATATABLE_JS_sSortAscending']."\",\n";
-        $script .= "                    \"sSortDescending\": \"".$lang['DATATABLE_JS_sSortDescending']."\"\n";
+        $script .= "                    \"sSortAscending\":  \"" . $lang['DATATABLE_JS_sSortAscending'] . "\",\n";
+        $script .= "                    \"sSortDescending\": \"" . $lang['DATATABLE_JS_sSortDescending'] . "\"\n";
         $script .= "                    }\n";
         $script .= "            },\n";
         return $script;
@@ -266,12 +266,12 @@ private function getScriptPaginate()
 
     public function disableFeatures($names)
     {
-        $this ->setFeature($names,false);
+        $this ->setFeature($names, false);
     }
 
     public function enableFeatures($names)
     {
-        $this ->setFeature($names,true);
+        $this ->setFeature($names, true);
     }
 
     private function setFeature($data, $value)

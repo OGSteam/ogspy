@@ -24,26 +24,29 @@ require_once("views/page_header.php");
             <table>
                 <tr align="center">
                     <?php
-                    if (!isset($pub_subaction)) $subaction = "ogsteam";
-                    else $subaction = $pub_subaction;
+                    if (!isset($pub_subaction)) {
+                        $subaction = "ogsteam";
+                    } else {
+                        $subaction = $pub_subaction;
+                    }
 
                     if ($subaction != "ogsteam") {
                         echo "\t\t\t" . "<td class='c' width='150' onclick=\"window.location = 'index.php?action=about&amp;subaction=ogsteam';\">";
-                        echo "<a style='cursor:pointer'><span style=\"color: lime; \">" .$lang['ABOUT_TEAM']. "</span></a>";
+                        echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['ABOUT_TEAM'] . "</span></a>";
                         echo "</td>";
                     } else {
                         echo "\t\t\t" . "<th width='150'>";
-                        echo "<a>".$lang['ABOUT_TEAM']."</a>";
+                        echo "<a>" . $lang['ABOUT_TEAM'] . "</a>";
                         echo "</th>";
                     }
 
                     if ($subaction != "changelog") {
                         echo "\t\t\t" . "<td class='c' width='150' onclick=\"window.location = 'index.php?action=about&amp;subaction=changelog';\">";
-                        echo "<a style='cursor:pointer'><span style=\"color: lime; \">" .$lang['ABOUT_CHANGELOG']. "</span></a>";
+                        echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['ABOUT_CHANGELOG'] . "</span></a>";
                         echo "</td>";
                     } else {
                         echo "\t\t\t" . "<th width='150'>";
-                        echo "<a>".$lang['ABOUT_CHANGELOG']."</a>";
+                        echo "<a>" . $lang['ABOUT_CHANGELOG'] . "</a>";
                         echo "</th>";
                     }
                     ?>

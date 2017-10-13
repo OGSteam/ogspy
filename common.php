@@ -31,8 +31,10 @@ if (file_exists("config/id.php")) {
 } else {
     if (!defined("OGSPY_INSTALLED") && !defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS")) {
         header("Location: install/index.php?lang=fr");
-    } elseif (file_exists('../config/id.php')) require_once('../config/id.php');
-}
+    } elseif (file_exists('../config/id.php')) {
+        require_once('../config/id.php');
+    }
+    }
 
 //Appel des fonctions
 
@@ -65,8 +67,9 @@ foreach ($_POST as $secvalue) { check_postvalue($secvalue); }
 if (!isset($ui_lang)) { // Checks the ui_lang value from parameters file
     if (isset($pub_lang)) {
         $ui_lang = $pub_lang; //This value is used during installation
-    } else
-        $ui_lang = "fr";
+    } else {
+            $ui_lang = "fr";
+    }
     //If no language is available in id.php file we take fr by default
 }
 require_once("lang/lang_main.php");

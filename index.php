@@ -61,11 +61,12 @@ if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "log
             $api->authenticate_by_user($pub_login, $pub_password);
 
         } elseif (isset($pub_token) && isset($pub_data)) {
-            if($api->authenticate_by_token($pub_token) === true )
-
+            if($api->authenticate_by_token($pub_token) === true ) {
+            
                 $api->api_treat_command($pub_data);
+            }
         }
-    }else {
+    } else {
         if (preg_match("#^action=(.*)#", $_SERVER['QUERY_STRING'], $matches)) {
             $goto = $matches[1];
         }
@@ -338,14 +339,14 @@ switch ($pub_action) {
 
     //
     case "mod_up" :
-        $mod_factory_helper->mod_sort($pub_mod_id,"up");
+        $mod_factory_helper->mod_sort($pub_mod_id, "up");
         redirection("index.php?action=administration&subaction=mod");
         break;
 
 
     //
     case "mod_down" :
-        $mod_factory_helper->mod_sort($pub_mod_id,"down");
+        $mod_factory_helper->mod_sort($pub_mod_id, "down");
         redirection("index.php?action=administration&subaction=mod");
         break;
 
@@ -360,11 +361,19 @@ switch ($pub_action) {
 
     default:
         if ($server_config['open_user'] != "" && $user_data['user_admin'] != 1 && $user_data['user_coadmin'] != 1) {
-            if (file_exists($server_config['open_user'])) require_once($server_config['open_user']);
-            else require_once("views/galaxy.php");
+            if (file_exists($server_config['open_user'])) {
+                require_once($server_config['open_user']);
+            } else {
+                require_once("views/galaxy.php");
+            }
         } elseif ($server_config['open_admin'] != "" && ($user_data['user_admin'] == 1 || $user_data['user_coadmin'] == 1)) {
-            if (file_exists($server_config['open_admin'])) require_once($server_config['open_admin']);
-            else require_once("views/galaxy.php");
-        } else require_once("views/galaxy.php");
+            if (file_exists($server_config['open_admin'])) {
+                require_once($server_config['open_admin']);
+            } else {
+                require_once("views/galaxy.php");
+            }
+        } else {
+            require_once("views/galaxy.php");
+        }
         break;
 }

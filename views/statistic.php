@@ -131,10 +131,10 @@ require_once 'views/page_header.php';
     } while ($galaxy_up < intval($server_config['num_of_galaxies']));
 
     $legend = '<table width="225">';
-    $legend .= '<tr><td class="c" colspan="2" align="center" width="150">'.$lang['STATS_LEGEND'].'</td></tr>';
-    $legend .= '<tr><td class="c">'.$lang['STATS_KNOWN_PLANETS'].'</td><th><span style="color: lime; ">xx</span></th></tr>';
-    $legend .= '<tr><td class="c">'.$lang['STATS_FREE_PLANETS'].'</td><th><span style="color: orange; "><b>xx</b></span></th></tr>';
-    $legend .= '<tr><td class="c">'.$lang['STATS_UPDATED_PLANETS'].'</td><th style="color: lime; text-decoration: blink;"><b>xx</b></th></tr>';
+    $legend .= '<tr><td class="c" colspan="2" align="center" width="150">' . $lang['STATS_LEGEND'] . '</td></tr>';
+    $legend .= '<tr><td class="c">' . $lang['STATS_KNOWN_PLANETS'] . '</td><th><span style="color: lime; ">xx</span></th></tr>';
+    $legend .= '<tr><td class="c">' . $lang['STATS_FREE_PLANETS'] . '</td><th><span style="color: orange; "><b>xx</b></span></th></tr>';
+    $legend .= '<tr><td class="c">' . $lang['STATS_UPDATED_PLANETS'] . '</td><th style="color: lime; text-decoration: blink;"><b>xx</b></th></tr>';
     $legend .= '</table>';
 
     if (version_compare(phpversion(), '5.4.0', '>=')) {
@@ -160,7 +160,7 @@ require_once 'views/page_header.php';
 
     if ($user_data['user_admin'] == 1 || $user_data['user_coadmin'] == 1 || $user_data['management_user'] == 1) {
         echo '<tr align="right">';
-        echo '<td colspan="7"><a href="index.php?action=raz_ratio">'.$lang['STATS_RAZ'].'</a></td>';
+        echo '<td colspan="7"><a href="index.php?action=raz_ratio">' . $lang['STATS_RAZ'] . '</a></td>';
         echo '</tr>';
     }
 
@@ -183,20 +183,28 @@ require_once 'views/page_header.php';
     $result = $db->sql_query($query);
     list($planetimport, $spyimport, $rankimport, $search) = $db->sql_fetch_row($result);
 
-    if ($planetimport == 0) $planetimport = 1;
-    if ($spyimport == 0) $spyimport = 1;
-    if ($rankimport == 0) $rankimport = 1;
-    if ($search == 0) $search = 1;
+    if ($planetimport == 0) {
+        $planetimport = 1;
+    }
+    if ($spyimport == 0) {
+        $spyimport = 1;
+    }
+    if ($rankimport == 0) {
+        $rankimport = 1;
+    }
+    if ($search == 0) {
+        $search = 1;
+    }
 
     foreach ($user_statistic as $v) {
 
         $ratio_planet = $v['planet_added_xtense'] / $planetimport;
-        $ratio_spy = $v['spy_added_xtense']/ $spyimport;
+        $ratio_spy = $v['spy_added_xtense'] / $spyimport;
         $ratio_rank = $v['rank_added_xtense'] / $rankimport;
         $ratio = (3 * $ratio_planet + 2 * $ratio_spy + $ratio_rank) / 6;
 
         $ratio_planet_penality = $v['planet_added_xtense'] / $planetimport;
-        $ratio_spy_penality = $v['spy_added_xtense']  / $spyimport;
+        $ratio_spy_penality = $v['spy_added_xtense'] / $spyimport;
         $ratio_rank_penality = $v['rank_added_xtense'] / $rankimport;
         $ratio_penality = (3 * $ratio_planet_penality + 2 * $ratio_spy_penality + $ratio_rank_penality) / 6;
 

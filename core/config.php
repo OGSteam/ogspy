@@ -80,8 +80,11 @@ define("COOKIE_NAME", "ogspy_id");
 
 
 //Chemin d'accès aux ressources
-if (!defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS") && !defined("GRAPHIC")) define("PATH_LOG", "journal/");
-else define("PATH_LOG", "../journal/");
+if (!defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS") && !defined("GRAPHIC")) {
+    define("PATH_LOG", "journal/");
+} else {
+    define("PATH_LOG", "../journal/");
+}
 $path_log_today = PATH_LOG . date("ymd") . "/";
 if (!is_dir($path_log_today)) {
     mkdir($path_log_today);

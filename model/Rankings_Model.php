@@ -15,7 +15,7 @@ namespace Ogsteam\Ogspy\Model;
 abstract class Rankings_Model
 {
     /* Liste des Tables en BDD */
-    protected  $rank_tables ;
+    protected  $rank_tables;
     protected  $rank_tables_sql_table;
 
     /**
@@ -44,11 +44,11 @@ abstract class Rankings_Model
     /**
      * @param $rank_table
      */
-    public function get_rank_latest_table_date($rank_table){
+    public function get_rank_latest_table_date($rank_table) {
 
         global $db;
 
-        $request = "SELECT MAX(`datadate`) FROM `" .$rank_table . "`". " LIMIT 0,1";
+        $request = "SELECT MAX(`datadate`) FROM `" . $rank_table . "`" . " LIMIT 0,1";
         $result = $db->sql_query($request);
         list($max) = $db->sql_fetch_row($result);
         return $max;
@@ -82,14 +82,14 @@ abstract class Rankings_Model
      * @param int $lower_rank
      * @return array
      */
-    public function get_ranktable($rank_table, $datadate, $bydate = false, $higher_rank = 1, $lower_rank = 100){
+    public function get_ranktable($rank_table, $datadate, $bydate = false, $higher_rank = 1, $lower_rank = 100) {
 
         global $db;
-        $request  = "SELECT `".implode("`,`", $this->rank_tables_sql_table)."`";
+        $request  = "SELECT `" . implode("`,`", $this->rank_tables_sql_table) . "`";
         $request .= " FROM `" . $rank_table . "`";
-        if($bydate)
+        if ($bydate)
         {
-            $request .= " WHERE `datadate` = '".$datadate."'"." AND `rank` >= '".$higher_rank ."' AND `rank` <= '".$lower_rank."'";
+            $request .= " WHERE `datadate` = '" . $datadate . "'" . " AND `rank` >= '" . $higher_rank . "' AND `rank` <= '" . $lower_rank . "'";
 
         }
         $result = $db->sql_query($request);
