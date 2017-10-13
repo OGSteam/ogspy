@@ -28,19 +28,22 @@ class Mod_Config_Model
     {
         global $db;
         $request = "SELECT `value` FROM `" . TABLE_MOD_CFG . "` WHERE `mod` = '" . $module . "'";
-            if ($config != null)
-            $request .= " AND `config` = '" . $config . "'";
+            if ($config != null) {
+                        $request .= " AND `config` = '" . $config . "'";
+            }
 
         $queryResult = $db->sql_query($request);
 
         $values = array();
-        while ($value = $db->sql_fetch_row($queryResult))
-            $values[] = $value[0];
+        while ($value = $db->sql_fetch_row($queryResult)) {
+                    $values[] = $value[0];
+        }
 
-        if (count($values) == 1)
-            return $values[0];
-        else
-            return $values;
+        if (count($values) == 1) {
+                    return $values[0];
+        } else {
+                    return $values;
+        }
     }
 
     /**

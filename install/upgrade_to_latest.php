@@ -18,7 +18,9 @@ define("UPGRADE_IN_PROGRESS", true);
 
 require_once("../common.php");
 
-if (!isset($pub_verbose)) $pub_verbose = true;
+if (!isset($pub_verbose)) {
+    $pub_verbose = true;
+}
 
 
 if ($pub_verbose == true) {
@@ -53,113 +55,113 @@ $requests = array();
 $up_to_date = false;
 switch ($ogsversion) {
     case '3.1.0':
-        $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.1' WHERE config_name = 'version'";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.1.1' WHERE config_name = 'version'";
         // MODIF TABLE_USER
-        $requests[] = "ALTER TABLE `".TABLE_USER."` ADD `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP') AFTER `rank_added_ogs`"; // Type de barre utilisée par le user
-        $requests[] = "ALTER TABLE `".TABLE_USER."` ADD `xtense_version` VARCHAR(10) AFTER `xtense_type`"; // Type de barre utilisée par le user
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP') AFTER `rank_added_ogs`"; // Type de barre utilisée par le user
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `xtense_version` VARCHAR(10) AFTER `xtense_type`"; // Type de barre utilisée par le user
         
         // MODIF TABLE_RANK_PLAYER_MILITARY
-        $requests[] = "ALTER TABLE `".TABLE_RANK_PLAYER_MILITARY."` ADD `nb_spacecraft` int(11) NOT NULL default '0' AFTER `sender_id`"; // Ajout nombre de vaisseaux au classement militaire joueur
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY . "` ADD `nb_spacecraft` int(11) NOT NULL default '0' AFTER `sender_id`"; // Ajout nombre de vaisseaux au classement militaire joueur
                                                   
         // SUPPRESSIONS ANCIENS CLASSEMENTS : TABLE_RANK_PLAYER_FLEET, TABLE_RANK_PLAYER_RESEARCH, TABLE_RANK_ALLY_FLEET & TABLE_RANK_ALLY_RESEARCH
-        $requests[] = "DROP TABLE `".TABLE_RANK_PLAYER_FLEET."`"; 	// ancien classement flotte
-        $requests[] = "DROP TABLE `".TABLE_RANK_PLAYER_RESEARCH."`";// ancien classement recherche
-        $requests[] = "DROP TABLE `".TABLE_RANK_ALLY_FLEET."`";		// ancien classement flotte
-        $requests[] = "DROP TABLE `".TABLE_RANK_ALLY_RESEARCH."`";	// ancien classement recherche
-        $requests[] = "DROP TABLE `".TABLE_SPY."`";					// ancienne table des RE
-        $requests[] = "DROP TABLE `".TABLE_UNIVERSE_TEMPORARY."`";	// ancienne table temporaire univers		
+        $requests[] = "DROP TABLE `" . TABLE_RANK_PLAYER_FLEET . "`"; // ancien classement flotte
+        $requests[] = "DROP TABLE `" . TABLE_RANK_PLAYER_RESEARCH . "`"; // ancien classement recherche
+        $requests[] = "DROP TABLE `" . TABLE_RANK_ALLY_FLEET . "`"; // ancien classement flotte
+        $requests[] = "DROP TABLE `" . TABLE_RANK_ALLY_RESEARCH . "`"; // ancien classement recherche
+        $requests[] = "DROP TABLE `" . TABLE_SPY . "`"; // ancienne table des RE
+        $requests[] = "DROP TABLE `" . TABLE_UNIVERSE_TEMPORARY . "`"; // ancienne table temporaire univers		
 
         $ogsversion = '3.1.1';
 
         break;
     case '3.1.1':
-        $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.2' WHERE config_name = 'version'";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.1.2' WHERE config_name = 'version'";
         $ogsversion = '3.1.2';
 
         break;
     case '3.1.2':
-        $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` MODIFY `coordinates` VARCHAR(10)";
-        $requests[] = "ALTER TABLE `".TABLE_UNIVERSE."` MODIFY `phalanx` tinyint(1) NOT NULL default '0'";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` MODIFY `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP','ANDROID')";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` ADD `user_email` VARCHAR(50) NOT NULL default '' AFTER `user_password`";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` ADD `off_commandant` enum('0','1') NOT NULL default '0' AFTER `disable_ip_check`";
-        $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.1.3' WHERE config_name = 'version'";
+        $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` MODIFY `coordinates` VARCHAR(10)";
+        $requests[] = "ALTER TABLE `" . TABLE_UNIVERSE . "` MODIFY `phalanx` tinyint(1) NOT NULL default '0'";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` MODIFY `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP','ANDROID')";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `user_email` VARCHAR(50) NOT NULL default '' AFTER `user_password`";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `off_commandant` enum('0','1') NOT NULL default '0' AFTER `disable_ip_check`";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.1.3' WHERE config_name = 'version'";
         $ogsversion = '3.1.3';
         break;
     case '3.1.3':
-        $requests[] = "CREATE TABLE IF NOT EXISTS `".TABLE_GCM_USERS."` ( ".
-                        "`user_id` int(11) NOT NULL default '0',".
-                        "`gcm_regid` varchar(255) NOT NULL, ".
-                        "`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, ".
-                        "`version_android` varchar(50), ".
-                        "`version_ogspy` varchar(50), ".
-                        "`device` varchar(50), ".
-                        "PRIMARY KEY (`gcm_regid`) ".
+        $requests[] = "CREATE TABLE IF NOT EXISTS `" . TABLE_GCM_USERS . "` ( " .
+                        "`user_id` int(11) NOT NULL default '0'," .
+                        "`gcm_regid` varchar(255) NOT NULL, " .
+                        "`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, " .
+                        "`version_android` varchar(50), " .
+                        "`version_ogspy` varchar(50), " .
+                        "`device` varchar(50), " .
+                        "PRIMARY KEY (`gcm_regid`) " .
                         ") ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";					  
                       
         //Passage des tables en UTF-8
-        $requests[] = "ALTER TABLE ".TABLE_CONFIG." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_GROUP." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_SESSIONS." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_STATISTIC." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_UNIVERSE." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_USER." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_USER_BUILDING." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_USER_DEFENCE." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_USER_FAVORITE." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_USER_GROUP." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_USER_SPY." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_USER_TECHNOLOGY." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_MOD." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_MOD_CFG." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_PARSEDSPY." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_PARSEDRC." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_PARSEDRCROUND." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_ROUND_ATTACK." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_ROUND_DEFENSE." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_PLAYER_POINTS." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_PLAYER_ECO." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_PLAYER_TECHNOLOGY." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_PLAYER_MILITARY." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_PLAYER_MILITARY_BUILT." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_PLAYER_MILITARY_LOOSE." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_PLAYER_MILITARY_DESTRUCT." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_PLAYER_HONOR." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_POINTS." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_ECO." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_TECHNOLOGY." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_MILITARY." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_MILITARY_BUILT." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_MILITARY_LOOSE." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_MILITARY_DESTRUCT." CONVERT TO CHARACTER SET utf8";
-        $requests[] = "ALTER TABLE ".TABLE_RANK_ALLY_HONOR." CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_CONFIG . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_GROUP . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_SESSIONS . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_STATISTIC . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_UNIVERSE . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_USER . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_USER_BUILDING . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_USER_DEFENCE . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_USER_FAVORITE . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_USER_GROUP . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_USER_SPY . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_USER_TECHNOLOGY . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_MOD . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_MOD_CFG . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDSPY . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRC . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRCROUND . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_ROUND_ATTACK . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_ROUND_DEFENSE . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_POINTS . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_ECO . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_TECHNOLOGY . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_MILITARY . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_MILITARY_BUILT . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_HONOR . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_POINTS . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_ECO . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_TECHNOLOGY . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_MILITARY . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_MILITARY_BUILT . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_MILITARY_LOOSE . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " CONVERT TO CHARACTER SET utf8";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_HONOR . " CONVERT TO CHARACTER SET utf8";
         
-        $requests[] = "ALTER TABLE ".TABLE_USER_BUILDING." ADD `boosters` VARCHAR(64) NOT NULL default 'm:0:0_c:0:0_d:0:0_p:0_m:0' AFTER `fields`";
-        $requests[] = "ALTER TABLE ".TABLE_PARSEDRC." MODIFY `pertes_A` BIGINT";
-        $requests[] = "ALTER TABLE ".TABLE_PARSEDRC." MODIFY `pertes_D` BIGINT";
-        $requests[] = "ALTER TABLE ".TABLE_PARSEDRC." MODIFY `gain_M` BIGINT";
-        $requests[] = "ALTER TABLE ".TABLE_PARSEDRC." MODIFY `gain_C` BIGINT";
-        $requests[] = "ALTER TABLE ".TABLE_PARSEDRC." MODIFY `gain_D` BIGINT";
-        $requests[] = "ALTER TABLE ".TABLE_PARSEDRC." MODIFY `debris_M` BIGINT";
-        $requests[] = "ALTER TABLE ".TABLE_PARSEDRC." MODIFY `debris_C` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_USER_BUILDING . " ADD `boosters` VARCHAR(64) NOT NULL default 'm:0:0_c:0:0_d:0:0_p:0_m:0' AFTER `fields`";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRC . " MODIFY `pertes_A` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRC . " MODIFY `pertes_D` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRC . " MODIFY `gain_M` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRC . " MODIFY `gain_C` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRC . " MODIFY `gain_D` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRC . " MODIFY `debris_M` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRC . " MODIFY `debris_C` BIGINT";
                 
-        $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.2.0' WHERE config_name = 'version'";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.2.0' WHERE config_name = 'version'";
         $ogsversion = '3.2.0';
         break;
 
     case '3.2.0':
-        $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.0' WHERE config_name = 'version'";
-        $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` DROP `CM`";
-        $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` DROP `CC`";
-        $requests[] = "ALTER TABLE `".TABLE_USER_BUILDING."` DROP `CD`";
-        $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY."` DROP `CM`";
-        $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY."` DROP `CC`";
-        $requests[] = "ALTER TABLE `".TABLE_PARSEDSPY."` DROP `CD`";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.0' WHERE config_name = 'version'";
+        $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` DROP `CM`";
+        $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` DROP `CC`";
+        $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` DROP `CD`";
+        $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` DROP `CM`";
+        $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` DROP `CC`";
+        $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` DROP `CD`";
         $ogsversion = '3.3.0';
         break;
 
     case '3.3.0':
-        $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.1' WHERE config_name = 'version'";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.1' WHERE config_name = 'version'";
         $requests[] = "ALTER TABLE `" . TABLE_UNIVERSE . "` MODIFY `galaxy` smallint(2)";
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` MODIFY `user_galaxy` smallint(2)";
         $requests[] = "ALTER TABLE `" . TABLE_USER_FAVORITE . "` MODIFY `galaxy` smallint(2)";
@@ -167,15 +169,15 @@ switch ($ogsversion) {
         break;
 
         case '3.3.1':
-        $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.3.2' WHERE config_name = 'version'";
-        $requests[] = "ALTER TABLE `".TABLE_USER."` MODIFY `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP','ANDROID')";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.2' WHERE config_name = 'version'";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` MODIFY `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP','ANDROID')";
         $ogsversion = '3.3.2';
             break;
 
     case '3.4.0':
-        $requests[] = "UPDATE ".TABLE_CONFIG." SET config_value = '3.4.0' WHERE config_name = 'version'";
-        $requests[] = "DROP TABLE `".TABLE_GCM_USERS."`";
-        $requests[] = "CREATE TABLE IF NOT EXISTS `" .TABLE_MOD_USER_CFG . "` (
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.4.0' WHERE config_name = 'version'";
+        $requests[] = "DROP TABLE `" . TABLE_GCM_USERS . "`";
+        $requests[] = "CREATE TABLE IF NOT EXISTS `" . TABLE_MOD_USER_CFG . "` (
 	                    `mod` VARCHAR(50) NOT NULL,
 	                    `config` VARCHAR(255) NOT NULL,
 	                    `user_id` INT(10) NOT NULL,
@@ -225,8 +227,7 @@ if ($pub_verbose == true) {
 if ($up_to_date) {
     echo "\t" . "<b><i>Pensez à supprimer le dossier 'install'</i></b><br>" . "\n";
     echo "\t" . "<br><a href='../index.php'>Retour</a>" . "\n";
-}
-else {
+} else {
     echo "\t" . "<br><font color='orange'><b>Cette version n'est pas la dernière en date, veuillez relancer le script</font><br>" . "\n";
     echo "\t" . "<a href=''>Recommencer l'opération</a>" . "\n";
 }

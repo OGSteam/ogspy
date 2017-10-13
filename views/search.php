@@ -174,14 +174,26 @@ require_once("views/page_header.php");
                         <th colspan="2">
                             <select name="type_search">
                                 <?php
-                                if (isset($type_search) && $type_search == "colonization") echo "\t\t\t\t\t" . "<option value='colonization' selected>" . $lang['SEARCH_EMPTY_PLANETS'] . "</option>";
-                                else echo "\t\t\t\t\t" . "<option value='colonization'>" . $lang['SEARCH_EMPTY_PLANETS'] . "</option>";
-                                if (isset($type_search) && $type_search == "moon") echo "\t\t\t\t\t" . "<option value='moon' selected>" . $lang['SEARCH_MOONS'] . "</option>";
-                                else echo "\t\t\t\t\t" . "<option value='moon'>" . $lang['SEARCH_MOONS'] . "</option>";
-                                if (isset($type_search) && $type_search == "away") echo "\t\t\t\t\t" . "<option value='away' selected>" . $lang['SEARCH_INACTIVEPLAYERS'] . "</option>";
-                                else echo "\t\t\t\t\t" . "<option value='away'>" . $lang['SEARCH_INACTIVEPLAYERS'] . "</option>";
-                                if (isset($type_search) && $type_search == "spy") echo "\t\t\t\t\t" . "<option value='spy' selected>" . $lang['SEARCH_PLANETS_SPYED'] . "</option>";
-                                else echo "\t\t\t\t\t" . "<option value='spy'>" . $lang['SEARCH_PLANETS_SPYED'] . "</option>";
+                                if (isset($type_search) && $type_search == "colonization") {
+                                    echo "\t\t\t\t\t" . "<option value='colonization' selected>" . $lang['SEARCH_EMPTY_PLANETS'] . "</option>";
+                                } else {
+                                    echo "\t\t\t\t\t" . "<option value='colonization'>" . $lang['SEARCH_EMPTY_PLANETS'] . "</option>";
+                                }
+                                if (isset($type_search) && $type_search == "moon") {
+                                    echo "\t\t\t\t\t" . "<option value='moon' selected>" . $lang['SEARCH_MOONS'] . "</option>";
+                                } else {
+                                    echo "\t\t\t\t\t" . "<option value='moon'>" . $lang['SEARCH_MOONS'] . "</option>";
+                                }
+                                if (isset($type_search) && $type_search == "away") {
+                                    echo "\t\t\t\t\t" . "<option value='away' selected>" . $lang['SEARCH_INACTIVEPLAYERS'] . "</option>";
+                                } else {
+                                    echo "\t\t\t\t\t" . "<option value='away'>" . $lang['SEARCH_INACTIVEPLAYERS'] . "</option>";
+                                }
+                                if (isset($type_search) && $type_search == "spy") {
+                                    echo "\t\t\t\t\t" . "<option value='spy' selected>" . $lang['SEARCH_PLANETS_SPYED'] . "</option>";
+                                } else {
+                                    echo "\t\t\t\t\t" . "<option value='spy'>" . $lang['SEARCH_PLANETS_SPYED'] . "</option>";
+                                }
                                 ?>
                             </select>
                         </th>
@@ -531,7 +543,9 @@ require_once("views/page_header.php");
                     echo "\t\t\t" . "<select name='page' onchange='this.form.submit();' onkeyup='this.form.submit();'>" . "\n";
                     for ($i = 1; $i <= $total_page; $i++) {
                         $selected = "";
-                        if ($i == $page) $selected = "selected";
+                        if ($i == $page) {
+                            $selected = "selected";
+                        }
                         echo "\t\t\t" . "<option value='" . $i . "' " . $selected . ">" . $lang['SEARCH_PAGE'] . " " . $i . "</option>" . "\n";
                     }
                     echo "\t\t\t" . "</select>";
@@ -571,11 +585,17 @@ if ($type_search == "ally" || $type_search == "player") {
             <td class="c" colspan="2"><?php echo($lang['SEARCH_RANK_MILITARY_DESTROYED']); ?></td>
             <td class="c" colspan="2"><?php echo($lang['SEARCH_RANK_MILITARY_HONOR']); ?></td>
 
-            <?php if ($type_search == "ally") echo "<td class=\"c\">" . $lang['SEARCH_NBMEMBERS'] . "</td>"; ?>
+            <?php if ($type_search == "ally") {
+    echo "<td class=\"c\">" . $lang['SEARCH_NBMEMBERS'] . "</td>";
+}
+?>
         </tr>
         <?php
-        if ($type_search == "ally") $individual_ranking = galaxy_show_ranking_unique_ally($string_search);
-        else $individual_ranking = galaxy_show_ranking_unique_player($string_search);
+        if ($type_search == "ally") {
+            $individual_ranking = galaxy_show_ranking_unique_ally($string_search);
+        } else {
+            $individual_ranking = galaxy_show_ranking_unique_player($string_search);
+        }
         while ($ranking = current($individual_ranking)) {
 
             $datadate = strftime("%d %b %Y %H:%M", key($individual_ranking));
