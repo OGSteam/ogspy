@@ -64,8 +64,9 @@ class Combat_Report_Model
         $rounds = array();
         $query = 'SELECT id_rcround, id_rc, numround, attaque_tir, attaque_puissance, attaque_bouclier, defense_tir, defense_puissance, defense_bouclier FROM ' . TABLE_PARSEDRCROUND . ' WHERE id_rc = ' . $id_rc . ' ORDER BY numround';
         $result_round = $db->sql_query($query);
-        while ($round = $db->sql_fetch_assoc($result_round))
-            $rounds[] = $round;
+        while ($round = $db->sql_fetch_assoc($result_round)) {
+                    $rounds[] = $round;
+        }
         $report['rounds'] = $rounds;
 
 

@@ -302,70 +302,70 @@ class Universe_Model
                     "    ON `last_update_user_id` = `user_id`";
 
         $where = "";
-        if($criteria->getPlayerName() != null) {
-            if($where != "") {
+        if ($criteria->getPlayerName() != null) {
+            if ($where != "") {
                             $where .= " AND ";
             }
             $where .= " `player` LIKE '" . $db->sql_escape_string($criteria->getPlayerName()) . "'";
         }
 
-        if($criteria->getAllyName() != null) {
-            if($where != "") {
+        if ($criteria->getAllyName() != null) {
+            if ($where != "") {
                             $where .= " AND ";
             }
             $where .= " `ally` LIKE '" . $db->sql_escape_string($criteria->getAllyName()) . "'";
         }
 
-        if($criteria->getPlanetName() != null)
+        if ($criteria->getPlanetName() != null)
         {
-            if($where != "") {
+            if ($where != "") {
                             $where .= " AND ";
             }
             $where .= " `name` LIKE '" . $db->sql_escape_string($criteria->getPlanetName()) . "'";
         }
 
-        if($criteria->getGalaxyDown() != null && $criteria->getGalaxyUp() != null)
+        if ($criteria->getGalaxyDown() != null && $criteria->getGalaxyUp() != null)
         {
-            if($where != "") {
+            if ($where != "") {
                             $where .= " AND ";
             }
             $where .= " `galaxy` BETWEEN " . $criteria->getGalaxyDown() . " AND " . $criteria->getGalaxyUp();
         }
 
-        if($criteria->getSystemDown() != null && $criteria->getSystemUp() != null)
+        if ($criteria->getSystemDown() != null && $criteria->getSystemUp() != null)
         {
-            if($where != "") {
+            if ($where != "") {
                             $where .= " AND ";
             }
             $where .= " `system` BETWEEN " . $criteria->getSystemDown() . " AND " . $criteria->getSystemUp();
         }
 
-        if($criteria->getRowDown() != null && $criteria->getRowUp() != null)
+        if ($criteria->getRowDown() != null && $criteria->getRowUp() != null)
         {
-            if($where != "") {
+            if ($where != "") {
                             $where .= " AND ";
             }
             $where .= " `row` BETWEEN " . $criteria->getRowDown() . " AND " . $criteria->getRowUp();
         }
 
-        if($criteria->getIsMoon())
+        if ($criteria->getIsMoon())
         {
-            if($where != "") {
+            if ($where != "") {
                             $where .= " AND ";
             }
             $where .= " `moon` = 1";
         }
 
-        if($criteria->getIsInactive())
+        if ($criteria->getIsInactive())
         {
-            if($where != "") {
+            if ($where != "") {
                             $where .= " AND ";
             }
             $where .= " `status` LIKE ('%i%')";
         }
 
         $query = $select . $request;
-        if($where != "") {
+        if ($where != "") {
                     $query .= " WHERE " . $where;
         }
 
@@ -387,7 +387,7 @@ class Universe_Model
         $query .= " LIMIT $start, $number";
 
         $queryCount = "SELECT count(*) " . $request;
-        if($where != "") {
+        if ($where != "") {
                     $queryCount .= " WHERE " . $where;
         }
         $result = $db->sql_query($queryCount);

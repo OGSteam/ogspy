@@ -86,8 +86,9 @@ class Mod_Model
     public function add(array $mod)
     {
         global $db;
-        if ($mod == null || count($mod) != 9)
-            throw new \Exception('Invalid parameter');
+        if ($mod == null || count($mod) != 9) {
+                    throw new \Exception('Invalid parameter');
+        }
 
         // On vérifie le nombre de valeur de l'explode
         $query = "INSERT INTO " . TABLE_MOD . " (title, menu, action, root, link, version, position, active,admin_only) VALUES (

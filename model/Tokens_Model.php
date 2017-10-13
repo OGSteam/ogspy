@@ -53,10 +53,11 @@ class Tokens_Model
         $request = "SELECT `token_id` FROM " . TABLE_TOKENS . " WHERE `token_user_id`= " . $token_user_id;
         $result = $db->sql_query($request);
 
-        if ($db->sql_numrows($result) > 0)
-            list($token_id) = $db->sql_fetch_row($result);
-        else
-            $token_id = null;
+        if ($db->sql_numrows($result) > 0) {
+                    list($token_id) = $db->sql_fetch_row($result);
+        } else {
+                    $token_id = null;
+        }
 
         return $token_id;
     }

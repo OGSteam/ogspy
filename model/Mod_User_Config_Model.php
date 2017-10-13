@@ -26,8 +26,9 @@ class Mod_User_Config_Model
     {
         global $db;
         $request = "SELECT `config`, `value` FROM `" . TABLE_MOD_USER_CFG . "` WHERE `mod` = '" . $module . "' AND `user_id` = " . $user_id;
-        if ($config != null)
-            $request .= " AND `config` = '" . $config . "'";
+        if ($config != null) {
+                    $request .= " AND `config` = '" . $config . "'";
+        }
 
         $queryResult = $db->sql_query($request);
 
@@ -50,13 +51,16 @@ class Mod_User_Config_Model
     {
         global $db;
         $query = "DELETE FROM `" . TABLE_MOD_USER_CFG . "` WHERE `mod` = '" . $module . "'";
-        if ($user_id != null)
-            $query .= " AND `user_id` = " . $user_id;
-        if ($config != null)
-            $query .= " AND `config` = '" . $config . "'";
+        if ($user_id != null) {
+                    $query .= " AND `user_id` = " . $user_id;
+        }
+        if ($config != null) {
+                    $query .= " AND `config` = '" . $config . "'";
+        }
 
-        if (!$db->sql_query($query))
-            return false;
+        if (!$db->sql_query($query)) {
+                    return false;
+        }
 
         return true;
     }

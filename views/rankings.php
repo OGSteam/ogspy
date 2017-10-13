@@ -91,8 +91,11 @@ $datatable->setPaginate(array(100, 500, 1000, -1));
             <?php $colspan = 2; ?>
             <th rowspan="2" class="c"><?php echo  $lang['RANK_PLAYER']?></th>
             <th rowspan="2" class="c"><?php echo  $lang['RANK_ALLY']?></th>
-        <?php else : ?>
-            <?php $colspan = 3; ?>
+        <?php else {
+    : ?>
+            <?php $colspan = 3;
+}
+?>
             <th rowspan="2" class="c"><?php echo  $lang['RANK_ALLY']?></th>
             <th rowspan="2" class="c"><?php echo  $lang['RANK_MEMBER']?></th>
         <?php endif; ?>

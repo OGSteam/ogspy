@@ -95,7 +95,7 @@ class datatable_js
         $script .= $this->getScriptPaginate();
         $script .= "        });\n";
 
-            $script .=  $this->getScriptToggleVis();
+            $script .= $this->getScriptToggleVis();
         $script .= "    } );\n";
 
         $script .= "</script>\n";

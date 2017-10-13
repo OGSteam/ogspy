@@ -26,7 +26,9 @@ class User_Model
     public function select_user_login($login, $password, $salt = false)
     {
         global $db;
-        if ($salt === false) $password = Ogspy\crypto($password);
+        if ($salt === false) {
+            $password = Ogspy\crypto($password);
+        }
 
         $request = "SELECT `user_id`, `user_active` FROM " . TABLE_USER . " WHERE `user_name` = '" . $db->sql_escape_string($login) . "' AND `user_password` = '" . $password . "'";
         $result = $db->sql_query($request);
@@ -342,7 +344,7 @@ class User_Model
      * @param $user_id
      * @param $value boolean 1/0
      */
-    public function set_user_coadmin ($user_id, $value)
+    public function set_user_coadmin($user_id, $value)
     {
         global $db;
         $request = "UPDATE " . TABLE_USER . " SET `user_coadmin` = '" . $value . "' WHERE `user_id` = " . $user_id;

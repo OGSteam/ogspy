@@ -341,15 +341,28 @@ function member_user_set()
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudolocked&info");
     }
 
-    if (is_null($pub_disable_ip_check) || $pub_disable_ip_check != 1)
-        $pub_disable_ip_check = 0;
+    if (is_null($pub_disable_ip_check) || $pub_disable_ip_check != 1) {
+            $pub_disable_ip_check = 0;
+    }
 
-    if (isset($pub_pseudo)) $data_user->set_user_pseudo($user_id, $pub_pseudo);
-    if (isset($pub_new_password)) $data_user->set_user_password($user_id, $pub_new_password);
-    if (isset($pub_pesudo_email)) $data_user->set_user_email($user_id, $pub_pesudo_email);
-    if (isset($pub_galaxy)) $data_user->set_user_default_galaxy($user_id, $pub_galaxy);
-    if (isset($pub_system)) $data_user->set_user_default_system($user_id, $pub_system);
-    if (isset($pub_disable_ip_check)) $data_user->set_user_ip_check($user_id, $pub_disable_ip_check);
+    if (isset($pub_pseudo)) {
+        $data_user->set_user_pseudo($user_id, $pub_pseudo);
+    }
+    if (isset($pub_new_password)) {
+        $data_user->set_user_password($user_id, $pub_new_password);
+    }
+    if (isset($pub_pesudo_email)) {
+        $data_user->set_user_email($user_id, $pub_pesudo_email);
+    }
+    if (isset($pub_galaxy)) {
+        $data_user->set_user_default_galaxy($user_id, $pub_galaxy);
+    }
+    if (isset($pub_system)) {
+        $data_user->set_user_default_system($user_id, $pub_system);
+    }
+    if (isset($pub_disable_ip_check)) {
+        $data_user->set_user_ip_check($user_id, $pub_disable_ip_check);
+    }
 
     redirection("index.php?action=profile");
 }
@@ -1151,7 +1164,9 @@ function usergroup_get($group_id = false)
         $info_usergroup = $data_group->get_group_rights($group_id);
     }
 
-    if (sizeof($info_usergroup) == 0) return false;
+    if (sizeof($info_usergroup) == 0) {
+        return false;
+    }
 
     return $info_usergroup;
 }

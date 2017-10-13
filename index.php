@@ -61,7 +61,7 @@ if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "log
             $api->authenticate_by_user($pub_login, $pub_password);
 
         } elseif (isset($pub_token) && isset($pub_data)) {
-            if($api->authenticate_by_token($pub_token) === true ) {
+            if ($api->authenticate_by_token($pub_token) === true) {
             
                 $api->api_treat_command($pub_data);
             }

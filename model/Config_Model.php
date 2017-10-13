@@ -24,17 +24,19 @@ class Config_Model
     {
         global $db;
 
-        if ($filter == null)
-            $filter = array();
+        if ($filter == null) {
+                    $filter = array();
+        }
 
         $query = "SELECT config_name, config_value FROM " . TABLE_CONFIG;
 
         $i = 0;
         foreach ($filter as $key => $value) {
-            if ($i == 0)
-                $query .= " WHERE ";
-            else
-                $query .= " AND ";
+            if ($i == 0) {
+                            $query .= " WHERE ";
+            } else {
+                            $query .= " AND ";
+            }
 
             $query .= "`" . $db->sql_escape_string($key) . "` = '" . $db->sql_escape_string($value) . "'";
             $i++;
