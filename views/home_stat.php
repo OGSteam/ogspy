@@ -321,8 +321,9 @@ if ($player_comp != "" && isset($player_comp)): ?>
     $title = $lang['HOME_STATS_GRAPHIC_TITLE'];
     if (!empty($user_data["user_stat_name"])) {
         $title .= " " . $lang['HOME_STATS_GRAPHIC_TITLE2'] . " " . $user_data["user_stat_name"];
-        if (!empty($last_date["general"]))
-            $title .= " " . $lang['HOME_STATS_GRAPHIC_FROM'] . " " . strftime("%d %b %Y %H:%M", $last_date["general"]);
+        if (!empty($last_date["general"])) {
+                    $title .= " " . $lang['HOME_STATS_GRAPHIC_FROM'] . " " . strftime("%d %b %Y %H:%M", $last_date["general"]);
+        }
     }
     echo "<tr><td class='c' colspan='2'>" . $lang['HOME_STATS_GRAPHIC_DIVERS'] . " " . help(null, $title) . "</td></tr>";
 

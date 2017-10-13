@@ -30,8 +30,9 @@ function generate_config_cache()
     $configs = $configRepository->find_by();
 
     // Output config as PHP code
-    foreach ($configs as $config)
-        $output[$config['config_name']] = stripslashes($config['config_value']);
+    foreach ($configs as $config) {
+            $output[$config['config_name']] = stripslashes($config['config_value']);
+    }
 
     $fh = @fopen('cache/cache_config.php', 'wb');
     if (!$fh) {

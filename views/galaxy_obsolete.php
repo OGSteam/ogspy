@@ -44,31 +44,59 @@ require_once("views/page_header.php");
                 <th colspan="2">
                     <select name="perimeter">
                         <?php
-                        for ($i = 1; $i <= intval($server_config['num_of_galaxies']); $i++)
-                            print "<option value=\"$i\"" . ($perimeter == $i ? ' selected' : '') . ">Galaxie $i</option>";
+                        for ($i = 1; $i <= intval($server_config['num_of_galaxies']); $i++) {
+                                                    print "<option value=\"$i\"" . ($perimeter == $i ? ' selected' : '') . ">Galaxie $i</option>";
+                        }
                         ?>
-                        <option value="0" <?php if ($perimeter == 0) echo "selected"; ?>><?php echo($lang['GALAXY_OLD_ALL']); ?></option>
+                        <option value="0" <?php if ($perimeter == 0) {
+    echo "selected";
+}
+?>><?php echo($lang['GALAXY_OLD_ALL']); ?></option>
                     </select>
                     &nbsp;&nbsp;
                     <?php echo($lang['GALAXY_OLD_SINCE']); ?>
                     &nbsp;&nbsp;
                     <select name="since">
-                        <option value="56" <?php if ($since == 56) echo "selected"; ?>>8 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
-                        <option value="42" <?php if ($since == 42) echo "selected"; ?>>6 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
-                        <option value="28" <?php if ($since == 28) echo "selected"; ?>>4 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
-                        <option value="21" <?php if ($since == 21) echo "selected"; ?>>3 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
-                        <option value="14" <?php if ($since == 14) echo "selected"; ?>>2 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
-                        <option value="7" <?php if ($since == 7) echo "selected"; ?>>1 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="56" <?php if ($since == 56) {
+    echo "selected";
+}
+?>>8 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="42" <?php if ($since == 42) {
+    echo "selected";
+}
+?>>6 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="28" <?php if ($since == 28) {
+    echo "selected";
+}
+?>>4 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="21" <?php if ($since == 21) {
+    echo "selected";
+}
+?>>3 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="14" <?php if ($since == 14) {
+    echo "selected";
+}
+?>>2 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="7" <?php if ($since == 7) {
+    echo "selected";
+}
+?>>1 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
                     </select>
                     &nbsp;&nbsp;
                 </th>
             </tr>
             <tr>
                 <th width="50%"><input type="radio" name="typesearch"
-                                       value="P" <?php if ($typesearch == "P") echo "checked"; ?>> <?php echo($lang['GALAXY_OLD_DISPLAYPLANETS']); ?>
+                                       value="P" <?php if ($typesearch == "P") {
+    echo "checked";
+}
+?>> <?php echo($lang['GALAXY_OLD_DISPLAYPLANETS']); ?>
                 </th>
                 <th width="50%"><input type="radio" name="typesearch"
-                                       value="M" <?php if ($typesearch == "M") echo "checked"; ?>> <?php echo($lang['GALAXY_OLD_DISPLAYMOONS']); ?>
+                                       value="M" <?php if ($typesearch == "M") {
+    echo "checked";
+}
+?>> <?php echo($lang['GALAXY_OLD_DISPLAYMOONS']); ?>
                 </th>
             </tr>
             <tr>

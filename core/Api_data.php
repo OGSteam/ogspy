@@ -51,15 +51,15 @@ class Api_data
      * @param $token
      * @return bool
      */
-    public function authenticate_by_token($token){
+    public function authenticate_by_token($token) {
 
         $data_token = new Tokens_Model();
         $user_id = $data_token->get_userid_from_token($token);
-        if($user_id !== false){
+        if ($user_id !== false) {
             $this->authenticated_token = $token;
             $this->user_id_token = $user_id;
             return true;
-        } else{
+        } else {
             $feedback = array('status' => 'error_auth');
             $this->send_response($feedback);
         }

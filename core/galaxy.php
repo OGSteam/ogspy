@@ -681,10 +681,14 @@ function galaxy_show_ranking($model, $ranking_table, $date = null)
     //Récupération de la dernière date de classement
     if ($date == null) {
         $last_ranking = $data_rankings->get_rank_latest_table_date($ranking_table);
-    } else
-        $last_ranking = $pub_date;
+    } else {
+            $last_ranking = $pub_date;
+    }
 
-    if ($last_ranking == null) return -1; // Pas de classement disponible
+    if ($last_ranking == null) {
+        return -1;
+    }
+    // Pas de classement disponible
 
     $ranking = $data_rankings->get_all_ranktable_bydate($last_ranking, 1, 99999);
 
