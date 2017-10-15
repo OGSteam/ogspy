@@ -51,16 +51,13 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 
-class datatable_js
+class Datatable_js
 {
-
-
     private $tableId = '';
     private $features;
     private $formatNumber;
     private $toggleVisibility;
     private $arrayPages;
-
 
     /**
      * datatable_js constructor.
@@ -212,6 +209,7 @@ class datatable_js
      *
      * @param $datatableToggleVis
      * @param $dataColumn
+     * @return string
      */
 private function getScriptPaginate()
     {
