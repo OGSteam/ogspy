@@ -6,7 +6,7 @@
  * @subpackage views
  * @author Ben.12
  * @created 15/12/2005
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
