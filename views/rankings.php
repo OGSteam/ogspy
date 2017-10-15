@@ -77,7 +77,8 @@ $datatable->setPaginate(array(100, 500, 1000, -1));
        data-column="15|16"><?php echo $lang['RANK_MILITARY_DESTROYED'] ?></a> |
     <a class="datatable-toggle-vis"
        data-column="17|18"><?php echo $lang['RANK_MILITARY_HONOR'] ?></a> <br/>
-<?php else : ?>
+<?php else {
+    : ?>
     <a class="datatable-toggle-vis"
        data-column="2"><?php echo $lang['RANK_MEMBER'] ?></a> |
     <a class="datatable-toggle-vis"
@@ -97,7 +98,7 @@ $datatable->setPaginate(array(100, 500, 1000, -1));
     <a class="datatable-toggle-vis"
        data-column="23|24|25"><?php echo $lang['RANK_MILITARY_HONOR'] ?></a>
     <br/>
-<?php endif;  ?>
+<?php endif; ?>
 <!-- fin vicsibilité colonne ou non -->
 </div>
 
@@ -110,8 +111,11 @@ $datatable->setPaginate(array(100, 500, 1000, -1));
         ?>
         <th rowspan = "2" class="c" ><?php echo $lang['RANK_PLAYER']?></th>
         <th rowspan="2" class="c"><?php echo $lang['RANK_ALLY'] ?></th>
-        <?php  else :
-        $colspan = 3; ?>
+        <?php  else {
+    :
+        $colspan = 3;
+}
+?>
 
         <th rowspan = "2" class="c" ><?php echo $lang['RANK_ALLY']?></th>
         <th rowspan="2" class="c"><?php echo $lang['RANK_MEMBER'] ?></th>
