@@ -82,6 +82,7 @@ class Mod_Model
 
     /**
      * @param array $mod Tableau associatif représentant un mod
+     * @throws \Exception
      */
     public function add(array $mod)
     {

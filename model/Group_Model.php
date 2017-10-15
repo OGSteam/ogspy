@@ -168,9 +168,11 @@ class Group_Model
         $request .= " WHERE group_id = " . $group_id;
         $db->sql_query($request);
     }
+
     /**
      * @param $group_id
      * @param $user_id
+     * @return bool
      */
     public function delete_user_from_group($user_id, $group_id)
     {

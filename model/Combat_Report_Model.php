@@ -52,6 +52,10 @@ class Combat_Report_Model
         return $tResult;
     }
 
+    /**
+     * @param $id_rc
+     * @return mixed
+     */
     public function get_combat_report($id_rc)
     {
         global $db;
@@ -69,19 +73,8 @@ class Combat_Report_Model
         }
         $report['rounds'] = $rounds;
 
-
-
-
-
         return $report;
     }
-
-
-
-
-
-
-
 
     /**
      * @param $id_rc
