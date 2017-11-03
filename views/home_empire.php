@@ -363,10 +363,11 @@ $nb_planete = find_nb_planete_user($user_data['user_id']);
             <th><a><?php echo($lang['HOME_EMPIRE_ENERGY']); ?></a></th>
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                if (isset($user_production['reel'][$i]))
-                echo "\t" . "<th>" . $user_production['reel'][$i]['prod_E'] . "</th>" . "\n";
-                else
-                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                if (isset($user_production['reel'][$i])) {
+                                echo "\t" . "<th>" . $user_production['reel'][$i]['prod_E'] . "</th>" . "\n";
+                } else {
+                                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                }
                 }
             ?>
         <tr>
