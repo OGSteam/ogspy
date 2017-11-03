@@ -65,7 +65,7 @@ class Sql_Db
     /**
      * @return int
      */
-    public function getSqlTiming ()
+    public function getSqlTiming()
     {
         return $this->sql_timing;
     }
