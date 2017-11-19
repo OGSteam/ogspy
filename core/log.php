@@ -11,6 +11,8 @@
 
 namespace Ogsteam\Ogspy;
 
+use ZipArchive;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -526,10 +528,12 @@ function log_extractor()
 
     $zip = new ZipArchive;
     $zip->open($zip_file, ZipArchive::CREATE);
-    foreach ($files as $filename) {
-        // ajout du fichier dans cet objet
-        $zip->addFile($root . $filename);
-        log_('debug', "fichier dans archive:" . $filename);
+    if (isset($files)) {
+        foreach ($files as $filename) {
+            // ajout du fichier dans cet objet
+            $zip->addFile($root . $filename);
+            log_('debug', "fichier dans archive:" . $filename);
+        }
     }
 
     // production de l'archive Zip
@@ -606,7 +610,6 @@ function log_purge()
 
         while ($file = readdir($path)) {
             if ($file != "." && $file != "..") {
-                $extension = substr($file, (strrpos($file, ".") + 1));
                 unlink($root . $d . "/" . $file);
             }
         }

@@ -207,9 +207,9 @@ class Datatable_js
     /**
      * mise en place de la pagination
      *
-     * @param $datatableToggleVis
-     * @param $dataColumn
      * @return string
+     * @internal param $datatableToggleVis
+     * @internal param $dataColumn
      */
 private function getScriptPaginate()
     {
@@ -220,6 +220,9 @@ private function getScriptPaginate()
     }
 
 
+    /**
+     * @return string
+     */
     private function getScriptFeatures()
     {
         $tab = array("AutoWidth", "Info", "LengthChange", "Ordering", "Paging", "ScrollX", "ScrollY", "Searching");
@@ -232,6 +235,9 @@ private function getScriptPaginate()
         return $script;
     }
 
+    /**
+     * @return string
+     */
     private function getScriptLangage()
     {
         global $lang; //import variable i18

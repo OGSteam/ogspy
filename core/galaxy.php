@@ -665,11 +665,13 @@ function get_all_ally_distinct_date_ranktable()
     return $ranks;
 }
 
-
 /**
  * Affichage classement
  *
- *
+ * @param      $model
+ * @param      $ranking_table
+ * @param null $date
+ * @return int
  */
 function galaxy_show_ranking($model, $ranking_table, $date = null)
 {
@@ -696,8 +698,6 @@ function galaxy_show_ranking($model, $ranking_table, $date = null)
 
 }
 
-
-
 /**
  * Affichage classement des joueurs
  *
@@ -707,8 +707,6 @@ function galaxy_show_ranking_ally($ranking_table = TABLE_RANK_ALLY_POINTS, $date
 {
     return galaxy_show_ranking(new Rankings_Ally_Model(), $ranking_table, $date);
 }
-
-
 
 /**
  * Affichage classement des joueurs
@@ -1106,7 +1104,8 @@ function UNparseRE($id_RE)
     $dateRE = date('m-d H:i:s', $row['dateRE']);
     $template = '<table border="0" cellpadding="2" cellspacing="0" align="center">
     <tr>
-        <td class="l" colspan="4" class="c">' . $lang['GAME_SPYREPORT_RES'] . ' ' . $row['planet_name'] . ' [' . $row['coordinates'] . '] (' . $lang['GAME_SPYREPORT_PLAYER'] . ' \'' . $rowPN['player'] . '\') le ' . $dateRE . '</td>
+        <td class="l c" colspan="4" >' . $lang['GAME_SPYREPORT_RES']
+        . ' ' . $row['planet_name'] . ' [' . $row['coordinates'] . '] (' . $lang['GAME_SPYREPORT_PLAYER'] . ' \'' . $rowPN['player'] . '\') le ' . $dateRE . '</td>
     </tr>
     <tr>
         <td class="c" style="text-align:right;">' . $lang['GAME_RES_METAL'] . ':</td>

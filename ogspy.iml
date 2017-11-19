@@ -2,17 +2,40 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/model" isTestSource="false" packagePrefix="Ogsteam\Ogspy\Model\" />
+      <sourceFolder url="file://$MODULE_DIR$/views/Helper" isTestSource="false" packagePrefix="Ogsteam\Ogspy\Views\" />
+      <sourceFolder url="file://$MODULE_DIR$/entity" isTestSource="false" packagePrefix="Ogsteam\Ogspy\Entity\" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/datatables/datatables" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ghunti/highcharts-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sabre/event" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sabre/http" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sabre/uri" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sinergi/token" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library name="PHARS">
+      <library name="PHP" type="php">
         <CLASSES>
-          <root url="phar://$MODULE_DIR$/composer.phar/" />
+          <root url="file://$MODULE_DIR$/vendor/composer" />
+          <root url="file://$MODULE_DIR$/vendor/datatables/datatables" />
+          <root url="file://$MODULE_DIR$/vendor/ghunti/highcharts-php" />
+          <root url="file://$MODULE_DIR$/vendor/sabre/event" />
+          <root url="file://$MODULE_DIR$/vendor/sabre/http" />
+          <root url="file://$MODULE_DIR$/vendor/sabre/uri" />
+          <root url="file://$MODULE_DIR$/vendor/sinergi/token" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="phar://$MODULE_DIR$/composer.phar/" />
+          <root url="file://$MODULE_DIR$/vendor/composer" />
+          <root url="file://$MODULE_DIR$/vendor/datatables/datatables" />
+          <root url="file://$MODULE_DIR$/vendor/ghunti/highcharts-php" />
+          <root url="file://$MODULE_DIR$/vendor/sabre/event" />
+          <root url="file://$MODULE_DIR$/vendor/sabre/http" />
+          <root url="file://$MODULE_DIR$/vendor/sabre/uri" />
+          <root url="file://$MODULE_DIR$/vendor/sinergi/token" />
         </SOURCES>
       </library>
     </orderEntry>

@@ -138,7 +138,7 @@ function consumption($building, $level)
 
         case "CEF":
             $result = $server_config['speed_uni'] * (10 * $level * pow(1.1, $level));
-            $result = round($result); // arrondi
+            $result = round($result);
             break;
 
         default:

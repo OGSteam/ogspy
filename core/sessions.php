@@ -80,6 +80,7 @@ function session()
                 $cookie_id = "";
             }
         }
+
     }
     if ($cookie_id == "") {
         session_begin($user_ip);
