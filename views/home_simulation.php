@@ -16,8 +16,14 @@ if (!defined('IN_SPYOGAME')) {
 $user_empire = user_get_empire($user_data['user_id']);
 $user_building = $user_empire["building"];
 $user_defence = $user_empire["defence"];
-if ($user_empire["technology"]) $user_technology = $user_empire["technology"];
-else $user_technology = '0';
+if ($user_empire["technology"])
+{
+    $user_technology = $user_empire["technology"];
+}
+else {
+    $user_technology['NRJ'] = 0;
+    $user_technology['Plasma'] = 0;
+}
 
 $nb_planete = find_nb_planete_user($user_data['user_id']);
 
@@ -42,10 +48,10 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
 
 //Calcul et correction boosters :
 //for ($i = 101; $i <= $nb_planete + 100; $i++) {
-    /*Boosters et extensions modification :*/
-	//booster dans fonctions
-    //$booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-   // $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+/*Boosters et extensions modification :*/
+//booster dans fonctions
+//$booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+// $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
 //}
 ?>
 
@@ -132,9 +138,13 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
         <th><a><?php echo($lang['HOME_SIMU_EXTENSION']); ?></a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            $booster = "&nbsp;";
+            $booster = "0";
 
-            $booster = $user_building[$i]["booster_tab"]['extention_p']; // La vue Lune n'existe pas sur la page simulation
+            if (isset($user_building[$i]["booster_tab"]['extention_p']))
+            {
+                $booster = $user_building[$i]["booster_tab"]['extention_p']; // La vue Lune n'existe pas sur la page simulation
+            }
+
 
             echo "\t" . "<th colspan='2'>" . $booster . "<input id='extension" . $i . "' type='hidden' value='" . $booster . "'></th>" . "</th>" . "\n";
         }
@@ -148,22 +158,23 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
     <tr>
         <td class="c"><?php echo($lang['HOME_SIMU_ENERGYS']); ?></td>
         <td class="c" colspan="4"><?php echo($lang['HOME_SIMU_TECH_ENERGY']); ?> <input type="text" id="NRJ" size="2" maxlength="2"
-                                                             value="<?php print $user_technology['NRJ'] ?>"
-                                                             onchange='update_page();'></td>
+                                                                                        value="<?php print $user_technology['NRJ'] ?>"
+                                                                                        onchange='update_page();'></td>
         <td class="c" colspan="4"><?php echo($lang['HOME_SIMU_TECH_PLASMA']); ?> <input type="text" id="Plasma" size="2" maxlength="2"
-                                                            value="<?php print $user_technology['Plasma'] ?>"
-                                                            onchange='update_page();'></td>
+                                                                                        value="<?php print $user_technology['Plasma'] ?>"
+                                                                                        onchange='update_page();'></td>
         <td class="c" colspan="2"><?php echo($lang['HOME_SIMU_OFF_INGE']); ?> <input type='checkbox'
-                                                            id='c_off_ingenieur' <?php print ($user_data["off_ingenieur"] == 1) ? 'checked="checked"' : '' ?>
-                                                            onClick='update_page();'>
+                                                                                     id='c_off_ingenieur' <?php print ($user_data["off_ingenieur"] == 1) ? 'checked="checked"' : '' ?>
+                                                                                     onClick='update_page();'>
         <td class="c" colspan="2"><?php echo($lang['HOME_SIMU_OFF_GEO']); ?> <input type='checkbox'
-                                                           id='c_off_geologue' <?php print ($user_data["off_geologue"] == 1) ? 'checked="checked"' : '' ?>
-                                                           onClick='update_page();'>
+                                                                                    id='c_off_geologue' <?php print ($user_data["off_geologue"] == 1) ? 'checked="checked"' : '' ?>
+                                                                                    onClick='update_page();'>
         <td class="c" colspan="2"><?php echo($lang['HOME_SIMU_OFF_FULL']); ?> <input type='checkbox'
-                                                       id='c_off_full' <?php print ($off_full == 1) ? 'checked="checked"' : '' ?>
-                                                       onClick='update_page();'>
+                                                                                     id='c_off_full' <?php print ($off_full == 1) ? 'checked="checked"' : '' ?>
+                                                                                     onClick='update_page();'>
         <td class="c" colspan="<?php echo 2 * ($nb_planete + 1) - 8; ?>">&nbsp;</td>
     </tr>
+
     <tr>
         <th><a><?php echo($lang['HOME_SIMU_SOLARPLANT_SHORT']); ?></a></th>
         <?php
@@ -269,6 +280,10 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
             echo "\t" . "<th colspan='2'>";
             echo "<select id='M_" . $i . "_booster' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 30; $j >= 0; $j = $j - 10) {
+                if (!isset($user_building[$i]["booster_tab"]['booster_m_val']))
+                {
+                    $user_building[$i]["booster_tab"]['booster_m_val'] = 0;
+                }
                 echo "\t\t" . "<option value='" . $j . "'";
                 if ($user_building[$i]["booster_tab"]['booster_m_val'] == $j) echo " selected='selected'";
                 echo ">" . $j . "%</option>" . "\n";
@@ -336,6 +351,10 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
             echo "<select id='C_" . $i . "_booster' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 30; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
+                if (!isset($user_building[$i]["booster_tab"]['booster_c_val']))
+                {
+                    $user_building[$i]["booster_tab"]['booster_c_val'] = 0;
+                }
                 if ($user_building[$i]["booster_tab"]['booster_c_val'] == $j) echo " selected='selected'";
                 echo ">" . $j . "%</option>" . "\n";
             }
@@ -401,6 +420,10 @@ echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
             echo "\t" . "<th colspan='2'>";
             echo "<select id='D_" . $i . "_booster' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 30; $j >= 0; $j = $j - 10) {
+                if (!isset($user_building[$i]["booster_tab"]['booster_d_val']))
+                {
+                    $user_building[$i]["booster_tab"]['booster_d_val'] = 0;
+                }
                 echo "\t\t" . "<option value='" . $j . "'";
                 if ($user_building[$i]["booster_tab"]['booster_d_val'] == $j) echo " selected='selected'";
                 echo ">" . $j . "%</option>" . "\n";

@@ -56,10 +56,10 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
         $name = $coordinates = $fields = $temperature_min = $temperature_max = $satellite = "";
         for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
-          /*Boosters et extensions modification :
-           * => calcul effectué dans fonction  get empire*/
-         $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-         $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+            /*Boosters et extensions modification :
+             * => calcul effectué dans fonction  get empire*/
+            $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+            $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
 
             $name .= "'".$user_building[$i]["planet_name"]."', ";
             $coordinates .= "'".$user_building[$i]["coordinates"]."', ";
@@ -70,10 +70,10 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
         }
 
         for ($i=201 ; $i<=$nb_planete+200 ; $i++) {
-         /*Boosters et extensions modification :*/
-        	//=> calcul effectué dans fonction  get empire*/
-           $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-           $user_building[$i]["fields"] += $booster_tab[$i]['extention_m'];
+            /*Boosters et extensions modification :*/
+            //=> calcul effectué dans fonction  get empire*/
+            $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+            $user_building[$i]["fields"] += $booster_tab[$i]['extention_m'];
 
             $name .= "'Lune', ";
             $coordinates .= "'', ";
@@ -198,7 +198,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <th>&nbsp;</th>
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            
+
                 echo "<th>";
                 if (!isset($pub_view) || $pub_view == "planets") {
                     echo "<input type='image' title='".$lang['HOME_EMPIRE_MOVELEFT']." " . $user_building[$i]["planet_name"] . "' src='images/previous.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;left';\">&nbsp;&nbsp;";
@@ -273,13 +273,13 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
                 $booster = "&nbsp;";
 
-                    $booster_tab = booster_decode($user_building[$i]["boosters"]);
+                $booster_tab = booster_decode($user_building[$i]["boosters"]);
 
-                    if ($view == "planets") {
-                        $booster = $booster_tab['extention_p'];
-                    } else {
-                        $booster = $booster_tab['extention_m'];
-                    }
+                if ($view == "planets") {
+                    $booster = $booster_tab['extention_p'];
+                } else {
+                    $booster = $booster_tab['extention_m'];
+                }
 
 
                 echo "\t" . "<th>" . $booster . "</th>" . "\n";
@@ -306,7 +306,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $M = $user_building[$i]["M"];
                 if ($M != "") {
-                	echo "\t" . "<th>" . $user_production['theorique'][$i]['M'] . "</th>" . "\n";
+                    echo "\t" . "<th>" . $user_production['theorique'][$i]['M'] . "</th>" . "\n";
                 } else {
                     echo "\t" . "<th>&nbsp</th>" . "\n";
                 }
@@ -320,8 +320,8 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $C = $user_building[$i]["C"];
                 if ($C != "") {
-                  	echo "\t" . "<th>" . $user_production['theorique'][$i]['C'] . "</th>" . "\n";
-              } else {
+                    echo "\t" . "<th>" . $user_production['theorique'][$i]['C'] . "</th>" . "\n";
+                } else {
                     echo "\t" . "<th>&nbsp</th>" . "\n";
                 }
             }
@@ -331,10 +331,10 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <th><a><?php echo($lang['HOME_EMPIRE_DEUT']); ?></a></th>
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            	$D = $user_building[$i]["D"];
+                $D = $user_building[$i]["D"];
                 if ($D != "") {
-                        	echo "\t" . "<th>" . $user_production['theorique'][$i]['D'] . "</th>" . "\n";
-         		 } else {
+                    echo "\t" . "<th>" . $user_production['theorique'][$i]['D'] . "</th>" . "\n";
+                } else {
                     echo "\t" . "<th>&nbsp</th>" . "\n";
                 }
             }
@@ -345,8 +345,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
 
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            	echo "\t" . "<th>" . $user_production['reel'][$i]['prod_E'] . "</th>" . "\n";
-                        }
+                if (!isset($user_production['reel'][$i]))	{	$user_production['reel'][$i]['prod_E']= 0 ;}
+                echo "\t" . "<th>" . $user_production['reel'][$i]['prod_E'] . "</th>" . "\n";
+            }
             ?>
         <tr>
             <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">Production
@@ -358,6 +359,8 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             // ratio
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
+                if (!isset($user_production['ratio'][$i]))	{	$user_production['reel'][$i]['ratio']= 0 ;}
+
                 echo "\t" . "<th style='font-weight:bold; color:";
                 if ($user_production['reel'][$i]['ratio'] != 1) {
                     echo "red";
@@ -552,8 +555,8 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             }
             ?>
         </tr>
-<?php
-if($view == "planets") { ?>
+        <?php
+        if($view == "planets") { ?>
         <tr>
             <th><a><?php echo($lang['HOME_EMPIRE_RESEARCHLAB']); ?></a></th>
             <?php
