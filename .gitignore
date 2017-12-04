@@ -7,6 +7,8 @@
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
+.idea/php.xml
+.idea/inspectionProfiles/
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -32,3 +34,8 @@ cmake-build-debug/
 
 parameters/key.php
 parameters/id.php
+journal/*/*.htm
+journal/*/*.log
+cache/*.php
+config/id.php
+config/key.php

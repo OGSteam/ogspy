@@ -51,7 +51,6 @@ $technology_requirement["Graviton"] = array(12);
 $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
 ?>
-
     <!-- DEBUT DU SCRIPT -->
     <script language="JavaScript">
         <?php
@@ -59,21 +58,21 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
         $nb_planete = find_nb_planete_user($user_data['user_id']);
 
         $name = $coordinates = $fields = $temperature_min = $temperature_max = $satellite = "";
-        for ($i = 101; $i <= $nb_planete + 100; $i++) {
+        for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
             /*Boosters et extensions modification :
-           * => calcul effectué dans fonction  get empire*/
+             * => calcul effectué dans fonction  get empire*/
             $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
             $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
 
-            $name .= "'" . $user_building[$i]["planet_name"] . "', ";
-            $coordinates .= "'" . $user_building[$i]["coordinates"] . "', ";
-            $fields .= "'" . $user_building[$i]["fields"] . "', ";
-            $temperature_min .= "'" . $user_building[$i]["temperature_min"] . "', ";
-            $temperature_max .= "'" . $user_building[$i]["temperature_max"] . "', ";
-            $satellite .= "'" . $user_building[$i]["Sat"] . "', ";
+            $name .= "'".$user_building[$i]["planet_name"]."', ";
+            $coordinates .= "'".$user_building[$i]["coordinates"]."', ";
+            $fields .= "'".$user_building[$i]["fields"]."', ";
+            $temperature_min .= "'".$user_building[$i]["temperature_min"]."', ";
+            $temperature_max .= "'".$user_building[$i]["temperature_max"]."', ";
+            $satellite .= "'".$user_building[$i]["Sat"]."', ";
         }
 
-        for ($i = 201; $i <= $nb_planete + 200; $i++) {
+        for ($i=201 ; $i<=$nb_planete+200 ; $i++) {
             /*Boosters et extensions modification :*/
             //=> calcul effectué dans fonction  get empire*/
             $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
@@ -202,7 +201,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <th>&nbsp;</th>
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            
+
                 echo "<th>";
                 if (!isset($pub_view) || $pub_view == "planets") {
                     echo "<input type='image' title='" . $lang['HOME_EMPIRE_MOVELEFT'] . " " . $user_building[$i]["planet_name"] . "' src='images/previous.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;left';\">&nbsp;&nbsp;";
@@ -290,13 +289,13 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
                 $booster = "&nbsp;";
 
-                    $booster_tab = booster_decode($user_building[$i]["boosters"]);
+                $booster_tab = booster_decode($user_building[$i]["boosters"]);
 
-                    if ($view == "planets") {
-                        $booster = $booster_tab['extention_p'];
-                    } else {
-                        $booster = $booster_tab['extention_m'];
-                    }
+                if ($view == "planets") {
+                    $booster = $booster_tab['extention_p'];
+                } else {
+                    $booster = $booster_tab['extention_m'];
+                }
 
 
                 echo "\t" . "<th>" . $booster . "</th>" . "\n";
@@ -337,7 +336,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $C = $user_building[$i]["C"];
                 if ($C != "") {
-                        echo "\t" . "<th>" . $user_production['theorique'][$i]['C'] . "</th>" . "\n";
+
+                    echo "\t" . "<th>" . $user_production['theorique'][$i]['C'] . "</th>" . "\n";
+
                 } else {
                     echo "\t" . "<th>&nbsp</th>" . "\n";
                 }
@@ -350,8 +351,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $D = $user_building[$i]["D"];
                 if ($D != "") {
-                            echo "\t" . "<th>" . $user_production['theorique'][$i]['D'] . "</th>" . "\n";
-                    } else {
+
+                    echo "\t" . "<th>" . $user_production['theorique'][$i]['D'] . "</th>" . "\n";
+                } else {
                     echo "\t" . "<th>&nbsp</th>" . "\n";
                 }
             }
@@ -362,8 +364,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
 
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
+
+                if (!isset($user_production['reel'][$i]))	{	$user_production['reel'][$i]['prod_E']= 0 ;}
                 echo "\t" . "<th>" . $user_production['reel'][$i]['prod_E'] . "</th>" . "\n";
-                        }
+            }
+
             ?>
         <tr>
             <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">Production
@@ -375,6 +380,8 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             // ratio
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
+                if (!isset($user_production['ratio'][$i]))	{	$user_production['reel'][$i]['ratio']= 0 ;}
+
                 echo "\t" . "<th style='font-weight:bold; color:";
                 if ($user_production['reel'][$i]['ratio'] != 1) {
                     echo "red";
@@ -446,7 +453,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     $M = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='15" . ($i + 1 - $start) . "'>" . $M . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='15" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $M . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -459,7 +466,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     $C = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='16" . ($i + 1 - $start) . "'>" . $C . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='16" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $C . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -472,7 +479,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     $D = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='17" . ($i + 1 - $start) . "'>" . $D . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='17" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $D . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -485,7 +492,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     $CES = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='20" . ($i + 1 - $start) . "'>" . $CES . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='20" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $CES . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -498,7 +505,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     $CEF = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='21" . ($i + 1 - $start) . "'>" . $CEF . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='21" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $CEF . "</span></th>" . "\n";
             }
 
             } // fin de si view="planets"
@@ -518,7 +525,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     $UdR = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='1" . ($i + 1 - $start) . "'>" . $UdR . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='1" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $UdR . "</span></th>" . "\n";
             }
 
             if ($view == "planets") {
@@ -533,7 +540,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     $UdN = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='22" . ($i + 1 - $start) . "'>" . $UdN . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='22" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $UdN . "</span></th>" . "\n";
             }
 
             } // fin de si view="planets"
@@ -548,7 +555,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     $CSp = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='2" . ($i + 1 - $start) . "'>" . $CSp . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='2" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $CSp . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -561,7 +568,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     $HM = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='3" . ($i + 1 - $start) . "'>" . $HM . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='3" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $HM . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -574,7 +581,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     $HC = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='4" . ($i + 1 - $start) . "'>" . $HC . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='4" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $HC . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -587,12 +594,13 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     $HD = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='5" . ($i + 1 - $start) . "'>" . $HD . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='5" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $HD . "</span></th>" . "\n";
             }
             ?>
         </tr>
-<?php
-if ($view == "planets") { ?>
+        <?php
+        if($view == "planets") { ?>
+
         <tr>
             <th><a><?php echo($lang['HOME_EMPIRE_RESEARCHLAB']); ?></a></th>
             <?php
@@ -602,7 +610,7 @@ if ($view == "planets") { ?>
                     $Lab = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='23" . ($i + 1 - $start) . "'>" . $Lab . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='23" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Lab . "</span></th>" . "\n";
             }
             if ($server_config['ddr'] == 1)
             {
@@ -617,7 +625,7 @@ if ($view == "planets") { ?>
                     $DdR = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='42" . ($i + 1 - $start) . "'>" . $DdR . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='42" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $DdR . "</span></th>" . "\n";
             }
             }//Fin de si $server_config['ddr']
             ?>
@@ -631,7 +639,7 @@ if ($view == "planets") { ?>
                     $Ter = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='24" . ($i + 1 - $start) . "'>" . $Ter . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='24" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Ter . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -644,7 +652,7 @@ if ($view == "planets") { ?>
                     $Silo = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='25" . ($i + 1 - $start) . "'>" . $Silo . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='25" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Silo . "</span></th>" . "\n";
             }
 
             } // fin de si view="planets"
@@ -660,7 +668,7 @@ if ($view == "planets") { ?>
                     $BaLu = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='15" . ($i + 1 - $start) . "'>" . $BaLu . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='15" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $BaLu . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -673,7 +681,7 @@ if ($view == "planets") { ?>
                     $Pha = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='16" . ($i + 1 - $start) . "'>" . $Pha . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='16" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Pha . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -686,7 +694,7 @@ if ($view == "planets") { ?>
                     $PoSa = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='17" . ($i + 1 - $start) . "'>" . $PoSa . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='17" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $PoSa . "</span></th>" . "\n";
             }
 
             } // fin de sinon view="planets"
@@ -706,7 +714,7 @@ if ($view == "planets") { ?>
                     $Sat = number_format($Sat, 0, ',', ' ');
                 }
 
-                echo "\t" . "<th><font color='lime' id='6" . ($i + 1 - $start) . "'>" . $Sat . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='6" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Sat . "</span></th>" . "\n";
             }
 
             if ($view == "planets") {
@@ -739,7 +747,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='26" . (($i + 1 - $start)) . "'>" . $Esp . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='26" . (($i + 1 - $start)) . "' style=\"color: lime; \">" . $Esp . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -767,7 +775,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='27" . ($i + 1 - $start) . "'>" . $Ordi . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='27" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Ordi . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -795,7 +803,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='28" . ($i + 1 - $start) . "'>" . $Armes . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='28" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Armes . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -823,7 +831,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='29" . ($i + 1 - $start) . "'>" . $Bouclier . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='29" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Bouclier . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -851,7 +859,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='30" . ($i + 1 - $start) . "'>" . $Protection . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='30" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Protection . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -879,7 +887,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='31" . ($i + 1 - $start) . "'>" . $NRJ . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='31" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $NRJ . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -907,7 +915,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='32" . ($i + 1 - $start) . "'>" . $Hyp . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='32" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Hyp . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -935,7 +943,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='33" . ($i + 1 - $start) . "'>" . $RC . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='33" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $RC . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -963,7 +971,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='34" . ($i + 1 - $start) . "'>" . $RI . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='34" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $RI . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -991,7 +999,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='35" . ($i + 1 - $start) . "'>" . $PH . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='35" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $PH . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1019,7 +1027,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='36" . ($i + 1 - $start) . "'>" . $Laser . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='36" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Laser . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1047,7 +1055,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='37" . ($i + 1 - $start) . "'>" . $Ions . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='37" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Ions . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1073,7 +1081,7 @@ if ($view == "planets") { ?>
                         next($requirement);
                     }
                 }
-                echo "\t" . "<th><font color='lime' id='38" . ($i + 1 - $start) . "'>" . $Plasma . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='38" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Plasma . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1101,7 +1109,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='39" . ($i + 1 - $start) . "'>" . $RRI . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='39" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $RRI . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1129,7 +1137,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='41" . ($i + 1 - $start) . "'>" . $Astrophysique . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='41" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Astrophysique . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1157,7 +1165,7 @@ if ($view == "planets") { ?>
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='40" . ($i + 1 - $start) . "'>" . $Graviton . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='40" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Graviton . "</span></th>" . "\n";
             }
 
             } // fin de si view="planets"
@@ -1178,7 +1186,7 @@ if ($view == "planets") { ?>
                     $LM = number_format($LM, 0, ',', ' ');
                 }
 
-                echo "\t" . "<th><font color='lime' id='7" . ($i + 1 - $start) . "'>" . $LM . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='7" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $LM . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1193,7 +1201,7 @@ if ($view == "planets") { ?>
                     $LLE = number_format($LLE, 0, ',', ' ');
                 }
 
-                echo "\t" . "<th><font color='lime' id='8" . ($i + 1 - $start) . "'>" . $LLE . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='8" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $LLE . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1208,7 +1216,7 @@ if ($view == "planets") { ?>
                     $LLO = number_format($LLO, 0, ',', ' ');
                 }
 
-                echo "\t" . "<th><font color='lime' id='9" . ($i + 1 - $start) . "'>" . $LLO . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='9" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $LLO . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1223,7 +1231,7 @@ if ($view == "planets") { ?>
                     $CG = number_format($CG, 0, ',', ' ');
                 }
 
-                echo "\t" . "<th><font color='lime' id='10" . ($i + 1 - $start) . "'>" . $CG . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='10" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $CG . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1238,7 +1246,7 @@ if ($view == "planets") { ?>
                     $AI = number_format($AI, 0, ',', ' ');
                 }
 
-                echo "\t" . "<th><font color='lime' id='11" . ($i + 1 - $start) . "'>" . $AI . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='11" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $AI . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1253,7 +1261,7 @@ if ($view == "planets") { ?>
                     $LP = number_format($LP, 0, ',', ' ');
                 }
 
-                echo "\t" . "<th><font color='lime' id='12" . ($i + 1 - $start) . "'>" . $LP . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='12" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $LP . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1266,7 +1274,7 @@ if ($view == "planets") { ?>
                     $PB = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='13" . ($i + 1 - $start) . "'>" . $PB . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='13" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $PB . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1279,7 +1287,7 @@ if ($view == "planets") { ?>
                     $GB = "&nbsp;";
                 }
 
-                echo "\t" . "<th><font color='lime' id='14" . ($i + 1 - $start) . "'>" . $GB . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='14" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $GB . "</span></th>" . "\n";
             }
 
             if ($view == "planets") {
@@ -1296,7 +1304,7 @@ if ($view == "planets") { ?>
                     $MIC = number_format($MIC, 0, ',', ' ');
                 }
 
-                echo "\t" . "<th><font color='lime' id='19" . ($i + 1 - $start) . "'>" . $MIC . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='19" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $MIC . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1311,7 +1319,7 @@ if ($view == "planets") { ?>
                     $MIP = number_format($MIP, 0, ',', ' ');
                 }
 
-                echo "\t" . "<th><font color='lime' id='18" . ($i + 1 - $start) . "'>" . $MIP . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='18" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $MIP . "</span></th>" . "\n";
             }
 
             } // fin de si view="planets"
