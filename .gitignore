@@ -32,3 +32,8 @@ cmake-build-debug/
 
 parameters/key.php
 parameters/id.php
+journal/*
+cache/*
+config/id.php
+config/key.php
+.idea/php.xml
