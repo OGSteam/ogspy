@@ -927,8 +927,8 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             break;
 
         //Pseudo ingame
-        case "Pseudo_ingame": // caracteres autorises entre 3 et 20 ( interdit au 05/11/11 = > &"'()# `/,;+ ) 
-            if (!preg_match("#^[\w@äàçéèêëïîöôûü\^\{\}\[\]\.\*\-_~%§]{3,20}$#", $value)) {
+        case "Pseudo_ingame": // caracteres autorises entre 3 et 20 + espace ( interdit au 05/11/11 = > &"'()# `/,;+ )
+            if (!preg_match("#^[\w@äàçéèêëïîöôûü \^\{\}\[\]\.\*\-_~%§]{3,20}$#", $value)) {
                 log_("check_var", array("Text", $value));
                 return false;
             }
