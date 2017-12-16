@@ -648,7 +648,7 @@ function set_serverconfig()
     $db->sql_query($request);
 
     //
-    if ($pub_url_forum != "" && !preg_match("#^http://#", $pub_url_forum)) {
+    if ($pub_url_forum != "" && !preg_match("#[^http://]|[^https://]#", $pub_url_forum)) {
             $pub_url_forum = "http://" . $pub_url_forum;
     }
     $request = "update " . TABLE_CONFIG . " set config_value = '" . $db->
@@ -990,7 +990,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
         //Adresse internet
         case "URL":
-            if (!preg_match("#^(((?:http|https?):\/\/)?(?(2)(www\.)?|(www\.){1})?[-a-z0-9~_]{2,}(\.[-a-z0-9~._]{2,})?[-a-z0-9~_\/&\?=.]{2,})$#i",
+            if (!preg_match("#^(((https|http):\/\/)?(?(2)(www\.)?|(www\.){1})?[-a-z0-9~_]{2,}(\.[-a-z0-9~._]{2,})?[-a-z0-9~_\/&\?=.]{2,})$#i",
                 $value)
             ) {
                 log_("check_var", array("URL", $value));
