@@ -1,6 +1,6 @@
 OGSpy
 ============
-[![GitHub Stars](https://img.shields.io/github/stars/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/stargazers) [![GitHub Issues](https://img.shields.io/github/issues/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/issues) [![Version Courante](https://img.shields.io/badge/version-3.3.2-green.svg)](https://github.com/OGSTeam/ogspy) [![Demo](https://img.shields.io/badge/demo-online-green.svg)](http://ogspy.fr/demo) [![Gitter](https://img.shields.io/gitter/room/gitterHQ/gitter.svg)](https://gitter.im/OGSteam/Support)[![Build Status](https://scrutinizer-ci.com/g/OGSteam/ogspy/badges/build.png?b=master)](https://scrutinizer-ci.com/g/OGSteam/ogspy/build-status/master)[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/OGSteam/ogspy/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/OGSteam/ogspy/?branch=master)
+[![GitHub Stars](https://img.shields.io/github/stars/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/stargazers) [![GitHub Issues](https://img.shields.io/github/issues/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/issues) [![Version Courante](https://img.shields.io/badge/version-3.3.2-green.svg)](https://github.com/OGSTeam/ogspy) [![Demo](https://img.shields.io/badge/demo-online-green.svg)](http://ogspy.fr/demo) [![Gitter](https://img.shields.io/gitter/room/gitterHQ/gitter.svg)](https://gitter.im/OGSteam/Support)[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e15bf326567d45c3aea25192f46aa596)](https://www.codacy.com/app/OGSteam/ogspy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OGSteam/ogspy&amp;utm_campaign=Badge_Grade)
 
 Le projet crée en 2006 est une aide pour un jeu de gestion de vaisseaux spatiaux.
 Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour ensuite les regrouper et les exploiter.
@@ -49,7 +49,7 @@ Responsable équipe : [DarkNoon](https://github.com/darknoon29)
 
 ### Développement
 
-* Machine
+* [Machine](https://github.com/machine62)
 * [Jedinight](https://github.com/jedi-night)
 * Superbox 
 * [Pitch314](https://github.com/pitch314)
@@ -72,10 +72,6 @@ Responsable équipe : [DarkNoon](https://github.com/darknoon29)
 * master - Branche Principale, utilisée uniquement pour publier les versions finales de nos outils.
 * development - branche qui contient les développements pour les futures versions
 * release-3.X.Y - Branche contenant les correctifs pour une future version
-
-### Statut de la branche de développement
-
-[![Build Status](https://scrutinizer-ci.com/g/OGSteam/ogspy/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/OGSteam/ogspy/build-status/develop)[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/OGSteam/ogspy/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/OGSteam/ogspy/?branch=develop)
 
 ---
 ## License
