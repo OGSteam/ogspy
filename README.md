@@ -1,20 +1,19 @@
 OGSpy
 ============
-[![GitHub Stars](https://img.shields.io/github/stars/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/stargazers) [![GitHub Issues](https://img.shields.io/github/issues/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/issues) [![Version Courante](https://img.shields.io/badge/version-3.3.2-green.svg)](https://github.com/OGSTeam/ogspy) [![Demo](https://img.shields.io/badge/demo-online-green.svg)](http://ogspy.fr/demo) [![Slack](https://join-ogsteam.herokuapp.com/badge.svg)](https://join-ogsteam.herokuapp.com)[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e15bf326567d45c3aea25192f46aa596)](https://www.codacy.com/app/OGSteam/ogspy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OGSteam/ogspy&amp;utm_campaign=Badge_Grade)
+[![GitHub Issues](https://img.shields.io/github/issues/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/issues) [![Version Courante](https://img.shields.io/badge/version-3.3.2-green.svg)](https://github.com/OGSTeam/ogspy) [![Demo](https://img.shields.io/badge/demo-online-green.svg)](http://ogspy.fr/demo) [![Slack](https://join-ogsteam.herokuapp.com/badge.svg)](https://join-ogsteam.herokuapp.com)[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e15bf326567d45c3aea25192f46aa596)](https://www.codacy.com/app/OGSteam/ogspy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OGSteam/ogspy&amp;utm_campaign=Badge_Grade)
 
 Le projet crée en 2006 est une aide pour un jeu de gestion de vaisseaux spatiaux.
 Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour ensuite les regrouper et les exploiter.
 
 Visitez notre forum [OGSteam.fr](https://forum.ogsteam.fr) pour en savoir plus.
 
-## Démo
-Vous pouvez tester un serveur OGSpy, une démo est disponible:
-
-- Serveur de test : https://ogspy.fr/demo
-- Nom d'utilisateur : demo
-- Mot de passe : ogsteam
-
 ---
+
+## Documentation
+
+Notre espace documentaire est contruit par nos utilisateurs via notre wiki. Vous pouvez y trouver les descriptifs de nos applications ainsi que les procédures d'installation.
+
+[Wiki OGSteam](https://wiki.ogsteam.fr)
 
 ## Fonctionalités
 - Enregistrement des Galaxies et des classements
@@ -27,12 +26,19 @@ Vous pouvez tester un serveur OGSpy, une démo est disponible:
 
 ---
 
-## Installation et Usages
+### Installation et Usages
 Nous avons réalisé un wiki qui détaille l'installation de l'outil sur un serveur web. Mais il existe aussi des hébergeurs qui installent le site pour vous.
 
 Vous trouverez toutes ces informations sur le wiki : 
 
 [Wiki de l'OGSteam](https://wiki.ogsteam.fr/doku.php)
+
+### Démo
+Vous pouvez tester un serveur OGSpy, une démo est disponible:
+
+- Serveur de test : https://ogspy.fr/demo
+- Nom d'utilisateur : demo
+- Mot de passe : ogsteam
 
 ---
 
