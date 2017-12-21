@@ -15,7 +15,9 @@ Notre espace documentaire est contruit par nos utilisateurs via notre wiki. Vous
 
 [Wiki OGSteam](https://wiki.ogsteam.fr)
 
-## Fonctionalités
+Des tutoriels d'installation sont aussi disponibles sur notre chaine Youtube : [Youtube](https://www.youtube.com/playlist?list=PLF1RvCcSTS6M28sPpadlerKcuwhhTBtrQ)
+
+### Fonctionalités
 - Enregistrement des Galaxies et des classements
 - Recherches des Emplacements joueurs
 - Stockage des rapports d'espionnages et de Combats
@@ -27,9 +29,7 @@ Notre espace documentaire est contruit par nos utilisateurs via notre wiki. Vous
 ---
 
 ### Installation et Usages
-Nous avons réalisé un wiki qui détaille l'installation de l'outil sur un serveur web. Mais il existe aussi des hébergeurs qui installent le site pour vous.
-
-Vous trouverez toutes ces informations sur le wiki : 
+Vous trouverez ur le wiki le manuel d'installation d'OGSpy sur un serveur web. Mais il existe aussi des hébergeurs qui installent le site pour vous.
 
 [Wiki de l'OGSteam](https://wiki.ogsteam.fr/doku.php)
 
