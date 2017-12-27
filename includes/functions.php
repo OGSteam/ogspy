@@ -434,7 +434,8 @@ function set_serverconfig()
             $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
             $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
             $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit, $pub_speed_uni,
-            $pub_ddr, $pub_astro_strict, $pub_config_cache, $pub_mod_cache;
+            $pub_ddr, $pub_astro_strict, $pub_config_cache, $pub_mod_cache,
+            $pub_mail_use, $pub_mail_smtp_use, $pub_mail_smtp_secure, $pub_mail_smtp_port, $pub_mail_smtp_host, $pub_mail_smtp_username, $pub_mail_smtp_password;
 
 
     if (!isset($pub_num_of_galaxies)) {
@@ -484,10 +485,18 @@ function set_serverconfig()
             $pub_debug_log = 0;
     }
     if (is_null($pub_block_ratio)) {
-            $pub_block_ratio = 0;
+        $pub_block_ratio = 0;
     }
-
-    $break = false;
+    if (is_null($pub_mail_use)) {
+        $mail_use = 0;
+    }
+    if (is_null($pub_mail_smtp_use)) {
+        $mail_smtp_use = 0;
+    }
+    if (is_null($pub_mail_smtp_secure)) {
+        $mail_smtp_secure = 0;
+    }
+   $break = false;
 
 
     if ($pub_server_active != 0 && $pub_server_active != 1) {
@@ -750,6 +759,22 @@ function set_serverconfig()
         " where config_name = 'config_cache'";
     $db->sql_query($request);
 
+    // param mail
+    $request = "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('mail_use','$pub_mail_use')";
+    $db->sql_query($request);
+    $request = "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('mail_smtp_use','$pub_mail_smtp_use')";
+    $db->sql_query($request);
+    $request = "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('mail_smtp_secure','$pub_mail_smtp_secure')";
+    $db->sql_query($request);
+    $request = "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('mail_smtp_port','$pub_mail_smtp_port')";
+    $db->sql_query($request);
+    $request = "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('mail_smtp_host','$pub_mail_smtp_host')";
+    $db->sql_query($request);
+    $request = "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('mail_smtp_username','$pub_mail_smtp_username')";
+    $db->sql_query($request);
+    $request = "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('mail_smtp_password','$pub_mail_smtp_password')";
+    $db->sql_query($request);
+
 
     // mise a jour des caches avec les mofids
     generate_config_cache();
@@ -972,7 +997,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
                 return false;
             }
             break;
-        //Chiffres
+        //Email
         case "Email":
             if (!preg_match('#^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}$#', $value)) {
                 log_("check_var", array("Email", $value));
