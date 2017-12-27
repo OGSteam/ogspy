@@ -713,6 +713,17 @@ INSERT INTO `ogspy_config` VALUES ('nb_colonnes_ally', '3');
 INSERT INTO `ogspy_config` VALUES ('open_user', '');
 INSERT INTO `ogspy_config` VALUES ('open_admin', '');
 
+## Partie mail
+INSERT INTO `ogspy_config` VALUES ('mail_active', '0');
+INSERT INTO `ogspy_config` VALUES ('mail_smtp_use', '0');
+INSERT INTO `ogspy_config` VALUES ('mail_smtp_server', '');
+INSERT INTO `ogspy_config` VALUES ('mail_smtp_secure', '0');
+INSERT INTO `ogspy_config` VALUES ('mail_smtp_host', '');
+INSERT INTO `ogspy_config` VALUES ('mail_smtp_port', '');
+INSERT INTO `ogspy_config` VALUES ('mail_smtp_username', '');
+INSERT INTO `ogspy_config` VALUES ('mail_smtp_password', '');
+
+
 ## ########################################################
 
 ## 
