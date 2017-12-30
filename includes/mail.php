@@ -10,66 +10,119 @@
  */
 
 if (!defined('IN_SPYOGAME')) {
-die("Hacking attempt");
+    die("Hacking attempt");
 }
 
 //-----accés PHPMailer------\\\
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
 require("includes/PHPMailer/PHPMailer.php");
 require("includes/PHPMailer/SMTP.php");
 require("includes/PHPMailer/Exception.php");
 //-----fin accés PHPMailer---\\\
 
-// Pour configuration a inserer dans BDD
-//mail_active => activation ou non des mails
-//mail_server   sender
-// si smtp
-//mail_smtp_use
-//mail_smtp_secure
-//mail_smtp_host
-//mail_smtp_port
-//mail_smtp_username
-//mail_smtp_password
+/**
+ * @param $dest string/array tableau de destinataire
+ * @param $subject string sujet du message
+ * @param $HTMLBody string contenu du message en HTML
+ */
+function SendMail($dest, $subject, $HTMLBody)
+{
+    //verifiaction avant envoit de mail
+    global $server_config;
+
+    //usage du mail possible
+    if ($server_config["mail_use"] != '1') {
+        log_("debug", "Tentative de mailing config.mail_use = " . $server_config["mail_use"]);
+        return false;
+    }
+
+    // le serveur à un mail defini
+    if (!check_var($server_config["mail_smtp_username"], "Email")) {
+        log_("Mail", "Erreur de format mail sender " . $server_config["mail_smtp_username"]);
+        return false;
+    }
+
+
+    // le serveur à un sujet de type string
+    if (!is_string($subject)) {
+        log_("Mail", "Erreur de format sujet");
+        return false;
+    }
+
+    // le serveur à un corps de message de type string
+    if (!is_string($HTMLBody)) {
+        log_("Mail", "Erreur de format body");
+        return false;
+    }
+
+
+    // configuration de l envoi
+    $mail = new PHPMailer();
+    $mail->setFrom($server_config["mail_smtp_username"], $server_config["servername"]);
+    $mail->Subject = $subject;
+    $mail->msgHTML($HTMLBody);
+
+    //gestion et verification des destinataires
+    $is_dest = false;
+    if (is_array($dest)) {
+        foreach ($dest as $maildest) {
+            if (!check_var($maildest, "Email")) {
+                log_("Mail", "Erreur de format mail destinataire " . $maildest);
+            } else {
+                $mail->addAddress($maildest, $maildest);
+                $is_dest = true;
+            }
+        }
+    } else {
+        if (!check_var($dest, "Email")) {
+            log_("Mail", "Erreur de format mail destinataire " . $dest);
+        } else {
+            $is_dest = true;
+            $mail->addAddress($dest, $dest);
+        }
+
+    }
+    if (!$is_dest) {
+        log_("Mail", "Aucun destinataire valide");
+        return false;
+    }
+    //fin gestion et verification des destinataires
+
+
+    //si mailing natif server
+    if ($server_config["mail_smtp_use"] != 1) {
+        if (!$mail->send()) {
+            log_("Mail", "Erreur MAIL 1  " . $mail->ErrorInfo);
+        } else {
+            return true;
+        }
+    }
+
+    //sinon SMTP
+    $mail->IsSMTP();
+    // securisé ?
+    if ($server_config["mail_smtp_secure"] != 0) {
+        $mail->SMTPSecure = "tsl";
+    }
+
+
+    $mail->Host = $server_config["mail_smtp_host"];      // sets YAHOO as the SMTP server
+    $mail->Port = (int)$server_config["mail_smtp_port"]; // set the SMTP port for the yahoo server
+
+    if ($server_config["Password"] != "") {
+        $mail->Username = $server_config["mail_smtp_username"];  // yahoo username
+        $mail->Password = $server_config["mail_smtp_username"];            // yahoo password
+    }
+
+    if (!$mail->Send()) {
+        log_("Mail", " Erreur MAIL 2  " . $mail->ErrorInfo);
+    } else {
+        return true;
+    }
+
+}
 
 
 
-
-
-
-
-
-
-//sample smtp yahoo
-//$mail = new PHPMailer();
-//$body  = "<h1>hello, world!</h1>";
-//$mail->IsSMTP(); // telling the class to use SMTP
-//$mail->SMTPAuth   = true;                  // enable SMTP authentication
-//$mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
-//$mail->Host       = "smtp.mail.yahoo.com";      // sets YAHOO as the SMTP server
-//$mail->Port       = 465;                   // set the SMTP port for the yahoo server
-//$mail->Username   = "@yahoo.fr";  // yahoo username
-//$mail->Password   = "mdp";            // yahoo password
-//$mail->SetFrom('@yahoo.fr', 'First Last');
-//$mail->AddReplyTo("@yahoo.fr","First Last");
-//$mail->Subject    = "PHPMailer Test Subject via smtp (yahoo), basic";
-//$mail->MsgHTML($body);
-//$address = "@yahoo.fr";
-//$mail->AddAddress($address, "John Doe");
-//
-//https://github.com/PHPMailer/PHPMailer/blob/master/examples/mail.phps
-//sample  without smtp
-//$mail = new PHPMailer;
-//$mail->setFrom('from@example.com', 'First Last');
-//$mail->addReplyTo('replyto@example.com', 'First Last');
-//$mail->addAddress('whoto@example.com', 'John Doe');
-//$mail->Subject = 'PHPMailer mail() test';
-//$mail->msgHTML(file_get_contents('contents.html'), __DIR__);
-//$mail->AltBody = 'This is a plain-text message body';
-//$mail->addAttachment('images/phpmailer_mini.png');
-//send the message, check for errors
-//if (!$mail->send()) {
-//    echo "Mailer Error: " . $mail->ErrorInfo;
-//} else {
-//    echo "Message sent!";
-//}
