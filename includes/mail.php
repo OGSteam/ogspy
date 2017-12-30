@@ -96,6 +96,7 @@ function SendMail($dest, $subject, $HTMLBody)
         if (!$mail->send()) {
             log_("Mail", "Erreur MAIL 1  " . $mail->ErrorInfo);
         } else {
+            mailCounter();
             return true;
         }
     }
@@ -103,7 +104,7 @@ function SendMail($dest, $subject, $HTMLBody)
     //sinon SMTP
     $mail->IsSMTP();
     $mail->SMTPAuth = true;
-    $mail->Timeout = 10;
+    $mail->Timeout = 28;
 
     // securisé ?
     if ($server_config["mail_smtp_secure"] != 0) {
@@ -124,10 +125,30 @@ function SendMail($dest, $subject, $HTMLBody)
     if (!$mail->Send()) {
         log_("Mail", " Erreur MAIL 2  " . $mail->ErrorInfo);
     } else {
+        mailCounter();
         return true;
     }
 
 }
+
+
+//Incremente le compte de mail
+function mailCounter()
+{
+    global $db,  $server_config;
+    if (!isset($server_config['count_mail']))
+    {
+        $server_config['count_mail'] = 0;
+    }
+   $total =  $server_config['count_mail'] + 1;
+
+    $request = "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('count_mail','$total')";
+    $db->sql_query($request);
+    // mise a jour des caches avec les mofids
+    generate_config_cache();
+
+}
+
 
 
 

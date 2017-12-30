@@ -82,6 +82,7 @@ $lang['ADMIN_SERVER_MEMBERNAME'] = "Nom du membre";
 $lang['ADMIN_SERVER_MEMBERCONNECTED'] = "Connexion";
 $lang['ADMIN_SERVER_MEMBERLASTACTIVITY'] = "Dernière activité";
 $lang['ADMIN_SERVER_MEMBERIP'] = "Adresse IP";
+$lang['ADMIN_SERVER_TOTAL_MAILS'] = "Total des Mails envoyés";
 
 /* admin_members.php*/
 
