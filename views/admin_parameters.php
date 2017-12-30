@@ -63,7 +63,7 @@ $server_config['mail_smtp_port'] = (isset ($server_config['mail_smtp_port'])) ? 
 $mail_smtp_port=(int)$server_config['mail_smtp_port'];
 $mail_smtp_host=(isset ($server_config['mail_smtp_host'])) ? $server_config['mail_smtp_host'] : "";
 $mail_smtp_username=(isset ($server_config['mail_smtp_username'])) ? $server_config['mail_smtp_username'] : "";
-$mail_smtp_password=(isset ($server_config['mail_smtp_password'])) ? $server_config['mail_smtp_password'] : "";
+$mail_smtp_password="";
 //fin mail
 ?>
 
@@ -178,7 +178,7 @@ $mail_smtp_password=(isset ($server_config['mail_smtp_password'])) ? $server_con
         </tr>
         <tr>
             <th width="60%"><?php echo($lang['ADMIN_PARAMS_MAIL_SMTP_PASSEWORD']); ?></th>
-            <th><input type="password" size="30" name="mail_smtp_password" value="<?php echo $mail_smtp_password; ?>"></th>
+            <th><input type="password" size="30" name="mail_smtp_password" value="<?php echo $mail_smtp_password; ?>"> (<input type="checkbox"  name="enable_mail_smtp_password" />)</th>
         </tr>
         <?php if ($server_config['mail_use'] == 1 && check_var($user_data["user_email"], "Email") ) : ?>
             <tr>

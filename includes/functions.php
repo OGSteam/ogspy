@@ -435,7 +435,7 @@ function set_serverconfig()
             $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
             $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit, $pub_speed_uni,
             $pub_ddr, $pub_astro_strict, $pub_config_cache, $pub_mod_cache,
-            $pub_mail_use, $pub_mail_smtp_use, $pub_mail_smtp_secure, $pub_mail_smtp_port, $pub_mail_smtp_host, $pub_mail_smtp_username, $pub_mail_smtp_password;
+            $pub_mail_use, $pub_mail_smtp_use, $pub_mail_smtp_secure, $pub_mail_smtp_port, $pub_mail_smtp_host, $pub_mail_smtp_username, $pub_mail_smtp_password,$pub_enable_mail_smtp_password;
 
 
     if (!isset($pub_num_of_galaxies)) {
@@ -772,8 +772,11 @@ function set_serverconfig()
     $db->sql_query($request);
     $request = "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('mail_smtp_username','$pub_mail_smtp_username')";
     $db->sql_query($request);
-    $request = "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('mail_smtp_password','$pub_mail_smtp_password')";
-    $db->sql_query($request);
+
+    if (isset($pub_enable_mail_smtp_password))
+    {
+        setMailSMTPPassword($pub_mail_smtp_password);
+    }
 
 
     // mise a jour des caches avec les mofids

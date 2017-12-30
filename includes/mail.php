@@ -116,10 +116,11 @@ function SendMail($dest, $subject, $HTMLBody)
 
     $mail->Port = (int)$server_config["mail_smtp_port"]; // set the SMTP port for the yahoo server
 
-
-    if ($server_config["mail_smtp_password"] != "") {
+    //get password
+    include_once("parameters/mail.php");
+    if ($mail_smtp_password != "") {
         $mail->Username = $server_config["mail_smtp_username"];  // yahoo username
-        $mail->Password = $server_config["mail_smtp_password"];            // yahoo password
+        $mail->Password = $mail_smtp_password;  // yahoo password
     }
 
     if (!$mail->Send()) {
@@ -148,6 +149,16 @@ function mailCounter()
     generate_config_cache();
 
 }
+
+//passage du mdp en system de fichier (pas de mdp en clair dans variables sessions et BDD
+function setMailSMTPPassword($password)
+{
+    $fh = @fopen('parameters/mail.php', 'wb');
+    fwrite($fh, '<?php' . "\n\n" . 'if (!defined("IN_SPYOGAME")) die("Hacking attempt");' . "\n\n" . '$mail_smtp_password ="'.$password.'";' . "\n\n" . '?>');
+    fclose($fh);
+}
+
+
 
 
 
