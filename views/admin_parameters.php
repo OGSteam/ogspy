@@ -18,6 +18,13 @@ if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
     redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 
+//check mail
+if (isset($pub_testmail))
+{
+    SendMail($user_data["user_email"],"TEST","<h1>TEST OK</h1>");
+}
+
+
 $max_battlereport = $server_config['max_battlereport'];
 $max_favorites = $server_config['max_favorites'];
 $max_spyreport = $server_config['max_spyreport'];
@@ -163,7 +170,7 @@ $mail_smtp_password=(isset ($server_config['mail_smtp_password'])) ? $server_con
         </tr>
         <tr>
             <th><?php echo($lang['ADMIN_PARAMS_MAIL_SMTP_PORT']); ?></th>
-            <th><input type="text" name="max_spyreport" maxlength="4" size="5" value="<?php echo $mail_smtp_port; ?>"></th>
+            <th><input type="text" name="mail_smtp_port" maxlength="4" size="5" value="<?php echo $mail_smtp_port; ?>"></th>
         </tr>
         <tr>
             <th width="60%"><?php echo($lang['ADMIN_PARAMS_MAIL_SMTP_USERNAME']); ?></th>
@@ -173,6 +180,12 @@ $mail_smtp_password=(isset ($server_config['mail_smtp_password'])) ? $server_con
             <th width="60%"><?php echo($lang['ADMIN_PARAMS_MAIL_SMTP_PASSEWORD']); ?></th>
             <th><input type="password" size="30" name="mail_smtp_password" value="<?php echo $mail_smtp_password; ?>"></th>
         </tr>
+        <?php if ($server_config['mail_use'] == 1 && check_var($user_data["user_email"], "Email") ) : ?>
+            <tr>
+                <th width="60%"><?php echo($lang['ADMIN_PARAMS_MAIL_TEST'].$user_data["user_email"]); ?></th>
+                <th><a href="index.php?action=administration&subaction=parameter&testmail">TEST</a></th>
+            </tr>
+        <?php endif ;?>
         <tr>
             <td class="c_tech" colspan="2"><?php echo($lang['ADMIN_PARAMS_SERVICE']); ?></td>
         </tr>

@@ -304,6 +304,15 @@ function log_($parameter, $option = 0)
 
         /* ----------- cache ----------- */
 
+        /* ----------- Mail ----------- */
+        case 'Mail' :
+            $line = "[mail] ". $option ;
+            break;
+
+        /* ----------- Mail ----------- */
+
+
+
         case 'key' :
             $line = $member . " Impossible de retrouver le fichier key.php. Vérifier les droits d acces au dossier  \'parameters\' ";
             break;

@@ -102,18 +102,23 @@ function SendMail($dest, $subject, $HTMLBody)
 
     //sinon SMTP
     $mail->IsSMTP();
+    $mail->SMTPAuth = true;
+    $mail->Timeout = 10;
+
     // securisé ?
     if ($server_config["mail_smtp_secure"] != 0) {
-        $mail->SMTPSecure = "tsl";
+        $mail->SMTPSecure = "ssl";
     }
 
 
     $mail->Host = $server_config["mail_smtp_host"];      // sets YAHOO as the SMTP server
+
     $mail->Port = (int)$server_config["mail_smtp_port"]; // set the SMTP port for the yahoo server
 
-    if ($server_config["Password"] != "") {
+
+    if ($server_config["mail_smtp_password"] != "") {
         $mail->Username = $server_config["mail_smtp_username"];  // yahoo username
-        $mail->Password = $server_config["mail_smtp_username"];            // yahoo password
+        $mail->Password = $server_config["mail_smtp_password"];            // yahoo password
     }
 
     if (!$mail->Send()) {
