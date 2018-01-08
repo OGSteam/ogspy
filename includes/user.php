@@ -28,7 +28,7 @@ function user_check_auth($action, $user_id = null)
         case "usergroup_manage":
             if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
                 1) {
-                            redirection("index.php?action=message&id_message=forbidden&info");
+                redirection("index.php?action=message&id_message=forbidden&info");
             }
 
             break;
@@ -36,19 +36,19 @@ function user_check_auth($action, $user_id = null)
         case "user_update":
             if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
                 1) {
-                            redirection("index.php?action=message&id_message=forbidden&info");
+                redirection("index.php?action=message&id_message=forbidden&info");
             }
 
             $info_user = user_get($user_id);
             if ($info_user === false) {
-                            redirection("index.php?action=message&id_message=deleteuser_failed&info");
+                redirection("index.php?action=message&id_message=deleteuser_failed&info");
             }
 
             if (($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
-                1) || ($info_user[0]["user_admin"] == 1) || (($user_data["user_coadmin"] == 1) &&
-                ($info_user[0]["user_coadmin"] == 1)) || (($user_data["user_coadmin"] != 1 && $user_data["management_user"] ==
-                1) && ($info_user[0]["user_coadmin"] == 1 || $info_user[0]["management_user"] ==
-                1))) {
+                    1) || ($info_user[0]["user_admin"] == 1) || (($user_data["user_coadmin"] == 1) &&
+                    ($info_user[0]["user_coadmin"] == 1)) || (($user_data["user_coadmin"] != 1 && $user_data["management_user"] ==
+                        1) && ($info_user[0]["user_coadmin"] == 1 || $info_user[0]["management_user"] ==
+                        1))) {
                 redirection("index.php?action=message&id_message=forbidden&info");
             }
 
@@ -59,14 +59,15 @@ function user_check_auth($action, $user_id = null)
             redirection("index.php?action=message&id_message=errorfatal&info");
     }
 }
+
 /**
  * Login d'un utilisateur
  * @global string $pub_login
  * @global string $pub_password
  * @global string $pub_goto
  * @todo Query : "select user_id, user_active from " . TABLE_USER .
-            " where user_name = '" .  $db->sql_escape_string($pub_login) .
-            "' and user_password = '" . md5(sha1($pub_password)) . "'";
+ * " where user_name = '" .  $db->sql_escape_string($pub_login) .
+ * "' and user_password = '" . md5(sha1($pub_password)) . "'";
  * @todo Query : "select user_lastvisit from " . TABLE_USER . " where user_id = " . $user_id;
  * @todo Query : "update " . TABLE_USER . " set user_lastvisit = " . time() ." where user_id = " . $user_id;
  * @todo Query : "update " . TABLE_STATISTIC ." set statistic_value = statistic_value + 1" " where statistic_name = 'connection_server'";
@@ -75,10 +76,15 @@ function user_check_auth($action, $user_id = null)
 function user_login()
 {
     global $db;
-    global $pub_login, $pub_password, $pub_goto, $url_append;
+    global $pub_login, $pub_password, $pub_goto, $url_append, $pub_token;
+
+    if (!token::statiCheckToken($pub_token)) // verification du token
+    {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
 
     if (!check_var($pub_login, "Pseudo_Groupname") || !check_var($pub_password,
-        "Password") || !check_var($pub_goto, "Special", "#^[\w=&%+]+$#")) {
+            "Password") || !check_var($pub_goto, "Special", "#^[\w=&%+]+$#")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
@@ -123,12 +129,13 @@ function user_login()
         }
     }
 }
+
 /**
-* Login d'un utilisateur avec redirection
-* @global string $pub_login
-* @global string $pub_password
-* @global string $pub_goto
-*/
+ * Login d'un utilisateur avec redirection
+ * @global string $pub_login
+ * @global string $pub_password
+ * @global string $pub_goto
+ */
 function user_login_redirection()
 {
     global $pub_goto, $url_append;
@@ -236,12 +243,12 @@ function member_user_set()
 {
     global $db, $user_data, $user_technology;
     global $pub_pseudo, $pub_old_password, $pub_new_password, $pub_new_password2, $pub_galaxy,
-        $pub_system, $pub_disable_ip_check, $pub_off_commandant, $pub_off_amiral, $pub_off_ingenieur,
-        $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email;
+           $pub_system, $pub_disable_ip_check, $pub_off_commandant, $pub_off_amiral, $pub_off_ingenieur,
+           $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email;
 
     if (!check_var($pub_pseudo, "Text") || !check_var($pub_old_password, "Text") ||
         !check_var($pub_new_password, "Text") || !check_var($pub_new_password2,
-        "CharNum") || !check_var($pub_pseudo_email, "Email")
+            "CharNum") || !check_var($pub_pseudo_email, "Email")
         || !check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_disable_ip_check, "Num") || !check_var($pub_pseudo_ingame, "Pseudo_ingame")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
@@ -285,7 +292,7 @@ function member_user_set()
             " SET `off_commandant` = '1' WHERE `user_id` = " . $user_id);
     }
     if ($user_data['off_commandant'] == 1 && (is_null($pub_off_commandant) || $pub_off_commandant !=
-        1)) {
+            1)) {
         $db->sql_query("UPDATE " . TABLE_USER .
             " SET `off_commandant` = '0' WHERE `user_id` = " . $user_id);
     }
@@ -296,7 +303,7 @@ function member_user_set()
             " SET `off_amiral` = '1' WHERE `user_id` = " . $user_id);
     }
     if ($user_data['off_amiral'] == 1 && (is_null($pub_off_amiral) || $pub_off_amiral !=
-        1)) {
+            1)) {
         $db->sql_query("UPDATE " . TABLE_USER .
             " SET `off_amiral` = '0' WHERE `user_id` = " . $user_id);
     }
@@ -307,7 +314,7 @@ function member_user_set()
             " SET `off_ingenieur` = '1' WHERE `user_id` = " . $user_id);
     }
     if ($user_data['off_ingenieur'] == 1 && (is_null($pub_off_ingenieur) || $pub_off_ingenieur !=
-        1)) {
+            1)) {
         $db->sql_query("UPDATE " . TABLE_USER .
             " SET `off_ingenieur` = '0' WHERE `user_id` = " . $user_id);
     }
@@ -318,7 +325,7 @@ function member_user_set()
             " SET `off_geologue` = '1' WHERE `user_id` = " . $user_id);
     }
     if ($user_data['off_geologue'] == 1 && (is_null($pub_off_geologue) || $pub_off_geologue !=
-        1)) {
+            1)) {
         $db->sql_query("UPDATE " . TABLE_USER .
             " SET `off_geologue` = '0' WHERE `user_id` = " . $user_id);
     }
@@ -332,7 +339,7 @@ function member_user_set()
             " WHERE `user_id` = " . $user_id);
     }
     if ($user_data['off_technocrate'] == 1 && (is_null($pub_off_technocrate) || $pub_off_technocrate !=
-        1)) {
+            1)) {
         $db->sql_query("UPDATE " . TABLE_USER .
             " SET `off_technocrate` = '0' WHERE `user_id` = " . $user_id);
         $tech = $user_technology['Esp'] - 2;
@@ -342,14 +349,14 @@ function member_user_set()
 
     //Contrôle que le pseudo ne soit pas déjà utilisé
     $request = "select * from " . TABLE_USER . " where user_name = '" .
-            $db->sql_escape_string($pub_pseudo) . "' and user_id <> " . $user_id;
+        $db->sql_escape_string($pub_pseudo) . "' and user_id <> " . $user_id;
     $result = $db->sql_query($request);
     if ($db->sql_numrows($result) != 0) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudolocked&info");
     }
 
     if (is_null($pub_disable_ip_check) || $pub_disable_ip_check != 1) {
-            $pub_disable_ip_check = 0;
+        $pub_disable_ip_check = 0;
     }
 
     user_set_general($user_id, $pub_pseudo, $pub_new_password, $pub_pseudo_email, null, $pub_galaxy, $pub_system,
@@ -370,7 +377,7 @@ function member_user_set()
  * @param integer $disable_ip_check
  */
 function user_set_general($user_id, $user_name = null, $user_password = null, $user_email = null, $user_lastvisit = null,
-    $user_galaxy = null, $user_system = null, $disable_ip_check = null)
+                          $user_galaxy = null, $user_system = null, $disable_ip_check = null)
 {
     global $db, $user_data, $server_config;
 
@@ -381,13 +388,13 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
     if (!empty($user_galaxy)) {
         $user_galaxy = intval($user_galaxy);
         if ($user_galaxy < 1 || $user_galaxy > intval($server_config['num_of_galaxies'])) {
-                    $user_galaxy = 1;
+            $user_galaxy = 1;
         }
     }
     if (!empty($user_system)) {
         $user_system = intval($user_system);
         if ($user_system < 1 || $user_system > intval($server_config['num_of_systems'])) {
-                    $user_system = 1;
+            $user_system = 1;
         }
     }
 
@@ -395,37 +402,37 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
 
     //Pseudo et mot de passe
     if (!empty($user_name)) {
-            $update .= "user_name = '" . $db->sql_escape_string($user_name) . "'";
+        $update .= "user_name = '" . $db->sql_escape_string($user_name) . "'";
     }
     if (!empty($user_password)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") . "user_password = '" . md5(sha1($user_password)) . "'";
+        $update .= ((strlen($update) > 0) ? ", " : "") . "user_password = '" . md5(sha1($user_password)) . "'";
     }
 
     //Galaxy et système solaire du membre
     if (!empty($user_galaxy)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") . "user_galaxy = '" . $user_galaxy .
+        $update .= ((strlen($update) > 0) ? ", " : "") . "user_galaxy = '" . $user_galaxy .
             "'";
     }
     if (!empty($user_system)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") . "user_system = '" . $user_system .
+        $update .= ((strlen($update) > 0) ? ", " : "") . "user_system = '" . $user_system .
             "'";
     }
 
     //Dernière visite
     if (!empty($user_lastvisit)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") . "user_lastvisit = '" . $user_lastvisit .
+        $update .= ((strlen($update) > 0) ? ", " : "") . "user_lastvisit = '" . $user_lastvisit .
             "'";
     }
 
     //Email
     if (!empty($user_email)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") . "user_email = '" . $user_email .
+        $update .= ((strlen($update) > 0) ? ", " : "") . "user_email = '" . $user_email .
             "'";
     }
 
     //Désactivation de la vérification de l'adresse ip
     if (!is_null($disable_ip_check)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") . "disable_ip_check = '" . $disable_ip_check .
+        $update .= ((strlen($update) > 0) ? ", " : "") . "disable_ip_check = '" . $disable_ip_check .
             "'";
     }
 
@@ -451,7 +458,7 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
  * @param null $management_ranking
  */
 function user_set_grant($user_id, $user_admin = null, $user_active = null, $user_coadmin = null,
-    $management_user = null, $management_ranking = null)
+                        $management_user = null, $management_ranking = null)
 {
     global $db, $user_data;
 
@@ -518,8 +525,8 @@ function user_set_grant($user_id, $user_admin = null, $user_active = null, $user
  * @param null $rank_exported
  */
 function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $search = null,
-    $spy_added_web = null, $spy_added_ogs = null, $rank_added_web = null, $rank_added_ogs = null,
-    $planet_exported = null, $spy_exported = null, $rank_exported = null)
+                       $spy_added_web = null, $spy_added_ogs = null, $rank_added_web = null, $rank_added_ogs = null,
+                       $planet_exported = null, $spy_exported = null, $rank_exported = null)
 {
     global $db, $user_data;
 
@@ -527,42 +534,42 @@ function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $sear
 
     //Statistiques envoi systèmes solaires et rapports d'espionnage
     if (!is_null($planet_added_web)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") .
+        $update .= ((strlen($update) > 0) ? ", " : "") .
             "planet_added_web = planet_added_web + " . $planet_added_web;
     }
     if (!is_null($planet_added_ogs)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") .
+        $update .= ((strlen($update) > 0) ? ", " : "") .
             "planet_added_ogs = planet_added_ogs + " . $planet_added_ogs;
     }
     if (!is_null($search)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") . "search = search + " . $search;
+        $update .= ((strlen($update) > 0) ? ", " : "") . "search = search + " . $search;
     }
     if (!is_null($spy_added_web)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") .
+        $update .= ((strlen($update) > 0) ? ", " : "") .
             "spy_added_web = spy_added_web + " . $spy_added_web;
     }
     if (!is_null($spy_added_ogs)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") .
+        $update .= ((strlen($update) > 0) ? ", " : "") .
             "spy_added_ogs = spy_added_ogs + " . $spy_added_ogs;
     }
     if (!is_null($rank_added_web)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") .
+        $update .= ((strlen($update) > 0) ? ", " : "") .
             "rank_added_web = rank_added_web + " . $rank_added_web;
     }
     if (!is_null($rank_added_ogs)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") .
+        $update .= ((strlen($update) > 0) ? ", " : "") .
             "rank_added_ogs = rank_added_ogs + " . $rank_added_ogs;
     }
     if (!is_null($planet_exported)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") .
+        $update .= ((strlen($update) > 0) ? ", " : "") .
             "planet_exported = planet_exported + " . $planet_exported;
     }
     if (!is_null($spy_exported)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") .
+        $update .= ((strlen($update) > 0) ? ", " : "") .
             "spy_exported = spy_exported + " . $spy_exported;
     }
     if (!is_null($rank_exported)) {
-            $update .= ((strlen($update) > 0) ? ", " : "") .
+        $update .= ((strlen($update) > 0) ? ", " : "") .
             "rank_exported = rank_exported + " . $rank_exported;
     }
 
@@ -605,6 +612,7 @@ function user_get($user_id = false)
 
     return $info_users;
 }
+
 /**
  * Recuperation des droits d'un utilisateur
  * @param int $user_id Identificateur de l'utilisateur demande
@@ -620,7 +628,7 @@ function user_get_auth($user_id)
     if ($user_info["user_admin"] == 1 || $user_info["user_coadmin"] == 1) {
         $user_auth = array("server_set_system" => 1, "server_set_spy" => 1,
             "server_set_rc" => 1, "server_set_ranking" => 1, "server_show_positionhided" =>
-            1, "ogs_connection" => 1, "ogs_set_system" => 1, "ogs_get_system" => 1,
+                1, "ogs_connection" => 1, "ogs_set_system" => 1, "ogs_get_system" => 1,
             "ogs_set_spy" => 1, "ogs_get_spy" => 1, "ogs_set_ranking" => 1,
             "ogs_get_ranking" => 1);
 
@@ -637,52 +645,52 @@ function user_get_auth($user_id)
     if ($db->sql_numrows($result) > 0) {
         $user_auth = array("server_set_system" => 0, "server_set_spy" => 0,
             "server_set_rc" => 0, "server_set_ranking" => 0, "server_show_positionhided" =>
-            0, "ogs_connection" => 0, "ogs_set_system" => 0, "ogs_get_system" => 0,
+                0, "ogs_connection" => 0, "ogs_set_system" => 0, "ogs_get_system" => 0,
             "ogs_set_spy" => 0, "ogs_get_spy" => 0, "ogs_set_ranking" => 0,
             "ogs_get_ranking" => 0);
 
         while ($row = $db->sql_fetch_assoc($result)) {
             if ($row["server_set_system"] == 1) {
-                            $user_auth["server_set_system"] = 1;
+                $user_auth["server_set_system"] = 1;
             }
             if ($row["server_set_spy"] == 1) {
-                            $user_auth["server_set_spy"] = 1;
+                $user_auth["server_set_spy"] = 1;
             }
             if ($row["server_set_rc"] == 1) {
-                            $user_auth["server_set_rc"] = 1;
+                $user_auth["server_set_rc"] = 1;
             }
             if ($row["server_set_ranking"] == 1) {
-                            $user_auth["server_set_ranking"] = 1;
+                $user_auth["server_set_ranking"] = 1;
             }
             if ($row["server_show_positionhided"] == 1) {
-                            $user_auth["server_show_positionhided"] = 1;
+                $user_auth["server_show_positionhided"] = 1;
             }
             if ($row["ogs_connection"] == 1) {
-                            $user_auth["ogs_connection"] = 1;
+                $user_auth["ogs_connection"] = 1;
             }
             if ($row["ogs_set_system"] == 1) {
-                            $user_auth["ogs_set_system"] = 1;
+                $user_auth["ogs_set_system"] = 1;
             }
             if ($row["ogs_get_system"] == 1) {
-                            $user_auth["ogs_get_system"] = 1;
+                $user_auth["ogs_get_system"] = 1;
             }
             if ($row["ogs_set_spy"] == 1) {
-                            $user_auth["ogs_set_spy"] = 1;
+                $user_auth["ogs_set_spy"] = 1;
             }
             if ($row["ogs_get_spy"] == 1) {
-                            $user_auth["ogs_get_spy"] = 1;
+                $user_auth["ogs_get_spy"] = 1;
             }
             if ($row["ogs_set_ranking"] == 1) {
-                            $user_auth["ogs_set_ranking"] = 1;
+                $user_auth["ogs_set_ranking"] = 1;
             }
             if ($row["ogs_get_ranking"] == 1) {
-                            $user_auth["ogs_get_ranking"] = 1;
+                $user_auth["ogs_get_ranking"] = 1;
             }
         }
     } else {
         $user_auth = array("server_set_system" => 0, "server_set_spy" => 0,
             "server_set_ranking" => 0, "server_show_positionhided" => 0, "ogs_connection" =>
-            0, "ogs_set_system" => 0, "ogs_get_system" => 0, "ogs_set_spy" => 0,
+                0, "ogs_set_system" => 0, "ogs_get_system" => 0, "ogs_set_spy" => 0,
             "ogs_get_spy" => 0, "ogs_set_ranking" => 0, "ogs_get_ranking" => 0);
     }
 
@@ -698,7 +706,7 @@ function user_create()
 {
     global $db, $user_data;
     global $pub_pseudo, $pub_user_id, $pub_active, $pub_user_coadmin, $pub_management_user,
-        $pub_management_ranking, $pub_group_id, $pub_pass;
+           $pub_management_ranking, $pub_group_id, $pub_pass;
 
     if (!check_var($pub_pseudo, "Pseudo_Groupname")) {
         redirection("index.php?action=message&id_message=errordata&info=1");
@@ -751,6 +759,7 @@ function user_create()
             $pub_pseudo);
     }
 }
+
 /**
  * Suppression d'un utilisateur ($pub_user_id)
  * @todo Query : x12
@@ -847,6 +856,7 @@ function user_delete()
 
     redirection("index.php?action=administration&subaction=member");
 }
+
 /**
  * Recuperation des statistiques
  * @todo Query : x1
@@ -870,7 +880,7 @@ function user_statistic()
             $here = "(*)";
             list($session_ogs) = $db->sql_fetch_row($result_2);
             if ($session_ogs == 1) {
-                            $here = "(**)";
+                $here = "(**)";
             }
         }
         $user_statistic[] = array_merge($row, array("here" => $here));
@@ -878,6 +888,7 @@ function user_statistic()
 
     return $user_statistic;
 }
+
 /**
  * Recuperation du nombres de comptes actifs
  * @todo Query : x1
@@ -892,7 +903,7 @@ function user_get_nb_active_users()
     $result = $db->sql_query($request);
     $number = $db->sql_numrows();
 
-    return($number);
+    return ($number);
 }
 
 /**
@@ -955,6 +966,7 @@ function user_set_all_empire_resync_moon()
     $db->sql_query($request);
 
 }
+
 /**
  * remise en ordre des planetes sans espaces vides ...
  * ( les id doivent se suivre 101,102,103 etc etc)
@@ -1001,11 +1013,11 @@ function user_set_all_empire_resync_planet()
     $request .= " order by planet_id";
     $result = $db->sql_query($request);
 
-        if ($db->sql_numrows($result) != 0) {
+    if ($db->sql_numrows($result) != 0) {
 
-    // on remet en ordre moon
-    user_set_all_empire_resync_moon();
-    // TODO : passer le result en parametre ...
+        // on remet en ordre moon
+        user_set_all_empire_resync_moon();
+        // TODO : passer le result en parametre ...
 
 
     }
@@ -1023,17 +1035,17 @@ function user_get_empire($user_id)
     global $db;
 
     $planet = array(false, "user_id" => "", "planet_name" => "", "coordinates" => "",
-            "fields" => "", "fields_used" => "", "boosters" => booster_encode(),
-            "temperature_min" => "", "temperature_max" =>"",
-            "Sat" => 0, "Sat_percentage" => 100, "M" => 0, "M_percentage" => 100, "C" => 0,
-            "C_Percentage" => 100, "D" => 0, "D_percentage" =>100, "CES" => 0, "CES_percentage" => 100,
-            "CEF" => 0, "CEF_percentage" => 100, "UdR" => 0, "UdN" => 0, "CSp" => 0,
-            "HM" => 0, "HC" => 0, "HD" => 0, "Lab" => 0,
-            "Ter" => 0, "Silo" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0,
-            "C_percentage" => 100);
+        "fields" => "", "fields_used" => "", "boosters" => booster_encode(),
+        "temperature_min" => "", "temperature_max" => "",
+        "Sat" => 0, "Sat_percentage" => 100, "M" => 0, "M_percentage" => 100, "C" => 0,
+        "C_Percentage" => 100, "D" => 0, "D_percentage" => 100, "CES" => 0, "CES_percentage" => 100,
+        "CEF" => 0, "CEF_percentage" => 100, "UdR" => 0, "UdN" => 0, "CSp" => 0,
+        "HM" => 0, "HC" => 0, "HD" => 0, "Lab" => 0,
+        "Ter" => 0, "Silo" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0,
+        "C_percentage" => 100);
 
     $defence = array("LM" => 0, "LLE" => 0, "LLO" => 0, "CG" => 0, "AI" => 0, "LP" =>
-            0, "PB" => 0, "GB" => 0, "MIC" => 0, "MIP" => 0);
+        0, "PB" => 0, "GB" => 0, "MIC" => 0, "MIP" => 0);
 
     // pour affichage on selectionne 9 planetes minis
     if (find_nb_planete_user($user_id) < 9) {
@@ -1083,21 +1095,18 @@ function user_get_empire($user_id)
         $row["boosters"] = booster_verify_str($row["boosters"]); //Correction et mise à jour booster from date
         $row["booster_tab"] = booster_decode($row["boosters"]); // ajout booster dans get_empire
         // incrémentation field
-        if ($row["planet_id"] > 200)
-        {
-            $row["fields"] += $row["booster_tab"]["extention_p"]; 
-        } else
-        {
+        if ($row["planet_id"] > 200) {
+            $row["fields"] += $row["booster_tab"]["extention_p"];
+        } else {
             $row["fields"] += $row["booster_tab"]["extention_m"];
         }
-		
+
         $row["C_percentage"] = $row["C_Percentage"]; // ligne inutile 
         $user_building[$row["planet_id"]] = $row;
         $user_building[$row["planet_id"]][0] = true;
     }
 
-	
-	
+
     $request = "SELECT Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique";
     $request .= " FROM " . TABLE_USER_TECHNOLOGY;
     $request .= " WHERE user_id = " . $user_id;
@@ -1130,7 +1139,7 @@ function user_get_empire($user_id)
     }
 
     return array("building" => $user_building, "technology" => $user_technology,
-            "defence" => $user_defence,);
+        "defence" => $user_defence,);
 }
 
 /**
@@ -1155,7 +1164,7 @@ function find_nb_planete_user($id)
 
     //mini 9 pour eviter bug affichage
     if ($db->sql_numrows($result) <= 9) {
-            return 9;
+        return 9;
     }
 
     return $db->sql_numrows($result);
@@ -1181,7 +1190,7 @@ function find_nb_moon_user($id)
 
     //mini 9 pour eviter bug affichage
     if ($db->sql_numrows($result) <= 9) {
-            return 9;
+        return 9;
     }
 
     return $db->sql_numrows($result);
@@ -1198,17 +1207,16 @@ function user_empire_production($user_empire, $off = NULL)
 {
     $prod = array();
 
-    if ($off == NULL)
-    {
+    if ($off == NULL) {
         $off['off_commandant'] = 0;
         $off['off_amiral'] = 0;
         $off['off_ingenieur'] = 0;
-        $off['off_geologue']  = 0;
+        $off['off_geologue'] = 0;
         $off['off_technocrate'] = 0;
     }
     //!\\ prepa officier
     $officier = $off['off_commandant'] + $off['off_amiral'] + $off['off_ingenieur']
-    + $off['off_geologue'] + $off['off_technocrate'];
+        + $off['off_geologue'] + $off['off_technocrate'];
     if ($officier == 5) {
         $off_full = 1;
         $officier = 2; //full officier
@@ -1227,59 +1235,49 @@ function user_empire_production($user_empire, $off = NULL)
     $ratio = array();
     $NRJ = $user_empire['technology']['NRJ'] != "" ? $user_empire['technology']['NRJ'] : "0";
     $temp_max = 0;
-        // FIN prepa ration E
-	
-	
+    // FIN prepa ration E
 
-    foreach ($user_empire["building"] as  $content)
-    {
-        if (isset($content["planet_id"]) && $content["planet_id"] < 200)
-        {// parcours des planetes ( < 200 )
-			
+
+    foreach ($user_empire["building"] as $content) {
+        if (isset($content["planet_id"]) && $content["planet_id"] < 200) {// parcours des planetes ( < 200 )
+
             // les different type de prod (generique)
             $type = array("M", "C", "D");
-            foreach ($type as $mine)
-            {
+            foreach ($type as $mine) {
                 $level = $content[$mine] != "" ? $content[$mine] : "0";
-                if ($level != "")
-                {	
-                    if (isset($content["temperature_max"]))
-                    {
+                if ($level != "") {
+                    if (isset($content["temperature_max"])) {
                         $temp_max = $content["temperature_max"];
                     }
-					
-                    if ($mine == "D")
-                    { // specificité deut puisque les cef pompe la prod
+
+                    if ($mine == "D") { // specificité deut puisque les cef pompe la prod
                         $CEF = $content["CEF"];
                         $CEF_consumption = consumption("CEF", $CEF);
                         $tmp = production($mine, $level, $officier, $temp_max, $NRJ, $plasma) - $CEF_consumption;
                         $prod["theorique"][$content["planet_id"]][$mine] = number_format(floor($tmp), 0, ',', ' ');
-                    } else
-                    {
+                    } else {
                         $tmp = production($mine, $level, $officier, $temp_max, $NRJ, $plasma);
                         $prod["theorique"][$content["planet_id"]][$mine] = number_format(floor($tmp), 0, ',', ' ');
                     }
                 }
             }
-			
-			
-			
-                // si pas de temperature impossible de calculer le ration et donc prod theorique ...
-            if (isset($content["temperature_max"]))
-            {
+
+
+            // si pas de temperature impossible de calculer le ration et donc prod theorique ...
+            if (isset($content["temperature_max"])) {
                 // calcul ratio
-            $ratio[$content["planet_id"]] = $product;
-            $ratio[$content["planet_id"]] = bilan_production_ratio($content["M"], $content["C"], $content["D"],
+                $ratio[$content["planet_id"]] = $product;
+                $ratio[$content["planet_id"]] = bilan_production_ratio($content["M"], $content["C"], $content["D"],
                     $content["CES"], $content["CEF"], $content["Sat"], $content["temperature_max"], $off['off_ingenieur'], $off['off_geologue'], $off_full,
                     $NRJ, $plasma, $content["M_percentage"] / 100, $content["C_percentage"] / 100,
                     $content["D_percentage"] / 100, $content["CES_percentage"] / 100, $content["CEF_percentage"] / 100,
                     $content["Sat_percentage"] / 100, $content["booster_tab"]);
-			
-            $prod["reel"][$content["planet_id"]] = $ratio[$content["planet_id"]];
+
+                $prod["reel"][$content["planet_id"]] = $ratio[$content["planet_id"]];
             }
-			
+
         }
-		
+
     }
     return $prod;
 }
@@ -1331,6 +1329,7 @@ function user_del_building()
 
     redirection("index.php?action=home&subaction=empire&view=" . $pub_view);
 }
+
 /**
  * Déplacement des données de planète de la page empire
  */
@@ -1354,12 +1353,12 @@ function user_move_empire()
     }
     if (isset($pub_left)) {
         if ($pub_planet_id == 101) {
-                    redirection("index.php?action=home&subaction=empire");
+            redirection("index.php?action=home&subaction=empire");
         }
         $new_position = $pub_planet_id - 1;
     } elseif (isset($pub_right)) {
         if ($pub_planet_id == (100 + $nb_planete)) {
-                    redirection("index.php?action=home&subaction=empire");
+            redirection("index.php?action=home&subaction=empire");
         }
         $new_position = $pub_planet_id + 1;
     }
@@ -1510,7 +1509,7 @@ function user_getfavorites_spy()
         list($user_name) = $db->sql_fetch_row($result_2);
         $favorite[$spy_id] = array("spy_id" => $spy_id, "spy_galaxy" => substr($coordinates,
             0, strpos($coordinates, ':')), "spy_system" => substr($coordinates, strpos($coordinates,
-            ':') + 1, strrpos($coordinates, ':') - strpos($coordinates, ':') - 1), "spy_row" =>
+                ':') + 1, strrpos($coordinates, ':') - strpos($coordinates, ':') - 1), "spy_row" =>
             substr($coordinates, strrpos($coordinates, ':') + 1), "player" => $player,
             "ally" => $ally, "moon" => $moon, "status" => $status, "datadate" => $datadate,
             "poster" => $user_name);
@@ -1570,7 +1569,7 @@ function user_del_favorite_spy()
     $db->sql_query($request);
 
     if (!isset($pub_info)) {
-            $pub_info = 1;
+        $pub_info = 1;
     }
 
     switch ($pub_info) {
@@ -1605,12 +1604,12 @@ function usergroup_create()
     }
 
     $request = "select group_id from " . TABLE_GROUP . " where group_name = '" .
-            $db->sql_escape_string($pub_groupname) . "'";
+        $db->sql_escape_string($pub_groupname) . "'";
     $result = $db->sql_query($request);
 
     if ($db->sql_numrows($result) == 0) {
         $request = "insert into " . TABLE_GROUP . " (group_name)" . " values ('" .
-                $db->sql_escape_string($pub_groupname) . "')";
+            $db->sql_escape_string($pub_groupname) . "')";
         $db->sql_query($request);
         $group_id = $db->sql_insertid();
 
@@ -1675,7 +1674,7 @@ function usergroup_get($group_id = false)
 
     if ($group_id !== false) {
         if (intval($group_id) == 0) {
-                    return false;
+            return false;
         }
         $request .= " where group_id = " . $group_id;
     }
@@ -1699,6 +1698,7 @@ function usergroup_get($group_id = false)
 
     return $info_usergroup;
 }
+
 /**
  * Enregistrement des droits d'un groupe utilisateurs
  */
@@ -1706,18 +1706,18 @@ function usergroup_setauth()
 {
     global $db, $user_data;
     global $pub_group_id, $pub_group_name, $pub_server_set_system, $pub_server_set_spy,
-        $pub_server_set_rc, $pub_server_set_ranking, $pub_server_show_positionhided, $pub_ogs_connection,
-        $pub_ogs_set_system, $pub_ogs_get_system, $pub_ogs_set_spy, $pub_ogs_get_spy, $pub_ogs_set_ranking,
-        $pub_ogs_get_ranking;
+           $pub_server_set_rc, $pub_server_set_ranking, $pub_server_show_positionhided, $pub_ogs_connection,
+           $pub_ogs_set_system, $pub_ogs_get_system, $pub_ogs_set_spy, $pub_ogs_get_spy, $pub_ogs_set_ranking,
+           $pub_ogs_get_ranking;
 
     if (!check_var($pub_group_id, "Num") || !check_var($pub_group_name,
-        "Pseudo_Groupname") || !check_var($pub_server_set_system, "Num") || !check_var($pub_server_set_spy,
-        "Num") || !check_var($pub_server_set_rc, "Num") || !check_var($pub_server_set_ranking,
-        "Num") || !check_var($pub_server_show_positionhided, "Num") || !check_var($pub_ogs_connection,
-        "Num") || !check_var($pub_ogs_set_system, "Num") || !check_var($pub_ogs_get_system,
-        "Num") || !check_var($pub_ogs_set_spy, "Num") || !check_var($pub_ogs_get_spy,
-        "Num") || !check_var($pub_ogs_set_ranking, "Num") || !check_var($pub_ogs_get_ranking,
-        "Num")) {
+            "Pseudo_Groupname") || !check_var($pub_server_set_system, "Num") || !check_var($pub_server_set_spy,
+            "Num") || !check_var($pub_server_set_rc, "Num") || !check_var($pub_server_set_ranking,
+            "Num") || !check_var($pub_server_show_positionhided, "Num") || !check_var($pub_ogs_connection,
+            "Num") || !check_var($pub_ogs_set_system, "Num") || !check_var($pub_ogs_get_system,
+            "Num") || !check_var($pub_ogs_set_spy, "Num") || !check_var($pub_ogs_get_spy,
+            "Num") || !check_var($pub_ogs_set_ranking, "Num") || !check_var($pub_ogs_get_ranking,
+            "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
@@ -1726,40 +1726,40 @@ function usergroup_setauth()
     }
 
     if (is_null($pub_server_set_system)) {
-            $pub_server_set_system = 0;
+        $pub_server_set_system = 0;
     }
     if (is_null($pub_server_set_spy)) {
-            $pub_server_set_spy = 0;
+        $pub_server_set_spy = 0;
     }
     if (is_null($pub_server_set_rc)) {
-            $pub_server_set_rc = 0;
+        $pub_server_set_rc = 0;
     }
     if (is_null($pub_server_set_ranking)) {
-            $pub_server_set_ranking = 0;
+        $pub_server_set_ranking = 0;
     }
     if (is_null($pub_server_show_positionhided)) {
-            $pub_server_show_positionhided = 0;
+        $pub_server_show_positionhided = 0;
     }
     if (is_null($pub_ogs_connection)) {
-            $pub_ogs_connection = 0;
+        $pub_ogs_connection = 0;
     }
     if (is_null($pub_ogs_set_system)) {
-            $pub_ogs_set_system = 0;
+        $pub_ogs_set_system = 0;
     }
     if (is_null($pub_ogs_get_system)) {
-            $pub_ogs_get_system = 0;
+        $pub_ogs_get_system = 0;
     }
     if (is_null($pub_ogs_set_spy)) {
-            $pub_ogs_set_spy = 0;
+        $pub_ogs_set_spy = 0;
     }
     if (is_null($pub_ogs_get_spy)) {
-            $pub_ogs_get_spy = 0;
+        $pub_ogs_get_spy = 0;
     }
     if (is_null($pub_ogs_set_ranking)) {
-            $pub_ogs_set_ranking = 0;
+        $pub_ogs_set_ranking = 0;
     }
     if (is_null($pub_ogs_get_ranking)) {
-            $pub_ogs_get_ranking = 0;
+        $pub_ogs_get_ranking = 0;
     }
 
     //Vérification des droits
@@ -1942,7 +1942,7 @@ function user_del_spy()
     }
 
     if (!isset($pub_info)) {
-            $pub_info = 1;
+        $pub_info = 1;
     }
 
     switch ($pub_info) {
@@ -1976,14 +1976,14 @@ function UNparseRC($id_RC)
             $lang['GAME_DEF_PB_S'], 'GB' => $lang['GAME_DEF_GB_S']);
     $base_ships = array('PT' => array(4000, 10, 5), 'GT' => array(12000, 25, 5),
         'CLE' => array(4000, 10, 50), 'CLO' => array(10000, 25, 150), 'CR' => array(27000,
-        50, 400), 'VB' => array(60000, 200, 1000), 'VC' => array(30000, 100, 50), 'REC' =>
-        array(16000, 10, 1), 'SE' => array(1000, 0, 0), 'BMD' => array(75000, 500, 1000),
+            50, 400), 'VB' => array(60000, 200, 1000), 'VC' => array(30000, 100, 50), 'REC' =>
+            array(16000, 10, 1), 'SE' => array(1000, 0, 0), 'BMD' => array(75000, 500, 1000),
         'DST' => array(110000, 500, 2000), 'EDLM' => array(9000000, 50000, 200000),
         'SAT' => array(2000, 1, 1), 'TRA' => array(70000, 400, 700));
     $base_defs = array('LM' => array(2000, 20, 80), 'LLE' => array(2000, 25, 100),
         'LLO' => array(8000, 100, 250), 'CG' => array(35000, 200, 1100), 'AI' => array(8000,
-        500, 150), 'LP' => array(100000, 300, 3000), 'PB' => array(20000, 2000, 1), 'GB' =>
-        array(100000, 10000, 1));
+            500, 150), 'LP' => array(100000, 300, 3000), 'PB' => array(20000, 2000, 1), 'GB' =>
+            array(100000, 10000, 1));
 
     // Récupération des constantes du RC
     $query = 'SELECT dateRC, coordinates, nb_rounds, victoire, pertes_A, pertes_D, gain_M, gain_C, 
@@ -2039,7 +2039,7 @@ function UNparseRC($id_RC)
                 if (isset($$key) && $$key > 0) {
                     $vivant_att = true;
                     $ship_type .= "\t" . $ship;
-                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.'); ;
+                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.');;
                     $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
                     $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
                     $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
@@ -2048,12 +2048,12 @@ function UNparseRC($id_RC)
             if ($vivant_att == true) {
                 $template .= ' [' . $coordinates . ']';
                 if ($idx == 1) {
-                                    $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
+                    $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
                 }
                 $template .= "\n";
                 $template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
             } else {
-                            $template .= ' détruit.' . "\n\n";
+                $template .= ' détruit.' . "\n\n";
             }
         } // Fin récupération de chaque attaquant du RC
 
@@ -2098,12 +2098,12 @@ function UNparseRC($id_RC)
             if ($vivant_def == true) {
                 $template .= ' [' . $coordinates . ']';
                 if ($idx == 1) {
-                                    $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
+                    $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
                 }
                 $template .= "\n";
                 $template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
             } else {
-                            $template .= ' ' . $lang['GAME_CREPORT_DESTROYED'] . ' ' . "\n\n";
+                $template .= ' ' . $lang['GAME_CREPORT_DESTROYED'] . ' ' . "\n\n";
             }
         } // Fin récupération de chaque défenseur du RC
 
@@ -2120,19 +2120,19 @@ function UNparseRC($id_RC)
     } // Fin récupération de chaque round du RC
 
     // Qui a remporté le combat ?
-        switch ($victoire) {
-            case 'N':
-                $template .= $lang['GAME_CREPORT_RESULT_EVEN'] . '.' .
-                    "\n\n";
-                break;
-            case 'A':
-                $template .= $lang['GAME_CREPORT_RESULT_WIN'] . ' ' .
-                    $nf_gain_M . ' ' . $lang['GAME_CREPORT_RESULT_WIN_1'] . ', ' . $nf_gain_C . ' ' . $lang['GAME_CREPORT_RESULT_WIN_2'] . ' ' . $nf_gain_D .
-                    ' ' . $lang['GAME_CREPORT_RESULT_WIN_3'] . '.' . "\n\n";
-                break;
-            case 'D':
-                $template .= $lang['GAME_CREPORT_RESULT_LOST'] . "\n\n";
-                break;
+    switch ($victoire) {
+        case 'N':
+            $template .= $lang['GAME_CREPORT_RESULT_EVEN'] . '.' .
+                "\n\n";
+            break;
+        case 'A':
+            $template .= $lang['GAME_CREPORT_RESULT_WIN'] . ' ' .
+                $nf_gain_M . ' ' . $lang['GAME_CREPORT_RESULT_WIN_1'] . ', ' . $nf_gain_C . ' ' . $lang['GAME_CREPORT_RESULT_WIN_2'] . ' ' . $nf_gain_D .
+                ' ' . $lang['GAME_CREPORT_RESULT_WIN_3'] . '.' . "\n\n";
+            break;
+        case 'D':
+            $template .= $lang['GAME_CREPORT_RESULT_LOST'] . "\n\n";
+            break;
     }
 
     // Pertes et champs de débris
@@ -2145,11 +2145,11 @@ function UNparseRC($id_RC)
     $lunePourcent = floor(($debris_M + $debris_C) / 100000);
     $lunePourcent = ($lunePourcent < 0 ? 0 : ($lunePourcent > 20 ? 20 : $lunePourcent));
     if ($lunePourcent > 0) {
-            $template .= $lang['GAME_CREPORT_RESULT_NO_MOON'] . ' ' . $lunePourcent . ' %';
+        $template .= $lang['GAME_CREPORT_RESULT_NO_MOON'] . ' ' . $lunePourcent . ' %';
     }
 
     if ($lune == 1) {
-            $template .= "\n" . $lang['GAME_CREPORT_RESULT_MOON'] . ".";
+        $template .= "\n" . $lang['GAME_CREPORT_RESULT_MOON'] . ".";
     }
 
     return ($template);
@@ -2179,7 +2179,7 @@ function ratio_calc($player)
     $request .= "from " . TABLE_USER;
     $resultat = $db->sql_query($request);
     list($planetimporttotal, $spyimporttotal, $rankimporttotal, $searchtotal) = $db->
-        sql_fetch_row($resultat);
+    sql_fetch_row($resultat);
     $query = "SELECT COUNT(user_id) as count FROM " . TABLE_USER;
     $result = $db->sql_query($query);
     if ($db->sql_numrows($result) > 0) {
@@ -2188,16 +2188,16 @@ function ratio_calc($player)
     }
     //pour éviter la division par zéro
     if ($planetimporttotal == 0) {
-            $planetimporttotal = 1;
+        $planetimporttotal = 1;
     }
     if ($spyimporttotal == 0) {
-            $spyimporttotal = 1;
+        $spyimporttotal = 1;
     }
     if ($rankimporttotal == 0) {
-            $rankimporttotal = 1;
+        $rankimporttotal = 1;
     }
     if ($searchtotal == 0) {
-            $searchtotal = 1;
+        $searchtotal = 1;
     }
 
     //et on commence le calcul
@@ -2212,7 +2212,7 @@ function ratio_calc($player)
     $ratio_rank_penality = (($rank_added_web + $rank_added_ogs) - $rank_exported) /
         $rankimporttotal;
     $ratio_penality = ($ratio_planet_penality * 4 + $ratio_spy_penality * 2 + $ratio_rank_penality) / (4 +
-        2 + 1);
+            2 + 1);
 
     $ratio_search = $search / $searchtotal;
     $ratio_searchpenality = ($ratio - $ratio_search);
@@ -2236,7 +2236,7 @@ function ratio_is_ok()
     static $result;
 
     if ($result != null) {
-            return $result;
+        return $result;
     }
     if (isset($server_config["block_ratio"]) && $server_config["block_ratio"] == 1) {
         if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] ==

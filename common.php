@@ -53,6 +53,7 @@ require_once ("includes/ogame.php");
 require_once ("includes/cache.php");
 require_once ("includes/chart_js.php");
 require_once ("includes/mail.php");
+require_once ("includes/token.php");
 
 //Récupération des valeur GET, POST, COOKIE
 extract($_GET, EXTR_PREFIX_ALL, "pub");
