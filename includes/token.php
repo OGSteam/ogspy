@@ -34,7 +34,9 @@ class token
     }
 
 
-
+    /**
+     * token constructor.
+     */
     public function __construct()
     {
         $this->salt=$this->getSalt();
@@ -46,11 +48,11 @@ class token
     {
         $this->lifeTime = $lifetime;
         $str = $this->getSalt()."_".$formName."_".microtime(true);
-        $this->token= sha1($str).$this->splitter.($this->lifeTime+time()); // token de form "sha1()____microtime"
+        $this->token = sha1($str).$this->splitter.($this->lifeTime+time()); // token de form "sha1()____microtime"
         // on stock le token
         if ($inSession)
         {
-           $this->saveInCookie();
+           $this->saveInCookie($this->token);
         }
         return $this->token;
 
@@ -100,22 +102,27 @@ class token
 
 
     }
-
-
-        //chemin d'acces du sel
-    private function _saltPath()
+    //chemin d'acces du sel
+    private function get_saltpath()
     {
         return $this->saltPath.'/salt';
     }
 
-    //retour le sel si existe sinon on utilise celui par defaut
+    //
+
+    /**
+     * retour le sel si existe sinon on utilise celui par defaut
+     */
     private function getSalt()
     {
-        $path = $this->_saltPath;
-        if(isset($path))
+        $path = $this->get_saltpath();
+        if(isset($path) && file_exists($path))
         {
            $retour =  file_get_contents($path);
             $this->salt =  $retour;
+        }else{
+            $this->salt = $this->CreateNewSalt();
+
         }
     }
 
@@ -129,17 +136,18 @@ class token
         for ($i = 0; $i < $nbLettre; $i++) {
             $retour .= $chaine[rand(0, strlen($chaine)-1)];
         }
-        $pathSalt =   $this->_saltPath();
+        $pathSalt =   $this->get_saltpath();
         file_put_contents($pathSalt,$retour);
+        return $retour;
     }
 
 
-    private function saveInCookie($content)
+    private function saveInCookie()
     {
         setcookie("token", $this->token);
     }
 
-    private function getInCookie($content)
+    private function getInCookie()
     {
         global $HTTP_COOKIE_VARS;
         return $HTTP_COOKIE_VARS['token'];
