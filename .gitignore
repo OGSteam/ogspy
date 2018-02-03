@@ -39,3 +39,6 @@ journal/*/*.log
 cache/*.php
 config/id.php
 config/key.php
+mod/*
+!mod/.htaccess
+parameters/salt
