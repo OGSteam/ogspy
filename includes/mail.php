@@ -17,15 +17,17 @@ if (!defined('IN_SPYOGAME')) {
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require("includes/PHPMailer/PHPMailer.php");
-require("includes/PHPMailer/SMTP.php");
-require("includes/PHPMailer/Exception.php");
+
+require_once("includes/PHPMailer/PHPMailer.php");
+require_once("includes/PHPMailer/SMTP.php");
+require_once("includes/PHPMailer/Exception.php");
 //-----fin accés PHPMailer---\\\
 
 /**
  * @param $dest string/array tableau de destinataire
  * @param $subject string sujet du message
  * @param $HTMLBody string contenu du message en HTML
+ * @return bool
  */
 function SendMail($dest, $subject, $HTMLBody)
 {

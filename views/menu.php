@@ -47,10 +47,10 @@ if (!defined('IN_SPYOGAME')) {
         if (document.getElementById && document.all) {
             var blink_tab = document.getElementsByTagName('blink');
             for (var a = 0; a < blink_tab.length; a++) {
-                if (go_visibility[a] != "visible")
-                    go_visibility[a] = "visible";
+                if (go_visibility[a] !== "visible")
+                    go_visibility[a] == "visible";
                 else
-                    go_visibility[a] = "hidden";
+                    go_visibility[a] == "hidden";
                 blink_tab[a].style.visibility = go_visibility[a];
             }
         }
@@ -59,7 +59,6 @@ if (!defined('IN_SPYOGAME')) {
     function Biper() {
         Timer();
         goblink();
-
         setTimeout("Biper()", 1000);
     }
 
