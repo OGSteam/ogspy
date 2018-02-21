@@ -78,10 +78,10 @@ function user_login()
     global $db;
     global $pub_login, $pub_password, $pub_goto, $url_append, $pub_token;
 
-    /*if (!token::statiCheckToken($pub_token)) // verification du token
+    if (!token::statiCheckToken($pub_token)) // verification du token
     {
         redirection("index.php?action=message&id_message=errordata&info");
-    }*/
+    }
 
     if (!check_var($pub_login, "Pseudo_Groupname") || !check_var($pub_password,
             "Password") || !check_var($pub_goto, "Special", "#^[\w=&%+]+$#")) {

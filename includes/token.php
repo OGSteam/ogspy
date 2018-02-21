@@ -72,7 +72,7 @@ class token
         }
         $date = (int)explode($this->splitter,$tokenA)[1];
         $t=time();
-        if($t < $date) // si périmé
+        if($date < $t) // si périmé [date du token inf a la date en cours (timestamp )]
         {
             return false;
         }
