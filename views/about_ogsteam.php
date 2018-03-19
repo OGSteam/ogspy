@@ -24,21 +24,21 @@ require_once("views/page_header.php");
         <td align="center" class="c" colspan="2"><span
                 style="color: Yellow; font-size: small; "><?php echo($lang['ABOUT_PROJECT_TEAM']); ?></span></td>
     </tr>
-    <!--tr>
-        <td width="100" height="100" align="center" valign="middle"><img src="http://board.ogsteam.fr/img/avatars/4.jpg"></td>
+    <tr>
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="skin/OGSpy_skin/gfx/ogame-produktion.jpg"></td>
         <td class="l">
-            &nbsp;<a><font color="Yellow" size="2">Kyser</font></a><br>
-            <center><b>Concepteur du serveur d'alliance OGSpy</b><br><br></center>
+            &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Kyser</span></a><br>
+            <div style="text-align: center;"><b>Concepteur du serveur d'alliance OGSpy</b><br><br></div>
         </td>
     </tr>
     <tr>
-        <td width="100" height="100" align="center" valign="middle"><img src="http://board.ogsteam.fr/img/avatars/2.jpg"></td>
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="skin/OGSpy_skin/gfx/ogame-produktion.jpg"></td>
         <td class="l">
-            &nbsp;<a><font color="Yellow" size="2">Rica</font></a><br>
-            <center><b>Concepteur du client OGame Stratege (OGS)<br>
-            Concepteur de l'ancien serveur d'alliance OGame Stratege Serveur (OGSS)</b><br></center>
+            &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Rica</span></a><br>
+            <div style="text-align: center;"><b>Concepteur du client OGame Stratege (OGS)<br>
+            Concepteur de l'ancien serveur d'alliance OGame Stratege Serveur (OGSS)</b><br></div>
         </td>
-    </tr-->
+    </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle"><img
                 src="http://www.gravatar.com/avatar/201bc534b68afd93f7474a96a911effe.png" width="80" title="Aeris"></td>
@@ -50,7 +50,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="http://forum.ogsteam.fr/index.php?action=dlattach;attach=76;type=avatar" width="80" title="Capi">
+                src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Capi">
         </td>
         <td class="l">
             &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Capi</span></a><br/>
@@ -61,7 +61,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Chris Alys"></td>
+                src="https://board.fr.ogame.gameforge.com/wcf/images/avatars/42/601-42f9fe2a3043c19d4e7c1183ee6936995705812a." width="80" title="Chris Alys"></td>
         <td class="l">
             &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Chris Alys</span></b><br/>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_CHRYS']); ?></b></div>
@@ -95,7 +95,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="http://www.mx2k.com/utilisateurphoto/65897-11022011-Bender.jpg" width="80" title="Machine"></td>
+                src="https://board.fr.ogame.gameforge.com/wcf/images/avatars/0d/1599-0d0b0d5df1313bcf1e49b8d1a995d6849551e8a1.jpg" width="80" title="Machine"></td>
         <td class="l">
             <b><span style="color: Yellow; font-size: x-small; ">Machine</span></b><br/>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_MACHINE']); ?></b></div>
@@ -131,7 +131,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="http://board.ogame.fr/wcf/images/avatars/avatar-49964.jpg" width="80" title="Xaviernuma"></td>
+                src="https://board.fr.ogame.gameforge.com/index.php/GravatarDownload/?userID=403750" width="80" title="Xaviernuma"></td>
         <td class="l">
             &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Xaviernuma</span></b><br/>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_XAVIERNUMA']); ?></b></div>
