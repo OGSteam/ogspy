@@ -1577,9 +1577,9 @@ function booster_lire_date($str)
  * Transforme en tableau les données des objets Ogame contenues dans une string de stockage.
  * Si aucun argument n'ai donné alors elle renvoie les valeurs des objets par défaut.
  * @param $str  string de stockage des objets Ogame
- * @return      tableau contenant les informations des objets
- * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
-*/
+ * @param null $boosters
+ * @return  array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
+ */
 function booster_decode($str = NULL, $boosters = NULL)
 {
     if ($str) {

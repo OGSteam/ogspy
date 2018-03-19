@@ -50,19 +50,19 @@ $technology_requirement["RRI"] = array(10, "Ordi" => 8, "Hyp" => 8);
 $technology_requirement["Graviton"] = array(12);
 $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
-?>
-    <!-- DEBUT DU SCRIPT -->
-    <script language="JavaScript">
-        <?php
 
         $nb_planete = find_nb_planete_user($user_data['user_id']);
+
 
         $name = $coordinates = $fields = $temperature_min = $temperature_max = $satellite = "";
         for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
             /*Boosters et extensions modification :
              * => calcul effectué dans fonction  get empire*/
+
+            if(isset($booster_tab[$i])) {
             $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-            $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+                $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+            }
 
             $name .= "'".$user_building[$i]["planet_name"]."', ";
             $coordinates .= "'".$user_building[$i]["coordinates"]."', ";
@@ -75,8 +75,10 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
         for ($i=201 ; $i<=$nb_planete+200 ; $i++) {
             /*Boosters et extensions modification :*/
             //=> calcul effectué dans fonction  get empire*/
-            $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-            $user_building[$i]["fields"] += $booster_tab[$i]['extention_m'];
+            if(isset($booster_tab[$i])) {
+                $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+                $user_building[$i]["fields"] += $booster_tab[$i]['extention_m'];
+            }
 
             $name .= "'Lune', ";
             $coordinates .= "'', ";
@@ -86,6 +88,8 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             $satellite .= "'" . $user_building[$i]["Sat"] . "', ";
         }
 
+        echo "<!-- DEBUT DU SCRIPT -->";
+        echo "<script>";
         echo "var name = new Array(" . substr($name, 0, strlen($name) - 2) . ");" . "\n";
         echo "var coordinates = new Array(" . substr($coordinates, 0, strlen($coordinates) - 2) . ");" . "\n";
         echo "var fields = new Array(" . substr($fields, 0, strlen($fields) - 2) . ");" . "\n";
