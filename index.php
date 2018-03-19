@@ -249,7 +249,7 @@ switch ($pub_action) {
 
         //
         case "about" :
-            require_once("views/about.php");
+            require_once("views/about_ogsteam.php");
             break;
 
         //

@@ -14,7 +14,10 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
+
+require_once("views/page_header.php");
 ?>
+
 
 <table width="70%" border="1" cellpadding="0" cellspacing="5" align="center">
     <tr>
@@ -163,3 +166,7 @@ if (!defined('IN_SPYOGAME')) {
         </td>
     </tr>
 </table>
+
+<?php
+require_once("views/page_tail.php");
+?>
