@@ -87,16 +87,18 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             $temperature_max .= "'" . $user_building[$i]["temperature_max"] . "', ";
             $satellite .= "'" . $user_building[$i]["Sat"] . "', ";
         }
-
-        echo "<!-- DEBUT DU SCRIPT -->";
-        echo "<script>";
-        echo "var name = new Array(" . substr($name, 0, strlen($name) - 2) . ");" . "\n";
-        echo "var coordinates = new Array(" . substr($coordinates, 0, strlen($coordinates) - 2) . ");" . "\n";
-        echo "var fields = new Array(" . substr($fields, 0, strlen($fields) - 2) . ");" . "\n";
-        echo "var temperature_min = new Array(" . substr($temperature_min, 0, strlen($temperature_min) - 2) . ");" . "\n";
-        echo "var temperature_max = new Array(" . substr($temperature_max, 0, strlen($temperature_max) - 2) . ");" . "\n";
-        echo "var satellite = new Array(" . substr($satellite, 0, strlen($satellite) - 2) . ");" . "\n";
+?>
+        <!-- DEBUT DU SCRIPT -->
+        <script>
+        <?php
+            echo "var name = new Array(" . substr($name, 0, strlen($name) - 2) . ");" . "\n";
+            echo "var coordinates = new Array(" . substr($coordinates, 0, strlen($coordinates) - 2) . ");" . "\n";
+            echo "var fields = new Array(" . substr($fields, 0, strlen($fields) - 2) . ");" . "\n";
+            echo "var temperature_min = new Array(" . substr($temperature_min, 0, strlen($temperature_min) - 2) . ");" . "\n";
+            echo "var temperature_max = new Array(" . substr($temperature_max, 0, strlen($temperature_max) - 2) . ");" . "\n";
+            echo "var satellite = new Array(" . substr($satellite, 0, strlen($satellite) - 2) . ");" . "\n";
         ?>
+
         var select_planet = false;
 
         function autofill(planet_id, planet_selected) {
@@ -152,13 +154,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
         }
 
         function clear_text2() {
-            if (document.post2.data.value == "<?php echo($lang['HOME_EMPIRE_TITLEDESC']); ?>") {
+            if (document.post2.data.value === "<?php echo($lang['HOME_EMPIRE_TITLEDESC']); ?>") {
                 document.post2.data.value = "";
             }
-        }
-
-        function message(msg) {
-            alert("\n" + msg);
         }
     </script>
     <!-- FIN DU SCRIPT -->
@@ -384,7 +382,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             // ratio
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                if (!isset($user_production['ratio'][$i]))	{	$user_production['reel'][$i]['ratio']= 0 ;}
+                if (!isset($user_production['reel'][$i]['ratio']))	{	$user_production['reel'][$i]['ratio']= 0 ;}
 
                 echo "\t" . "<th style='font-weight:bold; color:";
                 if ($user_production['reel'][$i]['ratio'] != 1) {
