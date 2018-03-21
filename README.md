@@ -1,20 +1,23 @@
 OGSpy
 ============
-[![GitHub Stars](https://img.shields.io/github/stars/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/stargazers) [![GitHub Issues](https://img.shields.io/github/issues/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/issues) [![Version Courante](https://img.shields.io/badge/version-3.3.2-green.svg)](https://github.com/OGSTeam/ogspy) [![Demo](https://img.shields.io/badge/demo-online-green.svg)](http://ogspy.fr/demo) [![Gitter](https://img.shields.io/gitter/room/gitterHQ/gitter.svg)](https://gitter.im/OGSteam/Support)[![Build Status](https://scrutinizer-ci.com/g/OGSteam/ogspy/badges/build.png?b=master)](https://scrutinizer-ci.com/g/OGSteam/ogspy/build-status/master)[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/OGSteam/ogspy/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/OGSteam/ogspy/?branch=master)
+[![GitHub Issues](https://img.shields.io/github/issues/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/issues) [![Version Courante](https://img.shields.io/badge/version-3.3.2-green.svg)](https://github.com/OGSTeam/ogspy) [![Demo](https://img.shields.io/badge/demo-online-green.svg)](http://ogspy.fr/demo) [![Slack](https://join-ogsteam.herokuapp.com/badge.svg)](https://join-ogsteam.herokuapp.com)[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e15bf326567d45c3aea25192f46aa596)](https://www.codacy.com/app/OGSteam/ogspy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OGSteam/ogspy&amp;utm_campaign=Badge_Grade)
 
 Le projet crée en 2006 est une aide pour un jeu de gestion de vaisseaux spatiaux.
 Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour ensuite les regrouper et les exploiter.
 
-## Démo
-Vous pouvez tester un serveur OGSpy, une démo est disponible:
-
-- Serveur de test : https://ogspy.fr/demo
-- Nom d'utilisateur : demo
-- Mot de passe : ogsteam
+Visitez notre forum [OGSteam.fr](https://forum.ogsteam.fr) pour en savoir plus.
 
 ---
 
-## Fonctionalités
+## Documentation
+
+Notre espace documentaire est contruit par nos utilisateurs via notre wiki. Vous pouvez y trouver les descriptifs de nos applications ainsi que les procédures d'installation.
+
+[Wiki OGSteam](https://wiki.ogsteam.fr)
+
+Des tutoriels d'installation sont aussi disponibles sur notre chaine Youtube : [Youtube](https://www.youtube.com/playlist?list=PLF1RvCcSTS6M28sPpadlerKcuwhhTBtrQ)
+
+### Fonctionalités
 - Enregistrement des Galaxies et des classements
 - Recherches des Emplacements joueurs
 - Stockage des rapports d'espionnages et de Combats
@@ -25,12 +28,17 @@ Vous pouvez tester un serveur OGSpy, une démo est disponible:
 
 ---
 
-## Installation et Usages
-Nous avons réalisé un wiki qui détaille l'installation de l'outil sur un serveur web. Mais il existe aussi des hébergeurs qui installent le site pour vous.
-
-Vous trouverez toutes ces informations sur le wiki : 
+### Installation et Usages
+Vous trouverez ur le wiki le manuel d'installation d'OGSpy sur un serveur web. Mais il existe aussi des hébergeurs qui installent le site pour vous.
 
 [Wiki de l'OGSteam](https://wiki.ogsteam.fr/doku.php)
+
+### Démo
+Vous pouvez tester un serveur OGSpy, une démo est disponible:
+
+- Serveur de test : https://ogspy.fr/demo
+- Nom d'utilisateur : demo
+- Mot de passe : ogsteam
 
 ---
 
@@ -49,7 +57,7 @@ Responsable équipe : [DarkNoon](https://github.com/darknoon29)
 
 ### Développement
 
-* Machine
+* [Machine](https://github.com/machine62)
 * [Jedinight](https://github.com/jedi-night)
 * Superbox 
 * [Pitch314](https://github.com/pitch314)
@@ -72,10 +80,6 @@ Responsable équipe : [DarkNoon](https://github.com/darknoon29)
 * master - Branche Principale, utilisée uniquement pour publier les versions finales de nos outils.
 * development - branche qui contient les développements pour les futures versions
 * release-3.X.Y - Branche contenant les correctifs pour une future version
-
-### Statut de la branche de développement
-
-[![Build Status](https://scrutinizer-ci.com/g/OGSteam/ogspy/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/OGSteam/ogspy/build-status/develop)[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/OGSteam/ogspy/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/OGSteam/ogspy/?branch=develop)
 
 ---
 ## License
