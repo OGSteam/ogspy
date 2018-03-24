@@ -122,6 +122,7 @@ $lang['ADMIN_MEMBERS_PASSWORDCANCEL'] = "annuler";
 $lang['ADMIN_MEMBERS_POPUP_NEWACCOUNT'] = "Création d'un nouveau compte";
 $lang['ADMIN_MEMBERS_POPUP_NAME'] = "Nom :";
 $lang['ADMIN_MEMBERS_POPUP_PASSWORD'] = "Mot de passe :";
+$lang['ADMIN_MEMBERS_POPUP_EMAIL'] = "Email";
 $lang['ADMIN_MEMBERS_POPUP_RIGHTS'] = "Droits :";
 $lang['ADMIN_MEMBERS_POPUP_COADMIN'] = "co-administrateur : ";
 $lang['ADMIN_MEMBERS_POPUP_MGTMEMBERS'] = "Gestion des membres";

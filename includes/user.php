@@ -706,7 +706,7 @@ function user_create()
 {
     global $db, $user_data;
     global $pub_pseudo, $pub_user_id, $pub_active, $pub_user_coadmin, $pub_management_user,
-           $pub_management_ranking, $pub_group_id, $pub_pass;
+           $pub_management_ranking, $pub_group_id, $pub_pass, $pub_email;
 
     if (!check_var($pub_pseudo, "Pseudo_Groupname")) {
         redirection("index.php?action=message&id_message=errordata&info=1");
@@ -729,6 +729,11 @@ function user_create()
             $pub_pseudo);
     }
 
+    if (!check_var($pub_email, "Email")) {
+        redirection("index.php?action=message&id_message=createuser_failed_password&info=" .
+            $pub_email);
+    }
+
     if ($pub_pass != "") {
         $password = $pub_pass;
     } else {
@@ -740,8 +745,8 @@ function user_create()
     $result = $db->sql_query($request);
     if ($db->sql_numrows($result) == 0) {
         $request = "insert into " . TABLE_USER .
-            " (user_name, user_password, user_regdate, user_active)" . " values ('" . $pub_pseudo .
-            "', '" . md5(sha1($password)) . "', " . time() . ", '1')";
+            " (user_name, user_password, user_email, user_regdate, user_active)" . " values ('" . $pub_pseudo .
+            "', '" . md5(sha1($password)) . "', '". $pub_email . "', " . time() . ", '1')";
         $db->sql_query($request);
         $user_id = $db->sql_insertid();
 

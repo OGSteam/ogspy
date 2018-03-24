@@ -164,6 +164,10 @@ $usergroup_list = usergroup_get();
                             <th align="center"><input name="pass" type="text" maxlength="15" size="20"></th>
                         </tr>
                         <tr>
+                            <th align="center"><?php echo($lang['ADMIN_MEMBERS_POPUP_EMAIL']); ?></th>
+                            <th align="center"><input name="email" type="text" maxlength="50" size="35"></th>
+                        </tr>
+                        <tr>
                             <th align="center"><?php echo($lang['ADMIN_MEMBERS_POPUP_RIGHTS']); ?></th>
                             <th align="center">
                                 <?php

@@ -96,6 +96,12 @@ switch ($pub_id_message) {
         $action = "action=administration&subaction=member";
         break;
 
+    case "createuser_failed_email" :
+        $message .= "<span style=\"color: red; \"><b>" . $lang['MSG_NEW_ACCOUNT_KO'] . "</b></span><br>";
+        $message .= "<i>" . $lang['MSG_NEW_ACCOUNT_KO_EMAIL_ILLEGAL'] . "</i>";
+        $action = "action=administration&subaction=member";
+        break;
+
     //
     case "createuser_failed_general" :
         $message .= "<span style=\"color: red; \"><b>" . $lang['MSG_NEW_ACCOUNT_KO'] . "</a></b></span><br>";

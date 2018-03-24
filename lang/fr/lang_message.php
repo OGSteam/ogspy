@@ -34,6 +34,7 @@ $lang['MSG_NEW_ACCOUNT_KO'] = "Création du compte de échouée";
 $lang['MSG_NEW_ACCOUNT_KO_NAME'] = "Le pseudo est déjà utilisé";
 $lang['MSG_NEW_ACCOUNT_KO_NAME_ILLEGAL'] = "Le pseudo doit contenir entre 3 et 15 caractères standards";
 $lang['MSG_NEW_ACCOUNT_KO_PASSWORD_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 15 caractères";
+$lang['MSG_NEW_ACCOUNT_KO_EMAIL_ILLEGAL'] = "L'addresse Email est incorrecte";
 $lang['MSG_NEW_ACCOUNT_KO_OTHER'] = "Le pseudo est incorrect";
 $lang['MSG_PROFILE_OK'] = "Modification du profil réussie";
 $lang['MSG_PROFILE_KO'] = "Modification du profil échouée";
