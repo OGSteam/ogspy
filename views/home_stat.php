@@ -287,12 +287,9 @@ if ($player_comp != "" && isset($player_comp)): ?>
         <tr>
             <td class='c' colspan='2'><?php echo($lang['HOME_STATS_COMP']); ?></td>
         </tr>
-    <?php else {
-    : ?>
+    <?php else : ?>
         <tr>
-            <td class='c' colspan='2'><?php echo($lang['HOME_STATS_RANKINGS']);
-}
-?></td>
+            <td class='c' colspan='2'><?php echo($lang['HOME_STATS_RANKINGS']); ?></td>
         </tr>
     <?php endif;
     // affichage du tableau avec conteur div
