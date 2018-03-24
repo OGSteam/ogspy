@@ -13,7 +13,7 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-//-----accés PHPMailer------\\\
+//-----accès PHPMailer------\\\
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -21,17 +21,18 @@ use PHPMailer\PHPMailer\Exception;
 require_once("includes/PHPMailer/PHPMailer.php");
 require_once("includes/PHPMailer/SMTP.php");
 require_once("includes/PHPMailer/Exception.php");
-//-----fin accés PHPMailer---\\\
+//-----fin accès PHPMailer---\\\
 
 /**
  * @param $dest string/array tableau de destinataire
  * @param $subject string sujet du message
  * @param $HTMLBody string contenu du message en HTML
  * @return bool
+ * @throws Exception
  */
-function SendMail($dest, $subject, $HTMLBody)
+function sendMail($dest, $subject, $HTMLBody)
 {
-    //verifiaction avant envoit de mail
+    //verifiaction avant envoi de mail
     global $server_config;
 
     //usage du mail possible
@@ -119,7 +120,7 @@ function SendMail($dest, $subject, $HTMLBody)
     $mail->Port = (int)$server_config["mail_smtp_port"]; // set the SMTP port for the yahoo server
 
     //get password
-    include_once("parameters/mail.php");
+    include_once("parameters/mail.php"); //TODO : A stocker en base non ?
     if ($mail_smtp_password != "") {
         $mail->Username = $server_config["mail_smtp_username"];  // yahoo username
         $mail->Password = $mail_smtp_password;  // yahoo password

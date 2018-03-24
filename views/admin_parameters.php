@@ -21,7 +21,7 @@ if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
 //check mail
 if (isset($pub_testmail))
 {
-    SendMail($user_data["user_email"],"TEST","<h1>TEST OK</h1>");
+    sendMail($user_data["user_email"],"TEST","<h1>TEST OK</h1>");
 }
 
 

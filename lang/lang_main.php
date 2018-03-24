@@ -24,6 +24,7 @@ if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
     require_once ("./lang/" . $ui_lang . "/lang_help.php");
     require_once ("./lang/" . $ui_lang . "/lang_home.php");
     require_once ("./lang/" . $ui_lang . "/lang_login.php");
+    require_once ("./lang/" . $ui_lang . "/lang_mail.php");
     require_once ("./lang/" . $ui_lang . "/lang_menu.php");
     require_once ("./lang/" . $ui_lang . "/lang_message.php");
     require_once ("./lang/" . $ui_lang . "/lang_profile.php");

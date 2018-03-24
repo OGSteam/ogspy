@@ -42,3 +42,4 @@ config/key.php
 mod/*
 !mod/.htaccess
 parameters/salt
+parameters/mail.php

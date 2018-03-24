@@ -204,7 +204,7 @@ function admin_user_set()
  */
 function admin_regeneratepwd()
 {
-    global $pub_user_id; // $pub_new_pass;
+    global $pub_user_id, $pub_pass_reset, $lang;
     $pass_id = "pub_pass_" . $pub_user_id;
     global $$pass_id;
     $new_pass = $$pass_id;
@@ -219,7 +219,7 @@ function admin_regeneratepwd()
 
     user_check_auth("user_update", $pub_user_id);
 
-    if (user_get($pub_user_id) === false) {
+    if ($user_info = user_get($pub_user_id) === false) {
         redirection("index.php?action=message&id_message=regeneratepwd_failed&info");
     }
     if ($new_pass != "") {
@@ -229,10 +229,13 @@ function admin_regeneratepwd()
     }
     user_set_general($pub_user_id, null, $password);
 
+    if ($user_info["user_email"] !== "") {
+        sendMail($user_info["user_email"], $lang['MAIL_RESET_PASSWORD_SUBJECT'], "<h1>" . $lang['MAIL_RESET_PASSWORD_MESSAGE'] . $password . "</h1>");
+        log_("debug", "Reset mot de passe : Le mail a été envoyé à " . $user_info["user_email"]);
+    }
     $info = $pub_user_id . ":" . $password;
     log_("regeneratepwd", $pub_user_id);
-    redirection("index.php?action=message&id_message=regeneratepwd_success&info=" .
-        $info);
+    redirection("index.php?action=message&id_message=regeneratepwd_success&info=" . $info);
 }
 
 /**
