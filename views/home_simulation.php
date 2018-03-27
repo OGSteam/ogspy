@@ -49,13 +49,12 @@ echo "<input type='hidden' id='off_geologue' value='" . $user_data["off_geologue
 echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
 
 //Calcul et correction boosters :
-//for ($i = 101; $i <= $nb_planete + 100; $i++) {
-
-/*Boosters et extensions modification :*/
-//booster dans fonctions
-//$booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-// $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
-//}
+for ($i = 101; $i <= $nb_planete + 100; $i++) {
+    /*Boosters et extensions modification :*/
+    //booster dans fonctions
+    $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+    $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+}
 ?>
 
 <script src="js/ogame_formula.js" type="text/javascript"></script>
