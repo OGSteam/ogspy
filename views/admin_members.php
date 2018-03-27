@@ -35,6 +35,7 @@ $usergroup_list = usergroup_get();
 <table>
     <tr>
         <td class="c" width="120"><?php echo($lang['ADMIN_MEMBERS_PLAYER']); ?></td>
+        <td class="c" width="120"><?php echo($lang['ADMIN_MEMBERS_EMAIL']); ?></td>
         <td class="c" width="120"><?php echo($lang['ADMIN_MEMBERS_REGISTERED']); ?></td>
         <td class="c" width="120"><?php echo($lang['ADMIN_MEMBERS_ENABLED']); ?></td>
         <?php
@@ -85,6 +86,7 @@ $usergroup_list = usergroup_get();
         }
 
         $name = $v["user_name"];
+        $email = $v["user_email"];
 
         $reg_date = strftime("%d %b %Y %H:%M", $v["user_regdate"]);
 
@@ -102,7 +104,8 @@ $usergroup_list = usergroup_get();
         echo "<tr>" . "\n";
 
         echo "<form method='POST' action='index.php?action=admin_modify_member&amp;user_id=" . $user_id . "'>" . "\n";
-        echo "\t" . "<th><a onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $auth . "')\">" . $name . "</a></th>" . "\n";
+        echo "\t" . "<th><a onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $auth . "')\">" . $name . "</a></th>" . "\n";
+        echo "\t" . "<th>" . $email . "</th>" . "\n";
         echo "\t" . "<th>" . $reg_date . "</th>" . "\n";
         echo "\t" . "<th><select name='active'><option value='1'>" . $lang['ADMIN_MEMBERS_YES'] . "</option><option value='0'" . $active_off . ">" . $lang['ADMIN_MEMBERS_NO'] . "</option></select></th>" . "\n";
         if ($user_data["user_admin"] == 1) {

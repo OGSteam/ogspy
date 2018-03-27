@@ -90,6 +90,7 @@ $lang['ADMIN_SERVER_TOTAL_MAILS'] = "Total des Mails envoyés";
 $lang['ADMIN_MEMBERS_NEWACCOUNT'] = "Création d'un nouveau compte";
 $lang['ADMIN_MEMBERS_NEWACCOUNT_BUTTON'] = "Créer nouveau membre";
 $lang['ADMIN_MEMBERS_PLAYER'] = "Joueur";
+$lang['ADMIN_MEMBERS_EMAIL'] = "Email";
 $lang['ADMIN_MEMBERS_REGISTERED'] = "Inscrit le";
 $lang['ADMIN_MEMBERS_ENABLED'] = "Compte actif";
 $lang['ADMIN_MEMBERS_COADMIN'] = "Co-administrateur";
