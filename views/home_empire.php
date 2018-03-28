@@ -59,8 +59,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             /*Boosters et extensions modification :
              * => calcul effectué dans fonction  get empire*/
 
-            if(isset($booster_tab[$i])) {
+
             $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+            if(isset($booster_tab[$i])) {
                 $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
             }
 
