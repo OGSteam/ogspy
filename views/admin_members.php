@@ -117,22 +117,22 @@ $usergroup_list = usergroup_get();
                                     <select name='user_coadmin'>"?>
                                         <option value='1'><?php echo $lang['ADMIN_MEMBERS_YES']; ?></option>
                                         <option value='0'
-                                                selected='selected'<?php echo $user_coadmin_off; ?>> <?php echo $lang['ADMIN_MEMBERS_NO']; ?></option>
+                                                selected='selected'> <?php echo $lang['ADMIN_MEMBERS_NO']; ?></option>
                                     </select><br>
                                 <?php endif; ?>
                                 <!-- gestion des Classements-->
                                 <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
                                     <?php echo "\t" . $lang['ADMIN_MEMBERS_POPUP_MGTRANKS'] . help('admin_member_manager') . " : "; ?>
                                     <select name='management_user'>"?>
-                                        <option value='1'><?php echo $lang['ADMIN_MEMBERS_YES']; ?></option>
-                                        <option value='0'<?php echo $management_user_off; ?> > <?php echo $lang['ADMIN_MEMBERS_NO']; ?></option>
+                                        <option value='1'  selected='selected'><?php echo $lang['ADMIN_MEMBERS_YES']; ?></option>
+                                        <option value='0'> <?php echo $lang['ADMIN_MEMBERS_NO']; ?></option>
                                     </select><br>
                                 <?php endif; ?>
                                 <!--creation d un nouveau compte-->
                                 <?php echo "\t" . $lang['ADMIN_MEMBERS_POPUP_GROUP'] . help('admin_ranking_manager') . " : "; ?>
                                 <select name='management_ranking'>"?>
-                                    <option value='1'><?php echo $lang['ADMIN_MEMBERS_YES']; ?></option>
-                                    <option value='0'<?php echo $management_ranking_off; ?> > <?php echo $lang['ADMIN_MEMBERS_NO']; ?></option>
+                                    <option value='1' ><?php echo $lang['ADMIN_MEMBERS_YES']; ?></option>
+                                    <option value='0' > <?php echo $lang['ADMIN_MEMBERS_NO']; ?></option>
                                 </select><br>
                             </th>
                         </tr>
@@ -200,7 +200,7 @@ $usergroup_list = usergroup_get();
             <td class="c" width="120">
                 <?php echo($lang['ADMIN_MEMBERS_LASTCONNECT']); ?>
             </td>
-            <td class="c" colspan="3">&nbsp;</td>
+            <td class="c" colspan="4">&nbsp;</td>
         </tr>
         <?php foreach ($user_info as $v) : ?>
             <tr>
@@ -292,6 +292,9 @@ $usergroup_list = usergroup_get();
                         <input type='image' src='images/userpwd.png' title='<?php echo $lang['ADMIN_MEMBERS_PWDCHANGE_TITLE'] . $name;?>'>
                     </th>
                 </form>
+                <th>
+                    <!-- Todo ajouter ici l'envoi direct du nouveau mdp via mail -->
+                </th>
            </tr>
         <?php endforeach; ?>
     </table>

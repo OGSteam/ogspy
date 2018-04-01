@@ -218,8 +218,9 @@ function admin_regeneratepwd()
     }
 
     user_check_auth("user_update", $pub_user_id);
+    $user_info =user_get($pub_user_id)[0];
 
-    if ($user_info = user_get($pub_user_id) === false) {
+    if ($user_info  === false) {
         redirection("index.php?action=message&id_message=regeneratepwd_failed&info");
     }
     if ($new_pass != "") {
@@ -233,9 +234,16 @@ function admin_regeneratepwd()
         sendMail($user_info["user_email"], $lang['MAIL_RESET_PASSWORD_SUBJECT'], "<h1>" . $lang['MAIL_RESET_PASSWORD_MESSAGE'] . $password . "</h1>");
         log_("debug", "Reset mot de passe : Le mail a été envoyé à " . $user_info["user_email"]);
     }
+    // todo non utilisable en l'etat :
+    //il faut utiliser le param d'activation mail du serveur
+    /// 3 cas possible
+    /// 1) activer + mail utilisateur (send mail + message a l'admin mail envoyé ... ]
+    /// 2) activer + mailutilisateur mais erreur => il faut afficher le mdp à l'administrateur
+    /// 3) mail non activé donc mdp à l'admin
+    /// accessoirement ettofer un peu le message de mail :)
     $info = $pub_user_id . ":" . $password;
     log_("regeneratepwd", $pub_user_id);
-    redirection("index.php?action=message&id_message=regeneratepwd_success&info=" . $info);
+     redirection("index.php?action=message&id_message=regeneratepwd_success&info=" . $info);
 }
 
 /**
