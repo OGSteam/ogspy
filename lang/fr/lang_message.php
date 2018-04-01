@@ -29,6 +29,7 @@ $lang['MSG_CREATE_USER_BBCODE'] = "BBCode pour";
 $lang['MSG_CREATE_USER_BBCODE_USER'] = "Utilisateur";
 $lang['MSG_PWD_REGEN_OK'] = "Génération réussie du nouveau mot de passe de";
 $lang['MSG_PWD_REGEN_INFO'] = "Transmettez lui son mot de passe :";
+$lang['MSG_PWD_REGEN_INFO_MAIL'] = "Le mot de passe a été transféré par mail";
 $lang['MSG_PWD_REGEN_KO'] = "Génération du nouveau mot de passe échouée";
 $lang['MSG_NEW_ACCOUNT_KO'] = "Création du compte de échouée";
 $lang['MSG_NEW_ACCOUNT_KO_NAME'] = "Le pseudo est déjà utilisé";

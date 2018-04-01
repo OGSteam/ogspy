@@ -204,7 +204,7 @@ function admin_user_set()
  */
 function admin_regeneratepwd()
 {
-    global $pub_user_id, $pub_pass_reset, $lang;
+    global $pub_user_id, $pub_pass_reset, $lang , $server_config;
     $pass_id = "pub_pass_" . $pub_user_id;
     global $$pass_id;
     $new_pass = $$pass_id;
@@ -230,20 +230,31 @@ function admin_regeneratepwd()
     }
     user_set_general($pub_user_id, null, $password);
 
-    if ($user_info["user_email"] !== "") {
-        sendMail($user_info["user_email"], $lang['MAIL_RESET_PASSWORD_SUBJECT'], "<h1>" . $lang['MAIL_RESET_PASSWORD_MESSAGE'] . $password . "</h1>");
-        log_("debug", "Reset mot de passe : Le mail a été envoyé à " . $user_info["user_email"]);
+    $NovisualisationMdpAdmin = true;
+    if ($server_config["mail_use"] == 1 && $user_info["user_email"] !== "")
+    {
+            $NovisualisationMdpAdmin = sendMail($user_info["user_email"], $lang['MAIL_RESET_PASSWORD_SUBJECT'], "<h1>" . $lang['MAIL_RESET_PASSWORD_MESSAGE'] . $password . "</h1>");
+            log_("debug", "Reset mot de passe : Le mail a été envoyé à " . $user_info["user_email"]);
     }
-    // todo non utilisable en l'etat :
-    //il faut utiliser le param d'activation mail du serveur
-    /// 3 cas possible
-    /// 1) activer + mail utilisateur (send mail + message a l'admin mail envoyé ... ]
-    /// 2) activer + mailutilisateur mais erreur => il faut afficher le mdp à l'administrateur
-    /// 3) mail non activé donc mdp à l'admin
-    /// accessoirement ettofer un peu le message de mail :)
-    $info = $pub_user_id . ":" . $password;
-    log_("regeneratepwd", $pub_user_id);
-     redirection("index.php?action=message&id_message=regeneratepwd_success&info=" . $info);
+    else
+    {
+        // pas d'usage de mail donc visualisation admin à affectuer
+        $NovisualisationMdpAdmin = false;
+    }
+
+    if ($NovisualisationMdpAdmin == false )
+    {
+        log_("regeneratepwd", $pub_user_id);
+        $info = $pub_user_id . ":" . $password;
+        redirection("index.php?action=message&id_message=regeneratepwd_success&info=" . $info);
+    }
+    else
+    {
+        $info = $pub_user_id . ":mail";
+        log_("regeneratepwd_", $pub_user_id);
+        redirection("index.php?action=message&id_message=regeneratepwd_success&info=$info");
+    }
+
 }
 
 /**

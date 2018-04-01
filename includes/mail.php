@@ -102,6 +102,7 @@ function sendMail($dest, $subject, $HTMLBody)
             mailCounter();
             return true;
         }
+        return false;
     }
 
     //sinon SMTP

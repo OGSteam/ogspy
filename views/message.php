@@ -65,7 +65,14 @@ switch ($pub_id_message) {
         list($user_id, $password) = explode(":", $pub_info);
         $user_info = user_get($user_id);
         $message .= "<span style=\"color: lime; \"><b>" . $lang['MSG_PWD_REGEN_OK'] . " <a>" . $user_info[0]["user_name"] . "</a></b></span><br>";
-        $message .= $lang['MSG_PWD_REGEN_INFO'] . " : <a>" . $password . "</a>";
+        if($password=="mail")
+        {
+            $message .= $lang['MSG_PWD_REGEN_INFO_MAIL'];
+        }
+        else
+        {
+            $message .= $lang['MSG_PWD_REGEN_INFO'] . " : <a>" . $password . "</a>";
+        }
         $action = "action=administration&subaction=member";
         break;
 
