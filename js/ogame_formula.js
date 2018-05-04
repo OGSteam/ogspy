@@ -19,7 +19,7 @@ function production(building, level, temperatureMax, energy, plasma) {
         case 'C':
             return speed * (15 + Math.round(20 * level * Math.pow(1.1, level) * geologue * (1 + (0.0066 * plasma))));
         case 'D':
-            return speed * Math.round(10 * level * Math.pow(1.1, level) * (1.44 - 0.004 * temperatureMax) * (1 + (0.0033 * plasma)));
+            return speed * Math.round(10 * level * Math.pow(1.1, level) * (1.44 - 0.004 * temperatureMax) * geologue *  (1 + (0.0033 * plasma)));
         case 'CES':
             return Math.floor(20 * level * Math.pow(1.1, level) * ingenieur);
         case 'CEF':
