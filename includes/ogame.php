@@ -65,7 +65,7 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
 
         case "D":
             $result = (10 * $level * pow(1.1, $level) * (1.44 - 0.004 * $temperature_max));
-            $result = $result * (1 + $geo); // geologue
+            $result = $result * (1 + $geo + 0.0033 * $Plasma); // geologue
             $result = round($result); // arrondi
             $result = $server_config['speed_uni'] * $result; // vitesse uni
             break;
@@ -246,7 +246,7 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1 , $
 		$prod_C = round($prod_C);
 
 		//production de deut avec ratio
-		$prod_D = production("D", $D, $off_geo, $temperature_max) * $per_D;
+		$prod_D = production("D", $D, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_D;
 		$prod_D *= $ratio;
 		$prod_D -= consumption("CEF", $CEF) * $per_CEF; //on soustrait la conso de deut de la cef
 		$prod_D = round($prod_D);

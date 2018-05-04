@@ -1241,10 +1241,9 @@ function user_empire_production($user_empire, $off = NULL)
 					$NRJ, $plasma, $content["M_percentage"] / 100, $content["C_percentage"] / 100,
 					$content["D_percentage"] / 100, $content["CES_percentage"] / 100, $content["CEF_percentage"] / 100,
 					$content["Sat_percentage"] / 100,$content["booster_tab"]);
-			
+
 			$prod["reel"][$content["planet_id"]] = $ratio[$content["planet_id"]];
 			}
-			
 		}
 		
 	}
