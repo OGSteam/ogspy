@@ -18,8 +18,11 @@ $user_galaxy = $user_data["user_galaxy"];
 $user_system = $user_data["user_system"];
 $user_email = $user_data["user_email"];
 $user_stat_name = $user_data["user_stat_name"];
-if ($server_config["disable_ip_check"] == 1) $disable_ip_check = $user_data["disable_ip_check"] == 1 ? "checked" : "";
-else $disable_ip_check = "disabled";
+if ($server_config["disable_ip_check"] == 1) {
+    $disable_ip_check = $user_data["disable_ip_check"] == 1 ? "checked" : "";
+} else {
+    $disable_ip_check = "disabled";
+}
 $off_commandant = (isset ($user_data["off_commandant"]) && $user_data["off_commandant"] == 1) ? "checked" : "";
 $off_amiral = (isset ($user_data["off_amiral"]) && $user_data["off_amiral"] == 1) ? "checked" : "";
 $off_ingenieur = (isset ($user_data["off_ingenieur"]) && $user_data["off_ingenieur"] == 1) ? "checked" : "";
@@ -67,7 +70,7 @@ require_once("views/page_header.php");
                 <td class="c_user" colspan="2"><?php echo($lang['PROFILE_TITLE']); ?></td>
             </tr>
             <tr>
-                <th><?php echo $lang['PROFILE_PSEUDO'].help("profile_login"); ?></th>
+                <th><?php echo $lang['PROFILE_PSEUDO'] . help("profile_login"); ?></th>
                 <th><label>
                         <input name="pseudo" type="text" size="20" maxlength="20" value="<?php echo $user_name; ?>">
                     </label></th>
@@ -79,7 +82,7 @@ require_once("views/page_header.php");
                     </label></th>
             </tr>
             <tr>
-                <th><?php echo $lang['PROFILE_NEWPWD'].help("profile_password"); ?></th>
+                <th><?php echo $lang['PROFILE_NEWPWD'] . help("profile_password"); ?></th>
                 <th><label>
                         <input name="new_password" type="password" autocomplete="off" size="20" maxlength="15">
                     </label></th>
@@ -91,7 +94,7 @@ require_once("views/page_header.php");
                     </label></th>
             </tr>
             <tr>
-                <th><?php echo $lang['PROFILE_EMAIL'].help("profile_pseudo_email"); ?></th>
+                <th><?php echo $lang['PROFILE_EMAIL'] . help("profile_pseudo_email"); ?></th>
                 <th>
                     <label>
                         <input name="pseudo_email" type="text" size="30" value="<?php echo $user_email; ?>">
@@ -102,7 +105,7 @@ require_once("views/page_header.php");
                 <td class="c" colspan="2"><?php echo($lang['PROFILE_GAME']); ?></td>
             </tr>
             <tr>
-                <th><?php echo $lang['PROFILE_MAINPLANET'].help("profile_main_planet"); ?></th>
+                <th><?php echo $lang['PROFILE_MAINPLANET'] . help("profile_main_planet"); ?></th>
                 <th>
                     <label>
                         <input name="galaxy" type="text" size="3" maxlength="2" value="<?php echo $user_galaxy; ?>">
@@ -113,7 +116,7 @@ require_once("views/page_header.php");
                 </th>
             </tr>
             <tr>
-                <th><?php echo $lang['PROFILE_PLAYERNAME'].help("profile_pseudo_ingame"); ?></th>
+                <th><?php echo $lang['PROFILE_PLAYERNAME'] . help("profile_pseudo_ingame"); ?></th>
                 <th>
                     <label>
                         <input name="pseudo_ingame" type="text" size="20" value="<?php echo $user_stat_name; ?>">
@@ -167,7 +170,7 @@ require_once("views/page_header.php");
                 <td class="c" colspan="2"><?php echo($lang['PROFILE_OTHERS']); ?></td>
             </tr>
             <tr>
-                <th><?php echo $lang['PROFILE_IPCHECK_DISABLE'].help("profile_disable_ip_check"); ?></th>
+                <th><?php echo $lang['PROFILE_IPCHECK_DISABLE'] . help("profile_disable_ip_check"); ?></th>
                 <th>
                     <label>
                         <input name="disable_ip_check" value="1" type="checkbox" <?php echo $disable_ip_check; ?>>

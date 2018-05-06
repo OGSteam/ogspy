@@ -17,11 +17,11 @@ require_once("version.php");
 if (isset($pub_redirection)) {
     switch ($pub_redirection) {
         case "install";
-            redirection("install.php?lang=".$ui_lang);
+            redirection("install.php?lang=" . $ui_lang);
             break;
 
         case "upgrade";
-            redirection("upgrade_to_latest.php?lang=".$ui_lang);
+            redirection("upgrade_to_latest.php?lang=" . $ui_lang);
             break;
     }
 }
@@ -79,12 +79,12 @@ if (isset($pub_redirection)) {
                 </tr>
                 <tr><td>&nbsp;</td></tr>
                 <?php
-                if(!(version_compare(PHP_VERSION, "5.2.0") >= 0)){
-                    echo "<tr><td style='font-size: 24px;'><span style=\"color: red; \">" .$lang['INSTALL_PHPERROR']. "</span></td></tr>";
-                    echo "<tr><td><span style=\"color: red; \">" .$lang['INSTALL_PHP_ADVISE'];
-                    echo "<br/><br/>".$lang['INSTALL_PHPVERSION'].PHP_VERSION;
+                if (!(version_compare(PHP_VERSION, "5.2.0") >= 0)) {
+                    echo "<tr><td style='font-size: 24px;'><span style=\"color: red; \">" . $lang['INSTALL_PHPERROR'] . "</span></td></tr>";
+                    echo "<tr><td><span style=\"color: red; \">" . $lang['INSTALL_PHP_ADVISE'];
+                    echo "<br/><br/>" . $lang['INSTALL_PHPVERSION'] . PHP_VERSION;
                     echo "</font></td></tr>";
-                }else{
+                } else {
                 ?>
                 <tr><td>&nbsp;</td></tr>
                 <form action="index.php?lang=<?php echo($ui_lang); ?>" method="POST">
@@ -106,7 +106,8 @@ if (isset($pub_redirection)) {
     ?>
     <tr align="center">
         <td>
-            <div style="text-align: center;font-size: x-small;"><i><b>OGSpy</b> is an <b>OGSteam Software</b> (c) 2005-2016</i><br>v <?php echo $install_version ;?></div>
+            <div style="text-align: center;font-size: x-small;"><i><b>OGSpy</b> is an <b>OGSteam Software</b>
+                    (c) 2005-2017</i><br>v <?php echo $install_version; ?></div>
         </td>
     </tr>
 </table>

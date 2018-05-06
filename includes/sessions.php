@@ -28,7 +28,7 @@ if (!defined('IN_SPYOGAME')) {
  */
 function session_begin($user_ip)
 {
-    global $db, $cookie_id, $server_config,$pub_toolbar_type;
+    global $db, $cookie_id, $server_config, $pub_toolbar_type;
 
     $cookie_name = COOKIE_NAME;
     $cookie_time = ($server_config["session_time"] == 0) ? 525600 : $server_config["session_time"];
@@ -139,8 +139,9 @@ function session_set_user_id($user_id, $lastvisit = 0)
     $request = "update " . TABLE_SESSIONS . " set session_user_id = " . $user_id .
         ", session_lastvisit = " . $lastvisit .
         " where session_id = '" . $cookie_id . "'";
-    if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1)
-        $request .= " and session_ip = '" . $user_ip . "'";
+    if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) {
+            $request .= " and session_ip = '" . $user_ip . "'";
+    }
     $db->sql_query($request);
 
     session_set_user_data($cookie_id);
@@ -198,8 +199,9 @@ function session_close($user_id = false)
 
         $request = "delete from " . TABLE_SESSIONS .
             " where session_id = '" . $cookie_id . "'";
-        if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1)
-            $request .= " and session_ip = '" . $user_ip . "'";
+        if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) {
+                    $request .= " and session_ip = '" . $user_ip . "'";
+        }
         $db->sql_query($request, true, false);
     } else {
         $request = "delete from " . TABLE_SESSIONS .

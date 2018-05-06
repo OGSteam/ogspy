@@ -24,8 +24,7 @@ if (!isset($pub_zoom) || !isset($pub_user_stat_name) || !isset($pub_player_comp)
     $pub_user_stat_name = "";
     $pub_zoom = "";
 }
-if (!check_var($pub_zoom, "Char") || !check_var($pub_player_comp, "Text") || !
-    check_var($pub_user_stat_name, "Text")
+if (!check_var($pub_zoom, "Char") || !check_var($pub_player_comp, "Text") || !check_var($pub_user_stat_name, "Text")
 ) {
     redirection("index.php?action=message&amp;id_message=errordata&amp;info");
 }
@@ -34,12 +33,15 @@ $zoom = $pub_zoom;
 $player_comp = $pub_player_comp;
 $user_stat_name = $pub_user_stat_name;
 
-if (!isset($zoom))
+if (!isset($zoom)) {
     $zoom = "true";
-if (isset($pub_zoom_change_y) && isset($pub_zoom_change_x))
+}
+if (isset($pub_zoom_change_y) && isset($pub_zoom_change_x)) {
     $zoom = ($zoom == "true" ? "false" : "true");
-if (!isset($player_comp))
+}
+if (!isset($player_comp)) {
     $player_comp = "";
+}
 if (isset($user_stat_name) && $user_stat_name != "" && $user_stat_name != $user_data["user_stat_name"]) {
     user_set_stat_name($user_stat_name);
     redirection("index.php?action=home&amp;subaction=stat&amp;zoom=" . $zoom .
@@ -224,38 +226,22 @@ if (sizeof($dates) > 0) {
         }
 
 
-        $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) :
-            "&nbsp;";
-        $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) :
-            "&nbsp;";
-        $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) :
-            "&nbsp;";
-        $eco_points = isset($ranking["eco"]) ? formate_number($ranking["eco"]["points"]) :
-            "&nbsp;";
-        $techno_rank = isset($ranking["techno"]) ? formate_number($ranking["techno"]["rank"]) :
-            "&nbsp;";
-        $techno_points = isset($ranking["techno"]) ? formate_number($ranking["techno"]["points"]) :
-            "&nbsp;";
-        $military_rank = isset($ranking["military"]) ? formate_number($ranking["military"]["rank"]) :
-            "&nbsp;";
-        $military_points = isset($ranking["military"]) ? formate_number($ranking["military"]["points"]) :
-            "&nbsp;";
-        $military_b_rank = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["rank"]) :
-            "&nbsp;";
-        $military_b_points = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["points"]) :
-            "&nbsp;";
-        $military_l_rank = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["rank"]) :
-            "&nbsp;";
-        $military_l_points = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) :
-            "&nbsp;";
-        $military_d_rank = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) :
-            "&nbsp;";
-        $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) :
-            "&nbsp;";
-        $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) :
-            "&nbsp;";
-        $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) :
-            "&nbsp;";
+        $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
+        $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
+        $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : "&nbsp;";
+        $eco_points = isset($ranking["eco"]) ? formate_number($ranking["eco"]["points"]) : "&nbsp;";
+        $techno_rank = isset($ranking["techno"]) ? formate_number($ranking["techno"]["rank"]) : "&nbsp;";
+        $techno_points = isset($ranking["techno"]) ? formate_number($ranking["techno"]["points"]) : "&nbsp;";
+        $military_rank = isset($ranking["military"]) ? formate_number($ranking["military"]["rank"]) : "&nbsp;";
+        $military_points = isset($ranking["military"]) ? formate_number($ranking["military"]["points"]) : "&nbsp;";
+        $military_b_rank = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["rank"]) : "&nbsp;";
+        $military_b_points = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["points"]) : "&nbsp;";
+        $military_l_rank = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["rank"]) : "&nbsp;";
+        $military_l_points = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) : "&nbsp;";
+        $military_d_rank = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) : "&nbsp;";
+        $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : "&nbsp;";
+        $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : "&nbsp;";
+        $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : "&nbsp;";
 
 
         $tab_rank = "\t\t\t" . "<th width='40'><font color='lime'><i>" . $honnor_rank .
@@ -292,7 +278,7 @@ if (sizeof($dates) > 0) {
         next($individual_ranking);
     }
 
-    echo "<p><b><u style='font-size:14px;'>".$lang['HOME_STATS_PALYERSTATS']." " . $user_data["user_stat_name"] .
+    echo "<p><b><u style='font-size:14px;'>" . $lang['HOME_STATS_PALYERSTATS'] . " " . $user_data["user_stat_name"] .
         "</u></b></p>";
 
     echo "<table width='1000'>";
@@ -329,11 +315,12 @@ if ($player_comp != "" && isset($player_comp)): ?>
 
     $title = $lang['HOME_STATS_GRAPHIC_TITLE'];
     if (!empty($user_data["user_stat_name"])) {
-        $title .= " ".$lang['HOME_STATS_GRAPHIC_TITLE2']." " . $user_data["user_stat_name"];
-        if (!empty($last_date["general"]))
-            $title .= " ".$lang['HOME_STATS_GRAPHIC_FROM']." " . strftime("%d %b %Y %H:%M", $last_date["general"]);
+        $title .= " " . $lang['HOME_STATS_GRAPHIC_TITLE2'] . " " . $user_data["user_stat_name"];
+        if (!empty($last_date["general"])) {
+                    $title .= " " . $lang['HOME_STATS_GRAPHIC_FROM'] . " " . strftime("%d %b %Y %H:%M", $last_date["general"]);
+        }
     }
-    echo "<tr><td class='c' colspan='2'>".$lang['HOME_STATS_GRAPHIC_DIVERS']." " . help(null, $title) . "</td></tr>";
+    echo "<tr><td class='c' colspan='2'>" . $lang['HOME_STATS_GRAPHIC_DIVERS'] . " " . help(null, $title) . "</td></tr>";
 
     $user_empire = user_get_empire($user_data["user_id"]);
     $user_building = $user_empire["building"];
@@ -350,8 +337,9 @@ if ($player_comp != "" && isset($player_comp)): ?>
             array_slice($user_defence, $nb_planete, $nb_planete)) / 1000);
     $t = round(all_technology_cumulate($user_technology) / 1000);
     $f = $last["general_pts"] - $b - $d - $l - $t;
-    if ($f < 0)
-        $f = 0;
+    if ($f < 0) {
+            $f = 0;
+    }
 
 
     // affichage premier camembert
@@ -359,12 +347,14 @@ if ($player_comp != "" && isset($player_comp)): ?>
     echo "<th align='center' width='400'>";
     echo "<div id='pie_point'>";
     // pas d info
-    if ($b == 0 && $d == 0 && $l == 0 && $t == 0)
-        echo $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'];
+    if ($b == 0 && $d == 0 && $l == 0 && $t == 0) {
+            echo $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'];
+    }
 
 // calcul impossible ( non connaissance du classement)
-    elseif ($last["general_pts"] == 0)
-        echo $lang['HOME_STATS_GRAPHIC_NOSTATSDATA'];
+    elseif ($last["general_pts"] == 0) {
+            echo $lang['HOME_STATS_GRAPHIC_NOSTATSDATA'];
+    }
 
 // autrement on affiche rien : on prepare juste l affichage du script
     else {
@@ -394,8 +384,9 @@ if ($player_comp != "" && isset($player_comp)): ?>
     echo "<th align='center' width='400'>";
     echo "<div id='pie_empire'  width='400'>";
     // pas d info
-    if ($b == 0 && $d == 0 && $l == 0 && $t == 0)
-        echo $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'];
+    if ($b == 0 && $d == 0 && $l == 0 && $t == 0) {
+            echo $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'];
+    }
 
 // autrement on affiche rien : on prepare juste l affichage du script
     else {
@@ -433,7 +424,7 @@ if ($player_comp != "" && isset($player_comp)): ?>
 
         echo $tab_rank;
         echo "\t\t" . "<tr>" . "\n";
-        echo "\t\t\t" . "<th width='150' style='border-color:#FF0000'><font color='yellow'>".$lang['HOME_STATS_PROGRESS_RATE']." :</font></th>" .
+        echo "\t\t\t" . "<th width='150' style='border-color:#FF0000'><font color='yellow'>" . $lang['HOME_STATS_PROGRESS_RATE'] . " :</font></th>" .
             "\n";
         echo "\t\t\t" . "<th width='70' style='border-color:#FF0000'>" . (($first["general_pts"] ==
                 -1 || $last_date["general"] == $first_date["general"]) ? "-" : round(($last["general_pts"] -

@@ -37,7 +37,7 @@ $lang['ADMIN_DISPLAY_ALLY_COLOR'] = "Alliance color";
 $lang['ADMIN_DISPLAY_ALLY_COLORDESC'] = "Must be the name of a color in English or code preceded by a #";
 $lang['ADMIN_DISPLAY_ALLY_GVIEW'] = "Number of galaxies per line <a>[1-100]</a>";
 $lang['ADMIN_DISPLAY_ALLY_SVIEW'] = "Number of systems per line <a>[1-100]</a>";
-$lang['ADMIN_DISPLAY_LOGIN_TITLE'] = "Connection option";
+$lang['ADMIN_DISPLAY_LOGIN_TITLE'] = "Connexion Settings";
 $lang['ADMIN_DISPLAY_LOGIN_REGISTER'] = "Displaying registration panel";
 $lang['ADMIN_DISPLAY_LOGIN_ALLYNAME'] = "Name of alliance";
 $lang['ADMIN_DISPLAY_LOGIN_FORUM'] = "Link of subscription forum";
@@ -76,7 +76,7 @@ $lang['ADMIN_SERVER_RANKINGS'] = "Ranking (number of lines)";
 $lang['ADMIN_SERVER_PHPINFO'] = "PHPInfo";
 $lang['ADMIN_SERVER_PHPMODULES'] = "PHP modules";
 $lang['ADMIN_SERVER_INFOVERSION'] = "Version information";
-$lang['ADMIN_SERVER_INFOVERSION_DESC'] = "Thank you to consult the Forum OGSteam to know the latest version of OGSpy: <a href='http://www.ogsteam.fr' target='_blank'>Forum</a>";
+$lang['ADMIN_SERVER_INFOVERSION_DESC'] = "Thank you to consult the Forum OGSteam to know the latest version of OGSpy: <a href='https://forum.ogsteam.fr' target='_blank'>Forum</a>";
 
 $lang['ADMIN_SERVER_MEMBERNAME'] = "Name of member";
 $lang['ADMIN_SERVER_MEMBERCONNECTED'] = "Connection";
@@ -161,7 +161,7 @@ $lang['ADMIN_GROUP_EXTERNAL_GETRANK'] = "Ranking exportation";
 $lang['ADMIN_GROUP_EXTERNAL_VALIDATE'] = "Validate permissions";
 
 
- /*    filename    : admin_mod.php */
+    /*    filename    : admin_mod.php */
 
 $lang['ADMIN_MOD_LIST'] = "Mods installed assets";
 $lang['ADMIN_MOD_LIST_INACTIVE'] = "Inactive installed mods";

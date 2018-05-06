@@ -81,8 +81,8 @@ if ($usergroup_info !== false) {
                     $index = 0;
                     echo "</tr>" . "\n" . "<tr>";
                 }
-                echo "\t" . "<form method='POST' action='index.php?action=usergroup_delmember&amp;user_id=" . $user["user_id"] . "&group_id=" . $group_id . "' onsubmit=\"return confirm('".$lang['ADMIN_GROUP_DELETE_CONFIRMATION']. $user["user_name"] . " ?');\">" . "\n";
-                echo "\t" . "<th width='175'>" . $user["user_name"] . "</th><th width='25'><input type='image' src='images/userdrop.png' title='". $lang['ADMIN_GROUP_DELETE'] . $user["user_name"] . " '></th>";
+                echo "\t" . "<form method='POST' action='index.php?action=usergroup_delmember&amp;user_id=" . $user["user_id"] . "&group_id=" . $group_id . "' onsubmit=\"return confirm('" . $lang['ADMIN_GROUP_DELETE_CONFIRMATION'] . $user["user_name"] . " ?');\">" . "\n";
+                echo "\t" . "<th width='175'>" . $user["user_name"] . "</th><th width='25'><input type='image' src='images/userdrop.png' title='" . $lang['ADMIN_GROUP_DELETE'] . $user["user_name"] . " '></th>";
                 echo "\t" . "</form>" . "\n";
                 $index++;
             }
@@ -97,14 +97,14 @@ if ($usergroup_info !== false) {
         echo "<tr>" . "\n";
         echo "<th width='200' colspan='2'>" . "\n";
         echo "\t" . "<select name='user_id'>" . "\n";
-        echo "\t\t" . "<option>".$lang['ADMIN_GROUP_MEMBERLIST']."</option>";
+        echo "\t\t" . "<option>" . $lang['ADMIN_GROUP_MEMBERLIST'] . "</option>";
         foreach ($user_list as $user) {
             echo "\t\t" . "<option value='" . $user["user_id"] . "'>" . $user["user_name"] . "</option>" . "\n";
         }
         echo "\t" . "</select>" . "\n";
         echo "</th>" . "\n";
-        echo "<th width='200' colspan='2'><input type='submit' value='".$lang['ADMIN_GROUP_ADD']."'></th>" . "\n";
-        echo "<th colspan='4'><input type='submit' name='add_all' value='".$lang['ADMIN_GROUP_ADDALL']."'></th>" . "\n";
+        echo "<th width='200' colspan='2'><input type='submit' value='" . $lang['ADMIN_GROUP_ADD'] . "'></th>" . "\n";
+        echo "<th colspan='4'><input type='submit' name='add_all' value='" . $lang['ADMIN_GROUP_ADDALL'] . "'></th>" . "\n";
         echo "</tr>" . "\n";
         echo "</form>" . "\n";
         ?>

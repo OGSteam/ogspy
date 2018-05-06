@@ -37,7 +37,7 @@ $lang['ADMIN_DISPLAY_ALLY_COLOR'] = "Couleur de l'alliance";
 $lang['ADMIN_DISPLAY_ALLY_COLORDESC'] = "Doit être le nom d'une couleur en anglais ou son code précédé d'un #";
 $lang['ADMIN_DISPLAY_ALLY_GVIEW'] = "Nombre de galaxies par ligne <a>[1-100]</a>";
 $lang['ADMIN_DISPLAY_ALLY_SVIEW'] = "Nombre de systèmes par ligne <a>[1-100]</a>";
-$lang['ADMIN_DISPLAY_LOGIN_TITLE'] = "Option de la connexion";
+$lang['ADMIN_DISPLAY_LOGIN_TITLE'] = "Options de connexion";
 $lang['ADMIN_DISPLAY_LOGIN_REGISTER'] = "Affichage du panneau inscription";
 $lang['ADMIN_DISPLAY_LOGIN_ALLYNAME'] = "Nom de l'alliance";
 $lang['ADMIN_DISPLAY_LOGIN_FORUM'] = "Lien du forum d'inscription";
@@ -83,12 +83,14 @@ $lang['ADMIN_SERVER_MEMBERNAME'] = "Nom du membre";
 $lang['ADMIN_SERVER_MEMBERCONNECTED'] = "Connexion";
 $lang['ADMIN_SERVER_MEMBERLASTACTIVITY'] = "Dernière activité";
 $lang['ADMIN_SERVER_MEMBERIP'] = "Adresse IP";
+$lang['ADMIN_SERVER_TOTAL_MAILS'] = "Total des Mails envoyés";
 
 /* admin_members.php*/
 
 $lang['ADMIN_MEMBERS_NEWACCOUNT'] = "Création d'un nouveau compte";
 $lang['ADMIN_MEMBERS_NEWACCOUNT_BUTTON'] = "Créer nouveau membre";
 $lang['ADMIN_MEMBERS_PLAYER'] = "Joueur";
+$lang['ADMIN_MEMBERS_EMAIL'] = "Email";
 $lang['ADMIN_MEMBERS_REGISTERED'] = "Inscrit le";
 $lang['ADMIN_MEMBERS_ENABLED'] = "Compte actif";
 $lang['ADMIN_MEMBERS_COADMIN'] = "Co-administrateur";
@@ -117,11 +119,13 @@ $lang['ADMIN_MEMBERS_PWDCHANGE_TITLE'] = "Changer le mot de passe de ";
 $lang['ADMIN_MEMBERS_PWDCHANGE'] = "Etes-vous sûr de vouloir changer le mot de passe de ";
 $lang['ADMIN_MEMBERS_NEWPASSWORD'] = "Nouveau mot de passe";
 $lang['ADMIN_MEMBERS_PASSWORDGENERATE'] = "Laissez vide pour un mot de passe aléatoire";
+$lang['ADMIN_MEMBERS_PASSWORD_EMAIL_RESET'] = "Réinitialiser le Mot de passe par EMail ?";
 $lang['ADMIN_MEMBERS_PASSWORDOK'] = "ok";
 $lang['ADMIN_MEMBERS_PASSWORDCANCEL'] = "annuler";
 $lang['ADMIN_MEMBERS_POPUP_NEWACCOUNT'] = "Création d'un nouveau compte";
 $lang['ADMIN_MEMBERS_POPUP_NAME'] = "Nom :";
 $lang['ADMIN_MEMBERS_POPUP_PASSWORD'] = "Mot de passe :";
+$lang['ADMIN_MEMBERS_POPUP_EMAIL'] = "Email";
 $lang['ADMIN_MEMBERS_POPUP_RIGHTS'] = "Droits :";
 $lang['ADMIN_MEMBERS_POPUP_COADMIN'] = "co-administrateur : ";
 $lang['ADMIN_MEMBERS_POPUP_MGTMEMBERS'] = "Gestion des membres";
@@ -162,7 +166,7 @@ $lang['ADMIN_GROUP_EXTERNAL_GETRANK'] = "Exportation de classements";
 $lang['ADMIN_GROUP_EXTERNAL_VALIDATE'] = "Valider les permissions";
 
 
- /*    filename    : admin_mod.php */
+    /*    filename    : admin_mod.php */
 
 $lang['ADMIN_MOD_LIST'] = "Mods installés actifs";
 $lang['ADMIN_MOD_LIST_INACTIVE'] = "Mods installés inactifs";
@@ -231,7 +235,15 @@ $lang['ADMIN_PARAMS_GOOGLE_CLOUD'] = "Utilisateurs Google Cloud Messaging";
 $lang['ADMIN_PARAMS_GOOGLE_NOTIF'] = "Nécessaire pour les notifications sur les appareils Android";
 $lang['ADMIN_PARAMS_VALIDATE'] = "Valider";
 $lang['ADMIN_PARAMS_CANCEL'] = "Réinitialiser";
-
+$lang['ADMIN_PARAMS_MAIL'] = "E-Mail";
+$lang['ADMIN_PARAMS_MAIL_USE'] = "Utiliser la fonction 'mail'";
+$lang['ADMIN_PARAMS_MAIL_SMTP_USE'] = "Utiliser un serveur SMTP tierce (yahoo,gmail, ....)'";
+$lang['ADMIN_PARAMS_MAIL_SMTP_HOST'] = "Serveur SMTP";
+$lang['ADMIN_PARAMS_MAIL_SMTP_SECURE'] = "Utilise Une connexion securisée";
+$lang['ADMIN_PARAMS_MAIL_SMTP_PORT'] = "Port à utiliser";
+$lang['ADMIN_PARAMS_MAIL_SMTP_USERNAME'] = "Compte utilisateur à utiliser";
+$lang['ADMIN_PARAMS_MAIL_SMTP_PASSEWORD'] = "Mot de passe SMTP du Compte utilisateur";
+$lang['ADMIN_PARAMS_MAIL_TEST'] = "Testl envoi d'un mail avec l'adresse : ";
 /* admin_viewer.php*/
 
 $lang['ADMIN_LOGS_NOLOGS'] = "Aucun log n'a été trouvé à cette date";

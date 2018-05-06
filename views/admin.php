@@ -29,18 +29,21 @@ require_once("views/page_header.php");
                 <tr align="center">
                     <?php
                     if (!isset($pub_subaction)) {
-                        if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) $pub_subaction = "infoserver";
-                        else $pub_subaction = "member";
+                        if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
+                            $pub_subaction = "infoserver";
+                        } else {
+                            $pub_subaction = "member";
+                        }
                     }
 
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
                         if ($pub_subaction != "infoserver") {
                             echo "\t\t\t" . "<td class='c' width='14%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=infoserver';\">";
-                            echo "<a style='cursor:pointer;color: lime;'>".$lang['ADMIN_TITLE_GENERAL_INFO']."</a>";
+                            echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_GENERAL_INFO'] . "</a>";
                             echo "</td>" . "\n";
                         } else {
                             echo "\t\t\t" . "<th width='14%'>";
-                            echo "<a>".$lang['ADMIN_TITLE_GENERAL_INFO']."</a>";
+                            echo "<a>" . $lang['ADMIN_TITLE_GENERAL_INFO'] . "</a>";
                             echo "</th>" . "\n";
                         }
                     }
@@ -48,11 +51,11 @@ require_once("views/page_header.php");
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
                         if ($pub_subaction != "parameter") {
                             echo "\t\t\t" . "<td class='c_tech' width='14%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=parameter';\">";
-                            echo "<a style='cursor:pointer;color: lime;'>".$lang['ADMIN_TITLE_SERVER_CONF']."</a>";
+                            echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_SERVER_CONF'] . "</a>";
                             echo "</td>" . "\n";
                         } else {
                             echo "\t\t\t" . "<th width='14%'>";
-                            echo "<a>".$lang['ADMIN_TITLE_SERVER_CONF']."</a>";
+                            echo "<a>" . $lang['ADMIN_TITLE_SERVER_CONF'] . "</a>";
                             echo "</th>" . "\n";
                         }
                     }
@@ -60,11 +63,11 @@ require_once("views/page_header.php");
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
                         if ($pub_subaction != "affichage") {
                             echo "\t\t\t" . "<td class='c' width='14%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=affichage';\">";
-                            echo "<a style='cursor:pointer;color: lime;'>".$lang['ADMIN_TITLE_DISPLAY_CONF']."</a>";
+                            echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_DISPLAY_CONF'] . "</a>";
                             echo "</td>" . "\n";
                         } else {
                             echo "\t\t\t" . "<th width='14%'>";
-                            echo "<a>".$lang['ADMIN_TITLE_DISPLAY_CONF']."</a>";
+                            echo "<a>" . $lang['ADMIN_TITLE_DISPLAY_CONF'] . "</a>";
                             echo "</th>" . "\n";
                         }
                     }
@@ -72,11 +75,11 @@ require_once("views/page_header.php");
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
                         if ($pub_subaction != "member") {
                             echo "\t\t\t" . "<td class='c' width='14%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=member';\">";
-                            echo "<a style='cursor:pointer;color: lime;'>".$lang['ADMIN_TITLE_MEMBER_CONF']."</a>";
+                            echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_MEMBER_CONF'] . "</a>";
                             echo "</td>" . "\n";
                         } else {
                             echo "\t\t\t" . "<th width='14%'>";
-                            echo "<a>".$lang['ADMIN_TITLE_MEMBER_CONF']."</a>";
+                            echo "<a>" . $lang['ADMIN_TITLE_MEMBER_CONF'] . "</a>";
                             echo "</th>" . "\n";
                         }
                     }
@@ -84,11 +87,11 @@ require_once("views/page_header.php");
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
                         if ($pub_subaction != "group") {
                             echo "\t\t\t" . "<td class='c' width='14%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=group';\">";
-                            echo "<a style='cursor:pointer;color: lime;'>" .$lang['ADMIN_TITLE_GROUP_CONF']. "</a>";
+                            echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_GROUP_CONF'] . "</a>";
                             echo "</td>" . "\n";
                         } else {
                             echo "\t\t\t" . "<th width='14%'>";
-                            echo "<a>".$lang['ADMIN_TITLE_GROUP_CONF']."</a>";
+                            echo "<a>" . $lang['ADMIN_TITLE_GROUP_CONF'] . "</a>";
                             echo "</th>" . "\n";
                         }
                     }
@@ -96,11 +99,11 @@ require_once("views/page_header.php");
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
                         if ($pub_subaction != "viewer") {
                             echo "\t\t\t" . "<td class='c' width='14%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer';\">";
-                            echo "<a style='cursor:pointer;color: lime;'>".$lang['ADMIN_TITLE_LOGS_CONF']."</a>";
+                            echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_LOGS_CONF'] . "</a>";
                             echo "</td>" . "\n";
                         } else {
                             echo "\t\t\t" . "<th width='14%'>";
-                            echo "<a>".$lang['ADMIN_TITLE_LOGS_CONF']."</a>";
+                            echo "<a>" . $lang['ADMIN_TITLE_LOGS_CONF'] . "</a>";
                             echo "</th>" . "\n";
                         }
                     }
@@ -108,11 +111,11 @@ require_once("views/page_header.php");
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
                         if ($pub_subaction != "mod") {
                             echo "\t\t\t" . "<td class='c' width='14%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=mod';\">";
-                            echo "<a style='cursor:pointer;color: lime;'>".$lang['ADMIN_TITLE_MODS_CONF']."</a>";
+                            echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_MODS_CONF'] . "</a>";
                             echo "</td>" . "\n";
                         } else {
                             echo "\t\t\t" . "<th width='14%'>";
-                            echo "<a>".$lang['ADMIN_TITLE_MODS_CONF']."</a>";
+                            echo "<a>" . $lang['ADMIN_TITLE_MODS_CONF'] . "</a>";
                             echo "</th>" . "\n";
                         }
                     }

@@ -29,7 +29,7 @@ $lang['MENU_RANKINGS'] = "Classements";
 $lang['MENU_UPDATE_STATUS'] = "Etat Cartographie";
 $lang['MENU_MODULES'] = "Modules";
 $lang['MENU_FORUM'] = "Forum Alliance";
-$lang['MENU_ABOUT'] = "A Propos";
+$lang['MENU_ABOUT'] = "L'OGSteam";
 $lang['MENU_LOGOUT'] = "Déconnexion";
 
 

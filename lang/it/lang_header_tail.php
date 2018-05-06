@@ -16,15 +16,15 @@
 
 /* page_header.php */
 
-$lang['HEAD_LANGUAGE'] = "fr";
-$lang['HEAD_RSS_STREAM'] = "Flux RSS OGSpy";
+$lang['HEAD_LANGUAGE'] = "it";
+$lang['HEAD_RSS_STREAM'] = "Feed RSS OGSpy";
 
 /* page_tail.php */
 
-$lang['FOOTER_PHPERRORS'] = "Erreurs php";
-$lang['FOOTER_RENDERING'] = "Temps de génération";
-$lang['FOOTER_OGSPY'] = "est un outil";
-$lang['FOOTER_CONTRIBUTORS'] = "contributeur";
-$lang['FOOTER_ON_SITE'] = "sur le site";
-$lang['FOOTER_QUERY'] = "requête";
+$lang['FOOTER_PHPERRORS'] = "Errori PHP";
+$lang['FOOTER_RENDERING'] = "Tempi di creazione";
+$lang['FOOTER_OGSPY'] = "è uno strumento";
+$lang['FOOTER_CONTRIBUTORS'] = "contributore";
+$lang['FOOTER_ON_SITE'] = "sul sito";
+$lang['FOOTER_QUERY'] = "richiesta";
 

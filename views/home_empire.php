@@ -20,12 +20,16 @@ $user_empire = user_get_empire($user_data['user_id']);
 $user_building = $user_empire["building"];
 $user_defence = $user_empire["defence"];
 $user_technology = $user_empire["technology"];
-$user_production = user_empire_production($user_empire,$user_data);
+$user_production = user_empire_production($user_empire, $user_data);
 
 
-if (!isset($pub_view) || $pub_view == "") $view = "planets";
-elseif ($pub_view == "planets" || $pub_view == "moons") $view = $pub_view;
-else $view = "planets";
+if (!isset($pub_view) || $pub_view == "") {
+    $view = "planets";
+} elseif ($pub_view == "planets" || $pub_view == "moons") {
+    $view = $pub_view;
+} else {
+    $view = "planets";
+}
 $start = $view == "planets" ? 101 : 201;
 
 /* Restes du Lang Empire :-) */
@@ -46,20 +50,20 @@ $technology_requirement["RRI"] = array(10, "Ordi" => 8, "Hyp" => 8);
 $technology_requirement["Graviton"] = array(12);
 $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
-?>
-
-    <!-- DEBUT DU SCRIPT -->
-    <script language="JavaScript">
-        <?php
 
         $nb_planete = find_nb_planete_user($user_data['user_id']);
+
 
         $name = $coordinates = $fields = $temperature_min = $temperature_max = $satellite = "";
         for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
             /*Boosters et extensions modification :
              * => calcul effectué dans fonction  get empire*/
+
+
             $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-            $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+            if(isset($booster_tab[$i])) {
+                $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+            }
 
             $name .= "'".$user_building[$i]["planet_name"]."', ";
             $coordinates .= "'".$user_building[$i]["coordinates"]."', ";
@@ -72,24 +76,30 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
         for ($i=201 ; $i<=$nb_planete+200 ; $i++) {
             /*Boosters et extensions modification :*/
             //=> calcul effectué dans fonction  get empire*/
-            $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-            $user_building[$i]["fields"] += $booster_tab[$i]['extention_m'];
+            if(isset($booster_tab[$i])) {
+                $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
+                $user_building[$i]["fields"] += $booster_tab[$i]['extention_m'];
+            }
 
             $name .= "'Lune', ";
             $coordinates .= "'', ";
             $fields .= "'1', ";
-            $temperature_min .= "'".$user_building[$i]["temperature_min"]."', ";
-            $temperature_max .= "'".$user_building[$i]["temperature_max"]."', ";
-            $satellite .= "'".$user_building[$i]["Sat"]."', ";
+            $temperature_min .= "'" . $user_building[$i]["temperature_min"] . "', ";
+            $temperature_max .= "'" . $user_building[$i]["temperature_max"] . "', ";
+            $satellite .= "'" . $user_building[$i]["Sat"] . "', ";
         }
-
-        echo "var name = new Array(".substr($name, 0, strlen($name)-2).");"."\n";
-        echo "var coordinates = new Array(".substr($coordinates, 0, strlen($coordinates)-2).");"."\n";
-        echo "var fields = new Array(".substr($fields, 0, strlen($fields)-2).");"."\n";
-        echo "var temperature_min = new Array(".substr($temperature_min, 0, strlen($temperature_min)-2).");"."\n";
-        echo "var temperature_max = new Array(".substr($temperature_max, 0, strlen($temperature_max)-2).");"."\n";
-        echo "var satellite = new Array(".substr($satellite, 0, strlen($satellite)-2).");"."\n";
+?>
+        <!-- DEBUT DU SCRIPT -->
+        <script>
+        <?php
+            echo "var name = new Array(" . substr($name, 0, strlen($name) - 2) . ");" . "\n";
+            echo "var coordinates = new Array(" . substr($coordinates, 0, strlen($coordinates) - 2) . ");" . "\n";
+            echo "var fields = new Array(" . substr($fields, 0, strlen($fields) - 2) . ");" . "\n";
+            echo "var temperature_min = new Array(" . substr($temperature_min, 0, strlen($temperature_min) - 2) . ");" . "\n";
+            echo "var temperature_max = new Array(" . substr($temperature_max, 0, strlen($temperature_max) - 2) . ");" . "\n";
+            echo "var satellite = new Array(" . substr($satellite, 0, strlen($satellite) - 2) . ");" . "\n";
         ?>
+
         var select_planet = false;
 
         function autofill(planet_id, planet_selected) {
@@ -124,7 +134,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
             var lign = 0;
             var id = 0;
-            var lim = <?php print ($server_config['ddr']==1)?'42':'41' ; ?>;
+            var lim = <?php print ($server_config['ddr'] == 1) ? '42' : '41'; ?>;
             if (planet_id > 9) {
                 lim = 17;
                 planet_id -= 9;
@@ -145,13 +155,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
         }
 
         function clear_text2() {
-            if (document.post2.data.value == "<?php echo($lang['HOME_EMPIRE_TITLEDESC']); ?>") {
+            if (document.post2.data.value === "<?php echo($lang['HOME_EMPIRE_TITLEDESC']); ?>") {
                 document.post2.data.value = "";
             }
-        }
-
-        function message(msg) {
-            alert("\n" + msg);
         }
     </script>
     <!-- FIN DU SCRIPT -->
@@ -165,11 +171,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             $colspan_lune = ceil($colspan);
 
             if ($view == "planets") {
-                echo "<th colspan='$colspan_planete'><a>".$lang['HOME_EMPIRE_PLANET']."</a></th>";
-                echo "<td class='c' align='center' colspan='$colspan_lune' onClick=\"window.location = 'index.php?action=home&amp;view=moons';\"><a style='cursor:pointer'><font color='lime'>".$lang['HOME_EMPIRE_MOON']."</font></a></td>";
+                echo "<th colspan='$colspan_planete'><a>" . $lang['HOME_EMPIRE_PLANET'] . "</a></th>";
+                echo "<td class='c' align='center' colspan='$colspan_lune' onClick=\"window.location = 'index.php?action=home&amp;view=moons';\"><a style='cursor:pointer'><font color='lime'>" . $lang['HOME_EMPIRE_MOON'] . "</font></a></td>";
             } else {
-                echo "<td class='c' align='center' colspan='$colspan_planete' onClick=\"window.location = 'index.php?action=home&amp;view=planets';\"><a style='cursor:pointer'><font color='lime'>".$lang['HOME_EMPIRE_PLANET']."</font></a></td>";
-                echo "<th colspan='$colspan_lune'><a>".$lang['HOME_EMPIRE_MOON']."</a></th>";
+                echo "<td class='c' align='center' colspan='$colspan_planete' onClick=\"window.location = 'index.php?action=home&amp;view=planets';\"><a style='cursor:pointer'><font color='lime'>" . $lang['HOME_EMPIRE_PLANET'] . "</font></a></td>";
+                echo "<th colspan='$colspan_lune'><a>" . $lang['HOME_EMPIRE_MOON'] . "</a></th>";
             }
             ?>
         </tr>
@@ -182,9 +188,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
         if (((find_nb_planete_user($user_data['user_id']) > $astro) || (find_nb_moon_user($user_data['user_id']) > $astro)) && ($user_technology != false)) {
             echo '<tr>';
             echo '<td class="c" colspan="' . ($nb_planete < 10 ? '10' : $nb_planete + 1) . '">';
-            echo $lang['HOME_EMPIRE_ERROR'].' ';
-            echo (find_nb_planete_user($user_data['user_id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_PLANET'].'<br>' : '';
-            echo (find_nb_moon_user($user_data['user_id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_MOON'].'<br>' : '';
+            echo $lang['HOME_EMPIRE_ERROR'] . ' ';
+            echo (find_nb_planete_user($user_data['user_id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_PLANET'] . '<br>' : '';
+            echo (find_nb_moon_user($user_data['user_id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_MOON'] . '<br>' : '';
             echo '</td>';
             echo '</tr>';
         }
@@ -201,10 +207,12 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
                 echo "<th>";
                 if (!isset($pub_view) || $pub_view == "planets") {
-                    echo "<input type='image' title='".$lang['HOME_EMPIRE_MOVELEFT']." " . $user_building[$i]["planet_name"] . "' src='images/previous.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;left';\">&nbsp;&nbsp;";
-                    echo "<input type='image' title='".$lang['HOME_EMPIRE_DELETE_PLANET']." " . $user_building[$i]["planet_name"] . "' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "';\">&nbsp;&nbsp;";
-                    echo "<input type='image' title='".$lang['HOME_EMPIRE_MOVERIGHT']." " . $user_building[$i]["planet_name"] . "' src='images/next.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;right';\">";
-                } else echo "<input type='image' title='".$lang['HOME_EMPIRE_DELETE_MOON']." " . $user_building[$i]["planet_name"] . "' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "';\">&nbsp;&nbsp;";
+                    echo "<input type='image' title='" . $lang['HOME_EMPIRE_MOVELEFT'] . " " . $user_building[$i]["planet_name"] . "' src='images/previous.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;left';\">&nbsp;&nbsp;";
+                    echo "<input type='image' title='" . $lang['HOME_EMPIRE_DELETE_PLANET'] . " " . $user_building[$i]["planet_name"] . "' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "';\">&nbsp;&nbsp;";
+                    echo "<input type='image' title='" . $lang['HOME_EMPIRE_MOVERIGHT'] . " " . $user_building[$i]["planet_name"] . "' src='images/next.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;right';\">";
+                } else {
+                    echo "<input type='image' title='" . $lang['HOME_EMPIRE_DELETE_MOON'] . " " . $user_building[$i]["planet_name"] . "' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "';\">&nbsp;&nbsp;";
+                }
                 echo "</th>";
             }
             ?>
@@ -214,7 +222,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $name = $user_building[$i]["planet_name"];
-                if ($name == "") $name = "&nbsp;";
+                if ($name == "") {
+                    $name = "&nbsp;";
+                }
 
                 echo "\t" . "<th><a>" . $name . "</a></th>" . "\n";
             }
@@ -225,8 +235,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $coordinates = $user_building[$i]["coordinates"];
-                if ($coordinates == "" || ($user_building[$i]["planet_name"] == "" && $view == "moons")) $coordinates = "&nbsp;";
-                else $coordinates = "[" . $coordinates . "]";
+                if ($coordinates == "" || ($user_building[$i]["planet_name"] == "" && $view == "moons")) {
+                    $coordinates = "&nbsp;";
+                } else {
+                    $coordinates = "[" . $coordinates . "]";
+                }
 
                 echo "\t" . "<th>" . $coordinates . "</th>" . "\n";
             }
@@ -237,7 +250,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $fields = $user_building[$i]["fields"];
-                if ($fields == "0") $fields = 0;
+                if ($fields == "0") {
+                    $fields = 0;
+                }
                 $fields_used = $user_building[$i]["fields_used"];
 
                 echo "\t" . "<th>" . $fields_used . " / " . ($fields != 0 ? $fields : "") . "</th>" . "\n";
@@ -249,7 +264,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $temperature_min = $user_building[$i]["temperature_min"];
-                if ($temperature_min == "") $temperature_min = "&nbsp;";
+                if ($temperature_min == "") {
+                    $temperature_min = "&nbsp;";
+                }
 
                 echo "\t" . "<th>" . $temperature_min . "</th>" . "\n";
             }
@@ -260,7 +277,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $temperature_max = $user_building[$i]["temperature_max"];
-                if ($temperature_max == "") $temperature_max = "&nbsp;";
+                if ($temperature_max == "") {
+                    $temperature_max = "&nbsp;";
+                }
 
                 echo "\t" . "<th>" . $temperature_max . "</th>" . "\n";
             }
@@ -285,7 +304,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                 echo "\t" . "<th>" . $booster . "</th>" . "\n";
             }
 
-            if($view == "planets") {
+            if ($view == "planets") {
             ?>
         </tr>
         <tr>
@@ -320,7 +339,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $C = $user_building[$i]["C"];
                 if ($C != "") {
+
                     echo "\t" . "<th>" . $user_production['theorique'][$i]['C'] . "</th>" . "\n";
+
                 } else {
                     echo "\t" . "<th>&nbsp</th>" . "\n";
                 }
@@ -333,6 +354,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $D = $user_building[$i]["D"];
                 if ($D != "") {
+
                     echo "\t" . "<th>" . $user_production['theorique'][$i]['D'] . "</th>" . "\n";
                 } else {
                     echo "\t" . "<th>&nbsp</th>" . "\n";
@@ -345,9 +367,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
 
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
+
                 if (!isset($user_production['reel'][$i]))	{	$user_production['reel'][$i]['prod_E']= 0 ;}
                 echo "\t" . "<th>" . $user_production['reel'][$i]['prod_E'] . "</th>" . "\n";
             }
+
             ?>
         <tr>
             <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">Production
@@ -359,7 +383,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             // ratio
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                if (!isset($user_production['ratio'][$i]))	{	$user_production['reel'][$i]['ratio']= 0 ;}
+                if (!isset($user_production['reel'][$i]['ratio']))	{	$user_production['reel'][$i]['ratio']= 0 ;}
 
                 echo "\t" . "<th style='font-weight:bold; color:";
                 if ($user_production['reel'][$i]['ratio'] != 1) {
@@ -428,9 +452,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $M = $user_building[$i]["M"];
-                if ($M == "") $M = "&nbsp;";
+                if ($M == "") {
+                    $M = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='15" . ($i + 1 - $start) . "'>" . $M . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='15" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $M . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -439,9 +465,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $C = $user_building[$i]["C"];
-                if ($C == "") $C = "&nbsp;";
+                if ($C == "") {
+                    $C = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='16" . ($i + 1 - $start) . "'>" . $C . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='16" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $C . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -450,9 +478,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $D = $user_building[$i]["D"];
-                if ($D == "") $D = "&nbsp;";
+                if ($D == "") {
+                    $D = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='17" . ($i + 1 - $start) . "'>" . $D . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='17" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $D . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -461,9 +491,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $CES = $user_building[$i]["CES"];
-                if ($CES == "") $CES = "&nbsp;";
+                if ($CES == "") {
+                    $CES = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='20" . ($i + 1 - $start) . "'>" . $CES . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='20" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $CES . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -472,16 +504,18 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $CEF = $user_building[$i]["CEF"];
-                if ($CEF == "") $CEF = "&nbsp;";
+                if ($CEF == "") {
+                    $CEF = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='21" . ($i + 1 - $start) . "'>" . $CEF . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='21" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $CEF . "</span></th>" . "\n";
             }
 
             } // fin de si view="planets"
             else {
                 echo '</tr><tr> <td class="c" colspan="';
                 print ($nb_planete < 10) ? '10' : $nb_planete + 1;
-                echo '">'.$lang['HOME_EMPIRE_BUILDINGS'].'</td>';
+                echo '">' . $lang['HOME_EMPIRE_BUILDINGS'] . '</td>';
             }
             ?>
         </tr>
@@ -490,12 +524,14 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $UdR = $user_building[$i]["UdR"];
-                if ($UdR == "") $UdR = "&nbsp;";
+                if ($UdR == "") {
+                    $UdR = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='1" . ($i + 1 - $start) . "'>" . $UdR . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='1" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $UdR . "</span></th>" . "\n";
             }
 
-            if($view == "planets") {
+            if ($view == "planets") {
             ?>
         </tr>
         <tr>
@@ -503,9 +539,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $UdN = $user_building[$i]["UdN"];
-                if ($UdN == "") $UdN = "&nbsp;";
+                if ($UdN == "") {
+                    $UdN = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='22" . ($i + 1 - $start) . "'>" . $UdN . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='22" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $UdN . "</span></th>" . "\n";
             }
 
             } // fin de si view="planets"
@@ -516,9 +554,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $CSp = $user_building[$i]["CSp"];
-                if ($CSp == "") $CSp = "&nbsp;";
+                if ($CSp == "") {
+                    $CSp = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='2" . ($i + 1 - $start) . "'>" . $CSp . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='2" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $CSp . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -527,9 +567,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $HM = $user_building[$i]["HM"];
-                if ($HM == "") $HM = "&nbsp;";
+                if ($HM == "") {
+                    $HM = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='3" . ($i + 1 - $start) . "'>" . $HM . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='3" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $HM . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -538,9 +580,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $HC = $user_building[$i]["HC"];
-                if ($HC == "") $HC = "&nbsp;";
+                if ($HC == "") {
+                    $HC = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='4" . ($i + 1 - $start) . "'>" . $HC . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='4" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $HC . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -549,24 +593,29 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $HD = $user_building[$i]["HD"];
-                if ($HD == "") $HD = "&nbsp;";
+                if ($HD == "") {
+                    $HD = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='5" . ($i + 1 - $start) . "'>" . $HD . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='5" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $HD . "</span></th>" . "\n";
             }
             ?>
         </tr>
         <?php
         if($view == "planets") { ?>
+
         <tr>
             <th><a><?php echo($lang['HOME_EMPIRE_RESEARCHLAB']); ?></a></th>
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $Lab = $user_building[$i]["Lab"];
-                if ($Lab == "") $Lab = "&nbsp;";
+                if ($Lab == "") {
+                    $Lab = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='23" . ($i + 1 - $start) . "'>" . $Lab . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='23" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Lab . "</span></th>" . "\n";
             }
-            if ( $server_config['ddr'] == 1 )
+            if ($server_config['ddr'] == 1)
             {
             ?>
         </tr>
@@ -575,9 +624,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $DdR = $user_building[$i]["DdR"];
-                if ($DdR == "") $DdR = "&nbsp;";
+                if ($DdR == "") {
+                    $DdR = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='42" . ($i + 1 - $start) . "'>" . $DdR . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='42" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $DdR . "</span></th>" . "\n";
             }
             }//Fin de si $server_config['ddr']
             ?>
@@ -587,9 +638,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $Ter = $user_building[$i]["Ter"];
-                if ($Ter == "") $Ter = "&nbsp;";
+                if ($Ter == "") {
+                    $Ter = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='24" . ($i + 1 - $start) . "'>" . $Ter . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='24" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Ter . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -598,9 +651,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $Silo = $user_building[$i]["Silo"];
-                if ($Silo == "") $Silo = "&nbsp;";
+                if ($Silo == "") {
+                    $Silo = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='25" . ($i + 1 - $start) . "'>" . $Silo . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='25" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Silo . "</span></th>" . "\n";
             }
 
             } // fin de si view="planets"
@@ -612,9 +667,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $BaLu = $user_building[$i]["BaLu"];
-                if ($BaLu == "") $BaLu = "&nbsp;";
+                if ($BaLu == "") {
+                    $BaLu = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='15" . ($i + 1 - $start) . "'>" . $BaLu . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='15" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $BaLu . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -623,9 +680,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $Pha = $user_building[$i]["Pha"];
-                if ($Pha == "") $Pha = "&nbsp;";
+                if ($Pha == "") {
+                    $Pha = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='16" . ($i + 1 - $start) . "'>" . $Pha . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='16" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Pha . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -634,9 +693,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $PoSa = $user_building[$i]["PoSa"];
-                if ($PoSa == "") $PoSa = "&nbsp;";
+                if ($PoSa == "") {
+                    $PoSa = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='17" . ($i + 1 - $start) . "'>" . $PoSa . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='17" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $PoSa . "</span></th>" . "\n";
             }
 
             } // fin de sinon view="planets"
@@ -650,13 +711,16 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $Sat = $user_building[$i]["Sat"];
-                if ($Sat == "") $Sat = "&nbsp;";
-                else $Sat = number_format($Sat, 0, ',', ' ');
+                if ($Sat == "") {
+                    $Sat = "&nbsp;";
+                } else {
+                    $Sat = number_format($Sat, 0, ',', ' ');
+                }
 
-                echo "\t" . "<th><font color='lime' id='6" . ($i + 1 - $start) . "'>" . $Sat . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='6" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Sat . "</span></th>" . "\n";
             }
 
-            if($view == "planets") {
+            if ($view == "planets") {
             ?>
         </tr>
         <tr>
@@ -676,7 +740,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $Esp = "-";
+                            if ($Lab < $value) {
+                                $Esp = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $Esp = "-";
                         }
@@ -684,7 +750,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='26" . (($i + 1 - $start)) . "'>" . $Esp . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='26" . (($i + 1 - $start)) . "' style=\"color: lime; \">" . $Esp . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -702,7 +768,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $Ordi = "-";
+                            if ($Lab < $value) {
+                                $Ordi = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $Ordi = "-";
                         }
@@ -710,7 +778,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='27" . ($i + 1 - $start) . "'>" . $Ordi . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='27" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Ordi . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -728,7 +796,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $Armes = "-";
+                            if ($Lab < $value) {
+                                $Armes = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $Armes = "-";
                         }
@@ -736,7 +806,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='28" . ($i + 1 - $start) . "'>" . $Armes . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='28" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Armes . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -754,7 +824,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $Bouclier = "-";
+                            if ($Lab < $value) {
+                                $Bouclier = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $Bouclier = "-";
                         }
@@ -762,7 +834,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='29" . ($i + 1 - $start) . "'>" . $Bouclier . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='29" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Bouclier . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -780,7 +852,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $Protection = "-";
+                            if ($Lab < $value) {
+                                $Protection = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $Protection = "-";
                         }
@@ -788,7 +862,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='30" . ($i + 1 - $start) . "'>" . $Protection . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='30" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Protection . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -806,7 +880,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $NRJ = "-";
+                            if ($Lab < $value) {
+                                $NRJ = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $NRJ = "-";
                         }
@@ -814,7 +890,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='31" . ($i + 1 - $start) . "'>" . $NRJ . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='31" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $NRJ . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -832,7 +908,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $Hyp = "-";
+                            if ($Lab < $value) {
+                                $Hyp = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $Hyp = "-";
                         }
@@ -840,7 +918,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='32" . ($i + 1 - $start) . "'>" . $Hyp . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='32" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Hyp . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -858,7 +936,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $RC = "-";
+                            if ($Lab < $value) {
+                                $RC = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $RC = "-";
                         }
@@ -866,7 +946,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='33" . ($i + 1 - $start) . "'>" . $RC . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='33" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $RC . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -884,7 +964,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $RI = "-";
+                            if ($Lab < $value) {
+                                $RI = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $RI = "-";
                         }
@@ -892,7 +974,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='34" . ($i + 1 - $start) . "'>" . $RI . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='34" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $RI . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -910,7 +992,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $PH = "-";
+                            if ($Lab < $value) {
+                                $PH = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $PH = "-";
                         }
@@ -918,7 +1002,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='35" . ($i + 1 - $start) . "'>" . $PH . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='35" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $PH . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -936,7 +1020,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $Laser = "-";
+                            if ($Lab < $value) {
+                                $Laser = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $Laser = "-";
                         }
@@ -944,7 +1030,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='36" . ($i + 1 - $start) . "'>" . $Laser . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='36" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Laser . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -962,7 +1048,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $Ions = "-";
+                            if ($Lab < $value) {
+                                $Ions = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $Ions = "-";
                         }
@@ -970,7 +1058,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='37" . ($i + 1 - $start) . "'>" . $Ions . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='37" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Ions . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -996,7 +1084,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                         next($requirement);
                     }
                 }
-                echo "\t" . "<th><font color='lime' id='38" . ($i + 1 - $start) . "'>" . $Plasma . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='38" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Plasma . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1014,7 +1102,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $RRI = "-";
+                            if ($Lab < $value) {
+                                $RRI = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $RRI = "-";
                         }
@@ -1022,7 +1112,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='39" . ($i + 1 - $start) . "'>" . $RRI . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='39" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $RRI . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1040,7 +1130,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $Astrophysique = "-";
+                            if ($Lab < $value) {
+                                $Astrophysique = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $Astrophysique = "-";
                         }
@@ -1048,7 +1140,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='41" . ($i + 1 - $start) . "'>" . $Astrophysique . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='41" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Astrophysique . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1066,7 +1158,9 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     while ($value = current($requirement)) {
                         $key = key($requirement);
                         if ($key == 0) {
-                            if ($Lab < $value) $Graviton = "-";
+                            if ($Lab < $value) {
+                                $Graviton = "-";
+                            }
                         } elseif ($user_technology[$key] < $value) {
                             $Graviton = "-";
                         }
@@ -1074,7 +1168,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     }
                 }
 
-                echo "\t" . "<th><font color='lime' id='40" . ($i + 1 - $start) . "'>" . $Graviton . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='40" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Graviton . "</span></th>" . "\n";
             }
 
             } // fin de si view="planets"
@@ -1089,10 +1183,13 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $LM = $user_defence[$i]["LM"];
-                if ($LM == "") $LM = "&nbsp;";
-                else $LM = number_format($LM, 0, ',', ' ');
+                if ($LM == "") {
+                    $LM = "&nbsp;";
+                } else {
+                    $LM = number_format($LM, 0, ',', ' ');
+                }
 
-                echo "\t" . "<th><font color='lime' id='7" . ($i + 1 - $start) . "'>" . $LM . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='7" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $LM . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1101,10 +1198,13 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $LLE = $user_defence[$i]["LLE"];
-                if ($LLE == "") $LLE = "&nbsp;";
-                else $LLE = number_format($LLE, 0, ',', ' ');
+                if ($LLE == "") {
+                    $LLE = "&nbsp;";
+                } else {
+                    $LLE = number_format($LLE, 0, ',', ' ');
+                }
 
-                echo "\t" . "<th><font color='lime' id='8" . ($i + 1 - $start) . "'>" . $LLE . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='8" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $LLE . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1113,10 +1213,13 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $LLO = $user_defence[$i]["LLO"];
-                if ($LLO == "") $LLO = "&nbsp;";
-                else $LLO = number_format($LLO, 0, ',', ' ');
+                if ($LLO == "") {
+                    $LLO = "&nbsp;";
+                } else {
+                    $LLO = number_format($LLO, 0, ',', ' ');
+                }
 
-                echo "\t" . "<th><font color='lime' id='9" . ($i + 1 - $start) . "'>" . $LLO . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='9" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $LLO . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1125,10 +1228,13 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $CG = $user_defence[$i]["CG"];
-                if ($CG == "") $CG = "&nbsp;";
-                else $CG = number_format($CG, 0, ',', ' ');
+                if ($CG == "") {
+                    $CG = "&nbsp;";
+                } else {
+                    $CG = number_format($CG, 0, ',', ' ');
+                }
 
-                echo "\t" . "<th><font color='lime' id='10" . ($i + 1 - $start) . "'>" . $CG . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='10" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $CG . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1137,10 +1243,13 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $AI = $user_defence[$i]["AI"];
-                if ($AI == "") $AI = "&nbsp;";
-                else $AI = number_format($AI, 0, ',', ' ');
+                if ($AI == "") {
+                    $AI = "&nbsp;";
+                } else {
+                    $AI = number_format($AI, 0, ',', ' ');
+                }
 
-                echo "\t" . "<th><font color='lime' id='11" . ($i + 1 - $start) . "'>" . $AI . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='11" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $AI . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1149,10 +1258,13 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $LP = $user_defence[$i]["LP"];
-                if ($LP == "") $LP = "&nbsp;";
-                else $LP = number_format($LP, 0, ',', ' ');
+                if ($LP == "") {
+                    $LP = "&nbsp;";
+                } else {
+                    $LP = number_format($LP, 0, ',', ' ');
+                }
 
-                echo "\t" . "<th><font color='lime' id='12" . ($i + 1 - $start) . "'>" . $LP . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='12" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $LP . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1161,9 +1273,11 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $PB = $user_defence[$i]["PB"];
-                if ($PB == "") $PB = "&nbsp;";
+                if ($PB == "") {
+                    $PB = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='13" . ($i + 1 - $start) . "'>" . $PB . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='13" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $PB . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1172,12 +1286,14 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $GB = $user_defence[$i]["GB"];
-                if ($GB == "") $GB = "&nbsp;";
+                if ($GB == "") {
+                    $GB = "&nbsp;";
+                }
 
-                echo "\t" . "<th><font color='lime' id='14" . ($i + 1 - $start) . "'>" . $GB . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='14" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $GB . "</span></th>" . "\n";
             }
 
-            if($view == "planets") {
+            if ($view == "planets") {
             ?>
         </tr>
         <tr>
@@ -1185,10 +1301,13 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $MIC = $user_defence[$i]["MIC"];
-                if ($MIC == "") $MIC = "&nbsp;";
-                else $MIC = number_format($MIC, 0, ',', ' ');
+                if ($MIC == "") {
+                    $MIC = "&nbsp;";
+                } else {
+                    $MIC = number_format($MIC, 0, ',', ' ');
+                }
 
-                echo "\t" . "<th><font color='lime' id='19" . ($i + 1 - $start) . "'>" . $MIC . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='19" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $MIC . "</span></th>" . "\n";
             }
             ?>
         </tr>
@@ -1197,10 +1316,13 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $MIP = $user_defence[$i]["MIP"];
-                if ($MIP == "") $MIP = "&nbsp;";
-                else $MIP = number_format($MIP, 0, ',', ' ');
+                if ($MIP == "") {
+                    $MIP = "&nbsp;";
+                } else {
+                    $MIP = number_format($MIP, 0, ',', ' ');
+                }
 
-                echo "\t" . "<th><font color='lime' id='18" . ($i + 1 - $start) . "'>" . $MIP . "</font></th>" . "\n";
+                echo "\t" . "<th><span  id='18" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $MIP . "</span></th>" . "\n";
             }
 
             } // fin de si view="planets"

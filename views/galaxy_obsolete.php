@@ -15,9 +15,15 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 $obsolete_listing = galaxy_obsolete();
-if (!isset($pub_since)) $pub_since = 0;
-if (!isset($pub_perimeter)) $pub_perimeter = 1;
-if (!isset($pub_typesearch)) $pub_typesearch = "P";
+if (!isset($pub_since)) {
+    $pub_since = 0;
+}
+if (!isset($pub_perimeter)) {
+    $pub_perimeter = 1;
+}
+if (!isset($pub_typesearch)) {
+    $pub_typesearch = "P";
+}
 
 $since = $pub_since;
 $perimeter = $pub_perimeter;
@@ -36,31 +42,59 @@ require_once("views/page_header.php");
                 <th colspan="2">
                     <select name="perimeter">
                         <?php
-                        for ($i = 1; $i <= intval($server_config['num_of_galaxies']); $i++)
-                            print "<option value=\"$i\"" . ($perimeter == $i ? ' selected' : '') . ">Galaxie $i</option>";
+                        for ($i = 1; $i <= intval($server_config['num_of_galaxies']); $i++) {
+                                                    print "<option value=\"$i\"" . ($perimeter == $i ? ' selected' : '') . ">Galaxie $i</option>";
+                        }
                         ?>
-                        <option value="0" <?php if ($perimeter == 0) echo "selected";?>><?php echo($lang['GALAXY_OLD_ALL']); ?></option>
+                        <option value="0" <?php if ($perimeter == 0) {
+    echo "selected";
+}
+?>><?php echo($lang['GALAXY_OLD_ALL']); ?></option>
                     </select>
                     &nbsp;&nbsp;
                     <?php echo($lang['GALAXY_OLD_SINCE']); ?>
                     &nbsp;&nbsp;
                     <select name="since">
-                        <option value="56" <?php if ($since == 56) echo "selected";?>>8 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
-                        <option value="42" <?php if ($since == 42) echo "selected";?>>6 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
-                        <option value="28" <?php if ($since == 28) echo "selected";?>>4 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
-                        <option value="21" <?php if ($since == 21) echo "selected";?>>3 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
-                        <option value="14" <?php if ($since == 14) echo "selected";?>>2 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
-                        <option value="7" <?php if ($since == 7) echo "selected";?>>1 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="56" <?php if ($since == 56) {
+    echo "selected";
+}
+?>>8 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="42" <?php if ($since == 42) {
+    echo "selected";
+}
+?>>6 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="28" <?php if ($since == 28) {
+    echo "selected";
+}
+?>>4 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="21" <?php if ($since == 21) {
+    echo "selected";
+}
+?>>3 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="14" <?php if ($since == 14) {
+    echo "selected";
+}
+?>>2 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
+                        <option value="7" <?php if ($since == 7) {
+    echo "selected";
+}
+?>>1 <?php echo($lang['GALAXY_OLD_WEEKS']); ?></option>
                     </select>
                     &nbsp;&nbsp;
                 </th>
             </tr>
             <tr>
                 <th width="50%"><input type="radio" name="typesearch"
-                                       value="P" <?php if ($typesearch == "P") echo "checked";?>> <?php echo($lang['GALAXY_OLD_DISPLAYPLANETS']); ?>
+                                       value="P" <?php if ($typesearch == "P") {
+    echo "checked";
+}
+?>> <?php echo($lang['GALAXY_OLD_DISPLAYPLANETS']); ?>
                 </th>
                 <th width="50%"><input type="radio" name="typesearch"
-                                       value="M" <?php if ($typesearch == "M") echo "checked";?>> <?php echo($lang['GALAXY_OLD_DISPLAYMOONS']); ?>
+                                       value="M" <?php if ($typesearch == "M") {
+    echo "checked";
+}
+?>> <?php echo($lang['GALAXY_OLD_DISPLAYMOONS']); ?>
                 </th>
             </tr>
             <tr>
@@ -97,17 +131,22 @@ if ($since >= 56) {
                     echo "</tr>" . "\n";
                     echo "<tr>";
                 }
-                if ($value["last_update"] != 0) $date = strftime("%d %b %Y %H:%M", $value["last_update"]);
-                else $date = "-";
+                if ($value["last_update"] != 0) {
+                    $date = strftime("%d %b %Y %H:%M", $value["last_update"]);
+                } else {
+                    $date = "-";
+                }
                 $color = $i & 1 ? "magenta" : "lime";
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
-                if ($typesearch == "M") $coordinates .= ":" . $value["row"];
+                if ($typesearch == "M") {
+                    $coordinates .= ":" . $value["row"];
+                }
                 echo "<th><font color='" . $color . "'>" . $coordinates . "</font></th><th><font color='" . $color . "'>" . $date . "</font></th>";
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" .$lang['GALAXY_OLD_LIMITED_50SYSTEMS']. "</i></span></th>";
+                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" . $lang['GALAXY_OLD_LIMITED_50SYSTEMS'] . "</i></span></th>";
                     $i = 4;
                     break;
                 }
@@ -153,12 +192,14 @@ if ($since >= 42) {
                 $color = $i & 1 ? "magenta" : "lime";
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
-                if ($typesearch == "M") $coordinates .= ":" . $value["row"];
+                if ($typesearch == "M") {
+                    $coordinates .= ":" . $value["row"];
+                }
                 echo "<th><span style=\"color:" . $color . "\">" . $coordinates . "</font></th><th><span style=\"color:" . $color . "\">" . $date . "</font></th>";
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" .$lang['GALAXY_OLD_LIMITED_50SYSTEMS']. "</i></span></th>";
+                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" . $lang['GALAXY_OLD_LIMITED_50SYSTEMS'] . "</i></span></th>";
                     $i = 4;
                     break;
                 }
@@ -204,12 +245,14 @@ if ($since >= 28) {
                 $color = $i & 1 ? "magenta" : "lime";
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
-                if ($typesearch == "M") $coordinates .= ":" . $value["row"];
+                if ($typesearch == "M") {
+                    $coordinates .= ":" . $value["row"];
+                }
                 echo "<th><span style=\"color:" . $color . "\">" . $coordinates . "</font></th><th><span style=\"color:" . $color . "\">" . $date . "</font></th>";
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" .$lang['GALAXY_OLD_LIMITED_50SYSTEMS']. "</i></span></th>";
+                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" . $lang['GALAXY_OLD_LIMITED_50SYSTEMS'] . "</i></span></th>";
                     $i = 4;
                     break;
                 }
@@ -255,12 +298,14 @@ if ($since >= 21) {
                 $color = $i & 1 ? "magenta" : "lime";
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
-                if ($typesearch == "M") $coordinates .= ":" . $value["row"];
+                if ($typesearch == "M") {
+                    $coordinates .= ":" . $value["row"];
+                }
                 echo "<th><span style=\"color:" . $color . "\">" . $coordinates . "</font></th><th><span style=\"color:" . $color . "\">" . $date . "</font></th>";
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><span style=\"color: orange; \"><font color='orange'><i>" .$lang['GALAXY_OLD_LIMITED_50SYSTEMS']. "</i></font></span></th>";
+                    echo "<th colspan='4'><span style=\"color: orange; \"><font color='orange'><i>" . $lang['GALAXY_OLD_LIMITED_50SYSTEMS'] . "</i></font></span></th>";
                     $i = 4;
                     break;
                 }
@@ -306,12 +351,14 @@ if ($since >= 14) {
                 $color = $i & 1 ? "magenta" : "lime";
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
-                if ($typesearch == "M") $coordinates .= ":" . $value["row"];
+                if ($typesearch == "M") {
+                    $coordinates .= ":" . $value["row"];
+                }
                 echo "<th><span style=\"color:" . $color . "\">" . $coordinates . "</font></th><th><span style=\"color:" . $color . "\">" . $date . "</font></th>";
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" .$lang['GALAXY_OLD_LIMITED_50SYSTEMS']. "</i></span></th>";
+                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" . $lang['GALAXY_OLD_LIMITED_50SYSTEMS'] . "</i></span></th>";
                     $i = 4;
                     break;
                 }
@@ -357,12 +404,14 @@ if ($since >= 7) {
                 $color = $i & 1 ? "magenta" : "lime";
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
-                if ($typesearch == "M") $coordinates .= ":" . $value["row"];
+                if ($typesearch == "M") {
+                    $coordinates .= ":" . $value["row"];
+                }
                 echo "<th><span style=\"color:" . $color . "\">" . $coordinates . "</font></th><th><span style=\"color:" . $color . "\">" . $date . "</font></th>";
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" .$lang['GALAXY_OLD_LIMITED_50SYSTEMS']. "</i></span></th>";
+                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" . $lang['GALAXY_OLD_LIMITED_50SYSTEMS'] . "</i></span></th>";
                     $i = 4;
                     break;
                 }

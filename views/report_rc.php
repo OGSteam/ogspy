@@ -25,7 +25,7 @@ if ($reports === false) {
 
 require_once("views/page_header_2.php");
 if (sizeof($reports) == 0) {
-    echo "<p>".$lang['REPORT_NOREPORTAVAILABLE']."</p>";
+    echo "<p>" . $lang['REPORT_NOREPORTAVAILABLE'] . "</p>";
     echo '<script language="javascript">window.opener.location.href=window.opener.location.href;</script>';
 } else {
     foreach ($reports as $v) {

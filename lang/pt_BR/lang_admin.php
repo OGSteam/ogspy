@@ -37,7 +37,7 @@ $lang['ADMIN_DISPLAY_ALLY_COLOR'] = "Cor da aliança";
 $lang['ADMIN_DISPLAY_ALLY_COLORDESC'] = "Deve ter o nome de uma cor em inglês ou de um código seguido de #";
 $lang['ADMIN_DISPLAY_ALLY_GVIEW'] = "Número de galáxias por linha <a>[1-100]</a>";
 $lang['ADMIN_DISPLAY_ALLY_SVIEW'] = "Número de sistemas por linha <a>[1-100]</a>";
-$lang['ADMIN_DISPLAY_LOGIN_TITLE'] = "Opção da conexão";
+$lang['ADMIN_DISPLAY_LOGIN_TITLE'] = "Options de connexion";
 $lang['ADMIN_DISPLAY_LOGIN_REGISTER'] = "Visualização do painel de inscrição";
 $lang['ADMIN_DISPLAY_LOGIN_ALLYNAME'] = "Nome da aliança";
 $lang['ADMIN_DISPLAY_LOGIN_FORUM'] = "Link do fórum de inscrição";
@@ -161,7 +161,7 @@ $lang['ADMIN_GROUP_EXTERNAL_GETRANK'] = "Exportação de classificação";
 $lang['ADMIN_GROUP_EXTERNAL_VALIDATE'] = "Validar as permissões";
 
 
- /*    filename    : admin_mod.php */
+    /*    filename    : admin_mod.php */
 
 $lang['ADMIN_MOD_LIST'] = "Mods instalados ativos";
 $lang['ADMIN_MOD_LIST_INACTIVE'] = "Mods instalados inativos";
