@@ -661,13 +661,20 @@ function install_mod($mod_folder)
 
     //Version Minimale OGSpy
     /** @var string $mod_required_ogspy */
-    $mod_required_ogspy = trim($file[3]);
-    if (isset($mod_required_ogspy)) {
-        if (version_compare($mod_required_ogspy, $server_config["version"]) > 0) {
-            log_("mod_erreur_txt_version", $mod_folder);
-            redirection("index.php?action=message&id_message=errormod&info");
-            exit();
+    if (isset($file[3]))
+    {
+        $mod_required_ogspy = trim($file[3]);
+        if (isset($mod_required_ogspy)) {
+            if (version_compare($mod_required_ogspy, $server_config["version"]) > 0) {
+                log_("mod_erreur_txt_version", $mod_folder);
+                redirection("index.php?action=message&id_message=errormod&info");
+                exit();
+            }
         }
+    }else{
+        log_("mod_erreur_txt_warning", $mod_folder);
+        redirection("index.php?action=message&id_message=errormod&info");
+        exit();
     }
 
     // On explode la chaine d'information

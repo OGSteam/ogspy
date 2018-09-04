@@ -147,7 +147,7 @@ require_once 'views/page_header.php';
     <tr>
         <td class="c" colspan="<?php echo $galaxy_step * 2 + 2; ?>" align="center">
             <a style="cursor:pointer"
-               onmouseover="this.T_WIDTH=210;this.T_TEMP=0;return escape('<?php echo $legend; ?>')"><?php echo($lang['STATS_LEGEND']); ?></a>
+               onmouseover="this.T_WIDTH=210;this.T_TEMP=0;return encodeURI('<?php echo $legend; ?>')"><?php echo($lang['STATS_LEGEND']); ?></a>
         </td>
     </tr>
 </table>

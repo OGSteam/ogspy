@@ -220,7 +220,7 @@ require_once("views/page_header.php");
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
 
-                $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $begin_allied . $begin_hided . $ally . $end_hided . $end_allied . "</a>";
+                $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip . "')\">" . $begin_allied . $begin_hided . $ally . $end_hided . $end_allied . "</a>";
             }
 
             if ($player == "") {
@@ -268,7 +268,7 @@ require_once("views/page_header.php");
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
 
-                $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $player . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $begin_allied . $begin_hided . $player . $end_hided . $end_allied . "</a>";
+                $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $player . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip . "')\">" . $begin_allied . $begin_hided . $player . $end_hided . $end_allied . "</a>";
             }
 
             if ($status == "") {
@@ -335,7 +335,7 @@ require_once("views/page_header.php");
             $legend = htmlentities($legend, ENT_COMPAT, "UTF-8");
         }
 
-        echo "<tr align='center'><td class='c' colspan='9'><a style='cursor:pointer' onmouseover=\"this.T_WIDTH=210;this.T_TEMP=0;return escape('" . $legend . "')\">" . $lang['GALAXY_LEGEND'] . "</a></td></tr>";
+        echo "<tr align='center'><td class='c' colspan='9'><a style='cursor:pointer' onmouseover=\"this.T_WIDTH=210;this.T_TEMP=0;return encodeURI('" . $legend . "')\">" . $lang['GALAXY_LEGEND'] . "</a></td></tr>";
         echo "</table></form>";
 
 
@@ -374,7 +374,7 @@ require_once("views/page_header.php");
                     } else {
                         $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                     }
-                    echo "[<a href='index.php?action=search&&amp;type_search=ally&amp;string_search=" . $value["ally"] . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $value["ally"] . "</a>]" . " ";
+                    echo "[<a href='index.php?action=search&&amp;type_search=ally&amp;string_search=" . $value["ally"] . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip . "')\">" . $value["ally"] . "</a>]" . " ";
                 }
 
                 $individual_ranking = galaxy_show_ranking_unique_player($value["player"]);
@@ -402,7 +402,7 @@ require_once("views/page_header.php");
                 } else {
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
-                echo "<a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $value["player"] . "&amp;strict=on\" onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip . "')\">" . $value["player"] . "</a> " . $lang['GALAXY_LUNA_PHALANX'] . " " . $value["level"];
+                echo "<a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $value["player"] . "&amp;strict=on\" onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip . "')\">" . $value["player"] . "</a> " . $lang['GALAXY_LUNA_PHALANX'] . " " . $value["level"];
                 echo " en <a href='index.php?action=galaxy&amp;galaxy=" . $value["galaxy"] . "&amp;system=" . $value["system"] . "'>" . $value["galaxy"] . ":" . $value["system"] . ":" . $value["row"] . "</a> [<span style=\"color: orange; \">" . $value["galaxy"] . ":";
 
 
@@ -437,31 +437,28 @@ require_once("views/page_header.php");
                 $up = intval($server_config['num_of_systems']);
             }
 
-            $tooltip_colonization .= "<tr><th><a href=\"index.php?action=search&amp;type_search=colonization&amp;galaxy_down=" . $galaxy . "&amp;galaxy_up=" . $galaxy . "&amp;system_down=" . $down . "&amp;system_up=" . $up . "&amp;row_down=&amp;row_up=\">" . $i . " " . $lang['GALAXY_SURROUNDING_SYSTEMS'] . "</a></th></tr>";
-            $tooltip_moon .= "<tr><th><a href=\"index.php?action=search&amp;type_search=moon&amp;galaxy_down=" . $galaxy . "&amp;galaxy_up=" . $galaxy . "&amp;system_down=" . $down . "&amp;system_up=" . $up . "&amp;row_down=&amp;row_up=\">" . $i . " " . $lang['GALAXY_SURROUNDING_SYSTEMS'] . "</a></th></tr>";
-            $tooltip_away .= "<tr><th><a href=\"index.php?action=search&amp;type_search=away&amp;galaxy_down=" . $galaxy . "&amp;galaxy_up=" . $galaxy . "&amp;system_down=" . $down . "&amp;system_up=" . $up . "&amp;row_down=&amp;row_up=\">" . $i . " " . $lang['GALAXY_SURROUNDING_SYSTEMS'] . "</a></th></tr>";
-            $tooltip_spy .= "<tr><th><a href=\"index.php?action=search&amp;type_search=spy&amp;galaxy_down=" . $galaxy . "&amp;galaxy_up=" . $galaxy . "&amp;system_down=" . $down . "&amp;system_up=" . $up . "&amp;row_down=&amp;row_up=\">" . $i . " " . $lang['GALAXY_SURROUNDING_SYSTEMS'] . "</a></th></tr>";
+            $tooltip_colonization .= "<th colspan='1'><a href=\"index.php?action=search&amp;type_search=colonization&amp;galaxy_down=" . $galaxy . "&amp;galaxy_up=" . $galaxy . "&amp;system_down=" . $down . "&amp;system_up=" . $up . "&amp;row_down=&amp;row_up=\">" . $i . "</a></th>";
+            $tooltip_moon .= "<th colspan='1'><a href=\"index.php?action=search&amp;type_search=moon&amp;galaxy_down=" . $galaxy . "&amp;galaxy_up=" . $galaxy . "&amp;system_down=" . $down . "&amp;system_up=" . $up . "&amp;row_down=&amp;row_up=\">" . $i ."</a></th>";
+            $tooltip_away .= "<th colspan='1'><a href=\"index.php?action=search&amp;type_search=away&amp;galaxy_down=" . $galaxy . "&amp;galaxy_up=" . $galaxy . "&amp;system_down=" . $down . "&amp;system_up=" . $up . "&amp;row_down=&amp;row_up=\">" . $i ."</a></th>";
+            $tooltip_spy .= "<th colspan='1'><a href=\"index.php?action=search&amp;type_search=spy&amp;galaxy_down=" . $galaxy . "&amp;galaxy_up=" . $galaxy . "&amp;system_down=" . $down . "&amp;system_up=" . $up . "&amp;row_down=&amp;row_up=\">" . $i ."</a></th>";
         }
 
-        if (version_compare(phpversion(), '5.4.0', '>=')) {
-            $tooltip_colonization = htmlentities($tooltip_begin . $tooltip_colonization . $tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
-            $tooltip_moon = htmlentities($tooltip_begin . $tooltip_moon . $tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
-            $tooltip_away = htmlentities($tooltip_begin . $tooltip_away . $tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
-            $tooltip_spy = htmlentities($tooltip_begin . $tooltip_spy . $tooltip_end, ENT_COMPAT | ENT_HTML401, "UTF-8");
-        } else {
-            $tooltip_colonization = htmlentities($tooltip_begin . $tooltip_colonization . $tooltip_end, ENT_COMPAT, "UTF-8");
-            $tooltip_moon = htmlentities($tooltip_begin . $tooltip_moon . $tooltip_end, ENT_COMPAT, "UTF-8");
-            $tooltip_away = htmlentities($tooltip_begin . $tooltip_away . $tooltip_end, ENT_COMPAT, "UTF-8");
-            $tooltip_spy = htmlentities($tooltip_begin . $tooltip_spy . $tooltip_end, ENT_COMPAT, "UTF-8");
-
-        }
         echo "<br><table width='860' border='1'>";
-        echo "<tr><td class='c' align='center' colspan='4'>" . $lang['GALAXY_SEARCH'] . "</td></tr>";
+        echo "<tr><td class='c' align='center' colspan='20'>" . $lang['GALAXY_SEARCH'] . "</td></tr>";
         echo "<tr align='center'>";
-        echo "<th width='25%' onmouseover=\"this.T_WIDTH=210;return escape('" . $tooltip_colonization . "')\">" . $lang['GALAXY_SEARCH_PLANETS_AVAILABLE'] . "</th>";
-        echo "<th width='25%' onmouseover=\"this.T_WIDTH=210;return escape('" . $tooltip_moon . "')\">" . $lang['GALAXY_SEARCH_MOONS'] . "</th>";
-        echo "<th width='25%' onmouseover=\"this.T_WIDTH=210;return escape('" . $tooltip_away . "')\">" . $lang['GALAXY_SEARCH_INACTIVES'] . "</th>";
-        echo "<th width='25%' onmouseover=\"this.T_WIDTH=210;return escape('" . $tooltip_spy . "')\">" . $lang['GALAXY_SEARCH_SPYREPORTS'] . "</th>";
+        echo "<th width='25%' colspan='5'>" . $lang['GALAXY_SEARCH_PLANETS_AVAILABLE'] . "</th>";
+        echo "<th width='25%' colspan='5'>" . $lang['GALAXY_SEARCH_MOONS'] . "</th>";
+        echo "<th width='25%' colspan='5'>" . $lang['GALAXY_SEARCH_INACTIVES'] . "</th>";
+        echo "<th width='25%' colspan='5'>" . $lang['GALAXY_SEARCH_SPYREPORTS'] . "</th>";
+        echo "</tr>";
+        echo "<tr align='center'>";
+        echo $tooltip_colonization;
+        echo $tooltip_moon;
+        echo $tooltip_away;
+        echo $tooltip_spy;
+        echo "</tr>";
+        echo "<tr align='center'>";
+        echo "<th colspan='20'>" . $lang['GALAXY_SURROUNDING_SYSTEMS']. "</th>";
         echo "</tr>";
         echo "</table>";
 

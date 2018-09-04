@@ -108,8 +108,7 @@ if (!defined('IN_SPYOGAME')) {
     ul.devices li .send_btn {
         background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFC775),
         to(#005DFF));
-        background: -webkit-linear-gradient(0% 0%, 0% 100%, from(#FFC775),
-        to(#005DFF));
+        background: -webkit-linear-gradient(0% 0%, 0% 100%, from(#FFC775), to(#005DFF));
         background: -moz-linear-gradient(center top, #0096FF, #FF9900);
         background: linear-gradient(#FFC775, #FF9900);
         text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);

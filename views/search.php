@@ -379,7 +379,7 @@ require_once("views/page_header.php");
                         }
 
 
-                        $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $v["ally"] . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return escape('" . $tooltip[$v["ally"]] . "')\">" . $begin_allied . $begin_hided . $v["ally"] . $end_hided . $end_allied . "</a>";
+                        $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $v["ally"] . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip[$v["ally"]] . "')\">" . $begin_allied . $begin_hided . $v["ally"] . $end_hided . $end_allied . "</a>";
                     }
 
                     if ($v["player"] == "") {
@@ -427,7 +427,7 @@ require_once("views/page_header.php");
                             }
                         }
 
-                        $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $v["player"] . "'&amp;strict=on onmouseover=\"this.T_WIDTH=260;return escape('" . $tooltip[$v["player"]] . "')\">" . $begin_allied . $begin_hided . $v["player"] . $end_hided . $end_allied . "</a>";
+                        $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $v["player"] . "'&amp;strict=on onmouseover=\"this.T_WIDTH=260;return encodeURI('" . $tooltip[$v["player"]] . "')\">" . $begin_allied . $begin_hided . $v["player"] . $end_hided . $end_allied . "</a>";
                     }
 
                     if ($v["status"] == "") {
@@ -492,7 +492,7 @@ require_once("views/page_header.php");
                 } else {
                     $legend = htmlentities($legend, ENT_COMPAT, "UTF-8");
                 }
-                echo "<tr align='center'><td class='c' colspan='7'><a href='' onmouseover=\"this.T_WIDTH=210;this.T_TEMP=0;return escape('" . $legend . "')\">" . $lang['SEARCH_LEGEND'] . "</a></td></tr>";
+                echo "<tr align='center'><td class='c' colspan='7'><a href='' onmouseover=\"this.T_WIDTH=210;this.T_TEMP=0;return encodeURI('" . $legend . "')\">" . $lang['SEARCH_LEGEND'] . "</a></td></tr>";
 
                 echo "\t\t\t" . "<td colspan='3' align='left' width='50%'>" . "\n";
                 if ($total_page > 1) {
