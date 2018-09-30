@@ -3,5 +3,6 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/mod/emspyre/index.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mod/emspyre/install.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/mod/flottes/flottes_bbcode.php" charset="UTF-8" />
   </component>
 </project>

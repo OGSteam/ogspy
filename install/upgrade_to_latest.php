@@ -171,8 +171,8 @@ switch ($ogsversion) {
         $up_to_date = true;
 
     case '3.3.2':
-        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.3' WHERE config_name = 'version'";
-        $ogsversion = '3.3.3';
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.4' WHERE config_name = 'version'";
+        $ogsversion = '3.3.4';
         $up_to_date = true;
 
         break;
@@ -202,7 +202,7 @@ if ($up_to_date) {
     echo "\t" . "<b><i>Pensez à supprimer le dossier 'install'</i></b><br>" . "\n";
     echo "\t" . "<br><a href='../index.php'>Retour</a>" . "\n";
 } else {
-    echo "\t" . "<br><font color='orange'><b>Cette version n'est pas la dernière en date, veuillez relancer le script</font><br>" . "\n";
+    echo "\t" . "<br><span style=\"color: orange; \"><b>Cette version n'est pas la dernière en date, veuillez relancer le script</span><br>" . "\n";
     echo "\t" . "<a href=''>Recommencer l'opération</a>" . "\n";
 }
 ?>

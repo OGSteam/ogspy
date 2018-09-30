@@ -6,7 +6,7 @@
  * @author Kyser
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 3.04
+ * @version 3.3.4
  */
 ?>
 <html>
@@ -228,7 +228,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
         }
     } elseif (isset($pub_file)) {
         if ($pub_sgbd_server != "" && $pub_sgbd_dbname != "" && $pub_sgbd_username != "" && $pub_lang != "") {
-            generate_id($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_num_of_galaxies, $pub_num_of_systems, $pub_lang);
+            generate_id($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_lang);
         } else {
             $pub_error = $lang['INSTALL_FORM_ERROR_CONNECTION_PARAMS'];
         }
@@ -351,7 +351,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
         <tr align="center">
             <td>
                 <div style="text-align: center;"><span style="font-size: x-small; "><i><b>OGSpy</b> is an
-                            <b>OGSteam Software</b> (c)2005-2017</i><br/>v <?php echo $install_version; ?></span></div>
+                            <b>OGSteam Software</b> (c)2005-2018</i><br/>v <?php echo $install_version; ?></span></div>
             </td>
         </tr>
     </table>

@@ -2,9 +2,16 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/mod/api" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/mod/attaques" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/mod/autoupdate" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/mod/emspyre" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/mod/flottes" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/mod/hof" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/mod/ogspy_stats" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/mod/quimsonde" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/mod/superapix" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/mod/timeobservatory" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/mod/xtense" vcs="Git" />
   </component>
 </project>
