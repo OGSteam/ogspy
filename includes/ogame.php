@@ -65,7 +65,7 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
 
         case "D":
             $result = (10 * $level * pow(1.1, $level) * (1.44 - 0.004 * $temperature_max));
-            $result = $result * (1 + $geo); // geologue
+            $result = $result * (1 + $geo + 0.0033 * $Plasma); // geologue
             $result = round($result); // arrondi
             $result = $server_config['speed_uni'] * $result; // vitesse uni
             break;

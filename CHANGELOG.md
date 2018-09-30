@@ -1,46 +1,46 @@
 3.3.2
-    Correctif affichage erreur MySQL
-    Mise à jour fichiers de langue
+- Correctif affichage erreur MySQL
+- Mise à jour fichiers de langue
 
 3.3.1	
-    Internationalisation - Anglais désormais complet
-    Phalanges Circulaires
-    Logo installation mis à jour
-    Mise à jour schéma BDD
+- Internationalisation - Anglais désormais complet
+- Phalanges Circulaires
+- Logo installation mis à jour
+- Mise à jour schéma BDD
     
 3.3.0 	
-    Internationalisation
-    Compatibilité PHP 7
-    Univers Circulaires
-    Corrections multiples
+- Internationalisation
+- Compatibilité PHP 7
+- Univers Circulaires
+- Corrections multiples
     
 3.2.0 	
-    Passage en UTF-8 pour une meilleur gestion des caractères spéciaux
-    Compatibilité PHP 5.5
-    Sortie de OGSpy pour Android
-    Correction erreur de suppression classement alliance
-    Mise en forme de la présentation des nombres dans l'espace personnel
-    BBCODE avec les identifiants à la création du nouvel utilisateur
+- Passage en UTF-8 pour une meilleur gestion des caractères spéciaux
+- Compatibilité PHP 5.5
+- Sortie de OGSpy pour Android
+- Correction erreur de suppression classement alliance
+- Mise en forme de la présentation des nombres dans l'espace personnel
+- BBCODE avec les identifiants à la création du nouvel utilisateur
     
 3.1.3
-    Correctif pour la suppression d'une planète dans l'espace Personel
-    Modification du champ phalanx pour mettre une valeur par défaut
-    Réorganisation du profil utilisateur et ajout de l'adresse mail
-    Taille d'un champ de la BDD pour les univers > 9 Galaxies
-    Correctif Formules de Production
-    Ajout du compte Commandant
-    Mise à jour de l'équipe OGSteam
+- Correctif pour la suppression d'une planète dans l'espace Personel
+- Modification du champ phalanx pour mettre une valeur par défaut
+- Réorganisation du profil utilisateur et ajout de l'adresse mail
+- Taille d'un champ de la BDD pour les univers > 9 Galaxies
+- Correctif Formules de Production
+- Ajout du compte Commandant
+- Mise à jour de l'équipe OGSteam
 
 3.1.2
-    Compatibilité OGame 5.X
-    Correctif de la supression d'un utilisateur
-    Correctif du système de Mise à jour
-    Mise à jour de l'équipe OGSteam
+- Compatibilité OGame 5.X
+- Correctif de la supression d'un utilisateur
+- Correctif du système de Mise à jour
+- Mise à jour de l'équipe OGSteam
 
 3.1.1
-    Compatibilité OGame 4.X
-    Correction de la maintenance automatique
-    Mise à jour de l'équipe OGSteam
+- Compatibilité OGame 4.X
+- Correction de la maintenance automatique
+- Mise à jour de l'équipe OGSteam
 
 3.1.0
 - Compatibilité OGame 3.X:
