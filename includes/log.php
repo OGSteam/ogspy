@@ -22,7 +22,7 @@ $ogspy_phperror = Array();
  * get_system_OGS, load_spy, load_spy_OGS, export_spy_sector, export_spy_date, mysql_error, login, login_OGS, logout, modify_account, modify_account_admin, create_account, regeneratepwd,
  * create_usergroup, delete_usergroup, modify_usergroup, add_usergroup, del_usergroup, load_rank, get_rank, erreur_config_cache, erreur_mod_cache, key, check_var, debug, php-error)
  * @param string $parameter Log type
- * @param mixed $option Optionnal data
+ * @param integer $option Optionnal data
  */
 function log_($parameter, $option = 0)
 {
@@ -128,8 +128,11 @@ function log_($parameter, $option = 0)
             break;
 
         case 'get_system_OGS' :
-            if ($option != 0) $line = $member . " récupère les planètes de la galaxie " . $option;
-            else $line = $member . " récupère toutes les planètes de l'univers";
+            if ($option != 0) {
+                $line = $member . " récupère les planètes de la galaxie " . $option;
+            } else {
+                $line = $member . " récupère toutes les planètes de l'univers";
+            }
             break;
 
         case 'load_spy' :
@@ -229,14 +232,14 @@ function log_($parameter, $option = 0)
             list($group_id, $user_id) = $option;
             $usergroup_info = usergroup_get($group_id);
             $user_info = user_get($user_id);
-            $line = "[admin] " . $member . " ajoute " . $user_info[0]["user_name"] . " dans le groupe " . $usergroup_info["group_name"];;
+            $line = "[admin] " . $member . " ajoute " . $user_info[0]["user_name"] . " dans le groupe " . $usergroup_info["group_name"]; ;
             break;
 
         case 'del_usergroup' :
             list($group_id, $user_id) = $option;
             $usergroup_info = usergroup_get($group_id);
             $user_info = user_get($user_id);
-            $line = "[admin] " . $member . " supprime " . $user_info[0]["user_name"] . " du groupe " . $usergroup_info["group_name"];;
+            $line = "[admin] " . $member . " supprime " . $user_info[0]["user_name"] . " du groupe " . $usergroup_info["group_name"]; ;
             break;
 
         /* ----------- Classement ----------- */
@@ -301,6 +304,15 @@ function log_($parameter, $option = 0)
 
         /* ----------- cache ----------- */
 
+        /* ----------- Mail ----------- */
+        case 'Mail' :
+            $line = "[mail] ". $option ;
+            break;
+
+        /* ----------- Mail ----------- */
+
+
+
         case 'key' :
             $line = $member . " Impossible de retrouver le fichier key.php. Vérifier les droits d acces au dossier  \'parameters\' ";
             break;
@@ -316,8 +328,12 @@ function log_($parameter, $option = 0)
             break;
         case 'php_error' :
             $line = "[PHP-ERROR] " . $option[0] . " - " . $option[1];
-            if (isset($option[2])) $line .= " ; Fichier: " . $option[2];
-            if (isset($option[3])) $line .= " ; Ligne: " . $option[3];
+            if (isset($option[2])) {
+                $line .= " ; Fichier: " . $option[2];
+            }
+            if (isset($option[3])) {
+                $line .= " ; Ligne: " . $option[3];
+            }
 
             break;
 
@@ -347,9 +363,15 @@ function ogspy_error_handler($code, $message, $file, $line)
     global $user_data;
     if ($user_data["user_admin"] == 1) {
         $line = "[PHP-ERROR] " . $option[0] . " - " . $option[1];
-        if (isset($option[2])) $line .= " ; Fichier: " . $option[2];
-        if (isset($option[3])) $line .= " ; Ligne: " . $option[3];
-        if ($option[0] != 8) $ogspy_phperror[] = $line;
+        if (isset($option[2])) {
+            $line .= " ; Fichier: " . $option[2];
+        }
+        if (isset($option[3])) {
+            $line .= " ; Ligne: " . $option[3];
+        }
+        if ($option[0] != 8) {
+            $ogspy_phperror[] = $line;
+        }
     }
 }
 
@@ -386,11 +408,13 @@ function log_size_info()
 
     $bytes = array('Octets', 'Ko', 'Mo', 'Go', 'To');
 
-    if ($logSize < 1024)
-        $logSize = 1;
+    if ($logSize < 1024) {
+            $logSize = 1;
+    }
 
-    for ($i = 0; $logSize > 1024; $i++)
-        $logSize /= 1024;
+    for ($i = 0; $logSize > 1024; $i++) {
+            $logSize /= 1024;
+    }
 
     $log_size_info['size'] = round($logSize, 2);
     $log_size_info['type'] = $bytes[$i];
@@ -405,8 +429,9 @@ function log_size_info()
  */
 function log_check_exist($date)
 {
-    if (!isset($date))
-        redirection("index.php?action=message&id_message=errorfatal&info");
+    if (!isset($date)) {
+            redirection("index.php?action=message&id_message=errorfatal&info");
+    }
 
     $typelog = array("sql", "log", "txt");
 
@@ -416,8 +441,9 @@ function log_check_exist($date)
     //Récupération de la liste des répertoires correspondant à cette date
     while ($file = readdir($path)) {
         if ($file != "." && $file != "..") {
-            if (is_dir($root . $file) && preg_match("/^" . $date . "/", $file))
-                $directories[] = $file;
+            if (is_dir($root . $file) && preg_match("/^" . $date . "/", $file)) {
+                            $directories[] = $file;
+            }
         }
     }
     closedir($path);
@@ -459,8 +485,9 @@ function log_extractor()
         redirection("index.php?action=message&id_message=forbidden&info");
     }
 
-    if (!isset($pub_date))
-        redirection("index.php?action=message&id_message=errorfatal&info");
+    if (!isset($pub_date)) {
+            redirection("index.php?action=message&id_message=errorfatal&info");
+    }
 
     $typelog = array("sql", "log", "txt");
 
@@ -472,8 +499,9 @@ function log_extractor()
     //Récupération de la liste des répertoires correspondant à cette date
     while ($file = readdir($path)) {
         if ($file != "." && $file != "..") {
-            if (is_dir($root . $file) && preg_match("/^" . $pub_date . "/", $file))
-                $directories[] = $file;
+            if (is_dir($root . $file) && preg_match("/^" . $pub_date . "/", $file)) {
+                            $directories[] = $file;
+            }
         }
     }
     closedir($path);
@@ -532,8 +560,9 @@ function log_remove()
 {
     global $pub_date, $user_data, $pub_directory;
 
-    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1)
-        redirection("index.php?action=message&id_message=forbidden&info");
+    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+            redirection("index.php?action=message&id_message=forbidden&info");
+    }
 
     if ($pub_directory == true) {
         @unlink("journal/" . $pub_date . "/log_" . $pub_date . ".log");

@@ -19,14 +19,13 @@ require_once("views/page_header_2.php");
 if (!isset($goto)) {
     $goto = "";
 }
-
 $enable_register_view = isset ($server_config['enable_register_view']) ? $server_config['enable_register_view'] : 0;
-
 ?>
 
 <form style="margin-bottom:40px;" method='post' action=''>
     <p><input type='hidden' name='action' value='login_web'/>
-        <input type='hidden' name='goto' value='<?php echo $goto; ?>'/></p>
+       <input type='hidden' name='token' value='<?php echo token::staticGetToken(600,"login");?>'/>
+       <input type='hidden' name='goto' value='<?php echo $goto; ?>'/></p>
 
     <table style="margin:0 auto; padding:0; border-collapse:separate; border-spacing:1px">
         <tr>

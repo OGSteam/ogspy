@@ -35,7 +35,9 @@ $ally_list = galaxy_ally_listing();
 foreach ($ally_list as $ally_name) {
     for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
         $selected_[$i] = "";
-        if ($ally_name == $pub_ally_[$i]) $selected_[$i] = "selected";
+        if ($ally_name == $pub_ally_[$i]) {
+            $selected_[$i] = "selected";
+        }
         $options_[$i] .= "<option " . $selected_[$i] . ">" . $ally_name . "</option>" . "\n";
     }
 }
@@ -76,12 +78,14 @@ require_once("views/page_header.php");
             <td class="c" width="45">&nbsp;</td>
 
             <?php
-            if ($galaxy > intval($server_config['num_of_galaxies']))
-                $galaxy_up = intval($server_config['num_of_galaxies']);
+            if ($galaxy > intval($server_config['num_of_galaxies'])) {
+                            $galaxy_up = intval($server_config['num_of_galaxies']);
+            }
             for ($i = $galaxy_down; $i < $galaxy_up; $i++) {
                 echo "<td class='c' width='60' colspan=" . $nb_colonnes_ally . ">";
-                if ($i <= intval($server_config['num_of_galaxies']))
-                    echo "G$i";
+                if ($i <= intval($server_config['num_of_galaxies'])) {
+                                    echo "G$i";
+                }
                 echo "</td>";
             }
             ?>
@@ -91,7 +95,9 @@ require_once("views/page_header.php");
         <?php
         for ($system = 1; $system <= intval($server_config['num_of_systems']); $system = $system + $step) {
             $up = $system + $step - 1;
-            if ($up > intval($server_config['num_of_systems'])) $up = intval($server_config['num_of_systems']);
+            if ($up > intval($server_config['num_of_systems'])) {
+                $up = intval($server_config['num_of_systems']);
+            }
 
             echo "<tr>" . "\n";
             echo "\t" . "<td class='c' align='center' nowrap>" . $system . " - " . $up . "</td>";
@@ -104,7 +110,7 @@ require_once("views/page_header.php");
                 foreach ($position as $ally_name) {
                     if ($galaxy_ally_position[$ally_name][$galaxy][$system]["planet"] > 0) {
                         $tooltip[$i] = "<table width=\'200\'>";
-                        $tooltip[$i] .= "<tr><td class=\'c\' colspan=\'2\' align=\'center\'>".$lang['CARTO_PLAYER_POSITIONS']."</td></tr>";
+                        $tooltip[$i] .= "<tr><td class=\'c\' colspan=\'2\' align=\'center\'>" . $lang['CARTO_PLAYER_POSITIONS'] . "</td></tr>";
                         $last_player = "";
                         foreach ($galaxy_ally_position[$ally_name][$galaxy][$system]["population"] as $value) {
                             $player = "";
@@ -118,9 +124,9 @@ require_once("views/page_header.php");
                         }
                         $tooltip[$i] .= "</table>";
                         if (version_compare(phpversion(), '5.4.0', '>=')) {
-                            $tooltip[$i] = " onmouseover=\"this.T_WIDTH=210;this.T_TEMP=15000;return escape('" . htmlentities($tooltip[$i], ENT_COMPAT | ENT_HTML401, "UTF-8") . "')\"";
+                            $tooltip[$i] = " onmouseover=\"this.T_WIDTH=210;this.T_TEMP=15000;return encodeURI('" . htmlentities($tooltip[$i], ENT_COMPAT | ENT_HTML401, "UTF-8") . "')\"";
                         } else {
-                            $tooltip[$i] = " onmouseover=\"this.T_WIDTH=210;this.T_TEMP=15000;return escape('" . htmlentities($tooltip[$i], ENT_COMPAT, "UTF-8") . "')\"";
+                            $tooltip[$i] = " onmouseover=\"this.T_WIDTH=210;this.T_TEMP=15000;return encodeURI('" . htmlentities($tooltip[$i], ENT_COMPAT, "UTF-8") . "')\"";
                         }
 
                         $nb_player[$i] = $galaxy_ally_position[$ally_name][$galaxy][$system]["planet"];

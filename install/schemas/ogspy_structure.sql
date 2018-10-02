@@ -1,6 +1,6 @@
 #
-# OGSpy version 3.3.2
-# Juin 2016
+# OGSpy version 3.3.4
+# Septembre 2018
 # 
 
 ## ########################################################
@@ -689,7 +689,7 @@ INSERT INTO `ogspy_config` VALUES ('reason', '');
 INSERT INTO `ogspy_config` VALUES ('servername', 'Cartographie');
 INSERT INTO `ogspy_config` VALUES ('server_active', '1');
 INSERT INTO `ogspy_config` VALUES ('session_time', '30');
-INSERT INTO `ogspy_config` VALUES ('url_forum', 'http://www.ogsteam.fr/');
+INSERT INTO `ogspy_config` VALUES ('url_forum', 'https://forum.ogsteam.fr/');
 INSERT INTO `ogspy_config` VALUES ('log_phperror', '0');
 INSERT INTO `ogspy_config` VALUES ('block_ratio', '0');
 INSERT INTO `ogspy_config` VALUES ('ratio_limit', '0');
@@ -712,6 +712,17 @@ INSERT INTO `ogspy_config` VALUES ('color_ally', 'Magenta_Yellow_Red');
 INSERT INTO `ogspy_config` VALUES ('nb_colonnes_ally', '3');
 INSERT INTO `ogspy_config` VALUES ('open_user', '');
 INSERT INTO `ogspy_config` VALUES ('open_admin', '');
+
+## Partie mail
+INSERT INTO `ogspy_config` VALUES ('mail_active', '0');
+INSERT INTO `ogspy_config` VALUES ('mail_smtp_use', '0');
+INSERT INTO `ogspy_config` VALUES ('mail_smtp_server', '');
+INSERT INTO `ogspy_config` VALUES ('mail_smtp_secure', '0');
+INSERT INTO `ogspy_config` VALUES ('mail_smtp_host', '');
+INSERT INTO `ogspy_config` VALUES ('mail_smtp_port', '');
+INSERT INTO `ogspy_config` VALUES ('mail_smtp_username', '');
+INSERT INTO `ogspy_config` VALUES ('mail_smtp_password', '');
+
 
 ## ########################################################
 

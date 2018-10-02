@@ -18,7 +18,7 @@ if (!defined('IN_SPYOGAME')) {
 
 <script type="text/javascript">
     var date = new Date;
-    var delta = Math.round((<?php echo (time() * 1000);?> -date.getTime()) / 1000);
+    var delta = Math.round((<?php echo (time() * 1000); ?> -date.getTime()) / 1000);
     function Timer() {
         var days = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
         var months = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jui", "Jui", "Aoû", "Sep", "oct", "nov", "déc"];
@@ -47,10 +47,10 @@ if (!defined('IN_SPYOGAME')) {
         if (document.getElementById && document.all) {
             var blink_tab = document.getElementsByTagName('blink');
             for (var a = 0; a < blink_tab.length; a++) {
-                if (go_visibility[a] != "visible")
-                    go_visibility[a] = "visible";
+                if (go_visibility[a] !== "visible")
+                    go_visibility[a] == "visible";
                 else
-                    go_visibility[a] = "hidden";
+                    go_visibility[a] == "hidden";
                 blink_tab[a].style.visibility = go_visibility[a];
             }
         }
@@ -59,7 +59,6 @@ if (!defined('IN_SPYOGAME')) {
     function Biper() {
         Timer();
         goblink();
-
         setTimeout("Biper()", 1000);
     }
 
@@ -84,7 +83,7 @@ if (!defined('IN_SPYOGAME')) {
 
     if ($server_config["server_active"] == 0) {
         echo "<tr>\n";
-        echo "\t" . "<td><div align='center'><font color='red'><b><blink>".$lang['MENU_SERVER_OFFLINE']."</blink></b></font></div></td>\n";
+        echo "\t" . "<td><div align='center'><font color='red'><b><blink>" . $lang['MENU_SERVER_OFFLINE'] . "</blink></b></font></div></td>\n";
         echo "</tr>\n";
     }
 
@@ -95,7 +94,7 @@ if (!defined('IN_SPYOGAME')) {
         <ul style="width:100px;" class= "menu" id="menu">
             <?php
             if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
-                echo "<li><a href='index.php?action=administration' class='menu_items'>".$lang['MENU_ADMIN']."</a></li>";
+                echo "<li><a href='index.php?action=administration' class='menu_items'>" . $lang['MENU_ADMIN'] . "</a></li>";
             }
             ?>
             <li><a href='index.php?action=profile' class='menu_items'><?php echo($lang['MENU_PROFILE']); ?></a></li>
@@ -110,14 +109,14 @@ if (!defined('IN_SPYOGAME')) {
             <li><p class='menu_items'><?php echo($lang['MENU_MODULES']); ?></p>
                 <ul class='menu_mods'>
 <?php
-             $request = "SELECT action, menu FROM " . TABLE_MOD . " WHERE active = 1 AND `admin_only` = '0' order by position, title";
-             $result = $db->sql_query($request);
+                $request = "SELECT action, menu FROM " . TABLE_MOD . " WHERE active = 1 AND `admin_only` = '0' order by position, title";
+                $result = $db->sql_query($request);
 
-             if ($db->sql_numrows($result)) {
-                 while ($val = $db->sql_fetch_assoc($result)) {
-                     echo '<span>&nbsp;&nbsp;- <a class=\'menu_mods\' href="index.php?action=' . $val['action'] . '">' . $val['menu'] . '</a></span>'.'<br>';
-                 }
-             }
+                if ($db->sql_numrows($result)) {
+                    while ($val = $db->sql_fetch_assoc($result)) {
+                        echo '<span>&nbsp;&nbsp;- <a class=\'menu_mods\' href="index.php?action=' . $val['action'] . '">' . $val['menu'] . '</a></span>' . '<br>';
+                    }
+                }
 
             if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
                 $request = "SELECT action, menu FROM " . TABLE_MOD . " WHERE active = 1 and `admin_only` = '1' order by position, title";
@@ -138,7 +137,7 @@ if (!defined('IN_SPYOGAME')) {
             <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
             <?php
             if ($server_config["url_forum"] != "") {
-                echo "<li><a href='" . $server_config["url_forum"] . "' class='menu_items'>".$lang['MENU_FORUM']."</a></li>";
+                echo "<li><a href='" . $server_config["url_forum"] . "' class='menu_items'>" . $lang['MENU_FORUM'] . "</a></li>";
             }
             ?>
             <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">

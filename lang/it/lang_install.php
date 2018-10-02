@@ -45,7 +45,7 @@ $lang['INSTALL_SUCCESS_BACK'] = "Indietro";
 $lang['INSTALL_IDFILE_ERROR'] = "Installazione fallita, impossibile generare il file 'config/id.php'";
 $lang['INSTALL_FORM_ERROR_PREFIX'] = "I caratteri utilizzati per il prefisso del database sono incorretti.";
 $lang['INSTALL_FORM_ERROR_USER'] = "I caratteri utilizzati per il nome utente e la password sono incorretti.";
-$lang['INSTALL_FORM_ERROR_GALAXY'] = "Vous n'avez pas rentrez des valeurs correcte pour le nombres de galaxies et (ou) de systemes";
+$lang['INSTALL_FORM_ERROR_GALAXY'] = "Non avete inserito i valori corretti per i numeri delle galassi e (o) dei sistemi";
 $lang['INSTALL_FORM_ERROR_CONNECTION'] = "Riempire correttamente i campi per il login al database e dell'account amministratore";
 $lang['INSTALL_FORM_ERROR_CONNECTION_PARAMS'] = "Riempire correttamente i campi per il login al database";
 

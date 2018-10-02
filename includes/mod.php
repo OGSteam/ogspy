@@ -23,8 +23,9 @@ function mod_list()
 {
     global $db, $user_data;
 
-    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1)
-        redirection("index.php?action=message&id_message=forbidden&info");
+    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+            redirection("index.php?action=message&id_message=forbidden&info");
+    }
 
     //Listing des mod présents dans le répertoire "mod"
     $path = opendir("mod/");
@@ -33,7 +34,9 @@ function mod_list()
     $directories = array();
     while ($file = readdir($path)) {
         if ($file != "." && $file != "..") {
-            if (is_dir("mod/" . $file)) $directories[$file] = array();
+            if (is_dir("mod/" . $file)) {
+                $directories[$file] = array();
+            }
         }
     }
     closedir($path);
@@ -47,7 +50,9 @@ function mod_list()
             }
         }
         closedir($path);
-        if (sizeof($directories[$d]) == 0) unset ($directories[$d]);
+        if (sizeof($directories[$d]) == 0) {
+            unset ($directories[$d]);
+        }
     }
 
 
@@ -104,18 +109,27 @@ function mod_check($check)
     global $user_data;
     global $pub_mod_id, $pub_directory;
 
-    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1)
-        redirection("index.php?action=message&id_message=forbidden&info");
+    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+            redirection("index.php?action=message&id_message=forbidden&info");
+    }
 
     switch ($check) {
         case "mod_id" :
-            if (!check_var($pub_mod_id, "Num")) redirection("index.php?action=message&id_message=errordata&info");
-            if (!isset($pub_mod_id)) redirection("index.php?action=message&id_message=errorfatal&info");
+            if (!check_var($pub_mod_id, "Num")) {
+                redirection("index.php?action=message&id_message=errordata&info");
+            }
+            if (!isset($pub_mod_id)) {
+                redirection("index.php?action=message&id_message=errorfatal&info");
+            }
             break;
 
         case "directory" :
-            if (!check_var($pub_directory, "Text")) redirection("index.php?action=message&id_message=errordata&info");
-            if (!isset($pub_directory)) redirection("index.php?action=message&id_message=errorfatal&info");
+            if (!check_var($pub_directory, "Text")) {
+                redirection("index.php?action=message&id_message=errordata&info");
+            }
+            if (!isset($pub_directory)) {
+                redirection("index.php?action=message&id_message=errorfatal&info");
+            }
             break;
     }
 }
@@ -518,9 +532,13 @@ function mod_set_option($param, $value, $nom_mod = '')
     global $db;
 
     $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
+    if (!check_var($param, "Text")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
     $query = 'REPLACE INTO ' . TABLE_MOD_CFG . ' VALUES ("' . $nom_mod . '", "' . $param . '", "' . $value . '")';
-    if (!$db->sql_query($query)) return false;
+    if (!$db->sql_query($query)) {
+        return false;
+    }
     return true;
 }
 /**
@@ -536,9 +554,13 @@ function mod_del_option($param)
     global $db;
 
     $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
+    if (!check_var($param, "Text")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
     $query = 'DELETE FROM ' . TABLE_MOD_CFG . ' WHERE `mod` = "' . $nom_mod . '" AND `config` = "' . $param . '"';
-    if (!$db->sql_query($query)) return false;
+    if (!$db->sql_query($query)) {
+        return false;
+    }
     return true;
 }
 /**
@@ -554,10 +576,14 @@ function mod_get_option($param)
     global $db;
 
     $nom_mod = mod_get_nom();
-    if (!check_var($param, "Text")) redirection("index.php?action=message&id_message=errordata&info");
+    if (!check_var($param, "Text")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
     $query = 'SELECT value FROM ' . TABLE_MOD_CFG . ' WHERE `mod` = "' . $nom_mod . '" AND `config` = "' . $param . '"';
     $result = $db->sql_query($query);
-    if (!list ($value) = $db->sql_fetch_row($result)) return '-1';
+    if (!list ($value) = $db->sql_fetch_row($result)) {
+        return '-1';
+    }
     return $value;
 }
 /**
@@ -600,7 +626,9 @@ function mod_del_all_option()
 
     $nom_mod = mod_get_nom();
     $query = 'DELETE FROM ' . TABLE_MOD_CFG . ' WHERE `mod` = "' . $nom_mod . '"';
-    if (!$db->sql_query($query)) return false;
+    if (!$db->sql_query($query)) {
+        return false;
+    }
     return true;
 }
 
@@ -614,7 +642,7 @@ function mod_del_all_option()
  * "','" . $value_mod[1] . "','" . $value_mod[2] . "','" . $value_mod[3] . "','" .
  * $value_mod[4] . "','" . $mod_version . "','" . $value_mod[5] . "','" . $value_mod[6] .
  * "')"
- * @return boolean true if the mod has been correctly installed
+ * @return null|boolean true if the mod has been correctly installed
  * @api
  */
 function install_mod($mod_folder)
@@ -633,13 +661,20 @@ function install_mod($mod_folder)
 
     //Version Minimale OGSpy
     /** @var string $mod_required_ogspy */
-    $mod_required_ogspy = trim($file[3]);
-    if (isset($mod_required_ogspy)) {
-        if (version_compare($mod_required_ogspy, $server_config["version"]) > 0) {
-            log_("mod_erreur_txt_version", $mod_folder);
-            redirection("index.php?action=message&id_message=errormod&info");
-            exit();
+    if (isset($file[3]))
+    {
+        $mod_required_ogspy = trim($file[3]);
+        if (isset($mod_required_ogspy)) {
+            if (version_compare($mod_required_ogspy, $server_config["version"]) > 0) {
+                log_("mod_erreur_txt_version", $mod_folder);
+                redirection("index.php?action=message&id_message=errormod&info");
+                exit();
+            }
         }
+    }else{
+        log_("mod_erreur_txt_warning", $mod_folder);
+        redirection("index.php?action=message&id_message=errormod&info");
+        exit();
     }
 
     // On explode la chaine d'information
@@ -687,7 +722,7 @@ function uninstall_mod($mod_uninstall_name, $mod_uninstall_table)
  * @param string $mod_folder : Folder name which contains the mod
  * @param string $mod_name : Mod name
  * @todo Query: "UPDATE " . TABLE_MOD . " SET version='" . $mod_version ."' WHERE action='" . $mod_name . "'";
- * @return boolean true if the mod has been correctly updated
+ * @return null|boolean true if the mod has been correctly updated
  * @api [Mod] Function to be called in the update.php file to set up the new version.
  */
 function update_mod($mod_folder, $mod_name)

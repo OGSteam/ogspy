@@ -50,6 +50,7 @@ $since = 0;
 $nb_users = 0;
 $og_uni = 'unknow';
 $og_pays = 'unknow';
+$nb_mail= (isset($server_config['count_mail'])) ? $server_config['count_mail']     : "0";
 
 $request = "select statistic_name, statistic_value from " . TABLE_STATISTIC;
 $result = $db->sql_query($request);
@@ -127,7 +128,8 @@ $online = session_whois_online();
         <th><a><?php echo($lang['ADMIN_SERVER_SESSIONS']); ?></a></th>
         <th><?php echo $connectes; ?><a href="index.php?action=drop_sessions"> (<?php echo($lang['ADMIN_SERVER_SESSIONS_CLEAN']); ?> <?php echo
                 help("drop_sessions"); ?>)</th>
-        <th colspan='2'></th>
+        <th><a><?php echo($lang['ADMIN_SERVER_TOTAL_MAILS']); ?></a></th>
+        <th><?php echo($nb_mail); ?></th>
     </tr>
     <tr>
         <th colspan='4'></th>
@@ -180,8 +182,9 @@ $online = session_whois_online();
     <?php
     foreach ($online as $v) {
         $user = $v["user"];
-        if ($v['time_start'] == 0)
-            $v['time_start'] = $v["time_lastactivity"];
+        if ($v['time_start'] == 0) {
+                    $v['time_start'] = $v["time_lastactivity"];
+        }
         $time_start = strftime("%d %b %Y %H:%M:%S", $v["time_start"]);
         $time_lastactivity = strftime("%d %b %Y %H:%M:%S", $v["time_lastactivity"]);
         $ip = $v["ip"];

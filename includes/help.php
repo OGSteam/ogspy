@@ -26,7 +26,7 @@ function help($key, $value = "", $prefixe = "")
 
     if (isset($help[$key])) {
         $value = $help[$key];
-    }else{
+    } else {
         $value = "Aide Introuvable";
     }
 
@@ -40,7 +40,7 @@ function help($key, $value = "", $prefixe = "")
     } else {
         $text = htmlentities($text, ENT_COMPAT, "UTF-8");
     }
-    $text = "this.T_WIDTH=210;this.T_TEMP=0;return escape('" . $text . "')";
+    $text = "this.T_WIDTH=210;this.T_TEMP=0;return encodeURI('" . $text . "')";
 
     return "<img style=\"cursor:pointer\" src=\"" . $prefixe . "images/help_2.png\" onmouseover=\"" . $text . "\">";
 }

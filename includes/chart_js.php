@@ -257,8 +257,7 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
         return $retour;
     }
 
-    if (!isset($_date_min) || !is_numeric($_date_min) || !isset($_date_max) || !
-        is_numeric($_date_max)
+    if (!isset($_date_min) || !is_numeric($_date_min) || !isset($_date_max) || !is_numeric($_date_max)
     ) {
         $retour .= affiche_error($conteneur, 'erreur 4');
         return $retour;
@@ -360,7 +359,7 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
  * Displays an error message in the selected container
  *
  * @param mixed $conteneur
- * @param mixed $error
+ * @param string $error
  * @return string js
  */
 function affiche_error($conteneur, $error)

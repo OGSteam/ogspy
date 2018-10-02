@@ -108,8 +108,7 @@ if (!defined('IN_SPYOGAME')) {
     ul.devices li .send_btn {
         background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFC775),
         to(#005DFF));
-        background: -webkit-linear-gradient(0% 0%, 0% 100%, from(#FFC775),
-        to(#005DFF));
+        background: -webkit-linear-gradient(0% 0%, 0% 100%, from(#FFC775), to(#005DFF));
         background: -moz-linear-gradient(center top, #0096FF, #FF9900);
         background: linear-gradient(#FFC775, #FF9900);
         text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
@@ -150,7 +149,7 @@ if ($users != false) {
                 $deviceInformation = $row[8];
                 ?>
                 <li>
-                    <form id="form<?php echo $userId;echo $i; ?>" name="form<?php echo $userId;echo $i; ?>"
+                    <form id="form<?php echo $userId; echo $i; ?>" name="form<?php echo $userId; echo $i; ?>"
                           method="post">
                         <label>Membre : </label><span><?php echo $name; if (isset($pseudo)) {
                                 echo " <i>(" . $pseudo . ")</i>";
@@ -184,12 +183,12 @@ if ($users != false) {
                         }?></div>
                         <div class="clear"></div>
                         <div class="send_container">
-                            <textarea rows="3" id="message<?php echo $userId;echo $i; ?>" cols="25" class="txt_message"
+                            <textarea rows="3" id="message<?php echo $userId; echo $i; ?>" cols="25" class="txt_message"
                                       placeholder="Type message here"></textarea>
-                            <input type="hidden" id="regId<?php echo $userId;echo $i; ?>"
+                            <input type="hidden" id="regId<?php echo $userId; echo $i; ?>"
                                    value="<?php echo $gcmRegid; ?>"/>
                             <input type="button" class="send_btn" value="Envoyer"
-                                   onclick="sendPushNotification('<?php echo $userId;echo $i; ?>')"/>
+                                   onclick="sendPushNotification('<?php echo $userId; echo $i; ?>')"/>
                         </div>
                     </form>
                 </li>

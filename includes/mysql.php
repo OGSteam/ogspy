@@ -86,17 +86,17 @@ class sql_db
 
         $this->db_connect_id = new mysqli($this->server, $this->user, $this->password, $this->dbname);
 
-		/* Vérification de la connexion */
-		if ($this->db_connect_id->connect_errno) {
-			echo("Échec de la connexion : ".$this->db_connect_id->connect_error);
-			exit();
-		}
+        /* Vérification de la connexion */
+        if ($this->db_connect_id->connect_errno) {
+            echo("Échec de la connexion : " . $this->db_connect_id->connect_error);
+            exit();
+        }
 		
-		if (!$this->db_connect_id->set_charset("utf8")) {
-			echo("Erreur lors du chargement du jeu de caractères utf8 : ".$this->db_connect_id->error);
-		} else {
-			/*printf("Jeu de caractères courant : %s\n", $this->db_connect_id->character_set_name());*/
-		}
+        if (!$this->db_connect_id->set_charset("utf8")) {
+            echo("Erreur lors du chargement du jeu de caractères utf8 : " . $this->db_connect_id->error);
+        } else {
+            /*printf("Jeu de caractères courant : %s\n", $this->db_connect_id->character_set_name());*/
+        }
 
         $sql_timing += benchmark() - $sql_start;
     }
@@ -133,7 +133,7 @@ class sql_db
         $sql_start = benchmark();
 
         if ($Auth_dieSQLError) {
-            if(!($this->result = $this->db_connect_id->query($query))){
+            if (!($this->result = $this->db_connect_id->query($query))) {
 
                 $this->DieSQLError($query);
             }
@@ -266,7 +266,7 @@ class sql_db
 
     /**
      * Returns the number of queries done.
-     * @return The number of queries done.
+     * @return integer number of queries done.
      */
     function sql_nb_requete()
     {
@@ -276,7 +276,7 @@ class sql_db
     /**
      * Escapes all characters to set up the Query
      * @param string $str The string to escape
-     * @return the escaped string
+     * @return string|false escaped string
      */
     function sql_escape_string($str)
     {
@@ -295,7 +295,7 @@ class sql_db
     {
         echo "<table align=center border=1>\n";
         echo "<tr><td class='c' colspan='3'>Database MySQL Error</td></tr>\n";
-        echo "<tr><th colspan='3'>ErrNo:" . $this->db_connect_id->errno ."</th></tr>\n";
+        echo "<tr><th colspan='3'>ErrNo:" . $this->db_connect_id->errno . "</th></tr>\n";
         echo "<tr><th colspan='3'><u>Query:</u><br>" . $query . "</th></tr>\n";
         echo "<tr><th colspan='3'><u>Error:</u><br>" . $this->db_connect_id->error . "</th></tr>\n";
         echo "</table>\n";

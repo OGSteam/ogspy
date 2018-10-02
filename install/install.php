@@ -6,7 +6,7 @@
  * @author Kyser
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 3.04
+ * @version 3.3.4
  */
 ?>
 <html>
@@ -87,28 +87,35 @@ function error_sql($message)
 
 /**
  * Création de la structure de la base de donnée
- * @var string $sgbd_server Serveur MySql (localhost)
- * @var string $sgbd_username Utilisateur Base de donnée
- * @var string $sgbd_password Mot de passe Base de donnée
- * @var string $sgbd_tableprefix Préfixe à utiliser pour les tables ogspy
- * @var string $admin_username Nom de l'Administrateur OGSpy
- * @var string $admin_password Mot de passe Administrateur OGSpy
- * @var string $admin_password2 Confirmation du Mot de passe Administrateur OGSpy
- * @var int $num_of_galaxies Nombre de galaxies dans l'univers OGame de cet OGSpy
- * @var int $num_of_systems Nombre de systèmes dans l'univers OGame de cet OGSpy
+ *
+ * @param string $sgbd_server Serveur MySql (localhost)
+ * @param        $sgbd_dbname Nom de la base de données
+ * @param string $sgbd_username Utilisateur Base de donné
+ * @param string $sgbd_password Mot de passe Base de donné
+ * @param string $sgbd_tableprefix Préfixe à utiliser pour les tables ogspy
+ * @param string $admin_username Nom de l'Administrateur OGSpy
+ * @param string $admin_password Mot de passe Administrateur OGSpy
+ * @param string $admin_password2 Confirmation du Mot de passe Administrateur OGSpy
+ * @param int    $num_of_galaxies Nombre de galaxies dans l'univers OGame de cet OGSp
+ * @param int    $num_of_systems Nombre de systèmes dans l'univers OGame de cet OGSpy
+ * @param        $ui_lang Langue
  */
 
 function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $admin_username, $admin_password, $admin_password2, $num_of_galaxies, $num_of_systems, $ui_lang)
 {
     global $lang, $install_version;
     $db = sql_db::getInstance($sgbd_server, $sgbd_username, $sgbd_password, $sgbd_dbname);
-    if (!$db->db_connect_id) error_sql($lang['INSTALL_SQL_CONNECTION_ERROR']);
+    if (!$db->db_connect_id) {
+        error_sql($lang['INSTALL_SQL_CONNECTION_ERROR']);
+    }
 
 
     //Création de la structure de la base de données
     $sql_query = @fread(@fopen("schemas/ogspy_structure.sql", 'r'), @filesize("schemas/ogspy_structure.sql")) or die("<h1>SQL structure file has not been found</h1>");
 
-    $sql_query = preg_replace("#ogspy_#", $sgbd_tableprefix, $sql_query);
+    if (trim($sgbd_tableprefix) != "") {
+        $sql_query = preg_replace("#ogspy_#", $sgbd_tableprefix, $sql_query);
+    }
 
     $sql_query = explode(";", $sql_query);
     $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('num_of_galaxies','$num_of_galaxies')";
@@ -152,10 +159,10 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 
     generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $ui_lang);
 
-    echo "<h3 align='center'><span style=\"color: yellow; \">" .$lang['INSTALL_SUCCESS']. "</span></h3>";
+    echo "<h3 align='center'><span style=\"color: yellow; \">" . $lang['INSTALL_SUCCESS'] . "</span></h3>";
     echo "<div style=\"text-align: center;\">";
-    echo "<b>".$lang['INSTALL_SUCCESS_REMOVE_FOLDER']."</b><br>";
-    echo "<a href='../index.php'>".$lang['INSTALL_SUCCESS_BACK']."</a>";
+    echo "<b>" . $lang['INSTALL_SUCCESS_REMOVE_FOLDER'] . "</b><br>";
+    echo "<a href='../index.php'>" . $lang['INSTALL_SUCCESS_BACK'] . "</a>";
     echo "</div>";
     exit();
 }
@@ -166,6 +173,10 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
  * @var string $sgbd_username Utilisateur Base de donnée
  * @var string $sgbd_password Mot de passe Base de donnée
  * @var string $sgbd_tableprefix Préfixe à utiliser pour les tables ogspy
+ * @param string $sgbd_server
+ * @param string $sgbd_username
+ * @param string $sgbd_password
+ * @param string $sgbd_tableprefix
  */
 function generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $install_ui_lang)
 {
@@ -209,7 +220,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
         } elseif (!check_var($pub_num_of_galaxies, "Galaxy", "", true) || !check_var($pub_num_of_systems, "Galaxy", "", true)) {
             $pub_error = $lang['INSTALL_FORM_ERROR_GALAXY'];
         } else {
-            if ($pub_sgbd_server != "" && $pub_sgbd_dbname != "" && $pub_sgbd_username != "" && $pub_admin_username != "" && $pub_admin_password != "" && $pub_admin_password == $pub_admin_password2 && $pub_num_of_galaxies != ""&& $pub_num_of_systems != "" && $pub_lang != "") {
+            if ($pub_sgbd_server != "" && $pub_sgbd_dbname != "" && $pub_sgbd_username != "" && $pub_admin_username != "" && $pub_admin_password != "" && $pub_admin_password == $pub_admin_password2 && $pub_num_of_galaxies != "" && $pub_num_of_systems != "" && $pub_lang != "") {
                 installation_db($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_admin_username, $pub_admin_password, $pub_admin_password2, $pub_num_of_galaxies, $pub_num_of_systems, $pub_lang);
             } else {
                 $pub_error = $lang['INSTALL_FORM_ERROR_CONNECTION'];
@@ -217,7 +228,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
         }
     } elseif (isset($pub_file)) {
         if ($pub_sgbd_server != "" && $pub_sgbd_dbname != "" && $pub_sgbd_username != "" && $pub_lang != "") {
-            generate_id($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_num_of_galaxies, $pub_num_of_systems, $pub_lang);
+            generate_id($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_lang);
         } else {
             $pub_error = $lang['INSTALL_FORM_ERROR_CONNECTION_PARAMS'];
         }
@@ -247,7 +258,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
             <td align="center">
                 <table width="800">
                     <tr>
-                        <td colspan="2" align="center"><span style="font-size: small; "><b><?php echo ($lang['INSTALL_VIEW_WELCOME'].$install_version); ?></b></span></td>
+                        <td colspan="2" align="center"><span style="font-size: small; "><b><?php echo ($lang['INSTALL_VIEW_WELCOME'] . $install_version); ?></b></span></td>
                     </tr>
                     <tr>
                         <td colspan="2" align="center">&nbsp;</td>
@@ -329,7 +340,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
                     </tr>
                     <tr>
                         <td colspan="2" align="center">
-                            <a target="_blank" href="http://www.ogsteam.fr/">
+                            <a target="_blank" href="https://forum.ogsteam.fr/">
                                 <i><span style="color: orange; "><?php echo $lang['INSTALL_VIEW_INSTALLHELP']; ?></span></i>
                             </a>
                         </td>
@@ -339,7 +350,8 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
         </tr>
         <tr align="center">
             <td>
-                <div style="text-align: center;"><span style="font-size: x-small; "><i><b>OGSpy</b> is an <b>OGSteam Software</b> (c)2005-2016</i><br/>v <?php echo $install_version; ?></span></div>
+                <div style="text-align: center;"><span style="font-size: x-small; "><i><b>OGSpy</b> is an
+                            <b>OGSteam Software</b> (c)2005-2018</i><br/>v <?php echo $install_version; ?></span></div>
             </td>
         </tr>
     </table>
