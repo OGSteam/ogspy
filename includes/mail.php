@@ -13,14 +13,20 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+$folder = "";
+if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
+
+	$folder= "../";
+}
+
 //-----accès PHPMailer------\\\
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 
-require_once("includes/PHPMailer/PHPMailer.php");
-require_once("includes/PHPMailer/SMTP.php");
-require_once("includes/PHPMailer/Exception.php");
+require_once($folder."includes/PHPMailer/PHPMailer.php");
+require_once($folder."includes/PHPMailer/SMTP.php");
+require_once($folder."includes/PHPMailer/Exception.php");
 //-----fin accès PHPMailer---\\\
 
 /**
