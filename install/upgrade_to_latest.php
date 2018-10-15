@@ -164,13 +164,28 @@ switch ($ogsversion) {
         $ogsversion = '3.3.1';
         $up_to_date = true;
 
-        case '3.3.1':
+    case '3.3.1':
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.2' WHERE config_name = 'version'";
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` MODIFY `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP','ANDROID')";
         $ogsversion = '3.3.2';
         $up_to_date = true;
 
     case '3.3.2':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.3' WHERE config_name = 'version'";
+        $ogsversion = '3.3.3';
+        $up_to_date = true;
+
+    case '3.3.3':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '0' WHERE config_name = 'mail_active'";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '0' WHERE config_name = 'mail_smtp_use'";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '' WHERE config_name = 'mail_smtp_server'";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '0' WHERE config_name = 'mail_smtp_secure'";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '' WHERE config_name = 'mail_smtp_host'";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '' WHERE config_name = 'mail_smtp_port'";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '' WHERE config_name = 'mail_smtp_username'";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '' WHERE config_name = 'mail_smtp_password'";
+
+
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.4' WHERE config_name = 'version'";
         $ogsversion = '3.3.4';
         $up_to_date = true;
