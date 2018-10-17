@@ -11,13 +11,11 @@ RUN apt-get update && \
   apt-get -y install \
 supervisor \
 git \
-mercurial \
 apache2 \
 libapache2-mod-php \
 mariadb-server \
 php-mysql \
-pwgen \
-php-mcrypt
+pwgen
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
