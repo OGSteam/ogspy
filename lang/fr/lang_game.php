@@ -87,8 +87,9 @@ $lang['GAME_BUILDING_HD'] = 'Réservoir de deutérium';
 $lang['GAME_BUILDING_LAB'] = 'Laboratoire de recherche'; 
 $lang['GAME_BUILDING_TER'] = 'Terraformeur'; 
 $lang['GAME_BUILDING_DDR'] = 'Dépôt de ravitaillement'; 
-$lang['GAME_BUILDING_SILO'] = 'Silo de missiles'; 
-$lang['GAME_BUILDING_BALU'] = 'Base lunaire'; 
+$lang['GAME_BUILDING_SILO'] = 'Silo de missiles';
+$lang['GAME_BUILDING_DOCK'] = 'Dock Spatial';
+$lang['GAME_BUILDING_BALU'] = 'Base lunaire';
 $lang['GAME_BUILDING_PHA'] = 'Phalange de capteur'; 
 $lang['GAME_BUILDING_POSA'] = 'Porte de saut spatial';
 

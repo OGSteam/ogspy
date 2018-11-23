@@ -206,8 +206,8 @@ function update_page() {
 
     //
     // Points
-    //                 UdR, Nanites, CSp,   HM,   HC,   HD, Lab, TeraF, DepotR,  Silo, BaseL, Phalang, PdS
-    var init_b_prix = [720, 1600000, 700, 1000, 1500, 2000, 800, 150000, 41000, 80000, 80000, 8000000, 60000];
+    //                 UdR, Nanites, CSp,   HM,   HC,   HD, Lab,  TeraF,DepotR,  Silo,Dock, BaseL, Phalg, PdS
+    var init_b_prix = [720, 1600000, 700, 1000, 1500, 2000, 800, 150000, 60000, 41000, 250, 80000, 80000, 8000000];
 
     // Batiments planetes
     var total_b_pts = 0;
@@ -222,12 +222,8 @@ function update_page() {
         for (j = 0; j < building_1.length; j++) {
             if (building_1[j] != 0) {
 
-                if (j == 6 || j == 7 || j == 8) {
-                    b_pts_1 += init_b_prix[j] * (1 - Math.pow(2.3, building_1[j])) / -1.3; //Formules Cachette En attendant de faire du propre en V5 et les Formules Officielles...
-                }
-                else {
-                    b_pts_1 += init_b_prix[j] * Math.pow(2, building_1[j] - 1);
-                }
+                b_pts_1 += init_b_prix[j] * Math.pow(2, building_1[j] - 1);
+
             }
         }
         total_pts_1[i] = b_pts_1;

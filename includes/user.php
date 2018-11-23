@@ -1068,7 +1068,7 @@ function user_get_empire($user_id)
         "C_Percentage" => 100, "D" => 0, "D_percentage" => 100, "CES" => 0, "CES_percentage" => 100,
         "CEF" => 0, "CEF_percentage" => 100, "UdR" => 0, "UdN" => 0, "CSp" => 0,
         "HM" => 0, "HC" => 0, "HD" => 0, "Lab" => 0,
-        "Ter" => 0, "Silo" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0,
+        "Ter" => 0, "Silo" => 0, "Dock" => 0,"BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0,
         "C_percentage" => 100);
 
     $defence = array("LM" => 0, "LLE" => 0, "LLO" => 0, "CG" => 0, "AI" => 0, "LP" =>
@@ -1091,7 +1091,7 @@ function user_get_empire($user_id)
         $user_building[$i] = $planet;
     }
 
-    $request = "SELECT planet_id, planet_name, coordinates, fields, boosters, temperature_min, temperature_max, Sat, Sat_percentage, M, M_percentage, C, C_Percentage, D, D_percentage, CES, CES_percentage, CEF, CEF_percentage, UdR, UdN, CSp, HM, HC, HD, Lab, Ter, Silo, BaLu, Pha, PoSa, DdR";
+    $request = "SELECT planet_id, planet_name, coordinates, fields, boosters, temperature_min, temperature_max, Sat, Sat_percentage, M, M_percentage, C, C_Percentage, D, D_percentage, CES, CES_percentage, CEF, CEF_percentage, UdR, UdN, CSp, HM, HC, HD, Lab, Ter, Silo, Dock, BaLu, Pha, PoSa, DdR";
     $request .= " FROM " . TABLE_USER_BUILDING;
     $request .= " WHERE user_id = " . $user_id;
     $request .= " ORDER BY planet_id";
