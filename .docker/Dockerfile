@@ -15,7 +15,7 @@ libapache2-mod-php \
 mariadb-server \
 php-mysql \
 pwgen
-&& apt-get clean \
+&& apt-get clean
 && rm -rf /var/lib/apt/lists/
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
