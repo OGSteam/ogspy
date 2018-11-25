@@ -273,7 +273,8 @@ function galaxy_show_sector()
                 "report_spy" => $report_spy,
                 "status" => $status,
                 "hided" => $hided,
-                "allied" => $friend];
+                "allied" => $friend
+            ];
         }
     }
 
@@ -644,13 +645,11 @@ function galaxy_statistic($step = 50)
                 $new = true;
             }
 
-            $statictics[$galaxy][$system] = array("planet" => $nb_planet, "free" => $nb_planet_free, "new" => $new);
+            $statistics[$galaxy][$system] = array("planet" => $nb_planet, "free" => $nb_planet_free, "new" => $new);
         }
     }
 
-    return ["map" => $statictics,
-            "nb_planets" => $nb_planets_total,
-            "nb_planets_free" => $nb_freeplanets_total];
+    return array("map" => $statistics, "nb_planets" => $nb_planets_total, "nb_planets_free" => $nb_freeplanets_total);
 }
 
 /**
@@ -743,10 +742,7 @@ function galaxy_ally_position($step = 50)
 
                 $population = array();
                 while (list($galaxy_, $system_, $row_, $player) = $db->sql_fetch_row($result)) {
-                    $population[] = ["galaxy" => $galaxy_,
-                                     "system" => $system_,
-                                     "row" => $row_,
-                                     "player" => $player];
+                    $population[] = array("galaxy" => $galaxy_, "system" => $system_, "row" => $row_, "player" => $player);
                 }
 
                 $statistics[$pub_ally_name][$galaxy][$system] = array("planet" => $nb_planet, "population" => $population);
@@ -1596,11 +1592,74 @@ function galaxy_obsolete()
 function UNparseRE($id_RE)
 {
     global $table_prefix, $db, $lang;
-    $show = array('flotte' => 0, 'defense' => 0, 'batiment' => 0, 'recherche' => 0);
-    $flotte = array('PT' => $lang['GAME_FLEET_PT'], 'GT' => $lang['GAME_FLEET_GT'], 'CLE' => $lang['GAME_FLEET_CLE'], 'CLO' => $lang['GAME_FLEET_CLO'], 'CR' => $lang['GAME_FLEET_CR'], 'VB' => $lang['GAME_FLEET_VB'], 'VC' => $lang['GAME_FLEET_VC'], 'REC' => $lang['GAME_FLEET_REC'], 'SE' => $lang['GAME_FLEET_SE'], 'BMD' => $lang['GAME_FLEET_BMD'], 'DST' => $lang['GAME_FLEET_DST'], 'EDLM' => $lang['GAME_FLEET_EDLM'], 'SAT' => $lang['GAME_FLEET_SAT'], 'TRA' => $lang['GAME_FLEET_TRA']);
-    $defs = array('LM' => $lang['GAME_DEF_LM'], 'LLE' => $lang['GAME_DEF_LLE'], 'LLO' => $lang['GAME_DEF_LLO'], 'CG' => $lang['GAME_DEF_CG'], 'AI' => $lang['GAME_DEF_AI'], 'LP' => $lang['GAME_DEF_LP'], 'PB' => $lang['GAME_DEF_PB'], 'GB' => $lang['GAME_DEF_GB'], 'MIC' => $lang['GAME_DEF_MIC'], 'MIP' => $lang['GAME_DEF_MIP']);
-    $bats = array('M' => $lang['GAME_BUILDING_M'], 'C' => $lang['GAME_BUILDING_C'], 'D' => $lang['GAME_BUILDING_D'], 'CES' => $lang['GAME_BUILDING_CES'], 'CEF' => $lang['GAME_BUILDING_CEF'], 'UdR' => $lang['GAME_BUILDING_UDR'], 'UdN' => $lang['GAME_BUILDING_UDN'], 'CSp' => $lang['GAME_BUILDING_CSP'], 'HM' => $lang['GAME_BUILDING_HM'], 'HC' => $lang['GAME_BUILDING_HC'], 'HD' => $lang['GAME_BUILDING_HD'], 'Lab' => $lang['GAME_BUILDING_LAB'], 'Ter' => $lang['GAME_BUILDING_TER'], 'DdR' => $lang['GAME_BUILDING_DDR'], 'Silo' => $lang['GAME_BUILDING_SILO'] , 'Dock' => $lang['GAME_BUILDING_DOCK'], 'BaLu' => $lang['GAME_BUILDING_BALU'], 'Pha' => $lang['GAME_BUILDING_PHA'], 'PoSa' => $lang['GAME_BUILDING_POSA']);
-    $techs = array('Esp' => $lang['GAME_TECH_ESP'], 'Ordi' => $lang['GAME_TECH_ORDI'], 'Armes' => $lang['GAME_TECH_WEAP'], 'Bouclier' => $lang['GAME_TECH_SHIELD'], 'Protection' => $lang['GAME_TECH_ARMOR'], 'NRJ' => $lang['GAME_TECH_ENERGY'], 'Hyp' => $lang['GAME_TECH_HYP'], 'RC' => $lang['GAME_TECH_CD'], 'RI' => $lang['GAME_TECH_ID'], 'PH' => $lang['GAME_TECH_HD'], 'Laser' => $lang['GAME_TECH_LASER'], 'Ions' => $lang['GAME_TECH_ION'], 'Plasma' => $lang['GAME_TECH_PLASMA'], 'RRI' => $lang['GAME_TECH_IRN'], 'Graviton' => $lang['GAME_TECH_GRAV'], 'Astrophysique' => $lang['GAME_TECH_ASTRO']);
+    $show = array('flotte' => 0,
+                  'defense' => 0,
+                  'batiment' => 0,
+                  'recherche' => 0);
+
+    $flotte = array('PT' => $lang['GAME_FLEET_PT'],
+                    'GT' => $lang['GAME_FLEET_GT'],
+                    'CLE' => $lang['GAME_FLEET_CLE'],
+                    'CLO' => $lang['GAME_FLEET_CLO'],
+                    'CR' => $lang['GAME_FLEET_CR'],
+                    'VB' => $lang['GAME_FLEET_VB'],
+                    'VC' => $lang['GAME_FLEET_VC'],
+                    'REC' => $lang['GAME_FLEET_REC'],
+                    'SE' => $lang['GAME_FLEET_SE'],
+                    'BMD' => $lang['GAME_FLEET_BMD'],
+                    'DST' => $lang['GAME_FLEET_DST'],
+                    'EDLM' => $lang['GAME_FLEET_EDLM'],
+                    'SAT' => $lang['GAME_FLEET_SAT'],
+                    'TRA' => $lang['GAME_FLEET_TRA']);
+
+    $defs   = array('LM' => $lang['GAME_DEF_LM'],
+                    'LLE' => $lang['GAME_DEF_LLE'],
+                    'LLO' => $lang['GAME_DEF_LLO'],
+                    'CG' => $lang['GAME_DEF_CG'],
+                    'AI' => $lang['GAME_DEF_AI'],
+                    'LP' => $lang['GAME_DEF_LP'],
+                    'PB' => $lang['GAME_DEF_PB'],
+                    'GB' => $lang['GAME_DEF_GB'],
+                    'MIC' => $lang['GAME_DEF_MIC'],
+                    'MIP' => $lang['GAME_DEF_MIP']);
+
+    $bats   = array('M' => $lang['GAME_BUILDING_M'],
+                    'C' => $lang['GAME_BUILDING_C'],
+                    'D' => $lang['GAME_BUILDING_D'],
+                    'CES' => $lang['GAME_BUILDING_CES'],
+                    'CEF' => $lang['GAME_BUILDING_CEF'],
+                    'UdR' => $lang['GAME_BUILDING_UDR'],
+                    'UdN' => $lang['GAME_BUILDING_UDN'],
+                    'CSp' => $lang['GAME_BUILDING_CSP'],
+                    'HM' => $lang['GAME_BUILDING_HM'],
+                    'HC' => $lang['GAME_BUILDING_HC'],
+                    'HD' => $lang['GAME_BUILDING_HD'],
+                    'Lab' => $lang['GAME_BUILDING_LAB'],
+                    'Ter' => $lang['GAME_BUILDING_TER'],
+                    'DdR' => $lang['GAME_BUILDING_DDR'],
+                    'Silo' => $lang['GAME_BUILDING_SILO'],
+                    'Dock' => $lang['GAME_BUILDING_DOCK'],
+                    'BaLu' => $lang['GAME_BUILDING_BALU'],
+                    'Pha' => $lang['GAME_BUILDING_PHA'],
+                    'PoSa' => $lang['GAME_BUILDING_POSA']);
+
+    $techs  = array('Esp' => $lang['GAME_TECH_ESP'],
+                    'Ordi' => $lang['GAME_TECH_ORDI'],
+                    'Armes' => $lang['GAME_TECH_WEAP'],
+                    'Bouclier' => $lang['GAME_TECH_SHIELD'],
+                    'Protection' => $lang['GAME_TECH_ARMOR'],
+                    'NRJ' => $lang['GAME_TECH_ENERGY'],
+                    'Hyp' => $lang['GAME_TECH_HYP'],
+                    'RC' => $lang['GAME_TECH_CD'],
+                    'RI' => $lang['GAME_TECH_ID'],
+                    'PH' => $lang['GAME_TECH_HD'],
+                    'Laser' => $lang['GAME_TECH_LASER'],
+                    'Ions' => $lang['GAME_TECH_ION'],
+                    'Plasma' => $lang['GAME_TECH_PLASMA'],
+                    'RRI' => $lang['GAME_TECH_IRN'],
+                    'Graviton' => $lang['GAME_TECH_GRAV'],
+                    'Astrophysique' => $lang['GAME_TECH_ASTRO']);
+
     $query = 'SELECT planet_name, coordinates, metal, cristal, deuterium, energie, activite, M, C, D, CES, CEF, UdR, UdN, CSp, HM, HC, 
         HD, Lab, Ter, Silo, Dock, DdR, BaLu, Pha, PoSa, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, 
         DST, EDLM, SAT, TRA, Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique, 
