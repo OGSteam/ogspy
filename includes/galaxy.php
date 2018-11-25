@@ -645,11 +645,19 @@ function galaxy_statistic($step = 50)
                 $new = true;
             }
 
-            $statistics[$galaxy][$system] = array("planet" => $nb_planet, "free" => $nb_planet_free, "new" => $new);
+            $statistics[$galaxy][$system] = array(
+                "planet" => $nb_planet,
+                "free" => $nb_planet_free,
+                "new" => $new
+            );
         }
     }
 
-    return array("map" => $statistics, "nb_planets" => $nb_planets_total, "nb_planets_free" => $nb_freeplanets_total);
+    return array(
+        "map" => $statistics,
+        "nb_planets" => $nb_planets_total,
+        "nb_planets_free" => $nb_freeplanets_total
+    );
 }
 
 /**
