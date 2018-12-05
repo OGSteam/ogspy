@@ -192,6 +192,27 @@ switch ($ogsversion) {
 
     case '3.3.4':
 
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_POINTS . " MODIFY `points` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_ECO . " MODIFY `points` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_TECHNOLOGY . " MODIFY `points` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_MILITARY . " MODIFY `points` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_MILITARY_BUILT . " MODIFY `points` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " MODIFY `points` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " MODIFY `points` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_HONOR . " MODIFY `points` BIGINT";
+
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_POINTS . " MODIFY `points` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_POINTS . " MODIFY `points_per_member` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_ECO . " MODIFY `points` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_TECHNOLOGY . " MODIFY `points` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_MILITARY . " MODIFY `points` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_MILITARY_BUILT . " MODIFY `points` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_MILITARY_LOOSE . " MODIFY `points` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " MODIFY `points` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_HONOR . " MODIFY `points` BIGINT";
+
+
+
         $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` ADD `Dock` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `Silo`";
 
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.5' WHERE config_name = 'version'";
