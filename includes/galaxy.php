@@ -107,17 +107,17 @@ function galaxy_show()
         @list($pub_galaxy, $pub_system) = explode(":", $pub_coordinates);
     }
     if (isset($pub_galaxy) && isset($pub_system)) {
-        if (intval($pub_galaxy) < 1) {
+        if ((int) $pub_galaxy < 1) {
             $pub_galaxy = 1;
         }
-        if (intval($pub_galaxy) > intval($server_config['num_of_galaxies'])) {
-            $pub_galaxy = intval($server_config['num_of_galaxies']);
+        if ((int) $pub_galaxy > (int) $server_config['num_of_galaxies']) {
+            $pub_galaxy = (int) $server_config['num_of_galaxies'];
         }
-        if (intval($pub_system) < 1) {
+        if ((int) $pub_system < 1) {
             $pub_system = 1;
         }
-        if (intval($pub_system) > intval($server_config['num_of_systems'])) {
-            $pub_system = intval($server_config['num_of_systems']);
+        if ((int) $pub_system > (int)$server_config['num_of_systems']) {
+            $pub_system = (int) $server_config['num_of_systems'];
         }
     }
 
@@ -198,23 +198,23 @@ function galaxy_show_sector()
     global $pub_galaxy, $pub_system_down, $pub_system_up;
 
     if (isset($pub_galaxy) && isset($pub_system_down) && isset($pub_system_up)) {
-        if (intval($pub_galaxy) < 1) {
+        if ((int)$pub_galaxy < 1) {
             $pub_galaxy = 1;
         }
-        if (intval($pub_galaxy) > intval($server_config['num_of_galaxies'])) {
-            $pub_galaxy = intval($server_config['num_of_galaxies']);
+        if ((int)($pub_galaxy) > (int) $server_config['num_of_galaxies']) {
+            $pub_galaxy = (int) $server_config['num_of_galaxies'];
         }
-        if (intval($pub_system_down) < 1) {
+        if ((int) $pub_system_down < 1) {
             $pub_system_down = 1;
         }
-        if (intval($pub_system_down) > intval($server_config['num_of_systems'])) {
-            $pub_system_down = intval($server_config['num_of_systems']);
+        if ((int) $pub_system_down > (int) $server_config['num_of_systems']) {
+            $pub_system_down = (int) $server_config['num_of_systems'];
         }
-        if (intval($pub_system_up) < 1) {
+        if ( (int) $pub_system_up < 1) {
             $pub_system_up = 1;
         }
-        if (intval($pub_system_up) > intval($server_config['num_of_systems'])) {
-            $pub_system_up = intval($server_config['num_of_systems']);
+        if ( (int) $pub_system_up > (int)$server_config['num_of_systems']) {
+            $pub_system_up = (int) $server_config['num_of_systems'];
         }
     }
 
@@ -239,7 +239,7 @@ function galaxy_show_sector()
     $result = $db->sql_query($request);
 
     $population = array_fill($pub_system_down, $pub_system_up, "");
-    while (list($system, $row, $planet, $ally, $player, $moon, $phalanx, $gate, $last_update_moon, $status, $update) = $db->sql_fetch_row($result)) {
+    while (list($system, $row, $planet, $ally, $player, $moon, $phalanx, $gate, $last_update, $last_update_moon, $status, $update) = $db->sql_fetch_row($result)) {
         if (!isset($last_update[$system])) {
             $last_update[$system] = $update;
         } elseif ($update < $last_update[$system]) {
@@ -262,7 +262,19 @@ function galaxy_show_sector()
                 $friend = true;
             }
 
-            $population[$system][$row] = array("ally" => $ally, "player" => $player, "moon" => $moon, "phalanx" => $phalanx, "gate" => $gate, "last_update_moon" => $last_update_moon, "planet" => $planet, "report_spy" => $report_spy, "status" => $status, "hided" => $hided, "allied" => $friend);
+            $population[$system][$row] = [
+                "ally" => $ally,
+                "player" => $player,
+                "moon" => $moon,
+                "phalanx" => $phalanx,
+                "gate" => $gate,
+                "last_update_moon" => $last_update_moon,
+                "planet" => $planet,
+                "report_spy" => $report_spy,
+                "status" => $status,
+                "hided" => $hided,
+                "allied" => $friend
+            ];
         }
     }
 
@@ -403,17 +415,17 @@ function galaxy_search()
                 break;
 
             case "colonization":
-                $galaxy_start = intval($pub_galaxy_down);
-                $galaxy_end = intval($pub_galaxy_up);
-                $system_start = intval($pub_system_down);
-                $system_end = intval($pub_system_up);
-                $row_start = intval($pub_row_down);
-                $row_end = intval($pub_row_up);
+                $galaxy_start = (int) $pub_galaxy_down;
+                $galaxy_end = (int) $pub_galaxy_up;
+                $system_start = (int) $pub_system_down;
+                $system_end = (int) $pub_system_up;
+                $row_start = (int) $pub_row_down;
+                $row_end = (int) $pub_row_up;
 
-                if ($galaxy_start < 1 || $galaxy_start > intval($server_config['num_of_galaxies']) || $galaxy_end < 1 || $galaxy_end > intval($server_config['num_of_galaxies'])) {
+                if ($galaxy_start < 1 || $galaxy_start > (int) $server_config['num_of_galaxies'] || $galaxy_end < 1 || $galaxy_end > (int)$server_config['num_of_galaxies']) {
                     break;
                 }
-                if ($system_start < 1 || $system_start > intval($server_config['num_of_systems']) || $system_end < 1 || $system_end > intval($server_config['num_of_systems'])) {
+                if ($system_start < 1 || $system_start > (int) $server_config['num_of_systems'] || $system_end < 1 || $system_end > (int) $server_config['num_of_systems']) {
                     break;
                 }
                 if ($pub_row_active) {
@@ -440,17 +452,17 @@ function galaxy_search()
                 break;
 
             case "moon":
-                $galaxy_start = intval($pub_galaxy_down);
-                $galaxy_end = intval($pub_galaxy_up);
-                $system_start = intval($pub_system_down);
-                $system_end = intval($pub_system_up);
-                $row_start = intval($pub_row_down);
-                $row_end = intval($pub_row_up);
+                $galaxy_start = (int) $pub_galaxy_down;
+                $galaxy_end = (int) $pub_galaxy_up;
+                $system_start = (int) $pub_system_down;
+                $system_end = (int) $pub_system_up;
+                $row_start = (int) $pub_row_down;
+                $row_end = (int) $pub_row_up;
 
-                if ($galaxy_start < 1 || $galaxy_start > intval($server_config['num_of_galaxies']) || $galaxy_end < 1 || $galaxy_end > intval($server_config['num_of_galaxies'])) {
+                if ($galaxy_start < 1 || $galaxy_start > (int) $server_config['num_of_galaxies'] || $galaxy_end < 1 || $galaxy_end > (int) $server_config['num_of_galaxies']) {
                     break;
                 }
-                if ($system_start < 1 || $system_start > intval($server_config['num_of_systems']) || $system_end < 1 || $system_end > intval($server_config['num_of_systems'])) {
+                if ($system_start < 1 || $system_start > (int) $server_config['num_of_systems'] || $system_end < 1 || $system_end > (int) $server_config['num_of_systems']) {
                     break;
                 }
                 if ($pub_row_active) {
@@ -482,17 +494,17 @@ function galaxy_search()
                 break;
 
             case "away":
-                $galaxy_start = intval($pub_galaxy_down);
-                $galaxy_end = intval($pub_galaxy_up);
-                $system_start = intval($pub_system_down);
-                $system_end = intval($pub_system_up);
-                $row_start = intval($pub_row_down);
-                $row_end = intval($pub_row_up);
+                $galaxy_start = (int) $pub_galaxy_down;
+                $galaxy_end = (int) $pub_galaxy_up;
+                $system_start = (int) $pub_system_down;
+                $system_end = (int) $pub_system_up;
+                $row_start = (int) $pub_row_down;
+                $row_end = (int) $pub_row_up;
 
-                if ($galaxy_start < 1 || $galaxy_start > intval($server_config['num_of_galaxies']) || $galaxy_end < 1 || $galaxy_end > intval($server_config['num_of_galaxies'])) {
+                if ($galaxy_start < 1 || $galaxy_start > (int) $server_config['num_of_galaxies'] || $galaxy_end < 1 || $galaxy_end > (int) $server_config['num_of_galaxies']) {
                     break;
                 }
-                if ($system_start < 1 || $system_start > intval($server_config['num_of_systems']) || $system_end < 1 || $system_end > intval($server_config['num_of_systems'])) {
+                if ($system_start < 1 || $system_start > (int)$server_config['num_of_systems'] || $system_end < 1 || $system_end > (int)$server_config['num_of_systems']) {
                     break;
                 }
                 if ($pub_row_active) {
@@ -560,7 +572,7 @@ function galaxy_search()
             if ($pub_page > $total_page) {
                 $pub_page = $total_page;
             }
-            $limit = intval($pub_page - 1) * 30;
+            $limit = ((int)$pub_page - 1) * 30;
             if ($limit < 0) {
                 $limit = 0;
                 $pub_page = 1;
@@ -606,8 +618,8 @@ function galaxy_statistic($step = 50)
 
     $nb_planets_total = 0;
     $nb_freeplanets_total = 0;
-    for ($galaxy = 1; $galaxy <= intval($server_config['num_of_galaxies']); $galaxy++) {
-        for ($system = 1; $system <= intval($server_config['num_of_systems']); $system = $system + $step) {
+    for ($galaxy = 1; $galaxy <= $server_config['num_of_galaxies']; $galaxy++) {
+        for ($system = 1; $system <= $server_config['num_of_systems']; $system = $system + $step) {
             $request = "SELECT count(*) FROM " . TABLE_UNIVERSE;
             $request .= " where galaxy = " . $galaxy;
             $request .= " and system between " . $system . " and " . ($system + $step - 1);
@@ -633,11 +645,19 @@ function galaxy_statistic($step = 50)
                 $new = true;
             }
 
-            $statictics[$galaxy][$system] = array("planet" => $nb_planet, "free" => $nb_planet_free, "new" => $new);
+            $statistics[$galaxy][$system] = array(
+                "planet" => $nb_planet,
+                "free" => $nb_planet_free,
+                "new" => $new
+            );
         }
     }
 
-    return array("map" => $statictics, "nb_planets" => $nb_planets_total, "nb_planets_free" => $nb_freeplanets_total);
+    return array(
+        "map" => $statistics,
+        "nb_planets" => $nb_planets_total,
+        "nb_planets_free" => $nb_freeplanets_total
+    );
 }
 
 /**
@@ -718,8 +738,8 @@ function galaxy_ally_position($step = 50)
             $friend = true;
         }
 
-        for ($galaxy = 1; $galaxy <= intval($server_config['num_of_galaxies']); $galaxy++) {
-            for ($system = 1; $system <= intval($server_config['num_of_systems']); $system = $system + $step) {
+        for ($galaxy = 1; $galaxy <= $server_config['num_of_galaxies']; $galaxy++) {
+            for ($system = 1; $system <= $server_config['num_of_systems']; $system = $system + $step) {
                 $request = "SELECT galaxy, system, row, player FROM " . TABLE_UNIVERSE;
                 $request .= " where galaxy = " . $galaxy;
                 $request .= " and system between " . $system . " and " . ($system + $step - 1);
@@ -770,11 +790,11 @@ function galaxy_reportspy_show()
     if (!isset($pub_galaxy) || !isset($pub_system) || !isset($pub_row)) {
         return false;
     }
-    if (intval($pub_galaxy) < 1 || intval($pub_galaxy) > intval($server_config['num_of_galaxies']) || intval($pub_system) < 1 || intval($pub_system) > intval($server_config['num_of_systems']) || intval($pub_row) < 1 || intval($pub_row) > 15) {
+    if ((int) $pub_galaxy < 1 || (int) $pub_galaxy > (int) $server_config['num_of_galaxies'] || (int) $pub_system < 1 || (int) $pub_system > (int) $server_config['num_of_systems'] || (int) $pub_row < 1 || (int) $pub_row > 15) {
         return false;
     }
 
-    $request_astre_name = "SELECT name FROM " . TABLE_UNIVERSE . " WHERE galaxy = " . intval($pub_galaxy) . " AND system = " . intval($pub_system) . " AND row = " . intval($pub_row);
+    $request_astre_name = "SELECT name FROM " . TABLE_UNIVERSE . " WHERE galaxy = " . (int) $pub_galaxy . " AND system = " . (int) $pub_system . " AND row = " . (int) $pub_row;
     $result_astre_name = $db->sql_query($request_astre_name);
     $astre_name = $db->sql_fetch_assoc($result_astre_name); //Récupère le nom de la planète
 
@@ -782,9 +802,9 @@ function galaxy_reportspy_show()
     $request = "select id_spy, user_name, dateRE";
     $request .= " from " . TABLE_PARSEDSPY . " left join " . TABLE_USER . " on user_id = sender_id";
     if (!isset($pub_spy_id)) {
-        $request .= " where active = '1'  and coordinates = '" . intval($pub_galaxy) . ":" . intval($pub_system) . ":" . intval($pub_row) . "'";
+        $request .= " where active = '1'  and coordinates = '" . (int) $pub_galaxy . ":" . (int) $pub_system . ":" . (int) $pub_row . "'";
     } else {
-        $request .= " where id_spy = " . intval($pub_spy_id);
+        $request .= " where id_spy = " . (int) $pub_spy_id;
     }
     $request .= " and BaLu<=0 and Pha<=0 and PoSa<=0 and planet_name='" . $astre_name['name'] . "'";
     $request .= " order by dateRE desc LIMIT 1";
@@ -799,11 +819,11 @@ function galaxy_reportspy_show()
     $request = "select id_spy, user_name, dateRE";
     $request .= " from " . TABLE_PARSEDSPY . " left join " . TABLE_USER . " on user_id = sender_id";
     if (!isset($pub_spy_id)) {
-        $request .= " where active = '1'  and coordinates = '" . intval($pub_galaxy) . ":" . intval($pub_system) . ":" . intval($pub_row) . "'";
+        $request .= " where active = '1'  and coordinates = '" . (int) $pub_galaxy . ":" . (int) $pub_system . ":" . (int) $pub_row . "'";
     } else {
-        $request .= " where id_spy = " . intval($pub_spy_id);
+        $request .= " where id_spy = " . (int) $pub_spy_id;
     }
-    $request .= " and M<=0 and C<=0 and D<=0 and CES<=0 and CEF<=0 and UdN<=0 and Lab<=0 and Ter<=0 and Silo<=0 and not planet_name='" . $astre_name['name'] . "'";
+    $request .= " and M<=0 and C<=0 and D<=0 and CES<=0 and CEF<=0 and UdN<=0 and Lab<=0 and Ter<=0 and Silo<=0 and Dock<=0 and not planet_name='" . $astre_name['name'] . "'";
     $request .= " order by dateRE desc LIMIT 1";
     $result = $db->sql_query($request);
 
@@ -988,7 +1008,7 @@ function galaxy_show_ranking_player()
     $table[] = array("tablename" => $tables[$id[0]], "arrayname" => $name[$id[0]]);
     $i = 0;
     // ensuite le reste des table / nom
-    for ($i; $i < sizeof($name); $i++) {
+    for ($i; $i < count($name); $i++) {
         if ($id[0] != $i) {
             $table[] = array("tablename" => $tables[$i], "arrayname" => $name[$i]);
         }
@@ -1030,7 +1050,7 @@ function galaxy_show_ranking_player()
         $ranking_available[] = $row["datadate"];
     }
 
-    for ($i; $i < sizeof($name); $i++) {
+    for ($i; $i < count($name); $i++) {
         reset($ranking);
         while ($value = current($ranking)) {
             $request = "select rank, player, ally, points, user_name";
@@ -1137,7 +1157,7 @@ function galaxy_show_ranking_ally()
     $table[] = array("tablename" => $tables[$id[0]], "arrayname" => $name[$id[0]]);
     $i = 0;
     // ensuite le reste des table / nom
-    for ($i; $i < sizeof($name); $i++) {
+    for ($i; $i < count($name); $i++) {
         if ($id[0] != $i) {
             $table[] = array("tablename" => $tables[$i], "arrayname" => $name[$i]);
         }
@@ -1180,7 +1200,7 @@ function galaxy_show_ranking_ally()
         $ranking_available[] = $row["datadate"];
     }
 
-    for ($i; $i < sizeof($name); $i++) {
+    for ($i; $i < count($name); $i++) {
         reset($ranking);
         while ($value = current($ranking)) {
             $request = "select rank, ally, number_member, points,  user_name";
@@ -1380,7 +1400,7 @@ function galaxy_drop_ranking()
 
         foreach ($tables_ally as $table) {
 
-            $requests[] = "DELETE FROM " . $table . " WHERE datadate = " . intval($pub_datadate);
+            $requests[] = "DELETE FROM " . $table . " WHERE datadate = " . (int) $pub_datadate;
         }
         foreach ($requests as $request) {
             $db->sql_query($request);
@@ -1525,7 +1545,7 @@ function galaxy_obsolete()
         $indice = array_search((int) $pub_since, $since);
 
         // l indice ne peut pas etre le premier ou le dernier
-        if ($indice == 0 || $indice == (sizeof($since) - 1)) {
+        if ($indice == 0 || $indice == (count($since) - 1)) {
             return $obsolete;
         }
         $indice_sup = $timestamp - 60 * 60 * 24 * $since[$indice + 1];
@@ -1546,7 +1566,7 @@ function galaxy_obsolete()
 
         $request = "select distinct galaxy, system" . $row_field . " from " . TABLE_UNIVERSE . " where moon = '" . $moon . "' and " . $field . " between " . $indice_sup . " and " . $indice_inf;
         if ($pub_perimeter != 0) {
-            $request .= " and galaxy = " . intval($pub_perimeter);
+            $request .= " and galaxy = " . (int)$pub_perimeter;
         }
         $request .= " order by galaxy, system, row limit 0, 51";
         $result = $db->sql_query($request);
@@ -1580,13 +1600,86 @@ function galaxy_obsolete()
 function UNparseRE($id_RE)
 {
     global $table_prefix, $db, $lang;
-    $show = array('flotte' => 0, 'defense' => 0, 'batiment' => 0, 'recherche' => 0);
-    $flotte = array('PT' => $lang['GAME_FLEET_PT'], 'GT' => $lang['GAME_FLEET_GT'], 'CLE' => $lang['GAME_FLEET_CLE'], 'CLO' => $lang['GAME_FLEET_CLO'], 'CR' => $lang['GAME_FLEET_CR'], 'VB' => $lang['GAME_FLEET_VB'], 'VC' => $lang['GAME_FLEET_VC'], 'REC' => $lang['GAME_FLEET_REC'], 'SE' => $lang['GAME_FLEET_SE'], 'BMD' => $lang['GAME_FLEET_BMD'], 'DST' => $lang['GAME_FLEET_DST'], 'EDLM' => $lang['GAME_FLEET_EDLM'], 'SAT' => $lang['GAME_FLEET_SAT'], 'TRA' => $lang['GAME_FLEET_TRA']);
-    $defs = array('LM' => $lang['GAME_DEF_LM'], 'LLE' => $lang['GAME_DEF_LLE'], 'LLO' => $lang['GAME_DEF_LLO'], 'CG' => $lang['GAME_DEF_CG'], 'AI' => $lang['GAME_DEF_AI'], 'LP' => $lang['GAME_DEF_LP'], 'PB' => $lang['GAME_DEF_PB'], 'GB' => $lang['GAME_DEF_GB'], 'MIC' => $lang['GAME_DEF_MIC'], 'MIP' => $lang['GAME_DEF_MIP']);
-    $bats = array('M' => $lang['GAME_BUILDING_M'], 'C' => $lang['GAME_BUILDING_C'], 'D' => $lang['GAME_BUILDING_D'], 'CES' => $lang['GAME_BUILDING_CES'], 'CEF' => $lang['GAME_BUILDING_CEF'], 'UdR' => $lang['GAME_BUILDING_UDR'], 'UdN' => $lang['GAME_BUILDING_UDN'], 'CSp' => $lang['GAME_BUILDING_CSP'], 'HM' => $lang['GAME_BUILDING_HM'], 'HC' => $lang['GAME_BUILDING_HC'], 'HD' => $lang['GAME_BUILDING_HD'], 'Lab' => $lang['GAME_BUILDING_LAB'], 'Ter' => $lang['GAME_BUILDING_TER'], 'DdR' => $lang['GAME_BUILDING_DDR'], 'Silo' => $lang['GAME_BUILDING_SILO'], 'BaLu' => $lang['GAME_BUILDING_BALU'], 'Pha' => $lang['GAME_BUILDING_PHA'], 'PoSa' => $lang['GAME_BUILDING_POSA']);
-    $techs = array('Esp' => $lang['GAME_TECH_ESP'], 'Ordi' => $lang['GAME_TECH_ORDI'], 'Armes' => $lang['GAME_TECH_WEAP'], 'Bouclier' => $lang['GAME_TECH_SHIELD'], 'Protection' => $lang['GAME_TECH_ARMOR'], 'NRJ' => $lang['GAME_TECH_ENERGY'], 'Hyp' => $lang['GAME_TECH_HYP'], 'RC' => $lang['GAME_TECH_CD'], 'RI' => $lang['GAME_TECH_ID'], 'PH' => $lang['GAME_TECH_HD'], 'Laser' => $lang['GAME_TECH_LASER'], 'Ions' => $lang['GAME_TECH_ION'], 'Plasma' => $lang['GAME_TECH_PLASMA'], 'RRI' => $lang['GAME_TECH_IRN'], 'Graviton' => $lang['GAME_TECH_GRAV'], 'Astrophysique' => $lang['GAME_TECH_ASTRO']);
+    $show   = array(
+        'flotte' => 0,
+        'defense' => 0,
+        'batiment' => 0,
+        'recherche' => 0
+    );
+
+    $flotte = array(
+        'PT' => $lang['GAME_FLEET_PT'],
+        'GT' => $lang['GAME_FLEET_GT'],
+        'CLE' => $lang['GAME_FLEET_CLE'],
+        'CLO' => $lang['GAME_FLEET_CLO'],
+        'CR' => $lang['GAME_FLEET_CR'],
+        'VB' => $lang['GAME_FLEET_VB'],
+        'VC' => $lang['GAME_FLEET_VC'],
+        'REC' => $lang['GAME_FLEET_REC'],
+        'SE' => $lang['GAME_FLEET_SE'],
+        'BMD' => $lang['GAME_FLEET_BMD'],
+        'DST' => $lang['GAME_FLEET_DST'],
+        'EDLM' => $lang['GAME_FLEET_EDLM'],
+        'SAT' => $lang['GAME_FLEET_SAT'],
+        'TRA' => $lang['GAME_FLEET_TRA']
+    );
+
+    $defs   = array(
+        'LM' => $lang['GAME_DEF_LM'],
+        'LLE' => $lang['GAME_DEF_LLE'],
+        'LLO' => $lang['GAME_DEF_LLO'],
+        'CG' => $lang['GAME_DEF_CG'],
+        'AI' => $lang['GAME_DEF_AI'],
+        'LP' => $lang['GAME_DEF_LP'],
+        'PB' => $lang['GAME_DEF_PB'],
+        'GB' => $lang['GAME_DEF_GB'],
+        'MIC' => $lang['GAME_DEF_MIC'],
+        'MIP' => $lang['GAME_DEF_MIP']
+    );
+
+    $bats   = array(
+        'M' => $lang['GAME_BUILDING_M'],
+        'C' => $lang['GAME_BUILDING_C'],
+        'D' => $lang['GAME_BUILDING_D'],
+        'CES' => $lang['GAME_BUILDING_CES'],
+        'CEF' => $lang['GAME_BUILDING_CEF'],
+        'UdR' => $lang['GAME_BUILDING_UDR'],
+        'UdN' => $lang['GAME_BUILDING_UDN'],
+        'CSp' => $lang['GAME_BUILDING_CSP'],
+        'HM' => $lang['GAME_BUILDING_HM'],
+        'HC' => $lang['GAME_BUILDING_HC'],
+        'HD' => $lang['GAME_BUILDING_HD'],
+        'Lab' => $lang['GAME_BUILDING_LAB'],
+        'Ter' => $lang['GAME_BUILDING_TER'],
+        'DdR' => $lang['GAME_BUILDING_DDR'],
+        'Silo' => $lang['GAME_BUILDING_SILO'],
+        'Dock' => $lang['GAME_BUILDING_DOCK'],
+        'BaLu' => $lang['GAME_BUILDING_BALU'],
+        'Pha' => $lang['GAME_BUILDING_PHA'],
+        'PoSa' => $lang['GAME_BUILDING_POSA']
+    );
+
+    $techs  = array(
+        'Esp' => $lang['GAME_TECH_ESP'],
+        'Ordi' => $lang['GAME_TECH_ORDI'],
+        'Armes' => $lang['GAME_TECH_WEAP'],
+        'Bouclier' => $lang['GAME_TECH_SHIELD'],
+        'Protection' => $lang['GAME_TECH_ARMOR'],
+        'NRJ' => $lang['GAME_TECH_ENERGY'],
+        'Hyp' => $lang['GAME_TECH_HYP'],
+        'RC' => $lang['GAME_TECH_CD'],
+        'RI' => $lang['GAME_TECH_ID'],
+        'PH' => $lang['GAME_TECH_HD'],
+        'Laser' => $lang['GAME_TECH_LASER'],
+        'Ions' => $lang['GAME_TECH_ION'],
+        'Plasma' => $lang['GAME_TECH_PLASMA'],
+        'RRI' => $lang['GAME_TECH_IRN'],
+        'Graviton' => $lang['GAME_TECH_GRAV'],
+        'Astrophysique' => $lang['GAME_TECH_ASTRO']
+    );
+
     $query = 'SELECT planet_name, coordinates, metal, cristal, deuterium, energie, activite, M, C, D, CES, CEF, UdR, UdN, CSp, HM, HC, 
-        HD, Lab, Ter, Silo, DdR, BaLu, Pha, PoSa, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, 
+        HD, Lab, Ter, Silo, Dock, DdR, BaLu, Pha, PoSa, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, 
         DST, EDLM, SAT, TRA, Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique, 
         dateRE, proba FROM ' . TABLE_PARSEDSPY . ' WHERE id_spy=' . $id_RE;
     $result = $db->sql_query($query);
@@ -1674,8 +1767,8 @@ function UNparseRE($id_RE)
         }
     }
     if ($show['batiment'] == 0) {
-        $query = 'SELECT M, C, D, CES, CEF, UdR, UdN, CSp, HM, HC, HD, Lab, Ter, Silo, DdR, BaLu, Pha, PoSa FROM ' . TABLE_PARSEDSPY . ' WHERE (M <> -1 OR C <> -1 OR D <> -1 OR CES <> -1 OR CEF <> -1 OR UdR <> -1 OR UdN <> -1 OR 
-            CSp <> -1 OR HM <> -1 OR HC <> -1 OR HD <> -1 OR Lab <> -1 OR Ter <> -1 OR Silo <> -1 OR DdR <> -1 OR BaLu <> -1 
+        $query = 'SELECT M, C, D, CES, CEF, UdR, UdN, CSp, HM, HC, HD, Lab, Ter, Silo, Dock, DdR, BaLu, Pha, PoSa FROM ' . TABLE_PARSEDSPY . ' WHERE (M <> -1 OR C <> -1 OR D <> -1 OR CES <> -1 OR CEF <> -1 OR UdR <> -1 OR UdN <> -1 OR 
+            CSp <> -1 OR HM <> -1 OR HC <> -1 OR HD <> -1 OR Lab <> -1 OR Ter <> -1 OR Silo <> -1 OR Dock <> -1 OR DdR <> -1 OR BaLu <> -1 
             OR Pha <> -1 OR PoSa <> -1) AND coordinates = "' . $row['coordinates'] . '" AND planet_name' . (($moon == 0) ? ' NOT ' : '') . ' LIKE "%(Lune)%" ORDER BY dateRE DESC LIMIT 0,1';
         $tmp_res = $db->sql_query($query);
         if ($db->sql_numrows($tmp_res) > 0) {

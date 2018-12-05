@@ -415,6 +415,13 @@ function building_upgrade($building, $level)
             $NRJ = 0;
             break;
 
+        case "Dock":
+            $M = 200 * pow(2, ($level - 1));
+            $C = 0;
+            $D = 50 * pow(2, ($level - 1));
+            $NRJ = 50 * pow(2, ($level - 1));
+            break;
+
         case "BaLu":
             $M = 20000 * pow(2, ($level - 1));
             $C = 40000 * pow(2, ($level - 1));
@@ -639,7 +646,7 @@ function all_building_cumulate($user_building)
             if ($key == "M" || $key == "C" || $key == "D" || $key == "CES" || $key == "CEF" ||
                 $key == "UdR" || $key == "UdN" || $key == "CSp" || $key == "HM" || $key == "HC" ||
                 $key == "HD" || $key == "Lab" ||
-                $key == "Ter" || $key == "DdR" || $key == "Silo" || $key == "BaLu" || $key == "Pha" ||
+                $key == "Ter" || $key == "DdR" || $key == "Silo" || $key == "Dock" || $key == "BaLu" || $key == "Pha" ||
                 $key == "PoSa"
             ) {
                 list($M, $C, $D) = array_values(building_cumulate($key, $level));

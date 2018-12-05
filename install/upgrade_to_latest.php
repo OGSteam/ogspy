@@ -190,6 +190,14 @@ switch ($ogsversion) {
         $ogsversion = '3.3.4';
         $up_to_date = true;
 
+    case '3.3.4':
+
+        $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` ADD `Dock` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `Silo`";
+
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.5' WHERE config_name = 'version'";
+        $ogsversion = '3.3.5';
+        $up_to_date = true;
+
         break;
     default:
     die("Aucune mise … jour n'est disponible");
