@@ -29,7 +29,7 @@ $lang['MENU_RANKINGS'] = "Rankings";
 $lang['MENU_UPDATE_STATUS'] = "Update Status";
 $lang['MENU_MODULES'] = "Modules";
 $lang['MENU_FORUM'] = "Alliance Board";
-$lang['MENU_ABOUT'] = "About";
+$lang['MENU_ABOUT'] = "The OGSteam";
 $lang['MENU_LOGOUT'] = "Logout";
 
 

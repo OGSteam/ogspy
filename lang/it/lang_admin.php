@@ -71,6 +71,7 @@ $lang['ADMIN_SERVER_SESSIONS_CLEAN'] = "Svuota";
 $lang['ADMIN_SERVER_CONNEXIONS'] = "Connessioni al server";
 $lang['ADMIN_SERVER_PLANETS'] = "Pianeti";
 $lang['ADMIN_SERVER_ALL_IMPORT'] = "Elementi importati";
+$lang['ADMIN_SERVER_ALL_EXPORT'] = "exportations";
 $lang['ADMIN_SERVER_SPYREPORTS'] = "Rapporti di spionaggio";
 $lang['ADMIN_SERVER_RANKINGS'] = "Classificazione (numero di linee)";
 $lang['ADMIN_SERVER_PHPINFO'] = "PHPInfo";
@@ -82,12 +83,14 @@ $lang['ADMIN_SERVER_MEMBERNAME'] = "Username";
 $lang['ADMIN_SERVER_MEMBERCONNECTED'] = "Connessione";
 $lang['ADMIN_SERVER_MEMBERLASTACTIVITY'] = "Ultima attività";
 $lang['ADMIN_SERVER_MEMBERIP'] = "Indirizzo IP";
+$lang['ADMIN_SERVER_TOTAL_MAILS'] = "Total des Mails envoyés";
 
 /* admin_members.php*/
 
 $lang['ADMIN_MEMBERS_NEWACCOUNT'] = "Creazione nuovo account";
 $lang['ADMIN_MEMBERS_NEWACCOUNT_BUTTON'] = "Creare un nuovo utente";
 $lang['ADMIN_MEMBERS_PLAYER'] = "Giocatore";
+$lang['ADMIN_MEMBERS_EMAIL'] = "Email";
 $lang['ADMIN_MEMBERS_REGISTERED'] = "Iscritto il";
 $lang['ADMIN_MEMBERS_ENABLED'] = "Account attivo";
 $lang['ADMIN_MEMBERS_COADMIN'] = "Co-amministratore";
@@ -116,11 +119,13 @@ $lang['ADMIN_MEMBERS_PWDCHANGE_TITLE'] = "Cambiare la password di";
 $lang['ADMIN_MEMBERS_PWDCHANGE'] = "Siete sicuri di voler cambiare la password di";
 $lang['ADMIN_MEMBERS_NEWPASSWORD'] = "Nuova password";
 $lang['ADMIN_MEMBERS_PASSWORDGENERATE'] = "Generare password casuale";
+$lang['ADMIN_MEMBERS_PASSWORD_EMAIL_RESET'] = "Réinitialiser le Mot de passe par EMail ?";
 $lang['ADMIN_MEMBERS_PASSWORDOK'] = "ok";
 $lang['ADMIN_MEMBERS_PASSWORDCANCEL'] = "annullare";
 $lang['ADMIN_MEMBERS_POPUP_NEWACCOUNT'] = "Creazione nuovo account";
 $lang['ADMIN_MEMBERS_POPUP_NAME'] = "Nome :";
 $lang['ADMIN_MEMBERS_POPUP_PASSWORD'] = "Password :";
+$lang['ADMIN_MEMBERS_POPUP_EMAIL'] = "Email";
 $lang['ADMIN_MEMBERS_POPUP_RIGHTS'] = "Permessi :";
 $lang['ADMIN_MEMBERS_POPUP_COADMIN'] = "co-amministratore :";
 $lang['ADMIN_MEMBERS_POPUP_MGTMEMBERS'] = "Gestione membri";
@@ -230,7 +235,15 @@ $lang['ADMIN_PARAMS_GOOGLE_CLOUD'] = "Utilizzatori di Google Cloud Messaging";
 $lang['ADMIN_PARAMS_GOOGLE_NOTIF'] = "Necessario per l'uso delle notifiche sugli apparecchi Android";
 $lang['ADMIN_PARAMS_VALIDATE'] = "Convalida";
 $lang['ADMIN_PARAMS_CANCEL'] = "Resetta";
-
+$lang['ADMIN_PARAMS_MAIL'] = "E-Mail";
+$lang['ADMIN_PARAMS_MAIL_USE'] = "Utiliser la fonction 'mail'";
+$lang['ADMIN_PARAMS_MAIL_SMTP_USE'] = "Utiliser un serveur SMTP tierce (yahoo,gmail, ....)'";
+$lang['ADMIN_PARAMS_MAIL_SMTP_HOST'] = "Serveur SMTP";
+$lang['ADMIN_PARAMS_MAIL_SMTP_SECURE'] = "Utilise Une connexion securisée";
+$lang['ADMIN_PARAMS_MAIL_SMTP_PORT'] = "Port à utiliser";
+$lang['ADMIN_PARAMS_MAIL_SMTP_USERNAME'] = "Compte utilisateur à utiliser";
+$lang['ADMIN_PARAMS_MAIL_SMTP_PASSEWORD'] = "Mot de passe SMTP du Compte utilisateur";
+$lang['ADMIN_PARAMS_MAIL_TEST'] = "Testl envoi d'un mail avec l'adresse : ";
 /* admin_viewer.php*/
 
 $lang['ADMIN_LOGS_NOLOGS'] = "Non è stato trovato alcun log per quella data";
