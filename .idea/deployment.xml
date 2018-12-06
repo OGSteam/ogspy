@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="UwAmp">
+  <component name="PublishConfigData" serverName="localhost">
     <serverData>
-      <paths name="UwAmp">
+      <paths name="localhost">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping local="$PROJECT_DIR$" web="ogspy" />
           </mappings>
         </serverdata>
       </paths>
