@@ -1144,7 +1144,6 @@ function check_postvalue($secvalue)
 /**
  * OGSpy Hash Function
  * @param string The string to Hash (usually the password)
- * todo : remplacer les sha1(md5()) d'ogspy par la fonction'
  * @return string Returns the hash of the input function
  */
 function crypto($str)

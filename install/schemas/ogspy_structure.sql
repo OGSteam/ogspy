@@ -484,6 +484,7 @@ CREATE TABLE ogspy_user (
   user_id            INT(11)         NOT NULL AUTO_INCREMENT,
   user_name          VARCHAR(20)     NOT NULL DEFAULT '',
   user_password      VARCHAR(32)     NOT NULL DEFAULT '',
+  user_password_s    VARCHAR(255)    NOT NULL DEFAULT '',
   user_email         VARCHAR(50)     NOT NULL DEFAULT '',
   user_admin         ENUM ('0', '1') NOT NULL DEFAULT '0',
   user_coadmin       ENUM ('0', '1') NOT NULL DEFAULT '0',
