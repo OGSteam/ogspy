@@ -211,9 +211,9 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " MODIFY `points` BIGINT";
         $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_HONOR . " MODIFY `points` BIGINT";
 
-
-
         $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` ADD `Dock` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `Silo`";
+
+        $requests[] = "ALTER TABLE `" . TABLE_MOD . "` MODIFY `version` VARCHAR(10)";
 
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.5' WHERE config_name = 'version'";
         $ogsversion = '3.3.5';
