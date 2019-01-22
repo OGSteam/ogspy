@@ -215,6 +215,52 @@ switch ($ogsversion) {
 
         $requests[] = "ALTER TABLE `" . TABLE_MOD . "` MODIFY `version` VARCHAR(10)";
 
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_POINTS . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_POINTS . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_ECO . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_ECO . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_TECHNOLOGY . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_TECHNOLOGY . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_BUILT . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_BUILT . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_LOOSE . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_LOOSE . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_HONOR . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_HONOR . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_POINTS . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_ECO . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_TECHNOLOGY . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_BUILT . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_LOOSE . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_DESTRUCT . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_HONOR . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+
+        $requests[] = "CREATE TABLE IF NOT EXISTS `" . ogspy_ally . "` ( " .
+            "`ally_id` int(6) NOT NULL ," .
+            "`ally` varchar(65) NOT NULL, " .
+            "`tag` varchar(65) NOT NULL, " .
+            "`member` int(3) NOT NULL ," .
+            "`datadate` INT(11) NOT NULL " .
+            "PRIMARY KEY (`ally_id`) " .
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8 ";
+
+        $requests[] = "CREATE TABLE IF NOT EXISTS `" . ogspy_player . "` ( " .
+            "`player_id` int(6) NOT NULL ," .
+            "`player` varchar(65) NOT NULL, " .
+            "`status` varchar(6) NOT NULL, " .
+            "`ally_id` int(6) NOT NULL ," .
+            "`datadate` INT(11) NOT NULL " .
+            "PRIMARY KEY (`player_id`) " .
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8 ";
+
+
+
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.5' WHERE config_name = 'version'";
         $ogsversion = '3.3.5';
         $up_to_date = true;
