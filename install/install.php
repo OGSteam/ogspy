@@ -243,7 +243,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
     $admin_password = $pub_admin_password;
     $admin_password2 = $pub_admin_password2;
     $num_of_galaxies = (isset($pub_num_of_galaxies) && !empty($pub_num_of_galaxies)) ? $pub_num_of_galaxies : 9;
-    $num_of_systems = (isset($pub_num_of_systems) && !empty($pub_num_of_systems)) ? $pub_num_of_systems : 9;
+    $num_of_systems = (isset($pub_num_of_systems) && !empty($pub_num_of_systems)) ? $pub_num_of_systems : 499;
     $uni_speed = (isset($pub_uni_speed) && !empty($pub_uni_speed)) ? $pub_uni_speed : 1;
     $directory = $pub_directory;
 }
@@ -312,7 +312,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
                     </tr>
                     <tr>
                         <th><?php echo $lang['INSTALL_VIEW_DBUNISPEED']; ?><?php echo help("profile_speed", "", "../"); ?></th>
-                        <th><input name="num_of_systems" type="text"
+                        <th><input name="uni_speed" type="text"
                                    value="<?php echo isset($pub_uni_speed) ? $pub_uni_speed : "1"; ?>"></th>
                     </tr>
 
@@ -358,7 +358,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
         <tr align="center">
             <td>
                 <div style="text-align: center;"><span style="font-size: x-small; "><i><b>OGSpy</b> is an
-                            <b>OGSteam Software</b> (c)2005-2018</i><br/>v <?php echo $install_version; ?></span></div>
+                            <b>OGSteam Software</b> (c)2005-2019</i><br/>v <?php echo $install_version; ?></span></div>
             </td>
         </tr>
     </table>
