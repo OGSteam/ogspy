@@ -964,7 +964,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
         //Mot de passe des membres
         case "Password":
-            if (!preg_match("#^[\w\s\-]{6,20}$#", $value)) {
+            if (!preg_match("#^[\w\s\-]{6,64}$#", $value)) {
                 return false;
             }
             break;

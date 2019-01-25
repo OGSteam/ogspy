@@ -1,14 +1,14 @@
 <?php
 /**
-* Token Class
+ * Token Class
  * CRSF protect
-* @package OGSpy
-* @subpackage token
-* @author Machine
-* @created 05/01/2018
-* @copyright Copyright &copy; 2007, http://ogsteam.fr/
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*/
+ * @package OGSpy
+ * @subpackage token
+ * @author Machine
+ * @created 05/01/2018
+ * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -52,7 +52,7 @@ class token
         // on stock le token
         if ($inSession)
         {
-           $this->saveInCookie($this->token);
+            $this->saveInCookie($this->token);
         }
         return $this->token;
 
@@ -63,20 +63,19 @@ class token
     //permet de verifier un token
     public function checkToken($tokenA,$TokenB=null)
     {
-        global $HTTP_COOKIE_VARS;
-
         $tokenA = trim((string)$tokenA);
         if(stristr($tokenA, $this->splitter) === FALSE) // si pas de splitteur, ce n'est pas notre token
         {
+            $this->resetInCookie();
             return false;
         }
         $date = (int)explode($this->splitter,$tokenA)[1];
         $t=time();
         if($date < $t) // si périmé [date du token inf a la date en cours (timestamp )]
         {
+            $this->resetInCookie();
             return false;
         }
-
 
         if ($TokenB == null )
         {
@@ -118,7 +117,7 @@ class token
         $path = $this->get_saltpath();
         if(isset($path) && file_exists($path))
         {
-           $retour =  file_get_contents($path);
+            $retour =  file_get_contents($path);
             $this->salt =  $retour;
         }else{
             $this->salt = $this->CreateNewSalt();
@@ -144,22 +143,19 @@ class token
 
     private function saveInCookie()
     {
-        setcookie("token", $this->token);
+        $_SESSION['ogspy_token'] = $this->token;
     }
 
     private function getInCookie()
     {
-        global $HTTP_COOKIE_VARS;
-        return $HTTP_COOKIE_VARS['token'];
+        return $_SESSION['ogspy_token'];
     }
 
     private function resetInCookie()
     {
-        global $_COOKIE ;
-        if (isset($_COOKIE["token"]))
+        if (isset($_SESSION['ogspy_token']))
         {
-            $t = $_COOKIE["token"];
-            setcookie("token", $t,time()-1);
+            unset($_SESSION['ogspy_token']);
         }
     }
 

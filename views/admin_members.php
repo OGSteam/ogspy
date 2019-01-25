@@ -95,7 +95,7 @@ $usergroup_list = usergroup_get();
                                 <?php echo($lang['ADMIN_MEMBERS_POPUP_PASSWORD']); ?>
                             </th>
                             <th align="center">
-                                <input name="pass" type="text" maxlength="15" size="20">
+                                <input name="pass" type="text" maxlength="64" size="20">
                             </th>
                         </tr>
                         <tr>
