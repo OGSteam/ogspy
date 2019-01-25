@@ -92,9 +92,9 @@ function user_login()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-        $request = "SELECT user_id, user_active, password_s FROM " . TABLE_USER .
+        $request = "SELECT user_id, user_active, user_password_s FROM " . TABLE_USER .
             " WHERE user_name = '" . $db->sql_escape_string($pub_login) .
-            "' AND user_password_s NOT NULL";
+            "' AND user_password_s IS NOT NULL";
         $result = $db->sql_query($request);
 
         if($db->sql_numrows($result)) {
