@@ -117,6 +117,8 @@ function user_login()
 
             if ($db->sql_numrows($result)) {
 
+                list($user_id, $user_active) = $db->sql_fetch_row($result);
+
                 //Ajout du nouveau mot de passe et supression ancien
 
                 $request = "UPDATE " . TABLE_USER . " SET `password_s` = '" . password_hash($pub_password, PASSWORD_DEFAULT ) . "' WHERE `user_id` = " . $user_id;
@@ -125,7 +127,6 @@ function user_login()
                 $request = "UPDATE " . TABLE_USER . " SET `password` = '' WHERE `user_id` = " . $user_id;
                 $db->sql_query($request);
 
-                list($user_id, $user_active) = $db->sql_fetch_row($result);
                 user_set_connection($user_id, $user_active);
 
 
