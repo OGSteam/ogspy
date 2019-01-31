@@ -94,7 +94,7 @@ function user_login()
 
         $request = "SELECT user_id, user_active, user_password_s FROM " . TABLE_USER .
             " WHERE user_name = '" . $db->sql_escape_string($pub_login) .
-            "' AND user_password_s IS NOT NULL";
+            "' AND NOT user_password_s = ''";
         $result = $db->sql_query($request);
 
         if($db->sql_numrows($result)) {
