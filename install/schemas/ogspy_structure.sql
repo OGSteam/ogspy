@@ -108,32 +108,33 @@ CREATE TABLE ogspy_mod (
   DEFAULT CHARSET = utf8;
 
 
---
--- Structure de la table `ogspy_ally`
---
+##
+## Structure de la table `ogspy_ally`
+##
 
 CREATE TABLE ogspy_ally (
-  id          INT(6)        NOT NULL,
-  ally        VARCHAR(65)   NOT NULL  COMMENT 'Nom de l alliance',
-  tag         VARCHAR(65)   NOT NULL DEFAULT '',
-  member      INT(3)        NOT NULL   COMMENT 'nombre de membre',
-  datadate    INT(11)       NOT NULL DEFAULT '0',
-  number_member INT(11)     NOT NULL,
-  PRIMARY KEY (id)
+  ally_id INT(6) NOT NULL,
+  ally      VARCHAR(65)    NOT NULL  COMMENT 'Nom de l alliance',
+  tag       VARCHAR(65)     NOT NULL DEFAULT '',
+  number_member   INT(3)    NOT NULL   COMMENT 'nombre de membre',
+  datadate      INT(11)     NOT NULL DEFAULT '0',
+  PRIMARY KEY (ally_id)
 )
   DEFAULT CHARSET = utf8;
 
---
--- Structure de la table `ogspy_player`
---
+## ##########################################################
+
+##
+## Structure de la table `ogspy_player`
+##
 
 CREATE TABLE ogspy_player (
-  id            INT(6)      NOT NULL,
-  player        VARCHAR(65) NOT NULL  COMMENT 'Nom du joueur',
-  status        VARCHAR(6)  NOT NULL DEFAULT '',
-  ally_id       INT(6)      NOT NULL   COMMENT 'Action transmise en get et traitée dans index.php',
+  player_id INT(6) NOT NULL,
+  player      VARCHAR(65)    NOT NULL  COMMENT 'Nom du joueur',
+  status       VARCHAR(6)     NOT NULL DEFAULT '',
+  ally_id   INT(6)    NOT NULL   COMMENT 'Action transmise en get et traitée dans index.php',
   datadate      INT(11)     NOT NULL DEFAULT '0',
-  PRIMARY KEY (id)
+  PRIMARY KEY (player_id)
 )
   DEFAULT CHARSET = utf8;
 

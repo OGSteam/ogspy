@@ -244,18 +244,18 @@ switch ($ogsversion) {
         $requests[] = "CREATE TABLE IF NOT EXISTS `" . ogspy_ally . "` ( " .
             "`ally_id` int(6) NOT NULL ," .
             "`ally` varchar(65) NOT NULL, " .
-            "`tag` varchar(65) NOT NULL, " .
-            "`member` int(3) NOT NULL ," .
-            "`datadate` INT(11) NOT NULL " .
+            "`tag` varchar(65)  NOT NULL default '' ".
+            "`number_member` int(3) NOT NULL ," .
+            "`datadate` INT(11)  NOT NULL default '0', ".
             "PRIMARY KEY (`ally_id`) " .
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8 ";
 
         $requests[] = "CREATE TABLE IF NOT EXISTS `" . ogspy_player . "` ( " .
             "`player_id` int(6) NOT NULL ," .
             "`player` varchar(65) NOT NULL, " .
-            "`status` varchar(6) NOT NULL, " .
+            "`status` varchar(6)  NOT NULL default '' ".
             "`ally_id` int(6) NOT NULL ," .
-            "`datadate` INT(11) NOT NULL " .
+            "`datadate` INT(11)  NOT NULL default '0', ".
             "PRIMARY KEY (`player_id`) " .
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8 ";
 
