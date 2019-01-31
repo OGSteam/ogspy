@@ -122,11 +122,10 @@ CREATE TABLE ogspy_ally (
 )
   DEFAULT CHARSET = utf8;
 
-## ##########################################################
 
-##
-## Structure de la table `ogspy_player`
-##
+--
+-- Structure de la table `ogspy_player`
+--
 
 CREATE TABLE ogspy_player (
   player_id INT(6) NOT NULL,
