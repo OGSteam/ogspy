@@ -121,10 +121,10 @@ function user_login()
 
                 //Ajout du nouveau mot de passe et supression ancien
 
-                $request = "UPDATE " . TABLE_USER . " SET `password_s` = '" . password_hash($pub_password, PASSWORD_DEFAULT ) . "' WHERE `user_id` = " . $user_id;
+                $request = "UPDATE " . TABLE_USER . " SET `user_password_s` = '" . password_hash($pub_password, PASSWORD_DEFAULT ) . "' WHERE `user_id` = " . $user_id;
                 $db->sql_query($request);
 
-                $request = "UPDATE " . TABLE_USER . " SET `password` = '' WHERE `user_id` = " . $user_id;
+                $request = "UPDATE " . TABLE_USER . " SET `user_password` = '' WHERE `user_id` = " . $user_id;
                 $db->sql_query($request);
 
                 user_set_connection($user_id, $user_active);
