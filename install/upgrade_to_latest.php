@@ -260,6 +260,8 @@ switch ($ogsversion) {
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8 ";
 
 
+        $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` ADD `Dock` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `Silo`";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `user_password_s` VARCHAR(255)    NOT NULL DEFAULT '' AFTER `user_password`";
 
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.5' WHERE config_name = 'version'";
         $ogsversion = '3.3.5';
