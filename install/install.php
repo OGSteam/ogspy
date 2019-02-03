@@ -95,13 +95,12 @@ function error_sql($message)
  * @param string $sgbd_tableprefix Préfixe à utiliser pour les tables ogspy
  * @param string $admin_username Nom de l'Administrateur OGSpy
  * @param string $admin_password Mot de passe Administrateur OGSpy
- * @param string $admin_password2 Confirmation du Mot de passe Administrateur OGSpy
  * @param int    $num_of_galaxies Nombre de galaxies dans l'univers OGame de cet OGSp
  * @param int    $num_of_systems Nombre de systèmes dans l'univers OGame de cet OGSpy
  * @param        $ui_lang Langue
  */
 
-function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $admin_username, $admin_password, $admin_password2, $num_of_galaxies, $num_of_systems, $uni_speed, $ui_lang)
+function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $admin_username, $admin_password, $num_of_galaxies, $num_of_systems, $uni_speed, $ui_lang)
 {
     global $lang, $install_version;
     $db = sql_db::getInstance($sgbd_server, $sgbd_username, $sgbd_password, $sgbd_dbname);
@@ -221,7 +220,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
             $pub_error = $lang['INSTALL_FORM_ERROR_GALAXY'];
         } else {
             if ($pub_sgbd_server != "" && $pub_sgbd_dbname != "" && $pub_sgbd_username != "" && $pub_admin_username != "" && $pub_admin_password != "" && $pub_admin_password == $pub_admin_password2 && $pub_num_of_galaxies != "" && $pub_num_of_systems != "" && $pub_lang != "") {
-                installation_db($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_admin_username, $pub_admin_password, $pub_admin_password2, $pub_num_of_galaxies, $pub_num_of_systems, $pub_uni_speed, $pub_lang);
+                installation_db($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_admin_username, $pub_admin_password, $pub_num_of_galaxies, $pub_num_of_systems, $pub_uni_speed, $pub_lang);
             } else {
                 $pub_error = $lang['INSTALL_FORM_ERROR_CONNECTION'];
             }
