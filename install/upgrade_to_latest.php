@@ -41,7 +41,7 @@ $result = $db->sql_query($request);
     while (list($name, $value) = $db->sql_fetch_row($result)) {
         $server_config[$name] = stripslashes($value);
     }
-    
+
 
 $request = "SELECT config_value FROM " . TABLE_CONFIG . " WHERE config_name = 'version'";
 $result = $db->sql_query($request);
@@ -55,18 +55,18 @@ switch ($ogsversion) {
         // MODIF TABLE_USER
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP') AFTER `rank_added_ogs`"; // Type de barre utilisée par le user
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `xtense_version` VARCHAR(10) AFTER `xtense_type`"; // Type de barre utilisée par le user
-        
+
         // MODIF TABLE_RANK_PLAYER_MILITARY
         $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY . "` ADD `nb_spacecraft` int(11) NOT NULL default '0' AFTER `sender_id`"; // Ajout nombre de vaisseaux au classement militaire joueur
-                                                  
+
         // SUPPRESSIONS ANCIENS CLASSEMENTS : TABLE_RANK_PLAYER_FLEET, TABLE_RANK_PLAYER_RESEARCH, TABLE_RANK_ALLY_FLEET & TABLE_RANK_ALLY_RESEARCH
         $requests[] = "DROP TABLE `" . TABLE_RANK_PLAYER_FLEET . "`"; // ancien classement flotte
         $requests[] = "DROP TABLE `" . TABLE_RANK_PLAYER_RESEARCH . "`"; // ancien classement recherche
         $requests[] = "DROP TABLE `" . TABLE_RANK_ALLY_FLEET . "`"; // ancien classement flotte
         $requests[] = "DROP TABLE `" . TABLE_RANK_ALLY_RESEARCH . "`"; // ancien classement recherche
         $requests[] = "DROP TABLE `" . TABLE_SPY . "`"; // ancienne table des RE
-        $requests[] = "DROP TABLE `" . TABLE_UNIVERSE_TEMPORARY . "`"; // ancienne table temporaire univers		
-        
+        $requests[] = "DROP TABLE `" . TABLE_UNIVERSE_TEMPORARY . "`"; // ancienne table temporaire univers
+
         $ogsversion = '3.1.1';
         $up_to_date = true;
         //Pas de break pour faire toutes les mises à jour d'un coup !
@@ -93,8 +93,8 @@ switch ($ogsversion) {
                         "`version_ogspy` varchar(50), " .
                         "`device` varchar(50), " .
                         "PRIMARY KEY (`gcm_regid`) " .
-                        ") ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";					  
-                      
+                        ") ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";
+
         //Passage des tables en UTF-8
         $requests[] = "ALTER TABLE " . TABLE_CONFIG . " CONVERT TO CHARACTER SET utf8";
         $requests[] = "ALTER TABLE " . TABLE_GROUP . " CONVERT TO CHARACTER SET utf8";
@@ -131,7 +131,7 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_MILITARY_LOOSE . " CONVERT TO CHARACTER SET utf8";
         $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " CONVERT TO CHARACTER SET utf8";
         $requests[] = "ALTER TABLE " . TABLE_RANK_ALLY_HONOR . " CONVERT TO CHARACTER SET utf8";
-        
+
         $requests[] = "ALTER TABLE " . TABLE_USER_BUILDING . " ADD `boosters` VARCHAR(64) NOT NULL default 'm:0:0_c:0:0_d:0:0_p:0_m:0' AFTER `fields`";
         $requests[] = "ALTER TABLE " . TABLE_PARSEDRC . " MODIFY `pertes_A` BIGINT";
         $requests[] = "ALTER TABLE " . TABLE_PARSEDRC . " MODIFY `pertes_D` BIGINT";
@@ -140,7 +140,7 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE " . TABLE_PARSEDRC . " MODIFY `gain_D` BIGINT";
         $requests[] = "ALTER TABLE " . TABLE_PARSEDRC . " MODIFY `debris_M` BIGINT";
         $requests[] = "ALTER TABLE " . TABLE_PARSEDRC . " MODIFY `debris_C` BIGINT";
-                
+
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.2.0' WHERE config_name = 'version'";
         $ogsversion = '3.2.0';
         $up_to_date = true;
@@ -260,8 +260,9 @@ switch ($ogsversion) {
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8 ";
 
 
-        $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` ADD `Dock` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `Silo`";
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `user_password_s` VARCHAR(255)    NOT NULL DEFAULT '' AFTER `user_password`";
+
+        $requests[] = "DROP TABLE `" . TABLE_GCM_USERS . "`";
 
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.5' WHERE config_name = 'version'";
         $ogsversion = '3.3.5';
@@ -276,14 +277,14 @@ switch ($ogsversion) {
 foreach ($requests as $request) {
     $db->sql_query($request);
 }
-  
+
 // on supprime tous les fichiers du cache
 // pour prendre en compte toutes les modifications
 $files = glob('../cache/*.php');
 if (count($files) > 0) {
-    foreach ($files as $filename) {unlink($filename); } 
+    foreach ($files as $filename) {unlink($filename); }
 }
-  
+
 ?>
     <h3 align='center'><span style="color: yellow; ">Mise à jour du serveur OGSpy vers la version <?php echo $ogsversion; ?> effectuée avec succès</span></h3>
     <div style="text-align: center;">

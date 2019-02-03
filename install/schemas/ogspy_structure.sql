@@ -40,7 +40,6 @@ DROP TABLE IF EXISTS ogspy_parsedRC;
 DROP TABLE IF EXISTS ogspy_parsedRCRound;
 DROP TABLE IF EXISTS ogspy_round_attack;
 DROP TABLE IF EXISTS ogspy_round_defense;
-DROP TABLE IF EXISTS ogspy_gcm_users;
 
 --
 -- Structure de la table `ogspy_config`
@@ -924,19 +923,3 @@ CREATE TABLE `ogspy_round_defense` (
   KEY `player` (`player`, `coordinates`)
 )
   DEFAULT CHARSET = utf8;
-
---
--- Structure de la table `ogspy_gcm_users`
---
-
-CREATE TABLE IF NOT EXISTS `ogspy_gcm_users` (
-  `user_id`         INT(11)      NOT NULL DEFAULT '0',
-  `gcm_regid`       VARCHAR(128) NOT NULL,
-  `created_at`      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `version_android` VARCHAR(50),
-  `version_ogspy`   VARCHAR(50),
-  `device`          VARCHAR(50),
-  PRIMARY KEY (`gcm_regid`)
-)
-  DEFAULT CHARSET = utf8;
-
