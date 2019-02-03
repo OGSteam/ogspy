@@ -90,44 +90,87 @@ function user_login()
 
     if (!isset($pub_login) || !isset($pub_password)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
-    } else {
-        $request = "SELECT user_id, user_active FROM " . TABLE_USER .
-            " WHERE user_name = '" . $db->sql_escape_string($pub_login) .
-            "' AND user_password = '" . md5(sha1($pub_password)) . "'";
-        $result = $db->sql_query($request);
-        if (list($user_id, $user_active) = $db->sql_fetch_row($result)) {
-            if ($user_active == 1) {
-                $request = "select user_lastvisit from " . TABLE_USER . " where user_id = " . $user_id;
-                $result = $db->sql_query($request);
-                list($lastvisit) = $db->sql_fetch_row($result);
-
-                $request = "update " . TABLE_USER . " set user_lastvisit = " . time() .
-                    " where user_id = " . $user_id;
-                $db->sql_query($request);
-
-                $request = "update " . TABLE_STATISTIC .
-                    " set statistic_value = statistic_value + 1";
-                $request .= " where statistic_name = 'connection_server'";
-                $db->sql_query($request);
-                if ($db->sql_affectedrows() == 0) {
-                    $request = "insert ignore into " . TABLE_STATISTIC .
-                        " values ('connection_server', '1')";
-                    $db->sql_query($request);
-                }
-
-                session_set_user_id($user_id, $lastvisit);
-                log_('login');
-                if (!isset($url_append)) {
-                    $url_append = "";
-                }
-                redirection("index.php?action=" . $pub_goto . "" . $url_append);
-            } else {
-                redirection("index.php?action=message&id_message=account_lock&info");
-            }
-        } else {
-            redirection("index.php?action=message&id_message=login_wrong&info");
-        }
     }
+
+        $request = "SELECT user_id, user_active, user_password_s FROM " . TABLE_USER .
+            " WHERE user_name = '" . $db->sql_escape_string($pub_login) .
+            "' AND NOT user_password_s = ''";
+        $result = $db->sql_query($request);
+
+        if($db->sql_numrows($result)) {
+
+            list($user_id, $user_active, $password_s) = $db->sql_fetch_row($result);
+            if (password_verify($pub_password, $password_s)) {
+                // Format Mot de passe Secure
+                user_set_connection($user_id, $user_active);
+            } else {
+                redirection("index.php?action=message&id_message=login_wrong&info");
+            }
+
+        }else {
+            // Format Mot de passe Legacy
+
+            $request = "SELECT user_id, user_active FROM " . TABLE_USER .
+                " WHERE user_name = '" . $db->sql_escape_string($pub_login) .
+                "' AND user_password = '" . md5(sha1($pub_password)) . "'";
+            $result = $db->sql_query($request);
+
+            if ($db->sql_numrows($result)) {
+
+                list($user_id, $user_active) = $db->sql_fetch_row($result);
+
+                //Ajout du nouveau mot de passe et supression ancien
+
+                $request = "UPDATE " . TABLE_USER . " SET `user_password_s` = '" . password_hash($pub_password, PASSWORD_DEFAULT ) . "' WHERE `user_id` = " . $user_id;
+                $db->sql_query($request);
+
+                $request = "UPDATE " . TABLE_USER . " SET `user_password` = '' WHERE `user_id` = " . $user_id;
+                $db->sql_query($request);
+
+                user_set_connection($user_id, $user_active);
+
+
+            } else {
+                redirection("index.php?action=message&id_message=login_wrong&info");
+            }
+
+        }
+}
+
+function user_set_connection($user_id, $user_active){
+
+    global $db,$pub_goto;
+
+
+        if ($user_active == 1) {
+            $request = "select user_lastvisit from " . TABLE_USER . " where user_id = " . $user_id;
+            $result = $db->sql_query($request);
+            list($lastvisit) = $db->sql_fetch_row($result);
+
+            $request = "update " . TABLE_USER . " set user_lastvisit = " . time() .
+                " where user_id = " . $user_id;
+            $db->sql_query($request);
+
+            $request = "update " . TABLE_STATISTIC .
+                " set statistic_value = statistic_value + 1";
+            $request .= " where statistic_name = 'connection_server'";
+            $db->sql_query($request);
+            if ($db->sql_affectedrows() == 0) {
+                $request = "insert ignore into " . TABLE_STATISTIC .
+                    " values ('connection_server', '1')";
+                $db->sql_query($request);
+            }
+
+            session_set_user_id($user_id, $lastvisit);
+            log_('login');
+            if (!isset($url_append)) {
+                $url_append = "";
+            }
+            redirection("index.php?action=" . $pub_goto . "" . $url_append);
+        } else {
+            redirection("index.php?action=message&id_message=account_lock&info");
+        }
+
 }
 
 /**
@@ -291,7 +334,7 @@ function member_user_set()
         if ($pub_old_password == "" || $pub_new_password == "" || $pub_new_password != $pub_new_password2) {
             redirection("index.php?action=message&id_message=member_modifyuser_failed_passwordcheck&info");
         }
-        if (md5(sha1($pub_old_password)) != $user_info[0]["user_password"]) {
+        if (password_verify($pub_old_password, $user_info[0]["user_password"])) {
             redirection("index.php?action=message&id_message=member_modifyuser_failed_passwordcheck&info");
         }
         if (!check_var($pub_new_password, "Password")) {
@@ -391,14 +434,14 @@ function member_user_set()
  * @todo Query x1
  * @param $user_id
  * @param null $user_name
- * @param null $user_password
+ * @param null $user_password_s
  * @param null $user_email
  * @param null $user_lastvisit
  * @param null $user_galaxy
  * @param null $user_system
  * @param integer $disable_ip_check
  */
-function user_set_general($user_id, $user_name = null, $user_password = null, $user_email = null, $user_lastvisit = null,
+function user_set_general($user_id, $user_name = null, $user_password_s = null, $user_email = null, $user_lastvisit = null,
                           $user_galaxy = null, $user_system = null, $disable_ip_check = null)
 {
     global $db, $user_data, $server_config;
@@ -426,8 +469,8 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
     if (!empty($user_name)) {
         $update .= "user_name = '" . $db->sql_escape_string($user_name) . "'";
     }
-    if (!empty($user_password)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_password = '" . md5(sha1($user_password)) . "'";
+    if (!empty($user_password_s)) {
+        $update .= ((strlen($update) > 0) ? ", " : "") . "user_password_s = '" . password_hash($user_password_s, PASSWORD_DEFAULT) . "'";
     }
 
     //Galaxy et système solaire du membre
@@ -611,7 +654,7 @@ function user_get($user_id = false)
 {
     global $db;
 
-    $request = "select user_id, user_name, user_password, user_email, user_active, user_regdate, user_lastvisit," .
+    $request = "select user_id, user_name, user_password_s, user_email, user_active, user_regdate, user_lastvisit," .
         " user_galaxy, user_system, user_admin, user_coadmin, management_user, management_ranking, disable_ip_check," .
         " off_commandant, off_amiral, off_ingenieur, off_geologue, off_technocrate" .
         " from " . TABLE_USER;
@@ -767,8 +810,8 @@ function user_create()
     $result = $db->sql_query($request);
     if ($db->sql_numrows($result) == 0) {
         $request = "insert into " . TABLE_USER .
-            " (user_name, user_password, user_email, user_regdate, user_active)" . " values ('" . $pub_pseudo .
-            "', '" . md5(sha1($password)) . "', '". $pub_email . "', " . time() . ", '1')";
+            " (user_name, user_password_s, user_email, user_regdate, user_active)" . " values ('" . $pub_pseudo .
+            "', '" . password_hash($password, PASSWORD_DEFAULT) . "', '". $pub_email . "', " . time() . ", '1')";
         $db->sql_query($request);
         $user_id = $db->sql_insertid();
 

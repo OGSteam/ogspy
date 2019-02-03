@@ -101,7 +101,7 @@ function error_sql($message)
  * @param        $ui_lang Langue
  */
 
-function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $admin_username, $admin_password, $admin_password2, $num_of_galaxies, $num_of_systems, $ui_lang)
+function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $admin_username, $admin_password, $admin_password2, $num_of_galaxies, $num_of_systems, $uni_speed, $ui_lang)
 {
     global $lang, $install_version;
     $db = sql_db::getInstance($sgbd_server, $sgbd_username, $sgbd_password, $sgbd_dbname);
@@ -120,8 +120,8 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
     $sql_query = explode(";", $sql_query);
     $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('num_of_galaxies','$num_of_galaxies')";
     $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('num_of_systems','$num_of_systems')";
-    $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('speed_uni','1')";
-    $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('ddr','false')";
+    $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('speed_uni','$uni_speed')";
+    $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('ddr','true')";
     $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('astro_strict','1')";
     $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('version','$install_version')";
     $sql_query[] = "ALTER DATABASE " . $sgbd_dbname . " charset=utf8"; /*Passage de interclassement en utf8*/
@@ -136,8 +136,8 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
         }
     }
 
-    $request = "insert into " . $sgbd_tableprefix . "user (user_id, user_name, user_password, user_regdate, user_active, user_admin)" .
-        " values (1, '" . mysqli_real_escape_string($db->db_connect_id, $admin_username) . "', '" . md5(sha1($admin_password)) . "', " . time() . ", '1', '1')";
+    $request = "insert into " . $sgbd_tableprefix . "user (user_id, user_name, user_password_s , user_regdate, user_active, user_admin)" .
+        " values (1, '" . mysqli_real_escape_string($db->db_connect_id, $admin_username) . "', '" . password_hash($admin_password,PASSWORD_DEFAULT ) . "', " . time() . ", '1', '1')";
     if (!($result = $db->sql_query($request, false, false))) {
         $error = $db->sql_error($result);
         print $request;
@@ -209,7 +209,7 @@ function generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password,
 }
 
 if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_username) && isset($pub_sgbd_password) && isset($pub_sgbd_tableprefix) &&
-    isset($pub_admin_username) && isset($pub_admin_password) && isset($pub_admin_password2) && isset($pub_num_of_galaxies) && isset($pub_num_of_systems) && isset($pub_lang)
+    isset($pub_admin_username) && isset($pub_admin_password) && isset($pub_admin_password2) && isset($pub_num_of_galaxies) && isset($pub_num_of_systems) && isset($pub_uni_speed)&& isset($pub_lang)
 ) {
 
     if (isset($pub_complete)) {
@@ -221,7 +221,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
             $pub_error = $lang['INSTALL_FORM_ERROR_GALAXY'];
         } else {
             if ($pub_sgbd_server != "" && $pub_sgbd_dbname != "" && $pub_sgbd_username != "" && $pub_admin_username != "" && $pub_admin_password != "" && $pub_admin_password == $pub_admin_password2 && $pub_num_of_galaxies != "" && $pub_num_of_systems != "" && $pub_lang != "") {
-                installation_db($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_admin_username, $pub_admin_password, $pub_admin_password2, $pub_num_of_galaxies, $pub_num_of_systems, $pub_lang);
+                installation_db($pub_sgbd_server, $pub_sgbd_dbname, $pub_sgbd_username, $pub_sgbd_password, $pub_sgbd_tableprefix, $pub_admin_username, $pub_admin_password, $pub_admin_password2, $pub_num_of_galaxies, $pub_num_of_systems, $pub_uni_speed, $pub_lang);
             } else {
                 $pub_error = $lang['INSTALL_FORM_ERROR_CONNECTION'];
             }
@@ -243,7 +243,8 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
     $admin_password = $pub_admin_password;
     $admin_password2 = $pub_admin_password2;
     $num_of_galaxies = (isset($pub_num_of_galaxies) && !empty($pub_num_of_galaxies)) ? $pub_num_of_galaxies : 9;
-    $num_of_systems = (isset($pub_num_of_systems) && !empty($pub_num_of_systems)) ? $pub_num_of_systems : 9;
+    $num_of_systems = (isset($pub_num_of_systems) && !empty($pub_num_of_systems)) ? $pub_num_of_systems : 499;
+    $uni_speed = (isset($pub_uni_speed) && !empty($pub_uni_speed)) ? $pub_uni_speed : 1;
     $directory = $pub_directory;
 }
 ?>
@@ -309,6 +310,12 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
                         <th><input name="num_of_systems" type="text"
                                    value="<?php echo isset($pub_num_of_systems) ? $pub_num_of_systems : "499"; ?>"></th>
                     </tr>
+                    <tr>
+                        <th><?php echo $lang['INSTALL_VIEW_DBUNISPEED']; ?><?php echo help("profile_speed", "", "../"); ?></th>
+                        <th><input name="uni_speed" type="text"
+                                   value="<?php echo isset($pub_uni_speed) ? $pub_uni_speed : "1"; ?>"></th>
+                    </tr>
+
 
                     <tr>
                         <td class="c" colspan="2"><?php echo $lang['INSTALL_VIEW_ADMIN']; ?></td>
@@ -351,7 +358,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
         <tr align="center">
             <td>
                 <div style="text-align: center;"><span style="font-size: x-small; "><i><b>OGSpy</b> is an
-                            <b>OGSteam Software</b> (c)2005-2018</i><br/>v <?php echo $install_version; ?></span></div>
+                            <b>OGSteam Software</b> (c)2005-2019</i><br/>v <?php echo $install_version; ?></span></div>
             </td>
         </tr>
     </table>

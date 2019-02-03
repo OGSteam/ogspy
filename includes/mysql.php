@@ -197,7 +197,7 @@ class sql_db
     /**
      * Gets the number of results returned by the Query
      * @param int $query_id The Query id.
-     * @return the number of results
+     * @return int|bool the number of results
      */
     function sql_numrows($query_id = 0)
     {

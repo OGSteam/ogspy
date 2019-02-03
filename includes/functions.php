@@ -964,7 +964,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
         //Mot de passe des membres
         case "Password":
-            if (!preg_match("#^[\w\s\-]{6,20}$#", $value)) {
+            if (!preg_match("#^[\w\s\-]{6,64}$#", $value)) {
                 return false;
             }
             break;
@@ -1144,7 +1144,6 @@ function check_postvalue($secvalue)
 /**
  * OGSpy Hash Function
  * @param string The string to Hash (usually the password)
- * todo : remplacer les sha1(md5()) d'ogspy par la fonction'
  * @return string Returns the hash of the input function
  */
 function crypto($str)

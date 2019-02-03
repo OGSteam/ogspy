@@ -52,7 +52,7 @@ require_once("views/page_header.php");
                 return false;
             }
             if (old_password != "" && new_password != "" && new_password2 != "") {
-                if (new_password.length < 6 || new_password.length > 15) {
+                if (new_password.length < 6 || new_password.length > 64) {
                     alert("<?php echo($lang['PROFILE_ERROR_ILLEGAL']); ?>");
                     return false;
                 }
@@ -78,19 +78,19 @@ require_once("views/page_header.php");
             <tr>
                 <th><?php echo($lang['PROFILE_OLDPWD']); ?></th>
                 <th><label>
-                        <input name="old_password" type="password" autocomplete="off" size="20" maxlength="15">
+                        <input name="old_password" type="password" autocomplete="off" size="20" maxlength="64">
                     </label></th>
             </tr>
             <tr>
                 <th><?php echo $lang['PROFILE_NEWPWD'] . help("profile_password"); ?></th>
                 <th><label>
-                        <input name="new_password" type="password" autocomplete="off" size="20" maxlength="15">
+                        <input name="new_password" type="password" autocomplete="off" size="20" maxlength="64">
                     </label></th>
             </tr>
             <tr>
                 <th><?php echo($lang['PROFILE_NEWPWDAGAIN']); ?></th>
                 <th><label>
-                        <input name="new_password2" type="password" autocomplete="off" size="20" maxlength="15">
+                        <input name="new_password2" type="password" autocomplete="off" size="20" maxlength="64">
                     </label></th>
             </tr>
             <tr>

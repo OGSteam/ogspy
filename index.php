@@ -1,4 +1,5 @@
 <?php
+session_start();
 /**
  * Fichier principal d'ogspy
  * @package OGSpy
@@ -70,6 +71,8 @@ if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
 
     }
 }
+
+
 
 
 switch ($pub_action) {
