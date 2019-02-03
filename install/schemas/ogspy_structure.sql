@@ -532,6 +532,21 @@ CREATE TABLE ogspy_user (
   DEFAULT CHARSET = utf8;
 
 --
+-- Structure de la table `ogspy_user_tokens`
+--
+
+CREATE TABLE `ogspy_user_tokens` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` INT NOT NULL,
+	`name` VARCHAR(100) NOT NULL,
+	`token` VARCHAR(64) NOT NULL,
+	`expiration_date` datetime NOT NULL,
+	PRIMARY KEY (id)
+)
+DEFAULT CHARSET = utf8;
+
+
+--
 -- Structure de la table `ogspy_user_building`
 --
 
@@ -923,3 +938,4 @@ CREATE TABLE `ogspy_round_defense` (
   KEY `player` (`player`, `coordinates`)
 )
   DEFAULT CHARSET = utf8;
+

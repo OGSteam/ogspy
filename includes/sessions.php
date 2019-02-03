@@ -134,7 +134,6 @@ function session()
 function session_set_user_id($user_id, $lastvisit = 0)
 {
     global $db, $user_ip, $cookie_id, $server_config;
-    global $HTTP_COOKIE_VARS;
 
     $request = "update " . TABLE_SESSIONS . " set session_user_id = " . $user_id .
         ", session_lastvisit = " . $lastvisit .
@@ -159,7 +158,7 @@ function session_set_user_id($user_id, $lastvisit = 0)
  */
 function session_set_user_data($cookie_id)
 {
-    global $db, $user_ip, $user_data, $user_auth;
+    global $db, $user_ip, $user_data, $user_auth, $user_token;
 
     $request = "select user_id, user_name, user_admin, user_coadmin, user_email, user_galaxy, user_system, session_lastvisit, user_stat_name, ";
     $request .= "management_user, management_ranking, disable_ip_check, off_commandant, off_amiral, off_ingenieur, off_geologue, off_technocrate";
@@ -169,15 +168,42 @@ function session_set_user_data($cookie_id)
     $request .= " and session_ip = '" . $user_ip . "'";
     $result = $db->sql_query($request);
 
+
     if ($db->sql_numrows($result) == 1) {
         $user_data = $db->sql_fetch_assoc($result);
         $user_auth = user_get_auth($user_data["user_id"]);
+        session_set_user_tokens_data();
+
 
     } else {
         unset($user_data);
         unset($user_auth);
+        unset($user_token);
     }
 }
+
+/**
+ * Get the user token (list) for the current user
+ * @return mixed
+ */
+function session_set_user_tokens_data()
+{
+    global $db, $user_data, $user_token;
+
+    $request_tokens = "SELECT `name`,`token`,`expiration_date` FROM " . TABLE_USER_TOKEN . " WHERE `user_id` = " . $user_data["user_id"];
+    $result_tokens = $db->sql_query($request_tokens);
+
+    if ($db->sql_numrows($result_tokens) > 0) {
+
+        $user_token = $db->sql_fetch_assoc($result_tokens);
+    }
+    else {
+        $user_token = array( 'name' => "Empty");
+
+    }
+    return $user_token;
+}
+
 /**
  * Closing an user session
  * @param boolean $user_id ID user session
@@ -189,7 +215,7 @@ function session_set_user_data($cookie_id)
  */
 function session_close($user_id = false)
 {
-    global $db, $user_ip, $cookie_id;
+    global $db, $user_ip, $cookie_id,$server_config;
 
     if (!$user_id) {
         global $HTTP_COOKIE_VARS;

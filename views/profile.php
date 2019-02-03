@@ -18,6 +18,12 @@ $user_galaxy = $user_data["user_galaxy"];
 $user_system = $user_data["user_system"];
 $user_email = $user_data["user_email"];
 $user_stat_name = $user_data["user_stat_name"];
+if ($user_token !== null && $user_token['name'] !== "Empty") {
+    $user_token_displayed = $user_token["token"];
+} else {
+    $user_token_displayed = $lang['PROFILE_TOKEN_TO_BE_CREATED'];
+}
+
 if ($server_config["disable_ip_check"] == 1) {
     $disable_ip_check = $user_data["disable_ip_check"] == 1 ? "checked" : "";
 } else {
@@ -98,6 +104,14 @@ require_once("views/page_header.php");
                 <th>
                     <label>
                         <input name="pseudo_email" type="text" size="30" value="<?php echo $user_email; ?>">
+                    </label>
+                </th>
+            </tr>
+            <tr>
+                <th><?php echo $lang['PROFILE_TOKEN'] . help("profile_token"); ?></th>
+                <th>
+                    <label>
+                        <input name="pseudo_user_token" type="text" size="60" value="<?php echo $user_token_displayed; ?>">
                     </label>
                 </th>
             </tr>

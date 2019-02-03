@@ -264,6 +264,17 @@ switch ($ogsversion) {
 
         $requests[] = "DROP TABLE `" . TABLE_GCM_USERS . "`";
 
+
+        $requests[] = "CREATE TABLE IF NOT EXISTS `".TABLE_USER_TOKEN."` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `user_id` INT NOT NULL,
+	        `name` VARCHAR(100) NOT NULL,
+	        `token` VARCHAR(64) NOT NULL,
+	        `expiration_date` datetime NOT NULL,
+	        PRIMARY KEY (id)
+        ) DEFAULT CHARSET = utf8;";
+
+
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.5' WHERE config_name = 'version'";
         $ogsversion = '3.3.5';
         $up_to_date = true;
