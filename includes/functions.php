@@ -11,6 +11,10 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
+use Ogsteam\Ogspy\Model;
+
+
+
 /**
  * URL Redirection
  * @param string $url target URL
@@ -792,20 +796,9 @@ function set_serverconfig()
  */
 function db_size_info()
 {
-    global $db;
-    global $table_prefix;
-
-    $dbSizeServer = 0;
-    $dbSizeTotal = 0;
-
-    $request = "SHOW TABLE STATUS";
-    $result = $db->sql_query($request);
-    while ($row = $db->sql_fetch_assoc($result)) {
-        $dbSizeTotal += $row['Data_length'] + $row['Index_length'];
-        if (preg_match("#^" . $table_prefix . ".*$#", $row['Name'])) {
-            $dbSizeServer += $row['Data_length'] + $row['Index_length'];
-        }
-    }
+    $dbSize = (new \Ogsteam\Ogspy\Model\DBUtils_Model())->SizeInfo();
+    $dbSizeServer = $dbSize['dbSizeServer'];
+    $dbSizeTotal = $dbSize['dbSizeTotal'];
 
     $bytes = array('Octets', 'Ko', 'Mo', 'Go', 'To');
 
@@ -840,15 +833,7 @@ function db_optimize($maintenance_action = false)
     $dbSize_before = db_size_info();
     $dbSize_before = $dbSize_before["Total"];
 
-    $request = 'SHOW TABLES';
-    $res = $db->sql_query($request);
-    while (list($table) = $db->sql_fetch_row($res)) {
-        $request = 'OPTIMIZE TABLE ' . $table;
-        $db->sql_query($request);
-    }
-    // 09-07-2012 : Commenté car cette table n'est plus utilisée
-    //$request = 'TRUNCATE ' . TABLE_UNIVERSE_TEMPORARY;
-    //$db->sql_query($request);
+    (new \Ogsteam\Ogspy\Model\DBUtils_Model())->Optimize();
 
     $dbSize_after = db_size_info();
     $dbSize_after = $dbSize_after["Total"];
