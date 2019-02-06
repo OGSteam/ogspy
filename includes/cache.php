@@ -13,23 +13,16 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+use Ogsteam\Ogspy\Model\Config_Model;
+
 /**
  * Function generate_config_cache()
  * Initialize the Cache filesystem
- * @todo Queries : "select * from " . TABLE_CONFIG,
  */
 function generate_config_cache()
 {
-    global $db, $table_prefix, $server_config;
-    $output = NULL;
 
-    $request = "select * from " . TABLE_CONFIG;
-    $result = $db->sql_query($request);
-
-    // Output config as PHP code
-    while ($cur_config_item = $db->sql_fetch_row($result)) {
-        $output[$cur_config_item[0]] = stripslashes($cur_config_item[1]);
-    }
+    $output = (new  Config_Model())->get_all();
 
     $fh = @fopen('cache/cache_config.php', 'wb');
     if (!$fh) {
