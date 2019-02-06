@@ -11,7 +11,7 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
-use Ogsteam\Ogspy\Model;
+use \Ogsteam\Ogspy\Model\DBUtils_Model;
 
 
 
@@ -796,7 +796,7 @@ function set_serverconfig()
  */
 function db_size_info()
 {
-    $dbSize = (new \Ogsteam\Ogspy\Model\DBUtils_Model())->SizeInfo();
+    $dbSize = (new DBUtils_Model())->SizeInfo();
     $dbSizeServer = $dbSize['dbSizeServer'];
     $dbSizeTotal = $dbSize['dbSizeTotal'];
 
@@ -833,7 +833,7 @@ function db_optimize($maintenance_action = false)
     $dbSize_before = db_size_info();
     $dbSize_before = $dbSize_before["Total"];
 
-    (new \Ogsteam\Ogspy\Model\DBUtils_Model())->Optimize();
+    (new DBUtils_Model())->Optimize();
 
     $dbSize_after = db_size_info();
     $dbSize_after = $dbSize_after["Total"];
