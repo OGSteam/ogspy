@@ -65,4 +65,19 @@ class Config_Model  extends Model_Abstract
                  WHERE `config_name` = '" . $this->db->sql_escape_string($config['config_name']) . "'";
         $this->db->sql_query($query);
     }
+
+    /**
+     * Met à jour la config
+     * @$config_value valeur de la configuration
+     * @$config_name nom de la configuration
+     */
+    public function update_one( $config_value,$config_name)
+    {
+        $query = "UPDATE " . TABLE_CONFIG . " SET 
+                    `config_value` = '" . $this->db->sql_escape_string($config_value) . "'
+                 WHERE `config_name` = '" . $this->db->sql_escape_string($config_name) . "'";
+        $this->db->sql_query($query);
+    }
+
+
 }
