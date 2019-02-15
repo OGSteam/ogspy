@@ -14,6 +14,8 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+use Ogsteam\Ogspy\Model\Group_Model;
+
 /**
  * Verification des droits utilisateurs sur une action avec redirection le cas echeant
  * @param string $action Action verifie
@@ -815,9 +817,8 @@ function user_create()
         $db->sql_query($request);
         $user_id = $db->sql_insertid();
 
-        $request = "insert into " . TABLE_USER_GROUP . " (group_id, user_id) values (" .
-            $pub_group_id . ", " . $user_id . ")";
-        $db->sql_query($request);
+        // integration du compte  dans un groupe
+        $Group_Model = (new Group_Model())->insert_user_togroup($user_id, $pub_group_id);
 
         $info = $user_id . ":" . $password;
         log_("create_account", $user_id);
@@ -853,8 +854,8 @@ function user_delete()
     $request = "delete from " . TABLE_USER . " where user_id = " . $pub_user_id;
     $db->sql_query($request);
 
-    $request = "delete from " . TABLE_USER_GROUP . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
+    //suppression de l'utilisateur des groupes'
+    (new Group_Model())->delete_user($pub_user_id);
 
     $request = "delete from " . TABLE_USER_BUILDING . " where user_id = " . $pub_user_id;
     $db->sql_query($request);
@@ -1659,8 +1660,8 @@ function user_del_favorite_spy()
  */
 function usergroup_create()
 {
-    global $db, $user_data;
     global $pub_groupname;
+    $Group_Model = new Group_Model();
 
     if (!isset($pub_groupname)) {
         redirection("index.php?action=message&id_message=createusergroup_failed_general&info");
@@ -1673,17 +1674,13 @@ function usergroup_create()
         redirection("index.php?action=message&id_message=createusergroup_failed_groupname&info");
     }
 
-    $request = "select group_id from " . TABLE_GROUP . " where group_name = '" .
-        $db->sql_escape_string($pub_groupname) . "'";
-    $result = $db->sql_query($request);
 
-    if ($db->sql_numrows($result) == 0) {
-        $request = "insert into " . TABLE_GROUP . " (group_name)" . " values ('" .
-            $db->sql_escape_string($pub_groupname) . "')";
-        $db->sql_query($request);
-        $group_id = $db->sql_insertid();
+    if (!$Group_Model->group_exist_by_name($pub_groupname))
+    {
+        $Group_Model->insert_group($pub_groupname);
+        $group_id = $Group_Model->sql_insertid();
 
-        log_("create_usergroup", $pub_groupname);
+         log_("create_usergroup", $pub_groupname);
         redirection("index.php?action=administration&subaction=group&group_id=" . $group_id);
     } else {
         redirection("index.php?action=message&id_message=createusergroup_failed_groupnamelocked&info=" .
@@ -1696,7 +1693,6 @@ function usergroup_create()
  */
 function usergroup_delete()
 {
-    global $db, $user_data;
     global $pub_group_id;
 
     if (!check_var($pub_group_id, "Num")) {
@@ -1716,11 +1712,7 @@ function usergroup_delete()
 
     log_("delete_usergroup", $pub_group_id);
 
-    $request = "delete from " . TABLE_USER_GROUP . " where group_id = " . intval($pub_group_id);
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_GROUP . " where group_id = " . intval($pub_group_id);
-    $db->sql_query($request);
+    (new Group_Model())->delete_group($pub_group_id);
 
     redirection("index.php?action=administration&subaction=group");
 }
@@ -1732,34 +1724,24 @@ function usergroup_delete()
  */
 function usergroup_get($group_id = false)
 {
-    global $db, $user_data;
+    $Group_Model = new Group_Model();
 
     //Vérification des droits
     user_check_auth("usergroup_manage");
 
-    $request = "select group_id, group_name, ";
-    $request .= " server_set_system, server_set_spy, server_set_rc, server_set_ranking, server_show_positionhided,";
-    $request .= " ogs_connection, ogs_set_system, ogs_get_system, ogs_set_spy, ogs_get_spy, ogs_set_ranking, ogs_get_ranking";
-    $request .= " from " . TABLE_GROUP;
-
-    if ($group_id !== false) {
-        if (intval($group_id) == 0) {
-            return false;
-        }
-        $request .= " where group_id = " . $group_id;
+    if (intval($group_id) == 0 && $group_id !== false) {
+        die("return false");
+        return false;
     }
-    $request .= " order by group_name";
-    $result = $db->sql_query($request);
 
+    $Group_Model = new Group_Model();
+
+    //demande de tous les groupes
     if (!$group_id) {
-        $info_usergroup = array();
-        while ($row = $db->sql_fetch_assoc()) {
-            $info_usergroup[] = $row;
-        }
-    } else {
-        while ($row = $db->sql_fetch_assoc()) {
-            $info_usergroup = $row;
-        }
+        $info_usergroup=$Group_Model->get_all_group_rights();
+    } else
+    {
+        $info_usergroup=$Group_Model->get_group_rights($group_id);
     }
 
     if (sizeof($info_usergroup) == 0) {
@@ -1837,22 +1819,21 @@ function usergroup_setauth()
 
     log_("modify_usergroup", $pub_group_id);
 
-    $request = "update " . TABLE_GROUP;
-    $request .= " set group_name = '" . $db->sql_escape_string($pub_group_name) .
-        "',";
-    $request .= " server_set_system = '" . intval($pub_server_set_system) .
-        "', server_set_spy = '" . intval($pub_server_set_spy) . "', server_set_rc = '" .
-        intval($pub_server_set_rc) . "', server_set_ranking = '" . intval($pub_server_set_ranking) .
-        "', server_show_positionhided = '" . intval($pub_server_show_positionhided) .
-        "',";
-    $request .= " ogs_connection = '" . intval($pub_ogs_connection) .
-        "', ogs_set_system = '" . intval($pub_ogs_set_system) . "', ogs_get_system = '" .
-        intval($pub_ogs_get_system) . "', ogs_set_spy = '" . intval($pub_ogs_set_spy) .
-        "', ogs_get_spy = '" . intval($pub_ogs_get_spy) . "', ogs_set_ranking = '" .
-        intval($pub_ogs_set_ranking) . "', ogs_get_ranking = '" . intval($pub_ogs_get_ranking) .
-        "'";
-    $request .= " where group_id = " . intval($pub_group_id);
-    $db->sql_query($request);
+    (new Group_Model())->update_group(
+        $pub_group_id,
+        $pub_group_name,
+        $pub_server_set_system,
+        $pub_server_set_spy,
+        $pub_server_set_rc,
+        $pub_server_set_ranking,
+        $pub_server_show_positionhided,
+        $pub_ogs_connection,
+        $pub_ogs_set_system,
+        $pub_ogs_get_system,
+        $pub_ogs_set_spy,
+        $pub_ogs_get_spy,
+        $pub_ogs_set_ranking,
+        $pub_ogs_get_ranking);
 
     redirection("index.php?action=administration&subaction=group&group_id=" . $pub_group_id);
 }
@@ -1870,18 +1851,7 @@ function usergroup_member($group_id)
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $usergroup_member = array();
-
-    $request = "select u.user_id, u.user_name from " . TABLE_USER . " as  u, " .
-        TABLE_USER_GROUP . " as g";
-    $request .= " where u.user_id = g.user_id";
-    $request .= " and g.group_id = " . intval($group_id);
-    $request .= " order by user_name";
-    $result = $db->sql_query($request);
-    while ($row = $db->sql_fetch_assoc()) {
-        $usergroup_member[] = $row;
-    }
-
+    $usergroup_member = (new Group_Model())->get_user_list($group_id);
     return $usergroup_member;
 }
 
@@ -1890,21 +1860,21 @@ function usergroup_member($group_id)
  */
 function usergroup_newmember()
 {
-    global $db, $user_data;
+    global $db;
     global $pub_user_id, $pub_group_id, $pub_add_all;
 
-    if ($pub_add_all == "Ajouter tout les membres") {
-        $request = "SELECT user_id FROM " . TABLE_USER;
+    $Group_Model = new Group_Model();
+        if (isset($pub_add_all) && is_numeric($pub_group_id)) {
+            $request = "SELECT user_id FROM " . TABLE_USER;
         $result = $db->sql_query($request);
-
         while ($res = $db->sql_fetch_assoc($result)) {
             user_check_auth("usergroup_manage");
-            $request = "INSERT IGNORE INTO " . TABLE_USER_GROUP .
-                " (group_id, user_id) values (" . intval($pub_group_id) . ", " . intval($res["user_id"]) .
-                ")";
-            $db->sql_query($request);
+            //insertion
+            if ($Group_Model->insert_user_togroup($res["user_id"],$pub_group_id)) {
+                log_("add_usergroup", array($pub_group_id, $res["user_id"]));
+            }
         }
-        redirection("index.php?action=administration&subaction=group");
+        redirection("index.php?action=administration&subaction=group&group_id=" . $pub_group_id);
     } else {
         if (!check_var($pub_user_id, "Num") || !check_var($pub_group_id, "Num")) {
             redirection("index.php?action=message&id_message=errordata&info");
@@ -1917,9 +1887,8 @@ function usergroup_newmember()
         //Vérification des droits
         user_check_auth("usergroup_manage");
 
-        $request = "select group_id from " . TABLE_GROUP . " where group_id = " . intval($pub_group_id);
-        $result = $db->sql_query($request);
-        if ($db->sql_numrows($result) == 0) {
+        if ($Group_Model->group_exist_by_id($pub_group_id)== false)
+        {
             redirection("index.php?action=administration&subaction=group");
         }
 
@@ -1928,13 +1897,8 @@ function usergroup_newmember()
         if ($db->sql_numrows($result) == 0) {
             redirection("index.php?action=administration&subaction=group");
         }
-
-        $request = "insert ignore into " . TABLE_USER_GROUP .
-            " (group_id, user_id) values (" . intval($pub_group_id) . ", " . intval($pub_user_id) .
-            ")";
-        $result = $db->sql_query($request);
-
-        if ($db->sql_affectedrows() > 0) {
+        //insertion
+        if ($Group_Model->insert_user_togroup($pub_user_id,$pub_group_id)) {
             log_("add_usergroup", array($pub_group_id, $pub_user_id));
         }
 
@@ -1949,8 +1913,9 @@ function usergroup_newmember()
  */
 function usergroup_delmember()
 {
-    global $db, $user_data;
     global $pub_user_id, $pub_group_id;
+
+    $Group_Model = new Group_Model();
 
     if (!isset($pub_user_id) || !isset($pub_group_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
@@ -1962,11 +1927,8 @@ function usergroup_delmember()
     //Vérification des droits
     user_check_auth("usergroup_manage");
 
-    $request = "delete from " . TABLE_USER_GROUP . " where group_id = " . intval($pub_group_id) .
-        " and user_id = " . intval($pub_user_id);
-    $result = $db->sql_query($request);
-
-    if ($db->sql_affectedrows() > 0) {
+    $Group_Model->delete_user_from_group($pub_user_id,$pub_group_id );
+    if ($Group_Model->sql_affectedrows() > 0) {
         log_("del_usergroup", array($pub_group_id, $pub_user_id));
     }
 

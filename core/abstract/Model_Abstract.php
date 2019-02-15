@@ -17,4 +17,18 @@ class Model_Abstract
         global $db; //todo prevoir un get_instance mysql
         $this->db = $db;
     }
+
+    function sql_insertid()
+    {
+        return $this->db->sql_insertid();
+    }
+
+    function sql_affectedrows()
+    {
+        return $this->db->sql_affectedrows();
+    }
+
+
+
+
 }
