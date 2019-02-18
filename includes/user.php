@@ -15,6 +15,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 use Ogsteam\Ogspy\Model\Group_Model;
+use Ogsteam\Ogspy\Model\Sessions_Model;
 
 /**
  * Verification des droits utilisateurs sur une action avec redirection le cas echeant
@@ -94,84 +95,85 @@ function user_login()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-        $request = "SELECT user_id, user_active, user_password_s FROM " . TABLE_USER .
+    $request = "SELECT user_id, user_active, user_password_s FROM " . TABLE_USER .
+        " WHERE user_name = '" . $db->sql_escape_string($pub_login) .
+        "' AND NOT user_password_s = ''";
+    $result = $db->sql_query($request);
+
+    if ($db->sql_numrows($result)) {
+
+        list($user_id, $user_active, $password_s) = $db->sql_fetch_row($result);
+        if (password_verify($pub_password, $password_s)) {
+            // Format Mot de passe Secure
+            user_set_connection($user_id, $user_active);
+        } else {
+            redirection("index.php?action=message&id_message=login_wrong&info");
+        }
+
+    } else {
+        // Format Mot de passe Legacy
+
+        $request = "SELECT user_id, user_active FROM " . TABLE_USER .
             " WHERE user_name = '" . $db->sql_escape_string($pub_login) .
-            "' AND NOT user_password_s = ''";
+            "' AND user_password = '" . md5(sha1($pub_password)) . "'";
         $result = $db->sql_query($request);
 
-        if($db->sql_numrows($result)) {
+        if ($db->sql_numrows($result)) {
 
-            list($user_id, $user_active, $password_s) = $db->sql_fetch_row($result);
-            if (password_verify($pub_password, $password_s)) {
-                // Format Mot de passe Secure
-                user_set_connection($user_id, $user_active);
-            } else {
-                redirection("index.php?action=message&id_message=login_wrong&info");
-            }
+            list($user_id, $user_active) = $db->sql_fetch_row($result);
 
-        }else {
-            // Format Mot de passe Legacy
+            //Ajout du nouveau mot de passe et supression ancien
 
-            $request = "SELECT user_id, user_active FROM " . TABLE_USER .
-                " WHERE user_name = '" . $db->sql_escape_string($pub_login) .
-                "' AND user_password = '" . md5(sha1($pub_password)) . "'";
-            $result = $db->sql_query($request);
+            $request = "UPDATE " . TABLE_USER . " SET `user_password_s` = '" . password_hash($pub_password, PASSWORD_DEFAULT) . "' WHERE `user_id` = " . $user_id;
+            $db->sql_query($request);
 
-            if ($db->sql_numrows($result)) {
+            $request = "UPDATE " . TABLE_USER . " SET `user_password` = '' WHERE `user_id` = " . $user_id;
+            $db->sql_query($request);
 
-                list($user_id, $user_active) = $db->sql_fetch_row($result);
-
-                //Ajout du nouveau mot de passe et supression ancien
-
-                $request = "UPDATE " . TABLE_USER . " SET `user_password_s` = '" . password_hash($pub_password, PASSWORD_DEFAULT ) . "' WHERE `user_id` = " . $user_id;
-                $db->sql_query($request);
-
-                $request = "UPDATE " . TABLE_USER . " SET `user_password` = '' WHERE `user_id` = " . $user_id;
-                $db->sql_query($request);
-
-                user_set_connection($user_id, $user_active);
+            user_set_connection($user_id, $user_active);
 
 
-            } else {
-                redirection("index.php?action=message&id_message=login_wrong&info");
-            }
-
+        } else {
+            redirection("index.php?action=message&id_message=login_wrong&info");
         }
+
+    }
 }
 
-function user_set_connection($user_id, $user_active){
+function user_set_connection($user_id, $user_active)
+{
 
-    global $db,$pub_goto;
+    global $db, $pub_goto;
 
 
-        if ($user_active == 1) {
-            $request = "select user_lastvisit from " . TABLE_USER . " where user_id = " . $user_id;
-            $result = $db->sql_query($request);
-            list($lastvisit) = $db->sql_fetch_row($result);
+    if ($user_active == 1) {
+        $request = "select user_lastvisit from " . TABLE_USER . " where user_id = " . $user_id;
+        $result = $db->sql_query($request);
+        list($lastvisit) = $db->sql_fetch_row($result);
 
-            $request = "update " . TABLE_USER . " set user_lastvisit = " . time() .
-                " where user_id = " . $user_id;
+        $request = "update " . TABLE_USER . " set user_lastvisit = " . time() .
+            " where user_id = " . $user_id;
+        $db->sql_query($request);
+
+        $request = "update " . TABLE_STATISTIC .
+            " set statistic_value = statistic_value + 1";
+        $request .= " where statistic_name = 'connection_server'";
+        $db->sql_query($request);
+        if ($db->sql_affectedrows() == 0) {
+            $request = "insert ignore into " . TABLE_STATISTIC .
+                " values ('connection_server', '1')";
             $db->sql_query($request);
-
-            $request = "update " . TABLE_STATISTIC .
-                " set statistic_value = statistic_value + 1";
-            $request .= " where statistic_name = 'connection_server'";
-            $db->sql_query($request);
-            if ($db->sql_affectedrows() == 0) {
-                $request = "insert ignore into " . TABLE_STATISTIC .
-                    " values ('connection_server', '1')";
-                $db->sql_query($request);
-            }
-
-            session_set_user_id($user_id, $lastvisit);
-            log_('login');
-            if (!isset($url_append)) {
-                $url_append = "";
-            }
-            redirection("index.php?action=" . $pub_goto . "" . $url_append);
-        } else {
-            redirection("index.php?action=message&id_message=account_lock&info");
         }
+
+        session_set_user_id($user_id, $lastvisit);
+        log_('login');
+        if (!isset($url_append)) {
+            $url_append = "";
+        }
+        redirection("index.php?action=" . $pub_goto . "" . $url_append);
+    } else {
+        redirection("index.php?action=message&id_message=account_lock&info");
+    }
 
 }
 
@@ -249,7 +251,7 @@ function admin_user_set()
  */
 function admin_regeneratepwd()
 {
-    global $pub_user_id, $pub_pass_reset, $lang , $server_config;
+    global $pub_user_id, $pub_pass_reset, $lang, $server_config;
     $pass_id = "pub_pass_" . $pub_user_id;
     global $$pass_id;
     $new_pass = $$pass_id;
@@ -263,9 +265,9 @@ function admin_regeneratepwd()
     }
 
     user_check_auth("user_update", $pub_user_id);
-    $user_info =user_get($pub_user_id)[0];
+    $user_info = user_get($pub_user_id)[0];
 
-    if ($user_info  === false) {
+    if ($user_info === false) {
         redirection("index.php?action=message&id_message=regeneratepwd_failed&info");
     }
     if ($new_pass != "") {
@@ -276,25 +278,19 @@ function admin_regeneratepwd()
     user_set_general($pub_user_id, null, $password);
 
     $NovisualisationMdpAdmin = true;
-    if ($server_config["mail_use"] == 1 && $user_info["user_email"] !== "")
-    {
-            $NovisualisationMdpAdmin = sendMail($user_info["user_email"], $lang['MAIL_RESET_PASSWORD_SUBJECT'], "<h1>" . $lang['MAIL_RESET_PASSWORD_MESSAGE'] . $password . "</h1>");
-            log_("debug", "Reset mot de passe : Le mail a été envoyé à " . $user_info["user_email"]);
-    }
-    else
-    {
+    if ($server_config["mail_use"] == 1 && $user_info["user_email"] !== "") {
+        $NovisualisationMdpAdmin = sendMail($user_info["user_email"], $lang['MAIL_RESET_PASSWORD_SUBJECT'], "<h1>" . $lang['MAIL_RESET_PASSWORD_MESSAGE'] . $password . "</h1>");
+        log_("debug", "Reset mot de passe : Le mail a été envoyé à " . $user_info["user_email"]);
+    } else {
         // pas d'usage de mail donc visualisation admin à affectuer
         $NovisualisationMdpAdmin = false;
     }
 
-    if ($NovisualisationMdpAdmin == false )
-    {
+    if ($NovisualisationMdpAdmin == false) {
         log_("regeneratepwd", $pub_user_id);
         $info = $pub_user_id . ":" . $password;
         redirection("index.php?action=message&id_message=regeneratepwd_success&info=" . $info);
-    }
-    else
-    {
+    } else {
         $info = $pub_user_id . ":mail";
         log_("regeneratepwd_", $pub_user_id);
         redirection("index.php?action=message&id_message=regeneratepwd_success&info=$info");
@@ -543,8 +539,7 @@ function user_set_grant($user_id, $user_admin = null, $user_active = null, $user
         $update .= ((strlen($update) > 0) ? ", " : "") . "user_active = '" . intval($user_active) .
             "'";
         if (intval($user_active) == 0) {
-            $request = "delete from " . TABLE_SESSIONS . " where session_user_id = " . $user_id;
-            $db->sql_query($request);
+            (new Sessions_Model())->close_user_session($user_id);
         }
     }
 
@@ -813,7 +808,7 @@ function user_create()
     if ($db->sql_numrows($result) == 0) {
         $request = "insert into " . TABLE_USER .
             " (user_name, user_password_s, user_email, user_regdate, user_active)" . " values ('" . $pub_pseudo .
-            "', '" . password_hash($password, PASSWORD_DEFAULT) . "', '". $pub_email . "', " . time() . ", '1')";
+            "', '" . password_hash($password, PASSWORD_DEFAULT) . "', '" . $pub_email . "', " . time() . ", '1')";
         $db->sql_query($request);
         $user_id = $db->sql_insertid();
 
@@ -930,7 +925,6 @@ function user_delete()
 
 /**
  * Recuperation des statistiques
- * @todo Query : x1
  */
 function user_statistic()
 {
@@ -944,16 +938,16 @@ function user_statistic()
     $user_statistic = array();
     while ($row = $db->sql_fetch_assoc($result)) {
         $here = "";
-        $request = "select session_ogs from " . TABLE_SESSIONS .
-            " where session_user_id = " . $row["user_id"];
-        $result_2 = $db->sql_query($request);
-        if ($db->sql_numrows($result_2) > 0) {
+        $session_ogs = (new Sessions_Model())->get_xtense_session($row["user_id"]);
+        if ($session_ogs != -1)
+        {
             $here = "(*)";
-            list($session_ogs) = $db->sql_fetch_row($result_2);
             if ($session_ogs == 1) {
                 $here = "(**)";
             }
+
         }
+
         $user_statistic[] = array_merge($row, array("here" => $here));
     }
 
@@ -1112,7 +1106,7 @@ function user_get_empire($user_id)
         "C_Percentage" => 100, "D" => 0, "D_percentage" => 100, "CES" => 0, "CES_percentage" => 100,
         "CEF" => 0, "CEF_percentage" => 100, "UdR" => 0, "UdN" => 0, "CSp" => 0,
         "HM" => 0, "HC" => 0, "HD" => 0, "Lab" => 0,
-        "Ter" => 0, "Silo" => 0, "Dock" => 0,"BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0,
+        "Ter" => 0, "Silo" => 0, "Dock" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0,
         "C_percentage" => 100);
 
     $defence = array("LM" => 0, "LLE" => 0, "LLO" => 0, "CG" => 0, "AI" => 0, "LP" =>
@@ -1675,12 +1669,11 @@ function usergroup_create()
     }
 
 
-    if (!$Group_Model->group_exist_by_name($pub_groupname))
-    {
+    if (!$Group_Model->group_exist_by_name($pub_groupname)) {
         $Group_Model->insert_group($pub_groupname);
         $group_id = $Group_Model->sql_insertid();
 
-         log_("create_usergroup", $pub_groupname);
+        log_("create_usergroup", $pub_groupname);
         redirection("index.php?action=administration&subaction=group&group_id=" . $group_id);
     } else {
         redirection("index.php?action=message&id_message=createusergroup_failed_groupnamelocked&info=" .
@@ -1738,10 +1731,9 @@ function usergroup_get($group_id = false)
 
     //demande de tous les groupes
     if (!$group_id) {
-        $info_usergroup=$Group_Model->get_all_group_rights();
-    } else
-    {
-        $info_usergroup=$Group_Model->get_group_rights($group_id);
+        $info_usergroup = $Group_Model->get_all_group_rights();
+    } else {
+        $info_usergroup = $Group_Model->get_group_rights($group_id);
     }
 
     if (sizeof($info_usergroup) == 0) {
@@ -1864,13 +1856,13 @@ function usergroup_newmember()
     global $pub_user_id, $pub_group_id, $pub_add_all;
 
     $Group_Model = new Group_Model();
-        if (isset($pub_add_all) && is_numeric($pub_group_id)) {
-            $request = "SELECT user_id FROM " . TABLE_USER;
+    if (isset($pub_add_all) && is_numeric($pub_group_id)) {
+        $request = "SELECT user_id FROM " . TABLE_USER;
         $result = $db->sql_query($request);
         while ($res = $db->sql_fetch_assoc($result)) {
             user_check_auth("usergroup_manage");
             //insertion
-            if ($Group_Model->insert_user_togroup($res["user_id"],$pub_group_id)) {
+            if ($Group_Model->insert_user_togroup($res["user_id"], $pub_group_id)) {
                 log_("add_usergroup", array($pub_group_id, $res["user_id"]));
             }
         }
@@ -1887,8 +1879,7 @@ function usergroup_newmember()
         //Vérification des droits
         user_check_auth("usergroup_manage");
 
-        if ($Group_Model->group_exist_by_id($pub_group_id)== false)
-        {
+        if ($Group_Model->group_exist_by_id($pub_group_id) == false) {
             redirection("index.php?action=administration&subaction=group");
         }
 
@@ -1898,7 +1889,7 @@ function usergroup_newmember()
             redirection("index.php?action=administration&subaction=group");
         }
         //insertion
-        if ($Group_Model->insert_user_togroup($pub_user_id,$pub_group_id)) {
+        if ($Group_Model->insert_user_togroup($pub_user_id, $pub_group_id)) {
             log_("add_usergroup", array($pub_group_id, $pub_user_id));
         }
 
@@ -1927,7 +1918,7 @@ function usergroup_delmember()
     //Vérification des droits
     user_check_auth("usergroup_manage");
 
-    $Group_Model->delete_user_from_group($pub_user_id,$pub_group_id );
+    $Group_Model->delete_user_from_group($pub_user_id, $pub_group_id);
     if ($Group_Model->sql_affectedrows() > 0) {
         log_("del_usergroup", array($pub_group_id, $pub_user_id));
     }

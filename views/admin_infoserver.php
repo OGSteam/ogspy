@@ -89,15 +89,10 @@ while (list($statistic_name, $statistic_value) = $db->sql_fetch_row($result)) {
 }
 
 //on compte le nombre de personnes en ligne
-$connectes_req = $db->sql_query("SELECT COUNT(session_ip) FROM " .
-    TABLE_SESSIONS);
-list($connectes) = $db->sql_fetch_row($connectes_req);
-
-//Personne en ligne
-$online = session_whois_online();
+$online = session_whois_online();//Personne en ligne
+$connectes = count($online);//Nombre personne en ligne
 
 // Derniere Version OGSpy
-
 $current_ogspy_version = github_get_latest_release('ogspy');
 if(version_compare($current_ogspy_version['release'],$server_config['version'],'>')){
     $ogspy_version_message = "<span style=\"color:red\">".$current_ogspy_version['release']." : " . $lang['ADMIN_SERVER_NEWVERSION'] . "</span><br><br><span>".$current_ogspy_version['description']."</span>";
