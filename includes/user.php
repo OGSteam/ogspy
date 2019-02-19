@@ -16,6 +16,7 @@ if (!defined('IN_SPYOGAME')) {
 
 use Ogsteam\Ogspy\Model\Group_Model;
 use Ogsteam\Ogspy\Model\Sessions_Model;
+use Ogsteam\Ogspy\Model\Statistics_Model;
 
 /**
  * Verification des droits utilisateurs sur une action avec redirection le cas echeant
@@ -155,15 +156,8 @@ function user_set_connection($user_id, $user_active)
             " where user_id = " . $user_id;
         $db->sql_query($request);
 
-        $request = "update " . TABLE_STATISTIC .
-            " set statistic_value = statistic_value + 1";
-        $request .= " where statistic_name = 'connection_server'";
-        $db->sql_query($request);
-        if ($db->sql_affectedrows() == 0) {
-            $request = "insert ignore into " . TABLE_STATISTIC .
-                " values ('connection_server', '1')";
-            $db->sql_query($request);
-        }
+        ///statistique
+        (new Statistics_Model())->add_user_connection();
 
         session_set_user_id($user_id, $lastvisit);
         log_('login');

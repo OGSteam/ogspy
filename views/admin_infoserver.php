@@ -13,6 +13,8 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
+use Ogsteam\Ogspy\Model\Statistics_Model;
+
 
 if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
     redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
@@ -52,41 +54,7 @@ $og_uni = 'unknow';
 $og_pays = 'unknow';
 $nb_mail= (isset($server_config['count_mail'])) ? $server_config['count_mail']     : "0";
 
-$request = "select statistic_name, statistic_value from " . TABLE_STATISTIC;
-$result = $db->sql_query($request);
-
-while (list($statistic_name, $statistic_value) = $db->sql_fetch_row($result)) {
-
-    switch ($statistic_name) {
-        case "connection_server":
-            $connection_server = $statistic_value;
-            break;
-
-        case "planetimport_ogs":
-            $planetimport_ogs = $statistic_value;
-            break;
-
-        case "planetexport_ogs":
-            $planetexport_ogs = $statistic_value;
-            break;
-
-        case "spyimport_ogs":
-            $spyimport_ogs = $statistic_value;
-            break;
-
-        case "spyexport_ogs":
-            $spyexport_ogs = $statistic_value;
-            break;
-
-        case "rankimport_ogs":
-            $rankimport_ogs = $statistic_value;
-            break;
-
-        case "rankexport_ogs":
-            $rankexport_ogs = $statistic_value;
-            break;
-    }
-}
+$stats = (new Statistics_Model())->find();
 
 //on compte le nombre de personnes en ligne
 $online = session_whois_online();//Personne en ligne
@@ -141,21 +109,21 @@ else{
     </tr>
     <tr>
         <th><a><?php echo($lang['ADMIN_SERVER_CONNEXIONS']); ?></a></th>
-        <th><?php echo formate_number($connection_server); ?></th>
+        <th><?php echo formate_number($stats["connection_server"]); ?></th>
 
         <th><a><?php echo($lang['ADMIN_SERVER_PLANETS']); ?></a></th>
-        <th><?php echo formate_number($planetimport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?>
-            - <?php echo formate_number($planetexport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_EXPORT']); ?>
+        <th><?php echo formate_number($stats["planetimport_ogs"]); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?>
+            - <?php echo formate_number($stats["planetexport_ogs"]); ?> <?php echo($lang['ADMIN_SERVER_ALL_EXPORT']); ?>
         </th>
     </tr>
     <tr>
         <th><a><?php echo($lang['ADMIN_SERVER_SPYREPORTS']); ?></a></th>
-        <th><?php echo formate_number($spyimport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?> - <?php echo formate_number($spyexport_ogs); ?>
+        <th><?php echo formate_number($stats["spyimport_ogs"]); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?> - <?php echo formate_number($stats["spyexport_ogs"]); ?>
             <?php echo($lang['ADMIN_SERVER_ALL_EXPORT']); ?>
         </th>
 
         <th><a><?php echo($lang['ADMIN_SERVER_RANKINGS']); ?></a></th>
-        <th><?php echo formate_number($rankimport_ogs); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?> - <?php echo formate_number($rankexport_ogs); ?>
+        <th><?php echo formate_number($stats["rankimport_ogs"]); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?> - <?php echo formate_number($stats["rankexport_ogs"]); ?>
             <?php echo($lang['ADMIN_SERVER_ALL_EXPORT']); ?>
         </th>
     </tr>
