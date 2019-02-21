@@ -39,13 +39,6 @@ $galaxy_statistic = galaxy_statistic();
 $users_info = sizeof(user_statistic());
 
 //Statistiques du serveur
-$connection_server = 0;
-$planetimport_ogs = 0;
-$planetexport_ogs = 0;
-$spyimport_ogs = 0;
-$spyexport_ogs = 0;
-$rankimport_ogs = 0;
-$rankexport_ogs = 0;
 $key = 'unknow';
 $paths = 'unknow';
 $since = 0;

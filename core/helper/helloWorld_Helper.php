@@ -9,7 +9,7 @@ use Ogsteam\Ogspy\Abstracts\Helper_Abstract;
  * @package Ogsteam\Ogspy\Helper
  *
  */
-class helloWorld extends Helper_Abstract
+class helloWorld_Helper extends Helper_Abstract
 {
     /**
      * helloWorld constructor.
