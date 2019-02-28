@@ -11,8 +11,10 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
+
 use Ogsteam\Ogspy\Model\DBUtils_Model;
 use Ogsteam\Ogspy\Model\Config_Model;
+use Ogsteam\Ogspy\Model\Universe_Model;
 
 
 
@@ -670,10 +672,8 @@ function db_optimize($maintenance_action = false)
  * @param int $new_num_of_galaxies Galaxy total
  * @param int $new_num_of_systems Solar Systems total
  * @return null
- * @todo : Query : sql_query("DELETE FROM " . TABLE_UNIVERSE . " WHERE galaxy > $new_num_of_galaxies");
  * @todo : Query : sql_query("UPDATE " . TABLE_USER . " SET user_galaxy=1 WHERE user_galaxy > $new_num_of_galaxies");
  * @todo : Query : sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE galaxy > $new_num_of_galaxies");
- * @todo : Query : sql_query("DELETE FROM " . TABLE_UNIVERSE . " WHERE system > $new_num_of_systems");
  * @todo : Query : sql_query("UPDATE " . TABLE_USER . " SET user_system=1 WHERE user_system > $new_num_of_systems");
  * @todo : Query : sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE system > $new_num_of_systems");
  */
@@ -685,13 +685,12 @@ function resize_db($new_num_of_galaxies, $new_num_of_systems)
     $Config_Model = new Config_Model();
 
     // si on reduit on doit supprimez toutes les entrées qui font reference au systemes ou galaxies que l'on va enlever
+    (new Universe_Model())->resize_universe($new_num_of_galaxies,$new_num_of_systems);
     if ($new_num_of_galaxies < intval($server_config['num_of_galaxies'])) {
-        $db->sql_query("DELETE FROM " . TABLE_UNIVERSE . " WHERE galaxy > $new_num_of_galaxies");
-        $db->sql_query("UPDATE " . TABLE_USER . " SET user_galaxy=1 WHERE user_galaxy > $new_num_of_galaxies");
+         $db->sql_query("UPDATE " . TABLE_USER . " SET user_galaxy=1 WHERE user_galaxy > $new_num_of_galaxies");
         $db->sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE galaxy > $new_num_of_galaxies");
     }
     if ($new_num_of_systems < intval($server_config['num_of_systems'])) {
-        $db->sql_query("DELETE FROM " . TABLE_UNIVERSE . " WHERE system > $new_num_of_systems");
         $db->sql_query("UPDATE " . TABLE_USER . " SET user_system=1 WHERE user_system > $new_num_of_systems");
         $db->sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE system > $new_num_of_systems");
     }
