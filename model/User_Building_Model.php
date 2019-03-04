@@ -1,0 +1,177 @@
+<?php
+/**
+ * Database Model
+ *
+ * @package OGSpy
+ * @subpackage Model
+ * @author DarkNoon
+ * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
+namespace Ogsteam\Ogspy\Model;
+
+use Ogsteam\Ogspy\Abstracts\Model_Abstract;
+
+class User_Building_Model  extends Model_Abstract
+{
+    /**
+     * @param $user_id
+     * @return mixed
+     */
+    public function get_planet_list($user_id) {
+        $request = "select planet_id, coordinates";
+        $request .= " from " . TABLE_USER_BUILDING;
+        $request .= " where user_id = " . $user_id;
+        $request .= " and planet_id <= 199";
+        $request .= " order by planet_id";
+        $result =  $this->db->sql_query($request);
+        while (list($planet_id, $coordinates) = $this->db->sql_fetch_row($result)) {
+            $planet_position[$coordinates] = $planet_id;
+        }
+        return $planet_position;
+    }
+    /**
+     * @param $user_id
+     * @return mixed
+     */
+    public function get_moon_list($user_id) {
+        // les lunes
+        $request = "select planet_id, coordinates";
+        $request .= " from " . TABLE_USER_BUILDING;
+        $request .= " where user_id = " . $user_id;
+        $request .= " and planet_id > 199";
+        $request .= " order by planet_id";
+        $result =  $this->db->sql_query($request);
+        while (list($planet_id, $coordinates) = $this->db->sql_fetch_row($result)) {
+            $moon_position[$coordinates] = $planet_id;
+        }
+        return $moon_position;
+    }
+    /**
+     * @param $user_id
+     * @return int|\Ogsteam\Ogspy\the
+     */
+    public function get_nb_planets($user_id) {
+        $request = "SELECT planet_id ";
+        $request .= " FROM " . TABLE_USER_BUILDING;
+        $request .= " WHERE user_id = " . $user_id;
+        $request .= " AND planet_id < 199 ";
+        $request .= " ORDER BY planet_id";
+        $result =  $this->db->sql_query($request);
+        // bug affichage ne doit pas etre gerer dans model
+        //mini 9 pour eviter bug affichage
+        //if ( $this->db->sql_numrows($result) <= 9)
+        //    return 9;
+        return  $this->db->sql_numrows($result);
+    }
+    /**
+     * @param $user_id
+     * @return int|\Ogsteam\Ogspy\the
+     */
+    public function get_nb_moons($user_id)
+    {
+        $request = "select planet_id ";
+        $request .= " from " . TABLE_USER_BUILDING;
+        $request .= " where user_id = " . $user_id;
+        $request .= " and planet_id > 199 ";
+        $request .= " order by planet_id";
+        $result =  $this->db->sql_query($request);
+        //mini 9 pour eviter bug affichage
+        if ( $this->db->sql_numrows($result) <= 9) {
+            return 9;
+        }
+        return  $this->db->sql_numrows($result);
+    }
+
+
+
+    /**
+     * Recupere les boosters de tous les utilisateurs
+     */
+    public function get_all_booster() {
+        $request = "SELECT user_id, planet_id, boosters FROM " . TABLE_USER_BUILDING;
+        $result = $this->db->sql_query($request);
+
+        $Boosters = array();
+        while (list($user_id, $planet_id, $boosters ) = $this->db->sql_fetch_row($result)) {
+            $Boosters[] = array("user_id" => $user_id, "planet_id" => $planet_id, "boosters" => $boosters);
+        }
+        return $Boosters;
+    }
+
+    /* Écrit la string de stockage des objets Ogame dans la BDD.
+     * @arg id_player   id du joueur
+     * @arg id_planet   id de la planète à rechercher
+     * @str_booster     string de stockage des boosters (donnée par les fonctions booster_encode() ou booster_encodev())
+     * @return FALSE en cas d'échec
+    */
+    /**
+     * @param $id_player
+     * @param $id_planet
+     * @param $str_booster
+     * @return bool
+     */
+    public function update_booster($user_id,$planet_id,$boosters) {
+        $requests = "UPDATE " . TABLE_USER_BUILDING . " SET boosters = '" . $boosters . "' " .
+            " WHERE user_id = " .$user_id .
+            " AND planet_id = " . $planet_id;
+
+        return $this->db->sql_query($requests);
+    }
+
+    /**
+     * @param $user_id
+     * @return array
+     */
+    public function select_user_building_list($user_id) {
+        $tElemList = array("planet_id", "planet_name", "coordinates", "fields", "boosters", "temperature_min", "temperature_max", "Sat", "Sat_percentage", "M", "M_percentage", "C", "C_Percentage", "D", "D_percentage", "CES", "CES_percentage", "CEF", "CEF_percentage", "UdR", "UdN", "CSp", "HM", "HC", "HD", "Lab", "Ter", "Silo", "BaLu", "Pha", "PoSa", "DdR");
+
+        $request = "SELECT ".implode(", ",$tElemList)." ";
+        $request .= " FROM " . TABLE_USER_BUILDING;
+        $request .= " WHERE user_id = " . $user_id;
+        $request .= " ORDER BY planet_id";
+        $result =  $this->db->sql_query($request);
+
+        $tbuilding = array();
+        while ($row =  $this->db->sql_fetch_assoc($result)){
+            $tbuilding[$row["planet_id"]] = array();
+            foreach ($tElemList as $elem)
+            {
+                $tbuilding[$row["planet_id"]][$elem] =$row[$elem];
+            }
+        }
+        return $tbuilding;
+    }
+    /**
+     * @param $user_id
+     * @param $previous_id
+     * @param $new_id
+     */
+    public function update_moon_id($user_id, $previous_id, $new_id) {
+        $request = "UPDATE " . TABLE_USER_BUILDING . " SET planet_id  = " . $new_id .
+            " WHERE  planet_id = " . $previous_id . " and user_id = " . $user_id;
+        $this->db->sql_query($request);
+        //We adjust the id if we go upper than 299
+        $request = "UPDATE " . TABLE_USER_BUILDING .
+            " SET planet_id  = planet_id -100 WHERE  planet_id > 299 and user_id = " . $user_id;
+        $this->db->sql_query($request);
+    }
+    /**
+     * @param $user_id
+     * @param $previous_id
+     * @param $new_id
+     */
+    public function update_planet_id($user_id, $previous_id, $new_id) {
+        $request = "UPDATE " . TABLE_USER_BUILDING . " SET planet_id  = " . $new_id .
+            " WHERE  planet_id = " . $previous_id . " and user_id = " . $user_id;
+        $this->db->sql_query($request);
+    }
+    /**
+     * @param $user_id
+     * @param $aster_id Planet or moon to be deleted
+     */
+    public function delete_user_aster($user_id, $aster_id) {
+        $request = "DELETE FROM " . TABLE_USER_BUILDING . " WHERE `user_id` = " . $user_id . " AND `planet_id` = " . intval($aster_id);
+        $this->db->sql_query($request);
+    }
+}

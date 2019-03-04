@@ -13,9 +13,13 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
+
+
 $user_empire = user_get_empire($user_data['user_id']);
 $user_building = $user_empire["building"];
 $user_defence = $user_empire["defence"];
+$user_percentage = $user_empire["user_percentage"];
+
 
 if ($user_empire["technology"])
 {
@@ -29,15 +33,6 @@ else {
 
 $nb_planete = find_nb_planete_user($user_data['user_id']);
 
-// Recuperation des pourcentages
-$planet = array("planet_id" => "", "M_percentage" => 0, "C_percentage" => 0, "D_percentage" => 0, "CES_percentage" => 100, "CEF_percentage" => 100, "Sat_percentage" => 100);
-$quet = $db->sql_query("SELECT planet_id, M_percentage, C_percentage, D_percentage, CES_percentage, CEF_percentage, Sat_percentage FROM " . TABLE_USER_BUILDING . " WHERE user_id = " . $user_data["user_id"] . " AND planet_id < 199 ORDER BY planet_id");
-$user_percentage = array_fill(101, $nb_planete, $planet);
-while ($row = $db->sql_fetch_assoc($quet)) {
-    $arr = $row;
-    unset($arr["planet_id"]);
-    $user_percentage[$row["planet_id"]] = $arr;
-}
 
 // ajout infos pour gestion js ...
 $officier = $user_data['off_commandant'] + $user_data['off_amiral'] + $user_data['off_ingenieur']

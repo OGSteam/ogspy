@@ -15,7 +15,7 @@ namespace Ogsteam\Ogspy\Model;
 use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 use Ogsteam\Ogspy\Helper\SearchCriteria_Helper;
 
-class Universe_Model
+class Universe_Model  extends Model_Abstract
 {
     /**
      * Mettre à jour une planète

@@ -15,6 +15,7 @@ if (!defined('IN_SPYOGAME')) {
 use Ogsteam\Ogspy\Model\DBUtils_Model;
 use Ogsteam\Ogspy\Model\Config_Model;
 use Ogsteam\Ogspy\Model\Universe_Model;
+use Ogsteam\Ogspy\Model\User_Building_Model;
 
 
 
@@ -1131,6 +1132,8 @@ function calc_distance($a, $b, $type, $typeArrondi = true)
  * @arg id_planet id de la planète à rechercher
  * @return tableau associatif des boosters ou NULL en cas d'échec
  * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
+ *
+ *  * TODo A verifier, est elle utilisée ???????
 */
 function booster_lire_bdd($id_player, $id_planet)
 {
@@ -1148,25 +1151,7 @@ function booster_lire_bdd($id_player, $id_planet)
     return $result;
 }
 
-/* Écrit la string de stockage des objets Ogame dans la BDD.
- * @arg id_player   id du joueur
- * @arg id_planet   id de la planète à rechercher
- * @str_booster     string de stockage des boosters (donnée par les fonctions booster_encode() ou booster_encodev())
- * @return FALSE en cas d'échec
-*/
-/**
- * @param $id_player
- * @param $id_planet
- * @param $str_booster
- * @return bool|mixed|\mysqli_result
- */
-function booster_ecrire_bdd_str($id_player, $id_planet, $str_booster)
-{
-    global $db;
 
-    $request = "UPDATE " . TABLE_USER_BUILDING . " SET boosters='" . $str_booster . "' WHERE user_id=" . $id_player . " AND planet_id=" . $id_planet;
-    return $db->sql_query($request);
-}
 
 /* Écrit les informations des objets Ogame dans la BDD sous forme d'une string de stockage.
  * @arg id_player   id du joueur
@@ -1179,35 +1164,41 @@ function booster_ecrire_bdd_str($id_player, $id_planet, $str_booster)
  * @param $id_planet
  * @param $tab_booster
  * @return bool|mixed|\mysqli_result
+ *
+ * TODo A verifier, est elle utilisée ???????
  */
 function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster)
 {
-    return booster_ecrire_bdd_str($id_player, $id_planet, booster_encode($tab_booster));
+    $User_Building_Model = new User_Building_Model();
+    return $User_Building_Model->update_booster($id_player,$id_planet,booster_encode($tab_booster));
 }
 
 /* Mets à jour les boosters de tous les users en fonction de la date de fin dans la BDD
- *
+* TODo A verifier, est elle utilisée ???????
 */
 function booster_maj_bdd()
 {
-    global $db;
+    $User_Building_Model = new User_Building_Model();
 
-    $request = "SELECT user_id, planet_id, boosters FROM " . TABLE_USER_BUILDING;
-    $res = $db->sql_query($request);
-    if ($res) {
-        $requests = array();
-        while ($row = $db->sql_fetch_assoc($res)) {
-            $tmp = booster_verify_str($row['boosters']);
-            if ($tmp !== $row['boosters']) {
-                $row['boosters'] = $tmp;
-                $requests[] = "UPDATE " . TABLE_USER_BUILDING . " SET boosters = '" . $row['boosters'] . "' " .
-                    " WHERE user_id = " . $row['user_id'] .
-                    " AND planet_id = " . $row['planet_id'];
-            }
+    // recupération de tous les booster et verification
+    $tUserBoosters = $User_Building_Model->get_all_booster();
+    $tUpdateBoosters = array();
+    foreach ($tUserBoosters as $UserBooster) {
+        $tmp = booster_verify_str($UserBooster['boosters']);
+        if ($tmp !== $UserBooster['boosters']) {
+            $tmptoUpdate = array();
+            $tmptoUpdate["user_id"] = $UserBooster['user_id'];
+            $tmptoUpdate["planet_id"] = $UserBooster['planet_id'];
+            $tmptoUpdate["boosters"] = $tmp;
+
+            $tUpdateBoosters[] = $tmptoUpdate;
         }
-        foreach ($requests as $request) {
-            $db->sql_query($request);
-        }
+    }
+
+    //sauvegarde des boosters actualisé
+    foreach ( $tUpdateBoosters as $UpdateBooster)
+    {
+        $User_Building_Model->update_booster($UpdateBooster["user_id"], $UpdateBooster["planet_id"],$UpdateBooster["boosters"] );
     }
 }
 

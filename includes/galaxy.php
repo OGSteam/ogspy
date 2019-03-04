@@ -86,6 +86,7 @@ function galaxy_check_auth($action)
     }
 }
 
+
 /**
  * Affichage des galaxies
  *
