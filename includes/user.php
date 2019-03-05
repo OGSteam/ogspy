@@ -20,6 +20,7 @@ use Ogsteam\Ogspy\Model\Statistics_Model;
 use Ogsteam\Ogspy\Model\Universe_Model;
 use Ogsteam\Ogspy\Model\User_Building_Model;
 use Ogsteam\Ogspy\Model\User_Defense_Model;
+use Ogsteam\Ogspy\Model\User_Technology_Model;
 
 
 
@@ -393,20 +394,18 @@ function member_user_set()
     }
 
     //compte technocrate
+    // todo a verifier, dans 3.4 la partie set esp a ete supprimée
+    //que faire ?
+    $User_Technology_Model=new User_Technology_Model();
     if ($user_data['off_technocrate'] == "0" && $pub_off_technocrate == 1) {
-        $db->sql_query("UPDATE " . TABLE_USER .
-            " SET `off_technocrate` = '1' WHERE `user_id` = " . $user_id);
+        $db->sql_query("UPDATE " . TABLE_USER ." SET `off_technocrate` = '1' WHERE `user_id` = " . $user_id);
         $tech = $user_technology['Esp'] + 2;
-        $db->sql_query("UPDATE " . TABLE_USER_TECHNOLOGY . " SET `Esp` = " . $tech .
-            " WHERE `user_id` = " . $user_id);
+        $User_Technology_Model->update_esp($user_id,$tech);
     }
-    if ($user_data['off_technocrate'] == 1 && (is_null($pub_off_technocrate) || $pub_off_technocrate !=
-            1)) {
-        $db->sql_query("UPDATE " . TABLE_USER .
-            " SET `off_technocrate` = '0' WHERE `user_id` = " . $user_id);
+    if ($user_data['off_technocrate'] == 1 && (is_null($pub_off_technocrate) || $pub_off_technocrate != 1)) {
+        $db->sql_query("UPDATE " . TABLE_USER ." SET `off_technocrate` = '0' WHERE `user_id` = " . $user_id);
         $tech = $user_technology['Esp'] - 2;
-        $db->sql_query("UPDATE " . TABLE_USER_TECHNOLOGY . " SET `Esp` = " . $tech .
-            " WHERE `user_id` = " . $user_id);
+        $User_Technology_Model->update_esp($user_id,$tech);
     }
 
     //Contrôle que le pseudo ne soit pas déjà utilisé
@@ -1012,7 +1011,6 @@ function user_set_all_empire_resync_id()
  */
 function user_get_empire($user_id)
 {
-    global $db;
 
     $planet = array(false, "user_id" => "", "planet_name" => "", "coordinates" => "",
         "fields" => "", "fields_used" => "", "boosters" => booster_encode(),
@@ -1098,13 +1096,7 @@ function user_get_empire($user_id)
         $user_building[$BuildingList["planet_id"]][0] = true;
         }
 
-    $request = "SELECT Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique";
-    $request .= " FROM " . TABLE_USER_TECHNOLOGY;
-    $request .= " WHERE user_id = " . $user_id;
-    $result = $db->sql_query($request);
-
-    $user_technology = $db->sql_fetch_assoc($result);
-
+    $user_technology = (new User_Technology_Model())->select_user_technologies($user_id);
 
     // on met les def planete a 0
     for ($i = 101; $i <= ($nb_planete + 100); $i++) {
@@ -1131,6 +1123,7 @@ function user_get_empire($user_id)
 /**
  * Récuperation du nombre de  planete de l utilisateur
  * TODO => cette fonction sera a mettre en adequation avec astro
+ * => adequation avec astro si remise à niveau vue empire
  * ( attention ancien uni techno a 1 planete mais utilisateur 9 possible  !!!!!)
  * @param $id
  * @return int|the
@@ -1280,8 +1273,7 @@ function user_del_building()
     //si plus de planete
     $iNBPlanet = $User_Building_Model->get_nb_planets();
     if ($iNBPlanet == 0) {
-        $request = "delete from " . TABLE_USER_TECHNOLOGY . " where user_id = " . $user_data["user_id"];
-        $db->sql_query($request);
+        (new User_Technology_Model())->delete_user_technologies($user_data["user_id"]);
     }
 
     // remise en ordre des planetes :
