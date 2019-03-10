@@ -460,6 +460,26 @@ function user_profile_token_updater($user_id)
 }
 
 /**
+ * Get the PAT on the user request
+ * @param $user_id
+ * @return array
+ * @throws Exception
+ */
+function get_user_profile_token($user_id)
+{
+    global $db;
+
+    $request = "SELECT `token` FROM " . TABLE_USER_TOKEN . " WHERE `user_id` = '" .
+        $user_id . "' AND `name` = 'PAT'";
+    $result = $db->sql_query($request);
+    if ($db->sql_numrows($result) == 0) {
+            return 1;
+    } else {
+        return $db->sql_fetch_row($result);
+    }
+}
+
+/**
  * Entree en BDD de donnees utilisateur
  * @todo Query x1
  * @param $user_id
