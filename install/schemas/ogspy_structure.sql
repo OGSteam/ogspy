@@ -540,7 +540,7 @@ CREATE TABLE `ogspy_user_tokens` (
   `user_id` INT NOT NULL,
 	`name` VARCHAR(100) NOT NULL,
 	`token` VARCHAR(64) NOT NULL,
-	`expiration_date` datetime NOT NULL,
+	`expiration_date` VARCHAR(15) NOT NULL,
 	PRIMARY KEY (id)
 )
 DEFAULT CHARSET = utf8;

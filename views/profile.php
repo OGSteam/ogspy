@@ -21,7 +21,7 @@ $user_stat_name = $user_data["user_stat_name"];
 if ($user_token !== null && $user_token['name'] !== "Empty") {
     $user_token_displayed = $user_token["token"];
 } else {
-    $user_token_displayed = $lang['PROFILE_TOKEN_TO_BE_CREATED'];
+    $user_token_displayed = $lang['PROFILE_TOKEN_TO_BE_UPDATED'];
 }
 
 if ($server_config["disable_ip_check"] == 1) {
@@ -35,11 +35,12 @@ $off_ingenieur = (isset ($user_data["off_ingenieur"]) && $user_data["off_ingenie
 $off_geologue = (isset ($user_data["off_geologue"]) && $user_data["off_geologue"] == 1) ? "checked" : "";
 $off_technocrate = (isset ($user_data["off_technocrate"]) && $user_data["off_technocrate"] == 1) ? "checked" : "";
 
+
 require_once("views/page_header.php");
 ?>
 
     <!-- DEBUT DU SCRIPT -->
-    <script language="JavaScript">
+    <script>
         function check_password(form) {
             var old_password = form.old_password.value;
             var new_password = form.new_password.value;
@@ -71,7 +72,7 @@ require_once("views/page_header.php");
 
     <form method="POST" action="index.php" onSubmit="return check_password(this);">
         <input name="action" type="hidden" value="member_modify_member">
-        <table width="450">
+        <table width="500">
             <tr>
                 <td class="c_user" colspan="2"><?php echo($lang['PROFILE_TITLE']); ?></td>
             </tr>
@@ -103,7 +104,7 @@ require_once("views/page_header.php");
                 <th><?php echo $lang['PROFILE_EMAIL'] . help("profile_pseudo_email"); ?></th>
                 <th>
                     <label>
-                        <input name="pseudo_email" type="text" size="30" value="<?php echo $user_email; ?>">
+                        <input name="pseudo_email" type="text" size="32" value="<?php echo $user_email; ?>">
                     </label>
                 </th>
             </tr>
@@ -111,7 +112,8 @@ require_once("views/page_header.php");
                 <th><?php echo $lang['PROFILE_TOKEN'] . help("profile_token"); ?></th>
                 <th>
                     <label>
-                        <input name="pseudo_user_token" type="text" size="60" value="<?php echo $user_token_displayed; ?>">
+                        <input name="pseudo_user_token" type="text" size="32" maxlength="64" value="<?php echo $user_token_displayed; ?>"><br>
+                        <input name="renew_user_token" value="1" type="checkbox" ><span><?php echo $lang['PROFILE_TOKEN_UPDATE']; ?><span>
                     </label>
                 </th>
             </tr>
