@@ -6,7 +6,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 
-class Helper_Abstract
+abstract class Helper_Abstract
 {
     protected  $version;
     protected  $name;

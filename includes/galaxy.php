@@ -15,6 +15,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 use Ogsteam\Ogspy\Model\Universe_Model;
+use Ogsteam\Ogspy\Model\Rankings_Player_Model;
 
 /**
  * Vérification des droits OGSpy
@@ -110,17 +111,17 @@ function galaxy_show()
         @list($pub_galaxy, $pub_system) = explode(":", $pub_coordinates);
     }
     if (isset($pub_galaxy) && isset($pub_system)) {
-        if ((int) $pub_galaxy < 1) {
+        if ((int)$pub_galaxy < 1) {
             $pub_galaxy = 1;
         }
-        if ((int) $pub_galaxy > (int) $server_config['num_of_galaxies']) {
-            $pub_galaxy = (int) $server_config['num_of_galaxies'];
+        if ((int)$pub_galaxy > (int)$server_config['num_of_galaxies']) {
+            $pub_galaxy = (int)$server_config['num_of_galaxies'];
         }
-        if ((int) $pub_system < 1) {
+        if ((int)$pub_system < 1) {
             $pub_system = 1;
         }
-        if ((int) $pub_system > (int)$server_config['num_of_systems']) {
-            $pub_system = (int) $server_config['num_of_systems'];
+        if ((int)$pub_system > (int)$server_config['num_of_systems']) {
+            $pub_system = (int)$server_config['num_of_systems'];
         }
     }
 
@@ -204,20 +205,20 @@ function galaxy_show_sector()
         if ((int)$pub_galaxy < 1) {
             $pub_galaxy = 1;
         }
-        if ((int)($pub_galaxy) > (int) $server_config['num_of_galaxies']) {
-            $pub_galaxy = (int) $server_config['num_of_galaxies'];
+        if ((int)($pub_galaxy) > (int)$server_config['num_of_galaxies']) {
+            $pub_galaxy = (int)$server_config['num_of_galaxies'];
         }
-        if ((int) $pub_system_down < 1) {
+        if ((int)$pub_system_down < 1) {
             $pub_system_down = 1;
         }
-        if ((int) $pub_system_down > (int) $server_config['num_of_systems']) {
-            $pub_system_down = (int) $server_config['num_of_systems'];
+        if ((int)$pub_system_down > (int)$server_config['num_of_systems']) {
+            $pub_system_down = (int)$server_config['num_of_systems'];
         }
-        if ( (int) $pub_system_up < 1) {
+        if ((int)$pub_system_up < 1) {
             $pub_system_up = 1;
         }
-        if ( (int) $pub_system_up > (int)$server_config['num_of_systems']) {
-            $pub_system_up = (int) $server_config['num_of_systems'];
+        if ((int)$pub_system_up > (int)$server_config['num_of_systems']) {
+            $pub_system_up = (int)$server_config['num_of_systems'];
         }
     }
 
@@ -234,7 +235,6 @@ function galaxy_show_sector()
     if ($server_config["allied"] != "") {
         $allied = explode(",", $server_config["allied"]);
     }
-
 
 
     $request = "select system, row, name, ally, player, moon, phalanx, gate, last_update_moon, status, last_update";
@@ -420,17 +420,17 @@ function galaxy_search()
                 break;
 
             case "colonization":
-                $galaxy_start = (int) $pub_galaxy_down;
-                $galaxy_end = (int) $pub_galaxy_up;
-                $system_start = (int) $pub_system_down;
-                $system_end = (int) $pub_system_up;
-                $row_start = (int) $pub_row_down;
-                $row_end = (int) $pub_row_up;
+                $galaxy_start = (int)$pub_galaxy_down;
+                $galaxy_end = (int)$pub_galaxy_up;
+                $system_start = (int)$pub_system_down;
+                $system_end = (int)$pub_system_up;
+                $row_start = (int)$pub_row_down;
+                $row_end = (int)$pub_row_up;
 
-                if ($galaxy_start < 1 || $galaxy_start > (int) $server_config['num_of_galaxies'] || $galaxy_end < 1 || $galaxy_end > (int)$server_config['num_of_galaxies']) {
+                if ($galaxy_start < 1 || $galaxy_start > (int)$server_config['num_of_galaxies'] || $galaxy_end < 1 || $galaxy_end > (int)$server_config['num_of_galaxies']) {
                     break;
                 }
-                if ($system_start < 1 || $system_start > (int) $server_config['num_of_systems'] || $system_end < 1 || $system_end > (int) $server_config['num_of_systems']) {
+                if ($system_start < 1 || $system_start > (int)$server_config['num_of_systems'] || $system_end < 1 || $system_end > (int)$server_config['num_of_systems']) {
                     break;
                 }
                 if ($pub_row_active) {
@@ -457,17 +457,17 @@ function galaxy_search()
                 break;
 
             case "moon":
-                $galaxy_start = (int) $pub_galaxy_down;
-                $galaxy_end = (int) $pub_galaxy_up;
-                $system_start = (int) $pub_system_down;
-                $system_end = (int) $pub_system_up;
-                $row_start = (int) $pub_row_down;
-                $row_end = (int) $pub_row_up;
+                $galaxy_start = (int)$pub_galaxy_down;
+                $galaxy_end = (int)$pub_galaxy_up;
+                $system_start = (int)$pub_system_down;
+                $system_end = (int)$pub_system_up;
+                $row_start = (int)$pub_row_down;
+                $row_end = (int)$pub_row_up;
 
-                if ($galaxy_start < 1 || $galaxy_start > (int) $server_config['num_of_galaxies'] || $galaxy_end < 1 || $galaxy_end > (int) $server_config['num_of_galaxies']) {
+                if ($galaxy_start < 1 || $galaxy_start > (int)$server_config['num_of_galaxies'] || $galaxy_end < 1 || $galaxy_end > (int)$server_config['num_of_galaxies']) {
                     break;
                 }
-                if ($system_start < 1 || $system_start > (int) $server_config['num_of_systems'] || $system_end < 1 || $system_end > (int) $server_config['num_of_systems']) {
+                if ($system_start < 1 || $system_start > (int)$server_config['num_of_systems'] || $system_end < 1 || $system_end > (int)$server_config['num_of_systems']) {
                     break;
                 }
                 if ($pub_row_active) {
@@ -499,14 +499,14 @@ function galaxy_search()
                 break;
 
             case "away":
-                $galaxy_start = (int) $pub_galaxy_down;
-                $galaxy_end = (int) $pub_galaxy_up;
-                $system_start = (int) $pub_system_down;
-                $system_end = (int) $pub_system_up;
-                $row_start = (int) $pub_row_down;
-                $row_end = (int) $pub_row_up;
+                $galaxy_start = (int)$pub_galaxy_down;
+                $galaxy_end = (int)$pub_galaxy_up;
+                $system_start = (int)$pub_system_down;
+                $system_end = (int)$pub_system_up;
+                $row_start = (int)$pub_row_down;
+                $row_end = (int)$pub_row_up;
 
-                if ($galaxy_start < 1 || $galaxy_start > (int) $server_config['num_of_galaxies'] || $galaxy_end < 1 || $galaxy_end > (int) $server_config['num_of_galaxies']) {
+                if ($galaxy_start < 1 || $galaxy_start > (int)$server_config['num_of_galaxies'] || $galaxy_end < 1 || $galaxy_end > (int)$server_config['num_of_galaxies']) {
                     break;
                 }
                 if ($system_start < 1 || $system_start > (int)$server_config['num_of_systems'] || $system_end < 1 || $system_end > (int)$server_config['num_of_systems']) {
@@ -626,15 +626,15 @@ function galaxy_statistic($step = 50)
     for ($galaxy = 1; $galaxy <= $server_config['num_of_galaxies']; $galaxy++) {
         for ($system = 1; $system <= $server_config['num_of_systems']; $system = $system + $step) {
             // nb planet
-            $nb_planet=$Universe_Model->get_nb_planets($galaxy,$system,$system + $step - 1);
+            $nb_planet = $Universe_Model->get_nb_planets($galaxy, $system, $system + $step - 1);
             $nb_planets_total += $nb_planet;
             //nb libre
-            $nb_planet_free=$Universe_Model->get_nb_empty_planets($galaxy,$system,$system + $step - 1);
+            $nb_planet_free = $Universe_Model->get_nb_empty_planets($galaxy, $system, $system + $step - 1);
             $nb_freeplanets_total += $nb_planet_free;
 
             $new = false;
 
-            $last_update = $Universe_Model->get_last_update($galaxy,$system,($system + $step - 1));
+            $last_update = $Universe_Model->get_last_update($galaxy, $system, ($system + $step - 1));
             if ($last_update > $user_data["session_lastvisit"]) {
                 $new = true;
             }
@@ -678,7 +678,7 @@ function galaxy_ally_listing()
  */
 function galaxy_ally_position($step = 50)
 {
-    global  $user_auth, $user_data, $server_config;
+    global $user_auth, $user_data, $server_config;
     global $pub_ally_, $nb_colonnes_ally;
 
     $Universe_Model = new Universe_Model();
@@ -723,7 +723,7 @@ function galaxy_ally_position($step = 50)
             for ($system = 1; $system <= $server_config['num_of_systems']; $system = $system + $step) {
 
                 $population = array();
-                $population =   $Universe_Model->get_ally_position($galaxy,$system,($system + $step - 1),$pub_ally_name);
+                $population = $Universe_Model->get_ally_position($galaxy, $system, ($system + $step - 1), $pub_ally_name);
                 $nb_planet = $Universe_Model->sql_affectedrows();
                 //$nb_planet =  count($population);
 
@@ -764,11 +764,11 @@ function galaxy_reportspy_show()
     if (!isset($pub_galaxy) || !isset($pub_system) || !isset($pub_row)) {
         return false;
     }
-    if ((int) $pub_galaxy < 1 || (int) $pub_galaxy > (int) $server_config['num_of_galaxies'] || (int) $pub_system < 1 || (int) $pub_system > (int) $server_config['num_of_systems'] || (int) $pub_row < 1 || (int) $pub_row > 15) {
+    if ((int)$pub_galaxy < 1 || (int)$pub_galaxy > (int)$server_config['num_of_galaxies'] || (int)$pub_system < 1 || (int)$pub_system > (int)$server_config['num_of_systems'] || (int)$pub_row < 1 || (int)$pub_row > 15) {
         return false;
     }
 
-    $request_astre_name = "SELECT name FROM " . TABLE_UNIVERSE . " WHERE galaxy = " . (int) $pub_galaxy . " AND system = " . (int) $pub_system . " AND row = " . (int) $pub_row;
+    $request_astre_name = "SELECT name FROM " . TABLE_UNIVERSE . " WHERE galaxy = " . (int)$pub_galaxy . " AND system = " . (int)$pub_system . " AND row = " . (int)$pub_row;
     $result_astre_name = $db->sql_query($request_astre_name);
     $astre_name = $db->sql_fetch_assoc($result_astre_name); //Récupère le nom de la planète
 
@@ -776,9 +776,9 @@ function galaxy_reportspy_show()
     $request = "select id_spy, user_name, dateRE";
     $request .= " from " . TABLE_PARSEDSPY . " left join " . TABLE_USER . " on user_id = sender_id";
     if (!isset($pub_spy_id)) {
-        $request .= " where active = '1'  and coordinates = '" . (int) $pub_galaxy . ":" . (int) $pub_system . ":" . (int) $pub_row . "'";
+        $request .= " where active = '1'  and coordinates = '" . (int)$pub_galaxy . ":" . (int)$pub_system . ":" . (int)$pub_row . "'";
     } else {
-        $request .= " where id_spy = " . (int) $pub_spy_id;
+        $request .= " where id_spy = " . (int)$pub_spy_id;
     }
     $request .= " and BaLu<=0 and Pha<=0 and PoSa<=0 and planet_name='" . $astre_name['name'] . "'";
     $request .= " order by dateRE desc LIMIT 1";
@@ -793,9 +793,9 @@ function galaxy_reportspy_show()
     $request = "select id_spy, user_name, dateRE";
     $request .= " from " . TABLE_PARSEDSPY . " left join " . TABLE_USER . " on user_id = sender_id";
     if (!isset($pub_spy_id)) {
-        $request .= " where active = '1'  and coordinates = '" . (int) $pub_galaxy . ":" . (int) $pub_system . ":" . (int) $pub_row . "'";
+        $request .= " where active = '1'  and coordinates = '" . (int)$pub_galaxy . ":" . (int)$pub_system . ":" . (int)$pub_row . "'";
     } else {
-        $request .= " where id_spy = " . (int) $pub_spy_id;
+        $request .= " where id_spy = " . (int)$pub_spy_id;
     }
     $request .= " and M<=0 and C<=0 and D<=0 and CES<=0 and CEF<=0 and UdN<=0 and Lab<=0 and Ter<=0 and Silo<=0 and Dock<=0 and not planet_name='" . $astre_name['name'] . "'";
     $request .= " order by dateRE desc LIMIT 1";
@@ -913,53 +913,67 @@ function galaxy_getfavorites()
     return $favorite;
 }
 
+
+/**
+ * Affichage classement
+ *
+ * @param      $model
+ * @param      $ranking_table
+ * @param null $date
+ * @return int
+ */
+function galaxy_show_ranking($model, $ranking_table, $date = null)
+{
+    global $pub_date;
+    // Récupération de la taille max des tableaux
+    $data_rankings = $model;
+    //Récupération de la dernière date de classement
+    if ($date == null) {
+        $last_ranking = $data_rankings->get_rank_latest_table_date($ranking_table);
+    } else {
+        $last_ranking = $pub_date;
+    }
+    if ($last_ranking == null) {
+        return -1;
+    }
+    // Pas de classement disponible
+    $ranking = $data_rankings->get_all_ranktable_bydate($last_ranking, 1, 99999);
+    return $ranking;
+}
+
+
 /**
  * Affichage classement des joueurs
  *
- * @global        object mysql $db
  * @global string $pub_order_by general|eco|techno|military|military_b|military_l|military_d|honnor
  * @global int $pub_date timestamp du classement voulu
  * @global int $pub_interval
- * @todo Query : "SELECT rank FROM `" . $table . "` order by `rank` desc limit 0,1"
- * @todo Query : "select max(datadate) from " . $table[$i]["tablename"]"
- * @todo : Query : "select rank, player, ally, points, user_name from " . $table[$i]["tablename"] . " left join " . TABLE_USER . " on sender_id = user_id" where rank between " . $limit_down . " and " . $limit_up . "  order by rank";"
- * @todo : Query : "select rank, player, ally, points, user_name from " . $table[$i]["tablename"] . " left join " . TABLE_USER . " on sender_id = user_id" where rank between " . $limit_down . " and " . $limit_up . " and datadate = " . $db->sql_escape_string($last_ranking). " order by rank";" *
- * @todo : Query : "select distinct datadate from " . $table[$i]["tablename"] . " order by datadate desc"
- * @todo : Query : "select rank, player, ally, points, user_name  from " . $table[$i]["tablename"] . " left join " . TABLE_USER . " on sender_id = user_id  where player = '" . $db->sql_escape_string(key($ranking)) . " and datadate = " . $db->sql_escape_string($last_ranking). " order by rank
- * @todo : Query : "select rank, player, ally, points, user_name  from " . $table[$i]["tablename"] . " left join " . TABLE_USER . " on sender_id = user_id  where player = '" . $db->sql_escape_string(key($ranking)) . "  order by rank
  * @return array array($order, $ranking, $ranking_available, $maxrank);
+ *
+ * todo revoir entierement affichage de la vue pour simplifier/ameliorer cette fonction,
+ * todo regression => gain de perf enorme mais si rien dans table general, pas d 'affichage classement (inner join)
  */
 function galaxy_show_ranking_player()
 {
-    global $db;
     global $pub_order_by, $pub_date, $pub_interval;
+
+    $Rankings_Player_Model = new Rankings_Player_Model();
 
     if (!isset($pub_order_by)) {
         $pub_order_by = "general";
     }
-
-    $tables = array(TABLE_RANK_PLAYER_POINTS, TABLE_RANK_PLAYER_ECO, TABLE_RANK_PLAYER_TECHNOLOGY, TABLE_RANK_PLAYER_MILITARY, TABLE_RANK_PLAYER_MILITARY_BUILT, TABLE_RANK_PLAYER_MILITARY_LOOSE, TABLE_RANK_PLAYER_MILITARY_DESTRUCT, TABLE_RANK_PLAYER_HONOR);
-    $name = array('general', 'eco', 'techno', 'military', 'military_b', 'military_l', 'military_d', 'honnor');
+    $tables = $Rankings_Player_Model->get_rank_tables();
+    $name = $Rankings_Player_Model->get_rank_table_ref();
 
     // verification de la variable pub_order
     if (!in_array($pub_order_by, $name)) {
         $pub_order_by = "general";
     }
 
+
     // selection du max rank
-    $maxrank = array();
-    $i = 0;
-    foreach ($tables as $table) {
-        $request = "SELECT rank FROM `" . $table . "` ORDER BY `rank` DESC LIMIT 0,1";
-        $result = $db->sql_query($request);
-        $max = $db->sql_fetch_row($result);
-        $maxrank[$i] = $max[0];
-        $i++;
+    $maxrank = max($Rankings_Player_Model->select_max_rank_row());
 
-    }
-
-    // selection de rank max !
-    $maxrank = max($maxrank);
 
     if (!isset($pub_interval)) {
         $pub_interval = 1;
@@ -977,78 +991,44 @@ function galaxy_show_ranking_player()
 
     // on determine l id du pub order
     $id = (array_keys($name, $pub_order_by));
-
-    // en premier l id :
-    $table[] = array("tablename" => $tables[$id[0]], "arrayname" => $name[$id[0]]);
-    $i = 0;
-    // ensuite le reste des table / nom
-    for ($i; $i < count($name); $i++) {
-        if ($id[0] != $i) {
-            $table[] = array("tablename" => $tables[$i], "arrayname" => $name[$i]);
-        }
-
-    }
-
-
-    $i = 0;
+    $orderTableName = $tables[$id[0]];
+    $orderStringName = $name[$id[0]];
 
     if (!isset($pub_date)) {
-        $request = "SELECT max(datadate) FROM " . $table[$i]["tablename"];
-        $result = $db->sql_query($request);
-        list($last_ranking) = $db->sql_fetch_row($result);
+        $last_ranking = $Rankings_Player_Model->get_rank_latest_table_date($orderTableName);
+
     } else {
-            $last_ranking = $pub_date;
+        $last_ranking = $pub_date;
     }
 
-    $request = "select rank, player, ally, points, user_name";
-    $request .= " from " . $table[$i]["tablename"] . " left join " . TABLE_USER;
-    $request .= " on sender_id = user_id";
-    $request .= " where rank between " . $limit_down . " and " . $limit_up;
-    $request .= isset($last_ranking) ? " and datadate = " . $db->sql_escape_string($last_ranking) : "";
-    $request .= " order by rank";
-    $result = $db->sql_query($request);
 
-    while (list($rank, $player, $ally, $points, $user_name) = $db->sql_fetch_row($result)) {
-        $ranking[$player][$table[$i]["arrayname"]] = array("rank" => $rank, "points" => $points);
-        $ranking[$player]["ally"] = $ally;
-        $ranking[$player]["sender"] = $user_name;
+    $all_ranktable_bydate = $Rankings_Player_Model->get_all_ranktable_bydate($last_ranking, $limit_down, $limit_up, $orderStringName);
 
-        if ($pub_order_by == $table[$i]["arrayname"]) {
-            $order[$rank] = $player;
-        }
+
+    // reconstruction des tableaux tel que demandé dans page vue ...
+    foreach ($all_ranktable_bydate as $ranktable_bydate) {
+        // recuperatio du nom
+        $currentPlayer = $ranktable_bydate["player_name"];
+
+        //récuperation du rank par defaut
+        $order[$ranktable_bydate["postion"]] = $currentPlayer;
+
+        $ranking[$currentPlayer]["ally"] = $ranktable_bydate["ally_name"];
+        $ranking[$currentPlayer]["sender"] = "none"; // todo est ce util ?
+
+        $ranking[$currentPlayer]["general"] = array("rank" => $ranktable_bydate["general_rank"], "points" => $ranktable_bydate["general_pts"]);
+        $ranking[$currentPlayer]["eco"] = array("rank" => $ranktable_bydate["eco_rank"], "points" => $ranktable_bydate["eco_pts"]);
+        $ranking[$currentPlayer]["techno"] = array("rank" => $ranktable_bydate["tech_rank"], "points" => $ranktable_bydate["tech_pts"]);
+        $ranking[$currentPlayer]["honnor"] = array("rank" => $ranktable_bydate["milh_rank"], "points" => $ranktable_bydate["milh_pts"]);
+
+        $ranking[$currentPlayer]["military"] = array("rank" => $ranktable_bydate["mil_rank"], "points" => $ranktable_bydate["mil_pts"]);
+        $ranking[$currentPlayer]["military_b"] = array("rank" => $ranktable_bydate["milb_rank"], "points" => $ranktable_bydate["milb_pts"]);
+        $ranking[$currentPlayer]["military_l"] = array("rank" => $ranktable_bydate["mill_rank"], "points" => $ranktable_bydate["mill_pts"]);
+        $ranking[$currentPlayer]["military_d"] = array("rank" => $ranktable_bydate["mild_rank"], "points" => $ranktable_bydate["mild_pts"]);
+
     }
 
-    $request = "SELECT DISTINCT datadate FROM " . $table[$i]["tablename"] . " ORDER BY datadate DESC";
-    $result_2 = $db->sql_query($request);
-    while ($row = $db->sql_fetch_assoc($result_2)) {
-        $ranking_available[] = $row["datadate"];
-    }
-
-    for ($i; $i < count($name); $i++) {
-        reset($ranking);
-        while ($value = current($ranking)) {
-            $request = "select rank, player, ally, points, user_name";
-            $request .= " from " . $table[$i]["tablename"] . " left join " . TABLE_USER;
-            $request .= " on sender_id = user_id";
-            $request .= " where player = '" . $db->sql_escape_string(key($ranking)) . "'";
-            $request .= isset($last_ranking) ? " and datadate = " . $db->sql_escape_string($last_ranking) : "";
-            $request .= " order by rank";
-            $result = $db->sql_query($request);
-
-            while (list($rank, $player, $ally, $points, $user_name) = $db->sql_fetch_row($result)) {
-                $ranking[$player][$table[$i]["arrayname"]] = array("rank" => $rank, "points" => $points);
-                $ranking[$player]["ally"] = $ally;
-                $ranking[$player]["sender"] = $user_name;
-
-                if ($pub_order_by == $table[$i]["arrayname"]) {
-                    $order[$rank] = $player;
-                }
-            }
-
-            next($ranking);
-        }
-    }
-
+    $ranking_available = $Rankings_Player_Model->get_all_distinct_date_ranktable($orderTableName);
     $ranking_available = array_unique($ranking_available);
 
     return array($order, $ranking, $ranking_available, $maxrank);
@@ -1107,7 +1087,7 @@ function galaxy_show_ranking_ally()
     if (isset($pub_suborder) && $pub_suborder == "member") {
         $pub_order_by2 = "points_per_member desc";
     } else {
-            $pub_order_by2 = "rank";
+        $pub_order_by2 = "rank";
     }
 
     if (!isset($pub_interval)) {
@@ -1145,7 +1125,7 @@ function galaxy_show_ranking_ally()
         $result = $db->sql_query($request);
         list($last_ranking) = $db->sql_fetch_row($result);
     } else {
-            $last_ranking = $pub_date;
+        $last_ranking = $pub_date;
     }
 
     $request = "select rank, ally, number_member, points,  user_name";
@@ -1158,7 +1138,7 @@ function galaxy_show_ranking_ally()
     $result = $db->sql_query($request);
 
     while ($row = $db->sql_fetch_assoc($result)) {
-        $ranking[$row["ally"]][$table[$i]["arrayname"]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int) ($row["points"] / $row["number_member"]));
+        $ranking[$row["ally"]][$table[$i]["arrayname"]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int)($row["points"] / $row["number_member"]));
         $ranking[$row["ally"]]["number_member"] = $row["number_member"];
         $ranking[$row["ally"]]["sender"] = $row["user_name"];
 
@@ -1186,7 +1166,7 @@ function galaxy_show_ranking_ally()
             $result = $db->sql_query($request);
 
             while ($row = $db->sql_fetch_assoc($result)) {
-                $ranking[$row["ally"]][$table[$i]["arrayname"]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int) ($row["points"] / $row["number_member"]));
+                $ranking[$row["ally"]][$table[$i]["arrayname"]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int)($row["points"] / $row["number_member"]));
                 $ranking[$row["ally"]]["number_member"] = $row["number_member"];
                 $ranking[$row["ally"]]["sender"] = $row["user_name"];
 
@@ -1208,37 +1188,56 @@ function galaxy_show_ranking_ally()
  *
  * @param string $player nom du joueur recherche
  * @param boolean $last le dernier classement ou tous les classements
- * @global        object mysql $db
- * @todo Query :  "select datadate, rank, points from " . $table . " where player = '" . $db->sql_escape_string($player) . "  order by datadate desc";
  * @return array $ranking
  */
 function galaxy_show_ranking_unique_player($player, $last = false)
 {
-    global $db;
 
     $ranking = array();
-    $tables = array(TABLE_RANK_PLAYER_POINTS, TABLE_RANK_PLAYER_ECO, TABLE_RANK_PLAYER_TECHNOLOGY, TABLE_RANK_PLAYER_MILITARY, TABLE_RANK_PLAYER_MILITARY_BUILT, TABLE_RANK_PLAYER_MILITARY_LOOSE, TABLE_RANK_PLAYER_MILITARY_DESTRUCT, TABLE_RANK_PLAYER_HONOR);
-    $name = array('general', 'eco', 'techno', 'military', 'military_b', 'military_l', 'military_d', 'honnor');
+    $tRanking = (new Rankings_Player_Model())->get_all_ranktable_byplayer($player);
+    foreach ($tRanking as $rank) {
+        $ranking[$rank["datadate"]]["general"]["rank"] = $rank["general_rank"];
+        $ranking[$rank["datadate"]]["general"]["points"] = $rank["general_rank"];
 
-    $i = 0;
-    foreach ($tables as $table) {
-
-        $request = "select datadate, rank, points";
-        $request .= " from " . $table;
-        $request .= " where player = '" . $db->sql_escape_string($player) . "'";
-        $request .= " order by datadate desc";
-        $result = $db->sql_query($request);
-        while (list($datadate, $rank, $points) = $db->sql_fetch_row($result)) {
-            $ranking[$datadate][$name[$i]] = array("rank" => $rank, "points" => $points);
-            if ($last) {
-                break;
-            }
+        if ((int)$rank["eco_rank"] > 0) {
+            $ranking[$rank["datadate"]]["eco"]["rank"] = $rank["eco_rank"];
+            $ranking[$rank["datadate"]]["eco"]["points"] = $rank["eco_pts"];
         }
 
+        if ((int)$rank["tech_rank"] > 0) {
+            $ranking[$rank["datadate"]]["techno"]["rank"] = $rank["tech_rank"];
+            $ranking[$rank["datadate"]]["techno"]["points"] = $rank["tech_pts"];
+        }
 
-        $i++;
+        if ((int)$rank["milh_rank"] > 0) {
+            $ranking[$rank["datadate"]]["honnor"]["rank"] = $rank["milh_rank"];
+            $ranking[$rank["datadate"]]["honnor"]["points"] = $rank["milh_pts"];
+        }
+
+        if ((int)$rank["mil_rank"] > 0) {
+            $ranking[$rank["datadate"]]["military"]["rank"] = $rank["mil_rank"];
+            $ranking[$rank["datadate"]]["military"]["points"] = $rank["mil_pts"];
+        }
+
+        if ((int)$rank["milb_rank"] > 0) {
+            $ranking[$rank["datadate"]]["military_b"]["rank"] = $rank["milb_rank"];
+            $ranking[$rank["datadate"]]["military_b"]["points"] = $rank["milb_pts"];
+        }
+
+        if ((int)$rank["mill_rank"] > 0) {
+            $ranking[$rank["datadate"]]["military_l"]["rank"] = $rank["mill_rank"];
+            $ranking[$rank["datadate"]]["military_l"]["points"] = $rank["mill_pts"];
+        }
+
+        if ((int)$rank["mild_rank"] > 0) {
+            $ranking[$rank["datadate"]]["military_d"]["rank"] = $rank["mild_rank"];
+            $ranking[$rank["datadate"]]["military_d"]["points"] = $rank["mild_pts"];
+        }
+
+        if ($last) {
+            break;
+        }
     }
-
 
     return $ranking;
 }
@@ -1269,7 +1268,7 @@ function galaxy_show_ranking_unique_ally($ally, $last = false)
         $request .= " order by datadate desc";
         $result = $db->sql_query($request);
         while ($row = $db->sql_fetch_assoc($result)) {
-            $ranking[$row["datadate"]][$name[$i]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int) ($row["points"] / $row["number_member"]));
+            $ranking[$row["datadate"]][$name[$i]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int)($row["points"] / $row["number_member"]));
             $ranking[$row["datadate"]]["number_member"] = $row["number_member"];
             if ($last) {
                 break;
@@ -1283,44 +1282,37 @@ function galaxy_show_ranking_unique_ally($ally, $last = false)
 /**
  * Suppression automatique de classements joueurs & alliances
  *
- * @global       object mysql $db
  * @global array $server_config
- * @todo Query : "delete from " . $table . " where datadate < " . (time()) - 60 * 60 * 24 * $max_keeprank)
- * @todo Query : "select distinct datadate from " . $table ." order by datadate desc limit 0, " . $max_keeprank
- * @todo Query : "delete from " . $table . " where datadate < " . $datadate
  */
 function galaxy_purge_ranking()
 {
-    global $db, $server_config;
+    global $server_config;
 
     if (!is_numeric($server_config["max_keeprank"])) {
         return;
     }
     $max_keeprank = intval($server_config["max_keeprank"]);
+    $Rankings_Player_Model  = new Rankings_Player_Model();
 
-    $rank_tables = array(TABLE_RANK_PLAYER_POINTS, TABLE_RANK_ALLY_POINTS, TABLE_RANK_PLAYER_ECO, TABLE_RANK_PLAYER_TECHNOLOGY, TABLE_RANK_PLAYER_MILITARY, TABLE_RANK_PLAYER_MILITARY_BUILT, TABLE_RANK_PLAYER_MILITARY_LOOSE, TABLE_RANK_PLAYER_MILITARY_DESTRUCT, TABLE_RANK_PLAYER_HONOR, TABLE_RANK_ALLY_ECO, TABLE_RANK_ALLY_TECHNOLOGY, TABLE_RANK_ALLY_MILITARY, TABLE_RANK_ALLY_MILITARY_BUILT, TABLE_RANK_ALLY_MILITARY_LOOSE, TABLE_RANK_ALLY_MILITARY_DESTRUCT, TABLE_RANK_ALLY_HONOR);
+  $rank_tables = $Rankings_Player_Model->get_rank_tables();
 
     if ($server_config["keeprank_criterion"] == "day") {
         // classement joueur
-
-        foreach ($rank_tables as $table) {
-            $request = "DELETE FROM " . $table . " WHERE datadate < " . (time() - 60 * 60 * 24 * $max_keeprank);
-            $db->sql_query($request, true, false);
-        }
-
+        $removeDatadate = (time() - 60 * 60 * 24 * $max_keeprank);
+        $Rankings_Player_Model->remove_all_rank_older_than($removeDatadate);
     }
 
     if ($server_config["keeprank_criterion"] == "quantity") {
-        foreach ($rank_tables as $table) {
 
-            $request = "SELECT DISTINCT datadate FROM " . $table . " ORDER BY datadate DESC LIMIT 0, " . $max_keeprank;
-            $result = $db->sql_query($request);
-            while ($row = $db->sql_fetch_assoc($result)) {
-                $datadate = $row["datadate"];
-            }
-            if (isset($datadate)) {
-                $request = "DELETE FROM " . $table . " WHERE datadate < " . $datadate;
-                $db->sql_query($request, true, false);
+        foreach ($rank_tables as $table) {
+            // récuperation des datadate en table
+            $ranking_available = $Rankings_Player_Model->get_all_distinct_date_ranktable($table);
+            if (count($ranking_available) > $max_keeprank )
+            {
+               /// dans ce cas, suppression des datas
+                $removeDatadate = $ranking_available[$max_keeprank]; // recuperation de la date limit
+                $Rankings_Player_Model->remove_all_rank_older_than($removeDatadate,$table);
+
             }
         }
 
@@ -1355,17 +1347,8 @@ function galaxy_drop_ranking()
 
     if ($pub_subaction == "player") {
 
-        $tables_player = array(TABLE_RANK_PLAYER_POINTS, TABLE_RANK_PLAYER_ECO, TABLE_RANK_PLAYER_TECHNOLOGY, TABLE_RANK_PLAYER_MILITARY, TABLE_RANK_PLAYER_MILITARY_BUILT, TABLE_RANK_PLAYER_MILITARY_LOOSE, TABLE_RANK_PLAYER_MILITARY_DESTRUCT, TABLE_RANK_PLAYER_HONOR);
-
-        foreach ($tables_player as $table) {
-
-            $requests[] = "DELETE FROM " . $table . " WHERE datadate = " . intval($pub_datadate);
-        }
-
-
-        foreach ($requests as $request) {
-            $db->sql_query($request);
-        }
+        $Rankings_Player_Model = new Rankings_Player_Model();
+        $Rankings_Player_Model->remove_all_rank_by_datadate(intval($pub_datadate));
 
 
     } elseif ($pub_subaction == "ally") {
@@ -1374,7 +1357,7 @@ function galaxy_drop_ranking()
 
         foreach ($tables_ally as $table) {
 
-            $requests[] = "DELETE FROM " . $table . " WHERE datadate = " . (int) $pub_datadate;
+            $requests[] = "DELETE FROM " . $table . " WHERE datadate = " . (int)$pub_datadate;
         }
         foreach ($requests as $request) {
             $db->sql_query($request);
@@ -1495,12 +1478,12 @@ function galaxy_obsolete()
         $since = array(0, 7, 14, 21, 28, 42, 56, $timestamp - 1);
 
         // on regarde l existence de la variable
-        if (!in_array((int) $pub_since, $since)) {
+        if (!in_array((int)$pub_since, $since)) {
             return $obsolete;
         }
 
         // on recupere l indice de recherche
-        $indice = array_search((int) $pub_since, $since);
+        $indice = array_search((int)$pub_since, $since);
 
         // l indice ne peut pas etre le premier ou le dernier
         if ($indice == 0 || $indice == (count($since) - 1)) {
@@ -1511,11 +1494,11 @@ function galaxy_obsolete()
 
         // on peut maintenant lancer une requete générique
         // on peut maintenant lancer une requete générique
-        $formoon=true;
+        $formoon = true;
         if ($pub_typesearch == "P") {
-            $formoon=false;
+            $formoon = false;
         }
-        $obsolete = (new Universe_Model())->get_galaxy_obsolete($pub_perimeter,$indice_inf,$indice_sup,$indice,$since,$formoon);
+        $obsolete = (new Universe_Model())->get_galaxy_obsolete($pub_perimeter, $indice_inf, $indice_sup, $indice, $since, $formoon);
 
 
     }
@@ -1537,7 +1520,7 @@ function galaxy_obsolete()
 function UNparseRE($id_RE)
 {
     global $table_prefix, $db, $lang;
-    $show   = array(
+    $show = array(
         'flotte' => 0,
         'defense' => 0,
         'batiment' => 0,
@@ -1561,7 +1544,7 @@ function UNparseRE($id_RE)
         'TRA' => $lang['GAME_FLEET_TRA']
     );
 
-    $defs   = array(
+    $defs = array(
         'LM' => $lang['GAME_DEF_LM'],
         'LLE' => $lang['GAME_DEF_LLE'],
         'LLO' => $lang['GAME_DEF_LLO'],
@@ -1574,7 +1557,7 @@ function UNparseRE($id_RE)
         'MIP' => $lang['GAME_DEF_MIP']
     );
 
-    $bats   = array(
+    $bats = array(
         'M' => $lang['GAME_BUILDING_M'],
         'C' => $lang['GAME_BUILDING_C'],
         'D' => $lang['GAME_BUILDING_D'],
@@ -1596,7 +1579,7 @@ function UNparseRE($id_RE)
         'PoSa' => $lang['GAME_BUILDING_POSA']
     );
 
-    $techs  = array(
+    $techs = array(
         'Esp' => $lang['GAME_TECH_ESP'],
         'Ordi' => $lang['GAME_TECH_ORDI'],
         'Armes' => $lang['GAME_TECH_WEAP'],
@@ -1631,7 +1614,7 @@ function UNparseRE($id_RE)
     if (preg_match('/\(Lune\)/', $row['planet_name'])) {
         $moon = 1;
     } else {
-            $moon = 0;
+        $moon = 0;
     }
 
     $dateRE = date('m-d H:i:s', $row['dateRE']);
@@ -1656,7 +1639,7 @@ function UNparseRE($id_RE)
     if ($row['activite'] > 0) {
         $template .= $lang['GAME_SPYREPORT_ACTIVITY'] . ' ' . $row['activite'] . ' ' . $lang['GAME_SPYREPORT_LASTMINUTES'] . '.';
     } else {
-            $template .= $lang['GAME_SPYREPORT_NOACTIVITY'];
+        $template .= $lang['GAME_SPYREPORT_NOACTIVITY'];
     }
     $template .= '</th>
     </tr>' . "\n";
@@ -1952,7 +1935,7 @@ function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_
     if ($ok_missil) {
         $missil_ok = "<br><span style='color: #FFFF66; '> " . $lang['GALAXY_MIP_UNDERFIRE'] . " : </span>" . $ok_missil . "</a>";
     } else {
-            $missil_ok = "<span style='color: #FFFF66; '> " . $lang['GALAXY_MIP_NOMIPS_AROUND'] . "</span>";
+        $missil_ok = "<span style='color: #FFFF66; '> " . $lang['GALAXY_MIP_NOMIPS_AROUND'] . "</span>";
     }
     return $missil_ok;
 }

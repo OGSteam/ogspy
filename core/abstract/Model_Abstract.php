@@ -8,7 +8,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 
-class Model_Abstract
+abstract class Model_Abstract
 {
     protected $db;
 
