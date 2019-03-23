@@ -241,6 +241,15 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_DESTRUCT . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
         $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_HONOR . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
 
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_ECO . "` ADD `points_per_member ` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_TECHNOLOGY . "` ADD `points_per_member ` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY . "` ADD `points_per_member ` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_BUILT . "` ADD `points_per_member ` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_LOOSE . "` ADD `points_per_member ` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_DESTRUCT . "` ADD `points_per_member ` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_HONOR . "` ADD `points_per_member ` BIGINT AFTER `points`";
+
+
         $requests[] = "CREATE TABLE IF NOT EXISTS `" . ogspy_ally . "` ( " .
             "`ally_id` int(6) NOT NULL ," .
             "`ally` varchar(65) NOT NULL, " .
