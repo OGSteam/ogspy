@@ -26,16 +26,20 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     define("TABLE_GROUP", $table_prefix . "group");
     define("TABLE_SESSIONS", $table_prefix . "sessions");
     define("TABLE_STATISTIC", $table_prefix . "statistics");
-    define("TABLE_UNIVERSE", $table_prefix . "universe");
     define("TABLE_USER", $table_prefix . "user");
-    define("TABLE_USER_BUILDING", $table_prefix . "user_building");
-    define("TABLE_USER_DEFENCE", $table_prefix . "user_defence");
+    define("TABLE_USER_TOKEN", $table_prefix. "user_tokens");
     define("TABLE_USER_FAVORITE", $table_prefix . "user_favorite");
     define("TABLE_USER_GROUP", $table_prefix . "user_group");
-    define("TABLE_USER_SPY", $table_prefix . "user_spy");
-    define("TABLE_USER_TECHNOLOGY", $table_prefix . "user_technology");
+
     define("TABLE_MOD", $table_prefix . "mod");
     define("TABLE_MOD_CFG", $table_prefix . "mod_config");
+
+    // Tables Player
+    define("TABLE_UNIVERSE", $table_prefix . "universe");
+    define("TABLE_USER_BUILDING", $table_prefix . "user_building");
+    define("TABLE_USER_DEFENCE", $table_prefix . "user_defence");
+    define("TABLE_USER_SPY", $table_prefix . "user_spy");
+    define("TABLE_USER_TECHNOLOGY", $table_prefix . "user_technology");
     define("TABLE_PARSEDSPY", $table_prefix . "parsedspy");
     define("TABLE_PARSEDRC", $table_prefix . "parsedRC");
     define("TABLE_PARSEDRCROUND", $table_prefix . "parsedRCRound");
@@ -71,11 +75,6 @@ if (!defined("INSTALL_IN_PROGRESS")) {
 //Paramètres session
 define("COOKIE_NAME", "ogspy_id");
 
-/*
-* Google API Key
-*/
-// For using Google Google Cloud Messaging and can push notifications on ogspy for android
-define("GOOGLE_API_KEY", "AIzaSyB5W5hiGP97Jh1e6s7c0vva0Hs_xSiGeQw");
 
 //Chemin d'accès aux ressources
 if (!defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS") && !defined("GRAPHIC")) {

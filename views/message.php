@@ -47,16 +47,12 @@ switch ($pub_id_message) {
     case "createuser_success" :
         list($user_id, $password) = explode(":", $pub_info);
         $user_info = user_get($user_id);
+        $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
+        $server_name = filter_input(INPUT_SERVER, 'SERVER_NAME', FILTER_SANITIZE_URL);
         $message .= "<span style=\"color: lime; \"><b>" . $lang['MSG_CREATE_USER_TITLE'] . " <a>" . $user_info[0]["user_name"] . "</a></b></span><br>";
-        $message .= $lang['MSG_CREATE_USER_INFO'] . " :<br><br>";
-        $message .= "- " . $lang['MSG_CREATE_USER_URL'] . " :<br><a>https://" . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . "</a><br><br>";
-        $message .= "- " . $lang['MSG_CREATE_USER_PASSWORD'] . " :<br><a>" . $password . "</a><br><br>";
-        $message .= "- " . $lang['MSG_CREATE_USER_XTENSE'] . " :<br><a>https://" . str_replace('index.php', '', $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . 'mod/xtense/xtense.php') . "</a><br><br>";
-        $message .= "<span style=\"color: lime; \"><b>" . $lang['MSG_CREATE_USER_XTENSE'] . " <a>" . $user_info[0]["user_name"] . "</a></b></span><br><br>";
-        $message .= "[b" . $lang['MSG_CREATE_USER_BBCODE_USER'] . ":[/b] [i]" . $user_info[0]["user_name"] . "[/i]<br>
-				[b]".$lang['MSG_CREATE_USER_URL'] . ":[/b] [url]https://" . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . "[/url]<br>
-				[b]".$lang['MSG_CREATE_USER_XTENSE'] . ":[/b] [url]https://" . str_replace('index.php', '', $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . 'mod/xtense/xtense.php') . "[/url]<br>
-				[b]".$lang['MSG_CREATE_USER_PASSWORD'] . " :[/b] [i]" . $password . "[/i]";
+        $message .= $lang['MSG_CREATE_USER_INFO'] . "<br><br>";
+        $message .= "- " . $lang['MSG_CREATE_USER_URL'] . " :<br><a>https://" . $server_name . $phpSelf . "</a><br><br>";
+        $message .= "- " . $lang['MSG_CREATE_USER_PASSWORD'] . " :<br><a>" . $password . "</a><br>";
         $action = "action=administration&subaction=member";
         break;
 

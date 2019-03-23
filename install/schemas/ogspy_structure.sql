@@ -147,6 +147,7 @@ CREATE TABLE ogspy_rank_ally_economique (
   ally_id              INT(6)     NOT NULL DEFAULT '-1',
   number_member INT(11)     NOT NULL,
   points        BIGINT     NOT NULL DEFAULT '0',
+  points_per_member        BIGINT     NOT NULL DEFAULT '0',
   sender_id     INT(11)     NOT NULL DEFAULT '0',
   PRIMARY KEY (rank, datadate),
   KEY datadate (datadate, ally),
@@ -166,6 +167,7 @@ CREATE TABLE ogspy_rank_ally_technology (
   ally_id              INT(6)     NOT NULL DEFAULT '-1',
   number_member INT(11)     NOT NULL,
   points        BIGINT      NOT NULL DEFAULT '0',
+  points_per_member        BIGINT     NOT NULL DEFAULT '0',
   sender_id     INT(11)     NOT NULL DEFAULT '0',
   PRIMARY KEY (rank, datadate),
   KEY datadate (datadate, ally),
@@ -184,6 +186,7 @@ CREATE TABLE ogspy_rank_ally_military (
   ally_id              INT(6)     NOT NULL DEFAULT '-1',
   number_member INT(11)     NOT NULL,
   points        BIGINT      NOT NULL DEFAULT '0',
+  points_per_member        BIGINT     NOT NULL DEFAULT '0',
   sender_id     INT(11)     NOT NULL DEFAULT '0',
   PRIMARY KEY (rank, datadate),
   KEY datadate (datadate, ally),
@@ -202,6 +205,7 @@ CREATE TABLE ogspy_rank_ally_military_built (
   ally_id              INT(6)     NOT NULL DEFAULT '-1',
   number_member INT(11)     NOT NULL,
   points        BIGINT      NOT NULL DEFAULT '0',
+  points_per_member        BIGINT     NOT NULL DEFAULT '0',
   sender_id     INT(11)     NOT NULL DEFAULT '0',
   PRIMARY KEY (rank, datadate),
   KEY datadate (datadate, ally),
@@ -220,6 +224,7 @@ CREATE TABLE ogspy_rank_ally_military_loose (
   ally_id              INT(6)     NOT NULL DEFAULT '-1',
   number_member INT(11)     NOT NULL,
   points        BIGINT      NOT NULL DEFAULT '0',
+  points_per_member        BIGINT     NOT NULL DEFAULT '0',
   sender_id     INT(11)     NOT NULL DEFAULT '0',
   PRIMARY KEY (rank, datadate),
   KEY datadate (datadate, ally),
@@ -238,6 +243,7 @@ CREATE TABLE ogspy_rank_ally_military_destruct (
   ally_id              INT(6)     NOT NULL DEFAULT '-1',
   number_member INT(11)     NOT NULL,
   points        BIGINT      NOT NULL DEFAULT '0',
+  points_per_member        BIGINT     NOT NULL DEFAULT '0',
   sender_id     INT(11)     NOT NULL DEFAULT '0',
   PRIMARY KEY (rank, datadate),
   KEY datadate (datadate, ally),
@@ -256,6 +262,7 @@ CREATE TABLE ogspy_rank_ally_honor (
   ally_id              INT(6)     NOT NULL DEFAULT '-1',
   number_member INT(11)     NOT NULL,
   points        BIGINT      NOT NULL DEFAULT '0',
+  points_per_member        BIGINT     NOT NULL DEFAULT '0',
   sender_id     INT(11)     NOT NULL DEFAULT '0',
   PRIMARY KEY (rank, datadate),
   KEY datadate (datadate, ally),
@@ -530,6 +537,21 @@ CREATE TABLE ogspy_user (
   UNIQUE KEY user_name (user_name)
 )
   DEFAULT CHARSET = utf8;
+
+--
+-- Structure de la table `ogspy_user_tokens`
+--
+
+CREATE TABLE `ogspy_user_tokens` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` INT NOT NULL,
+	`name` VARCHAR(100) NOT NULL,
+	`token` VARCHAR(64) NOT NULL,
+	`expiration_date` VARCHAR(15) NOT NULL,
+	PRIMARY KEY (id)
+)
+DEFAULT CHARSET = utf8;
+
 
 --
 -- Structure de la table `ogspy_user_building`
@@ -923,3 +945,4 @@ CREATE TABLE `ogspy_round_defense` (
   KEY `player` (`player`, `coordinates`)
 )
   DEFAULT CHARSET = utf8;
+

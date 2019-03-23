@@ -241,6 +241,15 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_DESTRUCT . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
         $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_HONOR . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
 
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_ECO . "` ADD `points_per_member ` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_TECHNOLOGY . "` ADD `points_per_member ` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY . "` ADD `points_per_member ` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_BUILT . "` ADD `points_per_member ` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_LOOSE . "` ADD `points_per_member ` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_DESTRUCT . "` ADD `points_per_member ` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_HONOR . "` ADD `points_per_member ` BIGINT AFTER `points`";
+
+
         $requests[] = "CREATE TABLE IF NOT EXISTS `" . ogspy_ally . "` ( " .
             "`ally_id` int(6) NOT NULL ," .
             "`ally` varchar(65) NOT NULL, " .
@@ -263,6 +272,17 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `user_password_s` VARCHAR(255)    NOT NULL DEFAULT '' AFTER `user_password`";
 
         $requests[] = "DROP TABLE `" . TABLE_GCM_USERS . "`";
+
+
+        $requests[] = "CREATE TABLE IF NOT EXISTS `".TABLE_USER_TOKEN."` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `user_id` INT NOT NULL,
+	        `name` VARCHAR(100) NOT NULL,
+	        `token` VARCHAR(64) NOT NULL,
+	        `expiration_date` VARCHAR(15) NOT NULL,
+	        PRIMARY KEY (id)
+        ) DEFAULT CHARSET = utf8;";
+
 
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.5' WHERE config_name = 'version'";
         $ogsversion = '3.3.5';
