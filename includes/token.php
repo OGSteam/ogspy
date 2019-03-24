@@ -115,6 +115,7 @@ class token
             $TokenB = trim((string)$TokenB);
             if ($tokenA == $TokenB )
             {
+                $this->resetInCookie();
                 return true;
             }
         }
@@ -193,9 +194,16 @@ class token
      */
     private function resetInCookie()
     {
+        global $_COOKIE ;
         if (isset($_SESSION['ogspy_token']))
         {
             unset($_SESSION['ogspy_token']);
+        }
+        //old plugin token (3.3.4)
+        if (isset($_COOKIE["token"]))
+        {
+            unset($_COOKIE['token']);
+            setcookie("token", $_COOKIE["token"],time()-1);
         }
     }
 
