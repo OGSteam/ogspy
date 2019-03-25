@@ -1,3 +1,37 @@
+## [3.3.5-alpha2] - 2019-03-25
+
+### Fixed
+* #98 Update vers OGspy 3.3.5 depuis auto update
+
+## [3.3.5-alpha1] - 2019-03-24
+
+### Added
+* #73 Token d'authentification pour API
+* #67 ajout player_id ally id
+* #63 Paramètre Vitesse univers configurable à l'installation 
+* #12 Ajout params pour install
+* #10 Abscence du Dock Spatial
+* #51 Information de version incomplet
+
+### Fixed
+* #97 Points par membres manquant pour les classement alliance
+* #71 fix_token_3.3.4 (Mail)
+* #49 Affichage message erreur espace personnelle ( Empire )
+* #57 bug update mod
+* #61 Fichier lang_mail.php manquant dans pt-br
+* #14 Limite Nombre de pts Classement atteint
+* #53 Docker : Echec à la création du container
+
+
+### Security
+* #46 Chiffrement des mots de passes
+* #45 Agrandir la taille des mots de passe à 64 caractères
+
+### Removed
+* #64  Remove GCM feature (Obsolete)
+
+
+
 3.3.2
 - Correctif affichage erreur MySQL
 - Mise à jour fichiers de langue
