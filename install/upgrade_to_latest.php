@@ -215,39 +215,39 @@ switch ($ogsversion) {
 
         $requests[] = "ALTER TABLE `" . TABLE_MOD . "` MODIFY `version` VARCHAR(10)";
 
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_POINTS . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_POINTS . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_ECO . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_ECO . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_TECHNOLOGY . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_TECHNOLOGY . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_BUILT . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_BUILT . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_LOOSE . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_LOOSE . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_HONOR . "` ADD `player_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_HONOR . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_POINTS . "` ADD `player_id` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_POINTS . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_ECO . "` ADD `player_id` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_ECO . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_TECHNOLOGY . "` ADD `player_id` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_TECHNOLOGY . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY . "` ADD `player_id` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_BUILT . "` ADD `player_id` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_BUILT . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_LOOSE . "` ADD `player_id` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_LOOSE . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . "` ADD `player_id` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_HONOR . "` ADD `player_id` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_PLAYER_HONOR . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
 
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_POINTS . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_ECO . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_TECHNOLOGY . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_BUILT . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_LOOSE . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_DESTRUCT . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_POINTS . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_ECO . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_TECHNOLOGY . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_BUILT . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_LOOSE . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_DESTRUCT . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
         $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_HONOR . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
 
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_ECO . "` ADD `points_per_member ` BIGINT AFTER `points`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_TECHNOLOGY . "` ADD `points_per_member ` BIGINT AFTER `points`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY . "` ADD `points_per_member ` BIGINT AFTER `points`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_BUILT . "` ADD `points_per_member ` BIGINT AFTER `points`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_LOOSE . "` ADD `points_per_member ` BIGINT AFTER `points`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_DESTRUCT . "` ADD `points_per_member ` BIGINT AFTER `points`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_HONOR . "` ADD `points_per_member ` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_ECO . "` ADD `points_per_member` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_TECHNOLOGY . "` ADD `points_per_member` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY . "` ADD `points_per_member` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_BUILT . "` ADD `points_per_member` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_LOOSE . "` ADD `points_per_member` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_DESTRUCT . "` ADD `points_per_member` BIGINT AFTER `points`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_HONOR . "` ADD `points_per_member` BIGINT AFTER `points`";
 
 
         $requests[] = "CREATE TABLE IF NOT EXISTS `" . ogspy_ally . "` ( " .
