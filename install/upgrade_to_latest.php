@@ -239,7 +239,7 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_BUILT . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
         $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_LOOSE . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
         $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_DESTRUCT . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_HONOR . "` ADD `ally_id ` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_HONOR . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
 
         $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_ECO . "` ADD `points_per_member` BIGINT AFTER `points`";
         $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_TECHNOLOGY . "` ADD `points_per_member` BIGINT AFTER `points`";
