@@ -284,8 +284,8 @@ switch ($ogsversion) {
         ) DEFAULT CHARSET = utf8;";
 
 
-        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.5' WHERE config_name = 'version'";
-        $ogsversion = '3.3.5';
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.5-alpha3' WHERE config_name = 'version'";
+        $ogsversion = '3.3.5-alpha3';
         $up_to_date = true;
 
         break;
