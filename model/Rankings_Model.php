@@ -48,6 +48,7 @@ abstract class Rankings_Model extends Model_Abstract
      */
     public function get_rank_latest_table_date($rank_table) {
         $request = "SELECT MAX(`datadate`) FROM `" . $rank_table . "`" . " LIMIT 0,1";
+        $request = "SELECT datadate FROM `" . $rank_table . "`" . " LIMIT 0,1";
         $result = $this->db->sql_query($request);
         list($max) = $this->db->sql_fetch_row($result);
         return $max;

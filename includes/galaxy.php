@@ -16,6 +16,7 @@ if (!defined('IN_SPYOGAME')) {
 
 use Ogsteam\Ogspy\Model\Universe_Model;
 use Ogsteam\Ogspy\Model\Rankings_Player_Model;
+use Ogsteam\Ogspy\Model\Rankings_Ally_Model;
 
 /**
  * Vérification des droits OGSpy
@@ -951,7 +952,7 @@ function galaxy_show_ranking($model, $ranking_table, $date = null)
  * @return array array($order, $ranking, $ranking_available, $maxrank);
  *
  * todo revoir entierement affichage de la vue pour simplifier/ameliorer cette fonction,
- * todo regression => gain de perf enorme mais si rien dans table general, pas d 'affichage classement (inner join)
+ * todo verifiction siregression 3.3.4 / 3.3.5 => gain de perf enorme mais si rien dans table general, pas d 'affichage classement (inner join)
  */
 function galaxy_show_ranking_player()
 {
@@ -1037,52 +1038,32 @@ function galaxy_show_ranking_player()
 /**
  * Affichage classement des alliances
  *
- * @global        object mysql $db
  * @global string $pub_order_by general|eco|techno|military|military_b|military_l|military_d|honnor
  * @global int $pub_date timestamp du classement voulu
  * @global int $pub_interval
  * @global int $pub_suborder : member
- * @todo Query : "SELECT rank FROM `" . $table . "` order by `rank` desc limit 0,1"
- * @todo Query : "select max(datadate) from " . $table[$i]["tablename"]
- * @todo Query : "select rank, ally, number_member, points,  user_name from " . $table[$i]["tablename"] . " left join " . TABLE_USER . " on sender_id = user_id where rank between " . $limit_down . " and " . $limit_up . "  and datadate = " . $db->sql_escape_string($last_ranking) ." order by " . $pub_order_by2;"
- * @todo Query : ""select rank, ally, number_member, points,  user_name from " . $table[$i]["tablename"] . " left join " . TABLE_USER . " on sender_id = user_id where rank between " . $limit_down . " and " . $limit_up . "  order by " . $pub_order_by2;"
- * @todo Query : "select distinct datadate from " . $table[$i]["tablename"] . order by datadate desc"
- * @todo Query : "select rank, ally, number_member, points,  user_name from " . $table[$i]["tablename"] . " left join " . TABLE_USER. " on sender_id = user_id where ally = '" . $db->sql_escape_string(key($ranking)) . "'  and datadate = " . $db->sql_escape_string($last_ranking) ." order by rank";
- * @todo Query : "select rank, ally, number_member, points,  user_name from " . $table[$i]["tablename"] . " left join " . TABLE_USER. " on sender_id = user_id where ally = '" . $db->sql_escape_string(key($ranking)) . "'  order by rank";
- * @return array array($order, $ranking, $ranking_available, $maxrank)
+ * todo revoir entierement affichage de la vue pour simplifier/ameliorer cette fonction,
+ * todo verifiction siregression 3.3.4 / 3.3.5 => gain de perf enorme mais si rien dans table general, pas d 'affichage classement (inner join) * @return array array($order, $ranking, $ranking_available, $maxrank)
  */
 function galaxy_show_ranking_ally()
 {
-    global $db;
     global $pub_order_by, $pub_date, $pub_interval, $pub_suborder;
+    $Rankings_Ally_Model = new Rankings_Ally_Model();
 
     if (!check_var($pub_order_by, "Char") || !check_var($pub_date, "Num") || !check_var($pub_interval, "Num") || !check_var($pub_suborder, "Char")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    $tables = array(TABLE_RANK_ALLY_POINTS, TABLE_RANK_ALLY_ECO, TABLE_RANK_ALLY_TECHNOLOGY, TABLE_RANK_ALLY_MILITARY, TABLE_RANK_ALLY_MILITARY_BUILT, TABLE_RANK_ALLY_MILITARY_LOOSE, TABLE_RANK_ALLY_MILITARY_DESTRUCT, TABLE_RANK_ALLY_HONOR);
-    $name = array('general', 'eco', 'techno', 'military', 'military_b', 'military_l', 'military_d', 'honnor');
+    $tables = $Rankings_Ally_Model->get_rank_tables();
+    $name = $Rankings_Ally_Model->get_rank_table_ref();
 
     // verification de la variable pub_order_by
     if (!in_array($pub_order_by, $name)) {
         $pub_order_by = "general";
     }
 
-
-    // selection du max rank
-    $maxrank = array();
-    $i = 0;
-    foreach ($tables as $table) {
-        $request = "SELECT rank FROM `" . $table . "` ORDER BY `rank` DESC LIMIT 0,1";
-        $result = $db->sql_query($request);
-        $max = $db->sql_fetch_row($result);
-        $maxrank[$i] = $max[0];
-        $i++;
-
-    }
-
     // selection de rank max !
-    $maxrank = max($maxrank);
+    $maxrank = max($Rankings_Ally_Model->select_max_rank_row());
 
     if (isset($pub_suborder) && $pub_suborder == "member") {
         $pub_order_by2 = "points_per_member desc";
@@ -1106,78 +1087,41 @@ function galaxy_show_ranking_ally()
 
     // on determine l id du pub order
     $id = (array_keys($name, $pub_order_by));
-
-    // en premier l id :
-    $table[] = array("tablename" => $tables[$id[0]], "arrayname" => $name[$id[0]]);
-    $i = 0;
-    // ensuite le reste des table / nom
-    for ($i; $i < count($name); $i++) {
-        if ($id[0] != $i) {
-            $table[] = array("tablename" => $tables[$i], "arrayname" => $name[$i]);
-        }
-
-    }
-
-    $i = 0;
+    $orderTableName = $tables[$id[0]];
+    $orderStringName = $name[$id[0]];
 
     if (!isset($pub_date)) {
-        $request = "SELECT max(datadate) FROM " . $table[$i]["tablename"];
-        $result = $db->sql_query($request);
-        list($last_ranking) = $db->sql_fetch_row($result);
+        $last_ranking = $Rankings_Ally_Model->get_rank_latest_table_date($orderTableName);
+
     } else {
         $last_ranking = $pub_date;
     }
+    $all_ranktable_bydate = $Rankings_Ally_Model->get_all_ranktable_bydate($last_ranking, $limit_down, $limit_up, $orderStringName);
 
-    $request = "select rank, ally, number_member, points,  user_name";
-    $request .= " from " . $table[$i]["tablename"] . " left join " . TABLE_USER;
-    $request .= " on sender_id = user_id";
-    $request .= " where rank between " . $limit_down . " and " . $limit_up;
-    $request .= isset($last_ranking) ? " and datadate = " . $db->sql_escape_string($last_ranking) : "";
-    $request .= " order by " . $pub_order_by2;
+    // reconstruction des tableaux tel que demandé dans page vue ...
+    foreach ($all_ranktable_bydate as $ranktable_bydate) {
+        // recuperatio du nom
+        $currentAlly = $ranktable_bydate["ally_name"];
 
-    $result = $db->sql_query($request);
+        //récuperation du rank par defaut
+        $order[$ranktable_bydate["postion"]] = $currentAlly;
 
-    while ($row = $db->sql_fetch_assoc($result)) {
-        $ranking[$row["ally"]][$table[$i]["arrayname"]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int)($row["points"] / $row["number_member"]));
-        $ranking[$row["ally"]]["number_member"] = $row["number_member"];
-        $ranking[$row["ally"]]["sender"] = $row["user_name"];
+        $ranking[$currentAlly]["number_member"] = $ranktable_bydate["member"];
+        $ranking[$currentAlly]["ally"] = $ranktable_bydate["ally_name"];
+        $ranking[$currentAlly]["sender"] = "none"; // todo est ce util ?
 
-        if ($pub_order_by == $table[$i]["arrayname"]) {
-            $order[$row["rank"]] = $row["ally"];
-        }
+        $ranking[$currentAlly]["general"] = array("rank" => $ranktable_bydate["general_rank"], "points" => $ranktable_bydate["general_pts"]);
+        $ranking[$currentAlly]["eco"] = array("rank" => $ranktable_bydate["eco_rank"], "points" => $ranktable_bydate["eco_pts"]);
+        $ranking[$currentAlly]["techno"] = array("rank" => $ranktable_bydate["tech_rank"], "points" => $ranktable_bydate["tech_pts"]);
+        $ranking[$currentAlly]["honnor"] = array("rank" => $ranktable_bydate["milh_rank"], "points" => $ranktable_bydate["milh_pts"]);
+
+        $ranking[$currentAlly]["military"] = array("rank" => $ranktable_bydate["mil_rank"], "points" => $ranktable_bydate["mil_pts"]);
+        $ranking[$currentAlly]["military_b"] = array("rank" => $ranktable_bydate["milb_rank"], "points" => $ranktable_bydate["milb_pts"]);
+        $ranking[$currentAlly]["military_l"] = array("rank" => $ranktable_bydate["mill_rank"], "points" => $ranktable_bydate["mill_pts"]);
+        $ranking[$currentAlly]["military_d"] = array("rank" => $ranktable_bydate["mild_rank"], "points" => $ranktable_bydate["mild_pts"]);
     }
 
-
-    $request = "SELECT DISTINCT datadate FROM " . $table[$i]["tablename"] . " ORDER BY datadate DESC";
-    $result_2 = $db->sql_query($request);
-    while ($row = $db->sql_fetch_assoc($result_2)) {
-        $ranking_available[] = $row["datadate"];
-    }
-
-    for ($i; $i < count($name); $i++) {
-        reset($ranking);
-        while ($value = current($ranking)) {
-            $request = "select rank, ally, number_member, points,  user_name";
-            $request .= " from " . $table[$i]["tablename"] . " left join " . TABLE_USER;
-            $request .= " on sender_id = user_id";
-            $request .= " where ally = '" . $db->sql_escape_string(key($ranking)) . "'";
-            $request .= isset($last_ranking) ? " and datadate = " . $db->sql_escape_string($last_ranking) : "";
-            $request .= " order by rank";
-            $result = $db->sql_query($request);
-
-            while ($row = $db->sql_fetch_assoc($result)) {
-                $ranking[$row["ally"]][$table[$i]["arrayname"]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int)($row["points"] / $row["number_member"]));
-                $ranking[$row["ally"]]["number_member"] = $row["number_member"];
-                $ranking[$row["ally"]]["sender"] = $row["user_name"];
-
-                if ($pub_order_by == $table[$i]["arrayname"]) {
-                    $order[$row["rank"]] = $row["ally"];
-                }
-            }
-            next($ranking);
-        }
-    }
-
+    $ranking_available = $Rankings_Ally_Model->get_all_distinct_date_ranktable($orderTableName);
     $ranking_available = array_unique($ranking_available);
 
     return array($order, $ranking, $ranking_available, $maxrank);
@@ -1247,8 +1191,6 @@ function galaxy_show_ranking_unique_player($player, $last = false)
  *
  * @param string $ally nom de l alliance recherche
  * @param boolean $last le dernier classement ou tous les classements
- * @global        object mysql $db
- * @todo Query : "select datadate, rank, points, number_member from " . $table . " where ally = '" . $db->sql_escape_string($ally) . "  order by datadate desc";
  * @return array $ranking
  */
 function galaxy_show_ranking_unique_ally($ally, $last = false)
@@ -1256,26 +1198,62 @@ function galaxy_show_ranking_unique_ally($ally, $last = false)
     global $db;
 
     $ranking = array();
-    $tables = array(TABLE_RANK_ALLY_POINTS, TABLE_RANK_ALLY_ECO, TABLE_RANK_ALLY_TECHNOLOGY, TABLE_RANK_ALLY_MILITARY, TABLE_RANK_ALLY_MILITARY_BUILT, TABLE_RANK_ALLY_MILITARY_LOOSE, TABLE_RANK_ALLY_MILITARY_DESTRUCT, TABLE_RANK_ALLY_HONOR);
-    $name = array('general', 'eco', 'techno', 'military', 'military_b', 'military_l', 'military_d', 'honnor');
+    $tRanking = (new Rankings_Ally_Model())->get_all_ranktable_byally($ally);
+    // formatage pour la vue
+    foreach ($tRanking as $rank) {
+        $ranking[$rank["datadate"]]["number_member"] = $rank["member"];
 
-    $i = 0;
-    foreach ($tables as $table) {
+        $ranking[$rank["datadate"]]["general"]["rank"] = $rank["general_rank"];
+        $ranking[$rank["datadate"]]["general"]["points"] = $rank["general_pts"];
+        $ranking[$rank["datadate"]]["general"]["points_per_member"] = $rank["general_pts_mb"];
 
-        $request = "select datadate, rank, points, number_member";
-        $request .= " from " . $table;
-        $request .= " where ally = '" . $db->sql_escape_string($ally) . "'";
-        $request .= " order by datadate desc";
-        $result = $db->sql_query($request);
-        while ($row = $db->sql_fetch_assoc($result)) {
-            $ranking[$row["datadate"]][$name[$i]] = array("rank" => $row["rank"], "points" => $row["points"], "points_per_member" => (int)($row["points"] / $row["number_member"]));
-            $ranking[$row["datadate"]]["number_member"] = $row["number_member"];
-            if ($last) {
-                break;
-            }
+        if ((int)$rank["eco_rank"] > 0) {
+            $ranking[$rank["datadate"]]["eco"]["rank"] = $rank["eco_rank"];
+            $ranking[$rank["datadate"]]["eco"]["points"] = $rank["eco_pts"];
+            $ranking[$rank["datadate"]]["eco"]["points_per_member"] = $rank["eco_pts_mb"];
         }
-        $i++;
+
+        if ((int)$rank["tech_rank"] > 0) {
+            $ranking[$rank["datadate"]]["techno"]["rank"] = $rank["tech_rank"];
+            $ranking[$rank["datadate"]]["techno"]["points"] = $rank["tech_pts"];
+            $ranking[$rank["datadate"]]["techno"]["points_per_member"] = $rank["tech_pts_mb"];
+        }
+
+        if ((int)$rank["milh_rank"] > 0) {
+            $ranking[$rank["datadate"]]["honnor"]["rank"] = $rank["milh_rank"];
+            $ranking[$rank["datadate"]]["honnor"]["points"] = $rank["milh_pts"];
+            $ranking[$rank["datadate"]]["honnor"]["points_per_member"] = $rank["milh_pts_mb"];
+        }
+
+        if ((int)$rank["mil_rank"] > 0) {
+            $ranking[$rank["datadate"]]["military"]["rank"] = $rank["mil_rank"];
+            $ranking[$rank["datadate"]]["military"]["points"] = $rank["mil_pts"];
+            $ranking[$rank["datadate"]]["military"]["points_per_member"] = $rank["mil_pts_mb"];
+        }
+
+        if ((int)$rank["milb_rank"] > 0) {
+            $ranking[$rank["datadate"]]["military_b"]["rank"] = $rank["milb_rank"];
+            $ranking[$rank["datadate"]]["military_b"]["points"] = $rank["milb_pts"];
+            $ranking[$rank["datadate"]]["military_b"]["points_per_member"] = $rank["milb_pts_mb"];
+        }
+
+        if ((int)$rank["mill_rank"] > 0) {
+            $ranking[$rank["datadate"]]["military_l"]["rank"] = $rank["mill_rank"];
+            $ranking[$rank["datadate"]]["military_l"]["points"] = $rank["mill_pts"];
+            $ranking[$rank["datadate"]]["military_l"]["points_per_member"] = $rank["mill_pts_mb"];
+        }
+
+        if ((int)$rank["mild_rank"] > 0) {
+            $ranking[$rank["datadate"]]["military_d"]["rank"] = $rank["mild_rank"];
+            $ranking[$rank["datadate"]]["military_d"]["points"] = $rank["mild_pts"];
+            $ranking[$rank["datadate"]]["military_d"]["points_per_member"] = $rank["mild_pts_mb"];
+        }
+
+        if ($last) {
+            break;
+        }
     }
+
     return $ranking;
 }
 
@@ -1292,9 +1270,9 @@ function galaxy_purge_ranking()
         return;
     }
     $max_keeprank = intval($server_config["max_keeprank"]);
-    $Rankings_Player_Model  = new Rankings_Player_Model();
+    $Rankings_Player_Model = new Rankings_Player_Model();
 
-  $rank_tables = $Rankings_Player_Model->get_rank_tables();
+    $rank_tables = $Rankings_Player_Model->get_rank_tables();
 
     if ($server_config["keeprank_criterion"] == "day") {
         // classement joueur
@@ -1307,11 +1285,10 @@ function galaxy_purge_ranking()
         foreach ($rank_tables as $table) {
             // récuperation des datadate en table
             $ranking_available = $Rankings_Player_Model->get_all_distinct_date_ranktable($table);
-            if (count($ranking_available) > $max_keeprank )
-            {
-               /// dans ce cas, suppression des datas
+            if (count($ranking_available) > $max_keeprank) {
+                /// dans ce cas, suppression des datas
                 $removeDatadate = $ranking_available[$max_keeprank]; // recuperation de la date limit
-                $Rankings_Player_Model->remove_all_rank_older_than($removeDatadate,$table);
+                $Rankings_Player_Model->remove_all_rank_older_than($removeDatadate, $table);
 
             }
         }
@@ -1325,13 +1302,10 @@ function galaxy_purge_ranking()
  * @global        object mysql $db
  * @global array $server_config
  * @global int $pub_datadate
- * @global string $pub_subaction : (player|ally)
- * @todo Query : "delete from " . $table . " where datadate = " .intval($pub_datadate);
  *
  */
 function galaxy_drop_ranking()
 {
-    global $db, $server_config;
     global $pub_datadate, $pub_subaction;
 
     if (!check_var($pub_datadate, "Num") || !check_var($pub_subaction, "Char")) {
@@ -1349,21 +1323,11 @@ function galaxy_drop_ranking()
 
         $Rankings_Player_Model = new Rankings_Player_Model();
         $Rankings_Player_Model->remove_all_rank_by_datadate(intval($pub_datadate));
-
-
     } elseif ($pub_subaction == "ally") {
-
-        $tables_ally = array(TABLE_RANK_ALLY_POINTS, TABLE_RANK_ALLY_ECO, TABLE_RANK_ALLY_TECHNOLOGY, TABLE_RANK_ALLY_MILITARY, TABLE_RANK_ALLY_MILITARY_BUILT, TABLE_RANK_ALLY_MILITARY_LOOSE, TABLE_RANK_ALLY_MILITARY_DESTRUCT, TABLE_RANK_ALLY_HONOR);
-
-        foreach ($tables_ally as $table) {
-
-            $requests[] = "DELETE FROM " . $table . " WHERE datadate = " . (int)$pub_datadate;
-        }
-        foreach ($requests as $request) {
-            $db->sql_query($request);
-        }
+        //todo varidable dtadate = 0 ici :/ voir affichage
+        $Rankings_Ally_Model = new Rankings_Ally_Model();
+        $Rankings_Ally_Model->remove_all_rank_by_datadate(intval($pub_datadate));
     }
-
     redirection("index.php?action=ranking&subaction=" . $pub_subaction);
 }
 
