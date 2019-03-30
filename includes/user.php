@@ -454,9 +454,10 @@ function user_profile_token_updater($user_id)
         $db->sql_query("INSERT INTO " . TABLE_USER_TOKEN . " (`id`, `user_id`, `name`, `token`, `expiration_date`)
             VALUES (NULL, '" . $user_id . "', 'PAT', '" . $new_token . "', '" . $next_year . "')");
     } else {
-        $db->sql_query("UPDATE INTO " . TABLE_USER_TOKEN . " (token`, `expiration_date`)
-            VALUES ('" . $new_token . "', '" . $next_year . "') WHERE `user_id` = '" . $user_id . "' AND `name` = 'PAT '");
+        $db->sql_query("UPDATE " . TABLE_USER_TOKEN . " SET `token` = '" . $new_token . "', `expiration_date` = '" . $next_year . "'
+            WHERE `user_id` = '" . $user_id . "' AND `name` = 'PAT '");
     }
+    $user_token["token"] = $new_token;
 }
 
 /**
