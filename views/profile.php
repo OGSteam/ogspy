@@ -72,12 +72,12 @@ require_once("views/page_header.php");
 
     <form method="POST" action="index.php" onSubmit="return check_password(this);">
         <input name="action" type="hidden" value="member_modify_member">
-        <table width="500">
+        <table width="600">
             <tr>
                 <td class="c_user" colspan="2"><?php echo($lang['PROFILE_TITLE']); ?></td>
             </tr>
             <tr>
-                <th><?php echo $lang['PROFILE_PSEUDO'] . help("profile_login"); ?></th>
+                <th width="35%"><?php echo $lang['PROFILE_PSEUDO'] . help("profile_login"); ?></th>
                 <th><label>
                         <input name="pseudo" type="text" size="20" maxlength="20" value="<?php echo $user_name; ?>">
                     </label></th>

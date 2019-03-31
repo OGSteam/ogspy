@@ -476,7 +476,8 @@ function get_user_profile_token($user_id)
     if ($db->sql_numrows($result) == 0) {
             return 1;
     } else {
-        return $db->sql_fetch_row($result);
+        $query_result = $db->sql_fetch_row($result);
+        return $query_result['token'];
     }
 }
 
