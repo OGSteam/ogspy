@@ -71,24 +71,27 @@ $lang['ADMIN_SERVER_SESSIONS_CLEAN'] = "Vacía";
 $lang['ADMIN_SERVER_CONNEXIONS'] = "Conexiones con el servidor";
 $lang['ADMIN_SERVER_PLANETS'] = "Planetas";
 $lang['ADMIN_SERVER_ALL_IMPORT'] = "Importaciones";
+$lang['ADMIN_SERVER_ALL_EXPORT'] = "exportations";
 $lang['ADMIN_SERVER_SPYREPORTS'] = "Reportes de espionaje";
 $lang['ADMIN_SERVER_RANKINGS'] = "Clasificación (número de líneas)";
 $lang['ADMIN_SERVER_PHPINFO'] = "PHPInfo";
 $lang['ADMIN_SERVER_PHPMODULES'] = "Módulos PHP";
 $lang['ADMIN_SERVER_INFOVERSION'] = "Información de la versión";
-$lang['ADMIN_SERVER_INFOVERSION_DESC'] = "Gracias por consultar el Foro de OGSteam para conocer la última version de OGSpy:
- <a href='http://www.ogsteam.fr' target='_blank'>Foro</a>";
+$lang['ADMIN_SERVER_RELEASENOTE'] = "Notes de Version";
+$lang['ADMIN_SERVER_NEWVERSION'] = "Une nouvelle version est disponible ! Lancez la mise à jour avec autoupdate ou téléchargez le nouveau package !";
 
 $lang['ADMIN_SERVER_MEMBERNAME'] = "Nick del miembro";
 $lang['ADMIN_SERVER_MEMBERCONNECTED'] = "Conexión";
 $lang['ADMIN_SERVER_MEMBERLASTACTIVITY'] = "Última actividad";
 $lang['ADMIN_SERVER_MEMBERIP'] = "Dirección IP";
+$lang['ADMIN_SERVER_TOTAL_MAILS'] = "Total des Mails envoyés";
 
 /* admin_members.php*/
 
 $lang['ADMIN_MEMBERS_NEWACCOUNT'] = "Crear nueva cuenta";
 $lang['ADMIN_MEMBERS_NEWACCOUNT_BUTTON'] = "Crear nuevo miembro";
 $lang['ADMIN_MEMBERS_PLAYER'] = "Jugador";
+$lang['ADMIN_MEMBERS_EMAIL'] = "Email";
 $lang['ADMIN_MEMBERS_REGISTERED'] = "Registro";
 $lang['ADMIN_MEMBERS_ENABLED'] = "Cuenta activa";
 $lang['ADMIN_MEMBERS_COADMIN'] = "Coadministrador";
@@ -117,11 +120,13 @@ $lang['ADMIN_MEMBERS_PWDCHANGE_TITLE'] = "Cambiar contraseña";
 $lang['ADMIN_MEMBERS_PWDCHANGE'] = "Seguro de cambiar su contraseña";
 $lang['ADMIN_MEMBERS_NEWPASSWORD'] = "Nueva contraseña";
 $lang['ADMIN_MEMBERS_PASSWORDGENERATE'] = "Dejar en blanco para una contraseña aleatoria";
+$lang['ADMIN_MEMBERS_PASSWORD_EMAIL_RESET'] = "Réinitialiser le Mot de passe par EMail ?";
 $lang['ADMIN_MEMBERS_PASSWORDOK'] = "ok";
 $lang['ADMIN_MEMBERS_PASSWORDCANCEL'] = "Cancelar";
 $lang['ADMIN_MEMBERS_POPUP_NEWACCOUNT'] = "Creación nueva cuenta";
 $lang['ADMIN_MEMBERS_POPUP_NAME'] = "Nombre";
 $lang['ADMIN_MEMBERS_POPUP_PASSWORD'] = "Contraseña";
+$lang['ADMIN_MEMBERS_POPUP_EMAIL'] = "Email";
 $lang['ADMIN_MEMBERS_POPUP_RIGHTS'] = "Derechos";
 $lang['ADMIN_MEMBERS_POPUP_COADMIN'] = "Coadministrador";
 $lang['ADMIN_MEMBERS_POPUP_MGTMEMBERS'] = "Gestión de los miembros";
@@ -233,7 +238,15 @@ $lang['ADMIN_PARAMS_GOOGLE_CLOUD'] = "Los usuarios de Google mensajería en la n
 $lang['ADMIN_PARAMS_GOOGLE_NOTIF'] = "Necesaria para las notificaciones en los dispositivos Android";
 $lang['ADMIN_PARAMS_VALIDATE'] = "Validar";
 $lang['ADMIN_PARAMS_CANCEL'] = "Reiniciar";
-
+$lang['ADMIN_PARAMS_MAIL'] = "E-Mail";
+$lang['ADMIN_PARAMS_MAIL_USE'] = "Utiliser la fonction 'mail'";
+$lang['ADMIN_PARAMS_MAIL_SMTP_USE'] = "Utiliser un serveur SMTP tierce (yahoo,gmail, ....)'";
+$lang['ADMIN_PARAMS_MAIL_SMTP_HOST'] = "Serveur SMTP";
+$lang['ADMIN_PARAMS_MAIL_SMTP_SECURE'] = "Utilise Une connexion securisée";
+$lang['ADMIN_PARAMS_MAIL_SMTP_PORT'] = "Port à utiliser";
+$lang['ADMIN_PARAMS_MAIL_SMTP_USERNAME'] = "Compte utilisateur à utiliser";
+$lang['ADMIN_PARAMS_MAIL_SMTP_PASSEWORD'] = "Mot de passe SMTP du Compte utilisateur";
+$lang['ADMIN_PARAMS_MAIL_TEST'] = "Testl envoi d'un mail avec l'adresse : ";
 /* admin_viewer.php*/
 
 $lang['ADMIN_LOGS_NOLOGS'] = "No hay ningún registro de esa fecha";

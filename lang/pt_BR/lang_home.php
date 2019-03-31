@@ -62,6 +62,7 @@ $lang['HOME_EMPIRE_RESEARCHLAB'] = "Laboratório de pesquisas";
 $lang['HOME_EMPIRE_ALLIANCEDEPOT'] = "Depósito da aliança";
 $lang['HOME_EMPIRE_TERRAFORMER'] = "Terra-Formador";
 $lang['HOME_EMPIRE_MISSILESSILO'] = "Silo de mísseis";
+$lang['HOME_EMPIRE_DOCK'] = "Dock Spatial";
 $lang['HOME_EMPIRE_LUNARSTATION'] = "Base lunar";
 $lang['HOME_EMPIRE_LUNARPHALANX'] = "Sensor Phalanx";
 $lang['HOME_EMPIRE_LUNARJUMPGATE'] = "Portal de Salto Quântico";
