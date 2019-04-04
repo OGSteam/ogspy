@@ -16,6 +16,7 @@ use Ogsteam\Ogspy\Model\DBUtils_Model;
 use Ogsteam\Ogspy\Model\Config_Model;
 use Ogsteam\Ogspy\Model\Universe_Model;
 use Ogsteam\Ogspy\Model\User_Building_Model;
+use Ogsteam\Ogspy\Model\User_Model;
 
 
 
@@ -684,15 +685,16 @@ function resize_db($new_num_of_galaxies, $new_num_of_systems)
 
     //appel de la couche" Model"
     $Config_Model = new Config_Model();
+    $User_Model = new User_Model();
 
     // si on reduit on doit supprimez toutes les entrées qui font reference au systemes ou galaxies que l'on va enlever
     (new Universe_Model())->resize_universe($new_num_of_galaxies,$new_num_of_systems);
     if ($new_num_of_galaxies < intval($server_config['num_of_galaxies'])) {
-         $db->sql_query("UPDATE " . TABLE_USER . " SET user_galaxy=1 WHERE user_galaxy > $new_num_of_galaxies");
+        $User_Model->set_default_galaxy_after_resize($new_num_of_galaxies);
         $db->sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE galaxy > $new_num_of_galaxies");
     }
     if ($new_num_of_systems < intval($server_config['num_of_systems'])) {
-        $db->sql_query("UPDATE " . TABLE_USER . " SET user_system=1 WHERE user_system > $new_num_of_systems");
+        $User_Model->set_default_system_after_resize($new_num_of_systems);
         $db->sql_query("DELETE FROM " . TABLE_USER_FAVORITE . " WHERE system > $new_num_of_systems");
     }
 
@@ -876,8 +878,7 @@ function admin_raz_ratio($maintenance_action = false)
         die("Acces interdit");
     }
 
-    $request = "UPDATE " . TABLE_USER . " set search='0'";
-    $db->sql_query($request);
+    (new User_Model())->all_raz_ratio_search();
 
     if (!$maintenance_action) {
         redirection("index.php?action=message&id_message=raz_ratio&info");

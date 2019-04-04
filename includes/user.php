@@ -21,6 +21,7 @@ use Ogsteam\Ogspy\Model\Universe_Model;
 use Ogsteam\Ogspy\Model\User_Building_Model;
 use Ogsteam\Ogspy\Model\User_Defense_Model;
 use Ogsteam\Ogspy\Model\User_Technology_Model;
+use Ogsteam\Ogspy\Model\User_Model;
 
 
 
@@ -154,15 +155,10 @@ function user_set_connection($user_id, $user_active)
 
 
     if ($user_active == 1) {
-        $request = "select user_lastvisit from " . TABLE_USER . " where user_id = " . $user_id;
-        $result = $db->sql_query($request);
-        list($lastvisit) = $db->sql_fetch_row($result);
 
-        $request = "update " . TABLE_USER . " set user_lastvisit = " . time() .
-            " where user_id = " . $user_id;
-        $db->sql_query($request);
+        $lastvisit = (new User_Model())->select_last_visit($user_id);
 
-        ///statistique
+         ///statistique
         (new Statistics_Model())->add_user_connection();
 
         session_set_user_id($user_id, $lastvisit);
@@ -830,7 +826,6 @@ function user_create()
  */
 function user_delete()
 {
-    global $db, $user_data;
     global $pub_user_id;
 
     if (!check_var($pub_user_id, "Num")) {
@@ -844,79 +839,10 @@ function user_delete()
     user_check_auth("user_update", $pub_user_id);
 
     log_("delete_account", $pub_user_id);
-    $request = "delete from " . TABLE_USER . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
 
-    //suppression de l'utilisateur des groupes'
-    (new Group_Model())->delete_user($pub_user_id);
+    (new User_Model())->delete_user($pub_user_id);
 
-    $request = "delete from " . TABLE_USER_BUILDING . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_FAVORITE . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_DEFENCE . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_SPY . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "delete from " . TABLE_USER_TECHNOLOGY . " where user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_POINTS . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_ECO . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_TECHNOLOGY . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_BUILT . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_PLAYER_HONOR . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_POINTS . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_ECO . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_TECHNOLOGY . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_MILITARY . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_BUILT . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_LOOSE . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_RANK_ALLY_HONOR . " set sender_id = 0 where sender_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    $request = "update " . TABLE_UNIVERSE . " set last_update_user_id = 0 where last_update_user_id = " . $pub_user_id;
-    $db->sql_query($request);
-
-    session_close($pub_user_id);
+     session_close($pub_user_id);
 
     redirection("index.php?action=administration&subaction=member");
 }
@@ -926,15 +852,9 @@ function user_delete()
  */
 function user_statistic()
 {
-    global $db;
-
-    $request = "select user_id, user_name, planet_added_web, planet_added_ogs, search, spy_added_web, spy_added_ogs, rank_added_web, rank_added_ogs, planet_exported, spy_exported, rank_exported, xtense_type, xtense_version, user_active, user_admin";
-    $request .= " from " . TABLE_USER .
-        " order by (planet_added_web + planet_added_ogs) desc";
-    $result = $db->sql_query($request);
-
+    $all_user_stats_data = (new User_Model())->select_all_user_stats_data();
     $user_statistic = array();
-    while ($row = $db->sql_fetch_assoc($result)) {
+    foreach ($all_user_stats_data as $row) {
         $here = "";
         $session_ogs = (new Sessions_Model())->get_xtense_session($row["user_id"]);
         if ($session_ogs != -1)
@@ -948,25 +868,16 @@ function user_statistic()
 
         $user_statistic[] = array_merge($row, array("here" => $here));
     }
-
     return $user_statistic;
 }
 
 /**
  * Recuperation du nombres de comptes actifs
- * @todo Query : x1
  */
 function user_get_nb_active_users()
 {
-    global $db;
-
-    $request = "SELECT user_id, user_active";
-    $request .= " FROM " . TABLE_USER;
-    $request .= " WHERE user_active='1'";
-    $result = $db->sql_query($request);
-    $number = $db->sql_numrows();
-
-    return ($number);
+    $number= (new User_Model())->get_nb_active_users();
+     return ($number);
 }
 
 /**
@@ -1730,15 +1641,18 @@ function usergroup_newmember()
     global $pub_user_id, $pub_group_id, $pub_add_all;
 
     $Group_Model = new Group_Model();
+    $User_Model =new User_Model();
+    $userid_list =  $User_Model->select_userid_list();
+
     if (isset($pub_add_all) && is_numeric($pub_group_id)) {
-        $request = "SELECT user_id FROM " . TABLE_USER;
-        $result = $db->sql_query($request);
-        while ($res = $db->sql_fetch_assoc($result)) {
+        foreach ($userid_list as $userid)
+        {
             user_check_auth("usergroup_manage");
             //insertion
-            if ($Group_Model->insert_user_togroup($res["user_id"], $pub_group_id)) {
-                log_("add_usergroup", array($pub_group_id, $res["user_id"]));
+            if ($Group_Model->insert_user_togroup($userid, $pub_group_id)) {
+                log_("add_usergroup", array($pub_group_id,$userid));
             }
+
         }
         redirection("index.php?action=administration&subaction=group&group_id=" . $pub_group_id);
     } else {
@@ -1757,11 +1671,12 @@ function usergroup_newmember()
             redirection("index.php?action=administration&subaction=group");
         }
 
-        $request = "select user_id from " . TABLE_USER . " where user_id = " . intval($pub_user_id);
-        $result = $db->sql_query($request);
-        if ($db->sql_numrows($result) == 0) {
+        //si le compte n existe pas
+        if (!in_array(intval($pub_user_id), $userid_list))
+        {
             redirection("index.php?action=administration&subaction=group");
         }
+
         //insertion
         if ($Group_Model->insert_user_togroup($pub_user_id, $pub_group_id)) {
             log_("add_usergroup", array($pub_group_id, $pub_user_id));
@@ -1807,11 +1722,8 @@ function usergroup_delmember()
  */
 function user_set_stat_name($user_stat_name)
 {
-    global $db, $user_data;
-
-    $request = "update " . TABLE_USER . " set user_stat_name = '" . $user_stat_name .
-        "' where user_id = " . $user_data['user_id'];
-    $db->sql_query($request);
+    global  $user_data;
+    (new User_Model())->set_game_account_name($user_data['user_id'], $user_stat_name);
 }
 
 //Suppression d'un rapport d'espionnage
@@ -2062,64 +1974,40 @@ function ratio_calc($player)
 {
     global $db, $user_data;
 
-    //récupération des données nécessaires
-    $sqlrecup = "SELECT planet_added_web, planet_added_ogs, planet_exported, search, spy_added_web, spy_added_ogs, spy_exported, rank_added_web, rank_added_ogs, rank_exported FROM " .
-        TABLE_USER . " WHERE user_id='" . $player . "'";
-    $result = $db->sql_query($sqlrecup);
-    list($planet_added_web, $planet_added_ogs, $planet_exported, $search, $spy_added_web,
-        $spy_added_ogs, $spy_exported, $rank_added_web, $rank_added_ogs, $rank_exported) =
-        $db->sql_fetch_row($result);
-    $request = "select sum(planet_added_web + planet_added_ogs), ";
-    $request .= "sum(spy_added_web + spy_added_ogs), ";
-    $request .= "sum(rank_added_web + rank_added_ogs), ";
-    $request .= "sum(search) ";
-    $request .= "from " . TABLE_USER;
-    $resultat = $db->sql_query($request);
-    list($planetimporttotal, $spyimporttotal, $rankimporttotal, $searchtotal) = $db->
-    sql_fetch_row($resultat);
-    $query = "SELECT COUNT(user_id) as count FROM " . TABLE_USER;
-    $result = $db->sql_query($query);
-    if ($db->sql_numrows($result) > 0) {
-        $row = $db->sql_fetch_assoc($result);
-        $max = $row['count'];
-    }
-    //pour éviter la division par zéro
-    if ($planetimporttotal == 0) {
-        $planetimporttotal = 1;
-    }
-    if ($spyimporttotal == 0) {
-        $spyimporttotal = 1;
-    }
-    if ($rankimporttotal == 0) {
-        $rankimporttotal = 1;
-    }
-    if ($searchtotal == 0) {
-        $searchtotal = 1;
-    }
-
-    //et on commence le calcul
-    $ratio_planet = ($planet_added_web + $planet_added_ogs) / $planetimporttotal;
-    $ratio_spy = ($spy_added_web + $spy_added_ogs) / $spyimporttotal;
-    $ratio_rank = ($rank_added_web + $rank_added_ogs) / $rankimporttotal;
-    $ratio = ($ratio_planet * 4 + $ratio_spy * 2 + $ratio_rank) / (4 + 2 + 1);
-
-    $ratio_planet_penality = ($planet_added_web + $planet_added_ogs - $planet_exported) /
-        $planetimporttotal;
-    $ratio_spy_penality = (($spy_added_web + $spy_added_ogs) - $spy_exported) / $spyimporttotal;
-    $ratio_rank_penality = (($rank_added_web + $rank_added_ogs) - $rank_exported) /
-        $rankimporttotal;
-    $ratio_penality = ($ratio_planet_penality * 4 + $ratio_spy_penality * 2 + $ratio_rank_penality) / (4 +
-            2 + 1);
-
-    $ratio_search = $search / $searchtotal;
-    $ratio_searchpenality = ($ratio - $ratio_search);
-
-    $result = ($ratio + $ratio_penality + $ratio_searchpenality) * 1000;
-    $array = array($result, $ratio_searchpenality, $ratio_search, $ratio_penality, $ratio_rank_penality,
-        $ratio_spy_penality, $ratio_planet_penality);
-
-    //retourne le ratio et calculs intermédiaires
-    return $array;
+        $data_user = new User_Model();
+        $user_stat = $data_user->select_user_stats_data($player);
+        $total_user_stats = $data_user->select_user_stats_sum();
+        //$total_users = $data_user->get_nb_users();
+        //pour éviter la division par zéro
+        if ($total_user_stats["planetimporttotal"] == 0) {
+            $total_user_stats["planetimporttotal"] = 1;
+        }
+        if ($total_user_stats["spyimporttotal"] == 0) {
+            $total_user_stats["spyimporttotal"] = 1;
+        }
+        if ($total_user_stats["rankimporttotal"] == 0) {
+            $total_user_stats["rankimporttotal"] = 1;
+        }
+        if ($total_user_stats["searchtotal"] == 0) {
+            $total_user_stats["searchtotal"] = 1;
+        }
+        //et on commence le calcul
+        $ratio_planet = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
+        $ratio_spy = $user_stat["spy_added_xtense"] / $total_user_stats["spyimporttotal"];
+        $ratio_rank = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
+        $ratio = ($ratio_planet * 4 + $ratio_spy * 2 + $ratio_rank) / (4 + 2 + 1);
+        $ratio_planet_penality = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
+        $ratio_spy_penality = $user_stat["spy_added_xtense"] / $total_user_stats["spyimporttotal"];
+        $ratio_rank_penality = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
+        $ratio_penality = ($ratio_planet_penality * 4 + $ratio_spy_penality * 2 + $ratio_rank_penality) / (4 +
+                2 + 1);
+        $ratio_search = $user_stat["search"] / $total_user_stats["searchtotal"];
+        $ratio_searchpenality = ($ratio - $ratio_search);
+        $result = ($ratio + $ratio_penality + $ratio_searchpenality) * 1000;
+        $array = array($result, $ratio_searchpenality, $ratio_search, $ratio_penality, $ratio_rank_penality,
+            $ratio_spy_penality, $ratio_planet_penality);
+        //retourne le ratio et calculs intermédiaires
+       return $array;
 }
 
 /**
