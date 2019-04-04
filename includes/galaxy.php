@@ -17,6 +17,7 @@ if (!defined('IN_SPYOGAME')) {
 use Ogsteam\Ogspy\Model\Universe_Model;
 use Ogsteam\Ogspy\Model\Rankings_Player_Model;
 use Ogsteam\Ogspy\Model\Rankings_Ally_Model;
+use Ogsteam\Ogspy\Model\User_Favorites_Model;
 
 /**
  * Vérification des droits OGSpy
@@ -891,26 +892,13 @@ function galaxy_purge_spy()
 /**
  * Recuperation des systemes favoris
  *
- * @global       object mysql $db
  * @global array $user_data
- * @todo Query : "select galaxy, system from " . TABLE_USER_FAVORITE ." where user_id = " . $user_data["user_id"] . " order by galaxy, system";"
  * @return array $favorite (galaxy/system)
  */
 function galaxy_getfavorites()
 {
-    global $db, $user_data;
-
-    $favorite = array();
-
-    $request = "SELECT galaxy, system FROM " . TABLE_USER_FAVORITE;
-    $request .= " where user_id = " . $user_data["user_id"];
-    $request .= " order by galaxy, system";
-    $result = $db->sql_query($request);
-
-    while (list($galaxy, $system) = $db->sql_fetch_row($result)) {
-        $favorite[] = array("galaxy" => $galaxy, "system" => $system);
-    }
-
+    global $user_data;
+    $favorite = (new User_Favorites_Model())->select_user_favorites($user_data["user_id"]);
     return $favorite;
 }
 

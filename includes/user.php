@@ -22,6 +22,7 @@ use Ogsteam\Ogspy\Model\User_Building_Model;
 use Ogsteam\Ogspy\Model\User_Defense_Model;
 use Ogsteam\Ogspy\Model\User_Technology_Model;
 use Ogsteam\Ogspy\Model\User_Model;
+use  Ogsteam\Ogspy\Model\User_Favorites_Model;
 
 
 
@@ -1250,8 +1251,10 @@ function user_move_empire()
  */
 function user_add_favorite()
 {
-    global $db, $user_data, $server_config;
+    global $user_data, $server_config;
     global $pub_galaxy, $pub_system;
+
+    $User_Favorites_Model = new User_Favorites_Model();
 
     if (!isset($pub_galaxy) || !isset($pub_system)) {
         redirection("index.php");
@@ -1261,15 +1264,9 @@ function user_add_favorite()
         redirection("index.php?action=galaxy");
     }
 
-    $request = "select * from " . TABLE_USER_FAVORITE . " where user_id = " . $user_data["user_id"];
-    $result = $db->sql_query($request);
-    $nb_favorites = $db->sql_numrows($result);
-
+    $nb_favorites=$User_Favorites_Model->get_nb_user_favorites($user_data["user_id"]);
     if ($nb_favorites < $server_config["max_favorites"]) {
-        $request = "insert ignore into " . TABLE_USER_FAVORITE .
-            " (user_id, galaxy, system) values (" . $user_data["user_id"] . ", '" . $pub_galaxy .
-            "', " . $pub_system . ")";
-        $db->sql_query($request);
+        $User_Favorites_Model->set_user_favorites($user_data["user_id"],$pub_galaxy,$pub_system);
         redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system);
     } else {
         redirection("index.php?action=message&id_message=max_favorites&info");
@@ -1281,9 +1278,10 @@ function user_add_favorite()
  */
 function user_del_favorite()
 {
-    global $db, $user_data;
+    global  $user_data;
     global $pub_galaxy, $pub_system, $server_config;
 
+    new User_Favorites_Model();
     if (!isset($pub_galaxy) || !isset($pub_system)) {
         redirection("index.php");
     }
@@ -1291,9 +1289,9 @@ function user_del_favorite()
         intval($pub_system) < 1 || intval($pub_system) > intval($server_config['num_of_systems'])) {
         redirection("index.php?action=galaxy");
     }
-    $request = "delete from " . TABLE_USER_FAVORITE . " where user_id = " . $user_data["user_id"] .
-        " and galaxy = '" . $pub_galaxy . "' and system = " . $pub_system;
-    $db->sql_query($request);
+
+    //suppression
+    (new User_Favorites_Model())->delete_user_favorites($user_data["user_id"],$pub_galaxy,$pub_system);
 
     redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system .
         "");
