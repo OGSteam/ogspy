@@ -314,6 +314,8 @@ function member_user_set()
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
+    $User_Model = new User_Model();
+
     $user_id = $user_data["user_id"];
     $user_info = user_get($user_id);
     $user_empire = user_get_empire($user_id);
@@ -344,82 +346,71 @@ function member_user_set()
 
     //pseudo ingame
     if ($user_data["user_stat_name"] !== $pub_pseudo_ingame) {
-        user_set_stat_name($pub_pseudo_ingame);
+        $User_Model->set_game_account_name($user_id, $pub_pseudo_ingame);
     }
-
     //compte Commandant
     if ($user_data['off_commandant'] == "0" && $pub_off_commandant == 1) {
-        $db->sql_query("UPDATE " . TABLE_USER .
-            " SET `off_commandant` = '1' WHERE `user_id` = " . $user_id);
+        $User_Model->set_player_officer($user_id, "off_commandant", 1);
     }
-    if ($user_data['off_commandant'] == 1 && (is_null($pub_off_commandant) || $pub_off_commandant !=
-            1)) {
-        $db->sql_query("UPDATE " . TABLE_USER .
-            " SET `off_commandant` = '0' WHERE `user_id` = " . $user_id);
+    if ($user_data['off_commandant'] == 1 && (is_null($pub_off_commandant) || $pub_off_commandant != 1)) {
+        $User_Model->set_player_officer($user_id, "off_commandant", 0);
     }
-
     //compte amiral
     if ($user_data['off_amiral'] == "0" && $pub_off_amiral == 1) {
-        $db->sql_query("UPDATE " . TABLE_USER .
-            " SET `off_amiral` = '1' WHERE `user_id` = " . $user_id);
+        $User_Model->set_player_officer($user_id, "off_amiral", 1);
     }
-    if ($user_data['off_amiral'] == 1 && (is_null($pub_off_amiral) || $pub_off_amiral !=
-            1)) {
-        $db->sql_query("UPDATE " . TABLE_USER .
-            " SET `off_amiral` = '0' WHERE `user_id` = " . $user_id);
+    if ($user_data['off_amiral'] == 1 && (is_null($pub_off_amiral) || $pub_off_amiral != 1)) {
+        $User_Model->set_player_officer($user_id, "off_amiral", 0);
     }
-
     //compte ingenieur
     if ($user_data['off_ingenieur'] == "0" && $pub_off_ingenieur == 1) {
-        $db->sql_query("UPDATE " . TABLE_USER .
-            " SET `off_ingenieur` = '1' WHERE `user_id` = " . $user_id);
+        $User_Model->set_player_officer($user_id, "off_ingenieur", 1);
     }
-    if ($user_data['off_ingenieur'] == 1 && (is_null($pub_off_ingenieur) || $pub_off_ingenieur !=
-            1)) {
-        $db->sql_query("UPDATE " . TABLE_USER .
-            " SET `off_ingenieur` = '0' WHERE `user_id` = " . $user_id);
+    if ($user_data['off_ingenieur'] == 1 && (is_null($pub_off_ingenieur) || $pub_off_ingenieur != 1)) {
+        $User_Model->set_player_officer($user_id, "off_ingenieur", 0);
     }
-
     //compte geologue
     if ($user_data['off_geologue'] == "0" && $pub_off_geologue == 1) {
-        $db->sql_query("UPDATE " . TABLE_USER .
-            " SET `off_geologue` = '1' WHERE `user_id` = " . $user_id);
+        $User_Model->set_player_officer($user_id, "off_geologue", 1);
     }
-    if ($user_data['off_geologue'] == 1 && (is_null($pub_off_geologue) || $pub_off_geologue !=
-            1)) {
-        $db->sql_query("UPDATE " . TABLE_USER .
-            " SET `off_geologue` = '0' WHERE `user_id` = " . $user_id);
+    if ($user_data['off_geologue'] == 1 && (is_null($pub_off_geologue) || $pub_off_geologue != 1)) {
+        $User_Model->set_player_officer($user_id, "off_geologue", 0);
     }
-
     //compte technocrate
-    // todo a verifier, dans 3.4 la partie set esp a ete supprimée
-    //que faire ?
-    $User_Technology_Model=new User_Technology_Model();
     if ($user_data['off_technocrate'] == "0" && $pub_off_technocrate == 1) {
-        $db->sql_query("UPDATE " . TABLE_USER ." SET `off_technocrate` = '1' WHERE `user_id` = " . $user_id);
-        $tech = $user_technology['Esp'] + 2;
-        $User_Technology_Model->update_esp($user_id,$tech);
+        $User_Model->set_player_officer($user_id, "off_technocrate", 1);
     }
     if ($user_data['off_technocrate'] == 1 && (is_null($pub_off_technocrate) || $pub_off_technocrate != 1)) {
-        $db->sql_query("UPDATE " . TABLE_USER ." SET `off_technocrate` = '0' WHERE `user_id` = " . $user_id);
-        $tech = $user_technology['Esp'] - 2;
-        $User_Technology_Model->update_esp($user_id,$tech);
+        $User_Model->set_player_officer($user_id, "off_technocrate", 0);
     }
-
     //Contrôle que le pseudo ne soit pas déjà utilisé
-    $request = "select * from " . TABLE_USER . " where user_name = '" .
-        $db->sql_escape_string($pub_pseudo) . "' and user_id <> " . $user_id;
-    $result = $db->sql_query($request);
-    if ($db->sql_numrows($result) != 0) {
+    $tUserName=$User_Model->select_user_list();
+    if (in_array($pub_pseudo,$tUserName))
+    {
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudolocked&info");
     }
 
     if (is_null($pub_disable_ip_check) || $pub_disable_ip_check != 1) {
         $pub_disable_ip_check = 0;
     }
-
-    user_set_general($user_id, $pub_pseudo, $pub_new_password, $pub_pseudo_email, null, $pub_galaxy, $pub_system,
-        $pub_disable_ip_check);
+    if (isset($pub_pseudo)) {
+        $User_Model->set_user_pseudo($user_id, $pub_pseudo);
+    }
+    if (isset($pub_new_password)) {
+        $User_Model->set_user_password($user_id, $pub_new_password);
+    }
+    if (isset($pub_pesudo_email)) {
+        $User_Model->set_user_email($user_id, $pub_pesudo_email);
+    }
+    if (isset($pub_galaxy)) {
+        $User_Model->set_user_default_galaxy($user_id, $pub_galaxy);
+    }
+    if (isset($pub_system)) {
+        $User_Model->set_user_default_system($user_id, $pub_system);
+    }
+    if (isset($pub_disable_ip_check)) {
+        $User_Model->set_user_ip_check($user_id, $pub_disable_ip_check);
+    }
     redirection("index.php?action=profile");
 }
 
@@ -510,7 +501,7 @@ function user_set_general($user_id, $user_name = null, $user_password_s = null, 
  * Enregistrement des droits et status utilisateurs
  * @todo Query : x2
  * @param $user_id
- * @param null $user_admin
+ * @param null $user_admin todo non utilisé !! a supprimer
  * @param null $user_active
  * @param null $user_coadmin
  * @param null $management_user
@@ -519,48 +510,34 @@ function user_set_general($user_id, $user_name = null, $user_password_s = null, 
 function user_set_grant($user_id, $user_admin = null, $user_active = null, $user_coadmin = null,
                         $management_user = null, $management_ranking = null)
 {
-    global $db, $user_data;
+    global  $user_data;
 
     if (!isset($user_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
-
     //Vérification des droits
     user_check_auth("user_update", $user_id);
-
-    $update = "";
-
+    $data_user = new User_Model();
     //Activation membre
     if (!is_null($user_active)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_active = '" . intval($user_active) .
-            "'";
+        $data_user->set_user_active($user_id, intval($user_active));
         if (intval($user_active) == 0) {
-            (new Sessions_Model())->close_user_session($user_id);
+            $data_session = new Sessions_Model();
+            $data_session->close_user_session($user_id);
         }
     }
-
     //Co-administration
     if (!is_null($user_coadmin)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_coadmin = '" . intval($user_coadmin) .
-            "'";
+        $data_user->set_user_coadmin($user_id, intval($user_coadmin));
     }
-
     //Gestion des membres
     if (!is_null($management_user)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "management_user = '" . intval($management_user) .
-            "'";
+        $data_user->set_user_management_user($user_id, intval($management_user));
     }
-
     //Gestion des classements
     if (!is_null($management_ranking)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "management_ranking = '" .
-            intval($management_ranking) . "'";
+        $data_user->set_user_management_ranking($user_id, intval($management_ranking));
     }
-
-
-    $request = "update " . TABLE_USER . " set " . $update . " where user_id = " . $user_id;
-    $db->sql_query($request);
-
     if ($user_id == $user_data['user_id']) {
         log_("modify_account");
     } else {
@@ -638,184 +615,94 @@ function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $sear
 /**
  * Recuperation d'une ligne d'information utilisateur
  * @param bool|int $user_id Identificateur optionnel d'1 utilisateur specifique
- * @return Array Liste des utilisateurs ou de l'utilisateur specifique
- * @comment Pourrait peut etre avantageusement remplace par select * from TABLE_USER
- * @comment pour les eventuels champs supplementaires
- * @todo Query : x1
+ * @return array Liste des utilisateurs ou de l'utilisateur specifique
  */
-function user_get($user_id = false)
+function user_get($user_id = null)
 {
-    global $db;
-
-    $request = "select user_id, user_name, user_password_s, user_email, user_active, user_regdate, user_lastvisit," .
-        " user_galaxy, user_system, user_admin, user_coadmin, management_user, management_ranking, disable_ip_check," .
-        " off_commandant, off_amiral, off_ingenieur, off_geologue, off_technocrate" .
-        " from " . TABLE_USER;
-
-    if ($user_id !== false) {
-        $request .= " where user_id = " . $user_id;
+    $User_Model = new User_Model();
+    if (isset($user_id)) {
+        $info_users = $User_Model->select_user_data($user_id);
+    } else {
+        $info_users = $User_Model->select_all_user_data();
     }
-    $request .= " order by user_name";
-    $result = $db->sql_query($request);
-
-    $info_users = array();
-    while ($row = $db->sql_fetch_assoc($result)) {
-
-        $info_users[] = $row;
-    }
-
-    if (sizeof($info_users) == 0) {
-        return false;
-    }
-
     return $info_users;
 }
 
 /**
  * Recuperation des droits d'un utilisateur
  * @param int $user_id Identificateur de l'utilisateur demande
- * @todo Query : x1
- * @return Array Tableau des droits
+ * @return array Tableau des droits
  */
 function user_get_auth($user_id)
 {
-    global $db;
-
     $user_info = user_get($user_id);
     $user_info = $user_info[0];
     if ($user_info["user_admin"] == 1 || $user_info["user_coadmin"] == 1) {
-        $user_auth = array("server_set_system" => 1, "server_set_spy" => 1,
-            "server_set_rc" => 1, "server_set_ranking" => 1, "server_show_positionhided" =>
-                1, "ogs_connection" => 1, "ogs_set_system" => 1, "ogs_get_system" => 1,
-            "ogs_set_spy" => 1, "ogs_get_spy" => 1, "ogs_set_ranking" => 1,
+        $user_auth = array("server_set_system" => 1,
+            "server_set_spy" => 1,
+            "server_set_rc" => 1,
+            "server_set_ranking" => 1,
+            "server_show_positionhided" => 1,
+            "ogs_connection" => 1,
+            "ogs_set_system" => 1,
+            "ogs_get_system" => 1,
+            "ogs_set_spy" => 1,
+            "ogs_get_spy" => 1,
+            "ogs_set_ranking" => 1,
             "ogs_get_ranking" => 1);
-
         return $user_auth;
     }
-
-    $request = "select server_set_system, server_set_spy, server_set_rc, server_set_ranking, server_show_positionhided,";
-    $request .= " ogs_connection, ogs_set_system, ogs_get_system, ogs_set_spy, ogs_get_spy, ogs_set_ranking, ogs_get_ranking";
-    $request .= " from " . TABLE_GROUP . " g, " . TABLE_USER_GROUP . " u";
-    $request .= " where g.group_id = u.group_id";
-    $request .= " and user_id = " . $user_id;
-    $result = $db->sql_query($request);
-
-    if ($db->sql_numrows($result) > 0) {
-        $user_auth = array("server_set_system" => 0, "server_set_spy" => 0,
-            "server_set_rc" => 0, "server_set_ranking" => 0, "server_show_positionhided" =>
-                0, "ogs_connection" => 0, "ogs_set_system" => 0, "ogs_get_system" => 0,
-            "ogs_set_spy" => 0, "ogs_get_spy" => 0, "ogs_set_ranking" => 0,
-            "ogs_get_ranking" => 0);
-
-        while ($row = $db->sql_fetch_assoc($result)) {
-            if ($row["server_set_system"] == 1) {
-                $user_auth["server_set_system"] = 1;
-            }
-            if ($row["server_set_spy"] == 1) {
-                $user_auth["server_set_spy"] = 1;
-            }
-            if ($row["server_set_rc"] == 1) {
-                $user_auth["server_set_rc"] = 1;
-            }
-            if ($row["server_set_ranking"] == 1) {
-                $user_auth["server_set_ranking"] = 1;
-            }
-            if ($row["server_show_positionhided"] == 1) {
-                $user_auth["server_show_positionhided"] = 1;
-            }
-            if ($row["ogs_connection"] == 1) {
-                $user_auth["ogs_connection"] = 1;
-            }
-            if ($row["ogs_set_system"] == 1) {
-                $user_auth["ogs_set_system"] = 1;
-            }
-            if ($row["ogs_get_system"] == 1) {
-                $user_auth["ogs_get_system"] = 1;
-            }
-            if ($row["ogs_set_spy"] == 1) {
-                $user_auth["ogs_set_spy"] = 1;
-            }
-            if ($row["ogs_get_spy"] == 1) {
-                $user_auth["ogs_get_spy"] = 1;
-            }
-            if ($row["ogs_set_ranking"] == 1) {
-                $user_auth["ogs_set_ranking"] = 1;
-            }
-            if ($row["ogs_get_ranking"] == 1) {
-                $user_auth["ogs_get_ranking"] = 1;
-            }
-        }
-    } else {
-        $user_auth = array("server_set_system" => 0, "server_set_spy" => 0,
-            "server_set_ranking" => 0, "server_show_positionhided" => 0, "ogs_connection" =>
-                0, "ogs_set_system" => 0, "ogs_get_system" => 0, "ogs_set_spy" => 0,
-            "ogs_get_spy" => 0, "ogs_set_ranking" => 0, "ogs_get_ranking" => 0);
-    }
-
+    $User_Model = new User_Model();
+    $user_auth = $User_Model->select_user_rights($user_id);
     return $user_auth;
 }
 
 /**
  * Creation d'un utilisateur a partir des donnees du formulaire admin
  * @comment redirection si erreur de type de donnee
- * @todo Query : x3
  */
 function user_create()
 {
-    global $db, $user_data;
-    global $pub_pseudo, $pub_user_id, $pub_active, $pub_user_coadmin, $pub_management_user,
-           $pub_management_ranking, $pub_group_id, $pub_pass, $pub_email;
-
+    global $pub_pseudo, $pub_active, $pub_user_coadmin, $pub_management_user,
+           $pub_management_ranking, $pub_group_id, $pub_pass;
     if (!check_var($pub_pseudo, "Pseudo_Groupname")) {
         redirection("index.php?action=message&id_message=errordata&info=1");
     }
-
     if (!isset($pub_pseudo)) {
         redirection("index.php?action=message&id_message=createuser_failed_general&info");
     }
-
     //Vérification des droits
     user_check_auth("user_create");
-
     if (!check_var($pub_pseudo, "Pseudo_Groupname")) {
         redirection("index.php?action=message&id_message=createuser_failed_pseudo&info=" .
             $pub_pseudo);
     }
-
     if (!check_var($pub_pass, "Password")) {
         redirection("index.php?action=message&id_message=createuser_failed_password&info=" .
             $pub_pseudo);
     }
-
-    if (!check_var($pub_email, "Email")) {
-        redirection("index.php?action=message&id_message=createuser_failed_password&info=" .
-            $pub_email);
-    }
-
     if ($pub_pass != "") {
         $password = $pub_pass;
     } else {
         $password = password_generator();
     }
-    //$request = "select user_id from ".TABLE_USER." where user_name = '". $db->sql_escape_string($pub_pseudo)."'";
-    $request = "select user_id from " . TABLE_USER . " where user_name = '" . $pub_pseudo .
-        "'";
-    $result = $db->sql_query($request);
-    if ($db->sql_numrows($result) == 0) {
-        $request = "insert into " . TABLE_USER .
-            " (user_name, user_password_s, user_email, user_regdate, user_active)" . " values ('" . $pub_pseudo .
-            "', '" . password_hash($password, PASSWORD_DEFAULT) . "', '" . $pub_email . "', " . time() . ", '1')";
-        $db->sql_query($request);
-        $user_id = $db->sql_insertid();
+    $User_Model = new User_Model();
+    //On vérifie que le nom n'existe pas
+    $result = $User_Model->select_user_name($pub_pseudo);
 
-        // integration du compte  dans un groupe
-        $Group_Model = (new Group_Model())->insert_user_togroup($user_id, $pub_group_id);
-
+    //Création de l'utilisateur
+    //Contrôle que le pseudo ne soit pas déjà utilisé
+    $tUserName=$User_Model->select_user_list();
+    if (!in_array($pub_pseudo,$tUserName))
+    {
+        $user_id = $User_Model->add_new_user($pub_pseudo, $password);
+        // Insertion dans le groupe par défaut
+        $User_Model->add_user_to_group($user_id, $pub_group_id);
         $info = $user_id . ":" . $password;
         log_("create_account", $user_id);
-        user_set_grant($user_id, null, $pub_active, $pub_user_coadmin, $pub_management_user,
-            $pub_management_ranking);
+        user_set_grant($user_id, $pub_active, $pub_user_coadmin, $pub_management_user, $pub_management_ranking);
         redirection("index.php?action=message&id_message=createuser_success&info=" . $info);
+
     } else {
         redirection("index.php?action=message&id_message=createuser_failed_pseudolocked&info=" .
             $pub_pseudo);
@@ -824,7 +711,6 @@ function user_create()
 
 /**
  * Suppression d'un utilisateur ($pub_user_id)
- * @todo Query : x12
  */
 function user_delete()
 {
