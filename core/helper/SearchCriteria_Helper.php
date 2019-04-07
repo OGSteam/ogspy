@@ -10,7 +10,7 @@
  * @version 3.4.0
  */
 
-namespace Ogsteam\Ogspy\Model;
+namespace Ogsteam\Ogspy\Helper;
 
 use Ogsteam\Ogspy\Abstracts\Helper_Abstract;
 

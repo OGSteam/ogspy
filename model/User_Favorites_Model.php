@@ -12,6 +12,7 @@
 
 namespace Ogsteam\Ogspy\Model;
 
+use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 
 class User_Favorites_Model  extends Model_Abstract
 {

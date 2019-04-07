@@ -23,6 +23,7 @@ use Ogsteam\Ogspy\Model\User_Defense_Model;
 use Ogsteam\Ogspy\Model\User_Technology_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use  Ogsteam\Ogspy\Model\User_Favorites_Model;
+use Ogsteam\Ogspy\Model\Spy_Model;
 
 
 
@@ -1302,69 +1303,18 @@ function user_del_favorite()
  */
 function user_getfavorites_spy()
 {
-    global $db, $user_data;
+    global $user_data;
     global $sort, $sort2;
-    $order = "";
 
-    if (!isset($sort) || !isset($sort2) || !is_numeric($sort) || !is_numeric($sort2)) {
-        $orderby = "dateRE desc";
-    } else {
-        switch ($sort2) {
-            case 0:
-                $order .= " desc";
-                break;
-            case 1:
-                $order .= " asc";
-                break;
-            default:
-                $order .= " asc";
-        }
-
-        switch ($sort) {
-            case 1:
-                $orderby = "coordinates" . $order . "";
-                break;
-            case 2:
-                $orderby = "ally " . $order;
-                break;
-            case 3:
-                $orderby = "player " . $order;
-                break;
-            case 4:
-                $orderby = "moon " . $order;
-                break;
-            case 5:
-                $orderby = "dateRE " . $order;
-                break;
-            default:
-                $orderby = "dateRE " . $order;
-        }
+    $Spy_Model = new Spy_Model();
+    if (!is_numeric($sort) || !is_numeric($sort2)) {
+        //Ordering by date Desc
+        $sort = 5;
+        $sort2 = 0;
     }
-
-    $favorite = array();
-
-    $request = "select " . TABLE_PARSEDSPY .
-        ".id_spy, coordinates, dateRE, sender_id, " . TABLE_UNIVERSE . ".moon, " . TABLE_UNIVERSE . ".ally, " . TABLE_UNIVERSE . ".player, " . TABLE_UNIVERSE . ".status";
-    $request .= " from " . TABLE_PARSEDSPY . ", " . TABLE_UNIVERSE;
-    $request .= " where " . TABLE_PARSEDSPY . ".sender_id = " . $user_data["user_id"] . " and CONCAT(" . TABLE_UNIVERSE . ".galaxy,':'," . TABLE_UNIVERSE . ".system,':'," . TABLE_UNIVERSE . ".row)=coordinates";
-    $request .= " order by " . $orderby;
-    $result = $db->sql_query($request);
-
-    while (list($spy_id, $coordinates, $datadate, $sender_id, $moon, $ally, $player, $status) = $db->sql_fetch_row($result)) {
-        $request = "select user_name from " . TABLE_USER;
-        $request .= " where user_id=" . $sender_id;
-        $result_2 = $db->sql_query($request);
-        list($user_name) = $db->sql_fetch_row($result_2);
-        $favorite[$spy_id] = array("spy_id" => $spy_id, "spy_galaxy" => substr($coordinates,
-            0, strpos($coordinates, ':')), "spy_system" => substr($coordinates, strpos($coordinates,
-                ':') + 1, strrpos($coordinates, ':') - strpos($coordinates, ':') - 1), "spy_row" =>
-            substr($coordinates, strrpos($coordinates, ':') + 1), "player" => $player,
-            "ally" => $ally, "moon" => $moon, "status" => $status, "datadate" => $datadate,
-            "poster" => $user_name);
-    }
-
-    return $favorite;
+    return $Spy_Model->get_favoriteSpyList($user_data["user_id"], $sort, $sort2);
 }
+
 
 /**
  * Ajout d'un rapport favori
@@ -1402,7 +1352,7 @@ function user_add_favorite_spy()
  */
 function user_del_favorite_spy()
 {
-    global $db, $user_data;
+    global  $user_data;
     global $pub_spy_id, $pub_galaxy, $pub_system, $pub_row, $pub_info;
 
     if (!check_var($pub_spy_id, "Num")) {
@@ -1412,9 +1362,7 @@ function user_del_favorite_spy()
     if (!isset($pub_spy_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
-
-    $request = "delete from " . TABLE_PARSEDSPY . " where sender_id = " . $user_data["user_id"] . " and id_spy = '" . $pub_spy_id . "'";
-    $db->sql_query($request);
+    (new Spy_Model())->delete_spy_senderId($pub_spy_id,$user_data["user_id"]);
 
     if (!isset($pub_info)) {
         $pub_info = 1;
@@ -1743,9 +1691,7 @@ function user_del_spy()
     }
 
     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-        $request = "delete from " . TABLE_PARSEDSPY . " where id_spy = '" . $pub_spy_id .
-            "'";
-        $db->sql_query($request);
+        (new Spy_Model())->delete_spy($pub_spy_id);
     }
 
     if (!isset($pub_info)) {
