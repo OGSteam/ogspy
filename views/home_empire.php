@@ -657,8 +657,21 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
                 echo "\t" . "<th><span  id='25" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Silo . "</span></th>" . "\n";
             }
+            ?>
+        </tr>
+        <tr>
+            <th><a><?php echo($lang['HOME_EMPIRE_DOCK']); ?></a></th>
+            <?php
+            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
+                $Dock = $user_building[$i]["Dock"];
+                if ($Dock == "") {
+                    $Dock = "&nbsp;";
+                }
 
-            } // fin de si view="planets"
+                echo "\t" . "<th><span  id='25" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Dock . "</span></th>" . "\n";
+            }
+
+            }
             else {
             ?>
         </tr>

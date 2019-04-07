@@ -77,7 +77,8 @@ $lang['ADMIN_SERVER_RANKINGS'] = "Classement (nombre de lignes)";
 $lang['ADMIN_SERVER_PHPINFO'] = "PHPInfo";
 $lang['ADMIN_SERVER_PHPMODULES'] = "Modules PHP";
 $lang['ADMIN_SERVER_INFOVERSION'] = "Information de version";
-$lang['ADMIN_SERVER_INFOVERSION_DESC'] = "Merci de consulter le Forum de l'OGSteam pour connaitre la dernière version d'OGSpy: <a href='http://www.ogsteam.fr' target='_blank'>Forum</a>";
+$lang['ADMIN_SERVER_RELEASENOTE'] = "Notes de Version";
+$lang['ADMIN_SERVER_NEWVERSION'] = "Une nouvelle version est disponible ! Lancez la mise à jour avec autoupdate ou téléchargez le nouveau package !";
 
 $lang['ADMIN_SERVER_MEMBERNAME'] = "Nom du membre";
 $lang['ADMIN_SERVER_MEMBERCONNECTED'] = "Connexion";

@@ -90,44 +90,87 @@ function user_login()
 
     if (!isset($pub_login) || !isset($pub_password)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
-    } else {
-        $request = "SELECT user_id, user_active FROM " . TABLE_USER .
-            " WHERE user_name = '" . $db->sql_escape_string($pub_login) .
-            "' AND user_password = '" . md5(sha1($pub_password)) . "'";
-        $result = $db->sql_query($request);
-        if (list($user_id, $user_active) = $db->sql_fetch_row($result)) {
-            if ($user_active == 1) {
-                $request = "select user_lastvisit from " . TABLE_USER . " where user_id = " . $user_id;
-                $result = $db->sql_query($request);
-                list($lastvisit) = $db->sql_fetch_row($result);
-
-                $request = "update " . TABLE_USER . " set user_lastvisit = " . time() .
-                    " where user_id = " . $user_id;
-                $db->sql_query($request);
-
-                $request = "update " . TABLE_STATISTIC .
-                    " set statistic_value = statistic_value + 1";
-                $request .= " where statistic_name = 'connection_server'";
-                $db->sql_query($request);
-                if ($db->sql_affectedrows() == 0) {
-                    $request = "insert ignore into " . TABLE_STATISTIC .
-                        " values ('connection_server', '1')";
-                    $db->sql_query($request);
-                }
-
-                session_set_user_id($user_id, $lastvisit);
-                log_('login');
-                if (!isset($url_append)) {
-                    $url_append = "";
-                }
-                redirection("index.php?action=" . $pub_goto . "" . $url_append);
-            } else {
-                redirection("index.php?action=message&id_message=account_lock&info");
-            }
-        } else {
-            redirection("index.php?action=message&id_message=login_wrong&info");
-        }
     }
+
+        $request = "SELECT user_id, user_active, user_password_s FROM " . TABLE_USER .
+            " WHERE user_name = '" . $db->sql_escape_string($pub_login) .
+            "' AND NOT user_password_s = ''";
+        $result = $db->sql_query($request);
+
+        if($db->sql_numrows($result)) {
+
+            list($user_id, $user_active, $password_s) = $db->sql_fetch_row($result);
+            if (password_verify($pub_password, $password_s)) {
+                // Format Mot de passe Secure
+                user_set_connection($user_id, $user_active);
+            } else {
+                redirection("index.php?action=message&id_message=login_wrong&info");
+            }
+
+        }else {
+            // Format Mot de passe Legacy
+
+            $request = "SELECT user_id, user_active FROM " . TABLE_USER .
+                " WHERE user_name = '" . $db->sql_escape_string($pub_login) .
+                "' AND user_password = '" . md5(sha1($pub_password)) . "'";
+            $result = $db->sql_query($request);
+
+            if ($db->sql_numrows($result)) {
+
+                list($user_id, $user_active) = $db->sql_fetch_row($result);
+
+                //Ajout du nouveau mot de passe et supression ancien
+
+                $request = "UPDATE " . TABLE_USER . " SET `user_password_s` = '" . password_hash($pub_password, PASSWORD_DEFAULT ) . "' WHERE `user_id` = " . $user_id;
+                $db->sql_query($request);
+
+                $request = "UPDATE " . TABLE_USER . " SET `user_password` = '' WHERE `user_id` = " . $user_id;
+                $db->sql_query($request);
+
+                user_set_connection($user_id, $user_active);
+
+
+            } else {
+                redirection("index.php?action=message&id_message=login_wrong&info");
+            }
+
+        }
+}
+
+function user_set_connection($user_id, $user_active){
+
+    global $db,$pub_goto;
+
+
+        if ($user_active == 1) {
+            $request = "select user_lastvisit from " . TABLE_USER . " where user_id = " . $user_id;
+            $result = $db->sql_query($request);
+            list($lastvisit) = $db->sql_fetch_row($result);
+
+            $request = "update " . TABLE_USER . " set user_lastvisit = " . time() .
+                " where user_id = " . $user_id;
+            $db->sql_query($request);
+
+            $request = "update " . TABLE_STATISTIC .
+                " set statistic_value = statistic_value + 1";
+            $request .= " where statistic_name = 'connection_server'";
+            $db->sql_query($request);
+            if ($db->sql_affectedrows() == 0) {
+                $request = "insert ignore into " . TABLE_STATISTIC .
+                    " values ('connection_server', '1')";
+                $db->sql_query($request);
+            }
+
+            session_set_user_id($user_id, $lastvisit);
+            log_('login');
+            if (!isset($url_append)) {
+                $url_append = "";
+            }
+            redirection("index.php?action=" . $pub_goto . "" . $url_append);
+        } else {
+            redirection("index.php?action=message&id_message=account_lock&info");
+        }
+
 }
 
 /**
@@ -266,7 +309,7 @@ function member_user_set()
     global $db, $user_data, $user_technology;
     global $pub_pseudo, $pub_old_password, $pub_new_password, $pub_new_password2, $pub_galaxy,
            $pub_system, $pub_disable_ip_check, $pub_off_commandant, $pub_off_amiral, $pub_off_ingenieur,
-           $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email;
+           $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email,$pub_renew_user_token;
 
     if (!check_var($pub_pseudo, "Text") || !check_var($pub_old_password, "Text") ||
         !check_var($pub_new_password, "Text") || !check_var($pub_new_password2,
@@ -291,12 +334,17 @@ function member_user_set()
         if ($pub_old_password == "" || $pub_new_password == "" || $pub_new_password != $pub_new_password2) {
             redirection("index.php?action=message&id_message=member_modifyuser_failed_passwordcheck&info");
         }
-        if (md5(sha1($pub_old_password)) != $user_info[0]["user_password"]) {
+        if (password_verify($pub_old_password, $user_info[0]["user_password"])) {
             redirection("index.php?action=message&id_message=member_modifyuser_failed_passwordcheck&info");
         }
         if (!check_var($pub_new_password, "Password")) {
             redirection("index.php?action=message&id_message=member_modifyuser_failed_password&info");
         }
+    }
+    // Token Generation
+    if ($pub_renew_user_token == 1){
+
+        user_profile_token_updater($user_id);
     }
 
     if (!check_var($pub_pseudo, "Pseudo_Groupname")) {
@@ -387,18 +435,65 @@ function member_user_set()
 }
 
 /**
+ * Update the PAT on the user request
+ * @param $user_id
+ * @return array
+ * @throws Exception
+ */
+function user_profile_token_updater($user_id)
+{
+    global $db;
+    $new_token = bin2hex(random_bytes(32));
+    $next_year = time() + (365 * 24 * 60 * 60);
+
+    $request = "SELECT `token` FROM " . TABLE_USER_TOKEN . " WHERE `user_id` = '" .
+        $user_id . "' AND `name` = 'PAT'";
+    $result = $db->sql_query($request);
+    if ($db->sql_numrows($result) == 0) {
+
+        $db->sql_query("INSERT INTO " . TABLE_USER_TOKEN . " (`id`, `user_id`, `name`, `token`, `expiration_date`)
+            VALUES (NULL, '" . $user_id . "', 'PAT', '" . $new_token . "', '" . $next_year . "')");
+    } else {
+        $db->sql_query("UPDATE " . TABLE_USER_TOKEN . " SET `token` = '" . $new_token . "', `expiration_date` = '" . $next_year . "'
+            WHERE `user_id` = '" . $user_id . "' AND `name` = 'PAT '");
+    }
+    $user_token["token"] = $new_token;
+}
+
+/**
+ * Get the PAT on the user request
+ * @param $user_id
+ * @return array
+ * @throws Exception
+ */
+function get_user_profile_token($user_id)
+{
+    global $db;
+
+    $request = "SELECT `token` FROM " . TABLE_USER_TOKEN . " WHERE `user_id` = '" .
+        $user_id . "' AND `name` = 'PAT'";
+    $result = $db->sql_query($request);
+    if ($db->sql_numrows($result) == 0) {
+            return 1;
+    } else {
+        $query_result = $db->sql_fetch_row($result);
+        return $query_result['token'];
+    }
+}
+
+/**
  * Entree en BDD de donnees utilisateur
  * @todo Query x1
  * @param $user_id
  * @param null $user_name
- * @param null $user_password
+ * @param null $user_password_s
  * @param null $user_email
  * @param null $user_lastvisit
  * @param null $user_galaxy
  * @param null $user_system
  * @param integer $disable_ip_check
  */
-function user_set_general($user_id, $user_name = null, $user_password = null, $user_email = null, $user_lastvisit = null,
+function user_set_general($user_id, $user_name = null, $user_password_s = null, $user_email = null, $user_lastvisit = null,
                           $user_galaxy = null, $user_system = null, $disable_ip_check = null)
 {
     global $db, $user_data, $server_config;
@@ -426,8 +521,8 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
     if (!empty($user_name)) {
         $update .= "user_name = '" . $db->sql_escape_string($user_name) . "'";
     }
-    if (!empty($user_password)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_password = '" . md5(sha1($user_password)) . "'";
+    if (!empty($user_password_s)) {
+        $update .= ((strlen($update) > 0) ? ", " : "") . "user_password_s = '" . password_hash($user_password_s, PASSWORD_DEFAULT) . "'";
     }
 
     //Galaxy et système solaire du membre
@@ -457,7 +552,6 @@ function user_set_general($user_id, $user_name = null, $user_password = null, $u
         $update .= ((strlen($update) > 0) ? ", " : "") . "disable_ip_check = '" . $disable_ip_check .
             "'";
     }
-
 
     $request = "update " . TABLE_USER . " set " . $update . " where user_id = " . $user_id;
     $db->sql_query($request);
@@ -611,7 +705,7 @@ function user_get($user_id = false)
 {
     global $db;
 
-    $request = "select user_id, user_name, user_password, user_email, user_active, user_regdate, user_lastvisit," .
+    $request = "select user_id, user_name, user_password_s, user_email, user_active, user_regdate, user_lastvisit," .
         " user_galaxy, user_system, user_admin, user_coadmin, management_user, management_ranking, disable_ip_check," .
         " off_commandant, off_amiral, off_ingenieur, off_geologue, off_technocrate" .
         " from " . TABLE_USER;
@@ -767,8 +861,8 @@ function user_create()
     $result = $db->sql_query($request);
     if ($db->sql_numrows($result) == 0) {
         $request = "insert into " . TABLE_USER .
-            " (user_name, user_password, user_email, user_regdate, user_active)" . " values ('" . $pub_pseudo .
-            "', '" . md5(sha1($password)) . "', '". $pub_email . "', " . time() . ", '1')";
+            " (user_name, user_password_s, user_email, user_regdate, user_active)" . " values ('" . $pub_pseudo .
+            "', '" . password_hash($password, PASSWORD_DEFAULT) . "', '". $pub_email . "', " . time() . ", '1')";
         $db->sql_query($request);
         $user_id = $db->sql_insertid();
 
@@ -1068,7 +1162,7 @@ function user_get_empire($user_id)
         "C_Percentage" => 100, "D" => 0, "D_percentage" => 100, "CES" => 0, "CES_percentage" => 100,
         "CEF" => 0, "CEF_percentage" => 100, "UdR" => 0, "UdN" => 0, "CSp" => 0,
         "HM" => 0, "HC" => 0, "HD" => 0, "Lab" => 0,
-        "Ter" => 0, "Silo" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0,
+        "Ter" => 0, "Silo" => 0, "Dock" => 0,"BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0,
         "C_percentage" => 100);
 
     $defence = array("LM" => 0, "LLE" => 0, "LLO" => 0, "CG" => 0, "AI" => 0, "LP" =>
@@ -1091,7 +1185,7 @@ function user_get_empire($user_id)
         $user_building[$i] = $planet;
     }
 
-    $request = "SELECT planet_id, planet_name, coordinates, fields, boosters, temperature_min, temperature_max, Sat, Sat_percentage, M, M_percentage, C, C_Percentage, D, D_percentage, CES, CES_percentage, CEF, CEF_percentage, UdR, UdN, CSp, HM, HC, HD, Lab, Ter, Silo, BaLu, Pha, PoSa, DdR";
+    $request = "SELECT planet_id, planet_name, coordinates, fields, boosters, temperature_min, temperature_max, Sat, Sat_percentage, M, M_percentage, C, C_Percentage, D, D_percentage, CES, CES_percentage, CEF, CEF_percentage, UdR, UdN, CSp, HM, HC, HD, Lab, Ter, Silo, Dock, BaLu, Pha, PoSa, DdR";
     $request .= " FROM " . TABLE_USER_BUILDING;
     $request .= " WHERE user_id = " . $user_id;
     $request .= " ORDER BY planet_id";

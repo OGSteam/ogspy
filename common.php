@@ -41,6 +41,7 @@ if (file_exists("parameters/id.php")) {
 
 //Appel des fonctions
 require_once ("includes/config.php");
+require_once ("includes/admin_functions.php");
 require_once ("includes/functions.php");
 require_once ("includes/mysql.php");
 require_once ("includes/log.php");

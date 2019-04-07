@@ -1,17 +1,15 @@
 <?php
 /**
-* Token Class
+ * Token Class
  * CRSF protect
-* @package OGSpy
-* @subpackage token
-* @author Machine
-* @created 05/01/2018
-* @copyright Copyright &copy; 2007, http://ogsteam.fr/
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*/
-if (!defined('IN_SPYOGAME')) {
-    die("Hacking attempt");
-}
+ * @package OGSpy
+ * @subpackage token
+ * @author Machine
+ * @created 05/01/2018
+ * @copyright Copyright &copy; 2007, https://ogsteam.fr/
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
+
 class token
 {
     private $lifeTime;
@@ -20,14 +18,26 @@ class token
     private $salt = "&pndmfekdiè_e,frèl'";
     private $token;
 
-    //version static de getToken
-    public static function staticGetToken($lifetime=600,$formName = "",$inSession=true)
+    /**
+     * version static de getToken
+     * @param int $lifetime
+     * @param string $formName
+     * @param bool $inSession
+     * @return string
+     */
+    public static function staticGetToken($lifetime=600, $formName = "", $inSession=true)
     {
         $t= new token();
         return  $t->getToken($lifetime,$formName,$inSession);
     }
-    //version static de checkToken
-    public static function statiCheckToken($tokenA,$TokenB=null)
+
+    /**
+     * Static Check Token
+     * @param $tokenA
+     * @param null $TokenB
+     * @return bool
+     */
+    public static function statiCheckToken($tokenA, $TokenB = null)
     {
         $t= new token();
         return  $t->checkToken($tokenA,$TokenB);
@@ -35,7 +45,7 @@ class token
 
 
     /**
-     * token constructor.
+     * token class constructor.
      */
     public function __construct()
     {
@@ -44,7 +54,15 @@ class token
 
 
     //permet l'obtention et le stockage d'un token
-    public function getToken($lifetime=600,$formName = "",$inSession=true)
+
+    /**
+     * Token Generation
+     * @param int $lifetime
+     * @param string $formName
+     * @param bool $inSession
+     * @return string
+     */
+    public function getToken($lifetime=600, $formName = "", $inSession=true)
     {
         $this->lifeTime = $lifetime;
         $str = $this->getSalt()."_".$formName."_".microtime(true);
@@ -52,7 +70,7 @@ class token
         // on stock le token
         if ($inSession)
         {
-           $this->saveInCookie($this->token);
+            $this->saveInCookie($this->token);
         }
         return $this->token;
 
@@ -60,23 +78,27 @@ class token
     }
 
 
-    //permet de verifier un token
-    public function checkToken($tokenA,$TokenB=null)
+    /**
+     * Token Verification
+     * @param $tokenA
+     * @param null $TokenB
+     * @return bool
+     */
+    public function checkToken($tokenA, $TokenB = null)
     {
-        global $HTTP_COOKIE_VARS;
-
         $tokenA = trim((string)$tokenA);
         if(stristr($tokenA, $this->splitter) === FALSE) // si pas de splitteur, ce n'est pas notre token
         {
+            $this->resetInCookie();
             return false;
         }
         $date = (int)explode($this->splitter,$tokenA)[1];
         $t=time();
         if($date < $t) // si périmé [date du token inf a la date en cours (timestamp )]
         {
+            $this->resetInCookie();
             return false;
         }
-
 
         if ($TokenB == null )
         {
@@ -93,6 +115,7 @@ class token
             $TokenB = trim((string)$TokenB);
             if ($tokenA == $TokenB )
             {
+                $this->resetInCookie();
                 return true;
             }
         }
@@ -102,7 +125,11 @@ class token
 
 
     }
-    //chemin d'acces du sel
+
+    /**
+     * Path to the Salt File
+     * @return string Saltpath
+     */
     private function get_saltpath()
     {
         return $this->saltPath.'/salt';
@@ -111,14 +138,14 @@ class token
     //
 
     /**
-     * retour le sel si existe sinon on utilise celui par defaut
+     * Returns curent salt, if not existing, returns the default one
      */
     private function getSalt()
     {
         $path = $this->get_saltpath();
         if(isset($path) && file_exists($path))
         {
-           $retour =  file_get_contents($path);
+            $retour =  file_get_contents($path);
             $this->salt =  $retour;
         }else{
             $this->salt = $this->CreateNewSalt();
@@ -126,7 +153,10 @@ class token
         }
     }
 
-    // permet la création d'un sel pour le token
+    /**
+     * Create a new salt token
+     * @return string
+     */
     public function CreateNewSalt()
     {
         $chaine = '0123456789&é(-è_çà)=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -142,24 +172,38 @@ class token
     }
 
 
+    /**
+     * Save token in the Session
+     */
     private function saveInCookie()
     {
-        setcookie("token", $this->token);
+        $_SESSION['ogspy_token'] = $this->token;
     }
 
+    /**
+     * Get the Token from the Cookie
+     * @return mixed
+     */
     private function getInCookie()
     {
-        global $HTTP_COOKIE_VARS;
-        return $HTTP_COOKIE_VARS['token'];
+        return $_SESSION['ogspy_token'];
     }
 
+    /**
+     *  Remove salt from the session
+     */
     private function resetInCookie()
     {
         global $_COOKIE ;
+        if (isset($_SESSION['ogspy_token']))
+        {
+            unset($_SESSION['ogspy_token']);
+        }
+        //old plugin token (3.3.4)
         if (isset($_COOKIE["token"]))
         {
-            $t = $_COOKIE["token"];
-            setcookie("token", $t,time()-1);
+            unset($_COOKIE['token']);
+            setcookie("token", $_COOKIE["token"],time()-1);
         }
     }
 

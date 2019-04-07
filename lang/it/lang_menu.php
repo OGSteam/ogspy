@@ -29,7 +29,7 @@ $lang['MENU_RANKINGS'] = "Classifiche";
 $lang['MENU_UPDATE_STATUS'] = "Stato della galassia";
 $lang['MENU_MODULES'] = "Moduli";
 $lang['MENU_FORUM'] = "Forum Alleanza";
-$lang['MENU_ABOUT'] = "Info su";
+$lang['MENU_ABOUT'] = "L'OGSteam";
 $lang['MENU_LOGOUT'] = "Disconnessione";
 
 

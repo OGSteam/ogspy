@@ -96,6 +96,16 @@ list($connectes) = $db->sql_fetch_row($connectes_req);
 //Personne en ligne
 $online = session_whois_online();
 
+// Derniere Version OGSpy
+
+$current_ogspy_version = github_get_latest_release('ogspy');
+if(version_compare($current_ogspy_version['release'],$server_config['version'],'>')){
+    $ogspy_version_message = "<span style=\"color:red\">".$current_ogspy_version['release']." : " . $lang['ADMIN_SERVER_NEWVERSION'] . "</span><br><br><span>".$current_ogspy_version['description']."</span>";
+}
+else{
+    $ogspy_version_message = $current_ogspy_version['release']."<br><span>".$current_ogspy_version['description']."</span><br><br>". " (<a href='https://github.com/ogsteam/ogspy/releases' target='_blank'>".$lang['ADMIN_SERVER_RELEASENOTE']."</a>)" ;
+
+}
 ?>
 
 <table width="100%">
@@ -168,7 +178,7 @@ $online = session_whois_online();
         <td class="c_ogspy"><?php echo($lang['ADMIN_SERVER_INFOVERSION']); ?></td>
     </tr>
     <tr>
-        <th style="text-align:left"><?php echo($lang['ADMIN_SERVER_INFOVERSION_DESC']); ?></th>
+        <th style="text-align:left"><?php echo($ogspy_version_message); ?></th>
     </tr>
 </table>
 <br/>
