@@ -1,23 +1,32 @@
 <?php
 /**
  * OGSpy Admin functions
- * @package OGSpy
+ * PHP Version 7.3
+ * 
+ * @category   Gametool
+ * @package    OGSpy
  * @subpackage Common
- * @author DarkNoon
- * @copyright Copyright &copy; 2018, https://www.ogsteam.fr/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 3.3.5
+ * @author     DarkNoon29 <darknoon@darkcity.fr>
+ * @copyright  2019 OGSteam.fr
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    GIT:<GIT_ID>
+ * @link       https://ogsteam.fr  
  */
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+
 /**
  * Formatting the query for the Github API
- * @param string $request
- * @return string
+ * 
+ * @param string $request Content
+ * 
+ * @return string $data Github Data
  */
-function github_api_Request($request) {
+function github_api_Request($request) 
+{
 
     $opts = [
         'http' => [
@@ -46,22 +55,25 @@ function github_api_Request($request) {
 
 /**
  * Formatting the query for the Github API
- * @param string $repository
+ * 
+ * @param string $repository Git Repository
+ * 
  * @return array $release
  */
 function github_get_latest_release($repository)
 {
     $release = 'no_release_available';
     $description = 'NA';
-    $data = github_api_Request("https://api.github.com/repos/ogsteam/".$repository."/releases/latest");
+    $url = "https://api.github.com/repos/ogsteam/".$repository."/releases/latest";
+    $data = github_api_Request(url);
 
     $mod_data = json_decode($data, true);
 
-    if(isset($mod_data)){
+    if (isset($mod_data) ) {
 
         $release = $mod_data['tag_name'];
         $description = $mod_data['body'];
-        $description = str_replace("\n","<br>",$description);
+        $description = str_replace("\n", "<br>", $description);
     }
 
     return array('release' => $release, 'description' => $description);
