@@ -65,7 +65,7 @@ function github_get_latest_release($repository)
     $release = 'no_release_available';
     $description = 'NA';
     $url = "https://api.github.com/repos/ogsteam/".$repository."/releases/latest";
-    $data = github_api_Request(url);
+    $data = github_api_Request($url);
 
     $mod_data = json_decode($data, true);
 
