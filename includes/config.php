@@ -45,6 +45,8 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     define("TABLE_PARSEDRCROUND", $table_prefix . "parsedRCRound");
     define("TABLE_ROUND_ATTACK", $table_prefix . "round_attack");
     define("TABLE_ROUND_DEFENSE", $table_prefix . "round_defense");
+    define("TABLE_GAME_PLAYER", $table_prefix . "game_player");
+    define("TABLE_GAME_ALLY", $table_prefix . "game_ally");
 
     // Google Cloud Messaging users table
     define("TABLE_GCM_USERS", $table_prefix . "gcm_users");
