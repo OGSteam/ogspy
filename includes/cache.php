@@ -13,7 +13,9 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+
 use Ogsteam\Ogspy\Model\Config_Model;
+use Ogsteam\Ogspy\Model\Mod_Model;
 
 /**
  * Function generate_config_cache()
@@ -45,18 +47,22 @@ function generate_config_cache()
  * Function generate_mod_cache()
  *
  * Generates the mod cache file system
- * @todo Queries : "SELECT action ,  menu ,  root, link, admin_only FROM ".TABLE_MOD." WHERE active = '1' order by position, title"
  */
 function generate_mod_cache()
 {
-    global $db, $table_prefix, $server_config;
-    $mod = NULL;
-
-    $query = "SELECT action ,  menu ,  root, link, admin_only FROM " . TABLE_MOD . " WHERE active = '1' order by position, title";
-    $result = $db->sql_query($query);
-
-    while ($row = $db->sql_fetch_assoc($result)) {
-        $mod[$row['action']] = $row;
+    $modExport = NULL;
+    // On récupère les mods actifs
+    $Mod_Model = new Mod_Model();
+    $tMods = $Mod_Model->find_by(array('active' => 1), array('position' => 'ASC', 'title' => 'ASC'));
+    // On extrait les propriétés souhaitées
+    foreach ($tMods as $mod)
+    {
+        $modExport[$mod['action']] = array('action' => $mod['action'],
+            'menu' => $mod['menu'],
+            'root' => $mod['root'],
+            'link' => $mod['link'],
+            'admin_only' => $mod['admin_only']
+        );
     }
 
     $fh = @fopen('cache/cache_mod.php', 'wb');
@@ -67,7 +73,7 @@ function generate_mod_cache()
         }
 
     } else {
-        fwrite($fh, '<?php' . "\n\n" . 'define(\'OGSPY_MOD_LOADED\', 1);' . "\n\n" . '$cache_mod = ' . var_export($mod, true) . ';' . "\n\n" . '?>');
+        fwrite($fh, '<?php' . "\n\n" . 'define(\'OGSPY_MOD_LOADED\', 1);' . "\n\n" . '$cache_mod = ' . var_export($modExport, true) . ';' . "\n\n" . '?>');
 
         fclose($fh);
 
