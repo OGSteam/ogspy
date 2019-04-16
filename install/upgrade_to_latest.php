@@ -250,7 +250,7 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_HONOR . "` ADD `points_per_member` BIGINT AFTER `points`";
 
 
-        $requests[] = "CREATE TABLE IF NOT EXISTS `" . ogspy_ally . "` ( " .
+        $requests[] = "CREATE TABLE IF NOT EXISTS `" . TABLE_GAME_ALLY . "` ( " .
             "`ally_id` int(6) NOT NULL ," .
             "`ally` varchar(65) NOT NULL, " .
             "`tag` varchar(65)  NOT NULL default '', ".
@@ -259,7 +259,7 @@ switch ($ogsversion) {
             "PRIMARY KEY (`ally_id`) " .
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8 ";
 
-        $requests[] = "CREATE TABLE IF NOT EXISTS `" . ogspy_player . "` ( " .
+        $requests[] = "CREATE TABLE IF NOT EXISTS `" . TABLE_GAME_PLAYER . "` ( " .
             "`player_id` int(6) NOT NULL ," .
             "`player` varchar(65) NOT NULL, " .
             "`status` varchar(6)  NOT NULL default '', ".

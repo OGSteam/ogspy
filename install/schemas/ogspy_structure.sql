@@ -40,6 +40,8 @@ DROP TABLE IF EXISTS ogspy_parsedRC;
 DROP TABLE IF EXISTS ogspy_parsedRCRound;
 DROP TABLE IF EXISTS ogspy_round_attack;
 DROP TABLE IF EXISTS ogspy_round_defense;
+DROP TABLE IF EXISTS ogspy_game_player;
+DROP TABLE IF EXISTS ogspy_game_player;
 
 --
 -- Structure de la table `ogspy_config`
@@ -114,7 +116,7 @@ CREATE TABLE ogspy_mod
 ## Structure de la table `ogspy_ally`
 ##
 
-CREATE TABLE ogspy_ally
+CREATE TABLE ogspy_game_ally
 (
   ally_id       INT(6)      NOT NULL,
   ally          VARCHAR(65) NOT NULL COMMENT 'Nom de l alliance',
@@ -130,7 +132,7 @@ CREATE TABLE ogspy_ally
 -- Structure de la table `ogspy_player`
 --
 
-CREATE TABLE ogspy_player
+CREATE TABLE ogspy_game_player
 (
   player_id INT(6)      NOT NULL,
   player    VARCHAR(65) NOT NULL COMMENT 'Nom du joueur',
