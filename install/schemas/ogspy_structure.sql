@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS ogspy_parsedRCRound;
 DROP TABLE IF EXISTS ogspy_round_attack;
 DROP TABLE IF EXISTS ogspy_round_defense;
 DROP TABLE IF EXISTS ogspy_game_player;
-DROP TABLE IF EXISTS ogspy_game_player;
+DROP TABLE IF EXISTS ogspy_game_ally;
 
 --
 -- Structure de la table `ogspy_config`
