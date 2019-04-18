@@ -59,6 +59,7 @@ $lang['INSTALL_VIEW_DBPREFIX'] = "Prefisso tabelle";
 $lang['INSTALL_VIEW_DBUNI'] = "Configurazione dell'universo";
 $lang['INSTALL_VIEW_DBUNIGAL'] = "Numero di galassie";
 $lang['INSTALL_VIEW_DBUNISYS'] = "Numero di sistemi per galassia";
+$lang['INSTALL_VIEW_DBUNISPEED'] = "Velocità dell'universo";
 $lang['INSTALL_VIEW_ADMIN'] = "Configurazione dell'account amministratore";
 $lang['INSTALL_VIEW_ADMINNAME'] = "Nome utente";
 $lang['INSTALL_VIEW_ADMINPWD'] = "Password";

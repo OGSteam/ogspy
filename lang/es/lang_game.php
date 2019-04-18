@@ -88,8 +88,9 @@ $lang['GAME_BUILDING_HD'] = 'Depósito de deuterio';
 $lang['GAME_BUILDING_LAB'] = 'Laboratorio de investigación'; 
 $lang['GAME_BUILDING_TER'] = 'Terraformer'; 
 $lang['GAME_BUILDING_DDR'] = 'Depósito de la alianza'; 
-$lang['GAME_BUILDING_SILO'] = 'Silo'; 
-$lang['GAME_BUILDING_BALU'] = 'Base lunar'; 
+$lang['GAME_BUILDING_SILO'] = 'Silo';
+$lang['GAME_BUILDING_DOCK'] = 'Dock Spatial';
+$lang['GAME_BUILDING_BALU'] = 'Base lunar';
 $lang['GAME_BUILDING_PHA'] = 'Sensor phalanx'; 
 $lang['GAME_BUILDING_POSA'] = 'Salto cuántico';
 

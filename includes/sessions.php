@@ -124,6 +124,24 @@ function session_set_user_data($cookie_id)
     {
         unset($user_data);
         unset($user_auth);
+        unset($user_token);
+    }
+}
+
+/**
+ * Get the user token (list) for the current user
+ * @return mixed
+ */
+function session_set_user_tokens_data()
+{
+    global $db, $user_data, $user_token;
+
+    $request_tokens = "SELECT `name`,`token`,`expiration_date` FROM " . TABLE_USER_TOKEN . " WHERE `user_id` = " . $user_data["user_id"];
+    $result_tokens = $db->sql_query($request_tokens);
+
+    if ($db->sql_numrows($result_tokens) > 0) {
+
+        $user_token = $db->sql_fetch_assoc($result_tokens);
     }
     else
     {
@@ -198,5 +216,3 @@ function drop_sessions()
 {
     (new Sessions_Model())->drop_all();
 }
-
-

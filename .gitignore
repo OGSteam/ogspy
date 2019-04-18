@@ -46,3 +46,7 @@ mod/*
 parameters/salt
 parameters/mail.php
 
+.idea/deployment.xml
+OGSpy.code-workspace
+.idea/sqldialects.xml
+.idea/vcs.xml

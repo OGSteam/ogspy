@@ -19,7 +19,6 @@ if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
     require_once ("./lang/" . $ui_lang . "/lang_cartography.php");
     require_once ("./lang/" . $ui_lang . "/lang_galaxy.php");
     require_once ("./lang/" . $ui_lang . "/lang_game.php");
-    require_once ("./lang/" . $ui_lang . "/lang_gcm.php");
     require_once ("./lang/" . $ui_lang . "/lang_header_tail.php");
     require_once ("./lang/" . $ui_lang . "/lang_help.php");
     require_once ("./lang/" . $ui_lang . "/lang_home.php");
