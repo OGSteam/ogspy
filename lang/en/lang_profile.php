@@ -39,8 +39,7 @@ $lang['PROFILE_ADMIRAL'] = "Admiral";
 $lang['PROFILE_ENGINEER'] = "Engineer";
 $lang['PROFILE_GEOLOGIST'] = "Geologist";
 $lang['PROFILE_TECHNOCRAT'] = "Technocrat";
-$lang['PROFILE_OTHERS'] = "
-Miscellaneous";
+$lang['PROFILE_OTHERS'] = "Miscellaneous";
 $lang['PROFILE_IPCHECK_DISABLE'] = "Disable the IP address verification";
 $lang['PROFILE_SAVE'] = "Save";
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Mail Language File
+ * ServerDown Language File
  * @package OGSpy
  * @subpackage i18n
  * @author DarkNoon
@@ -9,7 +9,6 @@
  * @version 3.3.0
  */
 
-/* mail.php */
-$lang['MAIL_RESET_PASSWORD_SUBJECT'] = "OGSpy : Your password has been reset by your Administrator";
-$lang['MAIL_RESET_PASSWORD_MESSAGE'] = "Your new password is :";
+/* serverdown.php */
 
+$lang['SERVERDOWN_TITLE'] = "The server is currently unavailable";
