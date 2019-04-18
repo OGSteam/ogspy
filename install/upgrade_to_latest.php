@@ -249,7 +249,9 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_MILITARY_DESTRUCT . "` ADD `points_per_member` BIGINT AFTER `points`";
         $requests[] = "ALTER TABLE `" . TABLE_RANK_ALLY_HONOR . "` ADD `points_per_member` BIGINT AFTER `points`";
 
-
+        if (!defined('TABLE_GAME_ALLY')) {
+            define("TABLE_GAME_ALLY", $table_prefix . "game_ally");
+        }
         $requests[] = "CREATE TABLE IF NOT EXISTS `" . TABLE_GAME_ALLY . "` ( " .
             "`ally_id` int(6) NOT NULL ," .
             "`ally` varchar(65) NOT NULL, " .
@@ -258,6 +260,10 @@ switch ($ogsversion) {
             "`datadate` INT(11)  NOT NULL default '0', ".
             "PRIMARY KEY (`ally_id`) " .
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8 ";
+
+        if (!defined('TABLE_GAME_PLAYER')) {
+            define("TABLE_GAME_PLAYER", $table_prefix . "game_player");
+        }
 
         $requests[] = "CREATE TABLE IF NOT EXISTS `" . TABLE_GAME_PLAYER . "` ( " .
             "`player_id` int(6) NOT NULL ," .
@@ -273,7 +279,9 @@ switch ($ogsversion) {
 
         $requests[] = "DROP TABLE `" . TABLE_GCM_USERS . "`";
 
-
+        if (!defined('TABLE_USER_TOKEN')) {
+            define("TABLE_USER_TOKEN", $table_prefix . "user_tokens");
+        }
         $requests[] = "CREATE TABLE IF NOT EXISTS `".TABLE_USER_TOKEN."` (
             `id` INT NOT NULL AUTO_INCREMENT,
             `user_id` INT NOT NULL,
