@@ -3,7 +3,7 @@
  * Fichier de gestion des sessions utilisateurs sur OGSpy
  * @package OGSpy
  * @subpackage Main
- * @author Kyser 
+ * @author Kyser
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04b
@@ -17,18 +17,17 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+use Ogsteam\Ogspy\Model\Sessions_Model;
+
+
 /**
  * Stating an user Session
- * @todo Query : "insert into ".TABLE_SESSIONS." (session_id, session_user_id, session_start, session_expire, session_ip) values (";
- * $request .="'".$cookie_id."', 0, ".time().", ".$cookie_expire.", '".$user_ip."')";
- * @todo Query : "delete from ".TABLE_SESSIONS." where session_ip = '".$user_ip."' and session_ogs = '1'"
- * @todo Query : "insert into ".TABLE_SESSIONS." (session_id, session_user_id, session_start, session_expire, session_ip, session_ogs) values (";
- * $request .="'".$cookie_id."', 0, ".time().", ".$cookie_expire.", '".$user_ip."', '1')";
  * @param $user_ip
  */
 function session_begin($user_ip)
 {
-    global $db, $cookie_id, $server_config, $pub_toolbar_type;
+    global $cookie_id, $server_config, $pub_toolbar_type;
+    $Sessions_Model = new Sessions_Model();
 
     $cookie_name = COOKIE_NAME;
     $cookie_time = ($server_config["session_time"] == 0) ? 525600 : $server_config["session_time"];
@@ -37,16 +36,9 @@ function session_begin($user_ip)
     $cookie_expire = time() + $cookie_time * 60;
 
     if (!isset($pub_toolbar_type)) {
-        $request = "insert into " . TABLE_SESSIONS . " (session_id, session_user_id, session_start, session_expire, session_ip) values (";
-        $request .= "'" . $cookie_id . "', 0, " . time() . ", " . $cookie_expire . ", '" . $user_ip . "')";
-        $db->sql_query($request, true, false) or die("Impossible d'initialiser la session");
+        $Sessions_Model->add_user_session($cookie_id, $cookie_expire, $user_ip);
     } else {
-        $request = "delete from " . TABLE_SESSIONS . " where session_ip = '" . $user_ip . "' and session_ogs = '1'";
-        $db->sql_query($request, true, false) or die("Impossible d'initialiser la session");
-
-        $request = "insert into " . TABLE_SESSIONS . " (session_id, session_user_id, session_start, session_expire, session_ip, session_ogs) values (";
-        $request .= "'" . $cookie_id . "', 0, " . time() . ", " . $cookie_expire . ", '" . $user_ip . "', '1')";
-        $db->sql_query($request, true, false) or die("Impossible d'initialiser la session");
+        $Sessions_Model->insert_xtense_session($cookie_id, $cookie_expire, $user_ip);
     }
 
     setcookie($cookie_name, $cookie_id, 0);
@@ -54,21 +46,12 @@ function session_begin($user_ip)
 
 /**
  * Gets the current session and creates it if the session for the current user does not exists
- * @todo Query : "delete from ".TABLE_SESSIONS." where session_expire < ".time()
- * @todo Query : "select session_id from ".TABLE_SESSIONS.
- * " where session_id = '".$cookie_id."'".
- * " and session_ip = '".$user_ip."'";
- * @todo Query : "select session_id from ".TABLE_SESSIONS." left join ".TABLE_USER.
- * " on session_user_id = user_id".
- * " where session_id = '".$cookie_id."'".
- * " and disable_ip_check = '1'";
- * @todo Query : "update ".TABLE_SESSIONS." set session_ip = '".$user_ip."' where session_id = '".$cookie_id."'"
- * @todo Query : "update ".TABLE_SESSIONS." set session_expire = ".$cookie_expire." where session_id = '".$cookie_id."'"
  */
 function session()
 {
-    global $db, $user_ip, $cookie_id, $server_config;
-    global $HTTP_COOKIE_VARS, $link_css;
+    global $user_ip, $cookie_id, $server_config;
+    global $HTTP_COOKIE_VARS;
+    $Sessions_Model = new Sessions_Model();
 
     $cookie_id = "";
     $cookie_name = COOKIE_NAME;
@@ -76,8 +59,7 @@ function session()
 
     //Purge des sessions expirées
     if ($server_config["session_time"] != 0) {
-        $request = "delete from " . TABLE_SESSIONS . " where session_expire < " . time();
-        $db->sql_query($request, true, false);
+        $Sessions_Model->clean_expired_sessions();
     }
 
     //Récupération de l'id de session si cookie présent
@@ -85,39 +67,24 @@ function session()
         $cookie_id = $HTTP_COOKIE_VARS[$cookie_name];
 
         //Vérification de la validité de le session
-        $request = "select session_id from " . TABLE_SESSIONS .
-            " where session_id = '" . $cookie_id . "'" .
-            " and session_ip = '" . $user_ip . "'";
-        $result = $db->sql_query($request);
-
-        if ($db->sql_numrows($result) != 1) {
+        if (!$Sessions_Model->is_valid_session_id($cookie_id, $user_ip)) {
             if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] == 1) {
                 //Mise à jour de l'adresse ip de session si le contrôle des ip est désactivé
-                $request = "select session_id from " . TABLE_SESSIONS . " left join " . TABLE_USER .
-                    " on session_user_id = user_id" .
-                    " where session_id = '" . $cookie_id . "'" .
-                    " and disable_ip_check = '1'";
-                $result = $db->sql_query($request);
-
-                if ($db->sql_numrows($result) > 0) {
-                    $request = "update " . TABLE_SESSIONS . " set session_ip = '" . $user_ip . "' where session_id = '" . $cookie_id . "'";
-                    $db->sql_query($request, true, false);
-                } else {
+                if (!$Sessions_Model->update_session_public_ip($cookie_id, $user_ip)) {
                     $cookie_id = "";
                 }
+
             } else {
                 $cookie_id = "";
 
             }
         }
     }
-
     if ($cookie_id == "") {
         session_begin($user_ip);
     } else {
         $cookie_expire = time() + $cookie_time * 60;
-        $request = "update " . TABLE_SESSIONS . " set session_expire = " . $cookie_expire . " where session_id = '" . $cookie_id . "'";
-        $db->sql_query($request, true, false);
+        $Sessions_Model->update_session_expiration_time($cookie_id, $cookie_expire);
     }
 
     session_set_user_data($cookie_id);
@@ -127,55 +94,34 @@ function session()
  * Updates the session in the database and the cookie
  * @param int $user_id The current user
  * @param int $lastvisit Lastvisit timestamp
- * @todo Query : "update ".TABLE_SESSIONS." set session_user_id = ".$user_id.
- * ", session_lastvisit = ".$lastvisit.
- * " where session_id = '".$cookie_id."'";
  */
 function session_set_user_id($user_id, $lastvisit = 0)
 {
-    global $db, $user_ip, $cookie_id, $server_config;
+    global $user_ip, $cookie_id, $server_config;
+    $Sessions_Model = new Sessions_Model();
 
-    $request = "update " . TABLE_SESSIONS . " set session_user_id = " . $user_id .
-        ", session_lastvisit = " . $lastvisit .
-        " where session_id = '" . $cookie_id . "'";
     if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) {
-            $request .= " and session_ip = '" . $user_ip . "'";
+        $Sessions_Model->update_session($user_id, $lastvisit, $cookie_id, $user_ip);
+    } else {
+        $Sessions_Model->update_session($user_id, $lastvisit, $cookie_id);
     }
-    $db->sql_query($request);
 
     session_set_user_data($cookie_id);
 }
+
 /**
  * Set the user_data array according to the user parameters in the database
  * @param int $cookie_id The cookie id of the user
  * @todo Y a comme un probleme dans cette fonction... ne semble pas prendre de parametres alors que la fonction precedente lui en donne un...
- * @todo Query : "select user_id, user_name, user_admin, user_coadmin, user_galaxy, user_system, session_lastvisit, user_stat_name, ";
- * $request .= "management_user, management_ranking, disable_ip_check, off_amiral, off_ingenieur, off_geologue, off_technocrate";
- * $request .= " from ".TABLE_USER." u, ".TABLE_SESSIONS." s";
- * $request .= " where u.user_id = s.session_user_id";
- * $request .= " and session_id = '".$cookie_id."'";
- * $request .= " and session_ip = '".$user_ip."'";
  */
 function session_set_user_data($cookie_id)
 {
-    global $db, $user_ip, $user_data, $user_auth, $user_token;
+    global $user_ip, $user_data, $user_auth;
 
-    $request = "select user_id, user_name, user_admin, user_coadmin, user_email, user_galaxy, user_system, session_lastvisit, user_stat_name, ";
-    $request .= "management_user, management_ranking, disable_ip_check, off_commandant, off_amiral, off_ingenieur, off_geologue, off_technocrate";
-    $request .= " from " . TABLE_USER . " u, " . TABLE_SESSIONS . " s";
-    $request .= " where u.user_id = s.session_user_id";
-    $request .= " and session_id = '" . $cookie_id . "'";
-    $request .= " and session_ip = '" . $user_ip . "'";
-    $result = $db->sql_query($request);
+    $user_data = (new Sessions_Model())->select_user_data_session($cookie_id,$user_ip);
 
-
-    if ($db->sql_numrows($result) == 1) {
-        $user_data = $db->sql_fetch_assoc($result);
-        $user_auth = user_get_auth($user_data["user_id"]);
-        session_set_user_tokens_data();
-
-
-    } else {
+    if ($user_data==false)
+    {
         unset($user_data);
         unset($user_auth);
         unset($user_token);
@@ -197,25 +143,21 @@ function session_set_user_tokens_data()
 
         $user_token = $db->sql_fetch_assoc($result_tokens);
     }
-    else {
-        $user_token = array( 'name' => "Empty");
-
+    else
+    {
+        $user_auth = user_get_auth($user_data["user_id"]);
     }
-    return $user_token;
 }
 
 /**
  * Closing an user session
  * @param boolean $user_id ID user session
- * @todo Query: "delete from ".TABLE_SESSIONS.
- * " where session_id = '".$cookie_id."'";
- * if ( isset ( $server_config["disable_ip_check"] ) && $server_config["disable_ip_check"] != 1 )
- * $request .= " and session_ip = '".$user_ip."'";
- * @todo Query: "delete from ".TABLE_SESSIONS." where session_user_id = ".$user_id;
  */
 function session_close($user_id = false)
 {
-    global $db, $user_ip, $cookie_id,$server_config;
+    global $user_ip, $cookie_id, $server_config;
+
+    $Sessions_Model = new Sessions_Model();
 
     if (!$user_id) {
         global $HTTP_COOKIE_VARS;
@@ -223,54 +165,46 @@ function session_close($user_id = false)
         $cookie_name = COOKIE_NAME;
         $cookie_id = $HTTP_COOKIE_VARS[$cookie_name];
 
-        $request = "delete from " . TABLE_SESSIONS .
-            " where session_id = '" . $cookie_id . "'";
         if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) {
-                    $request .= " and session_ip = '" . $user_ip . "'";
+            $Sessions_Model->close_session_by_coockie_session_ip($cookie_id, $user_ip);
+        } else {
+            $Sessions_Model->close_session_by_coockie($cookie_id);
         }
-        $db->sql_query($request, true, false);
     } else {
-        $request = "delete from " . TABLE_SESSIONS .
-            " where session_user_id = " . $user_id;
-        $db->sql_query($request, true, false);
+        $Sessions_Model->close_user_session($user_id);
+
     }
 }
 
 /**
  * Who is Online ?
- *
- * @todo Query $request = "select user_name, session_start, session_expire, session_ip, session_ogs";
- * $request .= " from ".TABLE_SESSIONS." left join ".TABLE_USER;
- * $request .= " on session_user_id = user_id";
- * $request .= " order by user_name";
  */
 function session_whois_online()
 {
-    global $db, $server_config;
+    global $server_config;
 
     $cookie_time = ($server_config["session_time"] == 0) ? 525600 : $server_config["session_time"];
 
-    $request = "select user_name, session_start, session_expire, session_ip, session_ogs";
-    $request .= " from " . TABLE_SESSIONS . " left join " . TABLE_USER;
-    $request .= " on session_user_id = user_id";
-    $request .= " order by user_name";
-    $result = $db->sql_query($request);
+    $tOnline = (new Sessions_Model())->who_is_online();
 
-    $guests = $members = array();
-    while (list($user_name, $session_start, $session_expire, $session_ip, $session_ogs) = $db->sql_fetch_row($result)) {
-        $time_lastactivity = $session_expire - $cookie_time * 60;
-        $session_ip = decode_ip($session_ip);
+    $guests = array();
+    $members = array();
+    foreach ($tOnline as $online) {
+        $time_lastactivity = $online["session_expire"] - $cookie_time * 60;
+        $session_ip = decode_ip($online["session_ip"]);
 
-        if (is_null($user_name)) {
-            $user_name = "Visiteur non identifié";
-            $guests[] = array("user" => $user_name, "time_start" => $session_start, "time_lastactivity" => $time_lastactivity, "ip" => $session_ip, "ogs" => 0);
+        if (is_null($online["user_name"])) {
+            $username = "Visiteur non identifié";
+            $guests[] = array("user" => $username, "time_start" => $online["session_start"], "time_lastactivity" => $time_lastactivity, "ip" => $session_ip, "ogs" => 0);
         } else {
-            $members[] = array("user" => $user_name, "time_start" => $session_start, "time_lastactivity" => $time_lastactivity, "ip" => $session_ip, "ogs" => $session_ogs);
+            $username = $online["user_name"];
+            $members[] = array("user" => $username, "time_start" => $online["session_start"], "time_lastactivity" => $time_lastactivity, "ip" => $session_ip, "ogs" => $online["session_ogs"]);
         }
     }
     $online = array_merge($members, $guests);
 
     return $online;
+
 }
 
 /**
@@ -280,8 +214,5 @@ function session_whois_online()
  */
 function drop_sessions()
 {
-    global $db;
-    $db->sql_query("TRUNCATE TABLE " . TABLE_SESSIONS);
+    (new Sessions_Model())->drop_all();
 }
-
-

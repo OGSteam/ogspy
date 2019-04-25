@@ -1,9 +1,4 @@
-## [3.3.5-alpha2] - 2019-03-25
-
-### Fixed
-* #98 Update vers OGspy 3.3.5 depuis auto update
-
-## [3.3.5-alpha1] - 2019-03-24
+## [3.3.5] - 2019-04-07
 
 ### Added
 * #73 Token d'authentification pour API
@@ -21,7 +16,7 @@
 * #61 Fichier lang_mail.php manquant dans pt-br
 * #14 Limite Nombre de pts Classement atteint
 * #53 Docker : Echec à la création du container
-
+* #98 Update vers OGspy 3.3.5 depuis auto update
 
 ### Security
 * #46 Chiffrement des mots de passes

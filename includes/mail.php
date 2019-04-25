@@ -128,6 +128,7 @@ function sendMail($dest, $subject, $HTMLBody)
 
     //get password
     include_once("parameters/mail.php"); //TODO : A stocker en base non ?
+    //TODO : aucune reference $mail_smtp_password
     if ($mail_smtp_password != "") {
         $mail->Username = $server_config["mail_smtp_username"];  // yahoo username
         $mail->Password = $mail_smtp_password;  // yahoo password
@@ -146,15 +147,15 @@ function sendMail($dest, $subject, $HTMLBody)
 //Incremente le compte de mail
 function mailCounter()
 {
-    global $db,  $server_config;
+    global  $server_config;
     if (!isset($server_config['count_mail']))
     {
         $server_config['count_mail'] = 0;
     }
    $total =  $server_config['count_mail'] + 1;
 
-    $request = "REPLACE INTO " . TABLE_CONFIG ." (config_name, config_value) VALUES ('count_mail','$total')";
-    $db->sql_query($request);
+    (new Config_Model())->update_one($total,"count_mail");
+
     // mise a jour des caches avec les mofids
     generate_config_cache();
 
