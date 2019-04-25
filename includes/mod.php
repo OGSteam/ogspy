@@ -15,6 +15,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 use Ogsteam\Ogspy\Model\Mod_Model;
+use Ogsteam\Ogspy\Model\Mod_Config_Model;
 
 /**
  * Fetch the mod list (admin only)
@@ -510,22 +511,15 @@ function mod_version()
  * @param string $nom_mod Mod name
  * @global $db
  * @return boolean returns true if the parameter is correctly saved. false in other cases.
- * @todo Query : 'REPLACE INTO ' . TABLE_MOD_CFG . ' VALUES ("' . $nom_mod . '", "' . $param . '", "' . $value . '")'
  * @api
  */
 function mod_set_option($param, $value, $nom_mod = '')
 {
-    global $db;
-
     $nom_mod = mod_get_nom();
     if (!check_var($param, "Text")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
-    $query = 'REPLACE INTO ' . TABLE_MOD_CFG . ' VALUES ("' . $nom_mod . '", "' . $param . '", "' . $value . '")';
-    if (!$db->sql_query($query)) {
-        return false;
-    }
-    return true;
+    return (new Mod_Config_Model)->set_mod_config($nom_mod, $param,$value);
 }
 
 /**
@@ -533,46 +527,37 @@ function mod_set_option($param, $value, $nom_mod = '')
  * @param string $param Name of the parameter
  * @global $db
  * @return boolean returns true if the parameter is correctly saved. false in other cases.
- * @todo Query : 'DELETE FROM ' . TABLE_MOD_CFG . ' WHERE `mod` = "' . $nom_mod . '" AND `config` = "' . $param . '"'
  * @api
  */
 function mod_del_option($param)
 {
-    global $db;
-
     $nom_mod = mod_get_nom();
     if (!check_var($param, "Text")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
-    $query = 'DELETE FROM ' . TABLE_MOD_CFG . ' WHERE `mod` = "' . $nom_mod . '" AND `config` = "' . $param . '"';
-    if (!$db->sql_query($query)) {
-        return false;
-    }
-    return true;
+    return (new Mod_Config_Model)->delete_mod_config($nom_mod, $param);
 }
 
 /**
  * Mod Configs : Reads a parameter value for the current mod
  * @param string $param Name of the parameter
  * @global $db
- * @return string Returns the value of the requested parameter
- * @todo Query : 'SELECT value FROM ' . TABLE_MOD_CFG . ' WHERE `mod` = "' . $nom_mod . '" AND `config` = "' . $param . '"'
+ * @return array()|string Returns the value of the requested parameter
  * @api
  */
 function mod_get_option($param)
 {
-    global $db;
-
     $nom_mod = mod_get_nom();
     if (!check_var($param, "Text")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
-    $query = 'SELECT value FROM ' . TABLE_MOD_CFG . ' WHERE `mod` = "' . $nom_mod . '" AND `config` = "' . $param . '"';
-    $result = $db->sql_query($query);
-    if (!list ($value) = $db->sql_fetch_row($result)) {
+
+    $retour = (new Mod_Config_Model)->get_mod_config($nom_mod, $param);
+    if (count($retour)==0)
+    {
         return '-1';
     }
-    return $value;
+    return $retour;
 }
 
 /**
@@ -582,22 +567,19 @@ function mod_get_option($param)
  * @global $directory
  * @global $mod_id
  * @return string Returns the current mod name
- * @todo Query : 'SELECT `action` FROM ' . TABLE_MOD . ' WHERE id=' . $pub_mod_id
  */
 function mod_get_nom()
 {
-    global $db;
-    global $pub_action;
+
+    global $pub_action,$pub_mod_id;
 
     $nom_mod = '';
     if ($pub_action == 'mod_install') {
         global $pub_directory;
         $nom_mod = $pub_directory;
     } elseif ($pub_action == 'mod_update' || $pub_action == 'mod_uninstall') {
-        global $pub_mod_id;
-        $query = 'SELECT `action` FROM ' . TABLE_MOD . ' WHERE id=' . $pub_mod_id;
-        $result = $db->sql_query($query);
-        list ($nom_mod) = $db->sql_fetch_row($result);
+        $Mod_Model = (new Mod_Model())->find_one_by(array("id" => $pub_mod_id));
+        $nom_mod = $Mod_Model["action"];
     } else {
         $nom_mod = $pub_action;
     }
@@ -608,36 +590,23 @@ function mod_get_nom()
  * Deletes all configurations for the current mod
  * @global $db
  * @return boolean Returns true if at least one entry has been deleted. False if nothing has been removed.
- * @todo Query : 'DELETE FROM ' . TABLE_MOD_CFG . ' WHERE `mod` = "' . $nom_mod . '"'
  */
 function mod_del_all_option()
 {
-    global $db;
-
     $nom_mod = mod_get_nom();
-    $query = 'DELETE FROM ' . TABLE_MOD_CFG . ' WHERE `mod` = "' . $nom_mod . '"';
-    if (!$db->sql_query($query)) {
-        return false;
-    }
-    return true;
+    return (new Mod_Config_Model)->delete_mod_config($nom_mod);
 }
 
 //\\ fonctions utilisable pour les mods //\\
 /**
  * Funtion to install a new mod in OGSpy
  * @param string $mod_folder : Folder name which contains the mod
- * @todo Query: "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] ."'"."'"
- * @todo Query: "INSERT INTO " . TABLE_MOD .
- * " (title, menu, action, root, link, version, active,admin_only) VALUES ('" . $value_mod[0] .
- * "','" . $value_mod[1] . "','" . $value_mod[2] . "','" . $value_mod[3] . "','" .
- * $value_mod[4] . "','" . $mod_version . "','" . $value_mod[5] . "','" . $value_mod[6] .
- * "')"
  * @return null|boolean true if the mod has been correctly installed
  * @api
  */
 function install_mod($mod_folder)
 {
-    global $db, $server_config;
+    global  $server_config;
     $is_ok = false;
     $filename = 'mod/' . $mod_folder . '/version.txt';
     if (file_exists($filename)) {
@@ -670,22 +639,26 @@ function install_mod($mod_folder)
     $value_mod = explode(',', $mod_config);
 
     // On vérifie si le mod est déjà installé""
-    $check = "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $value_mod[0] . "'";
-    $query_check = $db->sql_query($check);
-    $result_check = $db->sql_numrows($query_check);
-
-    if ($result_check != 0) {
-    } else
+    $Mod_Model = new Mod_Model();
+    $mod = $Mod_Model->find_one_by(array("title" => $value_mod[0]));
+    if (isset($mod['title']) )
+    {
         if (count($value_mod) == 7) {
-            // On vérifie le nombre de valeur de l'explode
-            $query = "INSERT INTO " . TABLE_MOD .
-                " (title, menu, action, root, link, version, active,admin_only) VALUES ('" . $value_mod[0] .
-                "','" . $value_mod[1] . "','" . $value_mod[2] . "','" . $value_mod[3] . "','" .
-                $value_mod[4] . "','" . $mod_version . "','" . $value_mod[5] . "','" . $value_mod[6] .
-                "')";
-            $db->sql_query($query);
+            $newMod = array();
+            $newMod['title'] =  $value_mod[0];
+            $newMod['menu'] = $value_mod[1];
+            $newMod['action'] = $value_mod[2];
+            $newMod['root'] =$value_mod[3] ;
+            $newMod['link'] = $value_mod[2];
+            $newMod['version'] = $mod_version;
+            $newMod['active'] = $value_mod[5];
+            $newMod['admin_only'] = $value_mod[6];
+
+            $Mod_Model->add($newMod);
+
             $is_ok = true; /// tout c 'est bien passe'
         }
+    }
     return $is_ok;
 }
 
@@ -693,14 +666,14 @@ function install_mod($mod_folder)
  * Function to uninstall an OGSpy Module
  * @param string $mod_uninstall_name : Mod name
  * @param string $mod_uninstall_table : Name of the Database table used by the Mod that we need to remove
- * @todo Query: "DELETE FROM " . TABLE_MOD . " WHERE title='" . $mod_uninstall_name ."'
  * @api
  */
 function uninstall_mod($mod_uninstall_name, $mod_uninstall_table)
 {
     global $db;
-    $db->sql_query("DELETE FROM " . TABLE_MOD . " WHERE title='" . $mod_uninstall_name . "';");
+    (new Mod_Model())->delete_by_title($mod_uninstall_name);
     if (!empty($mod_uninstall_table)) {
+        //todo MOD factory ?
         log_("debug", "DROP TABLE IF EXISTS " . $mod_uninstall_table);
         $db->sql_query("DROP TABLE IF EXISTS " . $mod_uninstall_table);
     }
@@ -710,7 +683,6 @@ function uninstall_mod($mod_uninstall_name, $mod_uninstall_table)
  * Fonction to update the OGSpy mod
  * @param string $mod_folder : Folder name which contains the mod
  * @param string $mod_name : Mod name
- * @todo Query: "UPDATE " . TABLE_MOD . " SET version='" . $mod_version ."' WHERE action='" . $mod_name . "'";
  * @return null|boolean true if the mod has been correctly updated
  * @api [Mod] Function to be called in the update.php file to set up the new version.
  */
@@ -738,10 +710,11 @@ function update_mod($mod_folder, $mod_name)
         }
     }
 
+    $Mod_Model = new Mod_Model(); //récuperation du mod
+    $mod = $Mod_Model->find_one_by(array("title" => $mod_name));
+    $mod['version']=$mod_version;
+    $Mod_Model->update($mod);
 
-    $query = "UPDATE " . TABLE_MOD . " SET version='" . $mod_version .
-        "' WHERE action='" . $mod_name . "'";
-    $db->sql_query($query);
     $is_oki = true;
     return $is_oki;
 }

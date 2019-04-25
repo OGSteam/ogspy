@@ -198,7 +198,18 @@ class Mod_Model  extends Model_Abstract
     public function delete($mod_id)
     {
         $request = "delete from " . TABLE_MOD . " where id = '{$this->db->sql_escape_string($mod_id)}'";
-       $this->db->sql_query($request);
+        $this->db->sql_query($request);
+    }
+
+
+    /**
+     * Supprime le mod
+     * @param $mod_uninstall_title title du mod
+     */
+    public function delete_by_title($mod_uninstall_title)
+    {
+        $request = "delete from " . TABLE_MOD . " where title = '{$this->db->sql_escape_string($mod_uninstall_title)}'";
+        $this->db->sql_query($request);
     }
 
 
