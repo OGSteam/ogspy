@@ -26,7 +26,8 @@ function load_lang_file($ui_lang, $filename, $parent_dir = ".") {
     require_once ($default_file_path);
 }
 
-global $lang = [];
+global $lang;
+$lang = array();
 
 if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
     load_lang_file($ui_lang, "lang_install.php", "..");

@@ -297,6 +297,11 @@ switch ($ogsversion) {
         $ogsversion = '3.3.5';
         $up_to_date = true;
 
+    case '3.3.5':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.6-dev' WHERE config_name = 'version'";
+        $ogsversion = '3.3.6-dev';
+        $up_to_date = true;
+
         break;
     default:
     die("Aucune mise … jour n'est disponible");
