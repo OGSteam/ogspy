@@ -18,7 +18,8 @@ if (!defined('IN_SPYOGAME')) {
 
 <script type="text/javascript">
     var date = new Date;
-    var delta = Math.round((<?php echo (time() * 1000); ?> -date.getTime()) / 1000);
+    var delta = Math.round((<?php echo(time() * 1000); ?> -date.getTime()) / 1000);
+
     function Timer() {
         var days = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
         var months = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jui", "Jui", "Aoû", "Sep", "oct", "nov", "déc"];
@@ -43,6 +44,7 @@ if (!defined('IN_SPYOGAME')) {
     }
 
     go_visibility = [];
+
     function goblink() {
         if (document.getElementById && document.all) {
             var blink_tab = document.getElementsByTagName('blink');
@@ -75,7 +77,8 @@ if (!defined('IN_SPYOGAME')) {
 
     <tr>
         <td>
-            <div><a href="index.php" class="menu"><img src="./skin/OGSpy_skin/transpa.gif" width="166" height="65" border="0"/></a></div>
+            <div><a href="index.php" class="menu"><img src="./skin/OGSpy_skin/transpa.gif" width="166" height="65"
+                                                       border="0"/></a></div>
         </td>
     </tr>
 
@@ -88,69 +91,73 @@ if (!defined('IN_SPYOGAME')) {
     }
 
     ?>
-<tr>
-    <td><div style="text-align='left';">
+    <tr>
+        <td>
+            <div style="text-align='left';">
 
-        <ul style="width:100px;" class= "menu" id="menu">
-            <?php
-            if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
-                echo "<li><a href='index.php?action=administration' class='menu_items'>" . $lang['MENU_ADMIN'] . "</a></li>";
-            }
-            ?>
-            <li><a href='index.php?action=profile' class='menu_items'><?php echo($lang['MENU_PROFILE']); ?></a></li>
-            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-            <li><a href='index.php?action=home' class='menu_items'><?php echo($lang['MENU_HOME']); ?></a></li>
-            <li><a href='index.php?action=galaxy' class='menu_items'><?php echo($lang['MENU_GALAXY']); ?></a></li>
-            <li><a href='index.php?action=cartography' class='menu_items'><?php echo($lang['MENU_ALLIANCES']); ?></a></li>
-            <li><a href='index.php?action=search' class='menu_items'><?php echo($lang['MENU_RESEARCH']); ?></a></li>
-            <li><a href='index.php?action=ranking' class='menu_items'><?php echo($lang['MENU_RANKINGS']); ?></a></li>
-            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-            <li><a href='index.php?action=statistic' class='menu_items'><?php echo($lang['MENU_UPDATE_STATUS']); ?></a></li>
-            <li><p class='menu_items'><?php echo($lang['MENU_MODULES']); ?></p>
-                <ul class='menu_mods'>
-<?php
-                $request = "SELECT action, menu FROM " . TABLE_MOD . " WHERE active = 1 AND `admin_only` = '0' order by position, title";
-                $result = $db->sql_query($request);
-
-                if ($db->sql_numrows($result)) {
-                    while ($val = $db->sql_fetch_assoc($result)) {
-                        echo '<span>&nbsp;&nbsp;- <a class=\'menu_mods\' href="index.php?action=' . $val['action'] . '">' . $val['menu'] . '</a></span>' . '<br>';
+                <ul style="width:100px;" class="menu" id="menu">
+                    <?php
+                    if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
+                        echo "<li><a href='index.php?action=administration' class='menu_items'>" . $lang['MENU_ADMIN'] . "</a></li>";
                     }
-                }
-
-            if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-                $request = "SELECT action, menu FROM " . TABLE_MOD . " WHERE active = 1 and `admin_only` = '1' order by position, title";
-                $result = $db->sql_query($request);
-
-                if ($db->sql_numrows($result)) {
-                    echo '<img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">';
-
-                    while ($val = $db->sql_fetch_assoc($result)) {
-                        echo '<span>&nbsp;&nbsp;- <a class="menu_mods" href="index.php?action=' . $val['action'] . '">' . $val['menu'] . '</a></span>' . '<br>';
+                    ?>
+                    <li><a href='index.php?action=profile' class='menu_items'><?php echo($lang['MENU_PROFILE']); ?></a>
+                    </li>
+                    <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+                    <li><a href='index.php?action=home' class='menu_items'><?php echo($lang['MENU_HOME']); ?></a></li>
+                    <li><a href='index.php?action=galaxy' class='menu_items'><?php echo($lang['MENU_GALAXY']); ?></a>
+                    </li>
+                    <li><a href='index.php?action=cartography'
+                           class='menu_items'><?php echo($lang['MENU_ALLIANCES']); ?></a></li>
+                    <li><a href='index.php?action=search' class='menu_items'><?php echo($lang['MENU_RESEARCH']); ?></a>
+                    </li>
+                    <li><a href='index.php?action=ranking' class='menu_items'><?php echo($lang['MENU_RANKINGS']); ?></a>
+                    </li>
+                    <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+                    <li><a href='index.php?action=statistic'
+                           class='menu_items'><?php echo($lang['MENU_UPDATE_STATUS']); ?></a></li>
+                    <li><p class='menu_items'><?php echo($lang['MENU_MODULES']); ?></p>
+                        <ul class='menu_mods'>
+                            <?php
+                            //todo sortir requete de la vue
+                            $mod_model = new \Ogsteam\Ogspy\Model\Mod_Model();
+                            $tMods = $mod_model->find_by(array("active" => "1"), array("position" => 'ASC', "title" => 'ASC'));
+                            ?>
+                            <!-- mod non admin -->
+                            <?php foreach ($tMods as $mod) : ?>
+                                <?php if ($mod['admin_only'] == 0) : ?>
+                                    <?php echo '<span>&nbsp;&nbsp;- <a class=\'menu_mods\' href="index.php?action=' . $mod['action'] . '">' . $mod['menu'] . '</a></span>' . '<br>'; ?>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                            <!-- mod admin -->
+                            <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
+                                <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+                                <?php foreach ($tMods as $mod) : ?>
+                                    <?php if ($mod['admin_only'] == 1) : ?>
+                                        <?php echo '<span>&nbsp;&nbsp;- <a class=\'menu_mods\' href="index.php?action=' . $mod['action'] . '">' . $mod['menu'] . '</a></span>' . '<br>'; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+                    <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+                    <?php
+                    if ($server_config["url_forum"] != "") {
+                        echo "<li><a href='" . $server_config["url_forum"] . "' class='menu_items'>" . $lang['MENU_FORUM'] . "</a></li>";
                     }
-                }
-            }
-
-?>
+                    ?>
+                    <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+                    <li><a href="index.php?action=about" class='menu_items'><?php echo($lang['MENU_ABOUT']); ?></a></li>
+                    <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+                    <li><a href='index.php?action=logout' class='menu_items'><?php echo($lang['MENU_LOGOUT']); ?></a>
+                    </li>
                 </ul>
-            </li>
-            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-            <?php
-            if ($server_config["url_forum"] != "") {
-                echo "<li><a href='" . $server_config["url_forum"] . "' class='menu_items'>" . $lang['MENU_FORUM'] . "</a></li>";
-            }
-            ?>
-            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-            <li><a href="index.php?action=about" class='menu_items'><?php echo($lang['MENU_ABOUT']); ?></a></li>
-            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-            <li><a href='index.php?action=logout' class='menu_items'><?php echo($lang['MENU_LOGOUT']); ?></a></li>
-        </ul>
 
-        </div><!---->
-    </td>
+            </div><!---->
+        </td>
 
 
-</tr>
+    </tr>
 
 </table>
 

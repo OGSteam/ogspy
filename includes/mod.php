@@ -20,7 +20,6 @@ use Ogsteam\Ogspy\Model\Mod_Config_Model;
 /**
  * Fetch the mod list (admin only)
  * @return array $mod_list The list of mods in an array.
- * @todo Query : "select id, title, root, link, version, active, admin_only from ".TABLE_MOD." order by position, title";
  */
 function mod_list()
 {
