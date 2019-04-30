@@ -86,6 +86,20 @@ class User_Building_Model  extends Model_Abstract
 
 
     /**
+     * Recupere les boosters d'un utilisateur
+     */
+    public function get_all_booster_player($id_player) {
+        $request = "SELECT user_id, planet_id, boosters FROM " . TABLE_USER_BUILDING . " WHERE user_id=" . $id_player ;
+        $result = $this->db->sql_query($request);
+
+        $Boosters = array();
+        while (list($user_id, $planet_id, $boosters ) = $this->db->sql_fetch_row($result)) {
+            $Boosters[$planet_id] = array("user_id" => $user_id, "planet_id" => $planet_id, "boosters" => $boosters);
+        }
+        return $Boosters;
+    }
+
+    /**
      * Recupere les boosters de tous les utilisateurs
      */
     public function get_all_booster() {

@@ -1057,14 +1057,12 @@ function booster_lire_bdd($id_player, $id_planet)
 {
     global $db;
     $result = NULL;
+    $User_Building_Model = new User_Building_Model();
+    $tBoosters = $User_Building_Model->get_all_booster_player($id_player);
 
-    $request = "SELECT boosters FROM " . TABLE_USER_BUILDING . " WHERE user_id=" . $id_player . " AND planet_id=" . $id_planet;
-    $res = $db->sql_query($request);
-    if ($res) {
-        $str = $db->sql_fetch_row($res);
-        if ($str) {
-            return booster_decode($str[0]);
-        }
+    if (isset($tBoosters[$id_planet]))
+    {
+         return booster_decode($tBoosters[$id_planet]);
     }
     return $result;
 }

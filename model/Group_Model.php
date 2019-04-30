@@ -99,6 +99,26 @@ class Group_Model extends Model_Abstract
     }
 
     /**
+     * @param $group_id
+     * @return array
+     */
+    public function get_user_group($user_id)
+    {
+
+        $user_id=intval($user_id);
+
+        $request = "SELECT group_id FROM  " . TABLE_USER_GROUP . " ";
+        $request .= " where user_id = " . $user_id;
+        $result = $this->db->sql_query($request);
+        $user_group = $this->db->sql_fetch_assoc($result);
+        if (isset ($user_group["group_id"]))
+        {
+            return $user_group["group_id"];
+        }
+        return null;
+    }
+
+    /**
      * @param $name
      * @return bool
      */

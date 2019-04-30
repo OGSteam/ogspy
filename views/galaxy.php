@@ -14,6 +14,8 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+global $user_data;
+//var_dump($user_data);
 
 $info_system = galaxy_show();
 $population = $info_system["population"];
@@ -31,13 +33,20 @@ $system_up = (($system - 1) > intval($server_config['num_of_systems'])) ? intval
 $favorites = galaxy_getfavorites();
 
 $missil = "";
-$request_usergroup = $db->sql_query("SELECT u.group_id, u.user_id, g.group_id, g.server_show_positionhided FROM " . TABLE_GROUP . " AS g, " . TABLE_USER_GROUP . " AS u WHERE g.server_show_positionhided >0 AND g.group_id = u.group_id AND u.user_id = '1' LIMIT 1 ");
-if ($db->sql_numrows($request_usergroup)) {
+//TODO sortir requete de la vue
+//recherche du group
+$user_group= (new \Ogsteam\Ogspy\Model\Group_Model())->get_user_group($user_data["user_id"]);
+//recherche des droits liés
+$tInfosGroups = (new \Ogsteam\Ogspy\Model\Group_Model())->get_group_rights($user_group);
+
+//si autorisé
+if ($tInfosGroups["server_show_positionhided"] == 0 )
+{
     if (($server_config["portee_missil"] != "0" && $server_config["portee_missil"] != "")) {
         $missil = portee_missiles($galaxy, $system);
     }
-
 }
+
 
 
 require_once("views/page_header.php");
