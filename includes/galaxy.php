@@ -547,9 +547,7 @@ function galaxy_reportspy_show()
  * @global int $pub_system
  * @global int $pub_row
  * @global int $pub_rc_id
- * @todo Query : "select id_rc from " . TABLE_PARSEDRC . " where coordinates = '" . intval($pub_galaxy) . ':' . intval($pub_system) .:' . intval($pub_row) . "' order by dateRC desc";"
- * @todo Query : "select id_rc from " . TABLE_PARSEDRC . " where id_rc = " . intval($pub_rc_id);
- * @return array $reports contenant les rc mis en forme
+  * @return array $reports contenant les rc mis en forme
  */
 function galaxy_reportrc_show()
 {
@@ -882,6 +880,70 @@ function galaxy_show_ranking_unique_player($player, $last = false)
 }
 
 /**
+ * Affichage classement d'un joueur particulier formatage pour chart_js
+ *
+ * @param string $player nom du joueur recherche
+ * @param boolean $last le dernier classement ou tous les classements
+ * @return array $ranking
+ */
+function galaxy_show_ranking_unique_player_forJS($player,$date_min =null, $date_max = null , $last = false)
+{
+
+    $ranking = array();
+    $tRanking = (new Rankings_Player_Model())->get_all_ranktable_byplayer($player);
+    foreach ($tRanking as $rank) {
+        if ( $rank["datadate"] >= $date_min && $rank["datadate"] <= $date_max) // ajouter dans la requete ca serait top
+        {
+
+            $ranking["rank"]["general (".$player.")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["general_rank"] . "]";
+            $ranking["points"]["general (".$player.")"][]="[" . $rank["datadate"] * 1000  . ", " . $rank["general_pts"] . "]";
+
+            if ((int)$rank["eco_rank"] > 0) {
+                $ranking["rank"]["Economique (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["eco_rank"] . "]";
+                $ranking["points"]["Economique (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["eco_pts"] . "]";
+            }
+
+            if ((int)$rank["tech_rank"] > 0) {
+                $ranking["rank"]["Recherche (".$player.")"][] = "[" . $rank["datadate"] * 1000  . ", " . $rank["tech_rank"] . "]";
+                $ranking["points"]["Recherche (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["tech_pts"] . "]";
+            }
+
+            if ((int)$rank["milh_rank"] > 0) {
+                $ranking["rank"]["Honneur (".$player.")"][] = "[" . $rank["datadate"] * 1000  . ", " . $rank["milh_rank"] . "]";
+                $ranking["points"]["Honneur (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["milh_pts"] . "]";
+            }
+
+            if ((int)$rank["mil_rank"] > 0) {
+                $ranking["rank"]["Militaire (".$player.")"][] = "[" . $rank["datadate"] * 1000  . ", " . $rank["mil_rank"] . "]";
+                $ranking["points"]["Militaire (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["mil_pts"] . "]";
+            }
+            if ((int)$rank["milb_rank"] > 0) {
+                $ranking["rank"]["Militaire Construits (".$player.")"][] = "[" . $rank["datadate"] * 1000  . ", " . $rank["milb_rank"] . "]";
+                $ranking["points"]["Militaire Construits (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["milb_pts"] . "]";
+            }
+
+            if ((int)$rank["mill_rank"] > 0) {
+                $ranking["rank"]["Perte militaire (".$player.")"][] = "[" . $rank["datadate"] * 1000  . ", " . $rank["mill_rank"] . "]";
+                $ranking["points"]["Perte militaire (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["mill_pts"] . "]";
+            }
+
+            if ((int)$rank["mild_rank"] > 0) {
+                $ranking["rank"]["destruction (".$player.")"][] = "[" . $rank["datadate"] * 1000  . ", " . $rank["mild_rank"] . "]";
+                $ranking["points"]["destruction (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["mild_pts"] . "]";
+            }
+
+            if ($last) {
+                break;
+            }
+        }
+
+
+    }
+
+    return $ranking;
+}
+
+/**
  * Affichage classement d\'une ally particuliere
  *
  * @param string $ally nom de l alliance recherche
@@ -890,8 +952,6 @@ function galaxy_show_ranking_unique_player($player, $last = false)
  */
 function galaxy_show_ranking_unique_ally($ally, $last = false)
 {
-    global $db;
-
     $ranking = array();
     $tRanking = (new Rankings_Ally_Model())->get_all_ranktable_byally($ally);
     // formatage pour la vue
