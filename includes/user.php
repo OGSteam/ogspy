@@ -26,7 +26,6 @@ use  Ogsteam\Ogspy\Model\User_Favorites_Model;
 use Ogsteam\Ogspy\Model\Spy_Model;
 
 
-
 /**
  * Verification des droits utilisateurs sur une action avec redirection le cas echeant
  * @param string $action Action verifie
@@ -78,18 +77,12 @@ function user_check_auth($action, $user_id = null)
  * @global string $pub_login
  * @global string $pub_password
  * @global string $pub_goto
- * @todo Query : "select user_id, user_active from " . TABLE_USER .
- * " where user_name = '" .  $db->sql_escape_string($pub_login) .
- * "' and user_password = '" . md5(sha1($pub_password)) . "'";
- * @todo Query : "select user_lastvisit from " . TABLE_USER . " where user_id = " . $user_id;
- * @todo Query : "update " . TABLE_USER . " set user_lastvisit = " . time() ." where user_id = " . $user_id;
- * @todo Query : "update " . TABLE_STATISTIC ." set statistic_value = statistic_value + 1" " where statistic_name = 'connection_server'";
- * @todo Query : "insert ignore into " . TABLE_STATISTIC ." values ('connection_server', '1')";
  */
 function user_login()
 {
-    global $db;
     global $pub_login, $pub_password, $pub_goto, $url_append, $pub_token;
+
+    $User_Model = new User_Model();
 
     if (!token::statiCheckToken($pub_token)) // verification du token
     {
@@ -105,62 +98,36 @@ function user_login()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $request = "SELECT user_id, user_active, user_password_s FROM " . TABLE_USER .
-        " WHERE user_name = '" . $db->sql_escape_string($pub_login) .
-        "' AND NOT user_password_s = ''";
-    $result = $db->sql_query($request);
+    $tlogin = $User_Model->select_user_login($pub_login, $pub_password);
 
-    if ($db->sql_numrows($result)) {
-
-        list($user_id, $user_active, $password_s) = $db->sql_fetch_row($result);
-        if (password_verify($pub_password, $password_s)) {
+    // si  retour
+    if ($tlogin != false) {
+        if (password_verify($pub_password, $tlogin['user_password_s'])) {
             // Format Mot de passe Secure
-            user_set_connection($user_id, $user_active);
+            user_set_connection($tlogin['user_id'], $tlogin['user_active']);
         } else {
             redirection("index.php?action=message&id_message=login_wrong&info");
         }
-
     } else {
         // Format Mot de passe Legacy
-
-        $request = "SELECT user_id, user_active FROM " . TABLE_USER .
-            " WHERE user_name = '" . $db->sql_escape_string($pub_login) .
-            "' AND user_password = '" . md5(sha1($pub_password)) . "'";
-        $result = $db->sql_query($request);
-
-        if ($db->sql_numrows($result)) {
-
-            list($user_id, $user_active) = $db->sql_fetch_row($result);
-
-            //Ajout du nouveau mot de passe et supression ancien
-
-            $request = "UPDATE " . TABLE_USER . " SET `user_password_s` = '" . password_hash($pub_password, PASSWORD_DEFAULT) . "' WHERE `user_id` = " . $user_id;
-            $db->sql_query($request);
-
-            $request = "UPDATE " . TABLE_USER . " SET `user_password` = '' WHERE `user_id` = " . $user_id;
-            $db->sql_query($request);
-
-            user_set_connection($user_id, $user_active);
-
-
+        $tlogin = $User_Model->select_user_login_legacy($pub_login, $pub_password);
+        if ($tlogin != false) {
+            user_set_connection($tlogin['user_id'], $tlogin['user_active']);
         } else {
             redirection("index.php?action=message&id_message=login_wrong&info");
         }
-
     }
 }
 
 function user_set_connection($user_id, $user_active)
 {
 
-    global $db, $pub_goto;
-
-
+    global  $pub_goto;
     if ($user_active == 1) {
 
         $lastvisit = (new User_Model())->select_last_visit($user_id);
 
-         ///statistique
+        ///statistique
         (new Statistics_Model())->add_user_connection();
 
         session_set_user_id($user_id, $lastvisit);
@@ -305,7 +272,7 @@ function member_user_set()
     global $db, $user_data, $user_technology;
     global $pub_pseudo, $pub_old_password, $pub_new_password, $pub_new_password2, $pub_galaxy,
            $pub_system, $pub_disable_ip_check, $pub_off_commandant, $pub_off_amiral, $pub_off_ingenieur,
-           $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email,$pub_renew_user_token;
+           $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email, $pub_renew_user_token;
 
     if (!check_var($pub_pseudo, "Text") || !check_var($pub_old_password, "Text") ||
         !check_var($pub_new_password, "Text") || !check_var($pub_new_password2,
@@ -340,7 +307,7 @@ function member_user_set()
         }
     }
     // Token Generation
-    if ($pub_renew_user_token == 1){
+    if ($pub_renew_user_token == 1) {
 
         user_profile_token_updater($user_id);
     }
@@ -389,9 +356,8 @@ function member_user_set()
         $User_Model->set_player_officer($user_id, "off_technocrate", 0);
     }
     //Contrôle que le pseudo ne soit pas déjà utilisé
-    $tUserName=$User_Model->select_user_list();
-    if (in_array($pub_pseudo,$tUserName))
-    {
+    $tUserName = $User_Model->select_user_list();
+    if (in_array($pub_pseudo, $tUserName)) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudolocked&info");
     }
 
@@ -459,7 +425,7 @@ function get_user_profile_token($user_id)
         $user_id . "' AND `name` = 'PAT'";
     $result = $db->sql_query($request);
     if ($db->sql_numrows($result) == 0) {
-            return 1;
+        return 1;
     } else {
         $query_result = $db->sql_fetch_row($result);
         return $query_result['token'];
@@ -468,7 +434,6 @@ function get_user_profile_token($user_id)
 
 /**
  * Entree en BDD de donnees utilisateur
- * @todo Query x1
  * @param $user_id
  * @param null $user_name
  * @param null $user_password_s
@@ -481,7 +446,10 @@ function get_user_profile_token($user_id)
 function user_set_general($user_id, $user_name = null, $user_password_s = null, $user_email = null, $user_lastvisit = null,
                           $user_galaxy = null, $user_system = null, $disable_ip_check = null)
 {
-    global $db, $user_data, $server_config;
+    global  $user_data, $server_config;
+   $User_Model =  new User_Model();
+
+
 
     if (!isset($user_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
@@ -498,48 +466,41 @@ function user_set_general($user_id, $user_name = null, $user_password_s = null, 
         if ($user_system < 1 || $user_system > intval($server_config['num_of_systems'])) {
             $user_system = 1;
         }
+
     }
 
-    $update = "";
+    // verification ok, modification bdd possible
 
     //Pseudo et mot de passe
     if (!empty($user_name)) {
-        $update .= "user_name = '" . $db->sql_escape_string($user_name) . "'";
+        $User_Model->set_user_pseudo($user_id,$user_name );
     }
     if (!empty($user_password_s)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_password_s = '" . password_hash($user_password_s, PASSWORD_DEFAULT) . "'";
-    }
+        $User_Model->set_user_password($user_id,password_hash($user_password_s, PASSWORD_DEFAULT) );
+     }
 
     //Galaxy et système solaire du membre
     if (!empty($user_galaxy)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_galaxy = '" . $user_galaxy .
-            "'";
+        $User_Model->set_user_default_galaxy($user_id,$user_galaxy );
     }
     if (!empty($user_system)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_system = '" . $user_system .
-            "'";
+        $User_Model->set_user_default_system($user_id,$user_system );
     }
 
     //Dernière visite
     if (!empty($user_lastvisit)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_lastvisit = '" . $user_lastvisit .
-            "'";
+        $User_Model->update_lastvisit_time($user_id);
     }
 
     //Email
     if (!empty($user_email)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "user_email = '" . $user_email .
-            "'";
+        $User_Model->set_user_email($user_id,$user_email);
     }
 
     //Désactivation de la vérification de l'adresse ip
     if (!is_null($disable_ip_check)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "disable_ip_check = '" . $disable_ip_check .
-            "'";
+        $User_Model->set_user_ip_check($user_id,$disable_ip_check);
     }
-
-    $request = "update " . TABLE_USER . " set " . $update . " where user_id = " . $user_id;
-    $db->sql_query($request);
 
     if ($user_id == $user_data['user_id']) {
         log_("modify_account");
@@ -561,7 +522,7 @@ function user_set_general($user_id, $user_name = null, $user_password_s = null, 
 function user_set_grant($user_id, $user_admin = null, $user_active = null, $user_coadmin = null,
                         $management_user = null, $management_ranking = null)
 {
-    global  $user_data;
+    global $user_data;
 
     if (!isset($user_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
@@ -598,7 +559,6 @@ function user_set_grant($user_id, $user_admin = null, $user_active = null, $user
 
 /**
  * Enregistrement des statistiques utilisateurs
- * @todo Query : x1
  * @param null $planet_added_web
  * @param null $planet_added_ogs
  * @param integer $search
@@ -614,53 +574,59 @@ function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $sear
                        $spy_added_web = null, $spy_added_ogs = null, $rank_added_web = null, $rank_added_ogs = null,
                        $planet_exported = null, $spy_exported = null, $rank_exported = null)
 {
-    global $db, $user_data;
+    global  $user_data;
 
-    $update = "";
+    //todo add xtense stat (ogs obsolete )
+
+    $User_Model = new User_Model();
 
     //Statistiques envoi systèmes solaires et rapports d'espionnage
     if (!is_null($planet_added_web)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "planet_added_web = planet_added_web + " . $planet_added_web;
+        // il n'y a plus d'insertion WEB
+        //$update .= ((strlen($update) > 0) ? ", " : "") .
+        //    "planet_added_web = planet_added_web + " . $planet_added_web;
     }
     if (!is_null($planet_added_ogs)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "planet_added_ogs = planet_added_ogs + " . $planet_added_ogs;
-    }
+        //todo add xtense stat (ogs obsolete )
+        $User_Model->add_stat_planet_inserted($user_data["user_id"],$planet_added_ogs);
+        }
     if (!is_null($search)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") . "search = search + " . $search;
-    }
+        $User_Model->add_stat_search_made($user_data["user_id"],$search);
+       }
     if (!is_null($spy_added_web)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "spy_added_web = spy_added_web + " . $spy_added_web;
+        // il n'y a plus d'insertion WEB
+        //$update .= ((strlen($update) > 0) ? ", " : "") .
+        //    "spy_added_web = spy_added_web + " . $spy_added_web;
     }
     if (!is_null($spy_added_ogs)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "spy_added_ogs = spy_added_ogs + " . $spy_added_ogs;
+        //todo add xtense stat (ogs obsolete )
+        $User_Model->add_stat_spy_inserted($user_data["user_id"],$spy_added_ogs);
     }
     if (!is_null($rank_added_web)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "rank_added_web = rank_added_web + " . $rank_added_web;
+        // il n'y a plus d'insertion WEB
+       //$update .= ((strlen($update) > 0) ? ", " : "") .
+       //     "rank_added_web = rank_added_web + " . $rank_added_web;
     }
     if (!is_null($rank_added_ogs)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "rank_added_ogs = rank_added_ogs + " . $rank_added_ogs;
+        //todo add xtense stat (ogs obsolete )
+        $User_Model->add_stat_rank_inserted($user_data["user_id"],$rank_added_ogs);
     }
     if (!is_null($planet_exported)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "planet_exported = planet_exported + " . $planet_exported;
+        // il n'y a plus d'export fonctionnalité OGS
+        //$update .= ((strlen($update) > 0) ? ", " : "") .
+        //    "planet_exported = planet_exported + " . $planet_exported;
     }
     if (!is_null($spy_exported)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "spy_exported = spy_exported + " . $spy_exported;
+        // il n'y a plus d'export fonctionnalité OGS
+        //$update .= ((strlen($update) > 0) ? ", " : "") .
+        //    "spy_exported = spy_exported + " . $spy_exported;
     }
     if (!is_null($rank_exported)) {
-        $update .= ((strlen($update) > 0) ? ", " : "") .
-            "rank_exported = rank_exported + " . $rank_exported;
+        // il n'y a plus d'export fonctionnalité OGS
+        //$update .= ((strlen($update) > 0) ? ", " : "") .
+        //    "rank_exported = rank_exported + " . $rank_exported;
     }
 
-    $request = "update " . TABLE_USER . " set " . $update . " where user_id = " . $user_data["user_id"];
-    $db->sql_query($request);
 }
 
 /**
@@ -743,9 +709,8 @@ function user_create()
 
     //Création de l'utilisateur
     //Contrôle que le pseudo ne soit pas déjà utilisé
-    $tUserName=$User_Model->select_user_list();
-    if (!in_array($pub_pseudo,$tUserName))
-    {
+    $tUserName = $User_Model->select_user_list();
+    if (!in_array($pub_pseudo, $tUserName)) {
         $user_id = $User_Model->add_new_user($pub_pseudo, $password);
         // Insertion dans le groupe par défaut
         $User_Model->add_user_to_group($user_id, $pub_group_id);
@@ -781,7 +746,7 @@ function user_delete()
 
     (new User_Model())->delete_user($pub_user_id);
 
-     session_close($pub_user_id);
+    session_close($pub_user_id);
 
     redirection("index.php?action=administration&subaction=member");
 }
@@ -796,8 +761,7 @@ function user_statistic()
     foreach ($all_user_stats_data as $row) {
         $here = "";
         $session_ogs = (new Sessions_Model())->get_xtense_session($row["user_id"]);
-        if ($session_ogs != -1)
-        {
+        if ($session_ogs != -1) {
             $here = "(*)";
             if ($session_ogs == 1) {
                 $here = "(**)";
@@ -815,8 +779,8 @@ function user_statistic()
  */
 function user_get_nb_active_users()
 {
-    $number= (new User_Model())->get_nb_active_users();
-     return ($number);
+    $number = (new User_Model())->get_nb_active_users();
+    return ($number);
 }
 
 /**
@@ -824,16 +788,16 @@ function user_get_nb_active_users()
  */
 function user_set_all_empire_resync_id()
 {
-    global  $user_data;
+    global $user_data;
 
     $User_Building_Model = new User_Building_Model();
     $User_Defense_Model = new User_Defense_Model();
 
 
     // les planetes
-    $planet_position =$User_Building_Model->get_planet_list($user_data["user_id"]);
+    $planet_position = $User_Building_Model->get_planet_list($user_data["user_id"]);
     // les lunes
-    $moon_position =$User_Building_Model->get_moon_list($user_data["user_id"]);
+    $moon_position = $User_Building_Model->get_moon_list($user_data["user_id"]);
 
 
     $new_planet_id = 101;
@@ -876,7 +840,6 @@ function user_get_empire($user_id)
         0, "PB" => 0, "GB" => 0, "MIC" => 0, "MIP" => 0);
 
 
-
     $nb_planete = find_nb_planete_user($user_id);
 
     // Recuperation des pourcentages
@@ -884,8 +847,7 @@ function user_get_empire($user_id)
     $user_percentage = array_fill(101, $nb_planete, $planet_pct);
 
 
-
-    $user_building=array();
+    $user_building = array();
     // on met les planete a 0
     for ($i = 101; $i <= ($nb_planete + 100); $i++) {
         $user_building[$i] = $planet;
@@ -899,17 +861,16 @@ function user_get_empire($user_id)
     $tBuildingList = (new User_Building_Model())->select_user_building_list($user_id);
 
     // mise en forme des valeurs
-    foreach ($tBuildingList as $BuildingList)
-    {
+    foreach ($tBuildingList as $BuildingList) {
         //préparationpct
-        $pct=array();
-        $pct["M_percentage"] = $BuildingList["M_percentage"] ;
-        $pct["C_percentage"] = $BuildingList["C_percentage"] ;
-        $pct["D_percentage"] = $BuildingList["D_percentage"] ;
-        $pct["CES_percentage"] = $BuildingList["CES_percentage"] ;
-        $pct["CEF_percentage"] = $BuildingList["CEF_percentage"] ;
-        $pct["Sat_percentage"] = $BuildingList["Sat_percentage"] ;
-        $user_percentage[$BuildingList["planet_id"]]= $pct;
+        $pct = array();
+        $pct["M_percentage"] = $BuildingList["M_percentage"];
+        $pct["C_percentage"] = $BuildingList["C_percentage"];
+        $pct["D_percentage"] = $BuildingList["D_percentage"];
+        $pct["CES_percentage"] = $BuildingList["CES_percentage"];
+        $pct["CEF_percentage"] = $BuildingList["CEF_percentage"];
+        $pct["Sat_percentage"] = $BuildingList["Sat_percentage"];
+        $user_percentage[$BuildingList["planet_id"]] = $pct;
 
         //calcul des cases utilisées
         $arr = $BuildingList;
@@ -929,7 +890,7 @@ function user_get_empire($user_id)
         unset($arr["CEF_percentage"]);
         $fields_used = array_sum(array_values($arr));
 
-        $BuildingList["fields_used"]=$fields_used;
+        $BuildingList["fields_used"] = $fields_used;
 
         // modification Booster
         $BuildingList["boosters"] = booster_verify_str($BuildingList["boosters"]); //Correction et mise à jour booster from date
@@ -944,7 +905,7 @@ function user_get_empire($user_id)
 
         $user_building[$BuildingList["planet_id"]] = $BuildingList;
         $user_building[$BuildingList["planet_id"]][0] = true;
-        }
+    }
 
     $user_technology = (new User_Technology_Model())->select_user_technologies($user_id);
 
@@ -966,8 +927,8 @@ function user_get_empire($user_id)
         $user_defence[$planet_id] = $tmpDefense;
     }
 
-      return array("building" => $user_building, "technology" => $user_technology,
-        "defence" => $user_defence,"user_percentage" =>$user_percentage );
+    return array("building" => $user_building, "technology" => $user_technology,
+        "defence" => $user_defence, "user_percentage" => $user_percentage);
 }
 
 /**
@@ -980,9 +941,9 @@ function user_get_empire($user_id)
  */
 function find_nb_planete_user($id)
 {
-    global  $user_data;
+    global $user_data;
 
-    $iRealTotal = (new User_Building_Model())->get_nb_planets( $user_data["user_id"]);
+    $iRealTotal = (new User_Building_Model())->get_nb_planets($user_data["user_id"]);
     //mini 9 pour eviter bug affichage
     if ($iRealTotal <= 9) {
         return 9;
@@ -996,9 +957,9 @@ function find_nb_planete_user($id)
  */
 function find_nb_moon_user($id)
 {
-    global  $user_data;
+    global $user_data;
 
-    $iRealTotal = (new User_Building_Model())->get_nb_moons( $user_data["user_id"]);
+    $iRealTotal = (new User_Building_Model())->get_nb_moons($user_data["user_id"]);
     //mini 9 pour eviter bug affichage
     if ($iRealTotal <= 9) {
         return 9;
@@ -1099,7 +1060,7 @@ function user_del_building()
     global $db, $user_data;
     global $pub_planet_id, $pub_view;
 
-    $User_Building_Model=  new User_Building_Model();
+    $User_Building_Model = new User_Building_Model();
     $User_Defense_Model = new User_Defense_Model();
 
     if (!check_var($pub_planet_id, "Num")) {
@@ -1109,15 +1070,15 @@ function user_del_building()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $User_Building_Model->delete_user_aster($user_data["user_id"],intval($pub_planet_id)); //batiment
-    $User_Defense_Model->delete_user_aster($user_data["user_id"],intval($pub_planet_id)); //defense
+    $User_Building_Model->delete_user_aster($user_data["user_id"], intval($pub_planet_id)); //batiment
+    $User_Defense_Model->delete_user_aster($user_data["user_id"], intval($pub_planet_id)); //defense
 
 
     // si on supprime une planete; la lune doit suivre
     if (intval($pub_planet_id) < 199) {
         $moon_id = (intval($pub_planet_id) + 100);
-        $User_Building_Model->delete_user_aster($user_data["user_id"],$moon_id); //batiment
-        $User_Defense_Model->delete_user_aster($user_data["user_id"],$moon_id); //defense
+        $User_Building_Model->delete_user_aster($user_data["user_id"], $moon_id); //batiment
+        $User_Defense_Model->delete_user_aster($user_data["user_id"], $moon_id); //defense
     }
 
     //si plus de planete
@@ -1140,7 +1101,7 @@ function user_move_empire()
     global $db, $user_data;
     global $pub_planet_id, $pub_left, $pub_right;
 
-    $User_Building_Model= new User_Building_Model();
+    $User_Building_Model = new User_Building_Model();
     $User_Defense_Model = new User_Defense_Model();
 
     $nb_planete = find_nb_planete_user($user_data["user_id"]);
@@ -1202,9 +1163,9 @@ function user_add_favorite()
         redirection("index.php?action=galaxy");
     }
 
-    $nb_favorites=$User_Favorites_Model->get_nb_user_favorites($user_data["user_id"]);
+    $nb_favorites = $User_Favorites_Model->get_nb_user_favorites($user_data["user_id"]);
     if ($nb_favorites < $server_config["max_favorites"]) {
-        $User_Favorites_Model->set_user_favorites($user_data["user_id"],$pub_galaxy,$pub_system);
+        $User_Favorites_Model->set_user_favorites($user_data["user_id"], $pub_galaxy, $pub_system);
         redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system);
     } else {
         redirection("index.php?action=message&id_message=max_favorites&info");
@@ -1216,7 +1177,7 @@ function user_add_favorite()
  */
 function user_del_favorite()
 {
-    global  $user_data;
+    global $user_data;
     global $pub_galaxy, $pub_system, $server_config;
 
     new User_Favorites_Model();
@@ -1229,7 +1190,7 @@ function user_del_favorite()
     }
 
     //suppression
-    (new User_Favorites_Model())->delete_user_favorites($user_data["user_id"],$pub_galaxy,$pub_system);
+    (new User_Favorites_Model())->delete_user_favorites($user_data["user_id"], $pub_galaxy, $pub_system);
 
     redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system .
         "");
@@ -1289,7 +1250,7 @@ function user_add_favorite_spy()
  */
 function user_del_favorite_spy()
 {
-    global  $user_data;
+    global $user_data;
     global $pub_spy_id, $pub_galaxy, $pub_system, $pub_row, $pub_info;
 
     if (!check_var($pub_spy_id, "Num")) {
@@ -1299,7 +1260,7 @@ function user_del_favorite_spy()
     if (!isset($pub_spy_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
-    (new Spy_Model())->delete_spy_senderId($pub_spy_id,$user_data["user_id"]);
+    (new Spy_Model())->delete_spy_senderId($pub_spy_id, $user_data["user_id"]);
 
     if (!isset($pub_info)) {
         $pub_info = 1;
@@ -1524,16 +1485,15 @@ function usergroup_newmember()
     global $pub_user_id, $pub_group_id, $pub_add_all;
 
     $Group_Model = new Group_Model();
-    $User_Model =new User_Model();
-    $userid_list =  $User_Model->select_userid_list();
+    $User_Model = new User_Model();
+    $userid_list = $User_Model->select_userid_list();
 
     if (isset($pub_add_all) && is_numeric($pub_group_id)) {
-        foreach ($userid_list as $userid)
-        {
+        foreach ($userid_list as $userid) {
             user_check_auth("usergroup_manage");
             //insertion
             if ($Group_Model->insert_user_togroup($userid, $pub_group_id)) {
-                log_("add_usergroup", array($pub_group_id,$userid));
+                log_("add_usergroup", array($pub_group_id, $userid));
             }
 
         }
@@ -1555,8 +1515,7 @@ function usergroup_newmember()
         }
 
         //si le compte n existe pas
-        if (!in_array(intval($pub_user_id), $userid_list))
-        {
+        if (!in_array(intval($pub_user_id), $userid_list)) {
             redirection("index.php?action=administration&subaction=group");
         }
 
@@ -1605,7 +1564,7 @@ function usergroup_delmember()
  */
 function user_set_stat_name($user_stat_name)
 {
-    global  $user_data;
+    global $user_data;
     (new User_Model())->set_game_account_name($user_data['user_id'], $user_stat_name);
 }
 
@@ -1855,40 +1814,40 @@ function ratio_calc($player)
 {
     global $db, $user_data;
 
-        $data_user = new User_Model();
-        $user_stat = $data_user->select_user_stats_data($player);
-        $total_user_stats = $data_user->select_user_stats_sum();
-        //$total_users = $data_user->get_nb_users();
-        //pour éviter la division par zéro
-        if ($total_user_stats["planetimporttotal"] == 0) {
-            $total_user_stats["planetimporttotal"] = 1;
-        }
-        if ($total_user_stats["spyimporttotal"] == 0) {
-            $total_user_stats["spyimporttotal"] = 1;
-        }
-        if ($total_user_stats["rankimporttotal"] == 0) {
-            $total_user_stats["rankimporttotal"] = 1;
-        }
-        if ($total_user_stats["searchtotal"] == 0) {
-            $total_user_stats["searchtotal"] = 1;
-        }
-        //et on commence le calcul
-        $ratio_planet = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
-        $ratio_spy = $user_stat["spy_added_xtense"] / $total_user_stats["spyimporttotal"];
-        $ratio_rank = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
-        $ratio = ($ratio_planet * 4 + $ratio_spy * 2 + $ratio_rank) / (4 + 2 + 1);
-        $ratio_planet_penality = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
-        $ratio_spy_penality = $user_stat["spy_added_xtense"] / $total_user_stats["spyimporttotal"];
-        $ratio_rank_penality = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
-        $ratio_penality = ($ratio_planet_penality * 4 + $ratio_spy_penality * 2 + $ratio_rank_penality) / (4 +
-                2 + 1);
-        $ratio_search = $user_stat["search"] / $total_user_stats["searchtotal"];
-        $ratio_searchpenality = ($ratio - $ratio_search);
-        $result = ($ratio + $ratio_penality + $ratio_searchpenality) * 1000;
-        $array = array($result, $ratio_searchpenality, $ratio_search, $ratio_penality, $ratio_rank_penality,
-            $ratio_spy_penality, $ratio_planet_penality);
-        //retourne le ratio et calculs intermédiaires
-       return $array;
+    $data_user = new User_Model();
+    $user_stat = $data_user->select_user_stats_data($player);
+    $total_user_stats = $data_user->select_user_stats_sum();
+    //$total_users = $data_user->get_nb_users();
+    //pour éviter la division par zéro
+    if ($total_user_stats["planetimporttotal"] == 0) {
+        $total_user_stats["planetimporttotal"] = 1;
+    }
+    if ($total_user_stats["spyimporttotal"] == 0) {
+        $total_user_stats["spyimporttotal"] = 1;
+    }
+    if ($total_user_stats["rankimporttotal"] == 0) {
+        $total_user_stats["rankimporttotal"] = 1;
+    }
+    if ($total_user_stats["searchtotal"] == 0) {
+        $total_user_stats["searchtotal"] = 1;
+    }
+    //et on commence le calcul
+    $ratio_planet = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
+    $ratio_spy = $user_stat["spy_added_xtense"] / $total_user_stats["spyimporttotal"];
+    $ratio_rank = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
+    $ratio = ($ratio_planet * 4 + $ratio_spy * 2 + $ratio_rank) / (4 + 2 + 1);
+    $ratio_planet_penality = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
+    $ratio_spy_penality = $user_stat["spy_added_xtense"] / $total_user_stats["spyimporttotal"];
+    $ratio_rank_penality = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
+    $ratio_penality = ($ratio_planet_penality * 4 + $ratio_spy_penality * 2 + $ratio_rank_penality) / (4 +
+            2 + 1);
+    $ratio_search = $user_stat["search"] / $total_user_stats["searchtotal"];
+    $ratio_searchpenality = ($ratio - $ratio_search);
+    $result = ($ratio + $ratio_penality + $ratio_searchpenality) * 1000;
+    $array = array($result, $ratio_searchpenality, $ratio_search, $ratio_penality, $ratio_rank_penality,
+        $ratio_spy_penality, $ratio_planet_penality);
+    //retourne le ratio et calculs intermédiaires
+    return $array;
 }
 
 /**

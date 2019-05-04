@@ -1562,6 +1562,9 @@ function UNparseRE($id_RE)
 function portee_missiles($galaxy, $system)
 {
     global $user_data, $server_config, $db;
+
+    $User_Model = new User_Model();
+
     $missil_ok = '';
     $total_missil = 0;
     // recherche niveau missile
@@ -1588,9 +1591,9 @@ function portee_missiles($galaxy, $system)
             $req2 = $db->sql_query($request);
             list ($missil_dispo) = $db->sql_fetch_row($req2);
 
-            // recherche le nom du joueur
-            $req3 = $db->sql_query('SELECT user_name FROM ' . TABLE_USER . ' WHERE user_id = ' . $base_joueur);
-            list ($nom_missil_joueur) = $db->sql_fetch_row($req3);
+            $info_users = $User_Model->select_user_data($base_joueur);
+            $nom_missil_joueur = $info_users["user_name"];
+
 
             // calcul de la porté du silo
             $porte_missil = ($niv_reac_impuls * 5) - 1; // Portée : (Lvl 10 * 5) - 1 = 49

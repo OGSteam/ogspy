@@ -8,29 +8,62 @@
  * @copyright Copyright &copy; 2016, http://ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
+
 namespace Ogsteam\Ogspy\Model;
 
 use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 
-class User_Model  extends Model_Abstract
+class User_Model extends Model_Abstract
 {
     /* Fonctions concerning user account */
     /**
      * @param $login
      * @param $password
-     * @return bool|mixed|mysqli_result
+     * @return array
      */
-    public function select_user_login($login, $password, $salt = false)
+    public function select_user_login($login, $password)
     {
-        
-        if ($salt === false) {
-        //    $password = Ogspy\crypto($password);
+        // quand tous les password seront mirgés, utilisation de password directement ici a prevoir
+        $request = "SELECT user_id, user_active, user_password_s FROM " . TABLE_USER .
+            " WHERE user_name = '" . $login . "' AND NOT user_password_s = ''";
+        $result = $this->db->sql_query($request);
+        // si pas de retour, user_password_s non encore initialisé
+        if (!$this->db->sql_numrows($result)) {
+            return false;
         }
+        /// autrement faire retour
+        $tlogin = $this->db->sql_fetch_row($result);
+        return $tlogin;
+    }
 
-        $request = "SELECT `user_id`, `user_active` FROM " . TABLE_USER . " WHERE `user_name` = '" . $this->db->sql_escape_string($login) . "' AND `user_password` = '" . $password . "'";
+    /* Fonctions concerning user account */
+    /**
+     * Permet la connexion avec ancien system de login et migre vers le nouveau
+     * @param $login
+     * @param $password
+     * @return array
+     */
+    public function select_user_login_legacy($login, $password)
+    {
+        $request = "SELECT user_id, user_active FROM " . TABLE_USER .
+            " WHERE user_name = '" . $login .
+            "' AND user_password = '" . md5(sha1($password)) . "'";
         $result = $this->db->sql_query($request);
 
-        return $result;
+        // si reponse, password non migré / si rien erreur de login
+        if (!$this->db-- > sql_numrows($result)) {
+            return false;
+        }
+
+        $tlogin = $this->db->sql_fetch_row($result);
+
+        //Ajout du nouveau mot de passe et supression ancien
+        $request = "UPDATE " . TABLE_USER . " SET `user_password_s` = '" . password_hash($password, PASSWORD_DEFAULT) . "' WHERE `user_id` = " . $tlogin['user_id'];
+        $this->db->sql_query($request);
+        $request = "UPDATE " . TABLE_USER . " SET `user_password` = '' WHERE `user_id` = " . $tlogin['user_id'];
+        $this->db->sql_query($request);
+
+        return $tlogin;
     }
 
     /**
@@ -39,7 +72,7 @@ class User_Model  extends Model_Abstract
      */
     public function select_user_name($username)
     {
-        
+
         $request = "SELECT * FROM " . TABLE_USER . " WHERE `user_name` = '" . $username . "'";
 
         $request = $this->db->sql_escape_string($request);
@@ -48,7 +81,8 @@ class User_Model  extends Model_Abstract
         return $result;
     }
 
-    public function select_user_list() {
+    public function select_user_list()
+    {
 
 
         $request = "SELECT `user_name` FROM " . TABLE_USER;
@@ -60,15 +94,16 @@ class User_Model  extends Model_Abstract
         return $user_name;
     }
 
-    public function select_userid_list() {
+    public function select_userid_list()
+    {
 
 
         $request = "SELECT `user_id` FROM " . TABLE_USER;
 
         $request = $this->db->sql_escape_string($request);
         $result = $this->db->sql_query($request);
-        $list_user_id =array();
-        while (list($user_id)  = $this->db->sql_fetch_row($result)) {
+        $list_user_id = array();
+        while (list($user_id) = $this->db->sql_fetch_row($result)) {
             $list_user_id[] = $user_id;
         }
         return $list_user_id;
@@ -163,6 +198,7 @@ class User_Model  extends Model_Abstract
         }
         return $retour;
     }
+
     /**
      * @return mixed
      */
@@ -196,6 +232,7 @@ class User_Model  extends Model_Abstract
             "rankimporttotal" => $rankimporttotal,
             "searchtotal" => $searchtotal);
     }
+
     /**
      * @param $user_id
      * @return array
@@ -289,12 +326,13 @@ class User_Model  extends Model_Abstract
      */
     public function set_user_default_galaxy($user_id, $default_galaxy)
     {
- 
+
         $request = "UPDATE " . TABLE_USER . " SET `user_galaxy` = '" . $default_galaxy . "' WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
         //Nettoyage Préventif
-        $request = $this->db->sql_query("UPDATE " . TABLE_USER . " SET user_galaxy=1 WHERE user_galaxy > $new_num_of_galaxies");
-        $this->db->sql_query($request);
+        //coquille ????  $new_num_of_galaxies ?
+        //$request = $this->db->sql_query("UPDATE " . TABLE_USER . " SET user_galaxy=1 WHERE user_galaxy > $new_num_of_galaxies");
+        //$this->db->sql_query($request);
     }
 
     /**
@@ -370,7 +408,7 @@ class User_Model  extends Model_Abstract
      */
     public function set_user_management_user($user_id, $value)
     {
-  
+
         $request = "UPDATE " . TABLE_USER . " SET `management_user` = '" . $value . "' WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
     }
@@ -392,29 +430,37 @@ class User_Model  extends Model_Abstract
      */
     public function add_stat_planet_inserted($user_id, $value)
     {
-
-        $request = "UPDATE " . TABLE_USER . " SET `planet_added_xtense` = planet_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `planet_added_ogs` = planet_added_ogs + '" . $value . "' WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
+        //todo a implementer ( en remplacement dOGS )
+        //$request = "UPDATE " . TABLE_USER . " SET `planet_added_xtense` = planet_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
+        //$this->db->sql_query($request);
     }
+
     /**
      * @param $user_id
      * @param $value boolean 1/0
      */
     public function add_stat_spy_inserted($user_id, $value)
     {
-        
-        $request = "UPDATE " . TABLE_USER . " SET `spy_added_xtense` = spy_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `spy_added_ogs` = spy_added_ogs + '" . $value . "' WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
+        //todo a implementer ( en remplacement dOGS )
+        //$request = "UPDATE " . TABLE_USER . " SET `spy_added_xtense` = spy_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
+        //$this->db->sql_query($request);
     }
+
     /**
      * @param $user_id
      * @param $value boolean 1/0
      */
     public function add_stat_rank_inserted($user_id, $value)
     {
-        
-        $request = "UPDATE " . TABLE_USER . " SET `rank_added_xtense` = rank_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `rank_added_ogs` = rank_added_ogs + '" . $value . "' WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
+        //todo a implementer ( en remplacement dOGS )
+        //$request = "UPDATE " . TABLE_USER . " SET `rank_added_xtense` = rank_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
+        //$this->db->sql_query($request);
     }
 
     /**
@@ -439,9 +485,10 @@ class User_Model  extends Model_Abstract
     /**
      * @return \Ogsteam\Ogspy\the
      */
-    public function get_nb_active_users() {
+    public function get_nb_active_users()
+    {
 
-        
+
         $request = "SELECT `user_id` FROM " . TABLE_USER . " WHERE `user_active` = '1'";
         $result = $this->db->sql_query($request);
         return $number = $this->db->sql_numrows();
@@ -450,9 +497,10 @@ class User_Model  extends Model_Abstract
     /**
      * @return \Ogsteam\Ogspy\the
      */
-    public function get_nb_users() {
+    public function get_nb_users()
+    {
 
-        
+
         $request = "SELECT `user_id` FROM " . TABLE_USER;
         $this->db->sql_query($request);
         return $number = $this->db->sql_numrows();
@@ -463,9 +511,10 @@ class User_Model  extends Model_Abstract
      * @param $password
      * @return \Ogsteam\Ogspy\Returs
      */
-    public function add_new_user($pseudo, $password) {
+    public function add_new_user($pseudo, $password)
+    {
 
-        
+
         $encrypted_password = Ogspy\crypto($password);
         $request = "INSERT INTO " . TABLE_USER . " (user_name, user_password, user_regdate, user_active)"
             . " VALUES ('" . $pseudo . "', '" . $encrypted_password . "', " . time() . ", '1')";
@@ -478,9 +527,10 @@ class User_Model  extends Model_Abstract
      * @param $user_id
      * @param $group_id
      */
-    public function add_user_to_group($user_id, $group_id) {
+    public function add_user_to_group($user_id, $group_id)
+    {
 
-        
+
         $request = "INSERT INTO " . TABLE_USER_GROUP . " (group_id, user_id) VALUES (" . $group_id . ", " . $user_id . ")";
         $this->db->sql_query($request);
     }
@@ -490,7 +540,7 @@ class User_Model  extends Model_Abstract
      */
     public function delete_user($user_id)
     {
-        
+
 
         $request = "DELETE FROM " . TABLE_USER . " WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
@@ -588,7 +638,7 @@ class User_Model  extends Model_Abstract
      */
     public function set_player_officer($user_id, $officer, $value)
     {
-        
+
         switch ($officer) {
             case 'off_commandant':
                 $request = "UPDATE " . TABLE_USER . " SET `off_commandant` = '" . $value . "' WHERE `user_id` = " . $user_id;
