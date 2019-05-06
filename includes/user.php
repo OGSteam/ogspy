@@ -24,6 +24,7 @@ use Ogsteam\Ogspy\Model\User_Technology_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use  Ogsteam\Ogspy\Model\User_Favorites_Model;
 use Ogsteam\Ogspy\Model\Spy_Model;
+use Ogsteam\Ogspy\Model\Tokens_Model;
 
 
 /**
@@ -393,22 +394,13 @@ function member_user_set()
  */
 function user_profile_token_updater($user_id)
 {
-    global $db;
+    //todo mettre dans un helper ( poru réutilisation generate password / id ogspy (parameters) , token login, ... )
+
     $new_token = bin2hex(random_bytes(32));
     $next_year = time() + (365 * 24 * 60 * 60);
 
-    $request = "SELECT `token` FROM " . TABLE_USER_TOKEN . " WHERE `user_id` = '" .
-        $user_id . "' AND `name` = 'PAT'";
-    $result = $db->sql_query($request);
-    if ($db->sql_numrows($result) == 0) {
-
-        $db->sql_query("INSERT INTO " . TABLE_USER_TOKEN . " (`id`, `user_id`, `name`, `token`, `expiration_date`)
-            VALUES (NULL, '" . $user_id . "', 'PAT', '" . $new_token . "', '" . $next_year . "')");
-    } else {
-        $db->sql_query("UPDATE " . TABLE_USER_TOKEN . " SET `token` = '" . $new_token . "', `expiration_date` = '" . $next_year . "'
-            WHERE `user_id` = '" . $user_id . "' AND `name` = 'PAT '");
-    }
-    $user_token["token"] = $new_token;
+    $Tokens_Model=  new Tokens_Model();
+    $user_token["token"] = $Tokens_Model->add_token($new_token,$user_id,$next_year,"PAT");
 }
 
 /**
@@ -419,17 +411,13 @@ function user_profile_token_updater($user_id)
  */
 function get_user_profile_token($user_id)
 {
-    global $db;
-
-    $request = "SELECT `token` FROM " . TABLE_USER_TOKEN . " WHERE `user_id` = '" .
-        $user_id . "' AND `name` = 'PAT'";
-    $result = $db->sql_query($request);
-    if ($db->sql_numrows($result) == 0) {
+    $Tokens_Model=  new Tokens_Model();
+    $token = $Tokens_Model->get_token($user_id,"PAT");
+    if ( $token == false)
+    {
         return 1;
-    } else {
-        $query_result = $db->sql_fetch_row($result);
-        return $query_result['token'];
     }
+    return $token;
 }
 
 /**
@@ -511,7 +499,6 @@ function user_set_general($user_id, $user_name = null, $user_password_s = null, 
 
 /**
  * Enregistrement des droits et status utilisateurs
- * @todo Query : x2
  * @param $user_id
  * @param null $user_admin todo non utilisé !! a supprimer
  * @param null $user_active
