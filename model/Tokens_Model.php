@@ -15,6 +15,7 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class Tokens_Model extends Model_Abstract
 {
     function __construct() {
+        parent::__construct();
         $this->delete_expired_tokens();
     }
     /**
@@ -28,7 +29,7 @@ class Tokens_Model extends Model_Abstract
      */
     public function add_token($token_id, $token_user_id, $token_expire, $token_type) {
         if ($this->get_token($token_user_id,$token_type) != false) {
-            $request = "UPDATE " . TABLE_USER_TOKEN . " SET  `token` = '" . $token_id . "', `expiration_date` = " . $token_expire . " WHERE `user_id` = '" . $token_user_id . "' AND `name` =  '" . $token_type . "'";
+            $request = "UPDATE " . TABLE_USER_TOKEN . " SET  `token` = '" . $token_id . "', `expiration_date` = '" . $token_expire . "' WHERE `user_id` = '" . $token_user_id . "' AND `name` =  '" . $token_type . "'";
             $this->db->sql_query($request, true, false);
         } else {
             $request = "INSERT INTO " . TABLE_USER_TOKEN . " (`id`, `user_id`, `name`, `token`, `expiration_date`) VALUES (NULL, '" . $token_user_id . "', 'PAT ', '" . $token_type . "', '" . $token_expire . "')";
@@ -43,7 +44,7 @@ class Tokens_Model extends Model_Abstract
      * @return mixed
      */
     public function get_token($token_user_id, $token_type) {
-        $request = "SELECT `token` FROM " . TABLE_USER_TOKEN . " WHERE `user_id`= " . $token_user_id . "' AND `name` =  '" . $token_type . "'";
+        $request = "SELECT `token` FROM " . TABLE_USER_TOKEN . " WHERE `user_id`= '" . $token_user_id . "' AND `name` =  '" . $token_type . "'";
         $result = $this->db->sql_query($request);
         if ($this->db->sql_numrows($result) > 0) {
             list($token_id) = $this->db->sql_fetch_row($result);
@@ -93,7 +94,7 @@ class Tokens_Model extends Model_Abstract
      * This function clean all expired tokens
      */
     public function delete_expired_tokens() {
-        $request = "DELETE FROM " . TABLE_USER_TOKEN . " WHERE token_expire < " . time();
+        $request = "DELETE FROM " . TABLE_USER_TOKEN . " WHERE expiration_date < " . time();
         $this->db->sql_query($request);
     }
 }

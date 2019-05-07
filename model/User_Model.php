@@ -290,7 +290,7 @@ class User_Model extends Model_Abstract
     {
 
         $request = "UPDATE " . TABLE_USER . " SET `user_name` = '" . $user_name . "' WHERE `user_id` = " . $user_id;
-        $request = $this->db->sql_escape_string($request);
+        //$request = $this->db->sql_escape_string($request);
         $this->db->sql_query($request);
 
     }
