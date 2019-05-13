@@ -27,7 +27,7 @@ use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Tokens_Model;
 
 
-/**
+/**Tokens_Model
  * Verification des droits utilisateurs sur une action avec redirection le cas echeant
  * @param string $action Action verifie
  * @param int $user_id identificateur optionnel de l'utilisateur teste

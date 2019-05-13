@@ -97,7 +97,6 @@ function galaxy_check_auth($action)
 }
 
 
-
 /**
  * Affichage des galaxies
  *
@@ -142,6 +141,7 @@ function galaxy_show()
     $population = filter_system($population[$pub_system]);
     return array("population" => $population, "galaxy" => $pub_galaxy, "system" => $pub_system);
 }
+
 /**
  * @param $system
  * @return mixed
@@ -344,8 +344,7 @@ function galaxy_search()
     $result = $universeRepository->find($criteria, $order, $limit, $number);
     $total_page = ceil($result['total_row'] / $number);
     $search_result = array();
-    foreach ($result['planets'] as $planet)
-    {
+    foreach ($result['planets'] as $planet) {
         $friend = false;
         if (in_array($planet["ally"], $allied)) {
             $friend = true;
@@ -510,7 +509,7 @@ function galaxy_ally_position($step = 50)
  * @global int $pub_system
  * @global int $pub_row
  * @global int $pub_spy_id
-  */
+ */
 function galaxy_reportspy_show()
 {
     global $pub_galaxy, $pub_system, $pub_row, $pub_spy_id, $server_config;
@@ -547,7 +546,7 @@ function galaxy_reportspy_show()
  * @global int $pub_system
  * @global int $pub_row
  * @global int $pub_rc_id
-  * @return array $reports contenant les rc mis en forme
+ * @return array $reports contenant les rc mis en forme
  */
 function galaxy_reportrc_show()
 {
@@ -568,8 +567,7 @@ function galaxy_reportrc_show()
     $report_list = $Combat_Report_Model->get_cr_id_list_by_planet(intval($pub_galaxy), intval($pub_system), intval($pub_row));
 
     $reports = array();
-    foreach ($report_list as $report_id)
-    {
+    foreach ($report_list as $report_id) {
         $reports[] = UNparseRC($report_id);
     }
     return $reports;
@@ -583,7 +581,7 @@ function galaxy_reportrc_show()
  */
 function galaxy_purge_spy()
 {
-    global  $server_config;
+    global $server_config;
 
     if (!is_numeric($server_config["max_keepspyreport"])) {
         return;
@@ -886,50 +884,50 @@ function galaxy_show_ranking_unique_player($player, $last = false)
  * @param boolean $last le dernier classement ou tous les classements
  * @return array $ranking
  */
-function galaxy_show_ranking_unique_player_forJS($player,$date_min =null, $date_max = null , $last = false)
+function galaxy_show_ranking_unique_player_forJS($player, $date_min = null, $date_max = null, $last = false)
 {
 
     $ranking = array();
     $tRanking = (new Rankings_Player_Model())->get_all_ranktable_byplayer($player);
     foreach ($tRanking as $rank) {
-        if ( $rank["datadate"] >= $date_min && $rank["datadate"] <= $date_max) // ajouter dans la requete ca serait top
+        if ($rank["datadate"] >= $date_min && $rank["datadate"] <= $date_max) // ajouter dans la requete ca serait top
         {
 
-            $ranking["rank"]["general (".$player.")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["general_rank"] . "]";
-            $ranking["points"]["general (".$player.")"][]="[" . $rank["datadate"] * 1000  . ", " . $rank["general_pts"] . "]";
+            $ranking["rank"]["general (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["general_rank"] . "]";
+            $ranking["points"]["general (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["general_pts"] . "]";
 
             if ((int)$rank["eco_rank"] > 0) {
-                $ranking["rank"]["Economique (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["eco_rank"] . "]";
-                $ranking["points"]["Economique (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["eco_pts"] . "]";
+                $ranking["rank"]["Economique (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["eco_rank"] . "]";
+                $ranking["points"]["Economique (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["eco_pts"] . "]";
             }
 
             if ((int)$rank["tech_rank"] > 0) {
-                $ranking["rank"]["Recherche (".$player.")"][] = "[" . $rank["datadate"] * 1000  . ", " . $rank["tech_rank"] . "]";
-                $ranking["points"]["Recherche (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["tech_pts"] . "]";
+                $ranking["rank"]["Recherche (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["tech_rank"] . "]";
+                $ranking["points"]["Recherche (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["tech_pts"] . "]";
             }
 
             if ((int)$rank["milh_rank"] > 0) {
-                $ranking["rank"]["Honneur (".$player.")"][] = "[" . $rank["datadate"] * 1000  . ", " . $rank["milh_rank"] . "]";
-                $ranking["points"]["Honneur (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["milh_pts"] . "]";
+                $ranking["rank"]["Honneur (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["milh_rank"] . "]";
+                $ranking["points"]["Honneur (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["milh_pts"] . "]";
             }
 
             if ((int)$rank["mil_rank"] > 0) {
-                $ranking["rank"]["Militaire (".$player.")"][] = "[" . $rank["datadate"] * 1000  . ", " . $rank["mil_rank"] . "]";
-                $ranking["points"]["Militaire (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["mil_pts"] . "]";
+                $ranking["rank"]["Militaire (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["mil_rank"] . "]";
+                $ranking["points"]["Militaire (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["mil_pts"] . "]";
             }
             if ((int)$rank["milb_rank"] > 0) {
-                $ranking["rank"]["Militaire Construits (".$player.")"][] = "[" . $rank["datadate"] * 1000  . ", " . $rank["milb_rank"] . "]";
-                $ranking["points"]["Militaire Construits (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["milb_pts"] . "]";
+                $ranking["rank"]["Militaire Construits (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["milb_rank"] . "]";
+                $ranking["points"]["Militaire Construits (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["milb_pts"] . "]";
             }
 
             if ((int)$rank["mill_rank"] > 0) {
-                $ranking["rank"]["Perte militaire (".$player.")"][] = "[" . $rank["datadate"] * 1000  . ", " . $rank["mill_rank"] . "]";
-                $ranking["points"]["Perte militaire (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["mill_pts"] . "]";
+                $ranking["rank"]["Perte militaire (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["mill_rank"] . "]";
+                $ranking["points"]["Perte militaire (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["mill_pts"] . "]";
             }
 
             if ((int)$rank["mild_rank"] > 0) {
-                $ranking["rank"]["destruction (".$player.")"][] = "[" . $rank["datadate"] * 1000  . ", " . $rank["mild_rank"] . "]";
-                $ranking["points"]["destruction (".$player.")"][] ="[" . $rank["datadate"] * 1000  . ", " . $rank["mild_pts"] . "]";
+                $ranking["rank"]["destruction (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["mild_rank"] . "]";
+                $ranking["points"]["destruction (" . $player . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["mild_pts"] . "]";
             }
 
             if ($last) {
@@ -1232,13 +1230,17 @@ function galaxy_obsolete()
  * @global array $table_prefix
  * @global       object mysql $db
  * @param string $id_RE RE a reconstituer
- * @todo Query : 'SELECT planet_name, coordinates, metal, cristal, deuterium, energie, activite, M, C, D, CES, CEF, UdR, UdN, CSp, HM, HC, HD, Lab, Ter, Silo, DdR, BaLu, Pha, PoSa, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, DST, EDLM, SAT, TRA, Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique, dateRE, proba FROM ' . TABLE_PARSEDSPY . ' WHERE id_spy=' . $id_RE
- * @todo Query : 'SELECT player FROM " . TABLE_UNIVERSE . " WHERE concat(galaxy, ':', system, ':', row) = (SELECT coordinates FROM " .TABLE_PARSEDSPY . " WHERE id_spy=" . $id_RE . ")";
  * @return string $template_RE reconstitue
  */
 function UNparseRE($id_RE)
 {
+    //todo nom de variable pas du tout expressive :/
     global $table_prefix, $db, $lang;
+
+    $Spy_Model = new Spy_Model();
+    $Universe_Model = new Universe_Model();
+
+
     $show = array(
         'flotte' => 0,
         'defense' => 0,
@@ -1317,19 +1319,15 @@ function UNparseRE($id_RE)
         'Astrophysique' => $lang['GAME_TECH_ASTRO']
     );
 
-    $query = 'SELECT planet_name, coordinates, metal, cristal, deuterium, energie, activite, M, C, D, CES, CEF, UdR, UdN, CSp, HM, HC, 
-        HD, Lab, Ter, Silo, Dock, DdR, BaLu, Pha, PoSa, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, 
-        DST, EDLM, SAT, TRA, Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique, 
-        dateRE, proba FROM ' . TABLE_PARSEDSPY . ' WHERE id_spy=' . $id_RE;
-    $result = $db->sql_query($query);
-    $row = $db->sql_fetch_assoc($result);
+    $row = $Spy_Model->get_spy_Id($id_RE);
 
-    $queryPlayerName = "SELECT player FROM " . TABLE_UNIVERSE . " WHERE concat(galaxy, ':', system, ':', row) = (SELECT coordinates FROM " . TABLE_PARSEDSPY . " WHERE id_spy=" . $id_RE . ")";
-    $resultPN = $db->sql_query($queryPlayerName);
-    $rowPN = $db->sql_fetch_assoc($resultPN);
+    $c = explode(":", $row['coordinates']);
+    $rowPN = $Universe_Model->get_player_name($c[0], $c[1], $c[2]);
 
+    $tRows = $Spy_Model->get_all_spy_coordinates($row['coordinates']); /// contiens tous les re dispo sur les coordonnées
     $sep_mille = ".";
 
+    // /!\ todo pattern "Lune" n'ezst plus determinant
     if (preg_match('/\(Lune\)/', $row['planet_name'])) {
         $moon = 1;
     } else {
@@ -1369,17 +1367,35 @@ function UNparseRE($id_RE)
         }
     }
     if ($show['flotte'] == 0) {
-        $query = 'SELECT PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, DST, EDLM, SAT, TRA FROM ' . TABLE_PARSEDSPY . ' WHERE 
-            (PT <> -1 OR GT <> -1 OR CLE <> -1 OR CLO <> -1 OR CR <> -1 OR VB <> -1 OR VC <> -1 OR REC <> -1 OR SE <> -1 OR 
-            BMD <> -1 OR DST <> -1 OR EDLM <> -1 OR SAT <> -1 OR TRA <> -1) AND coordinates = "' . $row['coordinates'] . '" 
-            AND planet_name' . (($moon == 0) ? ' NOT ' : '') . ' LIKE "%(Lune)%" ORDER BY dateRE DESC LIMIT 0,1';
-        $tmp_res = $db->sql_query($query);
-        if ($db->sql_numrows($tmp_res) > 0) {
-            $tmp_row = $db->sql_fetch_assoc($tmp_res);
-            $row = array_merge($row, $tmp_row);
-            $show['flotte'] = 1;
+        // besoin d 'une eventuelle reconstitution de re'
+        foreach ($tRows as $tmpRow) {
+            if ($row["planet_name"] == $tmpRow["planet_name"] && $show['flotte'] == 0) // on recherche sur la meme planete ou lune
+            {
+
+                $total = $tmpRow["PT"] + $tmpRow["GT"] + $tmpRow["CLE"] + $tmpRow["CLO"] + $tmpRow["CR"] + $tmpRow["VB"] + $tmpRow["VC"] + $tmpRow["REC"] + $tmpRow["SE"] + $tmpRow["BMD"] + $tmpRow["DST"] + $tmpRow["EDLM"] + $tmpRow["SAT"] + $tmpRow["TRA"];
+                if ((int)$total != -14) {
+                    $row["PT"] = $tmpRow["PT"];
+                    $row["GT"] = $tmpRow["GT"];
+                    $row["CLE"] = $tmpRow["CLE"];
+                    $row["CLO"] = $tmpRow["CLO"];
+                    $row["CR"] = $tmpRow["CR"];
+                    $row["VB"] = $tmpRow["VB"];
+                    $row["VC"] = $tmpRow["VC"];
+                    $row["REC"] = $tmpRow["REC"];
+                    $row["SE"] = $tmpRow["SE"];
+                    $row["BMD"] = $tmpRow["BMD"];
+                    $row["DST"] = $tmpRow["DST"];
+                    $row["EDLM"] = $tmpRow["EDLM"];
+                    $row["SAT"] = $tmpRow["SAT"];
+                    $row["TRA"] = $tmpRow["TRA"];
+
+                    $show['flotte'] = 1;
+                }
+            }
         }
     }
+
+
     foreach ($defs as $key => $value) {
         if ($row[$key] != -1) {
             $show['flotte'] = 1;
@@ -1387,16 +1403,31 @@ function UNparseRE($id_RE)
             continue;
         }
     }
+
     if ($show['defense'] == 0) {
-        $query = 'SELECT LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP FROM ' . TABLE_PARSEDSPY . ' WHERE (LM <> -1 OR LLE <> -1 
-            OR LLO <> -1 OR CG <> -1 OR AI <> -1 OR PB <> -1 OR GB <> -1 OR MIC <> -1 OR MIC <> -1) AND coordinates = "' . $row['coordinates'] . '" AND planet_name' . (($moon == 0) ? ' NOT ' : '') . ' LIKE "%(Lune)%" ORDER BY dateRE DESC LIMIT 0,1';
-        $tmp_res = $db->sql_query($query);
-        if ($db->sql_numrows($tmp_res) > 0) {
-            $tmp_row = $db->sql_fetch_assoc($tmp_res);
-            $row = array_merge($row, $tmp_row);
-            $show['defense'] = 1;
+        foreach ($tRows as $tmpRow) {
+            if ($row["planet_name"] == $tmpRow["planet_name"] && $show['defense'] == 0) // on recherche sur la meme planete ou lune
+            {
+                $total = $tmpRow["LM"] + $tmpRow["LLE"] + $tmpRow["LLO"] + $tmpRow["CG"] + $tmpRow["AI"] + $tmpRow["LP"] + $tmpRow["PB"] + $tmpRow["GB"] + $tmpRow["MIC"] + $tmpRow["MIP"];
+                if ((int)$total != -10) {
+                    $row["LM"] = $tmpRow["LM"];
+                    $row["LLE"] = $tmpRow["LLE"];
+                    $row["LLO"] = $tmpRow["LLO"];
+                    $row["CG"] = $tmpRow["CG"];
+                    $row["AI"] = $tmpRow["AI"];
+                    $row["LP"] = $tmpRow["LP"];
+                    $row["PB"] = $tmpRow["PB"];
+                    $row["GB"] = $tmpRow["GB"];
+                    $row["MIC"] = $tmpRow["MIC"];
+                    $row["BMD"] = $tmpRow["BMD"];
+                    $row["MIP"] = $tmpRow["MIP"];
+
+                    $show['defense'] = 1;
+                }
+            }
         }
     }
+
     foreach ($bats as $key => $value) {
         if ($row[$key] != -1) {
             $show['flotte'] = 1;
@@ -1406,16 +1437,38 @@ function UNparseRE($id_RE)
         }
     }
     if ($show['batiment'] == 0) {
-        $query = 'SELECT M, C, D, CES, CEF, UdR, UdN, CSp, HM, HC, HD, Lab, Ter, Silo, Dock, DdR, BaLu, Pha, PoSa FROM ' . TABLE_PARSEDSPY . ' WHERE (M <> -1 OR C <> -1 OR D <> -1 OR CES <> -1 OR CEF <> -1 OR UdR <> -1 OR UdN <> -1 OR 
-            CSp <> -1 OR HM <> -1 OR HC <> -1 OR HD <> -1 OR Lab <> -1 OR Ter <> -1 OR Silo <> -1 OR Dock <> -1 OR DdR <> -1 OR BaLu <> -1 
-            OR Pha <> -1 OR PoSa <> -1) AND coordinates = "' . $row['coordinates'] . '" AND planet_name' . (($moon == 0) ? ' NOT ' : '') . ' LIKE "%(Lune)%" ORDER BY dateRE DESC LIMIT 0,1';
-        $tmp_res = $db->sql_query($query);
-        if ($db->sql_numrows($tmp_res) > 0) {
-            $tmp_row = $db->sql_fetch_assoc($tmp_res);
-            $row = array_merge($row, $tmp_row);
-            $show['batiment'] = 1;
+        foreach ($tRows as $tmpRow) {
+            if ($row["planet_name"] == $tmpRow["planet_name"] && $show['batiment'] == 0) // on recherche sur la meme planete ou lune
+            {
+                $total = $tmpRow["M"] + $tmpRow["C"] + $tmpRow["D"] + $tmpRow["CES"] + $tmpRow["CEF"] + $tmpRow["UdR"] + $tmpRow["UdN"] + $tmpRow["CSp"] + $tmpRow["HM"] + $tmpRow["HC"] + $tmpRow["HD"] + $tmpRow["Lab"] + $tmpRow["Ter"] + $tmpRow["Silo"] + $tmpRow["Dock"] + $tmpRow["DdR"] + $tmpRow["BaLu"] + $tmpRow["Pha"] + $tmpRow["PoSa"];
+                if ((int)$total != -19) {
+
+                    $row["M"] = $tmpRow["M"];
+                    $row["C"] = $tmpRow["C"];
+                    $row["D"] = $tmpRow["D"];
+                    $row["CES"] = $tmpRow["CES"];
+                    $row["CEF"] = $tmpRow["CEF"];
+                    $row["UdR"] = $tmpRow["UdR"];
+                    $row["UdN"] = $tmpRow["UdN"];
+                    $row["CSp"] = $tmpRow["CSp"];
+                    $row["HM"] = $tmpRow["HM"];
+                    $row["HC"] = $tmpRow["HC"];
+                    $row["HD"] = $tmpRow["HD"];
+                    $row["Lab"] = $tmpRow["Lab"];
+                    $row["Ter"] = $tmpRow["Ter"];
+                    $row["Silo"] = $tmpRow["Silo"];
+                    $row["Dock"] = $tmpRow["Dock"];
+                    $row["DdR"] = $tmpRow["DdR"];
+                    $row["BaLu"] = $tmpRow["BaLu"];
+                    $row["Pha"] = $tmpRow["Pha"];
+                    $row["PoSa"] = $tmpRow["PoSa"];
+
+                    $show['batiment'] = 1;
+                }
+            }
         }
     }
+
     foreach ($techs as $key => $value) {
         if ($row[$key] != -1) {
             $show['flotte'] = 1;
@@ -1425,19 +1478,36 @@ function UNparseRE($id_RE)
             continue;
         }
     }
+
     if ($show['recherche'] == 0) {
-        $query = 'SELECT Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, 
-            Astrophysique FROM ' . TABLE_PARSEDSPY . ' WHERE (Esp <> -1 OR Ordi <> -1 OR Armes <> -1 OR Bouclier <> -1 OR 
-            Protection <> -1 OR NRJ <> -1 OR Hyp <> -1 OR RC <> -1 OR RI <> -1 OR PH <> -1 OR Laser <> -1 OR Ions <> -1 OR 
-            Plasma <> -1 OR RRI <> -1 OR Graviton <> -1 OR Astrophysique <> -1) AND coordinates = "' . $row['coordinates'] . '" 
-            AND planet_name' . (($moon == 0) ? ' NOT ' : '') . ' LIKE "%(Lune)%" ORDER BY dateRE DESC LIMIT 0,1';
-        $tmp_res = $db->sql_query($query);
-        if ($db->sql_numrows($tmp_res) > 0) {
-            $tmp_row = $db->sql_fetch_assoc($tmp_res);
-            $row = array_merge($row, $tmp_row);
-            $show['recherche'] = 1;
+        foreach ($tRows as $tmpRow) {
+            if ($show['recherche'] == 0) // onn recherche sur toutes les planetes /lunes ( recherche commune )
+            {
+
+                $total = $tmpRow["Esp"] + $tmpRow["Ordi"] + $tmpRow["Armes"] + $tmpRow["Bouclier"] + $tmpRow["NRJ"] + $tmpRow["Hyp"] + $tmpRow["RC"] + $tmpRow["RI"] + $tmpRow["PH"] + $tmpRow["Laser"] + $tmpRow["Ions"] + $tmpRow["Plasma"] + $tmpRow["RRI"] + $tmpRow["Graviton"] + $tmpRow["Astrophysique"];
+                if ((int)$total != -15) {
+                    $row["Esp"] = $tmpRow["Esp"];
+                    $row["Ordi"] = $tmpRow["Ordi"];
+                    $row["Armes"] = $tmpRow["Armes"];
+                    $row["Bouclier"] = $tmpRow["Bouclier"];
+                    $row["Hyp"] = $tmpRow["Hyp"];
+                    $row["NRJ"] = $tmpRow["NRJ"];
+                    $row["RC"] = $tmpRow["RC"];
+                    $row["RI"] = $tmpRow["RI"];
+                    $row["PH"] = $tmpRow["PH"];
+                    $row["Laser"] = $tmpRow["Laser"];
+                    $row["Plasma"] = $tmpRow["Plasma"];
+                    $row["Graviton"] = $tmpRow["Graviton"];
+                    $row["Astrophysique"] = $tmpRow["Astrophysique"];
+                    $row["Ions"] = $tmpRow["Ions"];
+                    $row["RRI"] = $tmpRow["RRI"];
+
+                    $show['recherche'] = 1;
+                }
+            }
         }
     }
+
     if ($show['flotte'] == 1) {
         $template .= '  <tr>
         <td class="l" colspan="4">' . $lang['GAME_CAT_FLEET'] . '</td>

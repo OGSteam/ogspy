@@ -253,6 +253,22 @@ class Universe_Model  extends Model_Abstract
     }
 
     /**
+     * Retourne le nom du joueur
+     * @param $galaxy
+     * @param $system
+     * @param $row
+     * @return mixed
+     */
+    public function get_player_name($galaxy, $system, $row)
+    {
+        $request_player_name = "SELECT `player` FROM " . TABLE_UNIVERSE . " WHERE `galaxy` = " . intval($galaxy) . " AND `system` = " . intval($system) . " AND `row` = " . intval($row);
+        $result_player_name = $this->db->sql_query($request_player_name);
+        $player_name = $this->db->sql_fetch_assoc($result_player_name); //Récupère le nom de la planète
+
+        return $player_name;
+    }
+
+    /**
      * Retourne la liste des phalanges d'une galaxie
      * @param $galaxy
      * @return array

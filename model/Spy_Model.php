@@ -83,6 +83,34 @@ class Spy_Model extends Model_Abstract
         return $favorite;
     }
 
+
+    public function get_spy_Id($id_RE)
+    {
+        $query = 'SELECT planet_name, coordinates, metal, cristal, deuterium, energie, activite, M, C, D, CES, CEF, UdR, UdN, CSp, HM, HC, 
+        HD, Lab, Ter, Silo, Dock, DdR, BaLu, Pha, PoSa, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, 
+        DST, EDLM, SAT, TRA, Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique, 
+        dateRE, proba FROM ' . TABLE_PARSEDSPY . ' WHERE id_spy=' . $id_RE;
+        $result = $this->db->sql_query($query);
+
+        $row = $this->db->sql_fetch_assoc($result);
+        return $row;
+    }
+
+    public function get_all_spy_coordinates($coord)
+    {
+        $query = "SELECT planet_name, coordinates, metal, cristal, deuterium, energie, activite, M, C, D, CES, CEF, UdR, UdN, CSp, HM, HC, 
+        HD, Lab, Ter, Silo, Dock, DdR, BaLu, Pha, PoSa, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, 
+        DST, EDLM, SAT, TRA, Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique, 
+        dateRE, proba FROM " . TABLE_PARSEDSPY . " WHERE coordinates='" . $coord. "' ORDER BY dateRE DESC ";
+        $result = $this->db->sql_query($query);
+
+        $tResult = array();
+        while ($row = $this->db->sql_fetch_assoc($result)) {
+            $tResult[] = $row;
+        }
+        return $tResult;
+    }
+
     /**
      * @param int $galaxy
      * @param int $system
@@ -108,7 +136,7 @@ class Spy_Model extends Model_Abstract
     public function get_spy_id_list_by_planet($galaxy, $system, $row) {
         
 
-        $request = "SELECT `id_spy`, `user_name`, `dateRE`, `is_moon`";
+        $request = "SELECT `id_spy`, `user_name`, `dateRE` ";//, `is_moon`";
         $request .= " FROM " . TABLE_PARSEDSPY . " LEFT JOIN " . TABLE_USER . " ON `user_id` = `sender_id`";
         $request .= " WHERE `active` = '1'  AND `coordinates` = '" . $galaxy . ":" . $system . ":" . $row . "'";
         $request .= " ORDER BY `dateRE` DESC";
@@ -117,8 +145,8 @@ class Spy_Model extends Model_Abstract
         while ($row = $this->db->sql_fetch_assoc($result)) {
             $tResult[] = array("id_spy" => $row['id_spy'],
                 "user_name" => $row['user_name'],
-                "dateRE" => $row['dateRE'],
-                "is_moon" => $row['is_moon']);
+                "dateRE" => $row['dateRE']);
+             //   ,"is_moon" => $row['is_moon']);
         }
         return $tResult;
     }
