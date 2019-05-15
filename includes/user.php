@@ -25,6 +25,7 @@ use Ogsteam\Ogspy\Model\User_Model;
 use  Ogsteam\Ogspy\Model\User_Favorites_Model;
 use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Tokens_Model;
+use Ogsteam\Ogspy\Model\User_Spy_favorites_Model;
 
 
 /**Tokens_Model
@@ -1206,8 +1207,10 @@ function user_getfavorites_spy()
  */
 function user_add_favorite_spy()
 {
-    global $db, $user_data, $server_config;
+    global  $user_data, $server_config;
     global $pub_spy_id, $pub_galaxy, $pub_system, $pub_row;
+
+    $User_Spy_favorites_Model = new User_Spy_favorites_Model();
 
     if (!check_var($pub_spy_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
@@ -1217,14 +1220,9 @@ function user_add_favorite_spy()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $request = "select * from " . TABLE_USER_SPY . " where user_id = " . $user_data["user_id"];
-    $result = $db->sql_query($request);
-    $nb_favorites = $db->sql_numrows($result);
-
+    $nb_favorites = $User_Spy_favorites_Model->Count_favorite_spy($user_data["user_id"]);
     if ($nb_favorites < $server_config["max_favorites_spy"]) {
-        $request = "insert ignore into " . TABLE_USER_SPY .
-            " (user_id, spy_id) values (" . $user_data["user_id"] . ", " . $pub_spy_id . ")";
-        $db->sql_query($request);
+        $User_Spy_favorites_Model->add_favorite_spy($user_data["user_id"],$pub_spy_id);
         redirection("index.php?action=show_reportspy&galaxy=" . $pub_galaxy . "&system=" .
             $pub_system . "&row=" . $pub_row);
     } else {
@@ -1247,7 +1245,8 @@ function user_del_favorite_spy()
     if (!isset($pub_spy_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
-    (new Spy_Model())->delete_spy_senderId($pub_spy_id, $user_data["user_id"]);
+    //(new Spy_Model())->delete_spy_senderId($pub_spy_id, $user_data["user_id"]);
+    (new User_Spy_favorites_Model())->delete_favorite_spy($user_data["user_id"],$pub_spy_id);
 
     if (!isset($pub_info)) {
         $pub_info = 1;

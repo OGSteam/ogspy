@@ -159,6 +159,10 @@ class Spy_Model extends Model_Abstract
 
         $request = "DELETE FROM " . TABLE_PARSEDSPY . " WHERE `spy_id` = '" . $spy_id . "'";
         $this->db->sql_query($request);
+
+        //todo prevoir suppression favorite ...
+
+
     }
 
     /**
