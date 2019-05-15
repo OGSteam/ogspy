@@ -807,7 +807,7 @@ function galaxy_reportspy_show()
         $request .= " where id_spy = " . (int) $pub_spy_id;
     }
     $request .= " and BaLu<=0 and Pha<=0 and PoSa<=0 and planet_name='" . $astre_name['name'] . "'";
-    $request .= " order by dateRE desc LIMIT 1";
+    $request .= " order by dateRE desc";
     $result = $db->sql_query($request);
 
     $reports = array();
@@ -824,7 +824,7 @@ function galaxy_reportspy_show()
         $request .= " where id_spy = " . (int) $pub_spy_id;
     }
     $request .= " and M<=0 and C<=0 and D<=0 and CES<=0 and CEF<=0 and UdN<=0 and Lab<=0 and Ter<=0 and Silo<=0 and Dock<=0 and not planet_name='" . $astre_name['name'] . "'";
-    $request .= " order by dateRE desc LIMIT 1";
+    $request .= " order by dateRE desc";
     $result = $db->sql_query($request);
 
     while (list($pub_spy_id, $user_name, $dateRE) = $db->sql_fetch_row($result)) {
@@ -1599,7 +1599,7 @@ function galaxy_obsolete()
  */
 function UNparseRE($id_RE)
 {
-    global $table_prefix, $db, $lang;
+    global $db, $lang;
     $show   = array(
         'flotte' => 0,
         'defense' => 0,
