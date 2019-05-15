@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-LABEL VERSION ="0.1"
+LABEL VERSION ="0.2"
 LABEL DESCRIPTION="APACHE PHP OGSPY"
 LABEL MAINTENER="darknoon@darkcity.fr"
 
@@ -14,8 +14,10 @@ apache2 \
 libapache2-mod-php \
 mariadb-server \
 php-mysql \
-pwgen
-&& apt-get clean
+php-xml \
+php-zip \
+pwgen \
+&& apt-get clean \
 && rm -rf /var/lib/apt/lists/
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
