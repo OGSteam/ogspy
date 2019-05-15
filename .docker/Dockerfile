@@ -44,7 +44,7 @@ COPY apache_default /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
 # Configure /app folder with sample app
-RUN git clone -b OGSpy_3.3 https://github.com/ogsteam/ogspy /app
+RUN git clone -b 3.3.5 https://github.com/ogsteam/ogspy /app
 RUN git clone -b master https://github.com/ogsteam/mod-autoupdate /app/mod/autoupdate
 RUN chown -R www-data:www-data /app
 RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
