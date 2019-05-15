@@ -75,7 +75,26 @@ function write_file_gz($file, $mode, $text)
     } else {
             return false;
     }
+}
+
+/**
+ * Remove a Folder with its content
+ * @param string $folder Chemin vers le dossier à supprimer
+ */
+    function remove_dir_from_ogspy($folder) {
+
+        $dir_iterator = new RecursiveDirectoryIterator($folder);
+        $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::CHILD_FIRST);
+
+        // On supprime chaque dossier et chaque fichier	du dossier cible
+        foreach($iterator as $fichier){
+            $fichier->isDir() ? rmdir($fichier) : unlink($fichier);
+        }
+
+        // On supprime le dossier cible
+        rmdir($folder);
     }
+
 
 /**
  * Convert an IP in Hex Format

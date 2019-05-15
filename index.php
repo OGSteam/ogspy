@@ -39,6 +39,7 @@ if (is_dir("install") && $pub_action != "message") {
     if (version_compare($server_config["version"], $install_version, '<')) {
         redirection("install/index.php");
     } else {
+        remove_dir_from_ogspy('install');
         redirection("index.php?action=message&id_message=install_directory&info");
     }
 }
