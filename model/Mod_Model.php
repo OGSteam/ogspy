@@ -213,6 +213,17 @@ class Mod_Model  extends Model_Abstract
     }
 
 
+    /**
+     * Supprime table d un mod
+     * @param $table_name nom de la table
+     */
+    public function drop_custum_table($table_name)
+    {
+        $request ="DROP TABLE IF EXISTS " . $table_name ;
+        $this->db->sql_query($request);
+    }
+
+
 
     public function isExistByTitle($title)
     {

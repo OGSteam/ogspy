@@ -669,12 +669,13 @@ function install_mod($mod_folder)
  */
 function uninstall_mod($mod_uninstall_name, $mod_uninstall_table)
 {
-    global $db;
-    (new Mod_Model())->delete_by_title($mod_uninstall_name);
+    $Mod_Model = new Mod_Model();
+
+    $Mod_Model->delete_by_title($mod_uninstall_name);
     if (!empty($mod_uninstall_table)) {
         //todo MOD factory ?
         log_("debug", "DROP TABLE IF EXISTS " . $mod_uninstall_table);
-        $db->sql_query("DROP TABLE IF EXISTS " . $mod_uninstall_table);
+        $Mod_Model->drop_custum_table($mod_uninstall_table);
     }
 }
 
