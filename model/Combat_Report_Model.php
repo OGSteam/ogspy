@@ -66,14 +66,39 @@ class Combat_Report_Model  extends Model_Abstract
 
         $report = $this->db->sql_fetch_assoc($result);
 
+        // récupération des Rounds
         $rounds = array();
+        $tRcroundId = array();
         $query = 'SELECT id_rcround, id_rc, numround, attaque_tir, attaque_puissance, attaque_bouclier, defense_tir, defense_puissance, defense_bouclier FROM ' . TABLE_PARSEDRCROUND . ' WHERE id_rc = ' . $id_rc . ' ORDER BY numround';
         $result_round = $this->db->sql_query($query);
+        // on indique le rounrc afin de pouvoir relier les infos (attaque / defenseusr)
         while ($round = $this->db->sql_fetch_assoc($result_round)) {
-            $rounds[] = $round;
-        }
-        $report['rounds'] = $rounds;
+            $round['attacks'] = array();
+            $round['defenses'] = array();
+            $rounds[$round["id_rcround"]] = $round;
 
+            //pour select in
+            $tRcroundId[]  = $round["id_rcround"];
+        }
+
+        // préparation du "select in"
+        $sRcroundId = implode(',', $tRcroundId);
+
+        //récupération des attaquants
+        $query = 'SELECT id_rcround, player, coordinates, Armes, Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, DST, EDLM, TRA FROM ' . TABLE_ROUND_ATTACK . ' WHERE  id_rcround IN ( '.$sRcroundId.' ) ';
+        $result_attack = $this->db->sql_query($query);
+        while ($attack = $this->db->sql_fetch_assoc($result_attack)) {
+            $rounds[$attack['id_rcround']]['attacks'][] = $attack;
+        }
+
+        // recuperation des defenseurs
+        $query = 'SELECT id_rcround, player, coordinates, Armes, Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, SAT, DST, EDLM, TRA, LM, LLE, LLO, CG, AI, LP, PB, GB FROM ' . TABLE_ROUND_DEFENSE . ' WHERE  id_rcround IN ( '.$sRcroundId.' ) ';
+        $result_def = $this->db->sql_query($query);
+        while ($def = $this->db->sql_fetch_assoc($result_def)) {
+            $rounds[$attack['id_rcround']]['defenses'][] = $def;
+        }
+
+        $report['rounds'] = $rounds;
         return $report;
     }
 

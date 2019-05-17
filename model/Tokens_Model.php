@@ -56,6 +56,24 @@ class Tokens_Model extends Model_Abstract
 
     /**
      * THis function will retrieve the token id from the user
+     * @param $token_user_id
+     * @return mixed
+     */
+    public function get_all_tokens($token_user_id) {
+        $request = "SELECT `token` FROM " . TABLE_USER_TOKEN . " WHERE `user_id`= '" . $token_user_id . "' ";
+        $result = $this->db->sql_query($request);
+
+
+        if ($this->db->sql_numrows($result) > 0) {
+            list($token_id) = $this->db->sql_fetch_row($result);
+            return $token_id;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * THis function will retrieve the token id from the user
      * @param $token
      * @return boolean true False
      * @internal param $token_user_id

@@ -26,6 +26,7 @@ use  Ogsteam\Ogspy\Model\User_Favorites_Model;
 use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Tokens_Model;
 use Ogsteam\Ogspy\Model\User_Spy_favorites_Model;
+use Ogsteam\Ogspy\Model\Combat_Report_Model;
 
 
 /**Tokens_Model
@@ -124,7 +125,7 @@ function user_login()
 function user_set_connection($user_id, $user_active)
 {
 
-    global  $pub_goto;
+    global $pub_goto;
     if ($user_active == 1) {
 
         $lastvisit = (new User_Model())->select_last_visit($user_id);
@@ -400,8 +401,8 @@ function user_profile_token_updater($user_id)
     $new_token = bin2hex(random_bytes(32));
     $next_year = time() + (365 * 24 * 60 * 60);
 
-    $Tokens_Model=  new Tokens_Model();
-    $user_token["token"] = $Tokens_Model->add_token($new_token,$user_id,$next_year,"PAT");
+    $Tokens_Model = new Tokens_Model();
+    $user_token["token"] = $Tokens_Model->add_token($new_token, $user_id, $next_year, "PAT");
 }
 
 /**
@@ -412,10 +413,9 @@ function user_profile_token_updater($user_id)
  */
 function get_user_profile_token($user_id)
 {
-    $Tokens_Model=  new Tokens_Model();
-    $token = $Tokens_Model->get_token($user_id,"PAT");
-    if ( $token == false)
-    {
+    $Tokens_Model = new Tokens_Model();
+    $token = $Tokens_Model->get_token($user_id, "PAT");
+    if ($token == false) {
         return 1;
     }
     return $token;
@@ -435,9 +435,8 @@ function get_user_profile_token($user_id)
 function user_set_general($user_id, $user_name = null, $user_password_s = null, $user_email = null, $user_lastvisit = null,
                           $user_galaxy = null, $user_system = null, $disable_ip_check = null)
 {
-    global  $user_data, $server_config;
-   $User_Model =  new User_Model();
-
+    global $user_data, $server_config;
+    $User_Model = new User_Model();
 
 
     if (!isset($user_id)) {
@@ -462,18 +461,18 @@ function user_set_general($user_id, $user_name = null, $user_password_s = null, 
 
     //Pseudo et mot de passe
     if (!empty($user_name)) {
-        $User_Model->set_user_pseudo($user_id,$user_name );
+        $User_Model->set_user_pseudo($user_id, $user_name);
     }
     if (!empty($user_password_s)) {
-        $User_Model->set_user_password($user_id,password_hash($user_password_s, PASSWORD_DEFAULT) );
-     }
+        $User_Model->set_user_password($user_id, password_hash($user_password_s, PASSWORD_DEFAULT));
+    }
 
     //Galaxy et système solaire du membre
     if (!empty($user_galaxy)) {
-        $User_Model->set_user_default_galaxy($user_id,$user_galaxy );
+        $User_Model->set_user_default_galaxy($user_id, $user_galaxy);
     }
     if (!empty($user_system)) {
-        $User_Model->set_user_default_system($user_id,$user_system );
+        $User_Model->set_user_default_system($user_id, $user_system);
     }
 
     //Dernière visite
@@ -483,12 +482,12 @@ function user_set_general($user_id, $user_name = null, $user_password_s = null, 
 
     //Email
     if (!empty($user_email)) {
-        $User_Model->set_user_email($user_id,$user_email);
+        $User_Model->set_user_email($user_id, $user_email);
     }
 
     //Désactivation de la vérification de l'adresse ip
     if (!is_null($disable_ip_check)) {
-        $User_Model->set_user_ip_check($user_id,$disable_ip_check);
+        $User_Model->set_user_ip_check($user_id, $disable_ip_check);
     }
 
     if ($user_id == $user_data['user_id']) {
@@ -562,7 +561,7 @@ function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $sear
                        $spy_added_web = null, $spy_added_ogs = null, $rank_added_web = null, $rank_added_ogs = null,
                        $planet_exported = null, $spy_exported = null, $rank_exported = null)
 {
-    global  $user_data;
+    global $user_data;
 
     //todo add xtense stat (ogs obsolete )
 
@@ -576,11 +575,11 @@ function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $sear
     }
     if (!is_null($planet_added_ogs)) {
         //todo add xtense stat (ogs obsolete )
-        $User_Model->add_stat_planet_inserted($user_data["user_id"],$planet_added_ogs);
-        }
+        $User_Model->add_stat_planet_inserted($user_data["user_id"], $planet_added_ogs);
+    }
     if (!is_null($search)) {
-        $User_Model->add_stat_search_made($user_data["user_id"],$search);
-       }
+        $User_Model->add_stat_search_made($user_data["user_id"], $search);
+    }
     if (!is_null($spy_added_web)) {
         // il n'y a plus d'insertion WEB
         //$update .= ((strlen($update) > 0) ? ", " : "") .
@@ -588,16 +587,16 @@ function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $sear
     }
     if (!is_null($spy_added_ogs)) {
         //todo add xtense stat (ogs obsolete )
-        $User_Model->add_stat_spy_inserted($user_data["user_id"],$spy_added_ogs);
+        $User_Model->add_stat_spy_inserted($user_data["user_id"], $spy_added_ogs);
     }
     if (!is_null($rank_added_web)) {
         // il n'y a plus d'insertion WEB
-       //$update .= ((strlen($update) > 0) ? ", " : "") .
-       //     "rank_added_web = rank_added_web + " . $rank_added_web;
+        //$update .= ((strlen($update) > 0) ? ", " : "") .
+        //     "rank_added_web = rank_added_web + " . $rank_added_web;
     }
     if (!is_null($rank_added_ogs)) {
         //todo add xtense stat (ogs obsolete )
-        $User_Model->add_stat_rank_inserted($user_data["user_id"],$rank_added_ogs);
+        $User_Model->add_stat_rank_inserted($user_data["user_id"], $rank_added_ogs);
     }
     if (!is_null($planet_exported)) {
         // il n'y a plus d'export fonctionnalité OGS
@@ -1207,7 +1206,7 @@ function user_getfavorites_spy()
  */
 function user_add_favorite_spy()
 {
-    global  $user_data, $server_config;
+    global $user_data, $server_config;
     global $pub_spy_id, $pub_galaxy, $pub_system, $pub_row;
 
     $User_Spy_favorites_Model = new User_Spy_favorites_Model();
@@ -1222,7 +1221,7 @@ function user_add_favorite_spy()
 
     $nb_favorites = $User_Spy_favorites_Model->Count_favorite_spy($user_data["user_id"]);
     if ($nb_favorites < $server_config["max_favorites_spy"]) {
-        $User_Spy_favorites_Model->add_favorite_spy($user_data["user_id"],$pub_spy_id);
+        $User_Spy_favorites_Model->add_favorite_spy($user_data["user_id"], $pub_spy_id);
         redirection("index.php?action=show_reportspy&galaxy=" . $pub_galaxy . "&system=" .
             $pub_system . "&row=" . $pub_row);
     } else {
@@ -1246,7 +1245,7 @@ function user_del_favorite_spy()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
     //(new Spy_Model())->delete_spy_senderId($pub_spy_id, $user_data["user_id"]);
-    (new User_Spy_favorites_Model())->delete_favorite_spy($user_data["user_id"],$pub_spy_id);
+    (new User_Spy_favorites_Model())->delete_favorite_spy($user_data["user_id"], $pub_spy_id);
 
     if (!isset($pub_info)) {
         $pub_info = 1;
@@ -1602,6 +1601,8 @@ function UNparseRC($id_RC)
 {
     global $db, $lang;
 
+    $Combat_Report_Model = new Combat_Report_Model();
+
     $key_ships = array('PT' => $lang['GAME_FLEET_PT_S'], 'GT' => $lang['GAME_FLEET_GT_S'], 'CLE' => $lang['GAME_FLEET_CLE_S'],
         'CLO' => $lang['GAME_FLEET_CLO_S'], 'CR' => $lang['GAME_FLEET_CR_S'], 'VB' => $lang['GAME_FLEET_VB_S'], 'VC' =>
             $lang['GAME_FLEET_VC_S'], 'REC' => $lang['GAME_FLEET_REC_S'], 'SE' => $lang['GAME_FLEET_SE_S'], 'BMD' => $lang['GAME_FLEET_BMD_S'],
@@ -1621,24 +1622,39 @@ function UNparseRC($id_RC)
             array(100000, 10000, 1));
 
     // Récupération des constantes du RC
-    $query = 'SELECT dateRC, coordinates, nb_rounds, victoire, pertes_A, pertes_D, gain_M, gain_C, 
-    gain_D, debris_M, debris_C, lune FROM ' . TABLE_PARSEDRC . ' WHERE id_rc = ' .
-        $id_RC;
-    $result = $db->sql_query($query);
-    list($dateRC, $coordinates, $nb_rounds, $victoire, $pertes_A, $pertes_D, $gain_M,
-        $gain_C, $gain_D, $debris_M, $debris_C, $lune) = $db->sql_fetch_row($result);
+
+    $RC = $Combat_Report_Model->get_combat_report($id_RC);
+
+    // mise en forme des data pour affichage
+    $dateRC = $RC["dateRC"];
+    $coordinates = $RC["coordinates"];
+    $nb_rounds = $RC["nb_rounds"];
+    $victoire = $RC["victoire"];
+    $pertes_A = $RC["pertes_A"];
+    $pertes_D = $RC["pertes_D"];
+    $gain_M = $RC["gain_M"];
+    $gain_C = $RC["gain_C"];
+    $gain_D = $RC["gain_D"];
+    $debris_M = $RC["debris_M"];
+    $debris_C = $RC["debris_C"];
+    $lune = $RC["lune"];
+    $tRounds = $RC["rounds"];
+
+
     $dateRC = date($lang['GAME_CREPORT_DATE'], $dateRC);
     $template = $lang['GAME_CREPORT_FIGHT'] . ' (' . $dateRC . "):\n\n";
 
     // Récupération de chaque round du RC
-    for ($idx = 1; $idx <= $nb_rounds; $idx++) {
-        $query = 'SELECT id_rcround, attaque_tir, attaque_puissance, attaque_bouclier, defense_tir, 
-      defense_puissance, defense_bouclier FROM ' . TABLE_PARSEDRCROUND .
-            ' WHERE id_rc = ' . $id_RC . '
-     AND numround = ' . $idx;
-        $result_round = $db->sql_query($query);
-        list($id_rcround, $attaque_tir, $attaque_puissance, $attaque_bouclier, $defense_tir,
-            $defense_puissance, $defense_bouclier) = $db->sql_fetch_row($result_round);
+    foreach ($tRounds as $round) {
+        // mise en forme des data pour affichage
+        $id_rcround = $round["id_rcround"];
+        $attaque_tir = $round["attaque_tir"];
+        $attaque_puissance = $round["attaque_puissance"];
+        $attaque_bouclier = $round["attaque_bouclier"];
+        $defense_tir = $round["defense_tir"];
+        $defense_puissance = $round["defense_puissance"];
+        $defense_bouclier = $round["defense_bouclier"];
+
         // On formate les résultats
         $nf_gain_M = number_format($gain_M, 0, ',', '.');
         $nf_gain_C = number_format($gain_C, 0, ',', '.');
@@ -1654,13 +1670,30 @@ function UNparseRC($id_RC)
         $nf_defense_puissance = number_format($defense_puissance, 0, ',', '.');
         $nf_defense_bouclier = number_format($defense_bouclier, 0, ',', '.');
 
+
         // Récupération de chaque attaquant du RC
-        $query = 'SELECT player, coordinates, Armes, Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, 
-      SE, BMD, DST, EDLM, TRA FROM ' . TABLE_ROUND_ATTACK .
-            ' WHERE id_rcround = ' . $id_rcround;
-        $result_attack = $db->sql_query($query);
-        while (list($player, $coordinates, $Armes, $Bouclier, $Protection, $PT, $GT, $CLE,
-            $CLO, $CR, $VB, $VC, $REC, $SE, $BMD, $DST, $EDLM, $TRA) = $db->sql_fetch_row($result_attack)) {
+        $idx = 1;
+        foreach ($round["attacks"] as $attak) {
+            $player = $attak["player"];
+            $coordinates = $attak["coordinates"];
+            $Armes = $attak["Armes"];
+            $Bouclier = $attak["Bouclier"];
+            $Protection = $attak["Protection"];
+            $PT = $attak["PT"];
+            $GT = $attak["GT"];
+            $CLE = $attak["CLE"];
+            $CLO = $attak["CLO"];
+            $CR = $attak["CR"];
+            $VB = $attak["VB"];
+            $VC = $attak["VC"];
+            $REC = $attak["REC"];
+            $SE = $attak["SE"];
+            $BMD = $attak["BMD"];
+            $DST = $attak["DST"];
+            $EDLM = $attak["EDLM"];
+            $TRA = $attak["TRA"];
+
+
             $key = '';
             $ship = 0;
             $vivant_att = false;
@@ -1690,17 +1723,45 @@ function UNparseRC($id_RC)
             } else {
                 $template .= ' détruit.' . "\n\n";
             }
-        } // Fin récupération de chaque attaquant du RC
 
-        // Récupération de chaque défenseur du RC
-        $query = 'SELECT player, coordinates, Armes, Bouclier, Protection, PT, GT, CLE, CLO, CR, VB, VC, REC, 
-      SE, BMD, SAT, DST, EDLM, TRA, LM, LLE, LLO, CG, AI, LP, PB, GB FROM ' .
-            TABLE_ROUND_DEFENSE . ' WHERE 
-      id_rcround = ' . $id_rcround;
-        $result_defense = $db->sql_query($query);
-        while (list($player, $coordinates, $Armes, $Bouclier, $Protection, $PT, $GT, $CLE,
-            $CLO, $CR, $VB, $VC, $REC, $SE, $BMD, $SAT, $DST, $EDLM, $TRA, $LM, $LLE, $LLO, $CG, $AI,
-            $LP, $PB, $GB) = $db->sql_fetch_row($result_defense)) {
+            $idx++;
+
+        }
+
+        // Récupération de chaque defenseur du RC
+        // Récupération de chaque attaquant du RC
+        $idx = 1;
+        foreach ($round["defenses"] as $defenses) {
+            $player = $defenses["player"];
+            $coordinates = $defenses["coordinates"];
+            $Armes = $defenses["Armes"];
+            $Bouclier = $defenses["Bouclier"];
+            $Protection = $defenses["Protection"];
+            $PT = $defenses["PT"];
+            $GT = $defenses["GT"];
+            $CLE = $defenses["CLE"];
+            $CLO = $defenses["CLO"];
+            $CR = $defenses["CR"];
+            $VB = $defenses["VB"];
+            $VC = $defenses["VC"];
+            $REC = $defenses["REC"];
+            $SE = $defenses["SE"];
+            $BMD = $defenses["BMD"];
+            $DST = $defenses["DST"];
+            $EDLM = $defenses["EDLM"];
+            $TRA = $defenses["TRA"];
+            $SAT = $defenses["SAT"];
+
+            $LM = $defenses["LM"];
+            $LLE = $defenses["LLE"];
+            $LLO = $defenses["LLO"];
+            $CG = $defenses["CG"];
+            $AI = $defenses["AI"];
+            $LP = $defenses["LP"];
+            $PB = $defenses["PB"];
+            $GB = $defenses["GB"];
+
+
             $key = '';
             $ship = 0;
             $vivant_def = false;
@@ -1740,7 +1801,9 @@ function UNparseRC($id_RC)
             } else {
                 $template .= ' ' . $lang['GAME_CREPORT_DESTROYED'] . ' ' . "\n\n";
             }
+            $idx++;
         } // Fin récupération de chaque défenseur du RC
+
 
         // Résultat du round
         if ($attaque_tir != 0 || $defense_tir != 0) {
@@ -1753,6 +1816,7 @@ function UNparseRC($id_RC)
                 $nf_attaque_bouclier . ' ' . $lang['GAME_CREPORT_RESULT_DEF_3'] . '.' . "\n\n";
         }
     } // Fin récupération de chaque round du RC
+
 
     // Qui a remporté le combat ?
     switch ($victoire) {
