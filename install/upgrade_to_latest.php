@@ -66,14 +66,13 @@ switch ($ogsversion) {
         $requests[] = "DROP TABLE `" . TABLE_RANK_ALLY_RESEARCH . "`"; // ancien classement recherche
         $requests[] = "DROP TABLE `" . TABLE_SPY . "`"; // ancienne table des RE
         $requests[] = "DROP TABLE `" . TABLE_UNIVERSE_TEMPORARY . "`"; // ancienne table temporaire univers
-
         $ogsversion = '3.1.1';
-        $up_to_date = true;
+
         //Pas de break pour faire toutes les mises à jour d'un coup !
     case '3.1.1':
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.1.2' WHERE config_name = 'version'";
         $ogsversion = '3.1.2';
-        $up_to_date = true;
+
         //Pas de break pour faire toutes les mises à jour d'un coup !
     case '3.1.2':
         $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` MODIFY `coordinates` VARCHAR(10)";
@@ -83,7 +82,7 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `off_commandant` enum('0','1') NOT NULL default '0' AFTER `disable_ip_check`";
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.1.3' WHERE config_name = 'version'";
         $ogsversion = '3.1.3';
-        $up_to_date = true;
+
     case '3.1.3':
         $requests[] = "CREATE TABLE IF NOT EXISTS `" . TABLE_GCM_USERS . "` ( " .
                         "`user_id` int(11) NOT NULL default '0'," .
@@ -143,7 +142,6 @@ switch ($ogsversion) {
 
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.2.0' WHERE config_name = 'version'";
         $ogsversion = '3.2.0';
-        $up_to_date = true;
 
     case '3.2.0':
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.0' WHERE config_name = 'version'";
@@ -154,7 +152,6 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` DROP `CC`";
         $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` DROP `CD`";
         $ogsversion = '3.3.0';
-        $up_to_date = true;
 
     case '3.3.0':
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.1' WHERE config_name = 'version'";
@@ -162,18 +159,15 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` MODIFY `user_galaxy` smallint(2)";
         $requests[] = "ALTER TABLE `" . TABLE_USER_FAVORITE . "` MODIFY `galaxy` smallint(2)";
         $ogsversion = '3.3.1';
-        $up_to_date = true;
 
     case '3.3.1':
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.2' WHERE config_name = 'version'";
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` MODIFY `xtense_type` enum('FF','GM-FF','GM-GC','GM-OP','ANDROID')";
         $ogsversion = '3.3.2';
-        $up_to_date = true;
 
     case '3.3.2':
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.3' WHERE config_name = 'version'";
         $ogsversion = '3.3.3';
-        $up_to_date = true;
 
     case '3.3.3':
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '0' WHERE config_name = 'mail_active'";
@@ -188,7 +182,6 @@ switch ($ogsversion) {
 
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.4' WHERE config_name = 'version'";
         $ogsversion = '3.3.4';
-        $up_to_date = true;
 
     case '3.3.4':
 
@@ -295,6 +288,11 @@ switch ($ogsversion) {
 
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.5' WHERE config_name = 'version'";
         $ogsversion = '3.3.5';
+
+    case '3.3.5':
+        $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` ADD `Dock` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `Silo`";
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.6-beta1' WHERE config_name = 'version'";
+        $ogsversion = '3.3.6-beta1';
         $up_to_date = true;
 
     case '3.3.5':
@@ -320,14 +318,14 @@ if (count($files) > 0) {
 }
 
 ?>
-    <h3 align='center'><span style="color: yellow; ">Mise à jour du serveur OGSpy vers la version <?php echo $ogsversion; ?> effectuée avec succès</span></h3>
+    <h3 align='center'><span style="color: yellow; ">Mise à jour du serveur OGSpy vers la version <?php echo $ogsversion; ?> réussie</span></h3>
     <div style="text-align: center;">
     <br>
 <?php
 if ($pub_verbose == true) {
 if ($up_to_date) {
-    echo "\t" . "<b><i>Pensez à supprimer le dossier 'install'</i></b><br>" . "\n";
-    echo "\t" . "<br><a href='../index.php'>Retour</a>" . "\n";
+    echo "\t" . "<b><i>Voulez-vous supprimer le dossier 'install' ?</i></b><br>" . "\n";
+    echo "\t" . "<br><a href='../index.php'>Oui</a>" . "\n";
 } else {
     echo "\t" . "<br><span style=\"color: orange; \"><b>Cette version n'est pas la dernière en date, veuillez relancer le script</span><br>" . "\n";
     echo "\t" . "<a href=''>Recommencer l'opération</a>" . "\n";

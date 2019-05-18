@@ -38,7 +38,7 @@ if (isset($pub_redirection)) {
 </head>
 <body>
 
-<table width="100%" align="center" cellpadding="20">
+<table width="60%" align="center" cellpadding="20">
     <tr>
         <td height="70"><div align="center"><img src="../skin/OGSpy_skin/logos/logo.png"></div></td>
     </tr>
@@ -56,8 +56,8 @@ if (isset($pub_redirection)) {
         <td align="center">
             <table>
                 <tr>
-                    <td align="center"><span
-                            style="font-size: small; "><b><?php echo $lang['INSTALL_WELCOME']; ?></b></span></td>
+                    <td align="left"><span
+                            style="font-size: small; "><b><?php echo $lang['INSTALL_WELCOME']; ?> <?php echo $install_version; ?></b></span></td>
                 </tr>
                 <tr><td>&nbsp;</td></tr>
                 <tr>
@@ -79,11 +79,11 @@ if (isset($pub_redirection)) {
                 </tr>
                 <tr><td>&nbsp;</td></tr>
                 <?php
-                if (!(version_compare(PHP_VERSION, "5.2.0") >= 0)) {
-                    echo "<tr><td style='font-size: 24px;'><span style=\"color: red; \">" . $lang['INSTALL_PHPERROR'] . "</span></td></tr>";
-                    echo "<tr><td><span style=\"color: red; \">" . $lang['INSTALL_PHP_ADVISE'];
-                    echo "<br/><br/>" . $lang['INSTALL_PHPVERSION'] . PHP_VERSION;
-                    echo "</font></td></tr>";
+                if (!(version_compare(PHP_VERSION, "7.0.0") >= 0)) {
+                    echo "<tr><td style='c'><span style=\"color: red\">" . $lang['INSTALL_PHPERROR'] . "</span></td></tr>";
+                    echo "<tr><td><span style=\"color: blue; \">" . $lang['INSTALL_PHP_ADVISE'];
+                    echo "<br><br>" . $lang['INSTALL_PHPVERSION'] . PHP_VERSION;
+                    echo "</td></tr><tr></tr>";
                 } else {
                 ?>
                 <tr><td>&nbsp;</td></tr>
@@ -104,12 +104,18 @@ if (isset($pub_redirection)) {
     <?php
     } // Fin Version compare
     ?>
+
+</table>
+
+<div id='barre'>
+    <table>
     <tr align="center">
         <td>
             <div style="text-align: center;font-size: x-small;"><i><b>OGSpy</b> is an <b>OGSteam Software</b>
-                    (c) 2005-2019</i><br>v <?php echo $install_version; ?></div>
+                    (c) 2005-2019</i></div>
         </td>
     </tr>
-</table>
+    </table>
+</div>
 </body>
 </html>

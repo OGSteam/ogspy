@@ -1238,7 +1238,7 @@ function galaxy_obsolete()
 function UNparseRE($id_RE)
 {
     //todo nom de variable pas du tout expressive :/
-    global $table_prefix, $db, $lang;
+    global $db, $lang;
 
     $Spy_Model = new Spy_Model();
     $Universe_Model = new Universe_Model();

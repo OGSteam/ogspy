@@ -42,7 +42,7 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 <tr>
     <td style="color: #ECFF00; text-align:center; font-size:13px; font-style:italic">
         <a style="font-weight:bold;" href="https://www.ogsteam.fr">OGSpy</a> is an <span style="font-weight:bold;">OGSteam Software</span> &copy;
-        2005-2018<br/>
+        2005-2019<br/>
         <span style="font-style:normal;">v <?php echo $server_config["version"]; ?></span><br/>
         <?php echo($lang['FOOTER_RENDERING']); ?> <?php echo round($php_timing + $sql_timing, 3); ?> sec (<span
             style="font-weight:bold;">PHP</span> : <?php echo round($php_timing, 3); ?> / <span
