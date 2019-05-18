@@ -29,6 +29,8 @@ class Statistics_Model extends Model_Abstract
     }
 
     private function add_statistic_name($name) {
+        $name= $this->db->sql_escape_string($name);
+
         $request = "INSERT IGNORE INTO " . TABLE_STATISTIC .
             " VALUES ('" . $name . "', '1')";
         $this->db->sql_query($request);

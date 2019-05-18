@@ -21,6 +21,8 @@ class User_Technology_Model  extends Model_Abstract
      * @return array
      */
     public function select_user_technologies($user_id) {
+        $user_id=(int)$user_id;
+
         $request = "SELECT Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique";
         $request .= " FROM " . TABLE_USER_TECHNOLOGY;
         $request .= " WHERE user_id = " . $user_id;
@@ -31,6 +33,8 @@ class User_Technology_Model  extends Model_Abstract
      * @param $user_id
      */
     public function delete_user_technologies($user_id) {
+        $user_id=(int)$user_id;
+
         $request = "DELETE FROM " . TABLE_USER_TECHNOLOGY . " WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
     }
@@ -40,6 +44,9 @@ class User_Technology_Model  extends Model_Abstract
      * @param $level niveau de l'espionnage
     */
     public function update_esp($user_id,$level) {
+        $user_id=(int)$user_id;
+        $level=(int)$level;
+        
         $request = "UPDATE " . TABLE_USER_TECHNOLOGY . " SET `Esp` = " . $level . " WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
     }

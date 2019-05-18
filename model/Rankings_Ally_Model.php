@@ -32,6 +32,8 @@ class Rankings_Ally_Model extends Rankings_Model
      */
     public function get_all_ranktable_byally($allyName)
     {
+        $ally_name=$this->db->sql_escape_string($allyName);
+
 
         $request  = "SELECT  general.datadate, general.rank, general.ally, general.number_member, general.rank, general.points, eco.rank, 
         eco.points, techno.rank, techno.points, military.rank, military.points, military_b.rank, military_b.points, military_l.rank, 
@@ -104,6 +106,12 @@ class Rankings_Ally_Model extends Rankings_Model
      */
     public function get_all_ranktable_bydate($datadate, $higher_rank = 1, $lower_rank = 100 , $ref = "general")
     {
+        $datadate=(int)$datadate;
+        $higher_rank=(int)$higher_rank;
+        $lower_rank=(int)$lower_rank;
+        $ref=$this->db->sql_escape_string($ref);
+
+
         if (!in_array($ref, $this->rank_table_ref)) {
             $ref = "general";
         }

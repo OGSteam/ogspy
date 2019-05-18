@@ -83,8 +83,9 @@ class Group_Model extends Model_Abstract
      */
     public function get_user_list($group_id)
     {
-        $usergroup_member = array();
         $group_id=intval($group_id);
+
+        $usergroup_member = array();
 
         $request = "SELECT u.user_id, u.user_name FROM " . TABLE_USER . " AS  u, " .
             TABLE_USER_GROUP . " AS g";
@@ -230,6 +231,8 @@ class Group_Model extends Model_Abstract
      */
     public function delete_user($user_id)
     {
+        $user_id = (int)$user_id;
+
         $request = "DELETE FROM " . TABLE_USER_GROUP . " WHERE user_id = " . intval($user_id);
         $this->db->sql_query($request);
         if ($this->db->sql_affectedrows() > 0) {
@@ -247,6 +250,10 @@ class Group_Model extends Model_Abstract
      */
     public function delete_user_from_group($user_id, $group_id)
     {
+        $user_id=(int)$user_id;
+        $group_id=(int)$group_id;
+
+
         $request = "DELETE FROM " . TABLE_USER_GROUP . " WHERE group_id = " . intval($group_id) .
             " and user_id = " . intval($user_id);
         $this->db->sql_query($request);

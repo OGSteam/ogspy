@@ -47,6 +47,8 @@ abstract class Rankings_Model extends Model_Abstract
      * @param $rank_table
      */
     public function get_rank_latest_table_date($rank_table) {
+        $rank_table=$this->db->sql_escape_string($rank_table);
+
         $request = "SELECT MAX(`datadate`) FROM `" . $rank_table . "`" . " LIMIT 0,1";
         $request = "SELECT datadate FROM `" . $rank_table . "`" . " LIMIT 0,1";
         $result = $this->db->sql_query($request);
@@ -60,6 +62,8 @@ abstract class Rankings_Model extends Model_Abstract
      */
     public function get_all_distinct_date_ranktable($rank_table)
     {
+        $rank_table=$this->db->sql_escape_string($rank_table);
+
         $ranking_available = array();
         $request = "SELECT DISTINCT datadate FROM `" . $rank_table . "`  ORDER BY datadate DESC";
         $result = $this->db->sql_query($request);
@@ -78,6 +82,13 @@ abstract class Rankings_Model extends Model_Abstract
      * @return array
      */
     public function get_ranktable($rank_table, $datadate, $bydate = false, $higher_rank = 1, $lower_rank = 100) {
+        $rank_table=$this->db->sql_escape_string($rank_table);
+        $datadate=(int)$datadate;
+        $bydate=(bool)$bydate;
+        $higher_rank=(int)$higher_rank;
+        $lower_rank=(int)$lower_rank;
+
+
         $request  = "SELECT `" . implode("`,`", $this->rank_tables_sql_table) . "`";
         $request .= " FROM `" . $rank_table . "`";
         if ($bydate)
@@ -98,6 +109,9 @@ abstract class Rankings_Model extends Model_Abstract
      * remove entry from database when datadate is out of time
      */
     public function remove_all_rank_older_than($datadate,$table=null) {
+        $datadate=(int)$datadate;
+        $table=$this->db->sql_escape_string($table);
+
         $tTables =$this->rank_tables;
         if (in_array($table, $this->rank_tables))
         {
@@ -117,6 +131,8 @@ abstract class Rankings_Model extends Model_Abstract
      * remove entry from database by datadate
      */
     public function remove_all_rank_by_datadate($datadate,$table=null) {
+        $datadate=(int)$datadate;
+        $table=$this->db->sql_escape_string($table);
         $tTables =$this->rank_tables;
         if (in_array($table, $this->rank_tables))
         {

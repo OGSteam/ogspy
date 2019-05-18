@@ -152,6 +152,8 @@ class Mod_Model  extends Model_Abstract
      */
     public function get_mod_id_by_root($root)
     {
+        $root =$this->db->sql_escape_string($root);
+
         $request = "select id from " . TABLE_MOD . " where root = '".$root."'";
         $result = $this->db->sql_query($request);
         list($id) = $this->db->sql_fetch_row($result);
@@ -186,6 +188,9 @@ class Mod_Model  extends Model_Abstract
      */
     public function update_posisiton($mod_id,$position)
     {
+        $mod_id=(int)$mod_id;
+        $position=(int)$position;
+
         $request = "update " . TABLE_MOD . " set position = " . $position . " where id = '".$mod_id."'";
         $this->db->sql_query($request);
     }
@@ -197,6 +202,8 @@ class Mod_Model  extends Model_Abstract
      */
     public function delete($mod_id)
     {
+        $mod_id=(int)$mod_id;
+
         $request = "delete from " . TABLE_MOD . " where id = '{$this->db->sql_escape_string($mod_id)}'";
         $this->db->sql_query($request);
     }
@@ -208,6 +215,8 @@ class Mod_Model  extends Model_Abstract
      */
     public function delete_by_title($mod_uninstall_title)
     {
+        $mod_uninstall_title = $this->db->sql_escape_string($mod_uninstall_title);
+
         $request = "delete from " . TABLE_MOD . " where title = '{$this->db->sql_escape_string($mod_uninstall_title)}'";
         $this->db->sql_query($request);
     }
@@ -219,6 +228,8 @@ class Mod_Model  extends Model_Abstract
      */
     public function drop_custum_table($table_name)
     {
+        $table_name=$this->db->sql_escape_string($table_name);
+
         $request ="DROP TABLE IF EXISTS " . $table_name ;
         $this->db->sql_query($request);
     }
@@ -227,6 +238,7 @@ class Mod_Model  extends Model_Abstract
 
     public function isExistByTitle($title)
     {
+        $title = $this->db->sql_escape_string($title);
 
         $request = "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $title ."'";
         $this->db->sql_query($request);

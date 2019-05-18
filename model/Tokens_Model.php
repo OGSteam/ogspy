@@ -28,6 +28,11 @@ class Tokens_Model extends Model_Abstract
      * @return mixed
      */
     public function add_token($token_id, $token_user_id, $token_expire, $token_type) {
+        $token_id=$this->db->sql_escape_string($token_id);
+        $token_user_id=(int)$token_user_id;
+        $token_expire=(int)$token_expire;
+        $token_type=$this->db->sql_escape_string($token_type);
+
         if ($this->get_token($token_user_id,$token_type) != false) {
             $request = "UPDATE " . TABLE_USER_TOKEN . " SET  `token` = '" . $token_id . "', `expiration_date` = '" . $token_expire . "' WHERE `user_id` = '" . $token_user_id . "' AND `name` =  '" . $token_type . "'";
             $this->db->sql_query($request, true, false);
@@ -44,6 +49,9 @@ class Tokens_Model extends Model_Abstract
      * @return mixed
      */
     public function get_token($token_user_id, $token_type) {
+        $token_user_id=(int)$token_user_id;
+        $token_type=$this->db->sql_escape_string($token_type);
+
         $request = "SELECT `token` FROM " . TABLE_USER_TOKEN . " WHERE `user_id`= '" . $token_user_id . "' AND `name` =  '" . $token_type . "'";
         $result = $this->db->sql_query($request);
         if ($this->db->sql_numrows($result) > 0) {
@@ -60,6 +68,8 @@ class Tokens_Model extends Model_Abstract
      * @return mixed
      */
     public function get_all_tokens($token_user_id) {
+        $token_user_id=(int)$token_user_id;
+
         $request = "SELECT `token` FROM " . TABLE_USER_TOKEN . " WHERE `user_id`= '" . $token_user_id . "' ";
         $result = $this->db->sql_query($request);
 
@@ -79,6 +89,9 @@ class Tokens_Model extends Model_Abstract
      * @internal param $token_user_id
      */
     public function get_userid_from_token($token, $token_type) {
+        $token=$this->db->sql_escape_string($token);
+        $token_type=$this->db->sql_escape_string($token_type);
+
         $request = "SELECT `user_id` FROM " . TABLE_USER_TOKEN . " WHERE `token`= '" . $token . "' AND `name` =  '" . $token_type . "'";
         $result = $this->db->sql_query($request);
         if ($this->db->sql_numrows($result) > 0) {
@@ -103,6 +116,8 @@ class Tokens_Model extends Model_Abstract
      *  This function removes all tokens by type from the Table
      */
     public function delete_all_tokens_by_type($token_type) {
+        $token_type=$this->db->sql_escape_string($token_type);
+
         $request = "DELETE FROM " . TABLE_USER_TOKEN . " WHERE `name` =  '" . $token_type . "'";
         $this->db->sql_query($request);
     }

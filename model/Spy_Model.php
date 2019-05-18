@@ -23,7 +23,9 @@ class Spy_Model extends Model_Abstract
      * @return array
      */
     public function get_favoriteSpyList($user_id, $sort = 5, $sort2 = 0) {
-
+        $user_id=(int)$user_id;
+        $sort=(int)$sort;
+        $sort2=(int)$sort2;
         
 
         switch ($sort2) {
@@ -86,6 +88,8 @@ class Spy_Model extends Model_Abstract
 
     public function get_spy_Id($id_RE)
     {
+        $id_RE=(int)$id_RE;
+
         $query = 'SELECT planet_name, coordinates, metal, cristal, deuterium, energie, activite, M, C, D, CES, CEF, UdR, UdN, CSp, HM, HC, 
         HD, Lab, Ter, Silo, Dock, DdR, BaLu, Pha, PoSa, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, 
         DST, EDLM, SAT, TRA, Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique, 
@@ -98,6 +102,8 @@ class Spy_Model extends Model_Abstract
 
     public function get_all_spy_coordinates($coord)
     {
+        $coord = $this->db->sql_escape_string($coord);
+
         $query = "SELECT planet_name, coordinates, metal, cristal, deuterium, energie, activite, M, C, D, CES, CEF, UdR, UdN, CSp, HM, HC, 
         HD, Lab, Ter, Silo, Dock, DdR, BaLu, Pha, PoSa, LM, LLE, LLO, CG, AI, LP, PB, GB, MIC, MIP, PT, GT, CLE, CLO, CR, VB, VC, REC, SE, BMD, 
         DST, EDLM, SAT, TRA, Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique, 
@@ -118,7 +124,9 @@ class Spy_Model extends Model_Abstract
      * @return int $nb_spy
      */
     public function get_nb_spy_by_planet($galaxy, $system, $row) {
-        
+        $galaxy=(int)$galaxy;
+        $system=(int)$system;
+        $row=(int)$row;
 
         $request = "SELECT * FROM " . TABLE_PARSEDSPY . " WHERE `active` = '1' AND `coordinates` = '" . $galaxy . ":" . $system . ":" . $row . "'";
         $result = $this->db->sql_query($request);
@@ -134,7 +142,9 @@ class Spy_Model extends Model_Abstract
      * @return array $tResult
      */
     public function get_spy_id_list_by_planet($galaxy, $system, $row) {
-        
+        $galaxy=(int)$galaxy;
+        $system=(int)$system;
+        $row=(int)$row;
 
         $request = "SELECT `id_spy`, `user_name`, `dateRE` ";//, `is_moon`";
         $request .= " FROM " . TABLE_PARSEDSPY . " LEFT JOIN " . TABLE_USER . " ON `user_id` = `sender_id`";
@@ -155,7 +165,7 @@ class Spy_Model extends Model_Abstract
      * @param $spy_id
      */
     public function delete_spy($spy_id) {
-
+        $spy_id=(int)$spy_id;
 
         $request = "DELETE FROM " . TABLE_PARSEDSPY . " WHERE `spy_id` = '" . $spy_id . "'";
         $this->db->sql_query($request);
@@ -170,6 +180,9 @@ class Spy_Model extends Model_Abstract
      * @param $user_id
      */
     public function delete_spy_by_senderId($spy_id,$user_id) {
+        $spy_id=(int)$spy_id;
+        $user_id=(int)$user_id;
+
         $request = "DELETE FROM " . TABLE_PARSEDSPY . " WHERE `spy_id` = '" . $spy_id . "' and  `sender_id` = '" . $user_id . "'";
         $this->db->sql_query($request);
     }
@@ -181,7 +194,7 @@ class Spy_Model extends Model_Abstract
      * @param $limit_time
      */
     public function delete_expired_spies($limit_time) {
-        
+        $limit_time=(int)$limit_time;
 
         $request = "DELETE FROM " . TABLE_PARSEDSPY . " WHERE `active` = '0' OR `dateRE` < " . $limit_time;
         $this->db->sql_query($request);

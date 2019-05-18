@@ -19,6 +19,8 @@ class User_Building_Model  extends Model_Abstract
      * @return mixed
      */
     public function get_planet_list($user_id) {
+        $user_id=(int)$user_id;
+
         $request = "select planet_id, coordinates";
         $request .= " from " . TABLE_USER_BUILDING;
         $request .= " where user_id = " . $user_id;
@@ -35,6 +37,8 @@ class User_Building_Model  extends Model_Abstract
      * @return mixed
      */
     public function get_moon_list($user_id) {
+        $user_id=(int)$user_id;
+
         // les lunes
         $request = "select planet_id, coordinates";
         $request .= " from " . TABLE_USER_BUILDING;
@@ -52,6 +56,8 @@ class User_Building_Model  extends Model_Abstract
      * @return int|\Ogsteam\Ogspy\the
      */
     public function get_nb_planets($user_id) {
+        $user_id=(int)$user_id;
+
         $request = "SELECT planet_id ";
         $request .= " FROM " . TABLE_USER_BUILDING;
         $request .= " WHERE user_id = " . $user_id;
@@ -70,6 +76,8 @@ class User_Building_Model  extends Model_Abstract
      */
     public function get_nb_moons($user_id)
     {
+        $user_id=(int)$user_id;
+
         $request = "select planet_id ";
         $request .= " from " . TABLE_USER_BUILDING;
         $request .= " where user_id = " . $user_id;
@@ -89,6 +97,8 @@ class User_Building_Model  extends Model_Abstract
      * Recupere les boosters d'un utilisateur
      */
     public function get_all_booster_player($id_player) {
+        $id_player=(int)$id_player;
+
         $request = "SELECT user_id, planet_id, boosters FROM " . TABLE_USER_BUILDING . " WHERE user_id=" . $id_player ;
         $result = $this->db->sql_query($request);
 
@@ -126,6 +136,10 @@ class User_Building_Model  extends Model_Abstract
      * @return bool
      */
     public function update_booster($user_id,$planet_id,$boosters) {
+        $user_id=(int)$user_id;
+        $planet_id=(int)$planet_id;
+        $boosters=$this->db->sql_escape_string($boosters);
+
         $requests = "UPDATE " . TABLE_USER_BUILDING . " SET boosters = '" . $boosters . "' " .
             " WHERE user_id = " .$user_id .
             " AND planet_id = " . $planet_id;
@@ -138,6 +152,8 @@ class User_Building_Model  extends Model_Abstract
      * @return array
      */
     public function select_user_building_list($user_id) {
+        $user_id=(int)$user_id;
+
         $tElemList = array("planet_id", "planet_name", "coordinates", "fields", "boosters", "temperature_min", "temperature_max", "Sat", "Sat_percentage", "M", "M_percentage", "C", "C_Percentage", "D", "D_percentage", "CES", "CES_percentage", "CEF", "CEF_percentage", "UdR", "UdN", "CSp", "HM", "HC", "HD", "Lab", "Ter", "Silo", "BaLu", "Pha", "PoSa", "DdR");
 
         $request = "SELECT ".implode(", ",$tElemList)." ";
@@ -158,6 +174,8 @@ class User_Building_Model  extends Model_Abstract
     }
 
     public function get_building_by_silo($silo_level) {
+        $silo_level=(int)$silo_level;
+
         $request =  "SELECT user_id, planet_id, coordinates, Silo FROM " . TABLE_USER_BUILDING . " WHERE Silo >= ".$silo_level." ";
         $result =  $this->db->sql_query($request);
 
@@ -175,6 +193,10 @@ class User_Building_Model  extends Model_Abstract
      * @param $new_id
      */
     public function update_moon_id($user_id, $previous_id, $new_id) {
+        $user_id=(int)$user_id;
+        $previous_id=(int)$previous_id;
+        $new_id=(int)$new_id;
+
         $request = "UPDATE " . TABLE_USER_BUILDING . " SET planet_id  = " . $new_id .
             " WHERE  planet_id = " . $previous_id . " and user_id = " . $user_id;
         $this->db->sql_query($request);
@@ -189,6 +211,10 @@ class User_Building_Model  extends Model_Abstract
      * @param $new_id
      */
     public function update_planet_id($user_id, $previous_id, $new_id) {
+        $user_id=(int)$user_id;
+        $previous_id=(int)$previous_id;
+        $new_id=(int)$new_id;
+
         $request = "UPDATE " . TABLE_USER_BUILDING . " SET planet_id  = " . $new_id .
             " WHERE  planet_id = " . $previous_id . " and user_id = " . $user_id;
         $this->db->sql_query($request);
@@ -198,6 +224,9 @@ class User_Building_Model  extends Model_Abstract
      * @param $aster_id Planet or moon to be deleted
      */
     public function delete_user_aster($user_id, $aster_id) {
+        $user_id=(int)$user_id;
+        $aster_id=(int)$aster_id;
+
         $request = "DELETE FROM " . TABLE_USER_BUILDING . " WHERE `user_id` = " . $user_id . " AND `planet_id` = " . intval($aster_id);
         $this->db->sql_query($request);
     }
