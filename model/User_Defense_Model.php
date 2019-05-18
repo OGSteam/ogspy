@@ -17,7 +17,7 @@ class User_Defense_Model  extends Model_Abstract
 {
     /**
      * @param $user_id
-     * @return bool|mixed|\Ogsteam\Ogspy\mysqli_result
+     * @return array
      */
     public function select_user_defense($user_id) {
         $tElemList = array("planet_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "GB", "MIC", "MIP");
@@ -39,6 +39,21 @@ class User_Defense_Model  extends Model_Abstract
         return $tDefense;
 
     }
+
+    public function select_user_defense_planete($user_id, $planet_id) {
+        $tElemList = array("planet_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "GB", "MIC", "MIP");
+
+        $request = "SELECT ".implode(", ",$tElemList)." ";;
+        $request .= " FROM " . TABLE_USER_DEFENCE;
+        $request .= " WHERE user_id = " . $user_id;
+        $request .= "  AND planet_id = " . $planet_id ." ";
+
+        $result = $this->db->sql_query($request);
+
+        return $this->db->sql_fetch_assoc($result);
+    }
+
+
     /**
      * @param $user_id
      * @param $previous_id

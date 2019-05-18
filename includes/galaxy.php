@@ -22,6 +22,9 @@ use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Combat_Report_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Helper;
+use Ogsteam\Ogspy\Model\User_Technology_Model;
+use Ogsteam\Ogspy\Model\User_Defense_Model;
+use Ogsteam\Ogspy\Model\User_Building_Model;
 
 
 use Ogsteam\Ogspy\Helper\SearchCriteria_Helper;
@@ -1621,28 +1624,34 @@ function UNparseRE($id_RE)
  *
  * @param int $galaxy
  * @param int $system
- * @global array $user_data
- * @global       object mysql $db
- * @todo Query : 'SELECT user_id, planet_id, coordinates, Silo FROM ' . TABLE_USER_BUILDING . ' WHERE Silo >= 3'
- * @todo Query : 'SELECT RI FROM ' . TABLE_USER_TECHNOLOGY . ' where user_id = ' . $base_joueur
- * @todo Query : 'SELECT MIP FROM ' . TABLE_USER_DEFENCE . ' where user_id = ' . $base_joueur . ' AND planet_id = ' . $base_id_planet;
- *
  * @return string
  */
 function portee_missiles($galaxy, $system)
 {
-    global $user_data, $server_config, $db;
+    global  $server_config;
+    //todo prevoir jointure de table
 
     $User_Model = new User_Model();
+    $User_Building_Model = new User_Building_Model();
+    $User_Technology_Model = new User_Technology_Model();
+    $User_Defense_Model = new User_Defense_Model();
+
 
     $missil_ok = '';
     $total_missil = 0;
     // recherche niveau missile
-    $request = 'SELECT user_id, planet_id, coordinates, Silo FROM ' . TABLE_USER_BUILDING . ' WHERE Silo >= 3';
-    $req1 = $db->sql_query($request);
+
+
+    $tUser_building = $User_Building_Model->get_building_by_silo(3);
 
     $ok_missil = '';
-    while (list ($base_joueur, $base_id_planet, $base_coord, $base_missil) = $db->sql_fetch_row($req1)) {
+    foreach ($tUser_building as $User_building) {
+
+        $base_joueur = $User_building["user_id"];
+        $base_id_planet = $User_building["planet_id"];
+        $base_coord = $User_building["coordinates"];
+        $base_missil = $User_building["Silo"];
+
         // sépare les coords
         $missil_coord = explode(':', $base_coord);
         $galaxie_missil = $missil_coord[0];
@@ -1650,16 +1659,15 @@ function portee_missiles($galaxy, $system)
         $planet_missil = $missil_coord[2]; // Inutile ?
 
         // recherche le niveau du réacteur du joueur
-        $request = 'SELECT RI FROM ' . TABLE_USER_TECHNOLOGY . ' WHERE user_id = ' . $base_joueur;
-        $req2 = $db->sql_query($request);
-        list ($niv_reac_impuls) = $db->sql_fetch_row($req2);
+        $tUser_Technology =  $User_Technology_Model->select_user_technologies($base_joueur);
+        $niv_reac_impuls = $tUser_Technology["RI"];
 
         if ($niv_reac_impuls > 0) {
 
             // recherche du nombre de missile dispo
-            $request = 'SELECT MIP FROM ' . TABLE_USER_DEFENCE . ' WHERE user_id = ' . $base_joueur . ' AND planet_id = ' . $base_id_planet;
-            $req2 = $db->sql_query($request);
-            list ($missil_dispo) = $db->sql_fetch_row($req2);
+            $tUser_defense = $User_Defense_Model->select_user_defense_planete($base_joueur, $base_id_planet);
+            $missil_dispo =  $tUser_defense["MIP"];
+
 
             $info_users = $User_Model->select_user_data($base_joueur);
             $nom_missil_joueur = $info_users["user_name"];

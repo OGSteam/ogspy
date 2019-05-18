@@ -156,6 +156,19 @@ class User_Building_Model  extends Model_Abstract
         }
         return $tbuilding;
     }
+
+    public function get_building_by_silo($silo_level) {
+        $request =  "SELECT user_id, planet_id, coordinates, Silo FROM " . TABLE_USER_BUILDING . " WHERE Silo >= ".$silo_level." ";
+        $result =  $this->db->sql_query($request);
+
+        $tbuilding = array();
+        while ($building =  $this->db->sql_fetch_assoc($result)){
+            $tbuilding[]=$building;
+            }
+
+        return $tbuilding;
+    }
+
     /**
      * @param $user_id
      * @param $previous_id
