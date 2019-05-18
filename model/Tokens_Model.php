@@ -37,7 +37,7 @@ class Tokens_Model extends Model_Abstract
             $request = "UPDATE " . TABLE_USER_TOKEN . " SET  `token` = '" . $token_id . "', `expiration_date` = '" . $token_expire . "' WHERE `user_id` = '" . $token_user_id . "' AND `name` =  '" . $token_type . "'";
             $this->db->sql_query($request, true, false);
         } else {
-            $request = "INSERT INTO " . TABLE_USER_TOKEN . " (`id`, `user_id`, `name`, `token`, `expiration_date`) VALUES (NULL, '" . $token_user_id . "', 'PAT ', '" . $token_type . "', '" . $token_expire . "')";
+            $request = "INSERT INTO " . TABLE_USER_TOKEN . " (`id`, `user_id`, `name`, `token`, `expiration_date`) VALUES (NULL, '" . $token_user_id . "', '" . $token_type . "' , '" . $token_type . "', '" . $token_expire . "')";
             $this->db->sql_query($request);
         }
         return $this->get_token($token_user_id,$token_type); ;
