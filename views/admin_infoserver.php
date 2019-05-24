@@ -48,6 +48,11 @@ $og_pays = 'unknow';
 $nb_mail= (isset($server_config['count_mail'])) ? $server_config['count_mail']     : "0";
 
 $stats = (new Statistics_Model())->find();
+//fix affichage info OGS
+//todo a supprimer, info insert xtense uniquement à la place ....
+$stats["spyexport_ogs"] = (isset($stats["spyexport_ogs"])) ? $stats["spyexport_ogs"] : 0;
+$stats["rankexport_ogs"] = (isset($stats["rankexport_ogs"])) ? $stats["rankexport_ogs"] : 0;
+$stats["planetexport_ogs"] = (isset($stats["planetexport_ogs"])) ? $stats["planetexport_ogs"] : 0;
 
 //on compte le nombre de personnes en ligne
 $online = session_whois_online();//Personne en ligne
