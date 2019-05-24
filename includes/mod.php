@@ -554,10 +554,7 @@ function mod_get_option($param)
     }
 
     $retour = (new Mod_Config_Model)->get_mod_config($nom_mod, $param);
-    if (count($retour)==0)
-    {
-        return '-1';
-    }
+
     return $retour;
 }
 
