@@ -670,12 +670,14 @@ function install_mod($mod_folder)
  * @param string $mod_uninstall_table : Name of the Database table used by the Mod that we need to remove
  * @api
  */
-function uninstall_mod($mod_uninstall_name, $mod_uninstall_table)
+function uninstall_mod($mod_uninstall_name, $mod_uninstall_table=null)
 {
     $Mod_Model = new Mod_Model();
 
     $Mod_Model->delete_by_title($mod_uninstall_name);
-    if (!empty($mod_uninstall_table)) {
+
+    if ($mod_uninstall_table!=null)
+    {
         //todo MOD factory ?
         log_("debug", "DROP TABLE IF EXISTS " . $mod_uninstall_table);
         $Mod_Model->drop_custum_table($mod_uninstall_table);

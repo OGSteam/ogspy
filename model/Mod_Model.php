@@ -114,7 +114,6 @@ class Mod_Model  extends Model_Abstract
      */
     public function add(array $mod)
     {
-        
         if ($mod == null || count($mod) != 9) {
             throw new \Exception('Invalid parameter');
         }
@@ -130,6 +129,7 @@ class Mod_Model  extends Model_Abstract
                     '" .$this->db->sql_escape_string($mod['position']) . "',
                     '" .$this->db->sql_escape_string($mod['active']) . "',
                     '" .$this->db->sql_escape_string($mod['admin_only']) . "')";
+
        $this->db->sql_query($query);
     }
 
@@ -228,10 +228,27 @@ class Mod_Model  extends Model_Abstract
      */
     public function drop_custum_table($table_name)
     {
-        $table_name=$this->db->sql_escape_string($table_name);
+        if (is_array($table_name))
+        {
+            foreach ($table_name as $tablename)
+            {
+                $table_name=$this->db->sql_escape_string($tablename);
 
-        $request ="DROP TABLE IF EXISTS " . $table_name ;
-        $this->db->sql_query($request);
+                $request ="DROP TABLE IF EXISTS " . $table_name ;
+                $this->db->sql_query($request);
+            }
+
+        }
+        else
+        {
+            $table_name=$this->db->sql_escape_string($table_name);
+
+            $request ="DROP TABLE IF EXISTS " . $table_name ;
+            $this->db->sql_query($request);
+
+        }
+
+
     }
 
 
