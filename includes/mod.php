@@ -651,7 +651,7 @@ function install_mod($mod_folder)
             $newMod['menu'] = $value_mod[1];
             $newMod['action'] = $value_mod[2];
             $newMod['root'] =$value_mod[3] ;
-            $newMod['link'] = $value_mod[2];
+            $newMod['link'] = $value_mod[4];
             $newMod['version'] = $mod_version;
             $newMod['active'] = $value_mod[5];
             $newMod['admin_only'] = $value_mod[6];
