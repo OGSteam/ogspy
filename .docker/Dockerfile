@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-LABEL VERSION ="0.1"
+LABEL VERSION ="0.2"
 LABEL DESCRIPTION="APACHE PHP OGSPY"
 LABEL MAINTENER="darknoon@darkcity.fr"
 
@@ -14,8 +14,10 @@ apache2 \
 libapache2-mod-php \
 mariadb-server \
 php-mysql \
-pwgen
-&& apt-get clean
+php-xml \
+php-zip \
+pwgen \
+&& apt-get clean \
 && rm -rf /var/lib/apt/lists/
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
@@ -42,7 +44,7 @@ COPY apache_default /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
 # Configure /app folder with sample app
-RUN git clone -b OGSpy_3.3 https://github.com/ogsteam/ogspy /app
+RUN git clone -b 3.3.5 https://github.com/ogsteam/ogspy /app
 RUN git clone -b master https://github.com/ogsteam/mod-autoupdate /app/mod/autoupdate
 RUN chown -R www-data:www-data /app
 RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
