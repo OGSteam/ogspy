@@ -222,6 +222,7 @@ function mod_install()
 
     //recuperation du mod
     $mod_id = $Mod_Model->get_mod_id_by_root($pub_directory);
+
     //récuperation de l'emplacement possible
     $position = $Mod_Model->get_position_max();
 
@@ -230,7 +231,8 @@ function mod_install()
 
     //récuperation du titre en base
     $mod = $Mod_Model->find_by(array("id" => $mod_id));
-    if (count($mod ==0) )
+
+    if (count($mod) !=0 )
     {
         log_("mod_install", $mod[0]['title']);
     }
@@ -640,7 +642,8 @@ function install_mod($mod_folder)
     // On vérifie si le mod est déjà installé""
     $Mod_Model = new Mod_Model();
     $mod = $Mod_Model->find_one_by(array("title" => $value_mod[0]));
-    if (isset($mod['title']) )
+
+    if (!isset($mod['title']) )
     {
         if (count($value_mod) == 7) {
             $newMod = array();
@@ -652,7 +655,7 @@ function install_mod($mod_folder)
             $newMod['version'] = $mod_version;
             $newMod['active'] = $value_mod[5];
             $newMod['admin_only'] = $value_mod[6];
-
+            $newMod['position'] = 1;
             $Mod_Model->add($newMod);
 
             $is_ok = true; /// tout c 'est bien passe'
