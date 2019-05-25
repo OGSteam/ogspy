@@ -37,7 +37,7 @@ class Tokens_Model extends Model_Abstract
             $request = "UPDATE " . TABLE_USER_TOKEN . " SET  `token` = '" . $token_id . "', `expiration_date` = '" . $token_expire . "' WHERE `user_id` = '" . $token_user_id . "' AND `name` =  '" . $token_type . "'";
             $this->db->sql_query($request, true, false);
         } else {
-            $request = "INSERT INTO " . TABLE_USER_TOKEN . " (`id`, `user_id`, `name`, `token`, `expiration_date`) VALUES (NULL, '" . $token_user_id . "', '" . $token_type . "' , '" . $token_type . "', '" . $token_expire . "')";
+            $request = "INSERT INTO " . TABLE_USER_TOKEN . " (`id`, `user_id`, `name`, `token`, `expiration_date`) VALUES (NULL, '" . $token_user_id . "', '" . $token_type . "' , '" . $token_id . "', '" . $token_expire . "')";
             $this->db->sql_query($request);
         }
         return $this->get_token($token_user_id,$token_type); ;
@@ -70,16 +70,21 @@ class Tokens_Model extends Model_Abstract
     public function get_all_tokens($token_user_id) {
         $token_user_id=(int)$token_user_id;
 
-        $request = "SELECT `token` FROM " . TABLE_USER_TOKEN . " WHERE `user_id`= '" . $token_user_id . "' ";
+        $request = "SELECT `token`, `name` ,`expiration_date`   FROM " . TABLE_USER_TOKEN . " WHERE `user_id`= '" . $token_user_id . "' ";
+
         $result = $this->db->sql_query($request);
-
-
+        $tRetour = array();
         if ($this->db->sql_numrows($result) > 0) {
-            list($token_id) = $this->db->sql_fetch_row($result);
-            return $token_id;
+            echo "retour ";
+            while ($row = $this->db->sql_fetch_assoc($result)) {
+                echo "boucle ";
+                $tRetour[$row['name']] = $row;
+            }
+            return $tRetour;
         } else {
             return false;
         }
+
     }
 
     /**
