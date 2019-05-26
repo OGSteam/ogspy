@@ -218,6 +218,7 @@ function mod_install()
         }
     }
     // si on arrive jusque la on peut installer
+    global $db; // fix pour mod ne faisant pas l'inclusion mais l'utilisant (xtense ... )
     require_once("mod/" . $pub_directory . "/install.php");
 
     //recuperation du mod
@@ -312,6 +313,8 @@ function mod_update()
     }
 
     if (file_exists("mod/" . $mod['root'] . "/update.php")) {
+        // si on arrive jusque la on peut installer
+        global $db; // fix pour mod ne faisant pas l'inclusion mais l'utilisant (xtense ... )
         require_once("mod/" . $mod['root'] . "/update.php");
 
         log_("mod_update", $mod['title']);
@@ -338,6 +341,8 @@ function mod_uninstall()
     $title = $mod["title"];
 
     if (file_exists("mod/" . $root . "/uninstall.php")) {
+        // si on arrive jusque la on peut installer
+        global $db; // fix pour mod ne faisant pas l'inclusion mais l'utilisant (xtense ... )
         require_once("mod/" . $root . "/uninstall.php");
     }
 
