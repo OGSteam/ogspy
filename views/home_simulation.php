@@ -48,7 +48,8 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
     /*Boosters et extensions modification :*/
     //booster dans fonctions
     $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
-    $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+    $iFields = (int) $user_building[$i]["fields"]; // si pas d'info sur batiment, variable string
+    $user_building[$i]["fields"] = $iFields + $booster_tab[$i]['extention_p'];
 }
 ?>
 

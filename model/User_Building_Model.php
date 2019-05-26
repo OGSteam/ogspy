@@ -154,7 +154,7 @@ class User_Building_Model  extends Model_Abstract
     public function select_user_building_list($user_id) {
         $user_id=(int)$user_id;
 
-        $tElemList = array("planet_id", "planet_name", "coordinates", "fields", "boosters", "temperature_min", "temperature_max", "Sat", "Sat_percentage", "M", "M_percentage", "C", "C_Percentage", "D", "D_percentage", "CES", "CES_percentage", "CEF", "CEF_percentage", "UdR", "UdN", "CSp", "HM", "HC", "HD", "Lab", "Ter", "Silo", "BaLu", "Pha", "PoSa", "DdR");
+        $tElemList = array("planet_id", "planet_name", "coordinates", "fields", "boosters", "temperature_min", "temperature_max", "Sat", "Sat_percentage", "M", "M_percentage", "C", "C_percentage", "D", "D_percentage", "CES", "CES_percentage", "CEF", "CEF_percentage", "UdR", "UdN", "CSp", "HM", "HC", "HD", "Lab", "Ter", "Silo", "Dock", "BaLu", "Pha", "PoSa", "DdR");
 
         $request = "SELECT ".implode(", ",$tElemList)." ";
         $request .= " FROM " . TABLE_USER_BUILDING;
