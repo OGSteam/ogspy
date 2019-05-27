@@ -8,4 +8,4 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04
  */
-$install_version = "3.3.7-alpha2";
+$install_version = "3.3.7-alpha3";
