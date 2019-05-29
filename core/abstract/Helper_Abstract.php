@@ -1,4 +1,5 @@
 <?php
+
 namespace Ogsteam\Ogspy\Abstracts;
 
 if (!defined('IN_SPYOGAME')) {
@@ -8,26 +9,24 @@ if (!defined('IN_SPYOGAME')) {
 
 abstract class Helper_Abstract
 {
-    protected  $version;
-    protected  $name;
-    protected  $description;
+    static protected $name = "undefined";
+    static protected $description = "";
+    static protected $version = "0.0.0";
 
-    public function getVersion()
+    public static function getVersion()
     {
-        return $this->version;
+        return static::$version;
     }
 
-    public function getName()
+    public static function getName()
     {
-        return $this->name ;
+        return static::$name;
     }
 
-    public function getDescription()
+    public static function getDescription()
     {
-        return $this->description ;
+        return static::$description;
     }
-
-
 
 
 }

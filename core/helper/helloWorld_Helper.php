@@ -11,14 +11,18 @@ use Ogsteam\Ogspy\Abstracts\Helper_Abstract;
  */
 class helloWorld_Helper extends Helper_Abstract
 {
+
+    static protected $name ="hello World" ;
+    static protected $description ="Helper hello World" ;
+    static protected $version ="0.0.1" ;
+
+
     /**
      * helloWorld constructor.
      */
     public function __construct()
     {
-        $this->name = "hello World";
-        $this->description = "hello World";
-        $this->version = "0.0.1";
+
     }
 
     /**

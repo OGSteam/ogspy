@@ -16,6 +16,10 @@ use Ogsteam\Ogspy\Abstracts\Helper_Abstract;
 
 class SearchCriteria_Helper  extends Helper_Abstract
 {
+    static protected $name ="Search Criteria" ;
+    static protected $description ="" ;
+    static protected $version ="0.0.1" ;
+
     private $server_config;
     private $player_name;
     private $ally_name;
@@ -34,10 +38,6 @@ class SearchCriteria_Helper  extends Helper_Abstract
      */
     public function __construct($server_config)
     {
-        $this->name = "Search Criteria";
-        $this->description = "";
-        $this->version = "0.0.1";
-
         $this->server_config = $server_config;
     }
     /**
