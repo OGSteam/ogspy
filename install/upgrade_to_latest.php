@@ -305,9 +305,14 @@ switch ($ogsversion) {
         $ogsversion = '3.3.7-alpha2';
         $up_to_date = true;
 
-    case '3.3.2-alpha1':
+    case '3.3.2-alpha2':
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-alpha3' WHERE config_name = 'version'";
-        $ogsversion = '3.3.7-alpha2';
+        $ogsversion = '3.3.7-alpha3';
+        $up_to_date = true;
+        break;
+    case '3.3.2-alpha3':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-alpha4' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-alpha4';
         $up_to_date = true;
         break;
 
