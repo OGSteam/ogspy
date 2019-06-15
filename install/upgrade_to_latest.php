@@ -293,13 +293,10 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` ADD `Dock` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `Silo`";
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.6-beta1' WHERE config_name = 'version'";
         $ogsversion = '3.3.6-beta1';
-        $up_to_date = true;
-
-    case '3.3.5':
-        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.6-dev' WHERE config_name = 'version'";
-        $ogsversion = '3.3.6-dev';
-        $up_to_date = true;
-
+    case '3.3.6-beta1':
+      $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.6' WHERE config_name = 'version'";
+      $ogsversion = '3.3.6';
+      $up_to_date = true;
         break;
     default:
     die("Aucune mise … jour n'est disponible");
