@@ -22,7 +22,7 @@ class User_Defense_Model  extends Model_Abstract
     public function select_user_defense($user_id) {
         $user_id=(int)$user_id;
 
-        $tElemList = array("planet_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "GB", "MIC", "MIP");
+        $tElemList = array("planet_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP");
 
         $request = "SELECT ".implode(", ",$tElemList)." ";;
         $request .= " FROM " . TABLE_USER_DEFENCE;
@@ -46,7 +46,7 @@ class User_Defense_Model  extends Model_Abstract
         $user_id=(int)$user_id;
         $planet_id=(int)$planet_id;
 
-        $tElemList = array("planet_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "GB", "MIC", "MIP");
+        $tElemList = array("planet_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP");
 
         $request = "SELECT ".implode(", ",$tElemList)." ";;
         $request .= " FROM " . TABLE_USER_DEFENCE;

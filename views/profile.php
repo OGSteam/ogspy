@@ -18,8 +18,10 @@ $user_galaxy = $user_data["user_galaxy"];
 $user_system = $user_data["user_system"];
 $user_email = $user_data["user_email"];
 $user_stat_name = $user_data["user_stat_name"];
-if ($user_token !== null && $user_token['name'] !== "Empty") {
-    $user_token_displayed = $user_token["token"];
+
+$user_token = (new Ogsteam\Ogspy\Model\Tokens_Model)->get_token($user_data["user_id"], "PAT");
+if ($user_token != false) {
+    $user_token_displayed = $user_token;
 } else {
     $user_token_displayed = $lang['PROFILE_TOKEN_TO_BE_UPDATED'];
 }

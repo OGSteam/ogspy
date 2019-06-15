@@ -218,10 +218,12 @@ function mod_install()
         }
     }
     // si on arrive jusque la on peut installer
+    global $db; // fix pour mod ne faisant pas l'inclusion mais l'utilisant (xtense ... )
     require_once("mod/" . $pub_directory . "/install.php");
 
     //recuperation du mod
     $mod_id = $Mod_Model->get_mod_id_by_root($pub_directory);
+
     //récuperation de l'emplacement possible
     $position = $Mod_Model->get_position_max();
 
@@ -230,7 +232,8 @@ function mod_install()
 
     //récuperation du titre en base
     $mod = $Mod_Model->find_by(array("id" => $mod_id));
-    if (count($mod ==0) )
+
+    if (count($mod) !=0 )
     {
         log_("mod_install", $mod[0]['title']);
     }
@@ -310,6 +313,8 @@ function mod_update()
     }
 
     if (file_exists("mod/" . $mod['root'] . "/update.php")) {
+        // si on arrive jusque la on peut installer
+        global $db; // fix pour mod ne faisant pas l'inclusion mais l'utilisant (xtense ... )
         require_once("mod/" . $mod['root'] . "/update.php");
 
         log_("mod_update", $mod['title']);
@@ -336,6 +341,8 @@ function mod_uninstall()
     $title = $mod["title"];
 
     if (file_exists("mod/" . $root . "/uninstall.php")) {
+        // si on arrive jusque la on peut installer
+        global $db; // fix pour mod ne faisant pas l'inclusion mais l'utilisant (xtense ... )
         require_once("mod/" . $root . "/uninstall.php");
     }
 
@@ -552,10 +559,7 @@ function mod_get_option($param)
     }
 
     $retour = (new Mod_Config_Model)->get_mod_config($nom_mod, $param);
-    if (count($retour)==0)
-    {
-        return '-1';
-    }
+
     return $retour;
 }
 
@@ -640,7 +644,8 @@ function install_mod($mod_folder)
     // On vérifie si le mod est déjà installé""
     $Mod_Model = new Mod_Model();
     $mod = $Mod_Model->find_one_by(array("title" => $value_mod[0]));
-    if (isset($mod['title']) )
+
+    if (!isset($mod['title']) )
     {
         if (count($value_mod) == 7) {
             $newMod = array();
@@ -648,11 +653,11 @@ function install_mod($mod_folder)
             $newMod['menu'] = $value_mod[1];
             $newMod['action'] = $value_mod[2];
             $newMod['root'] =$value_mod[3] ;
-            $newMod['link'] = $value_mod[2];
+            $newMod['link'] = $value_mod[4];
             $newMod['version'] = $mod_version;
             $newMod['active'] = $value_mod[5];
             $newMod['admin_only'] = $value_mod[6];
-
+            $newMod['position'] = 1;
             $Mod_Model->add($newMod);
 
             $is_ok = true; /// tout c 'est bien passe'
@@ -667,12 +672,14 @@ function install_mod($mod_folder)
  * @param string $mod_uninstall_table : Name of the Database table used by the Mod that we need to remove
  * @api
  */
-function uninstall_mod($mod_uninstall_name, $mod_uninstall_table)
+function uninstall_mod($mod_uninstall_name, $mod_uninstall_table=null)
 {
     $Mod_Model = new Mod_Model();
 
     $Mod_Model->delete_by_title($mod_uninstall_name);
-    if (!empty($mod_uninstall_table)) {
+
+    if ($mod_uninstall_table!=null)
+    {
         //todo MOD factory ?
         log_("debug", "DROP TABLE IF EXISTS " . $mod_uninstall_table);
         $Mod_Model->drop_custum_table($mod_uninstall_table);

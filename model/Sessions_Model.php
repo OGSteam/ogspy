@@ -57,7 +57,7 @@ class Sessions_Model extends Model_Abstract
         $user_id=(int)$user_id;
         $lastvisit=(int)$lastvisit;
         $cookie_id=$this->db->sql_escape_string($cookie_id);
-        $user_id= (bool)$user_ip;
+        $user_ip= (bool)$user_ip;
 
 
         $request = "UPDATE " . TABLE_SESSIONS . " SET session_user_id = " . $user_id . ", session_lastvisit = " . $lastvisit . " WHERE session_id = '" . $cookie_id . "'";
@@ -180,7 +180,7 @@ class Sessions_Model extends Model_Abstract
     public function select_user_data_session($cookie_id, $user_ip)
     {
         $cookie_id=$this->db->sql_escape_string($cookie_id);
-        $user_ip=(int)$user_ip;
+        $user_ip=$this->db->sql_escape_string($user_ip);
 
         $request = "SELECT `user_id`, `user_name`, `user_admin`, `user_coadmin`, `user_email`, `user_galaxy`, `user_system`, `session_lastvisit`, `user_stat_name`, ";
         $request .= "`management_user`, `management_ranking`, `disable_ip_check`, `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate`";

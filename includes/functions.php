@@ -20,7 +20,6 @@ use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\User_Favorites_Model;
 
 
-
 /**
  * URL Redirection
  * @param string $url target URL
@@ -57,9 +56,9 @@ function write_file($file, $mode, $text)
         fclose($fp);
         return true;
     } else {
-            return false;
+        return false;
     }
-    }
+}
 
 /**
  * Write a text or a table in a gz compressed file
@@ -83,7 +82,7 @@ function write_file_gz($file, $mode, $text)
         gzclose($fp);
         return true;
     } else {
-            return false;
+        return false;
     }
 }
 
@@ -91,19 +90,20 @@ function write_file_gz($file, $mode, $text)
  * Remove a Folder with its content
  * @param string $folder Chemin vers le dossier à supprimer
  */
-    function remove_dir_from_ogspy($folder) {
+function remove_dir_from_ogspy($folder)
+{
 
-        $dir_iterator = new RecursiveDirectoryIterator($folder);
-        $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::CHILD_FIRST);
+    $dir_iterator = new RecursiveDirectoryIterator($folder);
+    $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::CHILD_FIRST);
 
-        // On supprime chaque dossier et chaque fichier	du dossier cible
-        foreach($iterator as $fichier){
-            $fichier->isDir() ? rmdir($fichier) : unlink($fichier);
-        }
-
-        // On supprime le dossier cible
-        rmdir($folder);
+    // On supprime chaque dossier et chaque fichier	du dossier cible
+    foreach ($iterator as $fichier) {
+        $fichier->isDir() ? rmdir($fichier) : unlink($fichier);
     }
+
+    // On supprime le dossier cible
+    rmdir($folder);
+}
 
 
 /**
@@ -121,7 +121,7 @@ function encode_ip($ip)
     $d = explode(':', preg_replace('/(^:)|(:$)/', '', $ip));
     $res = '';
     foreach ($d as $x) {
-            $res .= sprintf('%0' . ($x == '' ? (9 - count($d)) * 4 : 4) . 's', $x);
+        $res .= sprintf('%0' . ($x == '' ? (9 - count($d)) * 4 : 4) . 's', $x);
     }
     return $res;
 }
@@ -140,9 +140,9 @@ function decode_ip($int_ip)
         if (count($zeros[0]) > 0) {
             $match = '';
             foreach ($zeros[0] as $zero) {
-                            if (strlen($zero) > strlen($match)) {
-                                                $match = $zero;
-                            }
+                if (strlen($zero) > strlen($match)) {
+                    $match = $zero;
+                }
             }
             $int_ip = preg_replace('/' . $match . '/', ':', $int_ip, 1);
         }
@@ -169,7 +169,7 @@ function hexhex($value)
 function password_generator()
 {
     $string = "abBDEFcdefghijkmnPQRSTUVWXYpqrst23456789";
-    srand((double) microtime() * 1000000);
+    srand((double)microtime() * 1000000);
     $password = '';
     for ($i = 0; $i < 6; $i++) {
         $password .= $string[rand() % strlen($string)];
@@ -242,9 +242,9 @@ function set_server_view()
 {
     global $user_data;
     global $pub_enable_portee_missil, $pub_enable_members_view, $pub_enable_stat_view,
-            $pub_galaxy_by_line_stat, $pub_system_by_line_stat, $pub_galaxy_by_line_ally, $pub_system_by_line_ally,
-            $pub_nb_colonnes_ally, $pub_color_ally, $pub_enable_register_view, $pub_register_alliance,
-            $pub_register_forum, $pub_open_user, $pub_open_admin;
+           $pub_galaxy_by_line_stat, $pub_system_by_line_stat, $pub_galaxy_by_line_ally, $pub_system_by_line_ally,
+           $pub_nb_colonnes_ally, $pub_color_ally, $pub_enable_register_view, $pub_register_alliance,
+           $pub_register_forum, $pub_open_user, $pub_open_admin;
 
     //appel de la couche" Model"
     $Config_Model = new Config_Model();
@@ -267,96 +267,96 @@ function set_server_view()
     }
 
     if (is_null($pub_enable_portee_missil)) {
-            $pub_enable_portee_missil = 0;
+        $pub_enable_portee_missil = 0;
     }
     if (is_null($pub_enable_stat_view)) {
-            $pub_enable_stat_view = 0;
+        $pub_enable_stat_view = 0;
     }
     if (is_null($pub_enable_members_view)) {
-            $pub_enable_members_view = 0;
+        $pub_enable_members_view = 0;
     }
 
     $break = false;
 
 
     if (!is_numeric($pub_galaxy_by_line_stat)) {
-            $break = true;
+        $break = true;
     }
     if (!is_numeric($pub_system_by_line_stat)) {
-            $break = true;
+        $break = true;
     }
     if ($pub_enable_stat_view != 0 && $pub_enable_stat_view != 1) {
-            $break = true;
+        $break = true;
     }
     if ($pub_enable_members_view != 0 && $pub_enable_members_view != 1) {
-            $break = true;
+        $break = true;
     }
     if (!is_numeric($pub_galaxy_by_line_ally)) {
-            $break = true;
+        $break = true;
     }
     if (!is_numeric($pub_system_by_line_ally)) {
-            $break = true;
+        $break = true;
     }
     if ($pub_nb_colonnes_ally == 0 || $pub_nb_colonnes_ally > 9 || !is_numeric($pub_nb_colonnes_ally)) {
-            $break = true;
+        $break = true;
     }
     if ($pub_enable_register_view != 0 && $pub_enable_register_view != 1) {
-            $break = true;
+        $break = true;
     }
 
     if ($break) {
         redirection("index.php?action=message&id_message=setting_server_view_failed&info");
     }
 
-    $Config_Model->update( array("config_value" =>$pub_enable_portee_missil , "config_name" => "portee_missil" ));
+    $Config_Model->update(array("config_value" => $pub_enable_portee_missil, "config_name" => "portee_missil"));
 
-        if ($pub_galaxy_by_line_stat < 1) {
-            $pub_galaxy_by_line_stat = 1;
+    if ($pub_galaxy_by_line_stat < 1) {
+        $pub_galaxy_by_line_stat = 1;
     }
     if ($pub_galaxy_by_line_stat > 100) {
-            $pub_galaxy_by_line_stat = 100;
+        $pub_galaxy_by_line_stat = 100;
     }
-    $Config_Model->update_one($pub_galaxy_by_line_stat,"galaxy_by_line_stat");
+    $Config_Model->update_one($pub_galaxy_by_line_stat, "galaxy_by_line_stat");
 
     if ($pub_system_by_line_stat < 1) {
-            $pub_system_by_line_stat = 1;
+        $pub_system_by_line_stat = 1;
     }
     if ($pub_system_by_line_stat > 100) {
-            $pub_system_by_line_stat = 100;
+        $pub_system_by_line_stat = 100;
     }
 
-    $Config_Model->update_one($pub_system_by_line_stat,"system_by_line_stat");
+    $Config_Model->update_one($pub_system_by_line_stat, "system_by_line_stat");
 
-    $Config_Model->update_one( $pub_open_user , "open_user" );
-    $Config_Model->update_one( $pub_open_admin ,"open_admin");
+    $Config_Model->update_one($pub_open_user, "open_user");
+    $Config_Model->update_one($pub_open_admin, "open_admin");
 
-    $Config_Model->update_one( $pub_enable_stat_view ,"enable_stat_view");
-    $Config_Model->update_one( $pub_enable_members_view ,"enable_members_view");
-    $Config_Model->update_one( $pub_nb_colonnes_ally ,"nb_colonnes_ally");
+    $Config_Model->update_one($pub_enable_stat_view, "enable_stat_view");
+    $Config_Model->update_one($pub_enable_members_view, "enable_members_view");
+    $Config_Model->update_one($pub_nb_colonnes_ally, "nb_colonnes_ally");
 
     $array = $pub_color_ally; //die(var_dump($pub_color_ally));
     $color_ally = implode("_", $array);
-    $Config_Model->update_one( $color_ally ,"color_ally");
+    $Config_Model->update_one($color_ally, "color_ally");
 
     if ($pub_galaxy_by_line_ally < 1) {
-            $pub_galaxy_by_line_ally = 1;
+        $pub_galaxy_by_line_ally = 1;
     }
     if ($pub_galaxy_by_line_ally > 100) {
-            $pub_galaxy_by_line_ally = 100;
+        $pub_galaxy_by_line_ally = 100;
     }
-    $Config_Model->update_one( $pub_galaxy_by_line_ally ,"galaxy_by_line_ally");
+    $Config_Model->update_one($pub_galaxy_by_line_ally, "galaxy_by_line_ally");
 
     if ($pub_system_by_line_ally < 1) {
-            $pub_system_by_line_ally = 1;
+        $pub_system_by_line_ally = 1;
     }
     if ($pub_system_by_line_ally > 100) {
         $pub_system_by_line_ally = 100;
     }
 
-    $Config_Model->update_one( $pub_system_by_line_ally ,"system_by_line_ally");
-    $Config_Model->update_one( $pub_enable_register_view ,"enable_register_view");
-    $Config_Model->update_one( $pub_register_alliance ,"register_alliance");
-    $Config_Model->update_one( $pub_register_forum ,"register_forum");
+    $Config_Model->update_one($pub_system_by_line_ally, "system_by_line_ally");
+    $Config_Model->update_one($pub_enable_register_view, "enable_register_view");
+    $Config_Model->update_one($pub_register_alliance, "register_alliance");
+    $Config_Model->update_one($pub_register_forum, "register_forum");
 
     // mise a jour des caches avec les modifs
     generate_config_cache();
@@ -371,21 +371,21 @@ function set_serverconfig()
 {
     global $user_data, $server_config;
     global $pub_max_battlereport, $pub_max_favorites, $pub_max_favorites_spy, $pub_max_spyreport,
-            $pub_server_active, $pub_session_time, $pub_max_keeplog, $pub_debug_log,
-            $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
-            $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
-            $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit, $pub_speed_uni,
-            $pub_ddr, $pub_astro_strict, $pub_config_cache, $pub_mod_cache,
-            $pub_mail_use, $pub_mail_smtp_use, $pub_mail_smtp_secure, $pub_mail_smtp_port, $pub_mail_smtp_host, $pub_mail_smtp_username, $pub_mail_smtp_password,$pub_enable_mail_smtp_password;
+           $pub_server_active, $pub_session_time, $pub_max_keeplog, $pub_debug_log,
+           $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
+           $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
+           $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit, $pub_speed_uni,
+           $pub_ddr, $pub_astro_strict, $pub_config_cache, $pub_mod_cache,
+           $pub_mail_use, $pub_mail_smtp_use, $pub_mail_smtp_secure, $pub_mail_smtp_port, $pub_mail_smtp_host, $pub_mail_smtp_username, $pub_mail_smtp_password, $pub_enable_mail_smtp_password;
 
     //appel de la couche" Model"
     $Config_Model = new Config_Model();
 
     if (!isset($pub_num_of_galaxies)) {
-            $pub_num_of_galaxies = intval($server_config['num_of_galaxies']);
+        $pub_num_of_galaxies = intval($server_config['num_of_galaxies']);
     }
     if (!isset($pub_num_of_systems)) {
-            $pub_num_of_systems = intval($server_config['num_of_systems']);
+        $pub_num_of_systems = intval($server_config['num_of_systems']);
     }
 
     if (!check_var($pub_max_battlereport, "Num") || !check_var($pub_max_favorites,
@@ -415,17 +415,17 @@ function set_serverconfig()
     }
 
     if (is_null($pub_server_active)) {
-            $pub_server_active = 0;
+        $pub_server_active = 0;
     }
     if (is_null($pub_disable_ip_check)) {
-            $pub_disable_ip_check = 0;
+        $pub_disable_ip_check = 0;
     }
     if (is_null($pub_log_phperror)) {
-            $pub_log_phperror = 0;
+        $pub_log_phperror = 0;
     }
 
     if (is_null($pub_debug_log)) {
-            $pub_debug_log = 0;
+        $pub_debug_log = 0;
     }
     if (is_null($pub_block_ratio)) {
         $pub_block_ratio = 0;
@@ -439,44 +439,44 @@ function set_serverconfig()
     if (is_null($pub_mail_smtp_secure)) {
         $mail_smtp_secure = 0;
     }
-   $break = false;
+    $break = false;
 
 
     if ($pub_server_active != 0 && $pub_server_active != 1) {
-            $break = true;
+        $break = true;
     }
     if ($pub_debug_log != 0 && $pub_debug_log != 1) {
-            $break = true;
+        $break = true;
     }
     if ($pub_block_ratio != 0 && $pub_block_ratio != 1) {
-            $break = true;
+        $break = true;
     }
     if (!is_numeric($pub_max_favorites)) {
-            $break = true;
+        $break = true;
     }
     if (!is_numeric($pub_max_favorites_spy)) {
-            $break = true;
+        $break = true;
     }
     if (!is_numeric($pub_ratio_limit)) {
-            $break = true;
+        $break = true;
     }
     if (!is_numeric($pub_max_spyreport)) {
-            $break = true;
+        $break = true;
     }
     if (!is_numeric($pub_max_battlereport)) {
-            $break = true;
+        $break = true;
     }
     if (!is_numeric($pub_session_time)) {
-            $break = true;
+        $break = true;
     }
     if (!is_numeric($pub_max_keeplog)) {
-            $break = true;
+        $break = true;
     }
     if ($pub_disable_ip_check != 0 && $pub_disable_ip_check != 1) {
-            $break = true;
+        $break = true;
     }
     if ($pub_log_phperror != 0 && $pub_log_phperror != 1) {
-            $break = true;
+        $break = true;
     }
 
     if ($break) {
@@ -488,144 +488,143 @@ function set_serverconfig()
     ) {
         resize_db($pub_num_of_galaxies, $pub_num_of_systems);
     }
-    $Config_Model->update_one($pub_server_active,"server_active");
+    $Config_Model->update_one($pub_server_active, "server_active");
 
-    $Config_Model->update_one($pub_debug_log,"debug_log");
-    $Config_Model->update_one($pub_block_ratio,"block_ratio");
-    $Config_Model->update_one($pub_log_phperror,"log_phperror");
+    $Config_Model->update_one($pub_debug_log, "debug_log");
+    $Config_Model->update_one($pub_block_ratio, "block_ratio");
+    $Config_Model->update_one($pub_log_phperror, "log_phperror");
 
     $pub_max_favorites = intval($pub_max_favorites);
     if ($pub_max_favorites < 0) {
-            $pub_max_favorites = 0;
+        $pub_max_favorites = 0;
     }
     if ($pub_max_favorites > 99) {
-            $pub_max_favorites = 99;
+        $pub_max_favorites = 99;
     }
-    $Config_Model->update_one($pub_max_favorites,"max_favorites");
+    $Config_Model->update_one($pub_max_favorites, "max_favorites");
 
     $pub_max_favorites_spy = intval($pub_max_favorites_spy);
     if ($pub_max_favorites_spy < 0) {
-            $pub_max_favorites_spy = 0;
+        $pub_max_favorites_spy = 0;
     }
     if ($pub_max_favorites_spy > 99) {
-            $pub_max_favorites_spy = 99;
+        $pub_max_favorites_spy = 99;
     }
-    $Config_Model->update_one($pub_max_favorites_spy,"max_favorites_spy");
+    $Config_Model->update_one($pub_max_favorites_spy, "max_favorites_spy");
 
-    $Config_Model->update_one($pub_ratio_limit,"ratio_limit");
+    $Config_Model->update_one($pub_ratio_limit, "ratio_limit");
 
     $pub_max_spyreport = intval($pub_max_spyreport);
     if ($pub_max_spyreport < 1) {
-            $pub_max_spyreport = 1;
+        $pub_max_spyreport = 1;
     }
     if ($pub_max_spyreport > 50) {
-            $pub_max_spyreport = 50;
+        $pub_max_spyreport = 50;
     }
-    $Config_Model->update_one($pub_max_spyreport,"max_spyreport");
+    $Config_Model->update_one($pub_max_spyreport, "max_spyreport");
 
     $pub_max_battlereport = intval($pub_max_battlereport);
     if ($pub_max_battlereport < 0) {
-            $pub_max_battlereport = 0;
+        $pub_max_battlereport = 0;
     }
     if ($pub_max_battlereport > 999) {
-            $pub_max_battlereport = 999;
+        $pub_max_battlereport = 999;
     }
-    $Config_Model->update_one($pub_max_battlereport,"max_battlereport");
+    $Config_Model->update_one($pub_max_battlereport, "max_battlereport");
 
     $pub_session_time = intval($pub_session_time);
     if ($pub_session_time < 5 && $pub_session_time != 0) {
-            $pub_session_time = 5;
+        $pub_session_time = 5;
     }
     if ($pub_session_time > 180) {
-            $pub_session_time = 180;
+        $pub_session_time = 180;
     }
-    $Config_Model->update_one($pub_session_time,"session_time");
+    $Config_Model->update_one($pub_session_time, "session_time");
 
     $pub_max_keeplog = intval($pub_max_keeplog);
     if ($pub_max_keeplog < 0) {
-            $pub_max_keeplog = 0;
+        $pub_max_keeplog = 0;
     }
     if ($pub_max_keeplog > 365) {
-            $pub_max_keeplog = 365;
+        $pub_max_keeplog = 365;
     }
-    $Config_Model->update_one($pub_max_keeplog,"max_keeplog");
+    $Config_Model->update_one($pub_max_keeplog, "max_keeplog");
 
-    $Config_Model->update_one($pub_reason,"reason");
+    $Config_Model->update_one($pub_reason, "reason");
 
     if (substr($pub_ally_protection, strlen($pub_ally_protection) - 1) == ",") {
-            $pub_ally_protection = substr($pub_ally_protection, 0, strlen($pub_ally_protection) -
+        $pub_ally_protection = substr($pub_ally_protection, 0, strlen($pub_ally_protection) -
             1);
     }
-    $Config_Model->update_one($pub_ally_protection,"ally_protection");
+    $Config_Model->update_one($pub_ally_protection, "ally_protection");
 
     if ($pub_url_forum != "" && !preg_match("#[^http://]|[^https://]#", $pub_url_forum)) {
-            $pub_url_forum = "http://" . $pub_url_forum;
+        $pub_url_forum = "http://" . $pub_url_forum;
     }
-    $Config_Model->update_one($pub_url_forum,"url_forum");
+    $Config_Model->update_one($pub_url_forum, "url_forum");
 
     $pub_max_keeprank = intval($pub_max_keeprank);
     if ($pub_max_keeprank < 1) {
-            $pub_max_keeprank = 1;
+        $pub_max_keeprank = 1;
     }
     if ($pub_max_keeprank > 999) {
-            $pub_max_keeprank = 999;
+        $pub_max_keeprank = 999;
     }
-    $Config_Model->update_one($pub_max_keeprank,"max_keeprank");
+    $Config_Model->update_one($pub_max_keeprank, "max_keeprank");
 
     if ($pub_keeprank_criterion != "quantity" && $pub_keeprank_criterion != "day") {
-            $pub_keeprank_criterion = "quantity";
+        $pub_keeprank_criterion = "quantity";
     }
-    $Config_Model->update_one($pub_keeprank_criterion,"keeprank_criterion");
+    $Config_Model->update_one($pub_keeprank_criterion, "keeprank_criterion");
 
     $pub_max_keepspyreport = intval($pub_max_keepspyreport);
     if ($pub_max_keepspyreport < 1) {
-            $pub_max_keepspyreport = 1;
+        $pub_max_keepspyreport = 1;
     }
     if ($pub_max_keepspyreport > 999) {
-            $pub_max_keepspyreport = 999;
+        $pub_max_keepspyreport = 999;
     }
-    $Config_Model->update_one($pub_max_keepspyreport,"max_keepspyreport");
+    $Config_Model->update_one($pub_max_keepspyreport, "max_keepspyreport");
 
-    $Config_Model->update_one($pub_servername,"servername");
+    $Config_Model->update_one($pub_servername, "servername");
 
     if (substr($pub_allied, strlen($pub_allied) - 1) == ",") {
-            $pub_allied = substr($pub_allied, 0, strlen($pub_allied) - 1);
+        $pub_allied = substr($pub_allied, 0, strlen($pub_allied) - 1);
     }
-    $Config_Model->update_one($pub_allied,"allied");
+    $Config_Model->update_one($pub_allied, "allied");
 
-    $Config_Model->update_one($pub_disable_ip_check,"disable_ip_check");
-    $Config_Model->update_one($pub_num_of_galaxies,"num_of_galaxies");
-    $Config_Model->update_one($pub_num_of_systems,"num_of_systems");
+    $Config_Model->update_one($pub_disable_ip_check, "disable_ip_check");
+    $Config_Model->update_one($pub_num_of_galaxies, "num_of_galaxies");
+    $Config_Model->update_one($pub_num_of_systems, "num_of_systems");
 
     if (!isset($pub_ddr) || !is_numeric($pub_ddr)) {
-            $pub_ddr = 0;
+        $pub_ddr = 0;
     }
-    $Config_Model->update_one($pub_ddr,"ddr");
+    $Config_Model->update_one($pub_ddr, "ddr");
 
     if (!isset($pub_astro_strict) || !is_numeric($pub_astro_strict)) {
-            $pub_astro_strict = 0;
+        $pub_astro_strict = 0;
     }
-    $Config_Model->update_one($pub_astro_strict,"astro_strict");
+    $Config_Model->update_one($pub_astro_strict, "astro_strict");
 
     if (!is_numeric($pub_speed_uni) || $pub_speed_uni < 1) {
-            $pub_speed_uni = 1;
+        $pub_speed_uni = 1;
     }
-    $Config_Model->update_one($pub_speed_uni,"speed_uni");
+    $Config_Model->update_one($pub_speed_uni, "speed_uni");
 
-    $Config_Model->update_one($pub_mod_cache,"mod_cache");
-    $Config_Model->update_one($pub_config_cache,"config_cache");
+    $Config_Model->update_one($pub_mod_cache, "mod_cache");
+    $Config_Model->update_one($pub_config_cache, "config_cache");
 
 
     // param mail
-    $Config_Model->update_one($pub_mail_use,"mail_use");
-    $Config_Model->update_one($pub_mail_smtp_use,"mail_smtp_use");
-    $Config_Model->update_one($pub_mail_smtp_secure,"mail_smtp_secure");
-    $Config_Model->update_one($pub_mail_smtp_port,"mail_smtp_port");
-    $Config_Model->update_one($pub_mail_smtp_host,"mail_smtp_host");
-    $Config_Model->update_one($pub_mail_smtp_username,"mail_smtp_username");
+    $Config_Model->update_one($pub_mail_use, "mail_use");
+    $Config_Model->update_one($pub_mail_smtp_use, "mail_smtp_use");
+    $Config_Model->update_one($pub_mail_smtp_secure, "mail_smtp_secure");
+    $Config_Model->update_one($pub_mail_smtp_port, "mail_smtp_port");
+    $Config_Model->update_one($pub_mail_smtp_host, "mail_smtp_host");
+    $Config_Model->update_one($pub_mail_smtp_username, "mail_smtp_username");
 
-    if (isset($pub_enable_mail_smtp_password))
-    {
+    if (isset($pub_enable_mail_smtp_password)) {
         setMailSMTPPassword($pub_mail_smtp_password);
     }
 
@@ -649,18 +648,18 @@ function db_size_info()
     $bytes = array('Octets', 'Ko', 'Mo', 'Go', 'To');
 
     if ($dbSizeServer < 1024) {
-            $dbSizeServer = 1;
+        $dbSizeServer = 1;
     }
     for ($i = 0; $dbSizeServer > 1024; $i++) {
-            $dbSizeServer /= 1024;
+        $dbSizeServer /= 1024;
     }
     $dbSize_info["Server"] = round($dbSizeServer, 2) . " " . $bytes[$i];
 
     if ($dbSizeTotal < 1024) {
-            $dbSizeTotal = 1;
+        $dbSizeTotal = 1;
     }
     for ($i = 0; $dbSizeTotal > 1024; $i++) {
-            $dbSizeTotal /= 1024;
+        $dbSizeTotal /= 1024;
     }
     $dbSize_info["Total"] = round($dbSizeTotal, 2) . " " . $bytes[$i];
 
@@ -705,8 +704,8 @@ function resize_db($new_num_of_galaxies, $new_num_of_systems)
     $User_Favorites_Model = new User_Favorites_Model();
 
     // si on reduit on doit supprimez toutes les entrées qui font reference au systemes ou galaxies que l'on va enlever
-    (new Universe_Model())->resize_universe($new_num_of_galaxies,$new_num_of_systems);
-    $User_Favorites_Model->delete_favorites_after_resize($new_num_of_galaxies,$new_num_of_systems); //suppression des favoris plus utils
+    (new Universe_Model())->resize_universe($new_num_of_galaxies, $new_num_of_systems);
+    $User_Favorites_Model->delete_favorites_after_resize($new_num_of_galaxies, $new_num_of_systems); //suppression des favoris plus utils
     if ($new_num_of_galaxies < intval($server_config['num_of_galaxies'])) {
         $User_Model->set_default_galaxy_after_resize($new_num_of_galaxies);
     }
@@ -717,8 +716,8 @@ function resize_db($new_num_of_galaxies, $new_num_of_systems)
     $server_config['num_of_galaxies'] = $new_num_of_galaxies;
     $server_config['num_of_systems'] = $new_num_of_systems;
 
-    $Config_Model->update_one($new_num_of_galaxies,"num_of_galaxies");
-    $Config_Model->update_one($new_num_of_systems,"num_of_systems");
+    $Config_Model->update_one($new_num_of_galaxies, "num_of_galaxies");
+    $Config_Model->update_one($new_num_of_systems, "num_of_systems");
 
     // mise a jour des caches avec les modifs
     generate_config_cache();
@@ -750,8 +749,8 @@ function maintenance_action()
         log_purge();
         galaxy_purge_spy();
 
-        (new Config_Model())->update_one($time,"last_maintenance_action");
-      }
+        (new Config_Model())->update_one($time, "last_maintenance_action");
+    }
 }
 
 /**
@@ -933,7 +932,7 @@ function check_getvalue($secvalue)
     } else {
         foreach ($secvalue as $subsecvalue) {
             if (!check_getvalue($subsecvalue)) {
-                            return false;
+                return false;
             }
         }
     }
@@ -956,7 +955,7 @@ function check_postvalue($secvalue)
     } else {
         foreach ($secvalue as $subsecvalue) {
             if (!check_postvalue($subsecvalue)) {
-                            return false;
+                return false;
             }
         }
     }
@@ -982,14 +981,14 @@ function generate_key()
 {
     //création de la clef
     $str = "abcdefghijklmnopqrstuvwxyzABCDEVGHIJKLMOPQRSTUVWXYZ";
-    srand((double) microtime() * 1000000);
+    srand((double)microtime() * 1000000);
     $pass = time();
     for ($i = 0; $i < 20; $i++) {
         $pass .= $str[rand() % strlen($str)];
     }
     $key = crypto($pass);
     // création du path
-    $path = $_SERVER["SCRIPT_FILENAME"]; ;
+    $path = $_SERVER["SCRIPT_FILENAME"];;
 
 
     $key_php[] = '<?php';
@@ -1079,13 +1078,11 @@ function booster_lire_bdd($id_player, $id_planet)
     $User_Building_Model = new User_Building_Model();
     $tBoosters = $User_Building_Model->get_all_booster_player($id_player);
 
-    if (isset($tBoosters[$id_planet]))
-    {
-         return booster_decode($tBoosters[$id_planet]);
+    if (isset($tBoosters[$id_planet])) {
+        return booster_decode($tBoosters[$id_planet]);
     }
     return $result;
 }
-
 
 
 /* Écrit les informations des objets Ogame dans la BDD sous forme d'une string de stockage.
@@ -1105,7 +1102,7 @@ function booster_lire_bdd($id_player, $id_planet)
 function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster)
 {
     $User_Building_Model = new User_Building_Model();
-    return $User_Building_Model->update_booster($id_player,$id_planet,booster_encode($tab_booster));
+    return $User_Building_Model->update_booster($id_player, $id_planet, booster_encode($tab_booster));
 }
 
 /* Mets à jour les boosters de tous les users en fonction de la date de fin dans la BDD
@@ -1131,9 +1128,8 @@ function booster_maj_bdd()
     }
 
     //sauvegarde des boosters actualisé
-    foreach ( $tUpdateBoosters as $UpdateBooster)
-    {
-        $User_Building_Model->update_booster($UpdateBooster["user_id"], $UpdateBooster["planet_id"],$UpdateBooster["boosters"] );
+    foreach ($tUpdateBoosters as $UpdateBooster) {
+        $User_Building_Model->update_booster($UpdateBooster["user_id"], $UpdateBooster["planet_id"], $UpdateBooster["boosters"]);
     }
 }
 
@@ -1163,7 +1159,7 @@ function booster_verify($boosters)
  * @param $str     string de stockage des boosters (donnée par les fonctions booster_encode() ou booster_encodev() ou directement from BDD)
  * @return tableau associatif des boosters mis à jour
  * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'extention_p', 'extention_m')
-*/
+ */
 function booster_verify_str($str)
 {
     return booster_encode(booster_verify(booster_decode($str)));
@@ -1180,7 +1176,7 @@ function booster_verify_str($str)
  *      'separateur' donne le char qui sert de séparateur entre les objets Ogame
  *      'default_str' donne la string de stockage par défaut : "m:0:0_c:0:0_d:0:0_p:0_m:0"
  * @return  le tableau correspondant au type
-*/
+ */
 function booster_objets_tab($type = '')
 {
     $objet_str = array('Booster de métal en or', 'Booster de métal en argent', 'Booster de métal en bronze',
@@ -1241,7 +1237,7 @@ function booster_objets_tab($type = '')
 /**
  * Indique si un uuid est enregistré dans OGSpy (il existe)
  * @uuid    string uuid récupéré de la page Ogame
-*/
+ */
 function booster_is_uuid($uuid)
 {
     return in_array($uuid, booster_objets_tab());
@@ -1255,7 +1251,7 @@ function booster_is_uuid($uuid)
  * return   le tableau à jour (par uuid et date)
  *          si $boosters==NULL OU booster_uuid($b) sans uuid -> donne tableau avec valeurs par défaut (équivalent booster_decode())
  *          NULL en cas d'erreur (uuid inconnu)
-*/
+ */
 
 function booster_uuid($boosters, $uuid = '', $date = 0)
 {
@@ -1284,13 +1280,12 @@ function booster_uuid($boosters, $uuid = '', $date = 0)
  * Transforme la date Ogame de format "*s *j *h" en nombre de seconde 6j 23h
  * @str string contenant le temps
  * @return int nombre de seconde correspondant à $str. 0 si problème
-*/
+ */
 function booster_lire_date($str)
 {
     $time = 0;
 
-    if (preg_match("/(\d+)s.(\d+)j.(\d+)h/", $str, $matches))
-    {
+    if (preg_match("/(\d+)s.(\d+)j.(\d+)h/", $str, $matches)) {
         $time = ($matches[1] * 604800 + $matches[2] * 86400 + $matches[3] * 3600);
 
     } elseif (preg_match("/(\d+)j.(\d+)h/", $str, $matches)) {
@@ -1322,7 +1317,7 @@ function booster_decode($str = NULL, $boosters = NULL)
                 'extention_p' => intval($boosters[$i++]), 'extention_m' => intval($boosters[$i++]));
         }
     }
-        return array('booster_m_val' => 0, 'booster_m_date' => 0,
+    return array('booster_m_val' => 0, 'booster_m_date' => 0,
         'booster_c_val' => 0, 'booster_c_date' => 0,
         'booster_d_val' => 0, 'booster_d_date' => 0,
         'extention_p' => 0, 'extention_m' => 0);
@@ -1332,7 +1327,7 @@ function booster_decode($str = NULL, $boosters = NULL)
  * Transforme le tableau des informations des objets Ogame en une string de stockage.
  * @b tableau associatif des infos array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
  * @return objet sous format string de stockage ("m:0:0_c:0:0_d:0:0_p:0_m:0 si pas d'argument)
-*/
+ */
 function booster_encode($b = NULL)
 {
     $str = '';
@@ -1353,9 +1348,9 @@ function booster_encode($b = NULL)
  * Transforme les valeurs des objets Ogame en une string de stockage.
  * string de stockage par défaut = m:0:0_c:0:0_d:0:0_p:0_m:0
  * @return string sous format string de stockage ("m:0:0_c:0:0_d:0:0_p:0_m:0" si pas d'argument)
-*/
+ */
 function booster_encodev($booster_m_val = 0, $booster_m_date = 0, $booster_c_val = 0, $booster_c_date = 0,
-                            $booster_d_val = 0, $booster_d_date = 0, $extention_p = 0, $extention_m = 0)
+                         $booster_d_val = 0, $booster_d_date = 0, $extention_p = 0, $extention_m = 0)
 {
     $separateur = booster_objets_tab('separateur');
     $str = '';
@@ -1369,3 +1364,25 @@ function booster_encodev($booster_m_val = 0, $booster_m_date = 0, $booster_c_val
 
 /**                     Fin booster partie                                     **/
 /********************************************************************************/
+
+/**
+ * Retourne la liste des helpers presents
+ * @return array
+ */
+function get_Helpers()
+{
+    $tHelpers = array();
+    foreach (glob("core/helper/*_Helper.php") as $filename) {
+        $helper = array();
+        $sHelperName = "\Ogsteam\Ogspy\Helper\\" . basename("$filename", ".php");
+
+
+        $helper['name'] = $sHelperName::getName();
+        $helper['version'] = $sHelperName::getVersion();
+        $helper['description'] = $sHelperName::getDescription();
+
+        $tHelpers[] = $helper;
+    }
+    return $tHelpers;
+}
+

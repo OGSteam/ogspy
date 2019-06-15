@@ -200,15 +200,22 @@ require_once 'views/page_header.php';
         }
 
         foreach ($user_statistic as $v) {
+              $ratio_planet = ( $v['planet_added_ogs']) / $planetimport;
+            //$ratio_planet = ($v['planet_added_web'] + $v['planet_added_ogs']) / $planetimport;
+            $ratio_spy = ($v['spy_added_ogs']) / $spyimport;
+            //$ratio_spy = ($v['spy_added_web'] + $v['spy_added_ogs']) / $spyimport;
+             $ratio_rank = ( $v['rank_added_ogs']) / $rankimport;
+            // $ratio_rank = ($v['rank_added_web'] + $v['rank_added_ogs']) / $rankimport;
+             $ratio = (3 * $ratio_planet + 2 * $ratio_spy + $ratio_rank) / 6;
 
-            $ratio_planet = ($v['planet_added_web'] + $v['planet_added_ogs']) / $planetimport;
-            $ratio_spy = ($v['spy_added_web'] + $v['spy_added_ogs']) / $spyimport;
-            $ratio_rank = ($v['rank_added_web'] + $v['rank_added_ogs']) / $rankimport;
-            $ratio = (3 * $ratio_planet + 2 * $ratio_spy + $ratio_rank) / 6;
-
-            $ratio_planet_penality = ($v['planet_added_web'] + $v['planet_added_ogs'] - $v['planet_exported']) / $planetimport;
-            $ratio_spy_penality = (($v['spy_added_web'] + $v['spy_added_ogs']) - $v['spy_exported']) / $spyimport;
-            $ratio_rank_penality = (($v['rank_added_web'] + $v['rank_added_ogs']) - $v['rank_exported']) / $rankimport;
+            // il n'y a plus de ration d'export puisque OGS n existe plus ...
+            // TODO revoir completement cette parti ... ( page stat  bof; plus ratio ..
+            //$ratio_planet_penality = ($v['planet_added_web'] + $v['planet_added_ogs'] - $v['planet_exported']) / $planetimport;
+            //$ratio_spy_penality = (($v['spy_added_web'] + $v['spy_added_ogs']) - $v['spy_exported']) / $spyimport;
+            //$ratio_rank_penality = (($v['rank_added_web'] + $v['rank_added_ogs']) - $v['rank_exported']) / $rankimport;
+            $ratio_planet_penality = ( $v['planet_added_ogs'] ) / $planetimport;
+            $ratio_spy_penality = ($v['spy_added_ogs']) / $spyimport;
+            $ratio_rank_penality = ( $v['rank_added_ogs']) / $rankimport;
             $ratio_penality = (3 * $ratio_planet_penality + 2 * $ratio_spy_penality + $ratio_rank_penality) / 6;
 
             $ratio_search = $v['search'] / $search;
@@ -247,7 +254,8 @@ require_once 'views/page_header.php';
                         $xtense_type = 'N/A (' . $v['xtense_type'] . ')';
                 }
 
-                if ($v['user_active'] == "1" && $v['user_admin'] == "0") {
+                //todo voir si seulement admin on le visuel ...
+                if ($v['user_active'] == "1" && $v['user_admin'] == "1") {
                     echo '<tr>';
                     echo '<th style="color: ' . $color . '">' . $v['user_name'] . (($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) ? ' ' . $v['here'] : '') . '</th>';
                     echo '<th>' . formate_number($v['planet_added_ogs']) . '</th>';
@@ -279,8 +287,7 @@ require_once 'views/page_header.php';
         if ($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) {
             ?>
             <tr>
-                <td colspan="7">(*) <?php echo($lang['STATS_CONNECTED']); ?><br/>(**) <?php echo($lang['STATS_CONNECTED_XTENSE
-            ']); ?></td>
+                <td colspan="7">(*) <?php echo($lang['STATS_CONNECTED']); ?><br/>(**) <?php echo($lang['STATS_CONNECTED_XTENSE']); ?></td>
             </tr>
             <?php
         }

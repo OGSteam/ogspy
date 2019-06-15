@@ -17,11 +17,12 @@ if (!defined('IN_SPYOGAME')) {
 require_once("includes/ogame.php");
 
 $user_empire = user_get_empire($user_data['user_id']);
+
 $user_building = $user_empire["building"];
+
 $user_defence = $user_empire["defence"];
 $user_technology = $user_empire["technology"];
 $user_production = user_empire_production($user_empire, $user_data);
-
 
 if (!isset($pub_view) || $pub_view == "") {
     $view = "planets";
@@ -59,10 +60,10 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             /*Boosters et extensions modification :
              * => calcul effectué dans fonction  get empire*/
 
-
             $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
             if(isset($booster_tab[$i])) {
-                $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+                $iFields = (int) $user_building[$i]["fields"]; // si pas d'info sur batiment, variable string
+                $user_building[$i]["fields"]= $iFields  + $booster_tab[$i]['extention_p'];
             }
 
             $name .= "'".$user_building[$i]["planet_name"]."', ";
@@ -1285,7 +1286,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <th><a><?php echo($lang['HOME_EMPIRE_WEAPONS_SMALLSHIELD']); ?></a></th>
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $PB = $user_defence[$i]["PB"];
+              $PB = $user_defence[$i]["PB"];
                 if ($PB == "") {
                     $PB = "&nbsp;";
                 }

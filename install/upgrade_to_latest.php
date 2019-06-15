@@ -293,11 +293,29 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` ADD `Dock` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `Silo`";
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.6-beta1' WHERE config_name = 'version'";
         $ogsversion = '3.3.6-beta1';
+
     case '3.3.6-beta1':
-      $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.6' WHERE config_name = 'version'";
-      $ogsversion = '3.3.6';
-      $up_to_date = true;
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.6' WHERE config_name = 'version'";
+        $ogsversion = '3.3.6';
+
+    case '3.3.6':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-alpha1' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-alpha1';
+
+    case '3.3.7-alpha1':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-alpha2' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-alpha2';
+
+    case '3.3.7-alpha2':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-alpha3' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-alpha3';
+
+    case '3.3.7-alpha3':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-alpha4' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-alpha4';
+        $up_to_date = true;
         break;
+
     default:
     die("Aucune mise … jour n'est disponible");
 }

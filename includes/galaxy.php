@@ -256,6 +256,11 @@ function galaxy_search()
     if ($server_config["allied"] != "") {
         $allied = explode(",", $server_config["allied"]);
     }
+    $protected = array();
+    if ($server_config["ally_protection"] != "") {
+        $protected = explode(",", $server_config["ally_protection"]);
+    }
+
     if (!isset($pub_type_search) || (!isset($pub_string_search) && (!isset($pub_galaxy_down) || !isset($pub_galaxy_up) || !isset($pub_system_down) || !isset($pub_system_up) || !isset($pub_row_down) || !isset($pub_row_up)))) {
         return array($search_result, $total_page);
     }
@@ -352,6 +357,10 @@ function galaxy_search()
         if (in_array($planet["ally"], $allied)) {
             $friend = true;
         }
+        $hided = false;
+        if (in_array($planet["ally"], $protected)) {
+            $hided = true;
+        }
         $data_spy = new Spy_Model();
         $nb_spy_reports = $data_spy->get_nb_spy_by_planet($planet["galaxy"], $planet["system"], $planet["row"]);
         $search_result[] = array("galaxy" => $planet["galaxy"],
@@ -367,7 +376,9 @@ function galaxy_search()
             "status" => $planet["status"],
             "timestamp" => $planet["last_update"],
             "poster" => $planet["user_name"],
-            "allied" => $friend);
+            "allied" => $friend,
+            "hided" => $hided
+        );
     }
     return array($search_result, $total_page);
 }
