@@ -57,7 +57,7 @@ class User_Model extends Model_Abstract
         $result = $this->db->sql_query($request);
 
         // si reponse, password non migré / si rien erreur de login
-        if (!$this->db-- > sql_numrows($result)) {
+        if (!$this->db-> sql_numrows($result)) {
             return false;
         }
 
