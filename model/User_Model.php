@@ -81,8 +81,6 @@ class User_Model extends Model_Abstract
         $username=$this->db->sql_escape_string($username);
 
         $request = "SELECT * FROM " . TABLE_USER . " WHERE `user_name` = '" . $username . "'";
-
-        $request = $this->db->sql_escape_string($request);
         $result = $this->db->sql_query($request);
 
         return $result;
@@ -93,8 +91,6 @@ class User_Model extends Model_Abstract
 
 
         $request = "SELECT `user_name` FROM " . TABLE_USER;
-
-        $request = $this->db->sql_escape_string($request);
         $result = $this->db->sql_query($request);
         list($user_name) = $this->db->sql_fetch_row($result);
 
