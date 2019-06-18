@@ -556,9 +556,8 @@ class User_Model extends Model_Abstract
     public function add_new_user($pseudo, $password)
     {
 
-
-        $encrypted_password = Ogspy\crypto($password);
-        $request = "INSERT INTO " . TABLE_USER . " (user_name, user_password, user_regdate, user_active)"
+        $encrypted_password =password_hash($password, PASSWORD_DEFAULT);
+        $request = "INSERT INTO " . TABLE_USER . " (user_name, user_password_s, user_regdate, user_active)"
             . " VALUES ('" . $pseudo . "', '" . $encrypted_password . "', " . time() . ", '1')";
         $this->db->sql_query($request);
 
