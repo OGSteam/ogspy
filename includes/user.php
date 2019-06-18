@@ -505,7 +505,10 @@ function user_set_general($user_id, $user_name = null, $user_password_s = null, 
  * @param null $user_coadmin
  * @param null $management_user
  * @param null $management_ranking
+ *
+ * todo : ajouter la possibilité de changer admin prinicpal '$useradmin non utilisé ....
  */
+
 function user_set_grant($user_id, $user_admin = null, $user_active = null, $user_coadmin = null,
                         $management_user = null, $management_ranking = null)
 {
@@ -703,7 +706,9 @@ function user_create()
         $User_Model->add_user_to_group($user_id, $pub_group_id);
         $info = $user_id . ":" . $password;
         log_("create_account", $user_id);
-        user_set_grant($user_id, $pub_active, $pub_user_coadmin, $pub_management_user, $pub_management_ranking);
+        user_set_grant($user_id, null, $pub_active, $pub_user_coadmin, $pub_management_user,
+            $pub_management_ranking);
+
         redirection("index.php?action=message&id_message=createuser_success&info=" . $info);
 
     } else {
