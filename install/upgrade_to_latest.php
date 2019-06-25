@@ -295,6 +295,10 @@ switch ($ogsversion) {
         $ogsversion = '3.3.6-beta1';
 
     case '3.3.6-beta1':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.6' WHERE config_name = 'version'";
+        $ogsversion = '3.3.6';
+
+    case '3.3.6':
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-alpha1' WHERE config_name = 'version'";
         $ogsversion = '3.3.7-alpha1';
 
@@ -317,6 +321,7 @@ switch ($ogsversion) {
     case '3.3.7-alpha5':
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-beta1' WHERE config_name = 'version'";
         $ogsversion = '3.3.7-beta1';
+
 
 
 
