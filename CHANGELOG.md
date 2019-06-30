@@ -1,4 +1,4 @@
-## [3.3.6-beta1] - 2019-05-15
+## [3.3.6] - 2019-06-15
 
 ### Added
 * #123 Supprimer le dossier install après l'installation
@@ -15,7 +15,7 @@
 ### Added
 * #73 Token d'authentification pour API
 * #67 ajout player_id ally id
-* #63 Paramètre Vitesse univers configurable à l'installation 
+* #63 Paramètre Vitesse univers configurable à l'installation
 * #12 Ajout params pour install
 * #10 Abscence du Dock Spatial
 * #51 Information de version incomplet
@@ -47,13 +47,13 @@
 - Phalanges Circulaires
 - Logo installation mis à jour
 - Mise à jour schéma BDD
-    
+
 [3.3.0]
 - Internationalisation
 - Compatibilité PHP 7
 - Univers Circulaires
 - Corrections multiples
-    
+
 [3.2.0]
 - Passage en UTF-8 pour une meilleur gestion des caractères spéciaux
 - Compatibilité PHP 5.5
@@ -61,7 +61,7 @@
 - Correction erreur de suppression classement alliance
 - Mise en forme de la présentation des nombres dans l'espace personnel
 - BBCODE avec les identifiants à la création du nouvel utilisateur
-    
+
 [3.1.3]
 - Correctif pour la suppression d'une planète dans l'espace Personel
 - Modification du champ phalanx pour mettre une valeur par défaut

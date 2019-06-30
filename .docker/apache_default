@@ -1,36 +1,35 @@
 <VirtualHost *:80>
-        ServerAdmin webmaster@localhost
+    ServerAdmin webmaster@localhost
 
-        DocumentRoot /var/www/html
-        <Directory />
-                Options FollowSymLinks
-                AllowOverride None
-        </Directory>
-        <Directory /var/www/html>
-                Options Indexes FollowSymLinks MultiViews
-                # To make wordpress .htaccess work
-                AllowOverride FileInfo
-				Require all granted
-        </Directory>
+    DocumentRoot /var/www/html
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory /var/www/html>
+        Options Indexes FollowSymLinks MultiViews
+        # To make wordpress .htaccess work
+        AllowOverride All
+        Require all granted
+    </Directory>
 
-        ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
-        <Directory "/usr/lib/cgi-bin">
-                AllowOverride None
-                Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
-                Require all granted
-        </Directory>
+    ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+    <Directory "/usr/lib/cgi-bin">
+        AllowOverride None
+        Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+        Require all granted
+    </Directory>
 
-        ErrorLog ${APACHE_LOG_DIR}/error.log
+    ErrorLog ${APACHE_LOG_DIR}/error.log
 
-        # Possible values include: debug, info, notice, warn, error, crit,
-        # alert, emerg.
-        LogLevel warn
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
 
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-	#
-	# Set HTTPS environment variable if we came in over secure
-	#  channel.
-	SetEnvIf x-forwarded-proto https HTTPS=on
+    # Set HTTPS environment variable if we came in over secure
+    #  channel.
+    SetEnvIf x-forwarded-proto https HTTPS=on
 
 </VirtualHost>
