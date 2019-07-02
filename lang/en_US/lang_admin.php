@@ -24,6 +24,7 @@ $lang['ADMIN_TITLE_LOGS_CONF'] = "Logs";
 $lang['ADMIN_TITLE_MODS_CONF'] = "Modules";
 $lang['ADMIN_TITLE_HELPER_CONF'] = "Helper";
 
+
 /* admin_affichage.php */
 $lang['ADMIN_DISPLAY_GALAXY_TITLE'] = "Option of the page : Galaxy";
 $lang['ADMIN_DISPLAY_GALAXY_MIPS'] = "Showing IPMs";
@@ -259,5 +260,6 @@ $lang['ADMIN_LOGS_SQL'] = "SQL Logs";
 $lang['ADMIN_LOGS_GENERAL'] = "General Logs";
 $lang['ADMIN_LOGS_SEE_TRANSACTIONALS'] = "If you want to view transactional file something: download the <br> logs";
 $lang['ADMIN_LOGS_VIEWER'] = "Viewer :";
+
 
 $lang['ADMIN_HELPER_HERE'] = "Helpers Presents :";
