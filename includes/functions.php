@@ -963,8 +963,8 @@ function check_postvalue($secvalue)
 }
 
 /**
- * OGSpy Hash Function
- * @param string The string to Hash (usually the password)
+ * OGSpy Simple Hash Function for unsecure tokens
+ * @param string The string to Hash
  * @return string Returns the hash of the input function
  */
 function crypto($str)

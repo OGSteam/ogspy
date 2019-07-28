@@ -308,15 +308,13 @@ class User_Model extends Model_Abstract
      * @param $user_id
      * @param $user_password
      */
-    public function set_user_password($user_id, $user_password)
+    public function set_user_password($user_id, $encrypted_password)
     {
-        $user_password=$this->db->sql_escape_string($user_password);
+        $encrypted_password=$this->db->sql_escape_string($encrypted_password);
         $user_id=(int)$user_id;
 
-        $encrypted_password = crypto($user_password);
-        $request = "UPDATE " . TABLE_USER . " SET `user_password` = '" . $encrypted_password . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `user_password_s` = '" . $encrypted_password . "' WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
-
     }
 
     /**
