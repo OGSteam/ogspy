@@ -1,3 +1,17 @@
+## [3.3.7] - En cours
+### Added
+* Autoloader #69, #70
+
+### Changed
+* DB Models #121, #94, #93, #89, #90, #91, #74, #75, #76, #77, #78, #79, #80, #81, #82, #83, #84, #85, #86, #87
+
+### Fixed
+* Champs Metal, Cristal, Deut de ParsedRE -> BigInt #134
+* Impossible de mettre à jour le mot de passe d'un utilisateur #135
+
+### Security
+* Sanitize DB variables #100 
+
 ## [3.3.6] - 2019-06-15
 
 ### Added
