@@ -56,9 +56,6 @@ COPY id.php /app/parameters/id.php
 COPY key.php /app/parameters/key.php
 COPY ogspy_docker.sql /app/ogspy_docker.sql
 
-# Import Data
-RUN mysql -u admin -p ogsteam < /app/ogspy_docker.sql
-
 #Environment variables to configure php
 ENV PHP_UPLOAD_MAX_FILESIZE 10M
 ENV PHP_POST_MAX_SIZE 10M
