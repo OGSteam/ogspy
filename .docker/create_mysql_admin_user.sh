@@ -16,7 +16,7 @@ echo "=> Creating MySQL admin user with ${_word} password"
 
 mysql -uroot -e "CREATE USER 'admin'@'%' IDENTIFIED BY '$PASS'"
 mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'127.0.0.1' WITH GRANT OPTION"
-mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' IDENTIFIED VIA unix_socket WITH GRANT OPTION;"
+mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' IDENTIFIED VIA unix_socket WITH GRANT OPTION"
 mysql -uroot -e "CREATE DATABASE ogspy"
 # You can create a /mysql-setup.sh file to intialized the DB
 if [ -f /mysql-setup.sh ] ; then
