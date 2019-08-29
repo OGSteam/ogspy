@@ -23,7 +23,6 @@ pwgen \
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 ENV MYSQL_PASS="ogsteam"
-ARG MYSQL_PASS="ogsteam"
 
 # Add image configuration and scripts
 COPY start-apache2.sh /start-apache2.sh
@@ -32,7 +31,8 @@ COPY run.sh /run.sh
 COPY my.cnf /etc/mysql/conf.d/my.cnf
 COPY supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
 COPY supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
-
+COPY mysql-setup.sh /mysql-setup.sh
+COPY ogspy_docker.sql /app/ogspy_docker.sql
 # Remove pre-installed database
 RUN rm -rf /var/lib/mysql/*
 
@@ -54,7 +54,7 @@ RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
 RUN rm -Rf /app/install
 COPY id.php /app/parameters/id.php
 COPY key.php /app/parameters/key.php
-COPY ogspy_docker.sql /app/ogspy_docker.sql
+
 
 #Environment variables to configure php
 ENV PHP_UPLOAD_MAX_FILESIZE 10M
