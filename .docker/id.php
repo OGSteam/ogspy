@@ -9,7 +9,7 @@ if (!defined("IN_SPYOGAME")) die("Hacking attempt");
 $table_prefix = "ogspy_";
 
 //Paramètres de connexion à la base de données
-$db_host = "localhost:/var/run/mysqld/mysqld.sock";
+$db_host = "127.0.0.1";
 $db_user = "admin";
 $db_password = "ogsteam";
 $db_database = "ogspy";
