@@ -52,6 +52,7 @@ if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
     load_lang_file($ui_lang, "lang_search.php");
     load_lang_file($ui_lang, "lang_serverdown.php");
     load_lang_file($ui_lang, "lang_statistic.php");
+    load_lang_file($ui_lang, "lang_help.php");
 }
 
 

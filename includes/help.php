@@ -13,6 +13,8 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+use Ogsteam\Ogspy\Helper\ToolTip_Helper;
+
 /**
  * help() creates a pop-up to display the help message on the mouse over.
  * @param string $key The Help message ID
@@ -20,15 +22,14 @@ if (!defined('IN_SPYOGAME')) {
  * @param string $prefixe Path to the OGSpy root (Not really used)
  * @return string The Html code to insert.
  */
-function help($key, $value = "", $prefixe = "")
+function help($key, $value = null, $prefixe = "")
 {
-    global $help;
+    global $lang;
 
-    if (isset($help[$key])) {
-        $value = $help[$key];
-    } else {
-        $value = "Aide Introuvable";
-    }
+    $tth = new ToolTip_Helper();
+    $key = "help_".$key;
+    $value = ($value==null) ? "Aide Introuvable" : $value;
+    $value = (isset($lang[$key])) ? $lang[$key] : $value; // On ecrase la variable si présente dans ogspy donc non custom
 
     $text = "<table width=\"200\">";
     $text .= '<tr><td class="c" style="text-align:center;">Aide</td></tr>';
@@ -40,7 +41,11 @@ function help($key, $value = "", $prefixe = "")
     } else {
         $text = htmlentities($text, ENT_COMPAT, "UTF-8");
     }
-    $text = "this.T_WIDTH=210;this.T_TEMP=0;return encodeURI('" . $text . "')";
 
-    return "<img style=\"cursor:pointer\" src=\"" . $prefixe . "images/help_2.png\" onmouseover=\"" . $text . "\">";
+    $tth-> addTooltip($key, $text);
+    return "<img style=\"cursor:pointer\" src=\"" . $prefixe . "images/help_2.png\" class=\"tooltip\"  data-tooltip-content=\"#".$key."\">";
+
+
+    //$text = "this.T_WIDTH=210;this.T_TEMP=0;return encodeURI('" . $text . "')";
+    //return "<img style=\"cursor:pointer\" src=\"" . $prefixe . "images/help_2.png\" onmouseover=\"" . $text . "\">";
 }

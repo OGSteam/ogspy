@@ -12,6 +12,7 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
+use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 
 $php_end = benchmark();
 $php_timing = $php_end - $php_start - $sql_timing;
@@ -58,7 +59,15 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
     </table>
 
 </div>
-<script type="text/javascript" src="js/wz_tooltip.js"></script>
+<?php echo (new ToolTip_Helper())->GetHTMLContent(); ?>
+<script>
+    $(document).ready(function () {
+        $('.tooltip_templates').css('display','none');
+        $('.tooltip').tooltipster();
+    });
+</script>
+
+
 
 </body>
 </html>

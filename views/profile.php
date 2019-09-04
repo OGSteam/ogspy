@@ -71,7 +71,6 @@ require_once("views/page_header.php");
         }
     </script>
     <!-- FIN DU SCRIPT -->
-
     <form method="POST" action="index.php" onSubmit="return check_password(this);">
         <input name="action" type="hidden" value="member_modify_member">
         <table width="600">
