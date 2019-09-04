@@ -4,6 +4,8 @@
 --
 --
 
+USE 'ogspy';
+
 DROP TABLE IF EXISTS ogspy_config;
 DROP TABLE IF EXISTS ogspy_group;
 DROP TABLE IF EXISTS ogspy_mod;
