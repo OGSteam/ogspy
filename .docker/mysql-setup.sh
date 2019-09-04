@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 echo "=> Initializing Data for OGSpy DB"
-mysql -uroot < /ogspy_docker.sql
+mysql -uroot < ogspy_docker.sql
 echo "=> Populate OGSpy DB Done!"
