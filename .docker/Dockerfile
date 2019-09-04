@@ -6,8 +6,8 @@ LABEL MAINTENER="darknoon@darkcity.fr"
 
 # Install packages
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && \
-apt-get -y install \
+RUN apt update && \
+apt -y install \
 supervisor \
 git \
 apache2 \
@@ -17,7 +17,7 @@ php-mysql \
 php-xml \
 php-zip \
 pwgen \
-&& apt-get clean \
+&& apt clean \
 && rm -rf /var/lib/apt/lists/
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
