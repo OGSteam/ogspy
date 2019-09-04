@@ -3,7 +3,8 @@
 /usr/bin/mysqld_safe > /dev/null 2>&1 &
 
 RET=1
-while [[ RET -ne 0 ]]; do
+while [[ RET -ne 0 ]]
+ do
     echo "=> Waiting for confirmation of MySQL service startup"
     sleep 5
     mysql -uroot -e "status" > /dev/null 2>&1
@@ -20,7 +21,8 @@ mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' WITH GRANT O
 
 mysql -uroot -e "CREATE DATABASE ogspy"
 # You can create a /mysql-setup.sh file to intialized the DB
-if [[ -f /mysql-setup.sh ]] ; then
+if [[ -f /mysql-setup.sh ]]
+then
   . /mysql-setup.sh
 fi
 

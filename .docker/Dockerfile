@@ -17,6 +17,7 @@ php-mysql \
 php-xml \
 php-zip \
 pwgen \
+vim \
 && apt clean \
 && rm -rf /var/lib/apt/lists/
 
@@ -39,8 +40,6 @@ RUN rm -rf /var/lib/mysql/*
 # Add MySQL utils
 COPY create_mysql_admin_user.sh /create_mysql_admin_user.sh
 RUN chmod 755 /*.sh
-# Remove DB File in case of
-RUN rm /app/ogspy_docker.sql
 
 # config to enable .htaccess
 COPY apache_default /etc/apache2/sites-available/000-default.conf
