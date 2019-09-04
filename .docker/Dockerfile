@@ -33,7 +33,7 @@ COPY my.cnf /etc/mysql/conf.d/my.cnf
 COPY supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
 COPY supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
 COPY mysql-setup.sh /mysql-setup.sh
-COPY ogspy_docker.sql /app/ogspy_docker.sql
+COPY ogspy_docker.sql /ogspy_docker.sql
 # Remove pre-installed database
 RUN rm -rf /var/lib/mysql/*
 
