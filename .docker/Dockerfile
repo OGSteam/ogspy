@@ -17,6 +17,7 @@ php-mysql \
 php-xml \
 php-zip \
 pwgen \
+vim \
 && apt clean \
 && rm -rf /var/lib/apt/lists/
 
@@ -32,15 +33,13 @@ COPY my.cnf /etc/mysql/conf.d/my.cnf
 COPY supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
 COPY supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
 COPY mysql-setup.sh /mysql-setup.sh
-COPY ogspy_docker.sql /app/ogspy_docker.sql
+COPY ogspy_docker.sql /ogspy_docker.sql
 # Remove pre-installed database
 RUN rm -rf /var/lib/mysql/*
 
 # Add MySQL utils
 COPY create_mysql_admin_user.sh /create_mysql_admin_user.sh
 RUN chmod 755 /*.sh
-# Remove DB File in case of
-RUN rm /app/ogspy_docker.sql
 
 # config to enable .htaccess
 COPY apache_default /etc/apache2/sites-available/000-default.conf
