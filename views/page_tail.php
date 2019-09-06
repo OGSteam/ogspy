@@ -62,8 +62,15 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 <?php echo (new ToolTip_Helper())->GetHTMLContent(); ?>
 <script>
     $(document).ready(function () {
-        $('.tooltip_templates').css('display','none');
-        $('.tooltip').tooltipster();
+        $('.tooltip').tooltipster(
+            {
+                animation: 'fade',
+                delay: 400,
+            }
+
+        );
+
+
     });
 </script>
 

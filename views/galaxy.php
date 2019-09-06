@@ -14,7 +14,10 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 global $user_data;
+$ToolTip_Helper = new ToolTip_Helper();
+
 //var_dump($user_data);
 
 $info_system = galaxy_show();
@@ -229,7 +232,12 @@ require_once("views/page_header.php");
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
 
-                $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip . "')\">" . $begin_allied . $begin_hided . $ally . $end_hided . $end_allied . "</a>";
+                //------------  Affichage Tooltip ----------------
+                $ttpKey = $ToolTip_Helper->preventJqueryError("ttp_alliance_".$ally);
+                $ToolTip_Helper->addTooltip($ttpKey,  $tooltip );
+                $ally = '<a class="tooltip"  data-tooltip-content="#'.$ttpKey.'" href="index.php?action=search&amp;type_search=ally&amp;string_search=' . $ally . '&strict=on">  '.$begin_allied . $begin_hided . $ally . $end_hided . $end_allied .'  </a>';
+                //------------  Fin Affichage Tooltip ----------------
+            //    $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip . "')\">" . $begin_allied . $begin_hided . $ally . $end_hided . $end_allied . "</a>";
             }
 
             if ($player == "") {
@@ -276,8 +284,11 @@ require_once("views/page_header.php");
                 } else {
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
-
-                $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $player . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip . "')\">" . $begin_allied . $begin_hided . $player . $end_hided . $end_allied . "</a>";
+                //------------  Affichage Tooltip ----------------
+                $ttpKey = $ToolTip_Helper->preventJqueryError("ttp_player_".$player);
+                $ToolTip_Helper->addTooltip($ttpKey,  $tooltip );
+                $player = '<a class="tooltip"  data-tooltip-content="#'.$ttpKey.'" href="index.php?action=search&amp;type_search=player&amp;string_search=' . $player . '&amp;strict=on">  '.$begin_allied . $begin_hided . $player . $end_hided . $end_allied.'  </a>';
+                //------------  Fin Affichage Tooltip ----------------
             }
 
             if ($status == "") {
@@ -343,8 +354,12 @@ require_once("views/page_header.php");
         } else {
             $legend = htmlentities($legend, ENT_COMPAT, "UTF-8");
         }
-
-        echo "<tr align='center'><td class='c' colspan='9'><a style='cursor:pointer' onmouseover=\"this.T_WIDTH=210;this.T_TEMP=0;return encodeURI('" . $legend . "')\">" . $lang['GALAXY_LEGEND'] . "</a></td></tr>";
+        //------------  Affichage Tooltip ----------------
+        (new ToolTip_Helper())->addTooltip("legende",  $legend );
+        echo "<tr align='center'><td class='c' colspan='9'>";
+            echo "<a style='cursor:pointer' class=\"tooltip\"  data-tooltip-content=\"#legende\">".$lang['GALAXY_LEGEND']."</a>";
+        echo "</td></tr>";
+        //------------ fin Affichage Tooltip ----------------
         echo "</table></form>";
 
 

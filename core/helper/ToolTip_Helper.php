@@ -29,6 +29,7 @@ class ToolTip_Helper extends Helper_Abstract
     public function addTooltip($key,$value)
     {
         $retour = true;
+
         if (isset(self::$content[$key]))
         {
             //gestion de l'erreur dans code ogspy et/ou mod
@@ -43,11 +44,11 @@ class ToolTip_Helper extends Helper_Abstract
     {
         $contents = self::$content;
         $retour = "";
-        $retour .="<div class=\"tooltip_templates\">";
+        $retour .="<div class=\"tooltip_templates\" style=\"display:none;\">";
         foreach ($contents as $key => $value )
         {
             $retour .="<span id=\"".$key."\">";
-                $retour .="". html_entity_decode($value)."";
+            $retour .="". html_entity_decode($value)."";
             $retour .="</span>";
         }
         $retour .="</div>";
@@ -58,7 +59,15 @@ class ToolTip_Helper extends Helper_Abstract
         return $retour;
     }
 
+    public function preventJqueryError($str)
+    {
+        // attention si "." et ou " " dans les noms ca bugouille
+        $str = str_replace(' ','',$str);
+        $str = str_replace('.','_',$str);
 
+
+        return $str;
+    }
 
     /**
      * @return string
