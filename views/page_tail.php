@@ -59,20 +59,8 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
     </table>
 
 </div>
-<?php echo (new ToolTip_Helper())->GetHTMLContent(); ?>
-<script>
-    $(document).ready(function () {
-        $('.tooltip').tooltipster(
-            {
-                animation: 'fade',
-                delay: 400,
-            }
-
-        );
-
-
-    });
-</script>
+<?php echo (new ToolTip_Helper())->GetHTMLHideContent(); ?>
+<?php echo (new ToolTip_Helper())->activateJs(); ?>
 
 
 

@@ -43,7 +43,7 @@ function help($key, $value = null, $prefixe = "")
     }
 
     $tth-> addTooltip($key, $text);
-    return "<img style=\"cursor:pointer\" src=\"" . $prefixe . "images/help_2.png\" class=\"tooltip\"  data-tooltip-content=\"#".$key."\">";
+    return "<img style=\"cursor:pointer\" src=\"" . $prefixe . "images/help_2.png\" ".$tth->GetHTMLClassContent().">";
 
 
     //$text = "this.T_WIDTH=210;this.T_TEMP=0;return encodeURI('" . $text . "')";

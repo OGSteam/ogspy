@@ -233,11 +233,8 @@ require_once("views/page_header.php");
                 }
 
                 //------------  Affichage Tooltip ----------------
-                $ttpKey = $ToolTip_Helper->preventJqueryError("ttp_alliance_".$ally);
-                $ToolTip_Helper->addTooltip($ttpKey,  $tooltip );
-                $ally = '<a class="tooltip"  data-tooltip-content="#'.$ttpKey.'" href="index.php?action=search&amp;type_search=ally&amp;string_search=' . $ally . '&strict=on">  '.$begin_allied . $begin_hided . $ally . $end_hided . $end_allied .'  </a>';
-                //------------  Fin Affichage Tooltip ----------------
-            //    $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip . "')\">" . $begin_allied . $begin_hided . $ally . $end_hided . $end_allied . "</a>";
+                    $ToolTip_Helper->addTooltip("ttp_alliance_".$ally,  $tooltip );
+                    $ally = '<a '.$ToolTip_Helper->GetHTMLClassContent().' href="index.php?action=search&amp;type_search=ally&amp;string_search=' . $ally . '&strict=on">  '.$begin_allied . $begin_hided . $ally . $end_hided . $end_allied .'  </a>';
             }
 
             if ($player == "") {
@@ -285,9 +282,8 @@ require_once("views/page_header.php");
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
                 //------------  Affichage Tooltip ----------------
-                $ttpKey = $ToolTip_Helper->preventJqueryError("ttp_player_".$player);
-                $ToolTip_Helper->addTooltip($ttpKey,  $tooltip );
-                $player = '<a class="tooltip"  data-tooltip-content="#'.$ttpKey.'" href="index.php?action=search&amp;type_search=player&amp;string_search=' . $player . '&amp;strict=on">  '.$begin_allied . $begin_hided . $player . $end_hided . $end_allied.'  </a>';
+                $ToolTip_Helper->addTooltip("ttp_player_".$player,  $tooltip );
+                $player = '<a '.$ToolTip_Helper->GetHTMLClassContent().' href="index.php?action=search&amp;type_search=player&amp;string_search=' . $player . '&amp;strict=on">  '.$begin_allied . $begin_hided . $player . $end_hided . $end_allied.'  </a>';
                 //------------  Fin Affichage Tooltip ----------------
             }
 
@@ -355,9 +351,9 @@ require_once("views/page_header.php");
             $legend = htmlentities($legend, ENT_COMPAT, "UTF-8");
         }
         //------------  Affichage Tooltip ----------------
-        (new ToolTip_Helper())->addTooltip("legende",  $legend );
+        $ToolTip_Helper->addTooltip("legende",  $legend );
         echo "<tr align='center'><td class='c' colspan='9'>";
-            echo "<a style='cursor:pointer' class=\"tooltip\"  data-tooltip-content=\"#legende\">".$lang['GALAXY_LEGEND']."</a>";
+        echo "<a style='cursor:pointer' ".$ToolTip_Helper->GetHTMLClassContent()." >".$lang['GALAXY_LEGEND']."</a>";
         echo "</td></tr>";
         //------------ fin Affichage Tooltip ----------------
         echo "</table></form>";
