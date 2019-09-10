@@ -42,8 +42,10 @@ $user_group= (new \Ogsteam\Ogspy\Model\Group_Model())->get_user_group($user_data
 //recherche des droits liés
 $tInfosGroups = (new \Ogsteam\Ogspy\Model\Group_Model())->get_group_rights($user_group);
 
-//si autorisé
-if ($tInfosGroups["server_show_positionhided"] == 0 )
+
+//si autorisé server_show_positionhided doit etre a 1 !!!!!!!!!!!
+//todo info a communiquer avec release
+if ($tInfosGroups["server_show_positionhided"] == 1 )
 {
     if (($server_config["portee_missil"] != "0" && $server_config["portee_missil"] != "")) {
         $missil = portee_missiles($galaxy, $system);
@@ -394,7 +396,9 @@ require_once("views/page_header.php");
                     } else {
                         $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                     }
-                    echo "[<a href='index.php?action=search&&amp;type_search=ally&amp;string_search=" . $value["ally"] . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip . "')\">" . $value["ally"] . "</a>]" . " ";
+
+                    $ToolTip_Helper->addTooltip("ttp_alliance_".$value["ally"],  $tooltip );
+                    echo "[<a href='index.php?action=search&&amp;type_search=ally&amp;string_search=" . $value["ally"] . "&amp;strict=on'  ".$ToolTip_Helper->GetHTMLClassContent().">" . $value["ally"] . "</a>]" . " ";
                 }
 
                 $individual_ranking = galaxy_show_ranking_unique_player($value["player"]);
@@ -422,7 +426,10 @@ require_once("views/page_header.php");
                 } else {
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
-                echo "<a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $value["player"] . "&amp;strict=on\" onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip . "')\">" . $value["player"] . "</a> " . $lang['GALAXY_LUNA_PHALANX'] . " " . $value["level"];
+
+                //------------  Affichage Tooltip ----------------
+                $ToolTip_Helper->addTooltip("ttp_player_".$player,  $tooltip );
+                echo "<a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $value["player"] . "&amp;strict=on\" ".$ToolTip_Helper->GetHTMLClassContent().">" . $value["player"] . "</a> " . $lang['GALAXY_LUNA_PHALANX'] . " " . $value["level"];
                 echo " en <a href='index.php?action=galaxy&amp;galaxy=" . $value["galaxy"] . "&amp;system=" . $value["system"] . "'>" . $value["galaxy"] . ":" . $value["system"] . ":" . $value["row"] . "</a> [<span style=\"color: orange; \">" . $value["galaxy"] . ":";
 
 

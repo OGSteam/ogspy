@@ -1681,18 +1681,17 @@ function portee_missiles($galaxy, $system)
 
 
             $info_users = $User_Model->select_user_data($base_joueur);
-            $nom_missil_joueur = $info_users["user_name"];
+            $nom_missil_joueur = $info_users[0]["user_name"];
 
 
             // calcul de la porté du silo
             $porte_missil = ($niv_reac_impuls * 5) - 1; // Portée : (Lvl 10 * 5) - 1 = 49
 
             // calcul de la fenetre
-            $vari_missil_moins = abs($sysSol_missil - $porte_missil) % $server_config['num_of_systems'];
+            $vari_missil_moins_tmp = ($sysSol_missil - $porte_missil) % $server_config['num_of_systems'];     // ne peux pas
+            $vari_missil_moins = (($sysSol_missil - $porte_missil) < 1 )  ? 1     : $vari_missil_moins_tmp;   //  etre negatif !!!!
             $vari_missil_plus = ($sysSol_missil + $porte_missil) % $server_config['num_of_systems'];
 
-
-            //log_('debug', '[' . $galaxy . ':' . $system . '] Fenetre Basse MIP pour : ' . $galaxy . ':' . $vari_missil_moins . ', Fenetre Sup MIP: ' . $galaxy . ':' . $vari_missil_plus);
 
             // création des textes si missil à portée
             if ($galaxy == $galaxie_missil && $system >= $vari_missil_moins && $system <= $vari_missil_plus) {
@@ -1736,11 +1735,11 @@ function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_
     }
     $door = '<a id="linkdoor" href="?action=galaxy&galaxy=' . $galaxie_missil . '&system=' . $sysSol_missil . '"';
     //$door .= ' onmouseover="this.T_WIDTH=260;this.T_TEMP=15000;return escape(' . $tooltip . ')"';
-    $total_missil += $missil_dispo;
+    $total_missil += (int)$missil_dispo;
     $missil_ready = "<span style='color: #DBBADC; '> " . $total_missil . " " . $lang['GALAXY_MIP_MIPS'] . " </span>";
 
     //<a href="index.htm" onmouseover="return escape('Some text')">Homepage </a>
-    $ok_missil .= $door . $missil_ready . $color_missil_ally1 . $base_coord . $color_missil_ally2;
+    $ok_missil .= $nom_missil_joueur ." - ". $door . $missil_ready . $color_missil_ally1 . $base_coord . $color_missil_ally2;
 
 
     if ($ok_missil) {
@@ -1748,5 +1747,6 @@ function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_
     } else {
         $missil_ok = "<span style='color: #FFFF66; '> " . $lang['GALAXY_MIP_NOMIPS_AROUND'] . "</span>";
     }
+
     return $missil_ok;
 }
