@@ -135,15 +135,53 @@ class ToolTip_Helper extends Helper_Abstract
         $retour .= "        $('.tooltip').tooltipster(";
         $retour .= "            {";
         $retour .= "                animation: 'fade',";
-        $retour .= "                delay: 600,";
+        $retour .= "                delay: 400,";
         $retour .= "                contentAsHTML: true,";
+        $retour .= "                theme: ['tooltipster-noir', 'tooltipster-noir-customized'],";
         $retour .= "            }";
         $retour .= "        );";
         $retour .= "    });";
         $retour .= "</script>";
 
+        $retour .= $this->customCSS();
+
         return $retour;
     }
+
+
+    public function customCSS()
+    {
+        $retour = "";
+        $retour .= "<style type=\"text/css\">";
+        $retour .= ".tooltipster-sidetip.tooltipster-noir.tooltipster-noir-customized .tooltipster-box {";
+        $retour .= " background: rgba(0,0,0,0.8);";
+        $retour .= "border: 1px solid black;";
+        $retour .= "border-radius: 6px;";
+        $retour .= "box-shadow: 5px 5px 2px 0 rgba(0,0,0,0.4);";
+        $retour .= "}";
+
+
+        $retour .= "</style>";
+               return $retour;
+}
+
+
+
+
+
+
+        //.tooltipster-sidetip.tooltipster-noir.tooltipster-noir-customized .tooltipster-box {
+    // background: grey;
+    //   border: 3px solid red;
+//	border-radius: 6px;
+//	box-shadow: 5px 5px 2px 0 rgba(0,0,0,0.4);
+//}
+
+//.tooltipster-sidetip.tooltipster-noir.tooltipster-noir-customized .tooltipster-content {
+    //       color: blue;
+    //     padding: 8px;
+//}
+    //  }
 
     /**
      * @return string
