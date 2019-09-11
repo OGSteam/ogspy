@@ -135,7 +135,8 @@ class ToolTip_Helper extends Helper_Abstract
         $retour .= "        $('.tooltip').tooltipster(";
         $retour .= "            {";
         $retour .= "                animation: 'fade',";
-        $retour .= "                delay: 400,";
+        $retour .= "                delay: 600,";
+        $retour .= "                contentAsHTML: true,";
         $retour .= "            }";
         $retour .= "        );";
         $retour .= "    });";
