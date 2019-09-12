@@ -33,7 +33,7 @@ function help($key, $value = null, $prefixe = "")
 
     $text = "<table width=\"200\">";
     $text .= '<tr><td class="c" style="text-align:center;">Aide</td></tr>';
-    $text .= '<tr><th style="color:white; ">' . addslashes($value) . "</th></tr>";
+    $text .= '<tr><th style="color:white; ">' . ($value) . "</th></tr>";
     $text .= "</table>";
 
     if (version_compare(phpversion(), '5.4.0', '>=')) {
