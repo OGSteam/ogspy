@@ -12,6 +12,11 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
+
+use Ogsteam\Ogspy\Core;
+use Ogsteam\Ogspy\Core\Ogspy;
+
+
 // PHP5 with register_long_arrays off?
 if (!isset($HTTP_POST_VARS) && isset($_POST)) {
     $HTTP_POST_VARS = $_POST;
@@ -61,23 +66,34 @@ if (defined("OGSPY_INSTALLED")){
     require_once ("includes/token.php");
 }
 
+
+// premier apppel et premiere instanciation d'ogspy
+$Ogspy= Ogspy::getInstance();
+
+
+/// ------ LEGACY PUB ------
+$pub = $Ogspy->Params->getAllParamsLegacy();
+extract($pub, EXTR_PREFIX_ALL, "pub");
+$pub = null;
+/// ------ LEGACY PUB ------
+
 //Récupération des valeur GET, POST, COOKIE
-extract($_GET, EXTR_PREFIX_ALL, "pub");
-extract($_POST, EXTR_PREFIX_ALL, "pub");
-extract($_COOKIE, EXTR_PREFIX_ALL, "pub");
+//extract($_GET, EXTR_PREFIX_ALL, "pub");
+//extract($_POST, EXTR_PREFIX_ALL, "pub");
+//extract($_COOKIE, EXTR_PREFIX_ALL, "pub");
 
-foreach ($_GET as $secvalue) {
-    if (!check_getvalue($secvalue)) {
-        die("I don't like you...");
-    }
-}
+//foreach ($_GET as $secvalue) {
+//    if (!check_getvalue($secvalue)) {
+//        die("I don't like you...");
+//    }
+//}
 
-foreach ($_POST as $secvalue) {
-    if (!check_postvalue($secvalue)) {
-        header("Location: index.php");
-        die();
-    }
-}
+//foreach ($_POST as $secvalue) {
+//    if (!check_postvalue($secvalue)) {
+//        header("Location: index.php");
+//        die();
+//    }
+//}
 
 //Language File
 if (!isset($ui_lang)) { // Checks the ui_lang value from parameters file

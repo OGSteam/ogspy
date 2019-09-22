@@ -62,13 +62,13 @@ if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "log
     exit();
 }
 
-
-if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
+$actionString = (string) $pub_action;
+if ($pub_action <> '' && isset($cache_mod[$actionString])) {
     if (ratio_is_ok()) {
-        if ($cache_mod[$pub_action]['admin_only'] == 1 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {
+        if ($cache_mod[$actionString]['admin_only'] == 1 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {
             redirection("index.php?action=message&id_message=forbidden&info");
         } else {
-            require_once("mod/" . $cache_mod[$pub_action]['root'] . "/" . $cache_mod[$pub_action]['link']);
+            require_once("mod/" . $cache_mod[$actionString]['root'] . "/" . $cache_mod[$actionString]['link']);
             exit();
         }
 
