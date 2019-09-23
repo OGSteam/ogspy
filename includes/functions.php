@@ -920,22 +920,10 @@ function benchmark()
  */
 function check_getvalue($secvalue)
 {
-    if (!is_array($secvalue)) {
-        if ((preg_match("/<[^>]*script*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*object*\"?[^>]*>/i",
-                $secvalue)) || (preg_match("/<[^>]*iframe*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*applet*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*meta*\"?[^>]*>/i",
-                $secvalue)) || (preg_match("/<[^>]*style*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*form*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*img*\"?[^>]*>/i",
-                $secvalue)) || (preg_match("/\([^>]*\"?[^)]*\)/i", $secvalue)) || (preg_match("/\"/i",
-                $secvalue))
-        ) {
-            return false;
-        }
-    } else {
-        foreach ($secvalue as $subsecvalue) {
-            if (!check_getvalue($subsecvalue)) {
-                return false;
-            }
-        }
-    }
+    global $Ogspy;
+    $Ogspy->Params->sanitize($secvalue,"get");
+
+    log_("depreciate", "Utilisation de la function check_getvalue " . $secvalue);
     return true;
 }
 
@@ -946,19 +934,11 @@ function check_getvalue($secvalue)
  */
 function check_postvalue($secvalue)
 {
-    if (!is_array($secvalue)) {
-        if ((preg_match("/<[^>]*script*\"?[^>]*>/", $secvalue)) || (preg_match("/<[^>]*style*\"?[^>]*>/",
-                $secvalue))
-        ) {
-            return false;
-        }
-    } else {
-        foreach ($secvalue as $subsecvalue) {
-            if (!check_postvalue($subsecvalue)) {
-                return false;
-            }
-        }
-    }
+    global $Ogspy;
+    $Ogspy->Params->sanitize($secvalue,"post");
+
+    log_("depreciate", "Utilisation de la function check_postvalue " . $secvalue);
+    return true;
     return true;
 }
 
