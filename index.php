@@ -20,6 +20,11 @@ define("IN_SPYOGAME", true);
  */
 require_once("common.php");
 
+use Ogsteam\Ogspy\Core;
+use Ogsteam\Ogspy\Core\Ogspy;
+
+$Ogspy= Ogspy::getInstance();
+
 /**
  * Repère de début de traitement par OGSpy
  * @name $php_start
@@ -62,7 +67,7 @@ if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "log
     exit();
 }
 
-$actionString = (string) $pub_action;
+$actionString = $Ogspy->Params->action;
 if ($pub_action <> '' && isset($cache_mod[$actionString])) {
     if (ratio_is_ok()) {
         if ($cache_mod[$actionString]['admin_only'] == 1 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {

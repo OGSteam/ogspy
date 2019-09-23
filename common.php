@@ -70,7 +70,6 @@ if (defined("OGSPY_INSTALLED")){
 // premier apppel et premiere instanciation d'ogspy
 $Ogspy= Ogspy::getInstance();
 
-
 /// ------ LEGACY PUB ------
 $pub = $Ogspy->Params->getAllParamsLegacy();
 extract($pub, EXTR_PREFIX_ALL, "pub");

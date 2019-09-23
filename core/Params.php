@@ -100,7 +100,7 @@ class Params
       }
 
     public function __get($key){
-        $this->getParam($key);
+       return $this->getParam($key);
     }
 
 
