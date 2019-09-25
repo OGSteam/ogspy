@@ -13,7 +13,8 @@ class Params
         $this->data = array();
 
         if ((int)self::$nbInstance > 0) {
-            //TODO si plus d'une instance LOG warning => class ogspy doit en etre le conteneur
+            return null;
+
         }
 
         //hydratation

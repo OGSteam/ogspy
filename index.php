@@ -25,6 +25,24 @@ use Ogsteam\Ogspy\Core\Ogspy;
 
 $Ogspy= Ogspy::getInstance();
 
+class MethodTest
+{
+    public function __call($name, $arguments)
+    {
+        // Note : la valeur de $name est sensible à la casse.
+        echo "Appel de la méthode '$name' "
+            . implode(', ', $arguments). "\n";
+    }
+
+    /**  Depuis PHP 5.3.0  */
+    public static function __callStatic($name, $arguments)
+    {
+        // Note : la valeur de $name est sensible à la casse.
+        echo "Appel de la méthode statique '$name' "
+            . implode(', ', $arguments). "\n";
+    }
+}
+
 /**
  * Repère de début de traitement par OGSpy
  * @name $php_start
@@ -68,7 +86,7 @@ if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "log
 }
 
 $actionString = $Ogspy->Params->action;
-if ($pub_action <> '' && isset($cache_mod[$actionString])) {
+if ($actionString <> '' && isset($cache_mod[$actionString])) {
     if (ratio_is_ok()) {
         if ($cache_mod[$actionString]['admin_only'] == 1 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {
             redirection("index.php?action=message&id_message=forbidden&info");

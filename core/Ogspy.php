@@ -12,12 +12,14 @@ class Ogspy
     private static $instance = null;
 
     public $Params; //stockage et gestion des __get / __post
-    private Static $Configs; //gestion de la config ogspy
+    public $Configs; //gestion de la config ogspy
 
+    private $isInstall = null;
 
     private function __construct()
     {
-            $this->Params = new Params();
+        $this->Params = new Params();
+        $this->Configs = new Configs();
     }
 
     public static function getInstance() {
@@ -29,6 +31,19 @@ class Ogspy
         return self::$instance;
     }
 
+
+
+    Public function setIsInstall()
+    {
+        $this->isInstall=true;
+    }
+    public function setIsNotInstall()
+    {
+        $this->isInstall=false;
+        //hydratation des fichier configs
+        $this->Configs->isNotInstall();
+
+    }
 
 
 

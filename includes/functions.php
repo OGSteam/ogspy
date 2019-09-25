@@ -213,25 +213,26 @@ function init_mod_cache()
  */
 function init_serverconfig()
 {
-    global $server_config;
-
-    // Load cached config
-    $filename = 'cache/cache_config.php';
-
-    if (file_exists($filename)) {
-        include $filename;
-        // regeneration si besoin
-        if ((filemtime($filename) + $server_config['config_cache']) < time()) {
-            generate_config_cache();
-        }
-
-    } else {
-        generate_config_cache();
-        if (file_exists($filename)) {
-            include $filename; // on reinjecte le fichier s'il existe'
-        }
-
-    }
+        log_("depreciate", "Appel d'une fonction déprécié : init_serverconfig()");
+//        global $server_config;
+//
+//    // Load cached config
+//        $filename = 'cache/cache_config.php';
+//
+//        if (file_exists($filename)) {
+//       include $filename;
+//            // regeneration si besoin
+//         if ((filemtime($filename) + $server_config['config_cache']) < time()) {
+//              generate_config_cache();
+//         }
+//
+//       } else {
+//           generate_config_cache();
+//           if (file_exists($filename)) {
+//               include $filename; // on reinjecte le fichier s'il existe'
+//            }
+//
+//       }
 
 }
 
@@ -921,7 +922,7 @@ function benchmark()
 function check_getvalue($secvalue)
 {
     global $Ogspy;
-    $Ogspy->Params->sanitize($secvalue,"get");
+    $Ogspy->Params->sanitize($secvalue, "get");
 
     log_("depreciate", "Utilisation de la function check_getvalue " . $secvalue);
     return true;
@@ -935,7 +936,7 @@ function check_getvalue($secvalue)
 function check_postvalue($secvalue)
 {
     global $Ogspy;
-    $Ogspy->Params->sanitize($secvalue,"post");
+    $Ogspy->Params->sanitize($secvalue, "post");
 
     log_("depreciate", "Utilisation de la function check_postvalue " . $secvalue);
     return true;
