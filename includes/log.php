@@ -326,6 +326,9 @@ function log_($parameter, $option = 0)
         case 'debug' :
             $line = 'DEBUG : ' . $option;
             break;
+        case 'depreciate' :
+            $line = 'DEPRECIE : Utilisation de  : ' . $option;
+            break;
         case 'php_error' :
             $line = "[PHP-ERROR] " . $option[0] . " - " . $option[1];
             if (isset($option[2])) {
