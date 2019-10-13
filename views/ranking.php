@@ -23,10 +23,10 @@ require_once("views/page_header.php");
                 <table>
                     <tr align="center">
                         <?php
-                        if (!isset($pub_subaction)) {
+                        if (!isset($Ogspy->Params->subaction)) {
                             $subaction = "player";
                         } else {
-                            $subaction = $pub_subaction;
+                            $subaction = $Ogspy->Params->subaction;
                         }
 
                         if ($subaction != "player") {

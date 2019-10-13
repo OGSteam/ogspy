@@ -19,10 +19,10 @@ if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
 }
 
 //Définition de la date sélectionnée
-if (!isset($pub_show)) {
+if (!isset($Ogspy->Params->show)) {
     $show = date("y~m~d");
 } else {
-    $show = $pub_show;
+    $show = $Ogspy->Params->show;
 }
 
 if (sizeof(explode("~", $show)) != 3) {
@@ -34,11 +34,11 @@ if (!checkdate($show_month, $show_day, $show_year)) {
 }
 $show = $show_year . $show_month . $show_day;
 
-if (!isset($pub_typelog)) {
+if (!isset($Ogspy->Params->typelog)) {
     $typelog = "log";
 } else {
-    if (check_var($pub_typelog, "Char")) {
-        $typelog = $pub_typelog;
+    if (check_var($Ogspy->Params->typelog, "Char")) {
+        $typelog = $Ogspy->Params->typelog;
     } else {
         $typelog = "log";
     }

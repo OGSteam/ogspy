@@ -26,7 +26,8 @@ $ogspy_phperror = Array();
  */
 function log_($parameter, $option = 0)
 {
-    global $db, $user_data, $server_config, $pub_action;
+    global $user_data, $server_config;
+    global $Ogspy;
 
     $member = "Inconnu";
     if (isset($user_data)) {
@@ -36,7 +37,7 @@ function log_($parameter, $option = 0)
     switch ($parameter) {
         /* ----------- Entrée Journal générique de Mod ----------- */
         case 'mod':
-            $line = "[$pub_action] " . $member . " ";
+            $line = "[$Ogspy->Params->action] " . $member . " ";
             if (is_array($option)) {
                 $line .= print_r($option, true);
             } else {
@@ -482,13 +483,13 @@ function log_check_exist($date)
  */
 function log_extractor()
 {
-    global $pub_date, $user_data;
+    global $Ogspy, $user_data;
 
     if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
         redirection("index.php?action=message&id_message=forbidden&info");
     }
 
-    if (!isset($pub_date)) {
+    if (!isset($Ogspy->Params->date)) {
             redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
@@ -502,7 +503,7 @@ function log_extractor()
     //Récupération de la liste des répertoires correspondant à cette date
     while ($file = readdir($path)) {
         if ($file != "." && $file != "..") {
-            if (is_dir($root . $file) && preg_match("/^" . $pub_date . "/", $file)) {
+            if (is_dir($root . $file) && preg_match("/^" . $Ogspy->Params->date . "/", $file)) {
                             $directories[] = $file;
             }
         }
@@ -547,7 +548,7 @@ function log_extractor()
     // entêtes HTTP
     header('Content-Type: application/x-zip');
     // force le téléchargement
-    header('Content-disposition: attachment; filename=log_' . $pub_date . '.zip');
+    header('Content-disposition: attachment; filename=log_' . $Ogspy->Params->date . '.zip');
     header('Content-Transfer-Encoding: binary');
 
     // envoi du fichier au navigateur
@@ -561,22 +562,22 @@ function log_extractor()
  */
 function log_remove()
 {
-    global $pub_date, $user_data, $pub_directory;
+    global $Ogspy, $user_data;
 
     if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
             redirection("index.php?action=message&id_message=forbidden&info");
     }
 
-    if ($pub_directory == true) {
-        @unlink("journal/" . $pub_date . "/log_" . $pub_date . ".log");
-        @unlink("journal/" . $pub_date . "/index.htm");
-        if (rmdir("journal/" . $pub_date)) {
+    if ($Ogspy->Params->directory == true) {
+        @unlink("journal/" . $Ogspy->Params->date . "/log_" . $Ogspy->Params->date . ".log");
+        @unlink("journal/" . $Ogspy->Params->date . "/index.htm");
+        if (rmdir("journal/" . $Ogspy->Params->date)) {
             redirection("index.php?action=message&id_message=log_remove&info");
         } else {
             redirection("index.php?action=message&id_message=log_missing&info");
         }
     } else {
-        if (unlink("journal/" . $pub_date . "/log_" . $pub_date . ".log")) {
+        if (unlink("journal/" . $Ogspy->Params->date . "/log_" . $Ogspy->Params->date . ".log")) {
             redirection("index.php?action=message&id_message=log_remove&info");
         } else {
             redirection("index.php?action=message&id_message=log_missing&info");

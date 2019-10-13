@@ -16,27 +16,27 @@ if (!defined('IN_SPYOGAME')) {
 //integré dasn le common.php
 //require "includes/ogame.php";
 
-if (!isset($pub_zoom) || !isset($pub_user_stat_name) || !isset($pub_player_comp) ||
-    !isset($pub_user_stat_name)
+if (!isset($Ogspy->Params->zoom) || !isset($Ogspy->Params->user_stat_name) || !isset($Ogspy->Params->player_comp) ||
+    !isset($Ogspy->Params->user_stat_name)
 ) {
-    $pub_user_stat_name = "";
-    $pub_player_comp = "";
-    $pub_user_stat_name = "";
-    $pub_zoom = "";
+    $Ogspy->Params->user_stat_name = "";
+    $Ogspy->Params->player_comp = "";
+    $Ogspy->Params->user_stat_name = "";
+    $Ogspy->Params->zoom = "";
 }
-if (!check_var($pub_zoom, "Char") || !check_var($pub_player_comp, "Text") || !check_var($pub_user_stat_name, "Text")
+if (!check_var($Ogspy->Params->zoom, "Char") || !check_var($Ogspy->Params->player_comp, "Text") || !check_var($Ogspy->Params->user_stat_name, "Text")
 ) {
     redirection("index.php?action=message&amp;id_message=errordata&amp;info");
 }
 
-$zoom = $pub_zoom;
-$player_comp = $pub_player_comp;
-$user_stat_name = $pub_user_stat_name;
+$zoom = $Ogspy->Params->zoom;
+$player_comp = $Ogspy->Params->player_comp;
+$user_stat_name = $Ogspy->Params->user_stat_name;
 
 if (!isset($zoom)) {
     $zoom = "true";
 }
-if (isset($pub_zoom_change_y) && isset($pub_zoom_change_x)) {
+if (isset($Ogspy->Params->zoom_change_y) && isset($Ogspy->Params->zoom_change_x)) {
     $zoom = ($zoom == "true" ? "false" : "true");
 }
 if (!isset($player_comp)) {
@@ -62,13 +62,13 @@ if (sizeof($dates) > 0) {
     $max_date = max($dates);
     $min_date = min($dates);
 
-    if (isset($pub_start_date) && isset($pub_end_date) && preg_match("/^(3[01]|[0-2][0-9]|[1-9])\/([1-9]|0[1-9]|1[012])\/(2[[:digit:]]{3})$/",
-            trim($pub_start_date)) && preg_match("/^(3[01]|[0-2][0-9]|[1-9])\/([1-9]|0[1-9]|1[012])\/(2[[:digit:]]{3})$/",
-            trim($pub_end_date))
+    if (isset($Ogspy->Params->start_date) && isset($Ogspy->Params->end_date) && preg_match("/^(3[01]|[0-2][0-9]|[1-9])\/([1-9]|0[1-9]|1[012])\/(2[[:digit:]]{3})$/",
+            trim($Ogspy->Params->start_date)) && preg_match("/^(3[01]|[0-2][0-9]|[1-9])\/([1-9]|0[1-9]|1[012])\/(2[[:digit:]]{3})$/",
+            trim($Ogspy->Params->end_date))
     ) {
-        $min = explode("/", trim($pub_start_date));
+        $min = explode("/", trim($Ogspy->Params->start_date));
         $min = mktime(22, 0, 0, $min[1], $min[0] - 1, $min[2]);
-        $max = explode("/", trim($pub_end_date));
+        $max = explode("/", trim($Ogspy->Params->end_date));
         $max = mktime(18, 0, 0, $max[1], $max[0], $max[2]);
         if ($max > $min) {
             $max_date = $max;

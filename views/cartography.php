@@ -30,7 +30,7 @@ $galaxy_ally_position = galaxy_ally_position($step);
 $position = array_keys($galaxy_ally_position);
 $ally = "";
 for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
-    $ally .= $pub_ally_[$i];
+    $ally .= $Ogspy->Params->ally_[$i];
     $options_[$i] = "<option></option>" . "\n";
 
 }
@@ -39,7 +39,7 @@ $ally_list = galaxy_ally_listing();
 foreach ($ally_list as $ally_name) {
     for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
         $selected_[$i] = "";
-        if ($ally_name == $pub_ally_[$i]) {
+        if ($ally_name == $Ogspy->Params->ally_[$i]) {
             $selected_[$i] = "selected";
         }
         $options_[$i] .= "<option " . $selected_[$i] . ">" . $ally_name . "</option>" . "\n";

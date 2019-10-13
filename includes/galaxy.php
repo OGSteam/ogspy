@@ -103,46 +103,46 @@ function galaxy_check_auth($action)
 /**
  * Affichage des galaxies
  *
- * @global int $pub_galaxy
- * @global int $pub_system
- * @global string $pub_coordinates
+ * @global int $Ogspy->Params->galaxy
+ * @global int $Ogspy->Params->system
+ * @global string $Ogspy->Params->coordinates
  * @global array $user_data
  * @global array $server_config
- * @return array contenant un systeme solaire correspondant a $pub_galaxy et $pub_system
+ * @return array contenant un systeme solaire correspondant a $Ogspy->Params->galaxy et $Ogspy->Params->system
  */
 function galaxy_show()
 {
     global $user_data, $server_config;
-    global $pub_galaxy, $pub_system, $pub_coordinates;
-    if (isset($pub_coordinates)) {
-        @list($pub_galaxy, $pub_system) = explode(":", $pub_coordinates);
+    global $Ogspy;
+    if (isset($Ogspy->Params->coordinates)) {
+        @list($Ogspy->Params->galaxy, $Ogspy->Params->system) = explode(":", $Ogspy->Params->coordinates);
     }
-    if (isset($pub_galaxy) && isset($pub_system)) {
-        if (intval($pub_galaxy) < 1) {
-            $pub_galaxy = 1;
+    if (isset($Ogspy->Params->galaxy) && isset($Ogspy->Params->system)) {
+        if (intval($Ogspy->Params->galaxy) < 1) {
+            $Ogspy->Params->galaxy = 1;
         }
-        if (intval($pub_galaxy) > intval($server_config['num_of_galaxies'])) {
-            $pub_galaxy = intval($server_config['num_of_galaxies']);
+        if (intval($Ogspy->Params->galaxy) > intval($server_config['num_of_galaxies'])) {
+            $Ogspy->Params->galaxy = intval($server_config['num_of_galaxies']);
         }
-        if (intval($pub_system) < 1) {
-            $pub_system = 1;
+        if (intval($Ogspy->Params->system) < 1) {
+            $Ogspy->Params->system = 1;
         }
-        if (intval($pub_system) > intval($server_config['num_of_systems'])) {
-            $pub_system = intval($server_config['num_of_systems']);
+        if (intval($Ogspy->Params->system) > intval($server_config['num_of_systems'])) {
+            $Ogspy->Params->system = intval($server_config['num_of_systems']);
         }
     }
-    if (!isset($pub_galaxy) || !isset($pub_system)) {
-        $pub_galaxy = $user_data["user_galaxy"];
-        $pub_system = $user_data["user_system"];
-        if ($pub_galaxy == 0 || $pub_system == 0) {
-            $pub_galaxy = 1;
-            $pub_system = 1;
+    if (!isset($Ogspy->Params->galaxy) || !isset($Ogspy->Params->system)) {
+        $Ogspy->Params->galaxy = $user_data["user_galaxy"];
+        $Ogspy->Params->system = $user_data["user_system"];
+        if ($Ogspy->Params->galaxy == 0 || $Ogspy->Params->system == 0) {
+            $Ogspy->Params->galaxy = 1;
+            $Ogspy->Params->system = 1;
         }
     }
     $Universe_Model = new Universe_Model();
-    $population = $Universe_Model->get_system($pub_galaxy, $pub_system, $pub_system);
-    $population = filter_system($population[$pub_system]);
-    return array("population" => $population, "galaxy" => $pub_galaxy, "system" => $pub_system);
+    $population = $Universe_Model->get_system($Ogspy->Params->galaxy, $Ogspy->Params->system, $Ogspy->Params->system);
+    $population = filter_system($population[$Ogspy->Params->system]);
+    return array("population" => $population, "galaxy" => $Ogspy->Params->galaxy, "system" => $Ogspy->Params->system);
 }
 
 /**
@@ -175,50 +175,50 @@ function filter_system($system)
 /**
  * Affichage des systemes
  *
- * @global int $pub_galaxy
- * @global int $pub_system_down
- * @global int $pub_system_up
+ * @global int $Ogspy->Params->galaxy
+ * @global int $Ogspy->Params->system_down
+ * @global int $Ogspy->Params->system_up
  * @global array $user_data
  * @global array $user_auth
  * @global array $server_config
- * @return array contenant les  systeme solaire compris entre $pub_system_down et $pub_system_up
+ * @return array contenant les  systeme solaire compris entre $Ogspy->Params->system_down et $Ogspy->Params->system_up
  */
 function galaxy_show_sector()
 {
     global $server_config;
-    global $pub_galaxy, $pub_system_down, $pub_system_up;
-    if (isset($pub_galaxy) && isset($pub_system_down) && isset($pub_system_up)) {
-        if (intval($pub_galaxy) < 1) {
-            $pub_galaxy = 1;
+    global $Ogspy;
+    if (isset($Ogspy->Params->galaxy) && isset($Ogspy->Params->system_down) && isset($Ogspy->Params->system_up)) {
+        if (intval($Ogspy->Params->galaxy) < 1) {
+            $Ogspy->Params->galaxy = 1;
         }
-        if (intval($pub_galaxy) > intval($server_config['num_of_galaxies'])) {
-            $pub_galaxy = intval($server_config['num_of_galaxies']);
+        if (intval($Ogspy->Params->galaxy) > intval($server_config['num_of_galaxies'])) {
+            $Ogspy->Params->galaxy = intval($server_config['num_of_galaxies']);
         }
-        if (intval($pub_system_down) < 1) {
-            $pub_system_down = 1;
+        if (intval($Ogspy->Params->system_down) < 1) {
+            $Ogspy->Params->system_down = 1;
         }
-        if (intval($pub_system_down) > intval($server_config['num_of_systems'])) {
-            $pub_system_down = intval($server_config['num_of_systems']);
+        if (intval($Ogspy->Params->system_down) > intval($server_config['num_of_systems'])) {
+            $Ogspy->Params->system_down = intval($server_config['num_of_systems']);
         }
-        if (intval($pub_system_up) < 1) {
-            $pub_system_up = 1;
+        if (intval($Ogspy->Params->system_up) < 1) {
+            $Ogspy->Params->system_up = 1;
         }
-        if (intval($pub_system_up) > intval($server_config['num_of_systems'])) {
-            $pub_system_up = intval($server_config['num_of_systems']);
+        if (intval($Ogspy->Params->system_up) > intval($server_config['num_of_systems'])) {
+            $Ogspy->Params->system_up = intval($server_config['num_of_systems']);
         }
     }
-    if (!isset($pub_galaxy) || !isset($pub_system_down) || !isset($pub_system_up)) {
-        $pub_galaxy = 1;
-        $pub_system_down = 1;
-        $pub_system_up = 25;
+    if (!isset($Ogspy->Params->galaxy) || !isset($Ogspy->Params->system_down) || !isset($Ogspy->Params->system_up)) {
+        $Ogspy->Params->galaxy = 1;
+        $Ogspy->Params->system_down = 1;
+        $Ogspy->Params->system_up = 25;
     }
     $Universe_Model = new Universe_Model();
-    $population = $Universe_Model->get_system($pub_galaxy, $pub_system_down, $pub_system_up);
-    for ($system = $pub_system_down; $system <= $pub_system_up; $system++) {
+    $population = $Universe_Model->get_system($Ogspy->Params->galaxy, $Ogspy->Params->system_down, $Ogspy->Params->system_up);
+    for ($system = $Ogspy->Params->system_down; $system <= $Ogspy->Params->system_up; $system++) {
         $population[$system] = filter_system($population[$system]);
         $population[$system]['timestamp'] = $population[$system][1]['timestamp'];
     }
-    return array("population" => $population, "galaxy" => $pub_galaxy, "system_down" => $pub_system_down, "system_up" => $pub_system_up);
+    return array("population" => $population, "galaxy" => $Ogspy->Params->galaxy, "system_down" => $Ogspy->Params->system_down, "system_up" => $Ogspy->Params->system_up);
 }
 
 /**
@@ -227,27 +227,27 @@ function galaxy_show_sector()
  * @global array $user_data
  * @global array $user_auth
  * @global array $server_config
- * @global string $pub_string_search
- * @global string $pub_type_search type de recherche a effectuer : (player|ally|planet|colonization|moon|away)
- * @global int $pub_strict
- * @global int $pub_sort (0|1|2) ordre des resultats (order by galaxy/system/row|order by ally/player/galaxy/systems/row|order by player/galaxy/system/row)
- * @global int $pub_sort2 : (0|1) ordre des resultats recherche (asc|desc)
- * @global int $pub_galaxy_down
- * @global int $pub_galaxy_up
- * @global int $pub_system_down
- * @global int $pub_system_up
- * @global int $pub_row_down
- * @global int $pub_row_up
- * @global ??? $pub_row_active
- * @global int $pub_page page courante ( pagination )
+ * @global string $Ogspy->Params->string_search
+ * @global string $Ogspy->Params->type_search type de recherche a effectuer : (player|ally|planet|colonization|moon|away)
+ * @global int $Ogspy->Params->strict
+ * @global int $Ogspy->Params->sort (0|1|2) ordre des resultats (order by galaxy/system/row|order by ally/player/galaxy/systems/row|order by player/galaxy/system/row)
+ * @global int $Ogspy->Params->sort2 : (0|1) ordre des resultats recherche (asc|desc)
+ * @global int $Ogspy->Params->galaxy_down
+ * @global int $Ogspy->Params->galaxy_up
+ * @global int $Ogspy->Params->system_down
+ * @global int $Ogspy->Params->system_up
+ * @global int $Ogspy->Params->row_down
+ * @global int $Ogspy->Params->row_up
+ * @global ??? $Ogspy->Params->row_active
+ * @global int $Ogspy->Params->page page courante ( pagination )
  * @return array resultat de la recherche + numero de la page
  */
 function galaxy_search()
 {
     //todo voir possible pb recherche strict ou non
     global $user_data, $server_config;
-    global $pub_string_search, $pub_type_search, $pub_strict, $pub_sort, $pub_sort2, $pub_galaxy_down, $pub_galaxy_up, $pub_system_down, $pub_system_up, $pub_row_down, $pub_row_up, $pub_row_active, $pub_page;
-    if (!check_var($pub_type_search, "Char") || !check_var($pub_strict, "Char") || !check_var($pub_sort, "Num") || !check_var($pub_sort2, "Num") || !check_var($pub_galaxy_down, "Num") || !check_var($pub_galaxy_up, "Num") || !check_var($pub_system_down, "Num") || !check_var($pub_system_up, "Num") || !check_var($pub_row_down, "Num") || !check_var($pub_row_up, "Num") || !check_var($pub_row_active, "Char") || !check_var($pub_page, "Num")) {
+    global $Ogspy ;
+    if (!check_var($Ogspy->Params->type_search, "Char") || !check_var($Ogspy->Params->strict, "Char") || !check_var($Ogspy->Params->sort, "Num") || !check_var($Ogspy->Params->sort2, "Num") || !check_var($Ogspy->Params->galaxy_down, "Num") || !check_var($Ogspy->Params->galaxy_up, "Num") || !check_var($Ogspy->Params->system_down, "Num") || !check_var($Ogspy->Params->system_up, "Num") || !check_var($Ogspy->Params->row_down, "Num") || !check_var($Ogspy->Params->row_up, "Num") || !check_var($Ogspy->Params->row_active, "Char") || !check_var($Ogspy->Params->page, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
     $search_result = array();
@@ -261,45 +261,45 @@ function galaxy_search()
         $protected = explode(",", $server_config["ally_protection"]);
     }
 
-    if (!isset($pub_type_search) || (!isset($pub_string_search) && (!isset($pub_galaxy_down) || !isset($pub_galaxy_up) || !isset($pub_system_down) || !isset($pub_system_up) || !isset($pub_row_down) || !isset($pub_row_up)))) {
+    if (!isset($Ogspy->Params->type_search) || (!isset($Ogspy->Params->string_search) && (!isset($Ogspy->Params->galaxy_down) || !isset($Ogspy->Params->galaxy_up) || !isset($Ogspy->Params->system_down) || !isset($Ogspy->Params->system_up) || !isset($Ogspy->Params->row_down) || !isset($Ogspy->Params->row_up)))) {
         return array($search_result, $total_page);
     }
     $data_user = new User_Model();
     $data_user->add_stat_search_made($user_data['user_id'], 1);
     $universeRepository = new Universe_Model();
     $criteria = new SearchCriteria_Helper($server_config);
-    if (isset($pub_galaxy_down) && isset($pub_galaxy_up)) {
-        $criteria->setGalaxyDown(intval($pub_galaxy_down));
-        $criteria->setGalaxyUp(intval($pub_galaxy_up));
+    if (isset($Ogspy->Params->galaxy_down) && isset($Ogspy->Params->galaxy_up)) {
+        $criteria->setGalaxyDown(intval($Ogspy->Params->galaxy_down));
+        $criteria->setGalaxyUp(intval($Ogspy->Params->galaxy_up));
     }
-    if (isset($pub_system_down) && isset($pub_system_up)) {
-        $criteria->setSystemDown(intval($pub_system_down));
-        $criteria->setSystemUp(intval($pub_system_up));
+    if (isset($Ogspy->Params->system_down) && isset($Ogspy->Params->system_up)) {
+        $criteria->setSystemDown(intval($Ogspy->Params->system_down));
+        $criteria->setSystemUp(intval($Ogspy->Params->system_up));
     }
-    if ($pub_row_active && isset($pub_row_down) && isset($pub_row_up)) {
-        $criteria->setRowDown(intval($pub_row_down));
-        $criteria->setRowUp(intval($pub_row_up));
+    if ($Ogspy->Params->row_active && isset($Ogspy->Params->row_down) && isset($Ogspy->Params->row_up)) {
+        $criteria->setRowDown(intval($Ogspy->Params->row_down));
+        $criteria->setRowUp(intval($Ogspy->Params->row_up));
     }
-    switch ($pub_type_search) {
+    switch ($Ogspy->Params->type_search) {
         case "player":
-            if ($pub_string_search == "") {
+            if ($Ogspy->Params->string_search == "") {
                 break;
             }
-            $search = isset($pub_strict) ? $pub_string_search : "%" . $pub_string_search . "%";
+            $search = isset($Ogspy->Params->strict) ? $Ogspy->Params->string_search : "%" . $Ogspy->Params->string_search . "%";
             $criteria->setPlayerName($search);
             break;
         case "ally":
-            if ($pub_string_search == "") {
+            if ($Ogspy->Params->string_search == "") {
                 break;
             }
-            $search = isset($pub_strict) ? $pub_string_search : "%" . $pub_string_search . "%";
+            $search = isset($Ogspy->Params->strict) ? $Ogspy->Params->string_search : "%" . $Ogspy->Params->string_search . "%";
             $criteria->setAllyName($search);
             break;
         case "planet":
-            if ($pub_string_search == "") {
+            if ($Ogspy->Params->string_search == "") {
                 break;
             }
-            $search = isset($pub_strict) ? $pub_string_search : "%" . $pub_string_search . "%";
+            $search = isset($Ogspy->Params->strict) ? $Ogspy->Params->string_search : "%" . $Ogspy->Params->string_search . "%";
             $criteria->setPlanetName($search);
             break;
         case "colonization":
@@ -315,10 +315,10 @@ function galaxy_search()
     if (!$criteria->isValid()) {
         return array($search_result, $total_page);
     }
-    if (!isset($pub_sort2)) {
-        $pub_sort2 = "0";
+    if (!isset($Ogspy->Params->sort2)) {
+        $Ogspy->Params->sort2 = "0";
     }
-    switch ($pub_sort2) {
+    switch ($Ogspy->Params->sort2) {
         case "1":
             $order2 = " DESC";
             break;
@@ -326,10 +326,10 @@ function galaxy_search()
             $order2 = " ASC";
             break;
     }
-    if (!isset($pub_sort)) {
-        $pub_sort = "1";
+    if (!isset($Ogspy->Params->sort)) {
+        $Ogspy->Params->sort = "1";
     }
-    switch ($pub_sort) {
+    switch ($Ogspy->Params->sort) {
         case "2":
             $order = array('ally' => $order2, 'player' => $order2, 'galaxy' => $order2, 'system' => $order2, 'row' => $order2);
             break;
@@ -340,14 +340,14 @@ function galaxy_search()
             $order = array('galaxy' => $order2, 'system' => $order2, 'row' => $order2);
             break;
     }
-    if (!isset($pub_page)) {
-        $pub_page = 1;
+    if (!isset($Ogspy->Params->page)) {
+        $Ogspy->Params->page = 1;
     }
     $number = 30;
-    $limit = intval($pub_page - 1) * $number;
+    $limit = intval($Ogspy->Params->page - 1) * $number;
     if ($limit < 0) {
         $limit = 0;
-        $pub_page = 1;
+        $Ogspy->Params->page = 1;
     }
     $result = $universeRepository->find($criteria, $order, $limit, $number);
     $total_page = ceil($result['total_row'] / $number);
@@ -450,30 +450,30 @@ function galaxy_ally_listing()
  * @global array $user_data
  * @global array $user_auth
  * @global array $server_config
- * @global array $pub_ally_
+ * @global array $Ogspy->Params->ally_
  * @global int $nb_colonnes_ally
  * @return array $statictics contenant la position de tous les joueurs de toutes les alliances non protegers par galaxie / systeme
  */
 function galaxy_ally_position($step = 50)
 {
     global $user_auth, $user_data, $server_config;
-    global $pub_ally_, $nb_colonnes_ally;
+    global $Ogspy;
 
     $Universe_Model = new Universe_Model();
 
     for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
-        if (!check_var($pub_ally_[$i], "Text")) {
+        if (!check_var($Ogspy->Params->ally_[$i], "Text")) {
             redirection("index.php?action=message&id_message=errordata&info");
         }
 
-        if (!isset($pub_ally_[$i])) {
+        if (!isset($Ogspy->Params->ally_[$i])) {
             return array();
         }
     }
 
-    $pub_ally_protection = $allied = array();
+    $Ogspy->Params->ally_protection = $allied = array();
     if ($server_config["ally_protection"] != "") {
-        $pub_ally_protection = explode(",", $server_config["ally_protection"]);
+        $Ogspy->Params->ally_protection = explode(",", $server_config["ally_protection"]);
     }
     if ($server_config["allied"] != "") {
         $allied = explode(",", $server_config["allied"]);
@@ -481,19 +481,19 @@ function galaxy_ally_position($step = 50)
 
     $statistics = array();
     for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
-        $pub_ally_list[$i - 1] = $pub_ally_[$i];
+        $Ogspy->Params->ally_list[$i - 1] = $Ogspy->Params->ally_[$i];
     }
 
-    foreach ($pub_ally_list as $pub_ally_name) {
-        if ($pub_ally_name == "") {
+    foreach ($Ogspy->Params->ally_list as $Ogspy->Params->ally_name) {
+        if ($Ogspy->Params->ally_name == "") {
             continue;
         }
-        if (in_array($pub_ally_name, $pub_ally_protection) && $user_auth["server_show_positionhided"] == 0 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {
-            $statistics[$pub_ally_name][0][0] = null;
+        if (in_array($Ogspy->Params->ally_name, $Ogspy->Params->ally_protection) && $user_auth["server_show_positionhided"] == 0 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {
+            $statistics[$Ogspy->Params->ally_name][0][0] = null;
             continue;
         }
         $friend = false;
-        if (in_array($pub_ally_name, $allied)) {
+        if (in_array($Ogspy->Params->ally_name, $allied)) {
             $friend = true;
         }
 
@@ -501,11 +501,11 @@ function galaxy_ally_position($step = 50)
             for ($system = 1; $system <= $server_config['num_of_systems']; $system = $system + $step) {
 
                 $population = array();
-                $population = $Universe_Model->get_ally_position($galaxy, $system, ($system + $step - 1), $pub_ally_name);
+                $population = $Universe_Model->get_ally_position($galaxy, $system, ($system + $step - 1), $Ogspy->Params->ally_name);
                 $nb_planet = $Universe_Model->sql_affectedrows();
                 //$nb_planet =  count($population);
 
-                $statistics[$pub_ally_name][$galaxy][$system] = array("planet" => $nb_planet, "population" => $population);
+                $statistics[$Ogspy->Params->ally_name][$galaxy][$system] = array("planet" => $nb_planet, "population" => $population);
             }
         }
     }
@@ -519,30 +519,30 @@ function galaxy_ally_position($step = 50)
  *
  * @return array $reports
  * @global array $server_config
- * @global int $pub_galaxy
- * @global int $pub_system
- * @global int $pub_row
- * @global int $pub_spy_id
+ * @global int $Ogspy->Params->galaxy
+ * @global int $Ogspy->Params->system
+ * @global int $Ogspy->Params->row
+ * @global int $Ogspy->Params->spy_id
  */
 function galaxy_reportspy_show()
 {
-    global $pub_galaxy, $pub_system, $pub_row, $pub_spy_id, $server_config;
-    //todo $pub_spy_id a gerer ?
+    global $Ogspy, $server_config;
+    //todo $Ogspy->Params->spy_id a gerer ?
 
-    if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_row, "Num")) {
+    if (!check_var($Ogspy->Params->galaxy, "Num") || !check_var($Ogspy->Params->system, "Num") || !check_var($Ogspy->Params->row, "Num")) {
         return false;
     }
 
-    if (!isset($pub_galaxy) || !isset($pub_system) || !isset($pub_row)) {
+    if (!isset($Ogspy->Params->galaxy) || !isset($Ogspy->Params->system) || !isset($Ogspy->Params->row)) {
         return false;
     }
-    if ((int)$pub_galaxy < 1 || (int)$pub_galaxy > (int)$server_config['num_of_galaxies'] || (int)$pub_system < 1 || (int)$pub_system > (int)$server_config['num_of_systems'] || (int)$pub_row < 1 || (int)$pub_row > 15) {
+    if ((int)$Ogspy->Params->galaxy < 1 || (int)$Ogspy->Params->galaxy > (int)$server_config['num_of_galaxies'] || (int)$Ogspy->Params->system < 1 || (int)$Ogspy->Params->system > (int)$server_config['num_of_systems'] || (int)$Ogspy->Params->row < 1 || (int)$Ogspy->Params->row > 15) {
         return false;
     }
 
 
     $Spy_Model = new Spy_Model();
-    $spy_list = $Spy_Model->get_spy_id_list_by_planet(intval($pub_galaxy), intval($pub_system), intval($pub_row));
+    $spy_list = $Spy_Model->get_spy_id_list_by_planet(intval($Ogspy->Params->galaxy), intval($Ogspy->Params->system), intval($Ogspy->Params->row));
     $reports = array();
     foreach ($spy_list as $row) {
         $data = UNparseRE($row["id_spy"]);
@@ -556,29 +556,29 @@ function galaxy_reportspy_show()
  *
  * @global       object mysql $db
  * @global array $server_config
- * @global int $pub_galaxy
- * @global int $pub_system
- * @global int $pub_row
- * @global int $pub_rc_id
+ * @global int $Ogspy->Params->galaxy
+ * @global int $Ogspy->Params->system
+ * @global int $Ogspy->Params->row
+ * @global int $Ogspy->Params->rc_id
  * @return array $reports contenant les rc mis en forme
  */
 function galaxy_reportrc_show()
 {
-    global $pub_galaxy, $pub_system, $pub_row, $pub_rc_id, $server_config;
+    global $Ogspy, $server_config;
 
-    if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_row, "Num")) {
+    if (!check_var($Ogspy->Params->galaxy, "Num") || !check_var($Ogspy->Params->system, "Num") || !check_var($Ogspy->Params->row, "Num")) {
         return false;
     }
 
-    if (!isset($pub_galaxy) || !isset($pub_system) || !isset($pub_row)) {
+    if (!isset($Ogspy->Params->galaxy) || !isset($Ogspy->Params->system) || !isset($Ogspy->Params->row)) {
         return false;
     }
-    if (intval($pub_galaxy) < 1 || intval($pub_galaxy) > intval($server_config['num_of_galaxies']) || intval($pub_system) < 1 || intval($pub_system) > intval($server_config['num_of_systems']) || intval($pub_row) < 1 || intval($pub_row) > 15) {
+    if (intval($Ogspy->Params->galaxy) < 1 || intval($Ogspy->Params->galaxy) > intval($server_config['num_of_galaxies']) || intval($Ogspy->Params->system) < 1 || intval($Ogspy->Params->system) > intval($server_config['num_of_systems']) || intval($Ogspy->Params->row) < 1 || intval($Ogspy->Params->row) > 15) {
         return false;
     }
 
     $Combat_Report_Model = new Combat_Report_Model();
-    $report_list = $Combat_Report_Model->get_cr_id_list_by_planet(intval($pub_galaxy), intval($pub_system), intval($pub_row));
+    $report_list = $Combat_Report_Model->get_cr_id_list_by_planet(intval($Ogspy->Params->galaxy), intval($Ogspy->Params->system), intval($Ogspy->Params->row));
 
     $reports = array();
     foreach ($report_list as $report_id) {
@@ -630,14 +630,14 @@ function galaxy_getfavorites()
  */
 function galaxy_show_ranking($model, $ranking_table, $date = null)
 {
-    global $pub_date;
+    global $Ogspy;
     // Récupération de la taille max des tableaux
     $data_rankings = $model;
     //Récupération de la dernière date de classement
     if ($date == null) {
         $last_ranking = $data_rankings->get_rank_latest_table_date($ranking_table);
     } else {
-        $last_ranking = $pub_date;
+        $last_ranking = $Ogspy->Params->date;
     }
     if ($last_ranking == null) {
         return -1;
@@ -651,9 +651,9 @@ function galaxy_show_ranking($model, $ranking_table, $date = null)
 /**
  * Affichage classement des joueurs
  *
- * @global string $pub_order_by general|eco|techno|military|military_b|military_l|military_d|honnor
- * @global int $pub_date timestamp du classement voulu
- * @global int $pub_interval
+ * @global string $Ogspy->Params->order_by general|eco|techno|military|military_b|military_l|military_d|honnor
+ * @global int $Ogspy->Params->date timestamp du classement voulu
+ * @global int $Ogspy->Params->interval
  * @return array array($order, $ranking, $ranking_available, $maxrank);
  *
  * todo revoir entierement affichage de la vue pour simplifier/ameliorer cette fonction,
@@ -661,19 +661,19 @@ function galaxy_show_ranking($model, $ranking_table, $date = null)
  */
 function galaxy_show_ranking_player()
 {
-    global $pub_order_by, $pub_date, $pub_interval;
+    global $Ogspy;
 
     $Rankings_Player_Model = new Rankings_Player_Model();
 
-    if (!isset($pub_order_by)) {
-        $pub_order_by = "general";
+    if (!isset($Ogspy->Params->order_by)) {
+        $Ogspy->Params->order_by = "general";
     }
     $tables = $Rankings_Player_Model->get_rank_tables();
     $name = $Rankings_Player_Model->get_rank_table_ref();
 
     // verification de la variable pub_order
-    if (!in_array($pub_order_by, $name)) {
-        $pub_order_by = "general";
+    if (!in_array($Ogspy->Params->order_by, $name)) {
+        $Ogspy->Params->order_by = "general";
     }
 
 
@@ -681,14 +681,14 @@ function galaxy_show_ranking_player()
     $maxrank = max($Rankings_Player_Model->select_max_rank_row());
 
 
-    if (!isset($pub_interval)) {
-        $pub_interval = 1;
+    if (!isset($Ogspy->Params->interval)) {
+        $Ogspy->Params->interval = 1;
     }
-    if (($pub_interval - 1) % 100 != 0 || $pub_interval > $maxrank) {
-        $pub_interval = 1;
+    if (($Ogspy->Params->interval - 1) % 100 != 0 || $Ogspy->Params->interval > $maxrank) {
+        $Ogspy->Params->interval = 1;
     }
-    $limit_down = $pub_interval;
-    $limit_up = $pub_interval + 99;
+    $limit_down = $Ogspy->Params->interval;
+    $limit_up = $Ogspy->Params->interval + 99;
 
     $order = array();
     $ranking = array();
@@ -696,15 +696,15 @@ function galaxy_show_ranking_player()
     $table = array();
 
     // on determine l id du pub order
-    $id = (array_keys($name, $pub_order_by));
+    $id = (array_keys($name, $Ogspy->Params->order_by));
     $orderTableName = $tables[$id[0]];
     $orderStringName = $name[$id[0]];
 
-    if (!isset($pub_date)) {
+    if (!isset($Ogspy->Params->date)) {
         $last_ranking = $Rankings_Player_Model->get_rank_latest_table_date($orderTableName);
 
     } else {
-        $last_ranking = $pub_date;
+        $last_ranking = $Ogspy->Params->date;
     }
 
 
@@ -743,19 +743,19 @@ function galaxy_show_ranking_player()
 /**
  * Affichage classement des alliances
  *
- * @global string $pub_order_by general|eco|techno|military|military_b|military_l|military_d|honnor
- * @global int $pub_date timestamp du classement voulu
- * @global int $pub_interval
- * @global int $pub_suborder : member
+ * @global string $Ogspy->Params->order_by general|eco|techno|military|military_b|military_l|military_d|honnor
+ * @global int $Ogspy->Params->date timestamp du classement voulu
+ * @global int $Ogspy->Params->interval
+ * @global int $Ogspy->Params->suborder : member
  * todo revoir entierement affichage de la vue pour simplifier/ameliorer cette fonction,
  * todo verifiction siregression 3.3.4 / 3.3.5 => gain de perf enorme mais si rien dans table general, pas d 'affichage classement (inner join) * @return array array($order, $ranking, $ranking_available, $maxrank)
  */
 function galaxy_show_ranking_ally()
 {
-    global $pub_order_by, $pub_date, $pub_interval, $pub_suborder;
+    global $Ogspy;
     $Rankings_Ally_Model = new Rankings_Ally_Model();
 
-    if (!check_var($pub_order_by, "Char") || !check_var($pub_date, "Num") || !check_var($pub_interval, "Num") || !check_var($pub_suborder, "Char")) {
+    if (!check_var($Ogspy->Params->order_by, "Char") || !check_var($Ogspy->Params->date, "Num") || !check_var($Ogspy->Params->interval, "Num") || !check_var($Ogspy->Params->suborder, "Char")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
@@ -763,27 +763,27 @@ function galaxy_show_ranking_ally()
     $name = $Rankings_Ally_Model->get_rank_table_ref();
 
     // verification de la variable pub_order_by
-    if (!in_array($pub_order_by, $name)) {
-        $pub_order_by = "general";
+    if (!in_array($Ogspy->Params->order_by, $name)) {
+        $Ogspy->Params->order_by = "general";
     }
 
     // selection de rank max !
     $maxrank = max($Rankings_Ally_Model->select_max_rank_row());
 
-    if (isset($pub_suborder) && $pub_suborder == "member") {
-        $pub_order_by2 = "points_per_member desc";
+    if (isset($Ogspy->Params->suborder) && $Ogspy->Params->suborder == "member") {
+        $Ogspy->Params->order_by2 = "points_per_member desc";
     } else {
-        $pub_order_by2 = "rank";
+        $Ogspy->Params->order_by2 = "rank";
     }
 
-    if (!isset($pub_interval)) {
-        $pub_interval = 1;
+    if (!isset($Ogspy->Params->interval)) {
+        $Ogspy->Params->interval = 1;
     }
-    if (($pub_interval - 1) % 100 != 0 || $pub_interval > $maxrank) {
-        $pub_interval = 1;
+    if (($Ogspy->Params->interval - 1) % 100 != 0 || $Ogspy->Params->interval > $maxrank) {
+        $Ogspy->Params->interval = 1;
     }
-    $limit_down = $pub_interval;
-    $limit_up = $pub_interval + 99;
+    $limit_down = $Ogspy->Params->interval;
+    $limit_up = $Ogspy->Params->interval + 99;
 
     $order = array();
     $ranking = array();
@@ -791,15 +791,15 @@ function galaxy_show_ranking_ally()
     $table = array();
 
     // on determine l id du pub order
-    $id = (array_keys($name, $pub_order_by));
+    $id = (array_keys($name, $Ogspy->Params->order_by));
     $orderTableName = $tables[$id[0]];
     $orderStringName = $name[$id[0]];
 
-    if (!isset($pub_date)) {
+    if (!isset($Ogspy->Params->date)) {
         $last_ranking = $Rankings_Ally_Model->get_rank_latest_table_date($orderTableName);
 
     } else {
-        $last_ranking = $pub_date;
+        $last_ranking = $Ogspy->Params->date;
     }
     $all_ranktable_bydate = $Rankings_Ally_Model->get_all_ranktable_bydate($last_ranking, $limit_down, $limit_up, $orderStringName);
 
@@ -1068,34 +1068,34 @@ function galaxy_purge_ranking()
  *
  * @global        object mysql $db
  * @global array $server_config
- * @global int $pub_datadate
+ * @global int $Ogspy->Params->datadate
  *
  */
 function galaxy_drop_ranking()
 {
-    global $pub_datadate, $pub_subaction;
+    global $Ogspy;
 
-    if (!check_var($pub_datadate, "Num") || !check_var($pub_subaction, "Char")) {
+    if (!check_var($Ogspy->Params->datadate, "Num") || !check_var($Ogspy->Params->subaction, "Char")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
     //Vérification des droits
     galaxy_check_auth("drop_ranking");
 
-    if (!isset($pub_datadate) || !isset($pub_subaction)) {
+    if (!isset($Ogspy->Params->datadate) || !isset($Ogspy->Params->subaction)) {
         redirection("index.php");
     }
 
-    if ($pub_subaction == "player") {
+    if ($Ogspy->Params->subaction == "player") {
 
         $Rankings_Player_Model = new Rankings_Player_Model();
-        $Rankings_Player_Model->remove_all_rank_by_datadate(intval($pub_datadate));
-    } elseif ($pub_subaction == "ally") {
+        $Rankings_Player_Model->remove_all_rank_by_datadate(intval($Ogspy->Params->datadate));
+    } elseif ($Ogspy->Params->subaction == "ally") {
         //todo varidable dtadate = 0 ici :/ voir affichage
         $Rankings_Ally_Model = new Rankings_Ally_Model();
-        $Rankings_Ally_Model->remove_all_rank_by_datadate(intval($pub_datadate));
+        $Rankings_Ally_Model->remove_all_rank_by_datadate(intval($Ogspy->Params->datadate));
     }
-    redirection("index.php?action=ranking&subaction=" . $pub_subaction);
+    redirection("index.php?action=ranking&subaction=" . $Ogspy->Params->subaction);
 }
 
 /**
@@ -1185,22 +1185,22 @@ function galaxy_get_phalanx($galaxy, $system)
  * Affichage des systemes solaires obsoletes
  *
  * @global        object mysql $db
- * @global int $pub_perimeter
- * @global int $pub_since
- * @global string $pub_typesearch (M|P)
- * @todo Query :  "select distinct galaxy, system" . $row_field . " from " . TABLE_UNIVERSE . " where moon = '" . $moon . "' and " . $field . " between " . $indice_sup ." and " . $indice_inf ."  and galaxy = " . intval($pub_perimeter) . " order by galaxy, system, row limit 0, 51";
+ * @global int $Ogspy->Params->perimeter
+ * @global int $Ogspy->Params->since
+ * @global string $Ogspy->Params->typesearch (M|P)
+ * @todo Query :  "select distinct galaxy, system" . $row_field . " from " . TABLE_UNIVERSE . " where moon = '" . $moon . "' and " . $field . " between " . $indice_sup ." and " . $indice_inf ."  and galaxy = " . intval($Ogspy->Params->perimeter) . " order by galaxy, system, row limit 0, 51";
  * @todo Query :  "select distinct galaxy, system" . $row_field . " from " . TABLE_UNIVERSE . " where moon = '" . $moon . "' and " . $field . " between " . $indice_sup ." and " . $indice_inf ."  order by galaxy, system, row limit 0, 51";
  * @return array $obsolete
  */
 function galaxy_obsolete()
 {
     global $db;
-    global $pub_perimeter, $pub_since, $pub_typesearch;
+    global $Ogspy;
 
     $obsolete = array();
-    if (isset($pub_perimeter) && isset($pub_since) && is_numeric($pub_perimeter) && is_numeric($pub_since)) {
-        if (!isset($pub_typesearch) || ($pub_typesearch != "M" && $pub_typesearch != "P")) {
-            $pub_typesearch = "P";
+    if (isset($Ogspy->Params->perimeter) && isset($Ogspy->Params->since) && is_numeric($Ogspy->Params->perimeter) && is_numeric($Ogspy->Params->since)) {
+        if (!isset($Ogspy->Params->typesearch) || ($Ogspy->Params->typesearch != "M" && $Ogspy->Params->typesearch != "P")) {
+            $Ogspy->Params->typesearch = "P";
         }
 
 
@@ -1209,12 +1209,12 @@ function galaxy_obsolete()
         $since = array(0, 7, 14, 21, 28, 42, 56, $timestamp - 1);
 
         // on regarde l existence de la variable
-        if (!in_array((int)$pub_since, $since)) {
+        if (!in_array((int)$Ogspy->Params->since, $since)) {
             return $obsolete;
         }
 
         // on recupere l indice de recherche
-        $indice = array_search((int)$pub_since, $since);
+        $indice = array_search((int)$Ogspy->Params->since, $since);
 
         // l indice ne peut pas etre le premier ou le dernier
         if ($indice == 0 || $indice == (count($since) - 1)) {
@@ -1226,10 +1226,10 @@ function galaxy_obsolete()
         // on peut maintenant lancer une requete générique
         // on peut maintenant lancer une requete générique
         $formoon = true;
-        if ($pub_typesearch == "P") {
+        if ($Ogspy->Params->typesearch == "P") {
             $formoon = false;
         }
-        $obsolete = (new Universe_Model())->get_galaxy_obsolete($pub_perimeter, $indice_inf, $indice_sup, $indice, $since, $formoon);
+        $obsolete = (new Universe_Model())->get_galaxy_obsolete($Ogspy->Params->perimeter, $indice_inf, $indice_sup, $indice, $since, $formoon);
 
 
     }

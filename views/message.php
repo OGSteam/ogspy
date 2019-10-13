@@ -13,18 +13,22 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
-if (!isset($pub_id_message) || !isset($pub_info)) {
+use Ogsteam\Ogspy\Core\Ogspy ;
+
+$Ogspy = Ogspy::GetInstance();
+
+if (!isset($Ogspy->Params->id_message) || !isset($Ogspy->Params->info)) {
     redirection("index.php");
 }
 
-if (!check_var($pub_id_message, "Char") || !check_var($pub_info, "Special", "#^[\sa-zA-Z0-9~¤_.\-\:\[\]]+$#")) {
+if (!check_var($Ogspy->Params->id_message, "Char") || !check_var($Ogspy->Params->info, "Special", "#^[\sa-zA-Z0-9~¤_.\-\:\[\]]+$#")) {
     redirection("index.php");
 }
 
 $action = "";
 $message = "<b>" . $lang['MSG_SYSTEM'] . "</b><br><br>";
 
-switch ($pub_id_message) {
+switch ($Ogspy->Params->id_message) {
     //
     case "forbidden" :
         $message .= "<span style=\"color: red; \"><b>" . $lang['MSG_FORBIDDEN'] . "</b></span>";
@@ -45,7 +49,7 @@ switch ($pub_id_message) {
 
     //
     case "createuser_success" :
-        list($user_id, $password) = explode(":", $pub_info);
+        list($user_id, $password) = explode(":", $Ogspy->Params->info);
         $user_info = user_get($user_id);
         $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
         $server_name = filter_input(INPUT_SERVER, 'SERVER_NAME', FILTER_SANITIZE_URL);
@@ -58,7 +62,7 @@ switch ($pub_id_message) {
 
     //
     case "regeneratepwd_success" :
-        list($user_id, $password) = explode(":", $pub_info);
+        list($user_id, $password) = explode(":", $Ogspy->Params->info);
         $user_info = user_get($user_id);
         $message .= "<span style=\"color: lime; \"><b>" . $lang['MSG_PWD_REGEN_OK'] . " <a>" . $user_info[0]["user_name"] . "</a></b></span><br>";
         if($password=="mail")
@@ -81,7 +85,7 @@ switch ($pub_id_message) {
     //
     case "createuser_failed_pseudolocked" :
         $message .= "<span style=\"color: red; \"><b>" . $lang['MSG_NEW_ACCOUNT_KO'] . "</b></span><br>";
-        $message .= "<i>" . $lang['MSG_NEW_ACCOUNT_KO_NAME'] . " (" . $pub_info . ")</i>";
+        $message .= "<i>" . $lang['MSG_NEW_ACCOUNT_KO_NAME'] . " (" . $Ogspy->Params->info . ")</i>";
         $action = "action=administration&subaction=member";
         break;
 
@@ -114,7 +118,7 @@ switch ($pub_id_message) {
 
     //
     case "admin_modifyuser_success" :
-        $user_info = user_get($pub_info);
+        $user_info = user_get($Ogspy->Params->info);
         $message .= "<span style=\"color: lime; \"><b>" . $lang['MSG_PROFILE_OK'] . "</b></span>";
         $action = "action=administration&subaction=member";
         break;
@@ -272,7 +276,7 @@ switch ($pub_id_message) {
 
     //
     case "db_optimize" :
-        list($dbSize_before, $dbSize_after) = explode("¤", $pub_info);
+        list($dbSize_before, $dbSize_after) = explode("¤", $Ogspy->Params->info);
         $message .= "<span style=\"color: lime; \"><b>" . $lang['MSG_DB_OPTIM_OK'] . "</b></span><br>";
         $message .= $lang['MSG_DB_OPTIM_BEFORE'] . " : " . $dbSize_before . "<br>";
         $message .= $lang['MSG_DB_OPTIM_AFTER'] . " : " . $dbSize_after . "<br><br>";

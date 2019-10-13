@@ -15,19 +15,19 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 $obsolete_listing = galaxy_obsolete();
-if (!isset($pub_since)) {
-    $pub_since = 0;
+if (!isset($Ogspy->Params->since)) {
+    $Ogspy->Params->since = 0;
 }
-if (!isset($pub_perimeter)) {
-    $pub_perimeter = 1;
+if (!isset($Ogspy->Params->perimeter)) {
+    $Ogspy->Params->perimeter = 1;
 }
-if (!isset($pub_typesearch)) {
-    $pub_typesearch = "P";
+if (!isset($Ogspy->Params->typesearch)) {
+    $Ogspy->Params->typesearch = "P";
 }
 
-$since = $pub_since;
-$perimeter = $pub_perimeter;
-$typesearch = $pub_typesearch;
+$since = $Ogspy->Params->since;
+$perimeter = $Ogspy->Params->perimeter;
+$typesearch = $Ogspy->Params->typesearch;
 
 
 require_once("views/page_header.php");

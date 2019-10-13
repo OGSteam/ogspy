@@ -16,9 +16,9 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 $reports = galaxy_reportspy_show();
-$galaxy = $pub_galaxy;
-$system = $pub_system;
-$row = $pub_row;
+$galaxy = $Ogspy->Params->galaxy;
+$system = $Ogspy->Params->system;
+$row = $Ogspy->Params->row;
 
 if ($reports === false) {
     redirection("index.php?action=message&amp;id_message=errorfatal&amp;info");

@@ -122,7 +122,7 @@ function mod_list()
 function mod_check($check)
 {
     global $user_data;
-    global $pub_mod_id, $pub_directory;
+    global $Ogspy;
 
     if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
         redirection("index.php?action=message&id_message=forbidden&info");
@@ -130,19 +130,19 @@ function mod_check($check)
 
     switch ($check) {
         case "mod_id" :
-            if (!check_var($pub_mod_id, "Num")) {
+            if (!check_var($Ogspy->Params->mod_id, "Num")) {
                 redirection("index.php?action=message&id_message=errordata&info");
             }
-            if (!isset($pub_mod_id)) {
+            if (!isset($Ogspy->Params->mod_id)) {
                 redirection("index.php?action=message&id_message=errorfatal&info");
             }
             break;
 
         case "directory" :
-            if (!check_var($pub_directory, "Text")) {
+            if (!check_var($Ogspy->Params->directory, "Text")) {
                 redirection("index.php?action=message&id_message=errordata&info");
             }
-            if (!isset($pub_directory)) {
+            if (!isset($Ogspy->Params->directory)) {
                 redirection("index.php?action=message&id_message=errorfatal&info");
             }
             break;
@@ -151,11 +151,11 @@ function mod_check($check)
 
 /**
  * Installs a Mod from a mod folder name (Fonction utilisée par la partie admin)
- * @global $pub_directory
+ * @global $Ogspy
  */
 function mod_install()
 {
-    global $pub_directory, $server_config;
+    global $Ogspy, $server_config;
 
     $Mod_Model = new Mod_Model();
 
@@ -165,29 +165,29 @@ function mod_install()
     // voir @ shad 
 
     // fichier install non present
-    if (!file_exists("mod/" . $pub_directory . "/install.php")) {
-        log_("mod_erreur_install_php", $pub_directory);
+    if (!file_exists("mod/" . $Ogspy->Params->directory . "/install.php")) {
+        log_("mod_erreur_install_php", $Ogspy->Params->directory);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
     }
 
     //fichier . txt non present 
-    if (!file_exists("mod/" . $pub_directory . "/version.txt")) {
-        log_("mod_erreur_install_txt", $pub_directory);
+    if (!file_exists("mod/" . $Ogspy->Params->directory . "/version.txt")) {
+        log_("mod_erreur_install_txt", $Ogspy->Params->directory);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
     }
 
 
     //verification  presence de majuscule
-    if (!ctype_lower($pub_directory)) {
-        log_("mod_erreur_minuscule", $pub_directory);
+    if (!ctype_lower($Ogspy->Params->directory)) {
+        log_("mod_erreur_minuscule", $Ogspy->Params->directory);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
     }
 
     // verification sur le fichier .txt
-    $filename = 'mod/' . $pub_directory . '/version.txt';
+    $filename = 'mod/' . $Ogspy->Params->directory . '/version.txt';
     // On récupère les données du fichier version.txt
     $file = file($filename);
     $mod_version = trim($file[1]);
@@ -203,7 +203,7 @@ function mod_install()
     }
     if (count($value_mod) != 7) {
 
-        log_("mod_erreur_txt_warning", $pub_directory);
+        log_("mod_erreur_txt_warning", $Ogspy->Params->directory);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
     }
@@ -212,17 +212,17 @@ function mod_install()
     $mod_required_ogspy = trim($file[3]);
     if (isset($mod_required_ogspy)) {
         if (version_compare($mod_required_ogspy, $server_config["version"]) > 0) {
-            log_("mod_erreur_txt_version", $pub_directory);
+            log_("mod_erreur_txt_version", $Ogspy->Params->directory);
             redirection("index.php?action=message&id_message=errormod&info");
             exit();
         }
     }
     // si on arrive jusque la on peut installer
     global $db; // fix pour mod ne faisant pas l'inclusion mais l'utilisant (xtense ... )
-    require_once("mod/" . $pub_directory . "/install.php");
+    require_once("mod/" . $Ogspy->Params->directory . "/install.php");
 
     //recuperation du mod
-    $mod_id = $Mod_Model->get_mod_id_by_root($pub_directory);
+    $mod_id = $Mod_Model->get_mod_id_by_root($Ogspy->Params->directory);
 
     //récuperation de l'emplacement possible
     $position = $Mod_Model->get_position_max();
@@ -238,7 +238,7 @@ function mod_install()
         log_("mod_install", $mod[0]['title']);
     }
     else{
-        log_("mod_install", "undefined ".$pub_directory);
+        log_("mod_install", "undefined ".$Ogspy->Params->directory);
     }
 
     generate_mod_cache();
@@ -250,8 +250,8 @@ function mod_install()
  */
 function mod_update()
 {
-    global $pub_mod_id, $server_config;
-    global $pub_directory;
+    global $Ogspy, $server_config;
+
 
     $Mod_Model = new Mod_Model();
 
@@ -259,7 +259,7 @@ function mod_update()
 
     //recuperation du mod
     //récuperation du titre en base
-    $mod =$Mod_Model->find_one_by(array("id" => $pub_mod_id));
+    $mod =$Mod_Model->find_one_by(array("id" => $Ogspy->Params->mod_id));
 
     // modif pour 3.0.7
     // check d un mod " normalisé"
@@ -329,13 +329,13 @@ function mod_update()
  */
 function mod_uninstall()
 {
-    global $pub_mod_id;
+    global $Ogspy;
 
     $Mod_Model = new Mod_Model();
     mod_check("mod_id");
 
     // selection du mod
-    $mod = $Mod_Model->find_one_by(array("id"=>$pub_mod_id));
+    $mod = $Mod_Model->find_one_by(array("id"=>$Ogspy->Params->mod_id));
 
     $root = $mod["root"];
     $title = $mod["title"];
@@ -346,7 +346,7 @@ function mod_uninstall()
         require_once("mod/" . $root . "/uninstall.php");
     }
 
-    $Mod_Model->delete($pub_mod_id);
+    $Mod_Model->delete($Ogspy->Params->mod_id);
 
     log_("mod_uninstall",$title);
     generate_mod_cache();
@@ -359,13 +359,13 @@ function mod_uninstall()
  */
 function mod_active()
 {
-    global $pub_mod_id;
+    global $Ogspy;
 
     $Mod_Model = new Mod_Model();
 
     mod_check("mod_id");
 
-    $mod =$Mod_Model->find_one_by(array("id" => $pub_mod_id));
+    $mod =$Mod_Model->find_one_by(array("id" => $Ogspy->Params->mod_id));
     $mod['active'] = 1;
     $Mod_Model->update($mod);
 
@@ -379,12 +379,12 @@ function mod_active()
  */
 function mod_disable()
 {
-    global $pub_mod_id;
+    global $Ogspy;
 
     mod_check("mod_id");
 
     $Mod_Model = new Mod_Model();
-    $mod =$Mod_Model->find_one_by(array("id" => $pub_mod_id));
+    $mod =$Mod_Model->find_one_by(array("id" => $Ogspy->Params->mod_id));
     $mod['active'] = 0;
     $Mod_Model->update($mod);
 
@@ -400,12 +400,12 @@ function mod_disable()
  */
 function mod_admin()
 {
-    global $pub_mod_id;
+    global $Ogspy;
 
     mod_check("mod_id");
 
     $Mod_Model = new Mod_Model();
-    $mod =$Mod_Model->find_one_by(array("id" => $pub_mod_id));
+    $mod =$Mod_Model->find_one_by(array("id" => $Ogspy->Params->mod_id));
     $mod['admin_only'] = 1;
     $Mod_Model->update($mod);
 
@@ -419,12 +419,12 @@ function mod_admin()
  */
 function mod_normal()
 {
-    global $pub_mod_id;
+    global $Ogspy;
 
     mod_check("mod_id");
 
     $Mod_Model = new Mod_Model();
-    $mod =$Mod_Model->find_one_by(array("id" => $pub_mod_id));
+    $mod =$Mod_Model->find_one_by(array("id" => $Ogspy->Params->mod_id));
     $mod['admin_only'] = 0;
     $Mod_Model->update($mod);
 
@@ -439,7 +439,7 @@ function mod_normal()
  */
 function mod_sort($order)
 {
-    global $pub_mod_id;
+    global $Ogspy;
 
     mod_check("mod_id");
 
@@ -452,7 +452,7 @@ function mod_sort($order)
     foreach ($tMod as $mod)
     {
         $oldModOrder[$mod["position"]]= $mod;
-        if ($pub_mod_id ==$mod["id"] )
+        if ($Ogspy->Params->mod_id ==$mod["id"] )
         {
             $oldModPosition=$mod["position"];
         }
@@ -492,22 +492,22 @@ function mod_sort($order)
 /**
  * Returns the version number of the current Mod.
  *
- * The function uses the $pub_action value to know what is the current mod
- * @global $pub_action
+ * The function uses the $Ogspy->Params->action value to know what is the current mod
+ * @global $Ogspy
  * @return string Current mod version number
  * @api
  */
 function mod_version()
 {
-    global $pub_action;
+    global $Ogspy;
 
     $Mod_Model = new Mod_Model();
-    $mod =$Mod_Model->find_one_by(array("root" => $pub_action));
+    $mod =$Mod_Model->find_one_by(array("root" => $Ogspy->Params->action));
     if (!is_null($mod))
     {
         return $mod["version"];
     }
-    return "(ModInconnu:'{$pub_action}')";
+    return "(ModInconnu:'{$Ogspy->Params->action}')";
 }
 
 /**
@@ -566,7 +566,7 @@ function mod_get_option($param)
 /**
  * Mod Configs : Gets the current mod name
  * @global $db
- * @global $pub_action
+ * @global $Ogspy
  * @global $directory
  * @global $mod_id
  * @return string Returns the current mod name
@@ -574,17 +574,16 @@ function mod_get_option($param)
 function mod_get_nom()
 {
 
-    global $pub_action,$pub_mod_id;
+    global $Ogspy;
 
     $nom_mod = '';
-    if ($pub_action == 'mod_install') {
-        global $pub_directory;
-        $nom_mod = $pub_directory;
-    } elseif ($pub_action == 'mod_update' || $pub_action == 'mod_uninstall') {
-        $Mod_Model = (new Mod_Model())->find_one_by(array("id" => $pub_mod_id));
+    if ($Ogspy->Params->action == 'mod_install') {
+        $nom_mod = $Ogspy->Params->directory;
+    } elseif ($Ogspy->Params->action == 'mod_update' || $Ogspy->Params->action == 'mod_uninstall') {
+        $Mod_Model = (new Mod_Model())->find_one_by(array("id" => $Ogspy->Params->mod_id));
         $nom_mod = $Mod_Model["action"];
     } else {
-        $nom_mod = $pub_action;
+        $nom_mod = $Ogspy->Params->action;
     }
     return $nom_mod;
 }

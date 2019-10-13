@@ -15,10 +15,14 @@ session_start();
  */
 define("IN_SPYOGAME", true);
 
+use Ogsteam\Ogspy\Core\Ogspy ;
+
 /**
  * Tout les includes se font à partir de là
  */
 require_once("common.php");
+$Ogspy = Ogspy::GetInstance();
+
 
 /**
  * Repère de début de traitement par OGSpy
@@ -28,13 +32,15 @@ $php_start = benchmark();
 $sql_timing = 0;
 
 /**
- * @global string $pub_action
+ * @global string $Ogspy->Params->action replacé par l'appel des Param
  */
-if (!isset($pub_action)) {
-    $pub_action = "";
-}
 
-if (is_dir("install") && $pub_action != "message") {
+if (!isset($Ogspy->Params->action)) {
+    $Ogspy->Params->action = "";
+}
+$actionOgspy  = (string)$Ogspy->Params->action;
+
+if (is_dir("install") && $actionOgspy != "message") {
     if(is_file("install/version.php")) {
         require_once("install/version.php");
         if (version_compare($server_config["version"], $install_version, '<')) {
@@ -45,13 +51,17 @@ if (is_dir("install") && $pub_action != "message") {
         }
     }
 }
-if ($server_config["server_active"] == 0 && $pub_action != "login_web" && $pub_action != "logout" && $user_data['user_admin'] != 1 && $user_data['user_coadmin'] != 1) {
-    $pub_action = "server_close";
+if ($server_config["server_active"] == 0 && $actionOgspy != "login_web" && $actionOgspy != "logout" && $user_data['user_admin'] != 1 && $user_data['user_coadmin'] != 1) {
+    $actionOgspy = "server_close";
 }
 
 //	Visiteur non identifié
-if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "login_web")) {
-    if ($pub_action == "message") {
+if(!isset($user_data["user_id"]))
+{
+    $actionOgspy == "login_web";
+}
+if (!isset($user_data["user_id"]) && !(isset($actionOgspy) && $actionOgspy == "login_web")) {
+    if ($actionOgspy == "message") {
         require("views/message.php");
     } else {
         if (preg_match("#^action=(.*)#", $_SERVER['QUERY_STRING'], $matches)) {
@@ -63,12 +73,12 @@ if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "log
 }
 
 
-if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
+if ($actionOgspy <> '' && isset($cache_mod[$actionOgspy])) {
     if (ratio_is_ok()) {
-        if ($cache_mod[$pub_action]['admin_only'] == 1 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {
+        if ($cache_mod[$actionOgspy]['admin_only'] == 1 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {
             redirection("index.php?action=message&id_message=forbidden&info");
         } else {
-            require_once("mod/" . $cache_mod[$pub_action]['root'] . "/" . $cache_mod[$pub_action]['link']);
+            require_once("mod/" . $cache_mod[$actionOgspy]['root'] . "/" . $cache_mod[$actionOgspy]['link']);
             exit();
         }
 
@@ -78,13 +88,13 @@ if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
 
 
 
-switch ($pub_action) {
+switch ($actionOgspy) {
     //----------------------------------------//
     //--------Connexion---------//
     //----------------------------------------//
     //Identification
         case "login_web" :
-            if ($pub_goto == null) {
+            if ($Ogspy->Params->goto == null) {
                 user_login();
             } else {
                 user_login_redirection();

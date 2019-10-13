@@ -23,11 +23,11 @@ require_once("views/page_header.php");
                 <table width="100%">
                     <tr align="center">
                         <?php
-                        if (!isset($pub_subaction)) {
-                            $pub_subaction = "empire";
+                        if (!isset($Ogspy->Params->subaction)) {
+                            $Ogspy->Params->subaction = "empire";
                         }
 
-                        if ($pub_subaction != "empire") {
+                        if ($Ogspy->Params->subaction != "empire") {
                             echo "\t\t\t" . "<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=empire';\">";
                             echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['HOME_EMPIRE_TITLE'] . "</span></a>";
                             echo "</td>";
@@ -37,7 +37,7 @@ require_once("views/page_header.php");
                             echo "</th>";
                         }
 
-                        if ($pub_subaction != "simulation") {
+                        if ($Ogspy->Params->subaction != "simulation") {
                             echo "\t\t\t" . "<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=simulation';\">";
                             echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['HOME_SIMULATION_TITLE'] . "</span></a>";
                             echo "</td>";
@@ -47,7 +47,7 @@ require_once("views/page_header.php");
                             echo "</th>";
                         }
 
-                        if ($pub_subaction != "spy") {
+                        if ($Ogspy->Params->subaction != "spy") {
                             echo "\t\t\t" . "<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=spy';\">";
                             echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['HOME_REPORTS_TITLE'] . "</span></a>";
                             echo "</td>";
@@ -57,7 +57,7 @@ require_once("views/page_header.php");
                             echo "</th>";
                         }
 
-                        if ($pub_subaction != "stat") {
+                        if ($Ogspy->Params->subaction != "stat") {
                             echo "\t\t\t" . "<td class='c_stats' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=stat';\">";
                             echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['HOME_STATISTICS_TITLE'] . "</span></a>";
                             echo "</td>";
@@ -74,7 +74,7 @@ require_once("views/page_header.php");
         <tr>
             <td>
                 <?php
-                switch ($pub_subaction) {
+                switch ($Ogspy->Params->subaction) {
                     case "empire" :
                         require_once("home_empire.php");
                         break;

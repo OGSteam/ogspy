@@ -24,10 +24,10 @@ $user_defence = $user_empire["defence"];
 $user_technology = $user_empire["technology"];
 $user_production = user_empire_production($user_empire, $user_data);
 
-if (!isset($pub_view) || $pub_view == "") {
+if (!isset($Ogspy->Params->view) || $Ogspy->Params->view == "") {
     $view = "planets";
-} elseif ($pub_view == "planets" || $pub_view == "moons") {
-    $view = $pub_view;
+} elseif ($Ogspy->Params->view == "planets" || $Ogspy->Params->view == "moons") {
+    $view = $Ogspy->Params->view;
 } else {
     $view = "planets";
 }
@@ -207,7 +207,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
 
                 echo "<th>";
-                if (!isset($pub_view) || $pub_view == "planets") {
+                if (!isset($Ogspy->Params->view) || $Ogspy->Params->view == "planets") {
                     echo "<input type='image' title='" . $lang['HOME_EMPIRE_MOVELEFT'] . " " . $user_building[$i]["planet_name"] . "' src='images/previous.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;left';\">&nbsp;&nbsp;";
                     echo "<input type='image' title='" . $lang['HOME_EMPIRE_DELETE_PLANET'] . " " . $user_building[$i]["planet_name"] . "' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "';\">&nbsp;&nbsp;";
                     echo "<input type='image' title='" . $lang['HOME_EMPIRE_MOVERIGHT'] . " " . $user_building[$i]["planet_name"] . "' src='images/next.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;right';\">";

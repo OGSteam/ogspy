@@ -26,7 +26,7 @@ use Ogsteam\Ogspy\Model\Sessions_Model;
  */
 function session_begin($user_ip)
 {
-    global $cookie_id, $server_config, $pub_toolbar_type;
+    global $cookie_id, $server_config, $Ogspy;
     $Sessions_Model = new Sessions_Model();
 
     $cookie_name = COOKIE_NAME;
@@ -35,7 +35,7 @@ function session_begin($user_ip)
 
     $cookie_expire = time() + $cookie_time * 60;
 
-    if (!isset($pub_toolbar_type)) {
+    if (!isset($Ogspy->Params->toolbar_type)) {
         $Sessions_Model->add_user_session($cookie_id, $cookie_expire, $user_ip);
     } else {
         $Sessions_Model->insert_xtense_session($cookie_id, $cookie_expire, $user_ip);

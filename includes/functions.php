@@ -241,18 +241,15 @@ function init_serverconfig()
 function set_server_view()
 {
     global $user_data;
-    global $pub_enable_portee_missil, $pub_enable_members_view, $pub_enable_stat_view,
-           $pub_galaxy_by_line_stat, $pub_system_by_line_stat, $pub_galaxy_by_line_ally, $pub_system_by_line_ally,
-           $pub_nb_colonnes_ally, $pub_color_ally, $pub_enable_register_view, $pub_register_alliance,
-           $pub_register_forum, $pub_open_user, $pub_open_admin;
+    global $Ogspy;
 
     //appel de la couche" Model"
     $Config_Model = new Config_Model();
 
 
-    if (!check_var($pub_enable_members_view, "Num") || !check_var($pub_enable_stat_view,
-            "Num") || !check_var($pub_galaxy_by_line_stat, "Num") || !check_var($pub_system_by_line_stat,
-            "Num") || !check_var($pub_galaxy_by_line_ally, "Num") || !check_var($pub_system_by_line_ally,
+    if (!check_var($Ogspy->Params->enable_members_view, "Num") || !check_var($Ogspy->Params->enable_stat_view,
+            "Num") || !check_var($Ogspy->Params->galaxy_by_line_stat, "Num") || !check_var($Ogspy->Params->system_by_line_stat,
+            "Num") || !check_var($Ogspy->Params->galaxy_by_line_ally, "Num") || !check_var($Ogspy->Params->system_by_line_ally,
             "Num")
     ) {
         redirection("index.php?action=message&id_message=errordata&info");
@@ -261,46 +258,46 @@ function set_server_view()
         redirection("planetindex.php?action=message&id_message=forbidden&info");
     }
 
-    if (!isset($pub_galaxy_by_line_stat) || !isset($pub_system_by_line_stat) || !isset($pub_galaxy_by_line_ally) || !isset($pub_system_by_line_ally)
+    if (!isset($Ogspy->Params->galaxy_by_line_stat) || !isset($Ogspy->Params->system_by_line_stat) || !isset($Ogspy->Params->galaxy_by_line_ally) || !isset($Ogspy->Params->system_by_line_ally)
     ) {
         redirection("index.php?action=message&id_message=setting_server_view_failed&info");
     }
 
-    if (is_null($pub_enable_portee_missil)) {
-        $pub_enable_portee_missil = 0;
+    if (is_null($Ogspy->Params->enable_portee_missil)) {
+        $Ogspy->Params->enable_portee_missil = 0;
     }
-    if (is_null($pub_enable_stat_view)) {
-        $pub_enable_stat_view = 0;
+    if (is_null($Ogspy->Params->enable_stat_view)) {
+        $Ogspy->Params->enable_stat_view = 0;
     }
-    if (is_null($pub_enable_members_view)) {
-        $pub_enable_members_view = 0;
+    if (is_null($Ogspy->Params->enable_members_view)) {
+        $Ogspy->Params->enable_members_view = 0;
     }
 
     $break = false;
 
 
-    if (!is_numeric($pub_galaxy_by_line_stat)) {
+    if (!is_numeric($Ogspy->Params->galaxy_by_line_stat)) {
         $break = true;
     }
-    if (!is_numeric($pub_system_by_line_stat)) {
+    if (!is_numeric($Ogspy->Params->system_by_line_stat)) {
         $break = true;
     }
-    if ($pub_enable_stat_view != 0 && $pub_enable_stat_view != 1) {
+    if ($Ogspy->Params->enable_stat_view != 0 && $Ogspy->Params->enable_stat_view != 1) {
         $break = true;
     }
-    if ($pub_enable_members_view != 0 && $pub_enable_members_view != 1) {
+    if ($Ogspy->Params->enable_members_view != 0 && $Ogspy->Params->enable_members_view != 1) {
         $break = true;
     }
-    if (!is_numeric($pub_galaxy_by_line_ally)) {
+    if (!is_numeric($Ogspy->Params->galaxy_by_line_ally)) {
         $break = true;
     }
-    if (!is_numeric($pub_system_by_line_ally)) {
+    if (!is_numeric($Ogspy->Params->system_by_line_ally)) {
         $break = true;
     }
-    if ($pub_nb_colonnes_ally == 0 || $pub_nb_colonnes_ally > 9 || !is_numeric($pub_nb_colonnes_ally)) {
+    if ($Ogspy->Params->nb_colonnes_ally == 0 || $Ogspy->Params->nb_colonnes_ally > 9 || !is_numeric($Ogspy->Params->nb_colonnes_ally)) {
         $break = true;
     }
-    if ($pub_enable_register_view != 0 && $pub_enable_register_view != 1) {
+    if ($Ogspy->Params->enable_register_view != 0 && $Ogspy->Params->enable_register_view != 1) {
         $break = true;
     }
 
@@ -308,55 +305,55 @@ function set_server_view()
         redirection("index.php?action=message&id_message=setting_server_view_failed&info");
     }
 
-    $Config_Model->update(array("config_value" => $pub_enable_portee_missil, "config_name" => "portee_missil"));
+    $Config_Model->update(array("config_value" => $Ogspy->Params->enable_portee_missil, "config_name" => "portee_missil"));
 
-    if ($pub_galaxy_by_line_stat < 1) {
-        $pub_galaxy_by_line_stat = 1;
+    if ($Ogspy->Params->galaxy_by_line_stat < 1) {
+        $Ogspy->Params->galaxy_by_line_stat = 1;
     }
-    if ($pub_galaxy_by_line_stat > 100) {
-        $pub_galaxy_by_line_stat = 100;
+    if ($Ogspy->Params->galaxy_by_line_stat > 100) {
+        $Ogspy->Params->galaxy_by_line_stat = 100;
     }
-    $Config_Model->update_one($pub_galaxy_by_line_stat, "galaxy_by_line_stat");
+    $Config_Model->update_one($Ogspy->Params->galaxy_by_line_stat, "galaxy_by_line_stat");
 
-    if ($pub_system_by_line_stat < 1) {
-        $pub_system_by_line_stat = 1;
+    if ($Ogspy->Params->system_by_line_stat < 1) {
+        $Ogspy->Params->system_by_line_stat = 1;
     }
-    if ($pub_system_by_line_stat > 100) {
-        $pub_system_by_line_stat = 100;
+    if ($Ogspy->Params->system_by_line_stat > 100) {
+        $Ogspy->Params->system_by_line_stat = 100;
     }
 
-    $Config_Model->update_one($pub_system_by_line_stat, "system_by_line_stat");
+    $Config_Model->update_one($Ogspy->Params->system_by_line_stat, "system_by_line_stat");
 
-    $Config_Model->update_one($pub_open_user, "open_user");
-    $Config_Model->update_one($pub_open_admin, "open_admin");
+    $Config_Model->update_one($Ogspy->Params->open_user, "open_user");
+    $Config_Model->update_one($Ogspy->Params->open_admin, "open_admin");
 
-    $Config_Model->update_one($pub_enable_stat_view, "enable_stat_view");
-    $Config_Model->update_one($pub_enable_members_view, "enable_members_view");
-    $Config_Model->update_one($pub_nb_colonnes_ally, "nb_colonnes_ally");
+    $Config_Model->update_one($Ogspy->Params->enable_stat_view, "enable_stat_view");
+    $Config_Model->update_one($Ogspy->Params->enable_members_view, "enable_members_view");
+    $Config_Model->update_one($Ogspy->Params->nb_colonnes_ally, "nb_colonnes_ally");
 
-    $array = $pub_color_ally; //die(var_dump($pub_color_ally));
+    $array = $Ogspy->Params->color_ally; //die(var_dump($Ogspy->Params->color_ally));
     $color_ally = implode("_", $array);
     $Config_Model->update_one($color_ally, "color_ally");
 
-    if ($pub_galaxy_by_line_ally < 1) {
-        $pub_galaxy_by_line_ally = 1;
+    if ($Ogspy->Params->galaxy_by_line_ally < 1) {
+        $Ogspy->Params->galaxy_by_line_ally = 1;
     }
-    if ($pub_galaxy_by_line_ally > 100) {
-        $pub_galaxy_by_line_ally = 100;
+    if ($Ogspy->Params->galaxy_by_line_ally > 100) {
+        $Ogspy->Params->galaxy_by_line_ally = 100;
     }
-    $Config_Model->update_one($pub_galaxy_by_line_ally, "galaxy_by_line_ally");
+    $Config_Model->update_one($Ogspy->Params->galaxy_by_line_ally, "galaxy_by_line_ally");
 
-    if ($pub_system_by_line_ally < 1) {
-        $pub_system_by_line_ally = 1;
+    if ($Ogspy->Params->system_by_line_ally < 1) {
+        $Ogspy->Params->system_by_line_ally = 1;
     }
-    if ($pub_system_by_line_ally > 100) {
-        $pub_system_by_line_ally = 100;
+    if ($Ogspy->Params->system_by_line_ally > 100) {
+        $Ogspy->Params->system_by_line_ally = 100;
     }
 
-    $Config_Model->update_one($pub_system_by_line_ally, "system_by_line_ally");
-    $Config_Model->update_one($pub_enable_register_view, "enable_register_view");
-    $Config_Model->update_one($pub_register_alliance, "register_alliance");
-    $Config_Model->update_one($pub_register_forum, "register_forum");
+    $Config_Model->update_one($Ogspy->Params->system_by_line_ally, "system_by_line_ally");
+    $Config_Model->update_one($Ogspy->Params->enable_register_view, "enable_register_view");
+    $Config_Model->update_one($Ogspy->Params->register_alliance, "register_alliance");
+    $Config_Model->update_one($Ogspy->Params->register_forum, "register_forum");
 
     // mise a jour des caches avec les modifs
     generate_config_cache();
@@ -370,33 +367,27 @@ function set_server_view()
 function set_serverconfig()
 {
     global $user_data, $server_config;
-    global $pub_max_battlereport, $pub_max_favorites, $pub_max_favorites_spy, $pub_max_spyreport,
-           $pub_server_active, $pub_session_time, $pub_max_keeplog, $pub_debug_log,
-           $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
-           $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
-           $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit, $pub_speed_uni,
-           $pub_ddr, $pub_astro_strict, $pub_config_cache, $pub_mod_cache,
-           $pub_mail_use, $pub_mail_smtp_use, $pub_mail_smtp_secure, $pub_mail_smtp_port, $pub_mail_smtp_host, $pub_mail_smtp_username, $pub_mail_smtp_password, $pub_enable_mail_smtp_password;
+    global $Ogspy;
 
     //appel de la couche" Model"
     $Config_Model = new Config_Model();
 
-    if (!isset($pub_num_of_galaxies)) {
-        $pub_num_of_galaxies = intval($server_config['num_of_galaxies']);
+    if (!isset($Ogspy->Params->num_of_galaxies)) {
+        $Ogspy->Params->num_of_galaxies = intval($server_config['num_of_galaxies']);
     }
-    if (!isset($pub_num_of_systems)) {
-        $pub_num_of_systems = intval($server_config['num_of_systems']);
+    if (!isset($Ogspy->Params->num_of_systems)) {
+        $Ogspy->Params->num_of_systems = intval($server_config['num_of_systems']);
     }
 
-    if (!check_var($pub_max_battlereport, "Num") || !check_var($pub_max_favorites,
-            "Num") || !check_var($pub_max_favorites_spy, "Num") || !check_var($pub_ratio_limit,
-            "Special", "#^[\w\s,\.\-]+$#") || !check_var($pub_max_spyreport, "Num") || !check_var($pub_server_active, "Num") || !check_var($pub_session_time, "Num") ||
-        !check_var($pub_max_keeplog, "Num") || !check_var($pub_debug_log, "Num") || !check_var($pub_block_ratio, "Num") || !check_var(stripslashes($pub_reason), "Text") || !check_var($pub_ally_protection,
-            "Special", "#^[\w\s,\.\-]+$#") || !check_var($pub_url_forum, "URL") || !check_var($pub_max_keeprank, "Num") || !check_var($pub_keeprank_criterion,
-            "Char") || !check_var($pub_max_keepspyreport, "Num") || !check_var(stripslashes($pub_servername), "Text") || !check_var($pub_allied, "Special", "#^[\w\s,\.\-]+$#") ||
-        !check_var($pub_disable_ip_check, "Num") || !check_var($pub_num_of_galaxies,
-            "Galaxies") || !check_var($pub_num_of_systems, "Galaxies") || !check_var($pub_config_cache,
-            "Num") || !check_var($pub_mod_cache, "Num")
+    if (!check_var($Ogspy->Params->max_battlereport, "Num") || !check_var($Ogspy->Params->max_favorites,
+            "Num") || !check_var($Ogspy->Params->max_favorites_spy, "Num") || !check_var($Ogspy->Params->ratio_limit,
+            "Special", "#^[\w\s,\.\-]+$#") || !check_var($Ogspy->Params->max_spyreport, "Num") || !check_var($Ogspy->Params->server_active, "Num") || !check_var($Ogspy->Params->session_time, "Num") ||
+        !check_var($Ogspy->Params->max_keeplog, "Num") || !check_var($Ogspy->Params->debug_log, "Num") || !check_var($Ogspy->Params->block_ratio, "Num") || !check_var(stripslashes($Ogspy->Params->reason), "Text") || !check_var($Ogspy->Params->ally_protection,
+            "Special", "#^[\w\s,\.\-]+$#") || !check_var($Ogspy->Params->url_forum, "URL") || !check_var($Ogspy->Params->max_keeprank, "Num") || !check_var($Ogspy->Params->keeprank_criterion,
+            "Char") || !check_var($Ogspy->Params->max_keepspyreport, "Num") || !check_var(stripslashes($Ogspy->Params->servername), "Text") || !check_var($Ogspy->Params->allied, "Special", "#^[\w\s,\.\-]+$#") ||
+        !check_var($Ogspy->Params->disable_ip_check, "Num") || !check_var($Ogspy->Params->num_of_galaxies,
+            "Galaxies") || !check_var($Ogspy->Params->num_of_systems, "Galaxies") || !check_var($Ogspy->Params->config_cache,
+            "Num") || !check_var($Ogspy->Params->mod_cache, "Num")
     ) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
@@ -404,78 +395,78 @@ function set_serverconfig()
         redirection("planetindex.php?action=message&id_message=forbidden&info");
     }
 
-    if (!isset($pub_max_battlereport) || !isset($pub_max_favorites) || !isset($pub_max_favorites_spy) ||
-        !isset($pub_ratio_limit) || !isset($pub_max_spyreport) || !isset($pub_session_time) ||
-        !isset($pub_max_keeplog) || !isset($pub_reason) ||
-        !isset($pub_ally_protection) || !isset($pub_url_forum) || !isset($pub_max_keeprank) ||
-        !isset($pub_keeprank_criterion) || !isset($pub_max_keepspyreport) || !isset($pub_servername) ||
-        !isset($pub_allied) || !isset($pub_mod_cache) || !isset($pub_config_cache)
+    if (!isset($Ogspy->Params->max_battlereport) || !isset($Ogspy->Params->max_favorites) || !isset($Ogspy->Params->max_favorites_spy) ||
+        !isset($Ogspy->Params->ratio_limit) || !isset($Ogspy->Params->max_spyreport) || !isset($Ogspy->Params->session_time) ||
+        !isset($Ogspy->Params->max_keeplog) || !isset($Ogspy->Params->reason) ||
+        !isset($Ogspy->Params->ally_protection) || !isset($Ogspy->Params->url_forum) || !isset($Ogspy->Params->max_keeprank) ||
+        !isset($Ogspy->Params->keeprank_criterion) || !isset($Ogspy->Params->max_keepspyreport) || !isset($Ogspy->Params->servername) ||
+        !isset($Ogspy->Params->allied) || !isset($Ogspy->Params->mod_cache) || !isset($Ogspy->Params->config_cache)
     ) {
         redirection("index.php?action=message&id_message=setting_serverconfig_failed&info");
     }
 
-    if (is_null($pub_server_active)) {
-        $pub_server_active = 0;
+    if (is_null($Ogspy->Params->server_active)) {
+        $Ogspy->Params->server_active = 0;
     }
-    if (is_null($pub_disable_ip_check)) {
-        $pub_disable_ip_check = 0;
+    if (is_null($Ogspy->Params->disable_ip_check)) {
+        $Ogspy->Params->disable_ip_check = 0;
     }
-    if (is_null($pub_log_phperror)) {
-        $pub_log_phperror = 0;
+    if (is_null($Ogspy->Params->log_phperror)) {
+        $Ogspy->Params->log_phperror = 0;
     }
 
-    if (is_null($pub_debug_log)) {
-        $pub_debug_log = 0;
+    if (is_null($Ogspy->Params->debug_log)) {
+        $Ogspy->Params->debug_log = 0;
     }
-    if (is_null($pub_block_ratio)) {
-        $pub_block_ratio = 0;
+    if (is_null($Ogspy->Params->block_ratio)) {
+        $Ogspy->Params->block_ratio = 0;
     }
-    if (is_null($pub_mail_use)) {
+    if (is_null($Ogspy->Params->mail_use)) {
         $mail_use = 0;
     }
-    if (is_null($pub_mail_smtp_use)) {
+    if (is_null($Ogspy->Params->mail_smtp_use)) {
         $mail_smtp_use = 0;
     }
-    if (is_null($pub_mail_smtp_secure)) {
+    if (is_null($Ogspy->Params->mail_smtp_secure)) {
         $mail_smtp_secure = 0;
     }
     $break = false;
 
 
-    if ($pub_server_active != 0 && $pub_server_active != 1) {
+    if ($Ogspy->Params->server_active != 0 && $Ogspy->Params->server_active != 1) {
         $break = true;
     }
-    if ($pub_debug_log != 0 && $pub_debug_log != 1) {
+    if ($Ogspy->Params->debug_log != 0 && $Ogspy->Params->debug_log != 1) {
         $break = true;
     }
-    if ($pub_block_ratio != 0 && $pub_block_ratio != 1) {
+    if ($Ogspy->Params->block_ratio != 0 && $Ogspy->Params->block_ratio != 1) {
         $break = true;
     }
-    if (!is_numeric($pub_max_favorites)) {
+    if (!is_numeric($Ogspy->Params->max_favorites)) {
         $break = true;
     }
-    if (!is_numeric($pub_max_favorites_spy)) {
+    if (!is_numeric($Ogspy->Params->max_favorites_spy)) {
         $break = true;
     }
-    if (!is_numeric($pub_ratio_limit)) {
+    if (!is_numeric($Ogspy->Params->ratio_limit)) {
         $break = true;
     }
-    if (!is_numeric($pub_max_spyreport)) {
+    if (!is_numeric($Ogspy->Params->max_spyreport)) {
         $break = true;
     }
-    if (!is_numeric($pub_max_battlereport)) {
+    if (!is_numeric($Ogspy->Params->max_battlereport)) {
         $break = true;
     }
-    if (!is_numeric($pub_session_time)) {
+    if (!is_numeric($Ogspy->Params->session_time)) {
         $break = true;
     }
-    if (!is_numeric($pub_max_keeplog)) {
+    if (!is_numeric($Ogspy->Params->max_keeplog)) {
         $break = true;
     }
-    if ($pub_disable_ip_check != 0 && $pub_disable_ip_check != 1) {
+    if ($Ogspy->Params->disable_ip_check != 0 && $Ogspy->Params->disable_ip_check != 1) {
         $break = true;
     }
-    if ($pub_log_phperror != 0 && $pub_log_phperror != 1) {
+    if ($Ogspy->Params->log_phperror != 0 && $Ogspy->Params->log_phperror != 1) {
         $break = true;
     }
 
@@ -483,149 +474,149 @@ function set_serverconfig()
         redirection("index.php?action=message&id_message=setting_serverconfig_failed&info");
     }
 
-    if (($pub_num_of_galaxies != intval($server_config['num_of_galaxies'])) || ($pub_num_of_systems !=
+    if (($Ogspy->Params->num_of_galaxies != intval($server_config['num_of_galaxies'])) || ($Ogspy->Params->num_of_systems !=
             intval($server_config['num_of_systems']))
     ) {
-        resize_db($pub_num_of_galaxies, $pub_num_of_systems);
+        resize_db($Ogspy->Params->num_of_galaxies, $Ogspy->Params->num_of_systems);
     }
-    $Config_Model->update_one($pub_server_active, "server_active");
+    $Config_Model->update_one($Ogspy->Params->server_active, "server_active");
 
-    $Config_Model->update_one($pub_debug_log, "debug_log");
-    $Config_Model->update_one($pub_block_ratio, "block_ratio");
-    $Config_Model->update_one($pub_log_phperror, "log_phperror");
+    $Config_Model->update_one($Ogspy->Params->debug_log, "debug_log");
+    $Config_Model->update_one($Ogspy->Params->block_ratio, "block_ratio");
+    $Config_Model->update_one($Ogspy->Params->log_phperror, "log_phperror");
 
-    $pub_max_favorites = intval($pub_max_favorites);
-    if ($pub_max_favorites < 0) {
-        $pub_max_favorites = 0;
+    $Ogspy->Params->max_favorites = intval($Ogspy->Params->max_favorites);
+    if ($Ogspy->Params->max_favorites < 0) {
+        $Ogspy->Params->max_favorites = 0;
     }
-    if ($pub_max_favorites > 99) {
-        $pub_max_favorites = 99;
+    if ($Ogspy->Params->max_favorites > 99) {
+        $Ogspy->Params->max_favorites = 99;
     }
-    $Config_Model->update_one($pub_max_favorites, "max_favorites");
+    $Config_Model->update_one($Ogspy->Params->max_favorites, "max_favorites");
 
-    $pub_max_favorites_spy = intval($pub_max_favorites_spy);
-    if ($pub_max_favorites_spy < 0) {
-        $pub_max_favorites_spy = 0;
+    $Ogspy->Params->max_favorites_spy = intval($Ogspy->Params->max_favorites_spy);
+    if ($Ogspy->Params->max_favorites_spy < 0) {
+        $Ogspy->Params->max_favorites_spy = 0;
     }
-    if ($pub_max_favorites_spy > 99) {
-        $pub_max_favorites_spy = 99;
+    if ($Ogspy->Params->max_favorites_spy > 99) {
+        $Ogspy->Params->max_favorites_spy = 99;
     }
-    $Config_Model->update_one($pub_max_favorites_spy, "max_favorites_spy");
+    $Config_Model->update_one($Ogspy->Params->max_favorites_spy, "max_favorites_spy");
 
-    $Config_Model->update_one($pub_ratio_limit, "ratio_limit");
+    $Config_Model->update_one($Ogspy->Params->ratio_limit, "ratio_limit");
 
-    $pub_max_spyreport = intval($pub_max_spyreport);
-    if ($pub_max_spyreport < 1) {
-        $pub_max_spyreport = 1;
+    $Ogspy->Params->max_spyreport = intval($Ogspy->Params->max_spyreport);
+    if ($Ogspy->Params->max_spyreport < 1) {
+        $Ogspy->Params->max_spyreport = 1;
     }
-    if ($pub_max_spyreport > 50) {
-        $pub_max_spyreport = 50;
+    if ($Ogspy->Params->max_spyreport > 50) {
+        $Ogspy->Params->max_spyreport = 50;
     }
-    $Config_Model->update_one($pub_max_spyreport, "max_spyreport");
+    $Config_Model->update_one($Ogspy->Params->max_spyreport, "max_spyreport");
 
-    $pub_max_battlereport = intval($pub_max_battlereport);
-    if ($pub_max_battlereport < 0) {
-        $pub_max_battlereport = 0;
+    $Ogspy->Params->max_battlereport = intval($Ogspy->Params->max_battlereport);
+    if ($Ogspy->Params->max_battlereport < 0) {
+        $Ogspy->Params->max_battlereport = 0;
     }
-    if ($pub_max_battlereport > 999) {
-        $pub_max_battlereport = 999;
+    if ($Ogspy->Params->max_battlereport > 999) {
+        $Ogspy->Params->max_battlereport = 999;
     }
-    $Config_Model->update_one($pub_max_battlereport, "max_battlereport");
+    $Config_Model->update_one($Ogspy->Params->max_battlereport, "max_battlereport");
 
-    $pub_session_time = intval($pub_session_time);
-    if ($pub_session_time < 5 && $pub_session_time != 0) {
-        $pub_session_time = 5;
+    $Ogspy->Params->session_time = intval($Ogspy->Params->session_time);
+    if ($Ogspy->Params->session_time < 5 && $Ogspy->Params->session_time != 0) {
+        $Ogspy->Params->session_time = 5;
     }
-    if ($pub_session_time > 180) {
-        $pub_session_time = 180;
+    if ($Ogspy->Params->session_time > 180) {
+        $Ogspy->Params->session_time = 180;
     }
-    $Config_Model->update_one($pub_session_time, "session_time");
+    $Config_Model->update_one($Ogspy->Params->session_time, "session_time");
 
-    $pub_max_keeplog = intval($pub_max_keeplog);
-    if ($pub_max_keeplog < 0) {
-        $pub_max_keeplog = 0;
+    $Ogspy->Params->max_keeplog = intval($Ogspy->Params->max_keeplog);
+    if ($Ogspy->Params->max_keeplog < 0) {
+        $Ogspy->Params->max_keeplog = 0;
     }
-    if ($pub_max_keeplog > 365) {
-        $pub_max_keeplog = 365;
+    if ($Ogspy->Params->max_keeplog > 365) {
+        $Ogspy->Params->max_keeplog = 365;
     }
-    $Config_Model->update_one($pub_max_keeplog, "max_keeplog");
+    $Config_Model->update_one($Ogspy->Params->max_keeplog, "max_keeplog");
 
-    $Config_Model->update_one($pub_reason, "reason");
+    $Config_Model->update_one($Ogspy->Params->reason, "reason");
 
-    if (substr($pub_ally_protection, strlen($pub_ally_protection) - 1) == ",") {
-        $pub_ally_protection = substr($pub_ally_protection, 0, strlen($pub_ally_protection) -
+    if (substr($Ogspy->Params->ally_protection, strlen($Ogspy->Params->ally_protection) - 1) == ",") {
+        $Ogspy->Params->ally_protection = substr($Ogspy->Params->ally_protection, 0, strlen($Ogspy->Params->ally_protection) -
             1);
     }
-    $Config_Model->update_one($pub_ally_protection, "ally_protection");
+    $Config_Model->update_one($Ogspy->Params->ally_protection, "ally_protection");
 
-    if ($pub_url_forum != "" && !preg_match("#[^http://]|[^https://]#", $pub_url_forum)) {
-        $pub_url_forum = "http://" . $pub_url_forum;
+    if ($Ogspy->Params->url_forum != "" && !preg_match("#[^http://]|[^https://]#", $Ogspy->Params->url_forum)) {
+        $Ogspy->Params->url_forum = "http://" . $Ogspy->Params->url_forum;
     }
-    $Config_Model->update_one($pub_url_forum, "url_forum");
+    $Config_Model->update_one($Ogspy->Params->url_forum, "url_forum");
 
-    $pub_max_keeprank = intval($pub_max_keeprank);
-    if ($pub_max_keeprank < 1) {
-        $pub_max_keeprank = 1;
+    $Ogspy->Params->max_keeprank = intval($Ogspy->Params->max_keeprank);
+    if ($Ogspy->Params->max_keeprank < 1) {
+        $Ogspy->Params->max_keeprank = 1;
     }
-    if ($pub_max_keeprank > 999) {
-        $pub_max_keeprank = 999;
+    if ($Ogspy->Params->max_keeprank > 999) {
+        $Ogspy->Params->max_keeprank = 999;
     }
-    $Config_Model->update_one($pub_max_keeprank, "max_keeprank");
+    $Config_Model->update_one($Ogspy->Params->max_keeprank, "max_keeprank");
 
-    if ($pub_keeprank_criterion != "quantity" && $pub_keeprank_criterion != "day") {
-        $pub_keeprank_criterion = "quantity";
+    if ($Ogspy->Params->keeprank_criterion != "quantity" && $Ogspy->Params->keeprank_criterion != "day") {
+        $Ogspy->Params->keeprank_criterion = "quantity";
     }
-    $Config_Model->update_one($pub_keeprank_criterion, "keeprank_criterion");
+    $Config_Model->update_one($Ogspy->Params->keeprank_criterion, "keeprank_criterion");
 
-    $pub_max_keepspyreport = intval($pub_max_keepspyreport);
-    if ($pub_max_keepspyreport < 1) {
-        $pub_max_keepspyreport = 1;
+    $Ogspy->Params->max_keepspyreport = intval($Ogspy->Params->max_keepspyreport);
+    if ($Ogspy->Params->max_keepspyreport < 1) {
+        $Ogspy->Params->max_keepspyreport = 1;
     }
-    if ($pub_max_keepspyreport > 999) {
-        $pub_max_keepspyreport = 999;
+    if ($Ogspy->Params->max_keepspyreport > 999) {
+        $Ogspy->Params->max_keepspyreport = 999;
     }
-    $Config_Model->update_one($pub_max_keepspyreport, "max_keepspyreport");
+    $Config_Model->update_one($Ogspy->Params->max_keepspyreport, "max_keepspyreport");
 
-    $Config_Model->update_one($pub_servername, "servername");
+    $Config_Model->update_one($Ogspy->Params->servername, "servername");
 
-    if (substr($pub_allied, strlen($pub_allied) - 1) == ",") {
-        $pub_allied = substr($pub_allied, 0, strlen($pub_allied) - 1);
+    if (substr($Ogspy->Params->allied, strlen($Ogspy->Params->allied) - 1) == ",") {
+        $Ogspy->Params->allied = substr($Ogspy->Params->allied, 0, strlen($Ogspy->Params->allied) - 1);
     }
-    $Config_Model->update_one($pub_allied, "allied");
+    $Config_Model->update_one($Ogspy->Params->allied, "allied");
 
-    $Config_Model->update_one($pub_disable_ip_check, "disable_ip_check");
-    $Config_Model->update_one($pub_num_of_galaxies, "num_of_galaxies");
-    $Config_Model->update_one($pub_num_of_systems, "num_of_systems");
+    $Config_Model->update_one($Ogspy->Params->disable_ip_check, "disable_ip_check");
+    $Config_Model->update_one($Ogspy->Params->num_of_galaxies, "num_of_galaxies");
+    $Config_Model->update_one($Ogspy->Params->num_of_systems, "num_of_systems");
 
-    if (!isset($pub_ddr) || !is_numeric($pub_ddr)) {
-        $pub_ddr = 0;
+    if (!isset($Ogspy->Params->ddr) || !is_numeric($Ogspy->Params->ddr)) {
+        $Ogspy->Params->ddr = 0;
     }
-    $Config_Model->update_one($pub_ddr, "ddr");
+    $Config_Model->update_one($Ogspy->Params->ddr, "ddr");
 
-    if (!isset($pub_astro_strict) || !is_numeric($pub_astro_strict)) {
-        $pub_astro_strict = 0;
+    if (!isset($Ogspy->Params->astro_strict) || !is_numeric($Ogspy->Params->astro_strict)) {
+        $Ogspy->Params->astro_strict = 0;
     }
-    $Config_Model->update_one($pub_astro_strict, "astro_strict");
+    $Config_Model->update_one($Ogspy->Params->astro_strict, "astro_strict");
 
-    if (!is_numeric($pub_speed_uni) || $pub_speed_uni < 1) {
-        $pub_speed_uni = 1;
+    if (!is_numeric($Ogspy->Params->speed_uni) || $Ogspy->Params->speed_uni < 1) {
+        $Ogspy->Params->speed_uni = 1;
     }
-    $Config_Model->update_one($pub_speed_uni, "speed_uni");
+    $Config_Model->update_one($Ogspy->Params->speed_uni, "speed_uni");
 
-    $Config_Model->update_one($pub_mod_cache, "mod_cache");
-    $Config_Model->update_one($pub_config_cache, "config_cache");
+    $Config_Model->update_one($Ogspy->Params->mod_cache, "mod_cache");
+    $Config_Model->update_one($Ogspy->Params->config_cache, "config_cache");
 
 
     // param mail
-    $Config_Model->update_one($pub_mail_use, "mail_use");
-    $Config_Model->update_one($pub_mail_smtp_use, "mail_smtp_use");
-    $Config_Model->update_one($pub_mail_smtp_secure, "mail_smtp_secure");
-    $Config_Model->update_one($pub_mail_smtp_port, "mail_smtp_port");
-    $Config_Model->update_one($pub_mail_smtp_host, "mail_smtp_host");
-    $Config_Model->update_one($pub_mail_smtp_username, "mail_smtp_username");
+    $Config_Model->update_one($Ogspy->Params->mail_use, "mail_use");
+    $Config_Model->update_one($Ogspy->Params->mail_smtp_use, "mail_smtp_use");
+    $Config_Model->update_one($Ogspy->Params->mail_smtp_secure, "mail_smtp_secure");
+    $Config_Model->update_one($Ogspy->Params->mail_smtp_port, "mail_smtp_port");
+    $Config_Model->update_one($Ogspy->Params->mail_smtp_host, "mail_smtp_host");
+    $Config_Model->update_one($Ogspy->Params->mail_smtp_username, "mail_smtp_username");
 
-    if (isset($pub_enable_mail_smtp_password)) {
-        setMailSMTPPassword($pub_mail_smtp_password);
+    if (isset($Ogspy->Params->enable_mail_smtp_password)) {
+        setMailSMTPPassword($Ogspy->Params->mail_smtp_password);
     }
 
 

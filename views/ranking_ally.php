@@ -16,8 +16,8 @@ if (!defined('IN_SPYOGAME')) {
 
 list($order, $ranking, $ranking_available, $maxrank) = galaxy_show_ranking_ally();
 
-$order_by = $pub_order_by;
-$interval = $pub_interval;
+$order_by = $Ogspy->Params->order_by;
+$interval = $Ogspy->Params->interval;
 
 $link_general = "<a href='index.php?action=ranking&amp;subaction=ally&amp;order_by=general'>" . $lang['RANK_GENERAL'] . "</a>";
 $link_eco = "<a href='index.php?action=ranking&amp;subaction=ally&amp;order_by=eco'>" . $lang['RANK_ECONOMY'] . "</a>";
@@ -69,11 +69,11 @@ switch ($order_by) {
                     $datadate = 0;
                     foreach ($ranking_available as $v) {
                         $selected = "";
-                        if (!isset($pub_date_selected) && !isset($datadate)) {
+                        if (!isset($Ogspy->Params->date_selected) && !isset($datadate)) {
                             $datadate = $v;
                             $date_selected = strftime("%d %b %Y %Hh", $v);
                         }
-                        if ($pub_date == $v) {
+                        if ($Ogspy->Params->date == $v) {
                             $selected = "selected";
                             $datadate = $v;
                             $date_selected = strftime("%d %b %Y %Hh", $v);

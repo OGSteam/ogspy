@@ -19,7 +19,7 @@ if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
 }
 
 //check mail
-if (isset($pub_testmail))
+if (isset($Ogspy->Params->testmail))
 {
     sendMail($user_data["user_email"],"TEST","<h1>TEST OK</h1>");
 }
@@ -43,8 +43,8 @@ $max_keepspyreport = $server_config['max_keepspyreport'];
 $servername = $server_config['servername'];
 $max_favorites_spy = $server_config['max_favorites_spy'];
 $disable_ip_check = $server_config['disable_ip_check'] == 1 ? "checked" : "";
-$num_of_galaxies = (isset ($pub_num_of_galaxies)) ? $pub_num_of_galaxies : $server_config['num_of_galaxies'];
-$num_of_systems = (isset ($pub_num_of_systems)) ? $pub_num_of_systems : $server_config['num_of_systems'];
+$num_of_galaxies = (isset ($Ogspy->Params->num_of_galaxies)) ? $Ogspy->Params->num_of_galaxies : $server_config['num_of_galaxies'];
+$num_of_systems = (isset ($Ogspy->Params->num_of_systems)) ? $Ogspy->Params->num_of_systems : $server_config['num_of_systems'];
 $block_ratio = $server_config['block_ratio'] == 1 ? "checked" : "";
 $ratio_limit = $server_config['ratio_limit'];
 $speed_uni = $server_config['speed_uni'];

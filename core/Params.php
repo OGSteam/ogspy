@@ -108,6 +108,12 @@ class Params
         return $this->getParam($key);
     }
 
+    public function __isset($key)
+    {
+        return isset($this->data[$key]);
+    }
+
+
 
     public function sanitize($str, $type = null)
     {

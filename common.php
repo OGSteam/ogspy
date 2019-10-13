@@ -12,6 +12,9 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
+
+use Ogsteam\Ogspy\Core\Ogspy ;
+
 // PHP5 with register_long_arrays off?
 if (!isset($HTTP_POST_VARS) && isset($_POST)) {
     $HTTP_POST_VARS = $_POST;
@@ -61,28 +64,25 @@ if (defined("OGSPY_INSTALLED")){
     require_once ("includes/token.php");
 }
 
-//Récupération des valeur GET, POST, COOKIE
-extract($_GET, EXTR_PREFIX_ALL, "pub");
-extract($_POST, EXTR_PREFIX_ALL, "pub");
-extract($_COOKIE, EXTR_PREFIX_ALL, "pub");
 
-foreach ($_GET as $secvalue) {
-    if (!check_getvalue($secvalue)) {
-        die("I don't like you...");
-    }
-}
+$Ogspy = Ogspy::GetInstance();
 
-foreach ($_POST as $secvalue) {
-    if (!check_postvalue($secvalue)) {
-        header("Location: index.php");
-        die();
-    }
+/// ------ LEGACY PUB ------
+$pub = $Ogspy->Params->getAllParamsLegacy();
+extract($pub, EXTR_PREFIX_ALL, "pub");
+$pub = null;
+/// ------ LEGACY PUB ------
+
+
+if (!isset($Ogspy->Params->action)) {
+    $Ogspy->Params->action = "";
 }
 
 //Language File
+// NB a terme integrer cela dans classe ogspy
 if (!isset($ui_lang)) { // Checks the ui_lang value from parameters file
-    if (isset($pub_lang)) {
-        $ui_lang = $pub_lang; //This value is used during installation
+    if (isset($Ogspy->Params->lang)) {
+        $ui_lang = (string)$Ogspy->Params->lang; //This value is used during installation
     } else {
             $ui_lang = "fr";
     }

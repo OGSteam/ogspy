@@ -20,9 +20,9 @@ if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_da
 
 $usergroup_list = usergroup_get();
 $usergroup_info = false;
-if (isset($pub_group_id)) {
-    if (check_var($pub_group_id, "Num")) {
-        $group_id = $pub_group_id;
+if (isset($Ogspy->Params->group_id)) {
+    if (check_var($Ogspy->Params->group_id, "Num")) {
+        $group_id = $Ogspy->Params->group_id;
         $usergroup_info = usergroup_get($group_id);
     }
 }

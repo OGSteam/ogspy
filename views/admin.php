@@ -14,6 +14,11 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
+
+use Ogsteam\Ogspy\Core\Ogspy ;
+$Ogspy = Ogspy::GetInstance();
+
+
 // Verification des droits admins
 if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] != 1) {
     redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
@@ -28,16 +33,16 @@ require_once("views/page_header.php");
             <table border="1" width="100%">
                 <tr align="center">
                     <?php
-                    if (!isset($pub_subaction)) {
+                    if (!isset($Ogspy->Params->subaction)) {
                         if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-                            $pub_subaction = "infoserver";
+                            $Ogspy->Params->subaction = "infoserver";
                         } else {
-                            $pub_subaction = "member";
+                            $Ogspy->Params->subaction = "member";
                         }
                     }
 
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-                        if ($pub_subaction != "infoserver") {
+                        if ($Ogspy->Params->subaction != "infoserver") {
                             echo "\t\t\t" . "<td class='c' width='12%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=infoserver';\">";
                             echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_GENERAL_INFO'] . "</a>";
                             echo "</td>" . "\n";
@@ -49,7 +54,7 @@ require_once("views/page_header.php");
                     }
 
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-                        if ($pub_subaction != "parameter") {
+                        if ($Ogspy->Params->subaction != "parameter") {
                             echo "\t\t\t" . "<td class='c_tech' width='12%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=parameter';\">";
                             echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_SERVER_CONF'] . "</a>";
                             echo "</td>" . "\n";
@@ -61,7 +66,7 @@ require_once("views/page_header.php");
                     }
 
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-                        if ($pub_subaction != "affichage") {
+                        if ($Ogspy->Params->subaction != "affichage") {
                             echo "\t\t\t" . "<td class='c' width='12%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=affichage';\">";
                             echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_DISPLAY_CONF'] . "</a>";
                             echo "</td>" . "\n";
@@ -73,7 +78,7 @@ require_once("views/page_header.php");
                     }
 
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
-                        if ($pub_subaction != "member") {
+                        if ($Ogspy->Params->subaction != "member") {
                             echo "\t\t\t" . "<td class='c' width='12%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=member';\">";
                             echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_MEMBER_CONF'] . "</a>";
                             echo "</td>" . "\n";
@@ -85,7 +90,7 @@ require_once("views/page_header.php");
                     }
 
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
-                        if ($pub_subaction != "group") {
+                        if ($Ogspy->Params->subaction != "group") {
                             echo "\t\t\t" . "<td class='c' width='12%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=group';\">";
                             echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_GROUP_CONF'] . "</a>";
                             echo "</td>" . "\n";
@@ -97,7 +102,7 @@ require_once("views/page_header.php");
                     }
 
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-                        if ($pub_subaction != "viewer") {
+                        if ($Ogspy->Params->subaction != "viewer") {
                             echo "\t\t\t" . "<td class='c' width='12%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer';\">";
                             echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_LOGS_CONF'] . "</a>";
                             echo "</td>" . "\n";
@@ -109,7 +114,7 @@ require_once("views/page_header.php");
                     }
 
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-                        if ($pub_subaction != "helper") {
+                        if ($Ogspy->Params->subaction != "helper") {
                             echo "\t\t\t" . "<td class='c' width='12%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=helper';\">";
                             echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_HELPER_CONF'] . "</a>";
                             echo "</td>" . "\n";
@@ -121,7 +126,7 @@ require_once("views/page_header.php");
                     }
 
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-                        if ($pub_subaction != "mod") {
+                        if ($Ogspy->Params->subaction != "mod") {
                             echo "\t\t\t" . "<td class='c' width='12%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=mod';\">";
                             echo "<a style='cursor:pointer;color: lime;'>" . $lang['ADMIN_TITLE_MODS_CONF'] . "</a>";
                             echo "</td>" . "\n";
@@ -139,7 +144,7 @@ require_once("views/page_header.php");
     <tr>
         <td>
             <?php
-            switch ($pub_subaction) {
+            switch ($Ogspy->Params->subaction) {
                 case "member" :
                     require_once("admin_members.php");
                     break;

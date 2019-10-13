@@ -77,35 +77,35 @@ function user_check_auth($action, $user_id = null)
 
 /**
  * Login d'un utilisateur
- * @global string $pub_login
- * @global string $pub_password
- * @global string $pub_goto
+ * @global string $Ogspy->Params->login
+ * @global string $Ogspy->Params->password
+ * @global string $Ogspy->Params->goto
  */
 function user_login()
 {
-    global $pub_login, $pub_password, $pub_goto, $url_append, $pub_token;
+    global $Ogspy;
 
     $User_Model = new User_Model();
 
-    if (!token::statiCheckToken($pub_token)) // verification du token
+    if (!token::statiCheckToken($Ogspy->Params->token)) // verification du token
     {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    if (!check_var($pub_login, "Pseudo_Groupname") || !check_var($pub_password,
-            "Password") || !check_var($pub_goto, "Special", "#^[\w=&%+]+$#")) {
+    if (!check_var($Ogspy->Params->login, "Pseudo_Groupname") || !check_var($Ogspy->Params->password,
+            "Password") || !check_var($Ogspy->Params->goto, "Special", "#^[\w=&%+]+$#")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    if (!isset($pub_login) || !isset($pub_password)) {
+    if (!isset($Ogspy->Params->login) || !isset($Ogspy->Params->password)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $tlogin = $User_Model->select_user_login($pub_login, $pub_password);
+    $tlogin = $User_Model->select_user_login($Ogspy->Params->login, $Ogspy->Params->password);
 
     // si  retour
     if ($tlogin != false) {
-        if (password_verify($pub_password, $tlogin['user_password_s'])) {
+        if (password_verify($Ogspy->Params->password, $tlogin['user_password_s'])) {
             // Format Mot de passe Secure
             user_set_connection($tlogin['user_id'], $tlogin['user_active']);
         } else {
@@ -113,7 +113,7 @@ function user_login()
         }
     } else {
         // Format Mot de passe Legacy
-        $tlogin = $User_Model->select_user_login_legacy($pub_login, $pub_password);
+        $tlogin = $User_Model->select_user_login_legacy($Ogspy->Params->login, $Ogspy->Params->password);
         if ($tlogin != false) {
             user_set_connection($tlogin['user_id'], $tlogin['user_active']);
         } else {
@@ -125,7 +125,7 @@ function user_login()
 function user_set_connection($user_id, $user_active)
 {
 
-    global $pub_goto;
+    global $Ogspy;
     if ($user_active == 1) {
 
         $lastvisit = (new User_Model())->select_last_visit($user_id);
@@ -138,7 +138,7 @@ function user_set_connection($user_id, $user_active)
         if (!isset($url_append)) {
             $url_append = "";
         }
-        redirection("index.php?action=" . $pub_goto . "" . $url_append);
+        redirection("index.php?action=" . $Ogspy->Params->goto . "" . $url_append);
     } else {
         redirection("index.php?action=message&id_message=account_lock&info");
     }
@@ -147,17 +147,16 @@ function user_set_connection($user_id, $user_active)
 
 /**
  * Login d'un utilisateur avec redirection
- * @global string $pub_login
- * @global string $pub_password
- * @global string $pub_goto
+ * @global string $Ogspy->Params->login
+ * @global string $Ogspy->Params->password
+ * @global string $Ogspy->Params->goto
  */
 function user_login_redirection()
 {
-    global $pub_goto, $url_append;
+    global $Ogspy, $url_append;
 
-    if ($pub_goto == 'galaxy') {
-        global $pub_galaxy, $pub_system;
-        $url_append = "&galaxy=" . $pub_galaxy . "&system=" . $pub_system;
+    if ($Ogspy->Params->goto == 'galaxy') {
+         $url_append = "&galaxy=" . $Ogspy->Params->galaxy . "&system=" . $Ogspy->Params->system;
         user_login();
     } else {
         user_login();
@@ -180,37 +179,37 @@ function user_logout()
 function admin_user_set()
 {
     global $user_data;
-    global $pub_user_id, $pub_active, $pub_user_coadmin, $pub_management_user, $pub_management_ranking;
+    global $Ogspy;
 
-    if (!check_var($pub_user_id, "Num") || !check_var($pub_active, "Num") || !check_var($pub_user_coadmin, "Num") || !check_var($pub_management_user, "Num") ||
-        !check_var($pub_management_ranking, "Num")) {
+    if (!check_var($Ogspy->Params->user_id, "Num") || !check_var($Ogspy->Params->active, "Num") || !check_var($Ogspy->Params->user_coadmin, "Num") || !check_var($Ogspy->Params->management_user, "Num") ||
+        !check_var($Ogspy->Params->management_ranking, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    if (!isset($pub_user_id) || !isset($pub_active)) {
+    if (!isset($Ogspy->Params->user_id) || !isset($Ogspy->Params->active)) {
         redirection("index.php?action=message&id_message=admin_modifyuser_failed&info");
     }
 
     //Vérification des droits
-    user_check_auth("user_update", $pub_user_id);
+    user_check_auth("user_update", $Ogspy->Params->user_id);
 
     if ($user_data["user_admin"] == 1) {
-        if (!isset($pub_user_coadmin) || !isset($pub_management_user) || !isset($pub_management_ranking)) {
+        if (!isset($Ogspy->Params->user_coadmin) || !isset($Ogspy->Params->management_user) || !isset($Ogspy->Params->management_ranking)) {
             redirection("index.php?action=message&id_message=admin_modifyuser_failed&info");
         }
     } elseif ($user_data["user_coadmin"] == 1) {
-        $pub_user_coadmin = null;
-        if (!isset($pub_management_user) || !isset($pub_management_ranking)) {
+        $Ogspy->Params->user_coadmin = null;
+        if (!isset($Ogspy->Params->management_user) || !isset($Ogspy->Params->management_ranking)) {
             redirection("index.php?action=message&id_message=admin_modifyuser_failed&info");
         }
     } else {
-        $pub_user_coadmin = $pub_management_user = null;
+        $Ogspy->Params->user_coadmin = $Ogspy->Params->management_user = null;
     }
-    if (user_get($pub_user_id) === false) {
+    if (user_get($Ogspy->Params->user_id) === false) {
         redirection("index.php?action=message&id_message=admin_modifyuser_failed&info");
     }
-    user_set_grant($pub_user_id, null, $pub_active, $pub_user_coadmin, $pub_management_user,
-        $pub_management_ranking);
+    user_set_grant($Ogspy->Params->user_id, null, $Ogspy->Params->active, $Ogspy->Params->user_coadmin, $Ogspy->Params->management_user,
+        $Ogspy->Params->management_ranking);
     redirection("index.php?action=administration&subaction=member");
 }
 
@@ -219,21 +218,21 @@ function admin_user_set()
  */
 function admin_regeneratepwd()
 {
-    global $pub_user_id, $pub_pass_reset, $lang, $server_config;
-    $pass_id = "pub_pass_" . $pub_user_id;
+    global $Ogspy, $lang, $server_config;
+    $pass_id = "pub_pass_" . $Ogspy->Params->user_id;
     global $$pass_id;
     $new_pass = $$pass_id;
 
-    if (!check_var($pub_user_id, "Num")) {
+    if (!check_var($Ogspy->Params->user_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    if (!isset($pub_user_id)) {
+    if (!isset($Ogspy->Params->user_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    user_check_auth("user_update", $pub_user_id);
-    $user_info = user_get($pub_user_id)[0];
+    user_check_auth("user_update", $Ogspy->Params->user_id);
+    $user_info = user_get($Ogspy->Params->user_id)[0];
 
     if ($user_info === false) {
         redirection("index.php?action=message&id_message=regeneratepwd_failed&info");
@@ -243,7 +242,7 @@ function admin_regeneratepwd()
     } else {
         $password = password_generator();
     }
-    user_set_general($pub_user_id, null, $password);
+    user_set_general($Ogspy->Params->user_id, null, $password);
 
     $NovisualisationMdpAdmin = true;
     if ($server_config["mail_use"] == 1 && $user_info["user_email"] !== "") {
@@ -255,12 +254,12 @@ function admin_regeneratepwd()
     }
 
     if ($NovisualisationMdpAdmin == false) {
-        log_("regeneratepwd", $pub_user_id);
-        $info = $pub_user_id . ":" . $password;
+        log_("regeneratepwd", $Ogspy->Params->user_id);
+        $info = $Ogspy->Params->user_id . ":" . $password;
         redirection("index.php?action=message&id_message=regeneratepwd_success&info=" . $info);
     } else {
-        $info = $pub_user_id . ":mail";
-        log_("regeneratepwd_", $pub_user_id);
+        $info = $Ogspy->Params->user_id . ":mail";
+        log_("regeneratepwd_", $Ogspy->Params->user_id);
         redirection("index.php?action=message&id_message=regeneratepwd_success&info=$info");
     }
 
@@ -272,15 +271,13 @@ function admin_regeneratepwd()
  */
 function member_user_set()
 {
-    global $db, $user_data, $user_technology;
-    global $pub_pseudo, $pub_old_password, $pub_new_password, $pub_new_password2, $pub_galaxy,
-           $pub_system, $pub_disable_ip_check, $pub_off_commandant, $pub_off_amiral, $pub_off_ingenieur,
-           $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email, $pub_renew_user_token;
+    global $user_data, $user_technology;
+    global $Ogspy;
 
-    if (!check_var($pub_pseudo, "Text") || !check_var($pub_old_password, "Text") ||
-        !check_var($pub_new_password, "Text") || !check_var($pub_new_password2,
-            "CharNum") || !check_var($pub_pseudo_email, "Email")
-        || !check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_disable_ip_check, "Num") || !check_var($pub_pseudo_ingame, "Pseudo_ingame")) {
+    if (!check_var($Ogspy->Params->pseudo, "Text") || !check_var($Ogspy->Params->old_password, "Text") ||
+        !check_var($Ogspy->Params->new_password, "Text") || !check_var($Ogspy->Params->new_password2,
+            "CharNum") || !check_var($Ogspy->Params->pseudo_email, "Email")
+        || !check_var($Ogspy->Params->galaxy, "Num") || !check_var($Ogspy->Params->system, "Num") || !check_var($Ogspy->Params->disable_ip_check, "Num") || !check_var($Ogspy->Params->pseudo_ingame, "Pseudo_ingame")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
@@ -292,98 +289,98 @@ function member_user_set()
     $user_technology = $user_empire["technology"];
 
     $password_validated = null;
-    if (!isset($pub_pseudo) || !isset($pub_old_password) || !isset($pub_new_password) ||
-        !isset($pub_new_password2) || !isset($pub_pseudo_email) || !isset($pub_galaxy) || !isset($pub_system)) {
+    if (!isset($Ogspy->Params->pseudo) || !isset($Ogspy->Params->old_password) || !isset($Ogspy->Params->new_password) ||
+        !isset($Ogspy->Params->new_password2) || !isset($Ogspy->Params->pseudo_email) || !isset($Ogspy->Params->galaxy) || !isset($Ogspy->Params->system)) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed&info");
     }
 
-    if ($pub_old_password != "" || $pub_new_password != "" || $pub_new_password2 !=
+    if ($Ogspy->Params->old_password != "" || $Ogspy->Params->new_password != "" || $Ogspy->Params->new_password2 !=
         "") {
-        if ($pub_old_password == "" || $pub_new_password == "" || $pub_new_password != $pub_new_password2) {
+        if ($Ogspy->Params->old_password == "" || $Ogspy->Params->new_password == "" || $Ogspy->Params->new_password != $Ogspy->Params->new_password2) {
             redirection("index.php?action=message&id_message=member_modifyuser_failed_passwordcheck&info");
         }
-        if (password_verify($pub_old_password, $user_info[0]["user_password"])) {
+        if (password_verify($Ogspy->Params->old_password, $user_info[0]["user_password"])) {
             redirection("index.php?action=message&id_message=member_modifyuser_failed_passwordcheck&info");
         }
-        if (!check_var($pub_new_password, "Password")) {
+        if (!check_var($Ogspy->Params->new_password, "Password")) {
             redirection("index.php?action=message&id_message=member_modifyuser_failed_password&info");
         }
     }
     // Token Generation
-    if ($pub_renew_user_token == 1) {
+    if ($Ogspy->Params->renew_user_token == 1) {
 
         user_profile_token_updater($user_id);
     }
 
-    if (!check_var($pub_pseudo, "Pseudo_Groupname")) {
+    if (!check_var($Ogspy->Params->pseudo, "Pseudo_Groupname")) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudo&info");
     }
 
     //pseudo ingame
-    if ($user_data["user_stat_name"] !== $pub_pseudo_ingame) {
-        $User_Model->set_game_account_name($user_id, $pub_pseudo_ingame);
+    if ($user_data["user_stat_name"] !== $Ogspy->Params->pseudo_ingame) {
+        $User_Model->set_game_account_name($user_id, $Ogspy->Params->pseudo_ingame);
     }
     //compte Commandant
-    if ($user_data['off_commandant'] == "0" && $pub_off_commandant == 1) {
+    if ($user_data['off_commandant'] == "0" && $Ogspy->Params->off_commandant == 1) {
         $User_Model->set_player_officer($user_id, "off_commandant", 1);
     }
-    if ($user_data['off_commandant'] == 1 && (is_null($pub_off_commandant) || $pub_off_commandant != 1)) {
+    if ($user_data['off_commandant'] == 1 && (is_null($Ogspy->Params->off_commandant) || $Ogspy->Params->off_commandant != 1)) {
         $User_Model->set_player_officer($user_id, "off_commandant", 0);
     }
     //compte amiral
-    if ($user_data['off_amiral'] == "0" && $pub_off_amiral == 1) {
+    if ($user_data['off_amiral'] == "0" && $Ogspy->Params->off_amiral == 1) {
         $User_Model->set_player_officer($user_id, "off_amiral", 1);
     }
-    if ($user_data['off_amiral'] == 1 && (is_null($pub_off_amiral) || $pub_off_amiral != 1)) {
+    if ($user_data['off_amiral'] == 1 && (is_null($Ogspy->Params->off_amiral) || $Ogspy->Params->off_amiral != 1)) {
         $User_Model->set_player_officer($user_id, "off_amiral", 0);
     }
     //compte ingenieur
-    if ($user_data['off_ingenieur'] == "0" && $pub_off_ingenieur == 1) {
+    if ($user_data['off_ingenieur'] == "0" && $Ogspy->Params->off_ingenieur == 1) {
         $User_Model->set_player_officer($user_id, "off_ingenieur", 1);
     }
-    if ($user_data['off_ingenieur'] == 1 && (is_null($pub_off_ingenieur) || $pub_off_ingenieur != 1)) {
+    if ($user_data['off_ingenieur'] == 1 && (is_null($Ogspy->Params->off_ingenieur) || $Ogspy->Params->off_ingenieur != 1)) {
         $User_Model->set_player_officer($user_id, "off_ingenieur", 0);
     }
     //compte geologue
-    if ($user_data['off_geologue'] == "0" && $pub_off_geologue == 1) {
+    if ($user_data['off_geologue'] == "0" && $Ogspy->Params->off_geologue == 1) {
         $User_Model->set_player_officer($user_id, "off_geologue", 1);
     }
-    if ($user_data['off_geologue'] == 1 && (is_null($pub_off_geologue) || $pub_off_geologue != 1)) {
+    if ($user_data['off_geologue'] == 1 && (is_null($Ogspy->Params->off_geologue) || $Ogspy->Params->off_geologue != 1)) {
         $User_Model->set_player_officer($user_id, "off_geologue", 0);
     }
     //compte technocrate
-    if ($user_data['off_technocrate'] == "0" && $pub_off_technocrate == 1) {
+    if ($user_data['off_technocrate'] == "0" && $Ogspy->Params->off_technocrate == 1) {
         $User_Model->set_player_officer($user_id, "off_technocrate", 1);
     }
-    if ($user_data['off_technocrate'] == 1 && (is_null($pub_off_technocrate) || $pub_off_technocrate != 1)) {
+    if ($user_data['off_technocrate'] == 1 && (is_null($Ogspy->Params->off_technocrate) || $Ogspy->Params->off_technocrate != 1)) {
         $User_Model->set_player_officer($user_id, "off_technocrate", 0);
     }
     //Contrôle que le pseudo ne soit pas déjà utilisé
     $tUserName = $User_Model->select_user_list();
-    if (in_array($pub_pseudo, $tUserName)) {
+    if (in_array($Ogspy->Params->pseudo, $tUserName)) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudolocked&info");
     }
 
-    if (is_null($pub_disable_ip_check) || $pub_disable_ip_check != 1) {
-        $pub_disable_ip_check = 0;
+    if (is_null($Ogspy->Params->disable_ip_check) || $Ogspy->Params->disable_ip_check != 1) {
+        $Ogspy->Params->disable_ip_check = 0;
     }
-    if (isset($pub_pseudo)) {
-        $User_Model->set_user_pseudo($user_id, $pub_pseudo);
+    if (isset($Ogspy->Params->pseudo)) {
+        $User_Model->set_user_pseudo($user_id, $Ogspy->Params->pseudo);
     }
-    if (isset($pub_new_password)) {
-        $User_Model->set_user_password($user_id, password_hash($pub_new_password, PASSWORD_DEFAULT));
+    if (isset($Ogspy->Params->new_password)) {
+        $User_Model->set_user_password($user_id, password_hash($Ogspy->Params->new_password, PASSWORD_DEFAULT));
     }
-    if (isset($pub_pesudo_email)) {
-        $User_Model->set_user_email($user_id, $pub_pesudo_email);
+    if (isset($Ogspy->Params->pesudo_email)) {
+        $User_Model->set_user_email($user_id, $Ogspy->Params->pesudo_email);
     }
-    if (isset($pub_galaxy)) {
-        $User_Model->set_user_default_galaxy($user_id, $pub_galaxy);
+    if (isset($Ogspy->Params->galaxy)) {
+        $User_Model->set_user_default_galaxy($user_id, $Ogspy->Params->galaxy);
     }
-    if (isset($pub_system)) {
-        $User_Model->set_user_default_system($user_id, $pub_system);
+    if (isset($Ogspy->Params->system)) {
+        $User_Model->set_user_default_system($user_id, $Ogspy->Params->system);
     }
-    if (isset($pub_disable_ip_check)) {
-        $User_Model->set_user_ip_check($user_id, $pub_disable_ip_check);
+    if (isset($Ogspy->Params->disable_ip_check)) {
+        $User_Model->set_user_ip_check($user_id, $Ogspy->Params->disable_ip_check);
     }
     redirection("index.php?action=profile");
 }
@@ -670,75 +667,74 @@ function user_get_auth($user_id)
  */
 function user_create()
 {
-    global $pub_pseudo, $pub_active, $pub_user_coadmin, $pub_management_user,
-           $pub_management_ranking, $pub_group_id, $pub_pass;
-    if (!check_var($pub_pseudo, "Pseudo_Groupname")) {
+    global $Ogspy;
+    if (!check_var($Ogspy->Params->pseudo, "Pseudo_Groupname")) {
         redirection("index.php?action=message&id_message=errordata&info=1");
     }
-    if (!isset($pub_pseudo)) {
+    if (!isset($Ogspy->Params->pseudo)) {
         redirection("index.php?action=message&id_message=createuser_failed_general&info");
     }
     //Vérification des droits
     user_check_auth("user_create");
-    if (!check_var($pub_pseudo, "Pseudo_Groupname")) {
+    if (!check_var($Ogspy->Params->pseudo, "Pseudo_Groupname")) {
         redirection("index.php?action=message&id_message=createuser_failed_pseudo&info=" .
-            $pub_pseudo);
+            $Ogspy->Params->pseudo);
     }
-    if (!check_var($pub_pass, "Password")) {
+    if (!check_var($Ogspy->Params->pass, "Password")) {
         redirection("index.php?action=message&id_message=createuser_failed_password&info=" .
-            $pub_pseudo);
+            $Ogspy->Params->pseudo);
     }
-    if ($pub_pass != "") {
-        $password = $pub_pass;
+    if ($Ogspy->Params->pass != "") {
+        $password = $Ogspy->Params->pass;
     } else {
         $password = password_generator();
     }
     $User_Model = new User_Model();
     //On vérifie que le nom n'existe pas
-    $result = $User_Model->select_user_name($pub_pseudo);
+    $result = $User_Model->select_user_name($Ogspy->Params->pseudo);
 
     //Création de l'utilisateur
     //Contrôle que le pseudo ne soit pas déjà utilisé
     $tUserName = $User_Model->select_user_list();
-    if (!in_array($pub_pseudo, $tUserName)) {
-        $user_id = $User_Model->add_new_user($pub_pseudo, $password);
+    if (!in_array($Ogspy->Params->pseudo, $tUserName)) {
+        $user_id = $User_Model->add_new_user($Ogspy->Params->pseudo, $password);
         // Insertion dans le groupe par défaut
-        $User_Model->add_user_to_group($user_id, $pub_group_id);
+        $User_Model->add_user_to_group($user_id, $Ogspy->Params->group_id);
         $info = $user_id . ":" . $password;
         log_("create_account", $user_id);
-        user_set_grant($user_id, null, $pub_active, $pub_user_coadmin, $pub_management_user,
-            $pub_management_ranking);
+        user_set_grant($user_id, null, $Ogspy->Params->active, $Ogspy->Params->user_coadmin, $Ogspy->Params->management_user,
+            $Ogspy->Params->management_ranking);
 
         redirection("index.php?action=message&id_message=createuser_success&info=" . $info);
 
     } else {
         redirection("index.php?action=message&id_message=createuser_failed_pseudolocked&info=" .
-            $pub_pseudo);
+            $Ogspy->Params->pseudo);
     }
 }
 
 /**
- * Suppression d'un utilisateur ($pub_user_id)
+ * Suppression d'un utilisateur ($Ogspy->Params->user_id)
  */
 function user_delete()
 {
-    global $pub_user_id;
+    global $Ogspy;
 
-    if (!check_var($pub_user_id, "Num")) {
+    if (!check_var($Ogspy->Params->user_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    if (!isset($pub_user_id)) {
+    if (!isset($Ogspy->Params->user_id)) {
         redirection("index.php?action=message&id_message=createuser_failed_general&info");
     }
 
-    user_check_auth("user_update", $pub_user_id);
+    user_check_auth("user_update", $Ogspy->Params->user_id);
 
-    log_("delete_account", $pub_user_id);
+    log_("delete_account", $Ogspy->Params->user_id);
 
-    (new User_Model())->delete_user($pub_user_id);
+    (new User_Model())->delete_user($Ogspy->Params->user_id);
 
-    session_close($pub_user_id);
+    session_close($Ogspy->Params->user_id);
 
     redirection("index.php?action=administration&subaction=member");
 }
@@ -1050,25 +1046,25 @@ function user_empire_production($user_empire, $off = NULL)
 function user_del_building()
 {
     global $db, $user_data;
-    global $pub_planet_id, $pub_view;
+    global $Ogspy;
 
     $User_Building_Model = new User_Building_Model();
     $User_Defense_Model = new User_Defense_Model();
 
-    if (!check_var($pub_planet_id, "Num")) {
+    if (!check_var($Ogspy->Params->planet_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
-    if (!isset($pub_planet_id)) {
+    if (!isset($Ogspy->Params->planet_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $User_Building_Model->delete_user_aster($user_data["user_id"], intval($pub_planet_id)); //batiment
-    $User_Defense_Model->delete_user_aster($user_data["user_id"], intval($pub_planet_id)); //defense
+    $User_Building_Model->delete_user_aster($user_data["user_id"], intval($Ogspy->Params->planet_id)); //batiment
+    $User_Defense_Model->delete_user_aster($user_data["user_id"], intval($Ogspy->Params->planet_id)); //defense
 
 
     // si on supprime une planete; la lune doit suivre
-    if (intval($pub_planet_id) < 199) {
-        $moon_id = (intval($pub_planet_id) + 100);
+    if (intval($Ogspy->Params->planet_id) < 199) {
+        $moon_id = (intval($Ogspy->Params->planet_id) + 100);
         $User_Building_Model->delete_user_aster($user_data["user_id"], $moon_id); //batiment
         $User_Defense_Model->delete_user_aster($user_data["user_id"], $moon_id); //defense
     }
@@ -1082,7 +1078,7 @@ function user_del_building()
     // remise en ordre des planetes :
     user_set_all_empire_resync_id();
 
-    redirection("index.php?action=home&subaction=empire&view=" . $pub_view);
+    redirection("index.php?action=home&subaction=empire&view=" . $Ogspy->Params->view);
 }
 
 /**
@@ -1091,44 +1087,44 @@ function user_del_building()
 function user_move_empire()
 {
     global $db, $user_data;
-    global $pub_planet_id, $pub_left, $pub_right;
+    global $Ogspy;
 
     $User_Building_Model = new User_Building_Model();
     $User_Defense_Model = new User_Defense_Model();
 
     $nb_planete = find_nb_planete_user($user_data["user_id"]);
 
-    if (!check_var($pub_planet_id, "Num")) {
+    if (!check_var($Ogspy->Params->planet_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
-    if (!isset($pub_planet_id) || (!isset($pub_left) && !isset($pub_right))) {
+    if (!isset($Ogspy->Params->planet_id) || (!isset($Ogspy->Params->left) && !isset($Ogspy->Params->right))) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $pub_planet_id = intval($pub_planet_id);
-    if ($pub_planet_id < 101 || $pub_planet_id > (100 + $nb_planete)) {
+    $Ogspy->Params->planet_id = intval($Ogspy->Params->planet_id);
+    if ($Ogspy->Params->planet_id < 101 || $Ogspy->Params->planet_id > (100 + $nb_planete)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
-    if (isset($pub_left)) {
-        if ($pub_planet_id == 101) {
+    if (isset($Ogspy->Params->left)) {
+        if ($Ogspy->Params->planet_id == 101) {
             redirection("index.php?action=home&subaction=empire");
         }
-        $new_position = $pub_planet_id - 1;
-    } elseif (isset($pub_right)) {
-        if ($pub_planet_id == (100 + $nb_planete)) {
+        $new_position = $Ogspy->Params->planet_id - 1;
+    } elseif (isset($Ogspy->Params->right)) {
+        if ($Ogspy->Params->planet_id == (100 + $nb_planete)) {
             redirection("index.php?action=home&subaction=empire");
         }
-        $new_position = $pub_planet_id + 1;
+        $new_position = $Ogspy->Params->planet_id + 1;
     }
 
     $tmpPosition = 9999;
     // deplacement building
-    $User_Building_Model->update_planet_id($user_data["user_id"], $pub_planet_id, $tmpPosition);
-    $User_Building_Model->update_planet_id($user_data["user_id"], $new_position, $pub_planet_id);
+    $User_Building_Model->update_planet_id($user_data["user_id"], $Ogspy->Params->planet_id, $tmpPosition);
+    $User_Building_Model->update_planet_id($user_data["user_id"], $new_position, $Ogspy->Params->planet_id);
     $User_Building_Model->update_planet_id($user_data["user_id"], $tmpPosition, $new_position);
     // deplacement defense
-    $User_Defense_Model->update_planet_id($user_data["user_id"], $pub_planet_id, $tmpPosition);
-    $User_Defense_Model->update_planet_id($user_data["user_id"], $new_position, $pub_planet_id);
+    $User_Defense_Model->update_planet_id($user_data["user_id"], $Ogspy->Params->planet_id, $tmpPosition);
+    $User_Defense_Model->update_planet_id($user_data["user_id"], $new_position, $Ogspy->Params->planet_id);
     $User_Defense_Model->update_planet_id($user_data["user_id"], $tmpPosition, $new_position);
 
     // remise en ordre des planetes :
@@ -1143,22 +1139,22 @@ function user_move_empire()
 function user_add_favorite()
 {
     global $user_data, $server_config;
-    global $pub_galaxy, $pub_system;
+    global $Ogspy;
 
     $User_Favorites_Model = new User_Favorites_Model();
 
-    if (!isset($pub_galaxy) || !isset($pub_system)) {
+    if (!isset($Ogspy->Params->galaxy) || !isset($Ogspy->Params->system)) {
         redirection("index.php");
     }
-    if (intval($pub_galaxy) < 1 || intval($pub_galaxy) > intval($server_config['num_of_galaxies']) ||
-        intval($pub_system) < 1 || intval($pub_system) > intval($server_config['num_of_systems'])) {
+    if (intval($Ogspy->Params->galaxy) < 1 || intval($Ogspy->Params->galaxy) > intval($server_config['num_of_galaxies']) ||
+        intval($Ogspy->Params->system) < 1 || intval($Ogspy->Params->system) > intval($server_config['num_of_systems'])) {
         redirection("index.php?action=galaxy");
     }
 
     $nb_favorites = $User_Favorites_Model->get_nb_user_favorites($user_data["user_id"]);
     if ($nb_favorites < $server_config["max_favorites"]) {
-        $User_Favorites_Model->set_user_favorites($user_data["user_id"], $pub_galaxy, $pub_system);
-        redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system);
+        $User_Favorites_Model->set_user_favorites($user_data["user_id"], $Ogspy->Params->galaxy, $Ogspy->Params->system);
+        redirection("index.php?action=galaxy&galaxy=" . $Ogspy->Params->galaxy . "&system=" . $Ogspy->Params->system);
     } else {
         redirection("index.php?action=message&id_message=max_favorites&info");
     }
@@ -1170,21 +1166,21 @@ function user_add_favorite()
 function user_del_favorite()
 {
     global $user_data;
-    global $pub_galaxy, $pub_system, $server_config;
+    global $Ogspy, $server_config;
 
     new User_Favorites_Model();
-    if (!isset($pub_galaxy) || !isset($pub_system)) {
+    if (!isset($Ogspy->Params->galaxy) || !isset($Ogspy->Params->system)) {
         redirection("index.php");
     }
-    if (intval($pub_galaxy) < 1 || intval($pub_galaxy) > intval($server_config['num_of_galaxies']) ||
-        intval($pub_system) < 1 || intval($pub_system) > intval($server_config['num_of_systems'])) {
+    if (intval($Ogspy->Params->galaxy) < 1 || intval($Ogspy->Params->galaxy) > intval($server_config['num_of_galaxies']) ||
+        intval($Ogspy->Params->system) < 1 || intval($Ogspy->Params->system) > intval($server_config['num_of_systems'])) {
         redirection("index.php?action=galaxy");
     }
 
     //suppression
-    (new User_Favorites_Model())->delete_user_favorites($user_data["user_id"], $pub_galaxy, $pub_system);
+    (new User_Favorites_Model())->delete_user_favorites($user_data["user_id"], $Ogspy->Params->galaxy, $Ogspy->Params->system);
 
-    redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system .
+    redirection("index.php?action=galaxy&galaxy=" . $Ogspy->Params->galaxy . "&system=" . $Ogspy->Params->system .
         "");
 }
 
@@ -1212,23 +1208,23 @@ function user_getfavorites_spy()
 function user_add_favorite_spy()
 {
     global $user_data, $server_config;
-    global $pub_spy_id, $pub_galaxy, $pub_system, $pub_row;
+    global $Ogspy;
 
     $User_Spy_favorites_Model = new User_Spy_favorites_Model();
 
-    if (!check_var($pub_spy_id, "Num")) {
+    if (!check_var($Ogspy->Params->spy_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    if (!isset($pub_spy_id)) {
+    if (!isset($Ogspy->Params->spy_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
     $nb_favorites = $User_Spy_favorites_Model->Count_favorite_spy($user_data["user_id"]);
     if ($nb_favorites < $server_config["max_favorites_spy"]) {
-        $User_Spy_favorites_Model->add_favorite_spy($user_data["user_id"], $pub_spy_id);
-        redirection("index.php?action=show_reportspy&galaxy=" . $pub_galaxy . "&system=" .
-            $pub_system . "&row=" . $pub_row);
+        $User_Spy_favorites_Model->add_favorite_spy($user_data["user_id"], $Ogspy->Params->spy_id);
+        redirection("index.php?action=show_reportspy&galaxy=" . $Ogspy->Params->galaxy . "&system=" .
+            $Ogspy->Params->system . "&row=" . $Ogspy->Params->row);
     } else {
         redirection("index.php?action=message&id_message=max_favorites&info=_spy");
     }
@@ -1240,25 +1236,25 @@ function user_add_favorite_spy()
 function user_del_favorite_spy()
 {
     global $user_data;
-    global $pub_spy_id, $pub_galaxy, $pub_system, $pub_row, $pub_info;
+    global $Ogspy;
 
-    if (!check_var($pub_spy_id, "Num")) {
+    if (!check_var($Ogspy->Params->spy_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    if (!isset($pub_spy_id)) {
+    if (!isset($Ogspy->Params->spy_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
-    //(new Spy_Model())->delete_spy_senderId($pub_spy_id, $user_data["user_id"]);
-    (new User_Spy_favorites_Model())->delete_favorite_spy($user_data["user_id"], $pub_spy_id);
+    //(new Spy_Model())->delete_spy_senderId($Ogspy->Params->spy_id, $user_data["user_id"]);
+    (new User_Spy_favorites_Model())->delete_favorite_spy($user_data["user_id"], $Ogspy->Params->spy_id);
 
-    if (!isset($pub_info)) {
-        $pub_info = 1;
+    if (!isset($Ogspy->Params->info)) {
+        $Ogspy->Params->info = 1;
     }
 
-    switch ($pub_info) {
+    switch ($Ogspy->Params->info) {
         case 2:
-            redirection("index.php?action=show_reportspy&galaxy=" . $pub_galaxy . "&system=" . $pub_system . "&row=" . $pub_row);
+            redirection("index.php?action=show_reportspy&galaxy=" . $Ogspy->Params->galaxy . "&system=" . $Ogspy->Params->system . "&row=" . $Ogspy->Params->row);
             break;
         case 1:
             redirection("index.php?action=home&subaction=spy");
@@ -1273,30 +1269,30 @@ function user_del_favorite_spy()
  */
 function usergroup_create()
 {
-    global $pub_groupname;
+    global $Ogspy;
     $Group_Model = new Group_Model();
 
-    if (!isset($pub_groupname)) {
+    if (!isset($Ogspy->Params->groupname)) {
         redirection("index.php?action=message&id_message=createusergroup_failed_general&info");
     }
 
     //Vérification des droits
     user_check_auth("usergroup_manage");
 
-    if (!check_var($pub_groupname, "Pseudo_Groupname")) {
+    if (!check_var($Ogspy->Params->groupname, "Pseudo_Groupname")) {
         redirection("index.php?action=message&id_message=createusergroup_failed_groupname&info");
     }
 
 
-    if (!$Group_Model->group_exist_by_name($pub_groupname)) {
-        $Group_Model->insert_group($pub_groupname);
+    if (!$Group_Model->group_exist_by_name($Ogspy->Params->groupname)) {
+        $Group_Model->insert_group($Ogspy->Params->groupname);
         $group_id = $Group_Model->sql_insertid();
 
-        log_("create_usergroup", $pub_groupname);
+        log_("create_usergroup", $Ogspy->Params->groupname);
         redirection("index.php?action=administration&subaction=group&group_id=" . $group_id);
     } else {
         redirection("index.php?action=message&id_message=createusergroup_failed_groupnamelocked&info=" .
-            $pub_groupname);
+            $Ogspy->Params->groupname);
     }
 }
 
@@ -1305,26 +1301,26 @@ function usergroup_create()
  */
 function usergroup_delete()
 {
-    global $pub_group_id;
+    global $Ogspy;
 
-    if (!check_var($pub_group_id, "Num")) {
+    if (!check_var($Ogspy->Params->group_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    if (!isset($pub_group_id)) {
+    if (!isset($Ogspy->Params->group_id)) {
         redirection("index.php?action=message&id_message=createusergroup_failed_general&info");
     }
 
     //Vérification des droits
     user_check_auth("usergroup_manage");
 
-    if ($pub_group_id == 1) {
+    if ($Ogspy->Params->group_id == 1) {
         redirection("index.php?action=administration&subaction=group&group_id=1");
     }
 
-    log_("delete_usergroup", $pub_group_id);
+    log_("delete_usergroup", $Ogspy->Params->group_id);
 
-    (new Group_Model())->delete_group($pub_group_id);
+    (new Group_Model())->delete_group($Ogspy->Params->group_id);
 
     redirection("index.php?action=administration&subaction=group");
 }
@@ -1368,85 +1364,82 @@ function usergroup_get($group_id = false)
 function usergroup_setauth()
 {
     global $db, $user_data;
-    global $pub_group_id, $pub_group_name, $pub_server_set_system, $pub_server_set_spy,
-           $pub_server_set_rc, $pub_server_set_ranking, $pub_server_show_positionhided, $pub_ogs_connection,
-           $pub_ogs_set_system, $pub_ogs_get_system, $pub_ogs_set_spy, $pub_ogs_get_spy, $pub_ogs_set_ranking,
-           $pub_ogs_get_ranking;
+    global $Ogspy;
 
-    if (!check_var($pub_group_id, "Num") || !check_var($pub_group_name,
-            "Pseudo_Groupname") || !check_var($pub_server_set_system, "Num") || !check_var($pub_server_set_spy,
-            "Num") || !check_var($pub_server_set_rc, "Num") || !check_var($pub_server_set_ranking,
-            "Num") || !check_var($pub_server_show_positionhided, "Num") || !check_var($pub_ogs_connection,
-            "Num") || !check_var($pub_ogs_set_system, "Num") || !check_var($pub_ogs_get_system,
-            "Num") || !check_var($pub_ogs_set_spy, "Num") || !check_var($pub_ogs_get_spy,
-            "Num") || !check_var($pub_ogs_set_ranking, "Num") || !check_var($pub_ogs_get_ranking,
+    if (!check_var($Ogspy->Params->group_id, "Num") || !check_var($Ogspy->Params->group_name,
+            "Pseudo_Groupname") || !check_var($Ogspy->Params->server_set_system, "Num") || !check_var($Ogspy->Params->server_set_spy,
+            "Num") || !check_var($Ogspy->Params->server_set_rc, "Num") || !check_var($Ogspy->Params->server_set_ranking,
+            "Num") || !check_var($Ogspy->Params->server_show_positionhided, "Num") || !check_var($Ogspy->Params->ogs_connection,
+            "Num") || !check_var($Ogspy->Params->ogs_set_system, "Num") || !check_var($Ogspy->Params->ogs_get_system,
+            "Num") || !check_var($Ogspy->Params->ogs_set_spy, "Num") || !check_var($Ogspy->Params->ogs_get_spy,
+            "Num") || !check_var($Ogspy->Params->ogs_set_ranking, "Num") || !check_var($Ogspy->Params->ogs_get_ranking,
             "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    if (!isset($pub_group_id) || !isset($pub_group_name)) {
+    if (!isset($Ogspy->Params->group_id) || !isset($Ogspy->Params->group_name)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    if (is_null($pub_server_set_system)) {
-        $pub_server_set_system = 0;
+    if (is_null($Ogspy->Params->server_set_system)) {
+        $Ogspy->Params->server_set_system = 0;
     }
-    if (is_null($pub_server_set_spy)) {
-        $pub_server_set_spy = 0;
+    if (is_null($Ogspy->Params->server_set_spy)) {
+        $Ogspy->Params->server_set_spy = 0;
     }
-    if (is_null($pub_server_set_rc)) {
-        $pub_server_set_rc = 0;
+    if (is_null($Ogspy->Params->server_set_rc)) {
+        $Ogspy->Params->server_set_rc = 0;
     }
-    if (is_null($pub_server_set_ranking)) {
-        $pub_server_set_ranking = 0;
+    if (is_null($Ogspy->Params->server_set_ranking)) {
+        $Ogspy->Params->server_set_ranking = 0;
     }
-    if (is_null($pub_server_show_positionhided)) {
-        $pub_server_show_positionhided = 0;
+    if (is_null($Ogspy->Params->server_show_positionhided)) {
+        $Ogspy->Params->server_show_positionhided = 0;
     }
-    if (is_null($pub_ogs_connection)) {
-        $pub_ogs_connection = 0;
+    if (is_null($Ogspy->Params->ogs_connection)) {
+        $Ogspy->Params->ogs_connection = 0;
     }
-    if (is_null($pub_ogs_set_system)) {
-        $pub_ogs_set_system = 0;
+    if (is_null($Ogspy->Params->ogs_set_system)) {
+        $Ogspy->Params->ogs_set_system = 0;
     }
-    if (is_null($pub_ogs_get_system)) {
-        $pub_ogs_get_system = 0;
+    if (is_null($Ogspy->Params->ogs_get_system)) {
+        $Ogspy->Params->ogs_get_system = 0;
     }
-    if (is_null($pub_ogs_set_spy)) {
-        $pub_ogs_set_spy = 0;
+    if (is_null($Ogspy->Params->ogs_set_spy)) {
+        $Ogspy->Params->ogs_set_spy = 0;
     }
-    if (is_null($pub_ogs_get_spy)) {
-        $pub_ogs_get_spy = 0;
+    if (is_null($Ogspy->Params->ogs_get_spy)) {
+        $Ogspy->Params->ogs_get_spy = 0;
     }
-    if (is_null($pub_ogs_set_ranking)) {
-        $pub_ogs_set_ranking = 0;
+    if (is_null($Ogspy->Params->ogs_set_ranking)) {
+        $Ogspy->Params->ogs_set_ranking = 0;
     }
-    if (is_null($pub_ogs_get_ranking)) {
-        $pub_ogs_get_ranking = 0;
+    if (is_null($Ogspy->Params->ogs_get_ranking)) {
+        $Ogspy->Params->ogs_get_ranking = 0;
     }
 
     //Vérification des droits
     user_check_auth("usergroup_manage");
 
-    log_("modify_usergroup", $pub_group_id);
+    log_("modify_usergroup", $Ogspy->Params->group_id);
 
     (new Group_Model())->update_group(
-        $pub_group_id,
-        $pub_group_name,
-        $pub_server_set_system,
-        $pub_server_set_spy,
-        $pub_server_set_rc,
-        $pub_server_set_ranking,
-        $pub_server_show_positionhided,
-        $pub_ogs_connection,
-        $pub_ogs_set_system,
-        $pub_ogs_get_system,
-        $pub_ogs_set_spy,
-        $pub_ogs_get_spy,
-        $pub_ogs_set_ranking,
-        $pub_ogs_get_ranking);
+        $Ogspy->Params->group_id,
+        $Ogspy->Params->group_name,
+        $Ogspy->Params->server_set_system,
+        $Ogspy->Params->server_set_spy,
+        $Ogspy->Params->server_set_rc,
+        $Ogspy->Params->server_set_ranking,
+        $Ogspy->Params->server_show_positionhided,
+        $Ogspy->Params->ogs_connection,
+        $Ogspy->Params->ogs_set_system,
+        $Ogspy->Params->ogs_get_system,
+        $Ogspy->Params->ogs_set_spy,
+        $Ogspy->Params->ogs_get_spy,
+        $Ogspy->Params->ogs_set_ranking,
+        $Ogspy->Params->ogs_get_ranking);
 
-    redirection("index.php?action=administration&subaction=group&group_id=" . $pub_group_id);
+    redirection("index.php?action=administration&subaction=group&group_id=" . $Ogspy->Params->group_id);
 }
 
 /**
@@ -1472,79 +1465,79 @@ function usergroup_member($group_id)
 function usergroup_newmember()
 {
     global $db;
-    global $pub_user_id, $pub_group_id, $pub_add_all;
+    global $Ogspy;
 
     $Group_Model = new Group_Model();
     $User_Model = new User_Model();
     $userid_list = $User_Model->select_userid_list();
 
-    if (isset($pub_add_all) && is_numeric($pub_group_id)) {
+    if (isset($Ogspy->Params->add_all) && is_numeric($Ogspy->Params->group_id)) {
         foreach ($userid_list as $userid) {
             user_check_auth("usergroup_manage");
             //insertion
-            if ($Group_Model->insert_user_togroup($userid, $pub_group_id)) {
-                log_("add_usergroup", array($pub_group_id, $userid));
+            if ($Group_Model->insert_user_togroup($userid, $Ogspy->Params->group_id)) {
+                log_("add_usergroup", array($Ogspy->Params->group_id, $userid));
             }
 
         }
-        redirection("index.php?action=administration&subaction=group&group_id=" . $pub_group_id);
+        redirection("index.php?action=administration&subaction=group&group_id=" . $Ogspy->Params->group_id);
     } else {
-        if (!check_var($pub_user_id, "Num") || !check_var($pub_group_id, "Num")) {
+        if (!check_var($Ogspy->Params->user_id, "Num") || !check_var($Ogspy->Params->group_id, "Num")) {
             redirection("index.php?action=message&id_message=errordata&info");
         }
 
-        if (!isset($pub_user_id) || !isset($pub_group_id)) {
+        if (!isset($Ogspy->Params->user_id) || !isset($Ogspy->Params->group_id)) {
             redirection("index.php?action=message&id_message=errorfatal&info");
         }
 
         //Vérification des droits
         user_check_auth("usergroup_manage");
 
-        if ($Group_Model->group_exist_by_id($pub_group_id) == false) {
+        if ($Group_Model->group_exist_by_id($Ogspy->Params->group_id) == false) {
             redirection("index.php?action=administration&subaction=group");
         }
 
         //si le compte n existe pas
-        if (!in_array(intval($pub_user_id), $userid_list)) {
+        if (!in_array(intval($Ogspy->Params->user_id), $userid_list)) {
             redirection("index.php?action=administration&subaction=group");
         }
 
         //insertion
-        if ($Group_Model->insert_user_togroup($pub_user_id, $pub_group_id)) {
-            log_("add_usergroup", array($pub_group_id, $pub_user_id));
+        if ($Group_Model->insert_user_togroup($Ogspy->Params->user_id, $Ogspy->Params->group_id)) {
+            log_("add_usergroup", array($Ogspy->Params->group_id, $Ogspy->Params->user_id));
         }
 
-        redirection("index.php?action=administration&subaction=group&group_id=" . $pub_group_id);
+        redirection("index.php?action=administration&subaction=group&group_id=" . $Ogspy->Params->group_id);
     }
 }
 
 /**
  * Supression d'un utilisateur d'un groupe
- * @global int $pub_user_id Identificateur utilisateur
- * @global int $pub_group_id Identificateur du Groupe
+ * @global int $Ogspy->Params->user_id Identificateur utilisateur
+ * @global int $Ogspy->Params->group_id Identificateur du Groupe
  */
 function usergroup_delmember()
 {
-    global $pub_user_id, $pub_group_id;
+    global $Ogspy;
 
     $Group_Model = new Group_Model();
 
-    if (!isset($pub_user_id) || !isset($pub_group_id)) {
+    if (!isset($Ogspy->Params->user_id) || !isset($Ogspy->Params->group_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
-    if (!check_var($pub_user_id, "Num") || !check_var($pub_group_id, "Num")) {
+    if (!check_var($Ogspy->Params->user_id, "Num") || !check_var($Ogspy->Params->group_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
     //Vérification des droits
     user_check_auth("usergroup_manage");
 
-    $Group_Model->delete_user_from_group($pub_user_id, $pub_group_id);
+    $Group_Model->delete_user_from_group($Ogspy->Params->user_id, $Ogspy->Params->group_id);
     if ($Group_Model->sql_affectedrows() > 0) {
-        log_("del_usergroup", array($pub_group_id, $pub_user_id));
+        log_("del_usergroup", array($Ogspy->Params->group_id, $Ogspy->Params->user_id));
     }
 
-    redirection("index.php?action=administration&subaction=group&group_id=" . $pub_group_id);
+    redirection("index.php?action=administration&subaction=group&group_id=" . $Ogspy->Params->group_id);
 }
 
 /**
@@ -1566,27 +1559,27 @@ function user_set_stat_name($user_stat_name)
 function user_del_spy()
 {
     global $db, $user_data;
-    global $pub_spy_id, $pub_galaxy, $pub_system, $pub_row, $pub_info;
+    global $Ogspy;
 
-    if (!check_var($pub_spy_id, "Num")) {
+    if (!check_var($Ogspy->Params->spy_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    if (!isset($pub_spy_id)) {
+    if (!isset($Ogspy->Params->spy_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
-        (new Spy_Model())->delete_spy($pub_spy_id);
+        (new Spy_Model())->delete_spy($Ogspy->Params->spy_id);
     }
 
-    if (!isset($pub_info)) {
-        $pub_info = 1;
+    if (!isset($Ogspy->Params->info)) {
+        $Ogspy->Params->info = 1;
     }
 
-    switch ($pub_info) {
+    switch ($Ogspy->Params->info) {
         case 2:
-            redirection("index.php?action=show_reportspy&galaxy=" . $pub_galaxy . "&system=" . $pub_system . "&row=" . $pub_row);
+            redirection("index.php?action=show_reportspy&galaxy=" . $Ogspy->Params->galaxy . "&system=" . $Ogspy->Params->system . "&row=" . $Ogspy->Params->row);
             break;
         case 1:
             redirection("index.php?action=home&subaction=spy");
