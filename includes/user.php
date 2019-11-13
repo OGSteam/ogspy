@@ -17,7 +17,6 @@ if (!defined('IN_SPYOGAME')) {
 use Ogsteam\Ogspy\Model\Group_Model;
 use Ogsteam\Ogspy\Model\Sessions_Model;
 use Ogsteam\Ogspy\Model\Statistics_Model;
-use Ogsteam\Ogspy\Model\Universe_Model;
 use Ogsteam\Ogspy\Model\User_Building_Model;
 use Ogsteam\Ogspy\Model\User_Defense_Model;
 use Ogsteam\Ogspy\Model\User_Technology_Model;
@@ -124,13 +123,15 @@ function user_login()
 
 function user_set_connection($user_id, $user_active)
 {
-
     global $pub_goto;
+
+    (new User_Model())->update_lastvisit_time($user_id);
+
     if ($user_active == 1) {
 
         $lastvisit = (new User_Model())->select_last_visit($user_id);
 
-        ///statistique
+        ///stat
         (new Statistics_Model())->add_user_connection();
 
         session_set_user_id($user_id, $lastvisit);
