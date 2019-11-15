@@ -1,9 +1,24 @@
 {
-  "name": "ogsteam/ogspy",
-  "description": "This is a tool to collect data from a game and provide statistics",
-  "license": "GPL-2.0",
-  "minimum-stability": "stable",
-  "require": {
+  "name" : "ogsteam/ogspy",
+  "description" : "OGSpy collects data from a game and provide statistics to their players",
+  "type" : "toolbox",
+  "keywords" : [ "ogspy" ],
+  "license" : "GPL-2.0-only",
+  "authors" : [
+    {
+      "name" : "DarkNoon",
+      "email" : "darknoon@darkcity.fr",
+      "homepage": "https://github.com/darknoon29",
+      "role" : "Lead Developer"
+    },
+    {
+      "name" : "Machine",
+      "homepage": "https://github.com/machine62",
+      "role" : "Developer"
+    }
+  ],
+  "require" : {
+    "php" : ">=7.0.0",
     "tooltipster/tooltipster": "4.2.*"
   },
   "autoload": {
@@ -13,5 +28,12 @@
       "Ogsteam\\Ogspy\\Abstracts\\": "core/abstract/",
       "Ogsteam\\Ogspy\\Model\\": "model/"
     }
-  }
+  },
+  "homepage" : "https://github.com/ogsteam/ogspy",
+  "support": {
+    "issues": "https://github.com/ogsteam/ogspy/issues",
+    "source": "https://github.com/ogsteam/ogspy/tree/master",
+    "chat" : "https://discord.gg/Azcb67b"
+  },
 }
+

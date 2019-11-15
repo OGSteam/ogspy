@@ -51,3 +51,4 @@ parameters/mail.php
 OGSpy.code-workspace
 .idea/sqldialects.xml
 .idea/bashsupport_project.xml
+ogspy.iml
