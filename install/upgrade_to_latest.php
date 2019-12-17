@@ -331,12 +331,24 @@ switch ($ogsversion) {
 
     case '3.3.7-beta3':
 
+        //table player
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `user_stat_name` VARCHAR(5) NOT NULL DEFAULT 'none' AFTER `user_stat_name`";
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` MODIFY `user_stat_name` ENUM ('none', 'COL', 'GEN', 'EXP')";
 
+        //table spy
         $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` ADD `ECL` INT(11) NOT NULL DEFAULT  '-1'  AFTER `TRA`";
         $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` ADD `FAU` INT(11) NOT NULL DEFAULT  '-1'  AFTER `TRA`";
         $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` ADD `FOR` INT(11) NOT NULL DEFAULT  '-1'  AFTER `TRA`";
+
+        //table building
+        $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` ADD `FOR` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `Sat_percentage`";
+
+        //table Round
+        $requests[] = "ALTER TABLE `" . TABLE_ROUND_ATTACK . "` ADD `FAU` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `TRA`";
+        $requests[] = "ALTER TABLE `" . TABLE_ROUND_ATTACK . "` ADD `ECL` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `TRA`";
+        $requests[] = "ALTER TABLE `" . TABLE_ROUND_DEFENSE . "` ADD `FAU` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `TRA`";
+        $requests[] = "ALTER TABLE `" . TABLE_ROUND_DEFENSE . "` ADD `ECL` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `TRA`";
+        $requests[] = "ALTER TABLE `" . TABLE_ROUND_DEFENSE . "` ADD `FOR` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `SAT`";
 
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-beta4' WHERE config_name = 'version'";
         $ogsversion = '3.3.7-beta4';
