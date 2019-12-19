@@ -1028,7 +1028,7 @@ CREATE TABLE `ogspy_round_defense`
   `FOR`             INT(11)     NOT NULL DEFAULT '-1',
   `TRA`             INT(11)     NOT NULL DEFAULT '-1',
   `ECL`             INT(11)     NOT NULL DEFAULT '-1',
-  `FOR`             INT(11)     NOT NULL DEFAULT '-1',
+  `FAU`             INT(11)     NOT NULL DEFAULT '-1',
   `LM`              INT(11)     NOT NULL DEFAULT '-1',
   `LLE`             INT(11)     NOT NULL DEFAULT '-1',
   `LLO`             INT(11)     NOT NULL DEFAULT '-1',
