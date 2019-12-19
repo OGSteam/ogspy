@@ -332,9 +332,8 @@ switch ($ogsversion) {
     case '3.3.7-beta3':
 
         //table player
-        $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `user_stat_name` VARCHAR(5) NOT NULL DEFAULT 'none' AFTER `user_stat_name`";
-        $requests[] = "ALTER TABLE `" . TABLE_USER . "` MODIFY `user_stat_name` ENUM ('none', 'COL', 'GEN', 'EXP')";
-
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `user_class`  ENUM ('none', 'COL', 'GEN', 'EXP') NOT NULL DEFAULT 'none' AFTER `user_stat_name`";
+       
         //table spy
         $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` ADD `ECL` INT(11) NOT NULL DEFAULT  '-1'  AFTER `TRA`";
         $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` ADD `FAU` INT(11) NOT NULL DEFAULT  '-1'  AFTER `TRA`";
