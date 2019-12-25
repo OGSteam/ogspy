@@ -183,7 +183,7 @@ class Sessions_Model extends Model_Abstract
         $user_ip=$this->db->sql_escape_string($user_ip);
 
         $request = "SELECT `user_id`, `user_name`, `user_admin`, `user_coadmin`, `user_email`, `user_galaxy`, `user_system`, `session_lastvisit`, `user_stat_name`, ";
-        $request .= "`management_user`, `management_ranking`, `disable_ip_check`, `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate`";
+        $request .= "`management_user`, `management_ranking`, `disable_ip_check`, `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate`  , `user_class`  ";
         $request .= " FROM " . TABLE_USER . " u, " . TABLE_SESSIONS . " s";
         $request .= " WHERE u.user_id = s.session_user_id";
         $request .= " AND session_id = '" . $cookie_id . "'";

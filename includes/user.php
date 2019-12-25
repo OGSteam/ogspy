@@ -273,10 +273,12 @@ function admin_regeneratepwd()
  */
 function member_user_set()
 {
-    global $db, $user_data, $user_technology;
+    global $user_data, $user_technology;
     global $pub_pseudo, $pub_old_password, $pub_new_password, $pub_new_password2, $pub_galaxy,
            $pub_system, $pub_disable_ip_check, $pub_off_commandant, $pub_off_amiral, $pub_off_ingenieur,
-           $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email, $pub_renew_user_token;
+           $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email, $pub_renew_user_token,$pub_user_class;
+
+
 
     if (!check_var($pub_pseudo, "Text") || !check_var($pub_old_password, "Text") ||
         !check_var($pub_new_password, "Text") || !check_var($pub_new_password2,
@@ -289,6 +291,7 @@ function member_user_set()
 
     $user_id = $user_data["user_id"];
     $user_info = user_get($user_id);
+
     $user_empire = user_get_empire($user_id);
     $user_technology = $user_empire["technology"];
 
@@ -323,6 +326,15 @@ function member_user_set()
     //pseudo ingame
     if ($user_data["user_stat_name"] !== $pub_pseudo_ingame) {
         $User_Model->set_game_account_name($user_id, $pub_pseudo_ingame);
+    }
+
+    //class_ingame
+    $classType = array('none','COL','GEN','EXP') ;
+    if ($user_data["user_class"] !== $pub_user_class) {
+        if(in_array($pub_user_class, $classType))
+        {
+            $User_Model->set_game_class_type($user_id, $pub_user_class);
+        }
     }
     //compte Commandant
     if ($user_data['off_commandant'] == "0" && $pub_off_commandant == 1) {
@@ -387,6 +399,7 @@ function member_user_set()
         $User_Model->set_user_ip_check($user_id, $pub_disable_ip_check);
     }
     redirection("index.php?action=profile");
+
 }
 
 /**
