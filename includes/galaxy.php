@@ -1276,7 +1276,10 @@ function UNparseRE($id_RE)
         'DST' => $lang['GAME_FLEET_DST'],
         'EDLM' => $lang['GAME_FLEET_EDLM'],
         'SAT' => $lang['GAME_FLEET_SAT'],
-        'TRA' => $lang['GAME_FLEET_TRA']
+        'TRA' => $lang['GAME_FLEET_TRA'],
+        'FOR' => $lang['GAME_FLEET_FOR'],
+        'FAU' => $lang['GAME_FLEET_FAU'],
+        'ECL' => $lang['GAME_FLEET_ECL']
     );
 
     $defs = array(
@@ -1335,6 +1338,10 @@ function UNparseRE($id_RE)
 
     $row = $Spy_Model->get_spy_Id($id_RE);
 
+    echo "<pre>";
+    print_r($row);
+    echo "</pre>";
+
     $c = explode(":", $row['coordinates']);
     $rowPN = $Universe_Model->get_player_name($c[0], $c[1], $c[2]);
 
@@ -1386,8 +1393,8 @@ function UNparseRE($id_RE)
             if ($row["planet_name"] == $tmpRow["planet_name"] && $show['flotte'] == 0) // on recherche sur la meme planete ou lune
             {
 
-                $total = $tmpRow["PT"] + $tmpRow["GT"] + $tmpRow["CLE"] + $tmpRow["CLO"] + $tmpRow["CR"] + $tmpRow["VB"] + $tmpRow["VC"] + $tmpRow["REC"] + $tmpRow["SE"] + $tmpRow["BMD"] + $tmpRow["DST"] + $tmpRow["EDLM"] + $tmpRow["SAT"] + $tmpRow["TRA"];
-                if ((int)$total != -14) {
+                $total = $tmpRow["PT"] + $tmpRow["GT"] + $tmpRow["CLE"] + $tmpRow["CLO"] + $tmpRow["CR"] + $tmpRow["VB"] + $tmpRow["VC"] + $tmpRow["REC"] + $tmpRow["SE"] + $tmpRow["BMD"] + $tmpRow["DST"] + $tmpRow["EDLM"] + $tmpRow["SAT"] + $tmpRow["TRA"]+ $tmpRow["FOR"]+ $tmpRow["FAU"]+ $tmpRow["ECL"];
+                if ((int)$total != -17) {
                     $row["PT"] = $tmpRow["PT"];
                     $row["GT"] = $tmpRow["GT"];
                     $row["CLE"] = $tmpRow["CLE"];
@@ -1402,6 +1409,9 @@ function UNparseRE($id_RE)
                     $row["EDLM"] = $tmpRow["EDLM"];
                     $row["SAT"] = $tmpRow["SAT"];
                     $row["TRA"] = $tmpRow["TRA"];
+                    $row["FOR"] = $tmpRow["FOR"];
+                    $row["FAU"] = $tmpRow["FAU"];
+                    $row["ECL"] = $tmpRow["ECL"];
 
                     $show['flotte'] = 1;
                 }
