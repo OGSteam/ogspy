@@ -138,7 +138,7 @@ class User_Model extends Model_Abstract
 
         $request = "SELECT `user_id`, `user_name`, `user_password`, `user_email`, `user_active`, `user_regdate`, `user_lastvisit`," .
             " `user_galaxy`, `user_system`, `user_admin`, `user_coadmin`, `management_user`, `management_ranking`, `disable_ip_check`," .
-            " `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate`" .
+            " `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate` , `user_class` " .
             " FROM " . TABLE_USER;
         $request .= " WHERE `user_id` = " . $user_id;
         $request .= " ORDER BY `user_name`";
@@ -152,6 +152,7 @@ class User_Model extends Model_Abstract
         if (count($info_users) == 0) {
             return false;
         }
+
         return $info_users;
     }
 
@@ -163,7 +164,7 @@ class User_Model extends Model_Abstract
 
         $request = "SELECT `user_id`, `user_name`, `user_password`, `user_email`, `user_active`, `user_regdate`, `user_lastvisit`," .
             " `user_galaxy`, `user_system`, `user_admin`, `user_coadmin`, `management_user`, `management_ranking`, `disable_ip_check`," .
-            " `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate`" .
+            " `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate` , `user_class` " .
             " FROM " . TABLE_USER;
 
         $request .= " ORDER BY `user_name`";
@@ -672,6 +673,21 @@ class User_Model extends Model_Abstract
         $user_stat_name=$this->db->sql_escape_string($user_stat_name);
 
         $request = "update " . TABLE_USER . " set user_stat_name = '" . $user_stat_name . "' where user_id = " . $user_id;
+        $this->db->sql_query($request);
+    }
+
+
+    /**
+     *
+     * @param user_class
+     */
+    public function set_game_class_type($user_id, $user_class)
+    {
+        $user_id=(int)$user_id;
+        $user_class=$this->db->sql_escape_string($user_class);
+
+        $request = "update " . TABLE_USER . " set user_class  = '" . $user_class . "' where user_id = " . $user_id;
+
         $this->db->sql_query($request);
     }
 

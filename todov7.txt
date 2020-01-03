@@ -1,0 +1,50 @@
+https://board.fr.ogame.gameforge.com/index.php?thread/724968-tutoriel-version-7/&postID=11981136#post11981136
+https://board.fr.ogame.gameforge.com/index.php?thread/723498-changelog-v7-1-rc-14-13-12-19/&postID=11975580#post11975580
+https://board.fr.ogame.gameforge.com/index.php?thread/724968-tutoriel-version-7/&postID=11981136#post11981136
+
+
+
+------modif bdd ----
+bdd
+add class player
+add new fleet (foreuse => FOR ; faucheurs => FAU; eclaireurs => ECL)
+-----------------
+
+
+
+
+------modif detail ----
+Collecteur
+
+    25% Production
+    100% de vitesse de base pour les transporteurs
+    25% de fret supplémentaire pour les transporteurs
+    2 offres supplémentaire dans le Marché
+    La taxe dans le Marché sera de 5%
+    10% de bonus énergie
+    Possibilité de construire des foreuses
+
+
+Général
+
+    100% de vitesse (de base ) pour les vaisseaux de combat hors EDLM
+    100% de vitesse (de base) pour les recyclceurs
+    25% consommation en moins pour tous les vaisseaux
+    25% consommation en moins pour les recycleurs
+    2 slots de flotte supplémentaire
+    2 niveaux de recherches de combats supplémentaire
+    Dock offensif
+    Possibilité de construire des faucheurs
+
+Explorateur
+
+    25% de réduction sur les temps de recherche
+    10% sur le nombre de cases des planètes nouvellement colonisées
+    Les champs de débris crées en expédition sont visible dans la vue galaxie
+    2 slots d'expédition supplémentaire
+    20% de portée des phalanges
+    75% de pillage sur les inactifs
+    Le gain en expédition est multiplié par la vitesse de l'univers
+    Possibilité de construire des éclaireurs
+
+-----------------
