@@ -599,6 +599,7 @@ CREATE TABLE ogspy_user_building
   Sat             SMALLINT(5) NOT NULL DEFAULT '0',
   Sat_percentage  SMALLINT(3) NOT NULL DEFAULT '100',
   FOR             SMALLINT(5) NOT NULL DEFAULT '0',
+  FOR_percentage  SMALLINT(3) NOT NULL DEFAULT '100',
   M               SMALLINT(2) NOT NULL DEFAULT '0',
   M_percentage    SMALLINT(3) NOT NULL DEFAULT '100',
   C               SMALLINT(2) NOT NULL DEFAULT '0',
