@@ -17,23 +17,25 @@ if (!isset($server_config['speed_uni'])) {
 }
 
 /**
- * Gets the hourly production of a Mine or a solar plant.
+ * Gets the hourly production of a Mine or a Energy plant.
+ *
  * @param string $building The building type
  * @param int $level The building level
- * @param int $officier Officer option enabled (=1) or not(=0) or full Officer(=2)
- * @param int $temperature_max Max temprature of the current planet
+ * @param int $officier Officer option enabled (=1) or not(=0) or full Officer(=2) [Attention : m / c / d => geologue, ces cef => ingenieur]
+ * @param int $temperature_max Max temperature of the current planet
  * @param int $NRJ Current value of the user Energy Technology
  * @param int $Plasma Current value of the user Plasma Technology
- * @return int the result of the production on the specified building.
+ * @param int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
+ * @param int $speed_uni The univers economy speed
+ * @return int The result of the production on the specified building.
  */
-function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ = 0, $Plasma = 0)
+function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ = 0, $Plasma = 0, $classe = 0, $speed_uni = 1)
 {
-    // attention officier
-    // pour m / c / d => geologue
-    // pour ces cef => ingenieur
+    //TODO : supprimer références globales
     global $server_config;
+    $speed_uni = $server_config['speed_uni'];
 
-    //Valeur de l'officier en valeur ajouté.
+    //Valeur de l'officier en valeur ajoutée.
     if ($officier == 0) {
         $geo = 0;
     } elseif ($officier == 1) {
@@ -44,44 +46,66 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
         $geo = 0;
     }
     $ing = $geo;
+    $bonus_foreuse = 0.0002; //0.02% / foreuse
+    //Valeur de la classe en valeur ajoutée.
+    if ($classe == 1) {
+        $bonus_class_mine = 0.25; //+25%
+        $bonus_class_energie = 0.10; //+10%
+        $bonus_foreuse = $bonus_foreuse * 1.5; //+50%
+    } else {
+        $bonus_class_mine = 0;
+        $bonus_class_energie = 0;
+    }
+    // print_r("officier=$officier, geo=$geo, ing=$ing, C_m=$bonus_class_mine, C_E=$bonus_class_energie, C_f=$bonus_foreuse, speed=$speed_uni\n");
     switch ($building) {
         case "M":
-            $prod_base = 30;
+            $prod_base = 30 * $speed_uni;
             $result = 30 * $level * pow(1.1, $level); // formule de base
-            $result = $result * (1 + $geo + 0.01 * $Plasma);
-            $result = round($result); // arrondi 
+            $result = $result * $speed_uni; // vitesse uni
+            // $result_foreuse = $result * $bonus_foreuse; //foreuse sur produc de base des mines
+            $result = $result * (1 + $geo + 0.01 * $Plasma + $bonus_class_mine);
+            $result = floor($result); // troncature
             $result = $result + $prod_base; // prod de base
-            $result = $server_config['speed_uni'] * $result; // vitesse uni
             break;
 
         case "C":
-            $prod_base = 15;
+            $prod_base = 15 * $speed_uni;
             $result = 20 * $level * pow(1.1, $level); // formule de base
-            $result = $result * (1 + $geo + 0.0066 * $Plasma);
-            $result = round($result); // arrondi
+            $result = $result * $speed_uni; // vitesse uni
+            // $result_foreuse = $result * $bonus_foreuse; //foreuse sur produc de base des mines
+            $result = $result * (1 + $geo + 0.0066 * $Plasma + $bonus_class_mine);
+            $result = floor($result); // troncature
             $result = $result + $prod_base; // prod de base
-            $result = $server_config['speed_uni'] * $result; // vitesse uni
             break;
 
         case "D":
-            $result = (10 * $level * pow(1.1, $level) * (1.44 - 0.004 * $temperature_max));
-            $result = $result * (1 + $geo + 0.0033 * $Plasma); // geologue
-            $result = round($result); // arrondi
-            $result = $server_config['speed_uni'] * $result; // vitesse uni
+            // $result = 10 * $level * pow(1.1, $level) * (1.44 - 0.004 * $temperature_max); //<Ogame V7
+            $result = 10 * $level * pow(1.1, $level) * floor((1.44 - 0.004 * $temperature_max)*10)/10;  //troncature à la décimale
+            $result = $result * $speed_uni; // vitesse uni
+            // $result_foreuse = $result * $bonus_foreuse; //foreuse sur produc de base des mines
+            $result = $result * (1 + $geo + 0.0033 * $Plasma + $bonus_class_mine);
+            $result = floor($result); // troncature
             break;
 
         case "CES":
             $result = 20 * $level * pow(1.1, $level);
-            $result = $result * (1 + $ing); // ingenieur
+            $result = $result * (1 + $ing + $bonus_class_energie); // ingenieur
             $result = floor($result); // troncature inférieure
             break;
 
         case "CEF":
             $result = 30 * $level * pow((1.05 + $NRJ * 0.01), $level);
-            $result = $result * (1 + $ing); // ingenieur
+            $result = $result * (1 + $ing + $bonus_class_energie); // ingenieur
             $result = floor($result); // troncature inférieure
             break;
 
+        case "SAT":
+            $result = ($temperature_max + 140) / 6;
+            $result = floor($result) * $level;
+            $result = $result * (1 + $ing + $bonus_class_energie);
+            $result = floor($result);
+            break;
+        
         default:
             $result = 0;
             break;
@@ -92,48 +116,86 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
 
 /**
  * Gets the energy production of satellites.
+ *
  * @param int $temperature_max Max temprature of the current planet
  * @param int $off_ing Officer ingenieur option enabled (=1) or not(=0) or full Officer(=2)
- * @return double result of the power production by sattelites.
+ * @param int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
+ * @return double The result of the power production by sattelites.
  */
-function production_sat($temperature_max, $off_ing = 0)
+function production_sat($temperature_max, $off_ing = 0, $classe = 0, $nb_sat = 1)
 {
-    if ($off_ing == 0) {
-        $ing = 1;
-    } elseif ($off_ing == 1) {
-        $ing = 1.10; //110%
-    } elseif ($off_ing == 2) {
-        $ing = 1.12; //112%
-    } else {
-        $ing = 1;
+    return production('SAT', $nb_sat, $off_ing, $temperature_max, 0, 0, $classe);
+}
+
+/**
+ * Gets the hourly planet production of foreuse.
+ *
+ * @param int $nb_foreuse The foreuse number of the current planet
+ * @param int $level_M The metal mine level
+ * @param int $level_C The cristal mine level
+ * @param int $level_D The deuterium mine level
+ * @param int $temperature_max Max temprature of the current planet
+ * @param int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
+ * @param int $speed_uni The univers economy speed
+ * @return array('M', 'C', 'D') The result foreuse production of metal 'M', cristal 'C' and deuterium 'D'
+ */
+function production_foreuse($nb_foreuse, $level_M, $level_C, $level_D, $temperature_max, $classe = 0, $speed_uni = 1)
+{
+    $bonus_foreuse = 0.0002; //0.02% / foreuse
+    //Valeur de la classe en valeur ajoutée.
+    if ($classe == 1) {
+        $bonus_foreuse = $bonus_foreuse * 1.5; //+50%
     }
-    return floor($ing * (($temperature_max + 140) / 6));
+    $nb_max = ($level_M + $level_C + $level_D) * 8;
+    if($nb_foreuse > $nb_max) {
+        $nb_foreuse = $nb_max;
+    }
+    $result_M = $bonus_foreuse * (production('M', $level_M, 0, $temperature_max, 0, 0, 0, $speed_uni) - 30 * $speed_uni);
+    $result_C = $bonus_foreuse * (production('C', $level_C, 0, $temperature_max, 0, 0, 0, $speed_uni) - 15 * $speed_uni);
+    $result_D = $bonus_foreuse * (production('D', $level_D, 0, $temperature_max, 0, 0, 0, $speed_uni));
+    
+    $result_M = round($result_M * $nb_foreuse); //arrondi
+    $result_C = round($result_C * $nb_foreuse); //arrondi
+    $result_D = round($result_D * $nb_foreuse); //arrondi
+    
+    return array('M' => $result_M, 'C' => $result_C, 'D' => $result_D);
 }
 
 /**
  * Gets the power consumption of the current building
+ *
  * @param string $building The building type
- * @param int $level Min The building Level
- * @return the building consumption
+ * @param int $level The building level (or number for foreuse)
+ * @param int $speed_uni The univers economy speed
+ * @return int The building consumption
  */
-function consumption($building, $level)
+function consumption($building, $level, $speed_uni = 1)
 {
+    //TODO : supprimer références globales
     global $server_config;
+    $speed_uni = $server_config['speed_uni'];
+    
     switch ($building) {
         case "M":   //no break
         case "C":
             $result = 10 * $level * pow(1.1, $level);
-            $result = ceil($result); //troncature supérieure
+            // $result = ceil($result); //troncature supérieure
+            $result = floor($result); // troncature
             break;
 
         case "D":
             $result = 20 * $level * pow(1.1, $level);
-            $result = ceil($result); //troncature supérieure
+            // $result = ceil($result); //troncature supérieure
+            $result = floor($result); // troncature
             break;
 
         case "CEF":
             $result = $server_config['speed_uni'] * (10 * $level * pow(1.1, $level));
             $result = round($result); // arrondi
+            break;
+
+        case "FOR":
+            $result = $level * 50;
             break;
 
         default:
@@ -145,13 +207,15 @@ function consumption($building, $level)
 }
 
 /**
- * Gets the production usage of the current planet
+ * Gets the production usage of the current planet.
+ *
  * @param int $M Metal Mine Level
  * @param int $C Cristal Mine Level
  * @param int $D Deuterieum Mine Level
  * @param int $CES Solar Plant Level
  * @param int $CEF Fusion Plant Level
  * @param int $SAT Number of sattelites
+ * @param int $FOR Number of foreuse
  * @param int $temperature_max Max temprature of the current planet
  * @param int $off_ing Officer ingenieur option enabled (=1) or not(=0) or full Officer(=2)
  * @param int $NRJ Current value of the user Energy Technology
@@ -161,24 +225,27 @@ function consumption($building, $level)
  * @param int $per_CES Solar Plant production percent (0=0%, 1=100%)
  * @param int $per_CEF Fusion Plant production percent (0=0%, 1=100%)
  * @param int $per_SAT sattelites production percent (0=0%, 1=100%)
- * @return array("ratio", "conso_E", "prod_E", "prod_CES", "prod_CEF", "prod_SAT", "conso_M", "conso_C", "conso_D")
+ * @param int $per_FOR foreuse production percent (0=0%, 1=100%)
+ * @param int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
+ * @return array("ratio", "conso_E", "prod_E", "prod_CES", "prod_CEF", "prod_SAT", "conso_M", "conso_C", "conso_D", "conso_FOR")
  */
 function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
-                $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1)
+               $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $FOR = 0, $per_FOR = 0, $classe = 0)
 {
     $consommation_E = 0; // la consommation
-    $conso_M = consumption("M", $M) * $per_M;
-    $conso_C = consumption("C", $C) * $per_C;
-    $conso_D = consumption("D", $D) * $per_D;
-    $consommation_E += $conso_M + $conso_C + $conso_D;
+    $conso_M   = consumption("M", $M) * $per_M;
+    $conso_C   = consumption("C", $C) * $per_C;
+    $conso_D   = consumption("D", $D) * $per_D;
+    $conso_FOR = consumption("FOR", $FOR) * $per_FOR;
+    $consommation_E += $conso_M + $conso_C + $conso_D + $conso_FOR;
 
     $production_E = 0; // la production
-    $prod_CES = production("CES", $CES, $off_ing) * $per_CES;
-    $prod_CEF = production("CEF", $CEF, $off_ing, $temperature_max, $NRJ) * $per_CEF;
-    $prod_SAT = $SAT * production_sat($temperature_max, $off_ing) * $per_SAT;
+    $prod_CES = production("CES", $CES, $off_ing, $temperature_max, $NRJ, 0, $classe) * $per_CES;
+    $prod_CEF = production("CEF", $CEF, $off_ing, $temperature_max, $NRJ, 0, $classe) * $per_CEF;
+    $prod_SAT = production("SAT", $SAT, $off_ing, $temperature_max, $NRJ, 0, $classe) * $per_SAT;
     $production_E += $prod_CES + $prod_CEF + $prod_SAT;
 
-    $ratio = 1; // indique le pourcentage a appliquer sur la prod
+    $ratio = 1; // indique le pourcentage à appliquer sur la prod
     $ratio_temp = 1;
     $ratio_temp = ($consommation_E == 0) ? 0 : ($production_E * 100 / $consommation_E) / 100; // fix division par 0
     $ratio = ($ratio_temp >= 1) ? 1 : $ratio_temp;
@@ -188,9 +255,8 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
 
     return array("ratio" => $ratio, "conso_E" => $consommation_E, "prod_E" => $production_E,
         "prod_CES" => $prod_CES, "prod_CEF" => $prod_CEF, "prod_SAT" => $prod_SAT,
-        "conso_M" => $conso_M, "conso_C" => $conso_C, "conso_D" => $conso_D);
+        "conso_M" => $conso_M, "conso_C" => $conso_C, "conso_D" => $conso_D, "conso_FOR" => $conso_FOR);
 }
-
 
 /**
  * Calculates the Production corresponding to the current ratio
@@ -216,14 +282,14 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
  * @return array
  */
 function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing = 0, $off_geo = 0, $off_full = 0, $NRJ = 0, $Plasma = 0,
-$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $booster = NULL)
+$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $booster = NULL,  $FOR = 0, $per_FOR = 0, $classe = 0, $speed_uni = 1)
 {
 
     if ($off_full == 1) {
         $off_ing = $off_geo = 2;
     }
     $tmp = ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
-            $per_M, $per_C, $per_D, $per_CES, $per_CEF, $per_SAT);
+            $per_M, $per_C, $per_D, $per_CES, $per_CEF, $per_SAT, $FOR, $per_FOR, $classe);
     $ratio = $tmp["ratio"];
     $consommation_E = $tmp["conso_E"];
     $production_E = $tmp["prod_E"];
@@ -233,41 +299,51 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
     $conso_M = $tmp["conso_M"];
     $conso_C = $tmp["conso_C"];
     $conso_D = $tmp["conso_D"];
+    $conso_FOR = $tmp["conso_FOR"];
 
     if ($ratio > 0) {
         //production de metal avec ratio
-        $prod_M = production("M", $M, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_M;
+        $prod_M = production("M", $M, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $speed_uni) * $per_M;
         $prod_M *= $ratio;
         $prod_M = round($prod_M);
 
         //production de cristal avec ratio
-        $prod_C = production("C", $C, $off_geo, $temperature_max, $NRJ, $Plasma) * $per_C;
+        $prod_C = production("C", $C, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $speed_uni) * $per_C;
         $prod_C *= $ratio;
         $prod_C = round($prod_C);
 
         //production de deut avec ratio
-        $prod_D = production("D", $D, $off_geo, $temperature_max) * $per_D;
+        $prod_D = production("D", $D, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $speed_uni) * $per_D;
         $prod_D *= $ratio;
-        $prod_D -= consumption("CEF", $CEF) * $per_CEF; //on soustrait la conso de deut de la cef
+        $prod_D -= consumption("CEF", $CEF, $speed_uni) * $per_CEF; //on soustrait la conso de deut de la cef
         $prod_D = round($prod_D);
+        
+        //production des foreuses (métal, cristal et deut)
+        $prod_FOR = production_foreuse($FOR, $M, $C, $D, $temperature_max, $classe, $speed_uni);
+        $prod_FOR['M'] = round($prod_FOR['M'] * $ratio);
+        $prod_FOR['C'] = round($prod_FOR['C'] * $ratio);
+        $prod_FOR['D'] = round($prod_FOR['D'] * $ratio);
     } else {
-        $prod_M = production("M", 0); //production de base
-        $prod_C = production("C", 0); //production de base
-        $prod_D = production("D", 0); //production de base
+        $prod_M = production("M", 0, 0, 0, 0, 0, 0, $speed_uni); //production de base
+        $prod_C = production("C", 0, 0, 0, 0, 0, 0, $speed_uni); //production de base
+        $prod_D = production("D", 0, 0, 0, 0, 0, 0, $speed_uni); //production de base
+        $prod_FOR = production_foreuse(0, 0, 0, 0, 0, 0, $speed_uni);
     }
 
-    if ($booster != NULL)
-    {
-        // si booster
-        $prod_M = $prod_M * (1 + $booster['booster_m_val'] / 100);
-        $prod_C = $prod_C * (1 + $booster['booster_c_val'] / 100);
-        $prod_D = $prod_D * (1 + $booster['booster_d_val'] / 100);
+    if ($booster != NULL) { // si booster
+        $boost_M = ($booster['booster_m_val'] / 100) * (production('M', $M, 0, $temperature_max, 0, 0, 0, $speed_uni) - 30 * $speed_uni);
+        $boost_C = ($booster['booster_c_val'] / 100) * (production('C', $C, 0, $temperature_max, 0, 0, 0, $speed_uni) - 15 * $speed_uni);
+        $boost_D = ($booster['booster_d_val'] / 100) * (production('D', $D, 0, $temperature_max, 0, 0, 0, $speed_uni));
+        
+        $prod_M += round($boost_M);
+        $prod_C += round($boost_C);
+        $prod_D += round($boost_D);
     }
 	 
-    return array("M" => $prod_M, "C" => $prod_C, "D" => $prod_D, "ratio" => $ratio,
+    return array("M" => $prod_M, "C" => $prod_C, "D" => $prod_D, "FOR" => $prod_FOR, "ratio" => $ratio,
             "conso_E" => $consommation_E, "prod_E" => $production_E, "prod_CES" => $prod_CES,
             "prod_CEF" => $prod_CEF, "prod_SAT" => $prod_SAT, "conso_M" => $conso_M,
-            "conso_C" => $conso_C, "conso_D" => $conso_D);
+            "conso_C" => $conso_C, "conso_D" => $conso_D, "conso_FOR" => $conso_FOR);
 }
 
 

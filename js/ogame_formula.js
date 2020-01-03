@@ -1,56 +1,90 @@
 // Production par heure
 function production(building, level, temperatureMax, energy, plasma) {
-
     if (typeof(plasma) == 'undefined') {
         plasma = 0;
     }
     var speed = document.getElementById('vitesse_uni').value,
-        ingenieur = document.getElementById('off_ingenieur').value == 1 ? 1.1 : 1,
-        geologue = document.getElementById('off_geologue').value == 1 ? 1.1 : 1;
-
+        ingenieur = document.getElementById('off_ingenieur').value == 1 ? 0.1 : 0,
+        geologue = document.getElementById('off_geologue').value == 1 ? 0.1 : 0;
+    var bonus_class_mine = 0,
+        bonus_class_energie = 0;
+    
     if (document.getElementById('off_full').value == 1) {
-        ingenieur = 1.12;
-        geologue = 1.12;
+        ingenieur = 0.12;
+        geologue = 0.12;
     }
-
+    if (document.getElementById('class_colect').value == 1) {
+        bonus_class_mine = 0.25; //+25%
+        bonus_class_energie = 0.10; //+10%
+    }
     switch (building) {
         case 'M':
-            return speed * (30 + Math.round(30 * level * Math.pow(1.1, level) * geologue * (1 + (0.01 * plasma))));
+            return Math.floor(speed * 30 * level * Math.pow(1.1, level) * (1 + geologue + 0.01 * plasma + bonus_class_mine)) + speed * 30;
         case 'C':
-            return speed * (15 + Math.round(20 * level * Math.pow(1.1, level) * geologue * (1 + (0.0066 * plasma))));
+            return Math.floor(speed * 20 * level * Math.pow(1.1, level) * (1 + geologue + 0.0066 * plasma + bonus_class_mine)) + speed * 15;
         case 'D':
-            return speed * Math.round(10 * level * Math.pow(1.1, level) * (1.44 - 0.004 * temperatureMax) * geologue *  (1 + (0.0033 * plasma)));
+            return Math.floor(speed * 10 * level * Math.pow(1.1, level) * Math.floor((1.44 - 0.004 * temperatureMax)*10)/10 * (1 + geologue + 0.0033 * plasma + bonus_class_mine));
         case 'CES':
-            return Math.floor(20 * level * Math.pow(1.1, level) * ingenieur);
+            return Math.floor(20 * level * Math.pow(1.1, level) * (1 + ingenieur + bonus_class_energie));
         case 'CEF':
-            return Math.floor(30 * level * Math.pow(1.05 + 0.01 * energy, level) * ingenieur);
+            return Math.floor(30 * level * Math.pow(1.05 + 0.01 * energy, level) * (1 + ingenieur + bonus_class_energie));
+        case 'SAT':
+            return Math.floor(Math.floor((parseInt(temperatureMax) + 140) / 6) * level * (1 + ingenieur + bonus_class_energie));
         default:
             return 0;
     }
 }
 
 // Production des satellites
-function production_sat(temperatureMax) {
-    var ingenieur = document.getElementById('off_ingenieur').value == 1 ? 1.1 : 1;
+function production_sat(temperatureMax, nbSat) {
+    return production('SAT', nbSat, temperatureMax, 0, 0);
+}
 
-    if (document.getElementById('off_full').value == 1) {
-        ingenieur = 1.12;
+//Production des foreuses
+function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax) {
+    var speed = document.getElementById('vitesse_uni').value;
+    var bonus_foreuse = 0.0002;
+    var nb_max;
+    if (document.getElementById('class_colect').value == 1) {
+        bonus_foreuse = bonus_foreuse * 1.5; //+50%
     }
-    return Math.floor(ingenieur * ((parseInt(temperatureMax) + 140) / 6));
+    nb_max = (parseInt(levelM) + parseInt(levelC) + parseInt(levelD)) * 8;
+    if(nbForeuse > nb_max) {
+        nbForeuse = nb_max;
+    }
+    //paypass lien externe !!
+    var tmp_class = document.getElementById('class_colect').value;
+    var tmp_geo = document.getElementById('off_geologue').value;
+    var tmp_off_full = document.getElementById('off_full').value;
+    document.getElementById('class_colect').value = 0;
+    document.getElementById('off_geologue').value = 0;
+    document.getElementById('off_full').value = 0;
+    
+    result_M = Math.round(nbForeuse * bonus_foreuse * (production('M', levelM, temperatureMax, 0, 0) - 30 * speed));
+    result_C = Math.round(nbForeuse * bonus_foreuse * (production('C', levelC, temperatureMax, 0, 0) - 15 * speed));
+    result_D = Math.round(nbForeuse * bonus_foreuse * production('D', levelD, temperatureMax, 0, 0));
+    
+    document.getElementById('class_colect').value = tmp_class;
+    document.getElementById('off_geologue').value = tmp_geo;
+    document.getElementById('off_full').value = tmp_off_full;
+    
+    
+    return {"M":result_M, "C":result_C, "D":result_D};
 }
 
 // Consommation d"énergie
 function consumption(building, level) {
-
     switch (building) {
         case 'M':
-            return Math.ceil(10 * level * Math.pow(1.1, level));
+            return Math.floor(10 * level * Math.pow(1.1, level));
         case 'C':
-            return Math.ceil(10 * level * Math.pow(1.1, level));
+            return Math.floor(10 * level * Math.pow(1.1, level));
         case 'D':
-            return Math.ceil(20 * level * Math.pow(1.1, level));
+            return Math.floor(20 * level * Math.pow(1.1, level));
         case 'CEF':
             return Math.round((10 * level * Math.pow(1.1, level)) * document.getElementById('vitesse_uni').value);
+        case 'FOR':
+            return level * 50;
         default:
             return 0;
     }
@@ -81,6 +115,11 @@ function update_page() {
     } else {
         document.getElementById('off_full').value = '0';
     }
+    if (document.getElementById('c_class_colect').checked) {
+        document.getElementById('class_colect').value = '1';
+    } else {
+        document.getElementById('class_colect').value = '0';
+    }
 
     //
     // Planètes
@@ -91,6 +130,8 @@ function update_page() {
     var C_1_prod = [];
     var D_1_conso = [];
     var D_1_prod = [];
+    var FOR_1_conso = [];
+    var FOR_1_prod = [];
 
     var NRJ_1 = [];
 
@@ -101,6 +142,7 @@ function update_page() {
     var CES_1 = [];
     var CEF_1 = [];
     var Sat_1 = [];
+    var For_1 = [];
 
     var nombrePlanete = parseInt(document.getElementById('simu').title); // on passe par le titre du tableau pour recuperer le nombre de planetes, la recuperation du nb de colonne ne marchant pas ...
 
@@ -113,6 +155,7 @@ function update_page() {
         var CES_1_percentage = document.getElementById("CES_" + j + "_percentage").value;
         var CEF_1_percentage = document.getElementById("CEF_" + j + "_percentage").value;
         var Sat_1_percentage = document.getElementById("Sat_" + j + "_percentage").value;
+        var For_1_percentage = document.getElementById("For_" + j + "_percentage").value;
         var M_1_booster = document.getElementById("M_" + j + "_booster").value;
         var C_1_booster = document.getElementById("C_" + j + "_booster").value;
         var D_1_booster = document.getElementById("D_" + j + "_booster").value;
@@ -123,15 +166,17 @@ function update_page() {
         CES_1[i] = document.getElementById("CES_" + j).value;
         CEF_1[i] = document.getElementById("CEF_" + j).value;
         Sat_1[i] = document.getElementById("Sat_" + j).value;
+        For_1[i] = document.getElementById("For_" + j).value;
 
         M_1_conso[i] = Math.round(consumption("M", M_1[i]) * M_1_percentage / 100);
         C_1_conso[i] = Math.round(consumption("C", C_1[i]) * C_1_percentage / 100);
         D_1_conso[i] = Math.round(consumption("D", D_1[i]) * D_1_percentage / 100);
-        var energie_conso = M_1_conso[i] + C_1_conso[i] + D_1_conso[i];
+        FOR_1_conso[i] = Math.round(consumption("FOR", For_1[i]) * For_1_percentage / 100);
+        var energie_conso = M_1_conso[i] + C_1_conso[i] + D_1_conso[i] + FOR_1_conso[i];
 
         var CES_1_production = production("CES", CES_1[i], temperature_max_1, NRJ) * CES_1_percentage / 100;
         var CEF_1_production = production("CEF", CEF_1[i], temperature_max_1, NRJ) * CEF_1_percentage / 100;
-        var Sat_1_production = production_sat(temperature_max_1) * Sat_1[i] * Sat_1_percentage / 100;
+        var Sat_1_production = production_sat(temperature_max_1, Sat_1[i]) * Sat_1_percentage / 100;
         NRJ_1[i] = Math.round(CES_1_production + CEF_1_production + Sat_1_production);
 
         var NRJ_1_delta = NRJ_1[i] - energie_conso;
@@ -152,6 +197,7 @@ function update_page() {
             M_1_prod[i] = Math.round(ratio_conso * production("M", M_1[i], temperature_max_1, NRJ, Plasma) * M_1_percentage / 100);
             C_1_prod[i] = Math.round(ratio_conso * production("C", C_1[i], temperature_max_1, NRJ, Plasma) * C_1_percentage / 100);
             D_1_prod[i] = Math.round(ratio_conso * production("D", D_1[i], temperature_max_1, NRJ) * D_1_percentage / 100) - Math.round(consumption("CEF", CEF_1[i]) * CEF_1_percentage / 100);
+            FOR_1_prod[i] = Math.round(ratio_conso * production_foreuse(For_1[i], M_1[i], C_1[i], D_1[i], temperature_max_1) * C_1_percentage / 100);
             M_1_prod[i] = Math.round(M_1_prod[i] * (1 + M_1_booster / 100));
             C_1_prod[i] = Math.round(C_1_prod[i] * (1 + C_1_booster / 100));
             D_1_prod[i] = Math.round(D_1_prod[i] * (1 + D_1_booster / 100));
@@ -159,6 +205,7 @@ function update_page() {
             M_1_prod[i] = Math.round(production("M", 0, 0, 0));
             C_1_prod[i] = Math.round(production("C", 0, 0, 0));
             D_1_prod[i] = Math.round(production("D", 0, 0, 0));
+            FOR_1_prod[i] = Math.round(production_foreuse(0, 0, 0, 0, 0));
         }
         document.getElementById("M_" + j + "_conso").innerHTML = format(M_1_conso[i]);
         document.getElementById("M_" + j + "_prod").innerHTML = format(M_1_prod[i]);
@@ -166,6 +213,8 @@ function update_page() {
         document.getElementById("C_" + j + "_prod").innerHTML = format(C_1_prod[i]);
         document.getElementById("D_" + j + "_conso").innerHTML = format(D_1_conso[i]);
         document.getElementById("D_" + j + "_prod").innerHTML = format(D_1_prod[i]);
+        document.getElementById("FOR_" + j + "_conso").innerHTML = format(FOR_1_conso[i]);
+        document.getElementById("FOR_" + j + "_prod").innerHTML = format(FOR_1_prod[i]);
 
         i++;
     }
@@ -179,15 +228,17 @@ function update_page() {
     var C_prod = 0;
     var D_conso = 0;
     var D_prod = 0;
+    var FOR_conso = 0;
     var NRJ = 0;
 
     for (i = 0; i < nombrePlanete; i++) {
         M_conso = M_conso + M_1_conso[i];
-        M_prod = M_prod + M_1_prod[i];
+        M_prod = M_prod + M_1_prod[i] + FOR_1_prod[i]["M"];
         C_conso = C_conso + C_1_conso[i];
-        C_prod = C_prod + C_1_prod[i];
+        C_prod = C_prod + C_1_prod[i] + FOR_1_prod[i]["C"];
         D_conso = D_conso + D_1_conso[i];
-        D_prod = D_prod + D_1_prod[i];
+        D_prod = D_prod + D_1_prod[i] + FOR_1_prod[i]["D"];
+        FOR_conso = FOR_conso + FOR_1_conso[i];
         NRJ += NRJ_1[i];
     }
     document.getElementById("M_conso").innerHTML = format(M_conso);
@@ -198,7 +249,7 @@ function update_page() {
     document.getElementById("D_prod").innerHTML = format(D_prod);
 
     //Energie
-    var Delta_NRJ = NRJ - (M_conso + C_conso + D_conso);
+    var Delta_NRJ = NRJ - (M_conso + C_conso + D_conso + FOR_conso);
     var s_delta = "-";
     if (Delta_NRJ < 0 || isNaN(Delta_NRJ)) s_delta = "<span style=\"color: red; \">" + format(Delta_NRJ) + "</span>";
     else s_delta = "<span style=\"color: lime; \">" + format(Delta_NRJ) + "</span>";
