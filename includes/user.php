@@ -894,6 +894,7 @@ function user_get_empire($user_id)
         unset($arr["D_percentage"]);
         unset($arr["CES_percentage"]);
         unset($arr["CEF_percentage"]);
+        unset($arr["Dock"]);
         $fields_used = array_sum(array_values($arr));
 
         $BuildingList["fields_used"] = $fields_used;
