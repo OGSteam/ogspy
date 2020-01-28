@@ -598,7 +598,7 @@ CREATE TABLE ogspy_user_building
   temperature_max SMALLINT(2) NOT NULL DEFAULT '0',
   Sat             SMALLINT(5) NOT NULL DEFAULT '0',
   Sat_percentage  SMALLINT(3) NOT NULL DEFAULT '100',
-  FOR             SMALLINT(5) NOT NULL DEFAULT '0',
+  `FOR`             SMALLINT(5) NOT NULL DEFAULT '0',
   FOR_percentage  SMALLINT(3) NOT NULL DEFAULT '100',
   M               SMALLINT(2) NOT NULL DEFAULT '0',
   M_percentage    SMALLINT(3) NOT NULL DEFAULT '100',
@@ -656,10 +656,10 @@ CREATE TABLE ogspy_user_defence
 
 CREATE TABLE ogspy_user_favorite
 (
-  user_id INT(11)     NOT NULL DEFAULT '0',
-  galaxy  SMALLINT(2) NOT NULL DEFAULT '1',
-  system  SMALLINT(3) NOT NULL DEFAULT '0',
-  UNIQUE KEY user_id (user_id, galaxy, system)
+  `user_id` INT(11)     NOT NULL DEFAULT '0',
+  `galaxy`  SMALLINT(2) NOT NULL DEFAULT '1',
+  `system`  SMALLINT(3) NOT NULL DEFAULT '0',
+  UNIQUE KEY user_id (`user_id`, `galaxy`, `system`)
 )
   DEFAULT CHARSET = utf8;
 

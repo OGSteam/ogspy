@@ -39,6 +39,7 @@ parameters/key.php
 parameters/id.php
 journal/*/*.htm
 journal/*/*.log
+journal/*/*.sql
 cache/*.php
 config/id.php
 config/key.php
