@@ -600,7 +600,7 @@ CREATE TABLE ogspy_user_building
   temperature_max SMALLINT(2) NOT NULL DEFAULT '0',
   Sat             SMALLINT(5) NOT NULL DEFAULT '0',
   Sat_percentage  SMALLINT(3) NOT NULL DEFAULT '100',
-  FOR             SMALLINT(5) NOT NULL DEFAULT '0',
+  `FOR`             SMALLINT(5) NOT NULL DEFAULT '0',
   FOR_percentage  SMALLINT(3) NOT NULL DEFAULT '100',
   M               SMALLINT(2) NOT NULL DEFAULT '0',
   M_percentage    SMALLINT(3) NOT NULL DEFAULT '100',
@@ -660,8 +660,8 @@ CREATE TABLE ogspy_user_favorite
 (
   user_id INT(11)     NOT NULL DEFAULT '0',
   galaxy  SMALLINT(2) NOT NULL DEFAULT '1',
-  system  SMALLINT(3) NOT NULL DEFAULT '0',
-  UNIQUE KEY user_id (user_id, galaxy, system)
+  `system`  SMALLINT(3) NOT NULL DEFAULT '0',
+  UNIQUE KEY user_id (user_id, galaxy, `system`)
 )
   DEFAULT CHARSET = utf8;
 
@@ -1051,7 +1051,7 @@ INSERT INTO `ogspy_config` (config_name, config_value) VALUES ('num_of_systems',
 INSERT INTO `ogspy_config` (config_name, config_value) VALUES ('speed_uni','1');
 INSERT INTO `ogspy_config` (config_name, config_value) VALUES ('ddr','true');
 INSERT INTO `ogspy_config` (config_name, config_value) VALUES ('astro_strict','1');
-INSERT INTO `ogspy_config` (config_name, config_value) VALUES ('version','3.3.6-dev');
+INSERT INTO `ogspy_config` (config_name, config_value) VALUES ('version','3.3.7-dev');
 INSERT INTO `ogspy_user` (user_id, user_name, user_password, user_regdate, user_active, user_admin) VALUES (1, 'ogsteam', '1619d7adc23f4f633f11014d2f22b7d8', '1567070548', '1', '1');
 INSERT INTO `ogspy_user_group` (group_id, user_id) values (1, 1);
 
