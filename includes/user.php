@@ -904,9 +904,9 @@ function user_get_empire($user_id)
         $BuildingList["booster_tab"] = booster_decode($BuildingList["boosters"]); // ajout booster dans get_empire
         // incrémentation field
         if ($BuildingList["planet_id"] > 200) {
-            $BuildingList["fields"] += $BuildingList["booster_tab"]["extention_p"];
-        } else {
             $BuildingList["fields"] += $BuildingList["booster_tab"]["extention_m"];
+        } else {
+            $BuildingList["fields"] += $BuildingList["booster_tab"]["extention_p"];
         }
 
 
