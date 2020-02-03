@@ -19,7 +19,9 @@
   ],
   "require" : {
     "php" : ">=7.0.0",
-    "tooltipster/tooltipster": "4.2.*"
+    "tooltipster/tooltipster": "4.2.*",
+    "ext-mysqli": "*",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {

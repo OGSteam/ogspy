@@ -11,6 +11,8 @@
 .idea/inspectionProfiles/
 .idea/vcs.xml
 .idea/misc.xml
+.idea/deployment.xml
+.idea/bashsupport_project.xml
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -21,6 +23,7 @@
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/webServers.xml
+.idea/sqldialects.xml
 
 # Gradle:
 .idea/**/gradle.xml
@@ -48,8 +51,7 @@ mod/*
 parameters/salt
 parameters/mail.php
 
-.idea/deployment.xml
+
 OGSpy.code-workspace
-.idea/sqldialects.xml
-.idea/bashsupport_project.xml
+
 ogspy.iml
