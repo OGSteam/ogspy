@@ -977,9 +977,9 @@ function find_nb_moon_user($id)
 /**
  * Calcul production de l'empire
  * @param array $user_empire
- * @param null $off
+ * @param null $off ($user_data)
  * @return array
- */
+ */ //TODO : prendre en compte les foreuses ...
 function user_empire_production($user_empire, $off = NULL)
 {
     $prod = array();
@@ -990,6 +990,7 @@ function user_empire_production($user_empire, $off = NULL)
         $off['off_ingenieur'] = 0;
         $off['off_geologue'] = 0;
         $off['off_technocrate'] = 0;
+        $off['user_class'] = 'none';
     }
     //!\\ prepa officier
     $officier = $off['off_commandant'] + $off['off_amiral'] + $off['off_ingenieur']
@@ -1002,6 +1003,23 @@ function user_empire_production($user_empire, $off = NULL)
         $officier = $off['off_geologue'];
     }
     //!\\ fin prepa officier
+    //!\\ prepa classe
+    // array('none','COL','GEN','EXP') - (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
+    switch ($off['user_class']) {
+        case 'COL' :
+            $classe = 1;
+            break;
+        case 'GEN' :
+            $classe = 2;
+            break;
+        case 'EXP' :
+            $classe = 3;
+            break;
+        default :
+            $classe = 0;
+            break;
+    }
+    //!\\ fin prepa classe
 
     //!\\ prepa techno
     $plasma = $user_empire['technology']['Plasma'] != "" ? $user_empire['technology']['Plasma'] : "0";
@@ -1013,7 +1031,6 @@ function user_empire_production($user_empire, $off = NULL)
     $NRJ = $user_empire['technology']['NRJ'] != "" ? $user_empire['technology']['NRJ'] : "0";
     $temp_max = 0;
     // FIN prepa ration E
-
 
     foreach ($user_empire["building"] as $content) {
         if (isset($content["planet_id"]) && $content["planet_id"] < 200) {// parcours des planetes ( < 200 )
@@ -1030,10 +1047,10 @@ function user_empire_production($user_empire, $off = NULL)
                     if ($mine == "D") { // specificité deut puisque les cef pompe la prod
                         $CEF = $content["CEF"];
                         $CEF_consumption = consumption("CEF", $CEF);
-                        $tmp = production($mine, $level, $officier, $temp_max, $NRJ, $plasma) - $CEF_consumption;
+                        $tmp = production($mine, $level, $officier, $temp_max, $NRJ, $plasma, $classe) - $CEF_consumption;
                         $prod["theorique"][$content["planet_id"]][$mine] = number_format(floor($tmp), 0, ',', ' ');
                     } else {
-                        $tmp = production($mine, $level, $officier, $temp_max, $NRJ, $plasma);
+                        $tmp = production($mine, $level, $officier, $temp_max, $NRJ, $plasma, $classe);
                         $prod["theorique"][$content["planet_id"]][$mine] = number_format(floor($tmp), 0, ',', ' ');
                     }
                 }
@@ -1048,7 +1065,8 @@ function user_empire_production($user_empire, $off = NULL)
                     $content["CES"], $content["CEF"], $content["Sat"], $content["temperature_max"], $off['off_ingenieur'], $off['off_geologue'], $off_full,
                     $NRJ, $plasma, $content["M_percentage"] / 100, $content["C_percentage"] / 100,
                     $content["D_percentage"] / 100, $content["CES_percentage"] / 100, $content["CEF_percentage"] / 100,
-                    $content["Sat_percentage"] / 100, $content["booster_tab"]);
+                    $content["Sat_percentage"] / 100, $content["booster_tab"],
+                    0, 0, $classe);
 
                 $prod["reel"][$content["planet_id"]] = $ratio[$content["planet_id"]];
             }

@@ -38,10 +38,12 @@ $nb_planete = find_nb_planete_user($user_data['user_id']);
 $officier = $user_data['off_commandant'] + $user_data['off_amiral'] + $user_data['off_ingenieur']
     + $user_data['off_geologue'] + $user_data['off_technocrate'];
 $off_full = ($officier == 5) ? '1' : '0';
+$class_colect = ($user_data['user_class'] === 'COL') ? '1' : '0';
 echo "<input type='hidden' id='vitesse_uni' size='2' maxlength='5' value='" . $server_config['speed_uni'] . "'/>";
 echo "<input type='hidden' id='off_ingenieur' value='" . $user_data["off_ingenieur"] . "'/>";
 echo "<input type='hidden' id='off_geologue' value='" . $user_data["off_geologue"] . "'/>";
 echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
+echo "<input type='hidden' id='class_colect' value='" . $class_colect . "'/>";
 
 //Calcul et correction boosters :
 for ($i = 101; $i <= $nb_planete + 100; $i++) {
