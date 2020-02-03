@@ -79,8 +79,8 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
             break;
 
         case "D":
-            // $result = 10 * $level * pow(1.1, $level) * (1.44 - 0.004 * $temperature_max); //<Ogame V7
-            $result = 10 * $level * pow(1.1, $level) * floor((1.44 - 0.004 * $temperature_max)*10)/10;  //troncature à la décimale
+            $result = 10 * $level * pow(1.1, $level) * (1.44 - 0.004 * $temperature_max); //<Ogame V7
+            //$result = 10 * $level * pow(1.1, $level) * floor((1.44 - 0.004 * $temperature_max)*10)/10;  //troncature à la décimale
             $result = $result * $speed_uni; // vitesse uni
             // $result_foreuse = $result * $bonus_foreuse; //foreuse sur produc de base des mines
             $result = $result * (1 + $geo + 0.0033 * $Plasma + $bonus_class_mine);
