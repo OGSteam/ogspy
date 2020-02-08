@@ -47,23 +47,23 @@ require_once("views/page_header.php");
     <!-- DEBUT DU SCRIPT -->
     <script>
         function check_password(form) {
-            var old_password = form.old_password.value;
-            var new_password = form.new_password.value;
-            var new_password2 = form.new_password2.value;
+            let old_password = form.old_password.value;
+            let new_password = form.new_password.value;
+            let new_password2 = form.new_password2.value;
 
-            if (old_password != "" && (new_password == "" || new_password2 == "")) {
+            if (old_password !== "" && (new_password === "" || new_password2 === "")) {
                 alert("<?php echo($lang['PROFILE_ERROR_RETRY']); ?>");
                 return false;
             }
-            if (old_password == "" && (new_password != "" || new_password2 != "")) {
+            if (old_password === "" && (new_password !== "" || new_password2 !== "")) {
                 alert("<?php echo($lang['PROFILE_ERROR_OLDPWD']); ?>");
                 return false;
             }
-            if (old_password != "" && new_password != new_password2) {
+            if (old_password !== "" && new_password !== new_password2) {
                 alert("<?php echo($lang['PROFILE_ERROR_ERROR']); ?>");
                 return false;
             }
-            if (old_password != "" && new_password != "" && new_password2 != "") {
+            if (old_password !== "" && new_password !== "" && new_password2 !== "") {
                 if (new_password.length < 6 || new_password.length > 64) {
                     alert("<?php echo($lang['PROFILE_ERROR_ILLEGAL']); ?>");
                     return false;

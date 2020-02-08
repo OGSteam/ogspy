@@ -281,8 +281,8 @@ function member_user_set()
 
 
     if (!check_var($pub_pseudo, "Text") || !check_var($pub_old_password, "Text") ||
-        !check_var($pub_new_password, "Text") || !check_var($pub_new_password2,
-            "CharNum") || !check_var($pub_pseudo_email, "Email")
+        !check_var($pub_new_password, "Password") || !check_var($pub_new_password2,
+            "Password") || !check_var($pub_pseudo_email, "Email")
         || !check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_disable_ip_check, "Num") || !check_var($pub_pseudo_ingame, "Pseudo_ingame")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
@@ -295,14 +295,14 @@ function member_user_set()
     $user_empire = user_get_empire($user_id);
     $user_technology = $user_empire["technology"];
 
-    $password_validated = null;
+    $password_change_validated = false;
     if (!isset($pub_pseudo) || !isset($pub_old_password) || !isset($pub_new_password) ||
         !isset($pub_new_password2) || !isset($pub_pseudo_email) || !isset($pub_galaxy) || !isset($pub_system)) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed&info");
     }
 
-    if ($pub_old_password != "" || $pub_new_password != "" || $pub_new_password2 !=
-        "") {
+    if ($pub_old_password != "" || $pub_new_password != "" || $pub_new_password2 != "")
+    {
         if ($pub_old_password == "" || $pub_new_password == "" || $pub_new_password != $pub_new_password2) {
             redirection("index.php?action=message&id_message=member_modifyuser_failed_passwordcheck&info");
         }
@@ -312,6 +312,7 @@ function member_user_set()
         if (!check_var($pub_new_password, "Password")) {
             redirection("index.php?action=message&id_message=member_modifyuser_failed_password&info");
         }
+        $password_change_validated = true;
     }
     // Token Generation
     if ($pub_renew_user_token == 1) {
@@ -383,7 +384,7 @@ function member_user_set()
     if (isset($pub_pseudo)) {
         $User_Model->set_user_pseudo($user_id, $pub_pseudo);
     }
-    if (isset($pub_new_password)) {
+    if (isset($pub_new_password) && $password_change_validated === true) {
         $User_Model->set_user_password($user_id, password_hash($pub_new_password, PASSWORD_DEFAULT));
     }
     if (isset($pub_pesudo_email)) {

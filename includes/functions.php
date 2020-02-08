@@ -770,7 +770,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
     switch ($type_check) {
         //Pseudo des membres
         case "Pseudo_Groupname":
-            if (!preg_match("#^[\w\s\-]{3,15}$#", $value)) {
+            if (!preg_match("/^[\w\s\-]{3,15}$/", $value)) {
                 log_("check_var", array("Pseudo_Groupname", $value));
                 return false;
             }
@@ -778,7 +778,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
         //Pseudo ingame
         case "Pseudo_ingame": // caracteres autorises entre 3 et 20 + espace ( interdit au 05/11/11 = > &"'()# `/,;+ )
-            if (!preg_match("#^[\w@äàçéèêëïîöôûü \^\{\}\[\]\.\*\-_~%§]{3,20}$#", $value)) {
+            if (!preg_match("/^[\w@äàçéèêëïîöôûü \^\{\}\[\]\.\*\-_~%§]{3,20}$/", $value)) {
                 log_("check_var", array("Text", $value));
                 return false;
             }
@@ -786,14 +786,14 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
         //Mot de passe des membres
         case "Password":
-            if (!preg_match("#^[\w\s\-]{6,64}$#", $value)) {
+            if (!preg_match("/^[\w\s\-]{6,64}$/", $value)) {
                 return false;
             }
             break;
 
         //Chaîne de caractères avec espace
         case "Text":
-            if (!preg_match("#^[\w'äàçéèêëïîöôûü\s\.\*\-]+$#", $value)) {
+            if (!preg_match("/^[\w'äàçéèêëïîöôûü\s\.\*\-]+$/", $value)) {
                 log_("check_var", array("Text", $value));
                 return false;
             }
@@ -801,7 +801,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
         //Chaîne de caractères et  chiffre
         case "CharNum":
-            if (!preg_match("#^[\w\.\*\-\#]+$#", $value)) {
+            if (!preg_match("/^[\w\.\*\-\#]+$/", $value)) {
                 log_("check_var", array("CharNum", $value));
                 return false;
             }
@@ -809,7 +809,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
         //Caractères
         case "Char":
-            if (!preg_match("#^[[:alpha:]_\.\*\-]+$#", $value)) {
+            if (!preg_match("/^[[:alpha:]_\.\*\-]+$/", $value)) {
                 log_("check_var", array("Char", $value));
                 return false;
             }
@@ -817,14 +817,14 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
         //Chiffres
         case "Num":
-            if (!preg_match("#^[[:digit:]]+$#", $value)) {
+            if (!preg_match("/^[[:digit:]]+$/", $value)) {
                 log_("check_var", array("Num", $value));
                 return false;
             }
             break;
         //Email
         case "Email":
-            if (!preg_match('#^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}$#', $value)) {
+            if (!preg_match('/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}$/', $value)) {
                 log_("check_var", array("Email", $value));
                 return false;
             }
@@ -840,7 +840,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
         //Adresse internet
         case "URL":
-            if (!preg_match("#^(((https|http):\/\/)?(?(2)(www\.)?|(www\.){1})?[-a-z0-9~_]{2,}(\.[-a-z0-9~._]{2,})?[-a-z0-9~_\/&\?=.]{2,})$#i",
+            if (!preg_match("/^(((https|http):\/\/)?(?(2)(www\.)?|(www\.){1})?[-a-z0-9~_]{2,}(\.[-a-z0-9~._]{2,})?[-a-z0-9~_\/&\?=.]{2,})$/i",
                 $value)
             ) {
                 log_("check_var", array("URL", $value));
