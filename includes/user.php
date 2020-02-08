@@ -387,8 +387,8 @@ function member_user_set()
     if (isset($pub_new_password) && $password_change_validated === true) {
         $User_Model->set_user_password($user_id, password_hash($pub_new_password, PASSWORD_DEFAULT));
     }
-    if (isset($pub_pesudo_email)) {
-        $User_Model->set_user_email($user_id, $pub_pesudo_email);
+    if (isset($pub_pseudo_email)) {
+        $User_Model->set_user_email($user_id, $pub_pseudo_email);
     }
     if (isset($pub_galaxy)) {
         $User_Model->set_user_default_galaxy($user_id, $pub_galaxy);
