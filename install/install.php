@@ -358,7 +358,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
         <tr align="center">
             <td>
                 <div style="text-align: center;"><span style="font-size: x-small; "><i><b>OGSpy</b> is an
-                            <b>OGSteam Software</b> (c)2005-2019</i><br/>v <?php echo $install_version; ?></span></div>
+                            <b>OGSteam Software</b> (c)2005-2020</i><br/>v <?php echo $install_version; ?></span></div>
             </td>
         </tr>
     </table>

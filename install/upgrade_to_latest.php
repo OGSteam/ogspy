@@ -353,7 +353,12 @@ switch ($ogsversion) {
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-beta4' WHERE config_name = 'version'";
         $ogsversion = '3.3.7-beta4';
 
+    case '3.3.7-beta4':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-beta5' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-beta5';
+
         $up_to_date = true;
+
         break;
     default:
     die("Aucune mise … jour n'est disponible");
