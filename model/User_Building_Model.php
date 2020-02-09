@@ -156,7 +156,7 @@ class User_Building_Model  extends Model_Abstract
 
         $tElemList = array("planet_id", "planet_name", "coordinates", "fields", "boosters", "temperature_min", "temperature_max", "Sat", "Sat_percentage", "FOR", "FOR_percentage", "M", "M_percentage", "C", "C_percentage", "D", "D_percentage", "CES", "CES_percentage", "CEF", "CEF_percentage", "UdR", "UdN", "CSp", "HM", "HC", "HD", "Lab", "Ter", "Silo", "Dock", "BaLu", "Pha", "PoSa", "DdR");
 
-        $request = "SELECT ".implode(", ",$tElemList)." ";
+        $request = "SELECT `".implode("`, `",$tElemList)."` ";
         $request .= " FROM " . TABLE_USER_BUILDING;
         $request .= " WHERE user_id = " . $user_id;
         $request .= " ORDER BY planet_id";
