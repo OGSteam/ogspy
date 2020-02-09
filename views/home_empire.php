@@ -328,7 +328,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                 if ($M != "") {
                     echo "\t" . "<th>" . $user_production['theorique'][$i]['M'] . "</th>" . "\n";
                 } else {
-                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                    echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
 
             }
@@ -344,7 +344,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     echo "\t" . "<th>" . $user_production['theorique'][$i]['C'] . "</th>" . "\n";
 
                 } else {
-                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                    echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
             }
             ?>
@@ -358,7 +358,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
                     echo "\t" . "<th>" . $user_production['theorique'][$i]['D'] . "</th>" . "\n";
                 } else {
-                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                    echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
             }
             ?>
@@ -375,8 +375,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
             ?>
         <tr>
-            <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">Production
-                R&eacute;elle
+            <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">Production R&eacute;elle
             </td>
         </tr>
         <tr>
@@ -405,7 +404,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                 if ($user_building[$i]["M"] != "") {
                     echo "\t" . "<th>" . number_format(floor($user_production['reel'][$i]['M']), 0, ',', ' ') . "</th>" . "\n";
                 } else {
-                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                    echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
             }
             ?>
@@ -417,7 +416,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                 if ($user_building[$i]["C"] != "") {
                     echo "\t" . "<th>" . number_format(floor($user_production['reel'][$i]['C']), 0, ',', ' ') . "</th>" . "\n";
                 } else {
-                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                    echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
             }
             ?>
@@ -429,7 +428,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                 if ($user_building[$i]["D"] != "") {
                     echo "\t" . "<th>" . number_format(floor($user_production['reel'][$i]['D']), 0, ',', ' ') . "</th>" . "\n";
                 } else {
-                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                    echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
             }
             ?>

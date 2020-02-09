@@ -341,7 +341,7 @@ if ($player_comp != "" && isset($player_comp)): ?>
             $f = 0;
     }
 
-
+    echo "<tr>";
     // affichage premier camembert
     $pie_point = "";
     echo "<th align='center' width='400'>";

@@ -165,7 +165,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
             }
 
 
-            echo "\t" . "<th colspan='2'>" . $booster . "<input id='extension" . $i . "' type='hidden' value='" . $booster . "'></th>" . "</th>" . "\n";
+            echo "\t" . "<th colspan='2'>" . $booster . "<input id='extension" . $i . "' type='hidden' value='" . $booster . "'></th>\n";
         }
         ?>
     </tr>
