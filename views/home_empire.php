@@ -309,7 +309,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             ?>
         </tr>
         <tr>
-            <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>"><?php echo($lang['HOME_EMPIRE_EXPECTED_PRODUCTION']); ?></td>
+            <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>"><?php echo($lang['HOME_EMPIRE_PRODUCTION_EXPECTED']); ?></td>
         </tr>
         <tr>
             <th><a><?php echo($lang['HOME_EMPIRE_METAL']); ?></a></th>
@@ -375,8 +375,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
             ?>
         <tr>
-            <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">Production R&eacute;elle
-            </td>
+            <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>"><?php echo($lang['HOME_EMPIRE_PRODUCTION_REAL']); ?></td>
         </tr>
         <tr>
             <th><a><?php echo($lang['HOME_EMPIRE_RATIO']); ?></a></th>
@@ -734,6 +733,21 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             }
 
             if ($view == "planets") {
+            ?>
+        </tr>
+        <tr>
+            <th><a><?php echo($lang['HOME_EMPIRE_CRAWLER']); ?></a></th>
+            <?php
+            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
+                $For = $user_building[$i]["FOR"];
+                if ($For == "") {
+                    $For = "&nbsp;";
+                } else {
+                    $For = number_format($For, 0, ',', ' ');
+                }
+
+                echo "\t" . "<th><span  id='6" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $For . "</span></th>" . "\n";
+            }
             ?>
         </tr>
         <tr>

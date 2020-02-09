@@ -191,7 +191,10 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <td class="c" colspan="2"><?php echo($lang['HOME_SIMU_OFF_FULL']); ?> <input type='checkbox'
                                                                                      id='c_off_full' <?php print ($off_full == 1) ? 'checked="checked"' : '' ?>
                                                                                      onClick='update_page();'>
-        <td class="c" colspan="<?php echo 2 * ($nb_planete + 1) - 8; ?>">&nbsp;</td>
+        <td class="c" colspan="2"><?php echo($lang['HOME_SIMU_CLASS_COLECT']); ?> <input type='checkbox'
+                                                                                     id='c_class_colect' <?php print ($class_colect == 1) ? 'checked="checked"' : '' ?>
+                                                                                     onClick='update_page();'>
+        <td class="c" colspan="<?php echo 2 * ($nb_planete + 1) - 16; ?>">&nbsp;</td>
     </tr>
 
     <tr>
@@ -268,6 +271,52 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <th>
             <div id="E_NRJ">-</div>
         </th>
+    </tr>
+    <!--
+    Foreuse
+    -->
+    <tr>
+        <td class="c" colspan="<?php echo 2 * ($nb_planete + 1); ?>"><?php echo($lang['HOME_SIMU_CRAWLER']); ?></td>
+    </tr>
+    <tr>
+        <th><a><?php echo($lang['HOME_SIMU_CRAWLER']); ?></a></th>
+        <?php
+
+        for ($i = 101; $i <= $nb_planete + 100; $i++) {
+            $FOR = $user_building[$i]["FOR"];
+            echo "\t" . "<th><input type='text' id='For_" . $i . "' size='2' maxlength='2' value='" . $FOR . "' onchange='update_page();'></th>" . "\n";
+            echo "\t" . "<th>";
+            echo "<select id='For_" . $i . "_percentage' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
+            for ($j = 100; $j >= 0; $j = $j - 10) {
+                echo "\t\t" . "<option value='" . $j . "'";
+                if ($user_percentage[$i]['FOR_percentage'] == $j) {
+                    echo " selected='selected'";
+                }
+                echo ">" . $j . "%</option>" . "\n";
+            }
+            echo "</select></th>" . "\n";
+        }
+        ?>
+        <th></th>
+    </tr>
+    <tr>
+        <th><a><?php echo($lang['HOME_SIMU_ENERGY_USAGE']); ?></a></th>
+        <?php
+        for ($i = 101; $i <= $nb_planete + 100; $i++) {
+            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='FOR_" . $i . "_conso'>-</div></span></th>" . "\n";
+        }
+        ?>
+        <th>
+            <div id="FOR_conso">-</div>
+        </th>
+    </tr>
+    <tr>
+        <th><a><?php echo($lang['HOME_SIMU_PRODUCTION']); ?></a></th>
+        <?php
+        for ($i = 101; $i <= $nb_planete + 100; $i++) {
+            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='FOR_" . $i . "_prod'>-</div></span></th>" . "\n";
+        }
+        ?>
     </tr>
 
     <!--

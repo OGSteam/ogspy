@@ -215,7 +215,7 @@ function update_page() {
         document.getElementById("D_" + j + "_conso").innerHTML = format(D_1_conso[i]);
         document.getElementById("D_" + j + "_prod").innerHTML = format(D_1_prod[i]);
         document.getElementById("FOR_" + j + "_conso").innerHTML = format(FOR_1_conso[i]);
-        document.getElementById("FOR_" + j + "_prod").innerHTML = format(FOR_1_prod[i]);
+        document.getElementById("FOR_" + j + "_prod").innerHTML = format(FOR_1_prod[i]["M"]) + " / " + format(FOR_1_prod[i]["C"]) + " / " + format(FOR_1_prod[i]["D"]);
 
         i++;
     }
@@ -248,6 +248,7 @@ function update_page() {
     document.getElementById("C_prod").innerHTML = format(C_prod);
     document.getElementById("D_conso").innerHTML = format(D_conso);
     document.getElementById("D_prod").innerHTML = format(D_prod);
+    document.getElementById("FOR_conso").innerHTML = format(FOR_conso);
 
     //Energie
     var Delta_NRJ = NRJ - (M_conso + C_conso + D_conso + FOR_conso);

@@ -836,12 +836,11 @@ function user_get_empire($user_id)
     $planet = array(false, "user_id" => "", "planet_name" => "", "coordinates" => "",
         "fields" => "", "fields_used" => "", "boosters" => booster_encode(),
         "temperature_min" => "", "temperature_max" => "",
-        "Sat" => 0, "Sat_percentage" => 100, "M" => 0, "M_percentage" => 100, "C" => 0,
-        "C_Percentage" => 100, "D" => 0, "D_percentage" => 100, "CES" => 0, "CES_percentage" => 100,
+        "Sat" => 0, "Sat_percentage" => 100, "FOR" => 0, "FOR_percentage" => 100,
+        "M" => 0, "M_percentage" => 100, "C" => 0, "C_Percentage" => 100, "D" => 0, "D_percentage" => 100, "CES" => 0, "CES_percentage" => 100,
         "CEF" => 0, "CEF_percentage" => 100, "UdR" => 0, "UdN" => 0, "CSp" => 0,
         "HM" => 0, "HC" => 0, "HD" => 0, "Lab" => 0,
-        "Ter" => 0, "Silo" => 0, "Dock" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0,
-        "C_percentage" => 100);
+        "Ter" => 0, "Silo" => 0, "Dock" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0);
 
     $defence = array("LM" => 0, "LLE" => 0, "LLO" => 0, "CG" => 0, "AI" => 0, "LP" =>
         0, "PB" => 0, "GB" => 0, "MIC" => 0, "MIP" => 0);
@@ -850,7 +849,7 @@ function user_get_empire($user_id)
     $nb_planete = find_nb_planete_user($user_id);
 
     // Recuperation des pourcentages
-    $planet_pct = array("planet_id" => "", "M_percentage" => 0, "C_percentage" => 0, "D_percentage" => 0, "CES_percentage" => 100, "CEF_percentage" => 100, "Sat_percentage" => 100);
+    $planet_pct = array("planet_id" => "", "M_percentage" => 0, "C_percentage" => 0, "D_percentage" => 0, "CES_percentage" => 100, "CEF_percentage" => 100, "Sat_percentage" => 100, "FOR_percentage" => 100);
     $user_percentage = array_fill(101, $nb_planete, $planet_pct);
 
 
@@ -877,6 +876,7 @@ function user_get_empire($user_id)
         $pct["CES_percentage"] = $BuildingList["CES_percentage"];
         $pct["CEF_percentage"] = $BuildingList["CEF_percentage"];
         $pct["Sat_percentage"] = $BuildingList["Sat_percentage"];
+        $pct["FOR_percentage"] = $BuildingList["FOR_percentage"];
         $user_percentage[$BuildingList["planet_id"]] = $pct;
 
         //calcul des cases utilisées
@@ -890,6 +890,8 @@ function user_get_empire($user_id)
         unset($arr["temperature_max"]);
         unset($arr["Sat"]);
         unset($arr["Sat_percentage"]);
+        unset($arr["FOR"]);
+        unset($arr["FOR_percentage"]);
         unset($arr["M_percentage"]);
         unset($arr["C_Percentage"]);
         unset($arr["D_percentage"]);
