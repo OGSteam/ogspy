@@ -176,25 +176,25 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
 
     <tr>
         <td class="c"><?php echo($lang['HOME_SIMU_ENERGYS']); ?></td>
-        <td class="c" colspan="4"><?php echo($lang['HOME_SIMU_TECH_ENERGY']); ?> <input type="text" id="NRJ" size="2" maxlength="2"
+        <td class="c" colspan="1"><?php echo($lang['HOME_SIMU_TECH_ENERGY']); ?> <input type="text" id="NRJ" size="2" maxlength="2"
                                                                                         value="<?php print $user_technology['NRJ'] ?>"
                                                                                         onchange='update_page();'></td>
-        <td class="c" colspan="4"><?php echo($lang['HOME_SIMU_TECH_PLASMA']); ?> <input type="text" id="Plasma" size="2" maxlength="2"
+        <td class="c" colspan="1"><?php echo($lang['HOME_SIMU_TECH_PLASMA']); ?> <input type="text" id="Plasma" size="2" maxlength="2"
                                                                                         value="<?php print $user_technology['Plasma'] ?>"
                                                                                         onchange='update_page();'></td>
-        <td class="c" colspan="2"><?php echo($lang['HOME_SIMU_OFF_INGE']); ?> <input type='checkbox'
+        <td class="c" colspan="1"><?php echo($lang['HOME_SIMU_OFF_INGE']); ?> <input type='checkbox'
                                                                                      id='c_off_ingenieur' <?php print ($user_data["off_ingenieur"] == 1) ? 'checked="checked"' : '' ?>
                                                                                      onClick='update_page();'>
-        <td class="c" colspan="2"><?php echo($lang['HOME_SIMU_OFF_GEO']); ?> <input type='checkbox'
+        <td class="c" colspan="1"><?php echo($lang['HOME_SIMU_OFF_GEO']); ?> <input type='checkbox'
                                                                                     id='c_off_geologue' <?php print ($user_data["off_geologue"] == 1) ? 'checked="checked"' : '' ?>
                                                                                     onClick='update_page();'>
-        <td class="c" colspan="2"><?php echo($lang['HOME_SIMU_OFF_FULL']); ?> <input type='checkbox'
+        <td class="c" colspan="1"><?php echo($lang['HOME_SIMU_OFF_FULL']); ?> <input type='checkbox'
                                                                                      id='c_off_full' <?php print ($off_full == 1) ? 'checked="checked"' : '' ?>
                                                                                      onClick='update_page();'>
-        <td class="c" colspan="2"><?php echo($lang['HOME_SIMU_CLASS_COLECT']); ?> <input type='checkbox'
+        <td class="c" colspan="1"><?php echo($lang['HOME_SIMU_CLASS_COLECT']); ?> <input type='checkbox'
                                                                                      id='c_class_colect' <?php print ($class_colect == 1) ? 'checked="checked"' : '' ?>
                                                                                      onClick='update_page();'>
-        <td class="c" colspan="<?php echo 2 * ($nb_planete + 1) - 16; ?>">&nbsp;</td>
+        <td class="c" colspan="<?php echo 2 * ($nb_planete + 1) - 6; ?>">&nbsp;</td>
     </tr>
 
     <tr>

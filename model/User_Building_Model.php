@@ -64,10 +64,6 @@ class User_Building_Model  extends Model_Abstract
         $request .= " AND planet_id < 199 ";
         $request .= " ORDER BY planet_id";
         $result =  $this->db->sql_query($request);
-        // bug affichage ne doit pas etre gerer dans model
-        //mini 9 pour eviter bug affichage
-        //if ( $this->db->sql_numrows($result) <= 9)
-        //    return 9;
         return  $this->db->sql_numrows($result);
     }
     /**
@@ -84,10 +80,6 @@ class User_Building_Model  extends Model_Abstract
         $request .= " and planet_id > 199 ";
         $request .= " order by planet_id";
         $result =  $this->db->sql_query($request);
-        //mini 9 pour eviter bug affichage
-        if ( $this->db->sql_numrows($result) <= 9) {
-            return 9;
-        }
         return  $this->db->sql_numrows($result);
     }
 

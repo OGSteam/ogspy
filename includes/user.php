@@ -952,29 +952,17 @@ function user_get_empire($user_id)
 function find_nb_planete_user($id)
 {
     global $user_data;
-
-    $iRealTotal = (new User_Building_Model())->get_nb_planets($user_data["user_id"]);
-    //mini 9 pour eviter bug affichage
-    if ($iRealTotal <= 9) {
-        return 9;
-    }
-    return $iRealTotal;
+    return (new User_Building_Model())->get_nb_planets($user_data["user_id"]);
 }
 
 /**
  * @param $id
- * @return int|\the
+ * @return int Nb of moons
  */
 function find_nb_moon_user($id)
 {
     global $user_data;
-
-    $iRealTotal = (new User_Building_Model())->get_nb_moons($user_data["user_id"]);
-    //mini 9 pour eviter bug affichage
-    if ($iRealTotal <= 9) {
-        return 9;
-    }
-    return $iRealTotal;
+    return (new User_Building_Model())->get_nb_moons($user_data["user_id"]);
 }
 
 /**
