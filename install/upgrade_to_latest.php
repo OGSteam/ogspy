@@ -22,11 +22,10 @@ if (!isset($pub_verbose)) {
 if ($pub_verbose == true) {
 ?>
 
-<html>
+<html lang="fr">
 <head>
 <title>Mise à jour OGSpy</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="language" content="fr" />
 <link rel="stylesheet" type="text/css" href="../skin/OGSpy_skin/formate.css" />
 </head>
 <body>
@@ -356,6 +355,10 @@ switch ($ogsversion) {
     case '3.3.7-beta4':
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-beta5' WHERE config_name = 'version'";
         $ogsversion = '3.3.7-beta5';
+
+    case '3.3.7-beta5':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-beta6' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-beta6';
 
         $up_to_date = true;
 
