@@ -846,7 +846,7 @@ function galaxy_show_ranking_unique_player($player, $last = false)
     $tRanking = (new Rankings_Player_Model())->get_all_ranktable_byplayer($player);
     foreach ($tRanking as $rank) {
         $ranking[$rank["datadate"]]["general"]["rank"] = $rank["general_rank"];
-        $ranking[$rank["datadate"]]["general"]["points"] = $rank["general_rank"];
+        $ranking[$rank["datadate"]]["general"]["points"] = $rank["general_pts"];
 
         if ((int)$rank["eco_rank"] > 0) {
             $ranking[$rank["datadate"]]["eco"]["rank"] = $rank["eco_rank"];
