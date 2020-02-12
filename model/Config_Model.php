@@ -77,6 +77,8 @@ class Config_Model  extends Model_Abstract
      * Met à jour la config
      * @$config_value valeur de la configuration
      * @$config_name nom de la configuration
+     * @param $config_value
+     * @param $config_name
      */
     public function update_one( $config_value,$config_name)
     {

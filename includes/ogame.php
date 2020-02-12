@@ -787,7 +787,7 @@ function all_lune_cumulate($user_building, $user_defence)
 function all_technology_cumulate($user_technology)
 {
     if(!isset($user_technology )) return 0;
-    
+
     $total = 0;
     $init_t_prix = array("Esp" => 1400, "Ordi" => 1000, "Armes" => 1000, "Bouclier" =>
         800, "Protection" => 1000, "NRJ" => 1200, "Hyp" => 6000, "RC" => 1000, "RI" =>

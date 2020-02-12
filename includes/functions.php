@@ -483,8 +483,7 @@ function set_serverconfig()
         redirection("index.php?action=message&id_message=setting_serverconfig_failed&info");
     }
 
-    if (($pub_num_of_galaxies != intval($server_config['num_of_galaxies'])) || ($pub_num_of_systems !=
-            intval($server_config['num_of_systems']))
+    if (($pub_num_of_galaxies != intval($server_config['num_of_galaxies'])) || ($pub_num_of_systems != intval($server_config['num_of_systems']))
     ) {
         resize_db($pub_num_of_galaxies, $pub_num_of_systems);
     }

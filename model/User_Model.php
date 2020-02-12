@@ -355,7 +355,7 @@ class User_Model extends Model_Abstract
     {
         $nb_galaxy=(int)$nb_galaxy;
 
-        $request = $this->db->sql_query("UPDATE " . TABLE_USER . " SET `user_galaxy` = 1 WHERE `user_galaxy` > $nb_galaxy");
+        $request = "UPDATE " . TABLE_USER . " SET `user_galaxy` = 1 WHERE `user_galaxy` > $nb_galaxy";
         $this->db->sql_query($request);
     }
 
