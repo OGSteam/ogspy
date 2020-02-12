@@ -1338,10 +1338,6 @@ function UNparseRE($id_RE)
 
     $row = $Spy_Model->get_spy_Id($id_RE);
 
-    echo "<pre>";
-    print_r($row);
-    echo "</pre>";
-
     $c = explode(":", $row['coordinates']);
     $rowPN = $Universe_Model->get_player_name($c[0], $c[1], $c[2]);
 
