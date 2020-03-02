@@ -339,8 +339,8 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` ADD `FOR` INT(11) NOT NULL DEFAULT  '-1'  AFTER `TRA`";
 
         //table building
-        $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` ADD `FOR_percentage` SMALLINT(3) NOT NULL DEFAULT '100' AFTER `Sat_percentage`";
         $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` ADD `FOR` SMALLINT(5) NOT NULL DEFAULT '-1' AFTER `Sat_percentage`";
+        $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` ADD `FOR_percentage` SMALLINT(3) NOT NULL DEFAULT '100' AFTER `FOR`";
         
         //table Round
         $requests[] = "ALTER TABLE `" . TABLE_ROUND_ATTACK . "` ADD `FAU` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `TRA`";
