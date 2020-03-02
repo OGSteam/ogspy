@@ -55,3 +55,10 @@ parameters/mail.php
 OGSpy.code-workspace
 
 ogspy.iml
+*.zip
+install*
+!install/index.php
+!install/install.php
+!install/schemas/ogspy_structure.sql
+!install/upgrade_to_latest.php
+!install/version.php
