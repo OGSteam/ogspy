@@ -13,7 +13,7 @@ function production(building, level, temperatureMax, energy, plasma) {
         ingenieur = 0.12;
         geologue = 0.12;
     }
-    if (document.getElementById('class_colect').value == 1) {
+    if (document.getElementById('class_collect').value == 1) {
         bonus_class_mine = 0.25; //+25%
         bonus_class_energie = 0.10; //+10%
     }
@@ -46,7 +46,7 @@ function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax) {
     var speed = document.getElementById('vitesse_uni').value;
     var bonus_foreuse = 0.0002;
     var nb_max;
-    if (document.getElementById('class_colect').value == 1) {
+    if (document.getElementById('class_collect').value == 1) {
         bonus_foreuse = bonus_foreuse * 1.5; //+50%
     }
     nb_max = (parseInt(levelM) + parseInt(levelC) + parseInt(levelD)) * 8;
@@ -54,10 +54,10 @@ function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax) {
         nbForeuse = nb_max;
     }
     //paypass lien externe !!
-    var tmp_class = document.getElementById('class_colect').value;
+    var tmp_class = document.getElementById('class_collect').value;
     var tmp_geo = document.getElementById('off_geologue').value;
     var tmp_off_full = document.getElementById('off_full').value;
-    document.getElementById('class_colect').value = 0;
+    document.getElementById('class_collect').value = 0;
     document.getElementById('off_geologue').value = 0;
     document.getElementById('off_full').value = 0;
     
@@ -65,7 +65,7 @@ function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax) {
     result_C = Math.round(nbForeuse * bonus_foreuse * (production('C', levelC, temperatureMax, 0, 0) - 15 * speed));
     result_D = Math.round(nbForeuse * bonus_foreuse * production('D', levelD, temperatureMax, 0, 0));
     
-    document.getElementById('class_colect').value = tmp_class;
+    document.getElementById('class_collect').value = tmp_class;
     document.getElementById('off_geologue').value = tmp_geo;
     document.getElementById('off_full').value = tmp_off_full;
     
@@ -116,10 +116,10 @@ function update_page() {
     } else {
         document.getElementById('off_full').value = '0';
     }
-    if (document.getElementById('c_class_colect').checked) {
-        document.getElementById('class_colect').value = '1';
+    if (document.getElementById('c_class_collect').checked) {
+        document.getElementById('class_collect').value = '1';
     } else {
-        document.getElementById('class_colect').value = '0';
+        document.getElementById('class_collect').value = '0';
     }
 
     //
@@ -197,7 +197,7 @@ function update_page() {
         if (ratio_conso > 0) {
             M_1_prod[i] = Math.round(ratio_conso * production("M", M_1[i], temperature_max_1, NRJ, Plasma) * M_1_percentage / 100);
             C_1_prod[i] = Math.round(ratio_conso * production("C", C_1[i], temperature_max_1, NRJ, Plasma) * C_1_percentage / 100);
-            D_1_prod[i] = Math.round(ratio_conso * production("D", D_1[i], temperature_max_1, NRJ) * D_1_percentage / 100) - Math.round(consumption("CEF", CEF_1[i]) * CEF_1_percentage / 100);
+            D_1_prod[i] = Math.round(ratio_conso * production("D", D_1[i], temperature_max_1, NRJ, Plasma) * D_1_percentage / 100) - Math.round(consumption("CEF", CEF_1[i]) * CEF_1_percentage / 100);
             FOR_1_prod[i] = Math.round(ratio_conso * production_foreuse(For_1[i], M_1[i], C_1[i], D_1[i], temperature_max_1) * C_1_percentage / 100);
             M_1_prod[i] = Math.round(M_1_prod[i] * (1 + M_1_booster / 100));
             C_1_prod[i] = Math.round(C_1_prod[i] * (1 + C_1_booster / 100));
@@ -272,17 +272,15 @@ function update_page() {
         var b_pts_1 = Math.floor(((60 + 15) * (1 - Math.pow(1.5, M_1[i])) / (-0.5)) + ((48 + 24) * (1 - Math.pow(1.6, C_1[i])) / (-0.6)) + ((225 + 75) * (1 - Math.pow(1.5, D_1[i])) / (-0.5)) + ((75 + 30) * (1 - Math.pow(1.5, CES_1[i])) / (-0.5)) + ((900 + 360 + 180) * (1 - Math.pow(1.8, CEF_1[i])) / (-0.8)));
 
         building_1 = building_1.split('<>');
-        for (j = 0; j < building_1.length; j++) {
-            if (building_1[j] != 0) {
-
-                b_pts_1 += init_b_prix[j] * Math.pow(2, building_1[j] - 1);
-
+        for (k = 0; k < building_1.length; k++) {
+            if (building_1[k] !== 0 || building_1[k] !== 100) {
+                b_pts_1 += init_b_prix[k] * Math.pow(2, building_1[k] - 1);
             }
         }
-        total_pts_1[i] = b_pts_1;
+        total_pts_1[j] = b_pts_1;
         total_b_pts += b_pts_1;
 
-        document.getElementById("building_pts_" + j).innerHTML = format(Math.round(b_pts_1 / 1000));
+        document.getElementById("building_pts_" + j).innerHTML = format(Math.round(total_pts_1[j] / 1000));
         j++;
     }
     document.getElementById("total_b_pts").innerHTML = format(Math.round(total_b_pts / 1000));
@@ -296,12 +294,12 @@ function update_page() {
         var defence_1 = document.getElementById("defence_" + j).value;
         defence_1 = defence_1.split('<>');
         var d_pts_1 = 0;
-        for (j = 0; j < defence_1.length; j++) {
-            d_pts_1 = d_pts_1 + init_d_prix[j] * defence_1[j];
+        for (k = 0; k < defence_1.length; k++) {
+            d_pts_1 = d_pts_1 + init_d_prix[k] * defence_1[k];
         }
-        total_pts_1[i] += d_pts_1;
+        total_pts_1[j] += d_pts_1;
         total_d_pts += d_pts_1;
-        document.getElementById("defence_pts_" + j).innerHTML = format(Math.round(d_pts_1 / 1000));
+        document.getElementById("defence_pts_" + j).innerHTML = format(Math.round(total_pts_1[j] / 1000));
         j++;
     }
     document.getElementById("total_d_pts").innerHTML = format(Math.round(total_d_pts / 1000));
@@ -316,13 +314,17 @@ function update_page() {
         lune_b_1 = lune_b_1.split('<>');
         lune_defence_1 = lune_defence_1.split('<>');
         lune_pts_1[i] = 0;
-        for (j = 0; j < (lune_b_1.length); j++) { // pk ? for(j=0; j<(lune_b_1.length-2); j++) ne prennait pas en compte ddr
-            lune_pts_1[i] += init_b_prix[j] * (Math.pow(2, lune_b_1[j]) - 1);
+
+        for (k = 0; k < (lune_b_1.length); k++) {
+            lune_pts_1[i] += init_b_prix[k] * (Math.pow(2, lune_b_1[k]) - 1);
         }
-        for (j = 0; j < lune_defence_1.length; j++) {
-            lune_pts_1[i] += init_d_prix[j] * lune_defence_1[j];
+
+        for (kk = 0; kk < lune_defence_1.length; kk++) {
+            lune_pts_1[i] += init_d_prix[kk] * lune_defence_1[kk];
         }
         total_lune_pts += lune_pts_1[i];
+
+
         document.getElementById("lune_pts_" + t).innerHTML = format(Math.round(lune_pts_1[i] / 1000));
         t++;
     }

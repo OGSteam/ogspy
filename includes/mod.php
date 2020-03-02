@@ -548,7 +548,7 @@ function mod_del_option($param)
  * Mod Configs : Reads a parameter value for the current mod
  * @param string $param Name of the parameter
  * @global $db
- * @return array()|string Returns the value of the requested parameter
+ * @return string Returns the value of the requested parameter
  * @api
  */
 function mod_get_option($param)

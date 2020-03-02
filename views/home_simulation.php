@@ -38,12 +38,12 @@ $nb_planete = find_nb_planete_user($user_data['user_id']);
 $officier = $user_data['off_commandant'] + $user_data['off_amiral'] + $user_data['off_ingenieur']
     + $user_data['off_geologue'] + $user_data['off_technocrate'];
 $off_full = ($officier == 5) ? '1' : '0';
-$class_colect = ($user_data['user_class'] === 'COL') ? '1' : '0';
+$class_collect = ($user_data['user_class'] === 'COL') ? '1' : '0';
 echo "<input type='hidden' id='vitesse_uni' size='2' maxlength='5' value='" . $server_config['speed_uni'] . "'/>";
 echo "<input type='hidden' id='off_ingenieur' value='" . $user_data["off_ingenieur"] . "'/>";
 echo "<input type='hidden' id='off_geologue' value='" . $user_data["off_geologue"] . "'/>";
 echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
-echo "<input type='hidden' id='class_colect' value='" . $class_colect . "'/>";
+echo "<input type='hidden' id='class_collect' value='" . $class_collect . "'/>";
 
 //Calcul et correction boosters :
 for ($i = 101; $i <= $nb_planete + 100; $i++) {
@@ -191,8 +191,8 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <td class="c" colspan="1"><?php echo($lang['HOME_SIMU_OFF_FULL']); ?> <input type='checkbox'
                                                                                      id='c_off_full' <?php print ($off_full == 1) ? 'checked="checked"' : '' ?>
                                                                                      onClick='update_page();'>
-        <td class="c" colspan="1"><?php echo($lang['HOME_SIMU_CLASS_COLECT']); ?> <input type='checkbox'
-                                                                                     id='c_class_colect' <?php print ($class_colect == 1) ? 'checked="checked"' : '' ?>
+        <td class="c" colspan="1"><?php echo($lang['HOME_SIMU_CLASS_COLLECT']); ?> <input type='checkbox'
+                                                                                     id='c_class_collect' <?php print ($class_collect == 1) ? 'checked="checked"' : '' ?>
                                                                                      onClick='update_page();'>
         <td class="c" colspan="<?php echo 2 * ($nb_planete + 1) - 6; ?>">&nbsp;</td>
     </tr>
@@ -550,7 +550,8 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         $lab_max = 0;
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='building_pts_" . $i . "'>-</div></span>" . "\n";
-            echo "\t<input type='hidden' id='building_" . $i . "' value='" . implode(array_slice($user_building[$i], 12, -3), "<>") . "' /></th>";
+            echo "\t<input type='hidden' id='building_" . $i . "' value='" . implode(array_slice($user_building[$i], 21, -3, true), "<>") . "' /></th>";
+
             if ($lab_max < $user_building[$i]["Lab"]) {
                 $lab_max = $user_building[$i]["Lab"];
             }
@@ -574,9 +575,10 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         for ($i = 201; $i <= 200 + $nb_planete; $i++) {
             echo "\t<th colspan='2'><span style=\"color: lime; \"><div id='lune_pts_" . $i . "'>-</div></span>" . "\n";
             if ($user_building[$i]) {
-                echo "\t<input type='hidden' id='lune_b_" . $i . "' value='" . implode(array_slice($user_building[$i], 12, -3, true), "<>") . "' />";
+                echo "\t<input type='hidden' id='lune_b_" . $i . "' value='" . implode(array_slice($user_building[$i], 23, -3, true), "<>") . "' />";
+                //print_r($user_building[$i]);
             } else {
-                echo "\t<input type='hidden' id='lune_b_" . $i100 . "' value='0' />";
+                echo "\t<input type='hidden' id='lune_b_" . $i . "' value='0' />";
             }
             echo "\t<input type='hidden' id='lune_d_" . $i . "' value='" . implode($user_defence[$i], "<>") . "' /></th>";
         }
