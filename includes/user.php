@@ -1098,7 +1098,7 @@ function user_del_building()
     }
 
     //si plus de planete
-    $iNBPlanet = $User_Building_Model->get_nb_planets();
+    $iNBPlanet = $User_Building_Model->get_nb_planets($user_data["user_id"]);
     if ($iNBPlanet == 0) {
         (new User_Technology_Model())->delete_user_technologies($user_data["user_id"]);
     }
