@@ -167,7 +167,7 @@ class Spy_Model extends Model_Abstract
     public function delete_spy($spy_id) {
         $spy_id=(int)$spy_id;
 
-        $request = "DELETE FROM " . TABLE_PARSEDSPY . " WHERE `spy_id` = '" . $spy_id . "'";
+        $request = "DELETE FROM " . TABLE_PARSEDSPY . " WHERE `id_spy` = '" . $spy_id . "'";
         $this->db->sql_query($request);
 
         //todo prevoir suppression favorite ...
@@ -183,7 +183,7 @@ class Spy_Model extends Model_Abstract
         $spy_id=(int)$spy_id;
         $user_id=(int)$user_id;
 
-        $request = "DELETE FROM " . TABLE_PARSEDSPY . " WHERE `spy_id` = '" . $spy_id . "' and  `sender_id` = '" . $user_id . "'";
+        $request = "DELETE FROM " . TABLE_PARSEDSPY . " WHERE `id_spy` = '" . $spy_id . "' and  `sender_id` = '" . $user_id . "'";
         $this->db->sql_query($request);
     }
 

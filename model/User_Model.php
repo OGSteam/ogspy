@@ -19,7 +19,7 @@ class User_Model extends Model_Abstract
     /**
      * @param $login
      * @param $password
-     * @return array
+     * @return array|bool hash or not
      */
     public function select_user_login($login, $password)
     {
@@ -27,8 +27,8 @@ class User_Model extends Model_Abstract
         $password=$this->db->sql_escape_string($password);
 
         // quand tous les password seront mirgés, utilisation de password directement ici a prevoir
-        $request = "SELECT user_id, user_active, user_password_s FROM " . TABLE_USER .
-            " WHERE user_name = '" . $login . "' AND NOT user_password_s = ''";
+        $request = "SELECT `user_id`, `user_active`, `user_password_s` FROM " . TABLE_USER .
+            " WHERE `user_name` = '" . $login . "' AND NOT `user_password_s` = ''";
         $result = $this->db->sql_query($request);
         // si pas de retour, user_password_s non encore initialisé
         if (!$this->db->sql_numrows($result)) {
@@ -44,16 +44,16 @@ class User_Model extends Model_Abstract
      * Permet la connexion avec ancien system de login et migre vers le nouveau
      * @param $login
      * @param $password
-     * @return array
+     * @return array|boolean
      */
     public function select_user_login_legacy($login, $password)
     {
         $login=$this->db->sql_escape_string($login);
         $password=$this->db->sql_escape_string($password);
 
-        $request = "SELECT user_id, user_active FROM " . TABLE_USER .
-            " WHERE user_name = '" . $login .
-            "' AND user_password = '" . md5(sha1($password)) . "'";
+        $request = "SELECT `user_id`, `user_active` FROM " . TABLE_USER .
+            " WHERE `user_name` = '" . $login .
+            "' AND `user_password` = '" . md5(sha1($password)) . "'";
         $result = $this->db->sql_query($request);
 
         // si reponse, password non migré / si rien erreur de login

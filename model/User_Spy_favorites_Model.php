@@ -22,7 +22,7 @@ class User_Spy_favorites_Model  extends Model_Abstract
         $user_id=(int)$user_id;
         $spy_id=(int)$spy_id;
 
-        $request = "insert ignore into " . TABLE_USER_SPY . " (user_id, spy_id) values (" . $user_id . ", " . $spy_id . ")";
+        $request = "INSERT IGNORE INTO " . TABLE_USER_SPY . " (`user_id`, `spy_id`) values ( $user_id, $spy_id)";
         $this->db->sql_query($request);
     }
 
@@ -32,7 +32,7 @@ class User_Spy_favorites_Model  extends Model_Abstract
     {
         $user_id=(int)$user_id;
 
-        $request = "select * from " . TABLE_USER_SPY . " where user_id = " . $user_id;
+        $request = "SELECT * FROM " . TABLE_USER_SPY . " where `user_id` = $user_id ";
         $result = $this->db->sql_query($request);
 
         $tResult = array();
@@ -47,12 +47,12 @@ class User_Spy_favorites_Model  extends Model_Abstract
     {
         $request="";
         if ($user_id==null) {
-            $request = "select * from " . TABLE_USER_SPY . " ";
+            $request = "SELECT * FROM " . TABLE_USER_SPY . " ";
         }
         else
         {
             $user_id=(int)$user_id;
-            $request = "select * from " . TABLE_USER_SPY . " where user_id = " . $user_id;
+            $request = "SELECT * FROM " . TABLE_USER_SPY . " where `user_id` = $user_id ";
         }
         $result = $this->db->sql_query($request);
 
