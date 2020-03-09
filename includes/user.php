@@ -1635,7 +1635,8 @@ function UNparseRC($id_RC)
     $key_ships = array('PT' => $lang['GAME_FLEET_PT_S'], 'GT' => $lang['GAME_FLEET_GT_S'], 'CLE' => $lang['GAME_FLEET_CLE_S'],
         'CLO' => $lang['GAME_FLEET_CLO_S'], 'CR' => $lang['GAME_FLEET_CR_S'], 'VB' => $lang['GAME_FLEET_VB_S'], 'VC' =>
             $lang['GAME_FLEET_VC_S'], 'REC' => $lang['GAME_FLEET_REC_S'], 'SE' => $lang['GAME_FLEET_SE_S'], 'BMD' => $lang['GAME_FLEET_BMD_S'],
-        'DST' => $lang['GAME_FLEET_DST_S'], 'EDLM' => $lang['GAME_FLEET_EDLM_S'], 'SAT' => $lang['GAME_FLEET_SAT_S'], 'TRA' => $lang['GAME_FLEET_TRA_S']);
+        'DST' => $lang['GAME_FLEET_DST_S'], 'EDLM' => $lang['GAME_FLEET_EDLM_S'], 'SAT' => $lang['GAME_FLEET_SAT_S'], 'TRA' => $lang['GAME_FLEET_TRA_S'],
+        'ECL' => $lang['GAME_FLEET_ECL'], 'FAU' => $lang['GAME_FLEET_FAU'], 'FOR' => $lang['GAME_FLEET_FOR']);
     $key_defs = array('LM' => $lang['GAME_DEF_LM_S'], 'LLE' => $lang['GAME_DEF_LLE_S'], 'LLO' => $lang['GAME_DEF_LLO_S'],
         'CG' => $lang['GAME_DEF_CG_S'], 'AI' => $lang['GAME_DEF_AI_S'], 'LP' => $lang['GAME_DEF_LP_S'], 'PB' =>
             $lang['GAME_DEF_PB_S'], 'GB' => $lang['GAME_DEF_GB_S']);
@@ -1644,7 +1645,8 @@ function UNparseRC($id_RC)
             50, 400), 'VB' => array(60000, 200, 1000), 'VC' => array(30000, 100, 50), 'REC' =>
             array(16000, 10, 1), 'SE' => array(1000, 0, 0), 'BMD' => array(75000, 500, 1000),
         'DST' => array(110000, 500, 2000), 'EDLM' => array(9000000, 50000, 200000),
-        'SAT' => array(2000, 1, 1), 'TRA' => array(70000, 400, 700));
+        'SAT' => array(2000, 1, 1), 'TRA' => array(70000, 400, 700),
+        'ECL' => array(23000, 100, 200), 'FAU' => array(140000, 700, 2800), 'FOR' => array(4000, 1, 1));
     $base_defs = array('LM' => array(2000, 20, 80), 'LLE' => array(2000, 25, 100),
         'LLO' => array(8000, 100, 250), 'CG' => array(35000, 200, 1100), 'AI' => array(8000,
             500, 150), 'LP' => array(100000, 300, 3000), 'PB' => array(20000, 2000, 1), 'GB' =>
@@ -1721,6 +1723,8 @@ function UNparseRC($id_RC)
             $DST = $attak["DST"];
             $EDLM = $attak["EDLM"];
             $TRA = $attak["TRA"];
+            $ECL = $attak["ECL"];
+            $FAU = $attak["FAU"];
 
 
             $key = '';
@@ -1742,9 +1746,9 @@ function UNparseRC($id_RC)
                     $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
                 }
             }
-            if ($vivant_att == true) {
+            if ($vivant_att === true) {
                 $template .= ' [' . $coordinates . ']';
-                if ($idx == 1) {
+                if ($idx === 1) {
                     $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
                 }
                 $template .= "\n";
@@ -1779,6 +1783,10 @@ function UNparseRC($id_RC)
             $DST = $defenses["DST"];
             $EDLM = $defenses["EDLM"];
             $TRA = $defenses["TRA"];
+            $ECL = $attak["ECL"];
+            $FOR = $attak["FOR"];
+            $FAU = $attak["FAU"];
+
             $SAT = $defenses["SAT"];
 
             $LM = $defenses["LM"];
@@ -1820,7 +1828,7 @@ function UNparseRC($id_RC)
                     $ship_armes .= "\t" . number_format(round($base_defs[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
                 }
             }
-            if ($vivant_def == true) {
+            if ($vivant_def === true) {
                 $template .= ' [' . $coordinates . ']';
                 if ($idx == 1) {
                     $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
@@ -1835,7 +1843,7 @@ function UNparseRC($id_RC)
 
 
         // Résultat du round
-        if ($attaque_tir != 0 || $defense_tir != 0) {
+        if ($attaque_tir !== 0 || $defense_tir !== 0) {
             $template .= $lang['GAME_CREPORT_RESULT_FLEET'] . ' ' . $nf_attaque_tir .
                 ' ' . $lang['GAME_CREPORT_RESULT_FLEET_1'] . ' ' . $nf_attaque_puissance .
                 ' ' . $lang['GAME_CREPORT_RESULT_FLEET_2'] . ' ' . $nf_defense_bouclier .
@@ -1876,7 +1884,7 @@ function UNparseRC($id_RC)
         $template .= $lang['GAME_CREPORT_RESULT_NO_MOON'] . ' ' . $lunePourcent . ' %';
     }
 
-    if ($lune == 1) {
+    if ($lune === 1) {
         $template .= "\n" . $lang['GAME_CREPORT_RESULT_MOON'] . ".";
     }
 

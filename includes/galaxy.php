@@ -560,7 +560,7 @@ function galaxy_reportspy_show()
  * @global int $pub_system
  * @global int $pub_row
  * @global int $pub_rc_id
- * @return array $reports contenant les rc mis en forme
+ * @return array|bool $reports contenant les rc mis en forme
  */
 function galaxy_reportrc_show()
 {
