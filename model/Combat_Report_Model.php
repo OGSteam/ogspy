@@ -99,8 +99,8 @@ class Combat_Report_Model  extends Model_Abstract
         // recuperation des defenseurs
         $query = "SELECT `id_rcround`, `player`, `coordinates`, `Armes`, `Bouclier`, `Protection`, `PT`, `GT`, `CLE`, `CLO`, `CR`, `VB`, `VC`, `REC`, `SE`, `BMD`, `SAT`, `DST`, `EDLM`, `TRA`, `ECL`, `FAU`, `FOR`, `LM`, `LLE`, `LLO`, `CG`, `AI`, `LP`, `PB`, `GB` FROM " . TABLE_ROUND_DEFENSE . " WHERE  `id_rcround` IN ( $sRcroundId ) ";
         $result_def = $this->db->sql_query($query);
-        while ($def = $this->db->sql_fetch_assoc($result_def)) {
-            $rounds[$attack['id_rcround']]['defenses'][] = $def;
+        while ($defenses = $this->db->sql_fetch_assoc($result_def)) {
+            $rounds[$defenses['id_rcround']]['defenses'][] = $defenses;
         }
 
         $report['rounds'] = $rounds;

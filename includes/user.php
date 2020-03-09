@@ -1751,6 +1751,7 @@ function UNparseRC($id_RC)
             }
             if ($vivant_att === true) {
                 $template .= ' [' . $coordinates . ']';
+                //Ligne Techno
                 if ($idx === 1) {
                     $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
                 }
@@ -1768,6 +1769,7 @@ function UNparseRC($id_RC)
         // Récupération de chaque attaquant du RC
         $idx = 1;
         foreach ($round["defenses"] as $defenses) {
+
             $player = $defenses["player"];
             $coordinates = $defenses["coordinates"];
             $Armes = $defenses["Armes"];
@@ -1811,6 +1813,7 @@ function UNparseRC($id_RC)
             $ship_armes = $lang['GAME_CREPORT_WEAPONS'];
             $ship_bouclier = $lang['GAME_CREPORT_SHIELD'];
             $ship_protection = $lang['GAME_CREPORT_PROTECTION'];
+
             foreach ($key_ships as $key => $ship) {
                 if (isset($$key) && $$key > 0) {
                     $vivant_def = true;
@@ -1831,11 +1834,14 @@ function UNparseRC($id_RC)
                     $ship_armes .= "\t" . number_format(round($base_defs[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
                 }
             }
+
             if ($vivant_def === true) {
                 $template .= ' [' . $coordinates . ']';
+                //Ligne Technos
                 if ($idx == 1) {
                     $template .= ' ' . $lang['GAME_CREPORT_WEAPONS'] . ': ' . $Armes . '% ' . $lang['GAME_CREPORT_SHIELD'] . ': ' . $Bouclier . '% ' . $lang['GAME_CREPORT_PROTECTION'] . ': ' . $Protection . '%';
                 }
+                //Ligne Vaisseaux
                 $template .= "\n";
                 $template .= $ship_type . "\n" . $ship_nombre . "\n" . $ship_armes . "\n" . $ship_bouclier . "\n" . $ship_protection . "\n\n";
             } else {
