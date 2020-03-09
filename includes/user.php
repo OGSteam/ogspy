@@ -1677,6 +1677,9 @@ function UNparseRC($id_RC)
 
     // Récupération de chaque round du RC
     foreach ($tRounds as $round) {
+        // round de Départ (0) inutile
+        if ($round['numround'] === '0' ) continue;
+
         // mise en forme des data pour affichage
         $id_rcround = $round["id_rcround"];
         $attaque_tir = $round["attaque_tir"];
