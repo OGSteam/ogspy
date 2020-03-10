@@ -14,6 +14,11 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+use Ogsteam\Ogspy\Helper\ToolTip_Helper;
+global $user_data;
+$ToolTip_Helper = new ToolTip_Helper();
+
+//var_dump($user_data);
 
 $info_system = galaxy_show();
 $population = $info_system["population"];
@@ -31,13 +36,22 @@ $system_up = (($system - 1) > intval($server_config['num_of_systems'])) ? intval
 $favorites = galaxy_getfavorites();
 
 $missil = "";
-$request_usergroup = $db->sql_query("SELECT u.group_id, u.user_id, g.group_id, g.server_show_positionhided FROM " . TABLE_GROUP . " AS g, " . TABLE_USER_GROUP . " AS u WHERE g.server_show_positionhided >0 AND g.group_id = u.group_id AND u.user_id = '1' LIMIT 1 ");
-if ($db->sql_numrows($request_usergroup)) {
+//TODO sortir requete de la vue
+//recherche du group
+$user_group= (new \Ogsteam\Ogspy\Model\Group_Model())->get_user_group($user_data["user_id"]);
+//recherche des droits liés
+$tInfosGroups = (new \Ogsteam\Ogspy\Model\Group_Model())->get_group_rights($user_group);
+
+
+//si autorisé server_show_positionhided doit etre a 1 !!!!!!!!!!!
+//todo info a communiquer avec release
+if ($tInfosGroups["server_show_positionhided"] == 1 )
+{
     if (($server_config["portee_missil"] != "0" && $server_config["portee_missil"] != "")) {
         $missil = portee_missiles($galaxy, $system);
     }
-
 }
+
 
 
 require_once("views/page_header.php");
@@ -220,7 +234,9 @@ require_once("views/page_header.php");
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
 
-                $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip . "')\">" . $begin_allied . $begin_hided . $ally . $end_hided . $end_allied . "</a>";
+                //------------  Affichage Tooltip ----------------
+                    $ToolTip_Helper->addTooltip("ttp_alliance_".$ally,  $tooltip );
+                    $ally = '<a '.$ToolTip_Helper->GetHTMLClassContent().' href="index.php?action=search&amp;type_search=ally&amp;string_search=' . $ally . '&strict=on">  '.$begin_allied . $begin_hided . $ally . $end_hided . $end_allied .'  </a>';
             }
 
             if ($player == "") {
@@ -267,8 +283,10 @@ require_once("views/page_header.php");
                 } else {
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
-
-                $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $player . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip . "')\">" . $begin_allied . $begin_hided . $player . $end_hided . $end_allied . "</a>";
+                //------------  Affichage Tooltip ----------------
+                $ToolTip_Helper->addTooltip("ttp_player_".$player,  $tooltip );
+                $player = '<a '.$ToolTip_Helper->GetHTMLClassContent().' href="index.php?action=search&amp;type_search=player&amp;string_search=' . $player . '&amp;strict=on">  '.$begin_allied . $begin_hided . $player . $end_hided . $end_allied.'  </a>';
+                //------------  Fin Affichage Tooltip ----------------
             }
 
             if ($status == "") {
@@ -334,8 +352,12 @@ require_once("views/page_header.php");
         } else {
             $legend = htmlentities($legend, ENT_COMPAT, "UTF-8");
         }
-
-        echo "<tr align='center'><td class='c' colspan='9'><a style='cursor:pointer' onmouseover=\"this.T_WIDTH=210;this.T_TEMP=0;return encodeURI('" . $legend . "')\">" . $lang['GALAXY_LEGEND'] . "</a></td></tr>";
+        //------------  Affichage Tooltip ----------------
+        $ToolTip_Helper->addTooltip("legende",  $legend );
+        echo "<tr align='center'><td class='c' colspan='9'>";
+        echo "<a style='cursor:pointer' ".$ToolTip_Helper->GetHTMLClassContent()." >".$lang['GALAXY_LEGEND']."</a>";
+        echo "</td></tr>";
+        //------------ fin Affichage Tooltip ----------------
         echo "</table></form>";
 
 
@@ -374,7 +396,9 @@ require_once("views/page_header.php");
                     } else {
                         $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                     }
-                    echo "[<a href='index.php?action=search&&amp;type_search=ally&amp;string_search=" . $value["ally"] . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip . "')\">" . $value["ally"] . "</a>]" . " ";
+
+                    $ToolTip_Helper->addTooltip("ttp_alliance_".$value["ally"],  $tooltip );
+                    echo "[<a href='index.php?action=search&&amp;type_search=ally&amp;string_search=" . $value["ally"] . "&amp;strict=on'  ".$ToolTip_Helper->GetHTMLClassContent().">" . $value["ally"] . "</a>]" . " ";
                 }
 
                 $individual_ranking = galaxy_show_ranking_unique_player($value["player"]);
@@ -402,7 +426,10 @@ require_once("views/page_header.php");
                 } else {
                     $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
                 }
-                echo "<a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $value["player"] . "&amp;strict=on\" onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip . "')\">" . $value["player"] . "</a> " . $lang['GALAXY_LUNA_PHALANX'] . " " . $value["level"];
+
+                //------------  Affichage Tooltip ----------------
+                $ToolTip_Helper->addTooltip("ttp_player_".$player,  $tooltip );
+                echo "<a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $value["player"] . "&amp;strict=on\" ".$ToolTip_Helper->GetHTMLClassContent().">" . $value["player"] . "</a> " . $lang['GALAXY_LUNA_PHALANX'] . " " . $value["level"];
                 echo " en <a href='index.php?action=galaxy&amp;galaxy=" . $value["galaxy"] . "&amp;system=" . $value["system"] . "'>" . $value["galaxy"] . ":" . $value["system"] . ":" . $value["row"] . "</a> [<span style=\"color: orange; \">" . $value["galaxy"] . ":";
 
 

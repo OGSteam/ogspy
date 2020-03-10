@@ -11,14 +11,16 @@ while [[ RET -ne 0 ]]; do
 done
 
 PASS=${MYSQL_PASS:-$(pwgen -s 12 1)}
-_word=$( [ ${MYSQL_PASS} ] && echo "preset" || echo "random" )
+_word=$( [[ ${MYSQL_PASS} ]] && echo "preset" || echo "random" )
 echo "=> Creating MySQL admin user with ${_word} password"
 
-mysql -uroot -e "CREATE USER 'admin'@'%' IDENTIFIED BY '$PASS'"
-mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION"
+mysql -uroot -e "CREATE USER 'admin'@'localhost' IDENTIFIED BY 'ogsteam'"
+mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' WITH GRANT OPTION"
+#mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' IDENTIFIED VIA unix_socket WITH GRANT OPTION"
+
 mysql -uroot -e "CREATE DATABASE ogspy"
 # You can create a /mysql-setup.sh file to intialized the DB
-if [ -f /mysql-setup.sh ] ; then
+if [[ -f /mysql-setup.sh ]]; then
   . /mysql-setup.sh
 fi
 

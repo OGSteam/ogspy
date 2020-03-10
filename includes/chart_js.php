@@ -237,14 +237,6 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
  * @param string $_comp
  * @return string the gerated JS Code
  * @todo Revoir les erreurs : la variable $conteneur semble incorrecte
- * @todo Query : "select datadate, rank, points";
- * $request .= " from " . $table;
- * $request .= " where player = '" . $db->sql_escape_string($player)
- * @todo Query : $request = "select datadate, rank, points";
- * $request .= " from " . $table;
- * $request .= " where player = '" . $db->sql_escape_string($player_comp) .
- * "'";
- * $request .= " order by datadate desc";
  */
 
 function create_curves($_player, $_date_min, $_date_max, $_comp)
@@ -252,6 +244,7 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
     global $db;
     $retour = "";
 
+    // todo quel est ce $contenur ?
     if (!isset($_player)) {
         $retour .= affiche_error($conteneur, 'erreur 3');
         return $retour;
@@ -269,74 +262,37 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
     $player_comp = $_comp;
 
     // récuperation des datas
+    $name = array();
+    $data = galaxy_show_ranking_unique_player_forJS($player ,$date_min , $date_max);
+    $nametpl = array('general', 'Economique', 'Recherche', 'Militaire', 'Militaire Construits', 'Perte militaire', 'destruction', 'honorifique');
 
-    $data = array();
-    $tables = array(TABLE_RANK_PLAYER_POINTS, TABLE_RANK_PLAYER_ECO,
-        TABLE_RANK_PLAYER_TECHNOLOGY, TABLE_RANK_PLAYER_MILITARY,
-        TABLE_RANK_PLAYER_MILITARY_BUILT, TABLE_RANK_PLAYER_MILITARY_LOOSE,
-        TABLE_RANK_PLAYER_MILITARY_DESTRUCT, TABLE_RANK_PLAYER_HONOR);
     if ($player_comp == "") {
-        $name = array('general', 'Economique', 'Recherche', 'Militaire',
-            'Militaire Construits', 'Perte militaire', 'destruction', 'honorifique');
+        // formatages des noms pour un joueur
+        foreach ($nametpl as $n) {
+            $name[] = $n . " (" . $player . ")";
+        }
     } else {
-        $name = array('general', 'Economique', 'Recherche', 'Militaire',
-            'Militaire Construits', 'Perte militaire', 'destruction', 'honorifique',
-            'general (' . $player_comp . ')', 'Economique (' . $player_comp . ')',
-            'Recherche (' . $player_comp . ')', 'Militaire (' . $player_comp . '',
-            'Militaire Construits (' . $player_comp . '', 'Perte militaire (' . $player_comp .
-            ')', 'destruction (' . $player_comp . ')', 'honorifique (' . $player_comp . ')');
-    }
+        $dataplayer_comp = galaxy_show_ranking_unique_player_forJS($player_comp,$date_min , $date_max);
 
-
-    $players = array($player, $player_comp);
-    // $i permet de correler $table et $name
-    $i = 0;
-
-    foreach ($tables as $table) {
-
-        $request = "select datadate, rank, points";
-        $request .= " from " . $table;
-        $request .= " where player = '" . $db->sql_escape_string($player) .
-            "'";
-        $request .= " order by datadate desc";
-        $result = $db->sql_query($request);
-        while ($row = $db->sql_fetch_assoc($result)) {
-            if ($row['datadate'] >= $date_min && $row['datadate'] <= $date_max) {
-                //  $row[datadate]$row[rank]$row[rank]
-                $time = $row['datadate'] * 1000;
-                // rank
-                $data['rank'][$name[$i]][] = "[" . $time . ", " . $row['rank'] . "]";
-                // point
-                $data['points'][$name[$i]][] = "[" . $time . ", " . $row['points'] . "]";
+        // fusion des datas
+        $names = array("rank", "points");
+        foreach ($names as $n) {
+            foreach ($dataplayer_comp["points"] as $key => $value) {
+                $data[$n][$key] = $value;
             }
         }
 
-        $i++;
-    }
-
-// on garde $i a la derniere valeur 
-    foreach ($tables as $table) {
-
-        $request = "select datadate, rank, points";
-        $request .= " from " . $table;
-        $request .= " where player = '" . $db->sql_escape_string($player_comp) .
-            "'";
-        $request .= " order by datadate desc";
-        $result = $db->sql_query($request);
-        while ($row = $db->sql_fetch_assoc($result)) {
-            if ($row['datadate'] >= $date_min && $row['datadate'] <= $date_max) {
-                //  $row[datadate]$row[rank]$row[rank]
-                $time = $row['datadate'] * 1000;
-                // rank
-                $data['rank'][$name[$i]][] = "[" . $time . ", " . $row['rank'] . "]";
-                // point
-                $data['points'][$name[$i]][] = "[" . $time . ", " . $row['points'] . "]";
+        // formatages des noms pour deux joueurs
+        $players = array($player,$player_comp);
+        $name=array();
+        foreach ($players as $p)
+        {
+            foreach ($nametpl as $n) {
+                $name[] = $n . " (" . $p . ")";
             }
+
         }
-
-        $i++;
     }
-
 
     if (isset($data['points'])) {
         $retour .= create_multi_curve("Points", $player, $data['points'], $name,
@@ -349,8 +305,6 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
 
     }
     return $retour;
-
-
 }
 
 
@@ -674,7 +628,7 @@ function create_multi_curve($titre, $sous_titre, $data, $names, $conteneur, $the
     if (isset($names)) {
         foreach ($names as $name) {
             if (isset($data[$name])) { //au moins 2 résultats
-    
+
                 $series[] = "{ name: '" . $name . "',data: [" . implode(',', $data[$name]) .
                     "]}";
             }

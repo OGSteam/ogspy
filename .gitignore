@@ -10,6 +10,9 @@
 .idea/php.xml
 .idea/inspectionProfiles/
 .idea/vcs.xml
+.idea/misc.xml
+.idea/deployment.xml
+.idea/bashsupport_project.xml
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -20,6 +23,7 @@
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/webServers.xml
+.idea/sqldialects.xml
 
 # Gradle:
 .idea/**/gradle.xml
@@ -38,6 +42,7 @@ parameters/key.php
 parameters/id.php
 journal/*/*.htm
 journal/*/*.log
+journal/*/*.sql
 cache/*.php
 config/id.php
 config/key.php
@@ -46,7 +51,14 @@ mod/*
 parameters/salt
 parameters/mail.php
 
-.idea/deployment.xml
+
 OGSpy.code-workspace
-.idea/sqldialects.xml
-.idea/vcs.xml
+
+ogspy.iml
+*.zip
+install*
+!install/index.php
+!install/install.php
+!install/schemas/ogspy_structure.sql
+!install/upgrade_to_latest.php
+!install/version.php

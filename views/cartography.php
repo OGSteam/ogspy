@@ -14,6 +14,10 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+use Ogsteam\Ogspy\Helper\ToolTip_Helper;
+$ToolTip_Helper = new ToolTip_Helper();
+$TtlCounter=0;
+
 $galaxy_step = $server_config['galaxy_by_line_ally'];
 $galaxy_down = 1;
 $galaxy = 1;
@@ -124,11 +128,14 @@ require_once("views/page_header.php");
                         }
                         $tooltip[$i] .= "</table>";
                         if (version_compare(phpversion(), '5.4.0', '>=')) {
-                            $tooltip[$i] = " onmouseover=\"this.T_WIDTH=210;this.T_TEMP=15000;return encodeURI('" . htmlentities($tooltip[$i], ENT_COMPAT | ENT_HTML401, "UTF-8") . "')\"";
-                        } else {
-                            $tooltip[$i] = " onmouseover=\"this.T_WIDTH=210;this.T_TEMP=15000;return encodeURI('" . htmlentities($tooltip[$i], ENT_COMPAT, "UTF-8") . "')\"";
-                        }
-
+                            $ToolTip_Helper->addTooltip("ttp_cartographie_".$value["player"]."_".$TtlCounter,  htmlentities($tooltip[$i], ENT_COMPAT | ENT_HTML401, "UTF-8")  );
+                            $tooltip[$i] = $ToolTip_Helper->GetHTMLClassContent();
+                            $TtlCounter++;
+                          } else {
+                            $ToolTip_Helper->addTooltip("ttp_cartographie_".$value["player"]."_".$TtlCounter,  htmlentities($tooltip[$i], ENT_COMPAT, "UTF-8")   );
+                            $tooltip[$i] = $ToolTip_Helper->GetHTMLClassContent();
+                            $TtlCounter++;
+                          }
                         $nb_player[$i] = $galaxy_ally_position[$ally_name][$galaxy][$system]["planet"];
                     }
                     $i++;

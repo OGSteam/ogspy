@@ -17,11 +17,12 @@ if (!defined('IN_SPYOGAME')) {
 require_once("includes/ogame.php");
 
 $user_empire = user_get_empire($user_data['user_id']);
+
 $user_building = $user_empire["building"];
+
 $user_defence = $user_empire["defence"];
 $user_technology = $user_empire["technology"];
 $user_production = user_empire_production($user_empire, $user_data);
-
 
 if (!isset($pub_view) || $pub_view == "") {
     $view = "planets";
@@ -59,10 +60,10 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             /*Boosters et extensions modification :
              * => calcul effectué dans fonction  get empire*/
 
-
             $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
             if(isset($booster_tab[$i])) {
-                $user_building[$i]["fields"] += $booster_tab[$i]['extention_p'];
+                $iFields = (int) $user_building[$i]["fields"]; // si pas d'info sur batiment, variable string
+                $user_building[$i]["fields"]= $iFields  + $booster_tab[$i]['extention_p'];
             }
 
             $name .= "'".$user_building[$i]["planet_name"]."', ";
@@ -308,7 +309,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             ?>
         </tr>
         <tr>
-            <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>"><?php echo($lang['HOME_EMPIRE_EXPECTED_PRODUCTION']); ?></td>
+            <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>"><?php echo($lang['HOME_EMPIRE_PRODUCTION_EXPECTED']); ?></td>
         </tr>
         <tr>
             <th><a><?php echo($lang['HOME_EMPIRE_METAL']); ?></a></th>
@@ -327,7 +328,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                 if ($M != "") {
                     echo "\t" . "<th>" . $user_production['theorique'][$i]['M'] . "</th>" . "\n";
                 } else {
-                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                    echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
 
             }
@@ -343,7 +344,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                     echo "\t" . "<th>" . $user_production['theorique'][$i]['C'] . "</th>" . "\n";
 
                 } else {
-                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                    echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
             }
             ?>
@@ -357,7 +358,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
                     echo "\t" . "<th>" . $user_production['theorique'][$i]['D'] . "</th>" . "\n";
                 } else {
-                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                    echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
             }
             ?>
@@ -374,9 +375,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
             ?>
         <tr>
-            <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">Production
-                R&eacute;elle
-            </td>
+            <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>"><?php echo($lang['HOME_EMPIRE_PRODUCTION_REAL']); ?></td>
         </tr>
         <tr>
             <th><a><?php echo($lang['HOME_EMPIRE_RATIO']); ?></a></th>
@@ -404,7 +403,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                 if ($user_building[$i]["M"] != "") {
                     echo "\t" . "<th>" . number_format(floor($user_production['reel'][$i]['M']), 0, ',', ' ') . "</th>" . "\n";
                 } else {
-                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                    echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
             }
             ?>
@@ -416,7 +415,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                 if ($user_building[$i]["C"] != "") {
                     echo "\t" . "<th>" . number_format(floor($user_production['reel'][$i]['C']), 0, ',', ' ') . "</th>" . "\n";
                 } else {
-                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                    echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
             }
             ?>
@@ -428,7 +427,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
                 if ($user_building[$i]["D"] != "") {
                     echo "\t" . "<th>" . number_format(floor($user_production['reel'][$i]['D']), 0, ',', ' ') . "</th>" . "\n";
                 } else {
-                    echo "\t" . "<th>&nbsp</th>" . "\n";
+                    echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
             }
             ?>
@@ -734,6 +733,21 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             }
 
             if ($view == "planets") {
+            ?>
+        </tr>
+        <tr>
+            <th><a><?php echo($lang['HOME_EMPIRE_CRAWLER']); ?></a></th>
+            <?php
+            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
+                $For = $user_building[$i]["FOR"];
+                if ($For == "") {
+                    $For = "&nbsp;";
+                } else {
+                    $For = number_format($For, 0, ',', ' ');
+                }
+
+                echo "\t" . "<th><span  id='6" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $For . "</span></th>" . "\n";
+            }
             ?>
         </tr>
         <tr>
@@ -1285,7 +1299,7 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
             <th><a><?php echo($lang['HOME_EMPIRE_WEAPONS_SMALLSHIELD']); ?></a></th>
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $PB = $user_defence[$i]["PB"];
+              $PB = $user_defence[$i]["PB"];
                 if ($PB == "") {
                     $PB = "&nbsp;";
                 }

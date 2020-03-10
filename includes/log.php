@@ -360,18 +360,15 @@ function ogspy_error_handler($code, $message, $file, $line)
     global $ogspy_phperror;
     $option = Array($code, $message, $file, $line);
     log_("php_error", Array($code, $message, $file, $line));
-    global $user_data;
-    if ($user_data["user_admin"] == 1) {
-        $line = "[PHP-ERROR] " . $option[0] . " - " . $option[1];
-        if (isset($option[2])) {
-            $line .= " ; Fichier: " . $option[2];
-        }
-        if (isset($option[3])) {
-            $line .= " ; Ligne: " . $option[3];
-        }
-        if ($option[0] != 8) {
-            $ogspy_phperror[] = $line;
-        }
+    $line = "[PHP-ERROR] " . $option[0] . " - " . $option[1];
+    if (isset($option[2])) {
+        $line .= " ; Fichier: " . $option[2];
+    }
+    if (isset($option[3])) {
+        $line .= " ; Ligne: " . $option[3];
+    }
+    if ($option[0] != 8) {
+        $ogspy_phperror[] = $line;
     }
 }
 

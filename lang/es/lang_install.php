@@ -18,10 +18,10 @@ $lang['INSTALL_PROJECT_L3'] = "Registro de todas las coordenadas segun distintos
 $lang['INSTALL_PROJECT_L4'] = "Registro de todos los planetas de un jugador o alianza. Información primordial en períodos de guerras";
 $lang['INSTALL_PROJECT_L5'] = "Posibilidades practicamente ilimitadas gracias a los módulos";
 $lang['INSTALL_PROJECT_L6'] = "Etc ...";
-$lang['INSTALL_FORUM'] = "Si deseas mas información, comentanos en el foro: : <a href='http://www.ogsteam.fr/' target='_blank'>http://www.ogsteam.fr/</a>";
+$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href='https://www.ogsteam.fr/' target='_blank'>https://www.ogsteam.fr/</a>";
 
 $lang['INSTALL_PHPERROR'] = "Versión de PHP insuficiciente";
-$lang['INSTALL_PHP_ADVISE'] = "Para realizar una instalación completa de OGSpy, debes disponer de una versión mínima de PHP 5.";
+$lang['INSTALL_PHP_ADVISE'] = "Pour pouvoir effectuer une installation complète d'OGSpy, votre hébergement doit être doté au minimum de la version 7 de PHP.";
 $lang['INSTALL_PHPVERSION'] = "Actualmente tienes la versión: ";
 $lang['INSTALL_ACTION'] = "Elige la acción que deseas realizar";
 $lang['INSTALL_ACTION_FULL'] = "Instalación completada";

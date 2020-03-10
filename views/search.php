@@ -18,6 +18,9 @@ if (!defined('IN_SPYOGAME')) {
 $search_result = array();
 list($search_result, $total_page) = galaxy_search();
 
+use Ogsteam\Ogspy\Helper\ToolTip_Helper;
+$ToolTip_Helper = new ToolTip_Helper();
+
 @$string_search = $pub_string_search;
 @$type_search = $pub_type_search;
 @$strict = $pub_strict;
@@ -378,8 +381,9 @@ require_once("views/page_header.php");
                             $tooltip[$v["ally"]] = htmlentities($tooltip[$v["ally"]], ENT_COMPAT, "UTF-8");
                         }
 
-
-                        $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $v["ally"] . "&amp;strict=on' onmouseover=\"this.T_WIDTH=260;this.T_TEMP=15000;return encodeURI('" . $tooltip[$v["ally"]] . "')\">" . $begin_allied . $begin_hided . $v["ally"] . $end_hided . $end_allied . "</a>";
+                        //------------  Affichage Tooltip ----------------
+                        $ToolTip_Helper->addTooltip("ttp_alliance_".$v["ally"], $tooltip[$v["ally"]]   );
+                        $ally = "<a href='index.php?action=search&amp;type_search=ally&amp;string_search=" . $v["ally"] . "&amp;strict=on' ".$ToolTip_Helper->GetHTMLClassContent().">" . $begin_allied . $begin_hided . $v["ally"] . $end_hided . $end_allied . "</a>";
                     }
 
                     if ($v["player"] == "") {
@@ -426,8 +430,9 @@ require_once("views/page_header.php");
                                 $tooltip[$v["player"]] = htmlentities($tooltip[$v["player"]], ENT_COMPAT, "UTF-8");
                             }
                         }
-
-                        $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $v["player"] . "'&amp;strict=on onmouseover=\"this.T_WIDTH=260;return encodeURI('" . $tooltip[$v["player"]] . "')\">" . $begin_allied . $begin_hided . $v["player"] . $end_hided . $end_allied . "</a>";
+                        //------------  Affichage Tooltip ----------------
+                        $ToolTip_Helper->addTooltip("ttp_player_".$v["player"], $tooltip[$v["player"]]   );
+                        $player = "<a href='index.php?action=search&amp;type_search=player&amp;string_search=" . $v["player"] . "'&amp;strict=on ".$ToolTip_Helper->GetHTMLClassContent().">" . $begin_allied . $begin_hided . $v["player"] . $end_hided . $end_allied . "</a>";
                     }
 
                     if ($v["status"] == "") {

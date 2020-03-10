@@ -82,25 +82,24 @@ if (sizeof($dates) > 0) {
 ?>
 <div style="text-align: center;">
     <form method="get" action="index.php">
-        <input type="hidden" name="action" value="home"/> <input
-            type="hidden" name="subaction" value="stat"/> <input type="hidden"
-                                                                 name="zoom" value="<?php echo $zoom; ?>"/>
+        <input type="hidden" name="action" value="home"/>
+        <input type="hidden" name="subaction" value="stat"/>
+        <input type="hidden" name="zoom" value="<?php echo $zoom; ?>"/>
         <table>
             <tr>
                 <td class='c'><?php echo($lang['HOME_STATS_STATISTICS']); ?></td>
                 <td class='c' colspan='2'><?php echo($lang['HOME_STATS_OPTIONS']); ?></td>
             </tr>
             <tr>
-                <th><input type="text" name="user_stat_name"
-                           value="<?php echo $user_data["user_stat_name"]; ?>"/> <input
-                        type="submit" value="<?php echo($lang['HOME_STATS_GETSTATS']); ?>"/>
+                <th><input type="text" name="user_stat_name" value="<?php echo $user_data["user_stat_name"]; ?>"/>
+                    <input type="submit" value="<?php echo($lang['HOME_STATS_GETSTATS']); ?>"/>
                 </th>
-                <th rowspan="2"><span style="text-decoration: underline;"><?php echo($lang['HOME_STATS_INTERVAL']); ?></span> : <?php echo($lang['HOME_STATS_FROM']); ?> <input type="text"
-                                                                      size="10" maxlength="10" name="start_date"
-                                                                      value="<?php echo strftime("%d/%m/%Y", $min_date + 60 * 60 * 2); ?>"/>
-                    <?php echo($lang['HOME_STATS_TO']); ?> <input type="text" size="10" maxlength="10" name="end_date"
-                              value="<?php echo strftime("%d/%m/%Y", $max_date); ?>"/> <input
-                        type="submit" value="<?php echo($lang['HOME_STATS_SEND']); ?>"/></th>
+                <th rowspan="2"><span style="text-decoration: underline;"><?php echo($lang['HOME_STATS_INTERVAL']); ?></span> : <?php echo($lang['HOME_STATS_FROM']); ?>
+                    <input type="text" size="10" maxlength="10" name="start_date" value="<?php echo strftime("%d/%m/%Y", $min_date + 60 * 60 * 2); ?>"/>
+                    <?php echo($lang['HOME_STATS_TO']); ?>
+                    <input type="text" size="10" maxlength="10" name="end_date" value="<?php echo strftime("%d/%m/%Y", $max_date); ?>"/>
+                    <input type="submit" value="<?php echo($lang['HOME_STATS_SEND']); ?>"/>
+                </th>
                 <th rowspan="2"><?php echo($lang['HOME_STATS_ZOOM']); ?> : <input type="image" align="absmiddle"
                                               name="zoom_change"
                                               src="images/<?php echo($zoom == "true" ? "zoom_in.png" : "zoom_out.png"); ?>"
@@ -108,22 +107,18 @@ if (sizeof($dates) > 0) {
                 </th>
             </tr>
             <tr>
-                <th><input type="text" name="player_comp"
-                           value="<?php echo $player_comp; ?>"/> <input type="submit"
-                                                                        value="<?php echo($lang['HOME_STATS_COMPARE']); ?>"/></th>
+                <th><input type="text" name="player_comp" value="<?php echo $player_comp; ?>"/>
+                     <input type="submit" value="<?php echo($lang['HOME_STATS_COMPARE']); ?>"/></th>
             </tr>
         </table>
     </form>
 
     <?php
-    $first = array("general_pts" => -1, "eco_pts" => -1, "techno_pts" => -1,
-        "military_pts" => -1, "military_b_pts" => -1, "military_l_pts" => -1,
-        "military_d_pts" => -1, "honnor_pts" => -1);
-    $last = array("general_pts" => 0, "eco_pts" => 0, "techno_pts" => 0,
-        "military_pts" => 0, "military_b_pts" => 0, "military_l_pts" => 0,
-        "military_d_pts" => 0, "honnor_pts" => 0, "general_rank" => 0, "eco_rank" => 0,
-        "techno_rank" => 0, "military_rank" => 0, "military_b_rank" => 0,
-        "military_l_rank" => 0, "military_d_rank" => 0, "honnor_rank" => 0);
+    $first = array("general_pts" => -1, "eco_pts" => -1, "techno_pts" => -1, "military_pts" => -1, "military_b_pts" => -1, "military_l_pts" => -1,
+                   "military_d_pts" => -1, "honnor_pts" => -1);
+    $last = array("general_pts" => 0, "eco_pts" => 0, "techno_pts" => 0, "military_pts" => 0, "military_b_pts" => 0, "military_l_pts" => 0,
+                  "military_d_pts" => 0, "honnor_pts" => 0, "general_rank" => 0, "eco_rank" => 0, "techno_rank" => 0, "military_rank" => 0,
+                  "military_b_rank" => 0, "military_l_rank" => 0, "military_d_rank" => 0, "honnor_rank" => 0);
     $tab_rank = "";
 
 
@@ -244,35 +239,23 @@ if (sizeof($dates) > 0) {
         $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : "&nbsp;";
 
 
-        $tab_rank = "\t\t\t" . "<th width='40'><font color='lime'><i>" . $honnor_rank .
-            "</i></font></th>" . "\n" . $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='70'>" . $honnor_points . "</th>" . "\n" . $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='40'><font color='lime'><i>" . $military_d_rank .
-            "</i></font></th>" . "\n" . $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='70'>" . $military_d_points . "</th>" . "\n" .
-            $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='40'><font color='lime'><i>" . $military_l_rank .
-            "</i></font></th>" . "\n" . $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='70'>" . $military_l_points . "</th>" . "\n" .
-            $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='40'><font color='lime'><i>" . $military_b_rank .
-            "</i></font></th>" . "\n" . $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='70'>" . $military_b_points . "</th>" . "\n" .
-            $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='40'><font color='lime'><i>" . $military_rank .
-            "</i></font></th>" . "\n" . $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='70'>" . $military_points . "</th>" . "\n" . $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='40'><font color='lime'><i>" . $techno_rank .
-            "</i></font></th>" . "\n" . $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='70'>" . $techno_points . "</th>" . "\n" . $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='40'><font color='lime'><i>" . $eco_rank .
-            "</i></font></th>" . "\n" . $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='70'>" . $eco_points . "</th>" . "\n" . $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='40'><font color='lime'><i>" . $general_rank .
-            "</i></font></th>" . "\n" . $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='70'>" . $general_points . "</th>" . "\n" . $tab_rank;
-        $tab_rank = "\t\t\t" . "<th width='180'>" . strftime("%d %b %Y %H:%M", $v) .
-            "</th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:40px;' ><span style=\"color: lime; \"><i>" . $honnor_rank . "</i></span></th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:70px;'>" . $honnor_points . "</th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:40px;'><span style=\"color: lime; \"><i>" . $military_d_rank . "</i></span></th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:70px;'>" . $military_d_points . "</th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:40px;'><span style=\"color: lime; \"><i>" . $military_l_rank . "</i></span></th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:70px;'>" . $military_l_points . "</th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:40px;'><span style=\"color: lime; \"><i>" . $military_b_rank . "</i></span></th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:70px;'>" . $military_b_points . "</th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:40px;'><span style=\"color: lime; \"><i>" . $military_rank . "</i></span></th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:70px;'>" . $military_points . "</th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:40px;'><span style=\"color: lime; \"><i>" . $techno_rank . "</i></span></th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:70px;'>" . $techno_points . "</th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:40px;'><span style=\"color: lime; \"><i>" . $eco_rank . "</i></span></th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:70px;'>" . $eco_points . "</th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:40px;'><span style=\"color: lime; \"><i>" . $general_rank . "</i></span></th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:70px;'>" . $general_points . "</th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:180px;'>" . strftime("%d %b %Y %H:%M", $v) . "</th>" . "\n" . $tab_rank;
         $tab_rank = "\t\t" . "<tr>" . "\n" . $tab_rank;
 
         next($individual_ranking);
@@ -329,19 +312,16 @@ if ($player_comp != "" && isset($player_comp)): ?>
 
     $nb_planete = find_nb_planete_user($user_data["user_id"]);
 
-    $b = round(all_building_cumulate(array_slice($user_building, 0, $nb_planete)) /
-        1000);
-    $d = round(all_defence_cumulate(array_slice($user_defence, 0, $nb_planete)) /
-        1000);
-    $l = round(all_lune_cumulate(array_slice($user_building, $nb_planete, $nb_planete),
-            array_slice($user_defence, $nb_planete, $nb_planete)) / 1000);
+    $b = round(all_building_cumulate(array_slice($user_building, 0, $nb_planete)) / 1000);
+    $d = round(all_defence_cumulate(array_slice($user_defence, 0, $nb_planete)) / 1000);
+    $l = round(all_lune_cumulate(array_slice($user_building, $nb_planete, $nb_planete), array_slice($user_defence, $nb_planete, $nb_planete)) / 1000);
     $t = round(all_technology_cumulate($user_technology) / 1000);
     $f = $last["general_pts"] - $b - $d - $l - $t;
     if ($f < 0) {
             $f = 0;
     }
 
-
+    echo "<tr>";
     // affichage premier camembert
     $pie_point = "";
     echo "<th align='center' width='400'>";
@@ -371,8 +351,7 @@ if ($player_comp != "" && isset($player_comp)): ?>
     for ($i = 1; $i <= $nb_planete; $i++) {
         $b = round(all_building_cumulate(array_slice($user_building, $i - 1, 1)) / 1000);
         $d = round(all_defence_cumulate(array_slice($user_defence, $i - 1, 1)) / 1000);
-        $l = round(all_lune_cumulate(array_slice($user_building, $i + $nb_planete - 1, 1),
-                array_slice($user_defence, $i + $nb_planete - 1, 1)) / 1000);
+        $l = round(all_lune_cumulate(array_slice($user_building, $i + $nb_planete - 1, 1), array_slice($user_defence, $i + $nb_planete - 1, 1)) / 1000);
         if ($b != 0 || $d != 0 || $l != 0) {
             $planet[] = $b + $d + $l;
             $planet_name[] = $user_building[$i + 100]['planet_name'];
@@ -424,74 +403,55 @@ if ($player_comp != "" && isset($player_comp)): ?>
 
         echo $tab_rank;
         echo "\t\t" . "<tr>" . "\n";
-        echo "\t\t\t" . "<th width='150' style='border-color:#FF0000'><font color='yellow'>" . $lang['HOME_STATS_PROGRESS_RATE'] . " :</font></th>" .
+        echo "\t\t\t" . "<th style='width:150px;border-color:#FF0000'><span style=\"color: yellow; \">" . $lang['HOME_STATS_PROGRESS_RATE'] . " :</span></th>" .
             "\n";
-        echo "\t\t\t" . "<th width='70' style='border-color:#FF0000'>" . (($first["general_pts"] ==
-                -1 || $last_date["general"] == $first_date["general"]) ? "-" : round(($last["general_pts"] -
-                    $first["general_pts"]) * 60 * 60 * 24 / ($last_date["general"] - $first_date["general"]),
-                2)) . "</th>" . "\n";
-        echo "\t\t\t" . "<th width='40' style='border-color:#FF0000'><font color='lime'><i>" . (($first["general_pts"] ==
-                -1 || $last_date["general"] == $first_date["general"]) ? "-" : round(($last["general_rank"] -
-                        $first["general_rank"]) * 60 * 60 * 24 / ($last_date["general"] - $first_date["general"]),
-                    2) * (-1)) . "</i></font></th>" . "\n";
-        echo "\t\t\t" . "<th width='70' style='border-color:#FF0000'>" . (($first["eco_pts"] ==
-                -1 || $last_date["eco"] == $first_date["eco"]) ? "-" : round(($last["eco_pts"] -
-                    $first["eco_pts"]) * 60 * 60 * 24 / ($last_date["eco"] - $first_date["eco"]), 2)) .
-            "</th>" . "\n";
-        echo "\t\t\t" . "<th width='40' style='border-color:#FF0000'><font color='lime'><i>" . (($first["eco_pts"] ==
-                -1 || $last_date["eco"] == $first_date["eco"]) ? "-" : round(($last["eco_rank"] -
-                        $first["eco_rank"]) * 60 * 60 * 24 / ($last_date["eco"] - $first_date["eco"]), 2) *
-                (-1)) . "</i></font></th>" . "\n";
-        echo "\t\t\t" . "<th width='70' style='border-color:#FF0000'>" . (($first["techno_pts"] ==
-                -1 || $last_date["techno"] == $first_date["techno"]) ? "-" : round(($last["techno_pts"] -
-                    $first["techno_pts"]) * 60 * 60 * 24 / ($last_date["techno"] - $first_date["techno"]),
-                2)) . "</th>" . "\n";
-        echo "\t\t\t" . "<th width='40' style='border-color:#FF0000'><font color='lime'><i>" . (($first["techno_pts"] ==
-                -1 || $last_date["techno"] == $first_date["techno"]) ? "-" : round(($last["techno_rank"] -
-                        $first["techno_rank"]) * 60 * 60 * 24 / ($last_date["techno"] - $first_date["techno"]),
-                    2) * (-1)) . "</i></font></th>" . "\n";
-        echo "\t\t\t" . "<th width='70' style='border-color:#FF0000'>" . (($first["military_pts"] ==
-                -1 || $last_date["military"] == $first_date["military"]) ? "-" : round(($last["military_pts"] -
-                    $first["military_pts"]) * 60 * 60 * 24 / ($last_date["military"] - $first_date["military"]),
-                2)) . "</th>" . "\n";
-        echo "\t\t\t" . "<th width='40' style='border-color:#FF0000'><font color='lime'><i>" . (($first["military_pts"] ==
-                -1 || $last_date["military"] == $first_date["military"]) ? "-" : round(($last["military_rank"] -
-                        $first["military_rank"]) * 60 * 60 * 24 / ($last_date["military"] - $first_date["military"]),
-                    2) * (-1)) . "</i></font></th>" . "\n";
-        echo "\t\t\t" . "<th width='70' style='border-color:#FF0000'>" . (($first["military_b_pts"] ==
-                -1 || $last_date["military_b"] == $first_date["military_b"]) ? "-" : round(($last["military_b_pts"] -
-                    $first["military_b_pts"]) * 60 * 60 * 24 / ($last_date["military_b"] - $first_date["military_b"]),
-                2)) . "</th>" . "\n";
-        echo "\t\t\t" . "<th width='40' style='border-color:#FF0000'><font color='lime'><i>" . (($first["military_b_pts"] ==
-                -1 || $last_date["military_b"] == $first_date["military_b"]) ? "-" : round(($last["military_b_rank"] -
-                        $first["military_b_rank"]) * 60 * 60 * 24 / ($last_date["military_b"] - $first_date["military_b"]),
-                    2) * (-1)) . "</i></font></th>" . "\n";
-        echo "\t\t\t" . "<th width='70' style='border-color:#FF0000'>" . (($first["military_l_pts"] ==
-                -1 || $last_date["military_l"] == $first_date["military_l"]) ? "-" : round(($last["military_l_pts"] -
-                    $first["military_l_pts"]) * 60 * 60 * 24 / ($last_date["military_l"] - $first_date["military_l"]),
-                2)) . "</th>" . "\n";
-        echo "\t\t\t" . "<th width='40' style='border-color:#FF0000'><font color='lime'><i>" . (($first["military_l_pts"] ==
-                -1 || $last_date["military_l"] == $first_date["military_l"]) ? "-" : round(($last["military_l_rank"] -
-                        $first["military_l_rank"]) * 60 * 60 * 24 / ($last_date["military_l"] - $first_date["military_l"]),
-                    2) * (-1)) . "</i></font></th>" . "\n";
-        echo "\t\t\t" . "<th width='70' style='border-color:#FF0000'>" . (($first["military_d_pts"] ==
-                -1 || $last_date["military_d"] == $first_date["military_d"]) ? "-" : round(($last["military_d_pts"] -
-                    $first["military_d_pts"]) * 60 * 60 * 24 / ($last_date["military_d"] - $first_date["military_d"]),
-                2)) . "</th>" . "\n";
-        echo "\t\t\t" . "<th width='40' style='border-color:#FF0000'><font color='lime'><i>" . (($first["military_d_pts"] ==
-                -1 || $last_date["military_d"] == $first_date["military_d"]) ? "-" : round(($last["military_d_rank"] -
-                        $first["military_d_rank"]) * 60 * 60 * 24 / ($last_date["military_d"] - $first_date["military_d"]),
-                    2) * (-1)) . "</i></font></th>" . "\n";
-        echo "\t\t\t" . "<th width='70' style='border-color:#FF0000'>" . (($first["honnor_pts"] ==
-                -1 || $last_date["honnor"] == $first_date["honnor"]) ? "-" : round(($last["honnor_pts"] -
-                    $first["honnor_pts"]) * 60 * 60 * 24 / ($last_date["honnor"] - $first_date["honnor"]),
-                2)) . "</th>" . "\n";
-        echo "\t\t\t" . "<th width='40' style='border-color:#FF0000'><font color='lime'><i>" . (($first["honnor_pts"] ==
-                -1 || $last_date["honnor"] == $first_date["honnor"]) ? "-" : round(($last["honnor_rank"] -
-                        $first["honnor_rank"]) * 60 * 60 * 24 / ($last_date["honnor"] - $first_date["honnor"]),
-                    2) * (-1)) . "</i></font></th>" . "\n</tr>";
+        echo "\t\t\t" . "<th style='width:70px;border-color:#FF0000'>" . (($first["general_pts"] == -1 ||
+                $last_date["general"] == $first_date["general"]) ? "-" : round(($last["general_pts"] - $first["general_pts"]) * 60 * 60 * 24 / ($last_date["general"] - $first_date["general"]),2)) . "</th>" . "\n";
 
+        echo "\t\t\t" . "<th style='width:40px;border-color:#FF0000'><span style=\"color: lime; \"><i>" . (($first["general_pts"] == -1 ||
+                $last_date["general"] == $first_date["general"]) ? "-" : round(($last["general_rank"] - $first["general_rank"]) * 60 * 60 * 24 / ($last_date["general"] - $first_date["general"]), 2) * (-1)) . "</i></span></th>" . "\n";
 
+        echo "\t\t\t" . "<th style='width:70px;border-color:#FF0000'>" . (($first["eco_pts"] == -1 ||
+                $last_date["eco"] == $first_date["eco"]) ? "-" : round(($last["eco_pts"] - $first["eco_pts"]) * 60 * 60 * 24 / ($last_date["eco"] - $first_date["eco"]), 2)) . "</th>" . "\n";
+
+        echo "\t\t\t" . "<th style='width:40px;border-color:#FF0000'><span style=\"color: lime; \"><i>" . (($first["eco_pts"] == -1 ||
+                $last_date["eco"] == $first_date["eco"]) ? "-" : round(($last["eco_rank"] - $first["eco_rank"]) * 60 * 60 * 24 / ($last_date["eco"] - $first_date["eco"]), 2) * (-1)) . "</i></span></th>" . "\n";
+
+        echo "\t\t\t" . "<th style='width:70px;border-color:#FF0000'>" . (($first["techno_pts"] == -1 ||
+                $last_date["techno"] == $first_date["techno"]) ? "-" : round(($last["techno_pts"] - $first["techno_pts"]) * 60 * 60 * 24 / ($last_date["techno"] - $first_date["techno"]),2)) . "</th>" . "\n";
+
+        echo "\t\t\t" . "<th style='width:40px;border-color:#FF0000'><span style=\"color: lime; \"><i>" . (($first["techno_pts"] == -1 ||
+                $last_date["techno"] == $first_date["techno"]) ? "-" : round(($last["techno_rank"] - $first["techno_rank"]) * 60 * 60 * 24 / ($last_date["techno"] - $first_date["techno"]),2) * (-1)) . "</i></span></th>" . "\n";
+
+        echo "\t\t\t" . "<th style='width:70px;border-color:#FF0000'>" . (($first["military_pts"] == -1 ||
+                $last_date["military"] == $first_date["military"]) ? "-" : round(($last["military_pts"] - $first["military_pts"]) * 60 * 60 * 24 / ($last_date["military"] - $first_date["military"]),2)) . "</th>" . "\n";
+
+        echo "\t\t\t" . "<th style='width:40px;border-color:#FF0000'><span style=\"color: lime; \"><i>" . (($first["military_pts"] == -1 ||
+                $last_date["military"] == $first_date["military"]) ? "-" : round(($last["military_rank"] - $first["military_rank"]) * 60 * 60 * 24 / ($last_date["military"] - $first_date["military"]),2) * (-1)) . "</i></span></th>" . "\n";
+
+        echo "\t\t\t" . "<th style='width:70px;border-color:#FF0000'>" . (($first["military_b_pts"] == -1 ||
+                $last_date["military_b"] == $first_date["military_b"]) ? "-" : round(($last["military_b_pts"] - $first["military_b_pts"]) * 60 * 60 * 24 / ($last_date["military_b"] - $first_date["military_b"]),2)) . "</th>" . "\n";
+
+        echo "\t\t\t" . "<th style='width:40px;border-color:#FF0000'><span style=\"color: lime; \"><i>" . (($first["military_b_pts"] == -1 ||
+                $last_date["military_b"] == $first_date["military_b"]) ? "-" : round(($last["military_b_rank"] - $first["military_b_rank"]) * 60 * 60 * 24 / ($last_date["military_b"] - $first_date["military_b"]),2) * (-1)) . "</i></span></th>" . "\n";
+
+        echo "\t\t\t" . "<th style='width:70px;border-color:#FF0000'>" . (($first["military_l_pts"] == -1 ||
+                $last_date["military_l"] == $first_date["military_l"]) ? "-" : round(($last["military_l_pts"] - $first["military_l_pts"]) * 60 * 60 * 24 / ($last_date["military_l"] - $first_date["military_l"]),2)) . "</th>" . "\n";
+
+        echo "\t\t\t" . "<th style='width:40px;border-color:#FF0000'><span style=\"color: lime; \"><i>" . (($first["military_l_pts"] == -1 ||
+                $last_date["military_l"] == $first_date["military_l"]) ? "-" : round(($last["military_l_rank"] - $first["military_l_rank"]) * 60 * 60 * 24 / ($last_date["military_l"] - $first_date["military_l"]),2) * (-1)) . "</i></span></th>" . "\n";
+
+        echo "\t\t\t" . "<th style='width:70px;border-color:#FF0000'>" . (($first["military_d_pts"] == -1 ||
+                $last_date["military_d"] == $first_date["military_d"]) ? "-" : round(($last["military_d_pts"] - $first["military_d_pts"]) * 60 * 60 * 24 / ($last_date["military_d"] - $first_date["military_d"]),2)) . "</th>" . "\n";
+
+        echo "\t\t\t" . "<th style='width:40px;border-color:#FF0000'><span style=\"color: lime; \"><i>" . (($first["military_d_pts"] == -1 ||
+                $last_date["military_d"] == $first_date["military_d"]) ? "-" : round(($last["military_d_rank"] - $first["military_d_rank"]) * 60 * 60 * 24 / ($last_date["military_d"] - $first_date["military_d"]),2) * (-1)) . "</i></span></th>" . "\n";
+
+        echo "\t\t\t" . "<th style='width:70px;border-color:#FF0000'>" . (($first["honnor_pts"] == -1 ||
+                $last_date["honnor"] == $first_date["honnor"]) ? "-" : round(($last["honnor_pts"] - $first["honnor_pts"]) * 60 * 60 * 24 / ($last_date["honnor"] - $first_date["honnor"]),2)) . "</th>" . "\n";
+
+        echo "\t\t\t" . "<th style='width:40px;border-color:#FF0000'><span style=\"color: lime; \"><i>" . (($first["honnor_pts"] == -1 ||
+                $last_date["honnor"] == $first_date["honnor"]) ? "-" : round(($last["honnor_rank"] - $first["honnor_rank"]) * 60 * 60 * 24 / ($last_date["honnor"] - $first_date["honnor"]),2) * (-1)) . "</i></span></th>" . "\n</tr>";
         ?>
 
     </table>

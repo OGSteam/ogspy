@@ -22,6 +22,8 @@ $lang['ADMIN_TITLE_MEMBER_CONF'] = "Gestão de membros";
 $lang['ADMIN_TITLE_GROUP_CONF'] = "Gestão de grupos";
 $lang['ADMIN_TITLE_LOGS_CONF'] = "Jornal";
 $lang['ADMIN_TITLE_MODS_CONF'] = "Módulos";
+$lang['ADMIN_TITLE_HELPER_CONF'] = "Helper";
+
 
 /* admin_affichage.php */
 $lang['ADMIN_DISPLAY_GALAXY_TITLE'] = "Opção da página: Galáxia";
@@ -258,3 +260,6 @@ $lang['ADMIN_LOGS_SQL'] = "Log SQL";
 $lang['ADMIN_LOGS_GENERAL'] = "Log geral";
 $lang['ADMIN_LOGS_SEE_TRANSACTIONALS'] = "Se você deseja visualizar os arquivos transacionais, baixe os<br> logs";
 $lang['ADMIN_LOGS_VIEWER'] = "Visualizador:";
+
+
+$lang['ADMIN_HELPER_HERE'] = "Helpers Presents :";

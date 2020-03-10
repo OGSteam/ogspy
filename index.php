@@ -7,7 +7,7 @@ session_start();
  * @author Kyser
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 3.03
+ * @version 3.3.7
  */
 
 /**
@@ -35,12 +35,14 @@ if (!isset($pub_action)) {
 }
 
 if (is_dir("install") && $pub_action != "message") {
-    require_once("install/version.php");
-    if (version_compare($server_config["version"], $install_version, '<')) {
-        redirection("install/index.php");
-    } else {
-        remove_dir_from_ogspy('install');
-        redirection("index.php?action=message&id_message=install_directory&info");
+    if(is_file("install/version.php")) {
+        require_once("install/version.php");
+        if (version_compare($server_config["version"], $install_version, '<')) {
+            redirection("install/index.php");
+        } else {
+            remove_dir_from_ogspy('install');
+            redirection("index.php?action=message&id_message=install_directory&info");
+        }
     }
 }
 if ($server_config["server_active"] == 0 && $pub_action != "login_web" && $pub_action != "logout" && $user_data['user_admin'] != 1 && $user_data['user_coadmin'] != 1) {

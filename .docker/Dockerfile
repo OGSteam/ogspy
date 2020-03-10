@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-LABEL VERSION ="0.1"
+LABEL VERSION ="0.3"
 LABEL DESCRIPTION="APACHE PHP OGSPY"
 LABEL MAINTENER="darknoon@darkcity.fr"
 
@@ -14,8 +14,11 @@ apache2 \
 libapache2-mod-php \
 mariadb-server \
 php-mysql \
-pwgen
-&& apt-get clean
+php-xml \
+php-zip \
+pwgen \
+vim \
+&& apt-get clean \
 && rm -rf /var/lib/apt/lists/
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
@@ -29,7 +32,8 @@ COPY run.sh /run.sh
 COPY my.cnf /etc/mysql/conf.d/my.cnf
 COPY supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
 COPY supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
-
+COPY mysql-setup.sh /mysql-setup.sh
+COPY ogspy_docker.sql /ogspy_docker.sql
 # Remove pre-installed database
 RUN rm -rf /var/lib/mysql/*
 
@@ -42,10 +46,16 @@ COPY apache_default /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
 # Configure /app folder with sample app
-RUN git clone -b OGSpy_3.3 https://github.com/ogsteam/ogspy /app
+RUN git clone -b develop https://github.com/ogsteam/ogspy /app
 RUN git clone -b master https://github.com/ogsteam/mod-autoupdate /app/mod/autoupdate
 RUN chown -R www-data:www-data /app
 RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
+
+# Configure OGSpy
+RUN rm -Rf /app/install
+COPY id.php /app/parameters/id.php
+COPY key.php /app/parameters/key.php
+
 
 #Environment variables to configure php
 ENV PHP_UPLOAD_MAX_FILESIZE 10M

@@ -6,8 +6,7 @@
  * @author Kyser
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 3.04
- */
+ * @version 3.3.7 */
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
@@ -40,6 +39,8 @@ if (file_exists("parameters/id.php")) {
     }
 
 //Appel des fonctions
+require __DIR__ . '/vendor/autoload.php';
+
 require_once ("includes/config.php");
 require_once ("includes/admin_functions.php");
 require_once ("includes/functions.php");

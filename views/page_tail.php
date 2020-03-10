@@ -12,6 +12,7 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
+use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 
 $php_end = benchmark();
 $php_timing = $php_end - $php_start - $sql_timing;
@@ -45,7 +46,7 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
         <tr>
             <td style="width:33%;text-align:left;font-size:11px;font-style:italic">
                 <a style="font-weight:bold;font-size: 12px" href="https://www.ogsteam.fr"
-                   target="_blank">OGSpy</a> <?php echo $server_config["version"] . " " . $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2019<br/>
+                   target="_blank">OGSpy</a> <?php echo $server_config["version"] . " " . $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2020<br/>
             </td>
             <td style="width:34%;text-align:center;font-size:11px;font-style:italic;font-weight:bold;"><?php echo("<span id='nb_users'>" . $nb_users . "</span> " . $lang['FOOTER_CONTRIBUTORS'] . (($nb_users > 1) ? "s" : "") . " " . $lang['FOOTER_ON_SITE']); ?></td>
             <td style="width:33%;text-align:right;font-size:11px;font-style:italic">
@@ -58,7 +59,10 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
     </table>
 
 </div>
-<script type="text/javascript" src="js/wz_tooltip.js"></script>
+<?php echo (new ToolTip_Helper())->GetHTMLHideContent(); ?>
+<?php echo (new ToolTip_Helper())->activateJs(); ?>
+
+
 
 </body>
 </html>

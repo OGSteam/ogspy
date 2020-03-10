@@ -18,8 +18,13 @@ $user_galaxy = $user_data["user_galaxy"];
 $user_system = $user_data["user_system"];
 $user_email = $user_data["user_email"];
 $user_stat_name = $user_data["user_stat_name"];
-if ($user_token !== null && $user_token['name'] !== "Empty") {
-    $user_token_displayed = $user_token["token"];
+$user_class = $user_data["user_class"];
+
+
+
+$user_token = (new Ogsteam\Ogspy\Model\Tokens_Model)->get_token($user_data["user_id"], "PAT");
+if ($user_token != false) {
+    $user_token_displayed = $user_token;
 } else {
     $user_token_displayed = $lang['PROFILE_TOKEN_TO_BE_UPDATED'];
 }
@@ -42,23 +47,23 @@ require_once("views/page_header.php");
     <!-- DEBUT DU SCRIPT -->
     <script>
         function check_password(form) {
-            var old_password = form.old_password.value;
-            var new_password = form.new_password.value;
-            var new_password2 = form.new_password2.value;
+            let old_password = form.old_password.value;
+            let new_password = form.new_password.value;
+            let new_password2 = form.new_password2.value;
 
-            if (old_password != "" && (new_password == "" || new_password2 == "")) {
+            if (old_password !== "" && (new_password === "" || new_password2 === "")) {
                 alert("<?php echo($lang['PROFILE_ERROR_RETRY']); ?>");
                 return false;
             }
-            if (old_password == "" && (new_password != "" || new_password2 != "")) {
+            if (old_password === "" && (new_password !== "" || new_password2 !== "")) {
                 alert("<?php echo($lang['PROFILE_ERROR_OLDPWD']); ?>");
                 return false;
             }
-            if (old_password != "" && new_password != new_password2) {
+            if (old_password !== "" && new_password !== new_password2) {
                 alert("<?php echo($lang['PROFILE_ERROR_ERROR']); ?>");
                 return false;
             }
-            if (old_password != "" && new_password != "" && new_password2 != "") {
+            if (old_password !== "" && new_password !== "" && new_password2 !== "") {
                 if (new_password.length < 6 || new_password.length > 64) {
                     alert("<?php echo($lang['PROFILE_ERROR_ILLEGAL']); ?>");
                     return false;
@@ -69,7 +74,6 @@ require_once("views/page_header.php");
         }
     </script>
     <!-- FIN DU SCRIPT -->
-
     <form method="POST" action="index.php" onSubmit="return check_password(this);">
         <input name="action" type="hidden" value="member_modify_member">
         <table width="600">
@@ -137,6 +141,27 @@ require_once("views/page_header.php");
                     <label>
                         <input name="pseudo_ingame" type="text" size="20" value="<?php echo $user_stat_name; ?>">
                     </label>
+                </th>
+            </tr>
+            <tr>
+                <th><?php echo $lang['PROFILE_CLASS']; ?></th>
+                <th>
+                    <?php //todo aucun lieu de centralisation de ce type de donnée magique !!! fichier de conf ogame ? ?>
+                    <?php $classType = array('none','COL','GEN','EXP') ; ?>
+                     <select name='user_class'>
+                        <?php foreach  ($classType as $class) : ?>
+                            <?php  echo $class ."__".$user_class ; ?>
+                            <option value='<?php echo $class; ?>'
+
+                                    <?php if (trim($class) == trim($user_class)) :?>
+                                        selected='selected' >
+                                    <?php else : ?>
+                                        >
+                                    <?php endif ; ?>
+                                <?php echo $lang['PROFILE_CLASS_'.strtoupper($class)]; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </th>
             </tr>
             <tr>

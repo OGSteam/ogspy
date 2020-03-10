@@ -22,11 +22,10 @@ if (!isset($pub_verbose)) {
 if ($pub_verbose == true) {
 ?>
 
-<html>
+<html lang="fr">
 <head>
 <title>Mise à jour OGSpy</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="language" content="fr" />
 <link rel="stylesheet" type="text/css" href="../skin/OGSpy_skin/formate.css" />
 </head>
 <body>
@@ -293,10 +292,79 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` ADD `Dock` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `Silo`";
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.6-beta1' WHERE config_name = 'version'";
         $ogsversion = '3.3.6-beta1';
+
     case '3.3.6-beta1':
-      $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.6' WHERE config_name = 'version'";
-      $ogsversion = '3.3.6';
-      $up_to_date = true;
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.6' WHERE config_name = 'version'";
+        $ogsversion = '3.3.6';
+
+    case '3.3.6':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-alpha1' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-alpha1';
+
+    case '3.3.7-alpha1':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-alpha2' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-alpha2';
+
+    case '3.3.7-alpha2':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-alpha3' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-alpha3';
+
+    case '3.3.7-alpha3':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-alpha4' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-alpha4';
+
+    case '3.3.7-alpha4':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-alpha5' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-alpha5';
+
+    case '3.3.7-alpha5':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-beta1' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-beta1';
+    case '3.3.7-beta1':
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDSPY . " MODIFY `metal` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDSPY . " MODIFY `cristal` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDSPY . " MODIFY `deuterium` BIGINT";
+
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-beta3' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-beta3';
+
+    case '3.3.7-beta3':
+
+        //table player
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `user_class`  ENUM ('none', 'COL', 'GEN', 'EXP') NOT NULL DEFAULT 'none' AFTER `user_stat_name`";
+       
+        //table spy
+        $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` ADD `ECL` INT(11) NOT NULL DEFAULT  '-1'  AFTER `TRA`";
+        $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` ADD `FAU` INT(11) NOT NULL DEFAULT  '-1'  AFTER `TRA`";
+        $requests[] = "ALTER TABLE `" . TABLE_PARSEDSPY . "` ADD `FOR` INT(11) NOT NULL DEFAULT  '-1'  AFTER `TRA`";
+
+        //table building
+        $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` ADD `FOR` SMALLINT(5) NOT NULL DEFAULT '-1' AFTER `Sat_percentage`";
+        $requests[] = "ALTER TABLE `" . TABLE_USER_BUILDING . "` ADD `FOR_percentage` SMALLINT(3) NOT NULL DEFAULT '100' AFTER `FOR`";
+        
+        //table Round
+        $requests[] = "ALTER TABLE `" . TABLE_ROUND_ATTACK . "` ADD `FAU` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `TRA`";
+        $requests[] = "ALTER TABLE `" . TABLE_ROUND_ATTACK . "` ADD `ECL` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `TRA`";
+        $requests[] = "ALTER TABLE `" . TABLE_ROUND_DEFENSE . "` ADD `FAU` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `TRA`";
+        $requests[] = "ALTER TABLE `" . TABLE_ROUND_DEFENSE . "` ADD `ECL` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `TRA`";
+        $requests[] = "ALTER TABLE `" . TABLE_ROUND_DEFENSE . "` ADD `FOR` SMALLINT(2) NOT NULL DEFAULT '-1' AFTER `SAT`";
+
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-beta4' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-beta4';
+
+    case '3.3.7-beta4':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-beta5' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-beta5';
+
+    case '3.3.7-beta5':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7-beta6' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7-beta6';
+
+    case '3.3.7-beta6':
+        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7' WHERE config_name = 'version'";
+        $ogsversion = '3.3.7';
+        $up_to_date = true;
+
         break;
     default:
     die("Aucune mise … jour n'est disponible");

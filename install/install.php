@@ -168,10 +168,11 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
 
 /**
  * Création du fichier de configuration id.php et quitte le script
- * @var string $sgbd_server Serveur MySql (localhost)
- * @var string $sgbd_username Utilisateur Base de donnée
- * @var string $sgbd_password Mot de passe Base de donnée
- * @var string $sgbd_tableprefix Préfixe à utiliser pour les tables ogspy
+ * 
+ * @param string $sgbd_server Serveur MySql (localhost)
+ * @param string $sgbd_username Utilisateur Base de donnée
+ * @param string $sgbd_password Mot de passe Base de donnée
+ * @param string $sgbd_tableprefix Préfixe à utiliser pour les tables ogspy
  * @param string $sgbd_server
  * @param string $sgbd_username
  * @param string $sgbd_password
@@ -182,10 +183,10 @@ function generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password,
     global $lang;
 
     $id_php[] = '<?php';
-    $id_php[] = '/***************************************************************************';
+    $id_php[] = '/*****************************************************************';
     $id_php[] = '*	filename	: id.php';
     $id_php[] = '*	generated	: ' . date("d/M/Y H:i:s");
-    $id_php[] = '***************************************************************************/';
+    $id_php[] = '*****************************************************************/';
     $id_php[] = '';
     $id_php[] = 'if (!defined("IN_SPYOGAME")) die("Hacking attempt");';
     $id_php[] = '';
@@ -201,7 +202,7 @@ function generate_id($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password,
     $id_php[] = '$ui_lang = "' . $install_ui_lang . '";';
     $id_php[] = '';
     $id_php[] = 'define("OGSPY_INSTALLED", TRUE);';
-    $id_php[] = '?>';
+
     if (!write_file("../parameters/id.php", "w", $id_php)) {
         die($lang['INSTALL_IDFILE_ERROR']);
     }
@@ -357,7 +358,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
         <tr align="center">
             <td>
                 <div style="text-align: center;"><span style="font-size: x-small; "><i><b>OGSpy</b> is an
-                            <b>OGSteam Software</b> (c)2005-2019</i><br/>v <?php echo $install_version; ?></span></div>
+                            <b>OGSteam Software</b> (c)2005-2020</i><br/>v <?php echo $install_version; ?></span></div>
             </td>
         </tr>
     </table>
