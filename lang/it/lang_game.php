@@ -31,6 +31,9 @@ $lang['GAME_FLEET_DST'] = 'Corazzata';
 $lang['GAME_FLEET_EDLM'] = 'Morte nera';
 $lang['GAME_FLEET_SAT'] = 'Satellite solare';
 $lang['GAME_FLEET_TRA'] = 'Incrociatore da battaglia';
+$lang['GAME_FLEET_FOR'] = 'Foreuse';
+$lang['GAME_FLEET_FAU'] = 'Faucheur';
+$lang['GAME_FLEET_ECL'] = 'Eclaireur';
 
 // Short Format for RC rendering
 $lang['GAME_FLEET_PT_S'] = 'Cargo l.';
