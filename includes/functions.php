@@ -1178,17 +1178,20 @@ function booster_verify_str($str)
  */
 function booster_objets_tab($type = '')
 {
-    $objet_str = array('Booster de métal en or', 'Booster de métal en argent', 'Booster de métal en bronze',
-        'Booster de cristal en or', 'Booster de cristal en argent', 'Booster de cristal en bronze',
-        'Booster de deutérium en or', 'Booster de deutérium en argent', 'Booster de deutérium en bronze',
+    $objet_str = array('Booster de métal en platine', 'Booster de métal en or', 'Booster de métal en argent', 'Booster de métal en bronze',
+        'Booster de cristal en platine', 'Booster de cristal en or', 'Booster de cristal en argent', 'Booster de cristal en bronze',
+        'Booster de deutérium en platine', 'Booster de deutérium en or', 'Booster de deutérium en argent', 'Booster de deutérium en bronze',
         'Extension planétaire en or', 'Extension planétaire en argent', 'Extension planétaire en bronze',
         'Extension lunaire en or', 'Extension lunaire en argent', 'Extension lunaire en bronze');
-    $objet_uuid = array('05294270032e5dc968672425ab5611998c409166', //'Booster de métal +30%'
+    $objet_uuid = array('a83cfdc15b8dba27c82962d57e50d8101d263cfb', //'Booster de métal +40%'
+        '05294270032e5dc968672425ab5611998c409166', //'Booster de métal +30%'
         'ba85cc2b8a5d986bbfba6954e2164ef71af95d4a', //'Booster de métal +20%'
         'de922af379061263a56d7204d1c395cefcfb7d75', //'Booster de métal +10%'
+        '35d96e441c21ef112a84c618934d9d0f026998fd', //'Booster de cristal +40%'
         '118d34e685b5d1472267696d1010a393a59aed03', //'Booster de cristal +30%'
         '422db99aac4ec594d483d8ef7faadc5d40d6f7d3', //'Booster de cristal +20%'
         '3c9f85221807b8d593fa5276cdf7af9913c4a35d', //'Booster de cristal +10%'
+        '4b51d903560edd102467b110586000bd64fdb954', //'Booster de deutérium +40%'
         '5560a1580a0330e8aadf05cb5bfe6bc3200406e2', //'Booster de deutérium +30%'
         'e4b78acddfa6fd0234bcb814b676271898b0dbb3', //'Booster de deutérium +20%'
         'd9fa5f359e80ff4f4c97545d07c66dbadab1d1be', //'Booster de deutérium +10%'
@@ -1198,10 +1201,10 @@ function booster_objets_tab($type = '')
         '05ee9654bd11a261f1ff0e5d0e49121b5e7e4401', //'Extension lunaire +6'
         'c21ff33ba8f0a7eadb6b7d1135763366f0c4b8bf', //'Extension lunaire +4'
         'be67e009a5894f19bbf3b0c9d9b072d49040a2cc'); //'Extension lunaire +2'
-    $objet_uuid_str = array('m:30:0', 'm:20:0', 'm:10:0', 'c:30:0', 'c:20:0', 'c:10:0', 'd:30:0', 'd:20:0', 'd:10:0', 'p:15', 'p:9', 'p:4', 'm:6', 'm:4', 'm:2');
-    $objet_uuid_tab = array(array('booster_m', 30), array('booster_m', 20), array('booster_m', 10),
-        array('booster_c', 30), array('booster_c', 20), array('booster_c', 10),
-        array('booster_d', 30), array('booster_d', 20), array('booster_d', 10),
+    $objet_uuid_str = array('m:40:0', 'm:30:0', 'm:20:0', 'm:10:0', 'c:40:0', 'c:30:0', 'c:20:0', 'c:10:0', 'd:40:0', 'd:30:0', 'd:20:0', 'd:10:0', 'p:15', 'p:9', 'p:4', 'm:6', 'm:4', 'm:2');
+    $objet_uuid_tab = array(array('booster_m', 40), array('booster_m', 30), array('booster_m', 20), array('booster_m', 10),
+        array('booster_c', 40), array('booster_c', 30), array('booster_c', 20), array('booster_c', 10),
+        array('booster_d', 40), array('booster_d', 30), array('booster_d', 20), array('booster_d', 10),
         array('extention_p', 15), array('extention_p', 9), array('extention_p', 4),
         array('extention_m', 6), array('extention_m', 4), array('extention_m', 2));
     $separateur = '_';
