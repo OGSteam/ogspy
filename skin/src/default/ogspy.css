@@ -3,6 +3,8 @@ html, body {
     padding: 0;
 }
 
+
+
 div.ban {
     background-image : url('img/logo_head.png');
     background-repeat: no-repeat;
@@ -30,3 +32,51 @@ div.content {
 }
 
 
+#footbarre{
+    background: linear-gradient( rgba( 10,0,24,0.2), rgba( 10,0,24,1));
+    color: #ECFF00;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+#footbarre .toologs{
+    float:left;
+    width: 29%;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    padding-left:1%;
+
+}
+#footbarre .online{
+    float:left;
+    width: 40%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+#footbarre .bench{
+    float:left;
+    width: 29%;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+    padding-right: 1px;
+}
+
+
+#footbarre  span.value {
+    color: #FF6F00;
+    font-weight: bold;
+}
+#footbarre  span.nb_users {
+    color: #FF6F00;
+    font-weight: bold;
+}
+#footbarre  span.version {
+    color: #FF6F00;
+    font-weight: bold;
+}
