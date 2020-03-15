@@ -1,0 +1,32 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+div.ban {
+    background-image : url('img/logo_head.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    width : 100%;
+    height : 50px;
+    margin-bottom : 0px;
+    padding : 0px;
+    padding-top : 20px;
+
+
+}
+
+div.menu {
+    float:left;
+    width:200px;
+}
+
+div.content {
+    padding-top : 100px;
+    padding-left : 200px;
+    width : auto;
+    vertical-align: center;
+}
+
+
