@@ -95,7 +95,7 @@ if (!defined('IN_SPYOGAME')) {
         <td>
             <div style="text-align='left';">
 
-                <ul style="width:100px;" class="menu" id="menu">
+                <ul class="menu" id="menu">
                     <?php
                     if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
                         echo "<li><a href='index.php?action=administration' class='menu_items'>" . $lang['MENU_ADMIN'] . "</a></li>";
