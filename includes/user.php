@@ -893,7 +893,7 @@ function user_get_empire($user_id)
         unset($arr["FOR"]);
         unset($arr["FOR_percentage"]);
         unset($arr["M_percentage"]);
-        unset($arr["C_Percentage"]);
+        unset($arr["C_percentage"]);
         unset($arr["D_percentage"]);
         unset($arr["CES_percentage"]);
         unset($arr["CEF_percentage"]);
