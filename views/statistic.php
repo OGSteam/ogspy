@@ -131,7 +131,7 @@ require_once 'views/page_header.php';
         } while ($galaxy_up < intval($server_config['num_of_galaxies']));
 
         $legend = '<table width="225">';
-        $legend .= '<tr><td class="c" colspan="2" align="center" width="150">' . $lang['STATS_LEGEND'] . '</td></tr>';
+        $legend .= '<tr><td align="center" class="c" colspan="2" width="150">' . $lang['STATS_LEGEND'] . '</td></tr>';
         $legend .= '<tr><td class="c">' . $lang['STATS_KNOWN_PLANETS'] . '</td><th><span style="color: lime; ">xx</span></th></tr>';
         $legend .= '<tr><td class="c">' . $lang['STATS_FREE_PLANETS'] . '</td><th><span style="color: orange; "><b>xx</b></span></th></tr>';
         $legend .= '<tr><td class="c">' . $lang['STATS_UPDATED_PLANETS'] . '</td><th style="color: lime; text-decoration: blink;"><b>xx</b></th></tr>';
@@ -200,19 +200,11 @@ require_once 'views/page_header.php';
         }
 
         foreach ($user_statistic as $v) {
-              $ratio_planet = ( $v['planet_added_ogs']) / $planetimport;
-            //$ratio_planet = ($v['planet_added_web'] + $v['planet_added_ogs']) / $planetimport;
-            $ratio_spy = ($v['spy_added_ogs']) / $spyimport;
-            //$ratio_spy = ($v['spy_added_web'] + $v['spy_added_ogs']) / $spyimport;
+             $ratio_planet = ( $v['planet_added_ogs']) / $planetimport;
+             $ratio_spy = ($v['spy_added_ogs']) / $spyimport;
              $ratio_rank = ( $v['rank_added_ogs']) / $rankimport;
-            // $ratio_rank = ($v['rank_added_web'] + $v['rank_added_ogs']) / $rankimport;
              $ratio = (3 * $ratio_planet + 2 * $ratio_spy + $ratio_rank) / 6;
 
-            // il n'y a plus de ration d'export puisque OGS n existe plus ...
-            // TODO revoir completement cette parti ... ( page stat  bof; plus ratio ..
-            //$ratio_planet_penality = ($v['planet_added_web'] + $v['planet_added_ogs'] - $v['planet_exported']) / $planetimport;
-            //$ratio_spy_penality = (($v['spy_added_web'] + $v['spy_added_ogs']) - $v['spy_exported']) / $spyimport;
-            //$ratio_rank_penality = (($v['rank_added_web'] + $v['rank_added_ogs']) - $v['rank_exported']) / $rankimport;
             $ratio_planet_penality = ( $v['planet_added_ogs'] ) / $planetimport;
             $ratio_spy_penality = ($v['spy_added_ogs']) / $spyimport;
             $ratio_rank_penality = ( $v['rank_added_ogs']) / $rankimport;
@@ -255,7 +247,7 @@ require_once 'views/page_header.php';
                 }
 
                 //todo voir si seulement admin on le visuel ...
-                if ($v['user_active'] == "1" && $v['user_admin'] == "1") {
+                if ($v['user_active'] == "1" || $v['user_admin'] == "1") {
                     echo '<tr>';
                     echo '<th style="color: ' . $color . '">' . $v['user_name'] . (($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) ? ' ' . $v['here'] : '') . '</th>';
                     echo '<th>' . formate_number($v['planet_added_ogs']) . '</th>';
@@ -269,21 +261,6 @@ require_once 'views/page_header.php';
             }
         }
 
-        if (sizeof($user_statistic) > 10) {
-
-            ?>
-
-            <tr align="center">
-                <td class="c"><?php echo($lang['STATS_USERNAME']); ?></td>
-                <td class="c"><?php echo($lang['STATS_PLANETS']); ?></td>
-                <td class="c"><?php echo($lang['STATS_SPY_REPORTS']); ?></td>
-                <td class="c"><?php echo($lang['STATS_RANKINGS']); ?></td>
-                <td class="c"><?php echo($lang['STATS_SEARCHINGS']); ?></td>
-                <td class="c"><?php echo($lang['STATS_RATIO']); ?></td>
-                <td class="c"><?php echo($lang['STATS_XTENSE']); ?></td>
-            </tr>
-            <?php
-        }
         if ($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) {
             ?>
             <tr>
