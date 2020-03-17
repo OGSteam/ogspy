@@ -1,6 +1,7 @@
 html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
 }
 
 
@@ -19,16 +20,119 @@ div.ban {
 
 }
 
+
 div.menu {
     float:left;
-    width:200px;
+    width:15%;
+    min-width: 200px;
+    height: 100%;
+    float: left;
+    display: inline-block;
+
+
 }
+
+div.menu aside .timer {
+    color: whitesmoke;
+    text-align: center;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+div.menu aside .timer span{
+    font-weight: bold;
+    color: #ECFF00;
+}
+
+div.menu aside .offline {
+    color: red;
+    text-align: center;
+    font-size: 20px;
+    padding-top : 10px;
+}
+
+div.menu aside .logo_menu {
+    background-image : url('img/logo_menu.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80% 100%;
+    width: 100%;
+    height: 60px;
+    padding : 0px;
+    margin: 5px 0px 0px;
+
+
+}
+
+div.menu nav{
+    text-transform: uppercase;
+    color: white;
+
+}
+div.menu nav a{
+    text-transform: uppercase;
+    color: white;
+
+}
+div.menu nav a:hover{
+    text-transform: uppercase;
+    color: #5CCCE8;
+    margin-left: 2px;
+    font-size: 12px;
+    transition: margin-left 0.5s, color 0.5s;
+
+
+}
+
+
+div.menu nav .menu_mods {
+    text-transform: uppercase;
+    color: lime;
+
+}
+div.menu nav a{
+    text-transform: uppercase;
+    color: white;
+
+}
+
+div.menu nav ul{
+    list-style: none;
+
+}
+div.menu nav ul li{
+    list-style: none;
+    margin-top : 5px;
+    margin-right: 5px;
+
+}
+div.menu nav .menu_items_modules {
+    color: #B6C6E5;
+    margin-top:  20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+
+}
+div.menu nav .menu_items_modules a:hover {
+    margin-left: 12px;
+    color :darkolivegreen;
+    transition: margin-left 0.5s, color 0.5s;
+
+
+
+}
+
+
 
 div.content {
     padding-top : 100px;
-    padding-left : 200px;
-    width : auto;
-    vertical-align: center;
+    margin-left: auto;
+    margin-right: auto ;
+    width: 80%;
+
+    display: inline-block;
+    margin-bottom: 30px;
+
 }
 
 
@@ -39,6 +143,8 @@ div.content {
     left: 0;
     bottom: 0;
     width: 100%;
+    height: 30px;
+
 }
 
 #footbarre .toologs{

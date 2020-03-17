@@ -15,7 +15,7 @@ if (!defined('IN_SPYOGAME')) {
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="language" content="<?php echo($lang['HEAD_LANGUAGE']); ?>">
     <title><?php echo $server_config["servername"] . " - OGSpy " . $server_config["version"]; ?></title>
-    <!-- old skin -->
+    <!-- old skin  -->
     <link rel="stylesheet" type="text/css" href="./skin/OGSpy_skin/formate.css"/>
     <!-- sera remplacer par !-->
     <link rel="stylesheet" type="text/css" href="./skin/src/default/ogspy.css"/>
