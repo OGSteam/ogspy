@@ -19,50 +19,41 @@ require_once("views/page_header_2.php");
 if (!isset($goto)) {
     $goto = "";
 }
-$enable_register_view = isset ($server_config['enable_register_view']) ? $server_config['enable_register_view'] : 0;
+$enable_register_view = isset ($server_config['enable_register_view']) ?1 : 1;
 ?>
 
-<form style="margin-bottom:40px;" method='post' action=''>
-    <p><input type='hidden' name='action' value='login_web'/>
-       <input type='hidden' name='token' value='<?php echo token::staticGetToken(600,"login");?>'/>
-       <input type='hidden' name='goto' value='<?php echo $goto; ?>'/></p>
 
-    <table style="margin:0 auto; padding:0; border-collapse:separate; border-spacing:1px">
-        <tr>
-            <td class="c" colspan="2" style="text-align:left"><?php echo($lang['LOGIN_CONNEXION_PARAMETERS']); ?></td>
-        </tr>
-        <tr>
-            <th style="width:150px"><?php echo($lang['LOGIN_USER']); ?></th>
-            <th style="width:150px"><input type='text' name='login'/></th>
-        </tr>
-        <tr>
-            <th style="width:150px"><?php echo($lang['LOGIN_PASSWORD']); ?></th>
-            <th style="width:150px"><input type='password' name='password'/></th>
-        </tr>
-        <tr>
-            <th colspan='2'><input type='submit' value='<?php echo($lang['LOGIN_CONNEXION_BUTTON']); ?>'/></th>
-        </tr>
-        <?php
+    <form method='post' action='' class="login">
+        <fieldset> <legend><?php echo($lang['LOGIN_CONNEXION_PARAMETERS']); ?></legend>
+        <input type='hidden' name='action' value='login_web'/>
+        <input type='hidden' name='token' value='<?php echo token::staticGetToken(600,"login");?>'/>
+        <input type='hidden' name='goto' value='<?php echo $goto; ?>'/></p>
 
-        if ($enable_register_view == 1) {
+        <label for="name"><?php echo($lang['LOGIN_USER']); ?></label>
+        <input type='text' name='login'/>
 
-            ?>
-            <tr>
-                <td class="c" colspan="2" style="text-align:left"><?php echo($lang['LOGIN_ACCOUNT_REQUEST']); ?></td>
-            </tr>
-            <tr>
-                <th colspan='2'><?php echo($lang['LOGIN_ACCOUNT_REQUEST_DESC']); ?>
-                </th>
-            </tr>
-            <tr>
-                <th colspan='2'><input type="button" value="<?php echo($lang['LOGIN_ACCOUNT_REQUEST_BUTTON']); ?>"
-                                       onclick="window.open('<?php echo $server_config['register_forum']; ?>');"/></th>
-            </tr>
-            <?php
+        <label for="mail"><?php echo($lang['LOGIN_PASSWORD']); ?></label>
+        <input type='password' name='password'/>
 
-        }
 
-        ?>
-    </table>
-</form>
-<?php require_once("views/page_tail_2.php"); ?>
+        <input class="button" type='submit' value='<?php echo($lang['LOGIN_CONNEXION_BUTTON']); ?>'/>
+
+        </fieldset>
+
+        <fieldset>
+        <legend><?php echo($lang['LOGIN_CONNEXION_PARAMETERS']); ?></legend>
+            <p>
+                <?php echo($lang['LOGIN_ACCOUNT_REQUEST_DESC']); ?>
+            </p>
+
+            <button type="button" onclick="window.open('<?php echo $server_config['register_forum']; ?>');"/>
+                <?php echo($lang['LOGIN_ACCOUNT_REQUEST_BUTTON']); ?>
+            </button>
+
+        </fieldset>
+
+    </form>
+
+<?php
+require_once("views/page_tail.php");
+?>

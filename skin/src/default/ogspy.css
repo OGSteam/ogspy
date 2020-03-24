@@ -24,7 +24,7 @@ li{
 }
 
 
-/* fin conf globale  */
+
 
 h1{
     text-align: center;
@@ -38,8 +38,82 @@ h1{
 
 }
 
+form {
+    background-color: rgba(0,0,0,0.8);
+    margin: 0 auto;
+    width: 90%;
+    padding: 1em;
+    border: 1px solid #CCC;
+    border-radius: 1em;
+
+}
+
+form fieldset{
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
+    box-shadow: 0 0 2px black, inset 0 0 1px rgba(255, 255, 255, 1);
+    border: 1px solid #CCC;
+    border-radius: 1em;
+    padding-bottom: 20px;
+    margin-top: 20px;
+    background-color: #3F2158;
+}
+
+form div  {
+    margin-top: 1em;
+}
+
+label {
+    /* Pour être sûrs que toutes les étiquettes ont même taille et sont correctement alignées */
+    display: inline-block;
+    width: 40%;
+    text-align: right;
+    padding-right: 3em;
+}
+
+input {
+    width: 40%;
+    box-sizing: border-box;
+    border: 1px solid #999;
+    margin-top :  5px;
+    margin-bottom :  5px;
+
+}
 
 
+
+
+
+.button {
+    margin-left: 30%;
+    margin-right: 30%;
+    width: 40%;
+    border: 1px solid #CCC;
+
+    background: none;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+
+    color: #ffffff !important;
+    font-weight: 100;
+    padding: 20px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    display: inline-block;
+    transition: all 0.3s ease 0s;
+}
+.button:hover {
+    color: #404040 !important;
+    font-weight: 700 !important;
+    letter-spacing: 3px;
+    background: rgba(0,0,0,0.8);
+    transition: all 0.3s ease 0s;
+    border: 1px solid black;
+    cursor: pointer;
+
+}
+
+
+    /* fin conf globale  */
 .main {
     height: 100%;
     min-height: 100%;
@@ -352,4 +426,11 @@ div.content .navbarreMenu ul  li.actif a{
 .aboutoggsteam .memberogsteamdescriptive {
     padding-left: 30px;
     margin-top: 15px;
+}
+
+
+
+/* Page Login  */
+form.login{
+width: 400px;
 }
