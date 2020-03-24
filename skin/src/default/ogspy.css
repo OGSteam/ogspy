@@ -185,6 +185,12 @@ div.content {
 }
 
 
+/*  content sans menu*/
+   div.nomenu{
+    width: 100%;
+}
+
+
 
 
 div.content .navbarreMenu{
