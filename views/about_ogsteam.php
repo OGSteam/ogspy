@@ -18,154 +18,311 @@ if (!defined('IN_SPYOGAME')) {
 require_once("views/page_header.php");
 ?>
 
+<h1><?php echo($lang['ABOUT_PROJECT_TEAM']); ?></h1>
+    <?php //todo fichiers langue a implementé .... + actualiser les infos des devs?>
+    <!--Kyser-->
+    <div class="aboutoggsteam">
+        <div class="memberogsteamavatar">
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Kyser" />
+        </div>
 
-    <table width="70%" border="1" cellpadding="0" cellspacing="5" align="center">
-        <tr>
-            <td align="center" class="c" colspan="2"><span
-                        style="color: Yellow; font-size: small; "><?php echo($lang['ABOUT_PROJECT_TEAM']); ?></span></td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle"><img src="skin/OGSpy_skin/gfx/ogame-produktion.jpg"></td>
-            <td class="l">
-                &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Kyser</span></a><br>
-                <div style="text-align: center;"><b>Concepteur du serveur d'alliance OGSpy</b><br><br></div>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle"><img src="skin/OGSpy_skin/gfx/ogame-produktion.jpg"></td>
-            <td class="l">
-                &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Rica</span></a><br>
-                <div style="text-align: center;"><b>Concepteur du client OGame Stratege (OGS)<br>
-                        Concepteur de l'ancien serveur d'alliance OGame Stratege Serveur (OGSS)</b><br></div>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle"><img
-                        src="http://www.gravatar.com/avatar/201bc534b68afd93f7474a96a911effe.png" width="80" title="Aeris"></td>
-            <td class="l">
-                &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Aéris</span></b><br/>
-                <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_AERIS']); ?></b></div>
-                <br/>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle"><img
-                        src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Capi">
-            </td>
-            <td class="l">
-                &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Capi</span></a><br/>
-                <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_CAPI']); ?><br/>
-                        <span style="color: orange; ">Capi capi, capo...</span></b></div>
-                <br/>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle"><img
-                        src="https://board.fr.ogame.gameforge.com/wcf/images/avatars/42/601-42f9fe2a3043c19d4e7c1183ee6936995705812a." width="80" title="Chris Alys"></td>
-            <td class="l">
-                &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Chris Alys</span></b><br/>
-                <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_CHRYS']); ?></b></div>
-                <br/>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle"><img
-                        src="http://r27.imgfast.net/users/2712/34/86/71/avatars/207-55.gif" width="80" title="DarkNoon"></td>
-            <td class="l">
-                &nbsp;<b><span style="color: Yellow; font-size: x-small; ">DarkNoon</span></b>
-                <br/>
+        <div class="memberogsteam">
+            <div class="memberogsteamname">
+                <p>Kyser</p>
+            </div>
+            <div class="memberogsteamnrole">
+                <p>Concepteur du serveur d'alliance OGSpy</p>
+            </div>
+            <div class="memberogsteamdescriptive">
+                <p></p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--Rica-->
+    <div class="aboutoggsteam">
+        <div class="memberogsteamavatar">
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Rica" />
+        </div>
+
+        <div class="memberogsteam">
+            <div class="memberogsteamname">
+                <p>Rica</p>
+            </div>
+            <div class="memberogsteamnrole">
+                <p></p>
+            </div>
+            <div class="memberogsteamdescriptive">
                 <ul>
-                    <li><b><?php echo($lang['ABOUT_PROJECT_DARKNOON']); ?></b></li>
-                    <li><b><?php echo($lang['ABOUT_PROJECT_DARKNOON1']); ?></b></li>
+                    <li>
+                        Concepteur du client OGame Stratege (OGS)
+                    </li>
+                    <li>
+                        Concepteur de l'ancien serveur d'alliance OGame Stratege Serveur (OGSS)
+                    </li>
                 </ul>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle"><img
-                        src="http://ballonrond.passion.free.fr/Images/Forums/ogsteam_avatar_jedinight.png" width="80"
-                        title="Jedinight"></td>
-            <td class="l">
-                <b><span style="color: Yellow; font-size: x-small; ">Jedinight</span></b>
-                <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_JEDINIGHT']); ?></b></div>
-                <br/>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Aéris-->
+    <div class="aboutoggsteam">
+        <div class="memberogsteamavatar">
+            <img src="http://www.gravatar.com/avatar/201bc534b68afd93f7474a96a911effe.png"  width="100%" title="Aéris" />
+        </div>
+
+        <div class="memberogsteam">
+            <div class="memberogsteamname">
+                <p>Aéris</p>
+            </div>
+            <div class="memberogsteamnrole">
+                <p><?php echo($lang['ABOUT_PROJECT_AERIS']); ?></p>
+            </div>
+            <div class="memberogsteamdescriptive">
+                <p></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Capi-->
+    <div class="aboutoggsteam">
+        <div class="memberogsteamavatar">
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Capi" />
+        </div>
+
+        <div class="memberogsteam">
+            <div class="memberogsteamname">
+                <p>Capi</p>
+            </div>
+            <div class="memberogsteamnrole">
+                <p><?php echo($lang['ABOUT_PROJECT_CAPI']); ?></p>
+            </div>
+            <div class="memberogsteamdescriptive">
+                <p>Capi capi, capo...</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Chris Alys-->
+    <div class="aboutoggsteam">
+        <div class="memberogsteamavatar">
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Chris Alys" />
+        </div>
+
+        <div class="memberogsteam">
+            <div class="memberogsteamname">
+                <p>Chris Alys</p>
+            </div>
+            <div class="memberogsteamnrole">
+                <p><?php echo($lang['ABOUT_PROJECT_CHRYS']); ?></p>
+            </div>
+            <div class="memberogsteamdescriptive">
+                <p></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!--DarkNoon-->
+    <div class="aboutoggsteam">
+        <div class="memberogsteamavatar">
+            <img src="https://forum.ogsteam.fr/index.php?action=dlattach;attach=210;type=avatar"  width="100%" title="DarkNoon" />
+        </div>
+
+        <div class="memberogsteam">
+            <div class="memberogsteamname">
+                <p>DarkNoon</p>
+            </div>
+            <div class="memberogsteamnrole">
+                <p><?php echo($lang['ABOUT_PROJECT_DARKNOON']); ?></p>
+            </div>
+            <div class="memberogsteamdescriptive">
+                <p><?php echo($lang['ABOUT_PROJECT_DARKNOON1']); ?></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Jedinight-->
+    <div class="aboutoggsteam">
+        <div class="memberogsteamavatar">
+            <img src="http://ballonrond.passion.free.fr/Images/Forums/ogsteam_avatar_jedinight.png"  width="100%" title="Jedinight" />
+        </div>
+
+        <div class="memberogsteam">
+            <div class="memberogsteamname">
+                <p>Jedinight</p>
+            </div>
+            <div class="memberogsteamnrole">
+                <p><?php echo($lang['ABOUT_PROJECT_JEDINIGHT']); ?></p>
+            </div>
+            <div class="memberogsteamdescriptive">
+                <p><?php echo($lang['ABOUT_PROJECT_JEDINIGHT1']); ?></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Machine-->
+    <div class="aboutoggsteam">
+        <div class="memberogsteamavatar">
+            <img src="https://board.fr.ogame.gameforge.com/wcf/images/avatars/0d/1599-0d0b0d5df1313bcf1e49b8d1a995d6849551e8a1.jpg"  width="100%" title="Machine" />
+        </div>
+
+        <div class="memberogsteam">
+            <div class="memberogsteamname">
+                <p>Machine</p>
+            </div>
+            <div class="memberogsteamnrole">
+                <p><?php echo($lang['ABOUT_PROJECT_MACHINE']); ?></p>
+            </div>
+            <div class="memberogsteamdescriptive">
+                <p></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Ninety-->
+    <div class="aboutoggsteam">
+        <div class="memberogsteamavatar">
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Ninety" />
+        </div>
+
+        <div class="memberogsteam">
+            <div class="memberogsteamname">
+                <p>Ninety</p>
+            </div>
+            <div class="memberogsteamnrole">
+                <p><?php echo($lang['ABOUT_PROJECT_NINETY']); ?></p>
+            </div>
+            <div class="memberogsteamdescriptive">
+                <p></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Shad-->
+    <div class="aboutoggsteam">
+        <div class="memberogsteamavatar">
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Shad" />
+        </div>
+
+        <div class="memberogsteam">
+            <div class="memberogsteamname">
+                <p>Shad</p>
+            </div>
+            <div class="memberogsteamnrole">
+                <p><?php echo($lang['ABOUT_PROJECT_SHAD']); ?></p>
+            </div>
+            <div class="memberogsteamdescriptive">
+                <p></p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!--Superbox-->
+    <div class="aboutoggsteam">
+        <div class="memberogsteamavatar">
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Superbox" />
+        </div>
+
+        <div class="memberogsteam">
+            <div class="memberogsteamname">
+                <p>Superbox</p>
+            </div>
+            <div class="memberogsteamnrole">
+                <p><?php echo($lang['ABOUT_PROJECT_SUPERBOX']); ?></p>
+            </div>
+            <div class="memberogsteamdescriptive">
+                <p></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Xaviernuma-->
+    <div class="aboutoggsteam">
+        <div class="memberogsteamavatar">
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Xaviernuma" />
+        </div>
+
+        <div class="memberogsteam">
+            <div class="memberogsteamname">
+                <p>Xaviernuma</p>
+            </div>
+            <div class="memberogsteamnrole">
+                <p><?php echo($lang['ABOUT_PROJECT_XAVIERNUMA']); ?></p>
+            </div>
+            <div class="memberogsteamdescriptive">
+                <p></p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!--Pitch314-->
+    <div class="aboutoggsteam">
+        <div class="memberogsteamavatar">
+            <img src="http://img57.xooimage.com/files/6/3/a/moe-148053-dxlsma..._200x200-3669dc4.jpg"  width="100%" title="Pitch314" />
+        </div>
+
+        <div class="memberogsteam">
+            <div class="memberogsteamname">
+                <p>Pitch314</p>
+            </div>
+            <div class="memberogsteamnrole">
+                <p><?php echo($lang['ABOUT_PROJECT_PITCH314']); ?></p>
+            </div>
+            <div class="memberogsteamdescriptive">
                 <ul>
-                    <li><b><?php echo($lang['ABOUT_PROJECT_JEDINIGHT1']); ?></b></li>
+                    <li>
+                        <?php echo($lang['ABOUT_PROJECT_PITCH314_1']); ?>
+                    </li>
+                    <li>
+                        <?php echo($lang['ABOUT_PROJECT_PITCH314_2']); ?>
+                    </li>
                 </ul>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle"><img
-                        src="https://board.fr.ogame.gameforge.com/wcf/images/avatars/0d/1599-0d0b0d5df1313bcf1e49b8d1a995d6849551e8a1.jpg" width="80" title="Machine"></td>
-            <td class="l">
-                <b><span style="color: Yellow; font-size: x-small; ">Machine</span></b><br/>
-                <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_MACHINE']); ?></b></div>
-                <br/>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle"><img
-                        src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Ninety"></td>
-            <td class="l">
-                &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Ninety</span></b><br/>
-                <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_NINETY']); ?></b></div>
-                <br/>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle"><img
-                        src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Shad"></td>
-            <td class="l">
-                &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Shad</span></b><br/>
-                <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_SHAD']); ?></b></div>
-                <br/>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle"><img
-                        src="http://r27.imgfast.net/users/2712/24/28/03/avatars/165-4.gif" width="80" title="Superbox"></td>
-            <td class="l">
-                &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Superbox</span></b><br/>
-                <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_SUPERBOX']); ?></b></div>
-                <br/>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle"><img
-                        src="https://board.fr.ogame.gameforge.com/index.php/GravatarDownload/?userID=403750" width="80" title="Xaviernuma"></td>
-            <td class="l">
-                &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Xaviernuma</span></b><br/>
-                <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_XAVIERNUMA']); ?></b></div>
-                <br/>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle"><img
-                        src="http://img57.xooimage.com/files/6/3/a/moe-148053-dxlsma..._200x200-3669dc4.jpg" width="80"
-                        title="pitch314"></td>
-            <td class="l">
-                &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Pitch314</span></b><br/>
-                <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_PITCH314']); ?></b></div>
-                <ul>
-                    <li><b><?php echo($lang['ABOUT_PROJECT_PITCH314_1']); ?></b></li>
-                    <li><b><?php echo($lang['ABOUT_PROJECT_PITCH314_2']); ?></b></li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle"><img
-                        src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Testeurs"></td>
-            <td class="l">
-                <b><span style="color: Yellow; font-size: x-small; "><?php echo($lang['ABOUT_TEST_TEAM']); ?></span></b>
-                <br/>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!--testeurs-->
+    <div class="aboutoggsteam">
+        <div class="memberogsteamavatar">
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Testeurs" />
+        </div>
+
+        <div class="memberogsteam">
+            <div class="memberogsteamname">
+                <p><?php echo  $lang['ABOUT_TEST_TEAM']; ?></p>
+            </div>
+            <div class="memberogsteamnrole">
+                <p></p>
+            </div>
+            <div class="memberogsteamdescriptive">
                 <ul>
                     <li>Skyline-ch</li>
                     <li>Anubys</li>
                     <li>Néo32</li>
                     <li>Lorenzo</li>
                 </ul>
-            </td>
-        </tr>
-    </table>
+        </div>
+    </div>
+    </div>
+    <br />
+    <br />
 
 <?php
 require_once("views/page_tail.php");

@@ -26,6 +26,19 @@ li{
 
 /* fin conf globale  */
 
+h1{
+    text-align: center;
+    font-size: 18px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
+    box-shadow: 0 0 2px black, inset 0 0 1px rgba(255, 255, 255, 1);
+    mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #ffffff 40%, #ffffff 60%, rgba(0, 0, 0, 0) 100%);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: yellow;
+
+}
+
+
 
 .main {
     height: 100%;
@@ -263,4 +276,74 @@ div.content .navbarreMenu ul  li.actif a{
 #footbarre span.version {
  color: #FF6F00;
  font-weight: bold;
+}
+
+
+/* Page About  */
+
+.aboutoggsteam {
+    padding: 1px;
+    margin: auto;
+    width: 80%;
+
+    background-color: white;
+    margin-bottom: 0px;
+}
+.aboutoggsteam p{
+    margin: 0;
+    padding: 0;
+    padding-left: 10px;
+}
+
+.aboutoggsteam .memberogsteam {
+    padding: 1px;
+    margin: auto;
+    width: 100%;
+    height: auto;
+    background-color: black;
+    background: linear-gradient(180deg, rgba(0,0,0, 0.5) 0%, rgba(0,0,0, 1) 2%,rgba(0,0,0, 1)  98% , rgba(0,0,0, 0.5)  100%);
+}
+
+.aboutoggsteam .memberogsteamavatar {
+    float:left;
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+
+}
+.aboutoggsteam .memberogsteamname {
+    background: linear-gradient(90deg, rgba(0,0,0, 0.0)  0% , rgba(255, 255, 255, 0.5) 3%, rgba(0,0,0, 0.8) 80%,rgba(0,0,0, 0.0)  100%);
+    color : yellow;
+    float: left;
+    width: 20%;
+    height: 20px;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+
+}
+.aboutoggsteam .memberogsteamnrole {
+    float: left;
+    width: auto;
+    height: 20px;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+.aboutoggsteam .memberogsteamdescriptive {
+    float: bottom;
+    width: 80%;
+    height: 80px;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+
+}
+
+.aboutoggsteam .memberogsteamdescriptive {
+    padding-left: 30px;
+    margin-top: 15px;
 }
