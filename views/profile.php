@@ -73,159 +73,106 @@ require_once("views/page_header.php");
             return true;
         }
     </script>
+
+
     <!-- FIN DU SCRIPT -->
     <form method="POST" action="index.php" onSubmit="return check_password(this);">
-        <input name="action" type="hidden" value="member_modify_member">
-        <table width="600">
-            <tr>
-                <td class="c_user" colspan="2"><?php echo($lang['PROFILE_TITLE']); ?></td>
-            </tr>
-            <tr>
-                <th width="35%"><?php echo $lang['PROFILE_PSEUDO'] . help("profile_login"); ?></th>
-                <th><label>
-                        <input name="pseudo" type="text" size="20" maxlength="20" value="<?php echo $user_name; ?>">
-                    </label></th>
-            </tr>
-            <tr>
-                <th><?php echo($lang['PROFILE_OLDPWD']); ?></th>
-                <th><label>
-                        <input name="old_password" type="password" autocomplete="off" size="20" maxlength="64">
-                    </label></th>
-            </tr>
-            <tr>
-                <th><?php echo $lang['PROFILE_NEWPWD'] . help("profile_password"); ?></th>
-                <th><label>
-                        <input name="new_password" type="password" autocomplete="off" size="20" maxlength="64">
-                    </label></th>
-            </tr>
-            <tr>
-                <th><?php echo($lang['PROFILE_NEWPWDAGAIN']); ?></th>
-                <th><label>
-                        <input name="new_password2" type="password" autocomplete="off" size="20" maxlength="64">
-                    </label></th>
-            </tr>
-            <tr>
-                <th><?php echo $lang['PROFILE_EMAIL'] . help("profile_pseudo_email"); ?></th>
-                <th>
-                    <label>
-                        <input name="pseudo_email" type="text" size="32" value="<?php echo $user_email; ?>">
-                    </label>
-                </th>
-            </tr>
-            <tr>
-                <th><?php echo $lang['PROFILE_TOKEN'] . help("profile_token"); ?></th>
-                <th>
-                    <label>
-                        <input name="pseudo_user_token" type="text" size="32" maxlength="64" value="<?php echo $user_token_displayed; ?>"><br>
-                        <input name="renew_user_token" value="1" type="checkbox" ><span><?php echo $lang['PROFILE_TOKEN_UPDATE']; ?><span>
-                    </label>
-                </th>
-            </tr>
-            <tr>
-                <td class="c" colspan="2"><?php echo($lang['PROFILE_GAME']); ?></td>
-            </tr>
-            <tr>
-                <th><?php echo $lang['PROFILE_MAINPLANET'] . help("profile_main_planet"); ?></th>
-                <th>
-                    <label>
-                        <input name="galaxy" type="text" size="3" maxlength="2" value="<?php echo $user_galaxy; ?>">
-                    </label>&nbsp;
-                    <label>
-                        <input name="system" type="text" size="3" maxlength="3" value="<?php echo $user_system; ?>">
-                    </label>
-                </th>
-            </tr>
-            <tr>
-                <th><?php echo $lang['PROFILE_PLAYERNAME'] . help("profile_pseudo_ingame"); ?></th>
-                <th>
-                    <label>
-                        <input name="pseudo_ingame" type="text" size="20" value="<?php echo $user_stat_name; ?>">
-                    </label>
-                </th>
-            </tr>
-            <tr>
-                <th><?php echo $lang['PROFILE_CLASS']; ?></th>
-                <th>
-                    <?php //todo aucun lieu de centralisation de ce type de donnée magique !!! fichier de conf ogame ? ?>
-                    <?php $classType = array('none','COL','GEN','EXP') ; ?>
-                     <select name='user_class'>
-                        <?php foreach  ($classType as $class) : ?>
-                            <?php  echo $class ."__".$user_class ; ?>
-                            <option value='<?php echo $class; ?>'
 
-                                    <?php if (trim($class) == trim($user_class)) :?>
-                                        selected='selected' >
-                                    <?php else : ?>
-                                        >
-                                    <?php endif ; ?>
-                                <?php echo $lang['PROFILE_CLASS_'.strtoupper($class)]; ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </th>
-            </tr>
-            <tr>
-                <td class="c" colspan="2"><?php echo($lang['PROFILE_OFFICERS']); ?></td>
-            </tr>
-            <tr>
-                <th><?php echo($lang['PROFILE_CODMANDER']); ?>:</th>
-                <th>
-                    <label>
-                        <input name="off_commandant" value="1" type="checkbox" <?php echo $off_commandant; ?>>
-                    </label>
-                </th>
-            </tr>
-            <tr>
-                <th><?php echo($lang['PROFILE_ADMIRAL']); ?>:</th>
-                <th>
-                    <label>
-                        <input name="off_amiral" value="1" type="checkbox" <?php echo $off_amiral; ?>>
-                    </label>
-                </th>
-            </tr>
-            <tr>
-                <th><?php echo($lang['PROFILE_ENGINEER']); ?>:</th>
-                <th>
-                    <label>
-                        <input name="off_ingenieur" value="1" type="checkbox" <?php echo $off_ingenieur; ?>>
-                    </label>
-                </th>
-            </tr>
-            <tr>
-                <th><?php echo($lang['PROFILE_GEOLOGIST']); ?>:</th>
-                <th>
-                    <label>
-                        <input name="off_geologue" value="1" type="checkbox" <?php echo $off_geologue; ?>>
-                    </label>
-                </th>
-            </tr>
-            <tr>
-                <th><?php echo($lang['PROFILE_TECHNOCRAT']); ?>:</th>
-                <th>
-                    <label>
-                        <input name="off_technocrate" value="1" type="checkbox" <?php echo $off_technocrate; ?>>
-                    </label>
-                </th>
-            </tr>
-            <tr>
-                <td class="c" colspan="2"><?php echo($lang['PROFILE_OTHERS']); ?></td>
-            </tr>
-            <tr>
-                <th><?php echo $lang['PROFILE_IPCHECK_DISABLE'] . help("profile_disable_ip_check"); ?></th>
-                <th>
-                    <label>
-                        <input name="disable_ip_check" value="1" type="checkbox" <?php echo $disable_ip_check; ?>>
-                    </label>
-                </th>
-            </tr>
-            <tr>
-                <th colspan="2">&nbsp;</th>
-            </tr>
-            <tr>
-                <th colspan="2" align="center"><input type="submit" value="<?php echo($lang['PROFILE_SAVE']); ?>"></th>
-            </tr>
-        </table>
+        <fieldset>
+            <legend> <?php echo($lang['PROFILE_TITLE']); ?></legend>
+            <input name="action" type="hidden" value="member_modify_member">
+
+            <label for="pseudo"><?php echo $lang['PROFILE_PSEUDO'] . help("profile_login"); ?></label>
+            <input  name="pseudo"  type="text" size="20" maxlength="20" value="<?php echo $user_name; ?>">
+
+            <label for="old_password"><?php echo($lang['PROFILE_OLDPWD']); ?></label>
+            <input name="old_password" type="password" autocomplete="off" size="20" maxlength="64">
+
+            <label for="new_password"><?php echo $lang['PROFILE_NEWPWD'] . help("profile_password"); ?></label>
+            <input name="new_password" type="password" autocomplete="off" size="20" maxlength="64">
+
+            <label for="new_password2"><?php echo $lang['PROFILE_NEWPWDAGAIN'] . help("profile_login"); ?></label>
+            <input name="new_password2" type="password" autocomplete="off" size="20" maxlength="64">
+
+            <label for="pseudo_email"><?php echo $lang['PROFILE_EMAIL'] . help("profile_pseudo_email"); ?></label>
+            <input name="pseudo_email" type="text" size="32" value="<?php echo $user_email; ?>">
+
+            <label for="pseudo_user_token"><?php echo $lang['PROFILE_TOKEN'] . help("profile_token"); ?></label>
+            <input name="pseudo_user_token" type="text" size="32" maxlength="64" value="<?php echo $user_token_displayed; ?>">
+
+            <label for="renew_user_token"><?php echo $lang['PROFILE_TOKEN_UPDATE']; ?></label>
+            <input name="renew_user_token" value="1" type="checkbox" >
+
+        </fieldset>
+
+        <fieldset>
+            <legend> <?php echo($lang['PROFILE_GAME']); ?></legend>
+
+            <label for="inputgalaxy"><?php echo $lang['PROFILE_MAINPLANET'] . help("profile_main_planet"); ?></label>
+            <div class="inputgalaxy" >
+                    <input name="galaxy" type="text" size="3" maxlength="2" value="<?php echo $user_galaxy; ?>"> :
+                    <input name="system" type="text" size="3" maxlength="3" value="<?php echo $user_system; ?>">
+            </div>
+
+
+            <label for="old_password"><?php echo $lang['PROFILE_PLAYERNAME'] . help("profile_pseudo_ingame"); ?></label>
+            <input name="pseudo_ingame" type="text" size="20" value="<?php echo $user_stat_name; ?>">
+
+            <label for="user_class"><?php echo $lang['PROFILE_CLASS']; ?></label>
+            <?php //todo aucun lieu de centralisation de ce type de donnée magique !!! fichier de conf ogame ? ?>
+            <?php $classType = array('none','COL','GEN','EXP') ; ?>
+            <select name='user_class'>
+                <?php foreach  ($classType as $class) : ?>
+                    <?php  echo $class ."__".$user_class ; ?>
+                    <option value='<?php echo $class; ?>'
+
+                        <?php if (trim($class) == trim($user_class)) :?>
+                            selected='selected' >
+                        <?php else : ?>
+                            >
+                        <?php endif ; ?>
+                        <?php echo $lang['PROFILE_CLASS_'.strtoupper($class)]; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
+
+        </fieldset>
+
+
+
+        <fieldset>
+            <legend><?php echo($lang['PROFILE_OFFICERS']); ?></legend>
+            <label for="off_commandant"><?php echo($lang['PROFILE_CODMANDER']); ?></label>
+            <input name="off_commandant" value="1" type="checkbox" <?php echo $off_commandant; ?>  />
+
+            <label for="off_amiral"><?php echo($lang['PROFILE_ADMIRAL']); ?></label>
+            <input name="off_amiral" value="1" type="checkbox" <?php echo $off_amiral; ?> />
+
+            <label for="off_ingenieur"><?php echo($lang['PROFILE_ENGINEER']); ?></label>
+            <input name="off_ingenieur" value="1" type="checkbox" <?php echo $off_ingenieur; ?> />
+
+            <label for="off_geologue"><?php echo($lang['PROFILE_GEOLOGIST']); ?></label>
+            <input name="off_geologue" value="1" type="checkbox" <?php echo $off_geologue; ?> />
+
+            <label for="off_technocrate"><?php echo($lang['PROFILE_TECHNOCRAT']); ?></label>
+            <input name="off_technocrate" value="1" type="checkbox" <?php echo $off_technocrate; ?> />
+
+         </fieldset>
+
+        <fieldset>
+            <legend><?php echo($lang['PROFILE_OTHERS']); ?></legend>
+
+            <label for="disable_ip_check"><?php echo $lang['PROFILE_IPCHECK_DISABLE'] . help("profile_disable_ip_check"); ?></label>
+            <input name="disable_ip_check" value="1" type="checkbox" <?php echo $disable_ip_check; ?> />
+
+        </fieldset>
+
+        <input type="submit" class=button value="<?php echo($lang['PROFILE_SAVE']); ?>">
     </form>
+
+
+
 
 <?php
 require_once("views/page_tail.php");
