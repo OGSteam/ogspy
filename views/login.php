@@ -19,7 +19,7 @@ require_once("views/page_header_2.php");
 if (!isset($goto)) {
     $goto = "";
 }
-$enable_register_view = isset ($server_config['enable_register_view']) ?1 : 1;
+$enable_register_view = isset ($server_config['enable_register_view']) ? $server_config['enable_register_view'] : 0;
 ?>
 
 
@@ -39,19 +39,18 @@ $enable_register_view = isset ($server_config['enable_register_view']) ?1 : 1;
         <input class="button" type='submit' value='<?php echo($lang['LOGIN_CONNEXION_BUTTON']); ?>'/>
 
         </fieldset>
+        <?php if ($enable_register_view == 1)  : ?>
+            <fieldset>
+            <legend><?php echo($lang['LOGIN_ACCOUNT_REQUEST']); ?></legend>
+                <p>
+                    <?php echo($lang['LOGIN_ACCOUNT_REQUEST_DESC']); ?>
+                </p>
 
-        <fieldset>
-        <legend><?php echo($lang['LOGIN_CONNEXION_PARAMETERS']); ?></legend>
-            <p>
-                <?php echo($lang['LOGIN_ACCOUNT_REQUEST_DESC']); ?>
-            </p>
-
-            <button type="button" onclick="window.open('<?php echo $server_config['register_forum']; ?>');"/>
-                <?php echo($lang['LOGIN_ACCOUNT_REQUEST_BUTTON']); ?>
-            </button>
-
-        </fieldset>
-
+                <button type="button" onclick="window.open('<?php echo $server_config['register_forum']; ?>');"/>
+                    <?php echo($lang['LOGIN_ACCOUNT_REQUEST_BUTTON']); ?>
+                </button>
+            </fieldset>
+        <?php endif ;?>
     </form>
 
 <?php
