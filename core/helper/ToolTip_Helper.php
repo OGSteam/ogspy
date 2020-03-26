@@ -129,19 +129,19 @@ class ToolTip_Helper extends Helper_Abstract
     //contenu javascript permettant d'ectiver le tootltip
     public function activateJs()
     {
-        $retour = "";
-        $retour .= "<script>";
-        $retour .= "    $(document).ready(function () {";
-        $retour .= "        $('.tooltip').tooltipster(";
-        $retour .= "            {";
-        $retour .= "                animation: 'fade',";
-        $retour .= "                delay: 400,";
-        $retour .= "                contentAsHTML: true,";
-        $retour .= "                theme: ['tooltipster-noir', 'tooltipster-noir-customized'],";
-        $retour .= "            }";
-        $retour .= "        );";
-        $retour .= "    });";
-        $retour .= "</script>";
+        $retour = "\n";
+        $retour .= "<script>\n";
+        $retour .= " $(document).ready(function () {\n";
+        $retour .= "  $('.tooltip').tooltipster(\n";
+        $retour .= "   {\n";
+        $retour .= "    animation: 'fade',\n";
+        $retour .= "    delay: 400,\n";
+        $retour .= "    contentAsHTML: true,\n";
+        $retour .= "    theme: ['tooltipster-noir', 'tooltipster-noir-customized'],\n";
+        $retour .= "   }\n";
+        $retour .= "  );\n";
+        $retour .= " });\n";
+        $retour .= "</script>\n";
 
         $retour .= $this->customCSS();
 
@@ -151,23 +151,17 @@ class ToolTip_Helper extends Helper_Abstract
 
     public function customCSS()
     {
-        $retour = "";
-        $retour .= "<style type=\"text/css\">";
-        $retour .= ".tooltipster-sidetip.tooltipster-noir.tooltipster-noir-customized .tooltipster-box {";
-        $retour .= " background: rgba(0,0,0,0.8);";
-        $retour .= "border: 1px solid black;";
-        $retour .= "border-radius: 6px;";
-        $retour .= "box-shadow: 5px 5px 2px 0 rgba(0,0,0,0.4);";
-        $retour .= "}";
-
-
-        $retour .= "</style>";
-               return $retour;
+        $retour = "\n";
+        $retour .= "<style type=\"text/css\">\n";
+        $retour .= " .tooltipster-sidetip.tooltipster-noir.tooltipster-noir-customized .tooltipster-box {\n";
+        $retour .= "  background: rgba(0,0,0,0.8);\n";
+        $retour .= "  border: 1px solid black;\n";
+        $retour .= "  border-radius: 6px;\n";
+        $retour .= "  box-shadow: 5px 5px 2px 0 rgba(0,0,0,0.4);\n";
+        $retour .= " }\n";
+        $retour .= "</style>\n";
+        return $retour;
 }
-
-
-
-
 
 
         //.tooltipster-sidetip.tooltipster-noir.tooltipster-noir-customized .tooltipster-box {
