@@ -854,6 +854,7 @@ function user_get_empire($user_id)
 
 
     $user_building = array();
+    $user_defence = array();
     // on met les planete a 0
     for ($i = 101; $i <= ($nb_planete + 100); $i++) {
         $user_building[$i] = $planet;

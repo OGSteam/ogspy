@@ -51,8 +51,11 @@ $stats = (new Statistics_Model())->find();
 //fix affichage info OGS
 //todo a supprimer, info insert xtense uniquement à la place ....
 $stats["spyexport_ogs"] = (isset($stats["spyexport_ogs"])) ? $stats["spyexport_ogs"] : 0;
+$stats["spyimport_ogs"] = (isset($stats["spyimport_ogs"])) ? $stats["spyimport_ogs"] : 0;
 $stats["rankexport_ogs"] = (isset($stats["rankexport_ogs"])) ? $stats["rankexport_ogs"] : 0;
+$stats["rankimport_ogs"] = (isset($stats["rankimport_ogs"])) ? $stats["rankimport_ogs"] : 0;
 $stats["planetexport_ogs"] = (isset($stats["planetexport_ogs"])) ? $stats["planetexport_ogs"] : 0;
+$stats["planetimport_ogs"] = (isset($stats["planetimport_ogs"])) ? $stats["planetimport_ogs"] : 0;
 
 //on compte le nombre de personnes en ligne
 $online = session_whois_online();//Personne en ligne
