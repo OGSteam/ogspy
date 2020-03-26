@@ -26,6 +26,36 @@ function load_lang_file($ui_lang, $filename, $parent_dir = ".") {
     require_once ($default_file_path);
 }
 
+/**
+ * Encode du texte pour un affichage sans problème en HTML avec prise en compte \n.
+ *
+ * @param string $texte Le texte à sécuriser
+ * @param string $format Le type de format final à encoder [défaut=HTML]
+ * @return string le texte encodé.
+ */
+function print_lang($texte, $format = 'HTML') {
+    //Pour HTML
+    $text = htmlspecialchars($texte, ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE, 'UTF-8');
+    // $text = nl2br($text, false);
+    $text = str_replace( array("\r\n", "\r", "\n"), '<br>', $text ); //Afin de retirer les retours à ligne, non supp par nl2br
+
+    return $text;
+}
+
+/**
+ * @brief Sécurise en formatant correctement les textes de langues.
+ *
+ * @param [in] $s_lang Tableau des textes de langue
+ * @return tableau encodé
+ *
+ */
+function secure_lang($s_lang) {
+    foreach($s_lang as $key => $value){
+        $s_lang[$key] = print_lang($value);
+    }
+    return $s_lang;
+}
+
 global $lang;
 $lang = array();
 
@@ -55,4 +85,5 @@ if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
     load_lang_file($ui_lang, "lang_help.php");
 }
 
-
+//TODO: Nettoyer les fichiers de lang avant ! 
+// $lang = secure_lang($lang);
