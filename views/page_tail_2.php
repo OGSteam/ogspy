@@ -32,5 +32,6 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 ?>
 
 </div>
+</div>
 </body>
 </html>

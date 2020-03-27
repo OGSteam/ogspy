@@ -27,13 +27,13 @@ $enable_register_view = isset ($server_config['enable_register_view']) ? $server
         <fieldset> <legend><?php echo($lang['LOGIN_CONNEXION_PARAMETERS']); ?></legend>
         <input type='hidden' name='action' value='login_web'/>
         <input type='hidden' name='token' value='<?php echo token::staticGetToken(600,"login");?>'/>
-        <input type='hidden' name='goto' value='<?php echo $goto; ?>'/></p>
+        <input type='hidden' name='goto' value='<?php echo $goto; ?>'/>
 
-        <label for="name"><?php echo($lang['LOGIN_USER']); ?></label>
-        <input type='text' name='login'/>
+        <label for="login"><?php echo($lang['LOGIN_USER']); ?></label>
+        <input type='text' name='login' id='login'/>
 
-        <label for="mail"><?php echo($lang['LOGIN_PASSWORD']); ?></label>
-        <input type='password' name='password'/>
+        <label for="password"><?php echo($lang['LOGIN_PASSWORD']); ?></label>
+        <input type='password' id='password' name='password'/>
 
 
         <input class="button" type='submit' value='<?php echo($lang['LOGIN_CONNEXION_BUTTON']); ?>'/>
@@ -46,7 +46,7 @@ $enable_register_view = isset ($server_config['enable_register_view']) ? $server
                     <?php echo($lang['LOGIN_ACCOUNT_REQUEST_DESC']); ?>
                 </p>
 
-                <button type="button" onclick="window.open('<?php echo $server_config['register_forum']; ?>');"/>
+                <button type="button" onclick="window.open('<?php echo $server_config['register_forum']; ?>');">
                     <?php echo($lang['LOGIN_ACCOUNT_REQUEST_BUTTON']); ?>
                 </button>
             </fieldset>
