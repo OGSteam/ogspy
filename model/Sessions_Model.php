@@ -37,7 +37,7 @@ class Sessions_Model extends Model_Abstract
     {
         $user_id=(int)$user_id;
 
-        $request = "SELECT `session_ogs` FROM " . TABLE_SESSIONS . " WHERE session_user_id = " . $user_id;
+        $request = "SELECT `session_ogs` FROM " . TABLE_SESSIONS . " WHERE `session_user_id` = " . $user_id;
         $result = $this->db->sql_query($request);
         if ($this->db->sql_numrows($result) > 0) {
             list($session_ogs) = $this->db->sql_fetch_row($result);

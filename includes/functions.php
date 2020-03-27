@@ -1178,34 +1178,81 @@ function booster_verify_str($str)
  */
 function booster_objets_tab($type = '')
 {
-    $objet_str = array('Booster de métal en or', 'Booster de métal en argent', 'Booster de métal en bronze',
-        'Booster de cristal en or', 'Booster de cristal en argent', 'Booster de cristal en bronze',
-        'Booster de deutérium en or', 'Booster de deutérium en argent', 'Booster de deutérium en bronze',
-        'Extension planétaire en or', 'Extension planétaire en argent', 'Extension planétaire en bronze',
-        'Extension lunaire en or', 'Extension lunaire en argent', 'Extension lunaire en bronze');
-    $objet_uuid = array('05294270032e5dc968672425ab5611998c409166', //'Booster de métal +30%'
-        'ba85cc2b8a5d986bbfba6954e2164ef71af95d4a', //'Booster de métal +20%'
-        'de922af379061263a56d7204d1c395cefcfb7d75', //'Booster de métal +10%'
-        '118d34e685b5d1472267696d1010a393a59aed03', //'Booster de cristal +30%'
-        '422db99aac4ec594d483d8ef7faadc5d40d6f7d3', //'Booster de cristal +20%'
-        '3c9f85221807b8d593fa5276cdf7af9913c4a35d', //'Booster de cristal +10%'
-        '5560a1580a0330e8aadf05cb5bfe6bc3200406e2', //'Booster de deutérium +30%'
-        'e4b78acddfa6fd0234bcb814b676271898b0dbb3', //'Booster de deutérium +20%'
-        'd9fa5f359e80ff4f4c97545d07c66dbadab1d1be', //'Booster de deutérium +10%'
+    $objet_str = array('Booster de métal en platine', 'Booster de métal en or', 'Booster de métal en argent', 'Booster de métal en bronze',
+        'Booster de cristal en platine', 'Booster de cristal en or', 'Booster de cristal en argent', 'Booster de cristal en bronze',
+        'Booster de deutérium en platine', 'Booster de deutérium en or', 'Booster de deutérium en argent', 'Booster de deutérium en bronze',
+        'Extension planétaire en platine', 'Extension planétaire en or', 'Extension planétaire en argent', 'Extension planétaire en bronze',
+        'Extension lunaire en platine', 'Extension lunaire en or', 'Extension lunaire en argent', 'Extension lunaire en bronze');
+    $objet_uuid = array('a83cfdc15b8dba27c82962d57e50d8101d263cfb', //'Booster de métal +40% 1s'
+        '05294270032e5dc968672425ab5611998c409166', //'Booster de métal +30% 1s'
+        'ba85cc2b8a5d986bbfba6954e2164ef71af95d4a', //'Booster de métal +20% 1s'
+        'de922af379061263a56d7204d1c395cefcfb7d75', //'Booster de métal +10% 1s'
+        '35d96e441c21ef112a84c618934d9d0f026998fd', //'Booster de cristal +40% 1s'
+        '118d34e685b5d1472267696d1010a393a59aed03', //'Booster de cristal +30% 1s'
+        '422db99aac4ec594d483d8ef7faadc5d40d6f7d3', //'Booster de cristal +20% 1s'
+        '3c9f85221807b8d593fa5276cdf7af9913c4a35d', //'Booster de cristal +10% 1s'
+        '4b51d903560edd102467b110586000bd64fdb954', //'Booster de deutérium +40% 1s'
+        '5560a1580a0330e8aadf05cb5bfe6bc3200406e2', //'Booster de deutérium +30% 1s'
+        'e4b78acddfa6fd0234bcb814b676271898b0dbb3', //'Booster de deutérium +20% 1s'
+        'd9fa5f359e80ff4f4c97545d07c66dbadab1d1be', //'Booster de deutérium +10% 1s'
+        'f3d9b82e10f2e969209c1a5ad7d22181c703bb36', //'Extension planétaire +20'
         '04e58444d6d0beb57b3e998edc34c60f8318825a', //'Extension planétaire +15'
         '0e41524dc46225dca21c9119f2fb735fd7ea5cb3', //'Extension planétaire +9'
         '16768164989dffd819a373613b5e1a52e226a5b0', //'Extension planétaire +4'
+        '8a426241572b2fea57844acd99bc326fe40e35cf', //'Extension lunaire +8'
         '05ee9654bd11a261f1ff0e5d0e49121b5e7e4401', //'Extension lunaire +6'
         'c21ff33ba8f0a7eadb6b7d1135763366f0c4b8bf', //'Extension lunaire +4'
-        'be67e009a5894f19bbf3b0c9d9b072d49040a2cc'); //'Extension lunaire +2'
-    $objet_uuid_str = array('m:30:0', 'm:20:0', 'm:10:0', 'c:30:0', 'c:20:0', 'c:10:0', 'd:30:0', 'd:20:0', 'd:10:0', 'p:15', 'p:9', 'p:4', 'm:6', 'm:4', 'm:2');
-    $objet_uuid_tab = array(array('booster_m', 30), array('booster_m', 20), array('booster_m', 10),
-        array('booster_c', 30), array('booster_c', 20), array('booster_c', 10),
-        array('booster_d', 30), array('booster_d', 20), array('booster_d', 10),
-        array('extention_p', 15), array('extention_p', 9), array('extention_p', 4),
-        array('extention_m', 6), array('extention_m', 4), array('extention_m', 2));
+        'be67e009a5894f19bbf3b0c9d9b072d49040a2cc', //'Extension lunaire +2'
+        'c690f492cffe5f9f2952337e8eed307a8a62d6cf', //'Booster de métal +40% 30j'
+        '6fecb993169fe918d9c63cd37a2e541cc067664e', //'Booster de métal +30% 30j'
+        '742743b3b0ae1f0b8a1e01921042810b58f12f39', //'Booster de métal +20% 30j'
+        '6bf45fcba8a6a68158273d04a924452eca75cf39', //'Booster de cristal +40% 30j'
+        '36fb611e71d42014f5ebd0aa5a52bc0c81a0c1cb', //'Booster de cristal +30% 30j'
+        '5b69663e3ba09a1fe77cf72c5094e246cfe954d6', //'Booster de cristal +20% 30j'
+        '620f779dbffa1011aded69b091239727910a3d03', //'Booster de deutérium +40% 30j'
+        '300493ddc756869578cb2888a3a1bc0c3c66765f', //'Booster de deutérium +30% 30j'
+        '26416a3cdb94613844b1d3ca78b9057fd6ae9b15', //'Booster de deutérium +20% 30j'
+        'ca7f903a65467b70411e513b0920d66c417aa3a2', //'Booster de métal +40% 90j'
+        '21c1a65ca6aecf54ffafb94c01d0c60d821b325d', //'Booster de métal +30% 90j'
+        '6f44dcd2bd84875527abba69158b4e976c308bbc', //'Booster de métal +20% 90j'
+        '7c2edf40c5cd54ad11c6439398b83020c0a7a6be', //'Booster de cristal +40% 90j'
+        'd45f00e8b909f5293a83df4f369737ea7d69c684', //'Booster de cristal +30% 90j'
+        '04d8afd5936976e32ce894b765ea8bd168aa07ef', //'Booster de cristal +20% 90j'
+        '831c3ea8d868eb3601536f4d5e768842988a1ba9', //'Booster de deutérium +40% 90j'
+        'dc5896bed3311434224d511fa7ced6fdbe41b4e8', //'Booster de deutérium +30% 90j'
+        '6f0952a919fd2ab9c009e9ccd83c1745f98f758f', //'Booster de deutérium +20% 90j'
+        );
+    $objet_uuid_str = array('m:40:0', 'm:30:0', 'm:20:0', 'm:10:0', 'c:40:0', 'c:30:0', 'c:20:0', 'c:10:0', 'd:40:0', 'd:30:0', 'd:20:0', 'd:10:0', 'p:20', 'p:15', 'p:9', 'p:4', 'm:8', 'm:6', 'm:4', 'm:2');
+    $objet_uuid_tab = array(array('booster_m', 40), array('booster_m', 30), array('booster_m', 20), array('booster_m', 10),
+        array('booster_c', 40), array('booster_c', 30), array('booster_c', 20), array('booster_c', 10),
+        array('booster_d', 40), array('booster_d', 30), array('booster_d', 20), array('booster_d', 10),
+        array('extention_p', 20), array('extention_p', 15), array('extention_p', 9), array('extention_p', 4),
+        array('extention_m', 8), array('extention_m', 6), array('extention_m', 4), array('extention_m', 2));
     $separateur = '_';
     $default_str = array('m:0:0', 'c:0:0', 'd:0:0', 'p:0', 'm:0');
+
+    //Protection débordement tableau, pour éviter les oublis sur la listes des boosters
+    $n = count($objet_str);
+    $ni = count($objet_uuid);
+    $nb_type_booster = 3; //Type de booster x3 (métal, cristal, deutérium)
+    $nb_booster_temps = 3; //Nombre de booster à temps (7j, 30j, 90j)
+    if($ni != $n + $nb_type_booster * 3 * ($nb_booster_temps-1)) { //Erreur de codage, protection débordement tableau
+        throw new Exception("Erreur interne : mauvais inventaire des boosters (uid=$ni, n=$n, add=" . ($n + $nb_type_booster * 3) . ")");
+    }
+    //Préparation des mêmes valeurs pour les boosters à différent temps.
+    for($i=0 ; $i < $nb_booster_temps-1 ; $i++) {   //Par booster à temps supplémentaire x2 (30j, 90j)
+        for($j=0 ; $j < $nb_type_booster ; $j++) {  //Par type de booster x3 (métal, cristal, deutérium)
+            for($k=0 ; $k < 3 ; $k++) {             //Par nouveau % du booster x3 (+40%, +30%, +20%)
+                // echo "$ni, $n, $k, $j, " . ($n + $j*3 + $k + $i*$nb_type_booster*3) . " ,$objet_str[$k]\n";
+                $objet_str[$n + $k + $j*3 + $i*$nb_type_booster*3] = $objet_str[$k + $j*4];
+                $objet_uuid_str[$n + $k + $j*3 + $i*$nb_type_booster*3] = $objet_uuid_str[$k + $j*4];
+                $objet_uuid_tab[$n + $k + $j*3 + $i*$nb_type_booster*3] = $objet_uuid_tab[$k + $j*4];
+            }
+        }
+    }
+    if($ni != count($objet_uuid)) { //Erreur de codage, remplissage des tableaux
+        throw new Exception("Erreur interne : mauvais inventaire des boosters, remplissage (uid=$ni, n=" . count($objet_uuid) . ")");
+    }
 
     switch ($type) {
         case 'definition':

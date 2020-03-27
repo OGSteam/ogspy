@@ -186,15 +186,6 @@ class User_Model extends Model_Abstract
      */
     public function select_all_user_stats_data()
     {
-        //todo ancciennement :   $request = "select user_id, user_name, planet_added_web, planet_added_ogs, search, spy_added_web, spy_added_ogs, rank_added_web, rank_added_ogs, planet_exported, spy_exported, rank_exported, xtense_type, xtense_version, user_active, user_admin";
-        // penser a spprimer champs
-
-        //todo dans 3.4 voci requete
-        //modifier les OGS par Xtense
-        //$request = "SELECT `user_id`, `user_name`, `planet_added_xtense`, `search`, `spy_added_xtense`, `rank_added_xtense`, `xtense_type`, `xtense_version`, `user_active`, `user_admin`";
-        //planet_added_ogs=>planet_added_xtense
-        //spy_added_ogs=>spy_added_xtense
-        //planet_added_ogs=>planet_added_xtense
         $request = "SELECT `user_id`, `user_name`, `planet_added_ogs`, `search`, `spy_added_ogs`, `rank_added_ogs`, `xtense_type`, `xtense_version`, `user_active`, `user_admin`";
         $request .= " FROM " . TABLE_USER . " ORDER BY `planet_added_ogs` DESC";
         $result = $this->db->sql_query($request);

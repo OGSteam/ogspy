@@ -30,4 +30,4 @@ $lang['STATS_SEARCHINGS'] = "Recherches<br/>effectuées";
 $lang['STATS_RATIO'] = "Ratio";
 $lang['STATS_XTENSE'] = "Xtense";
 $lang['STATS_CONNECTED'] = "connecté sur le serveur";
-$lang['STATS_CONNECTED_XTENSE'] = "connecté avec Xtense ou Xtense Chrome Plugin";
+$lang['STATS_CONNECTED_XTENSE'] = "connecté avec Xtense";

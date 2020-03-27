@@ -743,6 +743,9 @@ function all_building_cumulate($user_building)
  */
 function all_defence_cumulate($user_defence)
 {
+    if($user_defence == NULL) {
+        return 0;
+    }
 
     $total = 0;
     $init_d_prix = array("LM" => 2000, "LLE" => 2000, "LLO" => 8000, "CG" => 37000,

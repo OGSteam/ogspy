@@ -1,23 +1,36 @@
 <?php
 /**
- *  HTML Footer Light
- * @package OGSpy
- * @version 3.04b ($Rev: 7508 $)
- * @subpackage views
- * @author Kyser
- * @created 15/12/2005
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * HTML footer
  */
 // deprécié
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
+
 ?>
 
+
+
+
+
+<?php
+global $ogspy_phperror;
+if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
+    echo "\n<tr>\n\t<td><table><tr><th>" . $lang['FOOTER_PHPERRORS'] . "</th></tr>";
+    foreach ($ogspy_phperror as $line) {
+        echo "\n<tr><td>$line</td></tr>";
+    }
+    echo "</table>\n\t</td>\n</tr>";
+}
+?>
+
+
+
+<?php
+// echo (new ToolTip_Helper())->GetHTMLHideContent();   //non utilisé pour tail 2
+// echo (new ToolTip_Helper())->activateJs();
+?>
 
 </div>
-<?php
-require_once("views/page_foot.php");
-
-?>
+</body>
+</html>

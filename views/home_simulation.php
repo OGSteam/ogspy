@@ -120,7 +120,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
     <tr>
         <th><a><?php echo($lang['HOME_SIMU_MINTEMP']); ?></a></th>
         <?php
-        $t_min = $user_building[101]["temperature_min"];
+        $t_min = +INF;
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $temperature_min = $user_building[$i]["temperature_min"];
             if ($temperature_min == "") {
@@ -138,7 +138,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
     <tr>
         <th><a><?php echo($lang['HOME_SIMU_MAXTEMP']); ?></a></th>
         <?php
-        $t_max = $user_building[101]["temperature_max"];
+        $t_max = -INF;
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $temperature_max = $user_building[$i]["temperature_max"];
             if ($temperature_max == "") {

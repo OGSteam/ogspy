@@ -56,14 +56,14 @@ $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
 
 
         $name = $coordinates = $fields = $temperature_min = $temperature_max = $satellite = "";
-        for ($i=101 ; $i<=$nb_planete+100 ; $i++) {
+        for ($i = 101 ; $i <= $nb_planete + 100 ; $i++) {
             /*Boosters et extensions modification :
              * => calcul effectué dans fonction  get empire*/
 
             $booster_tab[$i] = booster_decode($user_building[$i]["boosters"]);
             if(isset($booster_tab[$i])) {
                 $iFields = (int) $user_building[$i]["fields"]; // si pas d'info sur batiment, variable string
-                $user_building[$i]["fields"]= $iFields  + $booster_tab[$i]['extention_p'];
+                $user_building[$i]["fields"] = $iFields  + $booster_tab[$i]['extention_p'];
             }
 
             $name .= "'".$user_building[$i]["planet_name"]."', ";

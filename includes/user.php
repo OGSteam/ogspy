@@ -854,6 +854,7 @@ function user_get_empire($user_id)
 
 
     $user_building = array();
+    $user_defence = array();
     // on met les planete a 0
     for ($i = 101; $i <= ($nb_planete + 100); $i++) {
         $user_building[$i] = $planet;
@@ -893,7 +894,7 @@ function user_get_empire($user_id)
         unset($arr["FOR"]);
         unset($arr["FOR_percentage"]);
         unset($arr["M_percentage"]);
-        unset($arr["C_Percentage"]);
+        unset($arr["C_percentage"]);
         unset($arr["D_percentage"]);
         unset($arr["CES_percentage"]);
         unset($arr["CEF_percentage"]);
