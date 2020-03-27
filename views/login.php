@@ -54,5 +54,5 @@ $enable_register_view = isset ($server_config['enable_register_view']) ? $server
     </form>
 
 <?php
-require_once("views/page_tail.php");
+require_once("views/page_tail_2.php");
 ?>
