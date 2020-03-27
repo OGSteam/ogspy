@@ -86,8 +86,6 @@ form .inputgalaxy{
 
 
 
-
-
 .button {
     margin-left: 30%;
     margin-right: 30%;
@@ -118,7 +116,62 @@ form .inputgalaxy{
 }
 
 
-    /* fin conf globale  */
+
+table{
+    width : 100%;
+    border-collapse: collapse;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
+    background-color: #3F2158;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 20px;
+
+}
+
+table thead th{
+    background-image: none;
+    background-color: black;
+    border: 1px solid white;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    color: #21b2ff
+}
+
+table thead td{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid white;
+
+}
+
+table tbody th {
+    background-image: none;
+    background-color: rgba(0,0,0,0.4);
+    border: 1px solid black;
+    text-align: center;
+
+}
+
+table tbody td {
+    background-color: rgba(255,255,255,0.1);
+    color: yellow;
+    border: 1px solid black;
+    text-align: center;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/* fin conf globale  */
 .main {
     height: 100%;
     min-height: 100%;

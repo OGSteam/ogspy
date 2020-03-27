@@ -69,6 +69,149 @@ else{
 }
 ?>
 
+
+<table width="40% ">
+    <thead>
+    <tr>
+        <th class="" ><?php echo($lang['ADMIN_SERVER_STATS']); ?></th>
+        <th class="" ><?php echo($lang['ADMIN_SERVER_STATS_VALUE']); ?></th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <tr>
+        <th><?php echo($lang['ADMIN_SERVER_MEMBERS']); ?></th>
+        <td><?php echo $users_info; ?></td>
+    </tr>
+
+    </tbody>
+
+</table>
+
+
+
+<table width="40%">
+    <tr>
+        <td class="c_ogspy"><?php echo($lang['ADMIN_SERVER_INFOVERSION']); ?></td>
+    </tr>
+    <tr>
+        <th style="text-align:left"><?php echo($ogspy_version_message); ?></th>
+    </tr>
+</table>
+
+
+    <table width="100%">
+        <tr>
+            <td class="c_user"><?php echo($lang['ADMIN_SERVER_MEMBERNAME']); ?></td>
+            <td class="c"><?php echo($lang['ADMIN_SERVER_MEMBERCONNECTED']); ?></td>
+            <td class="c"><?php echo($lang['ADMIN_SERVER_MEMBERLASTACTIVITY']); ?></td>
+            <td class="c_tech"><?php echo($lang['ADMIN_SERVER_MEMBERIP']); ?></td>
+        </tr>
+        <?php
+        foreach ($online as $v) {
+            $user = $v["user"];
+            if ($v['time_start'] == 0) {
+                $v['time_start'] = $v["time_lastactivity"];
+            }
+            $time_start = strftime("%d %b %Y %H:%M:%S", $v["time_start"]);
+            $time_lastactivity = strftime("%d %b %Y %H:%M:%S", $v["time_lastactivity"]);
+            $ip = $v["ip"];
+            $ogs = $v["ogs"] == 1 ? "(OGS)" : "";
+
+            echo "<tr>";
+            echo "\t" . "<th width='25%'>" . $user . " " . $ogs . "</th>";
+            echo "\t" . "<th width='25%'>" . $time_start . "</th>";
+            echo "\t" . "<th width='25%'>" . $time_lastactivity . "</th>";
+            echo "\t" . "<th width='25%'>" . $ip . "</th>";
+            echo "</tr>";
+        }
+        ?>
+    </table>
+
+
+
+
+<table width="40% ">
+    <thead>
+        <tr>
+            <th class="" ><?php echo($lang['ADMIN_SERVER_STATS']); ?></th>
+            <th class="" ><?php echo($lang['ADMIN_SERVER_STATS_VALUE']); ?></th>
+            <th class="" ><?php echo($lang['ADMIN_SERVER_STATS']); ?></th>
+            <th class="" ><?php echo($lang['ADMIN_SERVER_STATS_VALUE']); ?></th>
+        </tr>
+     </thead>
+
+    <tbody>
+
+    <tr>
+        <th><?php echo($lang['ADMIN_SERVER_MEMBERS']); ?></th>
+        <td><?php echo $users_info; ?></td>
+        <th><?php echo($lang['ADMIN_SERVER_FREEPLANETS']); ?></th>
+        <td><?php echo
+            formate_number($galaxy_statistic["nb_planets_free"]); ?></td>
+    </tr>
+    <tr>
+        <th><?php echo($lang['ADMIN_SERVER_NBPLANETS']); ?></th>
+        <td><?php echo formate_number($galaxy_statistic["nb_planets"]); ?></td>
+        <th rowspan="2"><?php echo($lang['ADMIN_SERVER_DB_SIZE']); ?></th>
+        <td><?php echo $dbsize_info; ?>??</td>
+    </tr>
+    <tr>
+        <th><?php echo($lang['ADMIN_SERVER_LOG_SIZE']); ?></th>
+        <th><?php echo $log_size_info; ?></th>
+        <th><a href="index.php?action=db_optimize"><i><?php echo($lang['ADMIN_SERVER_DB_OPTIMIZE']); ?></i></a></th>
+    </tr>
+    <tr>
+        <th><?php echo($lang['ADMIN_SERVER_SESSIONS']); ?></th>
+        <td><?php echo $connectes; ?><a href="index.php?action=drop_sessions"> (<?php echo($lang['ADMIN_SERVER_SESSIONS_CLEAN']); ?> <?php echo
+                help("drop_sessions"); ?>)</td>
+        <th><?php echo($lang['ADMIN_SERVER_TOTAL_MAILS']); ?></th>
+        <td><?php echo($nb_mail); ?></td>
+    </tr>
+    <tr>
+        <th colspan='4'>&nbsp;</th>
+    </tr>
+    <tr>
+        <th><?php echo($lang['ADMIN_SERVER_CONNEXIONS']); ?></th>
+        <td><?php echo formate_number($stats["connection_server"]); ?></td>
+
+        <th><?php echo($lang['ADMIN_SERVER_PLANETS']); ?></th>
+        <td><?php echo formate_number($stats["planetimport_ogs"]); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?>
+            - <?php echo formate_number($stats["planetexport_ogs"]); ?> <?php echo($lang['ADMIN_SERVER_ALL_EXPORT']); ?>
+        </td>
+    </tr>
+    <tr>
+        <th><?php echo($lang['ADMIN_SERVER_SPYREPORTS']); ?></th>
+        <td><?php echo formate_number($stats["spyimport_ogs"]); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?> - <?php echo formate_number($stats["spyexport_ogs"]); ?>
+            <?php echo($lang['ADMIN_SERVER_ALL_EXPORT']); ?>
+        </td>
+
+        <th><?php echo($lang['ADMIN_SERVER_RANKINGS']); ?></th>
+        <td><?php echo formate_number($stats["rankimport_ogs"]); ?> <?php echo($lang['ADMIN_SERVER_ALL_IMPORT']); ?> - <?php echo formate_number($stats["rankexport_ogs"]); ?>
+            <?php echo($lang['ADMIN_SERVER_ALL_EXPORT']); ?>
+        </td>
+    </tr>
+    </tbody>
+    <thead>
+        <tr>
+            <td colspan="4">&nbsp;</td>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th colspan="2"><a href="php/phpinfo.php" target="_blank"><?php echo($lang['ADMIN_SERVER_PHPINFO']); ?></a></th>
+        <th colspan="2"><a href="php/phpmodules.php" target="_blank"><?php echo($lang['ADMIN_SERVER_PHPMODULES']); ?></a></th>
+    </tr>
+
+
+    </tbody>
+
+</table>
+<br/>
+
+
+
 <table width="100%">
     <tr>
         <td class="c_stats" width="25%"><?php echo($lang['ADMIN_SERVER_STATS']); ?></td>
