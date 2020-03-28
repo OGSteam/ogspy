@@ -31,6 +31,9 @@ $lang['GAME_FLEET_DST'] = 'Destructor';
 $lang['GAME_FLEET_EDLM'] = 'Estrella de la muerte';
 $lang['GAME_FLEET_SAT'] = 'Satelite solar';
 $lang['GAME_FLEET_TRA'] = 'rastreador';
+$lang['GAME_FLEET_FOR'] = 'Foreuse';
+$lang['GAME_FLEET_FAU'] = 'Faucheur';
+$lang['GAME_FLEET_ECL'] = 'Eclaireur';
 
 // Short Format for RC rendering
 $lang['GAME_FLEET_PT_S'] = 'P. carga';

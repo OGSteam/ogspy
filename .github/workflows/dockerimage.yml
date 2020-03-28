@@ -1,0 +1,18 @@
+name: Docker Image OGSPY
+
+on:
+  push:
+    branches: [ feature/github_action ]
+  pull_request:
+    branches: [ feature/github_action ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file .docker/Dockerfile --tag ogspy-develop:$(date +%s)

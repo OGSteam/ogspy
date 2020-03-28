@@ -33,6 +33,11 @@ $lang['PROFILE_TOKEN_UPDATE'] = "Reset";
 $lang['PROFILE_GAME'] = "Game informations";
 $lang['PROFILE_MAINPLANET'] = "Main Planet position";
 $lang['PROFILE_PLAYERNAME'] = "Player Name";
+$lang['PROFILE_CLASS'] = "Classe dans le Jeu";
+$lang['PROFILE_CLASS_NONE'] = "sans classe";
+$lang['PROFILE_CLASS_COL'] = "Collecteur";
+$lang['PROFILE_CLASS_GEN'] = "General";
+$lang['PROFILE_CLASS_EXP'] = "Explorateur";
 $lang['PROFILE_OFFICERS'] = "Officers";
 $lang['PROFILE_CODMANDER'] = "Comander";
 $lang['PROFILE_ADMIRAL'] = "Admiral";
@@ -43,5 +48,8 @@ $lang['PROFILE_OTHERS'] = "
 Miscellaneous";
 $lang['PROFILE_IPCHECK_DISABLE'] = "Disable the IP address verification";
 $lang['PROFILE_SAVE'] = "Save";
+
+
+
 
 

@@ -7,7 +7,7 @@ session_start();
  * @author Kyser
  * @copyright Copyright &copy; 2007, http://ogsteam.fr/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 3.03
+ * @version 3.3.7
  */
 
 /**
