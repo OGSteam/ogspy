@@ -5,6 +5,9 @@ on:
     branches: [ feature/github_action ]
   pull_request:
     branches: [ feature/github_action ]
+env:
+  # TODO: Change variable to your image's name.
+  IMAGE_NAME: ogspy
 
 jobs:
 
@@ -16,17 +19,23 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: docker build . --file .docker/Dockerfile
-    - name: Dockerize
+    - name: Docker Login
       if: success()
-      uses:  manusa/actions-publish-docker@master
-      with:
-        name: ogsteam/ogspy
-        username: ${{ secrets.DOCKER_HUB_USER }}
-        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        tag script: |
-            return context.ref
-            .replace('refs/heads/','')
-            .replace('refs/tags/','')
-            .replace('refs/pull/','')
-            .replace(/\//g, '_')
-            .replace(/#/g, '');
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login ${{ secrets.DOCKER_REGISTRY_URL }} -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+    - name: Push image
+      run: |
+        IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPOSITORY_NAME }}/$IMAGE_NAME
+        # Strip git ref prefix from version
+        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+        # Strip "v" prefix from tag name
+        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+        # Use Docker `latest` tag convention
+        [ "$VERSION" == "master" ] && VERSION=latest
+        echo IMAGE_ID=$IMAGE_ID
+        echo VERSION=$VERSION
+
+        docker tag image $IMAGE_ID:$VERSION
+        docker push $IMAGE_ID:$VERSION
+        
+#https://www.learncloudnative.com/blog/2020-02-20-github-action-build-push-docker-images/
