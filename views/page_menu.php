@@ -153,11 +153,13 @@ if (!defined('IN_SPYOGAME')) {
                 </ul>
 
                 <ul class='menu_mods menu_mods_admin'><!-- mod  admin -->
+
                     <?php foreach ($tMods as $mod) : ?>
+
                         <?php if ($mod['admin_only'] == 1) : ?>
                             <li>
-                                <a class="menu_mods menu_mod_name_<?php echo $mod['menu']; ?>" href="index.php?action=<?php echo $mod['action'];?>">
-                                    <?php echo $mod['menu']; ?>
+                                <a class="menu_mods menu_mod_name_<?php echo $mod['title']; ?>" href="index.php?action=<?php echo $mod['action'];?>">
+                                    <?php echo $mod['title']; ?>
                                 </a>
                             </li>
                         <?php endif; ?>

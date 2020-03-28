@@ -23,7 +23,7 @@ require_once("views/page_header.php");
     <!--Kyser-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Kyser" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Kyser"  alt="Kyser" />
         </div>
 
         <div class="memberogsteam">
@@ -44,7 +44,7 @@ require_once("views/page_header.php");
     <!--Rica-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Rica" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Rica" alt="Rica" />
         </div>
 
         <div class="memberogsteam">
@@ -71,7 +71,7 @@ require_once("views/page_header.php");
     <!--Aéris-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="http://www.gravatar.com/avatar/201bc534b68afd93f7474a96a911effe.png"  width="100%" title="Aéris" />
+            <img src="http://www.gravatar.com/avatar/201bc534b68afd93f7474a96a911effe.png"  width="100%" title="Aéris" alt="Aéris" />
         </div>
 
         <div class="memberogsteam">
@@ -91,7 +91,7 @@ require_once("views/page_header.php");
     <!--Capi-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Capi" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Capi"  alt="Capi" />
         </div>
 
         <div class="memberogsteam">
@@ -111,7 +111,7 @@ require_once("views/page_header.php");
     <!--Chris Alys-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Chris Alys" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Chris Alys" alt="Chris Alys" />
         </div>
 
         <div class="memberogsteam">
@@ -131,7 +131,7 @@ require_once("views/page_header.php");
     <!--DarkNoon-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="https://forum.ogsteam.fr/index.php?action=dlattach;attach=210;type=avatar"  width="100%" title="DarkNoon" />
+            <img src="https://forum.ogsteam.fr/index.php?action=dlattach;attach=210;type=avatar"  width="100%" title="DarkNoon"  alt="DarkNoon" />
         </div>
 
         <div class="memberogsteam">
@@ -151,7 +151,7 @@ require_once("views/page_header.php");
     <!--Jedinight-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="http://ballonrond.passion.free.fr/Images/Forums/ogsteam_avatar_jedinight.png"  width="100%" title="Jedinight" />
+            <img src="http://ballonrond.passion.free.fr/Images/Forums/ogsteam_avatar_jedinight.png"  width="100%" title="Jedinight" alt="Jedinight" />
         </div>
 
         <div class="memberogsteam">
@@ -171,7 +171,7 @@ require_once("views/page_header.php");
     <!--Machine-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="https://board.fr.ogame.gameforge.com/wcf/images/avatars/0d/1599-0d0b0d5df1313bcf1e49b8d1a995d6849551e8a1.jpg"  width="100%" title="Machine" />
+            <img src="https://board.fr.ogame.gameforge.com/wcf/images/avatars/0d/1599-0d0b0d5df1313bcf1e49b8d1a995d6849551e8a1.jpg"  width="100%" title="Machine" alt="Machine" />
         </div>
 
         <div class="memberogsteam">
@@ -191,7 +191,7 @@ require_once("views/page_header.php");
     <!--Ninety-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Ninety" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Ninety" alt="Ninety" />
         </div>
 
         <div class="memberogsteam">
@@ -211,7 +211,7 @@ require_once("views/page_header.php");
     <!--Shad-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Shad" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Shad"  alt="Shad" />
         </div>
 
         <div class="memberogsteam">
@@ -232,7 +232,7 @@ require_once("views/page_header.php");
     <!--Superbox-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Superbox" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Superbox"  alt="Superbox" />
         </div>
 
         <div class="memberogsteam">
@@ -252,7 +252,7 @@ require_once("views/page_header.php");
     <!--Xaviernuma-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Xaviernuma" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Xaviernuma" alt="Xaviernuma" />
         </div>
 
         <div class="memberogsteam">
@@ -273,7 +273,7 @@ require_once("views/page_header.php");
     <!--Pitch314-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="http://img57.xooimage.com/files/6/3/a/moe-148053-dxlsma..._200x200-3669dc4.jpg"  width="100%" title="Pitch314" />
+            <img src="http://img57.xooimage.com/files/6/3/a/moe-148053-dxlsma..._200x200-3669dc4.jpg"  width="100%" title="Pitch314"  alt="Pitch314" />
         </div>
 
         <div class="memberogsteam">
@@ -301,7 +301,7 @@ require_once("views/page_header.php");
     <!--testeurs-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Testeurs" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Testeurs"  alt="Testeurs" />
         </div>
 
         <div class="memberogsteam">

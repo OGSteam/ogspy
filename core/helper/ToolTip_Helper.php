@@ -98,13 +98,13 @@ class ToolTip_Helper extends Helper_Abstract
     {
         $contents = self::$content;
         $retour = "";
-        $retour .= "<div class=\"tooltip_templates\" style=\"display:none;\">";
+        $retour .= "<div class=\"tooltip_templates\" style=\"display:none;\">\n";
         foreach ($contents as $key => $value) {
-            $retour .= "<span id=\"" . $key . "\">";
-            $retour .= "" . html_entity_decode($value) . "";
-            $retour .= "</span>";
+            $retour .= "<div id=\"" . $key . "\">\n";
+            $retour .= "" . html_entity_decode($value) . "\n";
+            $retour .= "</div>\n";
         }
-        $retour .= "</div>";
+        $retour .= "\n</div>";
 
         //reinitialisation des données
         self::$content = array();
@@ -130,7 +130,7 @@ class ToolTip_Helper extends Helper_Abstract
     public function activateJs()
     {
         $retour = "\n";
-        $retour .= "<script>\n";
+        $retour .= "<script type=\"text/javascript\">\n";
         $retour .= " $(document).ready(function () {\n";
         $retour .= "  $('.tooltip').tooltipster(\n";
         $retour .= "   {\n";

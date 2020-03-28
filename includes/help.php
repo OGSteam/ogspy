@@ -31,10 +31,24 @@ function help($key, $value = null, $prefixe = "")
     $value = ($value==null) ? "Aide Introuvable" : $value;
     $value = (isset($lang[$key])) ? $lang[$key] : $value; // On ecrase la variable si présente dans ogspy donc non custom
 
-    $text = "<table width=\"200\">";
-    $text .= '<tr><td class="c" style="text-align:center;">Aide</td></tr>';
-    $text .= '<tr><th style="color:white; ">' . ($value) . "</th></tr>";
+    //$text = "<table width=\"200\">";
+    //$text .= '<tr><td class="helper" style="text-align:center;">Aide</td></tr>';
+    //$text .= '<tr><th style="color:white; ">' . ($value) . "</th></tr>";
+    //$text .= "</table>";
+    // remplacé par :
+    $text = "<table class=\"tab_helper\">\n";
+    $text .= "    <thead>\n";
+    $text .= "        <tr>\n";
+    $text .= "            <th>Aide</th>\n";
+    $text .= "        <tr>\n";
+    $text .= "    </thead>\n";
+    $text .= "    <tbody>\n";
+    $text .= "        <tr>\n";
+    $text .= "            <td>" . ($value) . "</td>\n";
+    $text .= "        <tr>\n";
+    $text .= "    </tbody>\n";
     $text .= "</table>";
+
 
     if (version_compare(phpversion(), '5.4.0', '>=')) {
         $text = htmlentities($text, ENT_COMPAT | ENT_HTML401, "UTF-8");
@@ -43,7 +57,7 @@ function help($key, $value = null, $prefixe = "")
     }
 
     $tth-> addTooltip($key, $text);
-    return "<img style=\"cursor:pointer\" src=\"" . $prefixe . "images/help_2.png\" ".$tth->GetHTMLClassContent().">";
+    return "<img  alt=\"logo helper\" src=\"" . $prefixe . "images/help_2.png\" ".$tth->GetHTMLClassContent().">";
 
 
     //$text = "this.T_WIDTH=210;this.T_TEMP=0;return encodeURI('" . $text . "')";

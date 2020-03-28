@@ -41,7 +41,7 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 <div id="footbarre">
     <div class="toologs">
         <p>
-            <a href="https://www.ogsteam.fr" target="_blank">OGSpy</a> <span class="version"><?php echo $server_config["version"] ?></span></span> <?php echo $lang['FOOTER_OGSPY'] ?> OGSteam &copy; 2005-2020
+            <a href="https://www.ogsteam.fr" target="_blank">OGSpy</a> <span class="version"><?php echo $server_config["version"] ?></span><?php echo $lang['FOOTER_OGSPY'] ?> OGSteam &copy; 2005-2020
         </p>
     </div>
     <div class="online">
@@ -63,6 +63,7 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 <?php echo (new ToolTip_Helper())->GetHTMLHideContent(); ?>
 <?php echo (new ToolTip_Helper())->activateJs(); ?>
 
+</div>
 </div>
 </body>
 </html>
