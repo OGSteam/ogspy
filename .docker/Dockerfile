@@ -53,8 +53,8 @@ RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
 
 # Configure OGSpy
 RUN rm -Rf /app/install
-COPY id.php /app/parameters/id.php
-COPY key.php /app/parameters/key.php
+COPY .docker/id.php /app/parameters/id.php
+COPY .docker/key.php /app/parameters/key.php
 
 
 #Environment variables to configure php
