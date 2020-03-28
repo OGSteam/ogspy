@@ -25,8 +25,8 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
         tag script: |
             return context.ref
-            .replace('refs/heads/
-            .replace('refs/tags/'
-            .replace('refs/pull/'
+            .replace('refs/heads/','')
+            .replace('refs/tags/','')
+            .replace('refs/pull/','')
             .replace(/\//g, '_')
-            .replace(/#/g, '');:  
+            .replace(/#/g, '');
