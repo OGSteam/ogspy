@@ -34,15 +34,15 @@ ENV dockpath .docker/
 # Setting local docker construction
 #ENV dockpath ./
 
-COPY $dockpath/*.sh .
+COPY ${dockpath}/*.sh .
 #COPY start-apache2.sh /start-apache2.sh
 #COPY start-mysqld.sh /start-mysqld.sh
 #COPY run.sh /run.sh
-COPY $dockpath/my.cnf /etc/mysql/conf.d/my.cnf
-COPY $dockpath/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
-COPY $dockpath/supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
+COPY ${dockpath}/my.cnf /etc/mysql/conf.d/my.cnf
+COPY ${dockpath}/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
+COPY ${dockpath}/supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
 #COPY mysql-setup.sh /mysql-setup.sh
-COPY $dockpath/ogspy_docker.sql .
+COPY ${dockpath}/ogspy_docker.sql .
 # Remove pre-installed database
 RUN rm -rf /var/lib/mysql/*
 
@@ -51,7 +51,7 @@ RUN rm -rf /var/lib/mysql/*
 RUN chmod 755 /*.sh
 
 # config to enable .htaccess
-COPY $dockpath/apache_default /etc/apache2/sites-available/000-default.conf
+COPY ${dockpath}/apache_default /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
 # Configure /app folder with sample app
@@ -62,8 +62,8 @@ RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
 
 # Configure OGSpy
 RUN rm -Rf /app/install
-COPY $dockpath/id.php /app/parameters/id.php
-COPY $dockpath/key.php /app/parameters/key.php
+COPY ${dockpath}/id.php /app/parameters/id.php
+COPY ${dockpath}/key.php /app/parameters/key.php
 
 
 #Environment variables to configure php
