@@ -25,50 +25,19 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 ENV MYSQL_PASS="ogsteam"
 
-# TODO : idéalement, les configuraitons locales et copy mettre dans un configure.sh
-
-# Add image configuration and scripts
-# Setting online dockerHub construction
-ENV dockpath .docker/
-
-# Setting local docker construction
-#ENV dockpath ./
-
-COPY ${dockpath}/*.sh .
-#COPY start-apache2.sh /start-apache2.sh
-#COPY start-mysqld.sh /start-mysqld.sh
-#COPY run.sh /run.sh
-COPY ${dockpath}/my.cnf /etc/mysql/conf.d/my.cnf
-COPY ${dockpath}/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
-COPY ${dockpath}/supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
-#COPY mysql-setup.sh /mysql-setup.sh
-COPY ${dockpath}/ogspy_docker.sql .
-# Remove pre-installed database
-RUN rm -rf /var/lib/mysql/*
-
-# Add MySQL utils
-#COPY create_mysql_admin_user.sh /create_mysql_admin_user.sh
-RUN chmod 755 /*.sh
-
-# config to enable .htaccess
-COPY ${dockpath}/apache_default /etc/apache2/sites-available/000-default.conf
-RUN a2enmod rewrite
+#Environment variables to configure php
+ENV PHP_UPLOAD_MAX_FILESIZE 10M
+ENV PHP_POST_MAX_SIZE 10M
 
 # Configure /app folder with sample app
 RUN git clone -b develop https://github.com/ogsteam/ogspy /app
 RUN git clone -b master https://github.com/ogsteam/mod-autoupdate /app/mod/autoupdate
-RUN chown -R www-data:www-data /app
-RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
 
-# Configure OGSpy
-RUN rm -Rf /app/install
-COPY ${dockpath}/id.php /app/parameters/id.php
-COPY ${dockpath}/key.php /app/parameters/key.php
+# .SH executable
+RUN chmod 755 /app/.docker/*.sh
 
-
-#Environment variables to configure php
-ENV PHP_UPLOAD_MAX_FILESIZE 10M
-ENV PHP_POST_MAX_SIZE 10M
+# Configuration environment
+RUN /app/.docker/configure.sh
 
 # Add volumes for MySQL 
 VOLUME  ["/etc/mysql", "/var/lib/mysql", "/app" ]
