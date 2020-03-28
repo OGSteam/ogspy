@@ -21,9 +21,11 @@ jobs:
       run: docker build . --file .docker/Dockerfile --tag $IMAGE_NAME
     - name: Docker Login
       if: success()
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login ${{ secrets.DOCKER_REGISTRY_URL }} -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        docker login ${{ secrets.DOCKER_REGISTRY_URL }} --username ${{ secrets.DOCKER_USERNAME }} --password "${{ secrets.DOCKER_PASSWORD }}"
+       # docker push docker.pkg.github.com/repoowner/repo_name/image_name:tag
 
     - name: Push image
+      if: success()
       run: |
         IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPOSITORY_NAME }}/$IMAGE_NAME
         # Strip git ref prefix from version
