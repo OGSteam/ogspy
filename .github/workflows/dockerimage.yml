@@ -24,8 +24,8 @@ jobs:
       
     - name: Build the Docker image
       if: success()
-      run: docker build . --file .docker/Dockerfile --tag ogsteam/ogspy:dev
+      run: docker build . --file .docker/Dockerfile --tag ${{ secrets.DOCKER_REGISTRY_URL }}/ogsteam/ogspy/develop:latest
 
     - name: Push image
       if: success()
-      run: docker push ogsteam/ogspy:dev
+      run: docker push ${{ secrets.DOCKER_REGISTRY_URL }}/ogsteam/ogspy/develop:latest
