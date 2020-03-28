@@ -26,23 +26,23 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 ENV MYSQL_PASS="ogsteam"
 
 # Add image configuration and scripts
-COPY start-apache2.sh /start-apache2.sh
-COPY start-mysqld.sh /start-mysqld.sh
-COPY run.sh /run.sh
-COPY my.cnf /etc/mysql/conf.d/my.cnf
-COPY supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
-COPY supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
-COPY mysql-setup.sh /mysql-setup.sh
-COPY ogspy_docker.sql /ogspy_docker.sql
+COPY .docker/start-apache2.sh /root/start-apache2.sh
+COPY .docker/start-mysqld.sh /root/start-mysqld.sh
+COPY .docker/run.sh /root/run.sh
+COPY .docker/my.cnf /etc/mysql/conf.d/my.cnf
+COPY .docker/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
+COPY .docker/supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
+COPY .docker/mysql-setup.sh /root/mysql-setup.sh
+COPY .docker/ogspy_docker.sql /root/ogspy_docker.sql
 # Remove pre-installed database
 RUN rm -rf /var/lib/mysql/*
 
 # Add MySQL utils
-COPY create_mysql_admin_user.sh /create_mysql_admin_user.sh
-RUN chmod 755 /*.sh
+COPY .docker/create_mysql_admin_user.sh /root/create_mysql_admin_user.sh
+RUN chmod 755 /root/*.sh
 
 # config to enable .htaccess
-COPY apache_default /etc/apache2/sites-available/000-default.conf
+COPY .docker/apache_default /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
 # Configure /app folder with sample app
@@ -65,4 +65,4 @@ ENV PHP_POST_MAX_SIZE 10M
 VOLUME  ["/etc/mysql", "/var/lib/mysql", "/app" ]
 
 EXPOSE 80 3306
-CMD ["/run.sh"]
+CMD ["/root/run.sh"]
