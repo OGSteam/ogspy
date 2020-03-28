@@ -17,9 +17,18 @@ if (!defined('IN_SPYOGAME')) {
 
 require_once("views/page_head.php");
 require_once("views/page_menu.php");
+
+global $classcontenttag;
+
+
 ?>
 
-<div class="content">
+<?php if (isset($classcontenttag)) : ?>
+    <div class="content <?php echo $classcontenttag?>">
+<?php else : ?>
+    <div class="content">
+<?php endif ; ?>
+
 
 
 

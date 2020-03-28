@@ -68,6 +68,7 @@ if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
         if ($cache_mod[$pub_action]['admin_only'] == 1 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {
             redirection("index.php?action=message&id_message=forbidden&info");
         } else {
+            $classcontenttag="mod mod_".$pub_action."";
             require_once("mod/" . $cache_mod[$pub_action]['root'] . "/" . $cache_mod[$pub_action]['link']);
             exit();
         }
@@ -84,6 +85,7 @@ switch ($pub_action) {
     //----------------------------------------//
     //Identification
         case "login_web" :
+            $classcontenttag="page_login_web";
             if ($pub_goto == null) {
                 user_login();
             } else {
@@ -100,6 +102,7 @@ switch ($pub_action) {
         //---Administration---//
         //----------------------------------------//
         case "administration" :
+            $classcontenttag="page_administration";
             require_once("views/admin.php");
             break;
 
@@ -136,6 +139,7 @@ switch ($pub_action) {
         //---Gestion des membres---//
         //----------------------------------------//
         case "home" :
+            $classcontenttag="page_home";
             require_once("views/home.php");
             break;
 
@@ -148,6 +152,7 @@ switch ($pub_action) {
             break;
 
         case "profile" :
+            $classcontenttag="page_profile";
             require_once("views/profile.php");
             break;
 
@@ -156,6 +161,7 @@ switch ($pub_action) {
             break;
 
         case "message" :
+            $classcontenttag="page_message";
             require("views/message.php");
             break;
 
@@ -201,20 +207,24 @@ switch ($pub_action) {
         //--- ---//
         //----------------------------------------//
         case "galaxy" :
+            $classcontenttag="page galaxy";
             require_once("views/galaxy.php");
             break;
 
         case "galaxy_sector" :
+            $classcontenttag="page_galaxy_sector";
             require_once("views/galaxy_sector.php");
             break;
 
         //
         case "show_reportspy" :
+            $classcontenttag="page_report_spy";
             require_once("views/report_spy.php");
             break;
 
         //
         case "show_reportrc" :
+            $classcontenttag="page_report_rc";
             require_once("views/report_rc.php");
             break;
 
@@ -230,21 +240,25 @@ switch ($pub_action) {
 
         //
         case "search" :
+            $classcontenttag="page_search";
             require_once("views/search.php");
             break;
 
         //
         case "cartography" :
+            $classcontenttag="page_cartography";
             require_once("views/cartography.php");
             break;
 
         //
         case "statistic" :
+            $classcontenttag="page_statistic";
             require_once("views/statistic.php");
             break;
 
         //
         case "ranking" :
+            $classcontenttag="page_ranking";
             require_once("views/ranking.php");
             break;
 
@@ -255,11 +269,13 @@ switch ($pub_action) {
 
         //
         case "about" :
+            $classcontenttag="page_about_ogsteam";
             require_once("views/about_ogsteam.php");
             break;
 
         //
         case "galaxy_obsolete" :
+            $classcontenttag="pagegalaxy_obsolete";
             require_once("views/galaxy_obsolete.php");
             break;
 
@@ -334,6 +350,7 @@ switch ($pub_action) {
         //--- ---//
         //----------------------------------------//
         case "server_close":
+            $classcontenttag="page_serverdown";
             require_once("views/serverdown.php");
             break;
 
@@ -342,15 +359,18 @@ switch ($pub_action) {
                 if (file_exists($server_config['open_user'])) {
                     require_once($server_config['open_user']);
                 } else {
+                    $classcontenttag="page_galaxy";
                     require_once("views/galaxy.php");
                 }
             } elseif ($server_config['open_admin'] != "" && ($user_data['user_admin'] == 1 || $user_data['user_coadmin'] == 1)) {
                 if (file_exists($server_config['open_admin'])) {
                     require_once($server_config['open_admin']);
                 } else {
+                    $classcontenttag="page_galaxy";
                     require_once("views/galaxy.php");
                 }
             } else {
+                $classcontenttag="page_galaxy";
                 require_once("views/galaxy.php");
             }
             break;
