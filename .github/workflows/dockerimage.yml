@@ -15,12 +15,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file .docker/Dockerfile --tag ogspy-develop:$(date +%s)
+      run: docker build . --file .docker/Dockerfile
     - name: Dockerize
       if: success()
       uses:  manusa/actions-publish-docker@master
       with:
         name: ogsteam/ogspy
-        key: ogspy-develop:$(date +%s)
         username: ${{ secrets.DOCKER_HUB_USER }}
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
