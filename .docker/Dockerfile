@@ -26,6 +26,7 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 ENV MYSQL_PASS="ogsteam"
 
 # Add image configuration and scripts
+RUN ls
 COPY start-apache2.sh ./start-apache2.sh
 COPY start-mysqld.sh ./start-mysqld.sh
 COPY run.sh ./run.sh
