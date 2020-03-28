@@ -7,7 +7,7 @@ on:
     branches: [ feature/github_action ]
 env:
   # TODO: Change variable to your image's name.
-  IMAGE_NAME: ogspy
+  IMAGE_NAME: github_action
 
 jobs:
 
@@ -21,7 +21,8 @@ jobs:
       run: docker build . --file .docker/Dockerfile --tag $IMAGE_NAME
     - name: Docker Login
       if: success()
-      run:  docker login -u ${{ secrets.DOCKER_HUB_USER }} -p "${{ secrets.DOCKER_HUB_PASSWORD }}" ${{ secrets.DOCKER_REGISTRY_URL }}
+      #run:  docker login -u ${{ secrets.DOCKER_HUB_USER }} -p "${{ secrets.DOCKER_HUB_PASSWORD }}" ${{ secrets.DOCKER_REGISTRY_URL }}
+      run : echo ${{ secrets.DOCKER_HUB_PASSWORD }} | docker login -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin ${{ secrets.DOCKER_REGISTRY_URL }}
        # docker push docker.pkg.github.com/repoowner/repo_name/image_name:tag
 
     - name: Push image
