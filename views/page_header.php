@@ -13,6 +13,7 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
+use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo($lang['HEAD_LANGUAGE']); ?>">
