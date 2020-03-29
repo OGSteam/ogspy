@@ -57,12 +57,8 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
             </td>
         </tr>
     </table>
-
 </div>
 <?php echo (new ToolTip_Helper())->GetHTMLHideContent(); ?>
 <?php echo (new ToolTip_Helper())->activateJs(); ?>
-
-
-
 </body>
 </html>

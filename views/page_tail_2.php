@@ -21,10 +21,8 @@ $php_timing = $php_end - $php_start - $sql_timing;
 $db->sql_close(); // fermeture de la connexion à la base de données
 
 ?>
-
 </td>
 </tr>
-
 <?php
 
 global $ogspy_phperror;
@@ -40,7 +38,6 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 }
 
 ?>
-
 <tr>
     <td style="color: #ECFF00; text-align:center; font-size:13px; font-style:italic">
         <a style="font-weight:bold;" href="https://www.ogsteam.fr">OGSpy</a> is an <span style="font-weight:bold;">OGSteam Software</span> &copy;2005-2020<br/>
@@ -51,9 +48,5 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
     </td>
 </tr>
 </table>
-<?php
-// echo (new ToolTip_Helper())->GetHTMLHideContent();   //non utilisé pour tail 2
-// echo (new ToolTip_Helper())->activateJs();
-?>
 </body>
 </html>
