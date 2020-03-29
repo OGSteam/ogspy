@@ -30,17 +30,19 @@ ENV PHP_UPLOAD_MAX_FILESIZE 10M
 ENV PHP_POST_MAX_SIZE 10M
 
 # Configure /app folder with sample app
-RUN git clone -b develop https://github.com/ogsteam/ogspy /app
+COPY . /app
+#RUN git clone -b develop https://github.com/ogsteam/ogspy /app
 RUN git clone -b master https://github.com/ogsteam/mod-autoupdate /app/mod/autoupdate
 
 # .SH executable
 RUN chmod 755 /app/.docker/*.sh
 
 # Configuration environment
+WORKDIR /app/.docker/
 RUN /app/.docker/configure.sh
 
 # Add volumes for MySQL 
 VOLUME  ["/etc/mysql", "/var/lib/mysql", "/app" ]
 
 EXPOSE 80 3306
-CMD ["/run.sh"]
+CMD ["/app/.docker/run.sh"]

@@ -16,7 +16,7 @@ mv /app/.docker/supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysql
 rm -rf /var/lib/mysql/*
 
 # config to enable .htaccess
-mv apache_default /etc/apache2/sites-available/000-default.conf
+mv /app/.docker/apache_default /etc/apache2/sites-available/000-default.conf
 a2enmod rewrite
 
 # Configure /app folder with sample app
@@ -25,8 +25,8 @@ mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
 
 # Configure OGSpy
 rm -Rf /app/install
-mv id.php /app/parameters/id.php
-mv key.php /app/parameters/key.php
+mv /app/.docker/id.php /app/parameters/id.php
+mv /app/.docker/key.php /app/parameters/key.php
 
 # Clean OGSpy
 rm -Rf /app/.git
