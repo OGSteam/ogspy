@@ -29,6 +29,7 @@ if (!defined('IN_SPYOGAME')) {
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/highcharts.js"></script>
     <script src="vendor/tooltipster/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
+<?php echo (new ToolTip_Helper())->activateJs(); ?>
 </head>
 <body>
 <table id="maintable">

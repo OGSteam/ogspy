@@ -31,10 +31,10 @@ function help($key, $value = null, $prefixe = "")
     $value = ($value==null) ? "Aide Introuvable" : $value;
     $value = (isset($lang[$key])) ? $lang[$key] : $value; // On ecrase la variable si présente dans ogspy donc non custom
 
-    $text = "<table width=\"200\">";
+    $text  = '<table style="width:200">';
     $text .= '<tr><td class="c" style="text-align:center;">Aide</td></tr>';
     $text .= '<tr><th style="color:white; ">' . ($value) . "</th></tr>";
-    $text .= "</table>";
+    $text .= '</table>';
 
     if (version_compare(phpversion(), '5.4.0', '>=')) {
         $text = htmlentities($text, ENT_COMPAT | ENT_HTML401, "UTF-8");
