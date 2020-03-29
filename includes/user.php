@@ -833,8 +833,8 @@ function user_set_all_empire_resync_id()
 function user_get_empire($user_id)
 {
     $planet = array(false, "user_id" => "", "planet_name" => "", "coordinates" => "",
-        "fields" => "", "fields_used" => "", "boosters" => booster_encode(),
-        "temperature_min" => "", "temperature_max" => "",
+        "fields" => 0, "fields_used" => 0, "boosters" => booster_encode(),
+        "temperature_min" => 0, "temperature_max" => 0,
         "Sat" => 0, "Sat_percentage" => 100, "FOR" => 0, "FOR_percentage" => 100,
         "M" => 0, "M_percentage" => 100, "C" => 0, "C_percentage" => 100, "D" => 0, "D_percentage" => 100,
         "CES" => 0, "CES_percentage" => 100, "CEF" => 0, "CEF_percentage" => 100,
@@ -1032,14 +1032,17 @@ function user_empire_production($user_empire, $off = NULL, $speed_uni = 1)
             // si pas de temperature impossible de calculer le ration et donc prod theorique ...
             if (isset($content["temperature_max"])) {
                 // calcul production réélle
-                $ratio[$content["planet_id"]] = $product;
-                $ratio[$content["planet_id"]] = bilan_production_ratio($content['M'], $content['C'], $content['D'], $content['CES'], $content['CEF'],
+                $ratio = $product;
+                $ratio = bilan_production_ratio($content['M'], $content['C'], $content['D'], $content['CES'], $content['CEF'],
                     $content['Sat'], $content['temperature_max'], $off['off_ingenieur'], $off['off_geologue'], $off_full, $NRJ, $plasma,
                     $content['M_percentage'] / 100, $content['C_percentage'] / 100, $content['D_percentage'] / 100, $content['CES_percentage'] / 100,
                     $content['CEF_percentage'] / 100, $content['Sat_percentage'] / 100, $content['booster_tab'],
                     $content['FOR'], $content['FOR_percentage'] / 100, $classe, $speed_uni);
-
-                $prod["reel"][$content["planet_id"]] = $ratio[$content["planet_id"]];
+                //Ajout prod foreuse
+                $ratio['M'] += $ratio['FOR']['M'];
+                $ratio['C'] += $ratio['FOR']['C'];
+                $ratio['D'] += $ratio['FOR']['D'];
+                $prod["reel"][$content["planet_id"]] = $ratio;
             }
         }
     }
