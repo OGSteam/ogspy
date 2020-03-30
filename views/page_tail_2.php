@@ -11,8 +11,6 @@ if (!defined('IN_SPYOGAME')) {
 
 
 
-
-
 <?php
 global $ogspy_phperror;
 if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
@@ -25,11 +23,6 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 ?>
 
 
-
-<?php
-// echo (new ToolTip_Helper())->GetHTMLHideContent();   //non utilisé pour tail 2
-// echo (new ToolTip_Helper())->activateJs();
-?>
 
 </div>
 </div>

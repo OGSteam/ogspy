@@ -191,8 +191,8 @@ require_once("views/page_header.php");
             if ($ally == "") {
                 $ally = "&nbsp;";
             } else {
-                $tooltip = "<table width=\"250\" style=\"color:white;\">";
-                $tooltip .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">" . $lang['GALAXY_ALLY'] . " " . $ally . "</td></tr>";
+                $tooltip = '<table style="width:250px" style="color:white;">';
+                $tooltip .= '<tr><td colspan="3" class="c" align="center">' . $lang['GALAXY_ALLY'] . " " . $ally . '</td></tr>';
 
                 $individual_ranking = galaxy_show_ranking_unique_ally($ally);
                 while ($ranking = current($individual_ranking)) {
@@ -335,13 +335,13 @@ require_once("views/page_header.php");
 
             $i++;
         }
-        $legend = "<table width=\"225\">";
-        $legend .= "<tr><td class=\"c\" colspan=\"2\" align=\"center\"e width=\"150\">" . $lang['GALAXY_LEGEND'] . "</td></tr>";
+        $legend = '<table style="width:225px">';
+        $legend .= '<tr><td class="c" colspan="2" align="center" style="width:150px">' . $lang['GALAXY_LEGEND'] . "</td></tr>";
         $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_INACTIVE_7Days'] . "</td><th>" . $lang['GALAXY_INACTIVE_7Days_SYMBOL'] . "</th></tr>";
         $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_INACTIVE_28Days'] . "</td><th>" . $lang['GALAXY_INACTIVE_28Days_SYMBOL'] . "</th></tr>";
         $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_HOLIDAYS'] . "</td><th>" . $lang['GALAXY_HOLIDAYS_SYMBOL'] . "</th></tr>";
         $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_WEAK_PROTECTION'] . "</td><th>" . $lang['GALAXY_WEAK_PROTECTION_SYMBOL'] . "</th></tr>";
-        $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_MOON'] . "<br><i>" . $lang['GALAXY_MOON_PHALANX'] . "</i></td><th><img src=\"skin/OGSpy_skin/img/lune.png\">" . $lang['GALAXY_MOON_PHALANX_SYMBOL'] . "</th></tr>";
+        $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_MOON'] . '<br><span style="font-style:italic">' . $lang['GALAXY_MOON_PHALANX'] . '</span></td><th><img alt="lune" src="skin/OGSpy_skin/img/lune.png">' . $lang['GALAXY_MOON_PHALANX_SYMBOL'] . "</th></tr>";
         $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_SPYREPORT'] . "</td><th>" . $lang['GALAXY_SPYREPORT_SYMBOL'] . "</th></tr>";
         $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_COMBATREPORT'] . "</td><th>" . $lang['GALAXY_COMBATREPORT_SYMBOL'] . "</th></tr>";
         $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_ALLY_FRIEND'] . "</td><th><blink><a>abc</a></blink></th></tr>";

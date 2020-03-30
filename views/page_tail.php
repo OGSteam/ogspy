@@ -33,7 +33,6 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 }
 ?>
 
-
 <!-- Place pour bas de pages -->
 
 
@@ -55,10 +54,7 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
             [ <span class="value"><?php echo $nb_requete;?></span> <?php echo $lang['FOOTER_QUERY'] . (($nb_requete > 1) ? "s" : ""); ?>]
         </p>
     </div>
-
-
 </div>
-
 
 <?php echo (new ToolTip_Helper())->GetHTMLHideContent(); ?>
 <?php echo (new ToolTip_Helper())->activateJs(); ?>

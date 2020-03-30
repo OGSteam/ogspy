@@ -13,7 +13,7 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
-
+use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 
 require_once("views/page_head.php");
 require_once("views/page_menu.php");
