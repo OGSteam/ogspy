@@ -7,40 +7,28 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
-?>
 
-
-
-
-
-<?php
 $php_end = benchmark();
 $php_timing = $php_end - $php_start - $sql_timing;
 $nb_requete = $db->nb_requete;
 $nb_users = user_get_nb_active_users();
 $db->sql_close(); // fermeture de la connexion à la base de données
-?>
 
-
-<?php
 global $ogspy_phperror;
-if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
-    echo "\n<tr>\n\t<td><table><tr><th>" . $lang['FOOTER_PHPERRORS'] . "</th></tr>";
+if(is_array($ogspy_phperror) && count($ogspy_phperror)) {
+    echo "\t<tr><td>\n\t<table><tr><th>" . $lang['FOOTER_PHPERRORS'] . "</th></tr>";
     foreach ($ogspy_phperror as $line) {
         echo "\n<tr><td>$line</td></tr>";
     }
     echo "</table>\n\t</td>\n</tr>";
 }
 ?>
-
+<div style="height:30px;"></div>
 <!-- Place pour bas de pages -->
-
-
-
 <div id="footbarre">
     <div class="toologs">
         <p>
-            <a href="https://www.ogsteam.fr" target="_blank">OGSpy</a> <span class="version"><?php echo $server_config["version"] ?></span><?php echo $lang['FOOTER_OGSPY'] ?> OGSteam &copy; 2005-2020
+            <a href="https://www.ogsteam.fr" target="_blank">OGSpy</a> <span class="version"><?php echo $server_config['version'] ?></span><?php echo $lang['FOOTER_OGSPY'] ?> OGSteam &copy; 2005-2020
         </p>
     </div>
     <div class="online">
@@ -55,11 +43,8 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
         </p>
     </div>
 </div>
-
+</div>
+</div>
 <?php echo (new ToolTip_Helper())->GetHTMLHideContent(); ?>
-<?php echo (new ToolTip_Helper())->activateJs(); ?>
-
-</div>
-</div>
 </body>
 </html>

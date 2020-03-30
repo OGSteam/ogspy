@@ -1,5 +1,3 @@
-
-
 /* conf globale  */
 html, body {
     margin: 0;
@@ -18,13 +16,10 @@ body {
     font-size: 12px;
 }
 
-li{
+li {
     line-height : 1.2em;
     list-style: none;
 }
-
-
-
 
 h1{
     text-align: center;
@@ -48,7 +43,7 @@ form {
 
 }
 
-form fieldset{
+form fieldset {
     background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
     box-shadow: 0 0 2px black, inset 0 0 1px rgba(255, 255, 255, 1);
     border: 1px solid #CCC;
@@ -58,7 +53,7 @@ form fieldset{
     background-color: #3F2158;
 }
 
-form div  {
+form div {
     margin-top: 1em;
 }
 
@@ -83,8 +78,6 @@ form .inputgalaxy{
     width: 80px;
     display: inline-block;
 }
-
-
 
 .button {
     margin-left: 30%;
@@ -114,8 +107,6 @@ form .inputgalaxy{
     cursor: pointer;
 
 }
-
-
 
 table{
     width : 100%;
@@ -160,18 +151,8 @@ table tbody td {
     text-align: center;
 
 }
-
-
-
-
-
-
-
-
-
-
-
 /* fin conf globale  */
+
 .main {
     height: 100%;
     min-height: 100%;
@@ -189,7 +170,6 @@ div.ban {
     padding-top: 20px;
 
 }
-
 
 div.menu {
     float: left;
@@ -231,21 +211,17 @@ div.menu aside .logo_menu {
     height: 60px;
     padding: 0px;
     margin: 5px 0px 0px;
-
-
 }
 
 div.menu nav {
     text-transform: uppercase;
     color: white;
     padding-top: 10px;
-
 }
 
 div.menu nav a {
     text-transform: uppercase;
     color: white;
-
 }
 
 div.menu nav a:hover {
@@ -254,33 +230,25 @@ div.menu nav a:hover {
     margin-left: 2px;
     font-size: 12px;
     transition: margin-left 0.5s, color 0.5s;
-
-
 }
-
 
 div.menu nav .menu_mods {
     text-transform: uppercase;
     color: lime;
-
 }
 
 div.menu nav a {
     text-transform: uppercase;
     color: white;
-
 }
 
 div.menu nav ul {
     list-style: none;
-
 }
 
 div.menu nav ul li {
-
     margin-top: 5px;
     margin-right: 5px;
-
 }
 
 div.menu nav .menu_items_modules {
@@ -289,21 +257,15 @@ div.menu nav .menu_items_modules {
     margin-bottom: 20px;
     font-size: 11px;
     padding-left: 5px;
-
-
 }
 
 div.menu nav .menu_items_modules a:hover {
     margin-left: 12px;
     color: darkolivegreen;
     transition: margin-left 0.5s, color 0.5s;
-
-
 }
 
-
 div.content {
-
     padding-top: 100px;
     padding-bottom: 10px;
     margin-left: auto;
@@ -318,12 +280,9 @@ div.content {
 
 
 /*  content sans menu*/
-   div.nomenu{
+div.nomenu{
     width: 100%;
 }
-
-
-
 
 div.content .navbarreMenu{
     max-width: 100%;
@@ -337,7 +296,6 @@ div.content .navbarreMenu ul {
     box-shadow: 0 0 2px black, inset 0 0 1px rgba(255, 255, 255, 1);
 }
 
-
 div.content .navbarreMenu ul  li {
     display: inline-block;
 }
@@ -349,6 +307,7 @@ div.content .navbarreMenu ul  li a {
     text-decoration: none;
     display: block;
 }
+
 div.content .navbarreMenu ul  li a:hover {
  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(30,16,42, 0.5) 25%, rgba(30,16,42, 0.5) 75%, rgba(255, 255, 255, 0) 100%);
  color: #5CCCE8;
@@ -360,8 +319,6 @@ div.content .navbarreMenu ul  li.actif a{
  color: #5CCCE8;
 }
 
-
-
 #footbarre {
  background: linear-gradient(rgba(10, 0, 24, 0.2), rgba(10, 0, 24, 1));
  color: #ECFF00;
@@ -370,7 +327,7 @@ div.content .navbarreMenu ul  li.actif a{
  bottom: 0;
  width: 100%;
  height: 30px;
-
+ font-style: italic;
 }
 
 #footbarre .toologs {
@@ -380,7 +337,6 @@ div.content .navbarreMenu ul  li.actif a{
  padding: 0;
  text-align: left;
  padding-left: 1%;
-
 }
 
 #footbarre .online {
@@ -416,18 +372,15 @@ div.content .navbarreMenu ul  li.actif a{
  font-weight: bold;
 }
 
-
 /* Page About  */
-
 .aboutoggsteam {
     padding: 1px;
     margin: auto;
     width: 80%;
-
     background-color: white;
     margin-bottom: 0px;
 }
-.aboutoggsteam p{
+.aboutoggsteam p {
     margin: 0;
     padding: 0;
     padding-left: 10px;
@@ -441,7 +394,6 @@ div.content .navbarreMenu ul  li.actif a{
     background-color: black;
     background: linear-gradient(180deg, rgba(0,0,0, 0.5) 0%, rgba(0,0,0, 1) 2%,rgba(0,0,0, 1)  98% , rgba(0,0,0, 0.5)  100%);
 }
-
 .aboutoggsteam .memberogsteamavatar {
     float:left;
     width: 100px;
@@ -478,17 +430,13 @@ div.content .navbarreMenu ul  li.actif a{
     margin: 0;
     padding: 0;
     display: inline-block;
-
 }
-
 .aboutoggsteam .memberogsteamdescriptive {
     padding-left: 30px;
     margin-top: 15px;
 }
 
-
-
 /* Page Login  */
-form.login{
-width: 400px;
+form.login {
+    width: 400px;
 }

@@ -11,24 +11,17 @@
  */
 
 if (!defined('IN_SPYOGAME')) {
-    die("Hacking attempt");
+    die('Hacking attempt');
 }
-use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 
-require_once("views/page_head.php");
-require_once("views/page_menu.php");
+require_once('views/page_head.php');
+require_once('views/page_menu.php');
 
 global $classcontenttag;
 
-
+echo '<div class="content';
+if (isset($classcontenttag)) {
+    echo " $classcontenttag";
+}
+echo '">' . "\n";
 ?>
-
-<?php if (isset($classcontenttag)) : ?>
-    <div class="content <?php echo $classcontenttag?>">
-<?php else : ?>
-    <div class="content">
-<?php endif ; ?>
-
-
-
-
