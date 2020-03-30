@@ -21,7 +21,7 @@ if (!isset($goto)) {
 }
 $enable_register_view = isset ($server_config['enable_register_view']) ? $server_config['enable_register_view'] : 0;
 ?>
-    <form method='post' action='' class="login">
+    <form method='post' class="login">
         <fieldset> <legend><?php echo($lang['LOGIN_CONNEXION_PARAMETERS']); ?></legend>
          <input type='hidden' name='action' value='login_web'/>
          <input type='hidden' name='token' value='<?php echo token::staticGetToken(600,'login');?>'/>
