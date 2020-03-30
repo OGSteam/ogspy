@@ -2,15 +2,11 @@
 html, body {
     margin: 0;
     padding: 0;
-    /* height: 100%; */
-    /* min-height: 100%; */
 }
 
 body {
-
     background: rgb(10, 0, 24) url("img/fond_1.jpg") no-repeat fixed left top;
     background-size: cover;
-
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     text-align: left;
     font-size: 12px;
@@ -21,7 +17,7 @@ li {
     list-style: none;
 }
 
-h1{
+h1 {
     text-align: center;
     font-size: 18px;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
@@ -30,7 +26,6 @@ h1{
     padding-top: 5px;
     padding-bottom: 5px;
     color: yellow;
-
 }
 
 form {
@@ -40,7 +35,6 @@ form {
     padding: 1em;
     border: 1px solid #CCC;
     border-radius: 1em;
-
 }
 
 form fieldset {
@@ -71,10 +65,9 @@ input {
     border: 1px solid #999;
     margin-top :  5px;
     margin-bottom :  5px;
-
 }
 
-form .inputgalaxy{
+form .inputgalaxy {
     width: 80px;
     display: inline-block;
 }
@@ -105,10 +98,9 @@ form .inputgalaxy{
     transition: all 0.3s ease 0s;
     border: 1px solid black;
     cursor: pointer;
-
 }
 
-table{
+table {
     width : 100%;
     border-collapse: collapse;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
@@ -116,10 +108,9 @@ table{
     margin-right: auto;
     margin-left: auto;
     margin-bottom: 20px;
-
 }
 
-table thead th{
+table thead th {
     background-image: none;
     background-color: black;
     border: 1px solid white;
@@ -129,11 +120,10 @@ table thead th{
     color: #21b2ff
 }
 
-table thead td{
+table thead td {
     padding-top: 5px;
     padding-bottom: 5px;
     border-bottom: 1px solid white;
-
 }
 
 table tbody th {
@@ -141,7 +131,6 @@ table tbody th {
     background-color: rgba(0,0,0,0.4);
     border: 1px solid black;
     text-align: center;
-
 }
 
 table tbody td {
@@ -149,7 +138,6 @@ table tbody td {
     color: yellow;
     border: 1px solid black;
     text-align: center;
-
 }
 /* fin conf globale  */
 
@@ -158,17 +146,9 @@ table tbody td {
     min-height: 100%;
 }
 
-div.ban {
-    background-image: url('img/logo_head.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    position: absolute;
-    width: 100%;
-    height: 50px;
-    margin-bottom: 0px;
-    padding: 0px;
-    padding-top: 20px;
-
+header.ban {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 div.menu {
@@ -178,8 +158,13 @@ div.menu {
     height: 100%;
     min-height: 100%;
     display: block;
+}
 
-
+div.menu aside {
+    position:absolute;
+    top:0px;
+    width:inherit;
+    padding-top:10px;
 }
 
 div.menu aside .timer {
@@ -266,7 +251,6 @@ div.menu nav .menu_items_modules a:hover {
 }
 
 div.content {
-    padding-top: 100px;
     padding-bottom: 10px;
     margin-left: auto;
     margin-right: auto;
@@ -275,7 +259,6 @@ div.content {
     min-height: 100%;
     display: inline-block;
     margin-bottom: 30px;
-
 }
 
 
@@ -327,6 +310,7 @@ div.content .navbarreMenu ul  li.actif a{
  bottom: 0;
  width: 100%;
  height: 30px;
+ line-height:30px;
  font-style: italic;
 }
 

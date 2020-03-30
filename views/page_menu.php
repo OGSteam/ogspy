@@ -13,19 +13,12 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
-
-
-
-
-
 ?>
-
 <div class="menu">
     <aside>
         <div class="timer">
             <!-- placer dans un fichier js ...-->
-            <script type="text/javascript">
-
+            <script>
                 var date = new Date;
                 var delta = Math.round((1584339590000 - date.getTime()) / 1000);
 
@@ -75,23 +68,18 @@ if (!defined('IN_SPYOGAME')) {
 
                 window.onload = Biper;
             </script>
-            Heure serveur <br/>
+            Heure serveur <br>
             <span id="datetime">En attente</span>
-
         </div>
         <div class="logo_menu">
             <!-- logo ogsteam menu-->
         </div>
-        <?php if ($server_config["server_active"] == 0) : ?>
+<?php if ($server_config["server_active"] == 0) : ?>
             <div class="offline">
-                <?php echo $lang['MENU_SERVER_OFFLINE']; ?>
+<?php echo $lang['MENU_SERVER_OFFLINE']; ?>
             </div>
-
-        <?php endif; ?>
-
-
+<?php endif; ?>
     </aside>
-
     <nav>
         <ul class="navmenu">
             <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) :?>
@@ -185,14 +173,6 @@ if (!defined('IN_SPYOGAME')) {
                 </a>
             </li>
         </ul>
-
-
     </nav>
-
 </div>
-
-
-
-
     <!--<script>$( "#menu" ).menu();</script> (Encore pas mal de travail pour mettre ce menu en place) -->
-

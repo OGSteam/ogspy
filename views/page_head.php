@@ -28,7 +28,7 @@ use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 <?php echo (new ToolTip_Helper())->activateJs(); ?>
 </head>
 <body>
+<header class="ban">
+	<img alt="Logo OGSpy" src="./skin/OGSpy_skin/<?php echo $banner_selected; ?>"/>
+</header>
 <div class="main">
-    <div class="ban"> <!--logo ogsteam !-->
-        <!--<img src="./skin/OGSpy_skin/<?php echo  $banner_selected; ?>">-->
-    </div>
