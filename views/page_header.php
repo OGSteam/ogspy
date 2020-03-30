@@ -35,7 +35,7 @@ use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 <body>
 <table id="maintable">
     <tr>
-        <td style="vertical-align:top; width:180; padding:10px;" rowspan="4"><?php require_once("menu.php"); ?></td>
+        <td style="vertical-align:top; width:180px; padding:10px;" rowspan="4"><?php require_once("menu.php"); ?></td>
         <td style="height:70px">
             <div><img alt="Logo OGSpy" src="./skin/OGSpy_skin/<?php echo  $banner_selected; ?>"></div>
         </td>

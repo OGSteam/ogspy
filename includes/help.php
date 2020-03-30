@@ -31,7 +31,7 @@ function help($key, $value = null, $prefixe = "")
     $value = ($value==null) ? "Aide Introuvable" : $value;
     $value = (isset($lang[$key])) ? $lang[$key] : $value; // On ecrase la variable si présente dans ogspy donc non custom
 
-    $text  = '<table style="width:200">';
+    $text  = '<table style="width:200px">';
     $text .= '<tr><td class="c" style="text-align:center;">Aide</td></tr>';
     $text .= '<tr><th style="color:white; ">' . ($value) . "</th></tr>";
     $text .= '</table>';
