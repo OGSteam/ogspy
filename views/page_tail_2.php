@@ -17,10 +17,10 @@ if(is_array($ogspy_phperror) && count($ogspy_phperror)) {
     echo "</table>\n\t</td>\n</tr>";
 }
 ?>
-</div>
-<div style="color:#ECFF00; text-align:center; font-size:13px; font-style:italic">
-    <a href="https://www.ogsteam.fr" target="_blank">OGSpy</a> <span class="version"><?php echo $server_config['version'] ?></span><?php echo $lang['FOOTER_OGSPY'] ?> OGSteam &copy; 2005-2020<br>
-    <span style="font-style:normal;">v <?php echo $server_config["version"]; ?></span>
+<p id="footbarre" style="text-align:center; font-size:13px;">
+    <a href="https://www.ogsteam.fr" target="_blank">OGSpy</a> <?php echo $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2020<br>
+    <span class="version">v <?php echo $server_config['version']; ?></span>
+</p>
 </div>
 </div>
 </body>
