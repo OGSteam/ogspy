@@ -363,7 +363,7 @@ require_once("views/page_header.php");
 
         //Phalange
         echo "<br><table style='width:860px' border='1'>";
-        echo "<tr><td class='c' align='center'>" . $lang['GALAXY_PHALANX_LIST'] . help("galaxy_phalanx") . "</td></tr>";
+        echo "<tr><td class='c'>" . $lang['GALAXY_PHALANX_LIST'] . help("galaxy_phalanx") . "</td></tr>";
         if (sizeof($phalanx_list) > 0) {
             foreach ($phalanx_list as $value) {
 
@@ -447,7 +447,7 @@ require_once("views/page_header.php");
 
 
         //Raccourci recherche
-        $tooltip_begin = "<table width=\"200\">";
+        $tooltip_begin = "<table style='width:200px'>";
         $tooltip_end = "</table>";
 
         $tooltip_colonization = $tooltip_moon = $tooltip_away = $tooltip_spy = "";
@@ -470,25 +470,24 @@ require_once("views/page_header.php");
             $tooltip_spy .= "<th colspan='1'><a href=\"index.php?action=search&amp;type_search=spy&amp;galaxy_down=" . $galaxy . "&amp;galaxy_up=" . $galaxy . "&amp;system_down=" . $down . "&amp;system_up=" . $up . "&amp;row_down=&amp;row_up=\">" . $i ."</a></th>";
         }
 
-        echo "<br><table width='860' border='1'>";
-        echo "<tr><td class='c' align='center' colspan='20'>" . $lang['GALAXY_SEARCH'] . "</td></tr>";
-        echo "<tr align='center'>";
-        echo "<th width='25%' colspan='5'>" . $lang['GALAXY_SEARCH_PLANETS_AVAILABLE'] . "</th>";
-        echo "<th width='25%' colspan='5'>" . $lang['GALAXY_SEARCH_MOONS'] . "</th>";
-        echo "<th width='25%' colspan='5'>" . $lang['GALAXY_SEARCH_INACTIVES'] . "</th>";
-        echo "<th width='25%' colspan='5'>" . $lang['GALAXY_SEARCH_SPYREPORTS'] . "</th>";
+        echo "<br><table style='width:860px' border='1'>";
+        echo "<tr><td class='c' colspan='20'>" . $lang['GALAXY_SEARCH'] . "</td></tr>";
+        echo "<tr>";
+        echo "<th style='width=25%' colspan='5'>" . $lang['GALAXY_SEARCH_PLANETS_AVAILABLE'] . "</th>";
+        echo "<th style='width=25%' colspan='5'>" . $lang['GALAXY_SEARCH_MOONS'] . "</th>";
+        echo "<th style='width=25%' colspan='5'>" . $lang['GALAXY_SEARCH_INACTIVES'] . "</th>";
+        echo "<th style='width=25%' colspan='5'>" . $lang['GALAXY_SEARCH_SPYREPORTS'] . "</th>";
         echo "</tr>";
-        echo "<tr align='center'>";
+        echo "<tr>";
         echo $tooltip_colonization;
         echo $tooltip_moon;
         echo $tooltip_away;
         echo $tooltip_spy;
         echo "</tr>";
-        echo "<tr align='center'>";
+        echo "<tr>";
         echo "<th colspan='20'>" . $lang['GALAXY_SURROUNDING_SYSTEMS']. "</th>";
         echo "</tr>";
         echo "</table>";
-
 
         require_once("views/page_tail.php");
 ?>

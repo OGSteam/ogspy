@@ -302,6 +302,14 @@ div.content .navbarreMenu ul  li.actif a{
  color: #5CCCE8;
 }
 
+.tab_helper {
+ width:200px;
+ font-weight:bold;
+}
+.tab_helper tbody td {
+ color:white;
+}
+
 #footbarre {
  background: linear-gradient(rgba(10, 0, 24, 0.2), rgba(10, 0, 24, 1));
  color: #ECFF00;
