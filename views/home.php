@@ -11,10 +11,10 @@
  */
 
 if (!defined('IN_SPYOGAME')) {
-    die("Hacking attempt");
+    die('Hacking attempt');
 }
 
-require_once("views/page_header.php");
+require_once('views/page_header.php');
 ?>
 
     <table style="width:100%">
@@ -98,5 +98,5 @@ require_once("views/page_header.php");
     </table>
 
 <?php
-require_once("views/page_tail.php");
+require_once('views/page_tail.php');
 ?>
