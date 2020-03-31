@@ -163,12 +163,101 @@ table tbody td {
 
 
 
+/* msgbox   */
+/* Par defaut ogspy style   */
+.msgbox {
+    padding: 0px;
+    margin-top: 15px;
+    color: white;
+}
+.msgbox p{
+    margin:0;
+    padding:0;
+    padding-left: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.msgbox  p.msgboxtitle{
+    margin:0;
+    padding:0;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    background-color: black;
+    padding: 15px;
+    font-size: 14px;
+    color: #21b2ff;
+    border: 1px solid white;
+
+}
+.msgbox  p.msgcontent{
+    margin:0;
+    padding:0;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
+    background-color: #3F2158;
+    padding: 15px;
+    font-size: 12px;
 
 
+}
+
+.msgbox span.msgboxclosebtn {
+    margin-left: 15px;
+    paddin:0;
+    padding-bottom: 15px;
+    color: #21b2ff;
+    font-weight: bold;
+    float: right;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.msgbox span.msgboxclosebtn:hover {
+    color: white;
+}
 
 
+/* Par alert   */
+.msgbox.msgboxalert  p.msgboxtitle
+{
+    background-color: #8a2f24;
+    color: white;
+    border: none;
+}
+.msgbox.msgboxalert  p.msgcontent{
+    background: none;
+    background-color: #f44336;
+}
+.msgbox.msgboxalert span.msgboxclosebtn {
+    color: white;
+}
+.msgbox.msgboxalert span.msgboxclosebtn:hover {
+    color: black;
+}
 
 
+/* Par success   */
+.msgbox.msgboxsuccess  p.msgboxtitle
+{
+    background-color: #376f37;
+    color: white;
+    border: none;
+}
+.msgbox.msgboxsuccess  p.msgcontent{
+    background: none;
+    background-color: #4e9051;
+}
+.msgbox.msgboxsuccess span.msgboxclosebtn {
+    color: white;
+}
+.msgbox.msgboxsuccess span.msgboxclosebtn:hover {
+    color: black;
+}
+/* fin msgbox   */
 
 
 /* fin conf globale  */
