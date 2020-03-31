@@ -36,18 +36,10 @@ function help($key, $value = null, $prefixe = "")
     //$text .= '<tr><th style="color:white; ">' . ($value) . "</th></tr>";
     //$text .= "</table>";
     // remplacé par :
-    $text = "<table class=\"tab_helper\">\n";
-    $text .= "    <thead>\n";
-    $text .= "        <tr>\n";
-    $text .= "            <th>Aide</th>\n";
-    $text .= "        <tr>\n";
-    $text .= "    </thead>\n";
-    $text .= "    <tbody>\n";
-    $text .= "        <tr>\n";
-    $text .= "            <td>" . ($value) . "</td>\n";
-    $text .= "        <tr>\n";
-    $text .= "    </tbody>\n";
-
+    $text  = "<table class='tab_helper'>\n";
+    $text .= " <thead><tr><th>Aide</th></tr></thead>\n";
+    $text .= " <tbody><tr><td>" . ($value) . "</td></tr></tbody>\n";
+    $text .= "</table>\n";
 
     if (version_compare(phpversion(), '5.4.0', '>=')) {
         $text = htmlentities($text, ENT_COMPAT | ENT_HTML401, "UTF-8");

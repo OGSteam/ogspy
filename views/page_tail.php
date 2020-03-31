@@ -28,6 +28,7 @@ if(is_array($ogspy_phperror) && count($ogspy_phperror)) {
 <!-- Place pour bas de pages -->
 </div>
 </div>
+<?php echo (new ToolTip_Helper())->GetHTMLHideContent(); ?>
 <footer id="footbarre">
     <p class="toologs">
             <a href="https://www.ogsteam.fr/" target="_blank">OGSpy</a><span class="version"> <?php echo $server_config['version']; ?> </span><?php echo $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2020
@@ -40,6 +41,5 @@ if(is_array($ogspy_phperror) && count($ogspy_phperror)) {
             [ <span class="value"><?php echo $nb_requete;?></span> <?php echo $lang['FOOTER_QUERY'] . (($nb_requete > 1) ? "s" : ""); ?>]
     </p>
 </footer>
-<?php echo (new ToolTip_Helper())->GetHTMLHideContent(); ?>
 </body>
 </html>
