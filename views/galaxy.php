@@ -62,7 +62,7 @@ require_once("views/page_header.php");
     <table border="0">
         <tr>
             <td>
-                <table align="center">
+                <table>
                     <tr>
                         <td class="c" colspan="3"><?php echo($lang['GALAXY_SELECT_GALAXY']); ?></td>
                     </tr>
@@ -79,7 +79,7 @@ require_once("views/page_header.php");
                 </table>
             </td>
             <td>
-                <table align="center">
+                <table>
                     <tr>
                         <td class="c" colspan="3"><?php echo($lang['GALAXY_SELECT_SYSTEM']); ?></td>
                     </tr>
@@ -96,15 +96,15 @@ require_once("views/page_header.php");
                 </table>
             </td>
         </tr>
-        <tr align="center">
+        <tr>
             <td colspan="3"><input type="submit" value="<?php echo($lang['GALAXY_DISPLAY']); ?>"></td>
         </tr>
     </table>
 </form>
 <form method="POST" action="index.php?action=galaxy">
-    <table width="860">
+    <table style='width:860px;'>
         <tr>
-            <td colspan="3" align="left">
+            <td colspan="3">
                 <label>
                     <select name="coordinates" onchange="this.form.submit();" onkeyup="this.form.submit();">
                         <option><?php echo($lang['GALAXY_FAVORITE_LIST']); ?></option>
@@ -117,8 +117,7 @@ require_once("views/page_header.php");
                     </select>
                 </label>
             </td>
-
-            <td colspan="6" align="right">
+            <td colspan="6">
                 <?php
                 if (sizeof($favorites) < $server_config['max_favorites']) {
                                     $string_addfavorites = "window.location = 'index.php?action=add_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "';";
@@ -137,7 +136,7 @@ require_once("views/page_header.php");
             </td>
         </tr>
         <tr>
-            <td class="c" style="text-align: left" colspan="9"><?php echo($lang['GALAXY_SYSTEMS']); ?><?php echo $missil; ?></td>
+            <td class="c" style="text-align:left" colspan="9"><?php echo($lang['GALAXY_SYSTEMS']); ?><?php echo $missil; ?></td>
         </tr>
         <tr>
             <td class="c" width="25">&nbsp;</td>
@@ -156,8 +155,8 @@ require_once("views/page_header.php");
             $begin_hided = "";
             $end_hided = "";
             if ($v["hided"]) {
-                $begin_hided = "<span style=\"color: lime; \">";
-                $end_hided = "</span>";
+                $begin_hided = '<span style="color:lime;">';
+                $end_hided   = '</span>';
             }
             $begin_allied = "";
             $end_allied = "";
@@ -176,58 +175,58 @@ require_once("views/page_header.php");
             $gate = $v["gate"] == 1;
             $status = $v["status"];
             $timestamp = $v["timestamp"];
-            $poster = "&nbsp;";
+            $poster = '&nbsp;';
             if ($timestamp != 0) {
                 $timestamp = strftime("%d %b %Y %H:%M", $timestamp);
                 $poster = $timestamp . " - " . $v["poster"];
             }
 
             if ($planet == "") {
-                $planet = "&nbsp;";
+                $planet = '&nbsp;';
             } else {
                 $planet = "<a href='index.php?action=search&amp;type_search=planet&amp;string_search=" . $planet . "&amp;strict=on'>" . $begin_allied . $begin_hided . $planet . $end_hided . $end_allied . "</a>";
             }
 
             if ($ally == "") {
-                $ally = "&nbsp;";
+                $ally = '&nbsp;';
             } else {
                 $tooltip = '<table style="width:250px" style="color:white;">';
-                $tooltip .= '<tr><td colspan="3" class="c" align="center">' . $lang['GALAXY_ALLY'] . " " . $ally . '</td></tr>';
+                $tooltip .= '<tr><td colspan="3" class="c">' . $lang['GALAXY_ALLY'] . " " . $ally . '</td></tr>';
 
                 $individual_ranking = galaxy_show_ranking_unique_ally($ally);
                 while ($ranking = current($individual_ranking)) {
                     $datadate = strftime("%d %b %Y %H:%M", key($individual_ranking));
-                    $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
-                    $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
-                    $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : "&nbsp;";
-                    $eco_points = isset($ranking["eco"]) ? formate_number($ranking["eco"]["points"]) : "&nbsp;";
-                    $techno_rank = isset($ranking["techno"]) ? formate_number($ranking["techno"]["rank"]) : "&nbsp;";
-                    $techno_points = isset($ranking["techno"]) ? formate_number($ranking["techno"]["points"]) : "&nbsp;";
-                    $military_rank = isset($ranking["military"]) ? formate_number($ranking["military"]["rank"]) : "&nbsp;";
-                    $military_points = isset($ranking["military"]) ? formate_number($ranking["military"]["points"]) : "&nbsp;";
-                    $military_b_rank = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["rank"]) : "&nbsp;";
-                    $military_b_points = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["points"]) : "&nbsp;";
-                    $military_l_rank = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["rank"]) : "&nbsp;";
-                    $military_l_points = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) : "&nbsp;";
-                    $military_d_rank = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) : "&nbsp;";
-                    $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : "&nbsp;";
-                    $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : "&nbsp;";
-                    $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : "&nbsp;";
+                    $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : '&nbsp;';
+                    $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : '&nbsp;';
+                    $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : '&nbsp;';
+                    $eco_points = isset($ranking["eco"]) ? formate_number($ranking["eco"]["points"]) : '&nbsp;';
+                    $techno_rank = isset($ranking["techno"]) ? formate_number($ranking["techno"]["rank"]) : '&nbsp;';
+                    $techno_points = isset($ranking["techno"]) ? formate_number($ranking["techno"]["points"]) : '&nbsp;';
+                    $military_rank = isset($ranking["military"]) ? formate_number($ranking["military"]["rank"]) : '&nbsp;';
+                    $military_points = isset($ranking["military"]) ? formate_number($ranking["military"]["points"]) : '&nbsp;';
+                    $military_b_rank = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["rank"]) : '&nbsp;';
+                    $military_b_points = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["points"]) : '&nbsp;';
+                    $military_l_rank = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["rank"]) : '&nbsp;';
+                    $military_l_points = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) : '&nbsp;';
+                    $military_d_rank = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) : '&nbsp;';
+                    $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : '&nbsp;';
+                    $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : '&nbsp;';
+                    $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : '&nbsp;';
 
-                    $tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">" . $lang['GALAXY_RANK'] . " " . $datadate . "</td></tr>";
-                    $tooltip .= "<tr><td class=\"c\" width=\"75\">" . $lang['GALAXY_RANK_GENERAL'] . "</td><th width=\"30\">" . $general_rank . "</th><th>" . $general_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_ECONOMY'] . "</td><th>" . $eco_rank . "</th><th>" . $eco_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_LAB'] . "</td><th>" . $techno_rank . "</th><th>" . $techno_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_MILITARY'] . "</td><th width=\"30\">" . $military_rank . "</th><th>" . $military_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_MILITARY_BUILT'] . "</td><th width=\"30\">" . $military_b_rank . "</th><th>" . $military_b_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_MILITARY_LOST'] . "</td><th>" . $military_l_rank . "</th><th>" . $military_l_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_MILITARY_DESTROYED'] . "</td><th>" . $military_d_rank . "</th><th>" . $military_d_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_MILITARY_HONNOR'] . "</td><th>" . $honnor_rank . "</th><th>" . $honnor_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">" . formate_number($ranking["number_member"]) . " " . $lang['GALAXY_MEMBERS'] . "</td></tr>";
+                    $tooltip .= '<tr><td class="c" colspan="3">' . $lang['GALAXY_RANK'] . ' ' . $datadate . '</td></tr>';
+                    $tooltip .= '<tr><td class="c" style="width:75px">' . $lang['GALAXY_RANK_GENERAL'] . '</td><th style="width:30px">' . $general_rank . '</th><th>' . $general_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_ECONOMY'] . '</td><th>' . $eco_rank . '</th><th>' . $eco_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_LAB'] . '</td><th>' . $techno_rank . '</th><th>' . $techno_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY'] . '</td><th style="width:30px">' . $military_rank . '</th><th>' . $military_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_BUILT'] . '</td><th style="width:30px">' . $military_b_rank . '</th><th>' . $military_b_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_LOST'] . '</td><th>' . $military_l_rank . '</th><th>' . $military_l_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_DESTROYED'] . '</td><th>' . $military_d_rank . '</th><th>' . $military_d_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_HONNOR'] . '</td><th>' . $honnor_rank . '</th><th>' . $honnor_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c" colspan="3">' . formate_number($ranking["number_member"]) . " " . $lang['GALAXY_MEMBERS'] . '</td></tr>';
                     break;
                 }
-                $tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
-                $tooltip .= "</table>";
+                $tooltip .= '<tr><td class="c" colspan="3"><a href="index.php?action=search&amp;type_search=ally&amp;string_search=' . $ally . '&strict=on">' . $lang['GALAXY_SEE_DETAILS'] . '</a></td></tr>';
+                $tooltip .= '</table>';
                 if (version_compare(phpversion(), '5.4.0', '>=')) {
                     $tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
                 } else {
@@ -240,44 +239,44 @@ require_once("views/page_header.php");
             }
 
             if ($player == "") {
-                $player = "&nbsp;";
+                $player = '&nbsp;';
             } else {
-                $tooltip = "<table width=\"250\" style=\"color:white;\">";
-                $tooltip .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">" . $lang['GALAXY_PLAYER'] . " " . $player . "</td></tr>";
+                $tooltip = '<table style="width:250px; color:white;">';
+                $tooltip .= '<tr><td colspan="3" class="c">' . $lang['GALAXY_PLAYER'] . ' ' . $player . '</td></tr>';
 
                 $individual_ranking = galaxy_show_ranking_unique_player($player);
                 while ($ranking = current($individual_ranking)) {
                     $datadate = strftime("%d %b %Y %H:%M", key($individual_ranking));
-                    $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
-                    $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
-                    $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : "&nbsp;";
-                    $eco_points = isset($ranking["eco"]) ? formate_number($ranking["eco"]["points"]) : "&nbsp;";
-                    $techno_rank = isset($ranking["techno"]) ? formate_number($ranking["techno"]["rank"]) : "&nbsp;";
-                    $techno_points = isset($ranking["techno"]) ? formate_number($ranking["techno"]["points"]) : "&nbsp;";
-                    $military_rank = isset($ranking["military"]) ? formate_number($ranking["military"]["rank"]) : "&nbsp;";
-                    $military_points = isset($ranking["military"]) ? formate_number($ranking["military"]["points"]) : "&nbsp;";
-                    $military_b_rank = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["rank"]) : "&nbsp;";
-                    $military_b_points = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["points"]) : "&nbsp;";
-                    $military_l_rank = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["rank"]) : "&nbsp;";
-                    $military_l_points = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) : "&nbsp;";
-                    $military_d_rank = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) : "&nbsp;";
-                    $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : "&nbsp;";
-                    $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : "&nbsp;";
-                    $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : "&nbsp;";
+                    $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : '&nbsp;';
+                    $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : '&nbsp;';
+                    $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : '&nbsp;';
+                    $eco_points = isset($ranking["eco"]) ? formate_number($ranking["eco"]["points"]) : '&nbsp;';
+                    $techno_rank = isset($ranking["techno"]) ? formate_number($ranking["techno"]["rank"]) : '&nbsp;';
+                    $techno_points = isset($ranking["techno"]) ? formate_number($ranking["techno"]["points"]) : '&nbsp;';
+                    $military_rank = isset($ranking["military"]) ? formate_number($ranking["military"]["rank"]) : '&nbsp;';
+                    $military_points = isset($ranking["military"]) ? formate_number($ranking["military"]["points"]) : '&nbsp;';
+                    $military_b_rank = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["rank"]) : '&nbsp;';
+                    $military_b_points = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["points"]) : '&nbsp;';
+                    $military_l_rank = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["rank"]) : '&nbsp;';
+                    $military_l_points = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) : '&nbsp;';
+                    $military_d_rank = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) : '&nbsp;';
+                    $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : '&nbsp;';
+                    $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : '&nbsp;';
+                    $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : '&nbsp;';
 
-                    $tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">" . $lang['GALAXY_RANK'] . " " . $datadate . "</td></tr>";
-                    $tooltip .= "<tr><td class=\"c\" width=\"75\">" . $lang['GALAXY_RANK_GENERAL'] . "</td><th width=\"30\">" . $general_rank . "</th><th>" . $general_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_ECONOMY'] . "</td><th>" . $eco_rank . "</th><th>" . $eco_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_LAB'] . "</td><th>" . $techno_rank . "</th><th>" . $techno_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_MILITARY'] . "</td><th width=\"30\">" . $military_rank . "</th><th>" . $military_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_MILITARY_BUILT'] . "</td><th>" . $military_b_rank . "</th><th>" . $military_b_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_MILITARY_LOST'] . "</td><th>" . $military_l_rank . "</th><th>" . $military_l_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_MILITARY_DESTROYED'] . "</td><th>" . $military_d_rank . "</th><th>" . $military_d_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_MILITARY_HONNOR'] . "</td><th>" . $honnor_rank . "</th><th>" . $honnor_points . "</th></tr>";
+                    $tooltip .= '<tr><td class="c" colspan="3">' . $lang['GALAXY_RANK'] . " " . $datadate . '</td></tr>';
+                    $tooltip .= '<tr><td class="c" style="width:75px">' . $lang['GALAXY_RANK_GENERAL'] . '</td><th style="width:30px">' . $general_rank . '</th><th>' . $general_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_ECONOMY'] . '</td><th>' . $eco_rank . '</th><th>' . $eco_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_LAB'] . '</td><th>' . $techno_rank . '</th><th>' . $techno_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY'] . '</td><th style="width:30px">' . $military_rank . '</th><th>' . $military_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_BUILT'] . '</td><th>' . $military_b_rank . '</th><th>' . $military_b_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_LOST'] . '</td><th>' . $military_l_rank . '</th><th>' . $military_l_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_DESTROYED'] . '</td><th>' . $military_d_rank . '</th><th>' . $military_d_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_HONNOR'] . '</td><th>' . $honnor_rank . '</th><th>' . $honnor_points . '</th></tr>';
                     break;
                 }
-                $tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $player . "&amp;strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
-                $tooltip .= "</table>";
+                $tooltip .= '<tr><td class="c" colspan="3"><a href="index.php?action=search&amp;type_search=player&amp;string_search=' . $player . '&amp;strict=on">' . $lang['GALAXY_SEE_DETAILS'] . '</a></td></tr>';
+                $tooltip .= '</table>';
                 if (version_compare(phpversion(), '5.4.0', '>=')) {
                     $tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
                 } else {
@@ -290,7 +289,7 @@ require_once("views/page_header.php");
             }
 
             if ($status == "") {
-                $status = "&nbsp;";
+                $status = '&nbsp;';
             }
 
             if ($moon == 1) {
@@ -306,47 +305,47 @@ require_once("views/page_header.php");
                     $moon .= " - " . $detail;
                 }
             } else {
-                $moon = "&nbsp;";
+                $moon = '&nbsp;';
             }
 
             if ($v["report_spy"] > 0) {
-                $spy = "<a href='#' onClick=\"window.open('index.php?action=show_reportspy&amp;galaxy=$galaxy&amp;system=$system&amp;row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">" . $lang['GALAXY_SR'] . "</a>";
+                $spy = "<a href='#' onClick=\"window.open('index.php?action=show_reportspy&amp;galaxy=$galaxy&amp;system=$system&amp;row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">" . $lang['GALAXY_SR'] . '</a>';
             } else {
-                $spy = "&nbsp;";
+                $spy = '&nbsp;';
             }
 
             if (isset($v["report_rc"]) && $v["report_rc"] > 0) {
-                $rc = "<a href='#' onClick=\"window.open('index.php?action=show_reportrc&amp;galaxy=$galaxy&amp;system=$system&amp;row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">" . $v["report_rc"] . $lang['GALAXY_CR'] . "</a>";
+                $rc = "<a href='#' onClick=\"window.open('index.php?action=show_reportrc&amp;galaxy=$galaxy&amp;system=$system&amp;row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">" . $v["report_rc"] . $lang['GALAXY_CR'] . '</a>';
             } else {
-                $rc = "&nbsp;";
+                $rc = '&nbsp;';
             }
 
-            echo "<tr>" . "\n";
-            echo "\t" . "<th>" . $id . "</th>" . "\n";
-            echo "\t" . "<th>" . $planet . "</th>" . "\n";
-            echo "\t" . "<th>" . $ally . "</th>" . "\n";
-            echo "\t" . "<th>" . $player . "</th>" . "\n";
-            echo "\t" . "<th>" . $moon . "</th>" . "\n";
-            echo "\t" . "<th>" . $status . "</th>" . "\n";
-            echo "\t" . "<th>" . $spy . "</th>" . "\n";
-            echo "\t" . "<th>" . $rc . "</th>" . "\n";
-            echo "\t" . "<th>" . $poster . "</th>" . "\n";
-            echo "</tr>" . "\n";
+            echo "<tr>\n";
+            echo "\t<th>" . $id     . "</th>\n";
+            echo "\t<th>" . $planet . "</th>\n";
+            echo "\t<th>" . $ally   . "</th>\n";
+            echo "\t<th>" . $player . "</th>\n";
+            echo "\t<th>" . $moon   . "</th>\n";
+            echo "\t<th>" . $status . "</th>\n";
+            echo "\t<th>" . $spy    . "</th>\n";
+            echo "\t<th>" . $rc     . "</th>\n";
+            echo "\t<th>" . $poster . "</th>\n";
+            echo "</tr>\n";
 
             $i++;
         }
         $legend = '<table style="width:225px">';
-        $legend .= '<tr><td class="c" colspan="2" align="center" style="width:150px">' . $lang['GALAXY_LEGEND'] . "</td></tr>";
-        $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_INACTIVE_7Days'] . "</td><th>" . $lang['GALAXY_INACTIVE_7Days_SYMBOL'] . "</th></tr>";
-        $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_INACTIVE_28Days'] . "</td><th>" . $lang['GALAXY_INACTIVE_28Days_SYMBOL'] . "</th></tr>";
-        $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_HOLIDAYS'] . "</td><th>" . $lang['GALAXY_HOLIDAYS_SYMBOL'] . "</th></tr>";
-        $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_WEAK_PROTECTION'] . "</td><th>" . $lang['GALAXY_WEAK_PROTECTION_SYMBOL'] . "</th></tr>";
-        $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_MOON'] . '<br><span style="font-style:italic">' . $lang['GALAXY_MOON_PHALANX'] . '</span></td><th><img alt="lune" src="skin/OGSpy_skin/img/lune.png">' . $lang['GALAXY_MOON_PHALANX_SYMBOL'] . "</th></tr>";
-        $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_SPYREPORT'] . "</td><th>" . $lang['GALAXY_SPYREPORT_SYMBOL'] . "</th></tr>";
-        $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_COMBATREPORT'] . "</td><th>" . $lang['GALAXY_COMBATREPORT_SYMBOL'] . "</th></tr>";
-        $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_ALLY_FRIEND'] . "</td><th><blink><a>abc</a></blink></th></tr>";
-        $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_ALLY_HIDDEN'] . "</td><th><span style=\"color: lime; \">abc</span></th></tr>";
-        $legend .= "</table>";
+        $legend .= '<tr><td class="c" colspan="2"style="width:150px">' . $lang['GALAXY_LEGEND'] . '</td></tr>';
+        $legend .= '<tr><td class="c">' . $lang['GALAXY_INACTIVE_7Days'] . '</td><th>' . $lang['GALAXY_INACTIVE_7Days_SYMBOL'] . '</th></tr>';
+        $legend .= '<tr><td class="c">' . $lang['GALAXY_INACTIVE_28Days'] . '</td><th>' . $lang['GALAXY_INACTIVE_28Days_SYMBOL'] . '</th></tr>';
+        $legend .= '<tr><td class="c">' . $lang['GALAXY_HOLIDAYS'] . '</td><th>' . $lang['GALAXY_HOLIDAYS_SYMBOL'] . '</th></tr>';
+        $legend .= '<tr><td class="c">' . $lang['GALAXY_WEAK_PROTECTION'] . '</td><th>' . $lang['GALAXY_WEAK_PROTECTION_SYMBOL'] . '</th></tr>';
+        $legend .= '<tr><td class="c">' . $lang['GALAXY_MOON'] . '<br><span style="font-style:italic">' . $lang['GALAXY_MOON_PHALANX'] . '</span></td><th><img alt="lune" src="skin/OGSpy_skin/img/lune.png">' . $lang['GALAXY_MOON_PHALANX_SYMBOL'] . '</th></tr>';
+        $legend .= '<tr><td class="c">' . $lang['GALAXY_SPYREPORT'] . '</td><th>' . $lang['GALAXY_SPYREPORT_SYMBOL'] . '</th></tr>';
+        $legend .= '<tr><td class="c">' . $lang['GALAXY_COMBATREPORT'] . '</td><th>' . $lang['GALAXY_COMBATREPORT_SYMBOL'] . '</th></tr>';
+        $legend .= '<tr><td class="c">' . $lang['GALAXY_ALLY_FRIEND'] . '</td><th><blink><a>abc</a></blink></th></tr>';
+        $legend .= '<tr><td class="c">' . $lang['GALAXY_ALLY_HIDDEN'] . '</td><th><span style="color: lime;">abc</span></th></tr>';
+        $legend .= '</table>';
         if (version_compare(phpversion(), '5.4.0', '>=')) {
             $legend = htmlentities($legend, ENT_COMPAT | ENT_HTML401, "UTF-8");
         } else {
@@ -354,43 +353,40 @@ require_once("views/page_header.php");
         }
         //------------  Affichage Tooltip ----------------
         $ToolTip_Helper->addTooltip("legende",  $legend );
-        echo "<tr align='center'><td class='c' colspan='9'>";
-        echo "<a style='cursor:pointer' ".$ToolTip_Helper->GetHTMLClassContent()." >".$lang['GALAXY_LEGEND']."</a>";
-        echo "</td></tr>";
-        //------------ fin Affichage Tooltip ----------------
+        echo '<tr><td class="c" colspan="9">';
+        echo '<a style="cursor:pointer" ' . $ToolTip_Helper->GetHTMLClassContent() . ' >' . $lang['GALAXY_LEGEND'] . '</a>';
+        echo '</td></tr>';
         echo "</table></form>\n";
-
-
+        //------------ fin Affichage Tooltip ----------------
+        
         //Phalange
-        echo "<br><table style='width:860px' border='1'>";
-        echo "<tr><td class='c'>" . $lang['GALAXY_PHALANX_LIST'] . help("galaxy_phalanx") . "</td></tr>";
+        echo '<br><table style="width:860px" border="1">';
+        echo '<tr><td class="c">' . $lang['GALAXY_PHALANX_LIST'] . help("galaxy_phalanx") . '</td></tr>';
         if (sizeof($phalanx_list) > 0) {
             foreach ($phalanx_list as $value) {
-
-                echo "<tr align='left'><th>";
-
+                echo '<tr style="text-align:left;"><th>';
                 if ($value["ally"] != "") {
                     $individual_ranking = galaxy_show_ranking_unique_ally($value["ally"]);
-                    $tooltip = "<table width=\"250\" style=\"color:white;\">";
-                    $tooltip .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">" . $lang['GALAXY_ALLY'] . " " . $value["ally"] . "</td></tr>";
+                    $tooltip = '<table style="width:250px; color:white;">';
+                    $tooltip .= '<tr><td colspan="3" class="c">' . $lang['GALAXY_ALLY'] . ' ' . $value["ally"] . '</td></tr>';
                     while ($ranking = current($individual_ranking)) {
                         $datadate = strftime("%d %b %Y à %Hh", key($individual_ranking));
-                        $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
-                        $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) . " <i>( " . formate_number($ranking["general"]["points_per_member"]) . " )</i>" : "&nbsp;";
-                        $fleet_rank = isset($ranking["fleet"]) ? formate_number($ranking["fleet"]["rank"]) : "&nbsp;";
-                        $fleet_points = isset($ranking["fleet"]) ? formate_number($ranking["fleet"]["points"]) . " <i>( " . formate_number($ranking["fleet"]["points_per_member"]) . " )</i>" : "&nbsp;";
-                        $research_rank = isset($ranking["research"]) ? formate_number($ranking["research"]["rank"]) : "&nbsp;";
-                        $research_points = isset($ranking["research"]) ? formate_number($ranking["research"]["points"]) . " <i>( " . formate_number($ranking["research"]["points_per_member"]) . " )</i>" : "&nbsp;";
+                        $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : '&nbsp;';
+                        $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) . ' <span style="font-style:italic;">( ' . formate_number($ranking["general"]["points_per_member"]) . ' )</span>' : '&nbsp;';
+                        $fleet_rank = isset($ranking["fleet"]) ? formate_number($ranking["fleet"]["rank"]) : '&nbsp;';
+                        $fleet_points = isset($ranking["fleet"]) ? formate_number($ranking["fleet"]["points"]) . ' <span style="font-style:italic;">( ' . formate_number($ranking["fleet"]["points_per_member"]) . ' )</span>' : '&nbsp;';
+                        $research_rank = isset($ranking["research"]) ? formate_number($ranking["research"]["rank"]) : '&nbsp;';
+                        $research_points = isset($ranking["research"]) ? formate_number($ranking["research"]["points"]) . ' <span style="font-style:italic;">( ' . formate_number($ranking["research"]["points_per_member"]) . ' )</span>' : '&nbsp;';
 
-                        $tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">" . $lang['GALAXY_RANK'] . " " . $datadate . "</td></tr>";
-                        $tooltip .= "<tr><td class=\"c\" width=\"75\">" . $lang['GALAXY_RANK_GENERAL'] . "</td><th width=\"30\">" . $general_rank . "</th><th>" . $general_points . "</th></tr>";
-                        $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_FLEET'] . "</td><th>" . $fleet_rank . "</th><th>" . $fleet_points . "</th></tr>";
-                        $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_LAB'] . "</td><th>" . $research_rank . "</th><th>" . $research_points . "</th></tr>";
-                        $tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">" . formate_number($ranking["number_member"]) . " " . $lang['GALAXY_MEMBERS'] . "</td></tr>";
+                        $tooltip .= '<tr><td class="c" colspan="3">' . $lang['GALAXY_RANK'] . ' ' . $datadate . '</td></tr>';
+                        $tooltip .= '<tr><td class="c" style="width:75px">' . $lang['GALAXY_RANK_GENERAL'] . '</td><th style="width:30px">' . $general_rank . '</th><th>' . $general_points . '</th></tr>';
+                        $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_FLEET'] . '</td><th>' . $fleet_rank . '</th><th>' . $fleet_points . '</th></tr>';
+                        $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_LAB'] . '</td><th>' . $research_rank . '</th><th>' . $research_points . '</th></tr>';
+                        $tooltip .= '<tr><td class="c" colspan="3">' . formate_number($ranking["number_member"]) . ' ' . $lang['GALAXY_MEMBERS'] . '</td></tr>';
                         break;
                     }
-                    $tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=" . $value["ally"] . "&amp;strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
-                    $tooltip .= "</table>";
+                    $tooltip .= '<tr><td class="c" colspan="3"><a href="index.php?action=search&amp;type_search=ally&amp;string_search=' . $value["ally"] . '&amp;strict=on">' . $lang['GALAXY_SEE_DETAILS'] . '</a></td></tr>';
+                    $tooltip .= '</table>';
                     if (version_compare(phpversion(), '5.4.0', '>=')) {
                         $tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
                     } else {
@@ -398,29 +394,29 @@ require_once("views/page_header.php");
                     }
 
                     $ToolTip_Helper->addTooltip("ttp_alliance_".$value["ally"],  $tooltip );
-                    echo "[<a href='index.php?action=search&&amp;type_search=ally&amp;string_search=" . $value["ally"] . "&amp;strict=on'  ".$ToolTip_Helper->GetHTMLClassContent().">" . $value["ally"] . "</a>]" . " ";
+                    echo '[<a href="index.php?action=search&&amp;type_search=ally&amp;string_search=' . $value["ally"] . '&amp;strict=on"  ' . $ToolTip_Helper->GetHTMLClassContent() . '>' . $value["ally"] . '</a>] ';
                 }
 
                 $individual_ranking = galaxy_show_ranking_unique_player($value["player"]);
-                $tooltip = "<table width=\"250\" style=\"color:white;\">";
-                $tooltip .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">" . $lang['GALAXY_PLAYER'] . " " . $value["player"] . "</td></tr>";
+                $tooltip  = '<table style="width:250px; color:white;">';
+                $tooltip .= '<tr><td colspan="3" class="c">' . $lang['GALAXY_PLAYER'] . ' ' . $value["player"] . '</td></tr>';
                 while ($ranking = current($individual_ranking)) {
                     $datadate = strftime("%d %b %Y à %Hh", key($individual_ranking));
-                    $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
-                    $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
-                    $fleet_rank = isset($ranking["fleet"]) ? formate_number($ranking["fleet"]["rank"]) : "&nbsp;";
-                    $fleet_points = isset($ranking["fleet"]) ? formate_number($ranking["fleet"]["points"]) : "&nbsp;";
-                    $research_rank = isset($ranking["research"]) ? formate_number($ranking["research"]["rank"]) : "&nbsp;";
-                    $research_points = isset($ranking["research"]) ? formate_number($ranking["research"]["points"]) : "&nbsp;";
+                    $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : '&nbsp;';
+                    $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : '&nbsp;';
+                    $fleet_rank = isset($ranking["fleet"]) ? formate_number($ranking["fleet"]["rank"]) : '&nbsp;';
+                    $fleet_points = isset($ranking["fleet"]) ? formate_number($ranking["fleet"]["points"]) : '&nbsp;';
+                    $research_rank = isset($ranking["research"]) ? formate_number($ranking["research"]["rank"]) : '&nbsp;';
+                    $research_points = isset($ranking["research"]) ? formate_number($ranking["research"]["points"]) : '&nbsp;';
 
-                    $tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\">" . $lang['GALAXY_RANK'] . " " . $datadate . "</td></tr>";
-                    $tooltip .= "<tr><td class=\"c\" width=\"75\">" . $lang['GALAXY_RANK_GENERAL'] . "</td><th width=\"30\">" . $general_rank . "</th><th>" . $general_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_FLEET'] . "</td><th>" . $fleet_rank . "</th><th>" . $fleet_points . "</th></tr>";
-                    $tooltip .= "<tr><td class=\"c\">" . $lang['GALAXY_RANK_LAB'] . "</td><th>" . $research_rank . "</th><th>" . $research_points . "</th></tr>";
+                    $tooltip .= '<tr><td class="c" colspan="3">' . $lang['GALAXY_RANK'] . ' ' . $datadate . '</td></tr>';
+                    $tooltip .= '<tr><td class="c" style="width:75px">' . $lang['GALAXY_RANK_GENERAL'] . '</td><th style="width:30px">' . $general_rank . '</th><th>' . $general_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_FLEET'] . '</td><th>' . $fleet_rank . '</th><th>' . $fleet_points . '</th></tr>';
+                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_LAB'] . '</td><th>' . $research_rank . '</th><th>' . $research_points . '</th></tr>';
                     break;
                 }
-                $tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $value["player"] . "&amp;strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
-                $tooltip .= "</table>";
+                $tooltip .= '<tr><td class="c" colspan="3"><a href="index.php?action=search&amp;type_search=player&amp;string_search=' . $value['player'] . '&amp;strict=on">' . $lang['GALAXY_SEE_DETAILS'] . '</a></td></tr>';
+                $tooltip .= '</table>';
                 if (version_compare(phpversion(), '5.4.0', '>=')) {
                     $tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
                 } else {
@@ -429,26 +425,25 @@ require_once("views/page_header.php");
 
                 //------------  Affichage Tooltip ----------------
                 $ToolTip_Helper->addTooltip("ttp_player_".$player,  $tooltip );
-                echo "<a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $value["player"] . "&amp;strict=on\" ".$ToolTip_Helper->GetHTMLClassContent().">" . $value["player"] . "</a> " . $lang['GALAXY_LUNA_PHALANX'] . " " . $value["level"];
-                echo " en <a href='index.php?action=galaxy&amp;galaxy=" . $value["galaxy"] . "&amp;system=" . $value["system"] . "'>" . $value["galaxy"] . ":" . $value["system"] . ":" . $value["row"] . "</a> [<span style=\"color: orange; \">" . $value["galaxy"] . ":";
+                echo '<a href="index.php?action=search&amp;type_search=player&amp;string_search=' . $value['player'] . '&amp;strict=on" ' . $ToolTip_Helper->GetHTMLClassContent() . '>' . $value['player'] . '</a> ' . $lang['GALAXY_LUNA_PHALANX'] . ' ' . $value['level'];
+                echo ' en <a href="index.php?action=galaxy&amp;galaxy=' . $value['galaxy'] . '&amp;system=' . $value['system'] . '">' . $value['galaxy'] . ':' . $value['system'] . ':' . $value['row'] . '</a> [<span style="color:orange;">' . $value['galaxy'] . ':';
 
+                echo $value['range_down'] . ' <-> ' . $value['galaxy'] . ':' . $value['range_up'] . '</span>]';
 
-                echo $value['range_down'] . " <-> " . $value["galaxy"] . ":" . $value['range_up'] . "</span>]";
-
-                if ($value["gate"] == "1") {
-                    echo "<span style=\"color: red; \"> " . $lang['GALAXY_LUNA_GATE'] . " </span>";
+                if ($value['gate'] == '1') {
+                    echo '<span style="color:red;"> ' . $lang['GALAXY_LUNA_GATE'] . ' </span>';
                 }
-                echo ".</th></tr>";
+                echo '.</th></tr>';
             }
         } else {
-            echo "<tr><th>" . $lang['GALAXY_LUNA_NOPHALANX'] . "</th></tr>";
+            echo '<tr><th>' . $lang['GALAXY_LUNA_NOPHALANX'] . '</th></tr>';
         }
-        echo "</table>";
+        echo '</table>';
 
 
         //Raccourci recherche
-        $tooltip_begin = "<table style='width:200px'>";
-        $tooltip_end = "</table>";
+        $tooltip_begin = '<table style="width:200px">';
+        $tooltip_end = '</table>';
 
         $tooltip_colonization = $tooltip_moon = $tooltip_away = $tooltip_spy = "";
         for ($i = 10; $i <= 50; $i = $i + 10) {
@@ -464,30 +459,30 @@ require_once("views/page_header.php");
                 $up = intval($server_config['num_of_systems']);
             }
 
-            $tooltip_colonization .= "<th colspan='1'><a href=\"index.php?action=search&amp;type_search=colonization&amp;galaxy_down=" . $galaxy . "&amp;galaxy_up=" . $galaxy . "&amp;system_down=" . $down . "&amp;system_up=" . $up . "&amp;row_down=&amp;row_up=\">" . $i . "</a></th>";
-            $tooltip_moon .= "<th colspan='1'><a href=\"index.php?action=search&amp;type_search=moon&amp;galaxy_down=" . $galaxy . "&amp;galaxy_up=" . $galaxy . "&amp;system_down=" . $down . "&amp;system_up=" . $up . "&amp;row_down=&amp;row_up=\">" . $i ."</a></th>";
-            $tooltip_away .= "<th colspan='1'><a href=\"index.php?action=search&amp;type_search=away&amp;galaxy_down=" . $galaxy . "&amp;galaxy_up=" . $galaxy . "&amp;system_down=" . $down . "&amp;system_up=" . $up . "&amp;row_down=&amp;row_up=\">" . $i ."</a></th>";
-            $tooltip_spy .= "<th colspan='1'><a href=\"index.php?action=search&amp;type_search=spy&amp;galaxy_down=" . $galaxy . "&amp;galaxy_up=" . $galaxy . "&amp;system_down=" . $down . "&amp;system_up=" . $up . "&amp;row_down=&amp;row_up=\">" . $i ."</a></th>";
+            $tooltip_colonization .= '<th colspan="1"><a href="index.php?action=search&amp;type_search=colonization&amp;galaxy_down=' . $galaxy . '&amp;galaxy_up=' . $galaxy . '&amp;system_down=' . $down . '&amp;system_up=' . $up . '&amp;row_down=&amp;row_up=">' . $i . '</a></th>';
+            $tooltip_moon .= '<th colspan="1"><a href="index.php?action=search&amp;type_search=moon&amp;galaxy_down=' . $galaxy . '&amp;galaxy_up=' . $galaxy . '&amp;system_down=' . $down . '&amp;system_up=' . $up . '&amp;row_down=&amp;row_up=">' . $i . '</a></th>';
+            $tooltip_away .= '<th colspan="1"><a href="index.php?action=search&amp;type_search=away&amp;galaxy_down=' . $galaxy . '&amp;galaxy_up=' . $galaxy . '&amp;system_down=' . $down . '&amp;system_up=' . $up . '&amp;row_down=&amp;row_up=">' . $i . '</a></th>';
+            $tooltip_spy  .= '<th colspan="1"><a href="index.php?action=search&amp;type_search=spy&amp;galaxy_down='  . $galaxy . '&amp;galaxy_up=' . $galaxy . '&amp;system_down=' . $down . '&amp;system_up=' . $up . '&amp;row_down=&amp;row_up=">' . $i . '</a></th>';
         }
 
-        echo "<br><table style='width:860px' border='1'>";
-        echo "<tr><td class='c' colspan='20'>" . $lang['GALAXY_SEARCH'] . "</td></tr>";
-        echo "<tr>";
-        echo "<th style='width=25%' colspan='5'>" . $lang['GALAXY_SEARCH_PLANETS_AVAILABLE'] . "</th>";
-        echo "<th style='width=25%' colspan='5'>" . $lang['GALAXY_SEARCH_MOONS'] . "</th>";
-        echo "<th style='width=25%' colspan='5'>" . $lang['GALAXY_SEARCH_INACTIVES'] . "</th>";
-        echo "<th style='width=25%' colspan='5'>" . $lang['GALAXY_SEARCH_SPYREPORTS'] . "</th>";
-        echo "</tr>";
-        echo "<tr>";
+        echo '<br><table style="width:860px" border="1">';
+        echo '<tr><td class="c" colspan="20">' . $lang['GALAXY_SEARCH'] . '</td></tr>';
+        echo '<tr>';
+        echo '<th style="width=25%" colspan="5">' . $lang['GALAXY_SEARCH_PLANETS_AVAILABLE'] . '</th>';
+        echo '<th style="width=25%" colspan="5">' . $lang['GALAXY_SEARCH_MOONS'] . '</th>';
+        echo '<th style="width=25%" colspan="5">' . $lang['GALAXY_SEARCH_INACTIVES'] . '</th>';
+        echo '<th style="width=25%" colspan="5">' . $lang['GALAXY_SEARCH_SPYREPORTS'] . '</th>';
+        echo '</tr>';
+        echo '<tr>';
         echo $tooltip_colonization;
         echo $tooltip_moon;
         echo $tooltip_away;
         echo $tooltip_spy;
-        echo "</tr>";
-        echo "<tr>";
-        echo "<th colspan='20'>" . $lang['GALAXY_SURROUNDING_SYSTEMS']. "</th>";
-        echo "</tr>";
-        echo "</table>";
+        echo '</tr>';
+        echo '<tr>';
+        echo '<th colspan="20">' . $lang['GALAXY_SURROUNDING_SYSTEMS']. '</th>';
+        echo '</tr>';
+        echo '</table>';
 
-        require_once("views/page_tail.php");
+        require_once('views/page_tail.php');
 ?>

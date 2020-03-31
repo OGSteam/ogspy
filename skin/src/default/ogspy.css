@@ -30,7 +30,7 @@ h1 {
 
 form {
     background-color: rgba(0,0,0,0.8);
-    margin: 0 auto;
+    /* margin: 0 auto; */
     width: 40%;
     padding: 1em;
     border: 1px solid #CCC;
@@ -107,7 +107,7 @@ table {
     background-color: #3F2158;
     margin-right: auto;
     margin-left: auto;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 table thead th {
@@ -263,11 +263,14 @@ div.content {
 
 
 /*  content sans menu*/
-div.nomenu{
+div.nomenu {
     width: 100%;
 }
+div.nomenu form {
+    margin: 0 auto;
+}
 
-div.content .navbarreMenu{
+div.content .navbarreMenu {
     max-width: 100%;
     mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #ffffff 25%, #ffffff 75%, rgba(0, 0, 0, 0) 100%);
     margin: 0 auto;
