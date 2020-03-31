@@ -47,7 +47,6 @@ function help($key, $value = null, $prefixe = "")
     $text .= "            <td>" . ($value) . "</td>\n";
     $text .= "        <tr>\n";
     $text .= "    </tbody>\n";
-    $text .= "</table>";
 
 
     if (version_compare(phpversion(), '5.4.0', '>=')) {

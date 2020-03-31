@@ -11,13 +11,9 @@
  */
 
 if (!defined('IN_SPYOGAME')) {
-    die("Hacking attempt");
+    die('Hacking attempt');
 }
 
-
-require_once("views/page_head.php");
-
+require_once('views/page_head.php');
 ?>
-
 <div class="content nomenu">
-

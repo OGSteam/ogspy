@@ -11,12 +11,10 @@
  */
 
 if (!defined('IN_SPYOGAME')) {
-    die("Hacking attempt");
+    die('Hacking attempt');
 }
-
 ?>
-
-<script type="text/javascript">
+<script>
     var date = new Date;
     var delta = Math.round((<?php echo(time() * 1000); ?> -date.getTime()) / 1000);
 
@@ -66,7 +64,6 @@ if (!defined('IN_SPYOGAME')) {
 
     window.onload = Biper;
 </script>
-
 <table border="0" cellpadding="0" cellspacing="0">
     <tr align="center">
         <td>

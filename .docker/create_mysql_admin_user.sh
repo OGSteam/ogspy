@@ -20,8 +20,8 @@ mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' WITH GRANT O
 
 mysql -uroot -e "CREATE DATABASE ogspy"
 # You can create a /mysql-setup.sh file to intialized the DB
-if [[ -f /mysql-setup.sh ]]; then
-  . /mysql-setup.sh
+if [[ -f /app/.docker/mysql-setup.sh ]]; then
+  . /app/.docker/mysql-setup.sh
 fi
 
 echo "=> Done!"

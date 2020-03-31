@@ -97,14 +97,13 @@ class ToolTip_Helper extends Helper_Abstract
     public function GetHTMLHideContent()
     {
         $contents = self::$content;
-        $retour = "";
-        $retour .= "<div class=\"tooltip_templates\" style=\"display:none;\">\n";
+        $retour = '<div class="tooltip_templates" style="display:none;">';
         foreach ($contents as $key => $value) {
-            $retour .= "<div id=\"" . $key . "\">\n";
-            $retour .= "" . html_entity_decode($value) . "\n";
-            $retour .= "</div>\n";
+            $retour .= '<span id="' . $key . '">';
+            $retour .= "" . html_entity_decode($value) . "";
+            $retour .= "</span>\n";
         }
-        $retour .= "\n</div>";
+        $retour .= "</div>\n";
 
         //reinitialisation des données
         self::$content = array();
@@ -129,19 +128,14 @@ class ToolTip_Helper extends Helper_Abstract
     //contenu javascript permettant d'ectiver le tootltip
     public function activateJs()
     {
-        $retour = "\n";
-        $retour .= "<script type=\"text/javascript\">\n";
-        $retour .= " $(document).ready(function () {\n";
-        $retour .= "  $('.tooltip').tooltipster(\n";
-        $retour .= "   {\n";
-        $retour .= "    animation: 'fade',\n";
-        $retour .= "    delay: 400,\n";
-        $retour .= "    contentAsHTML: true,\n";
-        $retour .= "    theme: ['tooltipster-noir', 'tooltipster-noir-customized'],\n";
-        $retour .= "   }\n";
-        $retour .= "  );\n";
-        $retour .= " });\n";
-        $retour .= "</script>\n";
+        $retour  = "\t<script>\n";
+        $retour .= "\t $(document).ready(function () {\n";
+        $retour .= "\t  $('.tooltip').tooltipster( {";
+        $retour .= " animation: 'fade', delay: 400, contentAsHTML: true,";
+        $retour .= " theme: ['tooltipster-noir', 'tooltipster-noir-customized'], }\n";
+        $retour .= "\t  );\n";
+        $retour .= "\t });\n";
+        $retour .= "\t</script>\n";
 
         $retour .= $this->customCSS();
 
@@ -151,15 +145,14 @@ class ToolTip_Helper extends Helper_Abstract
 
     public function customCSS()
     {
-        $retour = "\n";
-        $retour .= "<style type=\"text/css\">\n";
-        $retour .= " .tooltipster-sidetip.tooltipster-noir.tooltipster-noir-customized .tooltipster-box {\n";
-        $retour .= "  background: rgba(0,0,0,0.8);\n";
-        $retour .= "  border: 1px solid black;\n";
-        $retour .= "  border-radius: 6px;\n";
-        $retour .= "  box-shadow: 5px 5px 2px 0 rgba(0,0,0,0.4);\n";
-        $retour .= " }\n";
-        $retour .= "</style>\n";
+        $retour  = "\t<style>\n";
+        $retour .= "\t .tooltipster-sidetip.tooltipster-noir.tooltipster-noir-customized .tooltipster-box {\n";
+        $retour .= "\t  background: rgba(0,0,0,0.8);\n";
+        $retour .= "\t  border: 1px solid black;\n";
+        $retour .= "\t  border-radius: 6px;\n";
+        $retour .= "\t  box-shadow: 5px 5px 2px 0 rgba(0,0,0,0.4);\n";
+        $retour .= "\t }\n";
+        $retour .= "\t</style>\n";
         return $retour;
 }
 

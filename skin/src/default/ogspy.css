@@ -1,32 +1,23 @@
-
-
 /* conf globale  */
 html, body {
     margin: 0;
     padding: 0;
-    height: 100%;
-    min-height: 100%;
 }
 
 body {
-
     background: rgb(10, 0, 24) url("img/fond_1.jpg") no-repeat fixed left top;
     background-size: cover;
-
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     text-align: left;
     font-size: 12px;
 }
 
-li{
+li {
     line-height : 1.2em;
     list-style: none;
 }
 
-
-
-
-h1{
+h1 {
     text-align: center;
     font-size: 18px;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
@@ -35,7 +26,6 @@ h1{
     padding-top: 5px;
     padding-bottom: 5px;
     color: yellow;
-
 }
 
 form {
@@ -45,10 +35,9 @@ form {
     padding: 1em;
     border: 1px solid #CCC;
     border-radius: 1em;
-
 }
 
-form fieldset{
+form fieldset {
     background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
     box-shadow: 0 0 2px black, inset 0 0 1px rgba(255, 255, 255, 1);
     border: 1px solid #CCC;
@@ -58,7 +47,7 @@ form fieldset{
     background-color: #3F2158;
 }
 
-form div  {
+form div {
     margin-top: 1em;
 }
 
@@ -76,15 +65,12 @@ input {
     border: 1px solid #999;
     margin-top :  5px;
     margin-bottom :  5px;
-
 }
 
-form .inputgalaxy{
+form .inputgalaxy {
     width: 80px;
     display: inline-block;
 }
-
-
 
 .button {
     margin-left: 30%;
@@ -112,12 +98,9 @@ form .inputgalaxy{
     transition: all 0.3s ease 0s;
     border: 1px solid black;
     cursor: pointer;
-
 }
 
-
-
-table{
+table {
     width : 100%;
     border-collapse: collapse;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
@@ -125,10 +108,9 @@ table{
     margin-right: auto;
     margin-left: auto;
     margin-bottom: 20px;
-
 }
 
-table thead th{
+table thead th {
     background-image: none;
     background-color: black;
     border: 1px solid white;
@@ -138,11 +120,10 @@ table thead th{
     color: #21b2ff
 }
 
-table thead td{
+table thead td {
     padding-top: 5px;
     padding-bottom: 5px;
     border-bottom: 1px solid white;
-
 }
 
 table tbody th {
@@ -150,7 +131,6 @@ table tbody th {
     background-color: rgba(0,0,0,0.4);
     border: 1px solid black;
     text-align: center;
-
 }
 
 table tbody td {
@@ -158,127 +138,19 @@ table tbody td {
     color: yellow;
     border: 1px solid black;
     text-align: center;
-
 }
-
-
-
-/* msgbox   */
-/* Par defaut ogspy style   */
-.msgbox {
-    padding: 0px;
-    margin-top: 15px;
-    color: white;
-}
-.msgbox p{
-    margin:0;
-    padding:0;
-    padding-left: 30px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-
-.msgbox  p.msgboxtitle{
-    margin:0;
-    padding:0;
-    margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
-    background-color: black;
-    padding: 15px;
-    font-size: 14px;
-    color: #21b2ff;
-    border: 1px solid white;
-
-}
-.msgbox  p.msgcontent{
-    margin:0;
-    padding:0;
-    margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
-    background-color: #3F2158;
-    padding: 15px;
-    font-size: 12px;
-
-
-}
-
-.msgbox span.msgboxclosebtn {
-    margin-left: 15px;
-    paddin:0;
-    padding-bottom: 15px;
-    color: #21b2ff;
-    font-weight: bold;
-    float: right;
-    font-size: 14px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.msgbox span.msgboxclosebtn:hover {
-    color: white;
-}
-
-
-/* Par alert   */
-.msgbox.msgboxalert  p.msgboxtitle
-{
-    background-color: #8a2f24;
-    color: white;
-    border: none;
-}
-.msgbox.msgboxalert  p.msgcontent{
-    background: none;
-    background-color: #f44336;
-}
-.msgbox.msgboxalert span.msgboxclosebtn {
-    color: white;
-}
-.msgbox.msgboxalert span.msgboxclosebtn:hover {
-    color: black;
-}
-
-
-/* Par success   */
-.msgbox.msgboxsuccess  p.msgboxtitle
-{
-    background-color: #376f37;
-    color: white;
-    border: none;
-}
-.msgbox.msgboxsuccess  p.msgcontent{
-    background: none;
-    background-color: #4e9051;
-}
-.msgbox.msgboxsuccess span.msgboxclosebtn {
-    color: white;
-}
-.msgbox.msgboxsuccess span.msgboxclosebtn:hover {
-    color: black;
-}
-/* fin msgbox   */
-
 
 /* fin conf globale  */
+
 .main {
     height: 100%;
     min-height: 100%;
 }
 
-div.ban {
-    background-image: url('img/logo_head.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    position: absolute;
-    width: 100%;
-    height: 50px;
-    margin-bottom: 0px;
-    padding: 0px;
-    padding-top: 20px;
-
+header.ban {
+    text-align: center;
+    margin-bottom: 30px;
 }
-
 
 div.menu {
     float: left;
@@ -287,8 +159,13 @@ div.menu {
     height: 100%;
     min-height: 100%;
     display: block;
+}
 
-
+div.menu aside {
+    position:absolute;
+    top:0px;
+    width:inherit;
+    padding-top:10px;
 }
 
 div.menu aside .timer {
@@ -320,21 +197,17 @@ div.menu aside .logo_menu {
     height: 60px;
     padding: 0px;
     margin: 5px 0px 0px;
-
-
 }
 
 div.menu nav {
     text-transform: uppercase;
     color: white;
     padding-top: 10px;
-
 }
 
 div.menu nav a {
     text-transform: uppercase;
     color: white;
-
 }
 
 div.menu nav a:hover {
@@ -343,33 +216,25 @@ div.menu nav a:hover {
     margin-left: 2px;
     font-size: 12px;
     transition: margin-left 0.5s, color 0.5s;
-
-
 }
-
 
 div.menu nav .menu_mods {
     text-transform: uppercase;
     color: lime;
-
 }
 
 div.menu nav a {
     text-transform: uppercase;
     color: white;
-
 }
 
 div.menu nav ul {
     list-style: none;
-
 }
 
 div.menu nav ul li {
-
     margin-top: 5px;
     margin-right: 5px;
-
 }
 
 div.menu nav .menu_items_modules {
@@ -378,22 +243,15 @@ div.menu nav .menu_items_modules {
     margin-bottom: 20px;
     font-size: 11px;
     padding-left: 5px;
-
-
 }
 
 div.menu nav .menu_items_modules a:hover {
     margin-left: 12px;
     color: darkolivegreen;
     transition: margin-left 0.5s, color 0.5s;
-
-
 }
 
-
 div.content {
-
-    padding-top: 100px;
     padding-bottom: 10px;
     margin-left: auto;
     margin-right: auto;
@@ -402,17 +260,13 @@ div.content {
     min-height: 100%;
     display: inline-block;
     margin-bottom: 30px;
-
 }
 
 
 /*  content sans menu*/
-   div.nomenu{
+div.nomenu{
     width: 100%;
 }
-
-
-
 
 div.content .navbarreMenu{
     max-width: 100%;
@@ -426,7 +280,6 @@ div.content .navbarreMenu ul {
     box-shadow: 0 0 2px black, inset 0 0 1px rgba(255, 255, 255, 1);
 }
 
-
 div.content .navbarreMenu ul  li {
     display: inline-block;
 }
@@ -438,6 +291,7 @@ div.content .navbarreMenu ul  li a {
     text-decoration: none;
     display: block;
 }
+
 div.content .navbarreMenu ul  li a:hover {
  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(30,16,42, 0.5) 25%, rgba(30,16,42, 0.5) 75%, rgba(255, 255, 255, 0) 100%);
  color: #5CCCE8;
@@ -449,8 +303,6 @@ div.content .navbarreMenu ul  li.actif a{
  color: #5CCCE8;
 }
 
-
-
 #footbarre {
  background: linear-gradient(rgba(10, 0, 24, 0.2), rgba(10, 0, 24, 1));
  color: #ECFF00;
@@ -459,7 +311,8 @@ div.content .navbarreMenu ul  li.actif a{
  bottom: 0;
  width: 100%;
  height: 30px;
-
+ line-height:30px;
+ font-style: italic;
 }
 
 #footbarre .toologs {
@@ -469,7 +322,6 @@ div.content .navbarreMenu ul  li.actif a{
  padding: 0;
  text-align: left;
  padding-left: 1%;
-
 }
 
 #footbarre .online {
@@ -505,18 +357,15 @@ div.content .navbarreMenu ul  li.actif a{
  font-weight: bold;
 }
 
-
 /* Page About  */
-
 .aboutoggsteam {
     padding: 1px;
     margin: auto;
     width: 80%;
-
     background-color: white;
     margin-bottom: 0px;
 }
-.aboutoggsteam p{
+.aboutoggsteam p {
     margin: 0;
     padding: 0;
     padding-left: 10px;
@@ -530,7 +379,6 @@ div.content .navbarreMenu ul  li.actif a{
     background-color: black;
     background: linear-gradient(180deg, rgba(0,0,0, 0.5) 0%, rgba(0,0,0, 1) 2%,rgba(0,0,0, 1)  98% , rgba(0,0,0, 0.5)  100%);
 }
-
 .aboutoggsteam .memberogsteamavatar {
     float:left;
     width: 100px;
@@ -567,17 +415,13 @@ div.content .navbarreMenu ul  li.actif a{
     margin: 0;
     padding: 0;
     display: inline-block;
-
 }
-
 .aboutoggsteam .memberogsteamdescriptive {
     padding-left: 30px;
     margin-top: 15px;
 }
 
-
-
 /* Page Login  */
-form.login{
-width: 400px;
+form.login {
+    width: 400px;
 }

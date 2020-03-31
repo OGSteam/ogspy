@@ -21,7 +21,7 @@ use Ogsteam\Ogspy\Model\User_Building_Model;
 use Ogsteam\Ogspy\Model\User_Defense_Model;
 use Ogsteam\Ogspy\Model\User_Technology_Model;
 use Ogsteam\Ogspy\Model\User_Model;
-use  Ogsteam\Ogspy\Model\User_Favorites_Model;
+use Ogsteam\Ogspy\Model\User_Favorites_Model;
 use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Tokens_Model;
 use Ogsteam\Ogspy\Model\User_Spy_favorites_Model;
@@ -825,26 +825,24 @@ function user_set_all_empire_resync_id()
 
 
 /**
- * Récupération des données empire de l'utilisateur loggé
+ * Récupération des données empire de l'utilisateur loggé.
  * @comment On pourrait mettre un paramètre $user_id optionnel
  * @param $user_id
  * @return array
  */
 function user_get_empire($user_id)
 {
-
     $planet = array(false, "user_id" => "", "planet_name" => "", "coordinates" => "",
-        "fields" => "", "fields_used" => "", "boosters" => booster_encode(),
-        "temperature_min" => "", "temperature_max" => "",
+        "fields" => 0, "fields_used" => 0, "boosters" => booster_encode(),
+        "temperature_min" => 0, "temperature_max" => 0,
         "Sat" => 0, "Sat_percentage" => 100, "FOR" => 0, "FOR_percentage" => 100,
-        "M" => 0, "M_percentage" => 100, "C" => 0, "C_Percentage" => 100, "D" => 0, "D_percentage" => 100, "CES" => 0, "CES_percentage" => 100,
-        "CEF" => 0, "CEF_percentage" => 100, "UdR" => 0, "UdN" => 0, "CSp" => 0,
-        "HM" => 0, "HC" => 0, "HD" => 0, "Lab" => 0,
+        "M" => 0, "M_percentage" => 100, "C" => 0, "C_percentage" => 100, "D" => 0, "D_percentage" => 100,
+        "CES" => 0, "CES_percentage" => 100, "CEF" => 0, "CEF_percentage" => 100,
+        "UdR" => 0, "UdN" => 0, "CSp" => 0, "HM" => 0, "HC" => 0, "HD" => 0, "Lab" => 0,
         "Ter" => 0, "Silo" => 0, "Dock" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0);
 
     $defence = array("LM" => 0, "LLE" => 0, "LLO" => 0, "CG" => 0, "AI" => 0, "LP" =>
         0, "PB" => 0, "GB" => 0, "MIC" => 0, "MIP" => 0);
-
 
     $nb_planete = find_nb_planete_user($user_id);
 
@@ -852,17 +850,17 @@ function user_get_empire($user_id)
     $planet_pct = array("planet_id" => "", "M_percentage" => 0, "C_percentage" => 0, "D_percentage" => 0, "CES_percentage" => 100, "CEF_percentage" => 100, "Sat_percentage" => 100, "FOR_percentage" => 100);
     $user_percentage = array_fill(101, $nb_planete, $planet_pct);
 
-
     $user_building = array();
-    $user_defence = array();
-    // on met les planete a 0
-    for ($i = 101; $i <= ($nb_planete + 100); $i++) {
+    $user_defence  = array();
+    // on met les planètes a 0
+    for($i = 101; $i <= ($nb_planete + 100); $i++) {
         $user_building[$i] = $planet;
+        $user_defence[$i]  = $defence;
     }
-
     // on met les lunes a 0
-    for ($i = 201; $i <= ($nb_planete + 200); $i++) {
+    for($i = 201; $i <= ($nb_planete + 200); $i++) {
         $user_building[$i] = $planet;
+        $user_defence[$i]  = $defence;
     }
 
     $tBuildingList = (new User_Building_Model())->select_user_building_list($user_id);
@@ -913,22 +911,11 @@ function user_get_empire($user_id)
             $BuildingList["fields"] += $BuildingList["booster_tab"]["extention_p"];
         }
 
-
         $user_building[$BuildingList["planet_id"]] = $BuildingList;
         $user_building[$BuildingList["planet_id"]][0] = true;
     }
 
     $user_technology = (new User_Technology_Model())->select_user_technologies($user_id);
-
-    // on met les def planete a 0
-    for ($i = 101; $i <= ($nb_planete + 100); $i++) {
-        $user_defence[$i] = $defence;
-    }
-
-    // on met les def lunes a 0
-    for ($i = 201; $i <= ($nb_planete + 200); $i++) {
-        $user_defence[$i] = $defence;
-    }
 
     $tDefenseList = (new User_Defense_Model())->select_user_defense($user_id);
     //$user_defence = array_fill(1, $nb_planete_lune, $defence);
@@ -943,10 +930,8 @@ function user_get_empire($user_id)
 }
 
 /**
- * Récuperation du nombre de  planete de l utilisateur
- * TODO => cette fonction sera a mettre en adequation avec astro
- * => adequation avec astro si remise à niveau vue empire
- * ( attention ancien uni techno a 1 planete mais utilisateur 9 possible  !!!!!)
+ * Récuperation du nombre de  planete de l utilisateur.
+ *
  * @param $id
  * @return int|the
  */
@@ -967,13 +952,19 @@ function find_nb_moon_user($id)
 }
 
 /**
- * Calcul production de l'empire
- * @param array $user_empire
- * @param null $off ($user_data)
+ * Calcul production de l'empire.
+ *
+ * @param array $user_empire contenant NRJ, plasma et les bâtiments (généralement généré par user_get_empire())
+ * @param array $off ($user_data) [defaut NULL, donc sans officier ou classe]
+ * @param int $speed_uni Vitesse de l'univers ($server_config['speed_uni'])
  * @return array
- */ //TODO : prendre en compte les foreuses ...
-function user_empire_production($user_empire, $off = NULL)
+ */
+function user_empire_production($user_empire, $off = NULL, $speed_uni = 1)
 {
+    //TODO : supprimer références globales
+    global $server_config;
+    $speed_uni = $server_config['speed_uni'];
+
     $prod = array();
 
     if ($off == NULL) {
@@ -1015,56 +1006,45 @@ function user_empire_production($user_empire, $off = NULL)
 
     //!\\ prepa techno
     $plasma = $user_empire['technology']['Plasma'] != "" ? $user_empire['technology']['Plasma'] : "0";
-    $NRJ = $user_empire['technology']['NRJ'] != "" ? $user_empire['technology']['NRJ'] : "0";
+    $NRJ    = $user_empire['technology']['NRJ'] != "" ? $user_empire['technology']['NRJ'] : "0";
     //!\\ fin prepa techno
     // prepa ration E
     $product = array("M" => 0, "C" => 0, "D" => 0, "ratio" => 1, "conso_E" => 0, "prod_E" => 0);
-    $ratio = array();
-    $NRJ = $user_empire['technology']['NRJ'] != "" ? $user_empire['technology']['NRJ'] : "0";
+    $ratio   = array();
     $temp_max = 0;
     // FIN prepa ration E
 
     foreach ($user_empire["building"] as $content) {
         if (isset($content["planet_id"]) && $content["planet_id"] < 200) {// parcours des planetes ( < 200 )
+            $temp_max = isset($content["temperature_max"]) ? $content["temperature_max"] : 0;
 
-            // les different type de prod (generique)
+           // Calcul production théorique
+            $prod_FOR = production_foreuse($content['FOR'], $content['M'], $content['C'], $content['D'], $temp_max, $classe, $speed_uni);
+            $prod["theorique"][$content["planet_id"]]['FOR'] = $prod_FOR; //=['M'], ['C'], ['D']
             $type = array("M", "C", "D");
             foreach ($type as $mine) {
                 $level = $content[$mine] != "" ? $content[$mine] : "0";
-                if ($level != "") {
-                    if (isset($content["temperature_max"])) {
-                        $temp_max = $content["temperature_max"];
-                    }
-
-                    if ($mine == "D") { // specificité deut puisque les cef pompe la prod
-                        $CEF = $content["CEF"];
-                        $CEF_consumption = consumption("CEF", $CEF);
-                        $tmp = production($mine, $level, $officier, $temp_max, $NRJ, $plasma, $classe) - $CEF_consumption;
-                        $prod["theorique"][$content["planet_id"]][$mine] = number_format(floor($tmp), 0, ',', ' ');
-                    } else {
-                        $tmp = production($mine, $level, $officier, $temp_max, $NRJ, $plasma, $classe);
-                        $prod["theorique"][$content["planet_id"]][$mine] = number_format(floor($tmp), 0, ',', ' ');
-                    }
-                }
+                $tmp = production($mine, $level, $officier, $temp_max, $NRJ, $plasma, $classe, $speed_uni);
+                $tmp += $prod_FOR[$mine];
+                $prod["theorique"][$content["planet_id"]][$mine] = number_format(floor($tmp), 0, ',', ' ');
             }
-
 
             // si pas de temperature impossible de calculer le ration et donc prod theorique ...
             if (isset($content["temperature_max"])) {
-                // calcul ratio
-                $ratio[$content["planet_id"]] = $product;
-                $ratio[$content["planet_id"]] = bilan_production_ratio($content["M"], $content["C"], $content["D"],
-                    $content["CES"], $content["CEF"], $content["Sat"], $content["temperature_max"], $off['off_ingenieur'], $off['off_geologue'], $off_full,
-                    $NRJ, $plasma, $content["M_percentage"] / 100, $content["C_percentage"] / 100,
-                    $content["D_percentage"] / 100, $content["CES_percentage"] / 100, $content["CEF_percentage"] / 100,
-                    $content["Sat_percentage"] / 100, $content["booster_tab"],
-                    0, 0, $classe);
-
-                $prod["reel"][$content["planet_id"]] = $ratio[$content["planet_id"]];
+                // calcul production réélle
+                $ratio = $product;
+                $ratio = bilan_production_ratio($content['M'], $content['C'], $content['D'], $content['CES'], $content['CEF'],
+                    $content['Sat'], $content['temperature_max'], $off['off_ingenieur'], $off['off_geologue'], $off_full, $NRJ, $plasma,
+                    $content['M_percentage'] / 100, $content['C_percentage'] / 100, $content['D_percentage'] / 100, $content['CES_percentage'] / 100,
+                    $content['CEF_percentage'] / 100, $content['Sat_percentage'] / 100, $content['booster_tab'],
+                    $content['FOR'], $content['FOR_percentage'] / 100, $classe, $speed_uni);
+                //Ajout prod foreuse
+                $ratio['M'] += $ratio['FOR']['M'];
+                $ratio['C'] += $ratio['FOR']['C'];
+                $ratio['D'] += $ratio['FOR']['D'];
+                $prod["reel"][$content["planet_id"]] = $ratio;
             }
-
         }
-
     }
     return $prod;
 }
