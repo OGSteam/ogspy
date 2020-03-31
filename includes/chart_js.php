@@ -61,11 +61,9 @@ function create_pie($_data, $_legend, $_title, $conteneur, $theme = true)
 
 
     // création du script
-    $retour .= "<script type=\"text/javascript\">
+    $retour .= "<script>
 var " . $conteneur . ";
 $(document).ready(function() {
-
-
     " . $conteneur . " = new Highcharts.Chart({
       chart: {
          renderTo: '" . $conteneur . "',
@@ -74,7 +72,7 @@ $(document).ready(function() {
          plotShadow: false
       },
       credits: {
-        text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
+        text: '<span style='font-weight:bold;'>OGSteam Software</span> v " . $server_config["version"] . " ',
         href: 'http://www.ogsteam.fr'
     },
       title: {
@@ -82,7 +80,7 @@ $(document).ready(function() {
       },
       tooltip: {
          formatter: function() {
-            return '<b>'+ this.point.name +'</b>: '+ this.percentage.toFixed(2) +' %';
+            return '<span style='font-weight:bold;'>'+ this.point.name +'</span>: '+ this.percentage.toFixed(2) +' %';
          }
       },
       plotOptions: {
@@ -171,11 +169,9 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 
 
     // création du script
-    $retour .= "<script type=\"text/javascript\">
+    $retour .= "<script>
 	var " . $conteneur . ";
 	$(document).ready(function() {
-
-
     " . $conteneur . " = new Highcharts.Chart({
 		chart: {
 	        renderTo: '" . $conteneur . "',
@@ -184,7 +180,7 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 			plotShadow: false
 		},
       	credits: {
-			text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
+			text: '<span style='font-weight:bold;'>OGSteam Software</span> v " . $server_config["version"] . " ',
         	href: 'http://www.ogsteam.fr'
 	  	},
 		title: {
@@ -192,7 +188,7 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
         },
         tooltip: {
             formatter: function() {
-				return '<b>' + this.point.name + '</b>: ' + number_format(this.point.y, 0, ',', ' ');
+				return '<span style='font-weight:bold;'>' + this.point.name + '</span>: ' + number_format(this.point.y, 0, ',', ' ');
             }
         },
       	plotOptions: {
@@ -318,7 +314,7 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
  */
 function affiche_error($conteneur, $error)
 {
-    $retour = '<script language="javascript">';
+    $retour = '<script>';
     $retour .= '$(document).ready(function() {';
     $retour .= '$("#' . $conteneur . '").empty();';
     $retour .= '$("#' . $conteneur . '").append("' . $error . '");';
@@ -647,7 +643,7 @@ function create_multi_curve($titre, $sous_titre, $data, $names, $conteneur, $the
 
 
     $retour = "
-    <script type=\"text/javascript\">
+    <script>
 var chart3;
 $(document).ready(function() {
    chart3 = new Highcharts.Chart({
@@ -657,10 +653,9 @@ $(document).ready(function() {
          
         
       },
-
     
       credits: {
-        text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
+        text: '<span style='font-weight:bold;'>OGSteam Software</span> v " . $server_config["version"] . " ',
         href: 'http://www.ogsteam.fr'
     },
     
@@ -683,7 +678,7 @@ $(document).ready(function() {
       
       tooltip: {
          formatter: function() {
-               return '<b>'+ this.series.name +'</b><br/>'+
+               return '<span style='font-weight:bold;'>'+ this.series.name +'</span><br/>'+
                Highcharts.dateFormat('%e. %b', this.x) +'<br/>" . $titre .
         " : '+ Highcharts.numberFormat(this.y, 0, ' ') +' ' ;
          }
@@ -692,8 +687,6 @@ $(document).ready(function() {
       " . $serie . "
       ]
    });
-   
-   
 });";
 
     // insertion du theme par defaut
@@ -706,4 +699,3 @@ $(document).ready(function() {
 
     return $retour;
 }
-
