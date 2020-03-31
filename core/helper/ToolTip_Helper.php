@@ -101,9 +101,9 @@ class ToolTip_Helper extends Helper_Abstract
         foreach ($contents as $key => $value) {
             $retour .= '<span id="' . $key . '">';
             $retour .= "" . html_entity_decode($value) . "";
-            $retour .= '</span>';
+            $retour .= "</span>\n";
         }
-        $retour .= "'</div>\n";
+        $retour .= "</div>\n";
 
         //reinitialisation des données
         self::$content = array();

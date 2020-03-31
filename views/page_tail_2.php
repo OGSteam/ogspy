@@ -18,8 +18,7 @@ if(is_array($ogspy_phperror) && count($ogspy_phperror)) {
 }
 ?>
 <p id="footbarre" style="text-align:center; font-size:13px;">
-    <a href="https://www.ogsteam.fr" target="_blank">OGSpy</a> <?php echo $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2020<br>
-    <span class="version">v <?php echo $server_config['version']; ?></span>
+    <a href="https://www.ogsteam.fr/" target="_blank">OGSpy</a><span class="version"> v <?php echo $server_config['version']; ?> </span><?php echo $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2020
 </p>
 </div>
 </div>

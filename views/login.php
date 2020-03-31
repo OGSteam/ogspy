@@ -26,8 +26,8 @@ $enable_register_view = isset ($server_config['enable_register_view']) ? $server
          <input type='hidden' name='action' value='login_web'/>
          <input type='hidden' name='token' value='<?php echo token::staticGetToken(600,'login');?>'/>
          <input type='hidden' name='goto' value='<?php echo $goto; ?>'/>
-         <input type='text' name='login' id='login'/><label for="login"><?php echo($lang['LOGIN_USER']); ?></label>
-         <input type='password' id='password' name='password'/><label for="password"><?php echo($lang['LOGIN_PASSWORD']); ?></label>
+         <label for="login"><?php echo($lang['LOGIN_USER']); ?></label><input type='text' name='login' id='login'/>
+         <label for="password"><?php echo($lang['LOGIN_PASSWORD']); ?></label><input type='password' id='password' name='password'/>
          <input class="button" type='submit' value='<?php echo($lang['LOGIN_CONNEXION_BUTTON']); ?>'/>
         </fieldset>
 <?php if ($enable_register_view == 1) : ?>

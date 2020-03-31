@@ -256,7 +256,7 @@ $message .= '<br/><br/><a href="index.php' . $action . '">' . $lang['MSG_BACK'] 
 
 require_once('views/page_header_2.php');
 ?>
-<table style="display:inline-block">
+<table>
     <tr>
         <td class="c">
             <div style="font-weight:bold"><?php echo $message; ?></div>

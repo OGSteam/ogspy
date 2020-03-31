@@ -24,6 +24,7 @@ if(is_array($ogspy_phperror) && count($ogspy_phperror)) {
 }
 // <div style="height:30px;"></div>
 ?>
+
 <!-- Place pour bas de pages -->
 </div>
 </div>

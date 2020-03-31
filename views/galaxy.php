@@ -358,11 +358,11 @@ require_once("views/page_header.php");
         echo "<a style='cursor:pointer' ".$ToolTip_Helper->GetHTMLClassContent()." >".$lang['GALAXY_LEGEND']."</a>";
         echo "</td></tr>";
         //------------ fin Affichage Tooltip ----------------
-        echo "</table></form>";
+        echo "</table></form>\n";
 
 
         //Phalange
-        echo "<br><table width='860' border='1'>";
+        echo "<br><table style='width:860px' border='1'>";
         echo "<tr><td class='c' align='center'>" . $lang['GALAXY_PHALANX_LIST'] . help("galaxy_phalanx") . "</td></tr>";
         if (sizeof($phalanx_list) > 0) {
             foreach ($phalanx_list as $value) {
@@ -491,4 +491,4 @@ require_once("views/page_header.php");
 
 
         require_once("views/page_tail.php");
-        ?>
+?>
