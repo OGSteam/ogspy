@@ -92,6 +92,8 @@ class ToolTip_Helper extends Helper_Abstract
      * Retourne Le contenu Html qui  sera afficher au survol
      * ce contenu nest pas directement visible dans la page html (hide())
      *
+     * TODO : Transformer le span en balise block => DIV
+     *
      * @return string
      */
     public function GetHTMLHideContent()
@@ -99,7 +101,7 @@ class ToolTip_Helper extends Helper_Abstract
         $contents = self::$content;
         $retour = '<div class="tooltip_templates" style="display:none;">';
         foreach ($contents as $key => $value) {
-            $retour .= '<span id="' . $key . '">';
+            $retour .= '<span id="' . $key . '">';      //TODO : à transformer en DIV
             $retour .= "" . html_entity_decode($value) . "";
             $retour .= "</span>\n";
         }

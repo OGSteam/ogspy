@@ -107,7 +107,7 @@ table {
     background-color: #3F2158;
     margin-right: auto;
     margin-left: auto;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 table thead th {
@@ -364,11 +364,14 @@ div.content {
 
 
 /*  content sans menu*/
-div.nomenu{
+div.nomenu {
     width: 100%;
 }
+div.nomenu form {
+    margin: 0 auto;
+}
 
-div.content .navbarreMenu{
+div.content .navbarreMenu {
     max-width: 100%;
     mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #ffffff 25%, #ffffff 75%, rgba(0, 0, 0, 0) 100%);
     margin: 0 auto;
@@ -401,6 +404,14 @@ div.content .navbarreMenu ul  li.actif a{
 
  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(30,16,42, 0.8) 25%, rgba(30,16,42, 0.8) 75%, rgba(255, 255, 255, 0) 100%);
  color: #5CCCE8;
+}
+
+.tab_helper {
+ width:200px;
+ font-weight:bold;
+}
+.tab_helper tbody td {
+ color:white;
 }
 
 #footbarre {

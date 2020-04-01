@@ -14,7 +14,6 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-
 $user_empire = user_get_empire($user_data['user_id']);
 $user_building = $user_empire["building"];
 $user_defence = $user_empire["defence"];
@@ -39,7 +38,7 @@ $officier = $user_data['off_commandant'] + $user_data['off_amiral'] + $user_data
     + $user_data['off_geologue'] + $user_data['off_technocrate'];
 $off_full = ($officier == 5) ? '1' : '0';
 $class_collect = ($user_data['user_class'] === 'COL') ? '1' : '0';
-echo "<input type='hidden' id='vitesse_uni' size='2' maxlength='5' value='" . $server_config['speed_uni'] . "'/>";
+echo "<input type='hidden' id='vitesse_uni' value='" . $server_config['speed_uni'] . "'/>";
 echo "<input type='hidden' id='off_ingenieur' value='" . $user_data["off_ingenieur"] . "'/>";
 echo "<input type='hidden' id='off_geologue' value='" . $user_data["off_geologue"] . "'/>";
 echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
@@ -55,9 +54,9 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
 }
 ?>
 
-<script src="js/ogame_formula.js" type="text/javascript"></script>
+<script src="js/ogame_formula.js"></script>
 
-<table id="simu" width="100%" title="<?php echo $nb_planete; ?>">
+<table id="simu" style="width:100%" title="<?php echo $nb_planete; ?>">
     <tr>
         <td class="c"></td>
         <?php
@@ -169,11 +168,9 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         }
         ?>
     </tr>
-
     <!--
     Energie
     -->
-
     <tr>
         <td class="c"><?php echo($lang['HOME_SIMU_ENERGYS']); ?></td>
         <td class="c" colspan="1"><?php echo($lang['HOME_SIMU_TECH_ENERGY']); ?> <input type="text" id="NRJ" size="2" maxlength="2"
@@ -265,7 +262,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <?php
 
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='NRJ_" . $i . "'>-</div></span></th>" . "\n";
+            echo "\t<th colspan='2'><div id='NRJ_" . $i . "' style='color:lime;'>-</div></th>\n";
         }
         ?>
         <th>
@@ -303,7 +300,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <th><a><?php echo($lang['HOME_SIMU_ENERGY_USAGE']); ?></a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='FOR_" . $i . "_conso'>-</div></span></th>" . "\n";
+            echo "\t<th colspan='2'><div id='FOR_" . $i . "_conso' style='color:lime;'>-</div></span></th>\n";
         }
         ?>
         <th>
@@ -314,7 +311,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <th><a><?php echo($lang['HOME_SIMU_PRODUCTION']); ?></a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='FOR_" . $i . "_prod'>-</div></span></th>" . "\n";
+            echo "\t<th colspan='2'><div id='FOR_" . $i . "_prod' style='color:lime;'>-</div></th>" . "\n";
         }
         ?>
     </tr>
@@ -375,7 +372,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <th><a><?php echo($lang['HOME_SIMU_ENERGY_USAGE']); ?></a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='M_" . $i . "_conso'>-</div></span></th>" . "\n";
+            echo "\t<th colspan='2'><div id='M_" . $i . "_conso' style='color:lime;'>-</div></th>\n";
         }
         ?>
         <th>
@@ -386,7 +383,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <th><a><?php echo($lang['HOME_SIMU_PRODUCTION']); ?></a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='M_" . $i . "_prod'>-</div></span></th>" . "\n";
+            echo "\t<th colspan='2'><div id='M_" . $i . "_prod' style='color:lime;'>-</div></th>\n";
         }
         ?>
         <th>
@@ -449,7 +446,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <th><a><?php echo($lang['HOME_SIMU_ENERGY_USAGE']); ?></a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='C_" . $i . "_conso'>-</div></span></th>" . "\n";
+            echo "\t<th colspan='2'><div id='C_" . $i . "_conso' style='color:lime;'>-</div></th>\n";
         }
         ?>
         <th>
@@ -460,7 +457,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <th><a><?php echo($lang['HOME_SIMU_PRODUCTION']); ?></a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='C_" . $i . "_prod'>-</div></span></th>" . "\n";
+            echo "\t<th colspan='2'><div id='C_" . $i . "_prod' style='color:lime;'>-</div></th>" . "\n";
         }
         ?>
         <th>
@@ -523,7 +520,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <th><a><?php echo($lang['HOME_SIMU_ENERGY_USAGE']); ?></a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='D_" . $i . "_conso'>-</div></span></th>" . "\n";
+            echo "\t<th colspan='2'><div id='D_" . $i . "_conso' style='color:lime;'>-</div></th>\n";
         }
         ?>
         <th>
@@ -534,7 +531,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <th><a><?php echo($lang['HOME_SIMU_PRODUCTION']); ?></a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='D_" . $i . "_prod'>-</div></span></th>" . "\n";
+            echo "\t<th colspan='2'><div id='D_" . $i . "_prod' style='color:lime;'>-</div></th>\n";
         }
         ?>
         <th>
@@ -549,7 +546,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <?php
         $lab_max = 0;
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='building_pts_" . $i . "'>-</div></span>" . "\n";
+            echo "\t<th colspan='2'><div id='building_pts_" . $i . "' style='color:lime;'>-</div>\n";
             echo "\t<input type='hidden' id='building_" . $i . "' value='" . implode(array_slice($user_building[$i], 21, -3, true), "<>") . "' /></th>";
 
             if ($lab_max < $user_building[$i]["Lab"]) {
@@ -563,7 +560,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <th><a><?php echo($lang['HOME_SIMU_DEFENCES']); ?></a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t<th colspan='2'><span style=\"color: lime; \"><div id='defence_pts_" . $i . "'>-</div></span>" . "\n";
+            echo "\t<th colspan='2'><div id='defence_pts_" . $i . "' style='color:lime;'>-</div>\n";
             echo "\t<input type='hidden' id='defence_" . $i . "' value='" . implode($user_defence[$i], "<>") . "' /></th>";
         }
         ?>
@@ -573,7 +570,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <th><a><?php echo($lang['HOME_SIMU_MOON']); ?></a></th>
         <?php
         for ($i = 201; $i <= 200 + $nb_planete; $i++) {
-            echo "\t<th colspan='2'><span style=\"color: lime; \"><div id='lune_pts_" . $i . "'>-</div></span>" . "\n";
+            echo "\t<th colspan='2'><div id='lune_pts_" . $i . "' style='color:lime;'>-</div>\n";
             if ($user_building[$i]) {
                 echo "\t<input type='hidden' id='lune_b_" . $i . "' value='" . implode(array_slice($user_building[$i], 23, -3, true), "<>") . "' />";
                 //print_r($user_building[$i]);
@@ -589,7 +586,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <th><a><?php echo($lang['HOME_SIMU_SATS']); ?></a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='sat_pts_" . $i . "'>-</div></span>" . "\n";
+            echo "\t<th colspan='2'><div id='sat_pts_" . $i . "' style='color:lime;'>-</div>\n";
             echo "\t<input type='hidden' id='sat_lune_" . $i . "' value=" . ($user_building[$i + 100]["Sat"] != "" ? $user_building[$i + 100]["Sat"] : 0) . " /></th>";
         }
         ?>
@@ -602,8 +599,8 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             if ($user_empire["technology"] != NULL && $user_building[$i]["Lab"] == $lab_max) {
-                echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='techno_pts'>-</div></span>" . "\n";
-                echo "\t<input type='hidden' id='techno' value='" . implode($user_empire["technology"], "<>") . "' /></th>";
+                echo "\t<th colspan='2'><div id='techno_pts_" . $i . "' style='color:lime;'>-</div>\n";
+                echo "\t<input type='hidden' id='techno_" . $i . "' value='" . implode($user_empire["technology"], "<>") . "' /></th>";
             } else {
                 echo "<th colspan='2'><span style=\"color: lime; \">-</span></th>";
             }
@@ -615,7 +612,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <th><a><span style="color: yellow; "><?php echo($lang['HOME_SIMU_TOTALS']); ?></span></a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            echo "\t" . "<th colspan='2'><span style=\"color:white;\"><div id='total_pts_" . $i . "'>-</div></span></th>" . "\n";
+            echo "\t<th colspan='2'><div id='total_pts_" . $i . "' style='color:white;'>-</div></th>\n";
         }
         ?>
         <th><span style="color: white; "><span id='total_pts'>-</span></span></th>
@@ -636,6 +633,6 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
     </tr>
 </table>
 
-<script type="text/javascript">
+<script>
     update_page();
 </script>
