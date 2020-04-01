@@ -58,7 +58,33 @@ class html_ogspy_Helper extends Helper_Abstract
 
     }
 
+    /**
+     * Retourne une messagebox
+     *
+     * @param string $title titre de la messagebox.
+     * @param string $message texte de la messagebox.
+     * @param bool $closebutton possibilité de fermer la boite
+     * @param string $type default|alert|success
+     *
+     * @return string
+     */
+    public function msgBox($title, $message, $closebutton = false, $type ="default")
+    {
+        $html = "";
+        $html .= "<div class=\"msgbox msgbox".$type."\">\n";
+        $html .= "<p class=\"msgboxtitle\">".$title." ";
+        if ($closebutton)
+        {
+            $html .= "<span class=\"msgboxclosebtn\" onclick=\"this.parentElement.parentElement.style.display='none';\">&times;</span>";
+        }
+        $html .= "</p>\n";
+        $html .= "<p class=\"msgcontent\">";
+        $html .= $message;
+        $html .= "</p>\n";
+        $html .= "</div>\n";
 
+        return $html;
+    }
 
 
     /**
