@@ -12,7 +12,7 @@
 
 
 if (!defined('IN_SPYOGAME')) {
-    die("Hacking attempt");
+    die('Hacking attempt');
 }
 
 $reports = galaxy_reportspy_show();
@@ -35,16 +35,15 @@ if (sizeof($reports) == 0) {
         $spy_id = $v['spy_id'];
         $sender = $v['sender'];
         if (sizeof($favorites) < $server_config['max_favorites_spy']) {
-            $string_addfavorites = "window.location = 'index.php?action=add_favorite_spy&amp;spy_id=" . $spy_id . "&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "&amp;row=" . $row . "';";
+            $string_addfavorites = 'window.location = \'index.php?action=add_favorite_spy&amp;spy_id=' . $spy_id . '&amp;galaxy=' . $galaxy . '&amp;system=' . $system . '&amp;row=' . $row . '\';';
         } else {
-            $string_addfavorites = "alert('" . $lang['REPORT_MAXFAVORITES'] . " (" . $server_config['max_favorites_spy'] . ")')";
+            $string_addfavorites = 'alert(\'' . $lang['REPORT_MAXFAVORITES'] . ' (' . $server_config['max_favorites_spy'] . ')\')';
         }
+        $string_delfavorites = 'window.location = \'index.php?action=del_favorite_spy&amp;spy_id=' . $spy_id . '&amp;galaxy=' . $galaxy . '&amp;system=' . $system . '&amp;row=' . $row . '&amp;info=2\';';
+        $string_delspy       = 'window.location.href = \'index.php?action=del_spy&amp;spy_id='     . $spy_id . '&amp;galaxy=' . $galaxy . '&amp;system=' . $system . '&amp;row=' . $row . '&amp;info=2\';';
 
-        $string_delfavorites = "window.location = 'index.php?action=del_favorite_spy&amp;spy_id=" . $spy_id . "&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "&amp;row=" . $row . "&amp;info=2';";
-        $string_delspy = "window.location.href = 'index.php?action=del_spy&amp;spy_id=" . $spy_id . "&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "&amp;row=" . $row . "&amp;info=2';";
-
-        echo '<div style="text-align:center;"><span style="font-weight:bold;">' . $lang['REPORT_RESENTBY'] . ' ' . $sender . '</span>' . date($lang['REPORT_DATEFORMAT'], $v['dateRE']) . "</div>\n";
-        echo '<div align="right">';
+        echo '<div><span style="font-weight:bold;">' . $lang['REPORT_RESENTBY'] . ' ' . $sender . '</span>' . date($lang['REPORT_DATEFORMAT'], $v['dateRE']) . "</div>\n";
+        echo '<div style="text-align:right">';
         if (!isset($favorites[$spy_id])) {
             echo "<input type='button' value='" . $lang['REPORT_ADDTOFAV'] . "' onclick=\"$string_addfavorites\">\n";
         } else {
@@ -58,4 +57,4 @@ if (sizeof($reports) == 0) {
     }
 }
 echo "<br/>\n";
-require_once("views/page_tail_2.php");
+require_once('views/page_tail_2.php');
