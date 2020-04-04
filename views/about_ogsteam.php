@@ -12,20 +12,18 @@
  */
 
 if (!defined('IN_SPYOGAME')) {
-    die("Hacking attempt");
+    die('Hacking attempt');
 }
 
-require_once("views/page_header.php");
+require_once('views/page_header.php');
 ?>
-
 <h1><?php echo($lang['ABOUT_PROJECT_TEAM']); ?></h1>
-    <?php //todo fichiers langue a implementé .... + actualiser les infos des devs?>
-    <!--Kyser-->
+<?php //todo fichiers langue a implementé .... + actualiser les infos des devs ?>
+<!--Kyser-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Kyser"  alt="Kyser" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100px" title="Kyser"  alt="Kyser" />
         </div>
-
         <div class="memberogsteam">
             <div class="memberogsteamname">
                 <p>Kyser</p>
@@ -36,17 +34,13 @@ require_once("views/page_header.php");
             <div class="memberogsteamdescriptive">
                 <p></p>
             </div>
-
         </div>
-
     </div>
-
-    <!--Rica-->
+<!--Rica-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Rica" alt="Rica" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100px" title="Rica" alt="Rica" />
         </div>
-
         <div class="memberogsteam">
             <div class="memberogsteamname">
                 <p>Rica</p>
@@ -64,16 +58,13 @@ require_once("views/page_header.php");
                     </li>
                 </ul>
             </div>
-
         </div>
     </div>
-
-    <!--Aéris-->
+<!--Aéris-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="http://www.gravatar.com/avatar/201bc534b68afd93f7474a96a911effe.png"  width="100%" title="Aéris" alt="Aéris" />
+            <img src="http://www.gravatar.com/avatar/201bc534b68afd93f7474a96a911effe.png"  width="100px" title="Aéris" alt="Aéris" />
         </div>
-
         <div class="memberogsteam">
             <div class="memberogsteamname">
                 <p>Aéris</p>
@@ -84,16 +75,13 @@ require_once("views/page_header.php");
             <div class="memberogsteamdescriptive">
                 <p></p>
             </div>
-
         </div>
     </div>
-
-    <!--Capi-->
+<!--Capi-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Capi"  alt="Capi" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100px" title="Capi"  alt="Capi" />
         </div>
-
         <div class="memberogsteam">
             <div class="memberogsteamname">
                 <p>Capi</p>
@@ -104,16 +92,13 @@ require_once("views/page_header.php");
             <div class="memberogsteamdescriptive">
                 <p>Capi capi, capo...</p>
             </div>
-
         </div>
     </div>
-
-    <!--Chris Alys-->
+<!--Chris Alys-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Chris Alys" alt="Chris Alys" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100px" title="Chris Alys" alt="Chris Alys" />
         </div>
-
         <div class="memberogsteam">
             <div class="memberogsteamname">
                 <p>Chris Alys</p>
@@ -124,16 +109,13 @@ require_once("views/page_header.php");
             <div class="memberogsteamdescriptive">
                 <p></p>
             </div>
-
         </div>
     </div>
-
-    <!--DarkNoon-->
+<!--DarkNoon-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="https://forum.ogsteam.fr/index.php?action=dlattach;attach=210;type=avatar"  width="100%" title="DarkNoon"  alt="DarkNoon" />
+            <img src="https://forum.ogsteam.fr/index.php?action=dlattach;attach=210;type=avatar"  width="100px" title="DarkNoon"  alt="DarkNoon" />
         </div>
-
         <div class="memberogsteam">
             <div class="memberogsteamname">
                 <p>DarkNoon</p>
@@ -144,16 +126,13 @@ require_once("views/page_header.php");
             <div class="memberogsteamdescriptive">
                 <p><?php echo($lang['ABOUT_PROJECT_DARKNOON1']); ?></p>
             </div>
-
         </div>
     </div>
-
-    <!--Jedinight-->
+<!--Jedinight-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="http://ballonrond.passion.free.fr/Images/Forums/ogsteam_avatar_jedinight.png"  width="100%" title="Jedinight" alt="Jedinight" />
+            <img src="http://ballonrond.passion.free.fr/Images/Forums/ogsteam_avatar_jedinight.png"  width="100px" title="Jedinight" alt="Jedinight" />
         </div>
-
         <div class="memberogsteam">
             <div class="memberogsteamname">
                 <p>Jedinight</p>
@@ -164,16 +143,13 @@ require_once("views/page_header.php");
             <div class="memberogsteamdescriptive">
                 <p><?php echo($lang['ABOUT_PROJECT_JEDINIGHT1']); ?></p>
             </div>
-
         </div>
     </div>
-
-    <!--Machine-->
+<!--Machine-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="https://board.fr.ogame.gameforge.com/wcf/images/avatars/0d/1599-0d0b0d5df1313bcf1e49b8d1a995d6849551e8a1.jpg"  width="100%" title="Machine" alt="Machine" />
+            <img src="https://board.fr.ogame.gameforge.com/wcf/images/avatars/0d/1599-0d0b0d5df1313bcf1e49b8d1a995d6849551e8a1.jpg"  width="100px" title="Machine" alt="Machine" />
         </div>
-
         <div class="memberogsteam">
             <div class="memberogsteamname">
                 <p>Machine</p>
@@ -184,16 +160,13 @@ require_once("views/page_header.php");
             <div class="memberogsteamdescriptive">
                 <p></p>
             </div>
-
         </div>
     </div>
-
-    <!--Ninety-->
+<!--Ninety-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Ninety" alt="Ninety" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100px" title="Ninety" alt="Ninety" />
         </div>
-
         <div class="memberogsteam">
             <div class="memberogsteamname">
                 <p>Ninety</p>
@@ -204,16 +177,13 @@ require_once("views/page_header.php");
             <div class="memberogsteamdescriptive">
                 <p></p>
             </div>
-
         </div>
     </div>
-
-    <!--Shad-->
+<!--Shad-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Shad"  alt="Shad" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100px" title="Shad"  alt="Shad" />
         </div>
-
         <div class="memberogsteam">
             <div class="memberogsteamname">
                 <p>Shad</p>
@@ -224,17 +194,13 @@ require_once("views/page_header.php");
             <div class="memberogsteamdescriptive">
                 <p></p>
             </div>
-
         </div>
     </div>
-
-
-    <!--Superbox-->
+<!--Superbox-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Superbox"  alt="Superbox" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100px" title="Superbox"  alt="Superbox" />
         </div>
-
         <div class="memberogsteam">
             <div class="memberogsteamname">
                 <p>Superbox</p>
@@ -245,16 +211,13 @@ require_once("views/page_header.php");
             <div class="memberogsteamdescriptive">
                 <p></p>
             </div>
-
         </div>
     </div>
-
-    <!--Xaviernuma-->
+<!--Xaviernuma-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Xaviernuma" alt="Xaviernuma" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100px" title="Xaviernuma" alt="Xaviernuma" />
         </div>
-
         <div class="memberogsteam">
             <div class="memberogsteamname">
                 <p>Xaviernuma</p>
@@ -265,17 +228,13 @@ require_once("views/page_header.php");
             <div class="memberogsteamdescriptive">
                 <p></p>
             </div>
-
         </div>
     </div>
-
-
-    <!--Pitch314-->
+<!--Pitch314-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="http://img57.xooimage.com/files/6/3/a/moe-148053-dxlsma..._200x200-3669dc4.jpg"  width="100%" title="Pitch314"  alt="Pitch314" />
+            <img src="http://img57.xooimage.com/files/6/3/a/moe-148053-dxlsma..._200x200-3669dc4.jpg"  width="100px" title="Pitch314"  alt="Pitch314" />
         </div>
-
         <div class="memberogsteam">
             <div class="memberogsteamname">
                 <p>Pitch314</p>
@@ -293,17 +252,13 @@ require_once("views/page_header.php");
                     </li>
                 </ul>
             </div>
-
         </div>
     </div>
-
-
-    <!--testeurs-->
+<!--testeurs-->
     <div class="aboutoggsteam">
         <div class="memberogsteamavatar">
-            <img src="skin/src/default/img/avatar/unknow.png"  width="100%" title="Testeurs"  alt="Testeurs" />
+            <img src="skin/src/default/img/avatar/unknow.png"  width="100px" title="Testeurs"  alt="Testeurs" />
         </div>
-
         <div class="memberogsteam">
             <div class="memberogsteamname">
                 <p><?php echo  $lang['ABOUT_TEST_TEAM']; ?></p>
@@ -318,12 +273,11 @@ require_once("views/page_header.php");
                     <li>Néo32</li>
                     <li>Lorenzo</li>
                 </ul>
+            </div>
         </div>
     </div>
-    </div>
-    <br />
-    <br />
-
+<br>
+<br>
 <?php
-require_once("views/page_tail.php");
+    require_once('views/page_tail.php');
 ?>
