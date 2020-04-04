@@ -11,7 +11,7 @@
  */
 
 if (!defined('IN_SPYOGAME')) {
-    die("Hacking attempt");
+    die('Hacking attempt');
 }
 
 $reports = galaxy_reportrc_show();
@@ -29,11 +29,10 @@ if (sizeof($reports) == 0) {
     echo '<script>window.opener.location.href=window.opener.location.href;</script>';
 } else {
     foreach ($reports as $v) {
-        echo "<table style='text-align: center'>\n";
+        echo "<table>\n";
         echo '<tr><td class="c">' . nl2br($v) . "</td></tr>\n";
-        echo "</table>";
-        echo "<br\>\n";
+        echo "</table><br>\n";
     }
 }
-echo "<br/>\n";
+echo "<br>\n";
 require_once('views/page_tail_2.php');

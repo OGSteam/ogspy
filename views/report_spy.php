@@ -52,9 +52,9 @@ if (sizeof($reports) == 0) {
         if ($user_data['user_admin'] == 1 || $user_data['user_coadmin'] == 1) {
             echo "<input type='button' value='" . $lang['REPORT_DELETE'] . "' onclick=\"$string_delspy\">\n";
         }
-        echo "</div><br/>\n";
-        echo $v['data'] . "<br/><br/>\n";
+        echo "</div><br>\n";
+        echo $v['data'] . "<br><br>\n";
     }
 }
-echo "<br/>\n";
+echo "<br>\n";
 require_once('views/page_tail_2.php');
