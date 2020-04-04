@@ -536,3 +536,11 @@ div.content .navbarreMenu ul  li.actif a{
 form.login {
     width: 400px;
 }
+
+.allied {
+ font-weight: bold;
+ animation: blinker-one 1s linear infinite;
+}
+@keyframes blinker-one {
+ 50% { opacity: 0; }
+}
