@@ -11,41 +11,38 @@
  */
 
 if (!defined("IN_SPYOGAME")) {
-    die("Hacking attempt");
+    die('Hacking attempt');
 }
-$user_name = $user_data["user_name"];
-$user_galaxy = $user_data["user_galaxy"];
-$user_system = $user_data["user_system"];
-$user_email = $user_data["user_email"];
-$user_stat_name = $user_data["user_stat_name"];
-$user_class = $user_data["user_class"];
 
+$user_name      = $user_data['user_name'];
+$user_galaxy    = $user_data['user_galaxy'];
+$user_system    = $user_data['user_system'];
+$user_email     = $user_data['user_email'];
+$user_stat_name = $user_data['user_stat_name'];
+$user_class     = $user_data['user_class'];
 
-
-$user_token = (new Ogsteam\Ogspy\Model\Tokens_Model)->get_token($user_data["user_id"], "PAT");
+$user_token = (new Ogsteam\Ogspy\Model\Tokens_Model)->get_token($user_data['user_id'], 'PAT');
 if ($user_token != false) {
     $user_token_displayed = $user_token;
 } else {
     $user_token_displayed = $lang['PROFILE_TOKEN_TO_BE_UPDATED'];
 }
 
-if ($server_config["disable_ip_check"] == 1) {
-    $disable_ip_check = $user_data["disable_ip_check"] == 1 ? "checked" : "";
+if ($server_config['disable_ip_check'] == 1) {
+    $disable_ip_check = $user_data['disable_ip_check'] == 1 ? 'checked' : '';
 } else {
-    $disable_ip_check = "disabled";
+    $disable_ip_check = 'disabled';
 }
-$off_commandant = (isset ($user_data["off_commandant"]) && $user_data["off_commandant"] == 1) ? "checked" : "";
-$off_amiral = (isset ($user_data["off_amiral"]) && $user_data["off_amiral"] == 1) ? "checked" : "";
-$off_ingenieur = (isset ($user_data["off_ingenieur"]) && $user_data["off_ingenieur"] == 1) ? "checked" : "";
-$off_geologue = (isset ($user_data["off_geologue"]) && $user_data["off_geologue"] == 1) ? "checked" : "";
-$off_technocrate = (isset ($user_data["off_technocrate"]) && $user_data["off_technocrate"] == 1) ? "checked" : "";
+$off_commandant  = (isset ($user_data['off_commandant'])  && $user_data['off_commandant'] == 1)  ? 'checked' : '';
+$off_amiral      = (isset ($user_data['off_amiral'])      && $user_data['off_amiral'] == 1)      ? 'checked' : '';
+$off_ingenieur   = (isset ($user_data['off_ingenieur'])   && $user_data['off_ingenieur'] == 1)   ? 'checked' : '';
+$off_geologue    = (isset ($user_data['off_geologue'])    && $user_data['off_geologue'] == 1)    ? 'checked' : '';
+$off_technocrate = (isset ($user_data['off_technocrate']) && $user_data['off_technocrate'] == 1) ? 'checked' : '';
 
-
-require_once("views/page_header.php");
+require_once('views/page_header.php');
 ?>
-
     <!-- DEBUT DU SCRIPT -->
-    <script type="text/javascript">
+    <script>
         function check_password(form) {
             let old_password = form.old_password.value;
             let new_password = form.new_password.value;
@@ -73,11 +70,8 @@ require_once("views/page_header.php");
             return true;
         }
     </script>
-
-
     <!-- FIN DU SCRIPT -->
     <form method="POST" action="index.php" onSubmit="return check_password(this);">
-
         <fieldset>
             <legend> <?php echo($lang['PROFILE_TITLE']); ?></legend>
             <input name="action" type="hidden" value="member_modify_member">
@@ -102,45 +96,36 @@ require_once("views/page_header.php");
 
             <label for="renew_user_token"><?php echo $lang['PROFILE_TOKEN_UPDATE']; ?></label>
             <input name="renew_user_token" id="renew_user_token" value="1" type="checkbox" >
-
         </fieldset>
-
         <fieldset>
             <legend> <?php echo($lang['PROFILE_GAME']); ?></legend>
-
-            <label for="galaxy"><?php echo $lang['PROFILE_MAINPLANET'] . help("profile_main_planet"); ?></label>
+            <label for="galaxy"><?php echo $lang['PROFILE_MAINPLANET'] . help('profile_main_planet'); ?></label>
             <div class="inputgalaxy" >
-                    <input name="galaxy" id="inputgalaxy"  type="text" size="3" maxlength="2" value="<?php echo $user_galaxy; ?>"> :
+                    <input name="galaxy" id="galaxy"  type="text" size="3" maxlength="2" value="<?php echo $user_galaxy; ?>"> :
                     <input name="system" id="system" type="text" size="3" maxlength="3" value="<?php echo $user_system; ?>">
             </div>
-
-
-            <label for="pseudo_ingame"><?php echo $lang['PROFILE_PLAYERNAME'] . help("profile_pseudo_ingame"); ?></label>
+            <label for="pseudo_ingame"><?php echo $lang['PROFILE_PLAYERNAME'] . help('profile_pseudo_ingame'); ?></label>
             <input name="pseudo_ingame" id="pseudo_ingame" type="text" size="20" value="<?php echo $user_stat_name; ?>">
 
             <label for="user_class"><?php echo $lang['PROFILE_CLASS']; ?></label>
-            <?php //todo aucun lieu de centralisation de ce type de donnée magique !!! fichier de conf ogame ? ?>
-            <?php $classType = array('none','COL','GEN','EXP') ; ?>
+<?php
+    //todo aucun lieu de centralisation de ce type de donnée magique !!! fichier de conf ogame ?
+    $classType = array('none','COL','GEN','EXP');
+?>
             <select name='user_class' id='user_class'>
-                <?php foreach  ($classType as $class) : ?>
-                    <?php  echo $class ."__".$user_class ; ?>
-                    <option value='<?php echo $class; ?>'
-
-                        <?php if (trim($class) == trim($user_class)) :?>
-                            selected='selected' >
-                        <?php else : ?>
-                            >
-                        <?php endif ; ?>
-                        <?php echo $lang['PROFILE_CLASS_'.strtoupper($class)]; ?>
-                    </option>
-                <?php endforeach; ?>
+<?php foreach  ($classType as $class) {
+    // echo $class . '__' . $user_class;
+    $selected = '';
+    if(trim($class) == trim($user_class)) {
+        $selected = 'selected="selected"';
+    }
+?>
+                <option value="<?php echo $class; ?>" <?php echo $selected ?>><?php echo $lang['PROFILE_CLASS_'.strtoupper($class)]; ?></option>
+<?php 
+    }
+?>
             </select>
-
-
         </fieldset>
-
-
-
         <fieldset>
             <legend><?php echo($lang['PROFILE_OFFICERS']); ?></legend>
             <label for="off_commandant"><?php echo($lang['PROFILE_CODMANDER']); ?></label>
@@ -157,23 +142,14 @@ require_once("views/page_header.php");
 
             <label for="off_technocrate"><?php echo($lang['PROFILE_TECHNOCRAT']); ?></label>
             <input name="off_technocrate" id="off_technocrate" value="1" type="checkbox" <?php echo $off_technocrate; ?> />
-
          </fieldset>
-
         <fieldset>
             <legend><?php echo($lang['PROFILE_OTHERS']); ?></legend>
-
             <label for="disable_ip_check"><?php echo $lang['PROFILE_IPCHECK_DISABLE'] . help("profile_disable_ip_check"); ?></label>
             <input name="disable_ip_check" id="disable_ip_check"  value="1" type="checkbox" <?php echo $disable_ip_check; ?> />
-
         </fieldset>
-
-        <input type="submit" class=button value="<?php echo($lang['PROFILE_SAVE']); ?>">
+        <input type="submit" class="button" value="<?php echo($lang['PROFILE_SAVE']); ?>">
     </form>
-
-
-
-
 <?php
-require_once("views/page_tail.php");
+    require_once('views/page_tail.php');
 ?>
