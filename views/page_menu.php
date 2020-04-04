@@ -74,7 +74,7 @@ if (!defined('IN_SPYOGAME')) {
         <div class="logo_menu">
             <!-- logo ogsteam menu-->
         </div>
-<?php if ($server_config["server_active"] == 0) : ?>
+<?php if ($server_config['server_active'] == 0) : ?>
             <div class="offline">
 <?php echo $lang['MENU_SERVER_OFFLINE']; ?>
             </div>
@@ -82,97 +82,81 @@ if (!defined('IN_SPYOGAME')) {
     </aside>
     <nav>
         <ul class="navmenu">
-            <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) :?>
+<?php if ($user_data['user_admin'] == 1 || $user_data['user_coadmin'] == 1 || $user_data['management_user'] == 1) : ?>
                 <li>
-                    <a href='index.php?action=administration' class='menu_items menu_items_admin'><?php echo  $lang['MENU_ADMIN'] ;?></a>
+                    <a href='index.php?action=administration' class='menu_items menu_items_admin'><?php echo $lang['MENU_ADMIN']; ?></a>
                 </li>
-            <?php endif; ?>
+<?php endif; ?>
             <li>
-                <a href='index.php?action=profile' class='menu_items menu_items_profil'>
-                    <?php echo  $lang['MENU_PROFILE'] ;?>
-                </a>
+                <a href='index.php?action=profile' class='menu_items menu_items_profil'><?php echo $lang['MENU_PROFILE']; ?></a>
             </li>
             <li>
-                <a href='index.php?action=home' class='menu_items menu_items_espperso'>
-                    <?php echo  $lang['MENU_HOME'] ;?>
-                </a>
+                <a href='index.php?action=home' class='menu_items menu_items_espperso'><?php echo $lang['MENU_HOME']; ?></a>
             </li>
             <li>
-                <a href='index.php?action=galaxy' class='menu_items menu_items_galaxie'>
-                    <?php echo  $lang['MENU_GALAXY'] ;?>
-                </a>
+                <a href='index.php?action=galaxy' class='menu_items menu_items_galaxie'><?php echo $lang['MENU_GALAXY']; ?></a>
             </li>
             <li>
-                <a href='index.php?action=cartography' class='menu_items menu_items_alliance'>
-                    <?php echo  $lang['MENU_ALLIANCES'] ;?>
-                </a>
+                <a href='index.php?action=cartography' class='menu_items menu_items_alliance'><?php echo $lang['MENU_ALLIANCES']; ?></a>
             </li>
             <li>
-                <a href='index.php?action=search' class='menu_items menu_items_recherche'>
-                    <?php echo  $lang['MENU_RESEARCH'] ;?>
-                </a>
+                <a href='index.php?action=search' class='menu_items menu_items_recherche'><?php echo $lang['MENU_RESEARCH']; ?></a>
             </li>
             <li>
-                <a href='index.php?action=ranking' class='menu_items menu_items_classements'>
-                    <?php echo  $lang['MENU_RANKINGS'] ;?>
-                </a>
+                <a href='index.php?action=ranking' class='menu_items menu_items_classements'><?php echo $lang['MENU_RANKINGS']; ?></a>
             </li>
-            <li><a href='index.php?action=statistic' class='menu_items menu_items_etatcarto'>
-                    <?php echo  $lang['MENU_UPDATE_STATUS'] ;?>
-                </a></li>
+            <li>
+                <a href='index.php?action=statistic' class='menu_items menu_items_etatcarto'><?php echo $lang['MENU_UPDATE_STATUS']; ?></a>
+            </li>
             <li class='menu_items menu_items_modules'><?php echo($lang['MENU_MODULES']); ?>
-
-                <?php
-                //todo sortir requete de la vue
-                $mod_model = new \Ogsteam\Ogspy\Model\Mod_Model();
-                $tMods = $mod_model->find_by(array("active" => "1"), array("position" => 'ASC', "title" => 'ASC'));
-                ?>
-
+<?php
+    //todo sortir requete de la vue
+    $mod_model = new \Ogsteam\Ogspy\Model\Mod_Model();
+    $tMods = $mod_model->find_by(array('active' => '1'), array('position' => 'ASC', 'title' => 'ASC'));
+?>
                 <ul class='menu_mods menu_mods_user'><!-- mod non admin -->
-                    <?php foreach ($tMods as $mod) : ?>
-                        <?php if ($mod['admin_only'] == 0) : ?>
+<?php
+    foreach ($tMods as $mod) {
+        if ($mod['admin_only'] == 0) {
+?>
                             <li>
-                                <a class="menu_mods menu_mod_name_<?php echo $mod['menu']; ?>" href="index.php?action=<?php echo $mod['action'];?>">
-                                    <?php echo $mod['menu']; ?>
-                                </a>
+                                <a class="menu_mods menu_mod_name_<?php echo $mod['menu']; ?>" href="index.php?action=<?php echo $mod['action'];?>"><?php echo $mod['menu']; ?></a>
                             </li>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
+<?php
+        }
+    }
+?>
                 </ul>
-
                 <ul class='menu_mods menu_mods_admin'><!-- mod  admin -->
-
-                    <?php foreach ($tMods as $mod) : ?>
-
-                        <?php if ($mod['admin_only'] == 1) : ?>
+<?php
+    foreach ($tMods as $mod) {
+        if ($mod['admin_only'] == 1) {
+?>
                             <li>
-                                <a class="menu_mods menu_mod_name_<?php echo $mod['title']; ?>" href="index.php?action=<?php echo $mod['action'];?>">
-                                    <?php echo $mod['title']; ?>
-                                </a>
+                                <a class="menu_mods menu_mod_name_<?php echo $mod['title']; ?>" href="index.php?action=<?php echo $mod['action'];?>"><?php echo $mod['title']; ?></a>
                             </li>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
+<?php 
+        }
+    }
+?>
                 </ul>
              </li>
-            <?PHP if ($server_config["url_forum"] != "") : ?>
+<?php
+    if ($server_config["url_forum"] != "") {
+?>
                 <li>
-                    <a href='https://forum.ogsteam.fr/' class='menu_items menu_items_forum '>
-                        <?php echo($lang['MENU_FORUM']); ?>
-                    </a>
+                    <a href='https://forum.ogsteam.fr/' class='menu_items menu_items_forum '><?php echo($lang['MENU_FORUM']); ?></a>
                 </li>
-            <?php endif ; ?>
-
+<?php
+    }
+?>
             <li>
-                <a href="index.php?action=about" class='menu_items menu_items_about'>
-                    <?php echo($lang['MENU_ABOUT']); ?>
-                </a>
+                <a href="index.php?action=about" class='menu_items menu_items_about'><?php echo($lang['MENU_ABOUT']); ?></a>
             </li>
             <li>
-                <a href='index.php?action=logout' class='menu_items menu_items_logout'>
-                    <?php echo($lang['MENU_LOGOUT']); ?>
-                </a>
+                <a href='index.php?action=logout' class='menu_items menu_items_logout'><?php echo($lang['MENU_LOGOUT']); ?></a>
             </li>
         </ul>
     </nav>
 </div>
-    <!--<script>$( "#menu" ).menu();</script> (Encore pas mal de travail pour mettre ce menu en place) -->
+<!--<script>$( "#menu" ).menu();</script> (Encore pas mal de travail pour mettre ce menu en place) -->

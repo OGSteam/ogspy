@@ -4,7 +4,7 @@
  */
 // deprécié
 if (!defined('IN_SPYOGAME')) {
-    die("Hacking attempt");
+    die('Hacking attempt');
 }
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 
@@ -16,11 +16,11 @@ $db->sql_close(); // fermeture de la connexion à la base de données
 
 global $ogspy_phperror;
 if(is_array($ogspy_phperror) && count($ogspy_phperror)) {
-    echo "\t<tr><td>\n\t<table><tr><th>" . $lang['FOOTER_PHPERRORS'] . "</th></tr>";
+    echo "\t<tr><td>\n\t<table><tr><th>" . $lang['FOOTER_PHPERRORS'] . '</th></tr>';
     foreach ($ogspy_phperror as $line) {
         echo "\n<tr><td>$line</td></tr>";
     }
-    echo "</table>\n\t</td>\n</tr>";
+    echo "</table>\n\t</td></tr>\n";
 }
 // <div style="height:30px;"></div>
 ?>
