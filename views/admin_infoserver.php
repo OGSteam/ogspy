@@ -84,7 +84,7 @@ else {
 
 
 
-<div class="infoserver">
+<div class="page_admininfoserver">
 
     <table class="infoserver_stat">
         <thead>
@@ -118,7 +118,7 @@ else {
         </tr>
         <tr>
             <th><?php echo($lang['ADMIN_SERVER_SESSIONS']); ?></th>
-            <td><?php echo $connectes; ?><a href="index.php?action=drop_sessions"> (<?php echo($lang['ADMIN_SERVER_SESSIONS_CLEAN']); ?> <?php echo
+            <td><?php echo $connectes; ?><a href="index.php?action=drop_sessions"> (<?php echo($lang['ADMIN_SERVER_SESSIONS_CLEAN']); ?></a> <?php echo
                     help("drop_sessions"); ?>)</td>
             <th><?php echo($lang['ADMIN_SERVER_TOTAL_MAILS']); ?></th>
             <td><?php echo($nb_mail); ?></td>
@@ -146,16 +146,9 @@ else {
                 <?php echo($lang['ADMIN_SERVER_ALL_EXPORT']); ?>
             </td>
         </tr>
-        </tbody>
-        <thead>
         <tr>
-            <th colspan="4">&nbsp;</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th colspan="2"><a href="php/phpinfo.php" target="_blank"><?php echo($lang['ADMIN_SERVER_PHPINFO']); ?></a></th>
-            <th colspan="2"><a href="php/phpmodules.php" target="_blank"><?php echo($lang['ADMIN_SERVER_PHPMODULES']); ?></a></th>
+            <td colspan="2"><a href="php/phpinfo.php" target="_blank"><?php echo($lang['ADMIN_SERVER_PHPINFO']); ?></a></td>
+            <td colspan="2"><a href="php/phpmodules.php" target="_blank"><?php echo($lang['ADMIN_SERVER_PHPMODULES']); ?></a></td>
         </tr>
 
 

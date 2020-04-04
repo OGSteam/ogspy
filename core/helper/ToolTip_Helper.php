@@ -101,9 +101,9 @@ class ToolTip_Helper extends Helper_Abstract
         $contents = self::$content;
         $retour = '<div class="tooltip_templates" style="display:none;">';
         foreach ($contents as $key => $value) {
-            $retour .= '<span id="' . $key . '">';      //TODO : à transformer en DIV
+            $retour .= '<div id="' . $key . '">';      //TODO : à transformer en DIV
             $retour .= "" . html_entity_decode($value) . "";
-            $retour .= "</span>\n";
+            $retour .= "</div>\n";
         }
         $retour .= "</div>\n";
 
