@@ -9,26 +9,32 @@ if (!defined('IN_SPYOGAME')) {
 $thelper = get_Helpers();
 ?>
 
-<table align="center">
-    <tr>
-        <td class="c" colspan="3" ><?php echo $lang['ADMIN_HELPER_HERE'] ; ?></td>
-    </tr>
-
-
-    <?php foreach ($thelper as $helper) : ?>
+<div class="page_adminhelper">
+    <table>
         <tr>
-            <th width="20%">
-                <?php echo $helper["name"]; ?>
-            </th>
-            <th width="20%">
-                <?php echo $helper["version"]; ?>
-            </th>
-            <th width="60%">
-                <?php echo $helper["description"]; ?>
-            </th>
-
+            <th  colspan="3" ><?php echo $lang['ADMIN_HELPER_HERE'] ; ?></th>
         </tr>
-    <?php endforeach; ?>
 
 
-</table>
+        <?php foreach ($thelper as $helper) : ?>
+            <tr>
+                <td>
+                    <?php echo $helper["name"]; ?>
+                </td>
+                <td>
+                    <?php echo $helper["version"]; ?>
+                </td>
+                <td>
+                    <?php echo $helper["description"]; ?>
+                </td>
+
+            </tr>
+        <?php endforeach; ?>
+
+
+    </table>
+
+
+</div>
+
+
