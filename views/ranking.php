@@ -11,65 +11,63 @@
  */
 
 if (!defined('IN_SPYOGAME')) {
-    die("Hacking attempt");
+    die('Hacking attempt');
 }
 
-require_once("views/page_header.php");
+require_once('views/page_header.php');
 ?>
-
-    <table width="100%">
+    <table style="width:100%">
         <tr>
             <td>
                 <table>
-                    <tr align="center">
-                        <?php
-                        if (!isset($pub_subaction)) {
-                            $subaction = "player";
-                        } else {
-                            $subaction = $pub_subaction;
-                        }
+                    <tr>
+<?php
+    if (!isset($pub_subaction)) {
+        $subaction = 'player';
+    } else {
+        $subaction = $pub_subaction;
+    }
 
-                        if ($subaction != "player") {
-                            echo "\t\t\t" . "<td class='c' width='150' onclick=\"window.location = 'index.php?action=ranking&amp;subaction=player';\">";
-                            echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['RANK_PLAYERS'] . "</span></a>";
-                            echo "</td>";
-                        } else {
-                            echo "\t\t\t" . "<th width='150'>";
-                            echo "<a>" . $lang['RANK_PLAYERS'] . "</a>";
-                            echo "</th>";
-                        }
+    if ($subaction != 'player') {
+        echo "\t\t\t" . '<td class="c" style="width:150px" onclick="window.location = \'index.php?action=ranking&amp;subaction=player\';">';
+        echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['RANK_PLAYERS'] . "</span></a>";
+        echo "</td>\n";
+    } else {
+        echo "\t\t\t" . '<th style="width:150px">';
+        echo '<a>' . $lang['RANK_PLAYERS'] . '</a>';
+        echo "</th>\n";
+    }
 
-                        if ($subaction != "ally") {
-                            echo "\t\t\t" . "<td class='c' width='150' onclick=\"window.location = 'index.php?action=ranking&amp;subaction=ally';\">";
-                            echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['RANK_ALLIANCES'] . "</span></a>";
-                            echo "</td>";
-                        } else {
-                            echo "\t\t\t" . "<th width='150'>";
-                            echo "<a>" . $lang['RANK_ALLIANCES'] . "</a>";
-                            echo "</th>";
-                        }
-                        ?>
+    if ($subaction != 'ally') {
+        echo "\t\t\t" . '<td class="c" style="width:150px" onclick="window.location = \'index.php?action=ranking&amp;subaction=ally\';">';
+        echo '<a style="cursor:pointer"><span style="color: lime;">' . $lang['RANK_ALLIANCES'] . '</span></a>';
+        echo "</td>\n";
+    } else {
+        echo "\t\t\t" . '<th style="width:150px">';
+        echo '<a>' . $lang['RANK_ALLIANCES'] . '</a>';
+        echo "</th>\n";
+    }
+?>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <td align="center">
-                <?php
-                switch ($subaction) {
-                    case "player" :
-                        require_once("ranking_player.php");
-                        break;
+            <td>
+<?php
+    switch ($subaction) {
+        case 'player' :
+            require_once('ranking_player.php');
+            break;
 
-                    case "ally" :
-                        require_once("ranking_ally.php");
-                        break;
-                }
-                ?>
+        case 'ally' :
+            require_once('ranking_ally.php');
+            break;
+    }
+?>
             </td>
         </tr>
     </table>
-
 <?php
-require_once("views/page_tail.php");
+    require_once('views/page_tail.php');
 ?>
