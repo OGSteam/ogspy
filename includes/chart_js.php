@@ -72,7 +72,7 @@ $(document).ready(function() {
          plotShadow: false
       },
       credits: {
-        text: '<span style='font-weight:bold;'>OGSteam Software</span> v " . $server_config["version"] . " ',
+        text: '<span style=\"font-weight:bold;\">OGSteam Software</span> v " . $server_config["version"] . " ',
         href: 'http://www.ogsteam.fr'
     },
       title: {
@@ -80,7 +80,7 @@ $(document).ready(function() {
       },
       tooltip: {
          formatter: function() {
-            return '<span style='font-weight:bold;'>'+ this.point.name +'</span>: '+ this.percentage.toFixed(2) +' %';
+            return '<span style=\"font-weight:bold;\">'+ this.point.name +'</span>: '+ this.percentage.toFixed(2) +' %';
          }
       },
       plotOptions: {
@@ -180,7 +180,7 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 			plotShadow: false
 		},
       	credits: {
-			text: '<span style='font-weight:bold;'>OGSteam Software</span> v " . $server_config["version"] . " ',
+			text: '<span style=\"font-weight:bold;\">OGSteam Software</span> v " . $server_config["version"] . " ',
         	href: 'http://www.ogsteam.fr'
 	  	},
 		title: {
@@ -188,7 +188,7 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
         },
         tooltip: {
             formatter: function() {
-				return '<span style='font-weight:bold;'>' + this.point.name + '</span>: ' + number_format(this.point.y, 0, ',', ' ');
+				return '<span style=\"font-weight:bold;\">' + this.point.name + '</span>: ' + number_format(this.point.y, 0, ',', ' ');
             }
         },
       	plotOptions: {
@@ -655,7 +655,7 @@ $(document).ready(function() {
       },
     
       credits: {
-        text: '<span style='font-weight:bold;'>OGSteam Software</span> v " . $server_config["version"] . " ',
+        text: '<span style=\"font-weight:bold;\">OGSteam Software</span> v " . $server_config["version"] . " ',
         href: 'http://www.ogsteam.fr'
     },
     
@@ -678,7 +678,7 @@ $(document).ready(function() {
       
       tooltip: {
          formatter: function() {
-               return '<span style='font-weight:bold;'>'+ this.series.name +'</span><br/>'+
+               return '<span style=\"font-weight:bold;\">'+ this.series.name +'</span><br/>'+
                Highcharts.dateFormat('%e. %b', this.x) +'<br/>" . $titre .
         " : '+ Highcharts.numberFormat(this.y, 0, ' ') +' ' ;
          }
