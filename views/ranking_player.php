@@ -105,7 +105,7 @@ switch ($order_by) {
             <input type="hidden" name="action" value="drop_ranking">
             <input type="hidden" name="subaction" value="player">
             <input type="hidden" name="datadate" value="<?php echo $datadate; ?>">
-            <td style="text-align:right"><input type="image" src="images/drop.png" title="<?php echo $lang['RANK_DELETE'] . " " . $date_selected; ?>"></td>
+            <td style="text-align:right"><input style="width:15px; heigth:15px;" alt="DELETE" type="image" src="images/drop.png" title="<?php echo $lang['RANK_DELETE'] . " " . $date_selected; ?>"></td>
         </form>
 <?php
     }

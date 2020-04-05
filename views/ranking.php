@@ -16,7 +16,7 @@ if (!defined('IN_SPYOGAME')) {
 
 require_once('views/page_header.php');
 ?>
-    <table style="width:100%">
+    <table>
         <tr>
             <td>
                 <table>

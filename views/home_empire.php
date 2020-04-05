@@ -147,7 +147,7 @@ for ($i = 201 ; $i <= $nb_planete + 200 ; $i++) {
         }
     </script>
     <!-- FIN DU SCRIPT -->
-    <table style="width:100%">
+    <table style="border-collapse:separate">
         <tr>
 <?php
     $colspan = ($nb_planete + 1) / 2;
@@ -185,11 +185,11 @@ for ($i = 201 ; $i <= $nb_planete + 200 ; $i++) {
     for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
         echo '<th>';
         if (!isset($pub_view) || $pub_view == "planets") {
-            echo '<input type="image" alt="MOVELEFT" title="'  . $lang['HOME_EMPIRE_MOVELEFT']      . ' ' . $user_building[$i]['planet_name'] . '" src="images/previous.png" onclick="window.location = \'index.php?action=move_planet&amp;planet_id=' . $i . '&amp;view=' . $view . '&amp;left\';">&nbsp;&nbsp;';
-            echo '<input type="image" alt="DELETE" title="'    . $lang['HOME_EMPIRE_DELETE_PLANET'] . ' ' . $user_building[$i]['planet_name'] . '" src="images/drop.png" onclick="window.location = \'index.php?action=del_planet&amp;planet_id='      . $i . '&amp;view=' . $view . '\';">&nbsp;&nbsp;';
-            echo '<input type="image" alt="MOVERIGHT" title="' . $lang['HOME_EMPIRE_MOVERIGHT']     . ' ' . $user_building[$i]['planet_name'] . '" src="images/next.png" onclick="window.location = \'index.php?action=move_planet&amp;planet_id='     . $i . '&amp;view=' . $view . '&amp;right\';">';
+            echo '<input style="width:15px; heigth:15px;" type="image" alt="MOVELEFT" title="'  . $lang['HOME_EMPIRE_MOVELEFT']      . ' ' . $user_building[$i]['planet_name'] . '" src="images/previous.png" onclick="window.location = \'index.php?action=move_planet&amp;planet_id=' . $i . '&amp;view=' . $view . '&amp;left\';">&nbsp;&nbsp;';
+            echo '<input style="width:15px; heigth:15px;" type="image" alt="DELETE" title="'    . $lang['HOME_EMPIRE_DELETE_PLANET'] . ' ' . $user_building[$i]['planet_name'] . '" src="images/drop.png" onclick="window.location = \'index.php?action=del_planet&amp;planet_id='      . $i . '&amp;view=' . $view . '\';">&nbsp;&nbsp;';
+            echo '<input style="width:15px; heigth:15px;" type="image" alt="MOVERIGHT" title="' . $lang['HOME_EMPIRE_MOVERIGHT']     . ' ' . $user_building[$i]['planet_name'] . '" src="images/next.png" onclick="window.location = \'index.php?action=move_planet&amp;planet_id='     . $i . '&amp;view=' . $view . '&amp;right\';">';
         } else {
-            echo '<input type="image" alt="DELETE" title="' . $lang['HOME_EMPIRE_DELETE_MOON']   . ' ' . $user_building[$i]['planet_name'] . '" src="images/drop.png" onclick="window.location = \'index.php?action=del_planet&amp;planet_id='      . $i . '&amp;view=' . $view . '\';">&nbsp;&nbsp;';
+            echo '<input style="width:15px; heigth:15px;" type="image" alt="DELETE" title="' . $lang['HOME_EMPIRE_DELETE_MOON']   . ' ' . $user_building[$i]['planet_name'] . '" src="images/drop.png" onclick="window.location = \'index.php?action=del_planet&amp;planet_id='      . $i . '&amp;view=' . $view . '\';">&nbsp;&nbsp;';
         }
         echo "</th>\n";
     }

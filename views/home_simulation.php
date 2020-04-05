@@ -56,7 +56,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
 
 <script src="js/ogame_formula.js"></script>
 
-<table id="simu" style="width:100%" title="<?php echo $nb_planete; ?>">
+<table id="simu" style="border-collapse:separate" title="<?php echo $nb_planete; ?>">
     <tr>
         <td class="c"></td>
         <?php
