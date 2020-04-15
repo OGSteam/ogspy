@@ -103,7 +103,7 @@ if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
     //VIEWER
     $viewer =array();
     $viewer[ "tag"] = "viewer actif";
-    $viewer["content"] = $lang['ADMIN_TITLE_GROUP_CONF'];
+    $viewer["content"] = $lang['ADMIN_TITLE_LOGS_CONF'];
     // si page deja affichée, on met le lien qui va bien
     if ($pub_subaction != "viewer") {
         $viewer["tag"] = "viewer";

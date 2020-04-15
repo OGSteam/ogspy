@@ -152,6 +152,22 @@ header.ban {
     margin-bottom: 30px;
 }
 
+.warning{
+    color:red;
+}
+.default
+{
+    color: #21b2ff;;
+}
+.notice{
+    color:yellow;
+}
+success{
+    color:green;
+}
+
+
+
 /* msgbox   */
 /* Par defaut ogspy style   */
 .msgbox {
