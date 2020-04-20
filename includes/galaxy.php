@@ -303,10 +303,7 @@ function galaxy_search()
             $criteria->setPlanetName($search);
             break;
         case "colonization":
-            // $criteria->setPlanetName("");
-			//Binu : utilisation d'une chaine non vide, sinon celle-ci est considérée comme null et le critère n'est pas utilisé
-			$criteria->setPlanetName(".");
-			//fin
+            $criteria->setPlanetName("");
             break;
         case "moon":
             $criteria->setIsMoon(true);

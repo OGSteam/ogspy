@@ -396,13 +396,8 @@ class Universe_Model extends Model_Abstract
             }
             $where .= " `ally` LIKE '" . $this->db->sql_escape_string($criteria->getAllyName()) . "'";
         }
-
-        if ($criteria->getPlanetName() != null) {
-			//Binu : Remplacement du charactère '.' utilisé pour remplacer la chaine vide en caractère vide pour que la requête aboutisse
-			if ($criteria->getPlanetName() == "."){
-				$criteria->setPlanetName("");
-			}
-			//fin
+		//Binu : changement de la comparaison
+        if ($criteria->getPlanetName() !== null) {
             if ($where != "") {
                 $where .= " AND ";
             }
@@ -453,19 +448,20 @@ class Universe_Model extends Model_Abstract
 			
 			$spy_query = "SELECT `coordinates`, `active` FROM " . TABLE_PARSEDSPY . " WHERE `active` = '1'";
 			$spy_where = "";
-			if (($criteria->getGalaxyDown() != null && $criteria->getGalaxyUp() != null) || ($criteria->getSystemDown() != null && $criteria->getSystemUp() != null) || ($criteria->getRowDown() != null && $criteria->getRowUp() != null)){
+			if (($criteria->getGalaxyDown() !== null && $criteria->getGalaxyUp() !== null) || ($criteria->getSystemDown() !== null && $criteria->getSystemUp() !== null) || ($criteria->getRowDown() !== null && $criteria->getRowUp() !== null)){
 				$coordinates = $criteria->getArrayCoordinates();
 				$spy_where .= " AND ";
-				if (count($coordinates) > 1){
+				$nb_coord = count($coordinates);
+				if ($nb_coord > 1){
 					$spy_where .= "(";
 				}
-				for ($i = 0 ; $i<count($coordinates) ; $i++){
+				for ($i = 0 ; $i<$nb_coord ; $i++){
 					$spy_where .= "`coordinates` = '" . $coordinates[$i] . "'";
-					if (count($coordinates) > 1 && $i != (count($coordinates) - 1)){
+					if ($nb_coord > 1 && $i != ($nb_coord - 1)){
 						$spy_where .= " OR ";
 					}
 				}
-				if (count($coordinates) > 1){
+				if ($nb_coord > 1){
 					$spy_where .= ")";
 				}
 			}

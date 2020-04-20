@@ -279,17 +279,17 @@ class SearchCriteria_Helper  extends Helper_Abstract
 	//Binu : ajout d'une fonction pour convertir les coordonnées de la table universe en coordonnées de la table spy
 	public function getArrayCoordinates()
 	{
-		if ($this->galaxy_down != null && $this->galaxy_up != null){
+		if (!empty($this->galaxy_down) && !empty($this->galaxy_up)){
 			$galaxy = array($this->galaxy_down,$this->galaxy_up);
 		}else{
 			$galaxy = array(1,$this->server_config['num_of_galaxies']);
 		}
-		if ($this->system_down != null && $this->system_up != null){
+		if (!empty($this->system_down) && !empty($this->system_up)){
 			$system = array($this->system_down,$this->system_up);
 		}else{
 			$system = array(1,$this->server_config['num_of_systems']);
 		}
-		if ($this->row_down != null && $this->row_up != null){
+		if (!empty($this->row_down) && !empty($this->row_up)){
 			$row = array($this->row_down,$this->row_up);
 		}else{
 			$row = array(1,15);
