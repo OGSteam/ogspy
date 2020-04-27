@@ -396,29 +396,29 @@ class Universe_Model extends Model_Abstract
             }
             $where .= " `ally` LIKE '" . $this->db->sql_escape_string($criteria->getAllyName()) . "'";
         }
-
-        if ($criteria->getPlanetName() != null) {
+		//Binu : changement de la comparaison
+        if ($criteria->getPlanetName() !== null) {
             if ($where != "") {
                 $where .= " AND ";
             }
             $where .= " `name` LIKE '" . $this->db->sql_escape_string($criteria->getPlanetName()) . "'";
         }
 
-        if ($criteria->getGalaxyDown() != null && $criteria->getGalaxyUp() != null) {
+        if ($criteria->getGalaxyDown() != null && $criteria->getGalaxyUp() != null && !$criteria->getIsSpied()) {
             if ($where != "") {
                 $where .= " AND ";
             }
             $where .= " `galaxy` BETWEEN " . $criteria->getGalaxyDown() . " AND " . $criteria->getGalaxyUp();
         }
 
-        if ($criteria->getSystemDown() != null && $criteria->getSystemUp() != null) {
+        if ($criteria->getSystemDown() != null && $criteria->getSystemUp() != null && !$criteria->getIsSpied()) {
             if ($where != "") {
                 $where .= " AND ";
             }
             $where .= " `system` BETWEEN " . $criteria->getSystemDown() . " AND " . $criteria->getSystemUp();
         }
 
-        if ($criteria->getRowDown() != null && $criteria->getRowUp() != null) {
+        if ($criteria->getRowDown() != null && $criteria->getRowUp() != null && !$criteria->getIsSpied()) {
             if ($where != "") {
                 $where .= " AND ";
             }
@@ -429,7 +429,9 @@ class Universe_Model extends Model_Abstract
             if ($where != "") {
                 $where .= " AND ";
             }
-            $where .= " `moon` = 1";
+            //Binu : ajout des cotes
+            $where .= " `moon` = '1'";
+			//fin
         }
 
         if ($criteria->getIsInactive()) {
@@ -438,6 +440,64 @@ class Universe_Model extends Model_Abstract
             }
             $where .= " `status` LIKE ('%i%')";
         }
+		
+		//Binu : Ajout du critère espionné
+		if ($criteria->getIsSpied()){
+			
+			//Binu : Récupération des planètes espionnées
+			
+			$spy_query = "SELECT `coordinates`, `active` FROM " . TABLE_PARSEDSPY . " WHERE `active` = '1'";
+			$spy_where = "";
+			if (($criteria->getGalaxyDown() !== null && $criteria->getGalaxyUp() !== null) || ($criteria->getSystemDown() !== null && $criteria->getSystemUp() !== null) || ($criteria->getRowDown() !== null && $criteria->getRowUp() !== null)){
+				$coordinates = $criteria->getArrayCoordinates();
+				$spy_where .= " AND ";
+				$nb_coord = count($coordinates);
+				if ($nb_coord > 1){
+					$spy_where .= "(";
+				}
+				for ($i = 0 ; $i<$nb_coord ; $i++){
+					$spy_where .= "`coordinates` = '" . $coordinates[$i] . "'";
+					if ($nb_coord > 1 && $i != ($nb_coord - 1)){
+						$spy_where .= " OR ";
+					}
+				}
+				if ($nb_coord > 1){
+					$spy_where .= ")";
+				}
+			}
+			$spy_query .= $spy_where . " ORDER BY `coordinates`";
+			$spy_result = $this->db->sql_query($spy_query);
+			while ($spy_coordinate = $this->db->sql_fetch_assoc($spy_result)) {
+				$spy_coordinates[] = $spy_coordinate['coordinates'];
+			}
+			
+			//Binu : Sélection des planètes ayant été espionnées
+			if (isset($spy_coordinates)){
+				if ($where != "") {
+					$where .= " AND ";
+				}
+				for ($i = 0 ; $i<count($spy_coordinates) ; $i++){
+					$split = explode(":",$spy_coordinates[$i]);
+					$galaxy = $split[0];
+					$system = $split[1];
+					$row = $split[2];
+					if (count($spy_coordinates) > 1){
+						$where .= "(";
+					}
+					$where .= "`galaxy` = " . $galaxy . " AND `system` = " . $system . " AND `row` = " . $row;
+					if (count($spy_coordinates) > 1){
+						$where .= ")";
+						if ($i < (count($spy_coordinates) - 1)){
+							$where .= " OR ";
+						}
+					}
+				}
+			}else{
+				//Binu : Si aucune planète de l'intervalle paramétré n'a été espionné, on s'assure qu'il n'y aura pas de résultat
+				$where .= "`galaxy` = 0";
+			}
+		}
+		//Fin correctif
 
         $query = $select . $request;
         if ($where != "") {
