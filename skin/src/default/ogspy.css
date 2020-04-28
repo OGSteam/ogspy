@@ -32,6 +32,7 @@ form {
     background-color: rgba(0,0,0,0.8);
     margin: 0 auto;
     width: 40%;
+    min-width: 480px;
     padding: 1em;
     border: 1px solid #CCC;
     border-radius: 1em;

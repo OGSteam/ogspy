@@ -198,7 +198,7 @@ $lang['ADMIN_PARAMS_ALLOW_IPCHECKDISABLING'] = "Autoriser la désactivation du c
 $lang['ADMIN_PARAMS_MAXSSFAVORITES'] = "Nombre maximum de systèmes favoris autorisé <a>[0-99]</a>";
 $lang['ADMIN_PARAMS_MAXREFAVORITES'] = "Nombre maximum de rapports d'espionnage favoris autorisé <a>[0-99]</a>";
 $lang['ADMIN_PARAMS_SESSIONS_TITLE'] = "Gestion des sessions";
-$lang['ADMIN_PARAMS_SESSIONS_DURATION'] = "Durée des sessions <a>[5-180 minutes]</a> <a>[0=durée indéterminée]";
+$lang['ADMIN_PARAMS_SESSIONS_DURATION'] = "Durée des sessions <a>[5-180 minutes]</a> <a>[0=durée indéterminée]</a>";
 $lang['ADMIN_PARAMS_ALLYPROTECT'] = "Protection alliance";
 $lang['ADMIN_PARAMS_ALLYPROTECTLIST'] = "Liste des alliances à ne pas afficher";
 $lang['ADMIN_PARAMS_ALLYPROTECTNOTICE'] = "Séparez les alliances avec des virgules";
