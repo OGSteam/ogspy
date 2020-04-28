@@ -311,6 +311,11 @@ function galaxy_search()
         case "away":
             $criteria->setIsInactive(true);
             break;
+		//Binu : ajout du critère spy
+		case "spy":
+			$criteria->setIsSpied(true);
+            break;
+		//fin
     }
     if (!$criteria->isValid()) {
         return array($search_result, $total_page);

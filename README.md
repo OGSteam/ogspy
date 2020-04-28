@@ -1,6 +1,6 @@
 OGSpy
 ============
-[![GitHub Issues](https://img.shields.io/github/issues/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/issues) [![Version Courante](https://img.shields.io/badge/version-3.3.6-green.svg)](https://github.com/OGSTeam/ogspy) [![Demo](https://img.shields.io/badge/demo-online-green.svg)](http://ogspy.fr/demo)[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e15bf326567d45c3aea25192f46aa596)](https://www.codacy.com/app/OGSteam/ogspy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OGSteam/ogspy&amp;utm_campaign=Badge_Grade)
+[![GitHub Issues](https://img.shields.io/github/issues/OGSTeam/ogspy.svg)](https://github.com/OGSTeam/ogspy/issues) [![Version Courante](https://img.shields.io/badge/version-3.3.7-green.svg)](https://github.com/OGSTeam/ogspy) [![Demo](https://img.shields.io/badge/demo-online-green.svg)](http://ogspy.fr/demo)[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e15bf326567d45c3aea25192f46aa596)](https://www.codacy.com/app/OGSteam/ogspy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OGSteam/ogspy&amp;utm_campaign=Badge_Grade)
 
 Le projet crée en 2006 est une aide pour un jeu de gestion de vaisseaux spatiaux.
 Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour ensuite les regrouper et les exploiter.
