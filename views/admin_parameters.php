@@ -179,7 +179,7 @@ $mail_smtp_password="";
                 <input name="speed_uni" id="speed_uni" type="text" size="5" maxlength="2" value="<?php echo $speed_uni; ?>" onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_SPEED_POPUP']); ?>\n')){document.getElementById('speed_uni').value='<?php echo $speed_uni; ?>';}"  readonly="readonly">
                 (<input name="enable_input_speed_uni" type="checkbox" onClick="(this.checked)? document.getElementById('speed_uni').readOnly=false : document.getElementById('speed_uni').readOnly=true;">)
                 <label for="ddr"><?php echo($lang['ADMIN_PARAMS_GAME_DDR']); ?><?php echo help("profile_ddr"); ?></label>
-                <input type='checkbox' value="1" <?php print ($ddr == 1) ? ' checked' : '' ?> name='ddr' id='ddr'/>
+                <input type='checkbox' value="1" <?php print ($ddr == 1) ? ' checked' : '' ?> name='ddr' id='ddr '/>
                 <label for="astro_strict"><?php echo($lang['ADMIN_PARAMS_GAME_ASTRO']); ?><?php echo help("astro_strict"); ?></label>
                 <input type='checkbox' value="1" <?php print ($astro_strict == 1) ? ' checked' : '' ?> name='astro_strict' id='astro_strict'/>
             </fieldset>
