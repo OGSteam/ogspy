@@ -20,8 +20,8 @@ docker run -d -p80:80 --name ogspy_container ogsteam/ogspy
 Open with your browser http://127.0.0.1 (The page could appear after some time corresponding to the service startup time)
 
 Database : ogspy
-user : admin
-Password : ogsteam
+user : ogsteam
+Password : password
 
 - When installation is finished remove install Folder:
 
