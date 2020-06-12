@@ -1,0 +1,54 @@
+html {
+  height: 100%;
+}
+
+body {
+  min-height:100%;
+  margin:0;
+  padding: 0;
+  display:grid;
+  grid-template-rows:$grid_template_rows_ban $grid_template_rows_content $grid_template_rows_footer;
+  grid-template-columns:$grid_template_columns_menu $grid_template_columns_content;
+  grid-template-areas:
+          "header header"
+          "menu content"
+          "footer footer";
+}
+
+header {
+  grid-area:header;
+
+
+  margin-left: $grid_padding_ext;
+  margin-right: $grid_padding_ext;
+  margin-top: $grid_padding_ext;
+  margin-bottom: $grid_padding_int;
+
+}
+.menu {
+  grid-area:menu;
+
+  margin-left: $grid_padding_ext;
+  margin-right: $grid_padding_int;
+  margin-top: $grid_padding_int;
+  margin-bottom: $grid_padding_int;
+
+}
+.content {
+  grid-area:content;
+
+  margin-left: $grid_padding_int;
+  margin-right: $grid_padding_ext;
+  margin-top: $grid_padding_int;
+  margin-bottom: $grid_padding_int;
+}
+#footbarre {
+  grid-area:footer;
+
+  margin-top: $grid_padding_int;
+  margin-left: $grid_padding_ext;
+  margin-right: $grid_padding_ext;
+  margin-bottom: $grid_padding_ext;
+
+  border-top: 1px solid $color4;
+}

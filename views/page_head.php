@@ -15,8 +15,10 @@ use Ogsteam\Ogspy\Helper\ToolTip_Helper;
     <title><?php echo $server_config['servername'] . ' - OGSpy ' . $server_config['version']; ?></title>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/icon" href="favicon.ico">
-    <!-- old skin-->
+    <!-- old skin
     <link rel="stylesheet" type="text/css" href="./skin/OGSpy_skin/formate.css">
+    <link rel="stylesheet" type="text/css" href="./skin/src/default/ogspy2.css">
+    -->
     <!-- sera remplacer par !-->
     <link rel="stylesheet" type="text/css" href="./skin/src/default/ogspy.css">
 
@@ -31,4 +33,4 @@ use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 <header class="ban">
 	<img alt="Logo OGSpy" src="./skin/OGSpy_skin/<?php echo $banner_selected; ?>"/>
 </header>
-<div class="main">
+

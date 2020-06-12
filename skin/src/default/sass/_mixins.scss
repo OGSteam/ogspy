@@ -1,0 +1,28 @@
+//-------------BASE------------------
+@mixin base-noMarginPadding {
+  margin: 0;
+  padding: 0;
+}
+
+//-----------FIN BASE----------------
+
+
+
+// -------------MENU------------------
+// MIXIN  Menu
+@mixin menu-left-li-light {
+  border: 2px solid $color2;
+  background-color: $color1;
+}
+
+@mixin menu-left-subli {
+  border: 2px solid $color2;
+  background-color: $color2;
+}
+
+@mixin menu-left-li-dark {
+  border: 2px solid $color1;
+  background-color: $color4;
+}
+
+////-----------FIN MENU----------------

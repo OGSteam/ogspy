@@ -16,6 +16,10 @@ if (!defined('IN_SPYOGAME')) {
 ?>
 <div class="menu">
     <aside>
+        <div class="logo_menu">
+            <!-- logo ogsteam menu-->
+        </div>
+
         <div class="timer">
             <!-- placer dans un fichier js ...-->
             <script>
@@ -71,9 +75,7 @@ if (!defined('IN_SPYOGAME')) {
             Heure serveur <br>
             <span id="datetime">En attente</span>
         </div>
-        <div class="logo_menu">
-            <!-- logo ogsteam menu-->
-        </div>
+
 <?php if ($server_config['server_active'] == 0) : ?>
             <div class="offline">
 <?php echo $lang['MENU_SERVER_OFFLINE']; ?>

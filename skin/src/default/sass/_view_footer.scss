@@ -1,0 +1,32 @@
+
+#footbarre {
+  background-color: $color2;
+  line-height:$grid_template_rows_footer * 0.60;
+  font-style: italic;
+  display: grid;
+  grid-template-columns: 30% 40% 30%;
+  grid-gap: 0px;
+
+  .toologs {
+    @include base-noMarginPadding;
+    text-align: left;
+  }
+  .online {
+    @include base-noMarginPadding;
+    text-align: center;
+  }
+  .bench {
+    @include base-noMarginPadding;
+    text-align: right;
+  }
+  span
+  {
+    color: $color_font_contrast;
+    font-weight: bold;
+  }
+
+}
+
+
+
+

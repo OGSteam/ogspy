@@ -1,0 +1,65 @@
+//variables palette principale
+$colorbase             : #010617; // designa basé sur cette couleur http://paletton.com/#uid=13P0u0kplhc6dOLgfr8A989Wq0C
+//couleur de fond
+$colorBCG : #FFFFFF ; //fond blanc + de contrast - pique aux yeux ...
+$colorBCG : rgba(0,0,0,0.1);
+$colorfont : rgba(0, 0, 0, 9);
+$isdark : false;
+
+//palette paletton
+$color1 : #B9C2DF;
+$color2 : #516092;
+$color3 : #040D2C;
+$color4 : #000103;
+
+//Couleur autre
+$color_font_warm: red;
+$color_font_contrast: #ECFF00;
+
+@if $isdark {
+  //couleur de la palette du plus clair au plus foncé (paletton) f=
+  $color4 : #B9C2DF;
+  $color3 : #516092;
+  $color2 : #040D2C;
+  $color1 : #000103;
+
+  /// couleur a modifier pour design coherent cf comment
+  $colorBCG : rgba(0,0,0,0.8);
+  $colorfont : rgb(174, 182, 238);
+  $color_font_warm: red;
+  $color_font_contrast: #ECFF00;
+
+}
+//fin variables palette principale
+//------------------------------
+
+
+
+
+
+
+// Positionnement grid
+$grid_template_rows_ban : 150px;
+$grid_template_rows_content : 1fr;
+$grid_template_rows_footer : 30px;
+$grid_template_columns_menu : 250px;
+$grid_template_columns_content : 1fr;
+
+$grid_padding_ext : 10px;
+$grid_padding_int : 2px;
+
+
+
+// Menu left
+$menu-left-padding :5px 5px 5px 5px;
+$menu-left-margin :5px 5px 5px 5px;
+
+
+
+
+$bcg_main_color : #000002;
+$bcg_main_color-linear-gradient:lighten($bcg_main_color, 40%);
+$bcg_footer_color : lighten($bcg_main_color, 40%);
+
+
+

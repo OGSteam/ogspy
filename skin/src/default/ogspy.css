@@ -1,563 +1,325 @@
-/* conf globale  */
-html, body {
-    margin: 0;
-    padding: 0;
+/* line 5, ../../../../../../compass.app/lib/ruby/compass_1.0/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
 }
 
-body {
-    background: rgb(10, 0, 24) url("img/fond_1.jpg") no-repeat fixed left top;
-    background-size: cover;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    text-align: left;
-    font-size: 12px;
+/* line 22, ../../../../../../compass.app/lib/ruby/compass_1.0/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
 }
 
-li {
-    line-height : 1.2em;
-    list-style: none;
+/* line 24, ../../../../../../compass.app/lib/ruby/compass_1.0/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
 }
 
-h1 {
-    text-align: center;
-    font-size: 18px;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
-    box-shadow: 0 0 2px black, inset 0 0 1px rgba(255, 255, 255, 1);
-    mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #ffffff 40%, #ffffff 60%, rgba(0, 0, 0, 0) 100%);
-    padding-top: 5px;
-    padding-bottom: 5px;
-    color: yellow;
-}
-
-form {
-    background-color: rgba(0,0,0,0.8);
-    margin: 0 auto;
-    width: 40%;
-    min-width: 480px;
-    padding: 1em;
-    border: 1px solid #CCC;
-    border-radius: 1em;
-}
-
-form fieldset {
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
-    box-shadow: 0 0 2px black, inset 0 0 1px rgba(255, 255, 255, 1);
-    border: 1px solid #CCC;
-    border-radius: 1em;
-    padding-bottom: 20px;
-    margin-top: 20px;
-    background-color: #3F2158;
-}
-
-form div {
-    margin-top: 1em;
-}
-
-label {
-    /* Pour être sûrs que toutes les étiquettes ont même taille et sont correctement alignées */
-    display: inline-block;
-    width: 40%;
-    text-align: right;
-    padding-right: 3em;
-}
-
-input {
-    width: 40%;
-    box-sizing: border-box;
-    border: 1px solid #999;
-    margin-top :  5px;
-    margin-bottom :  5px;
-}
-
-form .inputgalaxy {
-    width: 80px;
-    display: inline-block;
-}
-
-.button {
-    margin-left: 30%;
-    margin-right: 30%;
-    width: 40%;
-    border: 1px solid #CCC;
-
-    background: none;
-    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-
-    color: #ffffff !important;
-    font-weight: 100;
-    padding: 20px;
-    text-transform: uppercase;
-    border-radius: 6px;
-    display: inline-block;
-    transition: all 0.3s ease 0s;
-}
-.button:hover {
-    color: #404040 !important;
-    font-weight: 700 !important;
-    letter-spacing: 3px;
-    background: rgba(0,0,0,0.8);
-    transition: all 0.3s ease 0s;
-    border: 1px solid black;
-    cursor: pointer;
-}
-
+/* line 26, ../../../../../../compass.app/lib/ruby/compass_1.0/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 table {
-    width : 100%;
-    border-collapse: collapse;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
-    background-color: #3F2158;
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: 10px;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
-table thead th {
-    background-image: none;
-    background-color: black;
-    border: 1px solid white;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-    color: #21b2ff
+/* line 28, ../../../../../../compass.app/lib/ruby/compass_1.0/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
 }
 
-table thead td {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid white;
+/* line 30, ../../../../../../compass.app/lib/ruby/compass_1.0/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../compass.app/lib/ruby/compass_1.0/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
 }
 
-table tbody th {
-    background-image: none;
-    background-color: rgba(0,0,0,0.4);
-    border: 1px solid black;
-    text-align: center;
+/* line 32, ../../../../../../compass.app/lib/ruby/compass_1.0/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
 }
 
-table tbody td {
-    background-color: rgba(255,255,255,0.1);
-    color: yellow;
-    border: 1px solid black;
-    text-align: center;
+/* line 116, ../../../../../../compass.app/lib/ruby/compass_1.0/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block;
 }
 
-/* fin conf globale  */
-
-.main {
-    height: 100%;
-    min-height: 100%;
+/* line 1, sass/_grid.scss */
+html {
+  height: 100%;
 }
 
-header.ban {
-    text-align: center;
-    margin-bottom: 30px;
+/* line 5, sass/_grid.scss */
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-rows: 150px 1fr 30px;
+  grid-template-columns: 250px 1fr;
+  grid-template-areas: "header header" "menu content" "footer footer";
 }
 
-.warning{
-    color:red;
-}
-.default
-{
-    color: #21b2ff;;
-}
-.notice{
-    color:yellow;
-}
-success{
-    color:green;
+/* line 18, sass/_grid.scss */
+header {
+  grid-area: header;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 2px;
 }
 
-
-
-/* msgbox   */
-/* Par defaut ogspy style   */
-.msgbox {
-    padding: 0px;
-    margin-top: 15px;
-    color: white;
+/* line 28, sass/_grid.scss */
+.menu {
+  grid-area: menu;
+  margin-left: 10px;
+  margin-right: 2px;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
-.msgbox p{
-    margin:0;
-    padding:0;
-    padding-left: 30px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+/* line 37, sass/_grid.scss */
+.content {
+  grid-area: content;
+  margin-left: 2px;
+  margin-right: 10px;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
-.msgbox  p.msgboxtitle{
-    margin:0;
-    padding:0;
-    margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
-    background-color: black;
-    padding: 15px;
-    font-size: 14px;
-    color: #21b2ff;
-    border: 1px solid white;
-
-}
-.msgbox  p.msgcontent{
-    margin:0;
-    padding:0;
-    margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
-    background-color: #3F2158;
-    padding: 15px;
-    font-size: 12px;
-
-
-}
-
-.msgbox span.msgboxclosebtn {
-    margin-left: 15px;
-    paddin:0;
-    padding-bottom: 15px;
-    color: #21b2ff;
-    font-weight: bold;
-    float: right;
-    font-size: 14px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.msgbox span.msgboxclosebtn:hover {
-    color: white;
-}
-
-
-/* Par alert   */
-.msgbox.msgboxalert  p.msgboxtitle
-{
-    background-color: #8a2f24;
-    color: white;
-    border: none;
-}
-.msgbox.msgboxalert  p.msgcontent{
-    background: none;
-    background-color: #f44336;
-}
-.msgbox.msgboxalert span.msgboxclosebtn {
-    color: white;
-}
-.msgbox.msgboxalert span.msgboxclosebtn:hover {
-    color: black;
-}
-
-
-/* Par success   */
-.msgbox.msgboxsuccess  p.msgboxtitle
-{
-    background-color: #376f37;
-    color: white;
-    border: none;
-}
-.msgbox.msgboxsuccess  p.msgcontent{
-    background: none;
-    background-color: #4e9051;
-}
-.msgbox.msgboxsuccess span.msgboxclosebtn {
-    color: white;
-}
-.msgbox.msgboxsuccess span.msgboxclosebtn:hover {
-    color: black;
-}
-/* fin msgbox   */
-
-
-
-
-div.menu {
-    float: left;
-    width: 15%;
-    min-width: 200px;
-    height: 100%;
-    min-height: 100%;
-    display: block;
-}
-
-div.menu aside {
-    position:absolute;
-    top:0px;
-    width:inherit;
-    padding-top:10px;
-}
-
-div.menu aside .timer {
-    color: whitesmoke;
-    text-align: center;
-    font-size: 12px;
-    margin: 0;
-    padding: 0;
-}
-
-div.menu aside .timer span {
-    font-weight: bold;
-    color: #ECFF00;
-}
-
-div.menu aside .offline {
-    color: red;
-    text-align: center;
-    font-size: 20px;
-    padding-top: 10px;
-}
-
-div.menu aside .logo_menu {
-    background-image: url('img/logo_menu.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 80% 100%;
-    width: 100%;
-    height: 60px;
-    padding: 0px;
-    margin: 5px 0px 0px;
-}
-
-div.menu nav {
-    text-transform: uppercase;
-    color: white;
-    padding-top: 10px;
-}
-
-div.menu nav a {
-    text-transform: uppercase;
-    color: white;
-}
-
-div.menu nav a:hover {
-    text-transform: uppercase;
-    color: #5CCCE8;
-    margin-left: 2px;
-    font-size: 12px;
-    transition: margin-left 0.5s, color 0.5s;
-}
-
-div.menu nav .menu_mods {
-    text-transform: uppercase;
-    color: lime;
-}
-
-div.menu nav a {
-    text-transform: uppercase;
-    color: white;
-}
-
-div.menu nav ul {
-    list-style: none;
-}
-
-div.menu nav ul li {
-    margin-top: 5px;
-    margin-right: 5px;
-}
-
-div.menu nav .menu_items_modules {
-    color: #B6C6E5;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-size: 11px;
-    padding-left: 5px;
-}
-
-div.menu nav .menu_items_modules a:hover {
-    margin-left: 12px;
-    color: darkolivegreen;
-    transition: margin-left 0.5s, color 0.5s;
-}
-
-div.content {
-    padding-bottom: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 80%;
-    height: 100%;
-    min-height: 100%;
-    display: inline-block;
-    margin-bottom: 30px;
-}
-
-
-/*  content sans menu*/
-div.nomenu {
-    width: 100%;
-}
-div.nomenu form {
-    margin: 0 auto;
-}
-
-div.content .navbarreMenu {
-    max-width: 100%;
-    mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #ffffff 25%, #ffffff 75%, rgba(0, 0, 0, 0) 100%);
-    margin: 0 auto;
-    padding: 20px 0;
-}
-div.content .navbarreMenu ul {
-    text-align: center;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
-    box-shadow: 0 0 2px black, inset 0 0 1px rgba(255, 255, 255, 1);
-}
-
-div.content .navbarreMenu ul  li {
-    display: inline-block;
-}
-
-div.content .navbarreMenu ul  li a {
-    padding: 10px;
-    color: lime;
-    font-size: 12px;
-    text-decoration: none;
-    display: block;
-}
-
-div.content .navbarreMenu ul  li a:hover {
- background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(30,16,42, 0.5) 25%, rgba(30,16,42, 0.5) 75%, rgba(255, 255, 255, 0) 100%);
- color: #5CCCE8;
-}
-
-div.content .navbarreMenu ul  li.actif a{
-
- background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(30,16,42, 0.8) 25%, rgba(30,16,42, 0.8) 75%, rgba(255, 255, 255, 0) 100%);
- color: #5CCCE8;
-}
-
-.tab_helper {
- width:200px;
- font-weight:bold;
-}
-.tab_helper tbody td {
- color:white;
-}
-
+/* line 45, sass/_grid.scss */
 #footbarre {
- background: linear-gradient(rgba(10, 0, 24, 0.2), rgba(10, 0, 24, 1));
- color: #ECFF00;
- position: fixed;
- left: 0;
- bottom: 0;
- width: 100%;
- height: 30px;
- line-height:30px;
- font-style: italic;
+  grid-area: footer;
+  margin-top: 2px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border-top: 1px solid #000103;
 }
 
+/* line 1, sass/_main.scss */
+body {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: black;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  text-align: left;
+  font-size: 10px;
+}
+
+/* line 9, sass/_main.scss */
+a:link {
+  text-decoration: none;
+}
+
+/* line 13, sass/_main.scss */
+a:visited {
+  text-decoration: none;
+}
+
+/* line 17, sass/_main.scss */
+a:hover {
+  text-decoration: none;
+}
+
+/* line 21, sass/_main.scss */
+a:active {
+  text-decoration: none;
+}
+
+/* line 1, sass/_view_header.scss */
+header {
+  background-color: #040D2C;
+  text-align: center;
+}
+
+/* line 1, sass/_view_menu_left.scss */
+.menu {
+  margin-right: 10px;
+}
+/* line 4, sass/_view_menu_left.scss */
+.menu aside {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #516092;
+}
+/* line 9, sass/_view_menu_left.scss */
+.menu aside .logo_menu {
+  background-image: url("img/logo_menu.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80% 100%;
+  width: 100%;
+  height: 60px;
+  padding: 0px;
+  margin: 5px 0px 0px;
+}
+/* line 20, sass/_view_menu_left.scss */
+.menu aside .timer {
+  text-align: center;
+  font-size: 15px;
+  margin: 0;
+  padding: 0;
+}
+/* line 25, sass/_view_menu_left.scss */
+.menu aside .timer br {
+  content: "";
+  display: block;
+  margin-bottom: 5px;
+}
+/* line 31, sass/_view_menu_left.scss */
+.menu aside .timer span {
+  font-weight: bold;
+  color: #ECFF00;
+}
+/* line 37, sass/_view_menu_left.scss */
+.menu aside .offline {
+  color: red;
+  text-align: center;
+  font-size: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+/* line 50, sass/_view_menu_left.scss */
+.menu nav {
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+/* line 54, sass/_view_menu_left.scss */
+.menu nav ul.navmenu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+/* line 58, sass/_view_menu_left.scss */
+.menu nav ul.navmenu li {
+  border: 2px solid #516092;
+  background-color: #B9C2DF;
+  margin: 5px 5px 5px 5px;
+  padding: 5px 5px 5px 5px;
+}
+/* line 63, sass/_view_menu_left.scss */
+.menu nav ul.navmenu li a {
+  color: #000103;
+}
+/* line 68, sass/_view_menu_left.scss */
+.menu nav ul.navmenu li:hover {
+  border: 2px solid #B9C2DF;
+  background-color: #000103;
+  margin: 5px 5px 5px 5px;
+  padding: 5px 5px 5px 5px;
+}
+/* line 73, sass/_view_menu_left.scss */
+.menu nav ul.navmenu li:hover a {
+  color: #B9C2DF;
+}
+/* line 79, sass/_view_menu_left.scss */
+.menu nav ul.navmenu li.menu_items_modules {
+  border: 2px solid #516092;
+  background-color: #516092;
+}
+/* line 85, sass/_view_menu_left.scss */
+.menu nav ul.navmenu li.menu_items_modules:hover li a {
+  color: #000103;
+}
+/* line 91, sass/_view_menu_left.scss */
+.menu nav ul.navmenu li.menu_items_modules:hover li:hover a {
+  color: #B9C2DF;
+}
+
+/* line 3, sass/_view_menu_navbar.scss */
+.navbarreMenu {
+  max-width: 100%;
+  mask-image: linear-gradient(90deg, transparent 0%, #ffffff 25%, #ffffff 75%, transparent 100%);
+  margin: 0 auto;
+  padding: 20px 0;
+}
+/* line 10, sass/_view_menu_navbar.scss */
+.navbarreMenu ul li {
+  display: inline-block;
+}
+
+/* line 19, sass/_view_menu_navbar.scss */
+.navbarreMenu ul {
+  text-align: center;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
+  box-shadow: 0 0 2px black, inset 0 0 1px white;
+}
+
+/* line 25, sass/_view_menu_navbar.scss */
+.navbarreMenu2 ul li {
+  display: inline-block;
+}
+
+/* line 28, sass/_view_menu_navbar.scss */
+.navbarreMenu2 ul li a {
+  padding: 10px;
+  color: lime;
+  font-size: 12px;
+  text-decoration: none;
+  display: block;
+}
+
+/* line 36, sass/_view_menu_navbar.scss */
+.navbarreMenu2 ul li a:hover {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(30, 16, 42, 0.5) 25%, rgba(30, 16, 42, 0.5) 75%, rgba(255, 255, 255, 0) 100%);
+  color: #5CCCE8;
+}
+
+/* line 41, sass/_view_menu_navbar.scss */
+.navbarreMenu2 ul li.actif a {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(30, 16, 42, 0.8) 25%, rgba(30, 16, 42, 0.8) 75%, rgba(255, 255, 255, 0) 100%);
+  color: #5CCCE8;
+}
+
+/* line 2, sass/_view_footer.scss */
+#footbarre {
+  background-color: #516092;
+  line-height: 18px;
+  font-style: italic;
+  display: grid;
+  grid-template-columns: 30% 40% 30%;
+  grid-gap: 0px;
+}
+/* line 10, sass/_view_footer.scss */
 #footbarre .toologs {
- float: left;
- width: 29%;
- margin: 0;
- padding: 0;
- text-align: left;
- padding-left: 1%;
+  margin: 0;
+  padding: 0;
+  text-align: left;
 }
-
+/* line 14, sass/_view_footer.scss */
 #footbarre .online {
- float: left;
- width: 40%;
- margin: 0;
- padding: 0;
- text-align: center;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
-
+/* line 18, sass/_view_footer.scss */
 #footbarre .bench {
- float: left;
- width: 29%;
- margin: 0;
- padding: 0;
- text-align: right;
- padding-right: 1px;
+  margin: 0;
+  padding: 0;
+  text-align: right;
 }
-
-
-#footbarre span.value {
- color: #FF6F00;
- font-weight: bold;
-}
-
-#footbarre span.nb_users {
- color: #FF6F00;
- font-weight: bold;
-}
-
-#footbarre span.version {
- color: #FF6F00;
- font-weight: bold;
-}
-
-/* Page About  */
-.aboutoggsteam {
-    padding: 1px;
-    margin: auto;
-    width: 80%;
-    background-color: white;
-    margin-bottom: 0px;
-}
-.aboutoggsteam p {
-    margin: 0;
-    padding: 0;
-    padding-left: 10px;
-}
-
-.aboutoggsteam .memberogsteam {
-    padding: 1px;
-    margin: auto;
-    width: 100%;
-    height: auto;
-    background-color: black;
-    background: linear-gradient(180deg, rgba(0,0,0, 0.5) 0%, rgba(0,0,0, 1) 2%,rgba(0,0,0, 1)  98% , rgba(0,0,0, 0.5)  100%);
-}
-.aboutoggsteam .memberogsteamavatar {
-    float:left;
-    width: 100px;
-    height: 100px;
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    background-color: black;
-
-}
-.aboutoggsteam .memberogsteamname {
-    background: linear-gradient(90deg, rgba(0,0,0, 0.0)  0% , rgba(255, 255, 255, 0.5) 3%, rgba(0,0,0, 0.8) 80%,rgba(0,0,0, 0.0)  100%);
-    color : yellow;
-    float: left;
-    width: 20%;
-    height: 20px;
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-
-}
-.aboutoggsteam .memberogsteamnrole {
-    float: left;
-    width: auto;
-    height: 20px;
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-}
-.aboutoggsteam .memberogsteamdescriptive {
-    float: bottom;
-    width: 80%;
-    height: 80px;
-    margin: 0;
-    padding: 0;
-    display: inline-block;
-}
-.aboutoggsteam .memberogsteamdescriptive {
-    padding-left: 30px;
-    margin-top: 15px;
-}
-
-/* Page Login  */
-form.login {
-    width: 400px;
-}
-
-.allied {
- font-weight: bold;
- animation: blinker-one 1s linear infinite;
-}
-@keyframes blinker-one {
- 50% { opacity: 0; }
+/* line 22, sass/_view_footer.scss */
+#footbarre span {
+  color: #ECFF00;
+  font-weight: bold;
 }

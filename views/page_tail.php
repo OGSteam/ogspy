@@ -26,7 +26,7 @@ if(is_array($ogspy_phperror) && count($ogspy_phperror)) {
 ?>
 
 <!-- Place pour bas de pages -->
-</div>
+
 </div>
 <?php echo (new ToolTip_Helper())->GetHTMLHideContent(); ?>
 <footer id="footbarre">
