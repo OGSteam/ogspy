@@ -51,9 +51,16 @@ $grid_padding_int : 2px;
 
 
 // Menu left
+$menu-left-border:1px solid $color4;
 $menu-left-padding :5px 5px 5px 5px;
 $menu-left-margin :5px 5px 5px 5px;
+$menu-left-text-transform: uppercase;
+$menu-left-text-align: left;
 
+//menu navbar
+$menu-navbar-width : 100%;
+$menu-navbar-margin: auto;
+$menu-navbar-textalign: center;
 
 
 

@@ -1,5 +1,7 @@
 .menu {
   margin-right: 10px;
+  border : $menu-left-border;
+
   // partie haute
   aside {
     padding-top: 5px;
@@ -49,10 +51,10 @@
 .menu {
   nav {
     margin-top: 10px;
-    text-transform: uppercase;
+    text-transform: $menu-left-text-transform;
+    text-align:  $menu-left-text-align;
 
     ul.navmenu {
-      list-style-type: none;
       @include base-noMarginPadding;
 
       li {

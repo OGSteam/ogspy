@@ -13,6 +13,7 @@
 @mixin menu-left-li-light {
   border: 2px solid $color2;
   background-color: $color1;
+
 }
 
 @mixin menu-left-subli {
@@ -26,3 +27,20 @@
 }
 
 ////-----------FIN MENU----------------
+
+//----------navbar
+// dans ce skin on reprend  les memes couleurs que pour le menu
+@mixin menu-navbar-li-light {
+  @include  menu-left-li-light;
+  color: $color4;
+}
+
+@mixin menu-navbar-li-active {
+  @include  menu-left-subli;
+  color: $color1;
+}
+
+@mixin menu-navbar-li-dark {
+  @include  menu-left-li-dark;
+  color: $color1;
+}

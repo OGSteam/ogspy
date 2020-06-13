@@ -121,26 +121,25 @@ body {
   background-color: rgba(0, 0, 0, 0.1);
   color: black;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  text-align: left;
   font-size: 10px;
 }
 
-/* line 9, sass/_main.scss */
+/* line 8, sass/_main.scss */
 a:link {
   text-decoration: none;
 }
 
-/* line 13, sass/_main.scss */
+/* line 12, sass/_main.scss */
 a:visited {
   text-decoration: none;
 }
 
-/* line 17, sass/_main.scss */
+/* line 16, sass/_main.scss */
 a:hover {
   text-decoration: none;
 }
 
-/* line 21, sass/_main.scss */
+/* line 20, sass/_main.scss */
 a:active {
   text-decoration: none;
 }
@@ -154,14 +153,15 @@ header {
 /* line 1, sass/_view_menu_left.scss */
 .menu {
   margin-right: 10px;
+  border: 1px solid #000103;
 }
-/* line 4, sass/_view_menu_left.scss */
+/* line 6, sass/_view_menu_left.scss */
 .menu aside {
   padding-top: 5px;
   padding-bottom: 5px;
   background-color: #516092;
 }
-/* line 9, sass/_view_menu_left.scss */
+/* line 11, sass/_view_menu_left.scss */
 .menu aside .logo_menu {
   background-image: url("img/logo_menu.png");
   background-repeat: no-repeat;
@@ -172,25 +172,25 @@ header {
   padding: 0px;
   margin: 5px 0px 0px;
 }
-/* line 20, sass/_view_menu_left.scss */
+/* line 22, sass/_view_menu_left.scss */
 .menu aside .timer {
   text-align: center;
   font-size: 15px;
   margin: 0;
   padding: 0;
 }
-/* line 25, sass/_view_menu_left.scss */
+/* line 27, sass/_view_menu_left.scss */
 .menu aside .timer br {
   content: "";
   display: block;
   margin-bottom: 5px;
 }
-/* line 31, sass/_view_menu_left.scss */
+/* line 33, sass/_view_menu_left.scss */
 .menu aside .timer span {
   font-weight: bold;
   color: #ECFF00;
 }
-/* line 37, sass/_view_menu_left.scss */
+/* line 39, sass/_view_menu_left.scss */
 .menu aside .offline {
   color: red;
   text-align: center;
@@ -199,78 +199,183 @@ header {
   padding: 0;
 }
 
-/* line 50, sass/_view_menu_left.scss */
+/* line 52, sass/_view_menu_left.scss */
 .menu nav {
   margin-top: 10px;
   text-transform: uppercase;
+  text-align: left;
 }
-/* line 54, sass/_view_menu_left.scss */
+/* line 57, sass/_view_menu_left.scss */
 .menu nav ul.navmenu {
-  list-style-type: none;
   margin: 0;
   padding: 0;
 }
-/* line 58, sass/_view_menu_left.scss */
+/* line 60, sass/_view_menu_left.scss */
 .menu nav ul.navmenu li {
   border: 2px solid #516092;
   background-color: #B9C2DF;
   margin: 5px 5px 5px 5px;
   padding: 5px 5px 5px 5px;
 }
-/* line 63, sass/_view_menu_left.scss */
+/* line 65, sass/_view_menu_left.scss */
 .menu nav ul.navmenu li a {
   color: #000103;
 }
-/* line 68, sass/_view_menu_left.scss */
+/* line 70, sass/_view_menu_left.scss */
 .menu nav ul.navmenu li:hover {
   border: 2px solid #B9C2DF;
   background-color: #000103;
   margin: 5px 5px 5px 5px;
   padding: 5px 5px 5px 5px;
 }
-/* line 73, sass/_view_menu_left.scss */
+/* line 75, sass/_view_menu_left.scss */
 .menu nav ul.navmenu li:hover a {
   color: #B9C2DF;
 }
-/* line 79, sass/_view_menu_left.scss */
+/* line 81, sass/_view_menu_left.scss */
 .menu nav ul.navmenu li.menu_items_modules {
   border: 2px solid #516092;
   background-color: #516092;
 }
-/* line 85, sass/_view_menu_left.scss */
+/* line 87, sass/_view_menu_left.scss */
 .menu nav ul.navmenu li.menu_items_modules:hover li a {
   color: #000103;
 }
-/* line 91, sass/_view_menu_left.scss */
+/* line 93, sass/_view_menu_left.scss */
 .menu nav ul.navmenu li.menu_items_modules:hover li:hover a {
   color: #B9C2DF;
 }
 
-/* line 3, sass/_view_menu_navbar.scss */
-.navbarreMenu {
-  max-width: 100%;
-  mask-image: linear-gradient(90deg, transparent 0%, #ffffff 25%, #ffffff 75%, transparent 100%);
-  margin: 0 auto;
-  padding: 20px 0;
+/* line 1, sass/_view_menu_navbar.scss */
+nav.navbarreMenu {
+  width: 100%;
+  margin: auto;
+  background-color: #516092;
+}
+/* line 6, sass/_view_menu_navbar.scss */
+nav.navbarreMenu ul {
+  padding: 0;
+  margin: auto;
+  text-align: center;
 }
 /* line 10, sass/_view_menu_navbar.scss */
-.navbarreMenu ul li {
+nav.navbarreMenu ul li {
   display: inline-block;
+  min-width: 150px;
+}
+/* line 13, sass/_view_menu_navbar.scss */
+nav.navbarreMenu ul li a {
+  margin: 5px 5px 5px 5px;
+  padding: 5px 5px 5px 5px;
+  display: block;
+  border: 2px solid #516092;
+  background-color: #B9C2DF;
+  color: #000103;
+}
+/* line 20, sass/_view_menu_navbar.scss */
+nav.navbarreMenu ul li a:hover {
+  border: 2px solid #B9C2DF;
+  background-color: #000103;
+  color: #B9C2DF;
+}
+/* line 25, sass/_view_menu_navbar.scss */
+nav.navbarreMenu ul li .actif a {
+  border: 2px solid #516092;
+  background-color: #516092;
+  color: #B9C2DF;
 }
 
-/* line 19, sass/_view_menu_navbar.scss */
-.navbarreMenu ul {
+/* line 36, sass/_view_menu_navbar.scss */
+.navbarreMenu4 {
+  width: 100%;
+  margin: 0 0;
+  color: red;
+}
+/* line 40, sass/_view_menu_navbar.scss */
+.navbarreMenu4 ul {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  display: block;
+  list-style-type: none;
+}
+/* line 46, sass/_view_menu_navbar.scss */
+.navbarreMenu4 ul li {
+  border-left: 1px solid black;
+}
+/* line 48, sass/_view_menu_navbar.scss */
+.navbarreMenu4 ul li a {
+  display: block;
+  float: left;
+  width: 100px;
+  line-height: 50px;
+  background: black;
+  color: #DCDCDC;
+  text-align: center;
+}
+/* line 57, sass/_view_menu_navbar.scss */
+.navbarreMenu4 ul li a:hover {
+  background: black;
+  color: white;
+}
+
+/* line 65, sass/_view_menu_navbar.scss */
+.navbarreMenu3 {
+  width: 100%;
+  margin: 0 auto;
+}
+/* line 68, sass/_view_menu_navbar.scss */
+.navbarreMenu3 ul {
+  text-align: center;
+  width: 100%;
+  background-color: red;
+  display: block;
+  padding: 0;
+}
+/* line 76, sass/_view_menu_navbar.scss */
+.navbarreMenu3 ul li {
+  display: inline-block;
+  padding: 5px 5px 5px 5px;
+  width: 100%;
+}
+/* line 81, sass/_view_menu_navbar.scss */
+.navbarreMenu3 ul li a {
+  margin: 5px 5px 5px 5px;
+  padding: 5px 5px 5px 5px;
+  display: block;
+  border: 2px solid #516092;
+  background-color: #B9C2DF;
+  color: #000103;
+  color: #000103;
+}
+/* line 89, sass/_view_menu_navbar.scss */
+.navbarreMenu3 ul li a:hover {
+  border: 2px solid #B9C2DF;
+  background-color: #000103;
+  color: #B9C2DF;
+  color: #B9C2DF;
+}
+/* line 95, sass/_view_menu_navbar.scss */
+.navbarreMenu3 ul li .actif a {
+  border: 2px solid #516092;
+  background-color: #516092;
+  color: #B9C2DF;
+  color: #000103;
+}
+
+/* line 105, sass/_view_menu_navbar.scss */
+.navbarreMenu2 ul {
   text-align: center;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
   box-shadow: 0 0 2px black, inset 0 0 1px white;
 }
 
-/* line 25, sass/_view_menu_navbar.scss */
+/* line 111, sass/_view_menu_navbar.scss */
 .navbarreMenu2 ul li {
   display: inline-block;
 }
 
-/* line 28, sass/_view_menu_navbar.scss */
+/* line 114, sass/_view_menu_navbar.scss */
 .navbarreMenu2 ul li a {
   padding: 10px;
   color: lime;
@@ -279,13 +384,13 @@ header {
   display: block;
 }
 
-/* line 36, sass/_view_menu_navbar.scss */
+/* line 122, sass/_view_menu_navbar.scss */
 .navbarreMenu2 ul li a:hover {
   background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(30, 16, 42, 0.5) 25%, rgba(30, 16, 42, 0.5) 75%, rgba(255, 255, 255, 0) 100%);
   color: #5CCCE8;
 }
 
-/* line 41, sass/_view_menu_navbar.scss */
+/* line 127, sass/_view_menu_navbar.scss */
 .navbarreMenu2 ul li.actif a {
   background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(30, 16, 42, 0.8) 25%, rgba(30, 16, 42, 0.8) 75%, rgba(255, 255, 255, 0) 100%);
   color: #5CCCE8;

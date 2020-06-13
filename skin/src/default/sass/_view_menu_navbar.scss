@@ -1,22 +1,108 @@
+nav.navbarreMenu {
+  width: $menu-navbar-width;
+  margin: $menu-navbar-margin;
 
-
-.navbarreMenu {
-  max-width: 100%;
-  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #ffffff 25%, #ffffff 75%, rgba(0, 0, 0, 0) 100%);
-  margin: 0 auto;
-  padding: 20px 0;
-  ul
-  {
-    li{
+  background-color : $color2;
+  ul {
+    padding: 0;
+    margin: auto;
+    text-align: $menu-navbar-textalign;
+    li {
       display: inline-block;
-    }
+      min-width: 150px;
+      a
+      {
+        margin:  $menu-left-margin;
+        padding: $menu-left-padding;
+        display: block;
+        @include menu-navbar-li-light;
+      }
+      a:hover {
+        @include menu-navbar-li-dark;
+      }
+      .actif
+      {
+        a
+        {
+          @include menu-navbar-li-active;
+        }
+      }
 
+    }
   }
 
 }
 
+.navbarreMenu4 {
+  width: 100%;
+  margin: 0 0;
+  color :red;
+  ul {
+    width: 100%;
+    padding:0;
+    margin:0;
+    display: block;
+    list-style-type:none;
+    li {
+      border-left:1px solid black;
+      a {
+        display:block;
+        float:left;
+        width:100px;
+        line-height:50px;
+        background:black ;
+        color:#DCDCDC;
+        text-align:center;
+      }
+      a:hover {
+        background:black ;
+        color:white;
+      }
+    }
+  }
+}
 
- .navbarreMenu ul {
+.navbarreMenu3 {
+  width: 100%;
+  margin: 0 auto;
+  ul
+  {
+    text-align: center;
+    width: 100%;
+    background-color: red;
+    display: block;
+    padding: 0;
+
+    li
+    {
+      display: inline-block;
+      padding: $menu-left-padding;
+      width: 100%;
+      a
+      {
+        margin:  $menu-left-margin;
+        padding: $menu-left-padding;
+        display: block;
+        @include menu-navbar-li-light;
+        color: $color4;
+      }
+      a:hover {
+        @include menu-navbar-li-dark;
+        color: $color1;
+      }
+      .actif
+      {
+        a
+        {
+          @include menu-navbar-li-active;
+          color: $color4;
+        }
+      }
+    }
+  }
+}
+
+ .navbarreMenu2 ul {
   text-align: center;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0,0,0, 0.8) 10%, rgba(0,0,0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
   box-shadow: 0 0 2px black, inset 0 0 1px rgba(255, 255, 255, 1);
