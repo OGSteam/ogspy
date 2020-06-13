@@ -14,7 +14,6 @@ body {
           "menu content"
           "footer footer";
 }
-
 header {
   grid-area:header;
 
@@ -41,7 +40,13 @@ header {
   margin-right: $grid_padding_ext;
   margin-top: $grid_padding_int;
   margin-bottom: $grid_padding_int;
+
 }
+///disposition sans menu (on joue sur les marges )
+.nomenu{
+  margin-right: $grid_padding_ext +$grid_template_columns_menu ;
+}
+
 #footbarre {
   grid-area:footer;
 
@@ -52,3 +57,5 @@ header {
 
   border-top: 1px solid $color4;
 }
+
+

@@ -79,7 +79,7 @@ body {
   grid-template-areas: "header header" "menu content" "footer footer";
 }
 
-/* line 18, sass/_grid.scss */
+/* line 17, sass/_grid.scss */
 header {
   grid-area: header;
   margin-left: 10px;
@@ -88,7 +88,7 @@ header {
   margin-bottom: 2px;
 }
 
-/* line 28, sass/_grid.scss */
+/* line 27, sass/_grid.scss */
 .menu {
   grid-area: menu;
   margin-left: 10px;
@@ -97,7 +97,7 @@ header {
   margin-bottom: 2px;
 }
 
-/* line 37, sass/_grid.scss */
+/* line 36, sass/_grid.scss */
 .content {
   grid-area: content;
   margin-left: 2px;
@@ -106,7 +106,12 @@ header {
   margin-bottom: 2px;
 }
 
-/* line 45, sass/_grid.scss */
+/* line 46, sass/_grid.scss */
+.nomenu {
+  margin-right: 260px;
+}
+
+/* line 50, sass/_grid.scss */
 #footbarre {
   grid-area: footer;
   margin-top: 2px;
