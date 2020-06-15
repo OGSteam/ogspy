@@ -121,6 +121,26 @@ header {
   border-top: 1px solid #000103;
 }
 
+/* line 6, sass/_typo.scss */
+a:link {
+  text-decoration: none;
+}
+
+/* line 10, sass/_typo.scss */
+a:visited {
+  text-decoration: none;
+}
+
+/* line 14, sass/_typo.scss */
+a:hover {
+  text-decoration: none;
+}
+
+/* line 18, sass/_typo.scss */
+a:active {
+  text-decoration: none;
+}
+
 /* line 1, sass/_main.scss */
 body {
   background-color: rgba(0, 0, 0, 0.1);
@@ -129,24 +149,210 @@ body {
   font-size: 10px;
 }
 
-/* line 8, sass/_main.scss */
-a:link {
-  text-decoration: none;
+/* line 2, sass/_elem_button.scss */
+.button {
+  font-size: 1em;
+  border-radius: 8px;
+  padding: 10px;
+  color: #040D2C;
+  border: 1px solid #516092;
+  box-shadow: 0 1px 0 0 #516092 inset;
+  background: #B9C2DF;
+  background: -webkit-linear-gradient(#B9C2DF, #516092);
+  background: -moz-linear-gradient(#B9C2DF, #516092);
+  background: -o-linear-gradient(#B9C2DF, #516092);
+  background: linear-gradient(#B9C2DF, #516092);
+}
+/* line 16, sass/_mixins.scss */
+.button:hover {
+  border: 1px solid #B9C2DF;
+  background: #516092;
+  background: -webkit-linear-gradient(#516092, #040D2C);
+  background: -moz-linear-gradient(#516092, #040D2C);
+  background: -o-linear-gradient(#516092, #040D2C);
+  background: linear-gradient(#516092, #040D2C);
+  color: #B9C2DF;
 }
 
-/* line 12, sass/_main.scss */
-a:visited {
-  text-decoration: none;
+/* line 5, sass/_elem_button.scss */
+.button.default {
+  font-size: 1em;
+  border-radius: 8px;
+  padding: 10px;
+  color: #040D2C;
+  border: 1px solid #516092;
+  box-shadow: 0 1px 0 0 #516092 inset;
+  background: #B9C2DF;
+  background: -webkit-linear-gradient(#B9C2DF, #516092);
+  background: -moz-linear-gradient(#B9C2DF, #516092);
+  background: -o-linear-gradient(#B9C2DF, #516092);
+  background: linear-gradient(#B9C2DF, #516092);
+}
+/* line 16, sass/_mixins.scss */
+.button.default:hover {
+  border: 1px solid #B9C2DF;
+  background: #516092;
+  background: -webkit-linear-gradient(#516092, #040D2C);
+  background: -moz-linear-gradient(#516092, #040D2C);
+  background: -o-linear-gradient(#516092, #040D2C);
+  background: linear-gradient(#516092, #040D2C);
+  color: #B9C2DF;
 }
 
-/* line 16, sass/_main.scss */
-a:hover {
-  text-decoration: none;
+/* line 8, sass/_elem_button.scss */
+.button.warning {
+  font-size: 1em;
+  border-radius: 8px;
+  padding: 10px;
+  color: #400000;
+  border: 1px solid red;
+  box-shadow: 0 1px 0 0 #516092 inset;
+  background: #ff8484;
+  background: -webkit-linear-gradient(#ff8484, red);
+  background: -moz-linear-gradient(#ff8484, red);
+  background: -o-linear-gradient(#ff8484, red);
+  background: linear-gradient(#ff8484, red);
+}
+/* line 16, sass/_mixins.scss */
+.button.warning:hover {
+  border: 1px solid #ff8484;
+  background: red;
+  background: -webkit-linear-gradient(red, #400000);
+  background: -moz-linear-gradient(red, #400000);
+  background: -o-linear-gradient(red, #400000);
+  background: linear-gradient(red, #400000);
+  color: #ff8484;
 }
 
-/* line 20, sass/_main.scss */
-a:active {
-  text-decoration: none;
+/* line 11, sass/_elem_button.scss */
+.button.else {
+  font-size: 1em;
+  border-radius: 8px;
+  padding: 10px;
+  color: #222222;
+  border: 1px solid #747474;
+  box-shadow: 0 1px 0 0 #516092 inset;
+  background: #c8c8c8;
+  background: -webkit-linear-gradient(#c8c8c8, #747474);
+  background: -moz-linear-gradient(#c8c8c8, #747474);
+  background: -o-linear-gradient(#c8c8c8, #747474);
+  background: linear-gradient(#c8c8c8, #747474);
+}
+/* line 16, sass/_mixins.scss */
+.button.else:hover {
+  border: 1px solid #c8c8c8;
+  background: #747474;
+  background: -webkit-linear-gradient(#747474, #222222);
+  background: -moz-linear-gradient(#747474, #222222);
+  background: -o-linear-gradient(#747474, #222222);
+  background: linear-gradient(#747474, #222222);
+  color: #c8c8c8;
+}
+
+/* line 3, sass/_elem_form.scss */
+form {
+  width: 500px;
+  margin: 10px auto;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 0 #040D2C;
+}
+/* line 11, sass/_elem_form.scss */
+form .littlebox {
+  width: 250px;
+}
+/* line 15, sass/_elem_form.scss */
+form .bigbox {
+  width: 100%;
+}
+/* line 20, sass/_elem_form.scss */
+form p {
+  padding: 5px 10px 5px 0;
+  margin: 0 auto 5px;
+  font-size: 1.1em;
+}
+/* line 25, sass/_elem_form.scss */
+form .legend {
+  border-bottom: 2px solid #040D2C;
+  margin: 0 15px 20px;
+}
+/* line 31, sass/_elem_form.scss */
+form div {
+  margin: 0 0 15px 0;
+  border: none;
+}
+/* line 36, sass/_elem_form.scss */
+form label {
+  display: inline-block;
+  width: 45%;
+  margin: auto;
+  text-align: right;
+  padding-right: 10px;
+}
+/* line 44, sass/_elem_form.scss */
+form input {
+  width: 45%;
+  padding: 5px;
+  font-size: 0.9em;
+  border-radius: 5px;
+  background: rgba(81, 96, 146, 0.05);
+}
+/* line 52, sass/_elem_form.scss */
+form input:focus {
+  background: rgba(81, 96, 146, 0.2);
+}
+/* line 56, sass/_elem_form.scss */
+form .sep {
+  border: 1px solid #040D2C;
+  position: relative;
+  margin: 35px 20px;
+}
+
+/* line 3, sass/_elem_table.scss */
+table {
+  margin: 5px 0 0 0;
+  border-collapse: collapse;
+  border: 1px solid #000103;
+}
+/* line 8, sass/_elem_table.scss */
+table thead tr {
+  background-color: #516092;
+  color: #000103;
+  border: 1x solid #000103;
+}
+/* line 13, sass/_elem_table.scss */
+table thead tr th {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border: 1px solid #000103;
+  text-align: center;
+  font-size: 13px;
+}
+/* line 21, sass/_elem_table.scss */
+table thead tr td {
+  border: 1px solid #000103;
+  text-align: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+/* line 32, sass/_elem_table.scss */
+table tbody tr td {
+  background-color: #B9C2DF;
+  color: #000103;
+  border: 1px solid #000103;
+  text-align: center;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+/* line 41, sass/_elem_table.scss */
+table tbody tr th {
+  background-color: #6a79ac;
+  color: #040D2C;
+  border: 1px solid #000103;
+  text-align: center;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 /* line 1, sass/_view_header.scss */

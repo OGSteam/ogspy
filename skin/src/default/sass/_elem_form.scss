@@ -1,0 +1,63 @@
+
+
+form {
+  width:500px;
+  margin: 10px auto;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 0 $color3;
+
+  .littlebox
+  {
+    width:250px;
+  }
+  .bigbox
+  {
+    width:100%;
+  }
+
+  p {
+    padding: 5px 10px 5px 0;
+    margin: 0 auto 5px;
+    font-size: 1.1em;
+  }
+  .legend {
+    border-bottom: 2px solid $color3;
+    margin: 0 15px 20px;
+  }
+
+
+  div{
+    margin: 0 0 15px 0;
+    border : none;
+  }
+
+  label {
+    display: inline-block;
+    width: 45%;
+    margin:auto;
+    text-align: right;
+    padding-right:10px;
+  }
+
+  input{
+    width: 45%;
+    padding: 5px;
+    font-size: 0.9em;
+    border-radius: 5px;
+    background: rgba($color2, 0.05);
+  }
+
+  input:focus{
+    background: rgba($color2,0.2);
+  }
+
+  .sep {
+    border: 1px solid $color3;
+    position: relative;
+    margin: 35px 20px;
+  }
+
+
+}

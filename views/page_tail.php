@@ -38,7 +38,7 @@ if(is_array($ogspy_phperror) && count($ogspy_phperror)) {
     </p>
     <p class="bench">
         <?php echo $lang['FOOTER_RENDERING'] ;?> <span class="value"><?php echo round($php_timing + $sql_timing, 3); ?></span> sec (<span class="language">PHP</span> : <span class="value"><?php echo round($php_timing, 3); ?></span> / <span class="language">SQL</span> : <span class="value"><?php echo round($sql_timing, 3); ?></span>)
-            [ <span class="value"><?php echo $nb_requete;?></span> <?php echo $lang['FOOTER_QUERY'] . (($nb_requete > 1) ? "s" : ""); ?>]
+        [ <span class="value"><?php echo $nb_requete;?></span> <?php echo $lang['FOOTER_QUERY'] . (($nb_requete > 1) ? "s" : ""); ?>]
     </p>
 </footer>
 </body>

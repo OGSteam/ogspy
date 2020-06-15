@@ -1,0 +1,13 @@
+
+.button {
+  @include create-button($color1,$color2,$color3);
+}
+.button.default {
+  @include create-button($color1,$color2,$color3);
+}
+.button.warning {
+  @include create-button($color-btn-warning1,$color-btn-warning2,$color-btn-warning3);
+}
+.button.else {
+  @include create-button($color-btn-autre1,$color-btn-autre2,$color-btn-autre3);
+}

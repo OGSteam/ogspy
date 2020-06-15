@@ -4,9 +4,34 @@
   padding: 0;
 }
 
+@mixin create-button($mixcolor1,$mixcolor2,$mixcolor3){
+    font-size: 1em;
+    border-radius: 8px;
+    padding: 10px;
+    color:$mixcolor3;
+    border: 1px solid $mixcolor2;
+    box-shadow: 0 1px 0 0 $color2 inset;
+    @include linear-gradient($mixcolor1, $mixcolor2);
+
+    &:hover {
+      border: 1px solid $mixcolor1;
+      @include linear-gradient($mixcolor2, $mixcolor3);
+      color:$mixcolor1;
+  }
+}
 //-----------FIN BASE----------------
 
+//----------Couleur -----------
 
+
+@mixin linear-gradient($colorTop, $ColorBottom) {
+  background: $colorTop;
+  background: -webkit-linear-gradient($colorTop, $ColorBottom);
+  background: -moz-linear-gradient($colorTop, $ColorBottom);
+  background: -o-linear-gradient($colorTop, $ColorBottom);
+  background: linear-gradient($colorTop, $ColorBottom);
+}
+//----------FIN Couleur -----------
 
 // -------------MENU------------------
 // MIXIN  Menu

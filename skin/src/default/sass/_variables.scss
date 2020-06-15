@@ -15,6 +15,14 @@ $color4 : #000103;
 //Couleur autre
 $color_font_warm: red;
 $color_font_contrast: #ECFF00;
+$color_btn_default: rgba(0,0,0,0.1);
+//btn
+$color-btn-warning1: #ff8484;
+$color-btn-warning2:red;
+$color-btn-warning3: #400000;
+$color-btn-autre1: #c8c8c8;
+$color-btn-autre2: #747474;
+$color-btn-autre3: #222222;
 
 @if $isdark {
   //couleur de la palette du plus clair au plus foncé (paletton) f=
@@ -32,10 +40,6 @@ $color_font_contrast: #ECFF00;
 }
 //fin variables palette principale
 //------------------------------
-
-
-
-
 
 
 // Positionnement grid
