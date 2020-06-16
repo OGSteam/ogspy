@@ -4,6 +4,8 @@ table {
   margin: 5px 0 0 0;
   border-collapse: collapse;
   border: 1px solid $color4;
+
+  @include Boxfull();
   thead {
     tr {
       background-color: $color2;
@@ -52,3 +54,4 @@ table {
 
 
 }
+

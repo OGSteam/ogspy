@@ -1,21 +1,13 @@
 
 
 form {
-  width:500px;
   margin: 10px auto;
   padding: 10px;
   border: none;
   border-radius: 10px;
   box-shadow: 0 0 20px 0 $color3;
 
-  .littlebox
-  {
-    width:250px;
-  }
-  .bigbox
-  {
-    width:100%;
-  }
+  @include BoxDefault(); // taille moyenne par defaut
 
   p {
     padding: 5px 10px 5px 0;

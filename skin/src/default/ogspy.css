@@ -251,38 +251,32 @@ body {
 
 /* line 3, sass/_elem_form.scss */
 form {
-  width: 500px;
   margin: 10px auto;
   padding: 10px;
   border: none;
   border-radius: 10px;
   box-shadow: 0 0 20px 0 #040D2C;
+  box-sizing: border-box;
+  width: 50%;
+  max-width: 500px;
 }
-/* line 11, sass/_elem_form.scss */
-form .littlebox {
-  width: 250px;
-}
-/* line 15, sass/_elem_form.scss */
-form .bigbox {
-  width: 100%;
-}
-/* line 20, sass/_elem_form.scss */
+/* line 12, sass/_elem_form.scss */
 form p {
   padding: 5px 10px 5px 0;
   margin: 0 auto 5px;
   font-size: 1.1em;
 }
-/* line 25, sass/_elem_form.scss */
+/* line 17, sass/_elem_form.scss */
 form .legend {
   border-bottom: 2px solid #040D2C;
   margin: 0 15px 20px;
 }
-/* line 31, sass/_elem_form.scss */
+/* line 23, sass/_elem_form.scss */
 form div {
   margin: 0 0 15px 0;
   border: none;
 }
-/* line 36, sass/_elem_form.scss */
+/* line 28, sass/_elem_form.scss */
 form label {
   display: inline-block;
   width: 45%;
@@ -290,7 +284,7 @@ form label {
   text-align: right;
   padding-right: 10px;
 }
-/* line 44, sass/_elem_form.scss */
+/* line 36, sass/_elem_form.scss */
 form input {
   width: 45%;
   padding: 5px;
@@ -298,11 +292,11 @@ form input {
   border-radius: 5px;
   background: rgba(81, 96, 146, 0.05);
 }
-/* line 52, sass/_elem_form.scss */
+/* line 44, sass/_elem_form.scss */
 form input:focus {
   background: rgba(81, 96, 146, 0.2);
 }
-/* line 56, sass/_elem_form.scss */
+/* line 48, sass/_elem_form.scss */
 form .sep {
   border: 1px solid #040D2C;
   position: relative;
@@ -314,14 +308,16 @@ table {
   margin: 5px 0 0 0;
   border-collapse: collapse;
   border: 1px solid #000103;
+  box-sizing: border-box;
+  width: 100%;
 }
-/* line 8, sass/_elem_table.scss */
+/* line 10, sass/_elem_table.scss */
 table thead tr {
   background-color: #516092;
   color: #000103;
   border: 1x solid #000103;
 }
-/* line 13, sass/_elem_table.scss */
+/* line 15, sass/_elem_table.scss */
 table thead tr th {
   padding-top: 3px;
   padding-bottom: 3px;
@@ -329,14 +325,14 @@ table thead tr th {
   text-align: center;
   font-size: 13px;
 }
-/* line 21, sass/_elem_table.scss */
+/* line 23, sass/_elem_table.scss */
 table thead tr td {
   border: 1px solid #000103;
   text-align: center;
   padding-top: 3px;
   padding-bottom: 3px;
 }
-/* line 32, sass/_elem_table.scss */
+/* line 34, sass/_elem_table.scss */
 table tbody tr td {
   background-color: #B9C2DF;
   color: #000103;
@@ -345,7 +341,7 @@ table tbody tr td {
   padding-top: 2px;
   padding-bottom: 2px;
 }
-/* line 41, sass/_elem_table.scss */
+/* line 43, sass/_elem_table.scss */
 table tbody tr th {
   background-color: #6a79ac;
   color: #040D2C;
@@ -462,19 +458,20 @@ nav.navbarreMenu {
   width: 100%;
   margin: auto;
   background-color: #516092;
+  box-sizing: border-box;
 }
-/* line 6, sass/_view_menu_navbar.scss */
+/* line 7, sass/_view_menu_navbar.scss */
 nav.navbarreMenu ul {
   padding: 0;
   margin: auto;
   text-align: center;
 }
-/* line 10, sass/_view_menu_navbar.scss */
+/* line 11, sass/_view_menu_navbar.scss */
 nav.navbarreMenu ul li {
   display: inline-block;
   min-width: 150px;
 }
-/* line 13, sass/_view_menu_navbar.scss */
+/* line 14, sass/_view_menu_navbar.scss */
 nav.navbarreMenu ul li a {
   margin: 5px 5px 5px 5px;
   padding: 5px 5px 5px 5px;
@@ -483,26 +480,26 @@ nav.navbarreMenu ul li a {
   background-color: #B9C2DF;
   color: #000103;
 }
-/* line 20, sass/_view_menu_navbar.scss */
+/* line 21, sass/_view_menu_navbar.scss */
 nav.navbarreMenu ul li a:hover {
   border: 2px solid #B9C2DF;
   background-color: #000103;
   color: #B9C2DF;
 }
-/* line 25, sass/_view_menu_navbar.scss */
+/* line 26, sass/_view_menu_navbar.scss */
 nav.navbarreMenu ul li .actif a {
   border: 2px solid #516092;
   background-color: #516092;
   color: #B9C2DF;
 }
 
-/* line 36, sass/_view_menu_navbar.scss */
+/* line 37, sass/_view_menu_navbar.scss */
 .navbarreMenu4 {
   width: 100%;
   margin: 0 0;
   color: red;
 }
-/* line 40, sass/_view_menu_navbar.scss */
+/* line 41, sass/_view_menu_navbar.scss */
 .navbarreMenu4 ul {
   width: 100%;
   padding: 0;
@@ -510,11 +507,11 @@ nav.navbarreMenu ul li .actif a {
   display: block;
   list-style-type: none;
 }
-/* line 46, sass/_view_menu_navbar.scss */
+/* line 47, sass/_view_menu_navbar.scss */
 .navbarreMenu4 ul li {
   border-left: 1px solid black;
 }
-/* line 48, sass/_view_menu_navbar.scss */
+/* line 49, sass/_view_menu_navbar.scss */
 .navbarreMenu4 ul li a {
   display: block;
   float: left;
@@ -524,18 +521,18 @@ nav.navbarreMenu ul li .actif a {
   color: #DCDCDC;
   text-align: center;
 }
-/* line 57, sass/_view_menu_navbar.scss */
+/* line 58, sass/_view_menu_navbar.scss */
 .navbarreMenu4 ul li a:hover {
   background: black;
   color: white;
 }
 
-/* line 65, sass/_view_menu_navbar.scss */
+/* line 66, sass/_view_menu_navbar.scss */
 .navbarreMenu3 {
   width: 100%;
   margin: 0 auto;
 }
-/* line 68, sass/_view_menu_navbar.scss */
+/* line 69, sass/_view_menu_navbar.scss */
 .navbarreMenu3 ul {
   text-align: center;
   width: 100%;
@@ -543,13 +540,13 @@ nav.navbarreMenu ul li .actif a {
   display: block;
   padding: 0;
 }
-/* line 76, sass/_view_menu_navbar.scss */
+/* line 77, sass/_view_menu_navbar.scss */
 .navbarreMenu3 ul li {
   display: inline-block;
   padding: 5px 5px 5px 5px;
   width: 100%;
 }
-/* line 81, sass/_view_menu_navbar.scss */
+/* line 82, sass/_view_menu_navbar.scss */
 .navbarreMenu3 ul li a {
   margin: 5px 5px 5px 5px;
   padding: 5px 5px 5px 5px;
@@ -559,14 +556,14 @@ nav.navbarreMenu ul li .actif a {
   color: #000103;
   color: #000103;
 }
-/* line 89, sass/_view_menu_navbar.scss */
+/* line 90, sass/_view_menu_navbar.scss */
 .navbarreMenu3 ul li a:hover {
   border: 2px solid #B9C2DF;
   background-color: #000103;
   color: #B9C2DF;
   color: #B9C2DF;
 }
-/* line 95, sass/_view_menu_navbar.scss */
+/* line 96, sass/_view_menu_navbar.scss */
 .navbarreMenu3 ul li .actif a {
   border: 2px solid #516092;
   background-color: #516092;
@@ -574,19 +571,19 @@ nav.navbarreMenu ul li .actif a {
   color: #000103;
 }
 
-/* line 105, sass/_view_menu_navbar.scss */
+/* line 106, sass/_view_menu_navbar.scss */
 .navbarreMenu2 ul {
   text-align: center;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
   box-shadow: 0 0 2px black, inset 0 0 1px white;
 }
 
-/* line 111, sass/_view_menu_navbar.scss */
+/* line 112, sass/_view_menu_navbar.scss */
 .navbarreMenu2 ul li {
   display: inline-block;
 }
 
-/* line 114, sass/_view_menu_navbar.scss */
+/* line 115, sass/_view_menu_navbar.scss */
 .navbarreMenu2 ul li a {
   padding: 10px;
   color: lime;
@@ -595,13 +592,13 @@ nav.navbarreMenu ul li .actif a {
   display: block;
 }
 
-/* line 122, sass/_view_menu_navbar.scss */
+/* line 123, sass/_view_menu_navbar.scss */
 .navbarreMenu2 ul li a:hover {
   background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(30, 16, 42, 0.5) 25%, rgba(30, 16, 42, 0.5) 75%, rgba(255, 255, 255, 0) 100%);
   color: #5CCCE8;
 }
 
-/* line 127, sass/_view_menu_navbar.scss */
+/* line 128, sass/_view_menu_navbar.scss */
 .navbarreMenu2 ul li.actif a {
   background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(30, 16, 42, 0.8) 25%, rgba(30, 16, 42, 0.8) 75%, rgba(255, 255, 255, 0) 100%);
   color: #5CCCE8;

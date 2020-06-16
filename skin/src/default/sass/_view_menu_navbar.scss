@@ -1,8 +1,9 @@
 nav.navbarreMenu {
   width: $menu-navbar-width;
   margin: $menu-navbar-margin;
-
   background-color : $color2;
+  box-sizing :border-box;
+
   ul {
     padding: 0;
     margin: auto;

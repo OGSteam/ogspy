@@ -19,6 +19,42 @@
       color:$mixcolor1;
   }
 }
+
+
+//taille des differents elements ( table, panel, ...)
+@mixin Boxfull()
+{
+  box-sizing :border-box;
+  width : 100%;
+
+}
+
+@mixin BoxBig()
+{
+  box-sizing :border-box;
+  width : 80%;
+  max-width: 800px;
+}
+
+@mixin BoxLittle()
+{
+  box-sizing :border-box;
+  width : 250px;
+}
+
+@mixin BoxDefault()
+{
+  box-sizing :border-box;
+  width : 50%;
+  max-width: 500px;
+}
+
+
+
+
+
+
+
 //-----------FIN BASE----------------
 
 //----------Couleur -----------
