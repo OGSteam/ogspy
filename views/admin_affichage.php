@@ -70,48 +70,75 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
     <form method="POST" action="index.php" name="view">
         <input type="hidden" name="action" value="set_server_view">
         <fieldset>
-            <legend><?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?></legend>
-            <label for="enable_portee_missil"><?php echo($lang['ADMIN_DISPLAY_GALAXY_MIPS']); ?><?php echo help("display_mips"); ?></label>
-            <input type='checkbox' value="1" <?php echo $enable_portee_missil; ?> onClick="if (view.enable_portee_missil.checked == false)view.enable_portee_missil.checked=false;"  name='enable_portee_missil' id='enable_portee_missil'/>
+            <p class="legend"><?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?></p>
+<div>
+    <label for="enable_portee_missil"><?php echo($lang['ADMIN_DISPLAY_GALAXY_MIPS']); ?><?php echo help("display_mips"); ?></label>
+    <input type='checkbox' value="1" <?php echo $enable_portee_missil; ?> onClick="if (view.enable_portee_missil.checked == false)view.enable_portee_missil.checked=false;"  name='enable_portee_missil' id='enable_portee_missil'/>
+
+</div>
+
         </fieldset>
         <fieldset>
-            <legend><?php echo($lang['ADMIN_DISPLAY_STATS_TITLE']); ?></legend>
-            <label for="enable_stat_view"><?php echo($lang['ADMIN_DISPLAY_STATS_MEMBER']); ?><?php echo help("member_stats"); ?></label>
-            <input type="checkbox" value="1" <?php echo $enable_stat_view; ?> onClick="if (view.enable_stat_view.checked == false)view.enable_members_view.checked=false;" name='enable_stat_view' id='enable_stat_view'/>
+            <p class="legend"><?php echo($lang['ADMIN_DISPLAY_STATS_TITLE']); ?></p>
+            <div>
+                <label for="enable_stat_view"><?php echo($lang['ADMIN_DISPLAY_STATS_MEMBER']); ?><?php echo help("member_stats"); ?></label>
+                <input type="checkbox" value="1" <?php echo $enable_stat_view; ?> onClick="if (view.enable_stat_view.checked == false)view.enable_members_view.checked=false;" name='enable_stat_view' id='enable_stat_view'/>
+            </div>
+            <div>
             <label for="enable_members_view"><?php echo($lang['ADMIN_DISPLAY_STATS_CONNECTED']); ?><?php echo help("member_connected"); ?></label>
             <input type="checkbox" value="1" <?php echo $enable_members_view; ?> onClick="if (view.enable_stat_view.checked == false)view.enable_members_view.checked=false;" name='enable_members_view' id='enable_members_view'/>
-            <label for="galaxy_by_line_stat"><?php echo($lang['ADMIN_DISPLAY_STATS_GVIEW']); ?></label>
+            </div>
+            <div>
+                <label for="galaxy_by_line_stat"><?php echo($lang['ADMIN_DISPLAY_STATS_GVIEW']); ?></label>
             <input type="text" size="5" maxlength="3" value="<?php echo $galaxy_by_line_stat; ?>"  name='galaxy_by_line_stat' id='galaxy_by_line_stat'/>
-            <label for="system_by_line_stat"><?php echo($lang['ADMIN_DISPLAY_STATS_SVIEW']); ?></label>
+                        </div>
+            <div>
+                <label for="system_by_line_stat"><?php echo($lang['ADMIN_DISPLAY_STATS_SVIEW']); ?></label>
             <input type="text" size="5" maxlength="3" value="<?php echo $system_by_line_stat; ?>"  name='system_by_line_stat' id='system_by_line_stat'/>
+                </div>
         </fieldset>
 
         <fieldset>
-            <legend><?php echo($lang['ADMIN_DISPLAY_ALLY_TITLE']); ?></legend>
+            <p class="legend"><?php echo($lang['ADMIN_DISPLAY_ALLY_TITLE']); ?></p>
+            <div>
             <label for="nb_colonnes_ally"><?php echo($lang['ADMIN_DISPLAY_ALLY_COLUMS']); ?></label>
             <input type="text" size="3" maxlength="20" value="<?php echo $nb_colonnes_ally; ?>"  name='nb_colonnes_ally' id='nb_colonnes_ally'/>
+            </div>
             <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) : ?>
+            <div>
                 <label for="color_ally[<?php echo $i; ?>]" >
                     <span style="color: <?php echo $color_ally_e[$i - 1]; ?>; "><?php echo($lang['ADMIN_DISPLAY_ALLY_COLOR']); ?><?php echo $i; ?></span>
                     <br />
                     <?php echo($lang['ADMIN_DISPLAY_ALLY_COLORDESC']); ?>
                 </label>
                 <input name="color_ally[<?php echo $i; ?>]" id="color_ally[<?php echo $i; ?>]" type="text" size="15" maxlength="20"  value="<?php echo $color_ally_e[$i - 1]; ?>"> <?php echo help("color_picker" . $i); ?>
-            <?php endfor; ?>
-            <label for="galaxy_by_line_ally"><?php echo($lang['ADMIN_DISPLAY_ALLY_GVIEW']); ?></label>
+            </div>
+                <?php endfor; ?>
+            <div>
+                <label for="galaxy_by_line_ally"><?php echo($lang['ADMIN_DISPLAY_ALLY_GVIEW']); ?></label>
             <input type="text" size="5" maxlength="3" value="<?php echo $galaxy_by_line_ally; ?>"  name='galaxy_by_line_ally' id='galaxy_by_line_ally'/>
-            <label for="system_by_line_ally"><?php echo($lang['ADMIN_DISPLAY_ALLY_GVIEW']); ?></label>
+            </div>
+            <div>
+                <label for="system_by_line_ally"><?php echo($lang['ADMIN_DISPLAY_ALLY_GVIEW']); ?></label>
             <input type="text" size="5" maxlength="3" value="<?php echo $system_by_line_ally; ?>"  name='system_by_line_ally' id='system_by_line_ally'/>
+            </div>
         </fieldset>
         <fieldset>
-            <legend><?php echo($lang['ADMIN_DISPLAY_LOGIN_TITLE']); ?></legend>
+            <p class="legend"><?php echo($lang['ADMIN_DISPLAY_LOGIN_TITLE']); ?></p>
+            <div>
             <label for="enable_register_view"><?php echo($lang['ADMIN_DISPLAY_LOGIN_REGISTER']); ?> <?php echo help("member_registration"); ?></label>
             <input type="checkbox" value="1" <?php echo $enable_register_view; ?> onClick="if (view.enable_register_view.checked == false)view.enable_members_view.checked=false;"  name='enable_register_view' id='enable_register_view'/>
-            <label for="register_alliance"><?php echo($lang['ADMIN_DISPLAY_LOGIN_ALLYNAME']); ?> <?php echo help("ally_name"); ?> </label>
+            </div>
+            <div>
+                <label for="register_alliance"><?php echo($lang['ADMIN_DISPLAY_LOGIN_ALLYNAME']); ?> <?php echo help("ally_name"); ?> </label>
             <input type="text"  size="60" value="<?php echo $register_alliance; ?>"  name='register_alliance' id='register_alliance'/>
-            <label for="register_forum"><?php echo($lang['ADMIN_DISPLAY_LOGIN_FORUM']); ?> <?php echo help("forum_link"); ?> </label>
+            </div>
+            <div>
+                <label for="register_forum"><?php echo($lang['ADMIN_DISPLAY_LOGIN_FORUM']); ?> <?php echo help("forum_link"); ?> </label>
             <input type="text"  size="60" value="<?php echo $register_forum; ?>"  name='register_forum' id='register_forum'/>
-            <label for="open_user"><?php echo($lang['ADMIN_DISPLAY_LOGIN_MODULE']); ?> <?php echo help("first_displayed_module"); ?> </label>
+            </div>
+            <div>
+                <label for="open_user"><?php echo($lang['ADMIN_DISPLAY_LOGIN_MODULE']); ?> <?php echo help("first_displayed_module"); ?> </label>
             <select name="open_user" id="open_user" >
                 <option>------</option>
 
@@ -151,6 +178,8 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
                     <?php endif; ?>
                 <?php endforeach; ?>
             </select>
+            </div>
+            <div>
             <label for="open_admin"><?php echo($lang['ADMIN_DISPLAY_LOGIN_ADMINMODULE']); ?> <?php echo help("first_displayed_module_admin"); ?> </label>
             <select name="open_admin"  id="open_admin" >
                 <option>------</option>
@@ -196,9 +225,10 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
                     <?php endforeach; ?>
                 <?php endforeach; ?>
             </select>
+            </div>
          </fieldset>
         <input class="button" type='submit' value='<?php echo($lang['ADMIN_DISPLAY_SUBMIT']); ?>'/>
-        <input class="button" type='reset' value='<?php echo($lang['ADMIN_DISPLAY_RESET']); ?>'/>
+        <input class="button else" type='reset' value='<?php echo($lang['ADMIN_DISPLAY_RESET']); ?>'/>
     </form>
 </div>
 
