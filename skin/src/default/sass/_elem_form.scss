@@ -8,7 +8,6 @@ form {
   box-shadow: 0 0 20px 0 $color3;
 
   @include BoxDefault(); // taille moyenne par defaut
-
   p {
     padding: 5px 10px 5px 0;
     margin: 0 auto 5px;
