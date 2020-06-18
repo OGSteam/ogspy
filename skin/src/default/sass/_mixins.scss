@@ -49,11 +49,36 @@
   max-width: 500px;
 }
 
+//affichage sur diffeentes colonnes
+@mixin ColumnParent()
+{
+  :after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
 
-
-
-
-
+@mixin Columnchild1()
+{
+  float: left;
+  width: 100%;
+}
+@mixin Columnchild2()
+{
+  float: left;
+  width: 50%;
+}
+@mixin Columnchild3()
+{
+  float: left;
+  width: 33.33%;
+}
+@mixin Columnchild1()
+{
+  float: left;
+  width: 25%;
+}
 
 //-----------FIN BASE----------------
 
