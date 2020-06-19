@@ -121,22 +121,34 @@ header {
   border-top: 1px solid #000103;
 }
 
-/* line 6, sass/_typo.scss */
+/* line 3, sass/_typo.scss */
+h1 {
+  color: #040D2C;
+  font-size: 1.5em;
+}
+
+/* line 8, sass/_typo.scss */
+.notice {
+  color: #000103;
+}
+
+/* line 13, sass/_typo.scss */
 a:link {
   text-decoration: none;
 }
 
-/* line 10, sass/_typo.scss */
+/* line 17, sass/_typo.scss */
 a:visited {
   text-decoration: none;
 }
 
-/* line 14, sass/_typo.scss */
+/* line 21, sass/_typo.scss */
 a:hover {
   text-decoration: none;
+  cursor: default;
 }
 
-/* line 18, sass/_typo.scss */
+/* line 26, sass/_typo.scss */
 a:active {
   text-decoration: none;
 }
@@ -260,23 +272,23 @@ form {
   width: 50%;
   max-width: 500px;
 }
-/* line 12, sass/_elem_form.scss */
+/* line 11, sass/_elem_form.scss */
 form p {
   padding: 5px 10px 5px 0;
   margin: 0 auto 5px;
   font-size: 1.1em;
 }
-/* line 17, sass/_elem_form.scss */
+/* line 16, sass/_elem_form.scss */
 form .legend {
   border-bottom: 2px solid #040D2C;
   margin: 0 15px 20px;
 }
-/* line 23, sass/_elem_form.scss */
+/* line 22, sass/_elem_form.scss */
 form div {
   margin: 0 0 15px 0;
   border: none;
 }
-/* line 28, sass/_elem_form.scss */
+/* line 27, sass/_elem_form.scss */
 form label {
   display: inline-block;
   width: 45%;
@@ -284,7 +296,7 @@ form label {
   text-align: right;
   padding-right: 10px;
 }
-/* line 36, sass/_elem_form.scss */
+/* line 35, sass/_elem_form.scss */
 form input {
   width: 45%;
   padding: 5px;
@@ -292,47 +304,47 @@ form input {
   border-radius: 5px;
   background: rgba(81, 96, 146, 0.05);
 }
-/* line 44, sass/_elem_form.scss */
+/* line 43, sass/_elem_form.scss */
 form input:focus {
   background: rgba(81, 96, 146, 0.2);
 }
-/* line 48, sass/_elem_form.scss */
+/* line 47, sass/_elem_form.scss */
 form .sep {
   border: 1px solid #040D2C;
   position: relative;
   margin: 35px 20px;
 }
 
-/* line 3, sass/_elem_table.scss */
+/* line 1, sass/_elem_table.scss */
 table {
   margin: 5px 0 0 0;
   border-collapse: collapse;
-  border: 1px solid #000103;
+  border: 1px solid #040D2C;
   box-sizing: border-box;
   width: 100%;
 }
-/* line 10, sass/_elem_table.scss */
+/* line 8, sass/_elem_table.scss */
 table thead tr {
-  background-color: #516092;
-  color: #000103;
-  border: 1x solid #000103;
+  color: #B9C2DF;
+  border: 1x solid #B9C2DF;
 }
-/* line 15, sass/_elem_table.scss */
+/* line 11, sass/_elem_table.scss */
 table thead tr th {
   padding-top: 3px;
   padding-bottom: 3px;
-  border: 1px solid #000103;
+  border: 1px solid #B9C2DF;
   text-align: center;
   font-size: 13px;
+  background-color: #000103;
 }
-/* line 23, sass/_elem_table.scss */
+/* line 20, sass/_elem_table.scss */
 table thead tr td {
-  border: 1px solid #000103;
+  border: 1px solid #B9C2DF;
   text-align: center;
   padding-top: 3px;
   padding-bottom: 3px;
 }
-/* line 34, sass/_elem_table.scss */
+/* line 33, sass/_elem_table.scss */
 table tbody tr td {
   background-color: #B9C2DF;
   color: #000103;
@@ -341,16 +353,131 @@ table tbody tr td {
   padding-top: 2px;
   padding-bottom: 2px;
 }
-/* line 43, sass/_elem_table.scss */
+/* line 42, sass/_elem_table.scss */
 table tbody tr th {
-  background-color: #6a79ac;
-  color: #040D2C;
+  background-color: #516092;
+  color: #000103;
   border: 1px solid #000103;
   text-align: center;
   padding-top: 2px;
   padding-bottom: 2px;
 }
+/* line 53, sass/_elem_table.scss */
+table tbody tr:hover {
+  background-color: rgba(185, 194, 223, 0.9);
+}
+/* line 56, sass/_elem_table.scss */
+table tbody tr:hover th {
+  background-color: rgba(81, 96, 146, 0.8);
+}
+/* line 59, sass/_elem_table.scss */
+table tbody tr:hover td {
+  background-color: rgba(0, 0, 0, 0.2);
+}
 
+/* msgbox   */
+/* Par defaut ogspy style   */
+/* line 5, sass/_elem_msgbox.scss */
+.msgbox {
+  padding: 0px;
+  margin-top: 15px;
+}
+/* line 8, sass/_elem_msgbox.scss */
+.msgbox p {
+  background-color: #B9C2DF;
+  color: #040D2C;
+  border: 1px solid #000103;
+  border-top: none;
+}
+/* line 13, sass/_elem_msgbox.scss */
+.msgbox p .notice {
+  color: #000103;
+  font-size: 11px;
+}
+/* line 20, sass/_elem_msgbox.scss */
+.msgbox p.msgboxtitle {
+  padding: 3px;
+  color: #B9C2DF;
+  border: 1px solid #000103;
+  border-bottom: 1px solid #B9C2DF;
+  text-align: left;
+  font-size: 13px;
+  background-color: #000103;
+}
+/* line 28, sass/_elem_msgbox.scss */
+.msgbox p.msgboxtitle .notice {
+  color: #ECFF00;
+}
+/* line 34, sass/_elem_msgbox.scss */
+.msgbox .msgcontent {
+  padding: 15px;
+}
+/* line 37, sass/_elem_msgbox.scss */
+.msgbox span.msgboxclosebtn {
+  margin-left: 15px;
+  paddin: 0;
+  padding-bottom: 15px;
+  color: #21b2ff;
+  font-weight: bold;
+  float: right;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+/* line 47, sass/_elem_msgbox.scss */
+.msgbox span.msgboxclosebtn :hover {
+  color: white;
+}
+
+/* Par alert   */
+/* line 55, sass/_elem_msgbox.scss */
+.msgbox.msgboxalert p.msgboxtitle {
+  background-color: #8a2f24;
+  color: white;
+  border: none;
+}
+
+/* line 61, sass/_elem_msgbox.scss */
+.msgbox.msgboxalert p.msgcontent {
+  background: none;
+  background-color: #f44336;
+}
+
+/* line 65, sass/_elem_msgbox.scss */
+.msgbox.msgboxalert span.msgboxclosebtn {
+  color: white;
+}
+
+/* line 68, sass/_elem_msgbox.scss */
+.msgbox.msgboxalert span.msgboxclosebtn:hover {
+  color: black;
+}
+
+/* Par success   */
+/* line 74, sass/_elem_msgbox.scss */
+.msgbox.msgboxsuccess p.msgboxtitle {
+  background-color: #376f37;
+  color: white;
+  border: none;
+}
+
+/* line 80, sass/_elem_msgbox.scss */
+.msgbox.msgboxsuccess p.msgcontent {
+  background: none;
+  background-color: #4e9051;
+}
+
+/* line 84, sass/_elem_msgbox.scss */
+.msgbox.msgboxsuccess span.msgboxclosebtn {
+  color: white;
+}
+
+/* line 87, sass/_elem_msgbox.scss */
+.msgbox.msgboxsuccess span.msgboxclosebtn:hover {
+  color: black;
+}
+
+/* fin msgbox   */
 /* line 1, sass/_view_header.scss */
 header {
   background-color: #040D2C;
