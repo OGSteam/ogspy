@@ -40,7 +40,7 @@ $enable_register_view = isset ($server_config['enable_register_view']) ? $server
             <input class="button" type='submit' value='<?php echo($lang['LOGIN_CONNEXION_BUTTON']); ?>'/>
         </div>
 
-        <?php if ($enable_register_view != 1) : ?>
+        <?php if ($enable_register_view != 0) : ?>
             <div class="sep"></div>
                 <p><?php echo($lang['LOGIN_ACCOUNT_REQUEST']); ?></p>
                 <p>

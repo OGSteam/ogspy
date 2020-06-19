@@ -1,0 +1,91 @@
+
+
+/* msgbox   */
+/* Par defaut ogspy style   */
+.msgbox {
+  padding: 0px;
+  margin-top: 15px;
+  p{
+    background-color: $color1;
+    color: $color3;
+    border: 1px solid $color4;
+    border-top: none;
+    .notice
+    {
+      color : $color4;
+      font-size: 11px ;
+    }
+
+  }
+  p.msgboxtitle{
+    padding: 3px;
+    color: $color1;
+    border: 1px solid $color4;
+    border-bottom: 1px solid $color1;
+    text-align: left;
+    font-size: 10px * 1.3;
+    background-color: $color4;
+    .notice
+    {
+     color : $color_font_contrast;
+    }
+  }
+
+  .msgcontent{
+    padding: 15px;
+  }
+  span.msgboxclosebtn {
+    margin-left: 15px;
+    paddin:0;
+    padding-bottom: 15px;
+    color: #21b2ff;
+    font-weight: bold;
+    float: right;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+    :hover {
+      color: white;
+    }
+
+  }
+}
+
+/* Par alert   */
+.msgbox.msgboxalert  p.msgboxtitle
+{
+  background-color: #8a2f24;
+  color: white;
+  border: none;
+}
+.msgbox.msgboxalert  p.msgcontent{
+  background: none;
+  background-color: #f44336;
+}
+.msgbox.msgboxalert span.msgboxclosebtn {
+  color: white;
+}
+.msgbox.msgboxalert span.msgboxclosebtn:hover {
+  color: black;
+}
+
+
+/* Par success   */
+.msgbox.msgboxsuccess  p.msgboxtitle
+{
+  background-color: #376f37;
+  color: white;
+  border: none;
+}
+.msgbox.msgboxsuccess  p.msgcontent{
+  background: none;
+  background-color: #4e9051;
+}
+.msgbox.msgboxsuccess span.msgboxclosebtn {
+  color: white;
+}
+.msgbox.msgboxsuccess span.msgboxclosebtn:hover {
+  color: black;
+}
+/* fin msgbox   */
+

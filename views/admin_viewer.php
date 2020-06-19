@@ -160,11 +160,11 @@ if (file_exists($file)) {
             } else {
                 if (log_check_exist($show_year . $show_month . $day)) {
                     echo "\t" . "<td onclick=\"window.location='index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=" . $typelog . "';\">";
-                    echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $day . "</span></a></td>";
+                    echo "<a><span>" . $day . "</span></a></td>";
                     echo "\t" . "<td><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . $show_year . $show_month . $day . "'\" title='" . $lang['ADMIN_LOGS_DOWNLOAD'] . strftime("%d %B %Y", $date) . "' alt='" . $lang['ADMIN_LOGS_DOWNLOAD'] . strftime("%d %B %Y", $date) . "'>";
                 } else {
                     echo "\t" . "<td colspan='2' onclick=\"window.location='index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=" . $typelog . "';\">";
-                    echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $day . "</span></a></td>";
+                    echo "<a ><span>" . $day . "</span></a></td>";
                 }
             }
             if ($i % 10 == 0) {
@@ -198,11 +198,11 @@ if (file_exists($file)) {
     $show = $show_year . "~" . $show_month . "~" . $show_day;
     echo "<tr>";
     if ($typelog == "log") {
-        echo "\t" . "<td>" . $lang['ADMIN_LOGS_GENERAL'] . "</td>";
-        echo "\t" . "<td onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=sql';\"><a>" . $lang['ADMIN_LOGS_SQL'] . "</a></td>";
+        echo "\t" . "<th>" . $lang['ADMIN_LOGS_GENERAL'] . "</th>";
+        echo "\t" . "<th onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=sql';\"><a>" . $lang['ADMIN_LOGS_SQL'] . "</a></th>";
     } else {
-        echo "\t" . "<td onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=log';\"><a>" . $lang['ADMIN_LOGS_GENERAL'] . "</a></td>";
-        echo "\t" . "<td >" . $lang['ADMIN_LOGS_SQL'] . "</td>";
+        echo "\t" . "<th onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=log';\"><a>" . $lang['ADMIN_LOGS_GENERAL'] . "</a></th>";
+        echo "\t" . "<th >" . $lang['ADMIN_LOGS_SQL'] . "</th>";
     }
     echo "</tr>";
     ?>
@@ -219,7 +219,7 @@ if (file_exists($file)) {
 
 
 <?php
-$boxversiontitle =  $typelog == "log" ?  $lang['ADMIN_LOGS_VIEWER']  . " <span class=\"warning\">" . $lang['ADMIN_LOGS_GENERAL'] ."</span>":  $lang['ADMIN_LOGS_VIEWER']  . " <span class=\"warning\">" . $lang['ADMIN_LOGS_SQL'] ."</span>";
+$boxversiontitle =  $typelog == "log" ?  $lang['ADMIN_LOGS_VIEWER']  . " <span class=\"notice\">" . $lang['ADMIN_LOGS_GENERAL'] ."</span>":  $lang['ADMIN_LOGS_VIEWER']  . " <span class=\"notice\">" . $lang['ADMIN_LOGS_SQL'] ."</span>";
 $boxversionclosebutton=false;
 $boxversionstyle = " default";
 $boxversioncontent= "";

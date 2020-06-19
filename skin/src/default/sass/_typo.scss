@@ -1,7 +1,14 @@
 
 
+h1{
+  color: $color3;
+  font-size: 1.5em;
+}
 
+.notice{
+  color: $color4;
 
+}
 
 a:link {
   text-decoration: none;
@@ -13,6 +20,7 @@ a:visited {
 
 a:hover {
   text-decoration: none;
+  cursor: default;
 }
 
 a:active {
