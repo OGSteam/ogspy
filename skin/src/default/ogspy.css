@@ -132,23 +132,28 @@ h1 {
   color: #000103;
 }
 
-/* line 13, sass/_typo.scss */
+/* line 12, sass/_typo.scss */
+.warning {
+  color: red;
+}
+
+/* line 17, sass/_typo.scss */
 a:link {
   text-decoration: none;
 }
 
-/* line 17, sass/_typo.scss */
+/* line 21, sass/_typo.scss */
 a:visited {
   text-decoration: none;
 }
 
-/* line 21, sass/_typo.scss */
+/* line 25, sass/_typo.scss */
 a:hover {
   text-decoration: none;
   cursor: default;
 }
 
-/* line 26, sass/_typo.scss */
+/* line 30, sass/_typo.scss */
 a:active {
   text-decoration: none;
 }
@@ -568,7 +573,7 @@ header {
 }
 /* line 81, sass/_view_menu_left.scss */
 .menu nav ul.navmenu li.menu_items_modules {
-  border: 2px solid #516092;
+  border: 2px solid #B9C2DF;
   background-color: #516092;
 }
 /* line 87, sass/_view_menu_left.scss */
@@ -613,122 +618,11 @@ nav.navbarreMenu ul li a:hover {
   background-color: #000103;
   color: #B9C2DF;
 }
-/* line 26, sass/_view_menu_navbar.scss */
-nav.navbarreMenu ul li .actif a {
-  border: 2px solid #516092;
-  background-color: #516092;
-  color: #B9C2DF;
-}
-
-/* line 37, sass/_view_menu_navbar.scss */
-.navbarreMenu4 {
-  width: 100%;
-  margin: 0 0;
-  color: red;
-}
-/* line 41, sass/_view_menu_navbar.scss */
-.navbarreMenu4 ul {
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  display: block;
-  list-style-type: none;
-}
-/* line 47, sass/_view_menu_navbar.scss */
-.navbarreMenu4 ul li {
-  border-left: 1px solid black;
-}
-/* line 49, sass/_view_menu_navbar.scss */
-.navbarreMenu4 ul li a {
-  display: block;
-  float: left;
-  width: 100px;
-  line-height: 50px;
-  background: black;
-  color: #DCDCDC;
-  text-align: center;
-}
-/* line 58, sass/_view_menu_navbar.scss */
-.navbarreMenu4 ul li a:hover {
-  background: black;
-  color: white;
-}
-
-/* line 66, sass/_view_menu_navbar.scss */
-.navbarreMenu3 {
-  width: 100%;
-  margin: 0 auto;
-}
-/* line 69, sass/_view_menu_navbar.scss */
-.navbarreMenu3 ul {
-  text-align: center;
-  width: 100%;
-  background-color: red;
-  display: block;
-  padding: 0;
-}
-/* line 77, sass/_view_menu_navbar.scss */
-.navbarreMenu3 ul li {
-  display: inline-block;
-  padding: 5px 5px 5px 5px;
-  width: 100%;
-}
-/* line 82, sass/_view_menu_navbar.scss */
-.navbarreMenu3 ul li a {
-  margin: 5px 5px 5px 5px;
-  padding: 5px 5px 5px 5px;
-  display: block;
-  border: 2px solid #516092;
-  background-color: #B9C2DF;
-  color: #000103;
-  color: #000103;
-}
-/* line 90, sass/_view_menu_navbar.scss */
-.navbarreMenu3 ul li a:hover {
+/* line 24, sass/_view_menu_navbar.scss */
+nav.navbarreMenu ul li .actif {
   border: 2px solid #B9C2DF;
-  background-color: #000103;
-  color: #B9C2DF;
-  color: #B9C2DF;
-}
-/* line 96, sass/_view_menu_navbar.scss */
-.navbarreMenu3 ul li .actif a {
-  border: 2px solid #516092;
   background-color: #516092;
   color: #B9C2DF;
-  color: #000103;
-}
-
-/* line 106, sass/_view_menu_navbar.scss */
-.navbarreMenu2 ul {
-  text-align: center;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 0.8) 90%, rgba(255, 255, 255, 0) 100%);
-  box-shadow: 0 0 2px black, inset 0 0 1px white;
-}
-
-/* line 112, sass/_view_menu_navbar.scss */
-.navbarreMenu2 ul li {
-  display: inline-block;
-}
-
-/* line 115, sass/_view_menu_navbar.scss */
-.navbarreMenu2 ul li a {
-  padding: 10px;
-  color: lime;
-  font-size: 12px;
-  text-decoration: none;
-  display: block;
-}
-
-/* line 123, sass/_view_menu_navbar.scss */
-.navbarreMenu2 ul li a:hover {
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(30, 16, 42, 0.5) 25%, rgba(30, 16, 42, 0.5) 75%, rgba(255, 255, 255, 0) 100%);
-  color: #5CCCE8;
-}
-
-/* line 128, sass/_view_menu_navbar.scss */
-.navbarreMenu2 ul li.actif a {
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(30, 16, 42, 0.8) 25%, rgba(30, 16, 42, 0.8) 75%, rgba(255, 255, 255, 0) 100%);
-  color: #5CCCE8;
 }
 
 /* line 2, sass/_view_footer.scss */
