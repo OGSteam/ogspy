@@ -1056,19 +1056,18 @@ function calc_distance($a, $b, $type, $typeArrondi = true)
  * @return array|null
  */
 /* Description :
-  "m:0:0_c:0:0_d:0:0_p:0_m:0" =>booster_m;booster_c;booster_d;extension_p;extension_moon
-  booster_x    => ressource:%:date_de_fin  (ressource= m|c|d)
+  "m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0" =>booster_m;booster_c;booster_d;booster_e;extension_p;extension_moon
+  booster_x    => ressource:%:date_de_fin  (ressource= m|c|d|e)
   extension_x  => type:+" (type= p|m)
-  "m:0:0_c:0:0_d:0:0_p:0_m:0" = string de stockage par défaut
+  "m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0" = string de stockage par défaut
 */
 /*##Base de donnée  ##*/
 /* Lit les informations des objets Ogame dans la BDD et les transformes en un tableau
  * @arg id_player id du joueur
  * @arg id_planet id de la planète à rechercher
  * @return tableau associatif des boosters ou NULL en cas d'échec
- * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
+ * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date', 'extention_p', 'extention_m')
  *
- *  * TODo A verifier, est elle utilisée ???????
 */
 function booster_lire_bdd($id_player, $id_planet)
 {
@@ -1096,7 +1095,6 @@ function booster_lire_bdd($id_player, $id_planet)
  * @param $tab_booster
  * @return bool|mixed|\mysqli_result
  *
- * TODo A verifier, est elle utilisée ???????
  */
 function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster)
 {
@@ -1105,7 +1103,6 @@ function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster)
 }
 
 /* Mets à jour les boosters de tous les users en fonction de la date de fin dans la BDD
-* TODo A verifier, est elle utilisée ???????
 */
 function booster_maj_bdd()
 {
@@ -1137,11 +1134,11 @@ function booster_maj_bdd()
 /**
  * Contrôle la date de validité des boosters et reset si la date est dépassée
  * @param $boosters tableau infos des boosters (donnée par les fonctions booster_lire_bdd() ou booster_decode())
- * @return tableau associatif des boosters mis à jour array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'extention_p', 'extention_m')
+ * @return tableau associatif des boosters mis à jour array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date', 'extention_p', 'extention_m')
  */
 function booster_verify($boosters)
 {
-    $b_control = array('booster_m_', 'booster_c_', 'booster_d_');
+    $b_control = array('booster_m_', 'booster_c_', 'booster_d_', 'booster_e_');
     $current_time = time();
 
     foreach ($b_control as $b) {
@@ -1157,7 +1154,7 @@ function booster_verify($boosters)
  * Contrôle la date de validité des boosters et reset si la date est dépassée
  * @param $str     string de stockage des boosters (donnée par les fonctions booster_encode() ou booster_encodev() ou directement from BDD)
  * @return tableau associatif des boosters mis à jour
- * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'extention_p', 'extention_m')
+ * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date', 'extention_p', 'extention_m')
  */
 function booster_verify_str($str)
 {
@@ -1173,7 +1170,7 @@ function booster_verify_str($str)
  *      'string'     donne un tableau asso de string uuid=>'x:valeur:0'|'x:valeur'
  *      'full'       donne les tableaux simple : définition, uuid, string, array)
  *      'separateur' donne le char qui sert de séparateur entre les objets Ogame
- *      'default_str' donne la string de stockage par défaut : "m:0:0_c:0:0_d:0:0_p:0_m:0"
+ *      'default_str' donne la string de stockage par défaut : "m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0"
  * @return  le tableau correspondant au type
  */
 function booster_objets_tab($type = '')
@@ -1181,6 +1178,7 @@ function booster_objets_tab($type = '')
     $objet_str = array('Booster de métal en platine', 'Booster de métal en or', 'Booster de métal en argent', 'Booster de métal en bronze',
         'Booster de cristal en platine', 'Booster de cristal en or', 'Booster de cristal en argent', 'Booster de cristal en bronze',
         'Booster de deutérium en platine', 'Booster de deutérium en or', 'Booster de deutérium en argent', 'Booster de deutérium en bronze',
+        'Boosteurs d`énergie en platine', 'Boosteurs d`énergie en or', 'Boosteurs d`énergie en argent', 'Boosteurs d`énergie en bronze',
         'Extension planétaire en platine', 'Extension planétaire en or', 'Extension planétaire en argent', 'Extension planétaire en bronze',
         'Extension lunaire en platine', 'Extension lunaire en or', 'Extension lunaire en argent', 'Extension lunaire en bronze');
     $objet_uuid = array('a83cfdc15b8dba27c82962d57e50d8101d263cfb', //'Booster de métal +40% 1s'
@@ -1195,6 +1193,10 @@ function booster_objets_tab($type = '')
         '5560a1580a0330e8aadf05cb5bfe6bc3200406e2', //'Booster de deutérium +30% 1s'
         'e4b78acddfa6fd0234bcb814b676271898b0dbb3', //'Booster de deutérium +20% 1s'
         'd9fa5f359e80ff4f4c97545d07c66dbadab1d1be', //'Booster de deutérium +10% 1s'
+        '77c36199102e074dca46f5f26ef57ce824d044dd', //'Booster d'énergie +80% 1s'
+        '55b52cbfb148ec80cd4e5b0580f7bed01149d643', //'Booster d'énergie +60% 1s'
+        'c2bad58fcec374d709099d11d0549e59ea7e233e', //'Booster d'énergie +40% 1s'
+        '3f6f381dc9b92822406731a942c028adf8dc978f', //'Booster d'énergie +20% 1s'
         'f3d9b82e10f2e969209c1a5ad7d22181c703bb36', //'Extension planétaire +20'
         '04e58444d6d0beb57b3e998edc34c60f8318825a', //'Extension planétaire +15'
         '0e41524dc46225dca21c9119f2fb735fd7ea5cb3', //'Extension planétaire +9'
@@ -1212,6 +1214,9 @@ function booster_objets_tab($type = '')
         '620f779dbffa1011aded69b091239727910a3d03', //'Booster de deutérium +40% 30j'
         '300493ddc756869578cb2888a3a1bc0c3c66765f', //'Booster de deutérium +30% 30j'
         '26416a3cdb94613844b1d3ca78b9057fd6ae9b15', //'Booster de deutérium +20% 30j'
+        'dfe86378f8c3d7f3ee0790ea64603bc44e83ca47', //'Booster d'énergie +80% 30j'
+        '4fa9a2273ee446284d5177fd9d60a22de01e932b', //'Booster d'énergie +60% 30j'
+        'bedd248aaf288c27e9351cfacfa6be03f1dbb898', //'Booster d'énergie +40% 30j'
         'ca7f903a65467b70411e513b0920d66c417aa3a2', //'Booster de métal +40% 90j'
         '21c1a65ca6aecf54ffafb94c01d0c60d821b325d', //'Booster de métal +30% 90j'
         '6f44dcd2bd84875527abba69158b4e976c308bbc', //'Booster de métal +20% 90j'
@@ -1221,20 +1226,24 @@ function booster_objets_tab($type = '')
         '831c3ea8d868eb3601536f4d5e768842988a1ba9', //'Booster de deutérium +40% 90j'
         'dc5896bed3311434224d511fa7ced6fdbe41b4e8', //'Booster de deutérium +30% 90j'
         '6f0952a919fd2ab9c009e9ccd83c1745f98f758f', //'Booster de deutérium +20% 90j'
+        'c39aa972a971e94b1d9b4d7a8f734b3d8be12534', //'Booster d'énergie +80% 90j'
+        '5ad783dcfce3655ef97b36197425718a0dad6b66', //'Booster d'énergie +60% 90j'
+        'e05aa5b9e3df5be3857b43da8403eafbf5ad3b96', //'Booster d'énergie +40% 90j'
         );
-    $objet_uuid_str = array('m:40:0', 'm:30:0', 'm:20:0', 'm:10:0', 'c:40:0', 'c:30:0', 'c:20:0', 'c:10:0', 'd:40:0', 'd:30:0', 'd:20:0', 'd:10:0', 'p:20', 'p:15', 'p:9', 'p:4', 'm:8', 'm:6', 'm:4', 'm:2');
+    $objet_uuid_str = array('m:40:0', 'm:30:0', 'm:20:0', 'm:10:0', 'c:40:0', 'c:30:0', 'c:20:0', 'c:10:0', 'd:40:0', 'd:30:0', 'd:20:0', 'd:10:0', 'e:80:0', 'e:60:0', 'e:40:0', 'e:20:0', 'p:20', 'p:15', 'p:9', 'p:4', 'm:8', 'm:6', 'm:4', 'm:2');
     $objet_uuid_tab = array(array('booster_m', 40), array('booster_m', 30), array('booster_m', 20), array('booster_m', 10),
         array('booster_c', 40), array('booster_c', 30), array('booster_c', 20), array('booster_c', 10),
         array('booster_d', 40), array('booster_d', 30), array('booster_d', 20), array('booster_d', 10),
+        array('booster_e', 80), array('booster_e', 60), array('booster_e', 40), array('booster_e', 20),
         array('extention_p', 20), array('extention_p', 15), array('extention_p', 9), array('extention_p', 4),
         array('extention_m', 8), array('extention_m', 6), array('extention_m', 4), array('extention_m', 2));
     $separateur = '_';
-    $default_str = array('m:0:0', 'c:0:0', 'd:0:0', 'p:0', 'm:0');
+    $default_str = array('m:0:0', 'c:0:0', 'd:0:0', 'e:0:0', 'p:0', 'm:0');
 
     //Protection débordement tableau, pour éviter les oublis sur la listes des boosters
     $n = count($objet_str);
     $ni = count($objet_uuid);
-    $nb_type_booster = 3; //Type de booster x3 (métal, cristal, deutérium)
+    $nb_type_booster = 4; //Type de booster x4 (métal, cristal, deutérium, énergie)
     $nb_booster_temps = 3; //Nombre de booster à temps (7j, 30j, 90j)
     if($ni != $n + $nb_type_booster * 3 * ($nb_booster_temps-1)) { //Erreur de codage, protection débordement tableau
         throw new Exception("Erreur interne : mauvais inventaire des boosters (uid=$ni, n=$n, add=" . ($n + $nb_type_booster * 3) . ")");
@@ -1352,27 +1361,43 @@ function booster_lire_date($str)
  */
 function booster_decode($str = NULL, $boosters = NULL)
 {
-    if ($str) {
-        $s = booster_objets_tab('separateur');
-
-        if (preg_match("/m:(\\d+):(\\d+)" . $s . "c:(\\d+):(\\d+)" . $s . "d:(\\d+):(\\d+)" . $s . "p:(\\d+)" . $s . "m:(\\d+)/", $str, $boosters) === 1) {
-            $i = 1;
-            return array('booster_m_val' => intval($boosters[$i++]), 'booster_m_date' => intval($boosters[$i++]),
-                'booster_c_val' => intval($boosters[$i++]), 'booster_c_date' => intval($boosters[$i++]),
-                'booster_d_val' => intval($boosters[$i++]), 'booster_d_date' => intval($boosters[$i++]),
-                'extention_p' => intval($boosters[$i++]), 'extention_m' => intval($boosters[$i++]));
-        }
-    }
-    return array('booster_m_val' => 0, 'booster_m_date' => 0,
+    $result = array('booster_m_val' => 0, 'booster_m_date' => 0,
         'booster_c_val' => 0, 'booster_c_date' => 0,
         'booster_d_val' => 0, 'booster_d_date' => 0,
+        'booster_e_val' => 0, 'booster_e_date' => 0,
         'extention_p' => 0, 'extention_m' => 0);
+    $tab_boos = array('m','c','d','e');
+    $tab_ex = array('p','m');
+    
+    if($str) {
+        $s = booster_objets_tab('separateur');
+        $str_split = explode($s, $str);
+        foreach($str_split as $objet) {
+            $i = 0;
+            foreach($tab_boos as $booster) {
+                if (preg_match("/$booster:(\\d+):(\\d+)/", $objet, $boosters) === 1) {
+                    $i = 1;
+                    $result['booster_' . $booster. '_val'] = intval($boosters[$i++]);
+                    $result['booster_' . $booster. '_date'] = intval($boosters[$i]);
+                }
+            }
+            if($i === 0) {
+                foreach($tab_ex as $booster) {
+                    if (preg_match("/$booster:(\\d+)$/", $objet, $boosters) === 1) {
+                        $i = 1;
+                        $result['extention_' . $booster] = intval($boosters[$i]);
+                    }
+                }
+            }
+        }
+    }
+    return $result;
 }
 
 /**
  * Transforme le tableau des informations des objets Ogame en une string de stockage.
- * @b tableau associatif des infos array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
- * @return objet sous format string de stockage ("m:0:0_c:0:0_d:0:0_p:0_m:0 si pas d'argument)
+ * @b tableau associatif des infos array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date','extention_p', 'extention_m')
+ * @return objet sous format string de stockage ("m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0 si pas d'argument)
  */
 function booster_encode($b = NULL)
 {
@@ -1382,27 +1407,30 @@ function booster_encode($b = NULL)
         $str .= 'm:' . $b['booster_m_val'] . ':' . $b['booster_m_date'] . $separateur;
         $str .= 'c:' . $b['booster_c_val'] . ':' . $b['booster_c_date'] . $separateur;
         $str .= 'd:' . $b['booster_d_val'] . ':' . $b['booster_d_date'] . $separateur;
+        $str .= 'e:' . $b['booster_e_val'] . ':' . $b['booster_e_date'] . $separateur;
         $str .= 'p:' . $b['extention_p'] . $separateur;
         $str .= 'm:' . $b['extention_m'];
     } else {
-        $str = booster_objets_tab('default_str'); //"m:0:0_c:0:0_d:0:0_p:0_m:0";
+        $str = booster_objets_tab('default_str'); //"m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0";
     }
     return $str;
 }
 
 /**
  * Transforme les valeurs des objets Ogame en une string de stockage.
- * string de stockage par défaut = m:0:0_c:0:0_d:0:0_p:0_m:0
- * @return string sous format string de stockage ("m:0:0_c:0:0_d:0:0_p:0_m:0" si pas d'argument)
+ * string de stockage par défaut = m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0
+ * @return string sous format string de stockage ("m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0" si pas d'argument)
  */
 function booster_encodev($booster_m_val = 0, $booster_m_date = 0, $booster_c_val = 0, $booster_c_date = 0,
-                         $booster_d_val = 0, $booster_d_date = 0, $extention_p = 0, $extention_m = 0)
+                         $booster_d_val = 0, $booster_d_date = 0, $booster_e_val = 0, $booster_e_date = 0,
+                         $extention_p = 0, $extention_m = 0)
 {
     $separateur = booster_objets_tab('separateur');
     $str = '';
     $str .= 'm:' . $booster_m_val . ':' . $booster_m_date . $separateur;
     $str .= 'c:' . $booster_c_val . ':' . $booster_c_date . $separateur;
     $str .= 'd:' . $booster_d_val . ':' . $booster_d_date . $separateur;
+    $str .= 'e:' . $booster_e_val . ':' . $booster_e_date . $separateur;
     $str .= 'p:' . $extention_p . $separateur;
     $str .= 'm:' . $extention_m;
     return $str;
