@@ -343,9 +343,9 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
     }
 
     if ($booster != NULL) { // si booster
-        $boost_M = ($booster['booster_m_val'] / 100) * (production('M', $M, 0, $temperature_max, 0, 0, 0, $speed_uni) - 30 * $speed_uni);
-        $boost_C = ($booster['booster_c_val'] / 100) * (production('C', $C, 0, $temperature_max, 0, 0, 0, $speed_uni) - 15 * $speed_uni);
-        $boost_D = ($booster['booster_d_val'] / 100) * (production('D', $D, 0, $temperature_max, 0, 0, 0, $speed_uni));
+        $boost_M = ($booster['booster_m_val'] / 100) * (production('M', $M, 0, $temperature_max, 0, 0, 0, $speed_uni) - 30 * $speed_uni) * $per_M * $ratio;
+        $boost_C = ($booster['booster_c_val'] / 100) * (production('C', $C, 0, $temperature_max, 0, 0, 0, $speed_uni) - 15 * $speed_uni) * $per_C * $ratio;
+        $boost_D = ($booster['booster_d_val'] / 100) * (production('D', $D, 0, $temperature_max, 0, 0, 0, $speed_uni)) * $per_D * $ratio;
         
         $prod_M += round($boost_M);
         $prod_C += round($boost_C);
