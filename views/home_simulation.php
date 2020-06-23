@@ -260,6 +260,29 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         ?>
         <th></th>
     </tr>
+    <tr style='font-style:italic;'>
+        <th><a><?php echo($lang['HOME_SIMU_BOOSTERNRJ']); ?></a></th>
+        <?php
+
+        for ($i = 101; $i <= $nb_planete + 100; $i++) {
+            echo "\t" . "<th colspan='2'>";
+            echo "<select id='E_" . $i . "_booster' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
+            for ($j = 80; $j >= 0; $j = $j - 20) {
+                if (!isset($user_building[$i]["booster_tab"]['booster_e_val']))
+                {
+                    $user_building[$i]["booster_tab"]['booster_e_val'] = 0;
+                }
+                echo "\t\t" . "<option value='" . $j . "'";
+                if ($user_building[$i]["booster_tab"]['booster_e_val'] == $j) {
+                    echo " selected='selected'";
+                }
+                echo ">" . $j . "%</option>" . "\n";
+            }
+            echo "</select></th>" . "\n";
+        }
+        ?>
+        <th></th>
+    </tr>
     <tr>
         <th><a><?php echo($lang['HOME_SIMU_ENERGY']); ?></a></th>
         <?php

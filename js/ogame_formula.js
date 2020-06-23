@@ -160,7 +160,7 @@ function update_page() {
         var M_1_booster = document.getElementById("M_" + j + "_booster").value;
         var C_1_booster = document.getElementById("C_" + j + "_booster").value;
         var D_1_booster = document.getElementById("D_" + j + "_booster").value;
-		var E_1_booster = 0; //document.getElementById("E_" + j + "_booster").value;
+		var E_1_booster = document.getElementById("E_" + j + "_booster").value;
 
         M_1[i] = document.getElementById("M_" + j).value;
         C_1[i] = document.getElementById("C_" + j).value;
