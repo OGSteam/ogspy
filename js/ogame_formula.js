@@ -182,7 +182,7 @@ function update_page() {
 
         var NRJ_1_delta = NRJ_1[i] - energie_conso;
         if (NRJ_1_delta < 0) {
-            document.getElementById("NRJ_" + j).innerHTML = "<span style=\"color: red; \">" + format(NRJ_1_delta) + "</span>" + " / " + format(NRJ_1[i]);
+            document.getElementById("NRJ_" + j).innerHTML = "<span class=\"warning\">" + format(NRJ_1_delta) + "</span>" + " / " + format(NRJ_1[i]);
         } else {
             document.getElementById("NRJ_" + j).innerHTML = format(NRJ_1_delta) + " / " + format(NRJ_1[i]);
         }
@@ -253,9 +253,9 @@ function update_page() {
     //Energie
     var Delta_NRJ = NRJ - (M_conso + C_conso + D_conso + FOR_conso);
     var s_delta = "-";
-    if (Delta_NRJ < 0 || isNaN(Delta_NRJ)) s_delta = "<span style=\"color: red; \">" + format(Delta_NRJ) + "</span>";
-    else s_delta = "<span style=\"color: lime; \">" + format(Delta_NRJ) + "</span>";
-    document.getElementById("E_NRJ").innerHTML = s_delta + " / " + "<span style=\"color: lime; \">" + format(NRJ) + "</span>";
+    if (Delta_NRJ < 0 || isNaN(Delta_NRJ)) s_delta = "<span class=\"warning\">" + format(Delta_NRJ) + "</span>";
+    else s_delta = "<span>" + format(Delta_NRJ) + "</span>";
+    document.getElementById("E_NRJ").innerHTML = s_delta + " / " + "<span>" + format(NRJ) + "</span>";
 
     //
     // Points
@@ -338,7 +338,7 @@ function update_page() {
         var sat_lune_1 = document.getElementById("sat_lune_" + j).value;
         sat_pts_1[i] = Math.round(Sat_1[i] * 2.5 + sat_lune_1 * 2.5);
         total_sat_pts += sat_pts_1[i];
-        document.getElementById("sat_pts_" + j).innerHTML = "<span style=\"color: lime; \">" + format(sat_pts_1[i]) + "</span>";
+        document.getElementById("sat_pts_" + j).innerHTML = "<span>" + format(sat_pts_1[i]) + "</span>";
         j++;
     }
     document.getElementById("total_sat_pts").innerHTML = format(total_sat_pts);
