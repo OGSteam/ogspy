@@ -378,7 +378,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             echo "\t" . "<th colspan='2'>";
             echo "<select id='M_" . $i . "_booster' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
-            for ($j = 30; $j >= 0; $j = $j - 10) {
+            for ($j = 40; $j >= 0; $j = $j - 10) {
                 if (!isset($user_building[$i]["booster_tab"]['booster_m_val']))
                 {
                     $user_building[$i]["booster_tab"]['booster_m_val'] = 0;
@@ -452,7 +452,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             echo "\t" . "<th colspan='2'>";
             echo "<select id='C_" . $i . "_booster' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
-            for ($j = 30; $j >= 0; $j = $j - 10) {
+            for ($j = 40; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
 
                 if (!isset($user_building[$i]["booster_tab"]['booster_c_val']))
@@ -526,7 +526,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             echo "\t" . "<th colspan='2'>";
             echo "<select id='D_" . $i . "_booster' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
-            for ($j = 30; $j >= 0; $j = $j - 10) {
+            for ($j = 40; $j >= 0; $j = $j - 10) {
                 if (!isset($user_building[$i]["booster_tab"]['booster_d_val']))
                 {
                     $user_building[$i]["booster_tab"]['booster_d_val'] = 0;
