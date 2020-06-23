@@ -160,6 +160,7 @@ function update_page() {
         var M_1_booster = document.getElementById("M_" + j + "_booster").value;
         var C_1_booster = document.getElementById("C_" + j + "_booster").value;
         var D_1_booster = document.getElementById("D_" + j + "_booster").value;
+		var E_1_booster = 0; //document.getElementById("E_" + j + "_booster").value;
 
         M_1[i] = document.getElementById("M_" + j).value;
         C_1[i] = document.getElementById("C_" + j).value;
@@ -178,7 +179,7 @@ function update_page() {
         var CES_1_production = production("CES", CES_1[i], temperature_max_1, NRJ) * CES_1_percentage / 100;
         var CEF_1_production = production("CEF", CEF_1[i], temperature_max_1, NRJ) * CEF_1_percentage / 100;
         var Sat_1_production = production_sat(temperature_max_1, Sat_1[i]) * Sat_1_percentage / 100;
-        NRJ_1[i] = Math.round(CES_1_production + CEF_1_production + Sat_1_production);
+        NRJ_1[i] = Math.round((CES_1_production + CEF_1_production + Sat_1_production) * (1 + E_1_booster / 100));
 
         var NRJ_1_delta = NRJ_1[i] - energie_conso;
         if (NRJ_1_delta < 0) {
