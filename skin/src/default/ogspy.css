@@ -400,6 +400,13 @@ table tbody tr:hover td {
   font-size: 11px;
 }
 /* line 20, sass/_elem_msgbox.scss */
+.msgbox div {
+  background-color: #B9C2DF;
+  color: #040D2C;
+  border: 1px solid #000103;
+  border-top: none;
+}
+/* line 27, sass/_elem_msgbox.scss */
 .msgbox p.msgboxtitle {
   padding: 3px;
   color: #B9C2DF;
@@ -409,15 +416,15 @@ table tbody tr:hover td {
   font-size: 13px;
   background-color: #000103;
 }
-/* line 28, sass/_elem_msgbox.scss */
+/* line 36, sass/_elem_msgbox.scss */
 .msgbox p.msgboxtitle .notice {
   color: #ECFF00;
 }
-/* line 34, sass/_elem_msgbox.scss */
+/* line 42, sass/_elem_msgbox.scss */
 .msgbox .msgcontent {
   padding: 15px;
 }
-/* line 37, sass/_elem_msgbox.scss */
+/* line 45, sass/_elem_msgbox.scss */
 .msgbox span.msgboxclosebtn {
   margin-left: 15px;
   paddin: 0;
@@ -429,55 +436,55 @@ table tbody tr:hover td {
   cursor: pointer;
   transition: 0.3s;
 }
-/* line 47, sass/_elem_msgbox.scss */
+/* line 55, sass/_elem_msgbox.scss */
 .msgbox span.msgboxclosebtn :hover {
   color: white;
 }
 
 /* Par alert   */
-/* line 55, sass/_elem_msgbox.scss */
+/* line 63, sass/_elem_msgbox.scss */
 .msgbox.msgboxalert p.msgboxtitle {
   background-color: #8a2f24;
   color: white;
   border: none;
 }
 
-/* line 61, sass/_elem_msgbox.scss */
+/* line 69, sass/_elem_msgbox.scss */
 .msgbox.msgboxalert p.msgcontent {
   background: none;
   background-color: #f44336;
 }
 
-/* line 65, sass/_elem_msgbox.scss */
+/* line 73, sass/_elem_msgbox.scss */
 .msgbox.msgboxalert span.msgboxclosebtn {
   color: white;
 }
 
-/* line 68, sass/_elem_msgbox.scss */
+/* line 76, sass/_elem_msgbox.scss */
 .msgbox.msgboxalert span.msgboxclosebtn:hover {
   color: black;
 }
 
 /* Par success   */
-/* line 74, sass/_elem_msgbox.scss */
+/* line 82, sass/_elem_msgbox.scss */
 .msgbox.msgboxsuccess p.msgboxtitle {
   background-color: #376f37;
   color: white;
   border: none;
 }
 
-/* line 80, sass/_elem_msgbox.scss */
+/* line 88, sass/_elem_msgbox.scss */
 .msgbox.msgboxsuccess p.msgcontent {
   background: none;
   background-color: #4e9051;
 }
 
-/* line 84, sass/_elem_msgbox.scss */
+/* line 92, sass/_elem_msgbox.scss */
 .msgbox.msgboxsuccess span.msgboxclosebtn {
   color: white;
 }
 
-/* line 87, sass/_elem_msgbox.scss */
+/* line 95, sass/_elem_msgbox.scss */
 .msgbox.msgboxsuccess span.msgboxclosebtn:hover {
   color: black;
 }

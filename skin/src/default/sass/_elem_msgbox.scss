@@ -17,7 +17,16 @@
     }
 
   }
+  div{
+    background-color: $color1;
+    color: $color3;
+    border: 1px solid $color4;
+    border-top: none;
+
+
+  }
   p.msgboxtitle{
+
     padding: 3px;
     color: $color1;
     border: 1px solid $color4;
