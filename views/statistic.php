@@ -33,31 +33,36 @@ require_once 'views/page_header.php';
 ?>
 
     <table>
-        <tr>
-            <td class="c" colspan="<?php echo $galaxy_step * 2 + 2; ?>"><?php echo($lang['STATS_TITLE']); ?></td>
-        </tr>
+        <thead>
+            <tr>
+                <th colspan="<?php echo $galaxy_step * 2 + 2; ?>"><?php echo($lang['STATS_TITLE']); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+
+
 <?php
     do {
         $galaxy_up = $galaxy_down + $galaxy_step;
 
 ?>
             <tr>
-                <td class="c" style="width:45px"></td>
+                <th></th>
 <?php
         if ($galaxy > intval($server_config['num_of_galaxies'])) {
             $galaxy_up = intval($server_config['num_of_galaxies']);
         }
 
         for ($i = $galaxy_down; $i < $galaxy_up; $i++) {
-            echo '<td class="c" style="width:60px" colspan="2">';
+            echo '<th colspan="2">';
 
             if ($i <= intval($server_config['num_of_galaxies'])) {
                 echo "G$i";
             }
-            echo "</td>\n";
+            echo "</th>\n";
         }
 ?>
-                <td class="c" style="width:45px"></td>
+                <th></th>
             </tr>
 <?php
         for ($system = 1 ; $system <= intval($server_config['num_of_systems']) ; $system = $system + $step) {
@@ -67,7 +72,7 @@ require_once 'views/page_header.php';
                 $up = intval($server_config['num_of_systems']);
             }
             echo '<tr>';
-            echo '<td class="c">' . $system . ' - ' . $up . '</td>';
+            echo '<th>' . $system . ' - ' . $up . '</th>';
 
             for ($galaxy = $galaxy_down ; $galaxy < $galaxy_up ; $galaxy++) {
                 $link_colonized = '';
@@ -76,7 +81,7 @@ require_once 'views/page_header.php';
                 $free = '-';
 
                 if ($galaxy > intval($server_config['num_of_galaxies'])) {
-                    echo '<th></th><th></th>';
+                    echo '<td></td><td></td>';
                     continue;
                 }
                 if ($galaxy_statistic[$galaxy][$system]['planet'] > 0) {
@@ -86,9 +91,9 @@ require_once 'views/page_header.php';
                     $link_colonized .= '\';"';
 
                     if ($galaxy_statistic[$galaxy][$system]['new']) {
-                        $colonized = '<a style="cursor: pointer; text-decoration: blink; color: lime;">' . $galaxy_statistic[$galaxy][$system]['planet'] . '</a>';
+                        $colonized = '<a>' . $galaxy_statistic[$galaxy][$system]['planet'] . '</a>';
                     } else {
-                        $colonized = '<a style="cursor: pointer; color: lime;">' . $galaxy_statistic[$galaxy][$system]['planet'] . '</a>';
+                        $colonized = '<a>' . $galaxy_statistic[$galaxy][$system]['planet'] . '</a>';
                     }
                 }
                 if ($galaxy_statistic[$galaxy][$system]['free'] > 0) {
@@ -98,19 +103,20 @@ require_once 'views/page_header.php';
                     $link_free .= 'row_down&row_up';
                     $link_free .= '\';"';
 
-                    $free = '<a style="cursor:pointer; color: orange;">' . $galaxy_statistic[$galaxy][$system]['free'] . '</a>';
+                    $free = '<a>' . $galaxy_statistic[$galaxy][$system]['free'] . '</a>';
                 }
 
-                echo '<th style="width:30px" ' . $link_colonized . '>' . $colonized . '</th>';
-                echo '<th style="width:30px" ' . $link_free . '>' . $free . '</th>';
+                echo '<td  ' . $link_colonized . '>' . $colonized . '</td>';
+                echo '<td  ' . $link_free . '>' . $free . '</td>';
             }
 
-            echo '<td class="c" align="center">' . $system . ' - ' . $up . '</td>';
+            echo '<th>' . $system . ' - ' . $up . '</th>';
             echo '</tr>';
         }
         $galaxy_down = $galaxy_up;
     } while ($galaxy_up < intval($server_config['num_of_galaxies']));
 
+    // voir css pour redefinir legend
     $legend = '<table style="width:225px">';
     $legend .= '<tr><td class="c" colspan="2" style="width:150px">' . $lang['STATS_LEGEND'] . '</td></tr>';
     $legend .= '<tr><td class="c">' . $lang['STATS_KNOWN_PLANETS'] . '</td><th><span style="color: lime; ">xx</span></th></tr>';
@@ -125,28 +131,30 @@ require_once 'views/page_header.php';
     }
 ?>
         <tr>
-            <td class="c" colspan="<?php echo $galaxy_step * 2 + 2; ?>">
-                <a style="cursor:pointer" onmouseover="this.T_WIDTH=210;this.T_TEMP=0;return encodeURI('<?php echo $legend; ?>')"><?php echo($lang['STATS_LEGEND']); ?></a>
-            </td>
+            <th  colspan="<?php echo $galaxy_step * 2 + 2; ?>">
+                <a onmouseover="this.T_WIDTH=210;this.T_TEMP=0;return encodeURI('<?php echo $legend; ?>')"><?php echo($lang['STATS_LEGEND']); ?></a>
+            </th>
         </tr>
+
+        </tbody>
     </table>
     <br>
     <table>
 <?php
     if ($user_data['user_admin'] == 1 || $user_data['user_coadmin'] == 1 || $user_data['management_user'] == 1) {
-        echo '<tr style="text-align:right">';
+        echo '<tr>';
         echo '<td colspan="7"><a href="index.php?action=raz_ratio">' . $lang['STATS_RAZ'] . '</a></td>';
         echo '</tr>';
     }
 ?>
         <tr>
-            <td class="c" style="width:100px"><?php echo($lang['STATS_USERNAME']); ?></td>
-            <td class="c" style="width:100px"><?php echo($lang['STATS_PLANETS']); ?></td>
-            <td class="c" style="width:100px"><?php echo($lang['STATS_SPY_REPORTS']); ?></td>
-            <td class="c" style="width:100px"><?php echo($lang['STATS_RANKINGS']); ?></td>
-            <td class="c" style="width:100px"><?php echo($lang['STATS_SEARCHINGS']); ?></td>
-            <td class="c" style="width:100px"><?php echo($lang['STATS_RATIO']); ?></td>
-            <td class="c" style="width:100px"><?php echo($lang['STATS_XTENSE']); ?></td>
+            <th><?php echo($lang['STATS_USERNAME']); ?></th>
+            <th><?php echo($lang['STATS_PLANETS']); ?></th>
+            <th><?php echo($lang['STATS_SPY_REPORTS']); ?></th>
+            <th><?php echo($lang['STATS_RANKINGS']); ?></th>
+            <th><?php echo($lang['STATS_SEARCHINGS']); ?></th>
+            <th><?php echo($lang['STATS_RATIO']); ?></th>
+            <th><?php echo($lang['STATS_XTENSE']); ?></th>
         </tr>
 <?php
     // Statistiques participation des membres actifs
@@ -187,6 +195,7 @@ require_once 'views/page_header.php';
 
         $result = ($ratio + $ratio_penality + $ratio_searchpenality) * 1000;
 
+        //todo css class a ajouter au tableau
         if ($result < 0) {
             $color = 'red';
         } else if ($result == 0) {
@@ -196,6 +205,9 @@ require_once 'views/page_header.php';
         } else {
             $color = 'lime';
         }
+        // fin css todo
+
+
         if ($enable_stat_view || ($v['user_name'] == $user_data['user_name']) || $user_data['user_admin'] || $user_data['user_coadmin']) {
             switch ($v['xtense_type']) {
                 case 'FF':
@@ -214,16 +226,16 @@ require_once 'views/page_header.php';
                     $xtense_type = 'N/A (' . $v['xtense_type'] . ')';
             }
 
-            //todo voir si seulement admin on le visuel ...
+            //todo voir si seulement admin pour le visuel ...
             if ($v['user_active'] == "1" || $v['user_admin'] == "1") {
                 echo '<tr>';
-                echo '<th style="color: ' . $color . '">' . $v['user_name'] . (($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) ? ' ' . $v['here'] : '') . '</th>';
-                echo '<th>' . formate_number($v['planet_added_ogs']) . '</th>';
-                echo '<th>' . formate_number($v['spy_added_ogs']) . '</th>';
-                echo '<th>' . formate_number($v['rank_added_ogs']) . '</th>';
-                echo '<th>' . formate_number($v['search']) . '</th>';
-                echo '<th style="color: ' . $color . '">' . formate_number($result) . '</th>';
-                echo '<th>' . $xtense_type . '</th>';
+                echo '<td>' . $v['user_name'] . (($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) ? ' ' . $v['here'] : '') . '</td>';
+                echo '<td>' . formate_number($v['planet_added_ogs']) . '</td>';
+                echo '<td>' . formate_number($v['spy_added_ogs']) . '</td>';
+                echo '<td>' . formate_number($v['rank_added_ogs']) . '</td>';
+                echo '<td>' . formate_number($v['search']) . '</td>';
+                echo '<td>' . formate_number($result) . '</td>';
+                echo '<td>' . $xtense_type . '</td>';
                 echo '</tr>';
             }
         }
@@ -231,7 +243,7 @@ require_once 'views/page_header.php';
     if ($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) {
 ?>
             <tr>
-                <td colspan="7">(*) <?php echo($lang['STATS_CONNECTED']); ?><br>(**) <?php echo($lang['STATS_CONNECTED_XTENSE']); ?></td>
+                <th colspan="7">(*) <?php echo($lang['STATS_CONNECTED']); ?><br>(**) <?php echo($lang['STATS_CONNECTED_XTENSE']); ?></th>
             </tr>
 <?php
     }
