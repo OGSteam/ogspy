@@ -14,10 +14,10 @@ if (!defined('IN_SPYOGAME')) {
     die('Hacking attempt');
 }
 
-list($order, $ranking, $ranking_available, $maxrank) = galaxy_show_ranking_ally();
 
-$order_by = $pub_order_by;
-$interval = $pub_interval;
+global $order_by ;
+global $ranking ;
+
 
 $link_general    = '<a href="index.php?action=ranking&amp;subaction=ally&amp;order_by=general">'    . $lang['RANK_GENERAL'] . '</a>';
 $link_eco        = '<a href="index.php?action=ranking&amp;subaction=ally&amp;order_by=eco">'        . $lang['RANK_ECONOMY'] . '</a>';
@@ -55,77 +55,25 @@ switch ($order_by) {
         break;
 }
 ?>
+
 <table>
+    <thead>
     <tr>
-        <form method="POST" action="index.php">
-            <input type="hidden" name="action" value="ranking">
-            <input type="hidden" name="subaction" value="ally">
-            <input type="hidden" name="order_by" value="<?php echo $order_by; ?>">
-            <td style="text-align:right">
-                <select name="date" onchange="this.form.submit();">
-<?php
-    $date_selected = '';
-    $datadate = 0;
-    foreach ($ranking_available as $v) {
-        $selected = '';
-        if (!isset($pub_date_selected) && !isset($datadate)) {
-            $datadate = $v;
-            $date_selected = strftime('%d %b %Y %Hh', $v);
-        }
-        if ($pub_date == $v) {
-            $selected = 'selected';
-            $datadate = $v;
-            $date_selected = strftime('%d %b %Y %Hh', $v);
-        }
-        $string_date = strftime('%d %b %Y %Hh', $v);
-        echo "\t\t\t" . '<option value="' . $v . '" ' . $selected . '>' . $string_date . "</option>\n";
-    }
-?>
-                </select>
-                &nbsp;
-                <select name="interval" onchange="this.form.submit();">
-<?php
-    if (sizeof($ranking_available) > 0) {
-        for ($i = 1; $i <= $maxrank; $i = $i + 100) {
-            $selected = '';
-            if ($i == $interval) {
-                $selected = 'selected';
-            }
-            echo "\t\t\t" . '<option value="' . $i . '" ' . $selected . '>' . $i . ' - ' . ($i + 99) . "</option>\n";
-        }
-    }
-?>
-                </select>
-            </td>
-        </form>
-<?php
-    if ($user_data['user_admin'] == 1 || $user_data['user_coadmin'] == 1 || $user_data['management_ranking'] == 1) {
-?>
-        <form method="POST" action="index.php" onsubmit="return confirm('<?php echo($lang['RANK_DELETE_CONFIRMATION']); ?>');">
-            <input type="hidden" name="action" value="drop_ranking">
-            <input type="hidden" name="subaction" value="ally">
-            <input type="hidden" name="datadate" value="<?php echo $datadate; ?>">
-            <td style="text-align:right"><input type="image" style="width:15px; height:15px;" alt="DELETE" src="images/drop.png" title="<?php echo $lang['RANK_DELETE'] . ' ' . $date_selected; ?>"></td>
-        </form>
-<?php
-    }
-?>
+        <th><?php echo($lang['RANK_ID']); ?></th>
+        <th><?php echo($lang['RANK_ALLY']); ?></th>
+        <th><?php echo($lang['RANK_MEMBER']); ?></th>
+        <th colspan="2"><?php echo $link_general; ?></th>
+        <th colspan="2"><?php echo $link_eco; ?></th>
+        <th colspan="2"><?php echo $link_techno; ?></th>
+        <th colspan="2"><?php echo $link_military; ?></th>
+        <th colspan="2"><?php echo $link_military_b; ?></th>
+        <th colspan="2"><?php echo $link_military_l; ?></th>
+        <th colspan="2"><?php echo $link_military_d; ?></th>
+        <th colspan="2"><?php echo $link_honnor; ?></th>
     </tr>
-</table>
-<table style="width:1200px">
-    <tr>
-        <td class="c" style="width:30px"><?php echo($lang['RANK_ID']); ?></td>
-        <td class="c"><?php echo($lang['RANK_ALLY']); ?></td>
-        <td class="c"><?php echo($lang['RANK_MEMBER']); ?></td>
-        <td class="c_classement_points" colspan="2"><?php echo $link_general; ?></td>
-        <td class="c" colspan="2"><?php echo $link_eco; ?></td>
-        <td class="c_classement_recherche" colspan="2"><?php echo $link_techno; ?></td>
-        <td class="c_classement_flotte" colspan="2"><?php echo $link_military; ?></td>
-        <td class="c_classement_flotte" colspan="2"><?php echo $link_military_b; ?></td>
-        <td class="c_classement_flotte" colspan="2"><?php echo $link_military_l; ?></td>
-        <td class="c_classement_flotte" colspan="2"><?php echo $link_military_d; ?></td>
-        <td class="c" colspan="2"><?php echo $link_honnor; ?></td>
-    </tr>
+    </thead>
+<tbody>
+
 <?php
     while ($value = current($order)) {
         $ally = '<a href="index.php?action=search&amp;type_search=ally&amp;string_search=' . $value . '&amp;strict=on">';
@@ -205,27 +153,28 @@ switch ($order_by) {
 
         echo "<tr>\n";
         echo "\t" . '<th>' . formate_number(key($order)) . "</th>\n";
-        echo "\t" . '<th>' . $ally . "</th>\n";
-        echo "\t" . '<th>' . $member . "</th>\n";
-        echo "\t" . '<th style="width:100">' . $general_pts . '<br>(<span style="color:yellow; font-style: italic;">' . $general_pts_per_member . "</span>)</th>\n";
-        echo "\t" . '<th style="width:40px"><span style="color:lime; font-style: italic;">' . $general_rank . "</span></th>\n";
-        echo "\t" . '<th style="width:100">' . $eco_pts . '<br>(<span style="color:yellow; font-style: italic;">' . $eco_pts_per_member . "</span>)</th>\n";
-        echo "\t" . '<th style="width:40px"><span style="color:lime; font-style: italic;">' . $eco_rank . "</span></th>\n";
-        echo "\t" . '<th style="width:100">' . $techno_pts . '<br>(<span style="color:yellow; font-style: italic;">' . $techno_pts_per_member . "</span>)</th>\n";
-        echo "\t" . '<th style="width:40px"><span style="color:lime; font-style: italic;">' . $techno_rank . "</span></th>\n";
-        echo "\t" . '<th style="width:100">' . $military_pts . "<br>(<span style=\"color: yellow\">><i>" . $military_pts_per_member . "</span>)</th>\n";
-        echo "\t" . '<th style="width:40px"><span style="color:lime; font-style: italic;">' . $military_rank . "</span></th>\n";
-        echo "\t" . '<th style="width:100">' . $military_b_pts . '<br>(<span style="color:yellow; font-style: italic;">' . $military_b_pts_per_member . "</span>)</th>\n";
-        echo "\t" . '<th style="width:40px"><span style="color:lime; font-style: italic;">' . $military_b_rank . "</span></th>\n";
-        echo "\t" . '<th style="width:100">' . $military_l_pts . '<br>(<span style="color:yellow; font-style: italic;">' . $military_l_pts_per_member . "</span>)</th>\n";
-        echo "\t" . '<th style="width:40px"><span style="color:lime; font-style: italic;">' . $military_l_rank . "</span></th>\n";
-        echo "\t" . '<th style="width:100">' . $military_d_pts . '<br>(<span style="color:yellow; font-style: italic;">' . $military_d_pts_per_member . "</span>)</th>\n";
-        echo "\t" . '<th style="width:40px"><span style="color:lime; font-style: italic;">' . $military_d_rank . "</span></th>\n";
-        echo "\t" . '<th style="width:100">' . $honnor_pts . '<br>(<span style="color:yellow; font-style: italic;">' . $honnor_pts_per_member . "</span>)</th>\n";
-        echo "\t" . '<th style="width:40px"><span style="color:lime; font-style: italic;">' . $honnor_rank . "</span></th>\n";
+        echo "\t" . '<td>' . $ally . "</td>\n";
+        echo "\t" . '<td>' . $member . "</td>\n";
+        echo "\t" . '<td>' . $general_pts . '<br>(<span >' . $general_pts_per_member . "</span>)</td>\n";
+        echo "\t" . '<td ><span >' . $general_rank . "</span></td>\n";
+        echo "\t" . '<td>' . $eco_pts . '<br>(<span >' . $eco_pts_per_member . "</span>)</td>\n";
+        echo "\t" . '<td ><span >' . $eco_rank . "</span></td>\n";
+        echo "\t" . '<td>' . $techno_pts . '<br>(<span >' . $techno_pts_per_member . "</span>)</td>\n";
+        echo "\t" . '<td ><span >' . $techno_rank . "</span></td>\n";
+        echo "\t" . '<td>' . $military_pts . "<br>(<span><i>" . $military_pts_per_member . "</span>)</td>\n";
+        echo "\t" . '<td ><span >' . $military_rank . "</span></td>\n";
+        echo "\t" . '<td>' . $military_b_pts . '<br>(<span >' . $military_b_pts_per_member . "</span>)</td>\n";
+        echo "\t" . '<td ><span >' . $military_b_rank . "</span></td>\n";
+        echo "\t" . '<td>' . $military_l_pts . '<br>(<span >' . $military_l_pts_per_member . "</span>)</td>\n";
+        echo "\t" . '<td ><span >' . $military_l_rank . "</span></td>\n";
+        echo "\t" . '<td>' . $military_d_pts . '<br>(<span >' . $military_d_pts_per_member . "</span>)</td>\n";
+        echo "\t" . '<td ><span >' . $military_d_rank . "</span></td>\n";
+        echo "\t" . '<td>' . $honnor_pts . '<br>(<span >' . $honnor_pts_per_member . "</span>)</td>\n";
+        echo "\t" . '<td ><span >' . $honnor_rank . "</span></td>\n";
         echo "</tr>\n";
 
         next($order);
     }
 ?>
+</tbody>
 </table>
