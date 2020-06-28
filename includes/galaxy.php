@@ -1357,30 +1357,33 @@ function UNparseRE($id_RE)
     }
 
     $dateRE = date('m-d H:i:s', $row['dateRE']);
-    $template = '<table border="0" cellpadding="2" cellspacing="0" align="center">
+    $template = '<table>
+    <thead>
+         <tr>
+            <th colspan="4" >' . $lang['GAME_SPYREPORT_RES'] . ' ' . $row['planet_name'] . ' [' . $row['coordinates'] . '] (' . $lang['GAME_SPYREPORT_PLAYER'] . ' \'' . $rowPN['player'] . '\') le ' . $dateRE . '</th>
+        </tr>
+    </thead>
+    <tbody>
     <tr>
-        <td class="l" colspan="4" class="c">' . $lang['GAME_SPYREPORT_RES'] . ' ' . $row['planet_name'] . ' [' . $row['coordinates'] . '] (' . $lang['GAME_SPYREPORT_PLAYER'] . ' \'' . $rowPN['player'] . '\') le ' . $dateRE . '</td>
+        <th>' . $lang['GAME_RES_METAL'] . ':</th>
+        <td>' . number_format($row['metal'], 0, ',', $sep_mille) . '</td>
+        <th>' . $lang['GAME_RES_CRYSTAL'] . ':</th>
+        <td>' . number_format($row['cristal'], 0, ',', $sep_mille) . '</td>
     </tr>
     <tr>
-        <td class="c" style="text-align:right;">' . $lang['GAME_RES_METAL'] . ':</td>
-        <th>' . number_format($row['metal'], 0, ',', $sep_mille) . '</th>
-        <td class="c" style="text-align:right;">' . $lang['GAME_RES_CRYSTAL'] . ':</td>
-        <th>' . number_format($row['cristal'], 0, ',', $sep_mille) . '</th>
+        <th>' . $lang['GAME_RES_DEUT'] . ':</td>
+        <td>' . number_format($row['deuterium'], 0, ',', $sep_mille) . '</td>
+        <th class="c" style="text-align:right;">' . $lang['GAME_RES_ENERGY'] . ':</th>
+        <td>' . number_format($row['energie'], 0, ',', $sep_mille) . '</td>
     </tr>
     <tr>
-        <td class="c" style="text-align:right;">' . $lang['GAME_RES_DEUT'] . ':</td>
-        <th>' . number_format($row['deuterium'], 0, ',', $sep_mille) . '</th>
-        <td class="c" style="text-align:right;">' . $lang['GAME_RES_ENERGY'] . ':</td>
-        <th>' . number_format($row['energie'], 0, ',', $sep_mille) . '</th>
-    </tr>
-    <tr>
-        <th colspan="4">';
+        <td colspan="4">';
     if ($row['activite'] > 0) {
         $template .= $lang['GAME_SPYREPORT_ACTIVITY'] . ' ' . $row['activite'] . ' ' . $lang['GAME_SPYREPORT_LASTMINUTES'] . '.';
     } else {
         $template .= $lang['GAME_SPYREPORT_NOACTIVITY'];
     }
-    $template .= '</th>
+    $template .= '</td>
     </tr>' . "\n";
     foreach ($flotte as $key => $value) {
         if ($row[$key] != -1) {
@@ -1535,14 +1538,14 @@ function UNparseRE($id_RE)
 
     if ($show['flotte'] == 1) {
         $template .= '  <tr>
-        <td class="l" colspan="4">' . $lang['GAME_CAT_FLEET'] . '</td>
+        <th colspan="4">' . $lang['GAME_CAT_FLEET'] . '</th>
     </tr>
     <tr>' . "\n";
         $count = 0;
         foreach ($flotte as $key => $value) {
             if ($row[$key] > 0) {
-                $template .= '    <td class="c" style="text-align:right;">' . $flotte[$key] . '</td>
-        <th>' . number_format($row[$key], 0, ',', $sep_mille) . '</th>' . "\n";
+                $template .= '    <th class="c" style="text-align:right;">' . $flotte[$key] . '</th>
+        <td>' . number_format($row[$key], 0, ',', $sep_mille) . '</td>' . "\n";
                 if ($count == 0) {
                     $count = 1;
                 } else {
@@ -1553,21 +1556,21 @@ function UNparseRE($id_RE)
             }
         }
         if ($count == 1) {
-            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
+            $template .= '    <td>&nbsp;</td>
         <th>&nbsp;</th>' . "\n";
         }
         $template .= '  </tr>' . "\n";
     }
     if ($show['defense'] == 1) {
         $template .= '  <tr>
-        <td class="l" colspan="4">' . $lang['GAME_CAT_DEF'] . '</td>
+        <th class="l" colspan="4">' . $lang['GAME_CAT_DEF'] . '</th>
     </tr>
     <tr>' . "\n";
         $count = 0;
         foreach ($defs as $key => $value) {
             if ($row[$key] > 0) {
-                $template .= '    <td class="c" style="text-align:right;">' . $defs[$key] . '</td>
-        <th>' . number_format($row[$key], 0, ',', $sep_mille) . '</th>' . "\n";
+                $template .= '    <th>' . $defs[$key] . '</th>
+        <td>' . number_format($row[$key], 0, ',', $sep_mille) . '</td>' . "\n";
                 if ($count == 0) {
                     $count = 1;
                 } else {
@@ -1578,21 +1581,21 @@ function UNparseRE($id_RE)
             }
         }
         if ($count == 1) {
-            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
-        <th>&nbsp;</th>' . "\n";
+            $template .= '    <td>&nbsp;</td>
+        <td>&nbsp;</td>' . "\n";
         }
         $template .= '  </tr>' . "\n";
     }
     if ($show['batiment'] == 1) {
         $template .= '  <tr>
-        <td class="l" colspan="4">' . $lang['GAME_CAT_BUILDINGS'] . '</td>
+        <th colspan="4">' . $lang['GAME_CAT_BUILDINGS'] . '</th>
     </tr>
     <tr>' . "\n";
         $count = 0;
         foreach ($bats as $key => $value) {
             if ($row[$key] > 0) {
-                $template .= '    <td class="c" style="text-align:right;">' . $bats[$key] . '</td>
-        <th>' . $row[$key] . '</th>' . "\n";
+                $template .= '    <th>' . $bats[$key] . '</th>
+        <td>' . $row[$key] . '</td>' . "\n";
                 if ($count == 0) {
                     $count = 1;
                 } else {
@@ -1603,21 +1606,21 @@ function UNparseRE($id_RE)
             }
         }
         if ($count == 1) {
-            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
-        <th>&nbsp;</th>' . "\n";
+            $template .= '    <th>&nbsp;</th>
+        <td>&nbsp;</td>' . "\n";
         }
         $template .= '  </tr>' . "\n";
     }
     if ($show['recherche'] == 1) {
         $template .= '  <tr>
-        <td class="l" colspan="4">' . $lang['GAME_CAT_LAB'] . '</td>
+        <th colspan="4">' . $lang['GAME_CAT_LAB'] . '</th>
     </tr>
     <tr>' . "\n";
         $count = 0;
         foreach ($techs as $key => $value) {
             if ($row[$key] > 0) {
-                $template .= '    <td class="c" style="text-align:right;">' . $techs[$key] . '</td>
-        <th>' . $row[$key] . '</th>' . "\n";
+                $template .= '    <th>' . $techs[$key] . '</th>
+        <td>' . $row[$key] . '</td>' . "\n";
                 if ($count == 0) {
                     $count = 1;
                 } else {
@@ -1628,14 +1631,15 @@ function UNparseRE($id_RE)
             }
         }
         if ($count == 1) {
-            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
-        <th>&nbsp;</th>' . "\n";
+            $template .= '    <th>&nbsp;</th>
+        <td>&nbsp;</td>' . "\n";
         }
         $template .= '  </tr>' . "\n";
     }
     $template .= '  <tr>
-        <th colspan="4">' . $lang['GAME_SPYREPORT_PROBADEST'] . ' :' . $row['proba'] . '%</th>
+        <td colspan="4">' . $lang['GAME_SPYREPORT_PROBADEST'] . ' :' . $row['proba'] . '%</td>
     </tr>
+    </tbody>
 </table>';
     return ($template);
 }

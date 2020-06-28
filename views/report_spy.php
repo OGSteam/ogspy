@@ -45,12 +45,12 @@ if (sizeof($reports) == 0) {
         echo '<div><span style="font-weight:bold;">' . $lang['REPORT_RESENTBY'] . ' ' . $sender . '</span>' . date($lang['REPORT_DATEFORMAT'], $v['dateRE']) . "</div>\n";
         echo '<div style="text-align:right">';
         if (!isset($favorites[$spy_id])) {
-            echo "<input type='button' value='" . $lang['REPORT_ADDTOFAV'] . "' onclick=\"$string_addfavorites\">\n";
+            echo "<input type='button' class=\"button default \" value='" . $lang['REPORT_ADDTOFAV'] . "' onclick=\"$string_addfavorites\">\n";
         } else {
-            echo "<input type='button' value='" . $lang['REPORT_REMOVEFROMFAV'] . "' onclick=\"$string_delfavorites\">\n";
+            echo "<input type='button' class=\"button warning \"  value='" . $lang['REPORT_REMOVEFROMFAV'] . "' onclick=\"$string_delfavorites\">\n";
         }
         if ($user_data['user_admin'] == 1 || $user_data['user_coadmin'] == 1) {
-            echo "<input type='button' value='" . $lang['REPORT_DELETE'] . "' onclick=\"$string_delspy\">\n";
+            echo "<input type='button' class=\"button warning\" value='" . $lang['REPORT_DELETE'] . "' onclick=\"$string_delspy\">\n";
         }
         echo "</div><br>\n";
         echo $v['data'] . "<br><br>\n";
