@@ -54,6 +54,7 @@ class ToolTip_Helper extends Helper_Abstract
             $this->currentKey=$key;
             return false;
         }
+
         self::$content[$key] = $value;
         return $retour;
     }

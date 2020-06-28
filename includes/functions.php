@@ -1432,3 +1432,13 @@ function get_Helpers()
     return $tHelpers;
 }
 
+function htmlentitiesencode($value)
+{
+    if (version_compare(phpversion(), '5.4.0', '>=')) {
+        $value = htmlentities($value, ENT_COMPAT | ENT_HTML401, "UTF-8");
+    } else {
+        $value = htmlentities($value, ENT_COMPAT, "UTF-8");
+    }
+    return $value;
+}
+

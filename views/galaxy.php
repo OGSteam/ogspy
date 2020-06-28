@@ -15,6 +15,8 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
+use Ogsteam\Ogspy\Helper\html_ogspy_Helper;
+
 global $user_data;
 $ToolTip_Helper = new ToolTip_Helper();
 
@@ -38,451 +40,330 @@ $favorites = galaxy_getfavorites();
 $missil = "";
 //TODO sortir requete de la vue
 //recherche du group
-$user_group= (new \Ogsteam\Ogspy\Model\Group_Model())->get_user_group($user_data["user_id"]);
+$user_group = (new \Ogsteam\Ogspy\Model\Group_Model())->get_user_group($user_data["user_id"]);
 //recherche des droits liés
 $tInfosGroups = (new \Ogsteam\Ogspy\Model\Group_Model())->get_group_rights($user_group);
 
 
 //si autorisé server_show_positionhided doit etre a 1 !!!!!!!!!!!
 //todo info a communiquer avec release
-if ($tInfosGroups["server_show_positionhided"] == 1 )
-{
+if ($tInfosGroups["server_show_positionhided"] == 1) {
     if (($server_config["portee_missil"] != "0" && $server_config["portee_missil"] != "")) {
         $missil = portee_missiles($galaxy, $system);
     }
 }
 
+//stockage du html des tooltips joueur alliance
+$tab_tooltip_player = array();
+$tab_tooltip_player[""] = '&nbsp;';
+$tab_tooltip_ally = array();
+$tab_tooltip_ally[""] = '&nbsp;';
+
+/// préparation html des tooltip
+/// dans galaxie et phalange
+$tab_data = array($population, $phalanx_list);
+foreach ($tab_data as $value) {
+    foreach ($value as $v) {
+        $ally = $v["ally"];
+        $player = $v["player"];
+        //alliance
+        if ($ally != "" && !isset($tab_tooltip_ally[$ally])) {
+            $tab_tooltip_ally[$ally] = (new html_ogspy_Helper())->show_html_ranking_unique_ally($ally);
+        }
+        //player
+        if ($player != "" && !isset($tab_tooltip_player[$player])) {
+            $tab_tooltip_player[$player] = (new html_ogspy_Helper())->show_html_ranking_unique_player($player);
+        }
+    }
+}
 
 
 require_once("views/page_header.php");
+
 ?>
+    <form>
+        <input name="action" value="galaxy" type="hidden">
+        <div>
+            <label for="galaxy"><?php echo($lang['GALAXY_SELECT_GALAXY']); ?></label>
+            <input type="button" value="<<<"
+                   onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy_down; ?>&amp;system=<?php echo $system; ?>';">
+            <input type="text" name="galaxy" id="galaxy" maxlength="3" size="5" value="<?php echo $galaxy; ?>"
+                   tabindex="1">
+            <input type="button" value=">>>"
+                   onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy_up; ?>&amp;system=<?php echo $system; ?>';">
+        </div>
 
-<form>
-    <input name="action" value="galaxy" type="hidden">
-    <table border="0">
-        <tr>
-            <td>
-                <table>
-                    <tr>
-                        <td class="c" colspan="3"><?php echo($lang['GALAXY_SELECT_GALAXY']); ?></td>
-                    </tr>
-                    <tr>
-                        <td class="l"><input type="button" value="<<<"
-                                             onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy_down; ?>&amp;system=<?php echo $system; ?>';">
-                        </td>
-                        <td class="l"><input type="text" name="galaxy" maxlength="3" size="5"
-                                             value="<?php echo $galaxy; ?>" tabindex="1"></td>
-                        <td class="l"><input type="button" value=">>>"
-                                             onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy_up; ?>&amp;system=<?php echo $system; ?>';">
-                        </td>
-                    </tr>
-                </table>
-            </td>
-            <td>
-                <table>
-                    <tr>
-                        <td class="c" colspan="3"><?php echo($lang['GALAXY_SELECT_SYSTEM']); ?></td>
-                    </tr>
-                    <tr>
-                        <td class="l"><input type="button" value="<<<"
-                                             onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy; ?>&amp;system=<?php echo $system_down; ?>';">
-                        </td>
-                        <td class="l"><input type="text" name="system" maxlength="3" size="5"
-                                             value="<?php echo $system; ?>" tabindex="2"></td>
-                        <td class="l"><input type="button" value=">>>"
-                                             onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy; ?>&amp;system=<?php echo $system_up; ?>';">
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3"><input type="submit" value="<?php echo($lang['GALAXY_DISPLAY']); ?>"></td>
-        </tr>
-    </table>
-</form>
-<form method="POST" action="index.php?action=galaxy">
-    <table style='width:860px;'>
-        <tr>
-            <td colspan="3">
-                <label>
-                    <select name="coordinates" onchange="this.form.submit();" onkeyup="this.form.submit();">
-                        <option><?php echo($lang['GALAXY_FAVORITE_LIST']); ?></option>
-                        <?php
-                    foreach ($favorites as $v) {
-                        $coordinate = $v["galaxy"] . ":" . $v["system"];
-                        echo "\t\t\t" . "<option value='" . $coordinate . "'>" . $coordinate . "</option>";
-                        }
-                        ?>
-                    </select>
-                </label>
-            </td>
-            <td colspan="6">
+        <div>
+            <label for="system"><?php echo($lang['GALAXY_SELECT_SYSTEM']); ?></label>
+            <input type="button" value="<<<"
+                   onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy; ?>&amp;system=<?php echo $system_down; ?>';">
+            <input type="text" name="system" id="system" maxlength="3" size="5" value="<?php echo $system; ?>"
+                   tabindex="2">
+            <input type="button" value=">>>"
+                   onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy; ?>&amp;system=<?php echo $system_up; ?>';">
+        </div>
+        <div>
+
+            <input type="submit" value="<?php echo($lang['GALAXY_DISPLAY']); ?>">
+        </div>
+        <div class="sep">
+        </div>
+        <div>
+            <?php
+            if (sizeof($favorites) < $server_config['max_favorites']) {
+                $string_addfavorites = "window.location = 'index.php?action=add_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "';";
+            } else {
+                $string_addfavorites = "alert('" . $lang['GALAXY_MAX_FAVORITES_MESSAGE'] . " (" . $server_config['max_favorites'] . ")')";
+            }
+
+            if (sizeof($favorites) > 0) {
+                $string_delfavorites = "window.location = 'index.php?action=del_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "';";
+            } else {
+                $string_delfavorites = "alert('" . $lang['GALAXY_NO_FAVORITES_MESSAGE'] . "')";
+            }
+            ?>
+            <select name="coordinates" onchange="this.form.submit();" onkeyup="this.form.submit();">
+                <option><?php echo($lang['GALAXY_FAVORITE_LIST']); ?></option>
                 <?php
-                if (sizeof($favorites) < $server_config['max_favorites']) {
-                                    $string_addfavorites = "window.location = 'index.php?action=add_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "';";
-                } else {
-                                    $string_addfavorites = "alert('" . $lang['GALAXY_MAX_FAVORITES_MESSAGE'] . " (" . $server_config['max_favorites'] . ")')";
-                }
-
-                if (sizeof($favorites) > 0) {
-                                    $string_delfavorites = "window.location = 'index.php?action=del_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "';";
-                } else {
-                                    $string_delfavorites = "alert('" . $lang['GALAXY_NO_FAVORITES_MESSAGE'] . "')";
+                foreach ($favorites as $v) {
+                    $coordinate = $v["galaxy"] . ":" . $v["system"];
+                    echo "\t\t\t" . "<option value='" . $coordinate . "'>" . $coordinate . "</option>";
                 }
                 ?>
-                <input type="button" value="<?php echo($lang['GALAXY_ADD_FAVORITES']); ?>" onclick="<?php echo $string_addfavorites; ?>">
-                <input type="button" value="<?php echo($lang['GALAXY_REMOVE_FAVORITES']); ?>" onclick="<?php echo $string_delfavorites; ?>">
-            </td>
-        </tr>
-        <tr>
-            <td class="c" style="text-align:left" colspan="9"><?php echo($lang['GALAXY_SYSTEMS']); ?><?php echo $missil; ?></td>
-        </tr>
-        <tr>
-            <td class="c" width="25">&nbsp;</td>
-            <td class="c" width="175"><?php echo($lang['GALAXY_PLANETS']); ?></td>
-            <td class="c" width="175"><?php echo($lang['GALAXY_ALLIES']); ?></td>
-            <td class="c" width="175"><?php echo($lang['GALAXY_PLAYERS']); ?></td>
-            <td class="c" width="40">&nbsp;</td>
-            <td class="c" width="20">&nbsp;</td>
-            <td class="c" width="20">&nbsp;</td>
-            <td class="c" width="20">&nbsp;</td>
-            <td class="c" width="250"><?php echo($lang['GALAXY_UPDATES']); ?></td>
-        </tr>
-        <?php
-        $i = 1;
-        foreach ($population as $v) {
-            $begin_hided = "";
-            $end_hided = "";
-            if ($v["hided"]) {
-                $begin_hided = '<span style="color:lime;">';
-                $end_hided   = '</span>';
-            }
-            $begin_allied = "";
-            $end_allied = "";
-            if ($v["allied"]) {
-                $begin_allied = "<blink>";
-                $end_allied = "</blink>";
-            }
+            </select>
+            <input type="button" value="<?php echo($lang['GALAXY_ADD_FAVORITES']); ?>"
+                   onclick="<?php echo $string_addfavorites; ?>">
+            <input type="button" value="<?php echo($lang['GALAXY_REMOVE_FAVORITES']); ?>"
+                   onclick="<?php echo $string_delfavorites; ?>">
+        </div>
 
-            $id = $i;
-            $planet = $v["planet"];
-            $ally = $v["ally"];
-            $player = $v["player"];
-            $moon = $v["moon"];
-            $last_update_moon = $v["last_update_moon"];
-            $phalanx = $v["phalanx"];
-            $gate = $v["gate"] == 1;
-            $status = $v["status"];
-            $timestamp = $v["timestamp"];
-            $poster = '&nbsp;';
-            if ($timestamp != 0) {
-                $timestamp = strftime("%d %b %Y %H:%M", $timestamp);
-                $poster = $timestamp . " - " . $v["poster"];
-            }
+    </form>
 
-            if ($planet == "") {
-                $planet = '&nbsp;';
-            } else {
-                $planet = "<a href='index.php?action=search&amp;type_search=planet&amp;string_search=" . $planet . "&amp;strict=on'>" . $begin_allied . $begin_hided . $planet . $end_hided . $end_allied . "</a>";
-            }
 
-            if ($ally == "") {
-                $ally = '&nbsp;';
-            } else {
-                $tooltip = '<table style="width:250px" style="color:white;">';
-                $tooltip .= '<tr><td colspan="3" class="c">' . $lang['GALAXY_ALLY'] . " " . $ally . '</td></tr>';
+    <table>
+    <thead>
+    <tr>
+        <th colspan="9"><?php echo($lang['GALAXY_SYSTEMS']); ?><?php echo $missil; ?></th>
+    </tr>
+    </thead>
+    <tbody>
 
-                $individual_ranking = galaxy_show_ranking_unique_ally($ally);
-                while ($ranking = current($individual_ranking)) {
-                    $datadate = strftime("%d %b %Y %H:%M", key($individual_ranking));
-                    $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : '&nbsp;';
-                    $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : '&nbsp;';
-                    $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : '&nbsp;';
-                    $eco_points = isset($ranking["eco"]) ? formate_number($ranking["eco"]["points"]) : '&nbsp;';
-                    $techno_rank = isset($ranking["techno"]) ? formate_number($ranking["techno"]["rank"]) : '&nbsp;';
-                    $techno_points = isset($ranking["techno"]) ? formate_number($ranking["techno"]["points"]) : '&nbsp;';
-                    $military_rank = isset($ranking["military"]) ? formate_number($ranking["military"]["rank"]) : '&nbsp;';
-                    $military_points = isset($ranking["military"]) ? formate_number($ranking["military"]["points"]) : '&nbsp;';
-                    $military_b_rank = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["rank"]) : '&nbsp;';
-                    $military_b_points = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["points"]) : '&nbsp;';
-                    $military_l_rank = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["rank"]) : '&nbsp;';
-                    $military_l_points = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) : '&nbsp;';
-                    $military_d_rank = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) : '&nbsp;';
-                    $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : '&nbsp;';
-                    $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : '&nbsp;';
-                    $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : '&nbsp;';
+<tr>
+    <th>&nbsp;</th>
+    <th><?php echo($lang['GALAXY_PLANETS']); ?></th>
+    <th><?php echo($lang['GALAXY_ALLIES']); ?></th>
+    <th><?php echo($lang['GALAXY_PLAYERS']); ?></th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+    <th><?php echo($lang['GALAXY_UPDATES']); ?></th>
+</tr>
+<?php
+$i = 1;
+foreach ($population as $v) {
+    $begin_hided = "";
+    $end_hided = "";
+    if ($v["hided"]) {
+        $begin_hided = '<span>'; //todo ne pas oublier dans css  / classname
+        $end_hided = '</span>';
+    }
+    $begin_allied = "";
+    $end_allied = "";
+    if ($v["allied"]) {
+        $begin_allied = "";//todo ne pas oublier dans css / classname
+        $end_allied = "";
+    }
 
-                    $tooltip .= '<tr><td class="c" colspan="3">' . $lang['GALAXY_RANK'] . ' ' . $datadate . '</td></tr>';
-                    $tooltip .= '<tr><td class="c" style="width:75px">' . $lang['GALAXY_RANK_GENERAL'] . '</td><th style="width:30px">' . $general_rank . '</th><th>' . $general_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_ECONOMY'] . '</td><th>' . $eco_rank . '</th><th>' . $eco_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_LAB'] . '</td><th>' . $techno_rank . '</th><th>' . $techno_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY'] . '</td><th style="width:30px">' . $military_rank . '</th><th>' . $military_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_BUILT'] . '</td><th style="width:30px">' . $military_b_rank . '</th><th>' . $military_b_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_LOST'] . '</td><th>' . $military_l_rank . '</th><th>' . $military_l_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_DESTROYED'] . '</td><th>' . $military_d_rank . '</th><th>' . $military_d_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_HONNOR'] . '</td><th>' . $honnor_rank . '</th><th>' . $honnor_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c" colspan="3">' . formate_number($ranking["number_member"]) . " " . $lang['GALAXY_MEMBERS'] . '</td></tr>';
-                    break;
-                }
-                $tooltip .= '<tr><td class="c" colspan="3"><a href="index.php?action=search&amp;type_search=ally&amp;string_search=' . $ally . '&strict=on">' . $lang['GALAXY_SEE_DETAILS'] . '</a></td></tr>';
-                $tooltip .= '</table>';
-                if (version_compare(phpversion(), '5.4.0', '>=')) {
-                    $tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
-                } else {
-                    $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
-                }
+    $id = $i;
+    $planet = $v["planet"];
+    $ally = $v["ally"];
+    $player = $v["player"];
+    $moon = $v["moon"];
+    $last_update_moon = $v["last_update_moon"];
+    $phalanx = $v["phalanx"];
+    $gate = $v["gate"] == 1;
+    $status = $v["status"];
+    $timestamp = $v["timestamp"];
+    $poster = '&nbsp;';
+    if ($timestamp != 0) {
+        $timestamp = strftime("%d %b %Y %H:%M", $timestamp);
+        $poster = $timestamp . " - " . $v["poster"];
+    }
 
-                //------------  Affichage Tooltip ----------------
-                    $ToolTip_Helper->addTooltip("ttp_alliance_".$ally,  $tooltip );
-                    $ally = '<a '.$ToolTip_Helper->GetHTMLClassContent().' href="index.php?action=search&amp;type_search=ally&amp;string_search=' . $ally . '&strict=on">  '.$begin_allied . $begin_hided . $ally . $end_hided . $end_allied .'  </a>';
-            }
+    if ($planet == "") {
+        $planet = '&nbsp;';
+    } else {
+        $planet = "<a href='index.php?action=search&amp;type_search=planet&amp;string_search=" . $planet . "&amp;strict=on'>" . $begin_allied . $begin_hided . $planet . $end_hided . $end_allied . "</a>";
+    }
 
-            if ($player == "") {
-                $player = '&nbsp;';
-            } else {
-                $tooltip = '<table style="width:250px; color:white;">';
-                $tooltip .= '<tr><td colspan="3" class="c">' . $lang['GALAXY_PLAYER'] . ' ' . $player . '</td></tr>';
+    $tooltip = $tab_tooltip_ally[$ally];
+    //------------  Affichage Tooltip ----------------
+    $ToolTip_Helper->addTooltip("ttp_alliance_" . $ally, $tooltip);
+    $ally = '<a ' . $ToolTip_Helper->GetHTMLClassContent() . ' href="index.php?action=search&amp;type_search=ally&amp;string_search=' . $ally . '&strict=on">  ' . $begin_allied . $begin_hided . $ally . $end_hided . $end_allied . '  </a>';
 
-                $individual_ranking = galaxy_show_ranking_unique_player($player);
-                while ($ranking = current($individual_ranking)) {
-                    $datadate = strftime("%d %b %Y %H:%M", key($individual_ranking));
-                    $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : '&nbsp;';
-                    $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : '&nbsp;';
-                    $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : '&nbsp;';
-                    $eco_points = isset($ranking["eco"]) ? formate_number($ranking["eco"]["points"]) : '&nbsp;';
-                    $techno_rank = isset($ranking["techno"]) ? formate_number($ranking["techno"]["rank"]) : '&nbsp;';
-                    $techno_points = isset($ranking["techno"]) ? formate_number($ranking["techno"]["points"]) : '&nbsp;';
-                    $military_rank = isset($ranking["military"]) ? formate_number($ranking["military"]["rank"]) : '&nbsp;';
-                    $military_points = isset($ranking["military"]) ? formate_number($ranking["military"]["points"]) : '&nbsp;';
-                    $military_b_rank = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["rank"]) : '&nbsp;';
-                    $military_b_points = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["points"]) : '&nbsp;';
-                    $military_l_rank = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["rank"]) : '&nbsp;';
-                    $military_l_points = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) : '&nbsp;';
-                    $military_d_rank = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) : '&nbsp;';
-                    $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : '&nbsp;';
-                    $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : '&nbsp;';
-                    $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : '&nbsp;';
 
-                    $tooltip .= '<tr><td class="c" colspan="3">' . $lang['GALAXY_RANK'] . " " . $datadate . '</td></tr>';
-                    $tooltip .= '<tr><td class="c" style="width:75px">' . $lang['GALAXY_RANK_GENERAL'] . '</td><th style="width:30px">' . $general_rank . '</th><th>' . $general_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_ECONOMY'] . '</td><th>' . $eco_rank . '</th><th>' . $eco_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_LAB'] . '</td><th>' . $techno_rank . '</th><th>' . $techno_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY'] . '</td><th style="width:30px">' . $military_rank . '</th><th>' . $military_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_BUILT'] . '</td><th>' . $military_b_rank . '</th><th>' . $military_b_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_LOST'] . '</td><th>' . $military_l_rank . '</th><th>' . $military_l_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_DESTROYED'] . '</td><th>' . $military_d_rank . '</th><th>' . $military_d_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_MILITARY_HONNOR'] . '</td><th>' . $honnor_rank . '</th><th>' . $honnor_points . '</th></tr>';
-                    break;
-                }
-                $tooltip .= '<tr><td class="c" colspan="3"><a href="index.php?action=search&amp;type_search=player&amp;string_search=' . $player . '&amp;strict=on">' . $lang['GALAXY_SEE_DETAILS'] . '</a></td></tr>';
-                $tooltip .= '</table>';
-                if (version_compare(phpversion(), '5.4.0', '>=')) {
-                    $tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
-                } else {
-                    $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
-                }
-                //------------  Affichage Tooltip ----------------
-                $ToolTip_Helper->addTooltip("ttp_player_".$player,  $tooltip );
-                $player = '<a '.$ToolTip_Helper->GetHTMLClassContent().' href="index.php?action=search&amp;type_search=player&amp;string_search=' . $player . '&amp;strict=on">  '.$begin_allied . $begin_hided . $player . $end_hided . $end_allied.'  </a>';
-                //------------  Fin Affichage Tooltip ----------------
-            }
-
-            if ($status == "") {
-                $status = '&nbsp;';
-            }
-
-            if ($moon == 1) {
-                $moon = '<img src="skin/OGSpy_skin/img/lune.png">';
-                $detail = "";
-                if ($last_update_moon > 0) {
-                    $detail .= $phalanx;
-                }
-                if ($gate == 1) {
-                    $detail .= "P";
-                }
-                if ($detail != "") {
-                    $moon .= " - " . $detail;
-                }
-            } else {
-                $moon = '&nbsp;';
-            }
-
-            if ($v["report_spy"] > 0) {
-                $spy = "<a href='#' onClick=\"window.open('index.php?action=show_reportspy&amp;galaxy=$galaxy&amp;system=$system&amp;row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">" . $lang['GALAXY_SR'] . '</a>';
-            } else {
-                $spy = '&nbsp;';
-            }
-
-            if (isset($v["report_rc"]) && $v["report_rc"] > 0) {
-                $rc = "<a href='#' onClick=\"window.open('index.php?action=show_reportrc&amp;galaxy=$galaxy&amp;system=$system&amp;row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">" . $v["report_rc"] . $lang['GALAXY_CR'] . '</a>';
-            } else {
-                $rc = '&nbsp;';
-            }
-
-            echo "<tr>\n";
-            echo "\t<th>" . $id     . "</th>\n";
-            echo "\t<th>" . $planet . "</th>\n";
-            echo "\t<th>" . $ally   . "</th>\n";
-            echo "\t<th>" . $player . "</th>\n";
-            echo "\t<th>" . $moon   . "</th>\n";
-            echo "\t<th>" . $status . "</th>\n";
-            echo "\t<th>" . $spy    . "</th>\n";
-            echo "\t<th>" . $rc     . "</th>\n";
-            echo "\t<th>" . $poster . "</th>\n";
-            echo "</tr>\n";
-
-            $i++;
-        }
-        $legend = '<table style="width:225px">';
-        $legend .= '<tr><td class="c" colspan="2"style="width:150px">' . $lang['GALAXY_LEGEND'] . '</td></tr>';
-        $legend .= '<tr><td class="c">' . $lang['GALAXY_INACTIVE_7Days'] . '</td><th>' . $lang['GALAXY_INACTIVE_7Days_SYMBOL'] . '</th></tr>';
-        $legend .= '<tr><td class="c">' . $lang['GALAXY_INACTIVE_28Days'] . '</td><th>' . $lang['GALAXY_INACTIVE_28Days_SYMBOL'] . '</th></tr>';
-        $legend .= '<tr><td class="c">' . $lang['GALAXY_HOLIDAYS'] . '</td><th>' . $lang['GALAXY_HOLIDAYS_SYMBOL'] . '</th></tr>';
-        $legend .= '<tr><td class="c">' . $lang['GALAXY_WEAK_PROTECTION'] . '</td><th>' . $lang['GALAXY_WEAK_PROTECTION_SYMBOL'] . '</th></tr>';
-        $legend .= '<tr><td class="c">' . $lang['GALAXY_MOON'] . '<br><span style="font-style:italic">' . $lang['GALAXY_MOON_PHALANX'] . '</span></td><th><img alt="lune" src="skin/OGSpy_skin/img/lune.png">' . $lang['GALAXY_MOON_PHALANX_SYMBOL'] . '</th></tr>';
-        $legend .= '<tr><td class="c">' . $lang['GALAXY_SPYREPORT'] . '</td><th>' . $lang['GALAXY_SPYREPORT_SYMBOL'] . '</th></tr>';
-        $legend .= '<tr><td class="c">' . $lang['GALAXY_COMBATREPORT'] . '</td><th>' . $lang['GALAXY_COMBATREPORT_SYMBOL'] . '</th></tr>';
-        $legend .= '<tr><td class="c">' . $lang['GALAXY_ALLY_FRIEND'] . '</td><th><blink><a>abc</a></blink></th></tr>';
-        $legend .= '<tr><td class="c">' . $lang['GALAXY_ALLY_HIDDEN'] . '</td><th><span style="color: lime;">abc</span></th></tr>';
-        $legend .= '</table>';
-        if (version_compare(phpversion(), '5.4.0', '>=')) {
-            $legend = htmlentities($legend, ENT_COMPAT | ENT_HTML401, "UTF-8");
-        } else {
-            $legend = htmlentities($legend, ENT_COMPAT, "UTF-8");
-        }
+    if ($player == "") {
+        $player = '&nbsp;';
+    } else {
+        $tooltip = $tab_tooltip_player[$player];
         //------------  Affichage Tooltip ----------------
-        $ToolTip_Helper->addTooltip("legende",  $legend );
-        echo '<tr><td class="c" colspan="9">';
-        echo '<a style="cursor:pointer" ' . $ToolTip_Helper->GetHTMLClassContent() . ' >' . $lang['GALAXY_LEGEND'] . '</a>';
-        echo '</td></tr>';
-        echo "</table></form>\n";
-        //------------ fin Affichage Tooltip ----------------
-        
-        //Phalange
-        echo '<br><table style="width:860px" border="1">';
-        echo '<tr><td class="c">' . $lang['GALAXY_PHALANX_LIST'] . help("galaxy_phalanx") . '</td></tr>';
-        if (sizeof($phalanx_list) > 0) {
-            foreach ($phalanx_list as $value) {
-                echo '<tr style="text-align:left;"><th>';
-                if ($value["ally"] != "") {
-                    $individual_ranking = galaxy_show_ranking_unique_ally($value["ally"]);
-                    $tooltip = '<table style="width:250px; color:white;">';
-                    $tooltip .= '<tr><td colspan="3" class="c">' . $lang['GALAXY_ALLY'] . ' ' . $value["ally"] . '</td></tr>';
-                    while ($ranking = current($individual_ranking)) {
-                        $datadate = strftime("%d %b %Y à %Hh", key($individual_ranking));
-                        $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : '&nbsp;';
-                        $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) . ' <span style="font-style:italic;">( ' . formate_number($ranking["general"]["points_per_member"]) . ' )</span>' : '&nbsp;';
-                        $fleet_rank = isset($ranking["fleet"]) ? formate_number($ranking["fleet"]["rank"]) : '&nbsp;';
-                        $fleet_points = isset($ranking["fleet"]) ? formate_number($ranking["fleet"]["points"]) . ' <span style="font-style:italic;">( ' . formate_number($ranking["fleet"]["points_per_member"]) . ' )</span>' : '&nbsp;';
-                        $research_rank = isset($ranking["research"]) ? formate_number($ranking["research"]["rank"]) : '&nbsp;';
-                        $research_points = isset($ranking["research"]) ? formate_number($ranking["research"]["points"]) . ' <span style="font-style:italic;">( ' . formate_number($ranking["research"]["points_per_member"]) . ' )</span>' : '&nbsp;';
+        $ToolTip_Helper->addTooltip("ttp_player_" . $player, $tooltip);
+        $player = '<a ' . $ToolTip_Helper->GetHTMLClassContent() . ' href="index.php?action=search&amp;type_search=player&amp;string_search=' . $player . '&amp;strict=on">  ' . $begin_allied . $begin_hided . $player . $end_hided . $end_allied . '  </a>';
+        //------------  Fin Affichage Tooltip ----------------
+    }
 
-                        $tooltip .= '<tr><td class="c" colspan="3">' . $lang['GALAXY_RANK'] . ' ' . $datadate . '</td></tr>';
-                        $tooltip .= '<tr><td class="c" style="width:75px">' . $lang['GALAXY_RANK_GENERAL'] . '</td><th style="width:30px">' . $general_rank . '</th><th>' . $general_points . '</th></tr>';
-                        $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_FLEET'] . '</td><th>' . $fleet_rank . '</th><th>' . $fleet_points . '</th></tr>';
-                        $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_LAB'] . '</td><th>' . $research_rank . '</th><th>' . $research_points . '</th></tr>';
-                        $tooltip .= '<tr><td class="c" colspan="3">' . formate_number($ranking["number_member"]) . ' ' . $lang['GALAXY_MEMBERS'] . '</td></tr>';
-                        break;
-                    }
-                    $tooltip .= '<tr><td class="c" colspan="3"><a href="index.php?action=search&amp;type_search=ally&amp;string_search=' . $value["ally"] . '&amp;strict=on">' . $lang['GALAXY_SEE_DETAILS'] . '</a></td></tr>';
-                    $tooltip .= '</table>';
-                    if (version_compare(phpversion(), '5.4.0', '>=')) {
-                        $tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
-                    } else {
-                        $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
-                    }
+    if ($status == "") {
+        $status = '&nbsp;';
+    }
 
-                    $ToolTip_Helper->addTooltip("ttp_alliance_".$value["ally"],  $tooltip );
-                    echo '[<a href="index.php?action=search&&amp;type_search=ally&amp;string_search=' . $value["ally"] . '&amp;strict=on"  ' . $ToolTip_Helper->GetHTMLClassContent() . '>' . $value["ally"] . '</a>] ';
-                }
-
-                $individual_ranking = galaxy_show_ranking_unique_player($value["player"]);
-                $tooltip  = '<table style="width:250px; color:white;">';
-                $tooltip .= '<tr><td colspan="3" class="c">' . $lang['GALAXY_PLAYER'] . ' ' . $value["player"] . '</td></tr>';
-                while ($ranking = current($individual_ranking)) {
-                    $datadate = strftime("%d %b %Y à %Hh", key($individual_ranking));
-                    $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : '&nbsp;';
-                    $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : '&nbsp;';
-                    $fleet_rank = isset($ranking["fleet"]) ? formate_number($ranking["fleet"]["rank"]) : '&nbsp;';
-                    $fleet_points = isset($ranking["fleet"]) ? formate_number($ranking["fleet"]["points"]) : '&nbsp;';
-                    $research_rank = isset($ranking["research"]) ? formate_number($ranking["research"]["rank"]) : '&nbsp;';
-                    $research_points = isset($ranking["research"]) ? formate_number($ranking["research"]["points"]) : '&nbsp;';
-
-                    $tooltip .= '<tr><td class="c" colspan="3">' . $lang['GALAXY_RANK'] . ' ' . $datadate . '</td></tr>';
-                    $tooltip .= '<tr><td class="c" style="width:75px">' . $lang['GALAXY_RANK_GENERAL'] . '</td><th style="width:30px">' . $general_rank . '</th><th>' . $general_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_FLEET'] . '</td><th>' . $fleet_rank . '</th><th>' . $fleet_points . '</th></tr>';
-                    $tooltip .= '<tr><td class="c">' . $lang['GALAXY_RANK_LAB'] . '</td><th>' . $research_rank . '</th><th>' . $research_points . '</th></tr>';
-                    break;
-                }
-                $tooltip .= '<tr><td class="c" colspan="3"><a href="index.php?action=search&amp;type_search=player&amp;string_search=' . $value['player'] . '&amp;strict=on">' . $lang['GALAXY_SEE_DETAILS'] . '</a></td></tr>';
-                $tooltip .= '</table>';
-                if (version_compare(phpversion(), '5.4.0', '>=')) {
-                    $tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
-                } else {
-                    $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
-                }
-
-                //------------  Affichage Tooltip ----------------
-                $ToolTip_Helper->addTooltip("ttp_player_".$player,  $tooltip );
-                echo '<a href="index.php?action=search&amp;type_search=player&amp;string_search=' . $value['player'] . '&amp;strict=on" ' . $ToolTip_Helper->GetHTMLClassContent() . '>' . $value['player'] . '</a> ' . $lang['GALAXY_LUNA_PHALANX'] . ' ' . $value['level'];
-                echo ' en <a href="index.php?action=galaxy&amp;galaxy=' . $value['galaxy'] . '&amp;system=' . $value['system'] . '">' . $value['galaxy'] . ':' . $value['system'] . ':' . $value['row'] . '</a> [<span style="color:orange;">' . $value['galaxy'] . ':';
-
-                echo $value['range_down'] . ' <-> ' . $value['galaxy'] . ':' . $value['range_up'] . '</span>]';
-
-                if ($value['gate'] == '1') {
-                    echo '<span style="color:red;"> ' . $lang['GALAXY_LUNA_GATE'] . ' </span>';
-                }
-                echo '.</th></tr>';
-            }
-        } else {
-            echo '<tr><th>' . $lang['GALAXY_LUNA_NOPHALANX'] . '</th></tr>';
+    if ($moon == 1) {
+        $moon = '<img src="skin/OGSpy_skin/img/lune.png">';
+        $detail = "";
+        if ($last_update_moon > 0) {
+            $detail .= $phalanx;
         }
-        echo '</table>';
-
-
-        //Raccourci recherche
-        $tooltip_begin = '<table style="width:200px">';
-        $tooltip_end = '</table>';
-
-        $tooltip_colonization = $tooltip_moon = $tooltip_away = $tooltip_spy = "";
-        for ($i = 10; $i <= 50; $i = $i + 10) {
-            if ($system - $i >= 1) {
-                $down = $system - $i;
-            } else {
-                $down = 1;
-            }
-
-            if ($system + $i <= intval($server_config['num_of_systems'])) {
-                $up = $system + $i;
-            } else {
-                $up = intval($server_config['num_of_systems']);
-            }
-
-            $tooltip_colonization .= '<th colspan="1"><a href="index.php?action=search&amp;type_search=colonization&amp;galaxy_down=' . $galaxy . '&amp;galaxy_up=' . $galaxy . '&amp;system_down=' . $down . '&amp;system_up=' . $up . '&amp;row_down=&amp;row_up=">' . $i . '</a></th>';
-            $tooltip_moon .= '<th colspan="1"><a href="index.php?action=search&amp;type_search=moon&amp;galaxy_down=' . $galaxy . '&amp;galaxy_up=' . $galaxy . '&amp;system_down=' . $down . '&amp;system_up=' . $up . '&amp;row_down=&amp;row_up=">' . $i . '</a></th>';
-            $tooltip_away .= '<th colspan="1"><a href="index.php?action=search&amp;type_search=away&amp;galaxy_down=' . $galaxy . '&amp;galaxy_up=' . $galaxy . '&amp;system_down=' . $down . '&amp;system_up=' . $up . '&amp;row_down=&amp;row_up=">' . $i . '</a></th>';
-            $tooltip_spy  .= '<th colspan="1"><a href="index.php?action=search&amp;type_search=spy&amp;galaxy_down='  . $galaxy . '&amp;galaxy_up=' . $galaxy . '&amp;system_down=' . $down . '&amp;system_up=' . $up . '&amp;row_down=&amp;row_up=">' . $i . '</a></th>';
+        if ($gate == 1) {
+            $detail .= "P";
         }
+        if ($detail != "") {
+            $moon .= " - " . $detail;
+        }
+    } else {
+        $moon = '&nbsp;';
+    }
 
-        echo '<br><table style="width:860px" border="1">';
-        echo '<tr><td class="c" colspan="20">' . $lang['GALAXY_SEARCH'] . '</td></tr>';
-        echo '<tr>';
-        echo '<th style="width=25%" colspan="5">' . $lang['GALAXY_SEARCH_PLANETS_AVAILABLE'] . '</th>';
-        echo '<th style="width=25%" colspan="5">' . $lang['GALAXY_SEARCH_MOONS'] . '</th>';
-        echo '<th style="width=25%" colspan="5">' . $lang['GALAXY_SEARCH_INACTIVES'] . '</th>';
-        echo '<th style="width=25%" colspan="5">' . $lang['GALAXY_SEARCH_SPYREPORTS'] . '</th>';
-        echo '</tr>';
-        echo '<tr>';
-        echo $tooltip_colonization;
-        echo $tooltip_moon;
-        echo $tooltip_away;
-        echo $tooltip_spy;
-        echo '</tr>';
-        echo '<tr>';
-        echo '<th colspan="20">' . $lang['GALAXY_SURROUNDING_SYSTEMS']. '</th>';
-        echo '</tr>';
-        echo '</table>';
+    if ($v["report_spy"] > 0) {
+        $spy = "<a href='#' onClick=\"window.open('index.php?action=show_reportspy&amp;galaxy=$galaxy&amp;system=$system&amp;row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">" . $lang['GALAXY_SR'] . '</a>';
+    } else {
+        $spy = '&nbsp;';
+    }
 
-        require_once('views/page_tail.php');
+    if (isset($v["report_rc"]) && $v["report_rc"] > 0) {
+        $rc = "<a href='#' onClick=\"window.open('index.php?action=show_reportrc&amp;galaxy=$galaxy&amp;system=$system&amp;row=$i','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">" . $v["report_rc"] . $lang['GALAXY_CR'] . '</a>';
+    } else {
+        $rc = '&nbsp;';
+    }
+
+    echo "<tr>\n";
+    echo "\t<td>" . $id . "</td>\n";
+    echo "\t<td>" . $planet . "</td>\n";
+    echo "\t<td>" . $ally . "</td>\n";
+    echo "\t<td>" . $player . "</td>\n";
+    echo "\t<td>" . $moon . "</td>\n";
+    echo "\t<td>" . $status . "</td>\n";
+    echo "\t<td>" . $spy . "</td>\n";
+    echo "\t<td>" . $rc . "</td>\n";
+    echo "\t<td>" . $poster . "</td>\n";
+    echo "</tr>\n";
+
+    $i++;
+}
+$legend = '<table>';
+$legend .= '<thead><tr><th colspan="2">' . $lang['GALAXY_LEGEND'] . '</th></tr></thead>';
+$legend .= '<tbody>';
+$legend .= '<tr><th >' . $lang['GALAXY_INACTIVE_7Days'] . '</th><td>' . $lang['GALAXY_INACTIVE_7Days_SYMBOL'] . '</td></tr>';
+$legend .= '<tr><th  >' . $lang['GALAXY_INACTIVE_28Days'] . '</th><td>' . $lang['GALAXY_INACTIVE_28Days_SYMBOL'] . '</td></tr>';
+$legend .= '<tr><th >' . $lang['GALAXY_HOLIDAYS'] . '</th><td>' . $lang['GALAXY_HOLIDAYS_SYMBOL'] . '</td></tr>';
+$legend .= '<tr><th  >' . $lang['GALAXY_WEAK_PROTECTION'] . '</th><td>' . $lang['GALAXY_WEAK_PROTECTION_SYMBOL'] . '</td></tr>';
+$legend .= '<tr><th  >' . $lang['GALAXY_MOON'] . '<br><span>' . $lang['GALAXY_MOON_PHALANX'] . '</span></th><td><img alt="lune" src="skin/OGSpy_skin/img/lune.png">' . $lang['GALAXY_MOON_PHALANX_SYMBOL'] . '</td></tr>';
+$legend .= '<tr><th  >' . $lang['GALAXY_SPYREPORT'] . '</th><td>' . $lang['GALAXY_SPYREPORT_SYMBOL'] . '</td></tr>';
+$legend .= '<tr><th  >' . $lang['GALAXY_COMBATREPORT'] . '</th><td>' . $lang['GALAXY_COMBATREPORT_SYMBOL'] . '</td></tr>';
+$legend .= '<tr><th  >' . $lang['GALAXY_ALLY_FRIEND'] . '</th><td><blink><a>abc</a></blink></td></tr>';
+$legend .= '<tr><th  >' . $lang['GALAXY_ALLY_HIDDEN'] . '</th><td><span style="color: lime;">abc</span></td></tr>';
+$legend .= '</tbody>';
+$legend .= '</table>';
+
+//------------  Affichage Tooltip ----------------
+$legend = htmlentitiesencode($legend);
+$ToolTip_Helper->addTooltip("legende", $legend);
+echo '<tr><td class="c" colspan="9">';
+echo '<a style="cursor:pointer" ' . $ToolTip_Helper->GetHTMLClassContent() . ' >' . $lang['GALAXY_LEGEND'] . '</a>';
+echo '</td></tr>';
+echo ' </tbody>';
+echo "</table>\n";
+//------------ fin Affichage Tooltip ----------------
+
+//Phalange
+echo '<br><table>';
+echo '<thead><tr><th>' . $lang['GALAXY_PHALANX_LIST'] . help("galaxy_phalanx") . '</th></tr></thead>';
+echo '<tbody>';
+if (sizeof($phalanx_list) > 0) {
+    foreach ($phalanx_list as $value) {
+        echo '<tr><td>';
+
+        $tooltip = $tab_tooltip_ally[$value["ally"]];
+        //------------  Affichage Tooltip ----------------
+        $ToolTip_Helper->addTooltip("ttp_alliance_" . $value["ally"], $tooltip);
+        echo '[<a href="index.php?action=search&&amp;type_search=ally&amp;string_search=' . $value["ally"] . '&amp;strict=on"  ' . $ToolTip_Helper->GetHTMLClassContent() . '>' . $value["ally"] . '</a>] ';
+
+
+        //------------  Affichage Tooltip ----------------
+        $tab_tooltip_player[$value['player']] = (new html_ogspy_Helper())->show_html_ranking_unique_player($value['player']);
+        $ToolTip_Helper->addTooltip("ttp_player_" . $value['player'], $tooltip);
+        $player = '<a ' . $ToolTip_Helper->GetHTMLClassContent() . ' href="index.php?action=search&amp;type_search=player&amp;string_search=' . $value['player'] . '&amp;strict=on">  ' . $value['player'] . '</a>';
+
+        echo $player . $lang['GALAXY_LUNA_PHALANX'] . ' ' . $value['level'];
+        echo ' en <a href="index.php?action=galaxy&amp;galaxy=' . $value['galaxy'] . '&amp;system=' . $value['system'] . '">' . $value['galaxy'] . ':' . $value['system'] . ':' . $value['row'] . '</a> [<span>' . $value['galaxy'] . ':';
+
+        echo $value['range_down'] . ' <-> ' . $value['galaxy'] . ':' . $value['range_up'] . '</span>]';
+
+        if ($value['gate'] == '1') {
+            echo '<span> ' . $lang['GALAXY_LUNA_GATE'] . ' </span>';
+        }
+        echo '.</td></tr>';
+    }
+} else {
+    echo '<tr><td>' . $lang['GALAXY_LUNA_NOPHALANX'] . '</td></tr>';
+}
+echo '</tbody>';
+echo '</table>';
+
+
+//Raccourci recherche
+$tooltip_begin = '<table style="width:200px">';
+$tooltip_end = '</table>';
+
+$tooltip_colonization = $tooltip_moon = $tooltip_away = $tooltip_spy = "";
+for ($i = 10; $i <= 50; $i = $i + 10) {
+    if ($system - $i >= 1) {
+        $down = $system - $i;
+    } else {
+        $down = 1;
+    }
+
+    if ($system + $i <= intval($server_config['num_of_systems'])) {
+        $up = $system + $i;
+    } else {
+        $up = intval($server_config['num_of_systems']);
+    }
+
+    $tooltip_colonization .= '<td colspan="1"><a href="index.php?action=search&amp;type_search=colonization&amp;galaxy_down=' . $galaxy . '&amp;galaxy_up=' . $galaxy . '&amp;system_down=' . $down . '&amp;system_up=' . $up . '&amp;row_down=&amp;row_up=">' . $i . '</a></td>';
+    $tooltip_moon .= '<td colspan="1"><a href="index.php?action=search&amp;type_search=moon&amp;galaxy_down=' . $galaxy . '&amp;galaxy_up=' . $galaxy . '&amp;system_down=' . $down . '&amp;system_up=' . $up . '&amp;row_down=&amp;row_up=">' . $i . '</a></td>';
+    $tooltip_away .= '<td colspan="1"><a href="index.php?action=search&amp;type_search=away&amp;galaxy_down=' . $galaxy . '&amp;galaxy_up=' . $galaxy . '&amp;system_down=' . $down . '&amp;system_up=' . $up . '&amp;row_down=&amp;row_up=">' . $i . '</a></td>';
+    $tooltip_spy .= '<td colspan="1"><a href="index.php?action=search&amp;type_search=spy&amp;galaxy_down=' . $galaxy . '&amp;galaxy_up=' . $galaxy . '&amp;system_down=' . $down . '&amp;system_up=' . $up . '&amp;row_down=&amp;row_up=">' . $i . '</a></td>';
+}
+
+echo '<table>';
+echo '<thead><tr><th colspan="20">' . $lang['GALAXY_SEARCH'] . '</th></tr></thead>';
+echo '<tbody>';
+echo '<tr>';
+echo '<th colspan="5">' . $lang['GALAXY_SEARCH_PLANETS_AVAILABLE'] . '</th>';
+echo '<th colspan="5">' . $lang['GALAXY_SEARCH_MOONS'] . '</th>';
+echo '<th colspan="5">' . $lang['GALAXY_SEARCH_INACTIVES'] . '</th>';
+echo '<th  colspan="5">' . $lang['GALAXY_SEARCH_SPYREPORTS'] . '</th>';
+echo '</tr>';
+echo '<tr>';
+echo $tooltip_colonization;
+echo $tooltip_moon;
+echo $tooltip_away;
+echo $tooltip_spy;
+echo '</tr>';
+echo '<tr>';
+echo '<th colspan="20">' . $lang['GALAXY_SURROUNDING_SYSTEMS'] . '</th>';
+echo '</tr>';
+echo '</tbody>';
+echo '</table>';
+
+require_once('views/page_tail.php');
 ?>
