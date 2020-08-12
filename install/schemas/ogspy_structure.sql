@@ -564,7 +564,7 @@ CREATE TABLE `ogspy_user_building`
   `planet_name`     VARCHAR(20) NOT NULL DEFAULT '',
   `coordinates`     VARCHAR(10) NOT NULL DEFAULT '',
   `fields`          SMALLINT(3) NOT NULL DEFAULT '0',
-  `boosters`        VARCHAR(64) NOT NULL DEFAULT 'm:0:0_c:0:0_d:0:0_p:0_m:0',
+  `boosters`        VARCHAR(64) NOT NULL DEFAULT 'm:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0',
   `temperature_min` SMALLINT(2) NOT NULL DEFAULT '0',
   `temperature_max` SMALLINT(2) NOT NULL DEFAULT '0',
   `Sat`             SMALLINT(5) NOT NULL DEFAULT '0',

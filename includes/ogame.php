@@ -227,12 +227,14 @@ function consumption($building, $level, $speed_uni = 1)
  * @param int $per_SAT sattelites production percent (0=0%, 1=100%)
  * @param int $per_FOR foreuse production percent (0=0%, 1=100%)
  * @param int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
+ * @param null $booster
  * @return array("ratio", "conso_E", "prod_E", "prod_CES", "prod_CEF", "prod_SAT", "conso_M", "conso_C", "conso_D", "conso_FOR")
  */
 function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
-               $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $FOR = 0, $per_FOR = 0, $classe = 0)
+               $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $FOR = 0, $per_FOR = 0, $classe = 0, $booster = NULL)
 {
     $consommation_E = 0; // la consommation
+    $prod_boost_E = 0;
     $conso_M   = consumption("M", $M) * $per_M;
     $conso_C   = consumption("C", $C) * $per_C;
     $conso_D   = consumption("D", $D) * $per_D;
@@ -240,10 +242,19 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
     $consommation_E += $conso_M + $conso_C + $conso_D + $conso_FOR;
 
     $production_E = 0; // la production
-    $prod_CES = production("CES", $CES, $off_ing, $temperature_max, $NRJ, 0, $classe) * $per_CES;
-    $prod_CEF = production("CEF", $CEF, $off_ing, $temperature_max, $NRJ, 0, $classe) * $per_CEF;
-    $prod_SAT = production("SAT", $SAT, $off_ing, $temperature_max, $NRJ, 0, $classe) * $per_SAT;
+    $prod_CES = production('CES', $CES, $off_ing, $temperature_max, $NRJ, 0, $classe) * $per_CES;
+    $prod_CEF = production('CEF', $CEF, $off_ing, $temperature_max, $NRJ, 0, $classe) * $per_CEF;
+    $prod_SAT = production('SAT', $SAT, $off_ing, $temperature_max, $NRJ, 0, $classe) * $per_SAT;
     $production_E += $prod_CES + $prod_CEF + $prod_SAT;
+
+    if ($booster != NULL) { // si booster
+        $boost_CES = ($booster['booster_e_val'] / 100) * (production('CES', $CES, 0, $temperature_max, $NRJ) * $per_CES);
+        $boost_CEF = ($booster['booster_e_val'] / 100) * (production('CEF', $CEF, 0, $temperature_max, $NRJ) * $per_CEF);
+        $boost_SAT = ($booster['booster_e_val'] / 100) * (production('SAT', $SAT, 0, $temperature_max, $NRJ) * $per_SAT);
+        
+        $prod_boost_E = round($boost_CES) + round($boost_CEF) + round($boost_SAT);
+    }
+    $production_E += $prod_boost_E;
 
     $ratio = 1; // indique le pourcentage à appliquer sur la prod
     $ratio_temp = 1;
@@ -254,7 +265,7 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
     $production_E = round($production_E);
 
     return array("ratio" => $ratio, "conso_E" => $consommation_E, "prod_E" => $production_E,
-        "prod_CES" => $prod_CES, "prod_CEF" => $prod_CEF, "prod_SAT" => $prod_SAT,
+        "prod_CES" => $prod_CES, "prod_CEF" => $prod_CEF, "prod_SAT" => $prod_SAT, "prod_boost_E" => $prod_boost_E,
         "conso_M" => $conso_M, "conso_C" => $conso_C, "conso_D" => $conso_D, "conso_FOR" => $conso_FOR);
 }
 
@@ -289,13 +300,14 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
         $off_ing = $off_geo = 2;
     }
     $tmp = ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
-            $per_M, $per_C, $per_D, $per_CES, $per_CEF, $per_SAT, $FOR, $per_FOR, $classe);
+            $per_M, $per_C, $per_D, $per_CES, $per_CEF, $per_SAT, $FOR, $per_FOR, $classe, $booster);
     $ratio = $tmp["ratio"];
     $consommation_E = $tmp["conso_E"];
     $production_E = $tmp["prod_E"];
     $prod_CES = $tmp["prod_CES"];
     $prod_CEF = $tmp["prod_CEF"];
     $prod_SAT = $tmp["prod_SAT"];
+    $prod_boost_E = $tmp["prod_boost_E"];
     $conso_M = $tmp["conso_M"];
     $conso_C = $tmp["conso_C"];
     $conso_D = $tmp["conso_D"];
@@ -331,9 +343,9 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
     }
 
     if ($booster != NULL) { // si booster
-        $boost_M = ($booster['booster_m_val'] / 100) * (production('M', $M, 0, $temperature_max, 0, 0, 0, $speed_uni) - 30 * $speed_uni);
-        $boost_C = ($booster['booster_c_val'] / 100) * (production('C', $C, 0, $temperature_max, 0, 0, 0, $speed_uni) - 15 * $speed_uni);
-        $boost_D = ($booster['booster_d_val'] / 100) * (production('D', $D, 0, $temperature_max, 0, 0, 0, $speed_uni));
+        $boost_M = ($booster['booster_m_val'] / 100) * (production('M', $M, 0, $temperature_max, 0, 0, 0, $speed_uni) - 30 * $speed_uni) * $per_M * $ratio;
+        $boost_C = ($booster['booster_c_val'] / 100) * (production('C', $C, 0, $temperature_max, 0, 0, 0, $speed_uni) - 15 * $speed_uni) * $per_C * $ratio;
+        $boost_D = ($booster['booster_d_val'] / 100) * (production('D', $D, 0, $temperature_max, 0, 0, 0, $speed_uni)) * $per_D * $ratio;
         
         $prod_M += round($boost_M);
         $prod_C += round($boost_C);
@@ -342,7 +354,7 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
 	 
     return array("M" => $prod_M, "C" => $prod_C, "D" => $prod_D, "FOR" => $prod_FOR, "ratio" => $ratio,
             "conso_E" => $consommation_E, "prod_E" => $production_E, "prod_CES" => $prod_CES,
-            "prod_CEF" => $prod_CEF, "prod_SAT" => $prod_SAT, "conso_M" => $conso_M,
+            "prod_CEF" => $prod_CEF, "prod_SAT" => $prod_SAT, "prod_boost_E" => $prod_boost_E, "conso_M" => $conso_M,
             "conso_C" => $conso_C, "conso_D" => $conso_D, "conso_FOR" => $conso_FOR);
 }
 

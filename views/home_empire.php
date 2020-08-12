@@ -397,7 +397,7 @@ for ($i = 201 ; $i <= $nb_planete + 200 ; $i++) {
 <?php
     for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
         $booster_tab = booster_decode($user_building[$i]["boosters"]);
-        echo "\t" . "<th>m:" . $booster_tab['booster_m_val'] . '%, c:' . $booster_tab['booster_c_val'] . '%, d:' . $booster_tab['booster_d_val'] . "%</th>" . "\n";
+        echo "\t" . "<th>m:" . $booster_tab['booster_m_val'] . '%, c:' . $booster_tab['booster_c_val'] . '%, d:' . $booster_tab['booster_d_val'] . '%, e:' . $booster_tab['booster_e_val'] . "%</th>" . "\n";
     }
 ?>
         </tr>

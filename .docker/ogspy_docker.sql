@@ -565,7 +565,7 @@ CREATE TABLE `ogspy_user_building`
   `planet_name`     VARCHAR(20) NOT NULL DEFAULT '',
   `coordinates`     VARCHAR(10) NOT NULL DEFAULT '',
   `fields`          SMALLINT(3) NOT NULL DEFAULT '0',
-  `boosters`        VARCHAR(64) NOT NULL DEFAULT 'm:0:0_c:0:0_d:0:0_p:0_m:0',
+  `boosters`        VARCHAR(64) NOT NULL DEFAULT 'm:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0',
   `temperature_min` SMALLINT(2) NOT NULL DEFAULT '0',
   `temperature_max` SMALLINT(2) NOT NULL DEFAULT '0',
   `Sat`             SMALLINT(5) NOT NULL DEFAULT '0',
@@ -977,9 +977,9 @@ INSERT INTO `ogspy_user` (`user_id`, `user_name`, `user_password`, `user_regdate
 INSERT INTO `ogspy_user_group` (`group_id`, `user_id`) VALUES (1, 1);
 
 INSERT INTO `ogspy_user_building` (`user_id`, `planet_id`, `planet_name`, `coordinates`, `fields`, `boosters`, `temperature_min`, `temperature_max`, `Sat`, `Sat_percentage`, `FOR`, `FOR_percentage`, `M`, `M_percentage`, `C`, `C_Percentage`, `D`, `D_percentage`, `CES`, `CES_percentage`, `CEF`, `CEF_percentage`, `UdR`, `UdN`, `CSp`, `HM`, `HC`, `HD`, `Lab`, `Ter`, `DdR`, `Silo`, `Dock`, `BaLu`, `Pha`, `PoSa`) VALUES
-(1, 101, 'area'    , '2:330:12', 282, 'm:0:0_c:0:0_d:0:0_p:0_m:0',  -31,  9, 1500, 100, 840, 100, 38, 100, 34, 100, 33, 100, 12, 100, 23, 40,  7, 7, 12, 13,  9,  8, 18, 8, 1, 8, 7, 0, 0, 0),
-(1, 102, 'area2'   , '2:330:13', 201, 'm:30:0_c:0:0_d:0:0_p:0_m:0', -31,  9, 1500, 100, 840, 100, 38, 100, 34, 100, 33, 100, 12, 100, 23,  0,  7, 7, 12, 13,  9,  8, 18, 8, 1, 8, 7, 0, 0, 0),
-(1, 103, 'Atlantis', '2:331:5' , 250, 'm:0:0_c:0:0_d:0:0_p:0_m:0',   29, 69, 1510, 100, 841, 100, 38, 100, 34, 100, 33, 100, 29, 100, 19, 50, 10, 7, 12, 13, 11, 10, 18, 6, 1, 8, 7, 0, 0, 0);
+(1, 101, 'area'    , '2:330:12', 282, 'm:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0',  -31,  9, 1500, 100, 840, 100, 38, 100, 34, 100, 33, 100, 12, 100, 23, 40,  7, 7, 12, 13,  9,  8, 18, 8, 1, 8, 7, 0, 0, 0),
+(1, 102, 'area2'   , '2:330:13', 201, 'm:30:0_c:0:0_d:0:0_e:0:0_p:0_m:0', -31,  9, 1500, 100, 840, 100, 38, 100, 34, 100, 33, 100, 12, 100, 23,  0,  7, 7, 12, 13,  9,  8, 18, 8, 1, 8, 7, 0, 0, 0),
+(1, 103, 'Atlantis', '2:331:5' , 250, 'm:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0',   29, 69, 1510, 100, 841, 100, 38, 100, 34, 100, 33, 100, 29, 100, 19, 50, 10, 7, 12, 13, 11, 10, 18, 6, 1, 8, 7, 0, 0, 0);
 
 INSERT INTO `ogspy_user_technology` (`user_id`, `Esp`, `Ordi`, `Armes`, `Bouclier`, `Protection`, `NRJ`, `Hyp`, `RC`, `RI`, `PH`, `Laser`, `Ions`, `Plasma`, `RRI`, `Graviton`, `Astrophysique`) VALUES
 (1, 20, 20, 20, 20, 20, 20, 17, 20, 17, 16, 20, 20, 17, 12, 2, 23);

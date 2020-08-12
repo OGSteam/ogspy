@@ -160,6 +160,7 @@ function update_page() {
         var M_1_booster = document.getElementById("M_" + j + "_booster").value;
         var C_1_booster = document.getElementById("C_" + j + "_booster").value;
         var D_1_booster = document.getElementById("D_" + j + "_booster").value;
+		var E_1_booster = document.getElementById("E_" + j + "_booster").value;
 
         M_1[i] = document.getElementById("M_" + j).value;
         C_1[i] = document.getElementById("C_" + j).value;
@@ -178,7 +179,7 @@ function update_page() {
         var CES_1_production = production("CES", CES_1[i], temperature_max_1, NRJ) * CES_1_percentage / 100;
         var CEF_1_production = production("CEF", CEF_1[i], temperature_max_1, NRJ) * CEF_1_percentage / 100;
         var Sat_1_production = production_sat(temperature_max_1, Sat_1[i]) * Sat_1_percentage / 100;
-        NRJ_1[i] = Math.round(CES_1_production + CEF_1_production + Sat_1_production);
+        NRJ_1[i] = Math.round((CES_1_production + CEF_1_production + Sat_1_production) * (1 + E_1_booster / 100));
 
         var NRJ_1_delta = NRJ_1[i] - energie_conso;
         if (NRJ_1_delta < 0) {
@@ -199,9 +200,10 @@ function update_page() {
             C_1_prod[i] = Math.round(ratio_conso * production("C", C_1[i], temperature_max_1, NRJ, Plasma) * C_1_percentage / 100);
             D_1_prod[i] = Math.round(ratio_conso * production("D", D_1[i], temperature_max_1, NRJ, Plasma) * D_1_percentage / 100) - Math.round(consumption("CEF", CEF_1[i]) * CEF_1_percentage / 100);
             FOR_1_prod[i] = Math.round(ratio_conso * production_foreuse(For_1[i], M_1[i], C_1[i], D_1[i], temperature_max_1) * C_1_percentage / 100);
-            M_1_prod[i] = Math.round(M_1_prod[i] * (1 + M_1_booster / 100));
-            C_1_prod[i] = Math.round(C_1_prod[i] * (1 + C_1_booster / 100));
-            D_1_prod[i] = Math.round(D_1_prod[i] * (1 + D_1_booster / 100));
+            
+			M_1_prod[i] = M_1_prod[i] + Math.round((ratio_conso * production("M", M_1[i], temperature_max_1, NRJ, 0) * M_1_percentage / 100) * (M_1_booster / 100));
+			C_1_prod[i] = C_1_prod[i] + Math.round((ratio_conso * production("C", C_1[i], temperature_max_1, NRJ, 0) * C_1_percentage / 100) * (C_1_booster / 100));
+			D_1_prod[i] = D_1_prod[i] + Math.round((ratio_conso * production("D", D_1[i], temperature_max_1, NRJ, 0) * D_1_percentage / 100) * (D_1_booster / 100));
         } else {
             M_1_prod[i] = Math.round(production("M", 0, 0, 0));
             C_1_prod[i] = Math.round(production("C", 0, 0, 0));

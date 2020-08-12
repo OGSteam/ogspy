@@ -127,6 +127,7 @@ $lang['HOME_SIMU_PRODUCTION'] = "Production";
 $lang['HOME_SIMU_BOOSTERMETAL'] = "Booster Métal";
 $lang['HOME_SIMU_BOOSTERCRYSTAL'] = "Booster Cristal";
 $lang['HOME_SIMU_BOOSTERDEUT'] = "Booster Deutérium";
+$lang['HOME_SIMU_BOOSTERNRJ'] = "Booster d'énergie";
 $lang['HOME_SIMU_LEVEL'] = "Niveau";
 $lang['HOME_SIMU_PRODUCTION'] = "Production";
 $lang['HOME_SIMU_POINTSBYPLANET'] = "Poids en points de chaque planète";
