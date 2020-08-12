@@ -21,19 +21,18 @@ list($search_result, $total_page) = galaxy_search();
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 $ToolTip_Helper = new ToolTip_Helper();
 
-@$string_search = $pub_string_search;
-@$type_search = $pub_type_search;
-@$strict = $pub_strict;
-@$sort = $pub_sort;
-@$sort2 = $pub_sort2;
-@$galaxy_down = $pub_galaxy_down;
-@$galaxy_up = $pub_galaxy_up;
-@$system_down = $pub_system_down;
-@$system_up = $pub_system_up;
-@$row_down = $pub_row_down;
-@$row_up = $pub_row_up;
-@$row_active = $pub_row_active;
-@$page = $pub_page;
+$string_search = $pub_string_search;
+$type_search = $pub_type_search;
+$strict = $pub_strict;
+$sort = $pub_sort;
+$sort2 = $pub_sort2;
+$galaxy_down = $pub_galaxy_down;
+$galaxy_up = $pub_galaxy_up;
+$system_down = $pub_system_down;
+$system_up = $pub_system_up;
+$row_down = $pub_row_down;
+$row_up = $pub_row_up;
+$page = $pub_page;
 
 $link_order_coordinates = "";
 $link_order_ally = "";
@@ -127,7 +126,6 @@ $system_down = isset($system_down) ? $system_down : "";
 $system_up = isset($system_up) ? $system_up : "";
 $row_down = isset($row_down) ? $row_down : "";
 $row_up = isset($row_up) ? $row_up : "";
-$row_active = isset($row_active) ? " checked" : "";
 
 require_once("views/page_header.php");
 ?>
@@ -219,7 +217,7 @@ require_once("views/page_header.php");
                                    value="<?php echo $system_up; ?>"></th>
                     </tr>
                     <tr>
-                        <th><input name="row_active" type="checkbox"<?php echo $row_active; ?>></th>
+                        <th></th>
                         <th><?php echo($lang['SEARCH_POSITION']); ?></th>
                         <th><input name="row_down" type="text" maxlength="2" size="3" value="<?php echo $row_down; ?>">
                         </th>
@@ -256,9 +254,6 @@ require_once("views/page_header.php");
                         $option .= "&system_up=" . $system_up;
                         $option .= "&row_down=" . $row_down;
                         $option .= "&row_up=" . $row_up;
-                        if ($row_active != "") {
-                            $option .= "&row_active=on";
-                        }
                     }
 
                     echo "\t\t\t" . "<input type='button' value='<<' onclick=\"window.location = 'index.php?action=search&amp;sort=" . $sort . "&amp;sort2=" . $sort2 . "&amp;type_search=" . $type_search . "&amp;page=1" . $option . "';\">&nbsp;";
@@ -290,9 +285,6 @@ require_once("views/page_header.php");
                     echo "\t\t\t" . "<input type='hidden' name='system_up' value='" . $system_up . "'>" . "\n";
                     echo "\t\t\t" . "<input type='hidden' name='row_down' value='" . $row_down . "'>" . "\n";
                     echo "\t\t\t" . "<input type='hidden' name='row_up' value='" . $row_up . "'>" . "\n";
-                    if ($row_active != "") {
-                        echo "\t\t\t" . "<input type='hidden' name='row_active' value='on'>";
-                    }
                 }
                 if ($total_page > 1) {
                     echo "\t\t\t" . "<select name='page' onchange='this.form.submit();' onkeyup='this.form.submit();'>" . "\n";
@@ -458,7 +450,7 @@ require_once("views/page_header.php");
                     }
 
                     if ($v["report_spy"] > 0) {
-                        $report_spy = "<A HREF=\"#\" onClick=\"window.open('index.php?action=show_reportspy&amp;galaxy=" . $v["galaxy"] . "&amp;system=" . $v["system"] . "&amp;row=" . $v["row"] . "','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">" . $v["report_spy"] . "E</A>";
+                        $report_spy = "<a href=\"#\" onClick=\"window.open('index.php?action=show_reportspy&amp;galaxy=" . $v["galaxy"] . "&amp;system=" . $v["system"] . "&amp;row=" . $v["row"] . "','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)\">" . $v["report_spy"] . "E</a>";
                     } else {
                         $report_spy = "&nbsp;";
                     }
@@ -514,9 +506,6 @@ require_once("views/page_header.php");
                         $option .= "&system_up=" . $system_up;
                         $option .= "&row_down=" . $row_down;
                         $option .= "&row_up=" . $row_up;
-                        if ($row_active != "") {
-                            $option .= "&row_active=on";
-                        }
                     }
 
                     echo "\t\t\t" . "<input type='button' value='<<' onclick=\"window.location = 'index.php?action=search&amp;sort=" . $sort . "&amp;sort2=" . $sort2 . "&amp;type_search=" . $type_search . "&amp;page=1" . $option . "';\">&nbsp;";
@@ -627,19 +616,19 @@ if ($type_search == "ally" || $type_search == "player") {
             echo "\t\t" . "<tr>" . "\n";
             echo "\t\t\t" . "<th width='150'>" . $datadate . "</th>" . "\n";
             echo "\t\t\t" . "<th width='100'>" . $general_points . "</th>" . "\n";
-            echo "\t\t\t" . "<th width='40'><font color='lime'><i>" . $general_rank . "</i></font></th>" . "\n";
+            echo "\t\t\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $general_rank . "</i></span></th>" . "\n";
             echo "\t\t\t" . "<th width='100'>" . $eco_points . "</th>" . "\n";
-            echo "\t\t\t" . "<th width='40'><font color='lime'><i>" . $eco_rank . "</i></font></th>" . "\n";
+            echo "\t\t\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $eco_rank . "</i></span></th>" . "\n";
             echo "\t\t\t" . "<th width='100'>" . $techno_points . "</th>" . "\n";
-            echo "\t\t\t" . "<th width='40'><font color='lime'><i>" . $techno_rank . "</i></font></th>" . "\n";
+            echo "\t\t\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $techno_rank . "</i></span></th>" . "\n";
             echo "\t\t\t" . "<th width='100'>" . $military_points . "</th>" . "\n";
-            echo "\t\t\t" . "<th width='40'><font color='lime'><i>" . $military_rank . "</i></font></th>" . "\n";
+            echo "\t\t\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $military_rank . "</i></span></th>" . "\n";
             echo "\t\t\t" . "<th width='100'>" . $military_l_points . "</th>" . "\n";
-            echo "\t\t\t" . "<th width='40'><font color='lime'><i>" . $military_l_rank . "</i></font></th>" . "\n";
+            echo "\t\t\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $military_l_rank . "</i></span></th>" . "\n";
             echo "\t\t\t" . "<th width='100'>" . $military_d_points . "</th>" . "\n";
-            echo "\t\t\t" . "<th width='40'><font color='lime'><i>" . $military_d_rank . "</i></font></th>" . "\n";
+            echo "\t\t\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $military_d_rank . "</i></span></th>" . "\n";
             echo "\t\t\t" . "<th width='100'>" . $honnor_points . "</th>" . "\n";
-            echo "\t\t\t" . "<th width='40'><font color='lime'><i>" . $honnor_rank . "</i></font></th>" . "\n";
+            echo "\t\t\t" . "<th width='40'><span style=\"color: lime; \"><i>" . $honnor_rank . "</i></span></th>" . "\n";
             if ($type_search == "ally") {
                 echo "<th width='70'>" . formate_number($ranking["number_member"]) . "</th>";
             }
@@ -651,9 +640,6 @@ if ($type_search == "ally" || $type_search == "player") {
     </table>
 
 
-<?php } ?>
-
-
-<?php
+<?php }
 require_once("views/page_tail.php");
-?>
+

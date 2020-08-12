@@ -238,7 +238,6 @@ function galaxy_show_sector()
  * @global int $pub_system_up
  * @global int $pub_row_down
  * @global int $pub_row_up
- * @global ??? $pub_row_active
  * @global int $pub_page page courante ( pagination )
  * @return array resultat de la recherche + numero de la page
  */
@@ -246,8 +245,8 @@ function galaxy_search()
 {
     //todo voir possible pb recherche strict ou non
     global $user_data, $server_config;
-    global $pub_string_search, $pub_type_search, $pub_strict, $pub_sort, $pub_sort2, $pub_galaxy_down, $pub_galaxy_up, $pub_system_down, $pub_system_up, $pub_row_down, $pub_row_up, $pub_row_active, $pub_page;
-    if (!check_var($pub_type_search, "Char") || !check_var($pub_strict, "Char") || !check_var($pub_sort, "Num") || !check_var($pub_sort2, "Num") || !check_var($pub_galaxy_down, "Num") || !check_var($pub_galaxy_up, "Num") || !check_var($pub_system_down, "Num") || !check_var($pub_system_up, "Num") || !check_var($pub_row_down, "Num") || !check_var($pub_row_up, "Num") || !check_var($pub_row_active, "Char") || !check_var($pub_page, "Num")) {
+    global $pub_string_search, $pub_type_search, $pub_strict, $pub_sort, $pub_sort2, $pub_galaxy_down, $pub_galaxy_up, $pub_system_down, $pub_system_up, $pub_row_down, $pub_row_up, $pub_page;
+    if (!check_var($pub_type_search, "Char") || !check_var($pub_strict, "Char") || !check_var($pub_sort, "Num") || !check_var($pub_sort2, "Num") || !check_var($pub_galaxy_down, "Num") || !check_var($pub_galaxy_up, "Num") || !check_var($pub_system_down, "Num") || !check_var($pub_system_up, "Num") || !check_var($pub_row_down, "Num") || !check_var($pub_row_up, "Num")  || !check_var($pub_page, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
     $search_result = array();
@@ -276,7 +275,7 @@ function galaxy_search()
         $criteria->setSystemDown(intval($pub_system_down));
         $criteria->setSystemUp(intval($pub_system_up));
     }
-    if ($pub_row_active && isset($pub_row_down) && isset($pub_row_up)) {
+    if (isset($pub_row_down) && isset($pub_row_up)) {
         $criteria->setRowDown(intval($pub_row_down));
         $criteria->setRowUp(intval($pub_row_up));
     }
