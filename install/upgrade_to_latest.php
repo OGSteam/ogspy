@@ -363,6 +363,11 @@ switch ($ogsversion) {
     case '3.3.7-beta6':
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.7' WHERE config_name = 'version'";
         $ogsversion = '3.3.7';
+
+    case '3.3.8-beta1':
+        $requests[] = "ALTER TABLE `" . TABLE_UNIVERSE . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
+        $requests[] = "ALTER TABLE `" . TABLE_UNIVERSE . "` ADD `player_id` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $ogsversion = '3.3.8-beta1';
         $up_to_date = true;
 
         break;
