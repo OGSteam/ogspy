@@ -33,6 +33,7 @@ if (!defined("INSTALL_IN_PROGRESS")) {
 
     define("TABLE_MOD", $table_prefix . "mod");
     define("TABLE_MOD_CFG", $table_prefix . "mod_config");
+    define("TABLE_MOD_USER_CFG", $table_prefix . "mod_user_config");
 
     // Tables Player
     define("TABLE_UNIVERSE", $table_prefix . "universe");

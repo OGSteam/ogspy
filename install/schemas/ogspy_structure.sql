@@ -693,6 +693,19 @@ CREATE TABLE `ogspy_mod_config`
   DEFAULT CHARSET = UTF8;
 
 --
+-- Structure de la table `ogspy_mod_user_config`
+--
+CREATE TABLE `ogspy_mod_user_config` (
+    `mod`     VARCHAR(50) NOT NULL,
+    `user_id` INT(11) NOT NULL,
+    `config`  VARCHAR(255) NOT NULL,
+    `value`   VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`mod`, `config`, `user_id`),
+    UNIQUE KEY `config` (`config`)
+)
+    DEFAULT CHARSET = UTF8;
+
+--
 -- Structure de la table `ogspy_parsedspy`
 --
 CREATE TABLE `ogspy_parsedspy`

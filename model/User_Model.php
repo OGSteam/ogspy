@@ -647,6 +647,8 @@ class User_Model extends Model_Abstract
         $request = "update " . TABLE_UNIVERSE . " set last_update_user_id = 0 where last_update_user_id = " . $user_id;
         $this->db->sql_query($request);
 
+        $request = "DELETE FROM " . TABLE_MOD_USER_CFG . " where user_id = " . $user_id;
+        $this->db->sql_query($request);
 
     }
 

@@ -367,6 +367,15 @@ switch ($ogsversion) {
     case '3.3.8-beta1':
         $requests[] = "ALTER TABLE `" . TABLE_UNIVERSE . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
         $requests[] = "ALTER TABLE `" . TABLE_UNIVERSE . "` ADD `player_id` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
+        $requests[] = "CREATE TABLE IF NOT EXISTS `".TABLE_MOD_USER_CFG."` (
+                        `mod`     VARCHAR(50) NOT NULL,
+                        `userid` INT(11) NOT NULL,
+                        `config`  VARCHAR(255) NOT NULL,
+                        `value`   VARCHAR(255) NOT NULL,
+                        PRIMARY KEY (`mod`, `user_id`, `config`),
+                        UNIQUE KEY `config` (`config`)
+                    ) DEFAULT CHARSET = UTF8;";
+
         $ogsversion = '3.3.8-beta1';
         $up_to_date = true;
 
