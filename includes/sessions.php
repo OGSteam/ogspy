@@ -166,9 +166,9 @@ function session_close($user_id = false)
         $cookie_id = $HTTP_COOKIE_VARS[$cookie_name];
 
         if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) {
-            $Sessions_Model->close_session_by_coockie_session_ip($cookie_id, $user_ip);
+            $Sessions_Model->close_session_by_cookie_session_ip($cookie_id, $user_ip);
         } else {
-            $Sessions_Model->close_session_by_coockie($cookie_id);
+            $Sessions_Model->close_session_by_cookie($cookie_id);
         }
     } else {
         $Sessions_Model->close_user_session($user_id);

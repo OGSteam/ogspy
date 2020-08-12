@@ -138,7 +138,7 @@ class Sessions_Model extends Model_Abstract
     /**
      * @param $cookie_id
      */
-    public function close_session_by_coockie($cookie_id)
+    public function close_session_by_cookie($cookie_id)
     {
         $cookie_id = $this->db->sql_escape_string($cookie_id);
 
@@ -146,7 +146,7 @@ class Sessions_Model extends Model_Abstract
         $this->db->sql_query($request, true, false);
     }
 
-    public function close_session_by_coockie_session_ip($cookie_id,$user_ip)
+    public function close_session_by_cookie_session_ip($cookie_id, $user_ip)
     {
         $cookie_id = $this->db->sql_escape_string($cookie_id);
         $user_ip=$this->db->sql_escape_string($user_ip);
@@ -204,6 +204,7 @@ class Sessions_Model extends Model_Abstract
         $request = "SELECT `user_name`, `session_start`, `session_expire`, `session_ip`, `session_ogs`";
         $request .= " FROM " . TABLE_SESSIONS . " LEFT JOIN " . TABLE_USER;
         $request .= " ON `session_user_id` = `user_id`";
+        $request .= " GROUP BY `user_name`,`session_ip`,`session_ogs`";
         $request .= " ORDER BY `user_name`";
         $result = $this->db->sql_query($request);
 
