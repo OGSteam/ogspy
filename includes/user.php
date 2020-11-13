@@ -724,11 +724,10 @@ function user_create()
         user_set_grant($user_id, null, $pub_active, $pub_user_coadmin, $pub_management_user,
             $pub_management_ranking);
 
-        redirection("index.php?action=message&id_message=createuser_success&info=" . $info);
+        redirection("index.php?action=message&id_message=createuser_success&info=$info");
 
     } else {
-        redirection("index.php?action=message&id_message=createuser_failed_pseudolocked&info=" .
-            $pub_pseudo);
+        redirection("index.php?action=message&id_message=createuser_failed_pseudolocked&info=$pub_pseudo");
     }
 }
 

@@ -301,7 +301,7 @@ class Universe_Model extends Model_Abstract
     {
         $galaxy = (int)$galaxy;
 
-        $req = "SELECT galaxy, system, row, phalanx, gate, name, ally, player FROM " . TABLE_UNIVERSE . " WHERE galaxy = '" . $galaxy . "' AND moon = '1' AND phalanx > 0";
+        $req = "SELECT `galaxy`, `system`, `row`, `phalanx`, `gate`, `name`, `ally`, `player` FROM " . TABLE_UNIVERSE . " WHERE `galaxy` = '" . $galaxy . "' AND `moon` = '1' AND `phalanx` > 0";
 
         $result = $this->db->sql_query($req);
         $data = array();

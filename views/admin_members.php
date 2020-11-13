@@ -24,7 +24,7 @@ $usergroup_list = usergroup_get();
 
 ?>
 <!--Logicque javascript-->
-<script language="JavaScript">
+<script>
     function visible(byId) {
         document.getElementById(byId).style.visibility = 'visible';
         document.getElementById(byId).style.display = 'block';

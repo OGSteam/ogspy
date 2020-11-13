@@ -25,7 +25,7 @@ class Group_Model extends Model_Abstract
         $request .= " server_set_system, server_set_spy, server_set_rc, server_set_ranking, server_show_positionhided,";
         $request .= " ogs_connection, ogs_set_system, ogs_get_system, ogs_set_spy, ogs_get_spy, ogs_set_ranking, ogs_get_ranking";
         $request .= " from " . TABLE_GROUP;
-        $request .= " order by group_name";
+        $request .= " order by group_id";
 
         $result = $this->db->sql_query($request);
 
@@ -49,7 +49,7 @@ class Group_Model extends Model_Abstract
         $request .= " ogs_connection, ogs_set_system, ogs_get_system, ogs_set_spy, ogs_get_spy, ogs_set_ranking, ogs_get_ranking";
         $request .= " from " . TABLE_GROUP;
         $request .= " where group_id = " . $group_id;
-        $request .= " order by group_name";
+        $request .= " order by group_id";
 
         $result = $this->db->sql_query($request);
 
@@ -66,7 +66,7 @@ class Group_Model extends Model_Abstract
     public function get_group_list() {
         $request = "select group_id, group_name ";
         $request .= " from " . TABLE_GROUP;
-        $request .= " order by group_name";
+        $request .= " order by group_id";
 
         $result = $this->db->sql_query($request);
 
@@ -108,7 +108,7 @@ class Group_Model extends Model_Abstract
 
         $user_id=intval($user_id);
 
-        $request = "SELECT group_id FROM  " . TABLE_USER_GROUP . " ";
+        $request = "SELECT `group_id` FROM  " . TABLE_USER_GROUP . " ";
         $request .= " where user_id = " . $user_id;
         $result = $this->db->sql_query($request);
         $user_group = $this->db->sql_fetch_assoc($result);
