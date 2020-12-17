@@ -26,10 +26,11 @@ if (!isset($server_config['speed_uni'])) {
  * @param int $NRJ Current value of the user Energy Technology
  * @param int $Plasma Current value of the user Plasma Technology
  * @param int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
+ * @param int $position position of the planet
  * @param int $speed_uni The univers economy speed
  * @return int The result of the production on the specified building.
  */
-function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ = 0, $Plasma = 0, $classe = 0, $speed_uni = 1)
+function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ = 0, $Plasma = 0, $classe = 0, $position = 0, $speed_uni = 1)
 {
     //TODO : supprimer références globales
     global $server_config;
@@ -54,7 +55,7 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
         $bonus_class_energie = 0.10; //+10%
         $bonus_foreuse = $bonus_foreuse * 1.5; //+50%
         if ($officier != 0) {
-            $bonus_foreuse_max = 0,1; //+10%
+            $bonus_foreuse_max = 0.1; //+10%
         }
     } else {
         $bonus_class_mine = 0;
@@ -77,6 +78,7 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
             $bonus_position = 0.23;
         } elseif ($position == 10 || $position == 6) {
             $bonus_position = 0.17;
+        }
     }
     
     // print_r("officier=$officier, geo=$geo, ing=$ing, C_m=$bonus_class_mine, C_E=$bonus_class_energie, C_f=$bonus_foreuse, speed=$speed_uni\n");
@@ -161,10 +163,11 @@ function production_sat($temperature_max, $off_ing = 0, $classe = 0, $nb_sat = 1
  * @param int $level_D The deuterium mine level
  * @param int $temperature_max Max temprature of the current planet
  * @param int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
+ * @param int $position position of the planet
  * @param int $speed_uni The univers economy speed
  * @return array('M', 'C', 'D') The result foreuse production of metal 'M', cristal 'C' and deuterium 'D'
  */
-function production_foreuse($nb_foreuse, $level_M, $level_C, $level_D, $temperature_max, $classe = 0, $speed_uni = 1)
+function production_foreuse($nb_foreuse, $level_M, $level_C, $level_D, $temperature_max, $classe = 0, $position = 0, $speed_uni = 1)
 {
     $bonus_foreuse = 0.0002; //0.02% / foreuse
     //Valeur de la classe en valeur ajoutée.
@@ -175,9 +178,25 @@ function production_foreuse($nb_foreuse, $level_M, $level_C, $level_D, $temperat
     if($nb_foreuse > $nb_max) {
         $nb_foreuse = $nb_max;
     }
-    $result_M = $bonus_foreuse * (production('M', $level_M, 0, $temperature_max, 0, 0, 0, $speed_uni) - 30 * $speed_uni);
-    $result_C = $bonus_foreuse * (production('C', $level_C, 0, $temperature_max, 0, 0, 0, $speed_uni) - 15 * $speed_uni);
-    $result_D = $bonus_foreuse * (production('D', $level_D, 0, $temperature_max, 0, 0, 0, $speed_uni));
+    //Bonus position
+    $bonus_position_M = 0;
+    $bonus_position_C = 0;
+    if ($position == 1) {
+        $bonus_position_C = 0.4;
+    } elseif ($position == 2) {
+        $bonus_position_C = 0.3;
+    } elseif ($position == 3) {
+        $bonus_position_C = 0.2;
+    } elseif ($position == 8) {
+        $bonus_position_M = 0.35;
+    } elseif ($position == 9 || $position == 7) {
+        $bonus_position_M = 0.23;
+    } elseif ($position == 10 || $position == 6) {
+        $bonus_position_M = 0.17;
+    }
+    $result_M = $bonus_foreuse * (production('M', $level_M, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(30 * (1 + $bonus_position_M) * $speed_uni));
+    $result_C = $bonus_foreuse * (production('C', $level_C, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(15 * (1 + $bonus_position_C) * $speed_uni));
+    $result_D = $bonus_foreuse * (production('D', $level_D, 0, $temperature_max, 0, 0, 0, $position, $speed_uni));
     
     $result_M = round($result_M * $nb_foreuse); //arrondi
     $result_C = round($result_C * $nb_foreuse); //arrondi
@@ -318,7 +337,7 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
  * @return array
  */
 function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing = 0, $off_geo = 0, $off_full = 0, $NRJ = 0, $Plasma = 0,
-$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $booster = NULL,  $FOR = 0, $per_FOR = 0, $classe = 0, $speed_uni = 1)
+$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $booster = NULL,  $FOR = 0, $per_FOR = 0, $classe = 0, $position = 0, $speed_uni = 1)
 {
 
     if ($off_full == 1) {
@@ -337,40 +356,57 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
     $conso_C = $tmp["conso_C"];
     $conso_D = $tmp["conso_D"];
     $conso_FOR = $tmp["conso_FOR"];
+    //$position : ATTENTION : à ton directement la position ou pas ? ou on doit faire un calcul à partir des coordonnées !!!
 
     if ($ratio > 0) {
         //production de metal avec ratio
-        $prod_M = production("M", $M, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $speed_uni) * $per_M;
+        $prod_M = production("M", $M, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $position, $speed_uni) * $per_M;
         $prod_M *= $ratio;
         $prod_M = round($prod_M);
 
         //production de cristal avec ratio
-        $prod_C = production("C", $C, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $speed_uni) * $per_C;
+        $prod_C = production("C", $C, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $position, $speed_uni) * $per_C;
         $prod_C *= $ratio;
         $prod_C = round($prod_C);
 
         //production de deut avec ratio
-        $prod_D = production("D", $D, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $speed_uni) * $per_D;
+        $prod_D = production("D", $D, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $position, $speed_uni) * $per_D;
         $prod_D *= $ratio;
         $prod_D -= consumption("CEF", $CEF, $speed_uni) * $per_CEF; //on soustrait la conso de deut de la cef
         $prod_D = round($prod_D);
         
         //production des foreuses (métal, cristal et deut)
-        $prod_FOR = production_foreuse($FOR, $M, $C, $D, $temperature_max, $classe, $speed_uni);
+        $prod_FOR = production_foreuse($FOR, $M, $C, $D, $temperature_max, $classe, $position, $speed_uni);
         $prod_FOR['M'] = round($prod_FOR['M'] * $ratio);
         $prod_FOR['C'] = round($prod_FOR['C'] * $ratio);
         $prod_FOR['D'] = round($prod_FOR['D'] * $ratio);
     } else {
-        $prod_M = production("M", 0, 0, 0, 0, 0, 0, $speed_uni); //production de base
-        $prod_C = production("C", 0, 0, 0, 0, 0, 0, $speed_uni); //production de base
-        $prod_D = production("D", 0, 0, 0, 0, 0, 0, $speed_uni); //production de base
-        $prod_FOR = production_foreuse(0, 0, 0, 0, 0, 0, $speed_uni);
+        $prod_M = production("M", 0, 0, 0, 0, 0, 0, $position, $speed_uni); //production de base
+        $prod_C = production("C", 0, 0, 0, 0, 0, 0, $position, $speed_uni); //production de base
+        $prod_D = production("D", 0, 0, 0, 0, 0, 0, $position, $speed_uni); //production de base
+        $prod_FOR = production_foreuse(0, 0, 0, 0, 0, 0, $position, $speed_uni);
     }
 
     if ($booster != NULL) { // si booster
-        $boost_M = ($booster['booster_m_val'] / 100) * (production('M', $M, 0, $temperature_max, 0, 0, 0, $speed_uni) - 30 * $speed_uni) * $per_M * $ratio;
-        $boost_C = ($booster['booster_c_val'] / 100) * (production('C', $C, 0, $temperature_max, 0, 0, 0, $speed_uni) - 15 * $speed_uni) * $per_C * $ratio;
-        $boost_D = ($booster['booster_d_val'] / 100) * (production('D', $D, 0, $temperature_max, 0, 0, 0, $speed_uni)) * $per_D * $ratio;
+        //Bonus position
+        $bonus_position_M = 0;
+        $bonus_position_C = 0;
+        if ($position == 1) {
+            $bonus_position_C = 0.4;
+        } elseif ($position == 2) {
+            $bonus_position_C = 0.3;
+        } elseif ($position == 3) {
+            $bonus_position_C = 0.2;
+        } elseif ($position == 8) {
+            $bonus_position_M = 0.35;
+        } elseif ($position == 9 || $position == 7) {
+            $bonus_position_M = 0.23;
+        } elseif ($position == 10 || $position == 6) {
+            $bonus_position_M = 0.17;
+        }
+        $boost_M = ($booster['booster_m_val'] / 100) * (production('M', $M, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(30 * (1 + $bonus_position_M) * $speed_uni)) * $per_M * $ratio;
+        $boost_C = ($booster['booster_c_val'] / 100) * (production('C', $C, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(15 * (1 + $bonus_position_M) * $speed_uni)) * $per_C * $ratio;
+        $boost_D = ($booster['booster_d_val'] / 100) * (production('D', $D, 0, $temperature_max, 0, 0, 0, $position, $speed_uni)) * $per_D * $ratio;
         
         $prod_M += round($boost_M);
         $prod_C += round($boost_C);
