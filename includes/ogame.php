@@ -361,7 +361,7 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
     $conso_C = $tmp["conso_C"];
     $conso_D = $tmp["conso_D"];
     $conso_FOR = $tmp["conso_FOR"];
-    //$position : ATTENTION : à ton directement la position ou pas ? ou on doit faire un calcul à partir des coordonnées !!!
+    //$position : ATTENTION : a-t-on directement la position ou pas ? ou on doit faire un calcul à partir des coordonnées !!!
 
     if ($ratio > 0) {
         //production de metal avec ratio
