@@ -1016,7 +1016,7 @@ function user_empire_production($user_empire, $off = NULL, $speed_uni = 1)
     foreach ($user_empire["building"] as $content) {
         if (isset($content["planet_id"]) && $content["planet_id"] < 200) {// parcours des planetes ( < 200 )
             $temp_max = isset($content["temperature_max"]) ? $content["temperature_max"] : 0;
-            //TODO : Trouver la position
+            ////TODO : Trouver la position
             $position = 0;
             
            // Calcul production théorique

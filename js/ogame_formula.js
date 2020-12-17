@@ -1,7 +1,10 @@
 // Production par heure
-function production(building, level, temperatureMax, energy, plasma) {
+function production(building, level, temperatureMax, energy, plasma, position) {
     if (typeof(plasma) == 'undefined') {
         plasma = 0;
+    }
+	if (typeof(position) == 'undefined') {
+        position = 0;
     }
     var speed = document.getElementById('vitesse_uni').value,
         ingenieur = document.getElementById('off_ingenieur').value == 1 ? 0.1 : 0,
@@ -17,11 +20,30 @@ function production(building, level, temperatureMax, energy, plasma) {
         bonus_class_mine = 0.25; //+25%
         bonus_class_energie = 0.10; //+10%
     }
+	//Bonus position
+    bonus_position = 0;
+    if (building == 'C') {
+        if (position == 1) {
+            bonus_position = 0.4;
+        } else if (position == 2) {
+            bonus_position = 0.3;
+        } else if (position == 3) {
+            bonus_position = 0.2;
+        }
+    } else if (building == 'M') {
+        if (position == 8) {
+            bonus_position = 0.35;
+        } else if (position == 9 || position == 7) {
+            $bonus_position = 0.23;
+        } else if (position == 10 || position == 6) {
+            bonus_position = 0.17;
+        }
+    }
     switch (building) {
         case 'M':
-            return Math.floor(speed * 30 * level * Math.pow(1.1, level) * (1 + geologue + 0.01 * plasma + bonus_class_mine)) + speed * 30;
+            return Math.floor(speed * 30 * level * Math.pow(1.1, level) * (1 + bonus_position) * (1 + geologue + 0.01 * plasma + bonus_class_mine)) + Math.floor(speed * 30  * (1 + bonus_position));
         case 'C':
-            return Math.floor(speed * 20 * level * Math.pow(1.1, level) * (1 + geologue + 0.0066 * plasma + bonus_class_mine)) + speed * 15;
+            return Math.floor(speed * 20 * level * Math.pow(1.1, level) * (1 + bonus_position) * (1 + geologue + 0.0066 * plasma + bonus_class_mine)) + Math.floor(speed * 15  * (1 + bonus_position));
         case 'D':
             // return Math.floor(speed * 10 * level * Math.pow(1.1, level) * Math.floor((1.44 - 0.004 * temperatureMax)*10)/10 * (1 + geologue + 0.0033 * plasma + bonus_class_mine));
             return Math.round(speed * 10 * level * Math.pow(1.1, level) * (1.44 - 0.004 * temperatureMax) * (1 + geologue + 0.0033 * plasma + bonus_class_mine));
@@ -38,20 +60,43 @@ function production(building, level, temperatureMax, energy, plasma) {
 
 // Production des satellites
 function production_sat(temperatureMax, nbSat) {
-    return production('SAT', nbSat, temperatureMax, 0, 0);
+    return production('SAT', nbSat, temperatureMax, 0, 0, 0);
 }
 
 //Production des foreuses
-function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax) {
-    var speed = document.getElementById('vitesse_uni').value;
-    var bonus_foreuse = 0.0002;
+function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax, position) {
+	if (typeof(position) == 'undefined') {
+        position = 0;
+    }
+	var speed = document.getElementById('vitesse_uni').value;
+    var bonus_foreuse = 0.0002,
+		bonus_foreuse_max = 0;
     var nb_max;
     if (document.getElementById('class_collect').value == 1) {
         bonus_foreuse = bonus_foreuse * 1.5; //+50%
+		if (document.getElementById('off_geologue').value == 1) {
+			bonus_foreuse_max = 0.1; //+10%
+		}
     }
-    nb_max = (parseInt(levelM) + parseInt(levelC) + parseInt(levelD)) * 8;
+    nb_max = (parseInt(levelM) + parseInt(levelC) + parseInt(levelD)) * 8 * (1 + bonus_foreuse_max);
     if(nbForeuse > nb_max) {
         nbForeuse = nb_max;
+    }
+	//Bonus position
+    bonus_position_M = 0;
+    bonus_position_C = 0;
+    if (position == 1) {
+        bonus_position_C = 0.4;
+    } else if (position == 2) {
+        bonus_position_C = 0.3;
+    } else if (position == 3) {
+        bonus_position_C = 0.2;
+    } else if (position == 8) {
+        bonus_position_M = 0.35;
+    } else if (position == 9 || position == 7) {
+        bonus_position_M = 0.23;
+    } else if (position == 10 || position == 6) {
+        bonus_position_M = 0.17;
     }
     //paypass lien externe !!
     var tmp_class = document.getElementById('class_collect').value;
@@ -61,9 +106,10 @@ function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax) {
     document.getElementById('off_geologue').value = 0;
     document.getElementById('off_full').value = 0;
     
-    result_M = Math.round(nbForeuse * bonus_foreuse * (production('M', levelM, temperatureMax, 0, 0) - 30 * speed));
-    result_C = Math.round(nbForeuse * bonus_foreuse * (production('C', levelC, temperatureMax, 0, 0) - 15 * speed));
-    result_D = Math.round(nbForeuse * bonus_foreuse * production('D', levelD, temperatureMax, 0, 0));
+	final_bonus_foreuse = Math.min(0.5, bonus_foreuse * nbForeuse);
+    result_M = Math.round(final_bonus_foreuse * (production('M', levelM, temperatureMax, 0, 0, position) - Math.floor(speed * 30  * (1 + bonus_position))));
+    result_C = Math.round(final_bonus_foreuse * (production('C', levelC, temperatureMax, 0, 0, position) - Math.floor(speed * 15  * (1 + bonus_position))));
+    result_D = Math.round(final_bonus_foreuse *  production('D', levelD, temperatureMax, 0, 0, position));
     
     document.getElementById('class_collect').value = tmp_class;
     document.getElementById('off_geologue').value = tmp_geo;
@@ -161,6 +207,8 @@ function update_page() {
         var C_1_booster = document.getElementById("C_" + j + "_booster").value;
         var D_1_booster = document.getElementById("D_" + j + "_booster").value;
 		var E_1_booster = document.getElementById("E_" + j + "_booster").value;
+		
+		var position = 0; ////TODO : Trouver la position
 
         M_1[i] = document.getElementById("M_" + j).value;
         C_1[i] = document.getElementById("C_" + j).value;
@@ -196,19 +244,19 @@ function update_page() {
             if (ratio_conso > 1) ratio_conso = 1;
         }
         if (ratio_conso > 0) {
-            M_1_prod[i] = Math.round(ratio_conso * production("M", M_1[i], temperature_max_1, NRJ, Plasma) * M_1_percentage / 100);
-            C_1_prod[i] = Math.round(ratio_conso * production("C", C_1[i], temperature_max_1, NRJ, Plasma) * C_1_percentage / 100);
-            D_1_prod[i] = Math.round(ratio_conso * production("D", D_1[i], temperature_max_1, NRJ, Plasma) * D_1_percentage / 100) - Math.round(consumption("CEF", CEF_1[i]) * CEF_1_percentage / 100);
-            FOR_1_prod[i] = Math.round(ratio_conso * production_foreuse(For_1[i], M_1[i], C_1[i], D_1[i], temperature_max_1) * C_1_percentage / 100);
+            M_1_prod[i] = Math.round(ratio_conso * production("M", M_1[i], temperature_max_1, NRJ, Plasma, position) * M_1_percentage / 100);
+            C_1_prod[i] = Math.round(ratio_conso * production("C", C_1[i], temperature_max_1, NRJ, Plasma, position) * C_1_percentage / 100);
+            D_1_prod[i] = Math.round(ratio_conso * production("D", D_1[i], temperature_max_1, NRJ, Plasma, position) * D_1_percentage / 100) - Math.round(consumption("CEF", CEF_1[i]) * CEF_1_percentage / 100);
+            FOR_1_prod[i] = Math.round(ratio_conso * production_foreuse(For_1[i], M_1[i], C_1[i], D_1[i], temperature_max_1, position) * C_1_percentage / 100);
             
-			M_1_prod[i] = M_1_prod[i] + Math.round((ratio_conso * production("M", M_1[i], temperature_max_1, NRJ, 0) * M_1_percentage / 100) * (M_1_booster / 100));
-			C_1_prod[i] = C_1_prod[i] + Math.round((ratio_conso * production("C", C_1[i], temperature_max_1, NRJ, 0) * C_1_percentage / 100) * (C_1_booster / 100));
-			D_1_prod[i] = D_1_prod[i] + Math.round((ratio_conso * production("D", D_1[i], temperature_max_1, NRJ, 0) * D_1_percentage / 100) * (D_1_booster / 100));
+			M_1_prod[i] = M_1_prod[i] + Math.round((ratio_conso * production("M", M_1[i], temperature_max_1, NRJ, 0, position) * M_1_percentage / 100) * (M_1_booster / 100));
+			C_1_prod[i] = C_1_prod[i] + Math.round((ratio_conso * production("C", C_1[i], temperature_max_1, NRJ, 0, position) * C_1_percentage / 100) * (C_1_booster / 100));
+			D_1_prod[i] = D_1_prod[i] + Math.round((ratio_conso * production("D", D_1[i], temperature_max_1, NRJ, 0, position) * D_1_percentage / 100) * (D_1_booster / 100));
         } else {
-            M_1_prod[i] = Math.round(production("M", 0, 0, 0));
-            C_1_prod[i] = Math.round(production("C", 0, 0, 0));
-            D_1_prod[i] = Math.round(production("D", 0, 0, 0));
-            FOR_1_prod[i] = Math.round(production_foreuse(0, 0, 0, 0, 0));
+            M_1_prod[i] = Math.round(production("M", 0, 0, 0, 0, position));
+            C_1_prod[i] = Math.round(production("C", 0, 0, 0, 0, position));
+            D_1_prod[i] = Math.round(production("D", 0, 0, 0, 0, position));
+            FOR_1_prod[i] = Math.round(production_foreuse(0, 0, 0, 0, 0, position));
         }
         document.getElementById("M_" + j + "_conso").innerHTML = format(M_1_conso[i]);
         document.getElementById("M_" + j + "_prod").innerHTML = format(M_1_prod[i]);
