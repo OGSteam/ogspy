@@ -162,19 +162,24 @@ function production_sat($temperature_max, $off_ing = 0, $classe = 0, $nb_sat = 1
  * @param int $level_C The cristal mine level
  * @param int $level_D The deuterium mine level
  * @param int $temperature_max Max temprature of the current planet
+ * @param int $officier Officer option enabled (=1) or not(=0) or full Officer(=2) [Attention : m / c / d => geologue, ces cef => ingenieur]
  * @param int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
  * @param int $position position of the planet
  * @param int $speed_uni The univers economy speed
  * @return array('M', 'C', 'D') The result foreuse production of metal 'M', cristal 'C' and deuterium 'D'
  */
-function production_foreuse($nb_foreuse, $level_M, $level_C, $level_D, $temperature_max, $classe = 0, $position = 0, $speed_uni = 1)
+function production_foreuse($nb_foreuse, $level_M, $level_C, $level_D, $temperature_max, $officier = 0, $classe = 0, $position = 0, $speed_uni = 1)
 {
     $bonus_foreuse = 0.0002; //0.02% / foreuse
+    $bonus_foreuse_max = 0;
     //Valeur de la classe en valeur ajoutée.
     if ($classe == 1) {
         $bonus_foreuse = $bonus_foreuse * 1.5; //+50%
+        if ($officier != 0) {
+            $bonus_foreuse_max = 0.1; //+10%
+        }
     }
-    $nb_max = ($level_M + $level_C + $level_D) * 8;
+    $nb_max = ($level_M + $level_C + $level_D) * 8 * (1 + $bonus_foreuse_max);
     if($nb_foreuse > $nb_max) {
         $nb_foreuse = $nb_max;
     }
@@ -194,13 +199,13 @@ function production_foreuse($nb_foreuse, $level_M, $level_C, $level_D, $temperat
     } elseif ($position == 10 || $position == 6) {
         $bonus_position_M = 0.17;
     }
-    $result_M = $bonus_foreuse * (production('M', $level_M, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(30 * (1 + $bonus_position_M) * $speed_uni));
-    $result_C = $bonus_foreuse * (production('C', $level_C, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(15 * (1 + $bonus_position_C) * $speed_uni));
-    $result_D = $bonus_foreuse * (production('D', $level_D, 0, $temperature_max, 0, 0, 0, $position, $speed_uni));
+    $result_M = production('M', $level_M, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(30 * (1 + $bonus_position_M) * $speed_uni);
+    $result_C = production('C', $level_C, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(15 * (1 + $bonus_position_C) * $speed_uni);
+    $result_D = production('D', $level_D, 0, $temperature_max, 0, 0, 0, $position, $speed_uni);
     
-    $result_M = round($result_M * $nb_foreuse); //arrondi
-    $result_C = round($result_C * $nb_foreuse); //arrondi
-    $result_D = round($result_D * $nb_foreuse); //arrondi
+    $result_M = round($result_M * min(0.5, $bonus_foreuse * $nb_foreuse)); //arrondi
+    $result_C = round($result_C * min(0.5, $bonus_foreuse * $nb_foreuse)); //arrondi
+    $result_D = round($result_D * min(0.5, $bonus_foreuse * $nb_foreuse)); //arrondi
     
     return array('M' => $result_M, 'C' => $result_C, 'D' => $result_D);
 }
