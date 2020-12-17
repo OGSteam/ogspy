@@ -47,20 +47,44 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
     }
     $ing = $geo;
     $bonus_foreuse = 0.0002; //0.02% / foreuse
+    $bonus_foreuse_max = 0;
     //Valeur de la classe en valeur ajoutée.
     if ($classe == 1) {
         $bonus_class_mine = 0.25; //+25%
         $bonus_class_energie = 0.10; //+10%
         $bonus_foreuse = $bonus_foreuse * 1.5; //+50%
+        if ($officier != 0) {
+            $bonus_foreuse_max = 0,1; //+10%
+        }
     } else {
         $bonus_class_mine = 0;
         $bonus_class_energie = 0;
     }
+    //Bonus position
+    $bonus_position = 0;
+    if ($building === 'C') {
+        if ($position == 1) {
+            $bonus_position = 0.4;
+        } elseif ($position == 2) {
+            $bonus_position = 0.3;
+        } elseif ($position == 3) {
+            $bonus_position = 0.2;
+        }
+    } elseif ($building === 'M') {
+        if ($position == 8) {
+            $bonus_position = 0.35;
+        } elseif ($position == 9 || $position == 7) {
+            $bonus_position = 0.23;
+        } elseif ($position == 10 || $position == 6) {
+            $bonus_position = 0.17;
+    }
+    
     // print_r("officier=$officier, geo=$geo, ing=$ing, C_m=$bonus_class_mine, C_E=$bonus_class_energie, C_f=$bonus_foreuse, speed=$speed_uni\n");
     switch ($building) {
         case "M":
-            $prod_base = 30 * $speed_uni;
+            $prod_base = floor(30 * (1 + $bonus_position) * $speed_uni);
             $result = 30 * $level * pow(1.1, $level); // formule de base
+            $result = $result * (1 + $bonus_position);
             $result = $result * $speed_uni; // vitesse uni
             // $result_foreuse = $result * $bonus_foreuse; //foreuse sur produc de base des mines
             $result = $result * (1 + $geo + 0.01 * $Plasma + $bonus_class_mine);
@@ -69,8 +93,9 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
             break;
 
         case "C":
-            $prod_base = 15 * $speed_uni;
+            $prod_base = floor(15 * (1 + $bonus_position) * $speed_uni);
             $result = 20 * $level * pow(1.1, $level); // formule de base
+            $result = $result * (1 + $bonus_position);
             $result = $result * $speed_uni; // vitesse uni
             // $result_foreuse = $result * $bonus_foreuse; //foreuse sur produc de base des mines
             $result = $result * (1 + $geo + 0.0066 * $Plasma + $bonus_class_mine);
