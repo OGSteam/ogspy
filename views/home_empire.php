@@ -700,13 +700,15 @@ for ($i = 201 ; $i <= $nb_planete + 200 ; $i++) {
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $For = $user_building[$i]["FOR"];
+                $class_collect = ($user_data['user_class'] === 'COL') ? '1' : '0';
+                $nb_max = foreuse_max($user_building[$i]['M'], $user_building[$i]['C'], $user_building[$i]['D'], $user_data['off_geologue'], $class_collect);
                 if ($For == "") {
                     $For = "&nbsp;";
                 } else {
                     $For = number_format($For, 0, ',', ' ');
                 }
 
-                echo "\t" . "<th><span  id='6" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $For . "</span></th>" . "\n";
+                echo "\t" . "<th><span  id='43" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $For . " / " . $nb_max . "</span></th>" . "\n";
             }
             ?>
         </tr>

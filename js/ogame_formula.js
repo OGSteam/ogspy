@@ -119,6 +119,15 @@ function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax, p
     return {"M":result_M, "C":result_C, "D":result_D};
 }
 
+//Max foreuses
+function foreuse_max(levelM, levelC, levelD) {
+    var bonus_foreuse_max = 0;
+    if (document.getElementById('class_collect').value == 1 && document.getElementById('off_geologue').value == 1) {
+			bonus_foreuse_max = 0.1; //+10%
+    }
+    return (parseInt(levelM) + parseInt(levelC) + parseInt(levelD)) * 8 * (1 + bonus_foreuse_max);
+}
+
 // Consommation d"énergie
 function consumption(building, level) {
     switch (building) {
@@ -208,7 +217,7 @@ function update_page() {
         var D_1_booster = document.getElementById("D_" + j + "_booster").value;
 		var E_1_booster = document.getElementById("E_" + j + "_booster").value;
 		
-		var position = 0; ////TODO : Trouver la position
+		var position = document.getElementById("position_" + j).value;
 
         M_1[i] = document.getElementById("M_" + j).value;
         C_1[i] = document.getElementById("C_" + j).value;
@@ -265,8 +274,10 @@ function update_page() {
         document.getElementById("D_" + j + "_conso").innerHTML = format(D_1_conso[i]);
         document.getElementById("D_" + j + "_prod").innerHTML = format(D_1_prod[i]);
         document.getElementById("FOR_" + j + "_conso").innerHTML = format(FOR_1_conso[i]);
-        document.getElementById("FOR_" + j + "_prod").innerHTML = format(FOR_1_prod[i]["M"]) + " / " + format(FOR_1_prod[i]["C"]) + " / " + format(FOR_1_prod[i]["D"]);
-
+        document.getElementById("FOR_" + j + "_prod").innerHTML = FOR_1_prod[i]["M"] + " / " + FOR_1_prod[i]["C"] + " / " + FOR_1_prod[i]["D"];
+		
+		document.getElementById("FOR_" + j + "_max").innerHTML = format(foreuse_max(M_1[i], C_1[i], D_1[i]));
+		
         i++;
     }
 

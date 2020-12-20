@@ -211,6 +211,25 @@ function production_foreuse($nb_foreuse, $level_M, $level_C, $level_D, $temperat
 }
 
 /**
+ *  @brief Find number max of foreuse.
+ *  
+ *  @param [in] int $level_M The metal mine level
+ *  @param [in] int $level_C The cristal mine level
+ *  @param [in] int $level_D The deuterium mine level
+ *  @param [in] int $officier geologue option enabled (=1) or not(=0) or full Officer(=2)
+ *  @param [in] int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
+ *  @return int number max of foreus
+ */
+function foreuse_max($level_M, $level_C, $level_D, $officier = 0, $classe = 0) {
+    $bonus_foreuse_max = 0;
+    
+    if ($classe == 1 && $officier != 0) {
+        $bonus_foreuse_max = 0.1; //+10%
+    }
+    return ($level_M + $level_C + $level_D) * 8 * (1 + $bonus_foreuse_max);
+}
+
+/**
  * Gets the power consumption of the current building
  *
  * @param string $building The building type

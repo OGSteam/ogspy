@@ -311,14 +311,15 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
             echo "\t" . "<th><input type='text' id='For_" . $i . "' size='4' maxlength='4' value='" . $FOR . "' onchange='update_page();'></th>" . "\n";
             echo "\t" . "<th>";
             echo "<select id='For_" . $i . "_percentage' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
-            for ($j = 100; $j >= 0; $j = $j - 10) {
+            for ($j = 150; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
                 if ($user_percentage[$i]['FOR_percentage'] == $j) {
                     echo " selected='selected'";
                 }
                 echo ">" . $j . "%</option>" . "\n";
             }
-            echo "</select></th>" . "\n";
+            echo "</select>";
+            echo "<span style=\"color:lime;\"> / <div id='FOR_" . $i . "_max'>-</div></span></th>" . "\n";
         }
         ?>
         <th></th>
