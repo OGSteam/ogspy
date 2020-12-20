@@ -249,7 +249,7 @@ function update_page() {
         //Ratio de consommation d'énergie
         var ratio_conso = 0;
         if (energie_conso != 0) {
-            var ratio_conso = NRJ_1[i] / energie_conso;
+            ratio_conso = NRJ_1[i] / energie_conso;
             if (ratio_conso > 1) ratio_conso = 1;
         }
         if (ratio_conso > 0) {
@@ -257,9 +257,9 @@ function update_page() {
             C_1_prod[i] = Math.round(ratio_conso * production("C", C_1[i], temperature_max_1, NRJ, Plasma, position) * C_1_percentage / 100);
             D_1_prod[i] = Math.round(ratio_conso * production("D", D_1[i], temperature_max_1, NRJ, Plasma, position) * D_1_percentage / 100) - Math.round(consumption("CEF", CEF_1[i]) * CEF_1_percentage / 100);
             prod_for_tmp = production_foreuse(For_1[i], M_1[i], C_1[i], D_1[i], temperature_max_1, position);
-			prod_for_tmp["M"] = Math.round(ratio_conso * prod_for_tmp["M"] * C_1_percentage / 100);
-			prod_for_tmp["C"] = Math.round(ratio_conso * prod_for_tmp["C"] * C_1_percentage / 100);
-			prod_for_tmp["D"] = Math.round(ratio_conso * prod_for_tmp["D"] * C_1_percentage / 100);
+			prod_for_tmp["M"] = Math.round(ratio_conso * prod_for_tmp["M"] * For_1_percentage / 100);
+			prod_for_tmp["C"] = Math.round(ratio_conso * prod_for_tmp["C"] * For_1_percentage / 100);
+			prod_for_tmp["D"] = Math.round(ratio_conso * prod_for_tmp["D"] * For_1_percentage / 100);
 			FOR_1_prod[i] = prod_for_tmp;
             
 			M_1_prod[i] = M_1_prod[i] + Math.round((ratio_conso * production("M", M_1[i], temperature_max_1, NRJ, 0, position) * M_1_percentage / 100) * (M_1_booster / 100));
@@ -270,9 +270,9 @@ function update_page() {
             C_1_prod[i] = Math.round(production("C", 0, 0, 0, 0, position));
             D_1_prod[i] = Math.round(production("D", 0, 0, 0, 0, position));
 			prod_for_tmp = production_foreuse(0, 0, 0, 0, 0, position);
-			prod_for_tmp["M"] = Math.round(ratio_conso * prod_for_tmp["M"] * C_1_percentage / 100);
-			prod_for_tmp["C"] = Math.round(ratio_conso * prod_for_tmp["C"] * C_1_percentage / 100);
-			prod_for_tmp["D"] = Math.round(ratio_conso * prod_for_tmp["D"] * C_1_percentage / 100);
+			prod_for_tmp["M"] = Math.round(ratio_conso * prod_for_tmp["M"] * For_1_percentage / 100);
+			prod_for_tmp["C"] = Math.round(ratio_conso * prod_for_tmp["C"] * For_1_percentage / 100);
+			prod_for_tmp["D"] = Math.round(ratio_conso * prod_for_tmp["D"] * For_1_percentage / 100);
 			FOR_1_prod[i] = prod_for_tmp;
         }
         document.getElementById("M_" + j + "_conso").innerHTML = format(M_1_conso[i]);
