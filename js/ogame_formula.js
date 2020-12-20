@@ -282,7 +282,7 @@ function update_page() {
         document.getElementById("D_" + j + "_conso").innerHTML = format(D_1_conso[i]);
         document.getElementById("D_" + j + "_prod").innerHTML = format(D_1_prod[i]);
         document.getElementById("FOR_" + j + "_conso").innerHTML = format(FOR_1_conso[i]);
-        document.getElementById("FOR_" + j + "_prod").innerHTML = format(FOR_1_prod[i]["M"]) + " / " + format(FOR_1_prod[i]["C"]) + " / " + format((FOR_1_prod[i]["D"]);
+        document.getElementById("FOR_" + j + "_prod").innerHTML = format(FOR_1_prod[i]["M"]) + " / " + format(FOR_1_prod[i]["C"]) + " / " + format(FOR_1_prod[i]["D"]);
 		
 		document.getElementById("FOR_" + j + "_max").innerHTML = format(foreuse_max(M_1[i], C_1[i], D_1[i]));
 		
