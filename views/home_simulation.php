@@ -308,7 +308,8 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
 
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $FOR = $user_building[$i]["FOR"];
-            echo "\t" . "<th><input type='text' id='For_" . $i . "' size='4' maxlength='4' value='" . $FOR . "' onchange='update_page();'></th>" . "\n";
+            echo "\t" . "<th><input type='text' id='For_" . $i . "' size='4' maxlength='4' value='" . $FOR . "' onchange='update_page();'>";
+            echo "<span style=\"color:lime;\"> / <div id='FOR_" . $i . "_max'>-</div></span></th>" . "\n";
             echo "\t" . "<th>";
             echo "<select id='For_" . $i . "_percentage' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 150; $j >= 0; $j = $j - 10) {
@@ -318,8 +319,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
                 }
                 echo ">" . $j . "%</option>" . "\n";
             }
-            echo "</select>";
-            echo "<span style=\"color:lime;\"> / <div id='FOR_" . $i . "_max'>-</div></span></th>" . "\n";
+            echo "</select></th>" . "\n";
         }
         ?>
         <th></th>
