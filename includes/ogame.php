@@ -424,7 +424,20 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
             "conso_C" => $conso_C, "conso_D" => $conso_D, "conso_FOR" => $conso_FOR);
 }
 
-
+/**
+ *  @brief Return planet position from coordinates.
+ *  @param [in] $coordinates planet coordinates (galaxy:system:position)
+ *  @return int planet position
+ */
+function find_planet_position($coordinates) {
+    $position = 0;
+    
+    $coordinates_tmp = explode(':', $coordinates);
+    if (count($coordinates_tmp) === 3) {
+        $position = (int) $coordinates_tmp[2];
+    }
+    return $position;
+}
 
 /**
  * Calculates the Planet storage capacity (Taille Hangar)
