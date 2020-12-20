@@ -77,13 +77,14 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $coordinates = $user_building[$i]["coordinates"];
+            $position = find_planet_position($coordinates);
             if ($coordinates == "") {
                 $coordinates = "&nbsp;";
             } else {
                 $coordinates = "[" . $coordinates . "]";
             }
 
-            echo "\t" . "<th colspan='2'>" . $coordinates . "</th>" . "\n";
+            echo "\t" . "<th colspan='2'>" . $coordinates . "<input id='position_" . $i . "' type='hidden' value='" . $position . "'></th>" . "\n";
         }
         ?>
         <th></th>
@@ -114,7 +115,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
                 $sum_filed_used += $user_building[$i]["fields_used"];
             }
         }
-        echo "\t<th><div id='T_cases'>" . $sum_filed_used . "/" . $sum_field . "</div></th>";
+        echo "\t<th><div id='T_cases'>" . $sum_filed_used . " / " . $sum_field . "</div></th>";
         ?>
     </tr>
     <tr>
@@ -244,7 +245,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $Sat = $user_building[$i]["Sat"];
-            echo "\t" . "<th><input type='text' id='Sat_" . $i . "' size='2' maxlength='5' value='" . $Sat . "' onchange='update_page();'></th>" . "\n";
+            echo "\t" . "<th><input type='text' id='Sat_" . $i . "' size='5' maxlength='5' value='" . $Sat . "' onchange='update_page();'></th>" . "\n";
 
             echo "\t" . "<th>";
             echo "<select id='Sat_" . $i . "_percentage' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
@@ -307,7 +308,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
 
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $FOR = $user_building[$i]["FOR"];
-            echo "\t" . "<th><input type='text' id='For_" . $i . "' size='2' maxlength='2' value='" . $FOR . "' onchange='update_page();'></th>" . "\n";
+            echo "\t" . "<th><input type='text' id='For_" . $i . "' size='4' maxlength='4' value='" . $FOR . "' onchange='update_page();'></th>" . "\n";
             echo "\t" . "<th>";
             echo "<select id='For_" . $i . "_percentage' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
             for ($j = 100; $j >= 0; $j = $j - 10) {

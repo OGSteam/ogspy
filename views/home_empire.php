@@ -330,7 +330,7 @@ for ($i = 201 ; $i <= $nb_planete + 200 ; $i++) {
         if(!isset($user_production['reel'][$i])) {
             $user_production['reel'][$i]['prod_E'] = 0 ;
         }
-        echo "\t" . "<th>" . $user_production['reel'][$i]['prod_E'] . "</th>" . "\n";
+        echo "\t" . "<th>" . number_format($user_production['reel'][$i]['prod_E'], 0, ',', ' ') . "</th>" . "\n";
     }
 
 ?>
@@ -351,7 +351,7 @@ for ($i = 201 ; $i <= $nb_planete + 200 ; $i++) {
             echo "green";
         }
         echo ";'>";
-        echo number_format(round($user_production['reel'][$i]['ratio'], 3), 0, ',', ' ');
+        echo number_format(round($user_production['reel'][$i]['ratio'], 3), 3, ',', ' ');
         echo "</th>" . "\n";
     }
 ?>
