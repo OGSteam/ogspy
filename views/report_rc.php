@@ -32,7 +32,7 @@ if (sizeof($reports) == 0) {
         echo "<table style='text-align: center'>\n";
         echo '<tr><td class="c">' . nl2br($v) . "</td></tr>\n";
         echo "</table>";
-        echo "<br\>\n";
+        echo "<br/>\n";
     }
 }
 echo "<br/>\n";

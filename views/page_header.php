@@ -35,7 +35,7 @@ use Ogsteam\Ogspy\Helper\ToolTip_Helper;
     <script src="js/ogspy.js"></script>
 <?php echo (new ToolTip_Helper())->activateJs(); ?>
 </head>
-<body>
+<body onload="ogspy_run();">
 <table id="maintable">
     <tr>
         <td style="vertical-align:top; width:180px; padding:10px;" rowspan="4"><?php require_once("menu.php"); ?></td>

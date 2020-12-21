@@ -20,36 +20,7 @@ if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_da
 
 $user_info = user_get();
 $usergroup_list = usergroup_get();
-
-
 ?>
-<!--Logicque javascript-->
-<script>
-    function visible(byId) {
-        document.getElementById(byId).style.visibility = 'visible';
-        document.getElementById(byId).style.display = 'block';
-
-    }
-
-    function unvisible(byId) {
-        document.getElementById(byId).style.visibility = 'hidden';
-        document.getElementById(byId).style.display = 'none';
-
-    }
-
-    function beginCreateUser() {
-        visible("createNewPlayer");
-        unvisible("creatingNewPlayer");
-
-
-    }
-
-    function endCreateUser() {
-        visible("creatingNewPlayer");
-        unvisible("createNewPlayer");
-    }
-</script>
-
 
 <!--tableau de creation d'un nouvel utilisateur-->
 <div id="creatingNewPlayer" style="display: block;">
@@ -62,13 +33,11 @@ $usergroup_list = usergroup_get();
         <tr>
             <th width="100">
                 <input type="button" value="<?php echo($lang['ADMIN_MEMBERS_NEWACCOUNT_BUTTON']); ?>"
-                       onclick=beginCreateUser()>
+                       onclick=ogspy_beginCreateUser()>
             </th>
         </tr>
     </table>
-
 </div>
-
 
 <!-- formulaire de creation nouveau joueur-->
 <div id="createNewPlayer" style="display: none;visibility: hidden" ;>
@@ -154,7 +123,7 @@ $usergroup_list = usergroup_get();
                             <th align="center" colspan="2">
                                 <input type="submit" value="<?php echo($lang['ADMIN_MEMBERS_PASSWORDOK']); ?>">
                                 <input type="button" value="<?php echo($lang['ADMIN_MEMBERS_PASSWORDCANCEL']); ?>"
-                                       onclick=endCreateUser()>
+                                       onclick=ogspy_endCreateUser()>
                             </th>
                         </tr>
                     </table>
