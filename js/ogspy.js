@@ -51,6 +51,7 @@ function ogspy_check_password(form, message) {
 // includes/menu.php
 function ogspy_timer() {
 	var date = new Date();
+	var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
 	
 	document.getElementById('datetime').innerHTML = date.toLocaleString('fr-FR', options) + " " + date.toLocaleTimeString();
 	

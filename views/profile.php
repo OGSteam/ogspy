@@ -40,45 +40,14 @@ $off_ingenieur = (isset ($user_data["off_ingenieur"]) && $user_data["off_ingenie
 $off_geologue = (isset ($user_data["off_geologue"]) && $user_data["off_geologue"] == 1) ? "checked" : "";
 $off_technocrate = (isset ($user_data["off_technocrate"]) && $user_data["off_technocrate"] == 1) ? "checked" : "";
 
+$message  = "{PROFILE_ERROR_RETRY: '" . $lang['PROFILE_ERROR_RETRY'];
+$message .= "',PROFILE_ERROR_OLDPWD: '" . $lang['PROFILE_ERROR_OLDPWD'];
+$message .= "',PROFILE_ERROR_ERROR: '" . $lang['PROFILE_ERROR_ERROR'];
+$message .= "',PROFILE_ERROR_ILLEGAL: '" . $lang['PROFILE_ERROR_ILLEGAL'] . "'}";
 
 require_once("views/page_header.php");
-
-$message  = '{"PROFILE_ERROR_RETRY": ' . $lang['PROFILE_ERROR_RETRY'];
-$message += ',"PROFILE_ERROR_OLDPWD": ' . $lang['PROFILE_ERROR_OLDPWD'];
-$message += ',"PROFILE_ERROR_ERROR": ' . $lang['PROFILE_ERROR_ERROR'];
-$message += ',"PROFILE_ERROR_ILLEGAL": ' . $lang['PROFILE_ERROR_ILLEGAL'] . '}';
 ?>
-    <!-- DEBUT DU SCRIPT -->
-    <script>
-        function check_password(form, message) {
-            let old_password = form.old_password.value;
-            let new_password = form.new_password.value;
-            let new_password2 = form.new_password2.value;
-
-            if (old_password !== "" && (new_password === "" || new_password2 === "")) {
-                alert("<?php echo($lang['PROFILE_ERROR_RETRY']); ?>");
-                return false;
-            }
-            if (old_password === "" && (new_password !== "" || new_password2 !== "")) {
-                alert("<?php echo($lang['PROFILE_ERROR_OLDPWD']); ?>");
-                return false;
-            }
-            if (old_password !== "" && new_password !== new_password2) {
-                alert("<?php echo($lang['PROFILE_ERROR_ERROR']); ?>");
-                return false;
-            }
-            if (old_password !== "" && new_password !== "" && new_password2 !== "") {
-                if (new_password.length < 6 || new_password.length > 64) {
-                    alert("<?php echo($lang['PROFILE_ERROR_ILLEGAL']); ?>");
-                    return false;
-                }
-            }
-
-            return true;
-        }
-    </script>
-    <!-- FIN DU SCRIPT -->
-    <form method="POST" action="index.php" onSubmit="return check_password(this, <?php echo $message; ?>);">
+    <form method="POST" action="index.php" onSubmit="return ogspy_check_password(this, <?php echo $message; ?>);">
         <input name="action" type="hidden" value="member_modify_member">
         <table width="600">
             <tr>
