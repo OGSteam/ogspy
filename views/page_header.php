@@ -30,6 +30,8 @@ use Ogsteam\Ogspy\Helper\ToolTip_Helper;
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/highcharts.js"></script>
     <script src="vendor/tooltipster/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
+    <script src="js/ogame_formula.js"></script>
+    <script src="js/ogspy.js"></script>
 <?php echo (new ToolTip_Helper())->activateJs(); ?>
 </head>
 <body>
