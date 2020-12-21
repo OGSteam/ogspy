@@ -64,7 +64,7 @@ if (!defined('IN_SPYOGAME')) {
         setTimeout("Biper()", 1000);
     }
 
-    window.onload = Biper;
+    //window.onload = Biper;
 </script>
 
 <table border="0" cellpadding="0" cellspacing="0">

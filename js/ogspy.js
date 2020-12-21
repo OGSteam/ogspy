@@ -49,28 +49,15 @@ function ogspy_check_password(form, message) {
 	return true;
 }
 // includes/menu.php
-
-
-// <li class="OgameClock">21.12.2020 <span>06:34:22</span>
-// var serverTime = new Date(2020, 11, 21, 6, 32, 34);
-// var serverTimeZoneOffsetInMinutes = -60;
-// var localTime = new Date();
-// var localTimeZoneOffsetInMinutes = localTime.getTimezoneOffset();
-// var timeDiff = serverTime - localTime;
-// var timeZoneDiffSeconds = (serverTimeZoneOffsetInMinutes - localTimeZoneOffsetInMinutes) * 60;
-// var timerHandler = new TimerHandler();
-// $(document).ready(
-	// function(){
-	  // initOverlays();
-	// }
-  // );
-// timerHandler.appendCallback(function () {
-	// localTime = new Date();
-	// serverTime = new Date(localTime.valueOf() + timeDiff);
-	// $(".OGameClock").html(getFormatedDate(serverTime.getTime(), "[d].[m].[Y] <span>[H]:[i]:[s]</span>"));
-// });
+function ogspy_timer() {
+	var date = new Date();
+	
+	document.getElementById('datetime').innerHTML = date.toLocaleString('fr-FR', options) + " " + date.toLocaleTimeString();
+	
+	setTimeout("ogspy_timer()", 1000);
+}
 	
 // Global debut
 function ogspy_run() {
-	
+	ogspy_timer();
 }
