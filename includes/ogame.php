@@ -757,6 +757,7 @@ function building_upgrade($building, $level)
  */
 function building_cumulate($building, $level)
 {
+    $NRJ = 0;
     switch ($building) {
         case "M":
             $M = 60 * (1 - pow(1.5, $level)) / (-0.5);
@@ -794,6 +795,26 @@ function building_cumulate($building, $level)
             $D = 500 * $level;
             break;
 
+        case "Dock":
+            $M = 200 * (1 - pow(5, $level)) / (-5);
+            $C = 0;
+            $D = 50 * (1 - pow(5, $level)) / (-5);
+            $NRJ = 50 * (1 - pow(2.5, $level)) / (-2.5);
+            break;
+
+        case "Graviton":
+            $M = 0;
+            $C = 0;
+            $D = 0;
+            $NRJ = 300000 * (1 - pow(3, $level)) / (-3);
+            break;
+
+        case "Astrophysique":
+            $M = 4000 * (1 - pow(1.75, $level)) / (-1.75);
+            $C = 8000 * (1 - pow(1.75, $level)) / (-1.75);
+            $D = 4000 * (1 - pow(1.75, $level)) / (-1.75);
+            break;
+
         default:
             list($M, $C, $D) = array_values(building_upgrade($building, 1));
             $M = $M * -(1 - pow(2, $level));
@@ -802,7 +823,7 @@ function building_cumulate($building, $level)
             break;
     }
 
-    return array("M" => $M, "C" => $C, "D" => $D);
+    return array("M" => $M, "C" => $C, "D" => $D, "NRJ" => $NRJ);
 }
 
 /**
@@ -812,7 +833,6 @@ function building_cumulate($building, $level)
  */
 function all_building_cumulate($user_building)
 {
-
     $total = 0;
 
     while ($data = current($user_building)) {
@@ -823,20 +843,18 @@ function all_building_cumulate($user_building)
 
             $level = $data[$key];
             if ($level == "") {
-                            $level = 0;
+                $level = 0;
             }
 
             if ($key == "M" || $key == "C" || $key == "D" || $key == "CES" || $key == "CEF" ||
                 $key == "UdR" || $key == "UdN" || $key == "CSp" || $key == "HM" || $key == "HC" ||
-                $key == "HD" || $key == "Lab" ||
-                $key == "Ter" || $key == "DdR" || $key == "Silo" || $key == "Dock" || $key == "BaLu" || $key == "Pha" ||
-                $key == "PoSa"
-            ) {
+                $key == "HD" || $key == "Lab" || $key == "Ter" || $key == "DdR" || $key == "Silo" ||
+                $key == "Dock" || $key == "BaLu" || $key == "Pha" || $key == "PoSa"
+               ) {
                 list($M, $C, $D) = array_values(building_cumulate($key, $level));
                 $total += $M + $C + $D;
             }
         }
-
         next($user_building);
     }
 
