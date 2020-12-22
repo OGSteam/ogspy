@@ -465,15 +465,12 @@ function find_planet_position($coordinates) {
  */
 function depot_capacity($level)
 {
-    // capacité par défaut
-    $capacity = 10000;
+    $capacity = 10000;  // capacité par défaut
 
     if ($level > 0) {
-        $capacity = 5000 * floor((2.5 * exp(20 * $level / 33)));
+        $capacity = 5000 * floor(2.5 * exp(20 * $level / 33));
     }
-    $result = round($capacity);
-
-    return $result;
+    return $capacity;
 }
 
 /**
@@ -602,10 +599,10 @@ function building_upgrade($building, $level)
             break;
 
         case "Dock":
-            $M = 200 * pow(2, ($level - 1));
+            $M = 200 * pow(5, ($level - 1));
             $C = 0;
-            $D = 50 * pow(2, ($level - 1));
-            $NRJ = 50 * pow(2, ($level - 1));
+            $D = 50 * pow(5, ($level - 1));
+            $NRJ = floor(50 * pow(2.5, ($level - 1)));
             break;
 
         case "BaLu":

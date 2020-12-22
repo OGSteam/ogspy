@@ -49,16 +49,18 @@ function ogspy_check_password(form, message) {
 	return true;
 }
 // includes/menu.php
-function ogspy_timer() {
-	var date = new Date();
-	var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-	
-	document.getElementById('datetime').innerHTML = date.toLocaleString('fr-FR', options) + " " + date.toLocaleTimeString();
-	
-	setTimeout("ogspy_timer()", 1000);
+function ogspy_run_timer() {
+	if (document.getElementById('datetime') !== null) {
+		var date = new Date();
+		var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+		
+		document.getElementById('datetime').innerHTML = date.toLocaleString('fr-FR', options) + " " + date.toLocaleTimeString();
+		
+		setTimeout("ogspy_run_timer()", 1000);
+	}
 }
 	
 // Global debut
 function ogspy_run() {
-	ogspy_timer();
+	ogspy_run_timer();
 }
