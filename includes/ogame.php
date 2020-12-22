@@ -493,6 +493,7 @@ function astro_max_planete($level)
 function building_upgrade($building, $level)
 {
     switch ($building) {
+// Bâtiment :
         case "M":
             $M = 60 * pow(1.5, ($level - 1));
             $C = 15 * pow(1.5, ($level - 1));
@@ -626,6 +627,7 @@ function building_upgrade($building, $level)
             $NRJ = 0;
             break;
 
+// Recherches :
         case "Esp":
             $M = 200 * pow(2, ($level - 1));
             $C = 1000 * pow(2, ($level - 1));
@@ -759,6 +761,7 @@ function building_cumulate($building, $level)
 {
     $NRJ = 0;
     switch ($building) {
+// Bâtiment non x2 :
         case "M":
             $M = 60 * (1 - pow(1.5, $level)) / (-0.5);
             $C = 15 * (1 - pow(1.5, $level)) / (-0.5);
@@ -789,12 +792,6 @@ function building_cumulate($building, $level)
             $D = 180 * (1 - pow(1.8, $level)) / (-0.8);
             break;
 
-        case "Sat":
-            $M = 0;
-            $C = 2000 * $level;
-            $D = 500 * $level;
-            break;
-
         case "Dock":
             $M = 200 * (1 - pow(5, $level)) / (-5);
             $C = 0;
@@ -802,6 +799,7 @@ function building_cumulate($building, $level)
             $NRJ = 50 * (1 - pow(2.5, $level)) / (-2.5);
             break;
 
+// Recherches non x2 :
         case "Graviton":
             $M = 0;
             $C = 0;
@@ -815,6 +813,171 @@ function building_cumulate($building, $level)
             $D = 4000 * (1 - pow(1.75, $level)) / (-1.75);
             break;
 
+// Flottes :
+        case "PT":
+            $M = 2000 * $level;
+            $C = 2000 * $level;
+            $D = 0;
+            break;
+
+        case "GT":
+            $M = 6000 * $level;
+            $C = 6000 * $level;
+            $D = 0;
+            break;
+
+        case "CLE":
+            $M = 3000 * $level;
+            $C = 1000 * $level;
+            $D = 0;
+            break;
+
+        case "CLO":
+            $M = 6000 * $level;
+            $C = 4000 * $level;
+            $D = 0;
+            break;
+
+        case "CR":
+            $M = 20000 * $level;
+            $C =  7000 * $level;
+            $D =  2000 * $level;
+            break;
+
+        case "VB":
+            $M = 45000 * $level;
+            $C = 15000 * $level;
+            $D = 0;
+            break;
+
+        case "VC":
+            $M = 10000 * $level;
+            $C = 20000 * $level;
+            $D = 10000 * $level;
+            break;
+
+        case "REC":
+            $M = 10000 * $level;
+            $C =  6000 * $level;
+            $D =  2000 * $level;
+            break;
+
+        case "SE":
+            $M = 0;
+            $C = 1000 * $level;
+            $D = 0;
+            break;
+
+        case "BMD":
+            $M = 50000 * $level;
+            $C = 25000 * $level;
+            $D = 15000 * $level;
+            break;
+
+        case "DST":
+            $M = 60000 * $level;
+            $C = 50000 * $level;
+            $D = 15000 * $level;
+            break;
+
+        case "TRA":
+            $M = 30000 * $level;
+            $C = 40000 * $level;
+            $D = 15000 * $level;
+            break;
+
+        case "EDLM":
+            $M = 5000000 * $level;
+            $C = 4000000 * $level;
+            $D = 1000000 * $level;
+            break;
+
+        case "FOR":
+            $M = 2000 * $level;
+            $C = 2000 * $level;
+            $D = 1000 * $level;
+            break;
+
+        case "ECL":
+            $M =  8000 * $level;
+            $C = 15000 * $level;
+            $D =  8000 * $level;
+            break;
+
+        case "FAU":
+            $M = 85000 * $level;
+            $C = 55000 * $level;
+            $D = 20000 * $level;
+            break;
+
+        case "SAT":
+        case "Sat":
+            $M = 0;
+            $C = 2000 * $level;
+            $D =  500 * $level;
+            break;
+
+// Défenses :
+        case "LM":
+            $M = 2000 * $level;
+            $C = 0;
+            $D = 0;
+            break;
+
+        case "LLE":
+            $M = 1500 * $level;
+            $C =  500 * $level;
+            $D = 0;
+            break;
+
+        case "LLO":
+            $M = 6000 * $level;
+            $C = 2000 * $level;
+            $D = 0;
+            break;
+
+        case "CG":
+            $M = 20000 * $level;
+            $C = 15000 * $level;
+            $D =  2000 * $level;
+            break;
+
+        case "AI":
+            $M = 5000 * $level;
+            $C = 3000 * $level;
+            $D = 0;
+            break;
+
+        case "LP":
+            $M = 50000 * $level;
+            $C = 50000 * $level;
+            $D = 30000 * $level;
+            break;
+
+        case "PB":
+            $M = 10000 * $level;
+            $C = 10000 * $level;
+            $D = 0;
+            break;
+
+        case "GB":
+            $M = 50000 * $level;
+            $C = 50000 * $level;
+            $D = 0;
+            break;
+
+        case "MIC":
+            $M = 8000 * $level;
+            $C = 0;
+            $D = 2000 * $level;
+            break;
+
+        case "MIP":
+            $M = 12500 * $level;
+            $C = 2500 * $level;
+            $D = 10000 * $level;
+            break;
+
         default:
             list($M, $C, $D) = array_values(building_upgrade($building, 1));
             $M = $M * -(1 - pow(2, $level));
@@ -826,6 +989,10 @@ function building_cumulate($building, $level)
     return array("M" => $M, "C" => $C, "D" => $D, "NRJ" => $NRJ);
 }
 
+function defense_cumulate($defence, $number)  { return building_cumulate($defence, $number); }
+function fleet_cumulate($fleet, $number)      { return building_cumulate($fleet, $number); }
+function research_cumulate($research, $level) { return building_cumulate($research, $level); }
+
 /**
  * Calculates the price of all buildings
  * @param string $user_building The list of buildings with corresponding levels
@@ -836,11 +1003,9 @@ function all_building_cumulate($user_building)
     $total = 0;
 
     while ($data = current($user_building)) {
-
         $bats = array_keys($data);
-
+        
         foreach ($bats as $key) {
-
             $level = $data[$key];
             if ($level == "") {
                 $level = 0;
@@ -871,24 +1036,44 @@ function all_defence_cumulate($user_defence)
     if($user_defence == NULL) {
         return 0;
     }
-
     $total = 0;
-    $init_d_prix = array("LM" => 2000, "LLE" => 2000, "LLO" => 8000, "CG" => 37000,
-        "AI" => 8000, "LP" => 130000, "PB" => 20000, "GB" => 100000, "MIC" => 10000,
-        "MIP" => 25000);
-    $keys = array_keys($init_d_prix);
-
+    
     while ($data = current($user_defence)) {
-        if (sizeof($init_d_prix) != sizeof($keys)) {
-                    continue;
-        }
+        $defs = array_keys($data);
+        
+        foreach ($defs as $key) {
+            $level = $data[$key];
+            if ($level == "") {
+                $level = 0;
+            }
 
-        for ($i = 0; $i < sizeof($init_d_prix); $i++) {
-            $total += $init_d_prix[$keys[$i]] * ($data[$keys[$i]] != "" ? $data[$keys[$i]] : 0);
+            if ($key == "LM" || $key == "LLE" || $key == "LLO" || $key == "CG" ||
+                $key == "AI" || $key == "LP" || $key == "PB" || $key == "GB" ||
+                $key == "MIC" || $key == "MIP"
+               ) {
+                list($M, $C, $D) = array_values(building_cumulate($key, $level));
+                $total += $M + $C + $D;
+            }
         }
-
         next($user_defence);
     }
+    
+    // $init_d_prix = array("LM" => 2000, "LLE" => 2000, "LLO" => 8000, "CG" => 37000,
+        // "AI" => 8000, "LP" => 130000, "PB" => 20000, "GB" => 100000, "MIC" => 10000,
+        // "MIP" => 25000);
+    // $keys = array_keys($init_d_prix);
+
+    // while ($data = current($user_defence)) {
+        // if (sizeof($init_d_prix) != sizeof($keys)) {
+                    // continue;
+        // }
+
+        // for ($i = 0; $i < sizeof($init_d_prix); $i++) {
+            // $total += $init_d_prix[$keys[$i]] * ($data[$keys[$i]] != "" ? $data[$keys[$i]] : 0);
+        // }
+
+        // next($user_defence);
+    // }
 
     return $total;
 }
@@ -901,7 +1086,6 @@ function all_defence_cumulate($user_defence)
  */
 function all_lune_cumulate($user_building, $user_defence)
 {
-
     $total = all_defence_cumulate($user_defence) + all_building_cumulate($user_building);
 
     return $total;
@@ -917,34 +1101,53 @@ function all_technology_cumulate($user_technology)
     if(!isset($user_technology )) return 0;
 
     $total = 0;
-    $init_t_prix = array("Esp" => 1400, "Ordi" => 1000, "Armes" => 1000, "Bouclier" =>
-        800, "Protection" => 1000, "NRJ" => 1200, "Hyp" => 6000, "RC" => 1000, "RI" =>
-        6600, "PH" => 36000, "Laser" => 300, "Ions" => 1400, "Plasma" => 7000, "RRI" =>
-        800000, "Graviton" => 0, "Astrophysique" => 16000);
-    $keys = array_keys($init_t_prix);
-
-    if (sizeof($init_t_prix) != sizeof($user_technology)) {
-            return 0;
-    }
-
-    for ($i = 0; $i < sizeof($init_t_prix); $i++) {
-        $pow = ($keys[$i] != "Astrophysique") ? 2 : 1.75; // puissance change a cause de l astro ...
-
-        if ($keys[$i] != "Astrophysique") {
-            $total += $init_t_prix[$keys[$i]] * (pow($pow, ($user_technology[$keys[$i]] !=
-                        "") ? $user_technology[$keys[$i]] : 0) - 1);
-        } else {
-            $j = 0;
-            $user_technology[$keys[$i]] = ($user_technology[$keys[$i]] != "") ? $user_technology[$keys[$i]] : 0;
-            while ($j <= $user_technology[$keys[$i]]) {
-                $total += $init_t_prix[$keys[$i]] * (pow($pow, ($j - 1)));
-                $j++;
+    
+    while ($data = current($user_technology)) {
+        $technos = array_keys($data);
+        
+        foreach ($technos as $key) {
+            $level = $data[$key];
+            if ($level == "") {
+                $level = 0;
             }
 
+            if ($key == "Esp" || $key == "Ordi" || $key == "Armes" || $key == "Bouclier" ||
+                $key == "Protection" || $key == "NRJ" || $key == "Hyp" || $key == "RC" ||
+                $key == "RI" || $key == "PH" || $key == "Laser" || $key == "Ions" ||
+                $key == "Plasma" || $key == "RRI" || $key == "Graviton" || $key == "Astrophysique"
+               ) {
+                list($M, $C, $D) = array_values(building_cumulate($key, $level));
+                $total += $M + $C + $D;
+            }
         }
-
-
+        next($user_technology);
     }
+    
+    
+    // $init_t_prix = array("Esp" => 1400, "Ordi" => 1000, "Armes" => 1000, "Bouclier" =>
+        // 800, "Protection" => 1000, "NRJ" => 1200, "Hyp" => 6000, "RC" => 1000, "RI" =>
+        // 6600, "PH" => 36000, "Laser" => 300, "Ions" => 1400, "Plasma" => 7000, "RRI" =>
+        // 800000, "Graviton" => 0, "Astrophysique" => 16000);
+    // $keys = array_keys($init_t_prix);
+
+    // if (sizeof($init_t_prix) != sizeof($user_technology)) {
+            // return 0;
+    // }
+    // for ($i = 0; $i < sizeof($init_t_prix); $i++) {
+        // $pow = ($keys[$i] != "Astrophysique") ? 2 : 1.75; // puissance change a cause de l astro ...
+
+        // if ($keys[$i] != "Astrophysique") {
+            // $total += $init_t_prix[$keys[$i]] * (pow($pow, ($user_technology[$keys[$i]] !=
+                        // "") ? $user_technology[$keys[$i]] : 0) - 1);
+        // } else {
+            // $j = 0;
+            // $user_technology[$keys[$i]] = ($user_technology[$keys[$i]] != "") ? $user_technology[$keys[$i]] : 0;
+            // while ($j <= $user_technology[$keys[$i]]) {
+                // $total += $init_t_prix[$keys[$i]] * (pow($pow, ($j - 1)));
+                // $j++;
+            // }
+        // }
+    // }
 
     return $total;
 }
