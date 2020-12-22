@@ -718,9 +718,9 @@ function building_upgrade($building, $level)
             break;
 
         case "RRI":
-            $M = 20000 * pow(2, ($level - 1));
-            $C = 20000 * pow(2, ($level - 1));
-            $D = 1000 * pow(2, ($level - 1));
+            $M = 240000 * pow(2, ($level - 1));
+            $C = 400000 * pow(2, ($level - 1));
+            $D = 160000 * pow(2, ($level - 1));
             $NRJ = 0;
             break;
 
