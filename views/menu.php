@@ -41,7 +41,7 @@ if (!defined('IN_SPYOGAME')) {
     ?>
     <tr>
         <td>
-            <div style="text-align='left';">
+            <div style="text-align:left;">
 
                 <ul class="menu" id="menu">
                     <?php
