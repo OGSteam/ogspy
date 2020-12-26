@@ -41,7 +41,7 @@ function ogspy_check_password(form, message) {
 		return false;
 	}
 	if (old_password !== "" && new_password !== "" && new_password2 !== "") {
-		if (new_password.length < 6 || new_password.length > 64 || new_password.match("^[^;\"']{6,64}$")) {
+		if (new_password.length < 6 || new_password.length > 64 || !new_password.match("^[^;\"']{6,64}$")) {
 			alert(message['PROFILE_ERROR_ILLEGAL']);
 			return false;
 		}
