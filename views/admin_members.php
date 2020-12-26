@@ -53,7 +53,7 @@ $usergroup_list = usergroup_get();
                         </tr>
                         <tr>
                             <th align="center">
-                                <?php echo($lang['ADMIN_MEMBERS_POPUP_NAME']); ?>
+                                <?php echo($lang['ADMIN_MEMBERS_POPUP_NAME'] . help("profile_login")); ?>
                             </th>
                             <th align="center">
                                 <input name="pseudo" type="text" maxlength="15" size="20">
@@ -61,7 +61,7 @@ $usergroup_list = usergroup_get();
                         </tr>
                         <tr>
                             <th align="center">
-                                <?php echo($lang['ADMIN_MEMBERS_POPUP_PASSWORD']); ?>
+                                <?php echo($lang['ADMIN_MEMBERS_POPUP_PASSWORD'] . help("profile_password")); ?>
                             </th>
                             <th align="center">
                                 <input name="pass" type="text" maxlength="64" size="20">
