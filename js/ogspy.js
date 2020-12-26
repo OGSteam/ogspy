@@ -26,7 +26,7 @@ function ogspy_check_password(form, message) {
         message['PROFILE_ERROR_RETRY'] = "Saisissez le nouveau mot de passe et sa confirmation.";
 		message['PROFILE_ERROR_OLDPWD'] = "Saisissez l'ancien mot de passe.";
 		message['PROFILE_ERROR_ERROR'] = "Le mot de passe saisi est différent de la confirmation !";
-		message['PROFILE_ERROR_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 15 caractères !";
+		message['PROFILE_ERROR_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 15 caractères et pas les caractères suivants : ;'&quot; !";
     }
 	if (old_password !== "" && (new_password === "" || new_password2 === "")) {
 		alert(message['PROFILE_ERROR_RETRY']);
@@ -41,7 +41,7 @@ function ogspy_check_password(form, message) {
 		return false;
 	}
 	if (old_password !== "" && new_password !== "" && new_password2 !== "") {
-		if (new_password.length < 6 || new_password.length > 64) {
+		if (new_password.length < 6 || new_password.length > 64 || new_password.match("^[^;\"']{6,64}$")) {
 			alert(message['PROFILE_ERROR_ILLEGAL']);
 			return false;
 		}
