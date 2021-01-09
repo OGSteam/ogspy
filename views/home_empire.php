@@ -27,6 +27,9 @@ $speed_uni       = $server_config['speed_uni'];
 $user_production = user_empire_production($user_empire, $user_data, $speed_uni);
 $nb_planete      = find_nb_planete_user($user_data['user_id']);
 
+if (!isset($pub_view)) {
+	$pub_view = 'planets';
+}
 switch($pub_view) {
     case 'moons' :
         $view = $pub_view;
