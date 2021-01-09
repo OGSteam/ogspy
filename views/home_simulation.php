@@ -573,7 +573,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         $lab_max = 0;
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='building_pts_" . $i . "'>-</div></span>" . "\n";
-            echo "\t<input type='hidden' id='building_" . $i . "' value='" . implode(array_slice($user_building[$i], 21, -3, true), "<>") . "' /></th>";
+            echo "\t<input type='hidden' id='building_" . $i . "' value='" . implode('<>', array_slice($user_building[$i], 21, -3, true)) . "' /></th>";
 
             if ($lab_max < $user_building[$i]["Lab"]) {
                 $lab_max = $user_building[$i]["Lab"];
@@ -587,7 +587,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             echo "\t<th colspan='2'><span style=\"color: lime; \"><div id='defence_pts_" . $i . "'>-</div></span>" . "\n";
-            echo "\t<input type='hidden' id='defence_" . $i . "' value='" . implode($user_defence[$i], "<>") . "' /></th>";
+            echo "\t<input type='hidden' id='defence_" . $i . "' value='" . implode('<>', $user_defence[$i]) . "' /></th>";
         }
         ?>
         <th><span style="color: white; "><span id='total_d_pts'>-</span></span></th>
@@ -598,12 +598,12 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         for ($i = 201; $i <= 200 + $nb_planete; $i++) {
             echo "\t<th colspan='2'><span style=\"color: lime; \"><div id='lune_pts_" . $i . "'>-</div></span>" . "\n";
             if ($user_building[$i]) {
-                echo "\t<input type='hidden' id='lune_b_" . $i . "' value='" . implode(array_slice($user_building[$i], 23, -3, true), "<>") . "' />";
+                echo "\t<input type='hidden' id='lune_b_" . $i . "' value='" . implode('<>', array_slice($user_building[$i], 23, -3, true)) . "' />";
                 //print_r($user_building[$i]);
             } else {
                 echo "\t<input type='hidden' id='lune_b_" . $i . "' value='0' />";
             }
-            echo "\t<input type='hidden' id='lune_d_" . $i . "' value='" . implode($user_defence[$i], "<>") . "' /></th>";
+            echo "\t<input type='hidden' id='lune_d_" . $i . "' value='" . implode('<>', $user_defence[$i]) . "' /></th>";
         }
         ?>
         <th><span style="color: white; "><span id='total_lune_pts'>-</span></span></th>
@@ -626,7 +626,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             if ($user_empire["technology"] != NULL && $user_building[$i]["Lab"] == $lab_max) {
                 echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='techno_pts'>-</div></span>" . "\n";
-                echo "\t<input type='hidden' id='techno' value='" . implode($user_empire["technology"], "<>") . "' /></th>";
+                echo "\t<input type='hidden' id='techno' value='" . implode('<>', $user_empire['technology']) . "' /></th>";
             } else {
                 echo "<th colspan='2'><span style=\"color: lime; \">-</span></th>";
             }
