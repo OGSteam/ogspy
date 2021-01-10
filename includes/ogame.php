@@ -1001,7 +1001,7 @@ function research_cumulate($research, $level) { return building_cumulate($resear
 function all_building_cumulate($user_building)
 {
     $total = 0;
-
+var_dump($user_building);
     while ($data = current($user_building)) {
         $bats = array_keys($data);
         
@@ -1037,7 +1037,7 @@ function all_defence_cumulate($user_defence)
         return 0;
     }
     $total = 0;
-    
+    var_dump($user_defence);
     while ($data = current($user_defence)) {
         $defs = array_keys($data);
         
@@ -1101,7 +1101,7 @@ function all_technology_cumulate($user_technology)
     if(!isset($user_technology )) return 0;
 
     $total = 0;
-    
+    var_dump($user_technology);
     while ($data = current($user_technology)) {
         $technos = array_keys($data);
         
