@@ -466,12 +466,11 @@ function galaxy_ally_position($step = 50)
     $Universe_Model = new Universe_Model();
 
     for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
-        if (!check_var($pub_ally_[$i], "Text")) {
-            redirection("index.php?action=message&id_message=errordata&info");
-        }
-
         if (!isset($pub_ally_[$i])) {
             return array();
+        }
+        if (!check_var($pub_ally_[$i], "Text")) {
+            redirection("index.php?action=message&id_message=errordata&info");
         }
     }
 
