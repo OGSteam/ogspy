@@ -1101,8 +1101,7 @@ function all_technology_cumulate($user_technology)
 
     $total = 0;
 
-	foreach ($user_technology as $key) {
-		$level = $data[$key];
+	foreach ($user_technology as $key=>$level) {
 		if ($level == "") {
 			$level = 0;
 		}
