@@ -1691,7 +1691,7 @@ function portee_missiles($galaxy, $system)
 
             // recherche du nombre de missile dispo
             $tUser_defense = $User_Defense_Model->select_user_defense_planete($base_joueur, $base_id_planet);
-            $missil_dispo =  $tUser_defense["MIP"];
+            $missil_dispo = (!isset($tUser_defense['MIP']) ? 0 : $tUser_defense['MIP'];
 
 
             $info_users = $User_Model->select_user_data($base_joueur);
