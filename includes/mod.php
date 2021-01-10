@@ -468,7 +468,7 @@ function mod_sort($order)
                 //mod courant
                 $Mod_Model->update_posisiton($myMod['id'],$oldModPosition+1 );
                 //mod a bouger
-                $modToMove = $oldModPosition[$oldModPosition+1];
+                $modToMove = $oldModOrder[$oldModPosition+1];
                 $Mod_Model->update_posisiton($modToMove['id'],$oldModPosition );
             }
             break;
@@ -479,7 +479,7 @@ function mod_sort($order)
                 //mod courant
                 $Mod_Model->update_posisiton($myMod['id'],$oldModPosition-1 );
                 //mod a bouger
-                $modToMove = $oldModPosition[$oldModPosition+1];
+                $modToMove = $oldModOrder[$oldModPosition-1];
                 $Mod_Model->update_posisiton($modToMove['id'],$oldModPosition );
             }
             break;
