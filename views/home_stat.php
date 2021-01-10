@@ -369,7 +369,7 @@ if ($player_comp != "" && isset($player_comp)): ?>
 
 // autrement on affiche rien : on prepare juste l affichage du script
     else {
-        $pie_empire = create_pie(implode($planet, "_x_"), implode($planet_name, "_x_"),
+        $pie_empire = create_pie(implode('_x_', $planet), implode('_x_', $planet_name),
             $lang['HOME_STATS_GRAPHIC_REPARTITION'], "pie_empire");
     }
 

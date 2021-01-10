@@ -1016,14 +1016,15 @@ function user_empire_production($user_empire, $off = NULL, $speed_uni = 1)
     foreach ($user_empire["building"] as $content) {
         if (isset($content["planet_id"]) && $content["planet_id"] < 200) {// parcours des planetes ( < 200 )
             $temp_max = isset($content["temperature_max"]) ? $content["temperature_max"] : 0;
-
+            $position = find_planet_position($content['coordinates']);
+            
            // Calcul production théorique
-            $prod_FOR = production_foreuse($content['FOR'], $content['M'], $content['C'], $content['D'], $temp_max, $classe, $speed_uni);
+            $prod_FOR = production_foreuse($content['FOR'], $content['M'], $content['C'], $content['D'], $temp_max, $classe, $position, $speed_uni);
             $prod["theorique"][$content["planet_id"]]['FOR'] = $prod_FOR; //=['M'], ['C'], ['D']
             $type = array("M", "C", "D");
             foreach ($type as $mine) {
                 $level = $content[$mine] != "" ? $content[$mine] : "0";
-                $tmp = production($mine, $level, $officier, $temp_max, $NRJ, $plasma, $classe, $speed_uni);
+                $tmp = production($mine, $level, $officier, $temp_max, $NRJ, $plasma, $classe, $position, $speed_uni);
                 $tmp += $prod_FOR[$mine];
                 $prod["theorique"][$content["planet_id"]][$mine] = number_format(floor($tmp), 0, ',', ' ');
             }
@@ -1036,7 +1037,7 @@ function user_empire_production($user_empire, $off = NULL, $speed_uni = 1)
                     $content['Sat'], $content['temperature_max'], $off['off_ingenieur'], $off['off_geologue'], $off_full, $NRJ, $plasma,
                     $content['M_percentage'] / 100, $content['C_percentage'] / 100, $content['D_percentage'] / 100, $content['CES_percentage'] / 100,
                     $content['CEF_percentage'] / 100, $content['Sat_percentage'] / 100, $content['booster_tab'],
-                    $content['FOR'], $content['FOR_percentage'] / 100, $classe, $speed_uni);
+                    $content['FOR'], $content['FOR_percentage'] / 100, $classe, $position, $speed_uni);
                 //Ajout prod foreuse
                 $ratio['M'] += $ratio['FOR']['M'];
                 $ratio['C'] += $ratio['FOR']['C'];

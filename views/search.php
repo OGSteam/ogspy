@@ -174,27 +174,14 @@ require_once("views/page_header.php");
                         <th colspan="2">
                             <select name="type_search">
                                 <?php
-                                if (isset($type_search) && $type_search == "colonization") {
-                                    echo "\t\t\t\t\t" . "<option value='colonization' selected>" . $lang['SEARCH_EMPTY_PLANETS'] . "</option>";
-                                } else {
-                                    echo "\t\t\t\t\t" . "<option value='colonization'>" . $lang['SEARCH_EMPTY_PLANETS'] . "</option>";
-                                }
-                                if (isset($type_search) && $type_search == "moon") {
-                                    echo "\t\t\t\t\t" . "<option value='moon' selected>" . $lang['SEARCH_MOONS'] . "</option>";
-                                } else {
-                                    echo "\t\t\t\t\t" . "<option value='moon'>" . $lang['SEARCH_MOONS'] . "</option>";
-                                }
-                                if (isset($type_search) && $type_search == "away") {
-                                    echo "\t\t\t\t\t" . "<option value='away' selected>" . $lang['SEARCH_INACTIVEPLAYERS'] . "</option>";
-                                } else {
-                                    echo "\t\t\t\t\t" . "<option value='away'>" . $lang['SEARCH_INACTIVEPLAYERS'] . "</option>";
-                                }
-                                if (isset($type_search) && $type_search == "spy") {
-                                    echo "\t\t\t\t\t" . "<option value='spy' selected>" . $lang['SEARCH_PLANETS_SPYED'] . "</option>";
-                                } else {
-                                    echo "\t\t\t\t\t" . "<option value='spy'>" . $lang['SEARCH_PLANETS_SPYED'] . "</option>";
-                                }
-                                ?>
+                                $str_selected = array('colonization' => '', 'moon' => '', 'away' => '', 'spy' => '');
+                                if (isset($type_search) && isset($str_selected[$type_search])) {
+                                    $str_selected[$type_search] = ' selected';
+                                } ?>
+                                <option value='colonization'<?php echo $str_selected['colonization'] . ">" . $lang['SEARCH_EMPTY_PLANETS'] ?></option>
+                                <option value='moon'<?php echo $str_selected['moon'] . ">" . $lang['SEARCH_MOONS'] ?></option>
+                                <option value='away'<?php echo $str_selected['away'] . ">" . $lang['SEARCH_INACTIVEPLAYERS'] ?></option>
+                                <option value='spy'<?php echo $str_selected['spy'] . ">" . $lang['SEARCH_PLANETS_SPYED'] ?></option>
                             </select>
                         </th>
                         <th><?php echo($lang['SEARCH_MINIMUM']); ?></th>
@@ -236,10 +223,9 @@ require_once("views/page_header.php");
     <tr>
         <td colspan="3" align="center">
             <table>
+                <tr>
+                    <td colspan='3' align='left' width='50%'>
                 <?php
-                echo "\t\t" . "<tr>";
-
-                echo "\t\t\t" . "<td colspan='3' align='left' width='50%'>" . "\n";
                 if ($total_page > 1) {
                     if ($type_search == "planet" || $type_search == "ally" || $type_search == "player") {
                         $option = "&string_search=" . $string_search;
@@ -261,11 +247,11 @@ require_once("views/page_header.php");
 
                     echo "<input type='button' value='>' onclick=\"window.location = 'index.php?action=search&amp;sort=" . $sort . "&amp;sort2=" . $sort2 . "&amp;type_search=" . $type_search . "&amp;page=" . (intval($page) + 1) . $option . "';\">&nbsp;";
                     echo "<input type='button' value='>>' onclick=\"window.location = 'index.php?action=search&amp;sort=" . $sort . "&amp;sort2=" . $sort2 . "&amp;type_search=" . $type_search . "&amp;page=" . ($total_page) . $option . "';\">" . "\n";
-                }
-                echo "\t\t\t" . "</td>" . "\n";
-
-                echo "\t\t\t" . "<form method='GET' action='index.php'>" . "\n";
-                echo "\t\t\t" . "<td colspan='4' align='right' width='50%'>" . "\n";
+                } ?>
+                    </td>
+                    <td colspan='4' align='right' width='50%'>
+                        <form method='GET' action='index.php'>
+                <?php
                 echo "\t\t\t" . "<input type='hidden' name='type_search' value='" . $type_search . "'>" . "\n";
                 echo "\t\t\t" . "<input type='hidden' name='action' value='search'>" . "\n";
                 if (isset($sort) && isset($sort2)) {
@@ -296,12 +282,9 @@ require_once("views/page_header.php");
                         echo "\t\t\t" . "<option value='" . $i . "' " . $selected . ">Page " . $i . "</option>" . "\n";
                     }
                     echo "\t\t\t" . "</select>";
-                }
-                echo "\t\t\t" . "</td>" . "\n";
-                echo "\t\t\t" . "</form>" . "\n";
-
-                echo "\t\t" . "</tr>";
-                ?>
+                } ?>
+                    </form>
+                </td></tr>
                 <tr>
                     <td class="c" width="175"><?php echo $link_order_coordinates; ?></td>
                     <td class="c" width="175"><?php echo $link_order_ally; ?></td>
@@ -489,9 +472,15 @@ require_once("views/page_header.php");
                 } else {
                     $legend = htmlentities($legend, ENT_COMPAT, "UTF-8");
                 }
-                echo "<tr align='center'><td class='c' colspan='7'><a href='' onmouseover=\"this.T_WIDTH=210;this.T_TEMP=0;return encodeURI('" . $legend . "')\">" . $lang['SEARCH_LEGEND'] . "</a></td></tr>";
-
-                echo "\t\t\t" . "<td colspan='3' align='left' width='50%'>" . "\n";
+                //------------  Affichage Tooltip ----------------
+                $ToolTip_Helper->addTooltip("legende",  $legend );
+                echo "<td class='c' colspan='9' style='text-align:center;'>";
+                echo "<a style='cursor:pointer' ".$ToolTip_Helper->GetHTMLClassContent()." >".$lang['SEARCH_LEGEND']."</a>";
+                echo "</td>";
+                //------------ fin Affichage Tooltip ----------------
+?>
+                <td colspan='3' align='left' width='50%'>
+                <?php
                 if ($total_page > 1) {
                     if ($type_search == "planet" || $type_search == "ally" || $type_search == "player") {
                         $option = "&string_search=" . $string_search;
@@ -513,11 +502,11 @@ require_once("views/page_header.php");
 
                     echo "<input type='button' value='>' onclick=\"window.location = 'index.php?action=search&amp;sort=" . $sort . "&amp;sort2=" . $sort2 . "&amp;type_search=" . $type_search . "&amp;page=" . ($page + 1) . $option . "';\">&nbsp;";
                     echo "<input type='button' value='>>' onclick=\"window.location = 'index.php?action=search&amp;sort=" . $sort . "&amp;sort2=" . $sort2 . "&amp;type_search=" . $type_search . "&amp;page=" . ($total_page) . $option . "';\">" . "\n";
-                }
-                echo "\t\t\t" . "</td>" . "\n";
-
-                echo "\t\t\t" . "<form method='GET' action='index.php'>" . "\n";
-                echo "\t\t\t" . "<td colspan='4' align='right' width='50%'>" . "\n";
+                } ?>
+                </td>
+                <td colspan='4' align='right' width='50%'>
+                    <form method='GET' action='index.php'>
+                    <?php
                 echo "\t\t\t" . "<input type='hidden' name='type_search' value='" . $type_search . "'>" . "\n";
                 echo "\t\t\t" . "<input type='hidden' name='action' value='search'>" . "\n";
                 if (isset($sort) && isset($sort2)) {
@@ -548,12 +537,9 @@ require_once("views/page_header.php");
                         echo "\t\t\t" . "<option value='" . $i . "' " . $selected . ">" . $lang['SEARCH_PAGE'] . " " . $i . "</option>" . "\n";
                     }
                     echo "\t\t\t" . "</select>";
-                }
-                echo "\t\t\t" . "</td>" . "\n";
-                echo "\t\t\t" . "</form>" . "\n";
-
-                echo "\t\t" . "</tr>";
-                ?>
+                } ?>
+                    </form>
+                </td></tr>
             </table>
         </td>
     </tr>
@@ -569,7 +555,6 @@ require_once("views/page_header.php");
 <?php
 if ($type_search == "ally" || $type_search == "player") {
     ?>
-
     <table>
         <tr>
             <td class="c" colspan="15"><?php echo($lang['SEARCH_RANKOF']); ?> <a><?php echo $string_search; ?></a></td>
@@ -638,8 +623,5 @@ if ($type_search == "ally" || $type_search == "player") {
         ?>
 
     </table>
-
-
 <?php }
 require_once("views/page_tail.php");
-

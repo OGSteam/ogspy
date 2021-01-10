@@ -26,10 +26,11 @@ if (!isset($server_config['speed_uni'])) {
  * @param int $NRJ Current value of the user Energy Technology
  * @param int $Plasma Current value of the user Plasma Technology
  * @param int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
+ * @param int $position position of the planet
  * @param int $speed_uni The univers economy speed
  * @return int The result of the production on the specified building.
  */
-function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ = 0, $Plasma = 0, $classe = 0, $speed_uni = 1)
+function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ = 0, $Plasma = 0, $classe = 0, $position = 0, $speed_uni = 1)
 {
     //TODO : supprimer références globales
     global $server_config;
@@ -47,20 +48,45 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
     }
     $ing = $geo;
     $bonus_foreuse = 0.0002; //0.02% / foreuse
+    $bonus_foreuse_max = 0;
     //Valeur de la classe en valeur ajoutée.
     if ($classe == 1) {
         $bonus_class_mine = 0.25; //+25%
         $bonus_class_energie = 0.10; //+10%
         $bonus_foreuse = $bonus_foreuse * 1.5; //+50%
+        if ($officier != 0) {
+            $bonus_foreuse_max = 0.1; //+10%
+        }
     } else {
         $bonus_class_mine = 0;
         $bonus_class_energie = 0;
     }
+    //Bonus position
+    $bonus_position = 0;
+    if ($building === 'C') {
+        if ($position == 1) {
+            $bonus_position = 0.4;
+        } elseif ($position == 2) {
+            $bonus_position = 0.3;
+        } elseif ($position == 3) {
+            $bonus_position = 0.2;
+        }
+    } elseif ($building === 'M') {
+        if ($position == 8) {
+            $bonus_position = 0.35;
+        } elseif ($position == 9 || $position == 7) {
+            $bonus_position = 0.23;
+        } elseif ($position == 10 || $position == 6) {
+            $bonus_position = 0.17;
+        }
+    }
+    
     // print_r("officier=$officier, geo=$geo, ing=$ing, C_m=$bonus_class_mine, C_E=$bonus_class_energie, C_f=$bonus_foreuse, speed=$speed_uni\n");
     switch ($building) {
         case "M":
-            $prod_base = 30 * $speed_uni;
+            $prod_base = floor(30 * (1 + $bonus_position) * $speed_uni);
             $result = 30 * $level * pow(1.1, $level); // formule de base
+            $result = $result * (1 + $bonus_position);
             $result = $result * $speed_uni; // vitesse uni
             // $result_foreuse = $result * $bonus_foreuse; //foreuse sur produc de base des mines
             $result = $result * (1 + $geo + 0.01 * $Plasma + $bonus_class_mine);
@@ -69,8 +95,9 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
             break;
 
         case "C":
-            $prod_base = 15 * $speed_uni;
+            $prod_base = floor(15 * (1 + $bonus_position) * $speed_uni);
             $result = 20 * $level * pow(1.1, $level); // formule de base
+            $result = $result * (1 + $bonus_position);
             $result = $result * $speed_uni; // vitesse uni
             // $result_foreuse = $result * $bonus_foreuse; //foreuse sur produc de base des mines
             $result = $result * (1 + $geo + 0.0066 * $Plasma + $bonus_class_mine);
@@ -135,30 +162,71 @@ function production_sat($temperature_max, $off_ing = 0, $classe = 0, $nb_sat = 1
  * @param int $level_C The cristal mine level
  * @param int $level_D The deuterium mine level
  * @param int $temperature_max Max temprature of the current planet
+ * @param int $officier Officer option enabled (=1) or not(=0) or full Officer(=2) [Attention : m / c / d => geologue, ces cef => ingenieur]
  * @param int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
+ * @param int $position position of the planet
  * @param int $speed_uni The univers economy speed
  * @return array('M', 'C', 'D') The result foreuse production of metal 'M', cristal 'C' and deuterium 'D'
  */
-function production_foreuse($nb_foreuse, $level_M, $level_C, $level_D, $temperature_max, $classe = 0, $speed_uni = 1)
+function production_foreuse($nb_foreuse, $level_M, $level_C, $level_D, $temperature_max, $officier = 0, $classe = 0, $position = 0, $speed_uni = 1)
 {
     $bonus_foreuse = 0.0002; //0.02% / foreuse
+    $bonus_foreuse_max = 0;
     //Valeur de la classe en valeur ajoutée.
     if ($classe == 1) {
         $bonus_foreuse = $bonus_foreuse * 1.5; //+50%
+        if ($officier != 0) {
+            $bonus_foreuse_max = 0.1; //+10%
+        }
     }
-    $nb_max = ($level_M + $level_C + $level_D) * 8;
+    $nb_max = ($level_M + $level_C + $level_D) * 8 * (1 + $bonus_foreuse_max);
     if($nb_foreuse > $nb_max) {
         $nb_foreuse = $nb_max;
     }
-    $result_M = $bonus_foreuse * (production('M', $level_M, 0, $temperature_max, 0, 0, 0, $speed_uni) - 30 * $speed_uni);
-    $result_C = $bonus_foreuse * (production('C', $level_C, 0, $temperature_max, 0, 0, 0, $speed_uni) - 15 * $speed_uni);
-    $result_D = $bonus_foreuse * (production('D', $level_D, 0, $temperature_max, 0, 0, 0, $speed_uni));
+    //Bonus position
+    $bonus_position_M = 0;
+    $bonus_position_C = 0;
+    if ($position == 1) {
+        $bonus_position_C = 0.4;
+    } elseif ($position == 2) {
+        $bonus_position_C = 0.3;
+    } elseif ($position == 3) {
+        $bonus_position_C = 0.2;
+    } elseif ($position == 8) {
+        $bonus_position_M = 0.35;
+    } elseif ($position == 9 || $position == 7) {
+        $bonus_position_M = 0.23;
+    } elseif ($position == 10 || $position == 6) {
+        $bonus_position_M = 0.17;
+    }
+    $result_M = production('M', $level_M, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(30 * (1 + $bonus_position_M) * $speed_uni);
+    $result_C = production('C', $level_C, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(15 * (1 + $bonus_position_C) * $speed_uni);
+    $result_D = production('D', $level_D, 0, $temperature_max, 0, 0, 0, $position, $speed_uni);
     
-    $result_M = round($result_M * $nb_foreuse); //arrondi
-    $result_C = round($result_C * $nb_foreuse); //arrondi
-    $result_D = round($result_D * $nb_foreuse); //arrondi
+    $result_M = round($result_M * min(0.5, $bonus_foreuse * $nb_foreuse)); //arrondi
+    $result_C = round($result_C * min(0.5, $bonus_foreuse * $nb_foreuse)); //arrondi
+    $result_D = round($result_D * min(0.5, $bonus_foreuse * $nb_foreuse)); //arrondi
     
     return array('M' => $result_M, 'C' => $result_C, 'D' => $result_D);
+}
+
+/**
+ *  @brief Find number max of foreuse.
+ *  
+ *  @param [in] int $level_M The metal mine level
+ *  @param [in] int $level_C The cristal mine level
+ *  @param [in] int $level_D The deuterium mine level
+ *  @param [in] int $officier geologue option enabled (=1) or not(=0) or full Officer(=2)
+ *  @param [in] int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
+ *  @return int number max of foreus
+ */
+function foreuse_max($level_M, $level_C, $level_D, $officier = 0, $classe = 0) {
+    $bonus_foreuse_max = 0;
+    
+    if ($classe == 1 && $officier != 0) {
+        $bonus_foreuse_max = 0.1; //+10%
+    }
+    return ($level_M + $level_C + $level_D) * 8 * (1 + $bonus_foreuse_max);
 }
 
 /**
@@ -293,7 +361,7 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
  * @return array
  */
 function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing = 0, $off_geo = 0, $off_full = 0, $NRJ = 0, $Plasma = 0,
-$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $booster = NULL,  $FOR = 0, $per_FOR = 0, $classe = 0, $speed_uni = 1)
+$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $booster = NULL,  $FOR = 0, $per_FOR = 0, $classe = 0, $position = 0, $speed_uni = 1)
 {
 
     if ($off_full == 1) {
@@ -312,40 +380,57 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
     $conso_C = $tmp["conso_C"];
     $conso_D = $tmp["conso_D"];
     $conso_FOR = $tmp["conso_FOR"];
+    //$position : ATTENTION : a-t-on directement la position ou pas ? ou on doit faire un calcul à partir des coordonnées !!!
 
     if ($ratio > 0) {
         //production de metal avec ratio
-        $prod_M = production("M", $M, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $speed_uni) * $per_M;
+        $prod_M = production("M", $M, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $position, $speed_uni) * $per_M;
         $prod_M *= $ratio;
         $prod_M = round($prod_M);
 
         //production de cristal avec ratio
-        $prod_C = production("C", $C, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $speed_uni) * $per_C;
+        $prod_C = production("C", $C, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $position, $speed_uni) * $per_C;
         $prod_C *= $ratio;
         $prod_C = round($prod_C);
 
         //production de deut avec ratio
-        $prod_D = production("D", $D, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $speed_uni) * $per_D;
+        $prod_D = production("D", $D, $off_geo, $temperature_max, $NRJ, $Plasma, $classe, $position, $speed_uni) * $per_D;
         $prod_D *= $ratio;
         $prod_D -= consumption("CEF", $CEF, $speed_uni) * $per_CEF; //on soustrait la conso de deut de la cef
         $prod_D = round($prod_D);
         
         //production des foreuses (métal, cristal et deut)
-        $prod_FOR = production_foreuse($FOR, $M, $C, $D, $temperature_max, $classe, $speed_uni);
+        $prod_FOR = production_foreuse($FOR, $M, $C, $D, $temperature_max, $classe, $position, $speed_uni);
         $prod_FOR['M'] = round($prod_FOR['M'] * $ratio);
         $prod_FOR['C'] = round($prod_FOR['C'] * $ratio);
         $prod_FOR['D'] = round($prod_FOR['D'] * $ratio);
     } else {
-        $prod_M = production("M", 0, 0, 0, 0, 0, 0, $speed_uni); //production de base
-        $prod_C = production("C", 0, 0, 0, 0, 0, 0, $speed_uni); //production de base
-        $prod_D = production("D", 0, 0, 0, 0, 0, 0, $speed_uni); //production de base
-        $prod_FOR = production_foreuse(0, 0, 0, 0, 0, 0, $speed_uni);
+        $prod_M = production("M", 0, 0, 0, 0, 0, 0, $position, $speed_uni); //production de base
+        $prod_C = production("C", 0, 0, 0, 0, 0, 0, $position, $speed_uni); //production de base
+        $prod_D = production("D", 0, 0, 0, 0, 0, 0, $position, $speed_uni); //production de base
+        $prod_FOR = production_foreuse(0, 0, 0, 0, 0, 0, $position, $speed_uni);
     }
 
     if ($booster != NULL) { // si booster
-        $boost_M = ($booster['booster_m_val'] / 100) * (production('M', $M, 0, $temperature_max, 0, 0, 0, $speed_uni) - 30 * $speed_uni) * $per_M * $ratio;
-        $boost_C = ($booster['booster_c_val'] / 100) * (production('C', $C, 0, $temperature_max, 0, 0, 0, $speed_uni) - 15 * $speed_uni) * $per_C * $ratio;
-        $boost_D = ($booster['booster_d_val'] / 100) * (production('D', $D, 0, $temperature_max, 0, 0, 0, $speed_uni)) * $per_D * $ratio;
+        //Bonus position
+        $bonus_position_M = 0;
+        $bonus_position_C = 0;
+        if ($position == 1) {
+            $bonus_position_C = 0.4;
+        } elseif ($position == 2) {
+            $bonus_position_C = 0.3;
+        } elseif ($position == 3) {
+            $bonus_position_C = 0.2;
+        } elseif ($position == 8) {
+            $bonus_position_M = 0.35;
+        } elseif ($position == 9 || $position == 7) {
+            $bonus_position_M = 0.23;
+        } elseif ($position == 10 || $position == 6) {
+            $bonus_position_M = 0.17;
+        }
+        $boost_M = ($booster['booster_m_val'] / 100) * (production('M', $M, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(30 * (1 + $bonus_position_M) * $speed_uni)) * $per_M * $ratio;
+        $boost_C = ($booster['booster_c_val'] / 100) * (production('C', $C, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(15 * (1 + $bonus_position_M) * $speed_uni)) * $per_C * $ratio;
+        $boost_D = ($booster['booster_d_val'] / 100) * (production('D', $D, 0, $temperature_max, 0, 0, 0, $position, $speed_uni)) * $per_D * $ratio;
         
         $prod_M += round($boost_M);
         $prod_C += round($boost_C);
@@ -358,7 +443,20 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
             "conso_C" => $conso_C, "conso_D" => $conso_D, "conso_FOR" => $conso_FOR);
 }
 
-
+/**
+ *  @brief Return planet position from coordinates.
+ *  @param [in] $coordinates planet coordinates (galaxy:system:position)
+ *  @return int planet position
+ */
+function find_planet_position($coordinates) {
+    $position = 0;
+    
+    $coordinates_tmp = explode(':', $coordinates);
+    if (count($coordinates_tmp) === 3) {
+        $position = (int) $coordinates_tmp[2];
+    }
+    return $position;
+}
 
 /**
  * Calculates the Planet storage capacity (Taille Hangar)
@@ -367,15 +465,12 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
  */
 function depot_capacity($level)
 {
-    // capacité par défaut
-    $capacity = 10000;
+    $capacity = 10000;  // capacité par défaut
 
     if ($level > 0) {
-        $capacity = 5000 * floor((2.5 * exp(20 * $level / 33)));
+        $capacity = 5000 * floor(2.5 * exp(20 * $level / 33));
     }
-    $result = round($capacity);
-
-    return $result;
+    return $capacity;
 }
 
 /**
@@ -398,6 +493,7 @@ function astro_max_planete($level)
 function building_upgrade($building, $level)
 {
     switch ($building) {
+// Bâtiment :
         case "M":
             $M = 60 * pow(1.5, ($level - 1));
             $C = 15 * pow(1.5, ($level - 1));
@@ -504,10 +600,10 @@ function building_upgrade($building, $level)
             break;
 
         case "Dock":
-            $M = 200 * pow(2, ($level - 1));
+            $M = 200 * pow(5, ($level - 1));
             $C = 0;
-            $D = 50 * pow(2, ($level - 1));
-            $NRJ = 50 * pow(2, ($level - 1));
+            $D = 50 * pow(5, ($level - 1));
+            $NRJ = floor(50 * pow(2.5, ($level - 1)));
             break;
 
         case "BaLu":
@@ -531,6 +627,7 @@ function building_upgrade($building, $level)
             $NRJ = 0;
             break;
 
+// Recherches :
         case "Esp":
             $M = 200 * pow(2, ($level - 1));
             $C = 1000 * pow(2, ($level - 1));
@@ -623,9 +720,9 @@ function building_upgrade($building, $level)
             break;
 
         case "RRI":
-            $M = 20000 * pow(2, ($level - 1));
-            $C = 20000 * pow(2, ($level - 1));
-            $D = 1000 * pow(2, ($level - 1));
+            $M = 240000 * pow(2, ($level - 1));
+            $C = 400000 * pow(2, ($level - 1));
+            $D = 160000 * pow(2, ($level - 1));
             $NRJ = 0;
             break;
 
@@ -662,7 +759,9 @@ function building_upgrade($building, $level)
  */
 function building_cumulate($building, $level)
 {
+    $NRJ = 0;
     switch ($building) {
+// Bâtiment non x2 :
         case "M":
             $M = 60 * (1 - pow(1.5, $level)) / (-0.5);
             $C = 15 * (1 - pow(1.5, $level)) / (-0.5);
@@ -693,10 +792,190 @@ function building_cumulate($building, $level)
             $D = 180 * (1 - pow(1.8, $level)) / (-0.8);
             break;
 
+        case "Dock":
+            $M = 200 * (1 - pow(5, $level)) / (-5);
+            $C = 0;
+            $D = 50 * (1 - pow(5, $level)) / (-5);
+            $NRJ = 50 * (1 - pow(2.5, $level)) / (-2.5);
+            break;
+
+// Recherches non x2 :
+        case "Graviton":
+            $M = 0;
+            $C = 0;
+            $D = 0;
+            $NRJ = 300000 * (1 - pow(3, $level)) / (-3);
+            break;
+
+        case "Astrophysique":
+            $M = 4000 * (1 - pow(1.75, $level)) / (-1.75);
+            $C = 8000 * (1 - pow(1.75, $level)) / (-1.75);
+            $D = 4000 * (1 - pow(1.75, $level)) / (-1.75);
+            break;
+
+// Flottes :
+        case "PT":
+            $M = 2000 * $level;
+            $C = 2000 * $level;
+            $D = 0;
+            break;
+
+        case "GT":
+            $M = 6000 * $level;
+            $C = 6000 * $level;
+            $D = 0;
+            break;
+
+        case "CLE":
+            $M = 3000 * $level;
+            $C = 1000 * $level;
+            $D = 0;
+            break;
+
+        case "CLO":
+            $M = 6000 * $level;
+            $C = 4000 * $level;
+            $D = 0;
+            break;
+
+        case "CR":
+            $M = 20000 * $level;
+            $C =  7000 * $level;
+            $D =  2000 * $level;
+            break;
+
+        case "VB":
+            $M = 45000 * $level;
+            $C = 15000 * $level;
+            $D = 0;
+            break;
+
+        case "VC":
+            $M = 10000 * $level;
+            $C = 20000 * $level;
+            $D = 10000 * $level;
+            break;
+
+        case "REC":
+            $M = 10000 * $level;
+            $C =  6000 * $level;
+            $D =  2000 * $level;
+            break;
+
+        case "SE":
+            $M = 0;
+            $C = 1000 * $level;
+            $D = 0;
+            break;
+
+        case "BMD":
+            $M = 50000 * $level;
+            $C = 25000 * $level;
+            $D = 15000 * $level;
+            break;
+
+        case "DST":
+            $M = 60000 * $level;
+            $C = 50000 * $level;
+            $D = 15000 * $level;
+            break;
+
+        case "TRA":
+            $M = 30000 * $level;
+            $C = 40000 * $level;
+            $D = 15000 * $level;
+            break;
+
+        case "EDLM":
+            $M = 5000000 * $level;
+            $C = 4000000 * $level;
+            $D = 1000000 * $level;
+            break;
+
+        case "FOR":
+            $M = 2000 * $level;
+            $C = 2000 * $level;
+            $D = 1000 * $level;
+            break;
+
+        case "ECL":
+            $M =  8000 * $level;
+            $C = 15000 * $level;
+            $D =  8000 * $level;
+            break;
+
+        case "FAU":
+            $M = 85000 * $level;
+            $C = 55000 * $level;
+            $D = 20000 * $level;
+            break;
+
+        case "SAT":
         case "Sat":
             $M = 0;
             $C = 2000 * $level;
-            $D = 500 * $level;
+            $D =  500 * $level;
+            break;
+
+// Défenses :
+        case "LM":
+            $M = 2000 * $level;
+            $C = 0;
+            $D = 0;
+            break;
+
+        case "LLE":
+            $M = 1500 * $level;
+            $C =  500 * $level;
+            $D = 0;
+            break;
+
+        case "LLO":
+            $M = 6000 * $level;
+            $C = 2000 * $level;
+            $D = 0;
+            break;
+
+        case "CG":
+            $M = 20000 * $level;
+            $C = 15000 * $level;
+            $D =  2000 * $level;
+            break;
+
+        case "AI":
+            $M = 5000 * $level;
+            $C = 3000 * $level;
+            $D = 0;
+            break;
+
+        case "LP":
+            $M = 50000 * $level;
+            $C = 50000 * $level;
+            $D = 30000 * $level;
+            break;
+
+        case "PB":
+            $M = 10000 * $level;
+            $C = 10000 * $level;
+            $D = 0;
+            break;
+
+        case "GB":
+            $M = 50000 * $level;
+            $C = 50000 * $level;
+            $D = 0;
+            break;
+
+        case "MIC":
+            $M = 8000 * $level;
+            $C = 0;
+            $D = 2000 * $level;
+            break;
+
+        case "MIP":
+            $M = 12500 * $level;
+            $C = 2500 * $level;
+            $D = 10000 * $level;
             break;
 
         default:
@@ -707,8 +986,12 @@ function building_cumulate($building, $level)
             break;
     }
 
-    return array("M" => $M, "C" => $C, "D" => $D);
+    return array("M" => $M, "C" => $C, "D" => $D, "NRJ" => $NRJ);
 }
+
+function defense_cumulate($defence, $number)  { return building_cumulate($defence, $number); }
+function fleet_cumulate($fleet, $number)      { return building_cumulate($fleet, $number); }
+function research_cumulate($research, $level) { return building_cumulate($research, $level); }
 
 /**
  * Calculates the price of all buildings
@@ -717,31 +1000,26 @@ function building_cumulate($building, $level)
  */
 function all_building_cumulate($user_building)
 {
-
     $total = 0;
 
     while ($data = current($user_building)) {
-
         $bats = array_keys($data);
-
+        
         foreach ($bats as $key) {
-
             $level = $data[$key];
             if ($level == "") {
-                            $level = 0;
+                $level = 0;
             }
 
             if ($key == "M" || $key == "C" || $key == "D" || $key == "CES" || $key == "CEF" ||
                 $key == "UdR" || $key == "UdN" || $key == "CSp" || $key == "HM" || $key == "HC" ||
-                $key == "HD" || $key == "Lab" ||
-                $key == "Ter" || $key == "DdR" || $key == "Silo" || $key == "Dock" || $key == "BaLu" || $key == "Pha" ||
-                $key == "PoSa"
-            ) {
+                $key == "HD" || $key == "Lab" || $key == "Ter" || $key == "DdR" || $key == "Silo" ||
+                $key == "Dock" || $key == "BaLu" || $key == "Pha" || $key == "PoSa"
+               ) {
                 list($M, $C, $D) = array_values(building_cumulate($key, $level));
                 $total += $M + $C + $D;
             }
         }
-
         next($user_building);
     }
 
@@ -758,24 +1036,43 @@ function all_defence_cumulate($user_defence)
     if($user_defence == NULL) {
         return 0;
     }
-
     $total = 0;
-    $init_d_prix = array("LM" => 2000, "LLE" => 2000, "LLO" => 8000, "CG" => 37000,
-        "AI" => 8000, "LP" => 130000, "PB" => 20000, "GB" => 100000, "MIC" => 10000,
-        "MIP" => 25000);
-    $keys = array_keys($init_d_prix);
-
     while ($data = current($user_defence)) {
-        if (sizeof($init_d_prix) != sizeof($keys)) {
-                    continue;
-        }
+        $defs = array_keys($data);
+        
+        foreach ($defs as $key) {
+            $level = $data[$key];
+            if ($level == "") {
+                $level = 0;
+            }
 
-        for ($i = 0; $i < sizeof($init_d_prix); $i++) {
-            $total += $init_d_prix[$keys[$i]] * ($data[$keys[$i]] != "" ? $data[$keys[$i]] : 0);
+            if ($key == "LM" || $key == "LLE" || $key == "LLO" || $key == "CG" ||
+                $key == "AI" || $key == "LP" || $key == "PB" || $key == "GB" ||
+                $key == "MIC" || $key == "MIP"
+               ) {
+                list($M, $C, $D) = array_values(building_cumulate($key, $level));
+                $total += $M + $C + $D;
+            }
         }
-
         next($user_defence);
     }
+    
+    // $init_d_prix = array("LM" => 2000, "LLE" => 2000, "LLO" => 8000, "CG" => 37000,
+        // "AI" => 8000, "LP" => 130000, "PB" => 20000, "GB" => 100000, "MIC" => 10000,
+        // "MIP" => 25000);
+    // $keys = array_keys($init_d_prix);
+
+    // while ($data = current($user_defence)) {
+        // if (sizeof($init_d_prix) != sizeof($keys)) {
+                    // continue;
+        // }
+
+        // for ($i = 0; $i < sizeof($init_d_prix); $i++) {
+            // $total += $init_d_prix[$keys[$i]] * ($data[$keys[$i]] != "" ? $data[$keys[$i]] : 0);
+        // }
+
+        // next($user_defence);
+    // }
 
     return $total;
 }
@@ -788,7 +1085,6 @@ function all_defence_cumulate($user_defence)
  */
 function all_lune_cumulate($user_building, $user_defence)
 {
-
     $total = all_defence_cumulate($user_defence) + all_building_cumulate($user_building);
 
     return $total;
@@ -804,34 +1100,48 @@ function all_technology_cumulate($user_technology)
     if(!isset($user_technology )) return 0;
 
     $total = 0;
-    $init_t_prix = array("Esp" => 1400, "Ordi" => 1000, "Armes" => 1000, "Bouclier" =>
-        800, "Protection" => 1000, "NRJ" => 1200, "Hyp" => 6000, "RC" => 1000, "RI" =>
-        6600, "PH" => 36000, "Laser" => 300, "Ions" => 1400, "Plasma" => 7000, "RRI" =>
-        800000, "Graviton" => 0, "Astrophysique" => 16000);
-    $keys = array_keys($init_t_prix);
 
-    if (sizeof($init_t_prix) != sizeof($user_technology)) {
-            return 0;
-    }
+	foreach ($technos as $key) {
+		$level = $data[$key];
+		if ($level == "") {
+			$level = 0;
+		}
 
-    for ($i = 0; $i < sizeof($init_t_prix); $i++) {
-        $pow = ($keys[$i] != "Astrophysique") ? 2 : 1.75; // puissance change a cause de l astro ...
+		if ($key == "Esp" || $key == "Ordi" || $key == "Armes" || $key == "Bouclier" ||
+			$key == "Protection" || $key == "NRJ" || $key == "Hyp" || $key == "RC" ||
+			$key == "RI" || $key == "PH" || $key == "Laser" || $key == "Ions" ||
+			$key == "Plasma" || $key == "RRI" || $key == "Graviton" || $key == "Astrophysique"
+		   ) {
+			list($M, $C, $D) = array_values(building_cumulate($key, $level));
+			$total += $M + $C + $D;
+		}
+	}
+    
+    
+    // $init_t_prix = array("Esp" => 1400, "Ordi" => 1000, "Armes" => 1000, "Bouclier" =>
+        // 800, "Protection" => 1000, "NRJ" => 1200, "Hyp" => 6000, "RC" => 1000, "RI" =>
+        // 6600, "PH" => 36000, "Laser" => 300, "Ions" => 1400, "Plasma" => 7000, "RRI" =>
+        // 800000, "Graviton" => 0, "Astrophysique" => 16000);
+    // $keys = array_keys($init_t_prix);
 
-        if ($keys[$i] != "Astrophysique") {
-            $total += $init_t_prix[$keys[$i]] * (pow($pow, ($user_technology[$keys[$i]] !=
-                        "") ? $user_technology[$keys[$i]] : 0) - 1);
-        } else {
-            $j = 0;
-            $user_technology[$keys[$i]] = ($user_technology[$keys[$i]] != "") ? $user_technology[$keys[$i]] : 0;
-            while ($j <= $user_technology[$keys[$i]]) {
-                $total += $init_t_prix[$keys[$i]] * (pow($pow, ($j - 1)));
-                $j++;
-            }
+    // if (sizeof($init_t_prix) != sizeof($user_technology)) {
+            // return 0;
+    // }
+    // for ($i = 0; $i < sizeof($init_t_prix); $i++) {
+        // $pow = ($keys[$i] != "Astrophysique") ? 2 : 1.75; // puissance change a cause de l astro ...
 
-        }
-
-
-    }
+        // if ($keys[$i] != "Astrophysique") {
+            // $total += $init_t_prix[$keys[$i]] * (pow($pow, ($user_technology[$keys[$i]] !=
+                        // "") ? $user_technology[$keys[$i]] : 0) - 1);
+        // } else {
+            // $j = 0;
+            // $user_technology[$keys[$i]] = ($user_technology[$keys[$i]] != "") ? $user_technology[$keys[$i]] : 0;
+            // while ($j <= $user_technology[$keys[$i]]) {
+                // $total += $init_t_prix[$keys[$i]] * (pow($pow, ($j - 1)));
+                // $j++;
+            // }
+        // }
+    // }
 
     return $total;
 }

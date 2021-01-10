@@ -28,6 +28,9 @@ $user_production = user_empire_production($user_empire, $user_data, $speed_uni);
 $nb_planete      = find_nb_planete_user($user_data['user_id']);
 if(is_null($pub_view)) $pub_view= 'planets';
 
+if (!isset($pub_view)) {
+	$pub_view = 'planets';
+}
 switch($pub_view) {
     case 'moons' :
         $view = $pub_view;
@@ -77,77 +80,6 @@ for ($i = 201 ; $i <= $nb_planete + 200 ; $i++) {
     $satellite       .= "'" . $user_building[$i]["Sat"] . "', ";
 }
 ?>
-    <!-- DEBUT DU SCRIPT -->
-    <script>
-<?php
-    echo "var name = new Array(" . substr($name, 0, strlen($name) - 2) . ");" . "\n";
-    echo "var coordinates = new Array(" . substr($coordinates, 0, strlen($coordinates) - 2) . ");" . "\n";
-    echo "var fields = new Array(" . substr($fields, 0, strlen($fields) - 2) . ");" . "\n";
-    echo "var temperature_min = new Array(" . substr($temperature_min, 0, strlen($temperature_min) - 2) . ");" . "\n";
-    echo "var temperature_max = new Array(" . substr($temperature_max, 0, strlen($temperature_max) - 2) . ");" . "\n";
-    echo "var satellite = new Array(" . substr($satellite, 0, strlen($satellite) - 2) . ");" . "\n";
-?>
-        var select_planet = false;
-
-        function autofill(planet_id, planet_selected) {
-            document.getElementById('planet_name').style.visibility = 'visible';
-            document.getElementById('planet_name').disabled = false;
-
-            document.getElementById('coordinates').style.visibility = 'visible';
-            document.getElementById('coordinates').disabled = false;
-
-            document.getElementById('fields').style.visibility = 'visible';
-            document.getElementById('fields').disabled = false;
-
-            document.getElementById('temperature_min').style.visibility = 'visible';
-            document.getElementById('temperature_min').disabled = false;
-
-            document.getElementById('temperature_max').style.visibility = 'visible';
-            document.getElementById('temperature_max').disabled = false;
-
-            document.getElementById('satellite').style.visibility = 'visible';
-            document.getElementById('satellite').disabled = false;
-
-            //	if (name[(planet_id-1)] == "" && coordinates[(planet_id-1)] == "" && fields[(planet_id-1)] == "" && temperature[(planet_id-1)] == "" && satellite[(planet_id-1)] == "") {
-            //		return;
-            //	}
-
-            document.getElementById('planet_name').value = name[(planet_id - 1)];
-            document.getElementById('coordinates').value = coordinates[(planet_id - 1)];
-            document.getElementById('fields').value = fields[(planet_id - 1)];
-            document.getElementById('temperature_min').value = temperature_min[(planet_id - 1)];
-            document.getElementById('temperature_max').value = temperature_max[(planet_id - 1)];
-            document.getElementById('satellite').value = satellite[(planet_id - 1)];
-
-            var lign = 0;
-            var id = 0;
-            var lim = <?php print ($server_config['ddr'] == 1) ? '42' : '41'; ?>;
-            if (planet_id > 9) {
-                lim = 17;
-                planet_id -= 9;
-            }
-            for (var i = 1; i <= 9; i++) {
-                for (lign = 1; lign <= lim; lign++) {
-                    id = lign * 10 + i;
-                    document.getElementById(id.toString()).style.color = 'lime';
-                }
-            }
-
-            for (i = 1; i <= lim; i++) {
-                id = i * 10 + planet_id;
-                document.getElementById(id.toString()).style.color = 'yellow';
-            }
-
-            return (true);
-        }
-
-        function clear_text2() {
-            if (document.post2.data.value === "<?php echo($lang['HOME_EMPIRE_TITLEDESC']); ?>") {
-                document.post2.data.value = "";
-            }
-        }
-    </script>
-    <!-- FIN DU SCRIPT -->
     <table width="100%">
         <tr>
 <?php
@@ -331,7 +263,7 @@ for ($i = 201 ; $i <= $nb_planete + 200 ; $i++) {
         if(!isset($user_production['reel'][$i])) {
             $user_production['reel'][$i]['prod_E'] = 0 ;
         }
-        echo "\t" . "<th>" . $user_production['reel'][$i]['prod_E'] . "</th>" . "\n";
+        echo "\t" . "<th>" . number_format($user_production['reel'][$i]['prod_E'], 0, ',', ' ') . "</th>" . "\n";
     }
 
 ?>
@@ -352,7 +284,7 @@ for ($i = 201 ; $i <= $nb_planete + 200 ; $i++) {
             echo "green";
         }
         echo ";'>";
-        echo number_format(round($user_production['reel'][$i]['ratio'], 3), 0, ',', ' ');
+        echo number_format(round($user_production['reel'][$i]['ratio'], 3), 3, ',', ' ');
         echo "</th>" . "\n";
     }
 ?>
@@ -701,13 +633,15 @@ for ($i = 201 ; $i <= $nb_planete + 200 ; $i++) {
             <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $For = $user_building[$i]["FOR"];
+                $class_collect = ($user_data['user_class'] === 'COL') ? '1' : '0';
+                $nb_max = foreuse_max($user_building[$i]['M'], $user_building[$i]['C'], $user_building[$i]['D'], $user_data['off_geologue'], $class_collect);
                 if ($For == "") {
                     $For = "&nbsp;";
                 } else {
                     $For = number_format($For, 0, ',', ' ');
                 }
 
-                echo "\t" . "<th><span  id='6" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $For . "</span></th>" . "\n";
+                echo "\t" . "<th><span  id='43" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $For . " / " . $nb_max . "</span></th>" . "\n";
             }
             ?>
         </tr>

@@ -29,8 +29,8 @@ function log_($parameter, $option = 0)
     global $db, $user_data, $server_config, $pub_action;
 
     $member = "Inconnu";
-    if (isset($user_data)) {
-        $member = $user_data["user_name"];
+    if (isset($user_data['user_name'])) {
+        $member = $user_data['user_name'];
     }
 
     switch ($parameter) {

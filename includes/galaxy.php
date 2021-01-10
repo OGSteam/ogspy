@@ -466,12 +466,11 @@ function galaxy_ally_position($step = 50)
     $Universe_Model = new Universe_Model();
 
     for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
-        if (!check_var($pub_ally_[$i], "Text")) {
-            redirection("index.php?action=message&id_message=errordata&info");
-        }
-
         if (!isset($pub_ally_[$i])) {
             return array();
+        }
+        if (!check_var($pub_ally_[$i], "Text")) {
+            redirection("index.php?action=message&id_message=errordata&info");
         }
     }
 
@@ -1111,9 +1110,10 @@ function galaxy_drop_ranking()
  * @global array $server_config
  * @global array $user_data
  * @global array $user_auth
+ * @param string $classe Classe option chosen ('none','COL','GEN','EXP')
  * @return array $phalanxer (galaxy, system, row, phalanx, gate, name, ally, player)
  */
-function galaxy_get_phalanx($galaxy, $system)
+function galaxy_get_phalanx($galaxy, $system, $classe = 'none')
 {
     global $server_config, $user_data, $user_auth;
 
@@ -1122,6 +1122,10 @@ function galaxy_get_phalanx($galaxy, $system)
         $ally_protection = explode(",", $server_config["ally_protection"]);
     }
 
+    $bonus_classe = 0;
+    if ($classe === 'EXP') {
+        $bonus_classe = 0.2; //+20%
+    }
     $phalanxer = array();
     $data_computed = array();
 
@@ -1131,7 +1135,7 @@ function galaxy_get_phalanx($galaxy, $system)
         //Construction liste phalanges
         foreach ($data as $phalanx) {
             $arrondi_type = 0;
-            $phalanx_range = (pow($phalanx['level'], 2) - 1);
+            $phalanx_range = (pow($phalanx['level'], 2) - 1) * (1 + $bonus_classe);
             $system_lower_range = $phalanx['system'] - $phalanx_range;
             if ($system_lower_range < 1) {
                 $system_lower_range = $system_lower_range + $server_config['num_of_systems'];
@@ -1687,7 +1691,7 @@ function portee_missiles($galaxy, $system)
 
             // recherche du nombre de missile dispo
             $tUser_defense = $User_Defense_Model->select_user_defense_planete($base_joueur, $base_id_planet);
-            $missil_dispo =  $tUser_defense["MIP"];
+            $missil_dispo = (!isset($tUser_defense['MIP']) ? 0 : $tUser_defense['MIP'];
 
 
             $info_users = $User_Model->select_user_data($base_joueur);

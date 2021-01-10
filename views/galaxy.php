@@ -25,7 +25,7 @@ $population = $info_system["population"];
 $galaxy = $info_system["galaxy"];
 $system = $info_system["system"];
 
-$phalanx_list = galaxy_get_phalanx($galaxy, $system);
+$phalanx_list = galaxy_get_phalanx($galaxy, $system, $user_data['user_class']);
 
 $galaxy_down = (($galaxy - 1) < 1) ? 1 : $galaxy - 1;
 $galaxy_up = (($galaxy - 1) > intval($server_config['num_of_galaxies'])) ? intval($server_config['num_of_galaxies']) : $galaxy + 1;

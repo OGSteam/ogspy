@@ -55,8 +55,6 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
 }
 ?>
 
-<script src="js/ogame_formula.js" type="text/javascript"></script>
-
 <table id="simu" width="100%" title="<?php echo $nb_planete; ?>">
     <tr>
         <td class="c"></td>
@@ -77,13 +75,14 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $coordinates = $user_building[$i]["coordinates"];
+            $position = find_planet_position($coordinates);
             if ($coordinates == "") {
                 $coordinates = "&nbsp;";
             } else {
                 $coordinates = "[" . $coordinates . "]";
             }
 
-            echo "\t" . "<th colspan='2'>" . $coordinates . "</th>" . "\n";
+            echo "\t" . "<th colspan='2'>" . $coordinates . "<input id='position_" . $i . "' type='hidden' value='" . $position . "'></th>" . "\n";
         }
         ?>
         <th></th>
@@ -114,7 +113,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
                 $sum_filed_used += $user_building[$i]["fields_used"];
             }
         }
-        echo "\t<th><div id='T_cases'>" . $sum_filed_used . "/" . $sum_field . "</div></th>";
+        echo "\t<th><div id='T_cases'>" . $sum_filed_used . " / " . $sum_field . "</div></th>";
         ?>
     </tr>
     <tr>
@@ -244,7 +243,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $Sat = $user_building[$i]["Sat"];
-            echo "\t" . "<th><input type='text' id='Sat_" . $i . "' size='2' maxlength='5' value='" . $Sat . "' onchange='update_page();'></th>" . "\n";
+            echo "\t" . "<th><input type='text' id='Sat_" . $i . "' size='5' maxlength='5' value='" . $Sat . "' onchange='update_page();'></th>" . "\n";
 
             echo "\t" . "<th>";
             echo "<select id='Sat_" . $i . "_percentage' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
@@ -307,10 +306,11 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
 
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $FOR = $user_building[$i]["FOR"];
-            echo "\t" . "<th><input type='text' id='For_" . $i . "' size='2' maxlength='2' value='" . $FOR . "' onchange='update_page();'></th>" . "\n";
+            echo "\t" . "<th><input type='text' id='For_" . $i . "' size='4' maxlength='4' value='" . $FOR . "' onchange='update_page();'>";
+            echo "<span style=\"color:lime;\"> / <div id='FOR_" . $i . "_max'>-</div></span></th>" . "\n";
             echo "\t" . "<th>";
             echo "<select id='For_" . $i . "_percentage' onchange='update_page();' onKeyUp='update_page();'>" . "\n";
-            for ($j = 100; $j >= 0; $j = $j - 10) {
+            for ($j = 150; $j >= 0; $j = $j - 10) {
                 echo "\t\t" . "<option value='" . $j . "'";
                 if ($user_percentage[$i]['FOR_percentage'] == $j) {
                     echo " selected='selected'";
@@ -573,7 +573,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         $lab_max = 0;
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='building_pts_" . $i . "'>-</div></span>" . "\n";
-            echo "\t<input type='hidden' id='building_" . $i . "' value='" . implode(array_slice($user_building[$i], 21, -3, true), "<>") . "' /></th>";
+            echo "\t<input type='hidden' id='building_" . $i . "' value='" . implode('<>', array_slice($user_building[$i], 21, -3, true)) . "' /></th>";
 
             if ($lab_max < $user_building[$i]["Lab"]) {
                 $lab_max = $user_building[$i]["Lab"];
@@ -587,7 +587,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             echo "\t<th colspan='2'><span style=\"color: lime; \"><div id='defence_pts_" . $i . "'>-</div></span>" . "\n";
-            echo "\t<input type='hidden' id='defence_" . $i . "' value='" . implode($user_defence[$i], "<>") . "' /></th>";
+            echo "\t<input type='hidden' id='defence_" . $i . "' value='" . implode('<>', $user_defence[$i]) . "' /></th>";
         }
         ?>
         <th><span style="color: white; "><span id='total_d_pts'>-</span></span></th>
@@ -598,12 +598,12 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         for ($i = 201; $i <= 200 + $nb_planete; $i++) {
             echo "\t<th colspan='2'><span style=\"color: lime; \"><div id='lune_pts_" . $i . "'>-</div></span>" . "\n";
             if ($user_building[$i]) {
-                echo "\t<input type='hidden' id='lune_b_" . $i . "' value='" . implode(array_slice($user_building[$i], 23, -3, true), "<>") . "' />";
+                echo "\t<input type='hidden' id='lune_b_" . $i . "' value='" . implode('<>', array_slice($user_building[$i], 23, -3, true)) . "' />";
                 //print_r($user_building[$i]);
             } else {
                 echo "\t<input type='hidden' id='lune_b_" . $i . "' value='0' />";
             }
-            echo "\t<input type='hidden' id='lune_d_" . $i . "' value='" . implode($user_defence[$i], "<>") . "' /></th>";
+            echo "\t<input type='hidden' id='lune_d_" . $i . "' value='" . implode('<>', $user_defence[$i]) . "' /></th>";
         }
         ?>
         <th><span style="color: white; "><span id='total_lune_pts'>-</span></span></th>
@@ -626,7 +626,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             if ($user_empire["technology"] != NULL && $user_building[$i]["Lab"] == $lab_max) {
                 echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='techno_pts'>-</div></span>" . "\n";
-                echo "\t<input type='hidden' id='techno' value='" . implode($user_empire["technology"], "<>") . "' /></th>";
+                echo "\t<input type='hidden' id='techno' value='" . implode('<>', $user_empire['technology']) . "' /></th>";
             } else {
                 echo "<th colspan='2'><span style=\"color: lime; \">-</span></th>";
             }

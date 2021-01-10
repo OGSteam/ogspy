@@ -784,8 +784,11 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             break;
 
         //Mot de passe des membres
-        case "Password":
-            if (!preg_match("/^[\w\s\-]{6,64}$/", $value)) {
+        case "Password": //Tout caractère sauf ; ' et ".
+            // if (!preg_match("/^[\w\s\-]{6,64}$/", $value)) {
+                // return false;
+            // }
+			if (!preg_match("/^[^;'\"]{6,64}$/", $value)) { //Protection encore supplémentaire (même si sql_escape_string fait)
                 return false;
             }
             break;

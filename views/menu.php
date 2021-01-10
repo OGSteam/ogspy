@@ -15,58 +15,6 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 ?>
-
-<script type="text/javascript">
-    var date = new Date;
-    var delta = Math.round((<?php echo(time() * 1000); ?> -date.getTime()) / 1000);
-
-    function Timer() {
-        var days = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
-        var months = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jui", "Jui", "Aoû", "Sep", "oct", "nov", "déc"];
-
-        date = new Date;
-        date.setTime(date.getTime() + delta * 1000);
-        var hour = date.getHours();
-        var min = date.getMinutes();
-        var sec = date.getSeconds();
-        var day = days[date.getDay()];
-        var day_number = date.getDate();
-        var month = months[date.getMonth()];
-        if (sec < 10) sec = "0" + sec;
-        if (min < 10) min = "0" + min;
-        if (hour < 10) hour = "0" + hour;
-
-        var datetime = day + " " + day_number + " " + month + " " + hour + ":" + min + ":" + sec;
-
-        if (document.getElementById) {
-            document.getElementById("datetime").innerHTML = datetime;
-        }
-    }
-
-    go_visibility = [];
-
-    function goblink() {
-        if (document.getElementById && document.all) {
-            var blink_tab = document.getElementsByTagName('blink');
-            for (var a = 0; a < blink_tab.length; a++) {
-                if (go_visibility[a] !== "visible")
-                    go_visibility[a] == "visible";
-                else
-                    go_visibility[a] == "hidden";
-                blink_tab[a].style.visibility = go_visibility[a];
-            }
-        }
-    }
-
-    function Biper() {
-        Timer();
-        goblink();
-        setTimeout("Biper()", 1000);
-    }
-
-    window.onload = Biper;
-</script>
-
 <table border="0" cellpadding="0" cellspacing="0">
     <tr align="center">
         <td>
@@ -93,7 +41,7 @@ if (!defined('IN_SPYOGAME')) {
     ?>
     <tr>
         <td>
-            <div style="text-align='left';">
+            <div style="text-align:left;">
 
                 <ul class="menu" id="menu">
                     <?php

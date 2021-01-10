@@ -364,5 +364,4 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
     </table>
 </form>
 </body>
-<script language="JavaScript" src="../js/wz_tooltip.js"></script>
 </html>

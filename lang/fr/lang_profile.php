@@ -17,9 +17,9 @@
 /* profile.php */
 
 $lang['PROFILE_ERROR_RETRY'] = "Saisissez le nouveau mot de passe et sa confirmation";
-$lang['PROFILE_ERROR_OLDPWD'] = "Saisissez l'ancien mot de passe";
+$lang['PROFILE_ERROR_OLDPWD'] = "Saisissez l&rsquo;ancien mot de passe";
 $lang['PROFILE_ERROR_ERROR'] = "Le mot de passe saisi est différent de la confirmation";
-$lang['PROFILE_ERROR_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 15 caractères";
+$lang['PROFILE_ERROR_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 15 caractères et pas les caractères suivants : ; &rsquo; et &quot;";
 
 $lang['PROFILE_TITLE'] = "Informations OGSpy";
 $lang['PROFILE_PSEUDO'] = "Pseudo";
