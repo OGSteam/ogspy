@@ -13,6 +13,8 @@
 .idea/misc.xml
 .idea/deployment.xml
 .idea/bashsupport_project.xml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/runConfigurations/PHP_OGNMP.xml
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -24,6 +26,9 @@
 .idea/**/uiDesigner.xml
 .idea/webServers.xml
 .idea/sqldialects.xml
+.idea/encodings.xml
+.idea/vcs.xml
+
 
 # Gradle:
 .idea/**/gradle.xml

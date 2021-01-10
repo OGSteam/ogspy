@@ -175,7 +175,7 @@ require_once("views/page_header.php");
             $phalanx = $v["phalanx"];
             $gate = $v["gate"] == 1;
             $status = $v["status"];
-            $timestamp = $v["timestamp"];
+            $timestamp = intval($v["timestamp"]);
             $poster = "&nbsp;";
             if ($timestamp != 0) {
                 $timestamp = strftime("%d %b %Y %H:%M", $timestamp);
