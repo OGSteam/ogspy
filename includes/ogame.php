@@ -1001,7 +1001,7 @@ function research_cumulate($research, $level) { return building_cumulate($resear
 function all_building_cumulate($user_building)
 {
     $total = 0;
-var_dump($user_building);
+
     while ($data = current($user_building)) {
         $bats = array_keys($data);
         
@@ -1037,7 +1037,6 @@ function all_defence_cumulate($user_defence)
         return 0;
     }
     $total = 0;
-    var_dump($user_defence);
     while ($data = current($user_defence)) {
         $defs = array_keys($data);
         
@@ -1101,27 +1100,22 @@ function all_technology_cumulate($user_technology)
     if(!isset($user_technology )) return 0;
 
     $total = 0;
-    var_dump($user_technology);
-    while ($data = current($user_technology)) {
-        $technos = array_keys($data);
-        
-        foreach ($technos as $key) {
-            $level = $data[$key];
-            if ($level == "") {
-                $level = 0;
-            }
 
-            if ($key == "Esp" || $key == "Ordi" || $key == "Armes" || $key == "Bouclier" ||
-                $key == "Protection" || $key == "NRJ" || $key == "Hyp" || $key == "RC" ||
-                $key == "RI" || $key == "PH" || $key == "Laser" || $key == "Ions" ||
-                $key == "Plasma" || $key == "RRI" || $key == "Graviton" || $key == "Astrophysique"
-               ) {
-                list($M, $C, $D) = array_values(building_cumulate($key, $level));
-                $total += $M + $C + $D;
-            }
-        }
-        next($user_technology);
-    }
+	foreach ($technos as $key) {
+		$level = $data[$key];
+		if ($level == "") {
+			$level = 0;
+		}
+
+		if ($key == "Esp" || $key == "Ordi" || $key == "Armes" || $key == "Bouclier" ||
+			$key == "Protection" || $key == "NRJ" || $key == "Hyp" || $key == "RC" ||
+			$key == "RI" || $key == "PH" || $key == "Laser" || $key == "Ions" ||
+			$key == "Plasma" || $key == "RRI" || $key == "Graviton" || $key == "Astrophysique"
+		   ) {
+			list($M, $C, $D) = array_values(building_cumulate($key, $level));
+			$total += $M + $C + $D;
+		}
+	}
     
     
     // $init_t_prix = array("Esp" => 1400, "Ordi" => 1000, "Armes" => 1000, "Bouclier" =>
