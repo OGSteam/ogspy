@@ -1004,7 +1004,7 @@ function user_empire_production($user_empire, $off = NULL, $speed_uni = 1)
         $user_empire['technology']['Plasma'] = 0;
     }
     if ( !isset($user_empire['technology']['NRJ']) || $user_empire['technology']['NRJ'] == '' ) {
-        $user_empire['technology']['Plasma'] = 0;
+        $user_empire['technology']['NRJ'] = 0;
     }
     $plasma = $user_empire['technology']['Plasma'];
     $NRJ    = $user_empire['technology']['NRJ'];
