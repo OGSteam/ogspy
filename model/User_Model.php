@@ -78,11 +78,28 @@ class User_Model extends Model_Abstract
      */
     public function select_is_user_name($username)
     {
-        $username=$this->db->sql_escape_string($username);
+        $username = $this->db->sql_escape_string($username);
 
         $request = "SELECT * FROM " . TABLE_USER . " WHERE `user_name` = '" . $username . "'";
         $result = $this->db->sql_query($request);
-        if($result !== false && $result->num_rows !== 0) {
+        if ($result !== false && $result->num_rows !== 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $username
+     * @return bool
+     */
+    public function select_is_other_user_name($username, $user_id)
+    {
+        $username = $this->db->sql_escape_string($username);
+        $user_id  = (int) $user_id;
+
+        $request = "SELECT * FROM " . TABLE_USER . " WHERE `user_name` = '" . $username . "' AND `user_id` <> " . $user_id;
+        $result = $this->db->sql_query($request);
+        if ($this->db->sql_numrows($result) != 0) {
             return true;
         }
         return false;

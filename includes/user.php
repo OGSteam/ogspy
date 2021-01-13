@@ -372,10 +372,8 @@ function member_user_set()
     if ($user_data['off_technocrate'] == 1 && (is_null($pub_off_technocrate) || $pub_off_technocrate != 1)) {
         $User_Model->set_player_officer($user_id, "off_technocrate", 0);
     }
-    //Contrôle que le pseudo ne soit pas déjà utilisé
-	//Origine : un nom identique autre que pour moi (SELECT * FROM user WHERE user_name=$pub_pseudo AND user_id <> $user_id (=$user_data['user_id']))
-    $tUserName = $User_Model->select_user_list();
-    if (in_array($pub_pseudo, $tUserName)) {
+    //Contrôle que le pseudo ne soit pas déjà utilisé si changement
+    if ($User_Model->select_is_other_user_name($pub_pseudo, $user_id) === true) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudolocked&info");
     }
 
@@ -1002,6 +1000,7 @@ function user_empire_production($user_empire, $off = NULL, $speed_uni = 1)
     //!\\ fin prepa classe
 
     //!\\ prepa techno
+    if (isset($user_empire['technology']['Plasma']))
     $plasma = $user_empire['technology']['Plasma'] != "" ? $user_empire['technology']['Plasma'] : "0";
     $NRJ    = $user_empire['technology']['NRJ'] != "" ? $user_empire['technology']['NRJ'] : "0";
     //!\\ fin prepa techno
