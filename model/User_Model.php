@@ -74,38 +74,44 @@ class User_Model extends Model_Abstract
 
     /**
      * @param $username
-     * @return bool|mixed|\Ogsteam\Ogspy\mysqli_result
+     * @return bool
      */
-    public function select_user_name($username)
+    public function select_is_user_name($username)
     {
         $username=$this->db->sql_escape_string($username);
 
         $request = "SELECT * FROM " . TABLE_USER . " WHERE `user_name` = '" . $username . "'";
         $result = $this->db->sql_query($request);
-
-        return $result;
+        if($result !== false && $result->num_rows !== 0) {
+            return true;
+        }
+        return false;
     }
 
+    /**
+     *  @return array
+     */
     public function select_user_list()
     {
-
-
         $request = "SELECT `user_name` FROM " . TABLE_USER;
-        $result = $this->db->sql_query($request);
-        list($user_name) = $this->db->sql_fetch_row($result);
+        $list_user_name = array();
 
-        return $user_name;
+        $result = $this->db->sql_query($request);
+        while (list($user_name) = $this->db->sql_fetch_row($result)) {
+            $list_user_name[] = $user_name;
+        }
+        return $list_user_name;
     }
 
+    /**
+     *  @return array
+     */
     public function select_userid_list()
     {
-
-
         $request = "SELECT `user_id` FROM " . TABLE_USER;
-
-        $request = $this->db->sql_escape_string($request);
-        $result = $this->db->sql_query($request);
         $list_user_id = array();
+
+        $result = $this->db->sql_query($request);
         while (list($user_id) = $this->db->sql_fetch_row($result)) {
             $list_user_id[] = $user_id;
         }

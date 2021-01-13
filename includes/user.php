@@ -373,6 +373,7 @@ function member_user_set()
         $User_Model->set_player_officer($user_id, "off_technocrate", 0);
     }
     //Contrôle que le pseudo ne soit pas déjà utilisé
+	//Origine : un nom identique autre que pour moi (SELECT * FROM user WHERE user_name=$pub_pseudo AND user_id <> $user_id (=$user_data['user_id']))
     $tUserName = $User_Model->select_user_list();
     if (in_array($pub_pseudo, $tUserName)) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudolocked&info");
@@ -709,13 +710,10 @@ function user_create()
         $password = password_generator();
     }
     $User_Model = new User_Model();
-    //On vérifie que le nom n'existe pas
-    $result = $User_Model->select_user_name($pub_pseudo);
-
+    
     //Création de l'utilisateur
-    //Contrôle que le pseudo ne soit pas déjà utilisé
-    $tUserName = $User_Model->select_user_list();
-    if (!in_array($pub_pseudo, $tUserName)) {
+    //On vérifie que le nom n'existe pas
+    if ($User_Model->select_is_user_name($pub_pseudo) === false) {
         $user_id = $User_Model->add_new_user($pub_pseudo, $password);
         // Insertion dans le groupe par défaut
         $User_Model->add_user_to_group($user_id, $pub_group_id);
