@@ -97,6 +97,9 @@ for ($i = 201 ; $i <= $nb_planete + 200 ; $i++) {
         </tr>
 <?php
     // vérification de compte de planete/lune avec la technologie astro
+    if (!isset($user_technology['Astrophysique']) || $user_technology['Astrophysique'] == '') {
+        $user_technology['Astrophysique'] = 0;
+    }
     $astro = astro_max_planete($user_technology['Astrophysique']);
 
     if (((find_nb_planete_user($user_data['user_id']) > $astro) || (find_nb_moon_user($user_data['user_id']) > $astro)) && ($user_technology != false)) {

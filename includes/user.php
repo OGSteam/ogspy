@@ -1000,9 +1000,14 @@ function user_empire_production($user_empire, $off = NULL, $speed_uni = 1)
     //!\\ fin prepa classe
 
     //!\\ prepa techno
-    if (isset($user_empire['technology']['Plasma']))
-    $plasma = $user_empire['technology']['Plasma'] != "" ? $user_empire['technology']['Plasma'] : "0";
-    $NRJ    = $user_empire['technology']['NRJ'] != "" ? $user_empire['technology']['NRJ'] : "0";
+    if ( !isset($user_empire['technology']['Plasma']) || $user_empire['technology']['Plasma'] == '' ) {
+        $user_empire['technology']['Plasma'] = 0;
+    }
+    if ( !isset($user_empire['technology']['NRJ']) || $user_empire['technology']['NRJ'] == '' ) {
+        $user_empire['technology']['Plasma'] = 0;
+    }
+    $plasma = $user_empire['technology']['Plasma'];
+    $NRJ    = $user_empire['technology']['NRJ'];
     //!\\ fin prepa techno
     // prepa ration E
     $product = array("M" => 0, "C" => 0, "D" => 0, "ratio" => 1, "conso_E" => 0, "prod_E" => 0);
