@@ -25,14 +25,16 @@ require_once("views/page_header.php");
                 style="color: Yellow; font-size: small; "><?php echo($lang['ABOUT_PROJECT_TEAM']); ?></span></td>
     </tr>
     <tr>
-        <td class="c" width="100" height="100" align="center" valign="middle"><img src="skin/OGSpy_skin/gfx/ogame-produktion.jpg"></td>
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="images/avatars/default_avatar.svg" width="40" title="Kyser">
+        </td>
         <td class="l">
             &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Kyser</span></a><br>
             <div style="text-align: center;"><b>Concepteur du serveur d'alliance OGSpy</b><br><br></div>
         </td>
     </tr>
     <tr>
-        <td class="c" width="100" height="100" align="center" valign="middle"><img src="skin/OGSpy_skin/gfx/ogame-produktion.jpg"></td>
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="images/avatars/default_avatar.svg" width="40" title="Rica">
+        </td>
         <td class="l">
             &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Rica</span></a><br>
             <div style="text-align: center;"><b>Concepteur du client OGame Stratege (OGS)<br>
@@ -40,8 +42,8 @@ require_once("views/page_header.php");
         </td>
     </tr>
     <tr>
-        <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="http://www.gravatar.com/avatar/201bc534b68afd93f7474a96a911effe.png" width="80" title="Aeris"></td>
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="images/avatars/ogsteam_avatar_aeris.png" width="80" title="Aeris">
+        </td>
         <td class="l">
             &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Aéris</span></b><br/>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_AERIS']); ?></b></div>
@@ -49,8 +51,7 @@ require_once("views/page_header.php");
         </td>
     </tr>
     <tr>
-        <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Capi">
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="images/avatars/default_avatar.svg" width="40" title="Capi">
         </td>
         <td class="l">
             &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Capi</span></a><br/>
@@ -60,8 +61,8 @@ require_once("views/page_header.php");
         </td>
     </tr>
     <tr>
-        <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="https://board.fr.ogame.gameforge.com/wcf/images/avatars/42/601-42f9fe2a3043c19d4e7c1183ee6936995705812a." width="80" title="Chris Alys"></td>
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="images/avatars/default_avatar.svg" width="40" title="Chris Alys">
+        </td>
         <td class="l">
             &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Chris Alys</span></b><br/>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_CHRYS']); ?></b></div>
@@ -69,8 +70,8 @@ require_once("views/page_header.php");
         </td>
     </tr>
     <tr>
-        <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="http://r27.imgfast.net/users/2712/34/86/71/avatars/207-55.gif" width="80" title="DarkNoon"></td>
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="images/avatars/ogsteam_avatar_darknoon.png" width="80" title="DarkNoon">
+        </td>
         <td class="l">
             &nbsp;<b><span style="color: Yellow; font-size: x-small; ">DarkNoon</span></b>
             <br/>
@@ -81,9 +82,8 @@ require_once("views/page_header.php");
         </td>
     </tr>
     <tr>
-        <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="http://ballonrond.passion.free.fr/Images/Forums/ogsteam_avatar_jedinight.png" width="80"
-                title="Jedinight"></td>
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="images/avatars/ogsteam_avatar_jedinight.png" width="80" title="Jedinight">
+        </td>
         <td class="l">
             <b><span style="color: Yellow; font-size: x-small; ">Jedinight</span></b>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_JEDINIGHT']); ?></b></div>
@@ -94,8 +94,8 @@ require_once("views/page_header.php");
         </td>
     </tr>
     <tr>
-        <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="https://board.fr.ogame.gameforge.com/wcf/images/avatars/0d/1599-0d0b0d5df1313bcf1e49b8d1a995d6849551e8a1.jpg" width="80" title="Machine"></td>
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="images/avatars/ogsteam_avatar_machine.jpg" width="80" title="Machine">
+        </td>
         <td class="l">
             <b><span style="color: Yellow; font-size: x-small; ">Machine</span></b><br/>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_MACHINE']); ?></b></div>
@@ -103,8 +103,7 @@ require_once("views/page_header.php");
         </td>
     </tr>
     <tr>
-        <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Ninety"></td>
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="images/avatars/default_avatar.svg" width="40" title="Ninety"></td>
         <td class="l">
             &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Ninety</span></b><br/>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_NINETY']); ?></b></div>
@@ -112,8 +111,8 @@ require_once("views/page_header.php");
         </td>
     </tr>
     <tr>
-        <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Shad"></td>
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="images/avatars/default_avatar.svg" width="40" title="Shad">
+        </td>
         <td class="l">
             &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Shad</span></b><br/>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_SHAD']); ?></b></div>
@@ -121,8 +120,8 @@ require_once("views/page_header.php");
         </td>
     </tr>
     <tr>
-        <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="http://r27.imgfast.net/users/2712/24/28/03/avatars/165-4.gif" width="80" title="Superbox"></td>
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="images/avatars/default_avatar.svg" width="40" title="Superbox">
+        </td>
         <td class="l">
             &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Superbox</span></b><br/>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_SUPERBOX']); ?></b></div>
@@ -130,8 +129,8 @@ require_once("views/page_header.php");
         </td>
     </tr>
     <tr>
-        <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="https://board.fr.ogame.gameforge.com/index.php/GravatarDownload/?userID=403750" width="80" title="Xaviernuma"></td>
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="images/avatars/ogsteam_avatar_xaviernuma.jpg" width="80" title="Xaviernuma">
+        </td>
         <td class="l">
             &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Xaviernuma</span></b><br/>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_XAVIERNUMA']); ?></b></div>
@@ -139,9 +138,8 @@ require_once("views/page_header.php");
         </td>
     </tr>
     <tr>
-        <td class="c" width="100" height="100" align="center" valign="middle"><img
-                src="http://img57.xooimage.com/files/6/3/a/moe-148053-dxlsma..._200x200-3669dc4.jpg" width="80"
-                title="pitch314"></td>
+        <td class="c" width="100" height="100" align="center" valign="middle"><img src="images/avatars/ogsteam_avatar_pitch314.jpg" width="80" title="pitch314">
+        </td>
         <td class="l">
             &nbsp;<b><span style="color: Yellow; font-size: x-small; ">Pitch314</span></b><br/>
             <div style="text-align: center;"><b><?php echo($lang['ABOUT_PROJECT_PITCH314']); ?></b></div>
