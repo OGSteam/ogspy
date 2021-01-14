@@ -293,8 +293,7 @@ if ($player_comp != "" && isset($player_comp)): ?>
     // on fabrique toutes les courbes ici
     global $zoom;
     $zoom = 'false';
-    $curve = create_curves($user_data["user_stat_name"], $min_date, $max_date,
-        $player_comp);
+    $curve = create_curves($user_data["user_stat_name"], $min_date, $max_date, $player_comp);
 
     $title = $lang['HOME_STATS_GRAPHIC_TITLE'];
     if (!empty($user_data["user_stat_name"])) {
@@ -327,17 +326,17 @@ if ($player_comp != "" && isset($player_comp)): ?>
     echo "<th align='center' width='400'>";
     echo "<div id='pie_point'>";
     // pas d info
-    if ($b == 0 && $d == 0 && $l == 0 && $t == 0) {
+    if ($b == 0 && $d == 0 && $l == 0 && $t == 0) { // calcul impossible ( non connaissance du classement)
             echo $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'];
     }
-
-// calcul impossible ( non connaissance du classement)
-    elseif ($last["general_pts"] == 0) {
-            echo $lang['HOME_STATS_GRAPHIC_NOSTATSDATA'];
-    }
-
-// autrement on affiche rien : on prepare juste l affichage du script
+    // elseif ($last["general_pts"] == 0) { // autrement on affiche rien : on prepare juste l affichage du script
+            // echo $lang['HOME_STATS_GRAPHIC_NOSTATSDATA'];
+    // }
     else {
+        if ($last["general_pts"] == 0) {
+            echo $lang['HOME_STATS_GRAPHIC_NOSTATSDATA'] . "<br>/n";
+            $f = round(all_fleet_cumulate($user_building) / 1000); // only FOR et Sat, pour le moment
+        }
         $pie_point = create_pie($b . "_x_" . $d . "_x_" . $l . "_x_" . $f . "_x_" . $t,
             "Batiments_x_Défenses_x_Lunes_x_Flotte_x_Technologies",
             $lang['HOME_STATS_GRAPHIC_LASTREPARTITION'], "pie_point");
@@ -362,13 +361,9 @@ if ($player_comp != "" && isset($player_comp)): ?>
     $pie_empire = "";
     echo "<th align='center' width='400'>";
     echo "<div id='pie_empire'  width='400'>";
-    // pas d info
-    if ($b == 0 && $d == 0 && $l == 0 && $t == 0) {
+    if ($b == 0 && $d == 0 && $l == 0 && $t == 0) { // pas d info
             echo $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'];
-    }
-
-// autrement on affiche rien : on prepare juste l affichage du script
-    else {
+    } else { // autrement on affiche rien : on prepare juste l affichage du script
         $pie_empire = create_pie(implode('_x_', $planet), implode('_x_', $planet_name),
             $lang['HOME_STATS_GRAPHIC_REPARTITION'], "pie_empire");
     }
@@ -377,12 +372,7 @@ if ($player_comp != "" && isset($player_comp)): ?>
     echo "</th></tr></table>";
 
     ?>
-
-
-
-    <br/>
-
-
+<br/>
     <table>
         <tr>
             <td class="c" colspan="17"><?php echo($lang['HOME_STATS_RANKING']); ?> <a><?php echo $user_data["user_stat_name"]; ?></a></td>
