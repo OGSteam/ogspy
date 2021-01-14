@@ -488,7 +488,7 @@ function astro_max_planete($level)
  * Calculates the price to upgrade a building to a defined level
  * @param int $level The wanted Level
  * @param string $building The building type
- * @return ressources required to upgrade the building
+ * @return array('M', 'C','D, 'NRJ') ressources required to upgrade the building or technologies
  */
 function building_upgrade($building, $level)
 {
@@ -603,7 +603,7 @@ function building_upgrade($building, $level)
             $M = 200 * pow(5, ($level - 1));
             $C = 0;
             $D = 50 * pow(5, ($level - 1));
-            $NRJ = floor(50 * pow(2.5, ($level - 1)));
+            $NRJ = 50 * pow(2.5, ($level - 1));
             break;
 
         case "BaLu":
@@ -748,14 +748,14 @@ function building_upgrade($building, $level)
             break;
     }
 
-    return array("M" => $M, "C" => $C, "D" => $D, "NRJ" => $NRJ);
+    return array('M' => round($M), 'C' => round($C), 'D' => round($D), 'NRJ' => round($NRJ));
 }
 
 /**
  * Calculates the price of the a building corresponding to it current level
  * @param int $level The current Level
  * @param string $building The building type
- * @return ressources used to reach this level
+ * @return array('M', 'C','D, 'NRJ') ressources used to reach this level
  */
 function building_cumulate($building, $level)
 {
@@ -793,10 +793,10 @@ function building_cumulate($building, $level)
             break;
 
         case "Dock":
-            $M = 200 * (1 - pow(5, $level)) / (-5);
+            $M = 200 * (1 - pow(5, $level)) / (-4);
             $C = 0;
-            $D = 50 * (1 - pow(5, $level)) / (-5);
-            $NRJ = 50 * (1 - pow(2.5, $level)) / (-2.5);
+            $D = 50 * (1 - pow(5, $level)) / (-4);
+            $NRJ = 50 * (1 - pow(2.5, $level)) / (-1.5);
             break;
 
 // Recherches non x2 :
@@ -804,13 +804,13 @@ function building_cumulate($building, $level)
             $M = 0;
             $C = 0;
             $D = 0;
-            $NRJ = 300000 * (1 - pow(3, $level)) / (-3);
+            $NRJ = 300000 * (1 - pow(3, $level)) / (-2);
             break;
 
         case "Astrophysique":
-            $M = 4000 * (1 - pow(1.75, $level)) / (-1.75);
-            $C = 8000 * (1 - pow(1.75, $level)) / (-1.75);
-            $D = 4000 * (1 - pow(1.75, $level)) / (-1.75);
+            $M = 4000 * (1 - pow(1.75, $level)) / (-0.75);
+            $C = 8000 * (1 - pow(1.75, $level)) / (-0.75);
+            $D = 4000 * (1 - pow(1.75, $level)) / (-0.75);
             break;
 
 // Flottes :
@@ -978,34 +978,36 @@ function building_cumulate($building, $level)
             $D = 10000 * $level;
             break;
 
-        default:
-            list($M, $C, $D) = array_values(building_upgrade($building, 1));
+        default: //Pour les bâtiments et recherches en x2
+            list($M, $C, $D, $NRJ) = array_values(building_upgrade($building, 1));
             $M = $M * -(1 - pow(2, $level));
             $C = $C * -(1 - pow(2, $level));
             $D = $D * -(1 - pow(2, $level));
+            $NRJ = $NRJ * -(1 - pow(2, $level));
             break;
     }
 
-    return array("M" => $M, "C" => $C, "D" => $D, "NRJ" => $NRJ);
+    return array('M' => round($M), 'C' => round($C), 'D' => round($D), 'NRJ' => round($NRJ));
 }
 
 function defense_cumulate($defence, $number)  { return building_cumulate($defence, $number); }
 function fleet_cumulate($fleet, $number)      { return building_cumulate($fleet, $number); }
 function research_cumulate($research, $level) { return building_cumulate($research, $level); }
+function research_upgrade($research, $level)  { return building_upgrade($research, $level); }
 
 /**
  * Calculates the price of all buildings
- * @param string $user_building The list of buildings with corresponding levels
+ * @param $user_building The list of buildings of each planets with corresponding levels
  * @return integer bild :-)
  */
 function all_building_cumulate($user_building)
 {
     $total = 0;
 
-    while ($data = current($user_building)) {
+    while ($data = current($user_building)) { //Chaque planète
         $bats = array_keys($data);
         
-        foreach ($bats as $key) {
+        foreach ($bats as $key) { //Chaque bâtiments
             $level = $data[$key];
             if ($level == "") {
                 $level = 0;
@@ -1027,8 +1029,8 @@ function all_building_cumulate($user_building)
 }
 
 /**
- * Calculates the price of all buildings
- * @param string $user_defence The list of defenses with the number of each building
+ * Calculates the price of all defenses
+ * @param $user_defence The list of defenses of each planets with the number of each defense
  * @return the bild :-)
  */
 function all_defence_cumulate($user_defence)
