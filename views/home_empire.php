@@ -1295,15 +1295,14 @@ for ($i = 201 ; $i <= $nb_planete + 200 ; $i++) {
         </tr>
         <tr>
             <th><a><?php echo($lang['HOME_EMPIRE_TECHNOS']); ?></a></th>
+            <th colspan="<?php print ($nb_planete < 10) ? '9' : $nb_planete ?>"><span id='21' style="color: lime;">
 <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $point = all_technology_cumulate($user_technology);
                 $point = round($point / 1000);
                 $point = number_format($point, 0, ',', ' ');
-
-                echo "\t" . "<th><span  id='21" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $point . "</span></th>" . "\n";
-            }
-?>
+                echo $point;
+?></span>
+            </th>
         </tr>
     </table>
 
