@@ -7,7 +7,7 @@
  * @subpackage views
  * @author Kyser
  * @created 17/01/2006
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 

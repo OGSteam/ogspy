@@ -6,7 +6,7 @@
  * @subpackage views
  * @author bobzer
  * @created 07/04/2007
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 

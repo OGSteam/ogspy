@@ -10,7 +10,7 @@
  * @copyright  2019 OGSteam.fr
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    GIT:<GIT_ID>
- * @link       https://ogsteam.fr  
+ * @link       https://ogsteam.eu 
  */
 
 if (!defined('IN_SPYOGAME')) {

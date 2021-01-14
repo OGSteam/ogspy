@@ -935,7 +935,7 @@ INSERT INTO `ogspy_config` VALUES ('reason', '');
 INSERT INTO `ogspy_config` VALUES ('servername', 'Cartographie');
 INSERT INTO `ogspy_config` VALUES ('server_active', '1');
 INSERT INTO `ogspy_config` VALUES ('session_time', '30');
-INSERT INTO `ogspy_config` VALUES ('url_forum', 'https://forum.ogsteam.fr/');
+INSERT INTO `ogspy_config` VALUES ('url_forum', 'https://forum.ogsteam.eu/');
 INSERT INTO `ogspy_config` VALUES ('log_phperror', '0');
 INSERT INTO `ogspy_config` VALUES ('block_ratio', '0');
 INSERT INTO `ogspy_config` VALUES ('ratio_limit', '0');

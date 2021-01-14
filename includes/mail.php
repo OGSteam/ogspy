@@ -5,7 +5,7 @@
  * @package OGSpy
  * @subpackage mail
  * @author machine
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 

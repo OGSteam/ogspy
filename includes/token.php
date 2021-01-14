@@ -6,7 +6,7 @@
  * @subpackage token
  * @author Machine
  * @created 05/01/2018
- * @copyright Copyright &copy; 2007, https://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 

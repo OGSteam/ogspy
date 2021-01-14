@@ -5,7 +5,7 @@
  * @subpackage mods
  * @author Kyser
  * @created 21/07/2006
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04b ($Rev: 7692 $)
  */

@@ -4,7 +4,7 @@
  * @package OGSpy
  * @subpackage Common
  * @author Kyser
- * @copyright Copyright &copy; 2012, http://www.ogsteam.fr/
+ * @copyright Copyright &copy; 2012, http://www.ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.1.1 ($Rev: 7752 $)
  */

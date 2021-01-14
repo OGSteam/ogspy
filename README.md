@@ -5,7 +5,7 @@ OGSpy
 Le projet crée en 2006 est une aide pour un jeu de gestion de vaisseaux spatiaux.
 Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour ensuite les regrouper et les exploiter.
 
-Visitez notre forum [OGSteam.fr](https://forum.ogsteam.fr) pour en savoir plus.
+Visitez notre forum [OGSteam.fr](https://forum.ogsteam.eu) pour en savoir plus.
 
 ---
 
@@ -13,7 +13,7 @@ Visitez notre forum [OGSteam.fr](https://forum.ogsteam.fr) pour en savoir plus.
 
 Notre espace documentaire est contruit par nos utilisateurs via notre wiki. Vous pouvez y trouver les descriptifs de nos applications ainsi que les procédures d'installation.
 
-[Wiki OGSteam](https://wiki.ogsteam.fr)
+[Wiki OGSteam](https://wiki.ogsteam.eu)
 
 Des tutoriels d'installation sont aussi disponibles sur notre chaine Youtube : [Youtube](https://www.youtube.com/playlist?list=PLF1RvCcSTS6M28sPpadlerKcuwhhTBtrQ)
 
@@ -31,7 +31,7 @@ Des tutoriels d'installation sont aussi disponibles sur notre chaine Youtube : [
 ### Installation et Usages
 Vous trouverez ur le wiki le manuel d'installation d'OGSpy sur un serveur web. Mais il existe aussi des hébergeurs qui installent le site pour vous.
 
-[Wiki de l'OGSteam](https://wiki.ogsteam.fr/doku.php)
+[Wiki de l'OGSteam](https://wiki.ogsteam.eu/doku.php)
 
 ### Démo
 Vous pouvez tester un serveur OGSpy, une démo est disponible:

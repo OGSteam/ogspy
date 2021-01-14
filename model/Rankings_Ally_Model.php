@@ -5,7 +5,7 @@
  * @package OGSpy
  * @subpackage Model
  * @author Machine
- * @copyright Copyright &copy; 2017, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2017, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.4.0
  */

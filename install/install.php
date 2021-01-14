@@ -4,7 +4,7 @@
  * @package OGSpy
  * @subpackage install
  * @author Kyser
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.4
  */
@@ -347,7 +347,7 @@ if (isset($pub_sgbd_server) && isset($pub_sgbd_dbname) && isset($pub_sgbd_userna
                     </tr>
                     <tr>
                         <td colspan="2" align="center">
-                            <a target="_blank" href="https://forum.ogsteam.fr/">
+                            <a target="_blank" href="https://forum.ogsteam.eu/">
                                 <i><span style="color: orange; "><?php echo $lang['INSTALL_VIEW_INSTALLHELP']; ?></span></i>
                             </a>
                         </td>

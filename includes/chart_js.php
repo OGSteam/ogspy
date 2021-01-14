@@ -3,7 +3,7 @@
  * @package OGSpy
  * @subpackage Charts
  * @author Machine
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.1.0
  */
@@ -75,7 +75,7 @@ $(document).ready(function() {
       },
       credits: {
         text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
-        href: 'http://www.ogsteam.fr'
+        href: 'http://www.ogsteam.eu'
     },
       title: {
          text: '" . $title . "'
@@ -185,7 +185,7 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 		},
       	credits: {
 			text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
-        	href: 'http://www.ogsteam.fr'
+        	href: 'http://www.ogsteam.eu'
 	  	},
 		title: {
 			text: '" . $title . "'
@@ -661,7 +661,7 @@ $(document).ready(function() {
     
       credits: {
         text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
-        href: 'http://www.ogsteam.fr'
+        href: 'http://www.ogsteam.eu'
     },
     
       title: {
