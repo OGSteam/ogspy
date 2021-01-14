@@ -98,6 +98,8 @@ $lang['HOME_EMPIRE_WEAPONS_SMALLSHIELD'] = "Petit bouclier";
 $lang['HOME_EMPIRE_WEAPONS_LARGESHIELD'] = "Grand bouclier";
 $lang['HOME_EMPIRE_WEAPONS_ANTI'] = "Missile Interception";
 $lang['HOME_EMPIRE_WEAPONS_INTER'] = "Missile Interplanétaire";
+$lang['HOME_EMPIRE_POINTS_TITLE'] = "Points";
+$lang['HOME_EMPIRE_FLEET_TITLE'] = "Flottes";
 
 /* home_simulation.php */
 

@@ -1100,7 +1100,6 @@ for ($i = 201 ; $i <= $nb_planete + 200 ; $i++) {
         </tr>
         <tr>
             <td class="c_defense" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>"><?php echo($lang['HOME_EMPIRE_WEAPONS_TITLE']); ?></td>
-
         </tr>
         <tr>
             <th><a><?php echo($lang['HOME_EMPIRE_WEAPONS_MISSILES']); ?></a></th>
@@ -1251,6 +1250,54 @@ for ($i = 201 ; $i <= $nb_planete + 200 ; $i++) {
 
             } // fin de si view="planets"
             ?>
+        </tr>
+        <tr>
+            <td class="c_points" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>"><?php echo($lang['HOME_EMPIRE_POINTS_TITLE']); ?></td>
+        </tr>
+        <tr>
+            <th><a><?php echo($lang['HOME_EMPIRE_BUILDINGS']); ?></a></th>
+<?php
+            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
+                $point = all_building_cumulate(array(1=>$user_building[$i]));
+                $point = number_format($point, 0, ',', ' ');
+
+                echo "\t" . "<th><span  id='19" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $point . "</span></th>" . "\n";
+            }
+?>
+        </tr>
+        <tr>
+            <th><a><?php echo($lang['HOME_EMPIRE_WEAPONS_TITLE']); ?></a></th>
+<?php
+            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
+                $point = all_defence_cumulate(array(1=>$user_defence[$i]));
+                $point = number_format($point, 0, ',', ' ');
+
+                echo "\t" . "<th><span  id='20" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $point . "</span></th>" . "\n";
+            }
+?>
+        </tr>
+        <tr>
+            <th><a><?php echo($lang['HOME_EMPIRE_FLEET_TITLE']); ?></a></th>
+<?php
+// Pour le moment seulement les FOR et les SAT !!
+            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
+                $point = all_fleet_cumulate(array(1=>$user_building[$i])); //FOR et Sat
+                $point = number_format($point, 0, ',', ' ');
+
+                echo "\t" . "<th><span  id='20" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $point . "</span></th>" . "\n";
+            }
+?>
+        </tr>
+        <tr>
+            <th><a><?php echo($lang['HOME_EMPIRE_TECHNOS']); ?></a></th>
+<?php
+            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
+                $point = all_technology_cumulate($user_technology);
+                $point = number_format($point, 0, ',', ' ');
+
+                echo "\t" . "<th><span  id='21" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $point . "</span></th>" . "\n";
+            }
+?>
         </tr>
     </table>
 

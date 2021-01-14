@@ -1174,7 +1174,7 @@ function ogame_all_cumulate($user, $type)
                 $level = 0;
             }
             if (is_ogame_element($key) === $type) {
-                list($M, $C, $D) = array_values(building_cumulate($key, $level));
+                list($M, $C, $D) = array_values(ogame_element_cumulate($key, $level));
                 $total += $M + $C + $D;
             }
         }
