@@ -485,14 +485,15 @@ function astro_max_planete($level)
 }
 
 /**
- * Calculates the price to upgrade a building to a defined level
- * @param int $level The wanted Level
- * @param string $building The building type
- * @return array('M', 'C','D, 'NRJ') ressources required to upgrade the building or technologies
+ *  @brief Calculates the price to upgrade an Ogame element to a defined level (only building and research).
+ *  
+ *  @param [in] string $name Name of building or research, like in name in database
+ *  @param [in] int $level The wanted level
+ *  @return array('M', 'C','D, 'NRJ') ressources required to upgrade the building or technologies
  */
-function building_upgrade($building, $level)
+function ogame_element_upgrade($name, $level)
 {
-    switch ($building) {
+    switch ($name) {
 // Bâtiment :
         case "M":
             $M = 60 * pow(1.5, ($level - 1));
@@ -752,15 +753,31 @@ function building_upgrade($building, $level)
 }
 
 /**
- * Calculates the price of the a building corresponding to it current level
- * @param int $level The current Level
- * @param string $building The building type
- * @return array('M', 'C','D, 'NRJ') ressources used to reach this level
+ *  @brief Calculates the price to upgrade an building.
+ *  @param [in] string $building The name, like name in database
+ *  @param [in] int $level The wanted level
+ *  @return array('M', 'C','D, 'NRJ') ressources required to upgrade
  */
-function building_cumulate($building, $level)
+function building_upgrade($building, $level)  { return ogame_element_upgrade($building, $level); }
+/**
+ *  @brief Calculates the price to upgrade an research.
+ *  @param [in] string $research The name, like name in database
+ *  @param [in] int $level The wanted level
+ *  @return array('M', 'C','D, 'NRJ') ressources required to upgrade
+ */
+function research_upgrade($research, $level)  { return ogame_element_upgrade($research, $level); }
+
+/**
+ *  @brief Calculates the price of an Ogame element to it current level.
+ *  
+ *  @param [in] string $name Name of building/research/fleet/defence, like in name in database
+ *  @param [in] int $level The current level or the number of fleet/defence
+ *  @return array('M', 'C','D, 'NRJ') ressources used to it current level
+ */
+function ogame_element_cumulate($name, $level)
 {
     $NRJ = 0;
-    switch ($building) {
+    switch ($name) {
 // Bâtiment non x2 :
         case "M":
             $M = 60 * (1 - pow(1.5, $level)) / (-0.5);
@@ -979,7 +996,7 @@ function building_cumulate($building, $level)
             break;
 
         default: //Pour les bâtiments et recherches en x2
-            list($M, $C, $D, $NRJ) = array_values(building_upgrade($building, 1));
+            list($M, $C, $D, $NRJ) = array_values(building_upgrade($name, 1));
             $M = $M * -(1 - pow(2, $level));
             $C = $C * -(1 - pow(2, $level));
             $D = $D * -(1 - pow(2, $level));
@@ -990,94 +1007,215 @@ function building_cumulate($building, $level)
     return array('M' => round($M), 'C' => round($C), 'D' => round($D), 'NRJ' => round($NRJ));
 }
 
-function defense_cumulate($defence, $number)  { return building_cumulate($defence, $number); }
-function fleet_cumulate($fleet, $number)      { return building_cumulate($fleet, $number); }
-function research_cumulate($research, $level) { return building_cumulate($research, $level); }
-function research_upgrade($research, $level)  { return building_upgrade($research, $level); }
+/**
+ *  @brief Calculates the price of a building to it current level.
+ *  @param [in] string $building Name of building, like in name in database
+ *  @param [in] $level The current level
+ *  @return array('M', 'C','D, 'NRJ') ressources used to it current level
+ */
+function building_cumulate($building, $level) { return ogame_element_cumulate($building, $level); }
+/**
+ *  @brief Calculates the price of a number of defence.
+ *  @param [in] string $defence Name of defence, like in name in database
+ *  @param [in] $number The current number
+ *  @return array('M', 'C','D, 'NRJ') ressources used to have this defence number
+ */
+function defence_cumulate($defence, $number)  { return ogame_element_cumulate($defence, $number); }
+/**
+ *  @brief Calculates the price of a number of fleet.
+ *  @param [in] string $fleet Name of fleet, like in name in database
+ *  @param [in] $number The current number
+ *  @return array('M', 'C','D, 'NRJ') ressources used to have this fleet number
+ */
+function fleet_cumulate($fleet, $number)      { return ogame_element_cumulate($fleet, $number); }
+/**
+ *  @brief Calculates the price of a research to it current level.
+ *  @param [in] string $research Name of research, like in name in database
+ *  @param [in] $level The current level
+ *  @return array('M', 'C','D, 'NRJ') ressources used to it current level
+ */
+function research_cumulate($research, $level) { return ogame_element_cumulate($research, $level); }
+
 
 /**
- * Calculates the price of all buildings
- * @param $user_building The list of buildings of each planets with corresponding levels
- * @return integer bild :-)
+ *  @brief Détermine si c'est un bâtiment, une recherche, un vaisseau ou une défense.
+ *  
+ *  @param [in] string $nom Nom à recherche, correspond au nom en BDD
+ *  @return false|string 'BAT' pour bâtiment, 'RECH' pour recherche, 'DEF' pour défense, 'VSO' pour vaisseau et false sinon
+ *  
  */
-function all_building_cumulate($user_building)
+function is_ogame_element($nom)
 {
-    $total = 0;
-
-    while ($data = current($user_building)) { //Chaque planète
-        $bats = array_keys($data);
-        
-        foreach ($bats as $key) { //Chaque bâtiments
-            $level = $data[$key];
-            if ($level == "") {
-                $level = 0;
-            }
-
-            if ($key == "M" || $key == "C" || $key == "D" || $key == "CES" || $key == "CEF" ||
-                $key == "UdR" || $key == "UdN" || $key == "CSp" || $key == "HM" || $key == "HC" ||
-                $key == "HD" || $key == "Lab" || $key == "Ter" || $key == "DdR" || $key == "Silo" ||
-                $key == "Dock" || $key == "BaLu" || $key == "Pha" || $key == "PoSa"
-               ) {
-                list($M, $C, $D) = array_values(building_cumulate($key, $level));
-                $total += $M + $C + $D;
-            }
-        }
-        next($user_building);
+    switch ($nom) {
+// Bâtiments :
+        case 'M':    //Mine de métal
+        case 'C':    //Mine de cristal
+        case 'D':    //Synthétiseur de deutérium
+        case 'CES':  //Centrale électrique solaire
+        case 'CEF':  //Centrale électrique de fusion
+        case 'UdR':  //Usine de robots
+        case 'UdN':  //Usine de nanites
+        case 'CSp':  //Chantier spatial
+        case 'HM':   //Hangar de métal
+        case 'HC':   //Hangar de cristal
+        case 'HD':   //Réservoir de deutérium
+        case 'Lab':  //Laboratoire
+        case 'Ter':  //Terraformeur
+        case 'DdR':  //Dépot de ravitaillement
+        case 'Silo': //Silo de missiles
+        case 'Dock': //Dock spatial
+        case 'BaLu': //Base lunaire
+        case 'Pha':  //Phalange de capteur
+        case 'PoSa': //Porte de saut spatial
+            return 'BAT';
+            break;
+// Recherches :
+        case 'Esp':           //Technologie espionage
+        case 'Ordi':          //Technologie ordinateur
+        case 'Armes':         //Technologie armes
+        case 'Bouclier':      //Technologie bouclier
+        case 'Protection':    //Technologie protection des vaisseaux spatiaux
+        case 'NRJ':           //Technologie énergie
+        case 'Hyp':           //Technologie hyperespace
+        case 'RC':            //Réacteur à combustion
+        case 'RI':            //Réacteur à impulsion
+        case 'PH':            //Propulsion hyperespace
+        case 'Laser':         //Technologie laser
+        case 'Ions':          //Technologie à ions
+        case 'Plasma':        //Technologie plasma
+        case 'RRI':           //Réseau de recherche intergalactique
+        case 'Graviton':      //Technologie graviton
+        case 'Astrophysique': //Astrophysique
+            return 'RECH';
+            break;
+// Flottes :
+        case 'PT':   //Petit transporteur
+        case 'GT':   //Grand transporteur
+        case 'CLE':  //Chasseur léger
+        case 'CLO':  //Chasseur lourd
+        case 'CR':   //Croiseur
+        case 'VB':   //Vaisseau de bataille
+        case 'VC':   //Vaisseau de colonisation
+        case 'REC':  //Recycleur
+        case 'SE':   //Sonde d'espionnage
+        case 'BMD':  //Bombardier
+        case 'DST':  //Destructeur
+        case 'TRA':  //Traqueur
+        case 'EDLM': //Étoile de la mort
+        case 'FOR':  //Foreuse
+        case 'ECL':  //Éclaireur
+        case 'FAU':  //Faucheur
+        case 'SAT':  //Satellite solaire
+        case 'Sat':
+            return 'VSO';
+            break;
+// Défenses :
+        case 'LM':  //Lanceur de missiles
+        case 'LLE': //Artillerie laser légère
+        case 'LLO': //Artillerie laser lourde
+        case 'CG':  //Canon de Gauss
+        case 'AI':  //Artillerie à ions
+        case 'LP':  //Lanceur de plasma
+        case 'PB':  //Petit bouclier
+        case 'GB':  //Grand bouclier
+        case 'MIC': //Missile d'interception
+        case 'MIP': //Missile interplanétaire
+            return 'DEF';
+            break;
+        default:
+            return false;
     }
-
-    return $total;
 }
 
 /**
- * Calculates the price of all defenses
- * @param $user_defence The list of defenses of each planets with the number of each defense
- * @return the bild :-)
+ *  @brief Is an Ogame defence ?
+ *  @param [in] string $nom Name to look, like name in database
+ *  @return bool
  */
-function all_defence_cumulate($user_defence)
+function is_a_defence($nom)  { return is_ogame_element($nom) === 'DEF'; }
+/**
+ *  @brief Is an Ogame fleet ?
+ *  @param [in] string $nom Name to look, like name in database
+ *  @return bool
+ */
+function is_a_fleet($nom)    { return is_ogame_element($nom) === 'VSO'; }
+/**
+ *  @brief Is an Ogame building ?
+ *  @param [in] string $nom Name to look, like name in database
+ *  @return bool
+ */
+function is_a_building($nom) { return is_ogame_element($nom) === 'BAT'; }
+/**
+ *  @brief Is an Ogame research ?
+ *  @param [in] string $nom Name to look, like name in database
+ *  @return bool
+ */
+function is_a_research($nom) { return is_ogame_element($nom) === 'RECH'; }
+
+/**
+ *  @brief Calculates the price of all element of type (building,defence,fleet,research).
+ *  
+ *  @param [in] $user Array of element (for other than research, each planet or moon)
+ *  @param [in] string $type Type of element ('BAT' pour bâtiment, 'RECH' pour recherche, 'DEF' pour défense, 'VSO' pour vaisseau)
+ *  @return float Total price (M+C+D).
+ */
+function ogame_all_cumulate($user, $type)
 {
-    if($user_defence == NULL) {
-        return 0;
-    }
     $total = 0;
-    while ($data = current($user_defence)) {
-        $defs = array_keys($data);
-        
-        foreach ($defs as $key) {
-            $level = $data[$key];
+    
+    if ($type === 'RECH') {
+        $data = $user;  //1 seul array, les technos
+    } else {
+        $data = current($user); //plusieurs array, les planètes/lunes, donc juste la 1er
+    }
+    while($data){
+        foreach ($data as $key=>$level) {
             if ($level == "") {
                 $level = 0;
             }
-
-            if ($key == "LM" || $key == "LLE" || $key == "LLO" || $key == "CG" ||
-                $key == "AI" || $key == "LP" || $key == "PB" || $key == "GB" ||
-                $key == "MIC" || $key == "MIP"
-               ) {
+            if (is_ogame_element($key) === $type) {
                 list($M, $C, $D) = array_values(building_cumulate($key, $level));
                 $total += $M + $C + $D;
             }
         }
-        next($user_defence);
+        if ($type === 'RECH') {
+            break;
+        }
+        next($user);
+        $data = current($user);
     }
     
-    // $init_d_prix = array("LM" => 2000, "LLE" => 2000, "LLO" => 8000, "CG" => 37000,
-        // "AI" => 8000, "LP" => 130000, "PB" => 20000, "GB" => 100000, "MIC" => 10000,
-        // "MIP" => 25000);
-    // $keys = array_keys($init_d_prix);
-
-    // while ($data = current($user_defence)) {
-        // if (sizeof($init_d_prix) != sizeof($keys)) {
-                    // continue;
-        // }
-
-        // for ($i = 0; $i < sizeof($init_d_prix); $i++) {
-            // $total += $init_d_prix[$keys[$i]] * ($data[$keys[$i]] != "" ? $data[$keys[$i]] : 0);
-        // }
-
-        // next($user_defence);
-    // }
-
     return $total;
 }
+
+/**
+ *  @brief Calculates the price of all building.
+ *  
+ *  @param [in] $user_building Info of planet or moon
+ *  @return float Total price (M+C+D)
+ */
+function all_building_cumulate($user_building) { return ogame_all_cumulate($user_building, 'BAT'); }
+/**
+ *  @brief Calculates the price of all defence.
+ *  
+ *  @param [in] $user_defence Info of planet or moon
+ *  @return float Total price (M+C+D)
+ */
+function all_defence_cumulate($user_defence)   { return ogame_all_cumulate($user_defence, 'DEF'); }
+/**
+ *  @brief Calculates the price of all fleet.
+ *  
+ *  @param [in] $user_fleet Info of planet or moon
+ *  @return float Total price (M+C+D)
+ */
+function all_fleet_cumulate($user_fleet)       { return ogame_all_cumulate($user_fleet, 'VSO'); }
+/**
+ *  @brief Calculates the price of all research.
+ *  
+ *  @param [in] $user_techno Info of technologies
+ *  @return float Total price (M+C+D)
+ */
+function all_technology_cumulate($user_techno) { return ogame_all_cumulate($user_techno, 'RECH'); }
 
 /**
  * Calculates the price of all lunas
@@ -1087,64 +1225,7 @@ function all_defence_cumulate($user_defence)
  */
 function all_lune_cumulate($user_building, $user_defence)
 {
-    $total = all_defence_cumulate($user_defence) + all_building_cumulate($user_building);
-
-    return $total;
-}
-
-/**
- * Calculates the price of all researches
- * @param $user_technology
- * @return int the bild for all technologies :-)
- */
-function all_technology_cumulate($user_technology)
-{
-    if(!isset($user_technology )) return 0;
-
-    $total = 0;
-
-	foreach ($user_technology as $key=>$level) {
-		if ($level == "") {
-			$level = 0;
-		}
-
-		if ($key == "Esp" || $key == "Ordi" || $key == "Armes" || $key == "Bouclier" ||
-			$key == "Protection" || $key == "NRJ" || $key == "Hyp" || $key == "RC" ||
-			$key == "RI" || $key == "PH" || $key == "Laser" || $key == "Ions" ||
-			$key == "Plasma" || $key == "RRI" || $key == "Graviton" || $key == "Astrophysique"
-		   ) {
-			list($M, $C, $D) = array_values(building_cumulate($key, $level));
-			$total += $M + $C + $D;
-		}
-	}
-    
-    
-    // $init_t_prix = array("Esp" => 1400, "Ordi" => 1000, "Armes" => 1000, "Bouclier" =>
-        // 800, "Protection" => 1000, "NRJ" => 1200, "Hyp" => 6000, "RC" => 1000, "RI" =>
-        // 6600, "PH" => 36000, "Laser" => 300, "Ions" => 1400, "Plasma" => 7000, "RRI" =>
-        // 800000, "Graviton" => 0, "Astrophysique" => 16000);
-    // $keys = array_keys($init_t_prix);
-
-    // if (sizeof($init_t_prix) != sizeof($user_technology)) {
-            // return 0;
-    // }
-    // for ($i = 0; $i < sizeof($init_t_prix); $i++) {
-        // $pow = ($keys[$i] != "Astrophysique") ? 2 : 1.75; // puissance change a cause de l astro ...
-
-        // if ($keys[$i] != "Astrophysique") {
-            // $total += $init_t_prix[$keys[$i]] * (pow($pow, ($user_technology[$keys[$i]] !=
-                        // "") ? $user_technology[$keys[$i]] : 0) - 1);
-        // } else {
-            // $j = 0;
-            // $user_technology[$keys[$i]] = ($user_technology[$keys[$i]] != "") ? $user_technology[$keys[$i]] : 0;
-            // while ($j <= $user_technology[$keys[$i]]) {
-                // $total += $init_t_prix[$keys[$i]] * (pow($pow, ($j - 1)));
-                // $j++;
-            // }
-        // }
-    // }
-
-    return $total;
+    return all_defence_cumulate($user_defence) + all_building_cumulate($user_building);
 }
 
 /**
