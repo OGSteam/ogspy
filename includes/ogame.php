@@ -1037,110 +1037,111 @@ function fleet_cumulate($fleet, $number)      { return ogame_element_cumulate($f
 function research_cumulate($research, $level) { return ogame_element_cumulate($research, $level); }
 
 /**
- *  @brief Give database names of a buiding/research/fleet/defence.
+ *  @brief Give database names of a buiding/research/fleet/defence/class.
  *  
- *  @return array('BAT'=>array, 'RECH'=>array, 'VSO'=>array, 'DEF'=>array)
+ *  @return array('BAT'=>array, 'RECH'=>array, 'VSO'=>array, 'DEF'=>array, 'CLASS'=>array)
  *  
  */
-function ogame_get_element_names() {
+function ogame_get_element_names()
+{
     $names = array();
     
-    $names['BAT'] = array('M', 'C', 'D', 'CES', 'CEF', 'UdR', 'UdN', 'CSp', 'HM', 'HC', 'HD', 'Lab', 'Ter', 'DdR', 'Silo', 'Dock', 'BaLu', 'Pha', 'PoSa');
-    $names['RECH'] = array('Esp', 'Ordi', 'Armes', 'Bouclier', 'Protection', 'NRJ', 'Hyp', 'RC', 'RI', 'PH', 'Laser', 'Ions', 'Plasma', 'RRI', 'Graviton', 'Astrophysique');
-    $names['VSO'] = array('PT', 'GT', 'CLE', 'CLO', 'CR', 'VB', 'VC', 'REC', 'SE', 'BMD', 'DST', 'EDLM', 'TRA', 'SAT', 'FOR', 'FAU', 'ECL');
-    $names['DEF'] = array('LM', 'LLE', 'LLO', 'CG', 'AI', 'LP', 'PB', 'GB', 'MIC', 'MIP');
+    $names['BAT'] = array(  // Bâtiments :
+        'M',    //Mine de métal
+        'C',    //Mine de cristal
+        'D',    //Synthétiseur de deutérium
+        'CES',  //Centrale électrique solaire
+        'CEF',  //Centrale électrique de fusion
+        'UdR',  //Usine de robots
+        'UdN',  //Usine de nanites
+        'CSp',  //Chantier spatial
+        'HM',   //Hangar de métal
+        'HC',   //Hangar de cristal
+        'HD',   //Réservoir de deutérium
+        'Lab',  //Laboratoire
+        'Ter',  //Terraformeur
+        'DdR',  //Dépot de ravitaillement
+        'Silo', //Silo de missiles
+        'Dock', //Dock spatial
+        'BaLu', //Base lunaire
+        'Pha',  //Phalange de capteur
+        'PoSa', //Porte de saut spatial
+        );
+    $names['RECH'] = array( // Recherches :
+        'Esp',           //Technologie espionage
+        'Ordi',          //Technologie ordinateur
+        'Armes',         //Technologie armes
+        'Bouclier',      //Technologie bouclier
+        'Protection',    //Technologie protection des vaisseaux spatiaux
+        'NRJ',           //Technologie énergie
+        'Hyp',           //Technologie hyperespace
+        'RC',            //Réacteur à combustion
+        'RI',            //Réacteur à impulsion
+        'PH',            //Propulsion hyperespace
+        'Laser',         //Technologie laser
+        'Ions',          //Technologie à ions
+        'Plasma',        //Technologie plasma
+        'RRI',           //Réseau de recherche intergalactique
+        'Graviton',      //Technologie graviton
+        'Astrophysique', //Astrophysique
+        );
+    $names['VSO'] = array(  // Flottes :
+        'PT',   //Petit transporteur
+        'GT',   //Grand transporteur
+        'CLE',  //Chasseur léger
+        'CLO',  //Chasseur lourd
+        'CR',   //Croiseur
+        'VB',   //Vaisseau de bataille
+        'VC',   //Vaisseau de colonisation
+        'REC',  //Recycleur
+        'SE',   //Sonde d'espionnage
+        'BMD',  //Bombardier
+        'DST',  //Destructeur
+        'EDLM', //Étoile de la mort
+        'TRA',  //Traqueur
+        'SAT',  //Satellite solaire
+        'FOR',  //Foreuse
+        'FAU',  //Faucheur
+        'ECL',  //Éclaireur
+        );
+    $names['DEF'] = array(  // Défenses :
+        'LM',  //Lanceur de missiles
+        'LLE', //Artillerie laser légère
+        'LLO', //Artillerie laser lourde
+        'CG',  //Canon de Gauss
+        'AI',  //Artillerie à ions
+        'LP',  //Lanceur de plasma
+        'PB',  //Petit bouclier
+        'GB',  //Grand bouclier
+        'MIC', //Missile d'interception
+        'MIP', //Missile interplanétaire
+        );
+    $names['CLASS'] = array(
+        'none', //Aucune classe
+        'COL',  //Classe collecteur
+        'GEN',  //Classe général
+        'EXP',  //Classe explorateur
+        );
     
     return $names;
 }
 
 /**
- *  @brief Détermine si c'est un bâtiment, une recherche, un vaisseau ou une défense.
+ *  @brief Détermine si c'est un bâtiment, une recherche, un vaisseau, une défense ou une classe.
  *  
- *  @param [in] string $nom Nom à recherche, correspond au nom en BDD
- *  @return false|string 'BAT' pour bâtiment, 'RECH' pour recherche, 'DEF' pour défense, 'VSO' pour vaisseau et false sinon
+ *  @param [in] string $nom Nom à rechercher, correspond au nom en BDD
+ *  @return false|string 'BAT' bâtiment, 'RECH' recherche, 'DEF' défense, 'VSO' vaisseau, 'CLASS' classe et false sinon
  *  
  */
 function ogame_is_element($nom)
 {
-    switch ($nom) {
-// Bâtiments :
-        case 'M':    //Mine de métal
-        case 'C':    //Mine de cristal
-        case 'D':    //Synthétiseur de deutérium
-        case 'CES':  //Centrale électrique solaire
-        case 'CEF':  //Centrale électrique de fusion
-        case 'UdR':  //Usine de robots
-        case 'UdN':  //Usine de nanites
-        case 'CSp':  //Chantier spatial
-        case 'HM':   //Hangar de métal
-        case 'HC':   //Hangar de cristal
-        case 'HD':   //Réservoir de deutérium
-        case 'Lab':  //Laboratoire
-        case 'Ter':  //Terraformeur
-        case 'DdR':  //Dépot de ravitaillement
-        case 'Silo': //Silo de missiles
-        case 'Dock': //Dock spatial
-        case 'BaLu': //Base lunaire
-        case 'Pha':  //Phalange de capteur
-        case 'PoSa': //Porte de saut spatial
-            return 'BAT';
-            break;
-// Recherches :
-        case 'Esp':           //Technologie espionage
-        case 'Ordi':          //Technologie ordinateur
-        case 'Armes':         //Technologie armes
-        case 'Bouclier':      //Technologie bouclier
-        case 'Protection':    //Technologie protection des vaisseaux spatiaux
-        case 'NRJ':           //Technologie énergie
-        case 'Hyp':           //Technologie hyperespace
-        case 'RC':            //Réacteur à combustion
-        case 'RI':            //Réacteur à impulsion
-        case 'PH':            //Propulsion hyperespace
-        case 'Laser':         //Technologie laser
-        case 'Ions':          //Technologie à ions
-        case 'Plasma':        //Technologie plasma
-        case 'RRI':           //Réseau de recherche intergalactique
-        case 'Graviton':      //Technologie graviton
-        case 'Astrophysique': //Astrophysique
-            return 'RECH';
-            break;
-// Flottes :
-        case 'PT':   //Petit transporteur
-        case 'GT':   //Grand transporteur
-        case 'CLE':  //Chasseur léger
-        case 'CLO':  //Chasseur lourd
-        case 'CR':   //Croiseur
-        case 'VB':   //Vaisseau de bataille
-        case 'VC':   //Vaisseau de colonisation
-        case 'REC':  //Recycleur
-        case 'SE':   //Sonde d'espionnage
-        case 'BMD':  //Bombardier
-        case 'DST':  //Destructeur
-        case 'TRA':  //Traqueur
-        case 'EDLM': //Étoile de la mort
-        case 'FOR':  //Foreuse
-        case 'ECL':  //Éclaireur
-        case 'FAU':  //Faucheur
-        case 'SAT':  //Satellite solaire
-        case 'Sat':
-            return 'VSO';
-            break;
-// Défenses :
-        case 'LM':  //Lanceur de missiles
-        case 'LLE': //Artillerie laser légère
-        case 'LLO': //Artillerie laser lourde
-        case 'CG':  //Canon de Gauss
-        case 'AI':  //Artillerie à ions
-        case 'LP':  //Lanceur de plasma
-        case 'PB':  //Petit bouclier
-        case 'GB':  //Grand bouclier
-        case 'MIC': //Missile d'interception
-        case 'MIP': //Missile interplanétaire
-            return 'DEF';
-            break;
-        default:
-            return false;
+    $names = ogame_get_element_names();
+    foreach ($names as $label=>$name) {
+        if (in_array($nom, $name, true)) {
+            return $label;
+        }
     }
+    return false;
 }
 
 /**
@@ -1276,17 +1277,17 @@ function ogame_elements_details($nom, $user_techno = null, $classe = 0)
     static $PH_COEF     = 0.3;
     static $HYP_COEF    = 0.05;
     static $COMBAT_COEF = 0.1;
-    static $CLASS_NAME = array('none', 'COL', 'GEN', 'EXP');
+    $names = ogame_get_element_names();
     //Valeurs IN par défaut :
-    if ($user_techno == null || !isset($user_techno['Armes']))      { $user_techno['Armes'] = 0; }
-    if ($user_techno == null || !isset($user_techno['Bouclier']))   { $user_techno['Bouclier'] = 0; }
-    if ($user_techno == null || !isset($user_techno['Protection'])) { $user_techno['Protection'] = 0; }
-    if ($user_techno == null || !isset($user_techno['RC']))         { $user_techno['RC'] = 0; }
-    if ($user_techno == null || !isset($user_techno['RI']))         { $user_techno['RI'] = 0; }
-    if ($user_techno == null || !isset($user_techno['PH']))         { $user_techno['PH'] = 0; }
-    if ($user_techno == null || !isset($user_techno['Hyp']))        { $user_techno['Hyp'] = 0; }
-    if (isset($CLASS_NAME[$classe])) { $classe = $CLASS_NAME[$classe]; }
-    if (array_search($classe, $CLASS_NAME) === false) { $classe = $CLASS_NAME[0]; }
+    if (!isset($user_techno['Armes'])      || !is_numeric($user_techno['Armes']))      { $user_techno['Armes'] = 0; }
+    if (!isset($user_techno['Bouclier'])   || !is_numeric($user_techno['Bouclier']))   { $user_techno['Bouclier'] = 0; }
+    if (!isset($user_techno['Protection']) || !is_numeric($user_techno['Protection'])) { $user_techno['Protection'] = 0; }
+    if (!isset($user_techno['RC'])         || !is_numeric($user_techno['RC']))         { $user_techno['RC'] = 0; }
+    if (!isset($user_techno['RI'])         || !is_numeric($user_techno['RI']))         { $user_techno['RI'] = 0; }
+    if (!isset($user_techno['PH'])         || !is_numeric($user_techno['PH']))         { $user_techno['PH'] = 0; }
+    if (!isset($user_techno['Hyp'])        || !is_numeric($user_techno['Hyp']))        { $user_techno['Hyp'] = 0; }
+    if (isset($names['CLASS'][$classe])) { $classe = $names['CLASS'][$classe]; }
+    if (!in_array($classe, $names['CLASS'], true)) { $classe = $names['CLASS'][0]; }
     //Valeurs OUT par défaut :
     $structure    = 0;
     $bouclier     = 0;
