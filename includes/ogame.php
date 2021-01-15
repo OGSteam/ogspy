@@ -1036,6 +1036,22 @@ function fleet_cumulate($fleet, $number)      { return ogame_element_cumulate($f
  */
 function research_cumulate($research, $level) { return ogame_element_cumulate($research, $level); }
 
+/**
+ *  @brief Give database names of a buiding/research/fleet/defence.
+ *  
+ *  @return array('BAT'=>array, 'RECH'=>array, 'VSO'=>array, 'DEF'=>array)
+ *  
+ */
+function ogame_get_element_names() {
+    $names = array();
+    
+    $names['BAT'] = array('M', 'C', 'D', 'CES', 'CEF', 'UdR', 'UdN', 'CSp', 'HM', 'HC', 'HD', 'Lab', 'Ter', 'DdR', 'Silo', 'Dock', 'BaLu', 'Pha', 'PoSa');
+    $names['RECH'] = array('Esp', 'Ordi', 'Armes', 'Bouclier', 'Protection', 'NRJ', 'Hyp', 'RC', 'RI', 'PH', 'Laser', 'Ions', 'Plasma', 'RRI', 'Graviton', 'Astrophysique');
+    $names['VSO'] = array('PT', 'GT', 'CLE', 'CLO', 'CR', 'VB', 'VC', 'REC', 'SE', 'BMD', 'DST', 'EDLM', 'TRA', 'SAT', 'FOR', 'FAU', 'ECL');
+    $names['DEF'] = array('LM', 'LLE', 'LLO', 'CG', 'AI', 'LP', 'PB', 'GB', 'MIC', 'MIP');
+    
+    return $names;
+}
 
 /**
  *  @brief Détermine si c'est un bâtiment, une recherche, un vaisseau ou une défense.
@@ -1044,7 +1060,7 @@ function research_cumulate($research, $level) { return ogame_element_cumulate($r
  *  @return false|string 'BAT' pour bâtiment, 'RECH' pour recherche, 'DEF' pour défense, 'VSO' pour vaisseau et false sinon
  *  
  */
-function is_ogame_element($nom)
+function ogame_is_element($nom)
 {
     switch ($nom) {
 // Bâtiments :
@@ -1132,25 +1148,25 @@ function is_ogame_element($nom)
  *  @param [in] string $nom Name to look, like name in database
  *  @return bool
  */
-function is_a_defence($nom)  { return is_ogame_element($nom) === 'DEF'; }
+function is_a_defence($nom)  { return ogame_is_element($nom) === 'DEF'; }
 /**
  *  @brief Is an Ogame fleet ?
  *  @param [in] string $nom Name to look, like name in database
  *  @return bool
  */
-function is_a_fleet($nom)    { return is_ogame_element($nom) === 'VSO'; }
+function is_a_fleet($nom)    { return ogame_is_element($nom) === 'VSO'; }
 /**
  *  @brief Is an Ogame building ?
  *  @param [in] string $nom Name to look, like name in database
  *  @return bool
  */
-function is_a_building($nom) { return is_ogame_element($nom) === 'BAT'; }
+function is_a_building($nom) { return ogame_is_element($nom) === 'BAT'; }
 /**
  *  @brief Is an Ogame research ?
  *  @param [in] string $nom Name to look, like name in database
  *  @return bool
  */
-function is_a_research($nom) { return is_ogame_element($nom) === 'RECH'; }
+function is_a_research($nom) { return ogame_is_element($nom) === 'RECH'; }
 
 /**
  *  @brief Calculates the price of all element of type (building,defence,fleet,research).
@@ -1173,7 +1189,7 @@ function ogame_all_cumulate($user, $type)
             if ($level == "") {
                 $level = 0;
             }
-            if (is_ogame_element($key) === $type) {
+            if (ogame_is_element($key) === $type) {
                 list($M, $C, $D) = array_values(ogame_element_cumulate($key, $level));
                 $total += $M + $C + $D;
             }
@@ -1226,6 +1242,363 @@ function all_technology_cumulate($user_techno) { return ogame_all_cumulate($user
 function all_lune_cumulate($user_building, $user_defence)
 {
     return all_defence_cumulate($user_defence) + all_building_cumulate($user_building);
+}
+
+/**
+ *  @brief Calculates deut consommation for parking of a fleet.
+ *  
+ *  @param [in] int $conso The conso of the fleet
+ *  @param [in] int $hour Number of hours in parking
+ *  @return float Deut conso for this hour of parking
+ */
+function ogame_fleet_conso_statio($conso, $hour) {
+    $result = $hour * $conso / 10;
+    if ($result < 1) {
+        $result = 1;
+    }
+    return floor($result);
+}
+
+/**
+ *  @brief Calculates technical data of a fleet or defence.
+ *  
+ *  @param [in] string $nom The name, like name in Database
+ *  @param [in] array $user_techno The array of technologies
+ *  @param [in] string|int $classe The user class //array('none','COL','GEN','EXP') - (1=Collectionneur)[0=aucune, 2=général, 3=explorateur])
+ *  @return array('structure','bouclier','attaque','vitesse','fret','conso',(array)'rapidfire',(bool)'civil',(array)'cout') of the wanted fleet or defence.
+ *      rapidfire=array('PT'=>x, ...) array of all fleet and defence; if x>0 then again else from
+ *      cout=array of ogame_element_cumulate()=array('M','C','D','NRJ)
+ */
+function ogame_elements_details($nom, $user_techno = null, $classe = 0)
+{
+    static $RC_COEF     = 0.1;
+    static $RI_COEF     = 0.2;
+    static $PH_COEF     = 0.3;
+    static $HYP_COEF    = 0.05;
+    static $COMBAT_COEF = 0.1;
+    static $CLASS_NAME = array('none', 'COL', 'GEN', 'EXP');
+    //Valeurs IN par défaut :
+    if ($user_techno == null || !isset($user_techno['Armes']))      { $user_techno['Armes'] = 0; }
+    if ($user_techno == null || !isset($user_techno['Bouclier']))   { $user_techno['Bouclier'] = 0; }
+    if ($user_techno == null || !isset($user_techno['Protection'])) { $user_techno['Protection'] = 0; }
+    if ($user_techno == null || !isset($user_techno['RC']))         { $user_techno['RC'] = 0; }
+    if ($user_techno == null || !isset($user_techno['RI']))         { $user_techno['RI'] = 0; }
+    if ($user_techno == null || !isset($user_techno['PH']))         { $user_techno['PH'] = 0; }
+    if ($user_techno == null || !isset($user_techno['Hyp']))        { $user_techno['Hyp'] = 0; }
+    if (isset($CLASS_NAME[$classe])) { $classe = $CLASS_NAME[$classe]; }
+    if (array_search($classe, $CLASS_NAME) === false) { $classe = $CLASS_NAME[0]; }
+    //Valeurs OUT par défaut :
+    $structure    = 0;
+    $bouclier     = 0;
+    $attaque      = 0;
+    $vitesse      = 0;
+    $fret         = 0;
+    $conso        = 0;
+    $rapidfire    = array();
+    $civil        = true;
+    $cout         = ogame_element_cumulate($nom,1);
+    
+    $names = ogame_get_element_names();
+    $user_techno['speed'] = 0;
+    $techno_RC_coef  = $user_techno['RC']  * $RC_COEF;
+    $techno_RI_coef  = $user_techno['RI']  * $RI_COEF;
+    $techno_PH_coef  = $user_techno['PH']  * $PH_COEF;
+    $techno_Hyp_coef = $user_techno['Hyp'] * $HYP_COEF;
+    $techno_Armes_coef      = $user_techno['Armes']      * $COMBAT_COEF;
+    $techno_Bouclier_coef   = $user_techno['Bouclier']   * $COMBAT_COEF;
+    $techno_Protection_coef = $user_techno['Protection'] * $COMBAT_COEF;
+    
+    switch ($nom) {
+// Flottes :
+        case 'PT':   //Petit transporteur
+            $structure = 4000;
+            $bouclier  = 10;
+            $attaque   = 5;
+            $vitesse   = ($user_techno['RI']) < 5 ? 5000 : 10000;
+            $fret      = 5000;
+            $conso     = ($user_techno['RI']) < 5 ? 10 : 20;
+            $rapidfire = array('SE'=>5,'SAT'=>5,'FOR'=>5, 'CLO'=>-3,'TRA'=>-3,'EDLM'=>-250);
+            $user_techno['speed'] = ($user_techno['RI']) < 5 ? $techno_RC_coef : $techno_RI_coef;
+            break;
+        case 'GT':   //Grand transporteur
+            $structure = 12000;
+            $bouclier  = 25;
+            $attaque   = 5;
+            $vitesse   = 7500;
+            $fret      = 25000;
+            $conso     = 50;
+            $rapidfire = array('SE'=>5,'SAT'=>5,'FOR'=>5, 'TRA'=>-3,'EDLM'=>-250);
+            $user_techno['speed'] = $techno_RC_coef;
+            break;
+        case 'CLE':  //Chasseur léger
+            $structure = 4000;
+            $bouclier  = 10;
+            $attaque   = 50;
+            $vitesse   = 12500;
+            $fret      = 50;
+            $conso     = 20;
+            $rapidfire = array('SE'=>5,'SAT'=>5,'FOR'=>5, 'CR'=>-6,'ECL'=>-3,'EDLM'=>-200);
+            $civil     = false;
+            $user_techno['speed'] = $techno_RC_coef;
+            break;
+        case 'CLO':  //Chasseur lourd
+            $structure = 10000;
+            $bouclier  = 25;
+            $attaque   = 150;
+            $vitesse   = 10000;
+            $fret      = 100;
+            $conso     = 75;
+            $rapidfire = array('SE'=>5,'SAT'=>5,'FOR'=>5,'PT'=>3, 'TRA'=>-4,'ECL'=>-2,'EDLM'=>-100);
+            $civil     = false;
+            $user_techno['speed'] = $techno_RI_coef;
+            break;
+        case 'CR':   //Croiseur
+            $structure = 27000;
+            $bouclier  = 50;
+            $attaque   = 400;
+            $vitesse   = 15000;
+            $fret      = 800;
+            $conso     = 300;
+            $rapidfire = array('SE'=>5,'SAT'=>5,'FOR'=>5,'CLE'=>6,'LM'=>10, 'TRA'=>-4,'ECL'=>-3,'EDLM'=>-33);
+            $civil     = false;
+            $user_techno['speed'] = $techno_RI_coef;
+            break;
+        case 'VB':   //Vaisseau de bataille
+            $structure = 60000;
+            $bouclier  = 200;
+            $attaque   = 1000;
+            $vitesse   = 10000;
+            $fret      = 1500;
+            $conso     = 500;
+            $rapidfire = array('SE'=>5,'SAT'=>5,'FOR'=>5,'ECL'=>5, 'TRA'=>-7,'FAU'=>-7,'EDLM'=>-30);
+            $civil     = false;
+            $user_techno['speed'] = $techno_PH_coef;
+            break;
+        case 'VC':   //Vaisseau de colonisation
+            $structure = 30000;
+            $bouclier  = 100;
+            $attaque   = 50;
+            $vitesse   = 2500;
+            $fret      = 7500;
+            $conso     = 1000;
+            $rapidfire = array('SE'=>5,'SAT'=>5,'FOR'=>5, 'EDLM'=>-250);
+            $user_techno['speed'] = $techno_RI_coef;
+            break;
+        case 'REC':  //Recycleur
+            $structure = 16000;
+            $bouclier  = 10;
+            $attaque   = 1;
+            $vitesse   = ($user_techno['PH']) < 15 ? ( ($user_techno['RI']) < 17 ? 2000 : 4000 ) : 6000;
+            $fret      = 20000;
+            $conso     = ($user_techno['PH']) < 15 ? ( ($user_techno['RI']) < 17 ? 300 : 600 ) : 900;
+            $rapidfire = array('SE'=>5,'SAT'=>5,'FOR'=>5, 'EDLM'=>-250);
+            $user_techno['speed'] = ($user_techno['PH']) < 15 ? ( ($user_techno['RI']) < 17 ? $techno_RC_coef : $techno_RI_coef ) : $techno_PH_coef;
+            break;
+        case 'SE':   //Sonde d'espionnage
+            $structure = 1000;
+            $vitesse   = 100000000;
+            $fret      = 0; //Quid des unis à fret sonde ?
+            $conso     = 1;
+            $rapidfire = array('CLE'=>-5,'CLO'=>-5,'CR'=>-5,'VB'=>-5,'TRA'=>-5,'BMD'=>-5,'DST'=>-5,'EDLM'=>-1250,'FAU'=>-5,'ECL'=>-5,'PT'=>-5,'GT'=>-5,'VC'=>-5,'REC'=>-5);
+            $user_techno['speed'] = $techno_RC_coef;
+            break;
+        case 'BMD':  //Bombardier
+            $structure = 75000;
+            $bouclier  = 500;
+            $attaque   = 1000;
+            $vitesse   = ($user_techno['PH']) < 8 ? 400 : 500;
+            $fret      = 500;
+            $conso     = 700;
+            $rapidfire = array('SE'=>5,'SAT'=>5,'FOR'=>5,'LM'=>20,'LLE'=>20,'LLO'=>10,'AI'=>10,'CG'=>5,'LP'=>5, 'FAU'=>-4,'EDLM'=>-25);
+            $civil     = false;
+            $user_techno['speed'] = ($user_techno['PH']) < 8 ? $techno_RI_coef : $techno_PH_coef;
+            break;
+        case 'DST':  //Destructeur
+            $structure = 110000;
+            $bouclier  = 500;
+            $attaque   = 2000;
+            $vitesse   = 5000;
+            $fret      = 2000;
+            $conso     = 1000;
+            $rapidfire = array('SE'=>5,'SAT'=>5,'FOR'=>5,'LLE'=>10,'TRA'=>2, 'FAU'=>-3,'EDLM'=>-5);
+            $civil     = false;
+            $user_techno['speed'] = $techno_PH_coef;
+            break;
+        case 'TRA':  //Traqueur
+            $structure = 70000;
+            $bouclier  = 400;
+            $attaque   = 700;
+            $vitesse   = 10000;
+            $fret      = 750;
+            $conso     = 250;
+            $rapidfire = array('SE'=>5,'SAT'=>5,'FOR'=>5,'CLO'=>4,'CR'=>4,'VB'=>7,'PT'=>3,'GT'=>3, 'DST'=>-2,'EDLM'=>-15);
+            $civil     = false;
+            $user_techno['speed'] = $techno_PH_coef;
+            break;
+        case 'EDLM': //Étoile de la mort
+            $structure = 9000000;
+            $bouclier  = 50000;
+            $attaque   = 200000;
+            $vitesse   = 100;
+            $fret      = 1000000;
+            $conso     = 1;
+            $rapidfire = array('SE'=>1250,'SAT'=>1250,'CLE'=>200,'CLO'=>100,'CR'=>33,'VB'=>30,'BMD'=>25,'DST'=>5,'PT'=>250,'GT'=>250,'VC'=>250,'REC'=>250,'LM'=>200,'LLE'=>200,'LLO'=>100,'AI'=>100,'CG'=>50,'TRA'=>15,'ECL'=>30,'FAU'=>10,'FOR'=>1250);
+            $civil     = false;
+            $user_techno['speed'] = $techno_PH_coef;
+            break;
+        case 'FOR':  //Foreuse
+            $structure = 4000;
+            $bouclier  = 1;
+            $attaque   = 1;
+            $rapidfire = array('CLE'=>-5,'CLO'=>-5,'CR'=>-5,'VB'=>-5,'TRA'=>-5,'BMD'=>-5,'DST'=>-5,'EDLM'=>-1250,'FAU'=>-5,'ECL'=>-5,'PT'=>-5,'GT'=>-5,'VC'=>-5,'REC'=>-5);
+            break;
+        case 'ECL':  //Éclaireur
+            $structure = 23000;
+            $bouclier  = 100;
+            $attaque   = 200;
+            $vitesse   = 12000;
+            $fret      = 10000;
+            $conso     = 300;
+            $rapidfire = array('SE'=>5,'SAT'=>5,'FOR'=>5,'CR'=>3,'CLE'=>3,'CLO'=>2, 'VB'=>-5,'EDLM'=>-30);
+            $civil     = false;
+            $user_techno['speed'] = $techno_PH_coef;
+            break;
+        case 'FAU':  //Faucheur
+            $structure = 140000;
+            $bouclier  = 700;
+            $attaque   = 2800;
+            $vitesse   = 7000;
+            $fret      = 10000;
+            $conso     = 1100;
+            $rapidfire = array('SE'=>5,'SAT'=>5,'FOR'=>5,'VB'=>7,'BMD'=>4,'DST'=>3, 'AI'=>-2,'EDLM'=>-10);
+            $civil     = false;
+            $user_techno['speed'] = $techno_PH_coef;
+            break;
+        case 'SAT':  //Satellite solaire
+        case 'Sat':
+            $structure = 2000;
+            $bouclier  = 1;
+            $attaque   = 1;
+            $rapidfire = array('CLE'=>-5,'CLO'=>-5,'CR'=>-5,'VB'=>-5,'TRA'=>-5,'BMD'=>-5,'DST'=>-5,'EDLM'=>-1250,'FAU'=>-5,'ECL'=>-5,'PT'=>-5,'GT'=>-5,'VC'=>-5,'REC'=>-5);
+            break;
+// Défenses :
+        case 'LM':  //Lanceur de missiles
+            $structure = 2000;
+            $bouclier  = 20;
+            $attaque   = 80;
+            $rapidfire = array('CR'=>-10,'BMD'=>-20,'EDLM'=>-200);
+            break;
+        case 'LLE': //Artillerie laser légère
+            $structure = 2000;
+            $bouclier  = 25;
+            $attaque   = 100;
+            $rapidfire = array('BMD'=>-20,'DST'=>-20,'EDLM'=>-200);
+            break;
+        case 'LLO': //Artillerie laser lourde
+            $structure = 8000;
+            $bouclier  = 100;
+            $attaque   = 250;
+            $rapidfire = array('BMD'=>-10,'EDLM'=>-100);
+            break;
+        case 'CG':  //Canon de Gauss
+            $structure = 35000;
+            $bouclier  = 200;
+            $attaque   = 1100;
+            $rapidfire = array('BMD'=>-5,'EDLM'=>-50);
+            break;
+        case 'AI':  //Artillerie à ions
+            $structure = 8000;
+            $bouclier  = 500;
+            $attaque   = 150;
+            $rapidfire = array('FAU'=>2, 'BMD'=>-10,'EDLM'=>-100);
+            break;
+        case 'LP':  //Lanceur de plasma
+            $structure = 100000;
+            $bouclier  = 300;
+            $attaque   = 3000;
+            $rapidfire = array('BMD'=>-5);
+            break;
+        case 'PB':  //Petit bouclier
+            $structure = 20000;
+            $bouclier  = 2000;
+            $attaque   = 1;
+            $rapidfire = array('BMD'=>-20,'DST'=>-10,'EDLM'=>-200);
+            break;
+        case 'GB':  //Grand bouclier
+            $structure = 100000;
+            $bouclier  = 10000;
+            $attaque   = 1;
+            break;
+        case 'MIC': //Missile d'interception
+            $structure = 8000;
+            $bouclier  = 1;
+            $attaque   = 1;
+            break;
+        case 'MIP': //Missile interplanétaire
+            $structure = 15000;
+            $bouclier  = 1;
+            $attaque   = 12000;
+            break;
+        default:
+            break;
+    }
+    //fill rapidfire with other fleet/defence
+    foreach (array_merge($names['VSO'], $names['DEF']) as $fleet) {
+        if (!isset($rapidfire[$fleet])) {
+            $rapidfire[$fleet] = 0;
+        }
+    }
+    
+    /*
+    COL : +100% vitesse transporteur ; +25% fret transporteur
+    GEN : +100% vitesse vso combat/REC or EDLM ; -25% conso ; +20% fret REC/ECL ; +2 lvl techno combat
+    ECL : none
+    */
+    $bonus_class = 0;
+    $structure = round($structure + $structure * $techno_Protection_coef + $structure * $bonus_class);
+    
+    $bonus_class = 0;
+    $bouclier  = round($bouclier  + $bouclier * $techno_Bouclier_coef    + $bouclier * $bonus_class);
+    
+    $bonus_class = 0;
+    if ($classe === 'GEN') {
+        $bonus_class = 2 * $COMBAT_COEF;    //+2 lvl
+    }
+    $attaque   = round($attaque   + $attaque * $techno_Armes_coef        + $attaque * $bonus_class);
+    
+    $bonus_class = 0;
+    if ($classe === 'COL') {
+        if ($nom === 'PT' || $nom === 'GT') {
+            $bonus_class = 1; //+100%
+        }
+    } elseif ($classe === 'GEN') {
+        if (!$civil && $nom !== 'EDLM' || $nom === 'REC') {
+            $bonus_class = 1; //+100%
+        }
+    }
+    $vitesse   = round($vitesse   + $vitesse * $user_techno['speed']     + $vitesse * $bonus_class);
+    
+    $bonus_class = 0;
+    if ($classe === 'COL') {
+        if ($nom === 'PT' || $nom === 'GT') {
+            $bonus_class = 0.25; //+25%
+        }
+    } elseif ($classe === 'GEN') {
+        if ($nom === 'REC' || $nom === 'ECL') {
+            $bonus_class = 0.2; //+20%
+        }
+    }
+    $fret      = round($fret      + $fret * $techno_Hyp_coef             + $fret * $bonus_class);
+    
+    $bonus_class = 0;
+    if ($classe === 'GEN') {
+        $bonus_class = -0.25;    //-25%
+    }
+    $conso     = round($conso     + $conso * $bonus_class);
+    
+    return array('nom'=>$nom, 'structure'=>$structure, 'bouclier'=>$bouclier, 'attaque'=>$attaque, 
+                 'vitesse'=>$vitesse, 'fret'=>$fret, 'conso'=>$conso, 'rapidfire'=>$rapidfire,
+                 'civil'=>$civil, 'cout'=>$cout);
 }
 
 /**
