@@ -17,6 +17,173 @@ if (!isset($server_config['speed_uni'])) {
 }
 
 /**
+ *  @brief Return position ressources bonus in Ogame.
+ *  
+ *  @param [in] int $position The wanted position
+ *  @return array('M','C','D','NRJ','AM') of bonus, default is 0%
+ */
+function ogame_production_position($position)
+{
+    $result = array('M'=>0, 'C'=>0, 'D'=>0, 'NRJ'=>0, 'AM'=>0);
+    
+    switch ($position) {
+        case 1:
+            $result['C'] = 0.4; // +40% cristal
+            break;
+        case 2:
+            $result['C'] = 0.3; // +30% cristal
+            break;
+        case 3:
+            $result['C'] = 0.2; // +20% cristal
+            break;
+        case 8:
+            $result['M'] = 0.35; // +35% métal
+            break;
+        case 7: //no break
+        case 9:
+            $result['M'] = 0.23; // +23% métal
+            break;
+        case 6: //no break
+        case 10:
+            $result['M'] = 0.17; // +17% métal
+            break;
+        default:
+            break;
+    }
+    return $result;
+}
+
+/**
+ *  @brief Calculates foreuse coefficient on base production.
+ *  
+ *  @param [in] array $user_building array with mine level and FOR number (array('M','C','D','FOR'))
+ *  @param [in] array $user_data array with class and officiers infos (array('user_class'=>'COL'/...,'off_geologue' or 'off_full'))
+ *  @return float foreuse bonus coefficient
+ */
+function ogame_production_bonus_foreuse($user_building, $user_data)
+{
+    static $FOR_COEF = 0.0002; //0.02% / foreuse
+    static $FOR_BONUS_COL = 0.5;  //+50% pour COL
+    static $FOR_BONUS_COL_GEO = 0.1;    //+10% de foreuse pour COL+GEO
+    $names = ogame_get_element_names();
+    //Valeurs IN par défaut :
+    if (!isset($user_building['M'])   || !is_numeric($user_building['M']))   { $user_building['M'] = 0; }
+    if (!isset($user_building['C'])   || !is_numeric($user_building['C']))   { $user_building['C'] = 0; }
+    if (!isset($user_building['D'])   || !is_numeric($user_building['D']))   { $user_building['D'] = 0; }
+    if (!isset($user_building['FOR']) || !is_numeric($user_building['FOR'])) { $user_building['FOR'] = 0; }
+    if (!isset($user_data['off_geologue']))    { $user_data['off_geologue'] = 0; }
+    if (!isset($user_data['off_full']))        { $user_data['off_full'] = 0; }
+    if (!isset($user_data['user_class']))      { $user_data['user_class'] = 'none'; }
+    if (!in_array($user_data['user_class'], $names['CLASS'], true)) { $user_data['user_class'] = $names['CLASS'][0]; }
+    
+    $bonus_foreuse = $FOR_COEF;
+    if ($user_data['user_class'] === 'COL') {
+        $bonus_foreuse = $bonus_foreuse * (1 + $FOR_BONUS_COL);
+    }
+    $nb_foreuse_max = 8 * ($user_building['M'] + $user_building['C'] + $user_building['D']);
+    if ($user_data['user_class'] === 'COL' && ($user_data['off_geologue'] == 1 || $user_data['off_full'] == 1)) {
+        $nb_foreuse_max = $nb_foreuse_max * (1 + $FOR_BONUS_COL_GEO);
+    }
+    $nb_foreuse_max = floor($nb_foreuse_max);
+    if ($user_building['FOR'] > $nb_foreuse_max) {
+        $user_building['FOR'] = $nb_foreuse_max;
+    }
+    
+    return min(0.5, $bonus_foreuse * $user_building['FOR']);
+}
+
+/**
+ *  @brief Calculates building/sat/for or base production.
+ *  
+ *  @param [in] string $building The wanted building/sat/for ('base','M','C','D','CES','CEF','SAT','FOR')
+ *  @param [in] array $user_building Planet info ('M','C','D','CES','CEF','SAT','FOR','temperature_max','coordinates') 0 as default value
+ *  @param [in] array $user_technology Techno info ('NRJ','Plasma') 
+ *  @param [in] array $user_data User info (array('user_class'=>'COL'/...,'off_geologue' or 'off_full')
+ *  @param [in] array $server_config Ogame univers info ('speed_uni')
+ *  @return array('M','C','D','NRJ','AM') of production
+ *  
+ *  @details remplace partiellement production(), production_sat(), production_foreuse()
+ */
+function ogame_production_building($building, $user_building, $user_technology = null, $user_data = null, $server_config = null)
+{
+    static $BASE_M = 30;
+    static $BASE_C = 15;
+    $names = ogame_get_element_names();
+    //Valeurs OUT par défaut :
+    $result = array('M'=>0, 'C'=>0, 'D'=>0, 'NRJ'=>0, 'AM'=>0);
+    //Valeurs IN par défaut :
+    if (!isset($user_technology['NRJ'])    || !is_numeric($user_technology['NRJ']))    { $user_technology['NRJ'] = 0; }
+    if (!isset($user_building['M'])   || !is_numeric($user_building['M']))   { $user_building['M'] = 0; }
+    if (!isset($user_building['C'])   || !is_numeric($user_building['C']))   { $user_building['C'] = 0; }
+    if (!isset($user_building['D'])   || !is_numeric($user_building['D']))   { $user_building['D'] = 0; }
+    if (!isset($user_building['CES']) || !is_numeric($user_building['CES'])) { $user_building['CES'] = 0; }
+    if (!isset($user_building['CEF']) || !is_numeric($user_building['CEF'])) { $user_building['CEF'] = 0; }
+    if (!isset($user_building['FOR']) || !is_numeric($user_building['FOR'])) { $user_building['FOR'] = 0; }
+    if (!isset($user_building['SAT'])) {
+        if (!isset($user_building['Sat']) || !is_numeric($user_building['Sat'])) {
+            $user_building['SAT'] = 0;
+        } else {
+            $user_building['SAT'] = $user_building['Sat'];
+        }
+    }
+    if (!isset($user_building['temperature_max']) || !is_numeric($user_building['temperature_max'])) { $user_building['temperature_max'] = 0; }
+    if (!isset($user_building['coordinates'])) { $user_building['coordinates'] = 0; }
+    if (!isset($server_config['speed_uni']))   { $server_config['speed_uni'] = 1; }
+    
+    $user_building['position'] = ogame_find_planet_position($user_building['coordinates']);
+    $bonus_position = ogame_production_position($user_building['position']);
+    
+    switch ($building) {
+        case 'base':
+            $result['M'] = floor( $BASE_M * (1 + $bonus_position['M']) * $server_config['speed_uni'] );
+            $result['C'] = floor( $BASE_C * (1 + $bonus_position['C']) * $server_config['speed_uni'] );
+            break;
+        case 'M':
+            $level = $user_building['M'];
+            $coef_base = (1 + $bonus_position['M']) * $server_config['speed_uni'];
+            $result['M'] = floor( 30 * $level * pow(1.1, $level) * $coef_base );
+            break;
+        case 'C':
+            $level = $user_building['C'];
+            $coef_base = (1 + $bonus_position['C']) * $server_config['speed_uni'];
+            $result['C'] = floor( 20 * $level * pow(1.1, $level) * $coef_base );
+            break;
+        case 'D':
+            $level = $user_building['D'];
+            $coef_base = (1 + $bonus_position['D']) * $server_config['speed_uni'];
+            $result['D'] = floor( 10 * $level * pow(1.1, $level) * (1.44 - 0.004 * $user_building['temperature_max']) * $coef_base );
+            break;
+        case 'CES':
+            $level = $user_building['CES'];
+            $result['NRJ'] = floor( 20 * $level * pow(1.1, $level) );
+            break;
+        case 'CEF':
+            $level = $user_building['CEF'];
+            $result['NRJ'] = floor( 30 * $level * pow((1.05 + $user_technology['NRJ'] * 0.01), $level) );
+            break;
+        case 'SAT':
+            $number = $user_building['SAT'];
+            $result['NRJ'] = floor( ($user_building['temperature_max'] + 140) / 6 ) * $number;
+            break;
+        case 'FOR':
+            $production_mine_base['M'] = ogame_production_building('M', $user_building, null, null, $server_config)['M'];
+            $production_mine_base['C'] = ogame_production_building('C', $user_building, null, null, $server_config)['C'];
+            $production_mine_base['D'] = ogame_production_building('D', $user_building, null, null, $server_config)['D'];
+            $coef_for = ogame_production_bonus_foreuse($user_building, $user_data);
+            var_dump($coef_for);
+            $result['M'] = round($production_mine_base['M'] * $coef_for);
+            $result['C'] = round($production_mine_base['C'] * $coef_for);
+            $result['D'] = round($production_mine_base['D'] * $coef_for);
+            break;
+        default:
+            break;
+    }
+    
+    return $result;
+}
+
+
+/**
  * Gets the hourly production of a Mine or a Energy plant.
  *
  * @param string $building The building type
@@ -448,7 +615,7 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
  *  @param [in] $coordinates planet coordinates (galaxy:system:position)
  *  @return int planet position
  */
-function find_planet_position($coordinates) {
+function ogame_find_planet_position($coordinates) {
     $position = 0;
     
     $coordinates_tmp = explode(':', $coordinates);
@@ -1037,9 +1204,9 @@ function fleet_cumulate($fleet, $number)      { return ogame_element_cumulate($f
 function research_cumulate($research, $level) { return ogame_element_cumulate($research, $level); }
 
 /**
- *  @brief Give database names of a buiding/research/fleet/defence/class.
+ *  @brief Give database names of a buiding/research/fleet/defence/class/ressources.
  *  
- *  @return array('BAT'=>array, 'RECH'=>array, 'VSO'=>array, 'DEF'=>array, 'CLASS'=>array)
+ *  @return array('BAT'=>array, 'RECH'=>array, 'VSO'=>array, 'DEF'=>array, 'CLASS'=>array, 'RESS'=>array)
  *  
  */
 function ogame_get_element_names()
@@ -1121,6 +1288,13 @@ function ogame_get_element_names()
         'COL',  //Classe collecteur
         'GEN',  //Classe général
         'EXP',  //Classe explorateur
+        );
+    $names['RESS'] = array(
+        'M',   //métal
+        'C',   //cristal
+        'D',   //deutérium
+        'NRJ', //énergie
+        'AM',  //AM
         );
     
     return $names;
@@ -1601,6 +1775,8 @@ function ogame_elements_details($nom, $user_techno = null, $classe = 0)
                  'vitesse'=>$vitesse, 'fret'=>$fret, 'conso'=>$conso, 'rapidfire'=>$rapidfire,
                  'civil'=>$civil, 'cout'=>$cout);
 }
+
+// ogame_requirement
 
 /**
  * Calcule la distance entre a et b, a - b ; en tenant en compte des univers arrondis.

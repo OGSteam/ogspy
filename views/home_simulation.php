@@ -75,7 +75,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
             $coordinates = $user_building[$i]["coordinates"];
-            $position = find_planet_position($coordinates);
+            $position = ogame_find_planet_position($coordinates);
             if ($coordinates == "") {
                 $coordinates = "&nbsp;";
             } else {
