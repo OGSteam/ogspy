@@ -58,7 +58,7 @@ function ogame_production_position($position)
  *  
  *  @param [in] array $user_building array with mine level and FOR number (array('M','C','D','FOR'))
  *  @param [in] array $user_data array with class and officiers infos (array('user_class'=>'COL'/...,'off_geologue' or 'off_full'))
- *  @return float foreuse bonus coefficient
+ *  @return array('bonus', 'nb_FOR_maxed') bonus=foreuse bonus coefficient ; nb_FOR_maxed=limit nb if too much
  */
 function ogame_production_bonus_foreuse($user_building, $user_data)
 {
@@ -89,7 +89,7 @@ function ogame_production_bonus_foreuse($user_building, $user_data)
         $user_building['FOR'] = $nb_foreuse_max;
     }
     
-    return min(0.5, $bonus_foreuse * $user_building['FOR']);
+    return array('bonus'=>min(0.5, $bonus_foreuse * $user_building['FOR']), 'nb_FOR_maxed'=>$user_building['FOR']);
 }
 
 /**
@@ -175,12 +175,12 @@ function ogame_production_building($building, $user_building = null, $user_techn
             $production_mine_base['M'] = ogame_production_building('M', $user_building, null, null, $server_config)['M'];
             $production_mine_base['C'] = ogame_production_building('C', $user_building, null, null, $server_config)['C'];
             $production_mine_base['D'] = ogame_production_building('D', $user_building, null, null, $server_config)['D'];
-            $coef_for = ogame_production_bonus_foreuse($user_building, $user_data);
+            $bonus_for = ogame_production_bonus_foreuse($user_building, $user_data);
 
-            $result['M'] = round($production_mine_base['M'] * $coef_for);
-            $result['C'] = round($production_mine_base['C'] * $coef_for);
-            $result['D'] = round($production_mine_base['D'] * $coef_for);
-            $result['NRJ'] = - 50 * $number;
+            $result['M'] = round( $production_mine_base['M'] * $bonus_for['bonus'] );
+            $result['C'] = round( $production_mine_base['C'] * $bonus_for['bonus'] );
+            $result['D'] = round( $production_mine_base['D'] * $bonus_for['bonus'] );
+            $result['NRJ'] = - 50 * $bonus_for['nb_FOR_maxed'];
             break;
         default:
             break;
@@ -205,7 +205,8 @@ function ogame_production_building($building, $user_building = null, $user_techn
         'prod_CES','prod_CEF','prod_SAT','prod_FOR',   //production énergie de chaque unité
         'prod_M','prod_C','prod_D','prod_base', //production ressources de chaque mine
         'prod_booster','prod_off','prod_Plasma','prod_classe',   //production des bonus
-        'M','C','D','NRJ','AM' =>héritage du type ressource pour les valeurs retournées.
+        'M','C','D','NRJ','AM', =>héritage du type ressource pour les valeurs retournées.
+        'nb_FOR_maxed',
         ) à part conso_E/prod_E (float) les autres sont array('M','C','D','NRJ','AM')
  *  
  *  @details remplace ratio() et bilan_production_ratio()
@@ -228,6 +229,7 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
         'prod_CES'=>0, 'prod_CEF'=>0, 'prod_SAT'=>0, 'prod_FOR'=>0, //production et conso de chaque unité
         'prod_M'=>0, 'prod_C'=>0, 'prod_D'=>0, 'prod_base'=>0,  //production et conso de chaque unité
         'prod_booster'=>0, 'prod_off'=>0, 'prod_Plasma'=>0, 'prod_classe'=>0,   //production des bonus
+        'nb_FOR_maxed'=>0,
         );
     $result['prod_reel']      = $DEFAULT_TYPE_RESS;
     $result['prod_theorique'] = $DEFAULT_TYPE_RESS;
@@ -371,6 +373,7 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
     $bonus_off_full = ($user_data['off_full'] != 0)        ? $RESS_BONUS_FULL : 0;
     $bonus_class    = ($user_data['user_class'] === 'COL') ? $RESS_BONUS_COL  : 0;
     $bonus_for      = ogame_production_bonus_foreuse($user_building, $user_data);
+    $result['nb_FOR_maxed'] = $bonus_for['nb_FOR_maxed'];
 
 //*Métal :
     $production_mine_base = floor( $prod_mine_M['M'] * ($user_building['M_percentage'] / 100) * $ratio );
@@ -378,7 +381,7 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
     $prod_off     = round( $production_mine_base * $bonus_off_geo) + round($production_mine_base * $bonus_off_full );
     $prod_Plasma  = round( $production_mine_base * $user_technology['Plasma'] * $RESS_PLASMA_M );
     $prod_booster = round( $production_mine_base * $user_building['booster_tab']['booster_m_val'] / 100 );
-    $prod_FOR     = round( $production_mine_base * $bonus_for * ($user_building['FOR_percentage'] / 100) );
+    $prod_FOR     = round( $production_mine_base * $bonus_for['bonus'] * ($user_building['FOR_percentage'] / 100) );
     $prod_classe  = round( $production_mine_base * $bonus_class );
 
     $result['M'] = $prod_base['M'] + $production_mine_base + $prod_FOR + $prod_Plasma + $prod_booster + $prod_off + $prod_classe;
@@ -395,7 +398,7 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
     $prod_off     = round( $production_mine_base * $bonus_off_geo) + round($production_mine_base * $bonus_off_full );
     $prod_Plasma  = round( $production_mine_base * $user_technology['Plasma'] * $RESS_PLASMA_C );
     $prod_booster = round( $production_mine_base * $user_building['booster_tab']['booster_c_val'] / 100 );
-    $prod_FOR     = round( $production_mine_base * $bonus_for * ($user_building['FOR_percentage'] / 100) );
+    $prod_FOR     = round( $production_mine_base * $bonus_for['bonus'] * ($user_building['FOR_percentage'] / 100) );
     $prod_classe  = round( $production_mine_base * $bonus_class );
 
     $result['C'] = $prod_base['C'] + $production_mine_base + $prod_FOR + $prod_Plasma + $prod_booster + $prod_off + $prod_classe;
@@ -412,7 +415,7 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
     $prod_off     = round( $production_mine_base * $bonus_off_geo) + round($production_mine_base * $bonus_off_full );
     $prod_Plasma  = round( $production_mine_base * $user_technology['Plasma'] * $RESS_PLASMA_D );
     $prod_booster = round( $production_mine_base * $user_building['booster_tab']['booster_d_val'] / 100 );
-    $prod_FOR     = round( $production_mine_base * $bonus_for * ($user_building['FOR_percentage'] / 100) );
+    $prod_FOR     = round( $production_mine_base * $bonus_for['bonus'] * ($user_building['FOR_percentage'] / 100) );
     $prod_classe  = round( $production_mine_base * $bonus_class );
     $conso_CEF    = ceil( $prod_bat_CEF['D'] * $user_building['CEF_percentage'] / 100 );
     
