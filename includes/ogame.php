@@ -99,12 +99,12 @@ function ogame_production_bonus_foreuse($user_building, $user_data)
  *  @param [in] array $user_building Planet info ('M','C','D','CES','CEF','SAT','FOR','temperature_max','coordinates') 0 as default value
  *  @param [in] array $user_technology Techno info ('NRJ','Plasma') 
  *  @param [in] array $user_data User info (array('user_class'=>'COL'/...,'off_geologue' or 'off_full')
- *  @param [in] array $server_config Ogame univers info ('speed_uni')
+ *  @param [in] array $server_config Ogame univers info ('speed_uni',(bool)'final_calcul') / final_calcul permet de déterminer si les valeurs retournées seront manipulées avec les % de production ressources, et donc sans arrondi.
  *  @return array('M','C','D','NRJ','AM') of production
  *  
  *  @details remplace consumption() et partiellement production(), production_sat(), production_foreuse()
  */
-function ogame_production_building($building, $user_building, $user_technology = null, $user_data = null, $server_config = null)
+function ogame_production_building($building, $user_building = null, $user_technology = null, $user_data = null, $server_config = null)
 {
     static $BASE_M = 30;
     static $BASE_C = 15;
@@ -112,13 +112,13 @@ function ogame_production_building($building, $user_building, $user_technology =
     //Valeurs OUT par défaut :
     $result = array('M'=>0, 'C'=>0, 'D'=>0, 'NRJ'=>0, 'AM'=>0);
     //Valeurs IN par défaut :
-    if (!isset($user_technology['NRJ'])    || !is_numeric($user_technology['NRJ']))    { $user_technology['NRJ'] = 0; }
-    if (!isset($user_building['M'])   || !is_numeric($user_building['M']))   { $user_building['M'] = 0; }
-    if (!isset($user_building['C'])   || !is_numeric($user_building['C']))   { $user_building['C'] = 0; }
-    if (!isset($user_building['D'])   || !is_numeric($user_building['D']))   { $user_building['D'] = 0; }
-    if (!isset($user_building['CES']) || !is_numeric($user_building['CES'])) { $user_building['CES'] = 0; }
-    if (!isset($user_building['CEF']) || !is_numeric($user_building['CEF'])) { $user_building['CEF'] = 0; }
-    if (!isset($user_building['FOR']) || !is_numeric($user_building['FOR'])) { $user_building['FOR'] = 0; }
+    if (!isset($user_technology['NRJ']) || !is_numeric($user_technology['NRJ'])) { $user_technology['NRJ'] = 0; }
+    if (!isset($user_building['M'])     || !is_numeric($user_building['M']))     { $user_building['M'] = 0; }
+    if (!isset($user_building['C'])     || !is_numeric($user_building['C']))     { $user_building['C'] = 0; }
+    if (!isset($user_building['D'])     || !is_numeric($user_building['D']))     { $user_building['D'] = 0; }
+    if (!isset($user_building['CES'])   || !is_numeric($user_building['CES']))   { $user_building['CES'] = 0; }
+    if (!isset($user_building['CEF'])   || !is_numeric($user_building['CEF']))   { $user_building['CEF'] = 0; }
+    if (!isset($user_building['FOR'])   || !is_numeric($user_building['FOR']))   { $user_building['FOR'] = 0; }
     if (!isset($user_building['SAT'])) {
         if (!isset($user_building['Sat']) || !is_numeric($user_building['Sat'])) {
             $user_building['SAT'] = 0;
@@ -127,33 +127,34 @@ function ogame_production_building($building, $user_building, $user_technology =
         }
     }
     if (!isset($user_building['temperature_max']) || !is_numeric($user_building['temperature_max'])) { $user_building['temperature_max'] = 0; }
-    if (!isset($user_building['coordinates'])) { $user_building['coordinates'] = 0; }
-    if (!isset($server_config['speed_uni']))   { $server_config['speed_uni'] = 1; }
+    if (!isset($user_building['coordinates']))  { $user_building['coordinates'] = 0; }
+    if (!isset($server_config['speed_uni']))    { $server_config['speed_uni'] = 1; }
+    if (!isset($server_config['final_calcul'])) { $server_config['final_calcul'] = true; }
     
     $user_building['position'] = ogame_find_planet_position($user_building['coordinates']);
     $bonus_position = ogame_production_position($user_building['position']);
     
     switch ($building) {
         case 'base':
-            $result['M'] = floor( $BASE_M * (1 + $bonus_position['M']) * $server_config['speed_uni'] );
-            $result['C'] = floor( $BASE_C * (1 + $bonus_position['C']) * $server_config['speed_uni'] );
+            $result['M'] = $BASE_M * (1 + $bonus_position['M']) * $server_config['speed_uni'];
+            $result['C'] = $BASE_C * (1 + $bonus_position['C']) * $server_config['speed_uni'];
             break;
         case 'M':
             $level = $user_building['M'];
             $coef_base = (1 + $bonus_position['M']) * $server_config['speed_uni'];
-            $result['M']   = floor( 30 * $level * pow(1.1, $level) * $coef_base );
+            $result['M']   = 30 * $level * pow(1.1, $level) * $coef_base;
             $result['NRJ'] = - floor( 10 * $level * pow(1.1, $level) );
             break;
         case 'C':
             $level = $user_building['C'];
             $coef_base = (1 + $bonus_position['C']) * $server_config['speed_uni'];
-            $result['C']   = floor( 20 * $level * pow(1.1, $level) * $coef_base );
+            $result['C']   = 20 * $level * pow(1.1, $level) * $coef_base;
             $result['NRJ'] = - floor( 10 * $level * pow(1.1, $level) );
             break;
         case 'D':
             $level = $user_building['D'];
             $coef_base = (1 + $bonus_position['D']) * $server_config['speed_uni'];
-            $result['D']   = floor( 10 * $level * pow(1.1, $level) * (1.44 - 0.004 * $user_building['temperature_max']) * $coef_base );
+            $result['D']   = 10 * $level * pow(1.1, $level) * (1.44 - 0.004 * $user_building['temperature_max']) * $coef_base;
             $result['NRJ'] = - floor( 20 * $level * pow(1.1, $level) );
             break;
         case 'CES':
@@ -163,7 +164,7 @@ function ogame_production_building($building, $user_building, $user_technology =
         case 'CEF':
             $level = $user_building['CEF'];
             $result['NRJ'] = floor( 30 * $level * pow((1.05 + $user_technology['NRJ'] * 0.01), $level) );
-            $result['D']   = - floor( 10 * $level * pow(1.1, $level) * $server_config['speed_uni'] );
+            $result['D']   = - floor( 10 * $level * pow(1.1, $level) ) * $server_config['speed_uni'];
             break;
         case 'SAT':
             $number = $user_building['SAT'];
@@ -175,7 +176,7 @@ function ogame_production_building($building, $user_building, $user_technology =
             $production_mine_base['C'] = ogame_production_building('C', $user_building, null, null, $server_config)['C'];
             $production_mine_base['D'] = ogame_production_building('D', $user_building, null, null, $server_config)['D'];
             $coef_for = ogame_production_bonus_foreuse($user_building, $user_data);
-            var_dump($coef_for);
+
             $result['M'] = round($production_mine_base['M'] * $coef_for);
             $result['C'] = round($production_mine_base['C'] * $coef_for);
             $result['D'] = round($production_mine_base['D'] * $coef_for);
@@ -184,10 +185,264 @@ function ogame_production_building($building, $user_building, $user_technology =
         default:
             break;
     }
+    if ($server_config['final_calcul']) {
+        $result['M'] = floor($result['M']);
+        $result['C'] = floor($result['C']);
+        $result['D'] = floor($result['D']);
+    }
     
     return $result;
 }
 
+/**
+ *  @brief Calculates planet production and consumption.
+ *  
+ *  @param [in] array $user_building Planet info ('M','C','D','CES','CEF','SAT','FOR','temperature_max','coordinates','M_percentage','C_percentage','D_percentage','CES_percentage','CEF_percentage','Sat_percentage','FOR_percentage',array 'booster_tab') 0 as default value
+ *  @param [in] array $user_technology Techno info ('NRJ','Plasma') 
+ *  @param [in] array $user_data User info (array('user_class'=>'COL'/...,'off_commandant','off_amiral','off_ingenieur','off_geologue', or 'off_full')
+ *  @param [in] array $server_config Ogame univers info ('speed_uni')
+ *  @return array('prod_reel,'prod_theorique','ratio','conso_E','prod_E',  //Production totale
+        'prod_CES','prod_CEF','prod_SAT','prod_FOR',   //production énergie de chaque unité
+        'prod_M','prod_C','prod_D','prod_base', //production ressources de chaque mine
+        'prod_booster','prod_off','prod_Plasma','prod_classe',   //production des bonus
+        'M','C','D','NRJ','AM' =>héritage du type ressource pour les valeurs retournées.
+        ) à part conso_E/prod_E (float) les autres sont array('M','C','D','NRJ','AM')
+ *  
+ *  @details remplace ratio() et bilan_production_ratio()
+ */
+function ogame_production_planet($user_building, $user_technology = null, $user_data = null, $server_config = null)
+{
+    static $DEFAULT_TYPE_RESS = array('M'=>0, 'C'=>0, 'D'=>0, 'NRJ'=>0, 'AM'=>0);
+    static $NRJ_BONUS_COL     = 0.1;   //+10% pour COL
+    static $NRJ_BONUS_ING     = 0.1;   //+10% pour ingénieur
+    static $NRJ_BONUS_FULL    = 0.02;  //+2% pour full officier
+    static $RESS_BONUS_COL    = 0.25;  //+25% pour COL
+    static $RESS_BONUS_GEO    = 0.1;   //+10% pour géologue
+    static $RESS_BONUS_FULL   = 0.02; //+2% pour full officier
+    static $RESS_PLASMA_M     = 0.01;
+    static $RESS_PLASMA_C     = 0.0066;
+    static $RESS_PLASMA_D     = 0.0033;
+    $names = ogame_get_element_names();
+    //Valeurs OUT par défaut :
+    $result = array('prod_reel'=>0, 'prod_theorique'=>0, 'ratio'=>0, 'conso_E'=>0, 'prod_E'=>0,   //Production totale
+        'prod_CES'=>0, 'prod_CEF'=>0, 'prod_SAT'=>0, 'prod_FOR'=>0, //production et conso de chaque unité
+        'prod_M'=>0, 'prod_C'=>0, 'prod_D'=>0, 'prod_base'=>0,  //production et conso de chaque unité
+        'prod_booster'=>0, 'prod_off'=>0, 'prod_Plasma'=>0, 'prod_classe'=>0,   //production des bonus
+        );
+    $result['prod_reel']      = $DEFAULT_TYPE_RESS;
+    $result['prod_theorique'] = $DEFAULT_TYPE_RESS;
+    $result['prod_booster']   = $DEFAULT_TYPE_RESS;
+    $result['prod_off']       = $DEFAULT_TYPE_RESS;
+    $result['prod_Plasma']    = $DEFAULT_TYPE_RESS;
+    $result['prod_classe']    = $DEFAULT_TYPE_RESS;
+    $result = array_merge($result, $DEFAULT_TYPE_RESS); //Compatibilité par héritage !
+    //Valeurs IN par défaut :
+    if (!isset($user_technology['Plasma']) || !is_numeric($user_technology['Plasma'])) { $user_technology['Plasma'] = 0; }
+    if (!isset($user_data['off_commandant']))  { $user_data['off_commandant'] = 0; }
+    if (!isset($user_data['off_amiral']))      { $user_data['off_amiral'] = 0; }
+    if (!isset($user_data['off_ingenieur']))   { $user_data['off_ingenieur'] = 0; }
+    if (!isset($user_data['off_geologue']))    { $user_data['off_geologue'] = 0; }
+    if (!isset($user_data['off_full']))        { $user_data['off_full'] = 0; }
+    if (!isset($user_data['user_class']))      { $user_data['user_class'] = 'none'; }
+    if (!in_array($user_data['user_class'], $names['CLASS'], true)) { $user_data['user_class'] = $names['CLASS'][0]; }
+    if (!isset($user_building['M_percentage'])   || !is_numeric($user_building['M_percentage']))   { $user_building['M_percentage'] = 100; }
+    if (!isset($user_building['C_percentage'])   || !is_numeric($user_building['C_percentage']))   { $user_building['C_percentage'] = 100; }
+    if (!isset($user_building['D_percentage'])   || !is_numeric($user_building['D_percentage']))   { $user_building['D_percentage'] = 100; }
+    if (!isset($user_building['CES_percentage']) || !is_numeric($user_building['CES_percentage'])) { $user_building['CES_percentage'] = 100; }
+    if (!isset($user_building['CEF_percentage']) || !is_numeric($user_building['CEF_percentage'])) { $user_building['CEF_percentage'] = 100; }
+    if (!isset($user_building['Sat_percentage']) || !is_numeric($user_building['Sat_percentage'])) { $user_building['Sat_percentage'] = 100; }
+    if (!isset($user_building['FOR_percentage']) || !is_numeric($user_building['FOR_percentage'])) { $user_building['FOR_percentage'] = 100; }
+    if (!isset($user_building['booster_tab']['booster_e_val'])) { $user_building['booster_tab']['booster_e_val'] = 0; }
+    if (!isset($user_building['booster_tab']['booster_m_val'])) { $user_building['booster_tab']['booster_m_val'] = 0; }
+    if (!isset($user_building['booster_tab']['booster_c_val'])) { $user_building['booster_tab']['booster_c_val'] = 0; }
+    if (!isset($user_building['booster_tab']['booster_d_val'])) { $user_building['booster_tab']['booster_d_val'] = 0; }
+    if (!isset($user_data['production_theorique']) || !is_bool($user_data['production_theorique'])) { $user_data['production_theorique'] = false; }
+    
+    // $user_empire = user_get_empire($user_data['user_id']);
+    // $user_production = user_empire_production($user_empire, $user_data, $server_config['speed_uni']);
+    
+    if ($user_data['off_full'] != 0) {
+        $user_data['off_ingenieur'] = 1;
+        $user_data['off_geologue']  = 1;
+    }
+    if ($user_data['off_commandant'] != 0 && $user_data['off_amiral'] != 0 && $user_data['off_ingenieur'] != 0 && $user_data['off_geologue'] != 0) {
+        $user_data['off_full'] = 1;
+    }    
+    if ($user_data['user_class'] !== 'COL' && $user_building['FOR_percentage'] > 100) {
+        $user_building['FOR_percentage'] = 100;
+    }
+
+//Calcul valeurs de base
+    $prod_base    = ogame_production_building('base', $user_building, null, null, $server_config);
+    $server_config['final_calcul'] = false;
+    $prod_mine_M  = ogame_production_building('M', $user_building, $user_technology, $user_data, $server_config);
+    $prod_mine_C  = ogame_production_building('C', $user_building, $user_technology, $user_data, $server_config);
+    $prod_mine_D  = ogame_production_building('D', $user_building, $user_technology, $user_data, $server_config);
+    $prod_bat_CES = ogame_production_building('CES', $user_building, $user_technology, $user_data, $server_config);
+    $prod_bat_CEF = ogame_production_building('CEF', $user_building, $user_technology, $user_data, $server_config);
+    $prod_vso_SAT = ogame_production_building('SAT', $user_building, $user_technology, $user_data, $server_config);
+    $prod_vso_FOR = ogame_production_building('FOR', $user_building, $user_technology, $user_data, $server_config);
+    $result['prod_base'] = $prod_base;
+    $result['prod_M']    = $prod_mine_M;
+    $result['prod_C']    = $prod_mine_C;
+    $result['prod_D']    = $prod_mine_D;
+    $result['prod_CES']  = $prod_bat_CES;
+    $result['prod_CEF']  = $prod_bat_CEF;
+    $result['prod_SAT']  = $prod_vso_SAT;
+    $result['prod_FOR']  = $prod_vso_FOR;
+
+//Calcul de la consommation d'énergie théorique
+    $conso_M   = round( $prod_mine_M['NRJ'] * $user_building['M_percentage'] / 100 );
+    $conso_C   = round( $prod_mine_C['NRJ'] * $user_building['C_percentage'] / 100 );
+    $conso_D   = round( $prod_mine_D['NRJ'] * $user_building['D_percentage'] / 100 );
+    $conso_FOR = round( $prod_vso_FOR['NRJ'] * max(1, $user_building['FOR_percentage'] * 2 / 100 - 1) ); // [50 * max( 1 ; 1 + (pourcentage_production - 100%) * %_malus_overload / 10% ) ]
+    $consommation_E = $conso_M + $conso_C + $conso_D + $conso_FOR;
+    $result['conso_E']         = $consommation_E;
+    $result['prod_M']['NRJ']   = $conso_M;
+    $result['prod_C']['NRJ']   = $conso_C;
+    $result['prod_D']['NRJ']   = $conso_D;
+    $result['prod_FOR']['NRJ'] = $conso_FOR;
+    if (!$user_data['production_theorique']) {
+    //Calcul de la production d'énergie
+        $prod_CES = $prod_bat_CES['NRJ'] * $user_building['CES_percentage'] / 100;
+        $prod_CEF = $prod_bat_CEF['NRJ'] * $user_building['CEF_percentage'] / 100;
+        $prod_SAT = $prod_vso_SAT['NRJ'] * $user_building['Sat_percentage'] / 100;
+        $production_E = $prod_CES + $prod_CEF + $prod_SAT;
+        $result['prod_booster']['NRJ']    = round( $production_E * $user_building['booster_tab']['booster_e_val'] / 100 );
+        if ($user_data['user_class'] === 'COL') {
+            $result['prod_classe']['NRJ'] = round( $production_E * $NRJ_BONUS_COL );
+        }
+        if ($user_data['off_ingenieur'] != 0) {
+            $result['prod_off']['NRJ']    = round( $production_E * $NRJ_BONUS_ING );
+        }
+        if ($user_data['off_full'] != 0) {
+            $result['prod_off']['NRJ']   += round( $production_E * $NRJ_BONUS_FULL );
+        }
+        $result['prod_CES']['NRJ'] = round( $prod_CES );
+        $result['prod_CEF']['NRJ'] = round( $prod_CEF );
+        $result['prod_SAT']['NRJ'] = round( $prod_SAT );
+        $production_E  = $result['prod_CES']['NRJ'] + $result['prod_CEF']['NRJ'] + $result['prod_SAT']['NRJ'];
+        $production_E += $result['prod_booster']['NRJ'] + $result['prod_off']['NRJ'] + $result['prod_classe']['NRJ'];
+
+    //Calcul ratio
+        $ratio = 1; // indique le pourcentage à appliquer sur la prod
+        $ratio_temp = 1;
+        $ratio_temp = ($consommation_E == 0) ? 0 : (- $production_E * 100 / $consommation_E) / 100; // fix division par 0
+        if ($ratio_temp > 1) {
+            $ratio = 1;
+        }  else {
+            $ratio = $ratio_temp;
+        }
+        $result['ratio'] = $ratio;
+    } else { //Pour le cas d'un calcul théorique
+        $user_building['M_percentage'] = 100;
+        $user_building['C_percentage'] = 100;
+        $user_building['D_percentage'] = 100;
+        $user_building['CES_percentage'] = 100;
+        $user_building['CEF_percentage'] = 100;
+        $user_building['Sat_percentage'] = 100;
+        if ($user_building['FOR_percentage'] < 100) {
+            $user_building['FOR_percentage'] = 100;
+        }
+        $result['prod_FOR']['NRJ'] = round( $prod_vso_FOR['NRJ'] * max(1, $user_building['FOR_percentage'] * 2 / 100 - 1) );
+        $production_E = $result['prod_CES']['NRJ'] + $result['prod_CEF']['NRJ'] + $result['prod_SAT']['NRJ'];
+        
+        $result['prod_booster']['NRJ']    = round( $production_E * $user_building['booster_tab']['booster_e_val'] / 100 );
+        if ($user_data['user_class'] === 'COL') {
+            $result['prod_classe']['NRJ'] = round( $production_E * $NRJ_BONUS_COL );
+        }
+        if ($user_data['off_ingenieur'] != 0) {
+            $result['prod_off']['NRJ']    = round( $production_E * $NRJ_BONUS_ING );
+        }
+        if ($user_data['off_full'] != 0) {
+            $result['prod_off']['NRJ']   += round( $production_E * $NRJ_BONUS_FULL );
+        }
+        $result['prod_CES']['NRJ'] = round( $result['prod_CES']['NRJ'] );
+        $result['prod_CEF']['NRJ'] = round( $result['prod_CEF']['NRJ'] );
+        $result['prod_SAT']['NRJ'] = round( $result['prod_SAT']['NRJ'] );
+        $production_E  = $result['prod_CES']['NRJ'] + $result['prod_CEF']['NRJ'] + $result['prod_SAT']['NRJ'];
+        $production_E += $result['prod_booster']['NRJ'] + $result['prod_off']['NRJ'] + $result['prod_classe']['NRJ'];
+        $ratio = 1;
+    }
+    $result['prod_E'] = $production_E;
+
+//Calcul de la production
+    $bonus_off_geo  = ($user_data['off_geologue'] != 0)    ? $RESS_BONUS_GEO  : 0;
+    $bonus_off_full = ($user_data['off_full'] != 0)        ? $RESS_BONUS_FULL : 0;
+    $bonus_class    = ($user_data['user_class'] === 'COL') ? $RESS_BONUS_COL  : 0;
+    $bonus_for      = ogame_production_bonus_foreuse($user_building, $user_data);
+
+//*Métal :
+    $production_mine_base = floor( $prod_mine_M['M'] * ($user_building['M_percentage'] / 100) * $ratio );
+
+    $prod_off     = round( $production_mine_base * $bonus_off_geo) + round($production_mine_base * $bonus_off_full );
+    $prod_Plasma  = round( $production_mine_base * $user_technology['Plasma'] * $RESS_PLASMA_M );
+    $prod_booster = round( $production_mine_base * $user_building['booster_tab']['booster_m_val'] / 100 );
+    $prod_FOR     = round( $production_mine_base * $bonus_for * ($user_building['FOR_percentage'] / 100) );
+    $prod_classe  = round( $production_mine_base * $bonus_class );
+
+    $result['M'] = $prod_base['M'] + $production_mine_base + $prod_FOR + $prod_Plasma + $prod_booster + $prod_off + $prod_classe;
+    $result['prod_off']['M']     = $prod_off;
+    $result['prod_Plasma']['M']  = $prod_Plasma;
+    $result['prod_booster']['M'] = $prod_booster;
+    $result['prod_FOR']['M']     = $prod_FOR;
+    $result['prod_classe']['M']  = $prod_classe;
+    $result['prod_M']['M']       = $production_mine_base;
+
+//*Cristal :
+    $production_mine_base = floor( $prod_mine_C['C'] * ($user_building['C_percentage'] / 100) * $ratio );
+
+    $prod_off     = round( $production_mine_base * $bonus_off_geo) + round($production_mine_base * $bonus_off_full );
+    $prod_Plasma  = round( $production_mine_base * $user_technology['Plasma'] * $RESS_PLASMA_C );
+    $prod_booster = round( $production_mine_base * $user_building['booster_tab']['booster_c_val'] / 100 );
+    $prod_FOR     = round( $production_mine_base * $bonus_for * ($user_building['FOR_percentage'] / 100) );
+    $prod_classe  = round( $production_mine_base * $bonus_class );
+
+    $result['C'] = $prod_base['C'] + $production_mine_base + $prod_FOR + $prod_Plasma + $prod_booster + $prod_off + $prod_classe;
+    $result['prod_off']['C']     = $prod_off;
+    $result['prod_Plasma']['C']  = $prod_Plasma;
+    $result['prod_booster']['C'] = $prod_booster;
+    $result['prod_FOR']['C']     = $prod_FOR;
+    $result['prod_classe']['C']  = $prod_classe;
+    $result['prod_C']['C']       = $production_mine_base;
+
+//*Deutérium :
+    $production_mine_base = floor( $prod_mine_D['D'] * ($user_building['D_percentage'] / 100) * $ratio );
+
+    $prod_off     = round( $production_mine_base * $bonus_off_geo) + round($production_mine_base * $bonus_off_full );
+    $prod_Plasma  = round( $production_mine_base * $user_technology['Plasma'] * $RESS_PLASMA_D );
+    $prod_booster = round( $production_mine_base * $user_building['booster_tab']['booster_d_val'] / 100 );
+    $prod_FOR     = round( $production_mine_base * $bonus_for * ($user_building['FOR_percentage'] / 100) );
+    $prod_classe  = round( $production_mine_base * $bonus_class );
+    $conso_CEF    = ceil( $prod_bat_CEF['D'] * $user_building['CEF_percentage'] / 100 );
+    
+    $result['D'] = $prod_base['D'] + $production_mine_base + $prod_FOR + $prod_Plasma + $prod_booster + $prod_off + $prod_classe;
+    $result['D'] = $result['D'] + $conso_CEF;
+    $result['prod_off']['D']     = $prod_off;
+    $result['prod_Plasma']['D']  = $prod_Plasma;
+    $result['prod_booster']['D'] = $prod_booster;
+    $result['prod_FOR']['D']     = $prod_FOR;
+    $result['prod_classe']['D']  = $prod_classe;
+    $result['prod_CEF']['D']     = $conso_CEF;
+    $result['prod_D']['D']       = $production_mine_base;
+    
+    foreach ($names['RESS'] as $ress) {
+        $result['prod_reel'][$ress]  = floor($result['prod_base'][$ress]);
+        $result['prod_reel'][$ress] += floor($result['prod_M'][$ress])   + floor($result['prod_C'][$ress]) + floor($result['prod_D'][$ress]);
+        $result['prod_reel'][$ress] += floor($result['prod_CES'][$ress]) + floor($result['prod_CEF'][$ress]);
+        $result['prod_reel'][$ress] += floor($result['prod_SAT'][$ress]) + floor($result['prod_FOR'][$ress]);
+        $result['prod_reel'][$ress] += floor($result['prod_Plasma'][$ress]) + floor($result['prod_booster'][$ress]);
+        $result['prod_reel'][$ress] += floor($result['prod_off'][$ress]) + floor($result['prod_classe'][$ress]);
+    }
+    if (!$user_data['production_theorique']) {
+        $user_data['production_theorique'] = true;
+        $tmp = ogame_production_planet($user_building, $user_technology, $user_data, $server_config);
+        $result['prod_theorique'] = $tmp['prod_reel'];
+    }
+    $result['NRJ'] = $result['prod_reel']['NRJ'];
+    
+    return $result;
+}
 
 /**
  * Gets the hourly production of a Mine or a Energy plant.
@@ -536,6 +791,7 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
 function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing = 0, $off_geo = 0, $off_full = 0, $NRJ = 0, $Plasma = 0,
 $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $booster = NULL,  $FOR = 0, $per_FOR = 0, $classe = 0, $position = 0, $speed_uni = 1)
 {
+    trigger_error("Les fonctions bilan_production_ratio(),ratio(),production(),consumption(),production_sat(),production_foreuse() dépréciées depuis 3.3.8, préférer les fonctions ogame_*. Ici ogame_production_planet().", E_USER_NOTICE);
 
     if ($off_full == 1) {
         $off_ing = $off_geo = 2;
@@ -618,7 +874,8 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
 
 /**
  *  @brief Return planet position from coordinates.
- *  @param [in] $coordinates planet coordinates (galaxy:system:position)
+ *  
+ *  @param [in] string $coordinates planet coordinates (galaxy:system:position)
  *  @return int planet position
  */
 function ogame_find_planet_position($coordinates) {
@@ -1329,30 +1586,30 @@ function ogame_is_element($nom)
  *  @param [in] string $nom Name to look, like name in database
  *  @return bool
  */
-function is_a_defence($nom)  { return ogame_is_element($nom) === 'DEF'; }
+function ogame_is_a_defence($nom)  { return ogame_is_element($nom) === 'DEF'; }
 /**
  *  @brief Is an Ogame fleet ?
  *  @param [in] string $nom Name to look, like name in database
  *  @return bool
  */
-function is_a_fleet($nom)    { return ogame_is_element($nom) === 'VSO'; }
+function ogame_is_a_fleet($nom)    { return ogame_is_element($nom) === 'VSO'; }
 /**
  *  @brief Is an Ogame building ?
  *  @param [in] string $nom Name to look, like name in database
  *  @return bool
  */
-function is_a_building($nom) { return ogame_is_element($nom) === 'BAT'; }
+function ogame_is_a_building($nom) { return ogame_is_element($nom) === 'BAT'; }
 /**
  *  @brief Is an Ogame research ?
  *  @param [in] string $nom Name to look, like name in database
  *  @return bool
  */
-function is_a_research($nom) { return ogame_is_element($nom) === 'RECH'; }
+function ogame_is_a_research($nom) { return ogame_is_element($nom) === 'RECH'; }
 
 /**
  *  @brief Calculates the price of all element of type (building,defence,fleet,research).
  *  
- *  @param [in] $user Array of element (for other than research, each planet or moon)
+ *  @param [in] array $user Array of element each planet or moon
  *  @param [in] string $type Type of element ('BAT' pour bâtiment, 'RECH' pour recherche, 'DEF' pour défense, 'VSO' pour vaisseau)
  *  @return float Total price (M+C+D).
  */
