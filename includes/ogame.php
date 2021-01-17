@@ -1736,7 +1736,6 @@ function ogame_elements_details($nom, $user_techno = null, $classe = 0)
     $civil        = true;
     $cout         = ogame_element_cumulate($nom,1);
     
-    $names = ogame_get_element_names();
     $user_techno['speed'] = 0;
     $techno_RC_coef  = $user_techno['RC']  * $RC_COEF;
     $techno_RI_coef  = $user_techno['RI']  * $RI_COEF;
@@ -1990,7 +1989,7 @@ function ogame_elements_details($nom, $user_techno = null, $classe = 0)
     /*
     COL : +100% vitesse transporteur ; +25% fret transporteur
     GEN : +100% vitesse vso combat/REC or EDLM ; -25% conso ; +20% fret REC/ECL ; +2 lvl techno combat
-    ECL : none
+    EXP : none
     */
     $bonus_class = 0;
     $structure = round($structure + $structure * $techno_Protection_coef + $structure * $bonus_class);
@@ -2039,7 +2038,305 @@ function ogame_elements_details($nom, $user_techno = null, $classe = 0)
                  'civil'=>$civil, 'cout'=>$cout);
 }
 
-// ogame_requirement
+/**
+ *  @brief Calculates technical data of all fleet/defence.
+ *  
+ *  @param [in] array $user_techno The array of technologies
+ *  @param [in] string|int $classe The user class //array('none','COL','GEN','EXP') - (1=Collectionneur)[0=aucune, 2=général, 3=explorateur])
+ *  @return array of all fleet/defence with are array of details from ogame_elements_details()
+ */
+function ogame_all_details($user_techno = null, $classe = 0)
+{
+    $result = array();
+    $names = ogame_get_element_names();
+    
+    foreach (array_merge($names['VSO'], $names['DEF']) as $element) {
+        $result[$element] = ogame_elements_details($element, $user_techno, $classe);
+    }
+    return $result;
+}
+
+/**
+ *  @brief Calculates technical data of Ogame requirement.
+ *  
+ *  @param [in] string $nom The name, like name in Database
+ *  @return array('none','COL','GEN','EXP' : bool for class, 'CES',etc. : int for all bat/rech name in database)
+ */
+function ogame_elements_requirement($nom)
+{
+    $result = array();
+    $names = ogame_get_element_names();
+    foreach ($names['CLASS'] as $element) {
+        $result[$element] = false;
+    }
+    $result['none'] = true;
+    
+    switch ($nom) {
+// Bâtiments :
+        case 'M': //no break;
+        case 'C': //no break;
+        case 'D': //no break;
+        case 'CES': //no break;
+        case 'HM': //no break;
+        case 'HC': //no break;
+        case 'HD': //no break;
+        case 'UdR': //no break;
+        case 'Lab': //no break;
+        case 'DdR': //no break;
+        case 'BaLu': //no break;
+            break; //no requirement
+        case 'CEF':
+            $result['D']   = 5;
+            $result['NRJ'] = 3;
+            break;
+        case 'UdN':
+            $result['UdR']  = 10;
+            $result['Ordi'] = 10;
+            break;
+        case 'CSp':
+            $result['UdR'] = 2;
+            break;
+        case 'Ter':
+            $result['UdN'] = 1;
+            $result['NRJ'] = 12;
+            break;
+        case 'Silo':
+            $result['CSp'] = 1;
+            break;
+        case 'Dock':
+            $result['CSp'] = 2;
+            break;
+        case 'Pha':
+            $result['BaLu'] = 1;
+            break;  
+        case 'PoSa':
+            $result['BaLu'] = 1;
+            $result['Hyp']  = 7;
+            break;
+// Recherches :
+        case 'Esp':
+            $result['Lab'] = 3;
+            break;
+        case 'Ordi':
+            $result['Lab'] = 1;
+            break;
+        case 'Armes':
+            $result['Lab'] = 4;
+            break;
+        case 'Bouclier':
+            $result['Lab'] = 6;
+            $result['NRJ'] = 3;
+            break;
+        case 'Protection':
+            $result['Lab'] = 2;
+            break;
+        case 'NRJ':
+            $result['Lab'] = 1;
+            break;
+        case 'Hyp':
+            $result['Lab']      = 7;
+            $result['NRJ']      = 5;
+            $result['Bouclier'] = 5;
+            break;
+        case 'RC':
+            $result['Lab'] = 1;
+            $result['NRJ'] = 1;
+            break;
+        case 'RI':
+            $result['Lab'] = 2;
+            $result['NRJ'] = 1;
+            break;
+        case 'PH':
+            $result['Lab'] = 7;
+            $result['Hyp'] = 3;
+            break;
+        case 'Laser':
+            $result['Lab'] = 1;
+            $result['NRJ'] = 2;
+            break;
+        case 'Ions':
+            $result['Lab']   = 4;
+            $result['NRJ']   = 4;
+            $result['Laser'] = 5;
+            break;
+        case 'Plasma':
+            $result['Lab']   = 4;
+            $result['NRJ']   = 8;
+            $result['Laser'] = 10;
+            $result['Ions']  = 5;
+            break;
+        case 'RRI':
+            $result['Lab']  = 10;
+            $result['Ordi'] = 8;
+            $result['Hyp']  = 8;
+            break;
+        case 'Graviton':
+            $result['Lab'] = 12;
+            break;
+        case 'Astrophysique':
+            $result['Lab'] = 3;
+            $result['Esp'] = 4;
+            $result['RI']  = 3;
+            break;
+// Flottes :
+        case 'PT':
+            $result['CSp'] = 2;
+            $result['RC']  = 2;
+            break;
+        case 'GT':
+            $result['CSp'] = 4;
+            $result['RC']  = 6;
+            break;
+        case 'CLE':
+            $result['CSp'] = 1;
+            $result['RC']  = 1;
+            break;
+        case 'CLO':
+            $result['CSp']        = 3;
+            $result['Protection'] = 2;
+            $result['RI']         = 2;
+            break;
+        case 'CR':
+            $result['CSp']  = 5;
+            $result['RI']   = 4;
+            $result['Ions'] = 2;
+            break;
+        case 'VB':
+            $result['CSp'] = 7;
+            $result['PH']  = 4;
+            break;
+        case 'VC':
+            $result['CSp'] = 4;
+            $result['RI']  = 3;
+            break;
+        case 'REC':
+            $result['CSp']      = 4;
+            $result['RC']       = 6;
+            $result['Bouclier'] = 2;
+            break;
+        case 'SE':
+            $result['CSp'] = 3;
+            $result['RC']  = 3;
+            $result['Esp'] = 2;
+            break;
+        case 'BMD':
+            $result['CSp']    = 8;
+            $result['RI']     = 6;
+            $result['Plasma'] = 5;
+            break;
+        case 'DST':
+            $result['CSp'] = 9;
+            $result['Hyp'] = 5;
+            $result['PH']  = 6;
+            break;
+        case 'EDLM':
+            $result['CSp']      = 12;
+            $result['Hyp']      = 6;
+            $result['PH']       = 7;
+            $result['Graviton'] = 1;
+            break;
+        case 'TRA':
+            $result['CSp']   = 8;
+            $result['Hyp']   = 5;
+            $result['PH']    = 5;
+            $result['Laser'] = 12;
+            break;
+        case 'SAT':
+            $result['CSp'] = 1;
+            break;
+        case 'FOR':
+            $result['CSp']        = 5;
+            $result['RC']         = 4;
+            $result['Protection'] = 4;
+            $result['Laser']      = 4;
+            $result['COL']        = true;
+            break;
+        case 'FAU':
+            $result['CSp']      = 10;
+            $result['Hyp']      = 6;
+            $result['PH']       = 7;
+            $result['Bouclier'] = 6;
+            $result['GEN']      = true;
+            break;
+        case 'ECL':
+            $result['CSp'] = 5;
+            $result['PH']  = 2;
+            $result['EXP'] = true;
+            break;
+// Défenses :
+        case 'LM':
+            $result['CSp'] = 1;
+            break;
+        case 'LLE':
+            $result['CSp']   = 2;
+            $result['Laser'] = 3;
+            break;
+        case 'LLO':
+            $result['CSp']   = 4;
+            $result['NRJ']   = 3;
+            $result['Laser'] = 6;
+            break;
+        case 'CG':
+            $result['CSp']      = 6;
+            $result['NRJ']      = 6;
+            $result['Armes']    = 3;
+            $result['Bouclier'] = 1;
+            break;
+        case 'AI':
+            $result['CSp']  = 4;
+            $result['Ions'] = 4;
+            break;
+        case 'LP':
+            $result['CSp']    = 8;
+            $result['Plasma'] = 7;
+            break;
+        case 'PB':
+            $result['CSp']      = 1;
+            $result['Bouclier'] = 2;
+            break;
+        case 'GB':
+            $result['CSp']      = 6;
+            $result['Bouclier'] = 6;
+            break;
+        case 'MIC':
+            $result['CSp']  = 1;
+            $result['Silo'] = 1;
+            break;
+        case 'MIP':
+            $result['CSp']  = 1;
+            $result['Silo'] = 4;
+            $result['RI']   = 1;
+            break;
+        default:
+            break;
+    }
+    //fill with other building/research/fleet/defence
+    foreach (array_merge($names['BAT'], $names['RECH']) as $element) {
+        if (!isset($result[$element])) {
+            $result[$element] = 0;
+        }
+    }
+    if ($result['COL'] || $result['GEN'] || $result['EXP']) {
+        $result['none'] = false;
+    }
+    return $result;
+}
+
+/**
+ *  @brief Calculates technical data of Ogame requirement of all building/research/fleet/defence.
+ *  
+ *  @return array of all building/research/fleet/defence with are array of requirement from ogame_elements_requirement()
+ */
+function ogame_all_requirement()
+{
+    $result = array();
+    $names = ogame_get_element_names();
+
+    foreach (array_merge($names['BAT'], $names['RECH'], $names['VSO'], $names['DEF']) as $element) {
+        $result[$element] = ogame_elements_requirement($element);
+    }
+    return $result;
+}
 
 /**
  * Calcule la distance entre a et b, a - b ; en tenant en compte des univers arrondis.
