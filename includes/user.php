@@ -950,19 +950,19 @@ function find_nb_moon_user($id)
  * Calcul production de l'empire.
  *
  * @param array $user_empire contenant NRJ, plasma et les bâtiments (généralement généré par user_get_empire())
- * @param array $off ($user_data) [defaut NULL, donc sans officier ou classe]
- * @param int $speed_uni Vitesse de l'univers ($server_config['speed_uni'])
+ * @param array $user_data [defaut NULL, donc sans officier ou classe]
+ * @param int $server_config Pour la vitesse de l'univers ($server_config['speed_uni'])
  * @return array
  */
-function user_empire_production($user_empire, $off = NULL, $speed_uni = 1)
+function user_empire_production($user_empire, $user_data = null, $server_config = null)
 {
-    //TODO : supprimer références globales
-    global $server_config;
+    if (!isset($server_config['speed_uni']))    { $server_config['speed_uni'] = 1; }
     $speed_uni = $server_config['speed_uni'];
+    $off = $user_data;
 
     $prod = array();
 
-    if ($off == NULL) {
+    if ($off == null) {
         $off['off_commandant'] = 0;
         $off['off_amiral'] = 0;
         $off['off_ingenieur'] = 0;

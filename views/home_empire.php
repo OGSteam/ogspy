@@ -23,8 +23,7 @@ $user_empire = user_get_empire($user_data['user_id']);
 $user_building   = $user_empire['building'];
 $user_defence    = $user_empire['defence'];
 $user_technology = $user_empire['technology'];
-$speed_uni       = $server_config['speed_uni'];
-$user_production = user_empire_production($user_empire, $user_data, $speed_uni);
+$user_production = user_empire_production($user_empire, $user_data, $server_config);
 $nb_planete      = find_nb_planete_user($user_data['user_id']);
 
 if (!isset($pub_view)) {

@@ -730,7 +730,7 @@ function consumption($building, $level, $speed_uni = 1)
  * @return array("ratio", "conso_E", "prod_E", "prod_CES", "prod_CEF", "prod_SAT", "conso_M", "conso_C", "conso_D", "conso_FOR")
  */
 function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
-               $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $FOR = 0, $per_FOR = 0, $classe = 0, $booster = NULL)
+               $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $FOR = 0, $per_FOR = 0, $classe = 0, $booster = null)
 {
     $consommation_E = 0; // la consommation
     $prod_boost_E = 0;
@@ -792,7 +792,7 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
  * @return array
  */
 function bilan_production_ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing = 0, $off_geo = 0, $off_full = 0, $NRJ = 0, $Plasma = 0,
-$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $booster = NULL,  $FOR = 0, $per_FOR = 0, $classe = 0, $position = 0, $speed_uni = 1)
+$per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $booster = null,  $FOR = 0, $per_FOR = 0, $classe = 0, $position = 0, $speed_uni = 1)
 {
     trigger_error("Les fonctions bilan_production_ratio(),ratio(),production(),consumption(),production_sat(),production_foreuse() dépréciées depuis 3.3.8, préférer les fonctions ogame_*. Ici ogame_production_planet().", E_USER_NOTICE);
 
