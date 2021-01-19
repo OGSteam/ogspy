@@ -1168,9 +1168,9 @@ function ogame_element_upgrade($name, $level)
             break;
 
         case "Astrophysique":
-            $M = 4000 * pow(1.75, ($level - 1));
-            $C = 8000 * pow(1.75, ($level - 1));
-            $D = 4000 * pow(1.75, ($level - 1));
+            $M = round( 4000 * pow(1.75, ($level - 1)), -2 );
+            $C = round( 8000 * pow(1.75, ($level - 1)), -2 );
+            $D = round( 4000 * pow(1.75, ($level - 1)), -2 );
             $NRJ = 0;
             break;
 
