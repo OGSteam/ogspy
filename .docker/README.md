@@ -15,8 +15,8 @@ https://github.com/tutumcloud/lamp
   Open with your browser http://127.0.0.1 (The page could appear after some time corresponding to the service startup time)
 
     >   Database : ogspy  
-    > user : ogsteam  
-    > Password : password
+    >   user : ogsteam  
+    >   password : password
 
 -   When installation is finished remove install Folder:
   `docker exec ogspy_container rm -Rf /app/install`
