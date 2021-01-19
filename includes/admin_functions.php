@@ -20,10 +20,9 @@ if (!defined('IN_SPYOGAME')) {
 /**
  *  php8 -r "$a='le toekn';for($i=0;$i<strlen($a);$i++){$b=ord($a[$i]);$a[$i]=chr(++$b);}echo $a;"
  */
-function get_aTokenOGSpy() {
+function get_aTokenOGSpy($sep) {
     $result = '';
     $tokens = array('eee455gb', 'g3g986f', 'c2664c9764', '4c73dg6fb921');
-    $sep = ':';
     foreach ($tokens as $token) {
         for ($i = 0 ; $i < strlen($token) ; $i++) {
             $tmp = ord($token[$i]);
@@ -54,7 +53,7 @@ function github_api_Request($request)
             ]
         ]
     ];
-    $opts['http']['header'][1] .= get_aTokenOGSpy();
+    $opts['http']['header'][1] .= get_aTokenOGSpy(':');
 
     $context = stream_context_create($opts);
 
