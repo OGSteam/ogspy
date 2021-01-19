@@ -1,28 +1,28 @@
 ## 3.3.7 - 2019-03-10
 
 ### Added
--    Autoloader #69, #70
--    Espace personnel : Ajout Foreuse #143
+-   Autoloader #69, #70
+-   Espace personnel : Ajout Foreuse #143
 
 ### Changed
--    DB Models #121, #94, #93, #89, #90, #91, #74, #75, #76, #77, #78, #79, #80, #81, #82, #83, #84, #85, #86, #87
+-   DB Models #121, #94, #93, #89, #90, #91, #74, #75, #76, #77, #78, #79, #80, #81, #82, #83, #84, #85, #86, #87
 
 ### Fixed
--    Champs Metal, Cristal, Deut de ParsedRE -> BigInt #134
--    Impossible de mettre à jour le mot de passe d'un utilisateur #135
--    Sauvegarde Email Utilisateur inopérante #154
--    Réinitialisation mot de passe utilisateur lors de la génération du token #151
--    User last visit not updated anymore #139
--    Incohérence entre les planètes et les lunes #138
--    Error on Resize Univers #157
--    Espace Personnel : Variation général : Pas de points #155
--    Suppression colonie dans l'espace personnel en erreur #161
--    3.3.7 Suppression Re depuis galaxie #133
--    Affichage Date Rapport d'espionnage bloqué à 1970 #162
--    Aucun chiffre affiché dans le RC remonté sur l'ogsy #158
+-   Champs Metal, Cristal, Deut de ParsedRE -> BigInt #134
+-   Impossible de mettre à jour le mot de passe d'un utilisateur #135
+-   Sauvegarde Email Utilisateur inopérante #154
+-   Réinitialisation mot de passe utilisateur lors de la génération du token #151
+-   User last visit not updated anymore #139
+-   Incohérence entre les planètes et les lunes #138
+-   Error on Resize Univers #157
+-   Espace Personnel : Variation général : Pas de points #155
+-   Suppression colonie dans l'espace personnel en erreur #161
+-   3.3.7 Suppression Re depuis galaxie #133
+-   Affichage Date Rapport d'espionnage bloqué à 1970 #162
+-   Aucun chiffre affiché dans le RC remonté sur l'ogsy #158
 
 ### Security
--    Sanitize DB variables #100 
+-   Sanitize DB variables #100 
 
 ## 3.3.6 - 2019-06-15
 -    **Added:** #123 Supprimer le dossier install après l'installation
@@ -54,6 +54,7 @@
 -    **Fixed:** Mise à jour fichiers de langue
 
 ## 3.3.1
+
 -    Internationalisation - Anglais désormais complet
 -    Phalanges Circulaires
 -    Logo installation mis à jour
