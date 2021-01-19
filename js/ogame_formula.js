@@ -52,7 +52,7 @@ function production(building, level, temperatureMax, energy, plasma, position) {
         case 'CEF':
             return Math.floor(30 * level * Math.pow(1.05 + 0.01 * energy, level) * (1 + ingenieur + bonus_class_energie));
         case 'SAT':
-            return Math.floor(Math.floor((parseInt(temperatureMax) + 140) / 6) * level * (1 + ingenieur + bonus_class_energie));
+            return Math.floor(Math.floor((parseInt(temperatureMax, 10) + 140) / 6) * level * (1 + ingenieur + bonus_class_energie));
         default:
             return 0;
     }
@@ -78,7 +78,7 @@ function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax, p
 			bonus_foreuse_max = 0.1; //+10%
 		}
     }
-    nb_max = (parseInt(levelM) + parseInt(levelC) + parseInt(levelD)) * 8 * (1 + bonus_foreuse_max);
+    nb_max = (parseInt(levelM,10) + parseInt(levelC,10) + parseInt(levelD,10)) * 8 * (1 + bonus_foreuse_max);
     if(nbForeuse > nb_max) {
         nbForeuse = nb_max;
     }

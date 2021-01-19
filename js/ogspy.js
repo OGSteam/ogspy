@@ -9,15 +9,15 @@ function _admin_unvisible(byId) {
 	document.getElementById(byId).style.display = 'none';
 }
 function ogspy_beginCreateUser() {
-	_admin_visible("createNewPlayer");
-	_admin_unvisible("creatingNewPlayer");
+	_admin_visible('createNewPlayer');
+	_admin_unvisible('creatingNewPlayer');
 }
 function ogspy_endCreateUser() {
-	_admin_visible("creatingNewPlayer");
-	_admin_unvisible("createNewPlayer");
+	_admin_visible('creatingNewPlayer');
+	_admin_unvisible('createNewPlayer');
 }
-// includes/profile.php
-function ogspy_check_password(form, message) {
+// views/profile.php
+function ogspy_checkPassword(form, message) {
 	var old_password = form.old_password.value;
 	var new_password = form.new_password.value;
 	var new_password2 = form.new_password2.value;
@@ -48,19 +48,19 @@ function ogspy_check_password(form, message) {
 	}
 	return true;
 }
-// includes/menu.php
-function ogspy_run_timer() {
+// views/menu.php
+function ogspy_runTimer() {
 	if (document.getElementById('datetime') !== null) {
 		var date = new Date();
 		var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
 		
 		document.getElementById('datetime').innerHTML = date.toLocaleString('fr-FR', options) + " " + date.toLocaleTimeString();
 		
-		setTimeout("ogspy_run_timer()", 1000);
+		setTimeout("ogspy_runTimer()", 1000);
 	}
 }
 	
 // Global debut
 function ogspy_run() {
-	ogspy_run_timer();
+	ogspy_runTimer();
 }
