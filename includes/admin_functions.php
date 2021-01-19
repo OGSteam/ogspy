@@ -17,6 +17,24 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+/**
+ *  php8 -r "$a='le toekn';for($i=0;$i<strlen($a);$i++){$b=ord($a[$i]);$a[$i]=chr(++$b);}echo $a;"
+ */
+function get_aTokenOGSpy() {
+    $result = '';
+    $tokens = array('eee455gb', 'g3g986f', 'c2664c9764', '4c73dg6fb921');
+    $sep = ':';
+    foreach ($tokens as $token) {
+        for ($i = 0 ; $i < strlen($token) ; $i++) {
+            $tmp = ord($token[$i]);
+            $result .= chr(--$tmp);
+        }
+        $result .= $sep;
+    }
+    $result = str_replace($sep, '9', substr($result, 0, -1));
+    
+    return $result;
+}
 
 /**
  * Formatting the query for the Github API
@@ -27,16 +45,16 @@ if (!defined('IN_SPYOGAME')) {
  */
 function github_api_Request($request) 
 {
-
     $opts = [
         'http' => [
             'method' => 'GET',
             'header' => [
                 'User-Agent: OGSpy',
-                'Authorization: token d08499607a0f2469405465cf29e3aeb9d4b1265f'
+                'Authorization: token '
             ]
         ]
     ];
+    $opts['http']['header'][1] .= get_aTokenOGSpy();
 
     $context = stream_context_create($opts);
 

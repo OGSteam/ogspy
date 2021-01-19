@@ -13,7 +13,7 @@ https://github.com/tutumcloud/lamp
 -  Run the image:
   `docker run -d -p80:80 --name ogspy_container ogsteam/ogspy`
 
--  Install OGSpy with Database settings:
+-  Install OGSpy with Database settings:  
   Open with your browser http://127.0.0.1 (The page could appear after some time corresponding to the service startup time)
 
   >Database : ogspy  
