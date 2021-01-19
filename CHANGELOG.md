@@ -56,23 +56,23 @@
 *  [Security] #45 Agrandir la taille des mots de passe à 64 caractères
 *  [Removed] #64  Remove GCM feature (Obsolete)
 
-##[3.3.2]
+## [3.3.2]
 *  [Fixed] Correctif affichage erreur MySQL
 *  [Fixed] Mise à jour fichiers de langue
 
-##[3.3.1]
+## [3.3.1]
 *  Internationalisation - Anglais désormais complet
 *  Phalanges Circulaires
 *  Logo installation mis à jour
 *  Mise à jour schéma BDD
 
-##[3.3.0]
+## [3.3.0]
 *  Internationalisation
 *  Compatibilité PHP 7
 *  Univers Circulaires
 *  Corrections multiples
 
-##[3.2.0]
+## [3.2.0]
 *  Passage en UTF-8 pour une meilleur gestion des caractères spéciaux
 *  Compatibilité PHP 5.5
 *  Sortie de OGSpy pour Android
@@ -80,7 +80,7 @@
 *  Mise en forme de la présentation des nombres dans l'espace personnel
 *  BBCODE avec les identifiants à la création du nouvel utilisateur
 
-##[3.1.3]
+## [3.1.3]
 *  Correctif pour la suppression d'une planète dans l'espace Personel
 *  Modification du champ phalanx pour mettre une valeur par défaut
 *  Réorganisation du profil utilisateur et ajout de l'adresse mail
@@ -89,25 +89,25 @@
 *  Ajout du compte Commandant
 *  Mise à jour de l'équipe OGSteam
 
-##[3.1.2]
+## [3.1.2]
 *  Compatibilité OGame 5.X
 *  Correctif de la supression d'un utilisateur
 *  Correctif du système de Mise à jour
 *  Mise à jour de l'équipe OGSteam
 
-##[3.1.1]
+## [3.1.1]
 *  Compatibilité OGame 4.X
 *  Correction de la maintenance automatique
 *  Mise à jour de l'équipe OGSteam
 
-##[3.1.0]
+## [3.1.0]
 *  Compatibilité OGame 3.X:
 *  Nouveaux classements militaires
 *  Nouveaux bâtiments.
 *  Support IPv6.
 *  Nouveau skin.
 
-##[3.0.8]
+## [3.0.8]
 *  Affichage RE vue galaxie : affichage de 2 RE : 1 de planète, et 1 de lune, si il(s) existe(nt)
 *  Modification accés à la base de donnée.
 *  Mise en place d'un systeme de mise en cache.
@@ -116,7 +116,7 @@
 *  Supression des fichiers obsolétes.
 *  Mise en conformité des pseudos ingame - Correctifs divers
 
-##[3.0.7]
+## [3.0.7]
 *  Remplacement de la technologie Expéditions par Astrophysique
 *  Support d'un nombre de planètes supérieur à 9(Désormais lié à la Technologie Astrophysique)
 *  Désactivation de l'import par copier - coller
@@ -125,7 +125,7 @@
 *  Mise a jour des diverses formules de calcul
 *  Mise en conformité réglement ogame v1
 
-##[3.0.5]
+## [3.0.5]
 *  Compatibilité avec OGame 0.78c
 *  Depots de ravitaillement (optionnel)
 *  Vitesse de l'univers paramètrable
@@ -134,7 +134,7 @@
 *  Changement de la structure de la base de donnée (optimisation ++++)
 *  Affichage des RC enregistrés directement sur la vue galaxie
 
-##[3.04b]
+## [3.04b]
 *  Suppression du fond transparent pour l'ajout des membres (admin)
 *  Ajout de flag admin paramétrables sur les mods
 *  Ajout d'une option de journalisation des erreurs php
@@ -146,26 +146,26 @@
 *  Correction bug "Illegal mix of collations"
 *  Correction bug d'ajout de membres
 
-##[3.04]
+## [3.04]
 *  Ajout du mod_Xtense à la base d'OGSpy
 *  Ajout du mod_autoupdate à la base d'OGSpy
 *  Ajout d'une fonction "Ajouter tout les membres" pour les groupes
 *  Correction de bugs lié au passage d'Ogame en version 0.77b
 
-##[3.03]
+## [3.03]
 *  Mise en place du choix de galaxies et de sytèmes par galaxies
 
-##[3.02c]
+## [3.02c]
 *  Ordonnancement des mods dans l'administration
 *  Assouplissement des contrôles sur l'injection de systèmes solaires et rapport d'espionnage
 *  Modifications mineures de l'interface de l'administration
 *  Possibilité de désactiver le contrôle des adresses IP provoquant des déconnexions intempestives (AOL, Proxy, etc)
 *  Correction d'anomalies diverses
 
-##[3.02b]
+## [3.02b]
 *  Correction de bugs mineurs
 
-##[3.02]
+## [3.02]
 *  Gestion des utilisateurs par groupe
 *  Cartographie alliance
 *  Amélioration de l'interface par l'utilisation de tooltips
@@ -179,13 +179,13 @@
 *  Correction de bugs mineurs
 *  Incompatibilité avec les versions d'OGS antérieures à la 2.0
 
-##[0.301b]
+## [0.301b]
 *  Correction mauvais affichage des joueurs absents
 *  Correction du bug empêchant de rentrer le classement dans la période 16h-24h
 *  Bug javascript empêchant de faire des simulations avec Internet Explorer corrigé
 *  Correction de bugs mineurs
 
-##[0.301]
+## [0.301]
 *  Disponibilité du script de migration des bases de données OGSS -> OGSpy
 *  Nombre de satellites passé à 5 chiffres dans l'espace personnel
 *  Ajout d'un nouveau critère de recherche selon les rapports d'espionnage (Merci ben.12)
@@ -199,7 +199,7 @@
 *  Possibilité d'avoir de nombreuses statistiques par le biais de BBClone
 *  Faille de sécurité concernant les sessions corrigées
 
-##[0.300f]
+## [0.300f]
 *  Les rapports d'espionnage sont affichés du plus récent au plus ancien
 *  Message dans le journal lorsque l'on envoie le classement
 *  Exportation de rapports d'espionnage selon une date
@@ -208,7 +208,7 @@
 *  Correction du bug de recherche qui empêchait les pages suivantes avec comme un critère différent des coordonnées
 *  Correction bug dans l'espace personnel, calcul de la production d'énergie et de deutérium faussée
 
-##[0.300e]
+## [0.300e]
 *  Correction du bug de recherche qui n'affichait pas les pages avec IE
 *  Correction du bug de non compatibilité de requetes SQL avec certains serveurs MySQL
 *  Affichage PHPInfo - Modules PHP dans l'administration
@@ -217,19 +217,19 @@
 *  Correction du bug d'importation de certains rapports d'espionnage
 *  Possibilité de contrôler que le serveur soit à jour dans l'administration
 
-##[0.300d]
+## [0.300d]
 *  Correction du bug du panneau d'administration et de connexion avec OGS lié à un champ manquant dans la base de données
 *  Correction bug de recherche des joueurs sans ally
 *  Correction du bug dans l'espace personnel au sujet du nombre de cases utilisées par planète
 
-##[0.300c]
+## [0.300c]
 *  Correction du bug d'importation des rapports d'espionnage
 *  Correction bug empêchant de modifier les paramètres serveur selon la configuration d'installation employée pour OGSpy
 *  Correction de bugs mineurs
 
-##[0.300b]
+## [0.300b]
 *  Modification des requêtes incompatibles avec MySQL 4.0
 
-##[0.300]
+## [0.300]
 *  Restructuration intégrale du code
 *  Nouvelle interface utilisateur

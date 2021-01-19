@@ -1,4 +1,4 @@
-#OGSpy Docker
+# OGSpy Docker
 
 PHP 7.06 Maria DB
 
@@ -16,8 +16,8 @@ https://github.com/tutumcloud/lamp
 -  Install OGSpy with Database settings:
   Open with your browser http://127.0.0.1 (The page could appear after some time corresponding to the service startup time)
 
-  >Database : ogspy
-  >user : ogsteam
+  >Database : ogspy  
+  >user : ogsteam  
   >Password : password
 
 -  When installation is finished remove install Folder:
