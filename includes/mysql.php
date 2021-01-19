@@ -117,6 +117,8 @@ class sql_db
         unset($this->result);
         $result = @mysqli_close($this->db_connect_id); //deconnection
         self::$_instance = false;
+
+        return $result;
     }
 
     /**

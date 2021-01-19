@@ -184,7 +184,6 @@ class User_Model extends Model_Abstract
      */
     public function select_all_user_data()
     {
-
         $request = "SELECT `user_id`, `user_name`, `user_password`, `user_email`, `user_active`, `user_regdate`, `user_lastvisit`," .
             " `user_galaxy`, `user_system`, `user_admin`, `user_coadmin`, `management_user`, `management_ranking`, `disable_ip_check`," .
             " `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate` , `user_class` " .
@@ -241,7 +240,6 @@ class User_Model extends Model_Abstract
 
     public function select_user_stats_sum()
     {
-
         $request = "SELECT SUM(planet_added_xtense), SUM(spy_added_xtense), SUM(rank_added_xtense), SUM(search)";
         $request .= "FROM " . TABLE_USER;
         $resultat = $this->db->sql_query($request);
@@ -352,7 +350,6 @@ class User_Model extends Model_Abstract
      */
     public function set_user_default_galaxy($user_id, $default_galaxy)
     {
-
         $request = "UPDATE " . TABLE_USER . " SET `user_galaxy` = '" . $default_galaxy . "' WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
         //Nettoyage Préventif
@@ -372,7 +369,6 @@ class User_Model extends Model_Abstract
         $request = "UPDATE " . TABLE_USER . " SET `user_galaxy` = 1 WHERE `user_galaxy` > $nb_galaxy";
         $this->db->sql_query($request);
     }
-
 
     /**
      * @param $user_id
@@ -542,11 +538,9 @@ class User_Model extends Model_Abstract
      */
     public function get_nb_active_users()
     {
-
-
         $request = "SELECT `user_id` FROM " . TABLE_USER . " WHERE `user_active` = '1'";
         $result = $this->db->sql_query($request);
-        return $number = $this->db->sql_numrows();
+        return $this->db->sql_numrows();
     }
 
     /**
@@ -554,11 +548,9 @@ class User_Model extends Model_Abstract
      */
     public function get_nb_users()
     {
-
-
         $request = "SELECT `user_id` FROM " . TABLE_USER;
         $this->db->sql_query($request);
-        return $number = $this->db->sql_numrows();
+        return $this->db->sql_numrows();
     }
 
     /**
@@ -568,7 +560,6 @@ class User_Model extends Model_Abstract
      */
     public function add_new_user($pseudo, $password)
     {
-
         $encrypted_password =password_hash($password, PASSWORD_DEFAULT);
         $request = "INSERT INTO " . TABLE_USER . " (user_name, user_password_s, user_regdate, user_active)"
             . " VALUES ('" . $pseudo . "', '" . $encrypted_password . "', " . time() . ", '1')";
@@ -585,7 +576,6 @@ class User_Model extends Model_Abstract
     {
         $user_id=(int)$user_id;
         $group_id=(int)$group_id;
-
 
         $request = "INSERT INTO " . TABLE_USER_GROUP . " (group_id, user_id) VALUES (" . $group_id . ", " . $user_id . ")";
         $this->db->sql_query($request);
@@ -672,10 +662,9 @@ class User_Model extends Model_Abstract
 
         $request = "DELETE FROM " . TABLE_MOD_USER_CFG . " where user_id = " . $user_id;
         $this->db->sql_query($request);
-
     }
 
-    /* Fonctions concerning game account */
+/* Fonctions concerning game account */
 
     /**
      * A quoi sert donc cette fonction ? :p
@@ -691,7 +680,6 @@ class User_Model extends Model_Abstract
         $request = "update " . TABLE_USER . " set user_stat_name = '" . $user_stat_name . "' where user_id = " . $user_id;
         $this->db->sql_query($request);
     }
-
 
     /**
      *
@@ -739,5 +727,4 @@ class User_Model extends Model_Abstract
         }
         $this->db->sql_query($request);
     }
-
 }

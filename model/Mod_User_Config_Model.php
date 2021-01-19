@@ -42,9 +42,8 @@ class Mod_User_Config_Model extends Model_Abstract
 
         if (count($values) === 1) {
             return $values[0];
-        } else {
-            return $values;
         }
+        return $values;
     }
 
     /**

@@ -23,7 +23,7 @@ use Ogsteam\Ogspy\Model\Mod_Config_Model;
  */
 function mod_list()
 {
-    global $db, $user_data;
+    global $user_data;
 
     if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
         redirection("index.php?action=message&id_message=forbidden&info");
@@ -190,7 +190,7 @@ function mod_install()
     $filename = 'mod/' . $pub_directory . '/version.txt';
     // On récupère les données du fichier version.txt
     $file = file($filename);
-    $mod_version = trim($file[1]);
+    // $mod_version = trim($file[1]);
     $mod_config = trim($file[2]);
     // On explode la chaine d'information
     $value_mod = explode(',', $mod_config);
@@ -251,7 +251,7 @@ function mod_install()
 function mod_update()
 {
     global $pub_mod_id, $server_config;
-    global $pub_directory;
+    // global $pub_directory;
 
     $Mod_Model = new Mod_Model();
 
@@ -695,7 +695,7 @@ function uninstall_mod($mod_uninstall_name, $mod_uninstall_table=null)
  */
 function update_mod($mod_folder, $mod_name)
 {
-    global $db, $server_config;
+    global $server_config;
     $is_oki = false;
     $filename = 'mod/' . $mod_folder . '/version.txt';
     if (file_exists($filename)) {

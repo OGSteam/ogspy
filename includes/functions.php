@@ -184,7 +184,7 @@ function password_generator()
  */
 function init_mod_cache()
 {
-    global $cache_mod, $server_config;
+    global $server_config;
 
     // Load cached config
     $filename = 'cache/cache_mod.php';
@@ -414,34 +414,16 @@ function set_serverconfig()
         redirection("index.php?action=message&id_message=setting_serverconfig_failed&info");
     }
 
-    if (is_null($pub_server_active)) {
-        $pub_server_active = 0;
-    }
-    if (is_null($pub_disable_ip_check)) {
-        $pub_disable_ip_check = 0;
-    }
-    if (is_null($pub_log_phperror)) {
-        $pub_log_phperror = 0;
-    }
+    if (is_null($pub_server_active))    { $pub_server_active = 0; }
+    if (is_null($pub_disable_ip_check)) { $pub_disable_ip_check = 0; }
+    if (is_null($pub_log_phperror))     { $pub_log_phperror = 0; }
+    if (is_null($pub_debug_log))        { $pub_debug_log = 0; }
+    if (is_null($pub_block_ratio))      { $pub_block_ratio = 0; }
+    if (is_null($pub_mail_use))         { $pub_mail_use = 0; }
+    if (is_null($pub_mail_smtp_use))    { $pub_mail_smtp_use = 0; }
+    if (is_null($pub_mail_smtp_secure)) { $pub_mail_smtp_secure = 0; }
 
-    if (is_null($pub_debug_log)) {
-        $pub_debug_log = 0;
-    }
-    if (is_null($pub_block_ratio)) {
-        $pub_block_ratio = 0;
-    }
-    if (is_null($pub_mail_use)) {
-        $mail_use = 0;
-    }
-    if (is_null($pub_mail_smtp_use)) {
-        $mail_smtp_use = 0;
-    }
-    if (is_null($pub_mail_smtp_secure)) {
-        $mail_smtp_secure = 0;
-    }
     $break = false;
-
-
     if ($pub_server_active != 0 && $pub_server_active != 1) {
         $break = true;
     }
@@ -671,8 +653,6 @@ function db_size_info()
  */
 function db_optimize($maintenance_action = false)
 {
-    global $db;
-
     $dbSize_before = db_size_info();
     $dbSize_before = $dbSize_before["Total"];
 
@@ -739,7 +719,7 @@ function formate_number($number, $decimal = 0)
  */
 function maintenance_action()
 {
-    global $db, $server_config;
+    global $server_config;
 
 
     $time = mktime(0, 0, 0);
@@ -887,7 +867,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
  */
 function admin_raz_ratio($maintenance_action = false)
 {
-    global $db, $user_data;
+    global $user_data;
 
     if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
         1

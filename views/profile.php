@@ -47,7 +47,7 @@ $message .= "',PROFILE_ERROR_ILLEGAL: '" . $lang['PROFILE_ERROR_ILLEGAL'] . "'}"
 
 require_once("views/page_header.php");
 ?>
-    <form method="POST" action="index.php" onSubmit="return ogspy_check_password(this, <?php echo $message; ?>);">
+    <form method="POST" action="index.php" onSubmit="return ogspy_checkPassword(this, <?php echo $message; ?>);">
         <input name="action" type="hidden" value="member_modify_member">
         <table width="600">
             <tr>

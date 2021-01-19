@@ -26,7 +26,7 @@ $ogspy_phperror = Array();
  */
 function log_($parameter, $option = 0)
 {
-    global $db, $user_data, $server_config, $pub_action;
+    global $user_data, $server_config, $pub_action;
 
     $member = "Inconnu";
     if (isset($user_data['user_name'])) {
@@ -604,7 +604,7 @@ function log_purge()
         return;
     }
 
-    $files = array();
+    // $files = array();
     foreach ($directories as $d) {
         $path = opendir($root . $d);
 

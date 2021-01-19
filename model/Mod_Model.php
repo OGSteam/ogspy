@@ -96,14 +96,10 @@ class Mod_Model  extends Model_Abstract
     public function find_one_by($filter = array(), $orderBy = array())
     {
         $tMod = $this->find_by($filter,$orderBy);
-        if (count($tMod)==0)
-        {
+        if (count($tMod) === 0) {
             return NULL;
         }
-        else
-        {
-            return $tMod[0];
-        }
+        return $tMod[0];
     }
 
 

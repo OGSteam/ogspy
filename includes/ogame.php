@@ -111,7 +111,6 @@ function ogame_production_building($building, $user_building = null, $user_techn
 {
     static $BASE_M = 30;
     static $BASE_C = 15;
-    $names = ogame_get_element_names();
 //Valeurs OUT par défaut :
     $result = array('M'=>0, 'C'=>0, 'D'=>0, 'NRJ'=>0, 'AM'=>0);
 //Valeurs IN par défaut :
@@ -477,16 +476,10 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
         $geo = 0;
     }
     $ing = $geo;
-    $bonus_foreuse = 0.0002; //0.02% / foreuse
-    $bonus_foreuse_max = 0;
     //Valeur de la classe en valeur ajoutée.
     if ($classe == 1) {
         $bonus_class_mine = 0.25; //+25%
         $bonus_class_energie = 0.10; //+10%
-        $bonus_foreuse = $bonus_foreuse * 1.5; //+50%
-        if ($officier != 0) {
-            $bonus_foreuse_max = 0.1; //+10%
-        }
     } else {
         $bonus_class_mine = 0;
         $bonus_class_energie = 0;
@@ -517,7 +510,6 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
             $result = 30 * $level * pow(1.1, $level); // formule de base
             $result = $result * (1 + $bonus_position);
             $result = $result * $speed_uni; // vitesse uni
-            // $result_foreuse = $result * $bonus_foreuse; //foreuse sur produc de base des mines
             $result = $result * (1 + $geo + 0.01 * $Plasma + $bonus_class_mine);
             $result = floor($result); // troncature
             $result = $result + $prod_base; // prod de base
@@ -528,7 +520,6 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
             $result = 20 * $level * pow(1.1, $level); // formule de base
             $result = $result * (1 + $bonus_position);
             $result = $result * $speed_uni; // vitesse uni
-            // $result_foreuse = $result * $bonus_foreuse; //foreuse sur produc de base des mines
             $result = $result * (1 + $geo + 0.0066 * $Plasma + $bonus_class_mine);
             $result = floor($result); // troncature
             $result = $result + $prod_base; // prod de base
@@ -538,7 +529,6 @@ function production($building, $level, $officier = 0, $temperature_max = 0, $NRJ
             $result = 10 * $level * pow(1.1, $level) * (1.44 - 0.004 * $temperature_max); //<Ogame V7
             //$result = 10 * $level * pow(1.1, $level) * floor((1.44 - 0.004 * $temperature_max)*10)/10;  //troncature à la décimale
             $result = $result * $speed_uni; // vitesse uni
-            // $result_foreuse = $result * $bonus_foreuse; //foreuse sur produc de base des mines
             $result = $result * (1 + $geo + 0.0033 * $Plasma + $bonus_class_mine);
             $result = floor($result); // troncature
             break;
@@ -856,7 +846,7 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
             $bonus_position_M = 0.17;
         }
         $boost_M = ($booster['booster_m_val'] / 100) * (production('M', $M, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(30 * (1 + $bonus_position_M) * $speed_uni)) * $per_M * $ratio;
-        $boost_C = ($booster['booster_c_val'] / 100) * (production('C', $C, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(15 * (1 + $bonus_position_M) * $speed_uni)) * $per_C * $ratio;
+        $boost_C = ($booster['booster_c_val'] / 100) * (production('C', $C, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(15 * (1 + $bonus_position_C) * $speed_uni)) * $per_C * $ratio;
         $boost_D = ($booster['booster_d_val'] / 100) * (production('D', $D, 0, $temperature_max, 0, 0, 0, $position, $speed_uni)) * $per_D * $ratio;
 
         $prod_M += round($boost_M);

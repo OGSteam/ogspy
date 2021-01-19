@@ -82,7 +82,7 @@ function user_check_auth($action, $user_id = null)
  */
 function user_login()
 {
-    global $pub_login, $pub_password, $pub_goto, $url_append, $pub_token;
+    global $pub_login, $pub_password, $pub_goto, $pub_token;
 
     $User_Model = new User_Model();
 
@@ -220,7 +220,7 @@ function admin_user_set()
  */
 function admin_regeneratepwd()
 {
-    global $pub_user_id, $pub_pass_reset, $lang, $server_config;
+    global $pub_user_id, $lang, $server_config;
     $pass_id = "pub_pass_" . $pub_user_id;
     global $$pass_id;
     $new_pass = $$pass_id;
@@ -411,6 +411,7 @@ function member_user_set()
 function user_profile_token_updater($user_id)
 {
     //todo mettre dans un helper ( poru réutilisation generate password / id ogspy (parameters) , token login, ... )
+    //TODO : $user_token sort d'où, d'une globale ?
 
     $new_token = bin2hex(random_bytes(32));
     $next_year = time() + (365 * 24 * 60 * 60);
@@ -1056,7 +1057,7 @@ function user_empire_production($user_empire, $user_data = null, $server_config 
  */
 function user_del_building()
 {
-    global $db, $user_data;
+    global $user_data;
     global $pub_planet_id, $pub_view;
 
     $User_Building_Model = new User_Building_Model();
@@ -1478,7 +1479,6 @@ function usergroup_member($group_id)
  */
 function usergroup_newmember()
 {
-    global $db;
     global $pub_user_id, $pub_group_id, $pub_add_all;
 
     $Group_Model = new Group_Model();
@@ -1605,13 +1605,14 @@ function user_del_spy()
 
 /**
  * Reconstruction des RC
- * @global $db
  * @param int $id_RC RC à reconstituer
  * @return string $template_RC reconstitué
+ *
+ * TODO : fonctionne-t-elle ? Pleins de variables non utilisées.
  */
 function UNparseRC($id_RC)
 {
-    global $db, $lang;
+    global $lang;
 
     $Combat_Report_Model = new Combat_Report_Model();
 
@@ -1723,10 +1724,10 @@ function UNparseRC($id_RC)
             $ship_bouclier = $lang['GAME_CREPORT_SHIELD'];
             $ship_protection = $lang['GAME_CREPORT_PROTECTION'];
             foreach ($key_ships as $key => $ship) {
-                if (isset($$key) && $$key > 0) {
+                if (isset($key) && $key > 0) {
                     $vivant_att = true;
                     $ship_type .= "\t" . $ship;
-                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.');;
+                    $ship_nombre .= "\t" . number_format($key, 0, ',', '.');;
                     $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
                     $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
                     $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');

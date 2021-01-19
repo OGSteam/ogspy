@@ -136,9 +136,8 @@ class Group_Model extends Model_Abstract
             $this->db->sql_query($request);
             $group_id = $this->db->sql_insertid();
             return $group_id;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**

@@ -116,7 +116,7 @@ function session_set_user_id($user_id, $lastvisit = 0)
  */
 function session_set_user_data($cookie_id)
 {
-    global $user_ip, $user_data, $user_auth;
+    global $user_ip, $user_data, $user_auth, $user_token;
 
     $user_data = (new Sessions_Model())->select_user_data_session($cookie_id,$user_ip);
 

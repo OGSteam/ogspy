@@ -42,9 +42,8 @@ class Sessions_Model extends Model_Abstract
         if ($this->db->sql_numrows($result) > 0) {
             list($session_ogs) = $this->db->sql_fetch_row($result);
             return $session_ogs;
-        } else {
-            return -1;
         }
+        return -1;
     }
     /**
      * @param        $user_id

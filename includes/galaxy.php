@@ -391,14 +391,14 @@ function galaxy_search()
  * Recuperation des statistiques des galaxies
  *
  * @param int $step
- * @global       object mysql $db
+ * @global       object mysql
  * @global array $user_data
  * @global array $server_config
  * @return array contenant planete colonise ou non, par galaxy / systems
  */
 function galaxy_statistic($step = 50)
 {
-    global $db, $user_data, $server_config;
+    global $user_data, $server_config;
 
     $Universe_Model = new Universe_Model();
 
@@ -562,12 +562,11 @@ function galaxy_reportspy_show()
  * @global int $pub_galaxy
  * @global int $pub_system
  * @global int $pub_row
- * @global int $pub_rc_id
  * @return array|bool $reports contenant les rc mis en forme
  */
 function galaxy_reportrc_show()
 {
-    global $pub_galaxy, $pub_system, $pub_row, $pub_rc_id, $server_config;
+    global $pub_galaxy, $pub_system, $pub_row, $server_config;
 
     if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_row, "Num")) {
         return false;
@@ -696,7 +695,6 @@ function galaxy_show_ranking_player()
     $order = array();
     $ranking = array();
     $ranking_available = array();
-    $table = array();
 
     // on determine l id du pub order
     $id = (array_keys($name, $pub_order_by));
@@ -1192,7 +1190,6 @@ function galaxy_get_phalanx($galaxy, $system, $classe = 'none')
 /**
  * Affichage des systemes solaires obsoletes
  *
- * @global        object mysql $db
  * @global int $pub_perimeter
  * @global int $pub_since
  * @global string $pub_typesearch (M|P)
@@ -1202,7 +1199,6 @@ function galaxy_get_phalanx($galaxy, $system, $classe = 'none')
  */
 function galaxy_obsolete()
 {
-    global $db;
     global $pub_perimeter, $pub_since, $pub_typesearch;
 
     $obsolete = array();
@@ -1250,14 +1246,12 @@ function galaxy_obsolete()
  * Reconstruction des RE
  *
  * @global array $table_prefix
- * @global       object mysql $db
  * @param string $id_RE RE a reconstituer
  * @return string $template_RE reconstitue
  */
 function UNparseRE($id_RE)
 {
-    //todo nom de variable pas du tout expressive :/
-    global $db, $lang;
+    global $lang;
 
     $Spy_Model = new Spy_Model();
     $Universe_Model = new Universe_Model();
