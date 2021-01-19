@@ -1,44 +1,75 @@
-## 3.3.7 - 2019-03-10
+## 3.3.8 - en cours
+-   **Added:** #127 Formula library PHP, Ajout centralisation prix des unités Ogame
+-   **Added:** #148 Formula library PHP, helper formule - centralisation des formules
+-   **Added:** #150 Formula library PHP, Ajout centralisation infos flotte/def (vitesse,fret,rapidfire,etc.)
+-   **Added:** Formula library PHP, Ajout centralisation requirements des unités Ogame
+-   **Added:** Formula library PHP, Centralisation des prix, coût et cumul, pour def/vso/bat/recherche
+-   **Added:** Ajout affichage point dans l'espace perso
+-   **Added:** Ajout des langues Bosniens et Croate (bs, bs_BA, hr, hr_HR)
+-   **Added:** Ajout prise en charge Ogame V7 et des nouveaux boosters
+-   **Changed:** Centralisation des javascripts
+-   **Fixed:** #109 timer, sortir le javascript de la date
+-   **Fixed:** #117 table TABLE_MOD_USER_CFG
+-   **Fixed:** #137 Mot de passe : Gérer les caractères spéciaux
+-   **Fixed:** #144,145 espace perso/simu, correction formules
+-   **Fixed:** #149 formule phalange pour explorateur
+-   **Fixed:** #163 Gestion des Sessions : Ligne dupliquées
+-   **Fixed:** #164 Nombre de case des planètes et lunes
+-   **Fixed:** #166 Statistiques des membres cassées dans l'état cartographique
+-   **Fixed:** #167 table universe incomplete
+-   **Fixed:** #171 Critère recherche spéciale inactif
+-   **Fixed:** #173 Feature/advanced search (by Binu)
+-   **Fixed:** #160 ajustement largeur menu pour éviter les sauts de lignes (by Steffronte)
+-   **Fixed:** #165 La production ne prends pas en compte les foreuses ni le bonus de classe collecteur
+-   **Fixed:** #293 Page Recherche : Légende indisponible 
+-   **Fixed:** #298 Retirer les refs externe, images avatar dev
+-   **Fixed:** Correction formule coût et prix.
+-   **Fixed:** Multiple correction PHP (notice, warning) et HTML
+-   **Security:** #171 Compatibilité PHP8, éléments dépréciés
+-   **Security:** Suppression référence externe (image page OGSteam)
+-   **Removed:** #168 Erreur SQL lors de la modification de l'ordre des colonies dans l'espace personnel
+
+## 3.3.7 - 2020-03-10
 -   **Added:** #69,#70 Autoloader
 -   **Added:** #143 Espace personnel : Ajout Foreuse
--   **Changed:** DB Models #121, #94, #93, #89, #90, #91, #74, #75, #76, #77, #78, #79, #80, #81, #82, #83, #84, #85, #86, #87
+-   **Changed:** DB Models #121, #94, #93, #89, #90, #91, #74, #75, #76, #77, #78, #79, #80, #81, #82, #83, #84, #85, #86, #87r
+-   **Fixed:** #133 3.3.7 Suppression Re depuis galaxie
 -   **Fixed:** #134 Champs Metal, Cristal, Deut de ParsedRE -> BigInt
 -   **Fixed:** #135 Impossible de mettre à jour le mot de passe d'un utilisateur
--   **Fixed:** #154 Sauvegarde Email Utilisateur inopérante
--   **Fixed:** #151 Réinitialisation mot de passe utilisateur lors de la génération du token
--   **Fixed:** #139 User last visit not updated anymore
 -   **Fixed:** #138 Incohérence entre les planètes et les lunes
--   **Fixed:** #157 Error on Resize Univers
+-   **Fixed:** #139 User last visit not updated anymore
+-   **Fixed:** #151 Réinitialisation mot de passe utilisateur lors de la génération du token
+-   **Fixed:** #154 Sauvegarde Email Utilisateur inopérante
 -   **Fixed:** #155 Espace Personnel : Variation général : Pas de points
--   **Fixed:** #161 Suppression colonie dans l'espace personnel en erreur
--   **Fixed:** #133 3.3.7 Suppression Re depuis galaxie
--   **Fixed:** #162 Affichage Date Rapport d'espionnage bloqué à 1970
+-   **Fixed:** #157 Error on Resize Univers
 -   **Fixed:** #158 Aucun chiffre affiché dans le RC remonté sur l'ogsy
+-   **Fixed:** #161 Suppression colonie dans l'espace personnel en erreu
+-   **Fixed:** #162 Affichage Date Rapport d'espionnage bloqué à 1970
 -   **Security:** #100 Sanitize DB variables
 
 ## 3.3.6 - 2019-06-15
--   **Added:** #123 Supprimer le dossier install après l'installation
 -   **Fixed:** #120 Vue Galaxie : Affichage RE Multiples
+-   **Added:** #123 Supprimer le dossier install après l'installation
 -   **Fixed:** #124 Colonne Dock Manquante dans la table parsedspy après Mise à jour
 -   **Security:** #44 PHP 7.0 Requis
 
 ## 3.3.5 - 2019-04-16
--   **Added:** #73 Token d'authentification pour API
--   **Added:** #67 ajout player_id ally id
--   **Added:** #63 Paramètre Vitesse univers configurable à l'installation
--   **Added:** #12 Ajout params pour install
 -   **Added:** #10 Abscence du Dock Spatial
+-   **Added:** #12 Ajout params pour install
 -   **Added:** #51 Information de version incomplet
--   **Fixed:** #97 Points par membres manquant pour les classement alliance
--   **Fixed:** #71 fix_token_3.3.4 (Mail)
--   **Fixed:** #49 Affichage message erreur espace personnelle ( Empire )
+-   **Added:** #63 Paramètre Vitesse univers configurable à l'installation
+-   **Added:** #67 ajout player_id ally id
+-   **Added:** #73 Token d'authentification pour API
+-   **Fixed:** #14 Limite Nombre de pts Classement atteint
+-   **Fixed:** #49 Affichage message erreur espace personnelle (Empire)
+-   **Fixed:** #53 Docker : Echec à la création du container
 -   **Fixed:** #57 bug update mod
 -   **Fixed:** #61 Fichier lang_mail.php manquant dans pt-br
--   **Fixed:** #14 Limite Nombre de pts Classement atteint
--   **Fixed:** #53 Docker : Echec à la création du container
+-   **Fixed:** #71 fix_token_3.3.4 (Mail)
+-   **Fixed:** #97 Points par membres manquant pour les classement alliance
 -   **Fixed:** #98 Update vers OGspy 3.3.5 depuis auto update
--   **Security:** #46 Chiffrement des mots de passes
 -   **Security:** #45 Agrandir la taille des mots de passe à 64 caractères
+-   **Security:** #46 Chiffrement des mots de passes
 -   **Removed:** #64  Remove GCM feature (Obsolete)
 
 ## 3.3.4 - 2018-10-15
