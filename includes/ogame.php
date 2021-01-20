@@ -1,8 +1,8 @@
 <?php
-/**
- * OGame games formulas and data
+/** @file includes/ogame.php
+ * OGame games formulas and data.
  * @package OGSpy
- * @subpackage Ogame Data
+ * @subpackage Ogame formula library
  * @author Kyser
  * @copyright Copyright &copy; 2012, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -14,9 +14,21 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 /**
+ *  @brief Get an Ogame ressources array.
+ *  
+ *  @param[in] int $metal,$cristal,$deut The needed ressources
+ *  @param[in] int $NRJ,$AM              Optional ressources (0 default)
+ *  @return array('M','C','D','NRJ','AM'), default is 0
+ */
+function ogame_array_ressource($metal, $cristal, $deut, $NRJ = 0, $AM = 0)
+{
+    return array('M'=>$metal, 'C'=>$cristal, 'D'=>$deut, 'NRJ'=>$NRJ, 'AM'=>$AM);
+}
+
+/**
  *  @brief Return position ressources bonus in Ogame.
  *  
- *  @param [in] int $position The wanted position
+ *  @param[in] int $position The wanted position
  *  @return array('M','C','D','NRJ','AM') of bonus, default is 0%
  */
 function ogame_production_position($position)
@@ -54,8 +66,8 @@ function ogame_production_position($position)
 /**
  *  @brief Calculates foreuse coefficient on base production.
  *  
- *  @param [in] array $user_building array with mine level and FOR number (array('M','C','D','FOR'))
- *  @param [in] array $user_data array with class and officiers infos (array('user_class'=>'COL'/...,'off_geologue' or 'off_full'))
+ *  @param[in] array $user_building array of mines level and FOR number (array('M','C','D','FOR'))
+ *  @param[in] array $user_data     array with class and officiers infos (array('user_class'=>'COL'/...,'off_geologue' or 'off_full'))
  *  @return array('bonus', 'nb_FOR_maxed') bonus=foreuse bonus coefficient ; nb_FOR_maxed=limit nb if too much
  */
 function ogame_production_bonus_foreuse($user_building, $user_data)
@@ -98,14 +110,14 @@ function ogame_production_bonus_foreuse($user_building, $user_data)
 /**
  *  @brief Calculates building/sat/for or base production and consumption.
  *  
- *  @param [in] string $building The wanted building/sat/for ('base','M','C','D','CES','CEF','SAT','FOR')
- *  @param [in] array $user_building Planet info ('M','C','D','CES','CEF','SAT','FOR','temperature_max','coordinates') 0 as default value
- *  @param [in] array $user_technology Techno info ('NRJ','Plasma') 
- *  @param [in] array $user_data User info (array('user_class'=>'COL'/...,'off_geologue' or 'off_full')
- *  @param [in] array $server_config Ogame univers info ('speed_uni',(bool)'final_calcul') / final_calcul permet de déterminer si les valeurs retournées seront manipulées avec les % de production ressources, et donc sans arrondi.
+ *  @param[in] string $building        The wanted building/sat/for ('base','M','C','D','CES','CEF','SAT','FOR')
+ *  @param[in] array  $user_building   Planet info ('M','C','D','CES','CEF','SAT','FOR','temperature_max','coordinates') 0 as default value
+ *  @param[in] array  $user_technology Techno info ('NRJ','Plasma') 0 as default value
+ *  @param[in] array  $user_data       User info (array('user_class'=>'COL'/...,'off_geologue' or 'off_full')
+ *  @param[in] array  $server_config   Ogame univers info ('speed_uni',(bool)'final_calcul') / final_calcul permet de déterminer si les valeurs retournées seront manipulées avec les % de production ressources, et donc sans arrondi.
  *  @return array('M','C','D','NRJ','AM') of production
  *  
- *  @details remplace consumption() et partiellement production(), production_sat(), production_foreuse()
+ *  @details remplace les fonctions consumption et partiellement production,production_sat,production_foreuse
  */
 function ogame_production_building($building, $user_building = null, $user_technology = null, $user_data = null, $server_config = null)
 {
@@ -199,17 +211,17 @@ function ogame_production_building($building, $user_building = null, $user_techn
 /**
  *  @brief Calculates planet production and consumption.
  *  
- *  @param [in] array $user_building Planet info ('M','C','D','CES','CEF','SAT','FOR','temperature_max','coordinates','M_percentage','C_percentage','D_percentage','CES_percentage','CEF_percentage','Sat_percentage','FOR_percentage',array 'booster_tab') 0 as default value
- *  @param [in] array $user_technology Techno info ('NRJ','Plasma') 
- *  @param [in] array $user_data User info (array('user_class'=>'COL'/...,'off_commandant','off_amiral','off_ingenieur','off_geologue', or 'off_full')
- *  @param [in] array $server_config Ogame univers info ('speed_uni')
+ *  @param[in] array $user_building   Planet info ('M','C','D','CES','CEF','SAT','FOR','temperature_max','coordinates','M_percentage','C_percentage','D_percentage','CES_percentage','CEF_percentage','Sat_percentage','FOR_percentage',array 'booster_tab') 0 as default value
+ *  @param[in] array $user_technology Techno info ('NRJ','Plasma') 
+ *  @param[in] array $user_data       User info (array('user_class'=>'COL'/...,'off_commandant','off_amiral','off_ingenieur','off_geologue', or 'off_full')
+ *  @param[in] array $server_config   Ogame univers info ('speed_uni')
  *  @return array('prod_reel,'prod_theorique','ratio','conso_E','prod_E',  //Production totale
-        'prod_CES','prod_CEF','prod_SAT','prod_FOR',   //production énergie de chaque unité
-        'prod_M','prod_C','prod_D','prod_base', //production ressources de chaque mine
-        'prod_booster','prod_off','prod_Plasma','prod_classe',   //production des bonus
-        'M','C','D','NRJ','AM', =>héritage du type ressource pour les valeurs retournées.
-        'nb_FOR_maxed',
-        ) à part conso_E/prod_E (float) les autres sont array('M','C','D','NRJ','AM')
+ *      'prod_CES','prod_CEF','prod_SAT','prod_FOR',   //production énergie de chaque unité
+ *      'prod_M','prod_C','prod_D','prod_base', //production ressources de chaque mine
+ *      'prod_booster','prod_off','prod_Plasma','prod_classe',   //production des bonus
+ *      'M','C','D','NRJ','AM', =>héritage du type ressource pour les valeurs retournées.
+ *      'nb_FOR_maxed',
+ *      ) à part conso_E/prod_E (float) les autres sont array('M','C','D','NRJ','AM')
  *  
  *  @details remplace ratio() et bilan_production_ratio()
  */
@@ -863,7 +875,7 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
 /**
  *  @brief Return planet position from coordinates.
  *  
- *  @param [in] string $coordinates planet coordinates (galaxy:system:position)
+ *  @param[in] string $coordinates planet coordinates (galaxy:system:position)
  *  @return int planet position
  */
 function ogame_find_planet_position($coordinates) {
@@ -878,11 +890,12 @@ function ogame_find_planet_position($coordinates) {
 }
 
 /**
- * Calculates the Planet storage capacity (Taille Hangar)
- * @param int $level Storage building Level
- * @return double capacity
+ * @brief Calculates the planet storage capacity (taille hangar).
+ *
+ * @param[in] int $level Storage building level
+ * @return float capacity
  */
-function depot_capacity($level)
+function ogame_depot_capacity($level)
 {
     $capacity = 10000;  // capacité par défaut
 
@@ -907,8 +920,8 @@ function astro_max_planete($level)
 /**
  *  @brief Calculates the price to upgrade an Ogame element to a defined level (only building and research).
  *  
- *  @param [in] string $name Name of building or research, like in name in database
- *  @param [in] int $level The wanted level
+ *  @param[in] string $name  Name of building or research, like in name in database
+ *  @param[in] int    $level The wanted level
  *  @return array('M', 'C','D, 'NRJ') ressources required to upgrade the building or technologies
  */
 function ogame_element_upgrade($name, $level)
@@ -1190,8 +1203,8 @@ function research_upgrade($research, $level)  { return ogame_element_upgrade($re
 /**
  *  @brief Calculates the price of an Ogame element to it current level.
  *  
- *  @param [in] string $name Name of building/research/fleet/defence, like in name in database
- *  @param [in] int $level The current level or the number of fleet/defence
+ *  @param[in] string $name  Name of building/research/fleet/defence, like in name in database
+ *  @param[in] int    $level The current level or the number of fleet/defence
  *  @return array('M', 'C','D, 'NRJ') ressources used to it current level
  */
 function ogame_element_cumulate($name, $level)
@@ -1430,29 +1443,29 @@ function ogame_element_cumulate($name, $level)
 
 /**
  *  @brief Calculates the price of a building to it current level.
- *  @param [in] string $building Name of building, like in name in database
- *  @param [in] $level The current level
+ *  @param[in] string $building Name of building, like in name in database
+ *  @param[in] int    $level The current level
  *  @return array('M', 'C','D, 'NRJ') ressources used to it current level
  */
 function building_cumulate($building, $level) { return ogame_element_cumulate($building, $level); }
 /**
  *  @brief Calculates the price of a number of defence.
- *  @param [in] string $defence Name of defence, like in name in database
- *  @param [in] $number The current number
+ *  @param[in] string $defence Name of defence, like in name in database
+ *  @param[in] int    $number The current number
  *  @return array('M', 'C','D, 'NRJ') ressources used to have this defence number
  */
 function defence_cumulate($defence, $number)  { return ogame_element_cumulate($defence, $number); }
 /**
  *  @brief Calculates the price of a number of fleet.
- *  @param [in] string $fleet Name of fleet, like in name in database
- *  @param [in] $number The current number
+ *  @param[in] string $fleet Name of fleet, like in name in database
+ *  @param[in] int    $number The current number
  *  @return array('M', 'C','D, 'NRJ') ressources used to have this fleet number
  */
 function fleet_cumulate($fleet, $number)      { return ogame_element_cumulate($fleet, $number); }
 /**
  *  @brief Calculates the price of a research to it current level.
- *  @param [in] string $research Name of research, like in name in database
- *  @param [in] $level The current level
+ *  @param[in] string $research Name of research, like in name in database
+ *  @param[in] int    $level The current level
  *  @return array('M', 'C','D, 'NRJ') ressources used to it current level
  */
 function research_cumulate($research, $level) { return ogame_element_cumulate($research, $level); }
@@ -1461,7 +1474,6 @@ function research_cumulate($research, $level) { return ogame_element_cumulate($r
  *  @brief Give database names of a buiding/research/fleet/defence/class/ressources.
  *  
  *  @return array('BAT'=>array, 'RECH'=>array, 'VSO'=>array, 'DEF'=>array, 'CLASS'=>array, 'RESS'=>array)
- *  
  */
 function ogame_get_element_names()
 {
@@ -1557,9 +1569,8 @@ function ogame_get_element_names()
 /**
  *  @brief Détermine si c'est un bâtiment, une recherche, un vaisseau, une défense ou une classe.
  *  
- *  @param [in] string $nom Nom à rechercher, correspond au nom en BDD
+ *  @param[in] string $nom Nom à rechercher, correspond au nom en BDD
  *  @return false|string 'BAT' bâtiment, 'RECH' recherche, 'DEF' défense, 'VSO' vaisseau, 'CLASS' classe et false sinon
- *  
  */
 function ogame_is_element($nom)
 {
@@ -1575,25 +1586,25 @@ function ogame_is_element($nom)
 
 /**
  *  @brief Is an Ogame defence ?
- *  @param [in] string $nom Name to look, like name in database
+ *  @param[in] string $nom Name to look, like name in database
  *  @return bool
  */
 function ogame_is_a_defence($nom)  { return ogame_is_element($nom) === 'DEF'; }
 /**
  *  @brief Is an Ogame fleet ?
- *  @param [in] string $nom Name to look, like name in database
+ *  @param[in] string $nom Name to look, like name in database
  *  @return bool
  */
 function ogame_is_a_fleet($nom)    { return ogame_is_element($nom) === 'VSO'; }
 /**
  *  @brief Is an Ogame building ?
- *  @param [in] string $nom Name to look, like name in database
+ *  @param[in] string $nom Name to look, like name in database
  *  @return bool
  */
 function ogame_is_a_building($nom) { return ogame_is_element($nom) === 'BAT'; }
 /**
  *  @brief Is an Ogame research ?
- *  @param [in] string $nom Name to look, like name in database
+ *  @param[in] string $nom Name to look, like name in database
  *  @return bool
  */
 function ogame_is_a_research($nom) { return ogame_is_element($nom) === 'RECH'; }
@@ -1601,8 +1612,8 @@ function ogame_is_a_research($nom) { return ogame_is_element($nom) === 'RECH'; }
 /**
  *  @brief Calculates the price of all element of type (building,defence,fleet,research).
  *  
- *  @param [in] array $user Array of element each planet or moon
- *  @param [in] string $type Type of element ('BAT' pour bâtiment, 'RECH' pour recherche, 'DEF' pour défense, 'VSO' pour vaisseau)
+ *  @param[in] array  $user Array of element each planet or moon
+ *  @param[in] string $type Type of element ('BAT' pour bâtiment, 'RECH' pour recherche, 'DEF' pour défense, 'VSO' pour vaisseau)
  *  @return float Total price (M+C+D).
  */
 function ogame_all_cumulate($user, $type)
@@ -1636,29 +1647,25 @@ function ogame_all_cumulate($user, $type)
 
 /**
  *  @brief Calculates the price of all building.
- *  
- *  @param [in] $user_building Info of planet or moon
+ *  @param[in] $user_building Info of planet or moon
  *  @return float Total price (M+C+D)
  */
 function all_building_cumulate($user_building) { return ogame_all_cumulate($user_building, 'BAT'); }
 /**
  *  @brief Calculates the price of all defence.
- *  
- *  @param [in] $user_defence Info of planet or moon
+ *  @param[in] $user_defence Info of planet or moon
  *  @return float Total price (M+C+D)
  */
 function all_defence_cumulate($user_defence)   { return ogame_all_cumulate($user_defence, 'DEF'); }
 /**
  *  @brief Calculates the price of all fleet.
- *  
- *  @param [in] $user_fleet Info of planet or moon
+ *  @param[in] $user_fleet Info of planet or moon
  *  @return float Total price (M+C+D)
  */
 function all_fleet_cumulate($user_fleet)       { return ogame_all_cumulate($user_fleet, 'VSO'); }
 /**
  *  @brief Calculates the price of all research.
- *  
- *  @param [in] $user_techno Info of technologies
+ *  @param[in] $user_techno Info of technologies
  *  @return float Total price (M+C+D)
  */
 function all_technology_cumulate($user_techno) { return ogame_all_cumulate($user_techno, 'RECH'); }
@@ -1677,8 +1684,8 @@ function all_lune_cumulate($user_building, $user_defence)
 /**
  *  @brief Calculates deut consommation for parking of a fleet.
  *  
- *  @param [in] int $conso The conso of the fleet
- *  @param [in] int $hour Number of hours in parking
+ *  @param[in] int $conso The conso of the fleet
+ *  @param[in] int $hour  Number of hours in parking
  *  @return float Deut conso for this hour of parking
  */
 function ogame_fleet_conso_statio($conso, $hour) {
@@ -1693,9 +1700,9 @@ function ogame_fleet_conso_statio($conso, $hour) {
 /**
  *  @brief Calculates technical data of a fleet or defence.
  *  
- *  @param [in] string $nom The name, like name in Database
- *  @param [in] array $user_techno The array of technologies
- *  @param [in] string|int $classe The user class //array('none','COL','GEN','EXP') - (1=Collectionneur)[0=aucune, 2=général, 3=explorateur])
+ *  @param[in] string     $nom         The name, like name in Database
+ *  @param[in] array      $user_techno The array of technologies
+ *  @param[in] string|int $classe      The user class //array('none','COL','GEN','EXP') - (1=Collectionneur)[0=aucune, 2=général, 3=explorateur])
  *  @return array('structure','bouclier','attaque','vitesse','fret','conso',(array)'rapidfire',(bool)'civil',(array)'cout') of the wanted fleet or defence.
  *      rapidfire=array('PT'=>x, ...) array of all fleet and defence; if x>0 then again else from
  *      cout=array of ogame_element_cumulate()=array('M','C','D','NRJ)
@@ -2034,8 +2041,8 @@ function ogame_elements_details($nom, $user_techno = null, $classe = 0)
 /**
  *  @brief Calculates technical data of all fleet/defence.
  *  
- *  @param [in] array $user_techno The array of technologies
- *  @param [in] string|int $classe The user class //array('none','COL','GEN','EXP') - (1=Collectionneur)[0=aucune, 2=général, 3=explorateur])
+ *  @param[in] array      $user_techno The array of technologies
+ *  @param[in] string|int $classe The user class //array('none','COL','GEN','EXP') - (1=Collectionneur)[0=aucune, 2=général, 3=explorateur])
  *  @return array of all fleet/defence with are array of details from ogame_elements_details()
  */
 function ogame_all_details($user_techno = null, $classe = 0)
@@ -2053,7 +2060,7 @@ function ogame_all_details($user_techno = null, $classe = 0)
 /**
  *  @brief Calculates technical data of Ogame requirement.
  *  
- *  @param [in] string $nom The name, like name in Database
+ *  @param[in] string $nom The name, like name in Database
  *  @return array('none','COL','GEN','EXP' : bool for class, 'CES',etc. : int for all bat/rech name in database)
  */
 function ogame_elements_requirement($nom)
@@ -2333,6 +2340,111 @@ function ogame_all_requirement()
 
     return $result;
 }
+
+/**
+ *  @brief Calculates cumulate lab network.
+ *  
+ *  @param[in] array $user_empire       From user_get_empire()
+ *  @param[in] int   $current_planet_id Current planet to run a research, if not best lab (theory).
+ *  @return int Number of cumulate lab network
+ */
+function ogame_labo_cumulate($user_empire, $current_planet_id = -1)
+{
+    $result = 0;
+//Valeurs IN par défaut :
+    if (!isset($user_empire['technology']['RRI']) || !is_numeric($user_empire['technology']['RRI'])) { $user_empire['technology']['RRI'] = 0; }
+
+    $labs        = array();
+    $current_lab = -1;
+    $nb_labo     = 1 + $user_empire['technology']['RRI'];
+
+    foreach ($user_empire['building'] as $planet) {
+        if (isset($planet['planet_id']) && isset($planet['Lab']) && is_numeric($planet['Lab'])) {
+            if ($planet['planet_id'] !== $current_planet_id) {
+                $labs[] = $planet['Lab'];
+            } else {
+                $current_lab = $planet['Lab'];
+            }
+        }
+    }
+    rsort($labs, SORT_NUMERIC);
+    if ($current_lab !== -1) {
+        $nb_labo--;
+        $result = $current_lab;
+    }
+    if ($nb_labo > count($labs)) {
+        $nb_labo = count($labs);
+    }
+    for ($i = 0 ; $i < $nb_labo ; $i++) {
+        $result += $labs[$i];
+    }
+    
+    return $result;
+}
+
+/**
+ *  @brief Calculates construction time of a OGame element bat/vso/def/rech.
+ *  
+ *  @param[in] string $name          The name, like name in Database
+ *  @param[in] int    $level         The level or number for def/vso
+ *  @param[in] array  $user_building Array of bat level ('CSp','UdR','UdN','Lab')
+ *  @param[in] int    $cumul_labo    Number of cumulate lab network (only for rech)
+ *  @param[in] array  $user_data     Array with the user class (array('user_class'=>'COL'/GEN/EXP/none))
+ *  @return float Time in seconds
+ */
+function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0, $user_data = null)
+{
+    static $BONUS_RECH_EXP = 0.25;   //-25% temps de recherche
+//Valeurs OUT par défaut :
+    $result = 0;
+//Valeurs IN par défaut :
+    if (!isset($user_building['CSp']) || !is_numeric($user_building['CSp'])) { $user_building['CSp'] = 0; }
+    if (!isset($user_building['UdR']) || !is_numeric($user_building['UdR'])) { $user_building['UdR'] = 0; }
+    if (!isset($user_building['UdN']) || !is_numeric($user_building['UdN'])) { $user_building['UdN'] = 0; }
+    if (!isset($user_building['Lab']) || !is_numeric($user_building['Lab'])) { $user_building['Lab'] = 0; }
+    if (!isset($user_data['user_class'])) { $user_data['user_class'] = 'none'; }
+
+    if ($cumul_labo === 0) {
+        $cumul_labo = $user_building['Lab'];
+    }
+    $type = ogame_is_element($name);
+    $cout = ogame_element_upgrade($name, $level);
+    switch ($type) {
+        case 'BAT':
+            //(Métal + Cristal) / (2500 * MAX(4 - niveau / 2; 1) * (1 + niveau Usine de robots) * 2^niveau Usine de Nanites )
+            $result = ($cout['M'] + $cout['C']);
+            $tmp    = 2500 * max(4 - $level / 2, 1);
+            $tmp   *= (1 + $user_building['UdR']) * pow(2, $user_building['UdN']);
+            $result = $result / $tmp;
+            break;
+        case 'VSO': //no break
+        case 'DEF':
+            $cout = ogame_element_cumulate($name, $level);
+            //(cristal + métal)/5000 * 2/(1 + niveau chantier spatial) * 0,5^niveau nanites
+            $result  = ($cout['M'] + $cout['C']) / 5000;
+            $result *= 2 / (1 + $user_building['CSp']);
+            $result *= pow(0.5, $user_building['UdN']);
+            break;
+        case 'RECH':
+            //(métal + cristal) / (1000 * (1 + niveau labo + n meilleurs niveaux des labos autres que le labo de la planète effectuant la recherche))
+            $result = ($cout['M'] + $cout['C']) / (1000 * (1 + $cumul_labo));
+            if ($user_data['user_class'] === 'EXP') {
+                $result = $result * (1 - $BONUS_RECH_EXP);
+            }
+            break;
+        default:
+            break;
+    }
+    if ($result !== 0) {
+        $result = floor($result * 60 * 60); //floor à la seconde
+        if ($result < 1) {
+            $result = 1;
+        }
+    }
+
+    return $result;  
+}
+//php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');var_dump($a=ogame_construction_time('NRJ',21,array('Lab'=>18,'CSp'=>12,'UdR'=>10,'UdN'=>7),234));echo gmdate('z:H:m:s',$a);"
 
 /**
  * Calcule la distance entre a et b, a - b ; en tenant en compte des univers arrondis.

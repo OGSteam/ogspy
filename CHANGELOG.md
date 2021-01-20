@@ -24,7 +24,7 @@
 -   **Fixed:** #293 Page Recherche : Légende indisponible 
 -   **Fixed:** #298 Retirer les refs externe, images avatar dev
 -   **Fixed:** Correction formule coût et prix.
--   **Fixed:** Multiple correction PHP (notice, warning) et HTML
+-   **Fixed:** Multiple correction PHP (notice, warning, error) et HTML
 -   **Security:** #171 Compatibilité PHP8, éléments dépréciés
 -   **Security:** Suppression référence externe (image page OGSteam)
 -   **Removed:** #168 Erreur SQL lors de la modification de l'ordre des colonies dans l'espace personnel
