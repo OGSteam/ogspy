@@ -1,5 +1,5 @@
 /*eslint camelcase: ["error", {properties: "never"}]*/
-/*eslint quotes: ["error", "single", { "avoidEscape": true }, { "allowTemplateLiterals": false }]*/
+/*eslint quotes: ["error", "single", { "avoidEscape": true }*/
 // Production par heure
 function production(building, level, temperatureMax, energy, plasma, position) {
 	if (typeof(plasma) == 'undefined') {
@@ -23,8 +23,8 @@ function production(building, level, temperatureMax, energy, plasma, position) {
 		bonus_class_energie = 0.10; //+10%
 	}
 	//Bonus position
-	bonus_position = 0;
-	if (building == 'C') {
+	var bonus_position = 0;
+	if (building === 'C') {
 		if (position == 1) {
 			bonus_position = 0.4;
 		} else if (position == 2) {
@@ -32,7 +32,7 @@ function production(building, level, temperatureMax, energy, plasma, position) {
 		} else if (position == 3) {
 			bonus_position = 0.2;
 		}
-	} else if (building == 'M') {
+	} else if (building === 'M') {
 		if (position == 8) {
 			bonus_position = 0.35;
 		} else if (position == 9 || position == 7) {

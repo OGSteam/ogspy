@@ -1,6 +1,6 @@
 /* JS OGSpy global */
 /*eslint camelcase: ["error", {properties: "never"}]*/
-/*eslint quotes: ["error", "single", { "avoidEscape": true }, { "allowTemplateLiterals": false }]*/
+/*eslint quotes: ["error", "single", { "avoidEscape": true }*/
 // includes/admin_members.php
 function _admin_visible(byId) {
 	document.getElementById(byId).style.visibility = 'visible';

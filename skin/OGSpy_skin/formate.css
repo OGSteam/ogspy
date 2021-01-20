@@ -40,7 +40,7 @@ p td {
   text-align: center;
 }
 
-table table { /* fond global des zones descriptifs et temps recherche, construction  et de la barre des ressources en haut au milieu*/
+table table { /* fond global des zones descriptifs et temps recherche, construction  et de la barre des ressources en haut au milieu */
   border: 0;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   font-size: 11px;
@@ -205,7 +205,7 @@ td.j {
   color: #B6C6E5;
 }
 
-td.k, td.k input { /* berechne calculer? button  background-image: url("img/bl01.PNG");*/
+td.k, td.k input { /* berechne calculer? button  background-image: url("img/bl01.PNG"); */
   text-align: center;
   color: #FFFFFF;
   background: transparent url("img/barredroite.PNG") no-repeat;
@@ -300,7 +300,7 @@ a:hover { /* Planet Title hover */
   font-family: Tahoma, sans-serif;
 }
 
-.style td:hover { /*taille cases barres latérales */
+.style td:hover { /* taille cases barres latérales */
   background-image: url("img/Mod01.jpg");
   border-top: 0;
   font-size: 11px;
@@ -365,7 +365,7 @@ a.menu:hover {
 a.menu_items, p.menu_items {
   display: block;
   color: #FFFFFF;
-  font-family: Verdana;
+  font-family: Verdana, sans-serif;
   font-kerning: auto;
   font-style: normal;
   font-size: 1em;
@@ -380,10 +380,6 @@ a.menu_items, p.menu_items {
 
 a.menu_items:hover {
   color: lightseagreen;
-}
-
-ul.menu {
-  padding-left: 20px;
 }
 
 a.menu1 {
@@ -423,6 +419,7 @@ ul.menu {
   font-weight: bold;
   font-size: 1em;
   display: block;
+  padding-left: 20px;
 }
 
 ul.menu.a.hover {
