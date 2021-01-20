@@ -2389,12 +2389,12 @@ function ogame_labo_cumulate($user_empire, $current_planet_id = -1)
  *  @param[in] int    $level         The level or number for def/vso
  *  @param[in] array  $user_building Array of bat level ('CSp','UdR','UdN','Lab')
  *  @param[in] int    $cumul_labo    Number of cumulate lab network (only for rech)
- *  @param[in] array  $user_data     Array with the user class (array('user_class'=>'COL'/GEN/EXP/none))
+ *  @param[in] array  $user_class    User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
  *  @return float Time in seconds
  */
-function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0, $user_data = null)
+function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0, $user_class = 'none')
 {
-    static $BONUS_RECH_EXP = 0.25;   //-25% temps de recherche
+    static $RECH_BONUS_EXP = 0.25;   //-25% temps de recherche
 //Valeurs OUT par défaut :
     $result = 0;
 //Valeurs IN par défaut :
@@ -2402,7 +2402,6 @@ function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0,
     if (!isset($user_building['UdR']) || !is_numeric($user_building['UdR'])) { $user_building['UdR'] = 0; }
     if (!isset($user_building['UdN']) || !is_numeric($user_building['UdN'])) { $user_building['UdN'] = 0; }
     if (!isset($user_building['Lab']) || !is_numeric($user_building['Lab'])) { $user_building['Lab'] = 0; }
-    if (!isset($user_data['user_class'])) { $user_data['user_class'] = 'none'; }
 
     if ($cumul_labo === 0) {
         $cumul_labo = $user_building['Lab'];
@@ -2428,8 +2427,8 @@ function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0,
         case 'RECH':
             //(métal + cristal) / (1000 * (1 + niveau labo + n meilleurs niveaux des labos autres que le labo de la planète effectuant la recherche))
             $result = ($cout['M'] + $cout['C']) / (1000 * (1 + $cumul_labo));
-            if ($user_data['user_class'] === 'EXP') {
-                $result = $result * (1 - $BONUS_RECH_EXP);
+            if ($user_class === 'EXP') {
+                $result = $result * (1 - $RECH_BONUS_EXP);
             }
             break;
         default:
@@ -2483,4 +2482,49 @@ function calc_distance($a, $b, $type, $typeArrondi = true)
         return abs($a - $b); //|a-b|
     }
 }
+
+/**
+ *  @brief Calculates phalanx range.
+ *  
+ *  @param[in] int   $level         Level of the phalanx
+ *  @param[in] array $user_class    User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
+ *  @return Range in system
+ */
+function ogame_phalanx_range($level, $user_class = 'none')
+{
+    static $PHA_BONUS_EXP = 0.2;   //-20%
+
+    $bonus_class = 0;
+    if ($user_class === 'EXP') {
+        $bonus_class = $PHA_BONUS_EXP;
+    }
+
+    return floor( (pow($level, 2) - 1) * (1 + $bonus_class) );
+}
+
+/**
+ *  @brief Calculates MIP range.
+ *  
+ *  @param[in] int $impulsion Techno impulsion (RI)
+ *  @return int Range in system
+ */
+function ogame_missile_range($impulsion = 1)
+{
+    return 5 * $impulsion - 1;
+}
+
+/**
+ *  @brief Calculates MIP speed.
+ *  
+ *  @param[in] int $nb_system Number of sub-system from current planet
+ *  @param[in] int $speed_uni Univers speed
+ *  @return int Speed in seconds
+ */
+function ogame_missile_speed($nb_system, $speed_uni = 1)
+{
+    return (30 + 60 * $nb_system) * $speed_uni;
+}
+
+
+
 

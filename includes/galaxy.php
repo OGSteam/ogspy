@@ -621,7 +621,6 @@ function galaxy_getfavorites()
     return $favorite;
 }
 
-
 /**
  * Affichage classement
  *
@@ -648,7 +647,6 @@ function galaxy_show_ranking($model, $ranking_table, $date = null)
     $ranking = $data_rankings->get_all_ranktable_bydate($last_ranking, 1, 99999);
     return $ranking;
 }
-
 
 /**
  * Affichage classement des joueurs
@@ -1120,10 +1118,6 @@ function galaxy_get_phalanx($galaxy, $system, $classe = 'none')
         $ally_protection = explode(",", $server_config["ally_protection"]);
     }
 
-    $bonus_classe = 0;
-    if ($classe === 'EXP') {
-        $bonus_classe = 0.2; //+20%
-    }
     $phalanxer = array();
     $data_computed = array();
 
@@ -1133,7 +1127,7 @@ function galaxy_get_phalanx($galaxy, $system, $classe = 'none')
         //Construction liste phalanges
         foreach ($data as $phalanx) {
             $arrondi_type = 0;
-            $phalanx_range = (pow($phalanx['level'], 2) - 1) * (1 + $bonus_classe);
+            $phalanx_range = ogame_phalanx_range($phalanx['level'], $classe);
             $system_lower_range = $phalanx['system'] - $phalanx_range;
             if ($system_lower_range < 1) {
                 $system_lower_range = $system_lower_range + $server_config['num_of_systems'];
@@ -1637,7 +1631,6 @@ function UNparseRE($id_RE)
     return ($template);
 }
 
-
 /**
  * coordonnees des missiles A PORTEE
  *
@@ -1645,7 +1638,7 @@ function UNparseRE($id_RE)
  * @param int $system
  * @return string
  */
-function portee_missiles($galaxy, $system)
+function galaxy_portee_missiles($galaxy, $system)
 {
     global  $server_config;
     //todo prevoir jointure de table
@@ -1693,7 +1686,7 @@ function portee_missiles($galaxy, $system)
 
 
             // calcul de la porté du silo
-            $porte_missil = ($niv_reac_impuls * 5) - 1; // Portée : (Lvl 10 * 5) - 1 = 49
+            $porte_missil = ogame_missile_range($niv_reac_impuls); // Portée : (Lvl 10 * 5) - 1 = 49
 
             // calcul de la fenetre
             $vari_missil_moins_tmp = ($sysSol_missil - $porte_missil) % $server_config['num_of_systems'];     // ne peux pas

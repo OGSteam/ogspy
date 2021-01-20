@@ -48,7 +48,7 @@ $tInfosGroups = (new \Ogsteam\Ogspy\Model\Group_Model())->get_group_rights($user
 if ($tInfosGroups["server_show_positionhided"] == 1 )
 {
     if (($server_config["portee_missil"] != "0" && $server_config["portee_missil"] != "")) {
-        $missil = portee_missiles($galaxy, $system);
+        $missil = galaxy_portee_missiles($galaxy, $system);
     }
 }
 
