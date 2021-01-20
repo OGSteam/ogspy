@@ -1,51 +1,54 @@
 a {
-	color: Silver;
-	text-decoration: none;
+  color: Silver;
+  text-decoration: none;
 }
 
 a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 h1 {
-	font-size: 12px;
-	font-weight: bold;	
+  font-size: 12px;
+  font-weight: bold;
 }
 
 h2 {
-	font-size: 12px;
-	font-weight: bold;	
+  font-size: 12px;
+  font-weight: bold;
 }
 
-LI { list-style-type: square }
-
+li { list-style-type: square; }
 
 body {
-	background : #525A73;
+  background: #525A73;
 }
+
 .text1 {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	color: White;
-	text-align : left;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  color: White;
+  text-align: left;
 }
+
 .text2 {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	color: Silver;
-	text-align : left;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  color: Silver;
+  text-align: left;
 }
+
 .titre1 {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	font-weight: bold;
-	color: #FFFFFF;
-	text-decoration : none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-decoration: none;
 }
+
 .titre2 {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	font-weight: bold;
-	color: #cccccc;
-	text-decoration : none;	
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  color: #cccccc;
+  text-decoration: none;
 }
