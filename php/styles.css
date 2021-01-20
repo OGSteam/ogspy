@@ -20,7 +20,7 @@ h2 {
 li { list-style-type: square; }
 
 body {
-  background: #525A73;
+  background: #525a73;
 }
 
 .text1 {
@@ -41,7 +41,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
   font-weight: bold;
-  color: #FFFFFF;
+  color: #fff;
   text-decoration: none;
 }
 
@@ -49,6 +49,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
   font-weight: bold;
-  color: #cccccc;
+  color: #ccc;
   text-decoration: none;
 }

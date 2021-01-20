@@ -127,7 +127,7 @@ function foreuse_max(levelM, levelC, levelD) {
 	if (document.getElementById('class_collect').value == 1 && document.getElementById('off_geologue').value == 1) {
 			bonus_foreuse_max = 0.1; //+10%
 	}
-	return (parseInt(levelM) + parseInt(levelC) + parseInt(levelD)) * 8 * (1 + bonus_foreuse_max);
+	return (parseInt(levelM,10) + parseInt(levelC,10) + parseInt(levelD,10)) * 8 * (1 + bonus_foreuse_max);
 }
 
 // Consommation d"énergie
@@ -202,7 +202,7 @@ function update_page() {
 	var Sat_1 = [];
 	var For_1 = [];
 
-	var nombrePlanete = parseInt(document.getElementById('simu').title); // on passe par le titre du tableau pour recuperer le nombre de planetes, la recuperation du nb de colonne ne marchant pas ...
+	var nombrePlanete = parseInt(document.getElementById('simu').title,10); // on passe par le titre du tableau pour recuperer le nombre de planetes, la recuperation du nb de colonne ne marchant pas ...
 
 	var i = 0;
 	for (j = 101; j <= nombrePlanete + 100; j++) {
@@ -250,7 +250,7 @@ function update_page() {
 
 		//Ratio de consommation d'énergie
 		var ratio_conso = 0;
-		if (energie_conso != 0) {
+		if (energie_conso !== 0) {
 			ratio_conso = NRJ_1[i] / energie_conso;
 			if (ratio_conso > 1) ratio_conso = 1;
 		}
