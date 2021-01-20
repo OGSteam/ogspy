@@ -2499,7 +2499,7 @@ function ogame_phalanx_range($level, $user_class = 'none')
         $bonus_class = $PHA_BONUS_EXP;
     }
 
-    return floor( (pow($level, 2) - 1) * (1 + $bonus_class) );
+    return round( (pow($level, 2) - 1) * (1 + $bonus_class) );
 }
 
 /**
