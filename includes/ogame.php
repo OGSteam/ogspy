@@ -2525,6 +2525,90 @@ function ogame_missile_speed($nb_system, $speed_uni = 1)
     return (30 + 60 * $nb_system) * $speed_uni;
 }
 
+/**
+ *  @brief Calculates additional case given by terraformer.
+ *  
+ *  @param[in] int $level The terra level
+ *  @return int Number of additional case
+ */
+function ogame_terra_case($level)
+{
+    return floor(5.5 * $level);
+}
 
+/**
+ *  @brief Calculates the evolve coefficient of a building and research.
+ *  
+ *  @param[in] string $name Building/research name, as in Database
+ *  @return array('M', 'C','D, 'NRJ') array of coefficient by ressource
+ */
+function ogame_element_evolve_coef($name)
+{
+    $coefficient = ogame_array_ressource(0, 0, 0);
+    switch ($name) {
+        case 'M': //no break
+        case 'D': //no break
+        case 'CES':
+            $coefficient['M'] = 1.5;
+            $coefficient['C'] = 1.5;
+            break;
+        case 'C':
+            $coefficient['M'] = 1.6;
+            $coefficient['C'] = 1.6;
+            break;
+        case 'CEF':
+            $coefficient['M'] = 1.8;
+            $coefficient['C'] = 1.8;
+            $coefficient['D'] = 1.8;
+            break;
+        case 'Dock':
+            $coefficient['M']   = 5;
+            $coefficient['C']   = 5;
+            $coefficient['D']   = 5;
+            $coefficient['NRJ'] = 2.5;
+            break;
+        case 'Astrophysique':
+            $coefficient['M'] = 1.75;
+            $coefficient['C'] = 1.75;
+            $coefficient['D'] = 1.75;
+            break;
+        case 'Graviton':
+            $coefficient['NRJ'] = 3;
+            break;
+        default:
+            $coefficient['M']   = 2;
+            $coefficient['C']   = 2;
+            $coefficient['D']   = 2;
+            $coefficient['NRJ'] = 2;
+            break;
+    }
 
+    return $coefficient;
+}
 
+/**
+ *  @brief Calculates destroy price of a building.
+ *  
+ *  @param[in] string $name       Building name, as in Database
+ *  @param[in] int    $level      Building level
+ *  @param[in] int    $techno_ions Level of techno ions
+ *  @return false|array('M', 'C','D, 'NRJ'), false if undestroyable
+ */
+function ogame_building_destroy($name, $level, $techno_ions = 0)
+{ // Coût de démolition du niveau X à X-1 = arrondi.inf( ((cout construction niveau X à X+1) / coefficient_dévolution^2) * (1 - 0,04 * technologie_ion) )
+    //Bâtiments indestructibles :
+    if ($name === 'Ter' || $name === 'Dock' || $name === 'BaLu') {
+        return false;
+    }
+
+    $result      = ogame_array_ressource(0, 0, 0);
+    $coefficient = ogame_element_evolve_coef($name);
+    $couts       = ogame_element_upgrade($name, $level + 1);
+    foreach ($couts as $ress=>$cout) {
+        if ($coefficient[$ress] !== 0) {
+            $result[$ress] = floor( ($cout / pow($coefficient[$ress], 2)) * (1 - 0.04 * $techno_ions) );
+        }
+    }
+
+    return $result;
+}
