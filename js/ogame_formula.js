@@ -1,5 +1,4 @@
 /*eslint camelcase: ["error", {properties: "never"}]*/
-/*eslint quotes: ["error", "single", { "avoidEscape": true }*/
 // Production par heure
 function production(building, level, temperatureMax, energy, plasma, position) {
 	if (typeof(plasma) == 'undefined') {

@@ -3,7 +3,8 @@
 -   **Added:** #148 Formula library PHP, helper formule - centralisation des formules
 -   **Added:** #150 Formula library PHP, Ajout centralisation infos flotte/def (vitesse,fret,rapidfire,etc.)
 -   **Added:** Formula library PHP, Ajout centralisation requirements des unités Ogame
--   **Added:** Formula library PHP, Centralisation des prix, coût et cumul, pour def/vso/bat/recherche
+-   **Added:** Formula library PHP, Centralisation des prix, coût et cumul et destruction, temps de construction pour def/vso/bat/recherche
+-   **Added:** Formula library PHP, Ajout centralisation portée missiles et phalange
 -   **Added:** Ajout affichage point dans l'espace perso
 -   **Added:** Ajout des langues Bosniens et Croate (bs, bs_BA, hr, hr_HR)
 -   **Added:** Ajout prise en charge Ogame V7 et des nouveaux boosters
