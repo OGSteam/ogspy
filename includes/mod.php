@@ -291,7 +291,7 @@ function mod_update()
     $filename = 'mod/' . $mod['root'] . '/version.txt';
     // On récupère les données du fichier version.txt
     $file = file($filename);
-    $mod_version = trim($file[1]);
+    // $mod_version = trim($file[1]);   //TODO:Unused_code
     $mod_config = trim($file[2]);
     // On explode la chaine d'information
     $value_mod = explode(',', $mod_config);

@@ -39,6 +39,9 @@
 function autoComplete(field, select, property, forcematch) {
     var found = false;
 	var i;
+	if (property !== 'text' || property !== 'value') {
+		return;
+	}
     for (i = 0; i < select.options.length; i++) {
         if (select.options[i][property].toUpperCase().indexOf(field.value.toUpperCase()) === 0) {
             found = true;

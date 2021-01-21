@@ -33,11 +33,13 @@ function load_lang_file($ui_lang, $filename, $parent_dir = ".") {
  * @param string $format Le type de format final à encoder [défaut=HTML]
  * @return string le texte encodé.
  */
-function print_lang($texte, $format = 'HTML') {
-    //Pour HTML
-    $text = htmlspecialchars($texte, ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE, 'UTF-8');
-    // $text = nl2br($text, false);
-    $text = str_replace( array("\r\n", "\r", "\n"), '<br>', $text ); //Afin de retirer les retours à ligne, non supp par nl2br
+function lang_print($texte, $format = 'HTML') {
+    $text = '';
+    if ($format === 'HTML') { //Pour HTML
+        $text = htmlspecialchars($texte, ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE, 'UTF-8');
+        // $text = nl2br($text, false);
+        $text = str_replace( array("\r\n", "\r", "\n"), '<br>', $text ); //Afin de retirer les retours à ligne, non supp par nl2br
+    }
 
     return $text;
 }
@@ -49,9 +51,9 @@ function print_lang($texte, $format = 'HTML') {
  * @return tableau encodé
  *
  */
-function secure_lang($s_lang) {
+function lang_secure($s_lang) {
     foreach($s_lang as $key => $value){
-        $s_lang[$key] = print_lang($value);
+        $s_lang[$key] = lang_print($value);
     }
     return $s_lang;
 }
@@ -86,4 +88,4 @@ if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
 }
 
 //TODO: Nettoyer les fichiers de lang avant ! 
-// $lang = secure_lang($lang);
+// $lang = lang_secure($lang);

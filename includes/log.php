@@ -634,7 +634,7 @@ function log_purge()
     $path = opendir("$root");
     while ($file = readdir($path)) {
         if ($file != "." && $file != "..") {
-            if (is_dir($root . $file) && intval($file) < $limit && @preg_match("/[0-9]{6}/", $file)) {
+            if (is_dir($root . $file) && intval($file) < $limit && preg_match("/[0-9]{6}/", $file)) {
                 $directories[] = $file;
             }
         }
@@ -651,7 +651,7 @@ function log_purge()
 
         while ($file = readdir($path)) {
             if ($file != "." && $file != "..") {
-                $extension = substr($file, (strrpos($file, ".") + 1));
+                // $extension = substr($file, (strrpos($file, ".") + 1));   //TODO:Unused_code
                 unlink($root . $d . "/" . $file);
             }
         }

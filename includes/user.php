@@ -411,7 +411,7 @@ function member_user_set()
 function user_profile_token_updater($user_id)
 {
     //todo mettre dans un helper ( poru réutilisation generate password / id ogspy (parameters) , token login, ... )
-    //TODO : $user_token sort d'où, d'une globale ?
+    global $user_token;
 
     $new_token = bin2hex(random_bytes(32));
     $next_year = time() + (365 * 24 * 60 * 60);
@@ -515,7 +515,7 @@ function user_set_general($user_id, $user_name = null, $user_password_s = null, 
 /**
  * Enregistrement des droits et status utilisateurs
  * @param $user_id
- * @param null $user_admin todo non utilisé !! a supprimer
+ * @param null $user_admin
  * @param null $user_active
  * @param null $user_coadmin
  * @param null $management_user
@@ -928,23 +928,21 @@ function user_get_empire($user_id)
 /**
  * Récuperation du nombre de  planete de l utilisateur.
  *
- * @param $id
+ * @param $user_id
  * @return int|the
  */
-function find_nb_planete_user($id)
+function find_nb_planete_user($user_id)
 {
-    global $user_data;
-    return (new User_Building_Model())->get_nb_planets($user_data["user_id"]);
+    return (new User_Building_Model())->get_nb_planets($user_id);
 }
 
 /**
- * @param $id
+ * @param $user_id
  * @return int Nb of moons
  */
-function find_nb_moon_user($id)
+function find_nb_moon_user($user_id)
 {
-    global $user_data;
-    return (new User_Building_Model())->get_nb_moons($user_data["user_id"]);
+    return (new User_Building_Model())->get_nb_moons($user_id);
 }
 
 /**
@@ -1375,7 +1373,6 @@ function usergroup_get($group_id = false)
  */
 function usergroup_setauth()
 {
-    global $db, $user_data;
     global $pub_group_id, $pub_group_name, $pub_server_set_system, $pub_server_set_spy,
            $pub_server_set_rc, $pub_server_set_ranking, $pub_server_show_positionhided, $pub_ogs_connection,
            $pub_ogs_set_system, $pub_ogs_get_system, $pub_ogs_set_spy, $pub_ogs_get_spy, $pub_ogs_set_ranking,
@@ -1464,8 +1461,6 @@ function usergroup_setauth()
  */
 function usergroup_member($group_id)
 {
-    global $db, $user_data;
-
     if (!isset($group_id) || !is_numeric($group_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }

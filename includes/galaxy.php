@@ -474,12 +474,13 @@ function galaxy_ally_position($step = 50)
         }
     }
 
-    $pub_ally_protection = $allied = array();
+    $pub_ally_protection = array();
+    // $allied = array();       //TODO:Unused_code
+    // if ($server_config["allied"] != "") {
+        // $allied = explode(",", $server_config["allied"]);
+    // }
     if ($server_config["ally_protection"] != "") {
         $pub_ally_protection = explode(",", $server_config["ally_protection"]);
-    }
-    if ($server_config["allied"] != "") {
-        $allied = explode(",", $server_config["allied"]);
     }
 
     $statistics = array();
@@ -495,7 +496,7 @@ function galaxy_ally_position($step = 50)
             $statistics[$pub_ally_name][0][0] = null;
             continue;
         }
-        // $friend = false;
+        // $friend = false; //TODO:Unused_code
         // if (in_array($pub_ally_name, $allied)) {
             // $friend = true;
         // }
@@ -506,7 +507,7 @@ function galaxy_ally_position($step = 50)
                 $population = array();
                 $population = $Universe_Model->get_ally_position($galaxy, $system, ($system + $step - 1), $pub_ally_name);
                 $nb_planet = $Universe_Model->sql_affectedrows();
-                //$nb_planet =  count($population);
+                //$nb_planet =  count($population);     //TODO:Unused_code
 
                 $statistics[$pub_ally_name][$galaxy][$system] = array("planet" => $nb_planet, "population" => $population);
             }
@@ -529,8 +530,7 @@ function galaxy_ally_position($step = 50)
  */
 function galaxy_reportspy_show()
 {
-    global $pub_galaxy, $pub_system, $pub_row, $pub_spy_id, $server_config;
-    //todo $pub_spy_id a gerer ?
+    global $pub_galaxy, $pub_system, $pub_row, $server_config;
 
     if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_row, "Num")) {
         return false;
