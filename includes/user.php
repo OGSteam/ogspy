@@ -804,7 +804,7 @@ function user_set_all_empire_resync_id()
 
 
     $new_planet_id = 101;
-    foreach ($planet_position as $cle => $valeur) {
+    foreach ($planet_position as $valeur) {
         $User_Building_Model->update_planet_id($user_data["user_id"], $valeur, $new_planet_id);
         $User_Defense_Model->update_planet_id($user_data["user_id"], $valeur, $new_planet_id);
         $new_planet_id++;
@@ -813,7 +813,7 @@ function user_set_all_empire_resync_id()
     // on ressort les complexes planete / lune ayant la meme cle
     $complexe = array_intersect_key($planet_position, $moon_position);
     /// on passe les id se modifiant a 300
-    foreach ($complexe as $cle_com => $valeur_com) {
+    foreach (array_keys($complexe) as $cle_com) {
         $User_Defense_Model->update_moon_id($user_data["user_id"], $moon_position[$cle_com], $planet_position[$cle_com] + 200);
         $User_Building_Model->update_moon_id($user_data["user_id"], $moon_position[$cle_com], $planet_position[$cle_com] + 200);
     }
@@ -1098,7 +1098,7 @@ function user_del_building()
  */
 function user_move_empire()
 {
-    global $db, $user_data;
+    global $user_data;
     global $pub_planet_id, $pub_left, $pub_right;
 
     $User_Building_Model = new User_Building_Model();
@@ -1643,7 +1643,7 @@ function UNparseRC($id_RC)
     // mise en forme des data pour affichage
     $dateRC = $RC["dateRC"];
     $coordinates = $RC["coordinates"];
-    $nb_rounds = $RC["nb_rounds"];
+    // $nb_rounds = $RC["nb_rounds"];
     $victoire = $RC["victoire"];
     $pertes_A = $RC["pertes_A"];
     $pertes_D = $RC["pertes_D"];
@@ -1665,7 +1665,7 @@ function UNparseRC($id_RC)
         if ($round['numround'] === '0' ) continue;
 
         // mise en forme des data pour affichage
-        $id_rcround = $round["id_rcround"];
+        // $id_rcround = $round["id_rcround"];
         $attaque_tir = $round["attaque_tir"];
         $attaque_puissance = $round["attaque_puissance"];
         $attaque_bouclier = $round["attaque_bouclier"];
@@ -1697,21 +1697,21 @@ function UNparseRC($id_RC)
             $Armes = $attak["Armes"];
             $Bouclier = $attak["Bouclier"];
             $Protection = $attak["Protection"];
-            $PT = $attak["PT"];
-            $GT = $attak["GT"];
-            $CLE = $attak["CLE"];
-            $CLO = $attak["CLO"];
-            $CR = $attak["CR"];
-            $VB = $attak["VB"];
-            $VC = $attak["VC"];
-            $REC = $attak["REC"];
-            $SE = $attak["SE"];
-            $BMD = $attak["BMD"];
-            $DST = $attak["DST"];
-            $EDLM = $attak["EDLM"];
-            $TRA = $attak["TRA"];
-            $ECL = $attak["ECL"];
-            $FAU = $attak["FAU"];
+            // $PT = $attak["PT"];
+            // $GT = $attak["GT"];
+            // $CLE = $attak["CLE"];
+            // $CLO = $attak["CLO"];
+            // $CR = $attak["CR"];
+            // $VB = $attak["VB"];
+            // $VC = $attak["VC"];
+            // $REC = $attak["REC"];
+            // $SE = $attak["SE"];
+            // $BMD = $attak["BMD"];
+            // $DST = $attak["DST"];
+            // $EDLM = $attak["EDLM"];
+            // $TRA = $attak["TRA"];
+            // $ECL = $attak["ECL"];
+            // $FAU = $attak["FAU"];
 
 
             $key = '';
@@ -1759,33 +1759,33 @@ function UNparseRC($id_RC)
             $Armes = $defenses["Armes"];
             $Bouclier = $defenses["Bouclier"];
             $Protection = $defenses["Protection"];
-            $PT = $defenses["PT"];
-            $GT = $defenses["GT"];
-            $CLE = $defenses["CLE"];
-            $CLO = $defenses["CLO"];
-            $CR = $defenses["CR"];
-            $VB = $defenses["VB"];
-            $VC = $defenses["VC"];
-            $REC = $defenses["REC"];
-            $SE = $defenses["SE"];
-            $BMD = $defenses["BMD"];
-            $DST = $defenses["DST"];
-            $EDLM = $defenses["EDLM"];
-            $TRA = $defenses["TRA"];
-            $ECL = $attak["ECL"];
-            $FOR = $attak["FOR"];
-            $FAU = $attak["FAU"];
+            // $PT = $defenses["PT"];
+            // $GT = $defenses["GT"];
+            // $CLE = $defenses["CLE"];
+            // $CLO = $defenses["CLO"];
+            // $CR = $defenses["CR"];
+            // $VB = $defenses["VB"];
+            // $VC = $defenses["VC"];
+            // $REC = $defenses["REC"];
+            // $SE = $defenses["SE"];
+            // $BMD = $defenses["BMD"];
+            // $DST = $defenses["DST"];
+            // $EDLM = $defenses["EDLM"];
+            // $TRA = $defenses["TRA"];
+            // $ECL = $attak["ECL"];
+            // $FOR = $attak["FOR"];
+            // $FAU = $attak["FAU"];
 
-            $SAT = $defenses["SAT"];
+            // $SAT = $defenses["SAT"];
 
-            $LM = $defenses["LM"];
-            $LLE = $defenses["LLE"];
-            $LLO = $defenses["LLO"];
-            $CG = $defenses["CG"];
-            $AI = $defenses["AI"];
-            $LP = $defenses["LP"];
-            $PB = $defenses["PB"];
-            $GB = $defenses["GB"];
+            // $LM = $defenses["LM"];
+            // $LLE = $defenses["LLE"];
+            // $LLO = $defenses["LLO"];
+            // $CG = $defenses["CG"];
+            // $AI = $defenses["AI"];
+            // $LP = $defenses["LP"];
+            // $PB = $defenses["PB"];
+            // $GB = $defenses["GB"];
 
 
             $key = '';

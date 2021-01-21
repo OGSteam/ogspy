@@ -241,7 +241,6 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 
 function create_curves($_player, $_date_min, $_date_max, $_comp)
 {
-    global $db;
     $retour = "";
 
     // todo quel est ce $contenur ?

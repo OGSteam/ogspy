@@ -539,7 +539,7 @@ class User_Model extends Model_Abstract
     public function get_nb_active_users()
     {
         $request = "SELECT `user_id` FROM " . TABLE_USER . " WHERE `user_active` = '1'";
-        $result = $this->db->sql_query($request);
+        $this->db->sql_query($request);
         return $this->db->sql_numrows();
     }
 

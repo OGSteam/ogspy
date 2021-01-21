@@ -495,10 +495,10 @@ function galaxy_ally_position($step = 50)
             $statistics[$pub_ally_name][0][0] = null;
             continue;
         }
-        $friend = false;
-        if (in_array($pub_ally_name, $allied)) {
-            $friend = true;
-        }
+        // $friend = false;
+        // if (in_array($pub_ally_name, $allied)) {
+            // $friend = true;
+        // }
 
         for ($galaxy = 1; $galaxy <= $server_config['num_of_galaxies']; $galaxy++) {
             for ($system = 1; $system <= $server_config['num_of_systems']; $system = $system + $step) {
@@ -566,7 +566,7 @@ function galaxy_reportspy_show()
  */
 function galaxy_reportrc_show()
 {
-    global $pub_galaxy, $pub_system, $pub_row, $server_config;
+    global $pub_galaxy, $pub_system, $pub_row, $server_config; 
 
     if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_row, "Num")) {
         return false;
@@ -769,11 +769,11 @@ function galaxy_show_ranking_ally()
     // selection de rank max !
     $maxrank = max($Rankings_Ally_Model->select_max_rank_row());
 
-    if (isset($pub_suborder) && $pub_suborder == "member") {
-        $pub_order_by2 = "points_per_member desc";
-    } else {
-        $pub_order_by2 = "rank";
-    }
+    // if (isset($pub_suborder) && $pub_suborder == "member") {
+        // $pub_order_by2 = "points_per_member desc";
+    // } else {
+        // $pub_order_by2 = "rank";
+    // }
 
     if (!isset($pub_interval)) {
         $pub_interval = 1;
@@ -787,7 +787,6 @@ function galaxy_show_ranking_ally()
     $order = array();
     $ranking = array();
     $ranking_available = array();
-    $table = array();
 
     // on determine l id du pub order
     $id = (array_keys($name, $pub_order_by));
@@ -1341,11 +1340,11 @@ function UNparseRE($id_RE)
     $sep_mille = ".";
 
     // /!\ todo pattern "Lune" n'ezst plus determinant
-    if (preg_match('/\(Lune\)/', $row['planet_name'])) {
-        $moon = 1;
-    } else {
-        $moon = 0;
-    }
+    // if (preg_match('/\(Lune\)/', $row['planet_name'])) {
+        // $moon = 1;
+    // } else {
+        // $moon = 0;
+    // }
 
     $dateRE = date('m-d H:i:s', $row['dateRE']);
     $template = '<table border="0" cellpadding="2" cellspacing="0" align="center">
@@ -1662,13 +1661,13 @@ function galaxy_portee_missiles($galaxy, $system)
         $base_joueur = $User_building["user_id"];
         $base_id_planet = $User_building["planet_id"];
         $base_coord = $User_building["coordinates"];
-        $base_missil = $User_building["Silo"];
+        // $base_missil = $User_building["Silo"];
 
         // sépare les coords
         $missil_coord = explode(':', $base_coord);
         $galaxie_missil = $missil_coord[0];
         $sysSol_missil = $missil_coord[1];
-        $planet_missil = $missil_coord[2]; // Inutile ?
+        // $planet_missil = $missil_coord[2]; // Inutile ?
 
         // recherche le niveau du réacteur du joueur
         $tUser_Technology =  $User_Technology_Model->select_user_technologies($base_joueur);

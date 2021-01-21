@@ -1016,7 +1016,6 @@ function generate_key()
 */
 function booster_lire_bdd($id_player, $id_planet)
 {
-    global $db;
     $result = NULL;
     $User_Building_Model = new User_Building_Model();
     $tBoosters = $User_Building_Model->get_all_booster_player($id_player);
