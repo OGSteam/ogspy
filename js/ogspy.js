@@ -55,7 +55,7 @@ function ogspy_runTimer() {
 		var date = new Date();
 		var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
 		
-		document.getElementById('datetime').innerHTML = date.toLocaleString('fr-FR', options) + ' ' + date.toLocaleTimeString();
+		document.getElementById('datetime').innerText = date.toLocaleString('fr-FR', options) + ' ' + date.toLocaleTimeString();
 		
 		setTimeout('ogspy_runTimer()', 1000);
 	}

@@ -59,8 +59,8 @@ function autoComplete(field, select, property, forcematch) {
             field.value = field.value.substring(0, field.value.length - 1);
             return;
         }
-        var cursorKeys = "8;46;37;38;39;40;33;34;35;36;45;";
-        if (cursorKeys.indexOf(event.keyCode + ";") === -1) {
+        var cursorKeys = '8;46;37;38;39;40;33;34;35;36;45;';
+        if (cursorKeys.indexOf(event.keyCode + ';') === -1) {
             var r1 = field.createTextRange();
             var oldValue = r1.text;
             var newValue = found ? select.options[i][property] : oldValue;
