@@ -686,35 +686,17 @@ function foreuse_max($level_M, $level_C, $level_D, $officier = 0, $classe = 0) {
  */
 function consumption($building, $level, $speed_uni = 1)
 {
-    switch ($building) {
-        case "M":   //no break
-        case "C":
-            $result = 10 * $level * pow(1.1, $level);
-            // $result = ceil($result); //troncature supérieure
-            $result = floor($result); // troncature
-            break;
-
-        case "D":
-            $result = 20 * $level * pow(1.1, $level);
-            // $result = ceil($result); //troncature supérieure
-            $result = floor($result); // troncature
-            break;
-
-        case "CEF":
-            $result = $server_config['speed_uni'] * (10 * $level * pow(1.1, $level));
-            $result = round($result); // arrondi
-            break;
-
-        case "FOR":
-            $result = $level * 50;
-            break;
-
-        default:
-            $result = 0;
-            break;
+    if (ogame_is_a_building($building) === false) { return 0; }
+    $result = ogame_production_building($building, array($building=>$level), null, null, array('speed_uni'=>$speed_uni));
+    
+    if ($building === 'CEF') {
+        return - $result['D'];
     }
-
-    return ($result);
+    if($building==='M' || $building==='C' || $building==='D' || $building==='FOR') {
+        return -$result['NRJ'];
+    }
+    return 0;
+    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach($names['BAT'] as $e){if(consumption2($e,1)!=consumption($e,1))print_r($e);}"
 }
 
 /**
