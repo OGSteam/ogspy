@@ -327,6 +327,7 @@ function log_($parameter, $option = 0)
             $line = 'DEBUG : ' . $option;
             break;
         case 'php_error' :
+            $option[0] = FriendlyErrorType($option[0]);
             $line = "[PHP-ERROR] " . $option[0] . " - " . $option[1];
             if (isset($option[2])) {
                 $line .= " ; Fichier: " . $option[2];
