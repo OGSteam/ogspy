@@ -23,7 +23,8 @@
     "tooltipster/tooltipster": "4.2.*",
     "ext-mysqli": "*",
     "ext-json": "*",
-    "ext-zlib": "*"
+    "ext-zlib": "*",
+    "components/jquery": "^3.5"
   },
   "autoload": {
     "psr-4": {
@@ -40,4 +41,3 @@
     "chat" : "https://discord.gg/Azcb67b"
   }
 }
-

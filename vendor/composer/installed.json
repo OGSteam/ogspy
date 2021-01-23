@@ -1,46 +1,107 @@
-[
-    {
-        "name": "tooltipster/tooltipster",
-        "version": "4.2.7",
-        "version_normalized": "4.2.7.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/iamceege/tooltipster.git",
-            "reference": "b3b72ce3a9b4e0dff6882f9f57bcda608d664e82"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/iamceege/tooltipster/zipball/b3b72ce3a9b4e0dff6882f9f57bcda608d664e82",
-            "reference": "b3b72ce3a9b4e0dff6882f9f57bcda608d664e82",
-            "shasum": ""
-        },
-        "suggest": {
-            "components/jquery": ">=1.10"
-        },
-        "time": "2019-08-19T13:16:43+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Caleb Jacob",
-                "homepage": "https://plus.google.com/+CalebJacob?rel=author"
+{
+    "packages": [
+        {
+            "name": "components/jquery",
+            "version": "3.5.1",
+            "version_normalized": "3.5.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/components/jquery.git",
+                "reference": "b33e8f0f9a1cb2ae390cf05d766a900b53d2125b"
             },
-            {
-                "name": "Louis Ameline",
-                "homepage": "https://github.com/louisameline"
-            }
-        ],
-        "description": "Tooltipster is a flexible and extensible jQuery plugin for modern tooltips.",
-        "homepage": "http://iamceege.github.io/tooltipster/",
-        "keywords": [
-            "jquery",
-            "plugin",
-            "replacement",
-            "tooltip"
-        ]
-    }
-]
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/components/jquery/zipball/b33e8f0f9a1cb2ae390cf05d766a900b53d2125b",
+                "reference": "b33e8f0f9a1cb2ae390cf05d766a900b53d2125b",
+                "shasum": ""
+            },
+            "time": "2020-05-05T13:21:02+00:00",
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "jquery.js"
+                    ],
+                    "files": [
+                        "jquery.min.js",
+                        "jquery.min.map",
+                        "jquery.slim.js",
+                        "jquery.slim.min.js",
+                        "jquery.slim.min.map"
+                    ]
+                }
+            },
+            "installation-source": "dist",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "JS Foundation and other contributors"
+                }
+            ],
+            "description": "jQuery JavaScript Library",
+            "homepage": "http://jquery.com",
+            "support": {
+                "forum": "http://forum.jquery.com",
+                "irc": "irc://irc.freenode.org/jquery",
+                "issues": "https://github.com/jquery/jquery/issues",
+                "source": "https://github.com/jquery/jquery",
+                "wiki": "http://docs.jquery.com/"
+            },
+            "install-path": "../components/jquery"
+        },
+        {
+            "name": "tooltipster/tooltipster",
+            "version": "4.2.8",
+            "version_normalized": "4.2.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iamceege/tooltipster.git",
+                "reference": "0daaeffdc7da578f4048c4cf9ad2f37a474144f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iamceege/tooltipster/zipball/0daaeffdc7da578f4048c4cf9ad2f37a474144f0",
+                "reference": "0daaeffdc7da578f4048c4cf9ad2f37a474144f0",
+                "shasum": ""
+            },
+            "suggest": {
+                "components/jquery": ">=1.10"
+            },
+            "time": "2020-06-05T16:29:32+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Caleb Jacob",
+                    "homepage": "https://plus.google.com/+CalebJacob?rel=author"
+                },
+                {
+                    "name": "Louis Ameline",
+                    "homepage": "https://github.com/louisameline"
+                }
+            ],
+            "description": "Tooltipster is a flexible and extensible jQuery plugin for modern tooltips.",
+            "homepage": "http://iamceege.github.io/tooltipster/",
+            "keywords": [
+                "jquery",
+                "plugin",
+                "replacement",
+                "tooltip"
+            ],
+            "support": {
+                "issues": "https://github.com/iamceege/tooltipster/issues",
+                "source": "https://github.com/iamceege/tooltipster/tree/4.2.8"
+            },
+            "install-path": "../tooltipster/tooltipster"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}

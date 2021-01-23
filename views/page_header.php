@@ -27,7 +27,7 @@ use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 
     <!-- Ajout des scripts Graphique (highcharts), jquery et prototype-->
 
-    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="vendor/components/jquery/jquery.min.js"></script>
     <script src="js/highcharts.js"></script>
     <script src="js/autocomplete.js"></script>
     <script src="vendor/tooltipster/tooltipster/dist/js/tooltipster.bundle.min.js"></script>

@@ -4,20 +4,69 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e43bde731dd194b942d1daa001e20cf2",
+    "content-hash": "6f5472125ba44406e7564e733a611183",
     "packages": [
         {
-            "name": "tooltipster/tooltipster",
-            "version": "4.2.7",
+            "name": "components/jquery",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/iamceege/tooltipster.git",
-                "reference": "b3b72ce3a9b4e0dff6882f9f57bcda608d664e82"
+                "url": "https://github.com/components/jquery.git",
+                "reference": "b33e8f0f9a1cb2ae390cf05d766a900b53d2125b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iamceege/tooltipster/zipball/b3b72ce3a9b4e0dff6882f9f57bcda608d664e82",
-                "reference": "b3b72ce3a9b4e0dff6882f9f57bcda608d664e82",
+                "url": "https://api.github.com/repos/components/jquery/zipball/b33e8f0f9a1cb2ae390cf05d766a900b53d2125b",
+                "reference": "b33e8f0f9a1cb2ae390cf05d766a900b53d2125b",
+                "shasum": ""
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "jquery.js"
+                    ],
+                    "files": [
+                        "jquery.min.js",
+                        "jquery.min.map",
+                        "jquery.slim.js",
+                        "jquery.slim.min.js",
+                        "jquery.slim.min.map"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "JS Foundation and other contributors"
+                }
+            ],
+            "description": "jQuery JavaScript Library",
+            "homepage": "http://jquery.com",
+            "support": {
+                "forum": "http://forum.jquery.com",
+                "irc": "irc://irc.freenode.org/jquery",
+                "issues": "https://github.com/jquery/jquery/issues",
+                "source": "https://github.com/jquery/jquery",
+                "wiki": "http://docs.jquery.com/"
+            },
+            "time": "2020-05-05T13:21:02+00:00"
+        },
+        {
+            "name": "tooltipster/tooltipster",
+            "version": "4.2.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iamceege/tooltipster.git",
+                "reference": "0daaeffdc7da578f4048c4cf9ad2f37a474144f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iamceege/tooltipster/zipball/0daaeffdc7da578f4048c4cf9ad2f37a474144f0",
+                "reference": "0daaeffdc7da578f4048c4cf9ad2f37a474144f0",
                 "shasum": ""
             },
             "suggest": {
@@ -46,7 +95,11 @@
                 "replacement",
                 "tooltip"
             ],
-            "time": "2019-08-19T13:16:43+00:00"
+            "support": {
+                "issues": "https://github.com/iamceege/tooltipster/issues",
+                "source": "https://github.com/iamceege/tooltipster/tree/4.2.8"
+            },
+            "time": "2020-06-05T16:29:32+00:00"
         }
     ],
     "packages-dev": [],
@@ -55,6 +108,12 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": []
+    "platform": {
+        "php": ">=7.3",
+        "ext-mysqli": "*",
+        "ext-json": "*",
+        "ext-zlib": "*"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }
