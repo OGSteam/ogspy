@@ -13,7 +13,7 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-///////////////////// BASE fonctions : /////////////////////////////////////////
+/////////////////// STRUCT type fonctions : ////////////////////////////////////
 /**
  *  @brief Get an Ogame resources array.
  *  
@@ -871,66 +871,6 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
             "conso_C" => $conso_C, "conso_D" => $conso_D, "conso_FOR" => $conso_FOR);
 }
 
-/**
- *  @brief Return planet position from coordinates.
- *  @param[in] string $coordinates planet coordinates (galaxy:system:position)
- *  @return int planet position
- */
-function ogame_find_planet_position($coordinates) {
-    $position = ogame_find_coordinates($coordinates);
-
-    return $position['p'];
-}
-
-/**
- *  @brief Return coordinates in array.
- *  
- *  @param[in] string $string_coord Coordinates, in string like in Database ('2:3:4')
- *  @return array('g','s','p') of int, default is 0 ('::6' give planet position of 6)
- */
-function ogame_find_coordinates($string_coord)
-{
-    $result = array('g' => 0, 's' => 0, 'p' => 0);
-
-    $coordinates_tmp = explode(':', $string_coord);
-    if (count($coordinates_tmp) === 3) {
-        $result['g'] = (int) $coordinates_tmp[0];
-        $result['s'] = (int) $coordinates_tmp[1];
-        $result['p'] = (int) $coordinates_tmp[2];
-    }
-
-    return $result;
-}
-
-
-/**
- * @brief Calculates the planet storage capacity (taille hangar).
- *
- * @param[in] int $level Storage building level
- * @return float capacity
- */
-function ogame_depot_capacity($level)
-{
-    $capacity = 10000;  // capacité par défaut
-
-    if ($level > 0) {
-        $capacity = 5000 * floor(2.5 * exp(20 * $level / 33));
-    }
-
-    return $capacity;
-}
-
-/**
- * Returns the maximum numbers of planet slots available according to the Astrophysic level
- * @param int $level Astrophysic Level
- * @return the maximum number of planets
- */
-function astro_max_planete($level)
-{
-    global $server_config;
-    return ($server_config['astro_strict'] && $level < 15) ? 9 : ceil($level / 2) + 1;
-}
-
 ////////////////// OGAME CARACTERISTIQUES fonctions : //////////////////////////
 /**
  *  @brief Give database names of a building/research/fleet/defence/class/resources.
@@ -1070,410 +1010,6 @@ function ogame_is_a_building($nom) { return ogame_is_element($nom) === 'BAT'; }
  *  @return bool
  */
 function ogame_is_a_research($nom) { return ogame_is_element($nom) === 'RECH'; }
-
-/**
- *  @brief Return base price of an Ogame bat/vso/def/rech
- *  
- *  @param[in] string $name The name as in Database, all for all element
- *  @return array('M', 'C','D, 'NRJ') of the chosen element (array of these if 'all')
- */
-function ogame_element_cout_base($name = 'all')
-{
-    $cout_base   = array();
-//Coût de base des bâtiments                             métal , cristal, deutérium, NRJ 
-    $cout_base['M']             = ogame_array_ressource(  60   ,  15    , 0);
-    $cout_base['C']             = ogame_array_ressource(  48   ,  24    , 0);
-    $cout_base['D']             = ogame_array_ressource( 225   ,  75    , 0);
-    $cout_base['CES']           = ogame_array_ressource(  75   ,  30    , 0);
-    $cout_base['CEF']           = ogame_array_ressource( 900   , 360    , 180);
-    $cout_base['UdR']           = ogame_array_ressource( 400   , 120    , 200);
-    $cout_base['UdN']           = ogame_array_ressource(1000000, 500000 , 100000);
-    $cout_base['CSp']           = ogame_array_ressource( 400   , 200    , 100);
-    $cout_base['HM']            = ogame_array_ressource(1000   ,   0    , 0);
-    $cout_base['HC']            = ogame_array_ressource(1000   , 500    , 0);
-    $cout_base['HD']            = ogame_array_ressource(1000   , 1000   , 0);
-    $cout_base['Lab']           = ogame_array_ressource( 200   , 400    , 200);
-    $cout_base['Ter']           = ogame_array_ressource(  0    , 50000  , 100000  , 1000);
-    $cout_base['DdR']           = ogame_array_ressource(20000  , 40000  , 0);
-    $cout_base['Silo']          = ogame_array_ressource(20000  , 20000  , 1000);
-    $cout_base['Dock']          = ogame_array_ressource( 200   ,   0    ,  50     , 50);
-    $cout_base['BaLu']          = ogame_array_ressource(20000  , 40000  , 20000);
-    $cout_base['Pha']           = ogame_array_ressource(20000  , 40000  , 20000);
-    $cout_base['PoSa']          = ogame_array_ressource(2000000, 4000000, 2000000);
-//Coût de base des recherches
-    $cout_base['Esp']           = ogame_array_ressource(200    , 1000   , 200);
-    $cout_base['Ordi']          = ogame_array_ressource(  0    ,  400   , 600);
-    $cout_base['Armes']         = ogame_array_ressource(800    ,  200   , 0);
-    $cout_base['Bouclier']      = ogame_array_ressource(200    ,  600   , 0);
-    $cout_base['Protection']    = ogame_array_ressource(1000   ,    0   , 0);
-    $cout_base['NRJ']           = ogame_array_ressource(  0    ,  800   , 400);
-    $cout_base['Hyp']           = ogame_array_ressource(  0    , 4000   , 2000);
-    $cout_base['RC']            = ogame_array_ressource(400    ,    0   , 600);
-    $cout_base['RI']            = ogame_array_ressource(2000   , 4000   , 600);
-    $cout_base['PH']            = ogame_array_ressource(10000  , 20000  , 6000);
-    $cout_base['Laser']         = ogame_array_ressource(200    , 100    , 0);
-    $cout_base['Ions']          = ogame_array_ressource(1000   , 300    , 100);
-    $cout_base['Plasma']        = ogame_array_ressource(2000   , 4000   , 1000);
-    $cout_base['RRI']           = ogame_array_ressource(240000 , 400000 , 160000);
-    $cout_base['Graviton']      = ogame_array_ressource(  0    ,    0   , 0       , 300000);
-    $cout_base['Astrophysique'] = ogame_array_ressource(4000   , 8000   , 4000);
-//Coût de base des vaisseaux
-    $cout_base['PT']            = ogame_array_ressource(2000   , 2000   , 0);
-    $cout_base['GT']            = ogame_array_ressource(6000   , 6000   , 0);
-    $cout_base['CLE']           = ogame_array_ressource(3000   , 1000   , 0);
-    $cout_base['CLO']           = ogame_array_ressource(6000   , 4000   , 0);
-    $cout_base['CR']            = ogame_array_ressource(20000  , 7000   , 2000);
-    $cout_base['VB']            = ogame_array_ressource(45000  , 15000  , 0);
-    $cout_base['VC']            = ogame_array_ressource(10000  , 20000  , 10000);
-    $cout_base['REC']           = ogame_array_ressource(10000  , 6000   , 2000);
-    $cout_base['SE']            = ogame_array_ressource(0      , 1000   , 0);
-    $cout_base['BMD']           = ogame_array_ressource(50000  , 25000  , 15000);
-    $cout_base['DST']           = ogame_array_ressource(60000  , 50000  , 15000);
-    $cout_base['TRA']           = ogame_array_ressource(30000  , 40000  , 15000);
-    $cout_base['EDLM']          = ogame_array_ressource(5000000, 4000000, 1000000);
-    $cout_base['FOR']           = ogame_array_ressource(2000   , 2000   , 1000);
-    $cout_base['ECL']           = ogame_array_ressource(8000   , 15000  , 8000);
-    $cout_base['FAU']           = ogame_array_ressource(85000  , 55000  , 20000);
-    $cout_base['SAT']           = ogame_array_ressource(0      , 2000   , 500);
-//Coût de base des défenses
-    $cout_base['LM']            = ogame_array_ressource(2000   , 0      , 0);
-    $cout_base['LLE']           = ogame_array_ressource(1500   , 500    , 0);
-    $cout_base['LLO']           = ogame_array_ressource(6000   , 2000   , 0);
-    $cout_base['CG']            = ogame_array_ressource(20000  , 15000  , 2000);
-    $cout_base['AI']            = ogame_array_ressource(5000   , 3000   , 0);
-    $cout_base['LP']            = ogame_array_ressource(50000  , 50000  , 30000);
-    $cout_base['PB']            = ogame_array_ressource(10000  , 10000  , 0);
-    $cout_base['GB']            = ogame_array_ressource(50000  , 50000  , 0);
-    $cout_base['MIC']           = ogame_array_ressource(8000   , 0      , 2000);
-    $cout_base['MIP']           = ogame_array_ressource(12500  , 2500   , 10000);
-
-    if ($name === 'all') {
-        return $cout_base;
-    }
-    if (!isset($cout_base[$name])) {
-        return ogame_array_ressource(0, 0, 0);
-    }
-    return $cout_base[$name];
-    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['BAT'], $names['RECH'], $names['VSO'], $names['DEF']) as $e){if(ogame_element_cout_base($e)!=ogame_element_cumulate($e,1))print_r($e);}"
-}
-
-///////////////////// COUT fonctions : /////////////////////////////////////////
-/**
- *  @brief Calculates price of an Ogame bat/vso/def/rech
- *  
- *  @param[in] string $name  The chosen name, as in Database
- *  @param[in] int    $level The chosen level for bat/rech or the number of def/vso
- *  @return array('M', 'C','D, 'NRJ')
- */
-function ogame_element_cout($name, $level)
-{
-    $result = ogame_array_ressource(0, 0, 0);
-    $type   = ogame_is_element($name);
-    if ($type === false) {
-        return $result;
-    }
-
-    $coefficient = ogame_element_evolve_coef($name);
-    $base_cout   = ogame_element_cout_base($name);
-    foreach (array_keys($result) as $ress) {
-        if ($base_cout[$ress] !== 0) {  // Pour éviter les calculs inutiles !
-            if ($type === 'BAT' || $type === 'RECH') {
-                $result[$ress] = round( $base_cout[$ress] * pow($coefficient[$ress], $level - 1) );
-                if ($type === 'RECH') {
-                    $result[$ress] = round($result[$ress], -2); //Arrondi à la 100 pour les recherches.
-                }
-            } elseif ($type === 'DEF' || $type === 'VSO') {
-                $result[$ress] = $base_cout[$ress] * $level;
-            }
-        }
-    }
-
-    return $result;
-    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['BAT'], $names['RECH']) as $e){if(ogame_element_cout($e,10)!=ogame_element_upgrade($e,10))print_r($e);}"
-    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['VSO'], $names['DEF']) as $e){if(ogame_element_cout($e,10)!=ogame_element_cumulate($e,10))print_r($e);}"
-}
-
-/**
- *  @brief Calculates the price of an Ogame element to it current level.
- *  
- *  @param[in] string $name  Name of building/research/fleet/defence, like in name in database
- *  @param[in] int    $level The current level or the number of fleet/defence
- *  @return array('M', 'C','D, 'NRJ') resources used to it current level
- */
-function ogame_element_cumulate($name, $level)
-{
-    $result = ogame_array_ressource(0, 0, 0);
-    $type   = ogame_is_element($name);
-    if ($type === false) {
-        return $result;
-    }
-    if ($type === 'DEF' || $type === 'VSO') {
-        return ogame_element_cout($name, $level);
-    }
-
-    $coef      = ogame_element_evolve_coef($name);
-    $base_cout = ogame_element_cout_base($name);
-    foreach (array_keys($result) as $ress) {
-        if ($base_cout[$ress] !== 0) {  // Pour éviter les calculs inutiles !
-            $result[$ress] = round( $base_cout[$ress] * (1 - pow($coef[$ress], $level)) / (1 - $coef[$ress]) );
-            if ($type === 'RECH') {
-                $result[$ress] = round($result[$ress], -2); //Arrondi à la 100 pour les recherches.
-            }
-        }
-    }
-    
-    return $result;
-    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['BAT'], $names['RECH'], $names['VSO'], $names['DEF']) as $e){if(ogame_element_cumulate2($e,1)!=ogame_element_cumulate($e,1))print_r($e);}"
-} 
-
-/**
- *  @brief Calculates the price of all element of type (building,defence,fleet,research).
- *  
- *  @param[in] array  $user Array of element each planet or moon
- *  @param[in] string $type Type of element ('BAT' pour bâtiment, 'RECH' pour recherche, 'DEF' pour défense, 'VSO' pour vaisseau)
- *  @return float Total price (M+C+D).
- */
-function ogame_all_cumulate($user, $type)
-{
-    $total = 0;
-
-    if ($type === 'RECH') {
-        $data = $user;  //1 seul array, les technos
-    } else {
-        $data = current($user); //plusieurs array, les planètes/lunes, donc juste la 1er
-    }
-    while($data){
-        foreach ($data as $key=>$level) {
-            if ($level == "") {
-                $level = 0;
-            }
-            if ($key === 'Sat') {   //Nom dans la BDD ogspy_user_building
-                $key = 'SAT';
-            }
-            if (ogame_is_element($key) === $type) {
-                list($M, $C, $D) = array_values(ogame_element_cumulate($key, $level));
-                $total += $M + $C + $D;
-            }
-        }
-        if ($type === 'RECH') {
-            break;
-        }
-        next($user);
-        $data = current($user);
-    }
-
-    return $total;
-}
-
-/**
- *  @brief Calculates the price of all building.
- *  @param[in] $user_building Info of planet or moon
- *  @return float Total price (M+C+D)
- */
-function all_building_cumulate($user_building) { return ogame_all_cumulate($user_building, 'BAT'); }
-/**
- *  @brief Calculates the price of all defence.
- *  @param[in] $user_defence Info of planet or moon
- *  @return float Total price (M+C+D)
- */
-function all_defence_cumulate($user_defence)   { return ogame_all_cumulate($user_defence, 'DEF'); }
-/**
- *  @brief Calculates the price of all fleet.
- *  @param[in] $user_fleet Info of planet or moon
- *  @return float Total price (M+C+D)
- */
-function all_fleet_cumulate($user_fleet)       { return ogame_all_cumulate($user_fleet, 'VSO'); }
-/**
- *  @brief Calculates the price of all research.
- *  @param[in] $user_techno Info of technologies
- *  @return float Total price (M+C+D)
- */
-function all_technology_cumulate($user_techno) { return ogame_all_cumulate($user_techno, 'RECH'); }
-
-/**
- * Calculates the price of all lunas
- * @param $user_building
- * @param string $user_defence The list of buildings with corresponding levels on the luna
- * @return double bild :-)
- */
-function all_lune_cumulate($user_building, $user_defence)
-{
-    return all_defence_cumulate($user_defence) + all_building_cumulate($user_building);
-}
-
-///////////////////// FLOTTE fonctions : ///////////////////////////////////////
-/**
- *  @brief Calculates deut consummation for parking of a fleet.
- *  
- *  @param[in] int $conso The conso of the fleet
- *  @param[in] int $hour  Number of hours in parking
- *  @return float Deut conso for this hour of parking
- */
-function ogame_fleet_conso_statio($conso, $hour)
-{
-    $result = $hour * $conso / 10;
-    if ($result < 1) {
-        $result = 1;
-    }
-    if ($hour == 0) {
-        $result = 0;
-    }
-
-    return floor($result);
-}
-
-function ogame_fleet_slowest_speed($fleet, $user_techno=null, $class='none')
-{
-    $names     = ogame_get_element_names();
-    $details   = array();
-    $max_speed = ogame_elements_details('SE', $user_techno, $class);   //The fastest fleet
-    $min_speed = $max_speed['vitesse'];
-    foreach ($names['VSO'] as $elem) {
-        if (isset($fleet[$elem]) && $fleet[$elem] != 0) {
-            $details = ogame_elements_details($elem, $user_techno, $class);
-            if ($min_speed > $details['vitesse']) {
-                $min_speed = $details['vitesse'];
-            }
-        }
-    }
-    return $min_speed;
-}
-
-/**
- *  @brief Calculates distance between 2 coordinates.
- *  
- *  @param[in] string $a, $b         Coordinates ('g:s:p')
- *      'g1:s1:p1'->'g2:s2:p2' : normal distance calcul
- *      ':s1:p1'->'x:s2:p2     : distance between system/planet (only system is ':s1:')
- *      '::p1'->'x:x:p2        : distance between planet
- *  @param[in] array  $server_config Info of universe ('num_of_galaxies','num_of_systems','donutGalaxy','donutSystem' only these are checked) default 9/499/1/1
- *  @return array(int 'distance','type') [default=O,'p'], type='g' for between galaxy, 's' for between system and 'p' for between a sub-system
- */
-function ogame_fleet_distance($a, $b, $user_techno=null, $class='none', $server_config=null)
-{
-    $result = array('distance'=>0, 'type'=>'p');
-    if (!isset($server_config['num_of_galaxies']) || !is_numeric($server_config['num_of_galaxies'])) { $server_config['num_of_galaxies'] = 9; }
-    if (!isset($server_config['num_of_systems'])  || !is_numeric($server_config['num_of_systems']))  { $server_config['num_of_systems'] = 499; }
-    if (!isset($server_config['donutGalaxy'])     || !is_numeric($server_config['donutGalaxy']))     { $server_config['donutGalaxy'] = 1; }
-    if (!isset($server_config['donutSystem'])     || !is_numeric($server_config['donutSystem']))     { $server_config['donutSystem'] = 1; }
-
-    $dist_abs    = 0;
-    $max_type    = array('g'=>$server_config['num_of_galaxies'], 's'=>$server_config['num_of_systems'], 0);
-    $uni_arrondi = array('g'=>true, 's'=>true, 'p'=>false); //Par défaut
-    if ($server_config['donutGalaxy'] === 0) {
-        $max_type['g']    = 0;
-        $uni_arrondi['g'] = false;
-    }
-    if ($server_config['donutSystem'] === 0) {
-        $max_type['s']    = 0;
-        $uni_arrondi['s'] = false;
-    }
-    $coord_a = ogame_find_coordinates($a);
-    $coord_b = ogame_find_coordinates($b);
-    $key     = 'p';
-    foreach (array_keys($coord_a) as $key) {    //On ne calcule la distance qu'entre des vraies coordonnées.
-        if ($coord_a[$key] === 0 || $coord_b[$key] === 0) {
-            $coord_a[$key] = 0;
-            $coord_b[$key] = 0;
-        }
-        $dist_abs = abs($coord_a[$key] - $coord_b[$key]);   //|a-b|
-        if ($dist_abs !== 0) {
-            break;
-        }
-    }
-    $result['type']     = $key;
-    $result['distance'] = $dist_abs;    //|a-b|
-    if ($uni_arrondi[$key] && ($dist_abs > $max_type[$key] / 2)) {
-        $result['distance'] = abs($dist_abs - $max_type[$key]); //||a-b| - base|
-    }
-
-    return $result;
-}
-
-/**
- *  @brief Calculates deuterium consummation of a fleet
- *  
- *  @param[in] string $coord_from Coordinates of start ('g:s:p')
- *  @param[in] string $coord_to   Coordinates of end ('g:s:p')
- *  @param[in] array  $fleet      Array of fleet and theirs number ('PT'=>5, etc.)
- *  @param[in] string $type       Type of destination ('statio','expe','fuite')
- *  @return array('G' => 0, 's' => 0, 'p' => 0);
- *  
- *  @details    Remplace calc_distance
- */
-function ogame_fleet_send($coord_from, $coord_to, $fleet, $speed_per=100, $user_techno=null, $class='none', $server_config=null, $type='planet', $hour_mission=0) {
-    $result = array('conso'=>0, 'time'=>0);
-
-    $names     = ogame_get_element_names();
-    $details   = array();
-    $consos    = array();
-    $max_speed = ogame_elements_details('SE', $user_techno, $class);   //The fastest fleet
-    $min_speed = $max_speed['vitesse'];
-    foreach ($names['VSO'] as $elem) {
-        $consos[$elem] = 0;
-        if (isset($fleet[$elem]) && $fleet[$elem] != 0) {
-            $details = ogame_elements_details($elem, $user_techno, $class);
-            if ($min_speed > $details['vitesse']) {
-                $min_speed = $details['vitesse'];
-            }
-            $consos[$elem] = $details['conso'] * $fleet[$elem];
-        }
-    }
-    if ($min_speed == 0) { //Ne devrait jamais arriver mais pour éviter une div/0.
-        return $result;
-    }
-
-    $distance = ogame_fleet_distance($coord_from, $coord_to, $server_config);
-    if ($type === 'fuite') {
-        $distance['type'] = $type;
-    }
-    $conso_sum = array_sum($consos);
-    switch ($distance['type']) {
-        case 'g':   //between galaxy
-        // durée = Dans une autre galaxie : 10 + [ 35 000 / %vitesse * Racine(écart de galaxies * 20 000 000 / vitesse du vaisseau)]
-        // conso = Entre galaxies : 1 + arrondi.sup[conso * ((4 * distance absolue entre les galaxies) / 7) * (%vitesse / 100 + 1)^2 ]
-            $result['time']  = ( 10 + (35000 / $speed_per * sqrt($distance['distance'] * 20000000 / $min_speed)) );
-            $result['conso'] = 1 + ( $conso_sum * ((4 * $distance['distance']) / 7) * pow($speed_per / 100 + 1, 2) );
-            break;
-        case 's':   //between system (so inside same galaxy)
-        // durée = Dans sa galaxie        : 10 + [ 35 000 / %vitesse * Racine((2 700 000 + (écart de systèmes) * 95 000) / vitesse du vaisseau)]
-        // conso = Entre systèmes solaires  : 1 + arrondi.sup[conso * ((2.700 + 95 * distance absolue entre les systèmes solaires) / 35.000) * (%vitesse / 100 + 1)^2 ]
-            $result['time']  = ( 10 + (35000 / $speed_per * sqrt((2700000 + $distance['distance'] * 95000) / $min_speed)) );
-            $result['conso'] = 1 + ( $conso_sum * ((2700 + 95 * $distance['distance']) / 35000) * pow($speed_per / 100 + 1, 2) );
-            break;
-        case 'p':   //between sub-system (so in same galaxy and same system)
-            if ($distance['distance'] === 0) { // to moon/cdr
-                // durée = Jusqu'à son propre cdr : 10 + [ 35 000 / %vitesse * Racine(5 000 / vitesse du vaisseau) ]
-                // conso = Entre planète et lune (propre) : 1 + arrondi.sup[conso * ( 5 / 35.000) * (%vitesse / 100 + 1)^2 ]
-                $result['time']  = ( 10 + (35000 / $speed_per * sqrt(5000 / $min_speed)) );
-                $result['conso'] = 1 + ( $conso_sum * (5 / 35000) * pow($speed_per / 100 + 1, 2) );
-            } else { //to other planet in same system
-                // durée = Dans son système solaire : 10 + [ 35 000 / %vitesse * Racine((1 000 000 + distance absolue entre les planètes * 5 000) / vitesse du vaisseau) ]
-                // conso = Dans son système solaire : 1 + arrondi.sup[conso * ((1.000 + 5 * distance absolue entre les planètes) / 35.000) * (%vitesse / 100 + 1)^2 ]
-                $result['time']  = ( 10 + (35000 / $speed_per * sqrt((1000000 + $distance['distance'] * 5000) / $min_speed)) );
-                $result['conso'] = 1 + ( $conso_sum * ((1000 + 5 * $distance['distance']) / 35000) * pow($speed_per / 100 + 1, 2) );
-            }
-            break;
-        case 'fuite':
-            // Fuite de flotte : arrondi.inf[ conso à une distance de 1 * 1.5 ]
-            $distance['distance'] = 1 * 1.5;
-            $result['conso'] = ( $conso_sum * $distance['distance'] );  //???
-        default:
-            break;
-    }
-    $result['time']  += $hour_mission;
-    if ($type === 'statio') {
-        $result['conso'] += ogame_fleet_conso_statio($conso_sum, $hour_mission);
-    } elseif ($type === 'expe') {
-        
-    }
-    $result['time']  = round($result['time']);
-    $result['conso'] = ceil($result['conso']);
-    
-    return $result;
-    // php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();var_dump($a=ogame_fleet_send('1:1:1','1:1:1',array('PT'=>260),100,array('RC'=>20,'RI'=>17,'PH'=>16),'COL'));echo gmdate('z:H:i:s',$a['time']);"
-}
-
 
 /**
  *  @brief Return base details of Ogame def/vso.
@@ -1828,6 +1364,491 @@ function ogame_all_requirement()
 }
 
 /**
+ *  @brief Return base price of an Ogame bat/vso/def/rech
+ *  
+ *  @param[in] string $name The name as in Database, all for all element
+ *  @return array('M', 'C','D, 'NRJ') of the chosen element (array of these if 'all')
+ */
+function ogame_element_cout_base($name = 'all')
+{
+    $cout_base   = array();
+//Coût de base des bâtiments                             métal , cristal, deutérium, NRJ 
+    $cout_base['M']             = ogame_array_ressource(  60   ,  15    , 0);
+    $cout_base['C']             = ogame_array_ressource(  48   ,  24    , 0);
+    $cout_base['D']             = ogame_array_ressource( 225   ,  75    , 0);
+    $cout_base['CES']           = ogame_array_ressource(  75   ,  30    , 0);
+    $cout_base['CEF']           = ogame_array_ressource( 900   , 360    , 180);
+    $cout_base['UdR']           = ogame_array_ressource( 400   , 120    , 200);
+    $cout_base['UdN']           = ogame_array_ressource(1000000, 500000 , 100000);
+    $cout_base['CSp']           = ogame_array_ressource( 400   , 200    , 100);
+    $cout_base['HM']            = ogame_array_ressource(1000   ,   0    , 0);
+    $cout_base['HC']            = ogame_array_ressource(1000   , 500    , 0);
+    $cout_base['HD']            = ogame_array_ressource(1000   , 1000   , 0);
+    $cout_base['Lab']           = ogame_array_ressource( 200   , 400    , 200);
+    $cout_base['Ter']           = ogame_array_ressource(  0    , 50000  , 100000  , 1000);
+    $cout_base['DdR']           = ogame_array_ressource(20000  , 40000  , 0);
+    $cout_base['Silo']          = ogame_array_ressource(20000  , 20000  , 1000);
+    $cout_base['Dock']          = ogame_array_ressource( 200   ,   0    ,  50     , 50);
+    $cout_base['BaLu']          = ogame_array_ressource(20000  , 40000  , 20000);
+    $cout_base['Pha']           = ogame_array_ressource(20000  , 40000  , 20000);
+    $cout_base['PoSa']          = ogame_array_ressource(2000000, 4000000, 2000000);
+//Coût de base des recherches
+    $cout_base['Esp']           = ogame_array_ressource(200    , 1000   , 200);
+    $cout_base['Ordi']          = ogame_array_ressource(  0    ,  400   , 600);
+    $cout_base['Armes']         = ogame_array_ressource(800    ,  200   , 0);
+    $cout_base['Bouclier']      = ogame_array_ressource(200    ,  600   , 0);
+    $cout_base['Protection']    = ogame_array_ressource(1000   ,    0   , 0);
+    $cout_base['NRJ']           = ogame_array_ressource(  0    ,  800   , 400);
+    $cout_base['Hyp']           = ogame_array_ressource(  0    , 4000   , 2000);
+    $cout_base['RC']            = ogame_array_ressource(400    ,    0   , 600);
+    $cout_base['RI']            = ogame_array_ressource(2000   , 4000   , 600);
+    $cout_base['PH']            = ogame_array_ressource(10000  , 20000  , 6000);
+    $cout_base['Laser']         = ogame_array_ressource(200    , 100    , 0);
+    $cout_base['Ions']          = ogame_array_ressource(1000   , 300    , 100);
+    $cout_base['Plasma']        = ogame_array_ressource(2000   , 4000   , 1000);
+    $cout_base['RRI']           = ogame_array_ressource(240000 , 400000 , 160000);
+    $cout_base['Graviton']      = ogame_array_ressource(  0    ,    0   , 0       , 300000);
+    $cout_base['Astrophysique'] = ogame_array_ressource(4000   , 8000   , 4000);
+//Coût de base des vaisseaux
+    $cout_base['PT']            = ogame_array_ressource(2000   , 2000   , 0);
+    $cout_base['GT']            = ogame_array_ressource(6000   , 6000   , 0);
+    $cout_base['CLE']           = ogame_array_ressource(3000   , 1000   , 0);
+    $cout_base['CLO']           = ogame_array_ressource(6000   , 4000   , 0);
+    $cout_base['CR']            = ogame_array_ressource(20000  , 7000   , 2000);
+    $cout_base['VB']            = ogame_array_ressource(45000  , 15000  , 0);
+    $cout_base['VC']            = ogame_array_ressource(10000  , 20000  , 10000);
+    $cout_base['REC']           = ogame_array_ressource(10000  , 6000   , 2000);
+    $cout_base['SE']            = ogame_array_ressource(0      , 1000   , 0);
+    $cout_base['BMD']           = ogame_array_ressource(50000  , 25000  , 15000);
+    $cout_base['DST']           = ogame_array_ressource(60000  , 50000  , 15000);
+    $cout_base['TRA']           = ogame_array_ressource(30000  , 40000  , 15000);
+    $cout_base['EDLM']          = ogame_array_ressource(5000000, 4000000, 1000000);
+    $cout_base['FOR']           = ogame_array_ressource(2000   , 2000   , 1000);
+    $cout_base['ECL']           = ogame_array_ressource(8000   , 15000  , 8000);
+    $cout_base['FAU']           = ogame_array_ressource(85000  , 55000  , 20000);
+    $cout_base['SAT']           = ogame_array_ressource(0      , 2000   , 500);
+//Coût de base des défenses
+    $cout_base['LM']            = ogame_array_ressource(2000   , 0      , 0);
+    $cout_base['LLE']           = ogame_array_ressource(1500   , 500    , 0);
+    $cout_base['LLO']           = ogame_array_ressource(6000   , 2000   , 0);
+    $cout_base['CG']            = ogame_array_ressource(20000  , 15000  , 2000);
+    $cout_base['AI']            = ogame_array_ressource(5000   , 3000   , 0);
+    $cout_base['LP']            = ogame_array_ressource(50000  , 50000  , 30000);
+    $cout_base['PB']            = ogame_array_ressource(10000  , 10000  , 0);
+    $cout_base['GB']            = ogame_array_ressource(50000  , 50000  , 0);
+    $cout_base['MIC']           = ogame_array_ressource(8000   , 0      , 2000);
+    $cout_base['MIP']           = ogame_array_ressource(12500  , 2500   , 10000);
+
+    if ($name === 'all') {
+        return $cout_base;
+    }
+    if (!isset($cout_base[$name])) {
+        return ogame_array_ressource(0, 0, 0);
+    }
+    return $cout_base[$name];
+    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['BAT'], $names['RECH'], $names['VSO'], $names['DEF']) as $e){if(ogame_element_cout_base($e)!=ogame_element_cumulate($e,1))print_r($e);}"
+}
+
+///////////////////// COUT fonctions : /////////////////////////////////////////
+/**
+ *  @brief Calculates the evolve coefficient of a building and research.
+ *  
+ *  @param[in] string $name Building/research name, as in Database
+ *  @return array('M', 'C','D, 'NRJ') array of coefficient by ressource
+ */
+function ogame_element_evolve_coef($name)
+{
+    $coefficient = ogame_array_ressource(0, 0, 0);
+    switch ($name) {
+        case 'M': //no break
+        case 'D': //no break
+        case 'CES':
+            $coefficient['M'] = 1.5;
+            $coefficient['C'] = 1.5;
+            break;
+        case 'C':
+            $coefficient['M'] = 1.6;
+            $coefficient['C'] = 1.6;
+            break;
+        case 'CEF':
+            $coefficient['M'] = 1.8;
+            $coefficient['C'] = 1.8;
+            $coefficient['D'] = 1.8;
+            break;
+        case 'Dock':
+            $coefficient['M']   = 5;
+            $coefficient['C']   = 5;
+            $coefficient['D']   = 5;
+            $coefficient['NRJ'] = 2.5;
+            break;
+        case 'Astrophysique':
+            $coefficient['M'] = 1.75;
+            $coefficient['C'] = 1.75;
+            $coefficient['D'] = 1.75;
+            break;
+        case 'Graviton':
+            $coefficient['NRJ'] = 3;
+            break;
+        default:
+            $coefficient['M']   = 2;
+            $coefficient['C']   = 2;
+            $coefficient['D']   = 2;
+            $coefficient['NRJ'] = 2;
+            break;
+    }
+
+    $type = ogame_is_element($name);
+    if ($type !== 'BAT' && $type !== 'RECH') {
+        $coefficient = ogame_array_ressource(0, 0, 0);
+    }
+    return $coefficient;
+}
+
+/**
+ *  @brief Calculates price of an Ogame bat/vso/def/rech
+ *  
+ *  @param[in] string $name  The chosen name, as in Database
+ *  @param[in] int    $level The chosen level for bat/rech or the number of def/vso
+ *  @return array('M', 'C','D, 'NRJ')
+ */
+function ogame_element_cout($name, $level)
+{
+    $result = ogame_array_ressource(0, 0, 0);
+    $type   = ogame_is_element($name);
+    if ($type === false) {
+        return $result;
+    }
+
+    $coefficient = ogame_element_evolve_coef($name);
+    $base_cout   = ogame_element_cout_base($name);
+    foreach (array_keys($result) as $ress) {
+        if ($base_cout[$ress] !== 0) {  // Pour éviter les calculs inutiles !
+            if ($type === 'BAT' || $type === 'RECH') {
+                $result[$ress] = round( $base_cout[$ress] * pow($coefficient[$ress], $level - 1) );
+                if ($type === 'RECH') {
+                    $result[$ress] = round($result[$ress], -2); //Arrondi à la 100 pour les recherches.
+                }
+            } elseif ($type === 'DEF' || $type === 'VSO') {
+                $result[$ress] = $base_cout[$ress] * $level;
+            }
+        }
+    }
+
+    return $result;
+    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['BAT'], $names['RECH']) as $e){if(ogame_element_cout($e,10)!=ogame_element_upgrade($e,10))print_r($e);}"
+    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['VSO'], $names['DEF']) as $e){if(ogame_element_cout($e,10)!=ogame_element_cumulate($e,10))print_r($e);}"
+}
+
+/**
+ *  @brief Calculates the price of an Ogame element to it current level.
+ *  
+ *  @param[in] string $name  Name of building/research/fleet/defence, like in name in database
+ *  @param[in] int    $level The current level or the number of fleet/defence
+ *  @return array('M', 'C','D, 'NRJ') resources used to it current level
+ */
+function ogame_element_cumulate($name, $level)
+{
+    $result = ogame_array_ressource(0, 0, 0);
+    $type   = ogame_is_element($name);
+    if ($type === false) {
+        return $result;
+    }
+    if ($type === 'DEF' || $type === 'VSO') {
+        return ogame_element_cout($name, $level);
+    }
+
+    $coef      = ogame_element_evolve_coef($name);
+    $base_cout = ogame_element_cout_base($name);
+    foreach (array_keys($result) as $ress) {
+        if ($base_cout[$ress] !== 0) {  // Pour éviter les calculs inutiles !
+            $result[$ress] = round( $base_cout[$ress] * (1 - pow($coef[$ress], $level)) / (1 - $coef[$ress]) );
+            if ($type === 'RECH') {
+                $result[$ress] = round($result[$ress], -2); //Arrondi à la 100 pour les recherches.
+            }
+        }
+    }
+    
+    return $result;
+    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['BAT'], $names['RECH'], $names['VSO'], $names['DEF']) as $e){if(ogame_element_cumulate2($e,1)!=ogame_element_cumulate($e,1))print_r($e);}"
+} 
+
+/**
+ *  @brief Calculates the price of all element of type (building,defence,fleet,research).
+ *  
+ *  @param[in] array  $user Array of element each planet or moon
+ *  @param[in] string $type Type of element ('BAT' pour bâtiment, 'RECH' pour recherche, 'DEF' pour défense, 'VSO' pour vaisseau)
+ *  @return float Total price (M+C+D).
+ */
+function ogame_all_cumulate($user, $type)
+{
+    $total = 0;
+
+    if ($type === 'RECH') {
+        $data = $user;  //1 seul array, les technos
+    } else {
+        $data = current($user); //plusieurs array, les planètes/lunes, donc juste la 1er
+    }
+    while($data){
+        foreach ($data as $key=>$level) {
+            if ($level == "") {
+                $level = 0;
+            }
+            if ($key === 'Sat') {   //Nom dans la BDD ogspy_user_building
+                $key = 'SAT';
+            }
+            if (ogame_is_element($key) === $type) {
+                list($M, $C, $D) = array_values(ogame_element_cumulate($key, $level));
+                $total += $M + $C + $D;
+            }
+        }
+        if ($type === 'RECH') {
+            break;
+        }
+        next($user);
+        $data = current($user);
+    }
+
+    return $total;
+}
+
+/**
+ *  @brief Calculates the price of all building.
+ *  @param[in] $user_building Info of planet or moon
+ *  @return float Total price (M+C+D)
+ */
+function all_building_cumulate($user_building) { return ogame_all_cumulate($user_building, 'BAT'); }
+/**
+ *  @brief Calculates the price of all defence.
+ *  @param[in] $user_defence Info of planet or moon
+ *  @return float Total price (M+C+D)
+ */
+function all_defence_cumulate($user_defence)   { return ogame_all_cumulate($user_defence, 'DEF'); }
+/**
+ *  @brief Calculates the price of all fleet.
+ *  @param[in] $user_fleet Info of planet or moon
+ *  @return float Total price (M+C+D)
+ */
+function all_fleet_cumulate($user_fleet)       { return ogame_all_cumulate($user_fleet, 'VSO'); }
+/**
+ *  @brief Calculates the price of all research.
+ *  @param[in] $user_techno Info of technologies
+ *  @return float Total price (M+C+D)
+ */
+function all_technology_cumulate($user_techno) { return ogame_all_cumulate($user_techno, 'RECH'); }
+
+/**
+ * Calculates the price of all lunas
+ * @param $user_building
+ * @param string $user_defence The list of buildings with corresponding levels on the luna
+ * @return double bild :-)
+ */
+function all_lune_cumulate($user_building, $user_defence)
+{
+    return all_defence_cumulate($user_defence) + all_building_cumulate($user_building);
+}
+
+/**
+ *  @brief Calculates destroy price of a building.
+ *  
+ *  @param[in] string $name       Building name, as in Database
+ *  @param[in] int    $level      Building level
+ *  @param[in] int    $techno_ions Level of techno ions
+ *  @return false|array('M', 'C','D, 'NRJ'), false if undestroyable
+ */
+function ogame_building_destroy($name, $level, $techno_ions = 0)
+{ // Coût de démolition du niveau X à X-1 = arrondi.inf( ((cout construction niveau X à X+1) / coefficient_dévolution^2) * (1 - 0,04 * technologie_ion) )
+    //Bâtiments indestructibles :
+    if ($name === 'Ter' || $name === 'Dock' || $name === 'BaLu') {
+        return false;
+    }
+
+    $result      = ogame_array_ressource(0, 0, 0);
+    $coefficient = ogame_element_evolve_coef($name);
+    $couts       = ogame_element_cout($name, $level + 1);
+    foreach ($couts as $ress=>$cout) {
+        if ($coefficient[$ress] !== 0) {
+            $result[$ress] = floor( ($cout / pow($coefficient[$ress], 2)) * (1 - 0.04 * $techno_ions) );
+        }
+    }
+
+    return $result;
+}
+
+///////////////////// FLOTTE fonctions : ///////////////////////////////////////
+/**
+ *  @brief Calculates deut consummation for parking of a fleet.
+ *  
+ *  @param[in] int $conso The conso of the fleet
+ *  @param[in] int $hour  Number of hours in parking
+ *  @return float Deut conso for this hour of parking
+ */
+function ogame_fleet_conso_statio($conso, $hour)
+{
+    $result = $hour * $conso / 10;
+    if ($result < 1) {
+        $result = 1;
+    }
+    if ($hour == 0) {
+        $result = 0;
+    }
+
+    return floor($result);
+}
+
+function ogame_fleet_slowest_speed($fleet, $user_techno=null, $class='none')
+{
+    $names     = ogame_get_element_names();
+    $details   = array();
+    $max_speed = ogame_elements_details('SE', $user_techno, $class);   //The fastest fleet
+    $min_speed = $max_speed['vitesse'];
+    foreach ($names['VSO'] as $elem) {
+        if (isset($fleet[$elem]) && $fleet[$elem] != 0) {
+            $details = ogame_elements_details($elem, $user_techno, $class);
+            if ($min_speed > $details['vitesse']) {
+                $min_speed = $details['vitesse'];
+            }
+        }
+    }
+    return $min_speed;
+}
+
+/**
+ *  @brief Calculates distance between 2 coordinates.
+ *  
+ *  @param[in] string $a, $b         Coordinates ('g:s:p')
+ *      'g1:s1:p1'->'g2:s2:p2' : normal distance calcul
+ *      ':s1:p1'->'x:s2:p2     : distance between system/planet (only system is ':s1:')
+ *      '::p1'->'x:x:p2        : distance between planet
+ *  @param[in] array  $server_config Info of universe ('num_of_galaxies','num_of_systems','donutGalaxy','donutSystem' only these are checked) default 9/499/1/1
+ *  @return array(int 'distance','type') [default=O,'p'], type='g' for between galaxy, 's' for between system and 'p' for between a sub-system
+ */
+function ogame_fleet_distance($a, $b, $user_techno=null, $class='none', $server_config=null)
+{
+    $result = array('distance'=>0, 'type'=>'p');
+    if (!isset($server_config['num_of_galaxies']) || !is_numeric($server_config['num_of_galaxies'])) { $server_config['num_of_galaxies'] = 9; }
+    if (!isset($server_config['num_of_systems'])  || !is_numeric($server_config['num_of_systems']))  { $server_config['num_of_systems'] = 499; }
+    if (!isset($server_config['donutGalaxy'])     || !is_numeric($server_config['donutGalaxy']))     { $server_config['donutGalaxy'] = 1; }
+    if (!isset($server_config['donutSystem'])     || !is_numeric($server_config['donutSystem']))     { $server_config['donutSystem'] = 1; }
+
+    $dist_abs    = 0;
+    $max_type    = array('g'=>$server_config['num_of_galaxies'], 's'=>$server_config['num_of_systems'], 0);
+    $uni_arrondi = array('g'=>true, 's'=>true, 'p'=>false); //Par défaut
+    if ($server_config['donutGalaxy'] === 0) {
+        $max_type['g']    = 0;
+        $uni_arrondi['g'] = false;
+    }
+    if ($server_config['donutSystem'] === 0) {
+        $max_type['s']    = 0;
+        $uni_arrondi['s'] = false;
+    }
+    $coord_a = ogame_find_coordinates($a);
+    $coord_b = ogame_find_coordinates($b);
+    $key     = 'p';
+    foreach (array_keys($coord_a) as $key) {    //On ne calcule la distance qu'entre des vraies coordonnées.
+        if ($coord_a[$key] === 0 || $coord_b[$key] === 0) {
+            $coord_a[$key] = 0;
+            $coord_b[$key] = 0;
+        }
+        $dist_abs = abs($coord_a[$key] - $coord_b[$key]);   //|a-b|
+        if ($dist_abs !== 0) {
+            break;
+        }
+    }
+    $result['type']     = $key;
+    $result['distance'] = $dist_abs;    //|a-b|
+    if ($uni_arrondi[$key] && ($dist_abs > $max_type[$key] / 2)) {
+        $result['distance'] = abs($dist_abs - $max_type[$key]); //||a-b| - base|
+    }
+
+    return $result;
+}
+
+/**
+ *  @brief Calculates time and conso to send a fleet.
+ *  
+ *  @param[in] string $coord_from,$coord_to    Coordinates begin and end
+ *  @param[in] array  $fleet                   Array of fleet and their number (array('PT'=>10,etc.))
+ *  @param[in] int    $speed_per               Percentage of speed wanted
+ *  @param[in] array  $user_techno             List of techno ('RC','RI','PH', le reste est ignoré)
+ *  @param[in] string $class                   User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
+ *  @param[in] array  $server_config           Info of universe ('num_of_galaxies','num_of_systems','donutGalaxy','donutSystem' only these are checked) default 9/499/1/1
+ *  @param[in] string $type                    Indicates specific mission ('statio'/'expe', 'fuite')
+ *  @param[in] int    $hour_mission            Number of hour of the specific mission
+ *  @return array('conso', 'time'), time in seconds (one trip only)
+ */
+function ogame_fleet_send($coord_from, $coord_to, $fleet, $speed_per=100, $user_techno=null, $class='none', $server_config=null, $type='', $hour_mission=0) {
+    $result = array('conso'=>0, 'time'=>0);
+
+    $names     = ogame_get_element_names();
+    $details   = array();
+    $consos    = array();
+    $max_speed = ogame_elements_details('SE', $user_techno, $class);   //The fastest fleet
+    $min_speed = $max_speed['vitesse'];
+    foreach ($names['VSO'] as $elem) {
+        $consos[$elem] = 0;
+        if (isset($fleet[$elem]) && $fleet[$elem] != 0) {
+            $details = ogame_elements_details($elem, $user_techno, $class);
+            if ($min_speed > $details['vitesse']) {
+                $min_speed = $details['vitesse'];
+            }
+            $consos[$elem] = $details['conso'] * $fleet[$elem];
+        }
+    }
+    if ($min_speed == 0) { //Ne devrait jamais arriver mais pour éviter une div/0.
+        return $result;
+    }
+
+    $distance = ogame_fleet_distance($coord_from, $coord_to, $server_config);
+    if ($type === 'fuite') {
+        $distance['type'] = $type;
+    }
+    $conso_sum = array_sum($consos);
+    switch ($distance['type']) {
+        case 'g':   //between galaxy
+        // durée = Dans une autre galaxie : 10 + [ 35 000 / %vitesse * Racine(écart de galaxies * 20 000 000 / vitesse du vaisseau)]
+        // conso = Entre galaxies : 1 + arrondi.sup[conso * ((4 * distance absolue entre les galaxies) / 7) * (%vitesse / 100 + 1)^2 ]
+            $result['time']  = ( 10 + (35000 / $speed_per * sqrt($distance['distance'] * 20000000 / $min_speed)) );
+            $result['conso'] = 1 + ( $conso_sum * ((4 * $distance['distance']) / 7) * pow($speed_per / 100 + 1, 2) );
+            break;
+        case 's':   //between system (so inside same galaxy)
+        // durée = Dans sa galaxie        : 10 + [ 35 000 / %vitesse * Racine((2 700 000 + (écart de systèmes) * 95 000) / vitesse du vaisseau)]
+        // conso = Entre systèmes solaires  : 1 + arrondi.sup[conso * ((2.700 + 95 * distance absolue entre les systèmes solaires) / 35.000) * (%vitesse / 100 + 1)^2 ]
+            $result['time']  = ( 10 + (35000 / $speed_per * sqrt((2700000 + $distance['distance'] * 95000) / $min_speed)) );
+            $result['conso'] = 1 + ( $conso_sum * ((2700 + 95 * $distance['distance']) / 35000) * pow($speed_per / 100 + 1, 2) );
+            break;
+        case 'p':   //between sub-system (so in same galaxy and same system)
+            if ($distance['distance'] === 0) { // to moon/cdr
+                // durée = Jusqu'à son propre cdr : 10 + [ 35 000 / %vitesse * Racine(5 000 / vitesse du vaisseau) ]
+                // conso = Entre planète et lune (propre) : 1 + arrondi.sup[conso * ( 5 / 35.000) * (%vitesse / 100 + 1)^2 ]
+                $result['time']  = ( 10 + (35000 / $speed_per * sqrt(5000 / $min_speed)) );
+                $result['conso'] = 1 + ( $conso_sum * (5 / 35000) * pow($speed_per / 100 + 1, 2) );
+            } else { //to other planet in same system
+                // durée = Dans son système solaire : 10 + [ 35 000 / %vitesse * Racine((1 000 000 + distance absolue entre les planètes * 5 000) / vitesse du vaisseau) ]
+                // conso = Dans son système solaire : 1 + arrondi.sup[conso * ((1.000 + 5 * distance absolue entre les planètes) / 35.000) * (%vitesse / 100 + 1)^2 ]
+                $result['time']  = ( 10 + (35000 / $speed_per * sqrt((1000000 + $distance['distance'] * 5000) / $min_speed)) );
+                $result['conso'] = 1 + ( $conso_sum * ((1000 + 5 * $distance['distance']) / 35000) * pow($speed_per / 100 + 1, 2) );
+            }
+            break;
+        case 'fuite':
+            // Fuite de flotte : arrondi.inf[ conso à une distance de 1 * 1.5 ]
+            $distance['distance'] = 1 * 1.5;
+            $result['conso'] = ( $conso_sum * $distance['distance'] );  //???
+        default:
+            break;
+    }
+    if ($type === 'statio' || $type === 'expe') {
+        $result['conso'] += ogame_fleet_conso_statio($conso_sum, $hour_mission);
+        // $result['time']  += $hour_mission * 3600;
+    }
+    $result['time']  = round($result['time']);
+    $result['conso'] = ceil($result['conso']);
+    
+    return $result;
+    // php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();var_dump($a=ogame_fleet_send('1:1:1','1:1:1',array('PT'=>260),100,array('RC'=>20,'RI'=>17,'PH'=>16),'COL'));echo gmdate('z:H:i:s',$a['time']);"
+}
+
+///////////////////// TEMPS fonctions : ////////////////////////////////////////
+/**
  *  @brief Calculates cumulate lab network.
  *  
  *  @param[in] array $user_empire       From user_get_empire()
@@ -1930,6 +1951,68 @@ function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0,
 }
 //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');var_dump($a=ogame_construction_time('NRJ',21,array('Lab'=>18,'CSp'=>12,'UdR'=>10,'UdN'=>7),234));echo gmdate('z:H:i:s',$a);"
 
+///////////////////// DIVERS fonctions : ///////////////////////////////////////
+/**
+ *  @brief Return planet position from coordinates.
+ *  @param[in] string $coordinates planet coordinates (galaxy:system:position)
+ *  @return int planet position
+ */
+function ogame_find_planet_position($coordinates) {
+    $position = ogame_find_coordinates($coordinates);
+
+    return $position['p'];
+}
+
+/**
+ *  @brief Return coordinates in array.
+ *  
+ *  @param[in] string $string_coord Coordinates, in string like in Database ('2:3:4')
+ *  @return array('g','s','p') of int, default is 0 ('::6' give planet position of 6)
+ */
+function ogame_find_coordinates($string_coord)
+{
+    $result = array('g' => 0, 's' => 0, 'p' => 0);
+
+    $coordinates_tmp = explode(':', $string_coord);
+    if (count($coordinates_tmp) === 3) {
+        $result['g'] = (int) $coordinates_tmp[0];
+        $result['s'] = (int) $coordinates_tmp[1];
+        $result['p'] = (int) $coordinates_tmp[2];
+    }
+
+    return $result;
+}
+
+
+/**
+ * @brief Calculates the planet storage capacity (taille hangar).
+ *
+ * @param[in] int $level Storage building level
+ * @return float capacity
+ */
+function ogame_depot_capacity($level)
+{
+    $capacity = 10000;  // capacité par défaut
+
+    if ($level > 0) {
+        $capacity = 5000 * floor(2.5 * exp(20 * $level / 33));
+    }
+
+    return $capacity;
+}
+
+/**
+ * Returns the maximum numbers of planet slots available according to the Astrophysic level
+ * @param int $level Astrophysic Level
+ * @return the maximum number of planets
+ */
+function astro_max_planete($level)
+{
+    global $server_config;
+    return ($server_config['astro_strict'] && $level < 15) ? 9 : ceil($level / 2) + 1;
+}
+
+
 /**
  *  @brief Calculates phalanx range.
  *  
@@ -1981,85 +2064,4 @@ function ogame_missile_speed($nb_system, $speed_uni = 1)
 function ogame_terra_case($level)
 {
     return floor(5.5 * $level);
-}
-
-/**
- *  @brief Calculates the evolve coefficient of a building and research.
- *  
- *  @param[in] string $name Building/research name, as in Database
- *  @return array('M', 'C','D, 'NRJ') array of coefficient by ressource
- */
-function ogame_element_evolve_coef($name)
-{
-    $coefficient = ogame_array_ressource(0, 0, 0);
-    switch ($name) {
-        case 'M': //no break
-        case 'D': //no break
-        case 'CES':
-            $coefficient['M'] = 1.5;
-            $coefficient['C'] = 1.5;
-            break;
-        case 'C':
-            $coefficient['M'] = 1.6;
-            $coefficient['C'] = 1.6;
-            break;
-        case 'CEF':
-            $coefficient['M'] = 1.8;
-            $coefficient['C'] = 1.8;
-            $coefficient['D'] = 1.8;
-            break;
-        case 'Dock':
-            $coefficient['M']   = 5;
-            $coefficient['C']   = 5;
-            $coefficient['D']   = 5;
-            $coefficient['NRJ'] = 2.5;
-            break;
-        case 'Astrophysique':
-            $coefficient['M'] = 1.75;
-            $coefficient['C'] = 1.75;
-            $coefficient['D'] = 1.75;
-            break;
-        case 'Graviton':
-            $coefficient['NRJ'] = 3;
-            break;
-        default:
-            $coefficient['M']   = 2;
-            $coefficient['C']   = 2;
-            $coefficient['D']   = 2;
-            $coefficient['NRJ'] = 2;
-            break;
-    }
-
-    $type = ogame_is_element($name);
-    if ($type !== 'BAT' && $type !== 'RECH') {
-        $coefficient = ogame_array_ressource(0, 0, 0);
-    }
-    return $coefficient;
-}
-
-/**
- *  @brief Calculates destroy price of a building.
- *  
- *  @param[in] string $name       Building name, as in Database
- *  @param[in] int    $level      Building level
- *  @param[in] int    $techno_ions Level of techno ions
- *  @return false|array('M', 'C','D, 'NRJ'), false if undestroyable
- */
-function ogame_building_destroy($name, $level, $techno_ions = 0)
-{ // Coût de démolition du niveau X à X-1 = arrondi.inf( ((cout construction niveau X à X+1) / coefficient_dévolution^2) * (1 - 0,04 * technologie_ion) )
-    //Bâtiments indestructibles :
-    if ($name === 'Ter' || $name === 'Dock' || $name === 'BaLu') {
-        return false;
-    }
-
-    $result      = ogame_array_ressource(0, 0, 0);
-    $coefficient = ogame_element_evolve_coef($name);
-    $couts       = ogame_element_cout($name, $level + 1);
-    foreach ($couts as $ress=>$cout) {
-        if ($coefficient[$ress] !== 0) {
-            $result[$ress] = floor( ($cout / pow($coefficient[$ress], 2)) * (1 - 0.04 * $techno_ions) );
-        }
-    }
-
-    return $result;
 }
