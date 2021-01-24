@@ -13,11 +13,12 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+///////////////////// BASE fonctions : /////////////////////////////////////////
 /**
- *  @brief Get an Ogame ressources array.
+ *  @brief Get an Ogame resources array.
  *  
- *  @param[in] int $metal,$cristal,$deut The needed ressources
- *  @param[in] int $NRJ,$AM              Optional ressources (0 default)
+ *  @param[in] int $metal,$cristal,$deut The needed resources
+ *  @param[in] int $NRJ,$AM              Optional resources (0 default)
  *  @return array('M','C','D','NRJ','AM'), default is 0
  */
 function ogame_array_ressource($metal, $cristal, $deut, $NRJ = 0, $AM = 0)
@@ -40,6 +41,7 @@ function ogame_array_detail($structure, $bouclier, $attaque, $vitesse=0, $fret=0
                  'rapidfire'=>array(), 'civil'=>$civil);
 }
 
+///////////////////// PRODUCTION fonctions : ///////////////////////////////////
 /**
  *  @brief Return position ressources bonus in Ogame.
  *  
@@ -127,9 +129,9 @@ function ogame_production_bonus_foreuse($user_building, $user_data)
  *  
  *  @param[in] string $building        The wanted building/sat/for ('base','M','C','D','CES','CEF','SAT','FOR')
  *  @param[in] array  $user_building   Planet info ('M','C','D','CES','CEF','SAT','FOR','temperature_max','coordinates') 0 as default value
- *  @param[in] array  $user_technology Techno info ('NRJ','Plasma') 0 as default value
- *  @param[in] array  $user_data       User info (array('user_class'=>'COL'/...,'off_geologue' or 'off_full')
- *  @param[in] array  $server_config   Ogame univers info ('speed_uni',(bool)'final_calcul') / final_calcul permet de déterminer si les valeurs retournées seront manipulées avec les % de production ressources, et donc sans arrondi.
+ *  @param[in] array  $user_technology Techno info ('NRJ') 0 as default value
+ *  @param[in] array  $user_data       User info, for FOR only (array('user_class'=>'COL'/...,'off_geologue' or 'off_full')
+ *  @param[in] array  $server_config   Ogame universe info ('speed_uni',(bool)'final_calcul') / final_calcul permet de déterminer si les valeurs retournées seront manipulées avec les % de production ressources, et donc sans arrondi.
  *  @return array('M','C','D','NRJ','AM') of production
  *  
  *  @details remplace les fonctions consumption et partiellement production,production_sat,production_foreuse
@@ -229,7 +231,7 @@ function ogame_production_building($building, $user_building = null, $user_techn
  *  @param[in] array $user_building   Planet info ('M','C','D','CES','CEF','SAT','FOR','temperature_max','coordinates','M_percentage','C_percentage','D_percentage','CES_percentage','CEF_percentage','Sat_percentage','FOR_percentage',array 'booster_tab') 0 as default value
  *  @param[in] array $user_technology Techno info ('NRJ','Plasma') 
  *  @param[in] array $user_data       User info (array('user_class'=>'COL'/...,'off_commandant','off_amiral','off_ingenieur','off_geologue', or 'off_full')
- *  @param[in] array $server_config   Ogame univers info ('speed_uni')
+ *  @param[in] array $server_config   Ogame universe info ('speed_uni')
  *  @return array('prod_reel,'prod_theorique','ratio','conso_E','prod_E',  //Production totale
  *      'prod_CES','prod_CEF','prod_SAT','prod_FOR',   //production énergie de chaque unité
  *      'prod_M','prod_C','prod_D','prod_base', //production ressources de chaque mine
@@ -871,20 +873,35 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
 
 /**
  *  @brief Return planet position from coordinates.
- *  
  *  @param[in] string $coordinates planet coordinates (galaxy:system:position)
  *  @return int planet position
  */
 function ogame_find_planet_position($coordinates) {
-    $position = 0;
+    $position = ogame_find_coordinates($coordinates);
 
-    $coordinates_tmp = explode(':', $coordinates);
+    return $position['p'];
+}
+
+/**
+ *  @brief Return coordinates in array.
+ *  
+ *  @param[in] string $string_coord Coordinates, in string like in Database ('2:3:4')
+ *  @return array('g','s','p') of int, default is 0 ('::6' give planet position of 6)
+ */
+function ogame_find_coordinates($string_coord)
+{
+    $result = array('g' => 0, 's' => 0, 'p' => 0);
+
+    $coordinates_tmp = explode(':', $string_coord);
     if (count($coordinates_tmp) === 3) {
-        $position = (int) $coordinates_tmp[2];
+        $result['g'] = (int) $coordinates_tmp[0];
+        $result['s'] = (int) $coordinates_tmp[1];
+        $result['p'] = (int) $coordinates_tmp[2];
     }
 
-    return $position;
+    return $result;
 }
+
 
 /**
  * @brief Calculates the planet storage capacity (taille hangar).
@@ -914,9 +931,9 @@ function astro_max_planete($level)
     return ($server_config['astro_strict'] && $level < 15) ? 9 : ceil($level / 2) + 1;
 }
 
-
+////////////////// OGAME CARACTERISTIQUES fonctions : //////////////////////////
 /**
- *  @brief Give database names of a buiding/research/fleet/defence/class/ressources.
+ *  @brief Give database names of a building/research/fleet/defence/class/resources.
  *  
  *  @return array('BAT'=>array, 'RECH'=>array, 'VSO'=>array, 'DEF'=>array, 'CLASS'=>array, 'RESS'=>array)
  */
@@ -938,7 +955,7 @@ function ogame_get_element_names()
         'HD',   //Réservoir de deutérium
         'Lab',  //Laboratoire
         'Ter',  //Terraformeur
-        'DdR',  //Dépot de ravitaillement
+        'DdR',  //Dépôt de ravitaillement
         'Silo', //Silo de missiles
         'Dock', //Dock spatial
         'BaLu', //Base lunaire
@@ -946,7 +963,7 @@ function ogame_get_element_names()
         'PoSa', //Porte de saut spatial
         );
     $names['RECH'] = array( // Recherches :
-        'Esp',           //Technologie espionage
+        'Esp',           //Technologie espionnage
         'Ordi',          //Technologie ordinateur
         'Armes',         //Technologie armes
         'Bouclier',      //Technologie bouclier
@@ -1140,6 +1157,7 @@ function ogame_element_cout_base($name = 'all')
     //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['BAT'], $names['RECH'], $names['VSO'], $names['DEF']) as $e){if(ogame_element_cout_base($e)!=ogame_element_cumulate($e,1))print_r($e);}"
 }
 
+///////////////////// COUT fonctions : /////////////////////////////////////////
 /**
  *  @brief Calculates price of an Ogame bat/vso/def/rech
  *  
@@ -1180,7 +1198,7 @@ function ogame_element_cout($name, $level)
  *  
  *  @param[in] string $name  Name of building/research/fleet/defence, like in name in database
  *  @param[in] int    $level The current level or the number of fleet/defence
- *  @return array('M', 'C','D, 'NRJ') ressources used to it current level
+ *  @return array('M', 'C','D, 'NRJ') resources used to it current level
  */
 function ogame_element_cumulate($name, $level)
 {
@@ -1283,8 +1301,9 @@ function all_lune_cumulate($user_building, $user_defence)
     return all_defence_cumulate($user_defence) + all_building_cumulate($user_building);
 }
 
+///////////////////// FLOTTE fonctions : ///////////////////////////////////////
 /**
- *  @brief Calculates deut consommation for parking of a fleet.
+ *  @brief Calculates deut consummation for parking of a fleet.
  *  
  *  @param[in] int $conso The conso of the fleet
  *  @param[in] int $hour  Number of hours in parking
@@ -1298,6 +1317,58 @@ function ogame_fleet_conso_statio($conso, $hour) {
 
     return floor($result);
 }
+
+/**
+ *  @brief Calculates distance between 2 coordinates.
+ *  
+ *  @param[in] string $a, $b         Coordinates ('g:s:p')
+ *      'g1:s1:p1'->'g2:s2:p2' : normal distance calcul
+ *      ':s1:p1'->'x:s2:p2     : distance between system/planet (only system is ':s1:')
+ *      '::p1'->'x:x:p2        : distance between planet
+ *  @param[in] array  $server_config Info of universe ('num_of_galaxies','num_of_systems','donutGalaxy','donutSystem' only these are checked) default 9/499/1/1
+ *  @return array(int 'distance','type') [default=O,'p'], type='g' for between galaxy, 's' for between system and 'p' for between a sub-system
+ */
+function ogame_fleet_distance($a, $b, $server_config = null)
+{
+    $result = array('distance'=>0, 'type'=>'p');
+    if (!isset($server_config['num_of_galaxies']) || !is_numeric($server_config['num_of_galaxies'])) { $server_config['num_of_galaxies'] = 9; }
+    if (!isset($server_config['num_of_systems'])  || !is_numeric($server_config['num_of_systems']))  { $server_config['num_of_systems'] = 499; }
+    if (!isset($server_config['donutGalaxy'])     || !is_numeric($server_config['donutGalaxy']))     { $server_config['donutGalaxy'] = 1; }
+    if (!isset($server_config['donutSystem'])     || !is_numeric($server_config['donutSystem']))     { $server_config['donutSystem'] = 1; }
+
+    $dist_abs    = 0;
+    $max_type    = array('g'=>$server_config['num_of_galaxies'], 's'=>$server_config['num_of_systems'], 0);
+    $uni_arrondi = array('g'=>true, 's'=>true, 'p'=>false); //Par défaut
+    if ($server_config['donutGalaxy'] === 0) {
+        $max_type['g']    = 0;
+        $uni_arrondi['g'] = false;
+    }
+    if ($server_config['donutSystem'] === 0) {
+        $max_type['s']    = 0;
+        $uni_arrondi['s'] = false;
+    }
+    $coord_a = ogame_find_coordinates($a);
+    $coord_b = ogame_find_coordinates($b);
+    $key     = 'p';
+    foreach (array_keys($coord_a) as $key) {    //On ne calcule la distance qu'entre des vraies coordonnées.
+        if ($coord_a[$key] === 0 || $coord_b[$key] === 0) {
+            $coord_a[$key] = 0;
+            $coord_b[$key] = 0;
+        }
+        $dist_abs = abs($coord_a[$key] - $coord_b[$key]);   //|a-b|
+        if ($dist_abs !== 0) {
+            break;
+        }
+    }
+    $result['type']     = $key;
+    $result['distance'] = $dist_abs;    //|a-b|
+    if ($uni_arrondi[$key] && ($dist_abs > $max_type[$key] / 2)) {
+        $result['distance'] = abs($dist_abs - $max_type[$key]); //||a-b| - base|
+    }
+
+    return $result;
+}
+
 
 /**
  *  @brief Return base details of Ogame def/vso.
@@ -1393,7 +1464,7 @@ function ogame_elements_details_base($name = 'all')
  *      rapidfire=array('PT'=>x, ...) array of all fleet and defence; if x>0 then again else from
  *      cout=array of ogame_element_cumulate()=array('M','C','D','NRJ)
  */
-function ogame_elements_details($name, $user_techno = null, $classe = 0)
+function ogame_elements_details($name, $user_techno = null, $classe = 'none')
 {
     static $RC_COEF     = 0.1;
     static $RI_COEF     = 0.2;
@@ -1504,6 +1575,9 @@ function ogame_elements_details($name, $user_techno = null, $classe = 0)
         $bonus_class = -0.25;    //-25%
     }
     $conso     = round($conso     + $conso     * $bonus_class);
+    if ($conso < 1) {
+        $conso = 1;
+    }
     
     $base_detail['structure'] = $structure;
     $base_detail['bouclier']  = $bouclier;
@@ -1752,44 +1826,6 @@ function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0,
 //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');var_dump($a=ogame_construction_time('NRJ',21,array('Lab'=>18,'CSp'=>12,'UdR'=>10,'UdN'=>7),234));echo gmdate('z:H:m:s',$a);"
 
 /**
- * Calcule la distance entre a et b, a - b ; en tenant en compte des univers arrondis.
- * type = Représente le type de distance à calculer
- *      0 : Galaxie
- *      1 : Système
- *      2 : Planète
- * typeArrondi = true pour un univers arrondi selon le type donnée
- * @param $a
- * @param $b
- * @param $type
- * @param bool $typeArrondi
- * @return number
- */
-function calc_distance($a, $b, $type, $typeArrondi = true)
-{//a-b
-    global $server_config;
-
-    $max_type = 0;
-
-    switch ($type) {
-        case 0: //Galaxy
-            $max_type = $server_config['num_of_galaxies']; //9
-            break;
-        case 1: //System
-            $max_type = $server_config['num_of_systems']; //499
-            break;
-    }
-    if ($typeArrondi) {
-        if (abs($a - $b) < $max_type / 2) {
-            return abs($a - $b); //|a-b|
-        } else {
-            return abs(abs($a - $b) - $max_type); //||a-b| - base|
-        }
-    } else {
-        return abs($a - $b); //|a-b|
-    }
-}
-
-/**
  *  @brief Calculates phalanx range.
  *  
  *  @param[in] int   $level         Level of the phalanx
@@ -1823,7 +1859,7 @@ function ogame_missile_range($impulsion = 1)
  *  @brief Calculates MIP speed.
  *  
  *  @param[in] int $nb_system Number of sub-system from current planet
- *  @param[in] int $speed_uni Univers speed
+ *  @param[in] int $speed_uni Universe speed
  *  @return int Speed in seconds
  */
 function ogame_missile_speed($nb_system, $speed_uni = 1)
