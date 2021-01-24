@@ -1,4 +1,12 @@
 /*eslint camelcase: ["error", {properties: "never"}]*/
+/**
+ *  @file	js/ogame_formula.js
+ *  Bibliothèques des formules Ogame pour des modifications dynamiques.
+ *  @author pitch314
+ *  @version 2.0, 2021-01-22
+ */
+//uglifyjs js/ogame_formula.js -c -m -b -o js/ogame_formula.min.js
+
 // Production par heure
 function production(building, level, temperatureMax, energy, plasma, position) {
 	if (typeof(plasma) == 'undefined') {
@@ -11,7 +19,8 @@ function production(building, level, temperatureMax, energy, plasma, position) {
 		ingenieur = document.getElementById('off_ingenieur').value == 1 ? 0.1 : 0,
 		geologue = document.getElementById('off_geologue').value == 1 ? 0.1 : 0;
 	var bonus_class_mine = 0,
-		bonus_class_energie = 0;
+		bonus_class_energie = 0,
+		bonus_position = 0;
 	
 	if (document.getElementById('off_full').value == 1) {
 		ingenieur = 0.12;
@@ -22,7 +31,7 @@ function production(building, level, temperatureMax, energy, plasma, position) {
 		bonus_class_energie = 0.10; //+10%
 	}
 	//Bonus position
-	var bonus_position = 0;
+	bonus_position = 0;
 	if (building === 'C') {
 		if (position == 1) {
 			bonus_position = 0.4;
