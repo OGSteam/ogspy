@@ -1309,13 +1309,34 @@ function all_lune_cumulate($user_building, $user_defence)
  *  @param[in] int $hour  Number of hours in parking
  *  @return float Deut conso for this hour of parking
  */
-function ogame_fleet_conso_statio($conso, $hour) {
+function ogame_fleet_conso_statio($conso, $hour)
+{
     $result = $hour * $conso / 10;
     if ($result < 1) {
         $result = 1;
     }
+    if ($hour == 0) {
+        $result = 0;
+    }
 
     return floor($result);
+}
+
+function ogame_fleet_slowest_speed($fleet, $user_techno=null, $class='none')
+{
+    $names     = ogame_get_element_names();
+    $details   = array();
+    $max_speed = ogame_elements_details('SE', $user_techno, $class);   //The fastest fleet
+    $min_speed = $max_speed['vitesse'];
+    foreach ($names['VSO'] as $elem) {
+        if (isset($fleet[$elem]) && $fleet[$elem] != 0) {
+            $details = ogame_elements_details($elem, $user_techno, $class);
+            if ($min_speed > $details['vitesse']) {
+                $min_speed = $details['vitesse'];
+            }
+        }
+    }
+    return $min_speed;
 }
 
 /**
@@ -1328,7 +1349,7 @@ function ogame_fleet_conso_statio($conso, $hour) {
  *  @param[in] array  $server_config Info of universe ('num_of_galaxies','num_of_systems','donutGalaxy','donutSystem' only these are checked) default 9/499/1/1
  *  @return array(int 'distance','type') [default=O,'p'], type='g' for between galaxy, 's' for between system and 'p' for between a sub-system
  */
-function ogame_fleet_distance($a, $b, $server_config = null)
+function ogame_fleet_distance($a, $b, $user_techno=null, $class='none', $server_config=null)
 {
     $result = array('distance'=>0, 'type'=>'p');
     if (!isset($server_config['num_of_galaxies']) || !is_numeric($server_config['num_of_galaxies'])) { $server_config['num_of_galaxies'] = 9; }
@@ -1367,6 +1388,90 @@ function ogame_fleet_distance($a, $b, $server_config = null)
     }
 
     return $result;
+}
+
+/**
+ *  @brief Calculates deuterium consummation of a fleet
+ *  
+ *  @param[in] string $coord_from Coordinates of start ('g:s:p')
+ *  @param[in] string $coord_to   Coordinates of end ('g:s:p')
+ *  @param[in] array  $fleet      Array of fleet and theirs number ('PT'=>5, etc.)
+ *  @param[in] string $type       Type of destination ('statio','expe','fuite')
+ *  @return array('G' => 0, 's' => 0, 'p' => 0);
+ *  
+ *  @details    Remplace calc_distance
+ */
+function ogame_fleet_send($coord_from, $coord_to, $fleet, $speed_per=100, $user_techno=null, $class='none', $server_config=null, $type='planet', $hour_mission=0) {
+    $result = array('conso'=>0, 'time'=>0);
+
+    $names     = ogame_get_element_names();
+    $details   = array();
+    $consos    = array();
+    $max_speed = ogame_elements_details('SE', $user_techno, $class);   //The fastest fleet
+    $min_speed = $max_speed['vitesse'];
+    foreach ($names['VSO'] as $elem) {
+        $consos[$elem] = 0;
+        if (isset($fleet[$elem]) && $fleet[$elem] != 0) {
+            $details = ogame_elements_details($elem, $user_techno, $class);
+            if ($min_speed > $details['vitesse']) {
+                $min_speed = $details['vitesse'];
+            }
+            $consos[$elem] = $details['conso'] * $fleet[$elem];
+        }
+    }
+    if ($min_speed == 0) { //Ne devrait jamais arriver mais pour éviter une div/0.
+        return $result;
+    }
+
+    $distance = ogame_fleet_distance($coord_from, $coord_to, $server_config);
+    if ($type === 'fuite') {
+        $distance['type'] = $type;
+    }
+    $conso_sum = array_sum($consos);
+    switch ($distance['type']) {
+        case 'g':   //between galaxy
+        // durée = Dans une autre galaxie : 10 + [ 35 000 / %vitesse * Racine(écart de galaxies * 20 000 000 / vitesse du vaisseau)]
+        // conso = Entre galaxies : 1 + arrondi.sup[conso * ((4 * distance absolue entre les galaxies) / 7) * (%vitesse / 100 + 1)^2 ]
+            $result['time']  = ( 10 + (35000 / $speed_per * sqrt($distance['distance'] * 20000000 / $min_speed)) );
+            $result['conso'] = 1 + ( $conso_sum * ((4 * $distance['distance']) / 7) * pow($speed_per / 100 + 1, 2) );
+            break;
+        case 's':   //between system (so inside same galaxy)
+        // durée = Dans sa galaxie        : 10 + [ 35 000 / %vitesse * Racine((2 700 000 + (écart de systèmes) * 95 000) / vitesse du vaisseau)]
+        // conso = Entre systèmes solaires  : 1 + arrondi.sup[conso * ((2.700 + 95 * distance absolue entre les systèmes solaires) / 35.000) * (%vitesse / 100 + 1)^2 ]
+            $result['time']  = ( 10 + (35000 / $speed_per * sqrt((2700000 + $distance['distance'] * 95000) / $min_speed)) );
+            $result['conso'] = 1 + ( $conso_sum * ((2700 + 95 * $distance['distance']) / 35000) * pow($speed_per / 100 + 1, 2) );
+            break;
+        case 'p':   //between sub-system (so in same galaxy and same system)
+            if ($distance['distance'] === 0) { // to moon/cdr
+                // durée = Jusqu'à son propre cdr : 10 + [ 35 000 / %vitesse * Racine(5 000 / vitesse du vaisseau) ]
+                // conso = Entre planète et lune (propre) : 1 + arrondi.sup[conso * ( 5 / 35.000) * (%vitesse / 100 + 1)^2 ]
+                $result['time']  = ( 10 + (35000 / $speed_per * sqrt(5000 / $min_speed)) );
+                $result['conso'] = 1 + ( $conso_sum * (5 / 35000) * pow($speed_per / 100 + 1, 2) );
+            } else { //to other planet in same system
+                // durée = Dans son système solaire : 10 + [ 35 000 / %vitesse * Racine((1 000 000 + distance absolue entre les planètes * 5 000) / vitesse du vaisseau) ]
+                // conso = Dans son système solaire : 1 + arrondi.sup[conso * ((1.000 + 5 * distance absolue entre les planètes) / 35.000) * (%vitesse / 100 + 1)^2 ]
+                $result['time']  = ( 10 + (35000 / $speed_per * sqrt((1000000 + $distance['distance'] * 5000) / $min_speed)) );
+                $result['conso'] = 1 + ( $conso_sum * ((1000 + 5 * $distance['distance']) / 35000) * pow($speed_per / 100 + 1, 2) );
+            }
+            break;
+        case 'fuite':
+            // Fuite de flotte : arrondi.inf[ conso à une distance de 1 * 1.5 ]
+            $distance['distance'] = 1 * 1.5;
+            $result['conso'] = ( $conso_sum * $distance['distance'] );  //???
+        default:
+            break;
+    }
+    $result['time']  += $hour_mission;
+    if ($type === 'statio') {
+        $result['conso'] += ogame_fleet_conso_statio($conso_sum, $hour_mission);
+    } elseif ($type === 'expe') {
+        
+    }
+    $result['time']  = round($result['time']);
+    $result['conso'] = ceil($result['conso']);
+    
+    return $result;
+    // php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();var_dump($a=ogame_fleet_send('1:1:1','1:1:1',array('PT'=>260),100,array('RC'=>20,'RI'=>17,'PH'=>16),'COL'));echo gmdate('z:H:i:s',$a['time']);"
 }
 
 
@@ -1823,7 +1928,7 @@ function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0,
 
     return $result;  
 }
-//php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');var_dump($a=ogame_construction_time('NRJ',21,array('Lab'=>18,'CSp'=>12,'UdR'=>10,'UdN'=>7),234));echo gmdate('z:H:m:s',$a);"
+//php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');var_dump($a=ogame_construction_time('NRJ',21,array('Lab'=>18,'CSp'=>12,'UdR'=>10,'UdN'=>7),234));echo gmdate('z:H:i:s',$a);"
 
 /**
  *  @brief Calculates phalanx range.
