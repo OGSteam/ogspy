@@ -93,8 +93,8 @@ function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax, p
 		nbForeuse = nb_max;
 	}
 	//Bonus position
-	bonus_position_M = 0;
-	bonus_position_C = 0;
+	var bonus_position_M = 0;
+	var bonus_position_C = 0;
 	if (position == 1) {
 		bonus_position_C = 0.4;
 	} else if (position == 2) {
@@ -117,8 +117,8 @@ function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax, p
 	document.getElementById('off_full').value = 0;
 	
 	final_bonus_foreuse = Math.min(0.5, bonus_foreuse * nbForeuse);
-	result_M = Math.round(final_bonus_foreuse * (production('M', levelM, temperatureMax, 0, 0, position) - Math.floor(speed * 30  * (1 + bonus_position))));
-	result_C = Math.round(final_bonus_foreuse * (production('C', levelC, temperatureMax, 0, 0, position) - Math.floor(speed * 15  * (1 + bonus_position))));
+	result_M = Math.round(final_bonus_foreuse * (production('M', levelM, temperatureMax, 0, 0, position) - Math.floor(speed * 30  * (1 + bonus_position_M))));
+	result_C = Math.round(final_bonus_foreuse * (production('C', levelC, temperatureMax, 0, 0, position) - Math.floor(speed * 15  * (1 + bonus_position_C))));
 	result_D = Math.round(final_bonus_foreuse *  production('D', levelD, temperatureMax, 0, 0, position));
 	
 	document.getElementById('class_collect').value = tmp_class;
