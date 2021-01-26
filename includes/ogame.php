@@ -185,8 +185,8 @@ function ogame_production_building($building, $user_building = null, $user_techn
 
     switch ($building) {
         case 'base':
-            $result['M'] = $BASE_M * (1 + $bonus_position['M']) * $server_config['speed_uni'];
-            $result['C'] = $BASE_C * (1 + $bonus_position['C']) * $server_config['speed_uni'];
+            $result['M'] = floor( $BASE_M * (1 + $bonus_position['M']) * $server_config['speed_uni'] );
+            $result['C'] = floor( $BASE_C * (1 + $bonus_position['C']) * $server_config['speed_uni'] );
             break;
         case 'M':
             $level = $user_building['M'];
