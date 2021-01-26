@@ -184,7 +184,7 @@ function password_generator()
  */
 function init_mod_cache()
 {
-    global $server_config;
+    global $cache_mod, $server_config;      //$cache_mod nécessaire, définie dans cache/cache_mod.php !!
 
     // Load cached config
     $filename = 'cache/cache_mod.php';
