@@ -81,17 +81,38 @@ function ogame_production_position($position)
 }
 
 /**
+ *  @brief Calculates maximum number of foreuse.
+ *  
+ *  @param[in] int   $mine_M,$mine_C,$mine_D    Mine level
+ *  @param[in] array $user_data                 array with class and officiers infos (array('user_class'=>'COL'/...,'off_geologue' or 'off_full'))
+ *  @return int The max
+ */
+function ogame_production_foreuse_max($mine_M, $mine_C, $mine_D, $user_data)
+{
+    static $FOR_BONUS_COL_GEO = 0.1;    //+10% de foreuse pour COL+GEO
+    if (!isset($user_data['off_geologue'])) { $user_data['off_geologue'] = 0; }
+    if (!isset($user_data['off_full']))     { $user_data['off_full'] = 0; }
+    if (!isset($user_data['user_class']))   { $user_data['user_class'] = 'none'; }
+
+    $nb_foreuse_max = 8 * ($mine_M + $mine_C + $mine_D);
+    if ($user_data['user_class'] === 'COL' && ($user_data['off_geologue'] != 0 || $user_data['off_full'] != 0)) {
+        $nb_foreuse_max = $nb_foreuse_max * (1 + $FOR_BONUS_COL_GEO);
+    }
+
+    return floor($nb_foreuse_max);
+}
+
+/**
  *  @brief Calculates foreuse coefficient on base production.
  *  
  *  @param[in] array $user_building array of mines level and FOR number (array('M','C','D','FOR'))
  *  @param[in] array $user_data     array with class and officiers infos (array('user_class'=>'COL'/...,'off_geologue' or 'off_full'))
  *  @return array('bonus', 'nb_FOR_maxed') bonus=foreuse bonus coefficient ; nb_FOR_maxed=limit nb if too much
  */
-function ogame_production_bonus_foreuse($user_building, $user_data)
+function ogame_production_foreuse_bonus($user_building, $user_data)
 {
     static $FOR_COEF          = 0.0002; //0.02% / foreuse
     static $FOR_BONUS_COL     = 0.5;    //+50% pour COL
-    static $FOR_BONUS_COL_GEO = 0.1;    //+10% de foreuse pour COL+GEO
     $names = ogame_get_element_names();
 //Valeurs OUT par défaut :
     $result = array('bonus'=>0, 'nb_FOR_maxed'=>0);
@@ -109,11 +130,8 @@ function ogame_production_bonus_foreuse($user_building, $user_data)
     if ($user_data['user_class'] === 'COL') {
         $bonus_foreuse = $bonus_foreuse * (1 + $FOR_BONUS_COL);
     }
-    $nb_foreuse_max = 8 * ($user_building['M'] + $user_building['C'] + $user_building['D']);
-    if ($user_data['user_class'] === 'COL' && ($user_data['off_geologue'] != 0 || $user_data['off_full'] != 0)) {
-        $nb_foreuse_max = $nb_foreuse_max * (1 + $FOR_BONUS_COL_GEO);
-    }
-    $nb_foreuse_max = floor($nb_foreuse_max);
+    $nb_foreuse_max = ogame_production_foreuse_max($user_building['M'] + $user_building['C'] + $user_building['D'], $user_data);
+    
     if ($user_building['FOR'] > $nb_foreuse_max) {
         $user_building['FOR'] = $nb_foreuse_max;
     }
@@ -206,7 +224,7 @@ function ogame_production_building($building, $user_building = null, $user_techn
             $production_mine_base['M'] = ogame_production_building('M', $user_building, null, null, $server_config)['M'];
             $production_mine_base['C'] = ogame_production_building('C', $user_building, null, null, $server_config)['C'];
             $production_mine_base['D'] = ogame_production_building('D', $user_building, null, null, $server_config)['D'];
-            $bonus_for = ogame_production_bonus_foreuse($user_building, $user_data);
+            $bonus_for = ogame_production_foreuse_bonus($user_building, $user_data);
 
             $result['M'] = round( $production_mine_base['M'] * $bonus_for['bonus'] );
             $result['C'] = round( $production_mine_base['C'] * $bonus_for['bonus'] );
@@ -403,7 +421,7 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
     $bonus_off_geo  = ($user_data['off_geologue'] != 0)    ? $RESS_BONUS_GEO  : 0;
     $bonus_off_full = ($user_data['off_full'] != 0)        ? $RESS_BONUS_FULL : 0;
     $bonus_class    = ($user_data['user_class'] === 'COL') ? $RESS_BONUS_COL  : 0;
-    $bonus_for      = ogame_production_bonus_foreuse($user_building, $user_data);
+    $bonus_for      = ogame_production_foreuse_bonus($user_building, $user_data);
     $result['nb_FOR_maxed'] = $bonus_for['nb_FOR_maxed'];
 
 //*Métal :
