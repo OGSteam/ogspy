@@ -720,6 +720,84 @@ function ogame_fleetSend(coord_from, coord_to, fleet, speed_per=100, user_techno
 // var d = new Date(a['time']*1000);
 // console.log((d.getUTCDate()-1)+ ':'+ d.getUTCHours()+':'+d.getUTCMinutes()+':'+d.getUTCSeconds())
 
+//Cout
+function ogame_elementCoutBase(name = 'all') {
+	var cout_base = {};
+//Coût de base des bâtiments                           métal , cristal, deutérium, NRJ 
+	cout_base['M']             = ogame_arrayRessource(  60   ,  15    , 0);
+	cout_base['C']             = ogame_arrayRessource(  48   ,  24    , 0);
+	cout_base['D']             = ogame_arrayRessource( 225   ,  75    , 0);
+	cout_base['CES']           = ogame_arrayRessource(  75   ,  30    , 0);
+	cout_base['CEF']           = ogame_arrayRessource( 900   , 360    , 180);
+	cout_base['UdR']           = ogame_arrayRessource( 400   , 120    , 200);
+	cout_base['UdN']           = ogame_arrayRessource(1000000, 500000 , 100000);
+	cout_base['CSp']           = ogame_arrayRessource( 400   , 200    , 100);
+	cout_base['HM']            = ogame_arrayRessource(1000   ,   0    , 0);
+	cout_base['HC']            = ogame_arrayRessource(1000   , 500    , 0);
+	cout_base['HD']            = ogame_arrayRessource(1000   , 1000   , 0);
+	cout_base['Lab']           = ogame_arrayRessource( 200   , 400    , 200);
+	cout_base['Ter']           = ogame_arrayRessource(  0    , 50000  , 100000  , 1000);
+	cout_base['DdR']           = ogame_arrayRessource(20000  , 40000  , 0);
+	cout_base['Silo']          = ogame_arrayRessource(20000  , 20000  , 1000);
+	cout_base['Dock']          = ogame_arrayRessource( 200   ,   0    ,  50     , 50);
+	cout_base['BaLu']          = ogame_arrayRessource(20000  , 40000  , 20000);
+	cout_base['Pha']           = ogame_arrayRessource(20000  , 40000  , 20000);
+	cout_base['PoSa']          = ogame_arrayRessource(2000000, 4000000, 2000000);
+//Coût de base des recherches
+	cout_base['Esp']           = ogame_arrayRessource(200    , 1000   , 200);
+	cout_base['Ordi']          = ogame_arrayRessource(  0    ,  400   , 600);
+	cout_base['Armes']         = ogame_arrayRessource(800    ,  200   , 0);
+	cout_base['Bouclier']      = ogame_arrayRessource(200    ,  600   , 0);
+	cout_base['Protection']    = ogame_arrayRessource(1000   ,    0   , 0);
+	cout_base['NRJ']           = ogame_arrayRessource(  0    ,  800   , 400);
+	cout_base['Hyp']           = ogame_arrayRessource(  0    , 4000   , 2000);
+	cout_base['RC']            = ogame_arrayRessource(400    ,    0   , 600);
+	cout_base['RI']            = ogame_arrayRessource(2000   , 4000   , 600);
+	cout_base['PH']            = ogame_arrayRessource(10000  , 20000  , 6000);
+	cout_base['Laser']         = ogame_arrayRessource(200    , 100    , 0);
+	cout_base['Ions']          = ogame_arrayRessource(1000   , 300    , 100);
+	cout_base['Plasma']        = ogame_arrayRessource(2000   , 4000   , 1000);
+	cout_base['RRI']           = ogame_arrayRessource(240000 , 400000 , 160000);
+	cout_base['Graviton']      = ogame_arrayRessource(  0    ,    0   , 0       , 300000);
+	cout_base['Astrophysique'] = ogame_arrayRessource(4000   , 8000   , 4000);
+//Coût de base des vaisseaux
+	cout_base['PT']            = ogame_arrayRessource(2000   , 2000   , 0);
+	cout_base['GT']            = ogame_arrayRessource(6000   , 6000   , 0);
+	cout_base['CLE']           = ogame_arrayRessource(3000   , 1000   , 0);
+	cout_base['CLO']           = ogame_arrayRessource(6000   , 4000   , 0);
+	cout_base['CR']            = ogame_arrayRessource(20000  , 7000   , 2000);
+	cout_base['VB']            = ogame_arrayRessource(45000  , 15000  , 0);
+	cout_base['VC']            = ogame_arrayRessource(10000  , 20000  , 10000);
+	cout_base['REC']           = ogame_arrayRessource(10000  , 6000   , 2000);
+	cout_base['SE']            = ogame_arrayRessource(0      , 1000   , 0);
+	cout_base['BMD']           = ogame_arrayRessource(50000  , 25000  , 15000);
+	cout_base['DST']           = ogame_arrayRessource(60000  , 50000  , 15000);
+	cout_base['TRA']           = ogame_arrayRessource(30000  , 40000  , 15000);
+	cout_base['EDLM']          = ogame_arrayRessource(5000000, 4000000, 1000000);
+	cout_base['FOR']           = ogame_arrayRessource(2000   , 2000   , 1000);
+	cout_base['ECL']           = ogame_arrayRessource(8000   , 15000  , 8000);
+	cout_base['FAU']           = ogame_arrayRessource(85000  , 55000  , 20000);
+	cout_base['SAT']           = ogame_arrayRessource(0      , 2000   , 500);
+//Coût de base des défenses
+	cout_base['LM']            = ogame_arrayRessource(2000   , 0      , 0);
+	cout_base['LLE']           = ogame_arrayRessource(1500   , 500    , 0);
+	cout_base['LLO']           = ogame_arrayRessource(6000   , 2000   , 0);
+	cout_base['CG']            = ogame_arrayRessource(20000  , 15000  , 2000);
+	cout_base['AI']            = ogame_arrayRessource(5000   , 3000   , 0);
+	cout_base['LP']            = ogame_arrayRessource(50000  , 50000  , 30000);
+	cout_base['PB']            = ogame_arrayRessource(10000  , 10000  , 0);
+	cout_base['GB']            = ogame_arrayRessource(50000  , 50000  , 0);
+	cout_base['MIC']           = ogame_arrayRessource(8000   , 0      , 2000);
+	cout_base['MIP']           = ogame_arrayRessource(12500  , 2500   , 10000);
+	if (name === 'all') {
+		return cout_base;
+	}
+	if (typeof(cout_base[$name]) === 'undefined') {
+		return ogame_arrayRessource(0, 0, 0);
+	}
+	return cout_base[name];
+}
+// console.log(ogame_elementCoutBase())
 
 // Production par heure
 function production(building, level, temperatureMax, energy, plasma, position) {
