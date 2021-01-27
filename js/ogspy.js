@@ -1,5 +1,6 @@
 /* JS OGSpy global */
 /*eslint camelcase: ["error", {properties: "never"}]*/
+'use strict';
 // includes/admin_members.php
 function _admin_visible(byId) {
 	document.getElementById(byId).style.visibility = 'visible';
@@ -22,28 +23,29 @@ function ogspy_checkPassword(form, message) {
 	var old_password = form.old_password.value;
 	var new_password = form.new_password.value;
 	var new_password2 = form.new_password2.value;
-	
+
 	if (typeof(message) == 'undefined') {
+		var message = new Array();
 		message['PROFILE_ERROR_RETRY']   = 'Saisissez le nouveau mot de passe et sa confirmation.';
 		message['PROFILE_ERROR_OLDPWD']  = "Saisissez l'ancien mot de passe.";
 		message['PROFILE_ERROR_ERROR']   = 'Le mot de passe saisi est différent de la confirmation !';
 		message['PROFILE_ERROR_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 15 caractères et pas les caractères suivants : ;'&quot; !";
 	}
 	if (old_password !== '' && (new_password === '' || new_password2 === '')) {
-		alert(message['PROFILE_ERROR_RETRY']);
+		window.alert(message['PROFILE_ERROR_RETRY']);
 		return false;
 	}
 	if (old_password === '' && (new_password !== '' || new_password2 !== '')) {
-		alert(message['PROFILE_ERROR_OLDPWD']);
+		window.alert(message['PROFILE_ERROR_OLDPWD']);
 		return false;
 	}
 	if (old_password !== '' && new_password !== new_password2) {
-		alert(message['PROFILE_ERROR_ERROR']);
+		window.alert(message['PROFILE_ERROR_ERROR']);
 		return false;
 	}
 	if (old_password !== '' && new_password !== '' && new_password2 !== '') {
 		if (new_password.length < 6 || new_password.length > 64 || !new_password.match("^[^;\"']{6,64}$")) {
-			alert(message['PROFILE_ERROR_ILLEGAL']);
+			window.alert(message['PROFILE_ERROR_ILLEGAL']);
 			return false;
 		}
 	}
@@ -60,7 +62,7 @@ function ogspy_runTimer() {
 		setTimeout('ogspy_runTimer()', 1000);
 	}
 }
-	
+
 // Global debut
 function ogspy_run() {
 	ogspy_runTimer();

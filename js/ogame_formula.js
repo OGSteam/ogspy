@@ -6,8 +6,14 @@
  *  @version 2.0, 2021-01-22
  */
 //uglifyjs js/ogame_formula.js -c -m -b -o js/ogame_formula.min.js
-const DEFAULT_ARRAY_RESSOURCE = {M:0,C:0,D:0,NRJ:0};
+'use strict';
+// const DEFAULT_ARRAY_RESSOURCE = {'M':0,'C':0,'D':0,'NRJ':0};
+// Object.freeze(DEFAULT_ARRAY_RESSOURCE);
+// var a = JSON.parse(JSON.stringify(DEFAULT_ARRAY_RESSOURCE));
 
+function ogame_arrayRessource($metal, $cristal, $deut, $NRJ = 0) {
+    return {'M':$metal, 'C':$cristal, 'D':$deut, 'NRJ':$NRJ};
+}
 function ogame_getElementNames() {
 	const names = {'BAT' : ['M','C','D','CES','CEF','UdR','UdN','CSp','HM','HC','HD','Lab','Ter','DdR','Silo','Dock','BaLu','Pha','PoSa'],
 				'RECH' : ['Esp','Ordi','Armes','Bouclier','Protection','NRJ','Hyp','RC','RI','PH','Laser','Ions','Plasma','RRI','Graviton','Astrophysique'],
@@ -18,7 +24,7 @@ function ogame_getElementNames() {
 	return names;
 }
 function ogame_isElement(nom) {
-	names = ogame_getElementNames();
+	var names = ogame_getElementNames();
 	for (var type in names) {
 		for (var elem in names[type]) {
 			if (nom === names[type][elem]) {
@@ -40,7 +46,6 @@ function ogame_findCoordinates(string_coord) {
 		result['s'] = coordinates_tmp[1];
 		result['p'] = coordinates_tmp[2];
 	}
-
 	return result;
 }
 
@@ -51,7 +56,7 @@ function ogame_productionPosition(position) {
 	if (position < 1 || position > prod.length) {
 		position = 0;
 	}
-	return {M : prod['M'][position], C : prod['C'][position], D : 0, NRJ : 0};
+	return {'M' : prod['M'][position], 'C' : prod['C'][position], 'D' : 0, 'NRJ' : 0};
 }
 function ogame_productionForeuseMax(mine_M, mine_C, mine_D, user_data) {
 	if (typeof(user_data) === 'undefined') { user_data = new Array(); }
@@ -61,35 +66,37 @@ function ogame_productionForeuseMax(mine_M, mine_C, mine_D, user_data) {
 
 	var FOR_BONUS_COL_GEO = 0.1;    //+10% de foreuse pour COL+GEO
 	var nb_foreuse_max = 8 * (mine_M + mine_C + mine_D);
-	if (user_data['user_class'] === 'COL' && (user_data['off_geologue'] != 0 || user_data['off_full'] != 0)) {
+	if (user_data['user_class'] === 'COL' && (user_data['off_geologue'] !== 0 || user_data['off_full'] !== 0)) {
 		nb_foreuse_max = nb_foreuse_max * (1 + FOR_BONUS_COL_GEO);
 	}
 	return Math.floor(nb_foreuse_max);
 }
 function ogame_productionForeuseBonus(user_building, user_data) {
-	var FOR_COEF       = 0.0002; //0.02% / foreuse
+	var FOR_COEF       = 2e-4; //0.02% / foreuse
 	var FOR_BONUS_COL  = 0.5;    //+50% pour COL
+//Valeurs OUT par défaut :
+	var result = {'bonus':0, 'nb_FOR_maxed':0};
+//Valeurs IN par défaut :
 	if (typeof(user_building) === 'undefined') { user_building = new Array(); }
 	if (typeof(user_data) === 'undefined')     { user_data = new Array(); }
 	if (typeof(user_building['M']) === 'undefined')   { user_building['M'] = 0; }
 	if (typeof(user_building['C']) === 'undefined')   { user_building['C'] = 0; }
 	if (typeof(user_building['D']) === 'undefined')   { user_building['D'] = 0; }
 	if (typeof(user_building['FOR']) === 'undefined') { user_building['FOR'] = 0; }
-	if (typeof(user_data['user_class']) === 'undefined')   { user_data['user_class'] = 'none'; }
+	if (typeof(user_data['user_class']) === 'undefined') { user_data['user_class'] = 'none'; }
 
-	var names          = ogame_getElementNames();
-	var result         = {'bonus':0, 'nb_FOR_maxed':0};
 	var bonus_foreuse  = FOR_COEF;
 	var nb_foreuse_max = ogame_productionForeuseMax(user_building['M'], user_building['C'], user_building['D'], user_data);
+	var nb_foreuse     = user_building['FOR'];
 
 	if (user_data['user_class'] === 'COL') {
 		bonus_foreuse = bonus_foreuse * (1 + FOR_BONUS_COL);
 	}
-	if (user_building['FOR'] > nb_foreuse_max) {
-		user_building['FOR'] = nb_foreuse_max;
+	if (nb_foreuse > nb_foreuse_max) {
+		nb_foreuse = nb_foreuse_max;
 	}
-	result['bonus'] = Math.min(0.5, bonus_foreuse * user_building['FOR']);
-	result['nb_FOR_maxed'] = user_building['FOR'];
+	result['bonus'] = Math.min(0.5, bonus_foreuse * nb_foreuse);
+	result['nb_FOR_maxed'] = nb_foreuse;
 
 	return result;
 }
@@ -97,13 +104,13 @@ function ogame_productionBuilding(building, user_building=null, user_technology=
 	var BASE_M = 30;
 	var BASE_C = 15;
 //Valeurs OUT par défaut :
-	var result = {M:0,C:0,D:0,NRJ:0};
+	var result = ogame_arrayRessource(0,0,0);
 //Valeurs IN par défaut :
 	if (user_building   === null) { user_building = new Array(); }
 	if (user_technology === null) { user_technology = new Array(); }
 	if (user_data       === null) { user_data = new Array(); }
 	if (server_config   === null) { server_config = new Array(); }
-	if (typeof(user_technology['NRJ']) === 'undefined')    { user_technology['NRJ'] = 0; }
+	if (typeof(user_technology['NRJ']) === 'undefined') { user_technology['NRJ'] = 0; }
 	if (typeof(user_building['M'])     === 'undefined') { user_building['M'] = 0; }
 	if (typeof(user_building['C'])     === 'undefined') { user_building['C'] = 0; }
 	if (typeof(user_building['D'])     === 'undefined') { user_building['D'] = 0; }
@@ -118,7 +125,7 @@ function ogame_productionBuilding(building, user_building=null, user_technology=
 
 	user_building['position'] = ogame_findPlanetPosition(user_building['coordinates']);
 	var bonus_position = ogame_productionPosition(user_building['position']);
-	var level = 0, coef_base = 0;
+	var level = 0, coef_base = 0, bonus_for = 0, number = 0;
 	var production_mine_base = [];
 
 	switch (building) {
@@ -180,7 +187,7 @@ function ogame_productionBuilding(building, user_building=null, user_technology=
 
 	return result;
 }
-// console.log(ogame_productionBuilding('base',{M:38,CES:38,coordinates:'::8'},null,null,new Array()))
+// console.log(ogame_productionBuilding('base',{M:38,CES:38,coordinates:'::8'},null,null,{speed_uni:8}))
 function ogame_productionPlanet(user_building, user_technology=null, user_data=null, server_config=null) {
 	var NRJ_BONUS_COL     = 0.1;   //+10% pour COL
 	var NRJ_BONUS_ING     = 0.1;   //+10% pour ingénieur
@@ -189,23 +196,23 @@ function ogame_productionPlanet(user_building, user_technology=null, user_data=n
 	var RESS_BONUS_GEO    = 0.1;   //+10% pour géologue
 	var RESS_BONUS_FULL   = 0.02;  //+2% pour full officier
 	var RESS_PLASMA_M     = 0.01;
-	var RESS_PLASMA_C     = 0.0066;
-	var RESS_PLASMA_D     = 0.0033;
+	var RESS_PLASMA_C     = 6.6e-4;
+	var RESS_PLASMA_D     = 3.3e-4;
 	var names = ogame_getElementNames();
 //Valeurs OUT par défaut :
 	var result = {'prod_reel':0, 'prod_theorique':0, 'ratio':0, 'conso_E':0, 'prod_E':0,   //Production totale
 		'prod_CES':0, 'prod_CEF':0, 'prod_SAT':0, 'prod_FOR':0, //production et conso de chaque unité
 		'prod_M':0, 'prod_C':0, 'prod_D':0, 'prod_base':0,  //production et conso de chaque unité
 		'prod_booster':0, 'prod_off':0, 'prod_Plasma':0, 'prod_classe':0,   //production des bonus
-	'nb_FOR_maxed':0,M:0,C:0,D:0,NRJ:0};
-	result['prod_reel']      = {M:0,C:0,D:0,NRJ:0};
-	result['prod_theorique'] = {M:0,C:0,D:0,NRJ:0};
-	result['prod_booster']   = {M:0,C:0,D:0,NRJ:0};
-	result['prod_off']       = {M:0,C:0,D:0,NRJ:0};
-	result['prod_Plasma']    = {M:0,C:0,D:0,NRJ:0};
-	result['prod_classe']    = {M:0,C:0,D:0,NRJ:0};
+	'nb_FOR_maxed':0, 'M':0,'C':0,'D':0,'NRJ':0};
+	result['prod_reel']      = ogame_arrayRessource(0,0,0);
+	result['prod_theorique'] = ogame_arrayRessource(0,0,0);
+	result['prod_booster']   = ogame_arrayRessource(0,0,0);
+	result['prod_off']       = ogame_arrayRessource(0,0,0);
+	result['prod_Plasma']    = ogame_arrayRessource(0,0,0);
+	result['prod_classe']    = ogame_arrayRessource(0,0,0);
 //Valeurs IN par défaut :
-	if (typeof(user_building)   === 'undefined') { user_building = new Array(); }
+	if (typeof(user_building) === 'undefined') { user_building = new Array(); }
 	if (user_technology === null) { user_technology = new Array(); }
 	if (user_data       === null) { user_data = new Array(); }
 	if (server_config   === null) { server_config = new Array(); }
@@ -231,27 +238,33 @@ function ogame_productionPlanet(user_building, user_technology=null, user_data=n
 	if (typeof(user_building['booster_tab']['booster_d_val']) === 'undefined') { user_building['booster_tab']['booster_d_val'] = 0; }
 	if (typeof(user_data['production_theorique']) === 'undefined') { user_data['production_theorique'] = false; }
 
-	if (user_data['off_full'] != 0) {
+	if (user_data['off_full'] !== 0) {
 		user_data['off_ingenieur'] = 1;
 		user_data['off_geologue']  = 1;
 	}
-	if (user_data['off_commandant'] != 0 && user_data['off_amiral'] != 0 && user_data['off_ingenieur'] != 0 && user_data['off_geologue'] != 0) {
+	if (user_data['off_commandant'] !== 0 && user_data['off_amiral'] !== 0 && user_data['off_ingenieur'] !== 0 && user_data['off_geologue'] !== 0) {
 		user_data['off_full'] = 1;
 	}    
 	if (user_data['user_class'] !== 'COL' && user_building['FOR_percentage'] > 100) {
 		user_building['FOR_percentage'] = 100;
 	}
-
+	
+	var M_per   = user_building['M_percentage'];
+	var C_per   = user_building['C_percentage'];
+	var D_per   = user_building['D_percentage'];
+	var FOR_per = user_building['FOR_percentage'];
 //Calcul valeurs de base
-	prod_base    = {M:0,C:0,D:0,NRJ:0};
-	prod_mine_M  = {M:0,C:0,D:0,NRJ:0};
-	prod_mine_C  = {M:0,C:0,D:0,NRJ:0};
-	prod_mine_D  = {M:0,C:0,D:0,NRJ:0};
-	prod_bat_CES = {M:0,C:0,D:0,NRJ:0};
-	prod_bat_CEF = {M:0,C:0,D:0,NRJ:0};
-	prod_vso_SAT = {M:0,C:0,D:0,NRJ:0};
-	prod_vso_FOR = {M:0,C:0,D:0,NRJ:0};
-	var tmp = ogame_productionBuilding('base', user_building, null, null, server_config);
+	var tmp = [];
+	var ratio = 1;
+	var prod_base    = ogame_arrayRessource(0,0,0);
+	var prod_mine_M  = ogame_arrayRessource(0,0,0);
+	var prod_mine_C  = ogame_arrayRessource(0,0,0);
+	var prod_mine_D  = ogame_arrayRessource(0,0,0);
+	var prod_bat_CES = ogame_arrayRessource(0,0,0);
+	var prod_bat_CEF = ogame_arrayRessource(0,0,0);
+	var prod_vso_SAT = ogame_arrayRessource(0,0,0);
+	var prod_vso_FOR = ogame_arrayRessource(0,0,0);
+	tmp = ogame_productionBuilding('base', user_building, null, null, server_config);
 	prod_base['M'] = tmp['M']
 	prod_base['C'] = tmp['C']
 	server_config['final_calcul'] = false;
@@ -286,11 +299,11 @@ function ogame_productionPlanet(user_building, user_technology=null, user_data=n
 	result['prod_FOR']  = prod_vso_FOR;
 
 //Calcul de la consommation d'énergie théorique
-	conso_M   = Math.round( prod_mine_M['NRJ'] * user_building['M_percentage'] / 100 );
-	conso_C   = Math.round( prod_mine_C['NRJ'] * user_building['C_percentage'] / 100 );
-	conso_D   = Math.round( prod_mine_D['NRJ'] * user_building['D_percentage'] / 100 );
-	conso_FOR = Math.round( prod_vso_FOR['NRJ'] * Math.max(1, user_building['FOR_percentage'] * 2 / 100 - 1) ); // [50 * Math.max( 1 ; 1 + (pourcentage_production - 100%) * %_malus_overload / 10% ) ]
-	consommation_E = conso_M + conso_C + conso_D + conso_FOR;
+	var conso_M   = Math.round( prod_mine_M['NRJ'] * user_building['M_percentage'] / 100 );
+	var conso_C   = Math.round( prod_mine_C['NRJ'] * user_building['C_percentage'] / 100 );
+	var conso_D   = Math.round( prod_mine_D['NRJ'] * user_building['D_percentage'] / 100 );
+	var conso_FOR = Math.round( prod_vso_FOR['NRJ'] * Math.max(1, user_building['FOR_percentage'] * 2 / 100 - 1) );
+	var consommation_E = conso_M + conso_C + conso_D + conso_FOR;
 	result['conso_E']         = consommation_E;
 	result['prod_M']['NRJ']   = conso_M;
 	result['prod_C']['NRJ']   = conso_C;
@@ -298,18 +311,18 @@ function ogame_productionPlanet(user_building, user_technology=null, user_data=n
 	result['prod_FOR']['NRJ'] = conso_FOR;
 	if (!user_data['production_theorique']) {
 	//Calcul de la production d'énergie
-		prod_CES = prod_bat_CES['NRJ'] * user_building['CES_percentage'] / 100;
-		prod_CEF = prod_bat_CEF['NRJ'] * user_building['CEF_percentage'] / 100;
-		prod_SAT = prod_vso_SAT['NRJ'] * user_building['Sat_percentage'] / 100;
-		production_E = prod_CES + prod_CEF + prod_SAT;
+		var prod_CES = prod_bat_CES['NRJ'] * user_building['CES_percentage'] / 100;
+		var prod_CEF = prod_bat_CEF['NRJ'] * user_building['CEF_percentage'] / 100;
+		var prod_SAT = prod_vso_SAT['NRJ'] * user_building['Sat_percentage'] / 100;
+		var production_E = prod_CES + prod_CEF + prod_SAT;
 		result['prod_booster']['NRJ']    = Math.round( production_E * user_building['booster_tab']['booster_e_val'] / 100 );
 		if (user_data['user_class'] === 'COL') {
 			result['prod_classe']['NRJ'] = Math.round( production_E * NRJ_BONUS_COL );
 		}
-		if (user_data['off_ingenieur'] != 0) {
+		if (user_data['off_ingenieur'] !== 0) {
 			result['prod_off']['NRJ']    = Math.round( production_E * NRJ_BONUS_ING );
 		}
-		if (user_data['off_full'] != 0) {
+		if (user_data['off_full'] !== 0) {
 			result['prod_off']['NRJ']   += Math.round( production_E * NRJ_BONUS_FULL );
 		}
 		result['prod_CES']['NRJ'] = Math.round( prod_CES );
@@ -320,7 +333,7 @@ function ogame_productionPlanet(user_building, user_technology=null, user_data=n
 
 	//Calcul ratio
 		ratio = 1; // indique le pourcentage à appliquer sur la prod
-		ratio_temp = 1;
+		var ratio_temp = 1;
 		ratio_temp = (consommation_E == 0) ? 0 : (- production_E * 100 / consommation_E) / 100; // fix division par 0
 		if (ratio_temp > 1) {
 			ratio = 1;
@@ -329,26 +342,24 @@ function ogame_productionPlanet(user_building, user_technology=null, user_data=n
 		}
 		result['ratio'] = ratio;
 	} else { //Pour le cas d'un calcul théorique
-		user_building['M_percentage'] = 100;
-		user_building['C_percentage'] = 100;
-		user_building['D_percentage'] = 100;
-		user_building['CES_percentage'] = 100;
-		user_building['CEF_percentage'] = 100;
-		user_building['Sat_percentage'] = 100;
+		M_per   = 100;
+		C_per   = 100;
+		D_per   = 100;
+		FOR_per = 100;
 		if (user_building['FOR_percentage'] < 100) {
-			user_building['FOR_percentage'] = 100;
+			FOR_per = 100;
 		}
-		result['prod_FOR']['NRJ'] = Math.round( prod_vso_FOR['NRJ'] * Math.max(1, user_building['FOR_percentage'] * 2 / 100 - 1) );
+		result['prod_FOR']['NRJ'] = Math.round( prod_vso_FOR['NRJ'] * Math.max(1, FOR_per * 2 / 100 - 1) );
 		production_E = result['prod_CES']['NRJ'] + result['prod_CEF']['NRJ'] + result['prod_SAT']['NRJ'];
 		
 		result['prod_booster']['NRJ']    = Math.round( production_E * user_building['booster_tab']['booster_e_val'] / 100 );
 		if (user_data['user_class'] === 'COL') {
 			result['prod_classe']['NRJ'] = Math.round( production_E * NRJ_BONUS_COL );
 		}
-		if (user_data['off_ingenieur'] != 0) {
+		if (user_data['off_ingenieur'] !== 0) {
 			result['prod_off']['NRJ']    = Math.round( production_E * NRJ_BONUS_ING );
 		}
-		if (user_data['off_full'] != 0) {
+		if (user_data['off_full'] !== 0) {
 			result['prod_off']['NRJ']   += Math.round( production_E * NRJ_BONUS_FULL );
 		}
 		result['prod_CES']['NRJ'] = Math.round( result['prod_CES']['NRJ'] );
@@ -361,19 +372,19 @@ function ogame_productionPlanet(user_building, user_technology=null, user_data=n
 	result['prod_E'] = production_E;
 
 //Calcul de la production
-	bonus_off_geo  = (user_data['off_geologue'] != 0)    ? RESS_BONUS_GEO  : 0;
-	bonus_off_full = (user_data['off_full'] != 0)        ? RESS_BONUS_FULL : 0;
-	bonus_class    = (user_data['user_class'] === 'COL') ? RESS_BONUS_COL  : 0;
-	bonus_for      = ogame_productionForeuseBonus(user_building, user_data);
+	var production_mine_base=0, conso_CEF=0, prod_off=0, prod_Plasma=0, prod_booster=0, prod_FOR=0, prod_Classe=0;
+	var bonus_off_geo  = (user_data['off_geologue'] !== 0)    ? RESS_BONUS_GEO  : 0;
+	var bonus_off_full = (user_data['off_full'] !== 0)        ? RESS_BONUS_FULL : 0;
+	var bonus_class    = (user_data['user_class'] === 'COL')  ? RESS_BONUS_COL  : 0;
+	var bonus_for      = ogame_productionForeuseBonus(user_building, user_data);
 	result['nb_FOR_maxed'] = bonus_for['nb_FOR_maxed'];
 
 //*Métal :
-	production_mine_base = Math.floor( prod_mine_M['M'] * (user_building['M_percentage'] / 100) * ratio );
-// console.log(user_building['M_percentage'], prod_mine_M['M'], ratio)
+	production_mine_base = Math.floor( prod_mine_M['M'] * (M_per / 100) * ratio );
 	prod_off     = Math.round( production_mine_base * bonus_off_geo) + Math.round(production_mine_base * bonus_off_full );
 	prod_Plasma  = Math.round( production_mine_base * user_technology['Plasma'] * RESS_PLASMA_M );
 	prod_booster = Math.round( production_mine_base * user_building['booster_tab']['booster_m_val'] / 100 );
-	prod_FOR     = Math.round( production_mine_base * bonus_for['bonus'] * (user_building['FOR_percentage'] / 100) );
+	prod_FOR     = Math.round( production_mine_base * bonus_for['bonus'] * (FOR_per / 100) );
 	prod_Classe  = Math.round( production_mine_base * bonus_class );
 
 	result['M'] = prod_base['M'] + production_mine_base + prod_FOR + prod_Plasma + prod_booster + prod_off + prod_Classe;
@@ -385,12 +396,12 @@ function ogame_productionPlanet(user_building, user_technology=null, user_data=n
 	result['prod_M']['M']       = production_mine_base;
 
 //*Cristal :
-	production_mine_base = Math.floor( prod_mine_C['C'] * (user_building['C_percentage'] / 100) * ratio );
+	production_mine_base = Math.floor( prod_mine_C['C'] * (C_per / 100) * ratio );
 
 	prod_off     = Math.round( production_mine_base * bonus_off_geo) + Math.round(production_mine_base * bonus_off_full );
 	prod_Plasma  = Math.round( production_mine_base * user_technology['Plasma'] * RESS_PLASMA_C );
 	prod_booster = Math.round( production_mine_base * user_building['booster_tab']['booster_c_val'] / 100 );
-	prod_FOR     = Math.round( production_mine_base * bonus_for['bonus'] * (user_building['FOR_percentage'] / 100) );
+	prod_FOR     = Math.round( production_mine_base * bonus_for['bonus'] * (FOR_per / 100) );
 	prod_Classe  = Math.round( production_mine_base * bonus_class );
 
 	result['C'] = prod_base['C'] + production_mine_base + prod_FOR + prod_Plasma + prod_booster + prod_off + prod_Classe;
@@ -402,12 +413,12 @@ function ogame_productionPlanet(user_building, user_technology=null, user_data=n
 	result['prod_C']['C']       = production_mine_base;
 
 //*Deutérium :
-	production_mine_base = Math.floor( prod_mine_D['D'] * (user_building['D_percentage'] / 100) * ratio );
+	production_mine_base = Math.floor( prod_mine_D['D'] * (D_per / 100) * ratio );
 
 	prod_off     = Math.round( production_mine_base * bonus_off_geo) + Math.round(production_mine_base * bonus_off_full );
 	prod_Plasma  = Math.round( production_mine_base * user_technology['Plasma'] * RESS_PLASMA_D );
 	prod_booster = Math.round( production_mine_base * user_building['booster_tab']['booster_d_val'] / 100 );
-	prod_FOR     = Math.round( production_mine_base * bonus_for['bonus'] * (user_building['FOR_percentage'] / 100) );
+	prod_FOR     = Math.round( production_mine_base * bonus_for['bonus'] * (FOR_per / 100) );
 	prod_Classe  = Math.round( production_mine_base * bonus_class );
 	conso_CEF    = Math.ceil( prod_bat_CEF['D'] * user_building['CEF_percentage'] / 100 );
 

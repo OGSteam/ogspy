@@ -128,7 +128,10 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     }
 }
 
-if (isset($server_config["log_phperror"]) && $server_config["log_phperror"] == 1) {
+if (!isset($server_config["log_phperror"])) {
+    $server_config["log_phperror"] = 0;
+}
+if ($server_config["log_phperror"] == 1) {
     set_error_handler('ogspy_error_handler');
 }
 

@@ -353,7 +353,7 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
     $result['prod_C']['NRJ']   = $conso_C;
     $result['prod_D']['NRJ']   = $conso_D;
     $result['prod_FOR']['NRJ'] = $conso_FOR;
-    if (!$user_data['production_theorique']) {
+    if (!$user_data['production_theorique']) {  //Alors calcul du ratio puis sa prod associé
     //Calcul de la production d'énergie
         $prod_CES = $prod_bat_CES['NRJ'] * $user_building['CES_percentage'] / 100;
         $prod_CEF = $prod_bat_CEF['NRJ'] * $user_building['CEF_percentage'] / 100;
@@ -1117,7 +1117,7 @@ function ogame_elements_details_base($name = 'all')
  *  @brief Calculates technical data of a fleet or defence.
  *  
  *  @param[in] string     $name        The name, like name in Database
- *  @param[in] array      $user_techno The array of technologies
+ *  @param[in] array      $user_techno The array of technologies ('Armes','Bouclier','Protection','RC','RI','PH','Hyp', le reste est ignoré)
  *  @param[in] string|int $classe      The user class //array('none','COL','GEN','EXP') - (1=Collectionneur)[0=aucune, 2=général, 3=explorateur])
  *  @return array('nom','structure','bouclier','attaque','vitesse','fret','conso',(array)'rapidfire',(bool)'civil',(array)'cout') of the wanted fleet or defence.
  *      rapidfire=array('PT'=>x, ...) array of all fleet and defence; if x>0 then again else from
@@ -1694,7 +1694,7 @@ function ogame_building_destroy($name, $level, $techno_ions = 0)
 
 ///////////////////// FLOTTE fonctions : ///////////////////////////////////////
 /**
- *  @brief Calculates deut consummation for parking of a fleet.
+ *  @brief Calculates deut consummation for parking/expe of a fleet.
  *  
  *  @param[in] int $conso The conso of the fleet
  *  @param[in] int $hour  Number of hours in parking
@@ -1713,6 +1713,14 @@ function ogame_fleet_conso_statio($conso, $hour)
     return floor($result);
 }
 
+/**
+ *  @brief Calculates the slowest chip speed of a fleet.
+ *  
+ *  @param[in] array  $fleet       List of chips
+ *  @param[in] array  $user_techno List of techno ('RC','RI','PH', le reste est ignoré)
+ *  @param[in] string $class       User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
+ *  @return int the slowest speed
+ */
 function ogame_fleet_slowest_speed($fleet, $user_techno=null, $class='none')
 {
     $names     = ogame_get_element_names();
@@ -1737,6 +1745,8 @@ function ogame_fleet_slowest_speed($fleet, $user_techno=null, $class='none')
  *      'g1:s1:p1'->'g2:s2:p2' : normal distance calcul
  *      ':s1:p1'->'x:s2:p2     : distance between system/planet (only system is ':s1:')
  *      '::p1'->'x:x:p2        : distance between planet
+ *  @param[in] array  $user_techno List of techno ('RC','RI','PH',  only these are checked)
+ *  @param[in] string $class       User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
  *  @param[in] array  $server_config Info of universe ('num_of_galaxies','num_of_systems','donutGalaxy','donutSystem' only these are checked) default 9/499/1/1
  *  @return array(int 'distance','type') [default=O,'p'], type='g' for between galaxy, 's' for between system and 'p' for between a sub-system
  */
@@ -1794,7 +1804,8 @@ function ogame_fleet_distance($a, $b, $user_techno=null, $class='none', $server_
  *  @param[in] int    $hour_mission            Number of hour of the specific mission
  *  @return array('conso', 'time'), time in seconds (one trip only)
  */
-function ogame_fleet_send($coord_from, $coord_to, $fleet, $speed_per=100, $user_techno=null, $class='none', $server_config=null, $type='', $hour_mission=0) {
+function ogame_fleet_send($coord_from, $coord_to, $fleet, $speed_per=100, $user_techno=null, $class='none', $server_config=null, $type='', $hour_mission=0)
+{
     $result = array('conso'=>0, 'time'=>0);
 
     $names     = ogame_get_element_names();
@@ -1967,7 +1978,7 @@ function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0,
 
     return $result;  
 }
-//php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');var_dump($a=ogame_construction_time('NRJ',21,array('Lab'=>18,'CSp'=>12,'UdR'=>10,'UdN'=>7),234));echo gmdate('z:H:i:s',$a);"
+// php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');var_dump($a=ogame_construction_time('NRJ',21,array('Lab'=>18,'CSp'=>12,'UdR'=>10,'UdN'=>7),234));$year=gmdate('Y',$a)-1970;$week=gmdate('W',$a)-1;$day=gmdate('z',$a)-$week*7; echo $year.'a '.$week.'s '.$day.'j '.gmdate('H:i:s',$a);"
 
 ///////////////////// DIVERS fonctions : ///////////////////////////////////////
 /**
