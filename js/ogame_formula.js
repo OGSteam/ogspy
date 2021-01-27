@@ -589,131 +589,131 @@ function ogame_fleetSubDetails(name, user_techno = null, classe = 'none') {
 }
 // console.log(ogame_fleetSubDetails('PT',{'Hyp':18,'RC':21,'RI':17,'PH':16},'GEN'));
 function ogame_fleetConsoStatio(conso, hour) {
-    var result = hour * conso / 10;
-    if (result < 1) {
-        result = 1;
-    }
-    if (hour == 0) {
-        result = 0;
-    }
-    return Math.floor(result);
+	var result = hour * conso / 10;
+	if (result < 1) {
+		result = 1;
+	}
+	if (hour == 0) {
+		result = 0;
+	}
+	return Math.floor(result);
 }
 function ogame_fleetSlowestSpeed(fleet, user_techno=null, classe='none') {
-    var names     = ogame_getElementNames();
-    var details   = {};
-    var max_speed = ogame_fleetSubDetails('SE', user_techno, classe);   //The fastest fleet
-    var min_speed = max_speed['vitesse'];
-    for (var elem in names['VSO']) {
+	var names     = ogame_getElementNames();
+	var details   = {};
+	var max_speed = ogame_fleetSubDetails('SE', user_techno, classe);   //The fastest fleet
+	var min_speed = max_speed['vitesse'];
+	for (var elem in names['VSO']) {
 		elem = names['VSO'][elem];
-        if (typeof(fleet[elem])!=='undefined' && fleet[elem] !== 0) {
-            details = ogame_fleetSubDetails(elem, user_techno, classe);
-            if (min_speed > details['vitesse']) {
-                min_speed = details['vitesse'];
-            }
-        }
-    }
-    return min_speed;
+		if (typeof(fleet[elem])!=='undefined' && fleet[elem] !== 0) {
+			details = ogame_fleetSubDetails(elem, user_techno, classe);
+			if (min_speed > details['vitesse']) {
+				min_speed = details['vitesse'];
+			}
+		}
+	}
+	return min_speed;
 }
 function ogame_fleetDistance(a, b, user_techno=null, classe='none', server_config=null) {
-    var result = {'distance':0, 'type':'p'};
+	var result = {'distance':0, 'type':'p'};
 	if (user_techno === null)   { user_techno = new Array(); }
 	if (server_config === null) { server_config = new Array(); }
 	if (typeof(user_techno['RC'])  === 'undefined') { user_techno['RC'] = 0; }
-    if (typeof(server_config['num_of_galaxies']) === 'undefined') { server_config['num_of_galaxies'] = 9; }
-    if (typeof(server_config['num_of_systems'])  === 'undefined') { server_config['num_of_systems'] = 499; }
-    if (typeof(server_config['donutGalaxy'])     === 'undefined') { server_config['donutGalaxy'] = 1; }
-    if (typeof(server_config['donutSystem'])     === 'undefined') { server_config['donutSystem'] = 1; }
+	if (typeof(server_config['num_of_galaxies']) === 'undefined') { server_config['num_of_galaxies'] = 9; }
+	if (typeof(server_config['num_of_systems'])  === 'undefined') { server_config['num_of_systems'] = 499; }
+	if (typeof(server_config['donutGalaxy'])     === 'undefined') { server_config['donutGalaxy'] = 1; }
+	if (typeof(server_config['donutSystem'])     === 'undefined') { server_config['donutSystem'] = 1; }
 
-    var dist_abs    = 0;
-    var max_type    = {'g':server_config['num_of_galaxies'], 's':server_config['num_of_systems'], 'p':0};
-    var uni_arrondi = {'g':true, 's':true, 'p':false}; //Par défaut
-    if (server_config['donutGalaxy'] === 0) {
-        max_type['g']    = 0;
-        uni_arrondi['g'] = false;
-    }
-    if (server_config['donutSystem'] === 0) {
-        max_type['s']    = 0;
-        uni_arrondi['s'] = false;
-    }
-    var coord_a = ogame_findCoordinates(a);
-    var coord_b = ogame_findCoordinates(b);
-    var key     = 'p';
-    for (var key in coord_a) {    //On ne calcule la distance qu'entre des vraies coordonnées.
-        if (coord_a[key] === 0 || coord_b[key] === 0) {
-            coord_a[key] = 0;
-            coord_b[key] = 0;
-        }
-        dist_abs = Math.abs(coord_a[key] - coord_b[key]);   //|a-b|
-        if (dist_abs !== 0) {
-            break;
-        }
-    }
-    result['type']     = key;
-    result['distance'] = dist_abs;    //|a-b|
-    if (uni_arrondi[key] && (dist_abs > max_type[key] / 2)) {
-        result['distance'] = Math.abs(dist_abs - max_type[key]); //||a-b| - base|
-    }
-    return result;
+	var dist_abs    = 0;
+	var max_type    = {'g':server_config['num_of_galaxies'], 's':server_config['num_of_systems'], 'p':0};
+	var uni_arrondi = {'g':true, 's':true, 'p':false}; //Par défaut
+	if (server_config['donutGalaxy'] === 0) {
+		max_type['g']    = 0;
+		uni_arrondi['g'] = false;
+	}
+	if (server_config['donutSystem'] === 0) {
+		max_type['s']    = 0;
+		uni_arrondi['s'] = false;
+	}
+	var coord_a = ogame_findCoordinates(a);
+	var coord_b = ogame_findCoordinates(b);
+	var key     = 'p';
+	for (var key in coord_a) {    //On ne calcule la distance qu'entre des vraies coordonnées.
+		if (coord_a[key] === 0 || coord_b[key] === 0) {
+			coord_a[key] = 0;
+			coord_b[key] = 0;
+		}
+		dist_abs = Math.abs(coord_a[key] - coord_b[key]);   //|a-b|
+		if (dist_abs !== 0) {
+			break;
+		}
+	}
+	result['type']     = key;
+	result['distance'] = dist_abs;    //|a-b|
+	if (uni_arrondi[key] && (dist_abs > max_type[key] / 2)) {
+		result['distance'] = Math.abs(dist_abs - max_type[key]); //||a-b| - base|
+	}
+	return result;
 }
 // console.log(ogame_fleetDistance('1:2:6','9:499:8'))
 function ogame_fleetSend(coord_from, coord_to, fleet, speed_per=100, user_techno=null, classe='none', server_config=null, type='', hour_mission=0) {
-    var result    = {'conso':0, 'time':0};
-    var names     = ogame_getElementNames();
-    var details   = {};
-    var consos    = {};
-    var max_speed = ogame_fleetSubDetails('SE', user_techno, classe);   //The fastest fleet
-    var min_speed = max_speed['vitesse'];
+	var result    = {'conso':0, 'time':0};
+	var names     = ogame_getElementNames();
+	var details   = {};
+	var consos    = {};
+	var max_speed = ogame_fleetSubDetails('SE', user_techno, classe);   //The fastest fleet
+	var min_speed = max_speed['vitesse'];
 	var conso_sum = 0;
-    for (var elem in names['VSO']) {
+	for (var elem in names['VSO']) {
 		elem = names['VSO'][elem];
-        consos[elem] = 0;
-        if (typeof(fleet[elem])!=='undefined' && fleet[elem] !== 0) {
-            details = ogame_fleetSubDetails(elem, user_techno, classe);
-            if (min_speed > details['vitesse']) {
-                min_speed = details['vitesse'];
-            }
-            consos[elem] = details['conso'] * fleet[elem];
+		consos[elem] = 0;
+		if (typeof(fleet[elem])!=='undefined' && fleet[elem] !== 0) {
+			details = ogame_fleetSubDetails(elem, user_techno, classe);
+			if (min_speed > details['vitesse']) {
+				min_speed = details['vitesse'];
+			}
+			consos[elem] = details['conso'] * fleet[elem];
 			conso_sum   += consos[elem];
-        }
-    }
-    if (min_speed == 0) { //Ne devrait jamais arriver mais pour éviter une div/0.
-        return $result;
-    }
-    var distance  = ogame_fleetDistance(coord_from, coord_to, server_config);
-    if (type === 'fuite') {
-        distance['type'] = type;
-    }
-    switch (distance['type']) {
-        case 'g':   //between galaxy
-            result['time']  = ( 10 + (35000 / speed_per * Math.sqrt(distance['distance'] * 20000000 / min_speed)) );
-            result['conso'] = 1 + ( conso_sum * ((4 * distance['distance']) / 7) * Math.pow(speed_per / 100 + 1, 2) );
-            break;
-        case 's':   //between system (so inside same galaxy)
-            result['time']  = ( 10 + (35000 / speed_per * Math.sqrt((2700000 + distance['distance'] * 95000) / min_speed)) );
-            result['conso'] = 1 + ( conso_sum * ((2700 + 95 * distance['distance']) / 35000) * Math.pow(speed_per / 100 + 1, 2) );
-            break;
-        case 'p':   //between sub-system (so in same galaxy and same system)
-            if (distance['distance'] === 0) { // to moon/cdr
-                result['time']  = ( 10 + (35000 / speed_per * Math.sqrt(5000 / min_speed)) );
-                result['conso'] = 1 + ( conso_sum * (5 / 35000) * Math.pow(speed_per / 100 + 1, 2) );
-            } else { //to other planet in same system
-                result['time']  = ( 10 + (35000 / speed_per * Math.sqrt((1000000 + distance['distance'] * 5000) / min_speed)) );
-                result['conso'] = 1 + ( conso_sum * ((1000 + 5 * distance['distance']) / 35000) * Math.pow(speed_per / 100 + 1, 2) );
-            }
-            break;
-        case 'fuite':
-            distance['distance'] = 1 * 1.5;
-            result['conso'] = ( conso_sum * distance['distance'] );  //???
-        default:
-            break;
-    }
-    if (type === 'statio' || type === 'expe') {
-        result['conso'] += ogame_fleetConsoStatio(conso_sum, hour_mission);
-        // result['time']  += hour_mission * 3600;
-    }
-    result['time']  = Math.round(result['time']);
-    result['conso'] = Math.ceil(result['conso']);
-    return result;
+		}
+	}
+	if (min_speed == 0) { //Ne devrait jamais arriver mais pour éviter une div/0.
+		return $result;
+	}
+	var distance  = ogame_fleetDistance(coord_from, coord_to, server_config);
+	if (type === 'fuite') {
+		distance['type'] = type;
+	}
+	switch (distance['type']) {
+		case 'g':   //between galaxy
+			result['time']  = ( 10 + (35000 / speed_per * Math.sqrt(distance['distance'] * 20000000 / min_speed)) );
+			result['conso'] = 1 + ( conso_sum * ((4 * distance['distance']) / 7) * Math.pow(speed_per / 100 + 1, 2) );
+			break;
+		case 's':   //between system (so inside same galaxy)
+			result['time']  = ( 10 + (35000 / speed_per * Math.sqrt((2700000 + distance['distance'] * 95000) / min_speed)) );
+			result['conso'] = 1 + ( conso_sum * ((2700 + 95 * distance['distance']) / 35000) * Math.pow(speed_per / 100 + 1, 2) );
+			break;
+		case 'p':   //between sub-system (so in same galaxy and same system)
+			if (distance['distance'] === 0) { // to moon/cdr
+				result['time']  = ( 10 + (35000 / speed_per * Math.sqrt(5000 / min_speed)) );
+				result['conso'] = 1 + ( conso_sum * (5 / 35000) * Math.pow(speed_per / 100 + 1, 2) );
+			} else { //to other planet in same system
+				result['time']  = ( 10 + (35000 / speed_per * Math.sqrt((1000000 + distance['distance'] * 5000) / min_speed)) );
+				result['conso'] = 1 + ( conso_sum * ((1000 + 5 * distance['distance']) / 35000) * Math.pow(speed_per / 100 + 1, 2) );
+			}
+			break;
+		case 'fuite':
+			distance['distance'] = 1 * 1.5;
+			result['conso'] = ( conso_sum * distance['distance'] );  //???
+		default:
+			break;
+	}
+	if (type === 'statio' || type === 'expe') {
+		result['conso'] += ogame_fleetConsoStatio(conso_sum, hour_mission);
+		// result['time']  += hour_mission * 3600;
+	}
+	result['time']  = Math.round(result['time']);
+	result['conso'] = Math.ceil(result['conso']);
+	return result;
 }
 // var a=ogame_fleetSend('1:1:1','1:1:1',{'PT':260},100,{'RC':20,'RI':17,'PH':16},'COL');
 // console.log(a);
