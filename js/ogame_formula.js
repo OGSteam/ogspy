@@ -11,8 +11,11 @@
 // Object.freeze(DEFAULT_ARRAY_RESSOURCE);
 // var a = JSON.parse(JSON.stringify(DEFAULT_ARRAY_RESSOURCE));
 
-function ogame_arrayRessource($metal, $cristal, $deut, $NRJ = 0) {
-    return {'M':$metal, 'C':$cristal, 'D':$deut, 'NRJ':$NRJ};
+function ogame_arrayRessource(metal, cristal, deut, NRJ = 0) {
+	return {'M':metal, 'C':cristal, 'D':deut, 'NRJ':NRJ};
+}
+function ogame_arraySubDetail(vitesse=0, fret=0, conso=0, civil=true) {
+	return {'vitesse':vitesse, 'fret':fret, 'conso':conso, 'civil':civil};
 }
 function ogame_getElementNames() {
 	const names = {'BAT' : ['M','C','D','CES','CEF','UdR','UdN','CSp','HM','HC','HD','Lab','Ter','DdR','Silo','Dock','BaLu','Pha','PoSa'],
@@ -454,6 +457,268 @@ function ogame_productionPlanet(user_building, user_technology=null, user_data=n
 // console.log(ogame_productionPlanet({M:38,C:34,D:34,CES:28,CEF:20,CEF_percentage:80,SAT:2200,FOR:858,FOR_percentage:150,coordinates:'::8',temperature_max:47},{Plasma:19,NRJ:20},{user_class:'COL'}))
 
 //Flotte
+/**
+ *  @brief Return fleet moving details of Ogame vso.
+ *  
+ *  @param[in] string name The name as in Database, all for all element
+ *  @return array('vitesse','fret','conso',(bool)'civil')
+ */
+function ogame_fleetSubDetailsBase(name = 'all') {
+	var details_base = {};
+	var names        = ogame_getElementNames();
+//Coût de base des vaisseaux                   vitesse   ,fret    ,conso,civil)
+	details_base['PT']   = ogame_arraySubDetail(5000     , 5000   , 10);
+	details_base['GT']   = ogame_arraySubDetail(7500     , 25000  , 50);
+	details_base['CLE']  = ogame_arraySubDetail(12500    , 50     , 20  , false);
+	details_base['CLO']  = ogame_arraySubDetail(10000    , 100    , 75  , false);
+	details_base['CR']   = ogame_arraySubDetail(15000    , 800    , 300 , false);
+	details_base['VB']   = ogame_arraySubDetail(10000    , 1500   , 500 , false);
+	details_base['VC']   = ogame_arraySubDetail(2500     , 7500   , 1000);
+	details_base['REC']  = ogame_arraySubDetail(2000     , 20000  , 300);
+	details_base['SE']   = ogame_arraySubDetail(100000000, 0      , 1);
+	details_base['BMD']  = ogame_arraySubDetail(400      , 500    , 700 , false);
+	details_base['DST']  = ogame_arraySubDetail(5000     , 2000   , 1000, false);
+	details_base['TRA']  = ogame_arraySubDetail(10000    , 750    , 250 , false);
+	details_base['EDLM'] = ogame_arraySubDetail(100      , 1000000, 1   , false);
+	details_base['FOR']  = ogame_arraySubDetail();
+	details_base['ECL']  = ogame_arraySubDetail(12000    , 10000  , 300 , false);
+	details_base['FAU']  = ogame_arraySubDetail(7000     , 10000  , 1100, false);
+	details_base['SAT']  = ogame_arraySubDetail();
+	if (name === 'all') {
+		return details_base;
+	}
+	if (typeof(details_base[name]) === 'undefined') {
+		return ogame_arraySubDetail();
+	}
+	return details_base[name];
+}
+// console.log(ogame_fleetSubDetailsBase())
+/**
+ *  @brief Calculates technical data of a fleet or defence.
+ *  @return array('nom','vitesse','fret','conso',(bool)'civil') of the wanted fleet.
+ */
+function ogame_fleetSubDetails(name, user_techno = null, classe = 'none') {
+	var RC_COEF     = 0.1;
+	var RI_COEF     = 0.2;
+	var PH_COEF     = 0.3;
+	var HYP_COEF    = 0.05;
+	var names = ogame_getElementNames();
+//Valeurs IN par défaut :
+	if (user_techno === null) { user_techno = new Array(); }
+	if (typeof(user_techno['RC'])  === 'undefined') { user_techno['RC'] = 0; }
+	if (typeof(user_techno['RI'])  === 'undefined') { user_techno['RI'] = 0; }
+	if (typeof(user_techno['PH'])  === 'undefined') { user_techno['PH'] = 0; }
+	if (typeof(user_techno['Hyp']) === 'undefined') { user_techno['Hyp'] = 0; }
+
+	user_techno['speed'] = 0;  //local variable pour la vitesse
+	var base_detail = ogame_fleetSubDetailsBase(name);
+	var techno_RC_coef  = user_techno['RC']  * RC_COEF;
+	var techno_RI_coef  = user_techno['RI']  * RI_COEF;
+	var techno_PH_coef  = user_techno['PH']  * PH_COEF;
+	var techno_Hyp_coef = user_techno['Hyp'] * HYP_COEF;
+	if (name==='PT' || name==='GT' || name==='CLE' || name==='SE' || name==='REC') { //vso avec le réacteur à combustion.
+		user_techno['speed'] = techno_RC_coef;
+	} else if (name==='CLO' || name==='CR' || name==='VC' || name==='BMD') {
+		user_techno['speed'] = techno_RI_coef;
+	} else if (name==='VB' || name==='DST' || name==='TRA' || name==='EDLM' || name==='ECL' || name==='FAU') {
+		user_techno['speed'] = techno_PH_coef;
+	}
+	if (name === 'PT' && user_techno['RI'] >= 5) {
+		base_detail['vitesse'] = 10000;
+		base_detail['conso']   = 20;
+		user_techno['speed'] = techno_RI_coef;
+	}
+	if (name === 'REC') {
+		if (user_techno['RI'] >= 17) {
+			base_detail['vitesse'] = 4000;
+			base_detail['conso']   = 600;
+			user_techno['speed'] = techno_RI_coef;
+		}
+		if (user_techno['PH'] >= 15) {
+			base_detail['vitesse'] = 6000;
+			base_detail['conso']   = 900;
+			user_techno['speed'] = techno_PH_coef;
+		}
+	}
+	if (name === 'BMD' && user_techno['PH'] >= 8) {
+		base_detail['vitesse'] = 500;
+		user_techno['speed'] = techno_PH_coef;
+	}
+
+	var vitesse = base_detail['vitesse'];
+	var fret    = base_detail['fret'];
+	var conso   = base_detail['conso'];
+	var bonus_class = 0;
+//Vitesse
+	if (classe === 'COL') {
+		if (name === 'PT' || name === 'GT') {
+			bonus_class = 1; //+100%
+		}
+	} else if (classe === 'GEN') {
+		if (!base_detail['civil'] && name !== 'EDLM' || name === 'REC') {
+			bonus_class = 1; //+100%
+		}
+	}
+	vitesse = Math.round(vitesse * (1 + user_techno['speed'] + bonus_class));
+//fret
+	bonus_class = 0;
+	if (classe === 'COL') {
+		if (name === 'PT' || name === 'GT') {
+			bonus_class = 0.25; //+25%
+		}
+	} else if (classe === 'GEN') {
+		if (name === 'REC' || name === 'ECL') {
+			bonus_class = 0.2; //+20%
+		}
+	}
+	fret = Math.round(fret * (1 + techno_Hyp_coef + bonus_class));
+//conso
+	bonus_class = 0;
+	if (classe === 'GEN') {
+		bonus_class = -0.25;    //-25%
+	}
+	conso = Math.round(conso * (1 + bonus_class));
+	if (conso < 1) {
+		conso = 1;
+	}
+	base_detail['vitesse'] = vitesse;
+	base_detail['fret']    = fret;
+	base_detail['conso']   = conso;
+	base_detail['nom']     = name;
+	return base_detail;
+}
+// console.log(ogame_fleetSubDetails('PT',{'Hyp':18,'RC':21,'RI':17,'PH':16},'GEN'));
+function ogame_fleetConsoStatio(conso, hour) {
+    var result = hour * conso / 10;
+    if (result < 1) {
+        result = 1;
+    }
+    if (hour == 0) {
+        result = 0;
+    }
+    return Math.floor(result);
+}
+function ogame_fleetSlowestSpeed(fleet, user_techno=null, classe='none') {
+    var names     = ogame_getElementNames();
+    var details   = {};
+    var max_speed = ogame_fleetSubDetails('SE', user_techno, classe);   //The fastest fleet
+    var min_speed = max_speed['vitesse'];
+    for (var elem in names['VSO']) {
+		elem = names['VSO'][elem];
+        if (typeof(fleet[elem])!=='undefined' && fleet[elem] !== 0) {
+            details = ogame_fleetSubDetails(elem, user_techno, classe);
+            if (min_speed > details['vitesse']) {
+                min_speed = details['vitesse'];
+            }
+        }
+    }
+    return min_speed;
+}
+function ogame_fleetDistance(a, b, user_techno=null, classe='none', server_config=null) {
+    var result = {'distance':0, 'type':'p'};
+	if (user_techno === null)   { user_techno = new Array(); }
+	if (server_config === null) { server_config = new Array(); }
+	if (typeof(user_techno['RC'])  === 'undefined') { user_techno['RC'] = 0; }
+    if (typeof(server_config['num_of_galaxies']) === 'undefined') { server_config['num_of_galaxies'] = 9; }
+    if (typeof(server_config['num_of_systems'])  === 'undefined') { server_config['num_of_systems'] = 499; }
+    if (typeof(server_config['donutGalaxy'])     === 'undefined') { server_config['donutGalaxy'] = 1; }
+    if (typeof(server_config['donutSystem'])     === 'undefined') { server_config['donutSystem'] = 1; }
+
+    var dist_abs    = 0;
+    var max_type    = {'g':server_config['num_of_galaxies'], 's':server_config['num_of_systems'], 'p':0};
+    var uni_arrondi = {'g':true, 's':true, 'p':false}; //Par défaut
+    if (server_config['donutGalaxy'] === 0) {
+        max_type['g']    = 0;
+        uni_arrondi['g'] = false;
+    }
+    if (server_config['donutSystem'] === 0) {
+        max_type['s']    = 0;
+        uni_arrondi['s'] = false;
+    }
+    var coord_a = ogame_findCoordinates(a);
+    var coord_b = ogame_findCoordinates(b);
+    var key     = 'p';
+    for (var key in coord_a) {    //On ne calcule la distance qu'entre des vraies coordonnées.
+        if (coord_a[key] === 0 || coord_b[key] === 0) {
+            coord_a[key] = 0;
+            coord_b[key] = 0;
+        }
+        dist_abs = Math.abs(coord_a[key] - coord_b[key]);   //|a-b|
+        if (dist_abs !== 0) {
+            break;
+        }
+    }
+    result['type']     = key;
+    result['distance'] = dist_abs;    //|a-b|
+    if (uni_arrondi[key] && (dist_abs > max_type[key] / 2)) {
+        result['distance'] = Math.abs(dist_abs - max_type[key]); //||a-b| - base|
+    }
+    return result;
+}
+// console.log(ogame_fleetDistance('1:2:6','9:499:8'))
+function ogame_fleetSend(coord_from, coord_to, fleet, speed_per=100, user_techno=null, classe='none', server_config=null, type='', hour_mission=0) {
+    var result    = {'conso':0, 'time':0};
+    var names     = ogame_getElementNames();
+    var details   = {};
+    var consos    = {};
+    var max_speed = ogame_fleetSubDetails('SE', user_techno, classe);   //The fastest fleet
+    var min_speed = max_speed['vitesse'];
+	var conso_sum = 0;
+    for (var elem in names['VSO']) {
+		elem = names['VSO'][elem];
+        consos[elem] = 0;
+        if (typeof(fleet[elem])!=='undefined' && fleet[elem] !== 0) {
+            details = ogame_fleetSubDetails(elem, user_techno, classe);
+            if (min_speed > details['vitesse']) {
+                min_speed = details['vitesse'];
+            }
+            consos[elem] = details['conso'] * fleet[elem];
+			conso_sum   += consos[elem];
+        }
+    }
+    if (min_speed == 0) { //Ne devrait jamais arriver mais pour éviter une div/0.
+        return $result;
+    }
+    var distance  = ogame_fleetDistance(coord_from, coord_to, server_config);
+    if (type === 'fuite') {
+        distance['type'] = type;
+    }
+    switch (distance['type']) {
+        case 'g':   //between galaxy
+            result['time']  = ( 10 + (35000 / speed_per * Math.sqrt(distance['distance'] * 20000000 / min_speed)) );
+            result['conso'] = 1 + ( conso_sum * ((4 * distance['distance']) / 7) * Math.pow(speed_per / 100 + 1, 2) );
+            break;
+        case 's':   //between system (so inside same galaxy)
+            result['time']  = ( 10 + (35000 / speed_per * Math.sqrt((2700000 + distance['distance'] * 95000) / min_speed)) );
+            result['conso'] = 1 + ( conso_sum * ((2700 + 95 * distance['distance']) / 35000) * Math.pow(speed_per / 100 + 1, 2) );
+            break;
+        case 'p':   //between sub-system (so in same galaxy and same system)
+            if (distance['distance'] === 0) { // to moon/cdr
+                result['time']  = ( 10 + (35000 / speed_per * Math.sqrt(5000 / min_speed)) );
+                result['conso'] = 1 + ( conso_sum * (5 / 35000) * Math.pow(speed_per / 100 + 1, 2) );
+            } else { //to other planet in same system
+                result['time']  = ( 10 + (35000 / speed_per * Math.sqrt((1000000 + distance['distance'] * 5000) / min_speed)) );
+                result['conso'] = 1 + ( conso_sum * ((1000 + 5 * distance['distance']) / 35000) * Math.pow(speed_per / 100 + 1, 2) );
+            }
+            break;
+        case 'fuite':
+            distance['distance'] = 1 * 1.5;
+            result['conso'] = ( conso_sum * distance['distance'] );  //???
+        default:
+            break;
+    }
+    if (type === 'statio' || type === 'expe') {
+        result['conso'] += ogame_fleetConsoStatio(conso_sum, hour_mission);
+        // result['time']  += hour_mission * 3600;
+    }
+    result['time']  = Math.round(result['time']);
+    result['conso'] = Math.ceil(result['conso']);
+    return result;
+}
+// var a=ogame_fleetSend('1:1:1','1:1:1',{'PT':260},100,{'RC':20,'RI':17,'PH':16},'COL');
+// console.log(a);
+// var d = new Date(a['time']*1000);
+// console.log((d.getUTCDate()-1)+ ':'+ d.getUTCHours()+':'+d.getUTCMinutes()+':'+d.getUTCSeconds())
 
 
 // Production par heure
