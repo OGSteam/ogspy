@@ -424,7 +424,7 @@ function color_html_create_double_input($label, $value, $html_arg=array('size'=>
     foreach ($html_arg as $key=>$elem) {
         $result .= $key . '="' . $elem . '" ';
     }
-    $result .= 'value="' . $color['name'] . '" onchange="ogspy_colorDoubleChange("' . $id . '");">' . "\n";
+    $result .= 'value="' . $color['name'] . '" onchange="ogspy_colorDoubleChange(\'' . $id . '\');">' . "\n";
     
     $result .= '<input name="' . $label . '" id="' . $label . '" type="color" ';
     foreach ($html_arg as $key=>$elem) {
@@ -432,7 +432,7 @@ function color_html_create_double_input($label, $value, $html_arg=array('size'=>
             $result .= $key . '="' . $elem . '" ';
         }
     }
-    $result .= 'value="' . $color['value'] . '" onchange="ogspy_colorDoubleChange("' . $label . '");">' . "\n";
+    $result .= 'value="' . $color['value'] . '" onchange="ogspy_colorDoubleChange(\'' . $label . '\');">' . "\n";
     
     return $result;
 }
