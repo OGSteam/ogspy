@@ -38,7 +38,7 @@ $lang["help_profile_ddr"] = "Cocher si le dépôt de ravitaillement est présent
 $lang["help_astro_strict"] = "Cocher si l'univers est ancien. Cela permet d'avoir 9 planetes sans avoir la technologie astrophysique correspondante.";
 $lang["help_config_cache"] = "Durée de vie du cache config en seconde.";
 $lang["help_donutSystem"] = "Si les sytèmes sont ronds alors 499 vers 1 est une distane de 1.";
-$lang["donutGalaxy"] = "Si les galaxie sont rondes alors 9 vers 1 est une distane de 1.";
+$lang["help_donutGalaxy"] = "Si les galaxie sont rondes alors 9 vers 1 est une distane de 1.";
 $lang["help_mod_cache"] = "Durée de vie du cache mod en seconde..";
 
 /* admin page */

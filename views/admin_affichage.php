@@ -45,23 +45,52 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
 }
 ?>
 <script language="JavaScript">
-    var colors;
+    var nb_colonnes_ally = <?php echo $nb_colonnes_ally; ?>;
 
     function View(color) {
         colors = color;
-        <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) { ?>
-        document.getElementById('ColorPreview<?php echo $i; ?>').style.backgroundColor = colors;
-        <?php } ?>
-
+        <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
+        echo "document.getElementById('ColorPreview$i').style.backgroundColor = colors;";
+        } ?>
     }
 
     function Set(ally) {
         switch (ally) {
-        <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) {  ?>
-            case <?php echo $i; ?>:
-                document.getElementById('color_ally[<?php echo $i; ?>]').value = colors;
+        <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
+            echo "case $i:";
+            echo "\tdocument.getElementById('color_ally[$i]').value = colors;";
+            echo "\tbreak;\n";
+        } ?>
+        }
+    }
+    
+    function set_colorAlly(html = false) {
+        var colornames = getColorArr('names');
+        var colorhexs  = getColorArr('hexs');
+        var color_id1  = 'color_name_ally';
+        var color_id2  = 'color_ally';
+        var tab1 = colornames;
+        var tab2 = colorhexs;
+        if (html !== false) {
+            var tmp   = color_id1;
+            color_id1 = color_id2;
+            color_id2 = tmp;
+            tab2 = colornames;
+            tab1 = colorhexs;
+        }
+        for (var i = 0 ; i < nb_colonnes_ally ; i++) {
+            var c = document.getElementById(color_id1 + i).value;
+            c = c.replace('#', '');
+            for (j = 0; j < tab1.length; j++) {
+              if (c.toLowerCase() == tab1[j].toLowerCase()) {
+                var value_color = '#' + colorhexs[j];
+                if (html !== false) {
+                    value_color = colornames[j];
+                }
+                document.getElementById(color_id2 + i).value = value_color;
                 break;
-        <?php } ?>
+              }
+            }
         }
     }
 </script>
@@ -110,7 +139,9 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
             <th><input name="nb_colonnes_ally" type="text" size="3" maxlength="20"
                        value="<?php echo $nb_colonnes_ally; ?>"></th>
         </tr>
-        <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) { ?>
+        <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
+            $color = color_convert_to_html_input($color_ally_e[$i - 1]);
+            ?>
             <tr>
                 <th>
                     <span style="color: <?php echo $color_ally_e[$i - 1]; ?>; "><?php echo($lang['ADMIN_DISPLAY_ALLY_COLOR']); ?><?php echo $i; ?></span>
@@ -118,8 +149,11 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
 
                     <div class="z"><i><?php echo($lang['ADMIN_DISPLAY_ALLY_COLORDESC']); ?></i></div>
                 </th>
-                <th><input name="color_ally[<?php echo $i; ?>]" id="color_ally[<?php echo $i; ?>]" type="color" size="15"
-                           value="<?php echo color_convert_to_html_input($color_ally_e[$i - 1]); ?>">
+                <th><input name="color_name_ally[<?php echo $i; ?>]" id="color_name_ally[<?php echo $i; ?>]" type="text" size="15" maxlength="20"
+                            value="<?php echo $color['name']; ?>" onchange="set_colorName();">
+                    <input name="color_ally[<?php echo $i; ?>]" id="color_ally[<?php echo $i; ?>]" type="color" size="15"
+                           value="<?php echo $color['value']; ?>" onchange="set_colorHtml();">
+                    
                 </th>
             </tr>
         <?php } ?>
@@ -284,8 +318,6 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
                             <?php endif; ?>
                         <?php endforeach; ?>
                     <?php endforeach; ?>
-
-
                 </select></th>
         </tr>
         <tr>
