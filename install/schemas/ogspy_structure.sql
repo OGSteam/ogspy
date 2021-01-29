@@ -941,6 +941,10 @@ INSERT INTO `ogspy_config` VALUES ('block_ratio', '0');
 INSERT INTO `ogspy_config` VALUES ('ratio_limit', '0');
 INSERT INTO `ogspy_config` VALUES ('config_cache', '3600');
 INSERT INTO `ogspy_config` VALUES ('mod_cache', '604800');
+INSERT INTO `ogspy_config` VALUES ('ddr','1');
+INSERT INTO `ogspy_config` VALUES ('astro_strict','1');
+INSERT INTO `ogspy_config` VALUES ('donutSystem','1');
+INSERT INTO `ogspy_config` VALUES ('donutGalaxy','1');
 
 -- Partie affichage
 INSERT INTO `ogspy_config` VALUES ('enable_stat_view', '1');

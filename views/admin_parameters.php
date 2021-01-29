@@ -52,6 +52,8 @@ $ddr = $server_config['ddr'];
 $astro_strict = $server_config['astro_strict'];
 $config_cache = $server_config['config_cache'];
 $mod_cache = $server_config['mod_cache'];
+$donutSystem = $server_config['donutSystem'];
+$donutGalaxy = $server_config['donutGalaxy'];
 //mail
 $server_config['mail_use'] = (isset ($server_config['mail_use'])) ? $server_config['mail_use'] : 0;
 $mail_use = $server_config['mail_use'] == 1 ? "checked" : "";
@@ -255,6 +257,16 @@ $mail_smtp_password="";
             <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_ASTRO']); ?><?php echo help("astro_strict"); ?></th>
             <th><input name="astro_strict" value="1"
                        type="checkbox"<?php print ($astro_strict == 1) ? ' checked' : '' ?>></th>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_DONUT_SYSTEM']); ?><?php echo help("donutSystem"); ?></th>
+            <th><input name="donutSystem" value="1"
+                       type="checkbox"<?php print ($donutSystem == 1) ? ' checked' : '' ?>></th>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_DONUT_GALAXY']); ?><?php echo help("donutGalaxy"); ?></th>
+            <th><input name="donutGalaxy" value="1"
+                       type="checkbox"<?php print ($donutGalaxy == 1) ? ' checked' : '' ?>></th>
         </tr>
         <tr>
             <?php

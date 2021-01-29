@@ -120,8 +120,6 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
     $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('num_of_galaxies','$num_of_galaxies')";
     $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('num_of_systems','$num_of_systems')";
     $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('speed_uni','$uni_speed')";
-    $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('ddr','true')";
-    $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('astro_strict','1')";
     $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('version','$install_version')";
     $sql_query[] = "ALTER DATABASE " . $sgbd_dbname . " charset=utf8"; /*Passage de interclassement en utf8*/
 
@@ -135,7 +133,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
         }
     }
 
-    $request = "insert into " . $sgbd_tableprefix . "user (user_id, user_name, user_password_s , user_regdate, user_active, user_admin)" .
+    $request = "INSERT INTO " . $sgbd_tableprefix . "user (user_id, user_name, user_password_s , user_regdate, user_active, user_admin)" .
         " values (1, '" . mysqli_real_escape_string($db->db_connect_id, $admin_username) . "', '" . password_hash($admin_password,PASSWORD_DEFAULT ) . "', " . time() . ", '1', '1')";
     if (!($result = $db->sql_query($request, false, false))) {
         $error = $db->sql_error($result);
@@ -143,7 +141,7 @@ function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_passw
         error_sql($error['message']);
     }
 
-    $request = "insert into " . $sgbd_tableprefix . "user_group (group_id, user_id) values (1, 1)";
+    $request = "INSERT INTO " . $sgbd_tableprefix . "user_group (group_id, user_id) values (1, 1)";
     if (!($result = $db->sql_query($request, false, false))) {
         $error = $db->sql_error($result);
         print $request;

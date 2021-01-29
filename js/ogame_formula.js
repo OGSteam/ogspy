@@ -6,7 +6,7 @@
  *  @version 2.0, 2021-01-22
  */
 //uglifyjs js/ogame_formula.js -c -m -b -o js/ogame_formula.min.js
-'use strict';
+// 'use strict';	//Pour débug !!
 // const DEFAULT_ARRAY_RESSOURCE = {'M':0,'C':0,'D':0,'NRJ':0};
 // Object.freeze(DEFAULT_ARRAY_RESSOURCE);
 // var a = JSON.parse(JSON.stringify(DEFAULT_ARRAY_RESSOURCE));

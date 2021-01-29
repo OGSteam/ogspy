@@ -375,7 +375,7 @@ function set_serverconfig()
            $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
            $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
            $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit, $pub_speed_uni,
-           $pub_ddr, $pub_astro_strict, $pub_config_cache, $pub_mod_cache,
+           $pub_ddr, $pub_astro_strict, $pub_donutSystem, $pub_donutGalaxy, $pub_config_cache, $pub_mod_cache,
            $pub_mail_use, $pub_mail_smtp_use, $pub_mail_smtp_secure, $pub_mail_smtp_port, $pub_mail_smtp_host, $pub_mail_smtp_username, $pub_mail_smtp_password, $pub_enable_mail_smtp_password;
 
     //appel de la couche" Model"
@@ -579,12 +579,12 @@ function set_serverconfig()
     $Config_Model->update_one($pub_num_of_systems, "num_of_systems");
 
     if (!isset($pub_ddr) || !is_numeric($pub_ddr)) {
-        $pub_ddr = 0;
+        $pub_ddr = 1;
     }
     $Config_Model->update_one($pub_ddr, "ddr");
 
     if (!isset($pub_astro_strict) || !is_numeric($pub_astro_strict)) {
-        $pub_astro_strict = 0;
+        $pub_astro_strict = 1;
     }
     $Config_Model->update_one($pub_astro_strict, "astro_strict");
 
@@ -593,6 +593,16 @@ function set_serverconfig()
     }
     $Config_Model->update_one($pub_speed_uni, "speed_uni");
 
+    if (!isset($pub_donutSystem) || !is_numeric($pub_donutSystem)) {
+        $pub_donutSystem = 1;
+    }
+    $Config_Model->update_one($pub_donutSystem, "donutSystem");
+    
+    if (!isset($pub_donutGalaxy) || !is_numeric($pub_donutGalaxy)) {
+        $pub_donutGalaxy = 1;
+    }
+    $Config_Model->update_one($pub_donutGalaxy, "donutGalaxy");
+    
     $Config_Model->update_one($pub_mod_cache, "mod_cache");
     $Config_Model->update_one($pub_config_cache, "config_cache");
 
