@@ -357,7 +357,7 @@ function color_hex_to_rgb($couleur_id)
 {
     $couleur_str = '';
     if (is_numeric($couleur_id)) {
-        $couleur_str = dechex($couleur_id);
+        $couleur_str = sprintf('%06x', $couleur_id);
     }
     if (is_string($couleur_id)) {
         $couleur_str = $couleur_id;
@@ -403,7 +403,38 @@ function color_convert_to_html_input($color)
         }
         $color_rgb = color_hex_to_rgb($color);
     }
-    return array('name'=>$color_name, 'value'=>'#' . color_rgb_to_hex($color_rgb['red'], $color_rgb['green'], $color_rgb['blue']));
+    $hex_string = color_rgb_to_hex($color_rgb['red'], $color_rgb['green'], $color_rgb['blue']);
+    $color_name = color_getName($hex_string);
+    return array('name'=>$color_name, 'value'=>'#' . $hex_string);
+}
+
+/**
+ *  @brief Construct HTML double input for color, one for text and one for HTML5 color picker and link these with the JS.
+ *  
+ *  @param[in] string     $label        HTML id of the input 
+ *  @param[in] string|int $value        Color value (string 'red'/'#ff0000', int 0xffddee)
+ *  @param[in] array      $html_arg     HTML attributes (default = array('size'=>15, 'maxlength'=>20))
+ *  @return string HTML content with 2 inputs linked for color text+HTML5 color
+ */
+function color_html_create_double_input($label, $value, $html_arg=array('size'=>15, 'maxlength'=>20))
+{
+    $color = color_convert_to_html_input($value);
+    $id = 'colorname_' . $label;
+    $result = '<input name="' . $id . '" id="' . $id . '" type="text" ';
+    foreach ($html_arg as $key=>$elem) {
+        $result .= $key . '="' . $elem . '" ';
+    }
+    $result .= 'value="' . $color['name'] . '" onchange="ogspy_colorDoubleChange("' . $id . '");">' . "\n";
+    
+    $result .= '<input name="' . $label . '" id="' . $label . '" type="color" ';
+    foreach ($html_arg as $key=>$elem) {
+        if ($key !== 'maxlength') {
+            $result .= $key . '="' . $elem . '" ';
+        }
+    }
+    $result .= 'value="' . $color['value'] . '" onchange="ogspy_colorDoubleChange("' . $label . '");">' . "\n";
+    
+    return $result;
 }
 
 /**
