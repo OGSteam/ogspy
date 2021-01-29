@@ -118,9 +118,9 @@ for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
 
                     <div class="z"><i><?php echo($lang['ADMIN_DISPLAY_ALLY_COLORDESC']); ?></i></div>
                 </th>
-                <th><input name="color_ally[<?php echo $i; ?>]" id="color_ally[<?php echo $i; ?>]" type="text" size="15"
-                           maxlength="20"
-                           value="<?php echo $color_ally_e[$i - 1]; ?>"> <?php echo help("color_picker" . $i); ?></th>
+                <th><input name="color_ally[<?php echo $i; ?>]" id="color_ally[<?php echo $i; ?>]" type="color" size="15"
+                           value="<?php echo color_convert_to_html_input($color_ally_e[$i - 1]); ?>">
+                </th>
             </tr>
         <?php } ?>
         <tr>
