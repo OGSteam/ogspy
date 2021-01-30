@@ -39,58 +39,7 @@ $open_admin = $server_config['open_admin'];
 
 $color_ally_n = $server_config['color_ally'];
 $color_ally_e = explode("_", $color_ally_n);
-var_dump($color_ally_n);
 ?>
-<script language="JavaScript">
-    var nb_colonnes_ally = <?php echo $nb_colonnes_ally; ?>;
-
-    function View(color) {
-        colors = color;
-        <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
-        echo "document.getElementById('ColorPreview$i').style.backgroundColor = colors;";
-        } ?>
-    }
-
-    function Set(ally) {
-        switch (ally) {
-        <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
-            echo "case $i:";
-            echo "\tdocument.getElementById('color_ally[$i]').value = colors;";
-            echo "\tbreak;\n";
-        } ?>
-        }
-    }
-    
-    function set_colorAlly(html = false) {
-        var colornames = getColorArr('names');
-        var colorhexs  = getColorArr('hexs');
-        var color_id1  = 'color_name_ally';
-        var color_id2  = 'color_ally';
-        var tab1 = colornames;
-        var tab2 = colorhexs;
-        if (html !== false) {
-            var tmp   = color_id1;
-            color_id1 = color_id2;
-            color_id2 = tmp;
-            tab2 = colornames;
-            tab1 = colorhexs;
-        }
-        for (var i = 0 ; i < nb_colonnes_ally ; i++) {
-            var c = document.getElementById(color_id1 + i).value;
-            c = c.replace('#', '');
-            for (j = 0; j < tab1.length; j++) {
-              if (c.toLowerCase() == tab1[j].toLowerCase()) {
-                var value_color = '#' + colorhexs[j];
-                if (html !== false) {
-                    value_color = colornames[j];
-                }
-                document.getElementById(color_id2 + i).value = value_color;
-                break;
-              }
-            }
-        }
-    }
-</script>
 <form method="POST" action="index.php" name="view">
     <input type="hidden" name="action" value="set_server_view">
     <table width="100%">

@@ -80,7 +80,7 @@ function _getColorArr(x) {
 function ogspy_isColor(x) {
 	var colors = _getColorArr();
 	if (typeof(x) === 'string') {
-	 x = x.replace('#', ''); //cas '#xxyyzz'
+		x = x.replace('#', ''); //cas '#xxyyzz'
 	}
 	if (typeof(x) === 'number') {
 		var hex = x.toString(16);
