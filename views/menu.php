@@ -19,14 +19,14 @@ if (!defined('IN_SPYOGAME')) {
     <tr align="center">
         <td>
             <b><?php echo($lang['MENU_SERVER_TIME']); ?></b><br/>
-            <span id="datetime"><blink><?php echo($lang['MENU_WAITING']); ?></blink></span>
+            <span id="datetime"><?php echo($lang['MENU_WAITING']); ?></span>
         </td>
     </tr>
 
     <tr>
         <td>
-            <div><a href="index.php" class="menu"><img src="./skin/OGSpy_skin/transpa.gif" width="166" height="65"
-                                                       border="0"/></a></div>
+            <div><a href="index.php" class="menu">
+            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="65" border="0"/></a></div>
         </td>
     </tr>
 

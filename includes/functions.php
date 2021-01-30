@@ -413,21 +413,25 @@ function color_convert_to_html_input($color)
  *  
  *  @param[in] string     $label        HTML id of the input 
  *  @param[in] string|int $value        Color value (string 'red'/'#ff0000', int 0xffddee)
- *  @param[in] array      $html_arg     HTML attributes (default = array('size'=>15, 'maxlength'=>20))
+ *  @param[in] array      $html_arg1     HTML attributes for text box (default = array('size'=>15, 'maxlength'=>20))
+ *  @param[in] array      $html_arg2     HTML attributes for color box (default = $html_arg1)
  *  @return string HTML content with 2 inputs linked for color text+HTML5 color
  */
-function color_html_create_double_input($label, $value, $html_arg=array('size'=>15, 'maxlength'=>20))
+function color_html_create_double_input($label, $value, $html_arg1=array('size'=>15, 'maxlength'=>20), $html_arg2=null)
 {
+    if ($html_arg2 === null) {
+        $html_arg2 = $html_arg1;
+    }
     $color = color_convert_to_html_input($value);
     $id = 'colorname_' . $label;
     $result = '<input name="' . $id . '" id="' . $id . '" type="text" ';
-    foreach ($html_arg as $key=>$elem) {
+    foreach ($html_arg1 as $key=>$elem) {
         $result .= $key . '="' . $elem . '" ';
     }
     $result .= 'value="' . $color['name'] . '" onchange="ogspy_colorDoubleChange(\'' . $id . '\');">' . "\n";
     
     $result .= '<input name="' . $label . '" id="' . $label . '" type="color" ';
-    foreach ($html_arg as $key=>$elem) {
+    foreach ($html_arg2 as $key=>$elem) {
         if ($key !== 'maxlength') {
             $result .= $key . '="' . $elem . '" ';
         }
@@ -609,7 +613,7 @@ function set_server_view()
     $Config_Model->update_one($pub_enable_members_view, "enable_members_view");
     $Config_Model->update_one($pub_nb_colonnes_ally, "nb_colonnes_ally");
 
-    $array = $pub_color_ally; //die(var_dump($pub_color_ally));
+    $array = $pub_color_ally; // var_dump('set_server_view :',$pub_color_ally);
     $color_ally = implode("_", $array);
     $Config_Model->update_one($color_ally, "color_ally");
 

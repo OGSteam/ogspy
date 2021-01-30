@@ -79,6 +79,9 @@ function _getColorArr(x) {
 }
 function ogspy_isColor(x) {
 	var colors = _getColorArr();
+	if (typeof(x) === 'string') {
+	 x = x.replace('#', ''); //cas '#xxyyzz'
+	}
 	if (typeof(x) === 'number') {
 		var hex = x.toString(16);
 		x = '000000'.substr(0, 6 - hex.length) + hex;
@@ -95,8 +98,8 @@ function ogspy_colorDoubleChange(id) {
 	var color = ogspy_isColor(value);
 	var baseid = id.replace('colorname_', '');
 	if (color === false) {
-		return;
+		return; //no change
 	}
 	document.getElementById('colorname_' + baseid).value = color['name'];
-	document.getElementById(baseid).value = color['hex'];
+	document.getElementById(baseid).value = '#' + color['hex'];
 }
