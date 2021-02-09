@@ -686,17 +686,12 @@ function production_foreuse($nb_foreuse, $level_M, $level_C, $level_D, $temperat
  *  @param [in] int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
  *  @return int number max of foreus
  */
-function foreuse_max2($level_M, $level_C, $level_D, $officier = 0, $classe = 0) {
-    
-}
 function foreuse_max($level_M, $level_C, $level_D, $officier = 0, $classe = 0) {
-    $bonus_foreuse_max = 0;
+    $names = ogame_get_element_names();
+    if (isset($names['CLASS'][$classe])) {$classe = $names['CLASS'][$classe]; }
+    if (!in_array($classe, $names['CLASS'], true)) { $classe = $names['CLASS'][0]; }
 
-    if ($classe == 1 && $officier != 0) {
-        $bonus_foreuse_max = 0.1; //+10%
-    }
-
-    return ($level_M + $level_C + $level_D) * 8 * (1 + $bonus_foreuse_max);
+    return ogame_production_foreuse_max($level_M, $level_C, $level_D, array('off_geologue'=>$officier, 'user_class'=>$classe));
 }
 
 /**

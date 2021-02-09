@@ -168,7 +168,7 @@ function hexhex($value)
  *  @param[in] $Colorname The wanted color ('all' to retrieve all RGB HTML color code name)
  *  @return array('red,'green','blue') 0 as default ('black'), all=array of name with RGB
  */
-function color_getColor($Colorname = 'all') 
+function color_getColor($Colorname = 'all')
 {
     $Colorname = strtolower($Colorname);
     $Colors  =  array(
@@ -379,7 +379,8 @@ function color_hex_to_rgb($couleur_id)
  *  @param[in] int $r,$g, $b The RGB value
  *  @return string hexadecimal color value in string
  */
-function color_rgb_to_hex($r, $g, $b) {
+function color_rgb_to_hex($r, $g, $b)
+{
     $rouge = sprintf('%02x', $r);
     $vert  = sprintf('%02x', $g);
     $bleu  = sprintf('%02x', $b);
@@ -390,7 +391,7 @@ function color_rgb_to_hex($r, $g, $b) {
 /**
  *  @brief Return valid HTML value for an input color.
  *  
- *  @param[in] strin|int $color The color (name 'red' or '#ffddee' or value 'ffddee' or 0xffddee)
+ *  @param[in] string|int $color    The color (name 'red' or '#ffddee' or value 'ffddee' or 0xffddee)
  *  @return array('name','value') value=HTML valid color input value ('#xxx'), 0 as default (black)
  */
 function color_convert_to_html_input($color)
