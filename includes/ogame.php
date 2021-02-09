@@ -686,6 +686,9 @@ function production_foreuse($nb_foreuse, $level_M, $level_C, $level_D, $temperat
  *  @param [in] int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
  *  @return int number max of foreus
  */
+function foreuse_max2($level_M, $level_C, $level_D, $officier = 0, $classe = 0) {
+    
+}
 function foreuse_max($level_M, $level_C, $level_D, $officier = 0, $classe = 0) {
     $bonus_foreuse_max = 0;
 
@@ -1198,11 +1201,11 @@ function ogame_elements_details($name, $user_techno = null, $classe = 'none')
     $conso     = $base_detail['conso'];
     
     $bonus_class = 0;
-    $structure = round($structure + $structure * $techno_Protection_coef + $structure * $bonus_class);
-    $bouclier  = round($bouclier  + $bouclier  * $techno_Bouclier_coef   + $bouclier  * $bonus_class);
-    if ($classe === 'GEN') {
+     if ($classe === 'GEN') {
         $bonus_class = 2 * $COMBAT_COEF;    //+2 lvl
     }
+    $structure = round($structure + $structure * $techno_Protection_coef + $structure * $bonus_class);
+    $bouclier  = round($bouclier  + $bouclier  * $techno_Bouclier_coef   + $bouclier  * $bonus_class);
     $attaque   = round($attaque   + $attaque   * $techno_Armes_coef      + $attaque   * $bonus_class);
 
     $bonus_class = 0;
