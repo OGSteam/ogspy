@@ -303,9 +303,9 @@ CREATE TABLE `ogspy_rank_player_economique`
   `ally_id`   INT(6)       NOT NULL DEFAULT '-1',
   `points`    BIGINT       NOT NULL DEFAULT '0',
   `sender_id` INT(11)      NOT NULL DEFAULT '0',
-  PRIMARY KEY (`rank`, datadate),
-  KEY datadate (datadate, player),
-  KEY player (player)
+  PRIMARY KEY (`rank`, `datadate`),
+  KEY `datadate` (`datadate`, `player`),
+  KEY `player` (`player`)
 )
   DEFAULT CHARSET = UTF8;
 
@@ -696,8 +696,8 @@ CREATE TABLE `ogspy_mod_config`
 -- Structure de la table `ogspy_mod_user_config`
 --
 CREATE TABLE `ogspy_mod_user_config` (
-    `mod`     VARCHAR(50) NOT NULL,
-    `user_id` INT(11) NOT NULL,
+    `mod`     VARCHAR(50)  NOT NULL,
+    `user_id` INT(11)      NOT NULL,
     `config`  VARCHAR(255) NOT NULL,
     `value`   VARCHAR(255) NOT NULL,
     PRIMARY KEY (`mod`, `config`, `user_id`),
