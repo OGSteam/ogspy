@@ -72,6 +72,7 @@ function mod_list()
         $version = $mod['version'];
         $active = $mod['active'];
         $admin_only = $mod['admin_only'];
+        $position = $mod['position'];
 
         if (isset($directories[$root])) { //Mod présent du répertoire "mod"
             if (in_array($link, $directories[$root]) && in_array("version.txt", $directories[$root])) {
@@ -88,7 +89,7 @@ function mod_list()
                 if ($active == 0) { // Mod désactivé
                     $mod_list["disabled"][] = array("id" => $id, "title" => $title, "version" => $version, "up_to_date" => $up_to_date);
                 } else { //Mod activé
-                    $mod_list["actived"][] = array("id" => $id, "title" => $title, "version" => $version, "up_to_date" => $up_to_date, "admin_only" => $admin_only);
+                    $mod_list["actived"][] = array("id" => $id, "title" => $title, "version" => $version, "up_to_date" => $up_to_date, "admin_only" => $admin_only, 'position' => $position);
                 }
             } else { //Mod invalide
                 $mod_list["wrong"][] = array("id" => $id, "title" => $title);
@@ -440,10 +441,12 @@ function mod_normal()
 function mod_sort($order)
 {
     global $pub_mod_id;
-
+    $changed = false;
+    $change_msg = '-Pas de changement-';
+    
     mod_check("mod_id");
 
-    //récuérration des mods
+    //récupérration des mods
     $Mod_Model = new Mod_Model();
     $tMod = $Mod_Model->find_by(null, array('position' => 'ASC', 'title' => 'ASC'));
 
@@ -462,29 +465,28 @@ function mod_sort($order)
     $myMod=$oldModOrder[$oldModPosition];
     switch ($order) {
         case "up" :
-            //si on eut monter la position
-            if (isset($oldModOrder[$oldModPosition+1]))
-            {
-                //mod courant
-                $Mod_Model->update_posisiton($myMod['id'],$oldModPosition+1 );
-                //mod a bouger
-                $modToMove = $oldModOrder[$oldModPosition+1];
-                $Mod_Model->update_posisiton($modToMove['id'],$oldModPosition );
+            //si on veut monter la position
+            if (isset($oldModOrder[$oldModPosition+1])) {
+                $Mod_Model->update_posisiton($myMod['id'],$oldModPosition+1); //mod courant
+                $modToMove = $oldModOrder[$oldModPosition+1]; //mod à bouger
+                $Mod_Model->update_posisiton($modToMove['id'],$oldModPosition);
+                $changed = true;
             }
             break;
         case "down" :
-            //si on eut descendre la position
-            if (isset($oldModOrder[$oldModPosition-1]))
-            {
-                //mod courant
-                $Mod_Model->update_posisiton($myMod['id'],$oldModPosition-1 );
-                //mod a bouger
-                $modToMove = $oldModOrder[$oldModPosition-1];
-                $Mod_Model->update_posisiton($modToMove['id'],$oldModPosition );
+            //si on veut descendre la position
+            if (isset($oldModOrder[$oldModPosition-1])) {
+                $Mod_Model->update_posisiton($myMod['id'],$oldModPosition-1); //mod courant
+                $modToMove = $oldModOrder[$oldModPosition-1]; //mod à bouger
+                $Mod_Model->update_posisiton($modToMove['id'],$oldModPosition);
+                $changed = true;
             }
             break;
     }
-    log_("mod_order", $myMod["title"]);
+    if ($changed === true) {
+        $change_msg += $myMod["title"];
+    }
+    log_("mod_order", $change_msg);
     generate_mod_cache();
     redirection("index.php?action=administration&subaction=mod");
 }

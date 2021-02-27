@@ -58,7 +58,7 @@ DROP TABLE IF EXISTS "ogspy_round_defense";
 --
 CREATE TABLE "ogspy_config"
 (
-  "config_name"  VARCHAR(255) NOT NULL DEFAULT '',
+  "config_name"  VARCHAR(255) NOT NULL UNIQUE DEFAULT '',
   "config_value" VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY ("config_name")
 )
@@ -69,20 +69,20 @@ CREATE TABLE "ogspy_config"
 --
 CREATE TABLE "ogspy_group"
 (
-  "group_id"                  MEDIUMINT(8)    NOT NULL AUTO_INCREMENT,
-  "group_name"                VARCHAR(30)     NOT NULL,
-  "server_set_system"         ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "server_set_spy"            ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "server_set_rc"             ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "server_set_ranking"        ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "server_show_positionhided" ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "ogs_connection"            ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "ogs_set_system"            ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "ogs_get_system"            ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "ogs_set_spy"               ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "ogs_get_spy"               ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "ogs_set_ranking"           ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "ogs_get_ranking"           ENUM ('0', '1') NOT NULL DEFAULT '0',
+  "group_id"                  MEDIUMINT      NOT NULL AUTO_INCREMENT UNIQUE,
+  "group_name"                VARCHAR(30)    NOT NULL,
+  "server_set_system"         ENUM('0', '1') NOT NULL DEFAULT '0',
+  "server_set_spy"            ENUM('0', '1') NOT NULL DEFAULT '0',
+  "server_set_rc"             ENUM('0', '1') NOT NULL DEFAULT '0',
+  "server_set_ranking"        ENUM('0', '1') NOT NULL DEFAULT '0',
+  "server_show_positionhided" ENUM('0', '1') NOT NULL DEFAULT '0',
+  "ogs_connection"            ENUM('0', '1') NOT NULL DEFAULT '0',
+  "ogs_set_system"            ENUM('0', '1') NOT NULL DEFAULT '0',
+  "ogs_get_system"            ENUM('0', '1') NOT NULL DEFAULT '0',
+  "ogs_set_spy"               ENUM('0', '1') NOT NULL DEFAULT '0',
+  "ogs_get_spy"               ENUM('0', '1') NOT NULL DEFAULT '0',
+  "ogs_set_ranking"           ENUM('0', '1') NOT NULL DEFAULT '0',
+  "ogs_get_ranking"           ENUM('0', '1') NOT NULL DEFAULT '0',
   PRIMARY KEY ("group_id")
 )
   DEFAULT CHARACTER SET = UTF8;
@@ -92,16 +92,16 @@ CREATE TABLE "ogspy_group"
 --
 CREATE TABLE "ogspy_mod"
 (
-  "id"         INTEGER(11)     NOT NULL AUTO_INCREMENT,
+  "id"         MEDIUMINT       NOT NULL AUTO_INCREMENT UNIQUE,
   "title"      VARCHAR(255)    NOT NULL COMMENT 'Nom du mod',
   "menu"       VARCHAR(255)    NOT NULL COMMENT 'Titre du lien dans le menu',
   "action"     VARCHAR(255)    NOT NULL COMMENT 'Action transmise en get et traitée dans index.php',
   "root"       VARCHAR(255)    NOT NULL COMMENT 'Répertoire où se situe le mod (relatif au répertoire mods)',
   "link"       VARCHAR(255)    NOT NULL COMMENT 'fichier principale du mod',
   "version"    VARCHAR(10)     NOT NULL COMMENT 'Version du mod',
-  "position"   INTEGER(11)     NOT NULL DEFAULT '-1',
+  "position"   INTEGER         NOT NULL DEFAULT '-1',
   "active"     TINYINT(1)      NOT NULL COMMENT 'Permet de désactiver un mod sans le désinstaller, évite les mods#pirates',
-  "admin_only" ENUM ('0', '1') NOT NULL DEFAULT '0' COMMENT 'Affichage des mods de l utilisateur',
+  "admin_only" ENUM('0', '1')  NOT NULL DEFAULT '0' COMMENT 'Affichage des mods de l utilisateur',
   PRIMARY KEY ("id"),
   UNIQUE KEY "action" ("action"),
   UNIQUE KEY "title" ("title"),
@@ -115,11 +115,11 @@ CREATE TABLE "ogspy_mod"
 --
 CREATE TABLE "ogspy_game_ally"
 (
-  "ally_id"       INTEGER(6)  NOT NULL,
+  "ally_id"       INTEGER     NOT NULL,
   "ally"          VARCHAR(65) NOT NULL COMMENT 'Nom de l alliance',
   "tag"           VARCHAR(65) NOT NULL DEFAULT '',
-  "number_member" INTEGER(3)  NOT NULL COMMENT 'nombre de membre',
-  "datadate"      INTEGER(11) NOT NULL DEFAULT '0',
+  "number_member" INTEGER     NOT NULL COMMENT 'nombre de membre',
+  "datadate"      INTEGER     NOT NULL DEFAULT '0',
   PRIMARY KEY ("ally_id")
 )
   DEFAULT CHARACTER SET = UTF8;
@@ -129,11 +129,11 @@ CREATE TABLE "ogspy_game_ally"
 --
 CREATE TABLE "ogspy_game_player"
 (
-  "player_id" INTEGER(6)  NOT NULL,
+  "player_id" INTEGER     NOT NULL,
   "player"    VARCHAR(65) NOT NULL COMMENT 'Nom du joueur',
   "status"    VARCHAR(6)  NOT NULL DEFAULT '',
-  "ally_id"   INTEGER(6)  NOT NULL COMMENT 'Action transmise en get et traitée dans index.php',
-  "datadate"  INTEGER(11) NOT NULL DEFAULT '0',
+  "ally_id"   INTEGER     NOT NULL COMMENT 'Action transmise en get et traitée dans index.php',
+  "datadate"  INTEGER     NOT NULL DEFAULT '0',
   PRIMARY KEY ("player_id")
 )
   DEFAULT CHARACTER SET = UTF8;
@@ -143,14 +143,14 @@ CREATE TABLE "ogspy_game_player"
 --
 CREATE TABLE "ogspy_rank_ally_economique"
 (
-  "datadate"          INTEGER(11) NOT NULL DEFAULT '0',
-  "rank"              INTEGER(11) NOT NULL DEFAULT '0',
+  "datadate"          INTEGER     NOT NULL DEFAULT '0',
+  "rank"              INTEGER     NOT NULL DEFAULT '0',
   "ally"              VARCHAR(30) NOT NULL,
-  "ally_id"           INTEGER(6)  NOT NULL DEFAULT '-1',
-  "number_member"     INTEGER(11) NOT NULL,
+  "ally_id"           INTEGER     NOT NULL DEFAULT '-1',
+  "number_member"     INTEGER     NOT NULL,
   "points"            BIGINT      NOT NULL DEFAULT '0',
   "points_per_member" BIGINT      NOT NULL DEFAULT '0',
-  "sender_id"         INTEGER(11) NOT NULL DEFAULT '0',
+  "sender_id"         INTEGER     NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "ally"),
   KEY "ally" ("ally")
@@ -162,14 +162,14 @@ CREATE TABLE "ogspy_rank_ally_economique"
 --
 CREATE TABLE "ogspy_rank_ally_technology"
 (
-  "datadate"          INTEGER(11) NOT NULL DEFAULT '0',
-  "rank"              INTEGER(11) NOT NULL DEFAULT '0',
+  "datadate"          INTEGER     NOT NULL DEFAULT '0',
+  "rank"              INTEGER     NOT NULL DEFAULT '0',
   "ally"              VARCHAR(30) NOT NULL,
-  "ally_id"           INTEGER(6)  NOT NULL DEFAULT '-1',
-  "number_member"     INTEGER(11) NOT NULL,
+  "ally_id"           INTEGER     NOT NULL DEFAULT '-1',
+  "number_member"     INTEGER     NOT NULL,
   "points"            BIGINT      NOT NULL DEFAULT '0',
   "points_per_member" BIGINT      NOT NULL DEFAULT '0',
-  "sender_id"         INTEGER(11) NOT NULL DEFAULT '0',
+  "sender_id"         INTEGER     NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "ally"),
   KEY "ally" ("ally")
@@ -181,14 +181,14 @@ CREATE TABLE "ogspy_rank_ally_technology"
 --
 CREATE TABLE "ogspy_rank_ally_military"
 (
-  "datadate"          INTEGER(11) NOT NULL DEFAULT '0',
-  "rank"              INTEGER(11) NOT NULL DEFAULT '0',
+  "datadate"          INTEGER     NOT NULL DEFAULT '0',
+  "rank"              INTEGER     NOT NULL DEFAULT '0',
   "ally"              VARCHAR(30) NOT NULL,
-  "ally_id"           INTEGER(6)  NOT NULL DEFAULT '-1',
-  "number_member"     INTEGER(11) NOT NULL,
+  "ally_id"           INTEGER     NOT NULL DEFAULT '-1',
+  "number_member"     INTEGER     NOT NULL,
   "points"            BIGINT      NOT NULL DEFAULT '0',
   "points_per_member" BIGINT      NOT NULL DEFAULT '0',
-  "sender_id"         INTEGER(11) NOT NULL DEFAULT '0',
+  "sender_id"         INTEGER     NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "ally"),
   KEY "ally" ("ally")
@@ -200,14 +200,14 @@ CREATE TABLE "ogspy_rank_ally_military"
 --
 CREATE TABLE "ogspy_rank_ally_military_built"
 (
-  "datadate"          INTEGER(11) NOT NULL DEFAULT '0',
-  "rank"              INTEGER(11) NOT NULL DEFAULT '0',
+  "datadate"          INTEGER     NOT NULL DEFAULT '0',
+  "rank"              INTEGER     NOT NULL DEFAULT '0',
   "ally"              VARCHAR(30) NOT NULL,
-  "ally_id"           INTEGER(6)  NOT NULL DEFAULT '-1',
-  "number_member"     INTEGER(11) NOT NULL,
+  "ally_id"           INTEGER     NOT NULL DEFAULT '-1',
+  "number_member"     INTEGER     NOT NULL,
   "points"            BIGINT      NOT NULL DEFAULT '0',
   "points_per_member" BIGINT      NOT NULL DEFAULT '0',
-  "sender_id"         INTEGER(11) NOT NULL DEFAULT '0',
+  "sender_id"         INTEGER     NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "ally"),
   KEY "ally" ("ally")
@@ -219,14 +219,14 @@ CREATE TABLE "ogspy_rank_ally_military_built"
 --
 CREATE TABLE "ogspy_rank_ally_military_loose"
 (
-  "datadate"          INTEGER(11) NOT NULL DEFAULT '0',
-  "rank"              INTEGER(11) NOT NULL DEFAULT '0',
+  "datadate"          INTEGER     NOT NULL DEFAULT '0',
+  "rank"              INTEGER     NOT NULL DEFAULT '0',
   "ally"              VARCHAR(30) NOT NULL,
-  "ally_id"           INTEGER(6)  NOT NULL DEFAULT '-1',
-  "number_member"     INTEGER(11) NOT NULL,
+  "ally_id"           INTEGER     NOT NULL DEFAULT '-1',
+  "number_member"     INTEGER     NOT NULL,
   "points"            BIGINT      NOT NULL DEFAULT '0',
   "points_per_member" BIGINT      NOT NULL DEFAULT '0',
-  "sender_id"         INTEGER(11) NOT NULL DEFAULT '0',
+  "sender_id"         INTEGER     NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "ally"),
   KEY "ally" ("ally")
@@ -238,14 +238,14 @@ CREATE TABLE "ogspy_rank_ally_military_loose"
 --
 CREATE TABLE "ogspy_rank_ally_military_destruct"
 (
-  "datadate"          INTEGER(11) NOT NULL DEFAULT '0',
-  "rank"              INTEGER(11) NOT NULL DEFAULT '0',
+  "datadate"          INTEGER     NOT NULL DEFAULT '0',
+  "rank"              INTEGER     NOT NULL DEFAULT '0',
   "ally"              VARCHAR(30) NOT NULL,
-  "ally_id"           INTEGER(6)  NOT NULL DEFAULT '-1',
-  "number_member"     INTEGER(11) NOT NULL,
+  "ally_id"           INTEGER     NOT NULL DEFAULT '-1',
+  "number_member"     INTEGER     NOT NULL,
   "points"            BIGINT      NOT NULL DEFAULT '0',
   "points_per_member" BIGINT      NOT NULL DEFAULT '0',
-  "sender_id"         INTEGER(11) NOT NULL DEFAULT '0',
+  "sender_id"         INTEGER     NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "ally"),
   KEY "ally" ("ally")
@@ -257,14 +257,14 @@ CREATE TABLE "ogspy_rank_ally_military_destruct"
 --
 CREATE TABLE "ogspy_rank_ally_honor"
 (
-  "datadate"          INTEGER(11) NOT NULL DEFAULT '0',
-  "rank"              INTEGER(11) NOT NULL DEFAULT '0',
+  "datadate"          INTEGER     NOT NULL DEFAULT '0',
+  "rank"              INTEGER     NOT NULL DEFAULT '0',
   "ally"              VARCHAR(30) NOT NULL,
-  "ally_id"           INTEGER(6)  NOT NULL DEFAULT '-1',
-  "number_member"     INTEGER(11) NOT NULL,
+  "ally_id"           INTEGER     NOT NULL DEFAULT '-1',
+  "number_member"     INTEGER     NOT NULL,
   "points"            BIGINT      NOT NULL DEFAULT '0',
   "points_per_member" BIGINT      NOT NULL DEFAULT '0',
-  "sender_id"         INTEGER(11) NOT NULL DEFAULT '0',
+  "sender_id"         INTEGER     NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "ally"),
   KEY "ally" ("ally")
@@ -276,14 +276,14 @@ CREATE TABLE "ogspy_rank_ally_honor"
 --
 CREATE TABLE "ogspy_rank_ally_points"
 (
-  "datadate"          INTEGER(11) NOT NULL DEFAULT '0',
-  "rank"              INTEGER(11) NOT NULL DEFAULT '0',
+  "datadate"          INTEGER     NOT NULL DEFAULT '0',
+  "rank"              INTEGER     NOT NULL DEFAULT '0',
   "ally"              VARCHAR(30) NOT NULL,
-  "ally_id"           INTEGER(6)  NOT NULL DEFAULT '-1',
-  "number_member"     INTEGER(11) NOT NULL,
+  "ally_id"           INTEGER     NOT NULL DEFAULT '-1',
+  "number_member"     INTEGER     NOT NULL,
   "points"            BIGINT      NOT NULL DEFAULT '0',
   "points_per_member" BIGINT      NOT NULL,
-  "sender_id"         INTEGER(11) NOT NULL DEFAULT '0',
+  "sender_id"         INTEGER     NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "ally"),
   KEY "ally" ("ally")
@@ -295,14 +295,14 @@ CREATE TABLE "ogspy_rank_ally_points"
 --
 CREATE TABLE "ogspy_rank_player_economique"
 (
-  "datadate"  INTEGER(11)  NOT NULL DEFAULT '0',
-  "rank"      INTEGER(11)  NOT NULL DEFAULT '0',
+  "datadate"  INTEGER      NOT NULL DEFAULT '0',
+  "rank"      INTEGER      NOT NULL DEFAULT '0',
   "player"    VARCHAR(30)  NOT NULL DEFAULT '',
-  "player_id" INTEGER(6)   NOT NULL DEFAULT '-1',
+  "player_id" INTEGER      NOT NULL DEFAULT '-1',
   "ally"      VARCHAR(100) NOT NULL DEFAULT '',
-  "ally_id"   INTEGER(6)   NOT NULL DEFAULT '-1',
+  "ally_id"   INTEGER      NOT NULL DEFAULT '-1',
   "points"    BIGINT       NOT NULL DEFAULT '0',
-  "sender_id" INTEGER(11)  NOT NULL DEFAULT '0',
+  "sender_id" INTEGER      NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "player"),
   KEY "player" ("player")
@@ -314,14 +314,14 @@ CREATE TABLE "ogspy_rank_player_economique"
 --
 CREATE TABLE "ogspy_rank_player_technology"
 (
-  "datadate"  INTEGER(11)  NOT NULL DEFAULT '0',
-  "rank"      INTEGER(11)  NOT NULL DEFAULT '0',
+  "datadate"  INTEGER      NOT NULL DEFAULT '0',
+  "rank"      INTEGER      NOT NULL DEFAULT '0',
   "player"    VARCHAR(30)  NOT NULL DEFAULT '',
-  "player_id" INTEGER(6)   NOT NULL DEFAULT '-1',
+  "player_id" INTEGER      NOT NULL DEFAULT '-1',
   "ally"      VARCHAR(100) NOT NULL DEFAULT '',
-  "ally_id"   INTEGER(6)   NOT NULL DEFAULT '-1',
+  "ally_id"   INTEGER      NOT NULL DEFAULT '-1',
   "points"    BIGINT       NOT NULL DEFAULT '0',
-  "sender_id" INTEGER(11)  NOT NULL DEFAULT '0',
+  "sender_id" INTEGER      NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "player"),
   KEY "player" ("player")
@@ -333,15 +333,15 @@ CREATE TABLE "ogspy_rank_player_technology"
 --
 CREATE TABLE "ogspy_rank_player_military"
 (
-  "datadate"      INTEGER(11)  NOT NULL DEFAULT '0',
-  "rank"          INTEGER(11)  NOT NULL DEFAULT '0',
+  "datadate"      INTEGER      NOT NULL DEFAULT '0',
+  "rank"          INTEGER      NOT NULL DEFAULT '0',
   "player"        VARCHAR(30)  NOT NULL DEFAULT '',
-  "player_id"     INTEGER(6)   NOT NULL DEFAULT '-1',
+  "player_id"     INTEGER      NOT NULL DEFAULT '-1',
   "ally"          VARCHAR(100) NOT NULL DEFAULT '',
-  "ally_id"       INTEGER(6)   NOT NULL DEFAULT '-1',
+  "ally_id"       INTEGER      NOT NULL DEFAULT '-1',
   "points"        BIGINT       NOT NULL DEFAULT '0',
-  "sender_id"     INTEGER(11)  NOT NULL DEFAULT '0',
-  "nb_spacecraft" INTEGER(11)  NOT NULL DEFAULT '0',
+  "sender_id"     INTEGER      NOT NULL DEFAULT '0',
+  "nb_spacecraft" BIGINT       NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "player"),
   KEY "player" ("player")
@@ -353,14 +353,14 @@ CREATE TABLE "ogspy_rank_player_military"
 --
 CREATE TABLE "ogspy_rank_player_military_built"
 (
-  "datadate"  INTEGER(11)  NOT NULL DEFAULT '0',
-  "rank"      INTEGER(11)  NOT NULL DEFAULT '0',
+  "datadate"  INTEGER      NOT NULL DEFAULT '0',
+  "rank"      INTEGER      NOT NULL DEFAULT '0',
   "player"    VARCHAR(30)  NOT NULL DEFAULT '',
-  "player_id" INTEGER(6)   NOT NULL DEFAULT '-1',
+  "player_id" INTEGER      NOT NULL DEFAULT '-1',
   "ally"      VARCHAR(100) NOT NULL DEFAULT '',
-  "ally_id"   INTEGER(6)   NOT NULL DEFAULT '-1',
+  "ally_id"   INTEGER      NOT NULL DEFAULT '-1',
   "points"    BIGINT       NOT NULL DEFAULT '0',
-  "sender_id" INTEGER(11)  NOT NULL DEFAULT '0',
+  "sender_id" INTEGER      NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "player"),
   KEY "player" ("player")
@@ -372,14 +372,14 @@ CREATE TABLE "ogspy_rank_player_military_built"
 --
 CREATE TABLE "ogspy_rank_player_military_loose"
 (
-  "datadate"  INTEGER(11)  NOT NULL DEFAULT '0',
-  "rank"      INTEGER(11)  NOT NULL DEFAULT '0',
+  "datadate"  INTEGER      NOT NULL DEFAULT '0',
+  "rank"      INTEGER      NOT NULL DEFAULT '0',
   "player"    VARCHAR(30)  NOT NULL DEFAULT '',
-  "player_id" INTEGER(6)   NOT NULL DEFAULT '-1',
+  "player_id" INTEGER      NOT NULL DEFAULT '-1',
   "ally"      VARCHAR(100) NOT NULL DEFAULT '',
-  "ally_id"   INTEGER(6)   NOT NULL DEFAULT '-1',
+  "ally_id"   INTEGER      NOT NULL DEFAULT '-1',
   "points"    BIGINT       NOT NULL DEFAULT '0',
-  "sender_id" INTEGER(11)  NOT NULL DEFAULT '0',
+  "sender_id" INTEGER      NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "player"),
   KEY "player" ("player")
@@ -391,14 +391,14 @@ CREATE TABLE "ogspy_rank_player_military_loose"
 --
 CREATE TABLE "ogspy_rank_player_military_destruct"
 (
-  "datadate"  INTEGER(11)  NOT NULL DEFAULT '0',
-  "rank"      INTEGER(11)  NOT NULL DEFAULT '0',
+  "datadate"  INTEGER      NOT NULL DEFAULT '0',
+  "rank"      INTEGER      NOT NULL DEFAULT '0',
   "player"    VARCHAR(30)  NOT NULL DEFAULT '',
-  "player_id" INTEGER(6)   NOT NULL DEFAULT '-1',
+  "player_id" INTEGER      NOT NULL DEFAULT '-1',
   "ally"      VARCHAR(100) NOT NULL DEFAULT '',
-  "ally_id"   INTEGER(6)   NOT NULL DEFAULT '-1',
+  "ally_id"   INTEGER      NOT NULL DEFAULT '-1',
   "points"    BIGINT       NOT NULL DEFAULT '0',
-  "sender_id" INTEGER(11)  NOT NULL DEFAULT '0',
+  "sender_id" INTEGER      NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "player"),
   KEY "player" ("player")
@@ -410,14 +410,14 @@ CREATE TABLE "ogspy_rank_player_military_destruct"
 --
 CREATE TABLE "ogspy_rank_player_honor"
 (
-  "datadate"  INTEGER(11)  NOT NULL DEFAULT '0',
-  "rank"      INTEGER(11)  NOT NULL DEFAULT '0',
+  "datadate"  INTEGER      NOT NULL DEFAULT '0',
+  "rank"      INTEGER      NOT NULL DEFAULT '0',
   "player"    VARCHAR(30)  NOT NULL DEFAULT '',
-  "player_id" INTEGER(6)   NOT NULL DEFAULT '-1',
+  "player_id" INTEGER      NOT NULL DEFAULT '-1',
   "ally"      VARCHAR(100) NOT NULL DEFAULT '',
-  "ally_id"   INTEGER(6)   NOT NULL DEFAULT '-1',
+  "ally_id"   INTEGER      NOT NULL DEFAULT '-1',
   "points"    BIGINT       NOT NULL DEFAULT '0',
-  "sender_id" INTEGER(11)  NOT NULL DEFAULT '0',
+  "sender_id" INTEGER      NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "player"),
   KEY "player" ("player")
@@ -429,14 +429,14 @@ CREATE TABLE "ogspy_rank_player_honor"
 --
 CREATE TABLE "ogspy_rank_player_points"
 (
-  "datadate"  INTEGER(11)  NOT NULL DEFAULT '0',
-  "rank"      INTEGER(11)  NOT NULL DEFAULT '0',
+  "datadate"  INTEGER      NOT NULL DEFAULT '0',
+  "rank"      INTEGER      NOT NULL DEFAULT '0',
   "player"    VARCHAR(30)  NOT NULL DEFAULT '',
-  "player_id" INTEGER(6)   NOT NULL DEFAULT '-1',
+  "player_id" INTEGER      NOT NULL DEFAULT '-1',
   "ally"      VARCHAR(100) NOT NULL DEFAULT '',
-  "ally_id"   INTEGER(6)   NOT NULL DEFAULT '-1',
+  "ally_id"   INTEGER      NOT NULL DEFAULT '-1',
   "points"    BIGINT       NOT NULL DEFAULT '0',
-  "sender_id" INTEGER(11)  NOT NULL DEFAULT '0',
+  "sender_id" INTEGER      NOT NULL DEFAULT '0',
   PRIMARY KEY ("rank", "datadate"),
   KEY "datadate" ("datadate", "player"),
   KEY "player" ("player")
@@ -448,13 +448,13 @@ CREATE TABLE "ogspy_rank_player_points"
 --
 CREATE TABLE "ogspy_sessions"
 (
-  "session_id"        CHAR(32)        NOT NULL DEFAULT '',
-  "session_user_id"   INTEGER(11)     NOT NULL DEFAULT '0',
-  "session_start"     INTEGER(11)     NOT NULL DEFAULT '0',
-  "session_expire"    INTEGER(11)     NOT NULL DEFAULT '0',
-  "session_ip"        CHAR(32)        NOT NULL DEFAULT '',
-  "session_ogs"       ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "session_lastvisit" INTEGER(11)     NOT NULL DEFAULT '0',
+  "session_id"        CHAR(32)       NOT NULL DEFAULT '',
+  "session_user_id"   INTEGER        NOT NULL DEFAULT '0',
+  "session_start"     INTEGER        NOT NULL DEFAULT '0',
+  "session_expire"    INTEGER        NOT NULL DEFAULT '0',
+  "session_ip"        CHAR(32)       NOT NULL DEFAULT '',
+  "session_ogs"       ENUM('0', '1') NOT NULL DEFAULT '0',
+  "session_lastvisit" INTEGER        NOT NULL DEFAULT '0',
   UNIQUE KEY "session_id" ("session_id", "session_ip")
 )
   DEFAULT CHARACTER SET = UTF8;
@@ -475,21 +475,21 @@ CREATE TABLE "ogspy_statistics"
 --
 CREATE TABLE "ogspy_universe"
 (
-  "galaxy"              SMALLINT(2)     NOT NULL DEFAULT '1',
-  "system"              SMALLINT(3)     NOT NULL DEFAULT '1',
-  "row"                 SMALLINT(2)     NOT NULL DEFAULT '1',
-  "moon"                ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "phalanx"             TINYINT(1)      NOT NULL DEFAULT '0',
-  "gate"                ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "name"                VARCHAR(20)     NOT NULL DEFAULT '',
-  "ally"                VARCHAR(20)              DEFAULT NULL,
-  "ally_id"             INTEGER(6)      NOT NULL DEFAULT '-1',
-  "player"              VARCHAR(20)              DEFAULT NULL,
-  "player_id"           INTEGER(6)      NOT NULL DEFAULT '-1',
-  "status"              VARCHAR(5)      NOT NULL,
-  "last_update"         INTEGER(11)     NOT NULL DEFAULT '0',
-  "last_update_moon"    INTEGER(11)     NOT NULL DEFAULT '0',
-  "last_update_user_id" INTEGER(11)     NOT NULL DEFAULT '0',
+  "galaxy"              SMALLINT(2)    NOT NULL DEFAULT '1',
+  "system"              SMALLINT(3)    NOT NULL DEFAULT '1',
+  "row"                 SMALLINT(2)    NOT NULL DEFAULT '1',
+  "moon"                ENUM('0', '1') NOT NULL DEFAULT '0',
+  "phalanx"             TINYINT(1)     NOT NULL DEFAULT '0',
+  "gate"                ENUM('0', '1') NOT NULL DEFAULT '0',
+  "name"                VARCHAR(20)    NOT NULL DEFAULT '',
+  "ally"                VARCHAR(20)             DEFAULT NULL,
+  "ally_id"             INTEGER        NOT NULL DEFAULT '-1',
+  "player"              VARCHAR(20)             DEFAULT NULL,
+  "player_id"           INTEGER        NOT NULL DEFAULT '-1',
+  "status"              VARCHAR(5)     NOT NULL,
+  "last_update"         INTEGER        NOT NULL DEFAULT '0',
+  "last_update_moon"    INTEGER        NOT NULL DEFAULT '0',
+  "last_update_user_id" INTEGER        NOT NULL DEFAULT '0',
   UNIQUE KEY "univers" ("galaxy", "system", "row"),
   KEY "player" ("player")
 )
@@ -500,41 +500,41 @@ CREATE TABLE "ogspy_universe"
 --
 CREATE TABLE "ogspy_user"
 (
-  "user_id"            INTEGER(11)     NOT NULL AUTO_INCREMENT,
-  "user_name"          VARCHAR(20)     NOT NULL DEFAULT '',
-  "user_password"      VARCHAR(32)     NOT NULL DEFAULT '',
-  "user_password_s"    VARCHAR(255)    NOT NULL DEFAULT '',
-  "user_email"         VARCHAR(50)     NOT NULL DEFAULT '',
-  "user_admin"         ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "user_coadmin"       ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "user_active"        ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "user_regdate"       INTEGER(11)     NOT NULL DEFAULT '0',
-  "user_lastvisit"     INTEGER(11)     NOT NULL DEFAULT '0',
-  "user_galaxy"        SMALLINT(2)     NOT NULL DEFAULT '1',
-  "user_system"        SMALLINT(3)     NOT NULL DEFAULT '1',
-  "planet_added_web"   INTEGER(11)     NOT NULL DEFAULT '0',
-  "planet_added_ogs"   INTEGER(11)     NOT NULL DEFAULT '0',
-  "planet_exported"    INTEGER(11)     NOT NULL DEFAULT '0',
-  "search"             INTEGER(11)     NOT NULL DEFAULT '0',
-  "spy_added_web"      INTEGER(11)     NOT NULL DEFAULT '0',
-  "spy_added_ogs"      INTEGER(11)     NOT NULL DEFAULT '0',
-  "spy_exported"       INTEGER(11)     NOT NULL DEFAULT '0',
-  "rank_added_web"     INTEGER(11)     NOT NULL DEFAULT '0',
-  "rank_added_ogs"     INTEGER(11)     NOT NULL DEFAULT '0',
-  "xtense_type"        ENUM ('FF', 'GM-FF', 'GM-GC', 'ANDROID'),
-  "xtense_version"     VARCHAR(10),
-  "rank_exported"      INTEGER(11)     NOT NULL DEFAULT '0',
-  "user_skin"          VARCHAR(255)    NOT NULL DEFAULT '',
-  "user_stat_name"     VARCHAR(50)     NOT NULL DEFAULT '',
-  "user_class"         ENUM ('none', 'COL', 'GEN', 'EXP') NOT NULL DEFAULT 'none',
-  "management_user"    ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "management_ranking" ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "disable_ip_check"   ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "off_commandant"     ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "off_amiral"         ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "off_ingenieur"      ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "off_geologue"       ENUM ('0', '1') NOT NULL DEFAULT '0',
-  "off_technocrate"    ENUM ('0', '1') NOT NULL DEFAULT '0',
+  "user_id"            MEDIUMINT      NOT NULL AUTO_INCREMENT UNIQUE,
+  "user_name"          VARCHAR(20)    NOT NULL DEFAULT '',
+  "user_password"      VARCHAR(32)    NOT NULL DEFAULT '',
+  "user_password_s"    VARCHAR(255)   NOT NULL DEFAULT '',
+  "user_email"         VARCHAR(50)    NOT NULL DEFAULT '',
+  "user_admin"         ENUM('0', '1') NOT NULL DEFAULT '0',
+  "user_coadmin"       ENUM('0', '1') NOT NULL DEFAULT '0',
+  "user_active"        ENUM('0', '1') NOT NULL DEFAULT '0',
+  "user_regdate"       INTEGER        NOT NULL DEFAULT '0',
+  "user_lastvisit"     INTEGER        NOT NULL DEFAULT '0',
+  "user_galaxy"        SMALLINT(2)    NOT NULL DEFAULT '1',
+  "user_system"        SMALLINT(3)    NOT NULL DEFAULT '1',
+  "planet_added_web"   INTEGER        NOT NULL DEFAULT '0',
+  "planet_added_ogs"   INTEGER        NOT NULL DEFAULT '0',
+  "planet_exported"    INTEGER        NOT NULL DEFAULT '0',
+  "search"             INTEGER        NOT NULL DEFAULT '0',
+  "spy_added_web"      INTEGER        NOT NULL DEFAULT '0',
+  "spy_added_ogs"      INTEGER        NOT NULL DEFAULT '0',
+  "spy_exported"       INTEGER        NOT NULL DEFAULT '0',
+  "rank_added_web"     INTEGER        NOT NULL DEFAULT '0',
+  "rank_added_ogs"     INTEGER        NOT NULL DEFAULT '0',
+  "xtense_type"        ENUM('FF', 'GM-FF', 'GM-GC', 'ANDROID'),
+  "xtense_version"     VARCHAR(10)    NOT NULL DEFAULT '0',
+  "rank_exported"      INTEGER        NOT NULL DEFAULT '0',
+  "user_skin"          VARCHAR(255)   NOT NULL DEFAULT '',
+  "user_stat_name"     VARCHAR(50)    NOT NULL DEFAULT '',
+  "user_class"         ENUM('none', 'COL', 'GEN', 'EXP') NOT NULL DEFAULT 'none',
+  "management_user"    ENUM('0', '1') NOT NULL DEFAULT '0',
+  "management_ranking" ENUM('0', '1') NOT NULL DEFAULT '0',
+  "disable_ip_check"   ENUM('0', '1') NOT NULL DEFAULT '0',
+  "off_commandant"     ENUM('0', '1') NOT NULL DEFAULT '0',
+  "off_amiral"         ENUM('0', '1') NOT NULL DEFAULT '0',
+  "off_ingenieur"      ENUM('0', '1') NOT NULL DEFAULT '0',
+  "off_geologue"       ENUM('0', '1') NOT NULL DEFAULT '0',
+  "off_technocrate"    ENUM('0', '1') NOT NULL DEFAULT '0',
   PRIMARY KEY ("user_id"),
   UNIQUE KEY "user_name" ("user_name")
 )
@@ -545,8 +545,8 @@ CREATE TABLE "ogspy_user"
 --
 CREATE TABLE "ogspy_user_tokens"
 (
-  "id"              INT          NOT NULL AUTO_INCREMENT,
-  "user_id"         INT          NOT NULL,
+  "id"              MEDIUMINT    NOT NULL AUTO_INCREMENT UNIQUE,
+  "user_id"         MEDIUMINT    NOT NULL,
   "name"            VARCHAR(100) NOT NULL,
   "token"           VARCHAR(64)  NOT NULL,
   "expiration_date" VARCHAR(15)  NOT NULL,
@@ -559,8 +559,8 @@ CREATE TABLE "ogspy_user_tokens"
 --
 CREATE TABLE "ogspy_user_building"
 (
-  "user_id"         INTEGER(11) NOT NULL DEFAULT '0',
-  "planet_id"       INTEGER(11) NOT NULL DEFAULT '0',
+  "user_id"         MEDIUMINT   NOT NULL DEFAULT '0',
+  "planet_id"       MEDIUMINT   NOT NULL DEFAULT '0',
   "planet_name"     VARCHAR(20) NOT NULL DEFAULT '',
   "coordinates"     VARCHAR(10) NOT NULL DEFAULT '',
   "fields"          SMALLINT(3) NOT NULL DEFAULT '0',
@@ -604,16 +604,16 @@ CREATE TABLE "ogspy_user_building"
 --
 CREATE TABLE "ogspy_user_defence"
 (
-  "user_id"   INTEGER(11) NOT NULL DEFAULT '0',
-  "planet_id" INTEGER(11) NOT NULL DEFAULT '0',
-  "LM"        INTEGER(11) NOT NULL DEFAULT '0',
-  "LLE"       INTEGER(11) NOT NULL DEFAULT '0',
-  "LLO"       INTEGER(11) NOT NULL DEFAULT '0',
-  "CG"        INTEGER(11) NOT NULL DEFAULT '0',
-  "AI"        INTEGER(11) NOT NULL DEFAULT '0',
-  "LP"        INTEGER(11) NOT NULL DEFAULT '0',
-  "PB"        SMALLINT(1) NOT NULL DEFAULT '0',
-  "GB"        SMALLINT(1) NOT NULL DEFAULT '0',
+  "user_id"   MEDIUMINT   NOT NULL DEFAULT '0',
+  "planet_id" MEDIUMINT   NOT NULL DEFAULT '0',
+  "LM"        INTEGER     NOT NULL DEFAULT '0',
+  "LLE"       INTEGER     NOT NULL DEFAULT '0',
+  "LLO"       INTEGER     NOT NULL DEFAULT '0',
+  "CG"        INTEGER     NOT NULL DEFAULT '0',
+  "AI"        INTEGER     NOT NULL DEFAULT '0',
+  "LP"        INTEGER     NOT NULL DEFAULT '0',
+  "PB"        TINYINT(1)  NOT NULL DEFAULT '0',
+  "GB"        TINYINT(1)  NOT NULL DEFAULT '0',
   "MIC"       SMALLINT(3) NOT NULL DEFAULT '0',
   "MIP"       SMALLINT(3) NOT NULL DEFAULT '0',
   PRIMARY KEY ("user_id", "planet_id")
@@ -625,7 +625,7 @@ CREATE TABLE "ogspy_user_defence"
 --
 CREATE TABLE "ogspy_user_favorite"
 (
-  "user_id" INTEGER(11) NOT NULL DEFAULT '0',
+  "user_id" MEDIUMINT   NOT NULL DEFAULT '0',
   "galaxy"  SMALLINT(2) NOT NULL DEFAULT '1',
   "system"  SMALLINT(3) NOT NULL DEFAULT '0',
   UNIQUE KEY "user_id" ("user_id", "galaxy", "system")
@@ -637,8 +637,8 @@ CREATE TABLE "ogspy_user_favorite"
 --
 CREATE TABLE "ogspy_user_group"
 (
-  "group_id" MEDIUMINT(8) NOT NULL DEFAULT '0',
-  "user_id"  MEDIUMINT(8) NOT NULL DEFAULT '0',
+  "group_id" MEDIUMINT NOT NULL DEFAULT '0',
+  "user_id"  MEDIUMINT NOT NULL DEFAULT '0',
   UNIQUE KEY "group_id" ("group_id", "user_id")
 )
   DEFAULT CHARACTER SET = UTF8;
@@ -648,8 +648,8 @@ CREATE TABLE "ogspy_user_group"
 --
 CREATE TABLE "ogspy_user_spy"
 (
-    "user_id" INTEGER(11) NOT NULL DEFAULT '0',
-    "spy_id"  INTEGER(11) NOT NULL DEFAULT '0',
+    "user_id" MEDIUMINT NOT NULL DEFAULT '0',
+    "spy_id"  INTEGER   NOT NULL DEFAULT '0',
     PRIMARY KEY ("user_id", "spy_id")
 )
   DEFAULT CHARACTER SET = UTF8;
@@ -659,7 +659,7 @@ CREATE TABLE "ogspy_user_spy"
 --
 CREATE TABLE "ogspy_user_technology"
 (
-  "user_id"       INTEGER(11) NOT NULL DEFAULT '0',
+  "user_id"       MEDIUMINT   NOT NULL DEFAULT '0',
   "Esp"           SMALLINT(2) NOT NULL DEFAULT '0',
   "Ordi"          SMALLINT(2) NOT NULL DEFAULT '0',
   "Armes"         SMALLINT(2) NOT NULL DEFAULT '0',
@@ -697,7 +697,7 @@ CREATE TABLE "ogspy_mod_config"
 --
 CREATE TABLE "ogspy_mod_user_config" (
     "mod"     VARCHAR(50)  NOT NULL,
-    "user_id" INTEGER(11)  NOT NULL,
+    "user_id" MEDIUMINT    NOT NULL,
     "config"  VARCHAR(255) NOT NULL,
     "value"   VARCHAR(255) NOT NULL,
     PRIMARY KEY ("mod", "config", "user_id"),
@@ -710,80 +710,80 @@ CREATE TABLE "ogspy_mod_user_config" (
 --
 CREATE TABLE "ogspy_parsedspy"
 (
-  "id_spy"        INTEGER(11)     NOT NULL AUTO_INCREMENT,
-  "planet_name"   VARCHAR(20)     NOT NULL DEFAULT '',
-  "coordinates"   VARCHAR(9)      NOT NULL DEFAULT '',
-  "metal"         BIGINT          NOT NULL DEFAULT '-1',
-  "cristal"       BIGINT          NOT NULL DEFAULT '-1',
-  "deuterium"     BIGINT          NOT NULL DEFAULT '-1',
-  "energie"       INTEGER(7)      NOT NULL DEFAULT '-1',
-  "activite"      INTEGER(2)      NOT NULL DEFAULT '-1',
-  "M"             SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "C"             SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "D"             SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "CES"           SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "CEF"           SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "UdR"           SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "UdN"           SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "CSp"           SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "HM"            SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "HC"            SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "HD"            SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Lab"           SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Ter"           SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "DdR"           SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Silo"          SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Dock"          SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "BaLu"          SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Pha"           SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "PoSa"          SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "LM"            INTEGER(11)     NOT NULL DEFAULT '-1',
-  "LLE"           INTEGER(11)     NOT NULL DEFAULT '-1',
-  "LLO"           INTEGER(11)     NOT NULL DEFAULT '-1',
-  "CG"            INTEGER(11)     NOT NULL DEFAULT '-1',
-  "AI"            INTEGER(11)     NOT NULL DEFAULT '-1',
-  "LP"            INTEGER(11)     NOT NULL DEFAULT '-1',
-  "PB"            SMALLINT(1)     NOT NULL DEFAULT '-1',
-  "GB"            SMALLINT(1)     NOT NULL DEFAULT '-1',
-  "MIC"           SMALLINT(3)     NOT NULL DEFAULT '-1',
-  "MIP"           SMALLINT(3)     NOT NULL DEFAULT '-1',
-  "PT"            INTEGER(11)     NOT NULL DEFAULT '-1',
-  "GT"            INTEGER(11)     NOT NULL DEFAULT '-1',
-  "CLE"           INTEGER(11)     NOT NULL DEFAULT '-1',
-  "CLO"           INTEGER(11)     NOT NULL DEFAULT '-1',
-  "CR"            INTEGER(11)     NOT NULL DEFAULT '-1',
-  "VB"            INTEGER(11)     NOT NULL DEFAULT '-1',
-  "VC"            INTEGER(11)     NOT NULL DEFAULT '-1',
-  "REC"           INTEGER(11)     NOT NULL DEFAULT '-1',
-  "SE"            INTEGER(11)     NOT NULL DEFAULT '-1',
-  "BMD"           INTEGER(11)     NOT NULL DEFAULT '-1',
-  "DST"           INTEGER(11)     NOT NULL DEFAULT '-1',
-  "EDLM"          INTEGER(11)     NOT NULL DEFAULT '-1',
-  "SAT"           INTEGER(11)              DEFAULT '-1',
-  "TRA"           INTEGER(11)     NOT NULL DEFAULT '-1',
-  "FOR"           INTEGER(11)     NOT NULL DEFAULT '-1',
-  "FAU"           INTEGER(11)     NOT NULL DEFAULT '-1',
-  "ECL"           INTEGER(11)     NOT NULL DEFAULT '-1',
-  "Esp"           SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Ordi"          SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Armes"         SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Bouclier"      SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Protection"    SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "NRJ"           SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Hyp"           SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "RC"            SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "RI"            SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "PH"            SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Laser"         SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Ions"          SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Plasma"        SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "RRI"           SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Graviton"      SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "Astrophysique" SMALLINT(2)     NOT NULL DEFAULT '-1',
-  "dateRE"        INTEGER(11)     NOT NULL DEFAULT '0',
-  "proba"         SMALLINT(2)     NOT NULL DEFAULT '0',
-  "active"        ENUM ('0', '1') NOT NULL DEFAULT '1',
-  "sender_id"     INTEGER(11)     NOT NULL,
+  "id_spy"        INTEGER        NOT NULL AUTO_INCREMENT UNIQUE,
+  "planet_name"   VARCHAR(20)    NOT NULL DEFAULT '',
+  "coordinates"   VARCHAR(9)     NOT NULL DEFAULT '',
+  "metal"         BIGINT         NOT NULL DEFAULT '-1',
+  "cristal"       BIGINT         NOT NULL DEFAULT '-1',
+  "deuterium"     BIGINT         NOT NULL DEFAULT '-1',
+  "energie"       INTEGER        NOT NULL DEFAULT '-1',
+  "activite"      INTEGER        NOT NULL DEFAULT '-1',
+  "M"             SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "C"             SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "D"             SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "CES"           SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "CEF"           SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "UdR"           SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "UdN"           SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "CSp"           SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "HM"            SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "HC"            SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "HD"            SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Lab"           SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Ter"           SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "DdR"           SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Silo"          SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Dock"          SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "BaLu"          SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Pha"           SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "PoSa"          SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "LM"            INTEGER        NOT NULL DEFAULT '-1',
+  "LLE"           INTEGER        NOT NULL DEFAULT '-1',
+  "LLO"           INTEGER        NOT NULL DEFAULT '-1',
+  "CG"            INTEGER        NOT NULL DEFAULT '-1',
+  "AI"            INTEGER        NOT NULL DEFAULT '-1',
+  "LP"            INTEGER        NOT NULL DEFAULT '-1',
+  "PB"            TINYINT(1)     NOT NULL DEFAULT '-1',
+  "GB"            TINYINT(1)     NOT NULL DEFAULT '-1',
+  "MIC"           SMALLINT(3)    NOT NULL DEFAULT '-1',
+  "MIP"           SMALLINT(3)    NOT NULL DEFAULT '-1',
+  "PT"            INTEGER        NOT NULL DEFAULT '-1',
+  "GT"            INTEGER        NOT NULL DEFAULT '-1',
+  "CLE"           INTEGER        NOT NULL DEFAULT '-1',
+  "CLO"           INTEGER        NOT NULL DEFAULT '-1',
+  "CR"            INTEGER        NOT NULL DEFAULT '-1',
+  "VB"            INTEGER        NOT NULL DEFAULT '-1',
+  "VC"            INTEGER        NOT NULL DEFAULT '-1',
+  "REC"           INTEGER        NOT NULL DEFAULT '-1',
+  "SE"            INTEGER        NOT NULL DEFAULT '-1',
+  "BMD"           INTEGER        NOT NULL DEFAULT '-1',
+  "DST"           INTEGER        NOT NULL DEFAULT '-1',
+  "EDLM"          INTEGER        NOT NULL DEFAULT '-1',
+  "SAT"           INTEGER                 DEFAULT '-1',
+  "TRA"           INTEGER        NOT NULL DEFAULT '-1',
+  "FOR"           INTEGER        NOT NULL DEFAULT '-1',
+  "FAU"           INTEGER        NOT NULL DEFAULT '-1',
+  "ECL"           INTEGER        NOT NULL DEFAULT '-1',
+  "Esp"           SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Ordi"          SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Armes"         SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Bouclier"      SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Protection"    SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "NRJ"           SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Hyp"           SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "RC"            SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "RI"            SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "PH"            SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Laser"         SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Ions"          SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Plasma"        SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "RRI"           SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Graviton"      SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "Astrophysique" SMALLINT(2)    NOT NULL DEFAULT '-1',
+  "dateRE"        INTEGER        NOT NULL DEFAULT '0',
+  "proba"         SMALLINT(2)    NOT NULL DEFAULT '0',
+  "active"        ENUM('0', '1') NOT NULL DEFAULT '1',
+  "sender_id"     INTEGER        NOT NULL,
   PRIMARY KEY ("id_spy"),
   KEY "coordinates" ("coordinates")
 )
@@ -794,19 +794,19 @@ CREATE TABLE "ogspy_parsedspy"
 --
 CREATE TABLE "ogspy_parsedRC"
 (
-  "id_rc"       INTEGER(11) NOT NULL AUTO_INCREMENT,
-  "dateRC"      INTEGER(11) NOT NULL DEFAULT '0',
-  "coordinates" VARCHAR(9)  NOT NULL DEFAULT '',
-  "nb_rounds"   INTEGER(2)  NOT NULL DEFAULT '0',
-  "victoire"    CHAR        NOT NULL DEFAULT 'A',
-  "pertes_A"    BIGINT      NOT NULL DEFAULT '0',
-  "pertes_D"    BIGINT      NOT NULL DEFAULT '0',
-  "gain_M"      BIGINT      NOT NULL DEFAULT '-1',
-  "gain_C"      BIGINT      NOT NULL DEFAULT '-1',
-  "gain_D"      BIGINT      NOT NULL DEFAULT '-1',
-  "debris_M"    BIGINT      NOT NULL DEFAULT '-1',
-  "debris_C"    BIGINT      NOT NULL DEFAULT '-1',
-  "lune"        INTEGER(2)  NOT NULL DEFAULT '0',
+  "id_rc"       INTEGER    NOT NULL AUTO_INCREMENT UNIQUE,
+  "dateRC"      INTEGER    NOT NULL DEFAULT '0',
+  "coordinates" VARCHAR(9) NOT NULL DEFAULT '',
+  "nb_rounds"   INTEGER    NOT NULL DEFAULT '0',
+  "victoire"    CHAR       NOT NULL DEFAULT 'A',
+  "pertes_A"    BIGINT     NOT NULL DEFAULT '0',
+  "pertes_D"    BIGINT     NOT NULL DEFAULT '0',
+  "gain_M"      BIGINT     NOT NULL DEFAULT '-1',
+  "gain_C"      BIGINT     NOT NULL DEFAULT '-1',
+  "gain_D"      BIGINT     NOT NULL DEFAULT '-1',
+  "debris_M"    BIGINT     NOT NULL DEFAULT '-1',
+  "debris_C"    BIGINT     NOT NULL DEFAULT '-1',
+  "lune"        INTEGER    NOT NULL DEFAULT '0',
   PRIMARY KEY ("id_rc"),
   KEY "coordinatesrc" ("coordinates")
 )
@@ -817,15 +817,15 @@ CREATE TABLE "ogspy_parsedRC"
 --
 CREATE TABLE "ogspy_parsedRCRound"
 (
-  "id_rcround"        INTEGER(11) NOT NULL AUTO_INCREMENT,
-  "id_rc"             INTEGER(11) NOT NULL,
-  "numround"          INTEGER(2)  NOT NULL,
-  "attaque_tir"       INTEGER(11) NOT NULL DEFAULT '-1',
-  "attaque_puissance" INTEGER(11) NOT NULL DEFAULT '-1',
-  "defense_bouclier"  INTEGER(11) NOT NULL DEFAULT '-1',
-  "attaque_bouclier"  INTEGER(11) NOT NULL DEFAULT '-1',
-  "defense_tir"       INTEGER(11) NOT NULL DEFAULT '-1',
-  "defense_puissance" INTEGER(11) NOT NULL DEFAULT '-1',
+  "id_rcround"        INTEGER  NOT NULL AUTO_INCREMENT UNIQUE,
+  "id_rc"             INTEGER  NOT NULL,
+  "numround"          SMALLINT NOT NULL,
+  "attaque_tir"       INTEGER  NOT NULL DEFAULT '-1',   -- BIGINT ?
+  "attaque_puissance" INTEGER  NOT NULL DEFAULT '-1',
+  "defense_bouclier"  INTEGER  NOT NULL DEFAULT '-1',
+  "attaque_bouclier"  INTEGER  NOT NULL DEFAULT '-1',
+  "defense_tir"       INTEGER  NOT NULL DEFAULT '-1',
+  "defense_puissance" INTEGER  NOT NULL DEFAULT '-1',
   PRIMARY KEY ("id_rcround"),
   KEY "rcround" ("id_rc", "numround"),
   KEY "id_rc" ("id_rc")
@@ -837,28 +837,28 @@ CREATE TABLE "ogspy_parsedRCRound"
 --
 CREATE TABLE "ogspy_round_attack"
 (
-  "id_roundattack" INTEGER(11) NOT NULL AUTO_INCREMENT,
-  "id_rcround"     INTEGER(11) NOT NULL,
+  "id_roundattack" INTEGER     NOT NULL AUTO_INCREMENT UNIQUE,
+  "id_rcround"     INTEGER     NOT NULL,
   "player"         VARCHAR(30) NOT NULL DEFAULT '',
   "coordinates"    VARCHAR(9)  NOT NULL DEFAULT '',
   "Armes"          SMALLINT(2) NOT NULL DEFAULT '-1',
   "Bouclier"       SMALLINT(2) NOT NULL DEFAULT '-1',
   "Protection"     SMALLINT(2) NOT NULL DEFAULT '-1',
-  "PT"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "GT"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "CLE"            INTEGER(11) NOT NULL DEFAULT '-1',
-  "CLO"            INTEGER(11) NOT NULL DEFAULT '-1',
-  "CR"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "VB"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "VC"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "REC"            INTEGER(11) NOT NULL DEFAULT '-1',
-  "SE"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "BMD"            INTEGER(11) NOT NULL DEFAULT '-1',
-  "DST"            INTEGER(11) NOT NULL DEFAULT '-1',
-  "EDLM"           INTEGER(11) NOT NULL DEFAULT '-1',
-  "TRA"            INTEGER(11) NOT NULL DEFAULT '-1',
-  "ECL"            INTEGER(11) NOT NULL DEFAULT '-1',
-  "FAU"            INTEGER(11) NOT NULL DEFAULT '-1',
+  "PT"             INTEGER     NOT NULL DEFAULT '-1',
+  "GT"             INTEGER     NOT NULL DEFAULT '-1',
+  "CLE"            INTEGER     NOT NULL DEFAULT '-1',
+  "CLO"            INTEGER     NOT NULL DEFAULT '-1',
+  "CR"             INTEGER     NOT NULL DEFAULT '-1',
+  "VB"             INTEGER     NOT NULL DEFAULT '-1',
+  "VC"             INTEGER     NOT NULL DEFAULT '-1',
+  "REC"            INTEGER     NOT NULL DEFAULT '-1',
+  "SE"             INTEGER     NOT NULL DEFAULT '-1',
+  "BMD"            INTEGER     NOT NULL DEFAULT '-1',
+  "DST"            INTEGER     NOT NULL DEFAULT '-1',
+  "EDLM"           INTEGER     NOT NULL DEFAULT '-1',
+  "TRA"            INTEGER     NOT NULL DEFAULT '-1',
+  "ECL"            INTEGER     NOT NULL DEFAULT '-1',
+  "FAU"            INTEGER     NOT NULL DEFAULT '-1',
   PRIMARY KEY ("id_roundattack"),
   KEY "id_rcround" ("id_rcround"),
   KEY "player" ("player", "coordinates")
@@ -870,38 +870,38 @@ CREATE TABLE "ogspy_round_attack"
 --
 CREATE TABLE "ogspy_round_defense"
 (
-  "id_rounddefense" INTEGER(11) NOT NULL AUTO_INCREMENT,
-  "id_rcround"      INTEGER(11) NOT NULL,
+  "id_rounddefense" INTEGER     NOT NULL AUTO_INCREMENT UNIQUE,
+  "id_rcround"      INTEGER     NOT NULL,
   "player"          VARCHAR(30) NOT NULL DEFAULT '',
   "coordinates"     VARCHAR(9)  NOT NULL DEFAULT '',
   "Armes"           SMALLINT(2) NOT NULL DEFAULT '-1',
   "Bouclier"        SMALLINT(2) NOT NULL DEFAULT '-1',
   "Protection"      SMALLINT(2) NOT NULL DEFAULT '-1',
-  "PT"              INTEGER(11) NOT NULL DEFAULT '-1',
-  "GT"              INTEGER(11) NOT NULL DEFAULT '-1',
-  "CLE"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "CLO"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "CR"              INTEGER(11) NOT NULL DEFAULT '-1',
-  "VB"              INTEGER(11) NOT NULL DEFAULT '-1',
-  "VC"              INTEGER(11) NOT NULL DEFAULT '-1',
-  "REC"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "SE"              INTEGER(11) NOT NULL DEFAULT '-1',
-  "BMD"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "DST"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "EDLM"            INTEGER(11) NOT NULL DEFAULT '-1',
-  "SAT"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "FOR"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "TRA"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "ECL"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "FAU"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "LM"              INTEGER(11) NOT NULL DEFAULT '-1',
-  "LLE"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "LLO"             INTEGER(11) NOT NULL DEFAULT '-1',
-  "CG"              INTEGER(11) NOT NULL DEFAULT '-1',
-  "AI"              INTEGER(11) NOT NULL DEFAULT '-1',
-  "LP"              INTEGER(11) NOT NULL DEFAULT '-1',
-  "PB"              SMALLINT(1) NOT NULL DEFAULT '-1',
-  "GB"              SMALLINT(1) NOT NULL DEFAULT '-1',
+  "PT"              INTEGER     NOT NULL DEFAULT '-1',
+  "GT"              INTEGER     NOT NULL DEFAULT '-1',
+  "CLE"             INTEGER     NOT NULL DEFAULT '-1',
+  "CLO"             INTEGER     NOT NULL DEFAULT '-1',
+  "CR"              INTEGER     NOT NULL DEFAULT '-1',
+  "VB"              INTEGER     NOT NULL DEFAULT '-1',
+  "VC"              INTEGER     NOT NULL DEFAULT '-1',
+  "REC"             INTEGER     NOT NULL DEFAULT '-1',
+  "SE"              INTEGER     NOT NULL DEFAULT '-1',
+  "BMD"             INTEGER     NOT NULL DEFAULT '-1',
+  "DST"             INTEGER     NOT NULL DEFAULT '-1',
+  "EDLM"            INTEGER     NOT NULL DEFAULT '-1',
+  "SAT"             INTEGER     NOT NULL DEFAULT '-1',
+  "FOR"             INTEGER     NOT NULL DEFAULT '-1',
+  "TRA"             INTEGER     NOT NULL DEFAULT '-1',
+  "ECL"             INTEGER     NOT NULL DEFAULT '-1',
+  "FAU"             INTEGER     NOT NULL DEFAULT '-1',
+  "LM"              INTEGER     NOT NULL DEFAULT '-1',
+  "LLE"             INTEGER     NOT NULL DEFAULT '-1',
+  "LLO"             INTEGER     NOT NULL DEFAULT '-1',
+  "CG"              INTEGER     NOT NULL DEFAULT '-1',
+  "AI"              INTEGER     NOT NULL DEFAULT '-1',
+  "LP"              INTEGER     NOT NULL DEFAULT '-1',
+  "PB"              TINYINT(1)  NOT NULL DEFAULT '-1',
+  "GB"              TINYINT(1)  NOT NULL DEFAULT '-1',
   PRIMARY KEY ("id_rounddefense"),
   KEY "id_rcround" ("id_rcround"),
   KEY "player" ("player", "coordinates")
