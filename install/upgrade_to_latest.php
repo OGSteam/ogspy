@@ -350,6 +350,8 @@ switch ($ogsversion) {
                     ) DEFAULT CHARSET = UTF8;";
         $requests[] = "INSERT INTO " . TABLE_CONFIG . "config VALUES ('donutSystem','1')";
         $requests[] = "INSERT INTO " . TABLE_CONFIG . "config VALUES ('donutGalaxy','1')";
+        $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `user_pwd_change` TINYINT(1) NOT NULL DEFAULT '1' AFTER `user_password_s`";
+        $requests[] = "UPDATE " . TABLE_USER . " SET `user_pwd_change` = '0' WHERE `user_pwd_change` = '1'";    //Ne pas impacter les users existant
         
         // $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.8-beta1' WHERE config_name = 'version'";
         // $ogsversion = '3.3.8-beta1'; //pas encore !!
