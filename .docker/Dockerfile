@@ -33,6 +33,10 @@ ENV PHP_POST_MAX_SIZE 10M
 COPY . /app
 #RUN git clone -b develop https://github.com/ogsteam/ogspy /app
 RUN git clone -b master https://github.com/ogsteam/mod-autoupdate /app/mod/autoupdate
+RUN git clone -b master https://github.com/ogsteam/mod-xtense /app/mod/xtense
+RUN git clone -b master https://github.com/ogsteam/mod-production /app/mod/production
+RUN git clone -b master https://github.com/ogsteam/mod-tempsvols /app/mod/tempsvols
+RUN git clone -b master https://github.com/ogsteam/mod-bthof /app/mod/bthof
 
 # .SH executable
 RUN chmod 755 /app/.docker/*.sh
