@@ -464,8 +464,8 @@ function mod_sort($order)
     //changement de position
     $myMod=$oldModOrder[$oldModPosition];
     switch ($order) {
-        case "up" :
-            //si on veut monter la position
+        case "down" :
+            //si on veut monter la position (donc descendre en visu)
             if (isset($oldModOrder[$oldModPosition+1])) {
                 $Mod_Model->update_posisiton($myMod['id'],$oldModPosition+1); //mod courant
                 $modToMove = $oldModOrder[$oldModPosition+1]; //mod à bouger
@@ -473,8 +473,8 @@ function mod_sort($order)
                 $changed = true;
             }
             break;
-        case "down" :
-            //si on veut descendre la position
+        case "up" :
+            //si on veut descendre la position (donc monter en visu)
             if (isset($oldModOrder[$oldModPosition-1])) {
                 $Mod_Model->update_posisiton($myMod['id'],$oldModPosition-1); //mod courant
                 $modToMove = $oldModOrder[$oldModPosition-1]; //mod à bouger
