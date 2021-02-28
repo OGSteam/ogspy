@@ -384,7 +384,7 @@ function member_user_set()
         $User_Model->set_user_pseudo($user_id, $pub_pseudo);
     }
     if (isset($pub_new_password) && $password_change_validated === true) {
-        $User_Model->set_user_password($user_id, password_hash($pub_new_password, PASSWORD_DEFAULT));
+        $User_Model->set_user_password($user_id, password_hash($pub_new_password, PASSWORD_DEFAULT), 0);
     }
     if (isset($pub_pseudo_email)) {
         $User_Model->set_user_email($user_id, $pub_pseudo_email);

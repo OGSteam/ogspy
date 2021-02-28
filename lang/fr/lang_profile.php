@@ -47,8 +47,5 @@ $lang['PROFILE_TECHNOCRAT'] = "Technocrate";
 $lang['PROFILE_OTHERS'] = "Divers";
 $lang['PROFILE_IPCHECK_DISABLE'] = "Désactiver la vérification de l'adresse IP";
 $lang['PROFILE_SAVE'] = "Valider";
-
-
-
-
+$lang['PROFILE_CHANGEPWD'] = "Vous devez changer votre mot de passe !!!";
 

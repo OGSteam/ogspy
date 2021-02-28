@@ -62,7 +62,6 @@ if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "log
     exit();
 }
 
-
 if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
     if (ratio_is_ok()) {
         if ($cache_mod[$pub_action]['admin_only'] == 1 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {
@@ -75,7 +74,10 @@ if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
     }
 }
 
-
+//Changer le mdp :
+if ($user_data['user_pwd_change'] == 1) {
+    $pub_action = 'profile';
+}
 
 
 switch ($pub_action) {

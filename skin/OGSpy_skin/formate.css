@@ -423,3 +423,11 @@ ul.menu.a.hover {
   color: #56f39f;
   text-decoration: none;
 }
+
+#pwdchange {
+  color:red;
+  background-color: black;
+  font-weight: bold;
+  font-size: 3em;
+  text-align: center;
+}

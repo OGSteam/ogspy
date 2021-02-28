@@ -46,6 +46,10 @@ $message .= "',PROFILE_ERROR_ERROR: '" . $lang['PROFILE_ERROR_ERROR'];
 $message .= "',PROFILE_ERROR_ILLEGAL: '" . $lang['PROFILE_ERROR_ILLEGAL'] . "'}";
 
 require_once("views/page_header.php");
+
+if ($user_data['user_pwd_change'] == 1) {
+    echo '<div id="pwdchange">' . $lang['PROFILE_CHANGEPWD'] . "</div>\n";
+}
 ?>
     <form method="POST" action="index.php" onSubmit="return ogspy_checkPassword(this, <?php echo $message; ?>);">
         <input name="action" type="hidden" value="member_modify_member">
@@ -118,9 +122,7 @@ require_once("views/page_header.php");
             </tr>
             <tr>
                 <th><?php echo $lang['PROFILE_CLASS']; ?></th>
-                <th>
-                    <?php //todo aucun lieu de centralisation de ce type de donnée magique !!! fichier de conf ogame ? ?>
-                    <?php $classType = array('none','COL','GEN','EXP') ; ?>
+                <th><?php $classType = ogame_get_element_names()['CLASS']; ?>
                      <select name='user_class'>
                         <?php foreach  ($classType as $class) : ?>
                             <?php  echo $class ."__".$user_class ; ?>

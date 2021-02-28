@@ -977,7 +977,7 @@ INSERT INTO `ogspy_config` VALUES ('num_of_systems','499');
 INSERT INTO `ogspy_config` VALUES ('speed_uni','1');
 INSERT INTO `ogspy_config` VALUES ('version','3.3.8-dev');
 INSERT INTO `ogspy_config` VALUES ('log_phperror', '1');
-INSERT INTO `ogspy_user` (`user_id`, `user_name`, `user_password`, `user_regdate`, `user_active`, `user_admin`, `user_class`) VALUES (1, 'ogsteam', '1619d7adc23f4f633f11014d2f22b7d8', '1567070548', '1', '1', 'COL');
+INSERT INTO `ogspy_user` (`user_id`, `user_name`, `user_password`, `user_regdate`, `user_active`, `user_admin`, `user_class`, `user_pwd_change`) VALUES (1, 'ogsteam', '1619d7adc23f4f633f11014d2f22b7d8', '1567070548', '1', '1', 'COL', 0);
 INSERT INTO `ogspy_user_group` (`group_id`, `user_id`) VALUES (1, 1);
 
 INSERT INTO `ogspy_user_building` (`user_id`, `planet_id`, `planet_name`, `coordinates`, `fields`, `boosters`, `temperature_min`, `temperature_max`, `Sat`, `Sat_percentage`, `FOR`, `FOR_percentage`, `M`, `M_percentage`, `C`, `C_Percentage`, `D`, `D_percentage`, `CES`, `CES_percentage`, `CEF`, `CEF_percentage`, `UdR`, `UdN`, `CSp`, `HM`, `HC`, `HD`, `Lab`, `Ter`, `DdR`, `Silo`, `Dock`, `BaLu`, `Pha`, `PoSa`) VALUES

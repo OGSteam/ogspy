@@ -161,7 +161,7 @@ class User_Model extends Model_Abstract
 
         $request = "SELECT `user_id`, `user_name`, `user_password`, `user_email`, `user_active`, `user_regdate`, `user_lastvisit`," .
             " `user_galaxy`, `user_system`, `user_admin`, `user_coadmin`, `management_user`, `management_ranking`, `disable_ip_check`," .
-            " `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate` , `user_class` " .
+            " `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate` , `user_class`, `user_pwd_change`, `user_email_valid` " .
             " FROM " . TABLE_USER;
         $request .= " WHERE `user_id` = " . $user_id;
         $request .= " ORDER BY `user_name`";
@@ -186,7 +186,7 @@ class User_Model extends Model_Abstract
     {
         $request = "SELECT `user_id`, `user_name`, `user_password`, `user_email`, `user_active`, `user_regdate`, `user_lastvisit`," .
             " `user_galaxy`, `user_system`, `user_admin`, `user_coadmin`, `management_user`, `management_ranking`, `disable_ip_check`," .
-            " `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate` , `user_class` " .
+            " `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate` , `user_class`, `user_pwd_change`, `user_email_valid` " .
             " FROM " . TABLE_USER;
 
         $request .= " ORDER BY `user_name`";
@@ -321,13 +321,15 @@ class User_Model extends Model_Abstract
      * @param $user_id
      * @param $user_password
      */
-    public function set_user_password($user_id, $encrypted_password)
+    public function set_user_password($user_id, $encrypted_password, $user_pwd_change = 1)
     {
         $encrypted_password=$this->db->sql_escape_string($encrypted_password);
         $user_id=(int)$user_id;
 
         $request = "UPDATE " . TABLE_USER . " SET `user_password_s` = '" . $encrypted_password . "' WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
+        $request = "UPDATE " . TABLE_USER . " SET `user_pwd_change` = '" . $user_pwd_change . "' WHERE `user_id` = " . $user_id;
+        $this->db->sql_query($request); //TODO : SQL simplification en 1 seule requête ??
     }
 
     /**
@@ -341,7 +343,8 @@ class User_Model extends Model_Abstract
 
         $request = "UPDATE " . TABLE_USER . " SET `user_email` = '" . $user_email . "' WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
-
+        $request = "UPDATE " . TABLE_USER . " SET `user_email_valid` = '0' WHERE `user_id` = " . $user_id;
+        $this->db->sql_query($request);
     }
 
     /**
