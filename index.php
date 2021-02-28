@@ -75,7 +75,7 @@ if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
 }
 
 //Changer le mdp :
-if ($user_data['user_pwd_change'] == 1) {
+if ($pub_action !== 'logout' && $user_data['user_pwd_change'] == 1 && $pub_action !== 'member_modify_member') {
     $pub_action = 'profile';
 }
 
