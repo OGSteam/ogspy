@@ -820,12 +820,12 @@ CREATE TABLE "ogspy_parsedRCRound"
   "id_rcround"        INTEGER  NOT NULL AUTO_INCREMENT UNIQUE,
   "id_rc"             INTEGER  NOT NULL,
   "numround"          SMALLINT NOT NULL,
-  "attaque_tir"       INTEGER  NOT NULL DEFAULT '-1',   -- BIGINT ?
-  "attaque_puissance" INTEGER  NOT NULL DEFAULT '-1',
-  "defense_bouclier"  INTEGER  NOT NULL DEFAULT '-1',
-  "attaque_bouclier"  INTEGER  NOT NULL DEFAULT '-1',
-  "defense_tir"       INTEGER  NOT NULL DEFAULT '-1',
-  "defense_puissance" INTEGER  NOT NULL DEFAULT '-1',
+  "attaque_tir"       BIGINT  NOT NULL DEFAULT '-1',   -- BIGINT ?
+  "attaque_puissance" BIGINT  NOT NULL DEFAULT '-1',
+  "defense_bouclier"  BIGINT  NOT NULL DEFAULT '-1',
+  "attaque_bouclier"  BIGINT  NOT NULL DEFAULT '-1',
+  "defense_tir"       BIGINT  NOT NULL DEFAULT '-1',
+  "defense_puissance" BIGINT  NOT NULL DEFAULT '-1',
   PRIMARY KEY ("id_rcround"),
   KEY "rcround" ("id_rc", "numround"),
   KEY "id_rc" ("id_rc")

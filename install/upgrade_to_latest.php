@@ -354,6 +354,14 @@ switch ($ogsversion) {
         $requests[] = "UPDATE " . TABLE_USER . " SET `user_pwd_change` = '0' WHERE `user_pwd_change` = '1'";    //Ne pas impacter les users existant
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `user_email_valid` TINYINT(1) NOT NULL DEFAULT '0' AFTER `user_email`";
         
+        $requests[] = "ALTER TABLE " . TABLE_RANK_PLAYER_MILITARY . " MODIFY `nb_spacecraft` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRCROUND . " MODIFY `attaque_tir` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRCROUND . " MODIFY `attaque_puissance` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRCROUND . " MODIFY `defense_bouclier` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRCROUND . " MODIFY `attaque_bouclier` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRCROUND . " MODIFY `defense_tir` BIGINT";
+        $requests[] = "ALTER TABLE " . TABLE_PARSEDRCROUND . " MODIFY `defense_puissance` BIGINT";
+        
         // $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.8-beta1' WHERE config_name = 'version'";
         // $ogsversion = '3.3.8-beta1'; //pas encore !!
         $up_to_date = true;
