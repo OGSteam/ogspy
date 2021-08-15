@@ -34,6 +34,9 @@ $lang["help_galaxy_phalanx"] = "Chargez des rapports d'espionnage pour afficher 
 
 $lang["help_ratio_block"] = "Vous avez un ratio inferieur au seuil, vous ne pouvez pas accéder aux mods";
 $lang["help_profile_speed_uni"] = "Indiquez le multiplicateur de vitesse de votre univers (1 par défaut)";
+$lang["profile_speed_fleet_peaceful"] = "Indiquez le multiplicateur de vitesse des flottes pacifiques de votre univers (1 par défaut)";
+$lang["profile_speed_fleet_war"] = "Indiquez le multiplicateur de vitesse des flottes hostiles de votre univers (1 par défaut)";
+$lang["profile_speed_fleet_holding"] = "Indiquez le multiplicateur de vitesse de stationnement chez un allié de votre univers (1 par défaut)";
 $lang["help_profile_ddr"] = "Cocher si le dépôt de ravitaillement est présent dans votre univers";
 $lang["help_astro_strict"] = "Cocher si l'univers est ancien. Cela permet d'avoir 9 planetes sans avoir la technologie astrophysique correspondante.";
 $lang["help_config_cache"] = "Durée de vie du cache config en seconde.";

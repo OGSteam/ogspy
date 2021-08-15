@@ -975,6 +975,10 @@ INSERT INTO `ogspy_group`
 INSERT INTO `ogspy_config` VALUES ('num_of_galaxies','9');
 INSERT INTO `ogspy_config` VALUES ('num_of_systems','499');
 INSERT INTO `ogspy_config` VALUES ('speed_uni','1');
+INSERT INTO `ogspy_config` VALUES ('speed_fleet_peaceful','1');
+INSERT INTO `ogspy_config` VALUES ('speed_fleet_war','1');
+INSERT INTO `ogspy_config` VALUES ('speed_fleet_holding','1');
+INSERT INTO `ogspy_config` VALUES ('speed_research_divisor','1');
 INSERT INTO `ogspy_config` VALUES ('version','3.3.8-dev');
 INSERT INTO `ogspy_config` VALUES ('log_phperror', '1');
 INSERT INTO `ogspy_user` (`user_id`, `user_name`, `user_password`, `user_regdate`, `user_active`, `user_admin`, `user_class`, `user_pwd_change`) VALUES (1, 'ogsteam', '1619d7adc23f4f633f11014d2f22b7d8', '1567070548', '1', '1', 'COL', 0);

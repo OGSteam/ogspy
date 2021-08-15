@@ -48,6 +48,10 @@ $num_of_systems = (isset ($pub_num_of_systems)) ? $pub_num_of_systems : $server_
 $block_ratio = $server_config['block_ratio'] == 1 ? "checked" : "";
 $ratio_limit = $server_config['ratio_limit'];
 $speed_uni = $server_config['speed_uni'];
+$speed_fleet_peaceful = $server_config['speed_fleet_peaceful'];
+$speed_fleet_war = $server_config['speed_fleet_war'];
+$speed_fleet_holding = $server_config['speed_fleet_holding'];
+$speed_research_divisor = $server_config['speed_research_divisor'];
 $ddr = $server_config['ddr'];
 $astro_strict = $server_config['astro_strict'];
 $config_cache = $server_config['config_cache'];
@@ -241,13 +245,19 @@ $mail_smtp_password="";
         </tr>
         <tr>
             <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SPEED']); ?><?php echo help("profile_speed_uni"); ?></th>
-            <th><input name="speed_uni" id="speed_uni" type="text" size="5" maxlength="2"
-                       value="<?php echo $speed_uni; ?>"
-                       onChange="if (!confirm('<?php echo($lang['ADMIN_PARAMS_GAME_SPEED_POPUP']); ?>\n')){document.getElementById('speed_uni').value='<?php echo $speed_uni; ?>';}"
-                       readonly="readonly">(<input name="enable_input_speed_uni"
-                                                                                  type="checkbox"
-                                                                                  onClick="(this.checked)? document.getElementById('speed_uni').readOnly=false : document.getElementById('speed_uni').readOnly=true;">)
-            </th>
+            <th><input name="speed_uni" id="speed_uni" type="text" size="5" maxlength="2" value="<?php echo $speed_uni; ?>"></th>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SPEED_FLEET_PEACEFUL']); ?><?php echo help("profile_speed_fleet_peaceful"); ?></th>
+            <th><input name="speed_fleet_peaceful" id="speed_fleet_peaceful" type="text" size="5" maxlength="2" value="<?php echo $speed_fleet_peaceful; ?>"></th>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SPEED_FLEET_WAR']); ?><?php echo help("profile_speed_fleet_war"); ?></th>
+            <th><input name="speed_fleet_war" id="speed_fleet_war" type="text" size="5" maxlength="2" value="<?php echo $speed_fleet_war; ?>"></th>
+        </tr>
+        <tr>
+            <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_SPEED_FLEET_HOLDING']); ?><?php echo help("profile_speed_fleet_holding"); ?></th>
+            <th><input name="speed_fleet_holding" id="speed_fleet_holding" type="text" size="5" maxlength="2" value="<?php echo $speed_fleet_holding; ?>"></th>
         </tr>
         <tr>
             <th width="60%"><?php echo($lang['ADMIN_PARAMS_GAME_DDR']); ?><?php echo help("profile_ddr"); ?></th>

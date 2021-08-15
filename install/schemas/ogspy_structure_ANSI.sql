@@ -820,7 +820,7 @@ CREATE TABLE "ogspy_parsedRCRound"
   "id_rcround"        INTEGER  NOT NULL AUTO_INCREMENT UNIQUE,
   "id_rc"             INTEGER  NOT NULL,
   "numround"          SMALLINT NOT NULL,
-  "attaque_tir"       BIGINT  NOT NULL DEFAULT '-1',   -- BIGINT ?
+  "attaque_tir"       BIGINT  NOT NULL DEFAULT '-1',
   "attaque_puissance" BIGINT  NOT NULL DEFAULT '-1',
   "defense_bouclier"  BIGINT  NOT NULL DEFAULT '-1',
   "attaque_bouclier"  BIGINT  NOT NULL DEFAULT '-1',
@@ -945,6 +945,11 @@ INSERT INTO "ogspy_config" VALUES ('ddr','1');
 INSERT INTO "ogspy_config" VALUES ('astro_strict','1');
 INSERT INTO "ogspy_config" VALUES ('donutSystem','1');
 INSERT INTO "ogspy_config" VALUES ('donutGalaxy','1');
+-- INSERT INTO `ogspy_config` VALUES ('speed_uni','1');
+INSERT INTO `ogspy_config` VALUES ('speed_fleet_peaceful','1');
+INSERT INTO `ogspy_config` VALUES ('speed_fleet_war','1');
+INSERT INTO `ogspy_config` VALUES ('speed_fleet_holding','1');
+INSERT INTO `ogspy_config` VALUES ('speed_research_divisor','1');
 
 -- Partie affichage
 INSERT INTO "ogspy_config" VALUES ('enable_stat_view', '1');

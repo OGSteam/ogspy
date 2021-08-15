@@ -350,6 +350,10 @@ switch ($ogsversion) {
                     ) DEFAULT CHARSET = UTF8;";
         $requests[] = "INSERT INTO " . TABLE_CONFIG . "config VALUES ('donutSystem','1')";
         $requests[] = "INSERT INTO " . TABLE_CONFIG . "config VALUES ('donutGalaxy','1')";
+        $requests[] = "INSERT INTO " . TABLE_CONFIG . "config VALUES ('speed_fleet_peaceful','1')";
+        $requests[] = "INSERT INTO " . TABLE_CONFIG . "config VALUES ('speed_fleet_war','1')";
+        $requests[] = "INSERT INTO " . TABLE_CONFIG . "config VALUES ('speed_fleet_holding','1')";
+        $requests[] = "INSERT INTO " . TABLE_CONFIG . "config VALUES ('speed_research_divisor','1')";
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `user_pwd_change` TINYINT(1) NOT NULL DEFAULT '1' AFTER `user_password_s`";
         $requests[] = "UPDATE " . TABLE_USER . " SET `user_pwd_change` = '0' WHERE `user_pwd_change` = '1'";    //Ne pas impacter les users existant
         $requests[] = "ALTER TABLE `" . TABLE_USER . "` ADD `user_email_valid` TINYINT(1) NOT NULL DEFAULT '0' AFTER `user_email`";

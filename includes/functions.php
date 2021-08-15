@@ -654,7 +654,8 @@ function set_serverconfig()
            $pub_server_active, $pub_session_time, $pub_max_keeplog, $pub_debug_log,
            $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
            $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
-           $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit, $pub_speed_uni,
+           $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit,
+           $pub_speed_uni, $pub_speed_fleet_peaceful, $pub_speed_fleet_war, $pub_speed_fleet_holding,
            $pub_ddr, $pub_astro_strict, $pub_donutSystem, $pub_donutGalaxy, $pub_config_cache, $pub_mod_cache,
            $pub_mail_use, $pub_mail_smtp_use, $pub_mail_smtp_secure, $pub_mail_smtp_port, $pub_mail_smtp_host, $pub_mail_smtp_username, $pub_mail_smtp_password, $pub_enable_mail_smtp_password;
 
@@ -872,6 +873,13 @@ function set_serverconfig()
         $pub_speed_uni = 1;
     }
     $Config_Model->update_one($pub_speed_uni, "speed_uni");
+
+    foreach(array('speed_fleet_peaceful', 'speed_fleet_war', 'speed_fleet_holding') as $speed) {
+        if (!is_numeric(${'pub_'.$speed}) || ${'pub_'.$speed} < 1) {
+            ${'pub_'.$speed} = 1;
+        }
+        $Config_Model->update_one(${'pub_'.$speed}, $speed);
+    }
 
     if (!isset($pub_donutSystem) || !is_numeric($pub_donutSystem)) {
         $pub_donutSystem = 1;

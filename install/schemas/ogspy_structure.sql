@@ -947,6 +947,11 @@ INSERT INTO `ogspy_config` VALUES ('ddr','1');
 INSERT INTO `ogspy_config` VALUES ('astro_strict','1');
 INSERT INTO `ogspy_config` VALUES ('donutSystem','1');
 INSERT INTO `ogspy_config` VALUES ('donutGalaxy','1');
+-- INSERT INTO `ogspy_config` VALUES ('speed_uni','1');
+INSERT INTO `ogspy_config` VALUES ('speed_fleet_peaceful','1');
+INSERT INTO `ogspy_config` VALUES ('speed_fleet_war','1');
+INSERT INTO `ogspy_config` VALUES ('speed_fleet_holding','1');
+INSERT INTO `ogspy_config` VALUES ('speed_research_divisor','1');
 
 -- Partie affichage
 INSERT INTO `ogspy_config` VALUES ('enable_stat_view', '1');
