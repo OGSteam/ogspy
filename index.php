@@ -50,7 +50,7 @@ if ($server_config["server_active"] == 0 && $pub_action != "login_web" && $pub_a
 }
 
 //	Visiteur non identifié
-if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "login_web")) {
+if (!isset($user_data['user_id']) && !(isset($pub_action) && $pub_action == "login_web")) {
     if ($pub_action == "message") {
         require("views/message.php");
     } else {

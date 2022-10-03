@@ -617,7 +617,7 @@ function galaxy_purge_spy()
 function galaxy_getfavorites()
 {
     global $user_data;
-    $favorite = (new User_Favorites_Model())->select_user_favorites($user_data["user_id"]);
+    $favorite = (new User_Favorites_Model())->select_user_favorites($user_data['user_id']);
     return $favorite;
 }
 

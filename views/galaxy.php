@@ -38,7 +38,7 @@ $favorites = galaxy_getfavorites();
 $missil = "";
 //TODO sortir requete de la vue
 //recherche du group
-$user_group= (new \Ogsteam\Ogspy\Model\Group_Model())->get_user_group($user_data["user_id"]);
+$user_group= (new \Ogsteam\Ogspy\Model\Group_Model())->get_user_group($user_data['user_id']);
 //recherche des droits liés
 $tInfosGroups = (new \Ogsteam\Ogspy\Model\Group_Model())->get_group_rights($user_group);
 

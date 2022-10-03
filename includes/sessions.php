@@ -136,7 +136,7 @@ function session_set_user_data($cookie_id)
  *{
  *  global $db, $user_data, $user_token;
  *
- *  $request_tokens = "SELECT `name`,`token`,`expiration_date` FROM " . TABLE_USER_TOKEN . " WHERE `user_id` = " . $user_data["user_id"];
+ *  $request_tokens = "SELECT `name`,`token`,`expiration_date` FROM " . TABLE_USER_TOKEN . " WHERE `user_id` = " . $user_data['user_id'];
  *  $result_tokens = $db->sql_query($request_tokens);
  *
  *  if ($db->sql_numrows($result_tokens) > 0) {
@@ -145,7 +145,7 @@ function session_set_user_data($cookie_id)
  *  }
  *  else
  *  {
- *      $user_auth = user_get_auth($user_data["user_id"]);
+ *      $user_auth = user_get_auth($user_data['user_id']);
  *  }
  *}
 

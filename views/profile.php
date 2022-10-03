@@ -22,7 +22,7 @@ $user_class = $user_data["user_class"];
 
 
 
-$user_token = (new Ogsteam\Ogspy\Model\Tokens_Model)->get_token($user_data["user_id"], "PAT");
+$user_token = (new Ogsteam\Ogspy\Model\Tokens_Model)->get_token($user_data['user_id'], "PAT");
 if ($user_token != false) {
     $user_token_displayed = $user_token;
 } else {

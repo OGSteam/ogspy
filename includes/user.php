@@ -289,7 +289,7 @@ function member_user_set()
 
     $User_Model = new User_Model();
 
-    $user_id = $user_data["user_id"];
+    $user_id = $user_data['user_id'];
     $user_info = user_get($user_id);
 
     $user_empire = user_get_empire($user_id);
@@ -593,10 +593,10 @@ function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $sear
     }
     if (!is_null($planet_added_ogs)) {
         //todo add xtense stat (ogs obsolete )
-        $User_Model->add_stat_planet_inserted($user_data["user_id"], $planet_added_ogs);
+        $User_Model->add_stat_planet_inserted($user_data['user_id'], $planet_added_ogs);
     }
     if (!is_null($search)) {
-        $User_Model->add_stat_search_made($user_data["user_id"], $search);
+        $User_Model->add_stat_search_made($user_data['user_id'], $search);
     }
     if (!is_null($spy_added_web)) {
         // il n'y a plus d'insertion WEB
@@ -605,7 +605,7 @@ function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $sear
     }
     if (!is_null($spy_added_ogs)) {
         //todo add xtense stat (ogs obsolete )
-        $User_Model->add_stat_spy_inserted($user_data["user_id"], $spy_added_ogs);
+        $User_Model->add_stat_spy_inserted($user_data['user_id'], $spy_added_ogs);
     }
     if (!is_null($rank_added_web)) {
         // il n'y a plus d'insertion WEB
@@ -614,7 +614,7 @@ function user_set_stat($planet_added_web = null, $planet_added_ogs = null, $sear
     }
     if (!is_null($rank_added_ogs)) {
         //todo add xtense stat (ogs obsolete )
-        $User_Model->add_stat_rank_inserted($user_data["user_id"], $rank_added_ogs);
+        $User_Model->add_stat_rank_inserted($user_data['user_id'], $rank_added_ogs);
     }
     if (!is_null($planet_exported)) {
         // il n'y a plus d'export fonctionnalité OGS
@@ -798,15 +798,15 @@ function user_set_all_empire_resync_id()
 
 
     // les planetes
-    $planet_position = $User_Building_Model->get_planet_list($user_data["user_id"]);
+    $planet_position = $User_Building_Model->get_planet_list($user_data['user_id']);
     // les lunes
-    $moon_position = $User_Building_Model->get_moon_list($user_data["user_id"]);
+    $moon_position = $User_Building_Model->get_moon_list($user_data['user_id']);
 
 
     $new_planet_id = 101;
     foreach ($planet_position as $valeur) {
-        $User_Building_Model->update_planet_id($user_data["user_id"], $valeur, $new_planet_id);
-        $User_Defense_Model->update_planet_id($user_data["user_id"], $valeur, $new_planet_id);
+        $User_Building_Model->update_planet_id($user_data['user_id'], $valeur, $new_planet_id);
+        $User_Defense_Model->update_planet_id($user_data['user_id'], $valeur, $new_planet_id);
         $new_planet_id++;
     }
     //Resync moons
@@ -814,8 +814,8 @@ function user_set_all_empire_resync_id()
     $complexe = array_intersect_key($planet_position, $moon_position);
     /// on passe les id se modifiant a 300
     foreach (array_keys($complexe) as $cle_com) {
-        $User_Defense_Model->update_moon_id($user_data["user_id"], $moon_position[$cle_com], $planet_position[$cle_com] + 200);
-        $User_Building_Model->update_moon_id($user_data["user_id"], $moon_position[$cle_com], $planet_position[$cle_com] + 200);
+        $User_Defense_Model->update_moon_id($user_data['user_id'], $moon_position[$cle_com], $planet_position[$cle_com] + 200);
+        $User_Building_Model->update_moon_id($user_data['user_id'], $moon_position[$cle_com], $planet_position[$cle_com] + 200);
     }
 }
 
@@ -1068,21 +1068,21 @@ function user_del_building()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $User_Building_Model->delete_user_aster($user_data["user_id"], intval($pub_planet_id)); //batiment
-    $User_Defense_Model->delete_user_aster($user_data["user_id"], intval($pub_planet_id)); //defense
+    $User_Building_Model->delete_user_aster($user_data['user_id'], intval($pub_planet_id)); //batiment
+    $User_Defense_Model->delete_user_aster($user_data['user_id'], intval($pub_planet_id)); //defense
 
 
     // si on supprime une planete; la lune doit suivre
     if (intval($pub_planet_id) < 199) {
         $moon_id = (intval($pub_planet_id) + 100);
-        $User_Building_Model->delete_user_aster($user_data["user_id"], $moon_id); //batiment
-        $User_Defense_Model->delete_user_aster($user_data["user_id"], $moon_id); //defense
+        $User_Building_Model->delete_user_aster($user_data['user_id'], $moon_id); //batiment
+        $User_Defense_Model->delete_user_aster($user_data['user_id'], $moon_id); //defense
     }
 
     //si plus de planete
-    $iNBPlanet = $User_Building_Model->get_nb_planets($user_data["user_id"]);
+    $iNBPlanet = $User_Building_Model->get_nb_planets($user_data['user_id']);
     if ($iNBPlanet == 0) {
-        (new User_Technology_Model())->delete_user_technologies($user_data["user_id"]);
+        (new User_Technology_Model())->delete_user_technologies($user_data['user_id']);
     }
 
     // remise en ordre des planetes :
@@ -1102,7 +1102,7 @@ function user_move_empire()
     $User_Building_Model = new User_Building_Model();
     $User_Defense_Model = new User_Defense_Model();
 
-    $nb_planete = find_nb_planete_user($user_data["user_id"]);
+    $nb_planete = find_nb_planete_user($user_data['user_id']);
 
     if (!check_var($pub_planet_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
@@ -1129,13 +1129,13 @@ function user_move_empire()
 
     $tmpPosition = 9999;
     // deplacement building
-    $User_Building_Model->update_planet_id($user_data["user_id"], $pub_planet_id, $tmpPosition);
-    $User_Building_Model->update_planet_id($user_data["user_id"], $new_position, $pub_planet_id);
-    $User_Building_Model->update_planet_id($user_data["user_id"], $tmpPosition, $new_position);
+    $User_Building_Model->update_planet_id($user_data['user_id'], $pub_planet_id, $tmpPosition);
+    $User_Building_Model->update_planet_id($user_data['user_id'], $new_position, $pub_planet_id);
+    $User_Building_Model->update_planet_id($user_data['user_id'], $tmpPosition, $new_position);
     // deplacement defense
-    $User_Defense_Model->update_planet_id($user_data["user_id"], $pub_planet_id, $tmpPosition);
-    $User_Defense_Model->update_planet_id($user_data["user_id"], $new_position, $pub_planet_id);
-    $User_Defense_Model->update_planet_id($user_data["user_id"], $tmpPosition, $new_position);
+    $User_Defense_Model->update_planet_id($user_data['user_id'], $pub_planet_id, $tmpPosition);
+    $User_Defense_Model->update_planet_id($user_data['user_id'], $new_position, $pub_planet_id);
+    $User_Defense_Model->update_planet_id($user_data['user_id'], $tmpPosition, $new_position);
 
     // remise en ordre des planetes :
     user_set_all_empire_resync_id();
@@ -1161,9 +1161,9 @@ function user_add_favorite()
         redirection("index.php?action=galaxy");
     }
 
-    $nb_favorites = $User_Favorites_Model->get_nb_user_favorites($user_data["user_id"]);
+    $nb_favorites = $User_Favorites_Model->get_nb_user_favorites($user_data['user_id']);
     if ($nb_favorites < $server_config["max_favorites"]) {
-        $User_Favorites_Model->set_user_favorites($user_data["user_id"], $pub_galaxy, $pub_system);
+        $User_Favorites_Model->set_user_favorites($user_data['user_id'], $pub_galaxy, $pub_system);
         redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system);
     } else {
         redirection("index.php?action=message&id_message=max_favorites&info");
@@ -1188,7 +1188,7 @@ function user_del_favorite()
     }
 
     //suppression
-    (new User_Favorites_Model())->delete_user_favorites($user_data["user_id"], $pub_galaxy, $pub_system);
+    (new User_Favorites_Model())->delete_user_favorites($user_data['user_id'], $pub_galaxy, $pub_system);
 
     redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system .
         "");
@@ -1208,7 +1208,7 @@ function user_getfavorites_spy()
         $sort = 5;
         $sort2 = 0;
     }
-    return $Spy_Model->get_favoriteSpyList($user_data["user_id"], $sort, $sort2);
+    return $Spy_Model->get_favoriteSpyList($user_data['user_id'], $sort, $sort2);
 }
 
 
@@ -1230,9 +1230,9 @@ function user_add_favorite_spy()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $nb_favorites = $User_Spy_favorites_Model->Count_favorite_spy($user_data["user_id"]);
+    $nb_favorites = $User_Spy_favorites_Model->Count_favorite_spy($user_data['user_id']);
     if ($nb_favorites < $server_config["max_favorites_spy"]) {
-        $User_Spy_favorites_Model->add_favorite_spy($user_data["user_id"], $pub_spy_id);
+        $User_Spy_favorites_Model->add_favorite_spy($user_data['user_id'], $pub_spy_id);
         redirection("index.php?action=show_reportspy&galaxy=" . $pub_galaxy . "&system=" .
             $pub_system . "&row=" . $pub_row);
     } else {
@@ -1255,8 +1255,8 @@ function user_del_favorite_spy()
     if (!isset($pub_spy_id)) {
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
-    //(new Spy_Model())->delete_spy_senderId($pub_spy_id, $user_data["user_id"]);
-    (new User_Spy_favorites_Model())->delete_favorite_spy($user_data["user_id"], $pub_spy_id);
+    //(new Spy_Model())->delete_spy_senderId($pub_spy_id, $user_data['user_id']);
+    (new User_Spy_favorites_Model())->delete_favorite_spy($user_data['user_id'], $pub_spy_id);
 
     if (!isset($pub_info)) {
         $pub_info = 1;
