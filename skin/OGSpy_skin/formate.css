@@ -362,7 +362,7 @@ a.menu:hover {
 a.menu_items, p.menu_items {
   display: block;
   color: #fff;
-  font-family: Verdana, sans-serif;
+  font-family: Helvetica, Arial, Verdana, Tahoma, sans-serif;
   font-kerning: auto;
   font-style: normal;
   font-size: 1em;

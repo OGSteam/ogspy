@@ -709,7 +709,7 @@ function user_create()
         $password = password_generator();
     }
     $User_Model = new User_Model();
-    
+
     //Création de l'utilisateur
     //On vérifie que le nom n'existe pas
     if ($User_Model->select_is_user_name($pub_pseudo) === false) {
@@ -1018,7 +1018,7 @@ function user_empire_production($user_empire, $user_data = null, $server_config 
         if (isset($content["planet_id"]) && $content["planet_id"] < 200) {// parcours des planetes ( < 200 )
             $temp_max = isset($content["temperature_max"]) ? $content["temperature_max"] : 0;
             $position = ogame_find_planet_position($content['coordinates']);
-            
+
            // Calcul production théorique
             $prod_FOR = production_foreuse($content['FOR'], $content['M'], $content['C'], $content['D'], $temp_max, $classe, $position, $speed_uni);
             $prod["theorique"][$content["planet_id"]]['FOR'] = $prod_FOR; //=['M'], ['C'], ['D']

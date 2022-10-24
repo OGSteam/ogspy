@@ -2,7 +2,7 @@
 /**
  * OGSpy Admin functions
  * PHP Version 7.3
- * 
+ *
  * @category   Gametool
  * @package    OGSpy
  * @subpackage Common
@@ -10,7 +10,7 @@
  * @copyright  2019 OGSteam.fr
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    GIT:<GIT_ID>
- * @link       https://ogsteam.eu 
+ * @link       https://ogsteam.eu
  */
 
 if (!defined('IN_SPYOGAME')) {
@@ -31,18 +31,16 @@ function get_aTokenOGSpy($sep) {
         $result .= $sep;
     }
     $result = str_replace($sep, '9', substr($result, 0, -1));
-    
+
     return $result;
 }
 
 /**
  * Formatting the query for the Github API
- * 
  * @param string $request Content
- * 
  * @return string $data Github Data
  */
-function github_api_Request($request) 
+function github_api_Request($request)
 {
     $opts = [
         'http' => [
@@ -72,9 +70,7 @@ function github_api_Request($request)
 
 /**
  * Formatting the query for the Github API
- * 
  * @param string $repository Git Repository
- * 
  * @return array $release
  */
 function github_get_latest_release($repository)
@@ -86,7 +82,7 @@ function github_get_latest_release($repository)
 
     $mod_data = json_decode($data, true);
 
-    if (isset($mod_data) ) {
+    if (isset($mod_data)) {
 
         $release = $mod_data['tag_name'];
         $description = $mod_data['body'];

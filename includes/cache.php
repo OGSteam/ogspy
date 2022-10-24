@@ -14,8 +14,8 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 
-use Ogsteam\Ogspy\Model\Config_Model;
-use Ogsteam\Ogspy\Model\Mod_Model;
+use \Ogsteam\Ogspy\Model\Config_Model;
+use \Ogsteam\Ogspy\Model\Mod_Model;
 
 /**
  * Function generate_config_cache()
