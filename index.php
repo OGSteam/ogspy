@@ -50,11 +50,12 @@ if ($server_config["server_active"] == 0 && $pub_action != "login_web" && $pub_a
 }
 
 //	Visiteur non identifié
+
 if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "login_web")) {
     if ($pub_action == "message") {
         require("views/message.php");
     } else {
-        if (preg_match("#^action=(.*)#", $_SERVER['QUERY_STRING'], $matches)) {
+        if (preg_match("/^action=(.*)/", $_SERVER['QUERY_STRING'], $matches)) {
             $goto = $matches[1];
         }
         require_once("views/login.php");
@@ -74,13 +75,15 @@ if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
     }
 }
 
-//Changer le mdp :
-if ($pub_action !== 'logout' && $user_data['user_pwd_change'] == 1 && $pub_action !== 'member_modify_member') {
-    $pub_action = 'profile';
+if (isset($user_data['user_pwd_change'])) {
+    //Changer le mdp :
+    if ($pub_action !== 'logout' && $user_data['user_pwd_change'] == 1 && $pub_action !== 'member_modify_member') {
+        $pub_action = 'profile';
+    }
 }
 
-
 switch ($pub_action) {
+
     //----------------------------------------//
     //--------Connexion---------//
     //----------------------------------------//
@@ -196,8 +199,6 @@ switch ($pub_action) {
         case "usergroup_newmember" :
             usergroup_newmember();
             break;
-
-
 
         //----------------------------------------//
         //--- ---//
@@ -330,8 +331,6 @@ switch ($pub_action) {
         case "mod_down" :
             mod_sort("down");
             break;
-
-
         //----------------------------------------//
         //--- ---//
         //----------------------------------------//
@@ -341,6 +340,7 @@ switch ($pub_action) {
 
         default:
             if ($server_config['open_user'] != "" && $user_data['user_admin'] != 1 && $user_data['user_coadmin'] != 1) {
+
                 if (file_exists($server_config['open_user'])) {
                     require_once($server_config['open_user']);
                 } else {

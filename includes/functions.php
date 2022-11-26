@@ -164,7 +164,7 @@ function hexhex($value)
 
 /**
  *  @brief Get the RGB color (red, green, blue) of the desired color.
- *  
+ *
  *  @param[in] $Colorname The wanted color ('all' to retrieve all RGB HTML color code name)
  *  @return array('red,'green','blue') 0 as default ('black'), all=array of name with RGB
  */
@@ -172,7 +172,7 @@ function color_getColor($Colorname = 'all')
 {
     $Colorname = strtolower($Colorname);
     $Colors  =  array(
-//  Colors  as  they  are  defined  in  HTML  3.2 
+//  Colors  as  they  are  defined  in  HTML  3.2
         'black'=>array('red'=>0x00, 'green'=>0x00, 'blue'=>0x00),
         'maroon'=>array('red'=>0x80, 'green'=>0x00, 'blue'=>0x00),
         'green'=>array('red'=>0x00, 'green'=>0x80, 'blue'=>0x00),
@@ -311,7 +311,7 @@ function color_getColor($Colorname = 'all')
         'wheat'=>array('red'=>0xF5, 'green'=>0xDE, 'blue'=>0xB3),
         'whitesmoke'=>array('red'=>0xF5, 'green'=>0xF5, 'blue'=>0xF5),
         'yellowgreen'=>array('red'=>0x9A, 'green'=>0xCD, 'blue'=>0x32));
-    
+
     if ($Colorname === 'all') {
         return $Colors;
     }
@@ -322,7 +322,7 @@ function color_getColor($Colorname = 'all')
 }
 /**
  *  @brief Get color name or 'hex'.
- *  
+ *
  *  @param[in] string|int $couleur_id An hexa value (0xffddee) or a string with the exa value ('ffddee')
  *  @return string code name if exist else #hex ('ffddee')
  */
@@ -349,7 +349,7 @@ function color_getName($couleur_id)
 }
 /**
  *  @brief Convert hexadecimal color to rgb color.
- *  
+ *
  *  @param[in] string|int $couleur_id An hexa value (0xffddee) or a string with the exa value ('ffddee')
  *  @return array('red,'green','blue')
  */
@@ -375,7 +375,7 @@ function color_hex_to_rgb($couleur_id)
 }
 /**
  *  @brief Convert rgb color to hexadecimal color.
- *  
+ *
  *  @param[in] int $r,$g, $b The RGB value
  *  @return string hexadecimal color value in string
  */
@@ -390,7 +390,7 @@ function color_rgb_to_hex($r, $g, $b)
 
 /**
  *  @brief Return valid HTML value for an input color.
- *  
+ *
  *  @param[in] string|int $color    The color (name 'red' or '#ffddee' or value 'ffddee' or 0xffddee)
  *  @return array('name','value') value=HTML valid color input value ('#xxx'), 0 as default (black)
  */
@@ -411,8 +411,8 @@ function color_convert_to_html_input($color)
 
 /**
  *  @brief Construct HTML double input for color, one for text and one for HTML5 color picker and link these with the JS.
- *  
- *  @param[in] string     $label        HTML id of the input 
+ *
+ *  @param[in] string     $label        HTML id of the input
  *  @param[in] string|int $value        Color value (string 'red'/'#ff0000', int 0xffddee)
  *  @param[in] array      $html_arg1     HTML attributes for text box (default = array('size'=>15, 'maxlength'=>20))
  *  @param[in] array      $html_arg2     HTML attributes for color box (default = $html_arg1)
@@ -430,7 +430,7 @@ function color_html_create_double_input($label, $value, $html_arg1=array('size'=
         $result .= $key . '="' . $elem . '" ';
     }
     $result .= 'value="' . $color['name'] . '" onchange="ogspy_colorDoubleChange(\'' . $id . '\');">' . "\n";
-    
+
     $result .= '<input name="' . $label . '" id="' . $label . '" type="color" ';
     foreach ($html_arg2 as $key=>$elem) {
         if ($key !== 'maxlength') {
@@ -438,7 +438,7 @@ function color_html_create_double_input($label, $value, $html_arg1=array('size'=
         }
     }
     $result .= 'value="' . $color['value'] . '" onchange="ogspy_colorDoubleChange(\'' . $label . '\');">' . "\n";
-    
+
     return $result;
 }
 
@@ -885,12 +885,12 @@ function set_serverconfig()
         $pub_donutSystem = 1;
     }
     $Config_Model->update_one($pub_donutSystem, "donutSystem");
-    
+
     if (!isset($pub_donutGalaxy) || !is_numeric($pub_donutGalaxy)) {
         $pub_donutGalaxy = 1;
     }
     $Config_Model->update_one($pub_donutGalaxy, "donutGalaxy");
-    
+
     $Config_Model->update_one($pub_mod_cache, "mod_cache");
     $Config_Model->update_one($pub_config_cache, "config_cache");
 
@@ -1610,7 +1610,7 @@ function booster_decode($str = NULL, $boosters = NULL)
         'extention_p' => 0, 'extention_m' => 0);
     $tab_boos = array('m','c','d','e');
     $tab_ex = array('p','m');
-    
+
     if($str) {
         $s = booster_objets_tab('separateur');
         $str_split = explode($s, $str);

@@ -86,13 +86,12 @@ function user_login()
 
     $User_Model = new User_Model();
 
-    if (!token::statiCheckToken($pub_token)) // verification du token
-    {
+    if (!token::statiCheckToken($pub_token)) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
     if (!check_var($pub_login, "Pseudo_Groupname") || !check_var($pub_password,
-            "Password") || !check_var($pub_goto, "Special", "#^[\w=&%+]+$#")) {
+       "Password") || !check_var($pub_goto, "Special", "#^[\w=&%+]+$#")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
@@ -101,7 +100,6 @@ function user_login()
     }
 
     $tlogin = $User_Model->select_user_login($pub_login, $pub_password);
-
     // si  retour
     if ($tlogin != false) {
         if (password_verify($pub_password, $tlogin['user_password_s'])) {
@@ -124,7 +122,6 @@ function user_login()
 function user_set_connection($user_id, $user_active)
 {
     global $pub_goto;
-
     (new User_Model())->update_lastvisit_time($user_id);
 
     if ($user_active == 1) {
@@ -133,7 +130,6 @@ function user_set_connection($user_id, $user_active)
 
         ///stat
         (new Statistics_Model())->add_user_connection();
-
         session_set_user_id($user_id, $lastvisit);
         log_('login');
         if (!isset($url_append)) {

@@ -50,7 +50,7 @@ function session_begin($user_ip)
 function session()
 {
     global $user_ip, $cookie_id, $server_config;
-    global $HTTP_COOKIE_VARS;
+    global $_COOKIE;
     $Sessions_Model = new Sessions_Model();
 
     $cookie_id = "";
@@ -63,8 +63,8 @@ function session()
     }
 
     //Récupération de l'id de session si cookie présent
-    if (isset($HTTP_COOKIE_VARS[$cookie_name])) {
-        $cookie_id = $HTTP_COOKIE_VARS[$cookie_name];
+    if (isset($_COOKIE[$cookie_name])) {
+        $cookie_id = $_COOKIE[$cookie_name];
 
         //Vérification de la validité de le session
         if (!$Sessions_Model->is_valid_session_id($cookie_id, $user_ip)) {
@@ -160,10 +160,10 @@ function session_close($user_id = false)
     $Sessions_Model = new Sessions_Model();
 
     if (!$user_id) {
-        global $HTTP_COOKIE_VARS;
+        global $_COOKIE;
 
         $cookie_name = COOKIE_NAME;
-        $cookie_id = $HTTP_COOKIE_VARS[$cookie_name];
+        $cookie_id = $_COOKIE[$cookie_name];
 
         if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) {
             $Sessions_Model->close_session_by_cookie_session_ip($cookie_id, $user_ip);

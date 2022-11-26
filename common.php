@@ -11,20 +11,6 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
-// PHP5 with register_long_arrays off?
-if (!isset($HTTP_POST_VARS) && isset($_POST)) {
-    $HTTP_POST_VARS = $_POST;
-    $HTTP_GET_VARS = $_GET;
-    $HTTP_SERVER_VARS = $_SERVER;
-    $HTTP_COOKIE_VARS = $_COOKIE;
-    $HTTP_ENV_VARS = $_ENV;
-    $HTTP_POST_FILES = $_FILES;
-
-    // _SESSION is the only superglobal which is conditionally set
-    if (isset($_SESSION)) {
-        $HTTP_SESSION_VARS = $_SESSION;
-    }
-}
 
 //Récupération des paramètres de connexion à la base de données
 if (file_exists("parameters/id.php")) {
@@ -93,14 +79,7 @@ require_once ("lang/lang_main.php");
 if (!defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS")) {
 if (file_exists('parameters/key.php')) {
     require_once ('parameters/key.php');
-    $dossierParent = (__FILE__);
-    $path = $_SERVER["SCRIPT_FILENAME"]; ;
-    if ($path != $serveur_path) {
-        generate_key();
-    } // regenere que si incoherence d url
-
-} else // non bloquant
-{
+} else {
     generate_key();
 }
 }
