@@ -16,7 +16,7 @@ if (!defined('IN_SPYOGAME')) {
 /////////////////// STRUCT type fonctions : ////////////////////////////////////
 /**
  *  @brief Get an Ogame resources array.
- *  
+ *
  *  @param[in] int $metal,$cristal,$deut The needed resources
  *  @param[in] int $NRJ,$AM              Optional resources (0 default)
  *  @return array('M','C','D','NRJ','AM'), default is 0
@@ -28,7 +28,7 @@ function ogame_array_ressource($metal, $cristal, $deut, $NRJ = 0, $AM = 0)
 
 /**
  *  @brief Get an Ogame details array pour def/vso.
- *  
+ *
  *  @param[in] int  $structure,$bouclier,$attaque   Generic details of def/vso
  *  @param[in] int  $vitesse,$fret,$conso           Optional details of vso (0 default)
  *  @param[in] bool $civil                          If vso is civil or not (default true)
@@ -44,7 +44,7 @@ function ogame_array_detail($structure, $bouclier, $attaque, $vitesse=0, $fret=0
 ///////////////////// PRODUCTION fonctions : ///////////////////////////////////
 /**
  *  @brief Return position ressources bonus in Ogame.
- *  
+ *
  *  @param[in] int $position The wanted position
  *  @return array('M','C','D','NRJ','AM') of bonus, default is 0%
  */
@@ -82,7 +82,7 @@ function ogame_production_position($position)
 
 /**
  *  @brief Calculates maximum number of foreuse.
- *  
+ *
  *  @param[in] int   $mine_M,$mine_C,$mine_D    Mine level
  *  @param[in] array $user_data                 array with class and officiers infos (array('user_class'=>'COL'/...,'off_geologue' or 'off_full'))
  *  @return int The max
@@ -104,7 +104,7 @@ function ogame_production_foreuse_max($mine_M, $mine_C, $mine_D, $user_data)
 
 /**
  *  @brief Calculates foreuse coefficient on base production.
- *  
+ *
  *  @param[in] array $user_building array of mines level and FOR number (array('M','C','D','FOR'))
  *  @param[in] array $user_data     array with class and officiers infos (array('user_class'=>'COL'/...,'off_geologue' or 'off_full'))
  *  @return array('bonus', 'nb_FOR_maxed') bonus=foreuse bonus coefficient ; nb_FOR_maxed=limit nb if too much
@@ -130,8 +130,8 @@ function ogame_production_foreuse_bonus($user_building, $user_data)
     if ($user_data['user_class'] === 'COL') {
         $bonus_foreuse = $bonus_foreuse * (1 + $FOR_BONUS_COL);
     }
-    $nb_foreuse_max = ogame_production_foreuse_max($user_building['M'] + $user_building['C'] + $user_building['D'], $user_data);
-    
+    $nb_foreuse_max = ogame_production_foreuse_max($user_building['M'], $user_building['C'], $user_building['D'], $user_data);
+
     if ($user_building['FOR'] > $nb_foreuse_max) {
         $user_building['FOR'] = $nb_foreuse_max;
     }
@@ -144,14 +144,14 @@ function ogame_production_foreuse_bonus($user_building, $user_data)
 
 /**
  *  @brief Calculates building/sat/for or base production and consumption.
- *  
+ *
  *  @param[in] string $building        The wanted building/sat/for ('base','M','C','D','CES','CEF','SAT','FOR')
  *  @param[in] array  $user_building   Planet info ('M','C','D','CES','CEF','SAT','FOR','temperature_max','coordinates') 0 as default value
  *  @param[in] array  $user_technology Techno info ('NRJ') 0 as default value
  *  @param[in] array  $user_data       User info, for FOR only (array('user_class'=>'COL'/...,'off_geologue' or 'off_full')
  *  @param[in] array  $server_config   Ogame universe info ('speed_uni',(bool)'final_calcul') / final_calcul permet de déterminer si les valeurs retournées seront manipulées avec les % de production ressources, et donc sans arrondi.
  *  @return array('M','C','D','NRJ','AM') of production
- *  
+ *
  *  @details remplace les fonctions consumption et partiellement production,production_sat,production_foreuse
  */
 function ogame_production_building($building, $user_building = null, $user_technology = null, $user_data = null, $server_config = null)
@@ -245,9 +245,9 @@ function ogame_production_building($building, $user_building = null, $user_techn
 
 /**
  *  @brief Calculates planet production and consumption.
- *  
+ *
  *  @param[in] array $user_building   Planet info ('M','C','D','CES','CEF','SAT','FOR','temperature_max','coordinates','M_percentage','C_percentage','D_percentage','CES_percentage','CEF_percentage','Sat_percentage','FOR_percentage',array 'booster_tab') 0 as default value
- *  @param[in] array $user_technology Techno info ('NRJ','Plasma') 
+ *  @param[in] array $user_technology Techno info ('NRJ','Plasma')
  *  @param[in] array $user_data       User info (array('user_class'=>'COL'/...,'off_commandant','off_amiral','off_ingenieur','off_geologue', or 'off_full')
  *  @param[in] array $server_config   Ogame universe info ('speed_uni')
  *  @return array('prod_reel,'prod_theorique','ratio','conso_E','prod_E',  //Production totale
@@ -257,7 +257,7 @@ function ogame_production_building($building, $user_building = null, $user_techn
  *      'M','C','D','NRJ','AM', =>héritage du type ressource pour les valeurs retournées.
  *      'nb_FOR_maxed',
  *      ) à part conso_E/prod_E (float) les autres sont array('M','C','D','NRJ','AM')
- *  
+ *
  *  @details remplace les fonctions ratio et bilan_production_ratio
  */
 function ogame_production_planet($user_building, $user_technology = null, $user_data = null, $server_config = null)
@@ -308,7 +308,7 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
     if (!isset($user_building['booster_tab']['booster_c_val'])) { $user_building['booster_tab']['booster_c_val'] = 0; }
     if (!isset($user_building['booster_tab']['booster_d_val'])) { $user_building['booster_tab']['booster_d_val'] = 0; }
     if (!isset($user_data['production_theorique']) || !is_bool($user_data['production_theorique'])) { $user_data['production_theorique'] = false; }
-    
+
     // $user_empire = user_get_empire($user_data['user_id']);
     // $user_production = user_empire_production($user_empire, $user_data, $server_config['speed_uni']);
 
@@ -318,7 +318,7 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
     }
     if ($user_data['off_commandant'] != 0 && $user_data['off_amiral'] != 0 && $user_data['off_ingenieur'] != 0 && $user_data['off_geologue'] != 0) {
         $user_data['off_full'] = 1;
-    }    
+    }
     if ($user_data['user_class'] !== 'COL' && $user_building['FOR_percentage'] > 100) {
         $user_building['FOR_percentage'] = 100;
     }
@@ -397,7 +397,7 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
         }
         $result['prod_FOR']['NRJ'] = round( $prod_vso_FOR['NRJ'] * max(1, $user_building['FOR_percentage'] * 2 / 100 - 1) );
         $production_E = $result['prod_CES']['NRJ'] + $result['prod_CEF']['NRJ'] + $result['prod_SAT']['NRJ'];
-        
+
         $result['prod_booster']['NRJ']    = round( $production_E * $user_building['booster_tab']['booster_e_val'] / 100 );
         if ($user_data['user_class'] === 'COL') {
             $result['prod_classe']['NRJ'] = round( $production_E * $NRJ_BONUS_COL );
@@ -668,7 +668,7 @@ function production_foreuse($nb_foreuse, $level_M, $level_C, $level_D, $temperat
     $result_M = production('M', $level_M, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(30 * (1 + $bonus_position_M) * $speed_uni);
     $result_C = production('C', $level_C, 0, $temperature_max, 0, 0, 0, $position, $speed_uni) - floor(15 * (1 + $bonus_position_C) * $speed_uni);
     $result_D = production('D', $level_D, 0, $temperature_max, 0, 0, 0, $position, $speed_uni);
-    
+
     $result_M = round($result_M * min(0.5, $bonus_foreuse * $nb_foreuse)); //arrondi
     $result_C = round($result_C * min(0.5, $bonus_foreuse * $nb_foreuse)); //arrondi
     $result_D = round($result_D * min(0.5, $bonus_foreuse * $nb_foreuse)); //arrondi
@@ -678,7 +678,7 @@ function production_foreuse($nb_foreuse, $level_M, $level_C, $level_D, $temperat
 
 /**
  *  @brief Find number max of foreuse.
- *  
+ *
  *  @param [in] int $level_M The metal mine level
  *  @param [in] int $level_C The cristal mine level
  *  @param [in] int $level_D The deuterium mine level
@@ -706,7 +706,7 @@ function consumption($building, $level, $speed_uni = 1)
 {
     if (ogame_is_a_building($building) === false) { return 0; }
     $result = ogame_production_building($building, array($building=>$level), null, null, array('speed_uni'=>$speed_uni));
-    
+
     if ($building === 'CEF') {
         return - $result['D'];
     }
@@ -762,7 +762,7 @@ function ratio($M, $C, $D, $CES, $CEF, $SAT, $temperature_max, $off_ing, $NRJ,
         $boost_CES = ($booster['booster_e_val'] / 100) * (production('CES', $CES, 0, $temperature_max, $NRJ) * $per_CES);
         $boost_CEF = ($booster['booster_e_val'] / 100) * (production('CEF', $CEF, 0, $temperature_max, $NRJ) * $per_CEF);
         $boost_SAT = ($booster['booster_e_val'] / 100) * (production('SAT', $SAT, 0, $temperature_max, $NRJ) * $per_SAT);
-        
+
         $prod_boost_E = round($boost_CES) + round($boost_CEF) + round($boost_SAT);
     }
     $production_E += $prod_boost_E;
@@ -890,7 +890,7 @@ $per_M = 1, $per_C = 1, $per_D = 1, $per_CES = 1, $per_CEF = 1, $per_SAT = 1, $b
 ////////////////// OGAME CARACTERISTIQUES fonctions : //////////////////////////
 /**
  *  @brief Give database names of a building/research/fleet/defence/class/resources.
- *  
+ *
  *  @return array('BAT'=>array, 'RECH'=>array, 'VSO'=>array, 'DEF'=>array, 'CLASS'=>array, 'RESS'=>array)
  */
 function ogame_get_element_names()
@@ -986,7 +986,7 @@ function ogame_get_element_names()
 
 /**
  *  @brief Détermine si c'est un bâtiment, une recherche, un vaisseau, une défense ou une classe.
- *  
+ *
  *  @param[in] string $nom Nom à rechercher, correspond au nom en BDD
  *  @return false|string 'BAT' bâtiment, 'RECH' recherche, 'DEF' défense, 'VSO' vaisseau, 'CLASS' classe et false sinon
  */
@@ -1029,7 +1029,7 @@ function ogame_is_a_research($nom) { return ogame_is_element($nom) === 'RECH'; }
 
 /**
  *  @brief Return base details of Ogame def/vso.
- *  
+ *
  *  @param[in] string $name The name as in Database, all for all element
  *  @return array('structure','bouclier','attaque','vitesse','fret','conso',(array)'rapidfire',(bool)'civil')
  *      rapidfire=array('PT'=>x, ...) array of all fleet and defence; if x>0 then again else from
@@ -1113,7 +1113,7 @@ function ogame_elements_details_base($name = 'all')
 
 /**
  *  @brief Calculates technical data of a fleet or defence.
- *  
+ *
  *  @param[in] string     $name        The name, like name in Database
  *  @param[in] array      $user_techno The array of technologies ('Armes','Bouclier','Protection','RC','RI','PH','Hyp', le reste est ignoré)
  *  @param[in] string|int $classe      The user class //array('none','COL','GEN','EXP') - (1=Collectionneur)[0=aucune, 2=général, 3=explorateur])
@@ -1140,7 +1140,7 @@ function ogame_elements_details($name, $user_techno = null, $classe = 'none')
     if (isset($names['CLASS'][$classe])) { $classe = $names['CLASS'][$classe]; }
     if (!in_array($classe, $names['CLASS'], true)) { $classe = $names['CLASS'][0]; }
     if ($name === 'Sat') { $name = 'SAT'; }
-    
+
     $base_detail = ogame_elements_details_base($name);
     $cout        = ogame_element_cumulate($name, 1);
     $user_techno['speed'] = 0;  //local variable pour la vitesse
@@ -1151,7 +1151,7 @@ function ogame_elements_details($name, $user_techno = null, $classe = 'none')
     $techno_Armes_coef      = $user_techno['Armes']      * $COMBAT_COEF;
     $techno_Bouclier_coef   = $user_techno['Bouclier']   * $COMBAT_COEF;
     $techno_Protection_coef = $user_techno['Protection'] * $COMBAT_COEF;
-    
+
     //Calcul vitesse
     if ($name==='PT' || $name==='GT' || $name==='CLE' || $name==='SE' || $name==='REC') { //vso avec le réacteur à combustion.
         $user_techno['speed'] = $techno_RC_coef;
@@ -1182,7 +1182,7 @@ function ogame_elements_details($name, $user_techno = null, $classe = 'none')
         $base_detail['vitesse'] = 500;
         $user_techno['speed'] = $techno_PH_coef;
     }
-    
+
     /*
     COL : +100% vitesse transporteur ; +25% fret transporteur
     GEN : +100% vitesse vso combat/REC or EDLM ; -25% conso ; +20% fret REC/ECL ; +2 lvl techno combat
@@ -1194,7 +1194,7 @@ function ogame_elements_details($name, $user_techno = null, $classe = 'none')
     $vitesse   = $base_detail['vitesse'];
     $fret      = $base_detail['fret'];
     $conso     = $base_detail['conso'];
-    
+
     $bonus_class = 0;
      if ($classe === 'GEN') {
         $bonus_class = 2 * $COMBAT_COEF;    //+2 lvl
@@ -1226,7 +1226,7 @@ function ogame_elements_details($name, $user_techno = null, $classe = 'none')
         }
     }
     $fret      = round($fret      + $fret      * $techno_Hyp_coef         + $fret     * $bonus_class);
-    
+
     $bonus_class = 0;
     if ($classe === 'GEN') {
         $bonus_class = -0.25;    //-25%
@@ -1235,7 +1235,7 @@ function ogame_elements_details($name, $user_techno = null, $classe = 'none')
     if ($conso < 1) {
         $conso = 1;
     }
-    
+
     $base_detail['structure'] = $structure;
     $base_detail['bouclier']  = $bouclier;
     $base_detail['attaque']   = $attaque;
@@ -1244,14 +1244,14 @@ function ogame_elements_details($name, $user_techno = null, $classe = 'none')
     $base_detail['conso']     = $conso;
     $base_detail['cout']      = $cout;
     $base_detail['nom']       = $name;
-    
+
     return $base_detail;
     //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();$b=array('Esp'=>23,'Ordi'=>20,'Armes'=>22,'Bouclier'=>20,'Protection'=>20,'NRJ'=>20,'Hyp'=>18,'RC'=>21,'RI'=>17,'PH'=>16,'Laser'=>20,'Ions'=>20,'Plasma'=>19,'RRI'=>13,'Graviton'=>2,'Astrophysique'=>23);foreach(array_merge($names['VSO'], $names['DEF']) as $e){if(ogame_elements_details2($e,$b,'GEN')!=ogame_elements_details($e,$b,'GEN'))print_r($e);}"
 }
 
 /**
  *  @brief Calculates technical data of all fleet/defence.
- *  
+ *
  *  @param[in] array      $user_techno The array of technologies
  *  @param[in] string|int $classe The user class //array('none','COL','GEN','EXP') - (1=Collectionneur)[0=aucune, 2=général, 3=explorateur])
  *  @return array of all fleet/defence with are array of details from ogame_elements_details()
@@ -1270,7 +1270,7 @@ function ogame_all_details($user_techno = null, $classe = 0)
 
 /**
  *  @brief Calculates technical data of Ogame requirement.
- *  
+ *
  *  @param[in] string $nom The name, like name in Database
  *  @return array('none','COL','GEN','EXP' : bool for class, 'CES',etc. : int for all bat/rech name in database)
  */
@@ -1364,7 +1364,7 @@ function ogame_elements_requirement($name = 'all')
 
 /**
  *  @brief Calculates technical data of Ogame requirement of all building/research/fleet/defence.
- *  
+ *
  *  @return array of all building/research/fleet/defence with are array of requirement from ogame_elements_requirement()
  */
 function ogame_all_requirement()
@@ -1381,14 +1381,14 @@ function ogame_all_requirement()
 
 /**
  *  @brief Return base price of an Ogame bat/vso/def/rech
- *  
+ *
  *  @param[in] string $name The name as in Database, all for all element
  *  @return array('M', 'C','D, 'NRJ') of the chosen element (array of these if 'all')
  */
 function ogame_element_cout_base($name = 'all')
 {
     $cout_base   = array();
-//Coût de base des bâtiments                             métal , cristal, deutérium, NRJ 
+//Coût de base des bâtiments                             métal , cristal, deutérium, NRJ
     $cout_base['M']             = ogame_array_ressource(  60   ,  15    , 0);
     $cout_base['C']             = ogame_array_ressource(  48   ,  24    , 0);
     $cout_base['D']             = ogame_array_ressource( 225   ,  75    , 0);
@@ -1468,7 +1468,7 @@ function ogame_element_cout_base($name = 'all')
 ///////////////////// COUT fonctions : /////////////////////////////////////////
 /**
  *  @brief Calculates the evolve coefficient of a building and research.
- *  
+ *
  *  @param[in] string $name Building/research name, as in Database
  *  @return array('M', 'C','D, 'NRJ') array of coefficient by ressource
  */
@@ -1522,7 +1522,7 @@ function ogame_element_evolve_coef($name)
 
 /**
  *  @brief Calculates price of an Ogame bat/vso/def/rech
- *  
+ *
  *  @param[in] string $name  The chosen name, as in Database
  *  @param[in] int    $level The chosen level for bat/rech or the number of def/vso
  *  @return array('M', 'C','D, 'NRJ')
@@ -1557,7 +1557,7 @@ function ogame_element_cout($name, $level)
 
 /**
  *  @brief Calculates the price of an Ogame element to it current level.
- *  
+ *
  *  @param[in] string $name  Name of building/research/fleet/defence, like in name in database
  *  @param[in] int    $level The current level or the number of fleet/defence
  *  @return array('M', 'C','D, 'NRJ') resources used to it current level
@@ -1583,14 +1583,14 @@ function ogame_element_cumulate($name, $level)
             }
         }
     }
-    
+
     return $result;
     //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['BAT'], $names['RECH'], $names['VSO'], $names['DEF']) as $e){if(ogame_element_cumulate2($e,1)!=ogame_element_cumulate($e,1))print_r($e);}"
-} 
+}
 
 /**
  *  @brief Calculates the price of all element of type (building,defence,fleet,research).
- *  
+ *
  *  @param[in] array  $user Array of element each planet or moon
  *  @param[in] string $type Type of element ('BAT' pour bâtiment, 'RECH' pour recherche, 'DEF' pour défense, 'VSO' pour vaisseau)
  *  @return float Total price (M+C+D).
@@ -1665,7 +1665,7 @@ function all_lune_cumulate($user_building, $user_defence)
 
 /**
  *  @brief Calculates destroy price of a building.
- *  
+ *
  *  @param[in] string $name       Building name, as in Database
  *  @param[in] int    $level      Building level
  *  @param[in] int    $techno_ions Level of techno ions
@@ -1693,7 +1693,7 @@ function ogame_building_destroy($name, $level, $techno_ions = 0)
 ///////////////////// FLOTTE fonctions : ///////////////////////////////////////
 /**
  *  @brief Calculates deut consummation for parking/expe of a fleet.
- *  
+ *
  *  @param[in] int $conso The conso of the fleet
  *  @param[in] int $hour  Number of hours in parking
  *  @return float Deut conso for this hour of parking
@@ -1713,7 +1713,7 @@ function ogame_fleet_conso_statio($conso, $hour)
 
 /**
  *  @brief Calculates the slowest chip speed of a fleet.
- *  
+ *
  *  @param[in] array  $fleet       List of chips
  *  @param[in] array  $user_techno List of techno ('RC','RI','PH', le reste est ignoré)
  *  @param[in] string $class       User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
@@ -1738,7 +1738,7 @@ function ogame_fleet_slowest_speed($fleet, $user_techno=null, $class='none')
 
 /**
  *  @brief Calculates distance between 2 coordinates.
- *  
+ *
  *  @param[in] string $a, $b         Coordinates ('g:s:p')
  *      'g1:s1:p1'->'g2:s2:p2' : normal distance calcul
  *      ':s1:p1'->'x:s2:p2     : distance between system/planet (only system is ':s1:')
@@ -1791,7 +1791,7 @@ function ogame_fleet_distance($a, $b, $user_techno=null, $class='none', $server_
 
 /**
  *  @brief Calculates time and conso to send a fleet.
- *  
+ *
  *  @param[in] string $coord_from,$coord_to    Coordinates begin and end
  *  @param[in] array  $fleet                   Array of fleet and their number (array('PT'=>10,etc.))
  *  @param[in] int    $speed_per               Percentage of speed wanted
@@ -1869,7 +1869,7 @@ function ogame_fleet_send($coord_from, $coord_to, $fleet, $speed_per=100, $user_
     }
     $result['time']  = round($result['time']);
     $result['conso'] = ceil($result['conso']);
-    
+
     return $result;
     // php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();var_dump($a=ogame_fleet_send('1:1:1','1:1:1',array('PT'=>260),100,array('RC'=>20,'RI'=>17,'PH'=>16),'COL'));echo gmdate('z:H:i:s',$a['time']);"
 }
@@ -1877,7 +1877,7 @@ function ogame_fleet_send($coord_from, $coord_to, $fleet, $speed_per=100, $user_
 ///////////////////// TEMPS fonctions : ////////////////////////////////////////
 /**
  *  @brief Calculates cumulate lab network.
- *  
+ *
  *  @param[in] array $user_empire       From user_get_empire()
  *  @param[in] int   $current_planet_id Current planet to run a research, if not best lab (theory).
  *  @return int Number of cumulate lab network
@@ -1912,13 +1912,13 @@ function ogame_labo_cumulate($user_empire, $current_planet_id = -1)
     for ($i = 0 ; $i < $nb_labo ; $i++) {
         $result += $labs[$i];
     }
-    
+
     return $result;
 }
 
 /**
  *  @brief Calculates construction time of a OGame element bat/vso/def/rech.
- *  
+ *
  *  @param[in] string $name          The name, like name in Database
  *  @param[in] int    $level         The level or number for def/vso
  *  @param[in] array  $user_building Array of bat level ('CSp','UdR','UdN','Lab')
@@ -1974,7 +1974,7 @@ function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0,
         }
     }
 
-    return $result;  
+    return $result;
 }
 // php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');var_dump($a=ogame_construction_time('NRJ',21,array('Lab'=>18,'CSp'=>12,'UdR'=>10,'UdN'=>7),234));$year=gmdate('Y',$a)-1970;$week=gmdate('W',$a)-1;$day=gmdate('z',$a)-$week*7; echo $year.'a '.$week.'s '.$day.'j '.gmdate('H:i:s',$a);"
 
@@ -1992,7 +1992,7 @@ function ogame_find_planet_position($coordinates) {
 
 /**
  *  @brief Return coordinates in array.
- *  
+ *
  *  @param[in] string $string_coord Coordinates, in string like in Database ('2:3:4')
  *  @return array('g','s','p') of int, default is 0 ('::6' give planet position of 6)
  */
@@ -2042,7 +2042,7 @@ function astro_max_planete($level)
 
 /**
  *  @brief Calculates phalanx range.
- *  
+ *
  *  @param[in] int   $level         Level of the phalanx
  *  @param[in] array $user_class    User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
  *  @return Range in system
@@ -2061,7 +2061,7 @@ function ogame_phalanx_range($level, $user_class = 'none')
 
 /**
  *  @brief Calculates MIP range.
- *  
+ *
  *  @param[in] int $impulsion Techno impulsion (RI)
  *  @return int Range in system
  */
@@ -2072,7 +2072,7 @@ function ogame_missile_range($impulsion = 1)
 
 /**
  *  @brief Calculates MIP speed.
- *  
+ *
  *  @param[in] int $nb_system Number of sub-system from current planet
  *  @param[in] int $speed_uni Universe speed
  *  @return int Speed in seconds
@@ -2084,7 +2084,7 @@ function ogame_missile_speed($nb_system, $speed_uni = 1)
 
 /**
  *  @brief Calculates additional case given by terraformer.
- *  
+ *
  *  @param[in] int $level The terra level
  *  @return int Number of additional case
  */
