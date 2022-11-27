@@ -444,11 +444,11 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
 //*Cristal :
     $production_mine_base = floor( $prod_mine_C['C'] * ($user_building['C_percentage'] / 100) * $ratio );
 
-    $prod_off     = round( $production_mine_base * $bonus_off_geo) + round($production_mine_base * $bonus_off_full );
-    $prod_Plasma  = round( $production_mine_base * $user_technology['Plasma'] * $RESS_PLASMA_C );
-    $prod_booster = round( $production_mine_base * $user_building['booster_tab']['booster_c_val'] / 100 );
-    $prod_FOR     = round( $production_mine_base * $bonus_for['bonus'] * ($user_building['FOR_percentage'] / 100) );
-    $prod_classe  = round( $production_mine_base * $bonus_class );
+    $prod_off     = round($production_mine_base * $bonus_off_geo) + round($production_mine_base * $bonus_off_full);
+    $prod_Plasma  = round($production_mine_base * $user_technology['Plasma'] * $RESS_PLASMA_C);
+    $prod_booster = round($production_mine_base * $user_building['booster_tab']['booster_c_val'] / 100);
+    $prod_FOR     = round($production_mine_base * $bonus_for['bonus'] * ($user_building['FOR_percentage'] / 100));
+    $prod_classe  = round($production_mine_base * $bonus_class);
 
     $result['C'] = $prod_base['C'] + $production_mine_base + $prod_FOR + $prod_Plasma + $prod_booster + $prod_off + $prod_classe;
     $result['prod_off']['C']     = $prod_off;
