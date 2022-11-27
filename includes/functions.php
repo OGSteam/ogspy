@@ -657,7 +657,8 @@ function set_serverconfig()
            $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit,
            $pub_speed_uni, $pub_speed_fleet_peaceful, $pub_speed_fleet_war, $pub_speed_fleet_holding,
            $pub_ddr, $pub_astro_strict, $pub_donutSystem, $pub_donutGalaxy, $pub_config_cache, $pub_mod_cache,
-           $pub_mail_use, $pub_mail_smtp_use, $pub_mail_smtp_secure, $pub_mail_smtp_port, $pub_mail_smtp_host, $pub_mail_smtp_username, $pub_mail_smtp_password, $pub_enable_mail_smtp_password;
+           $pub_mail_use, $pub_mail_smtp_use, $pub_mail_smtp_secure, $pub_mail_smtp_port, $pub_mail_smtp_host,
+           $pub_mail_smtp_username, $pub_mail_smtp_password, $pub_enable_mail_smtp_password;
 
     //appel de la couche" Model"
     $Config_Model = new Config_Model();
