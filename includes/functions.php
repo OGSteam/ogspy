@@ -821,8 +821,8 @@ function set_serverconfig()
     }
     $Config_Model->update_one($pub_ally_protection, "ally_protection");
 
-    if ($pub_url_forum != "" && !preg_match("#[^http://]|[^https://]#", $pub_url_forum)) {
-        $pub_url_forum = "http://" . $pub_url_forum;
+    if ($pub_url_forum != "" && !preg_match("#[^https://]#", $pub_url_forum)) {
+        $pub_url_forum = "https://" . $pub_url_forum;
     }
     $Config_Model->update_one($pub_url_forum, "url_forum");
 
