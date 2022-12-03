@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInitfabe2773b4340eab1e0f4f4782b45d05
 {
     public static $prefixLengthsPsr4 = array (
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
         'O' => 
         array (
             'Ogsteam\\Ogspy\\Model\\' => 20,
@@ -17,6 +21,10 @@ class ComposerStaticInitfabe2773b4340eab1e0f4f4782b45d05
     );
 
     public static $prefixDirsPsr4 = array (
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
         'Ogsteam\\Ogspy\\Model\\' => 
         array (
             0 => __DIR__ . '/../..' . '/model',
@@ -35,11 +43,16 @@ class ComposerStaticInitfabe2773b4340eab1e0f4f4782b45d05
         ),
     );
 
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitfabe2773b4340eab1e0f4f4782b45d05::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitfabe2773b4340eab1e0f4f4782b45d05::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitfabe2773b4340eab1e0f4f4782b45d05::$classMap;
 
         }, null, ClassLoader::class);
     }

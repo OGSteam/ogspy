@@ -1,29 +1,32 @@
 {
-  "name" : "ogsteam/ogspy",
-  "description" : "OGSpy collects data from a game and provide statistics to their players",
-  "type" : "toolbox",
-  "keywords" : [ "ogspy" ],
-  "license" : "GPL-2.0-only",
-  "version" : "3.3.7",
-  "authors" : [
+  "name": "ogsteam/ogspy",
+  "description": "OGSpy collects data from a game and provide statistics to their players",
+  "type": "toolbox",
+  "keywords": [
+    "ogspy"
+  ],
+  "license": "GPL-2.0-only",
+  "version": "3.3.7",
+  "authors": [
     {
-      "name" : "DarkNoon",
-      "email" : "darknoon@darkcity.fr",
+      "name": "DarkNoon",
+      "email": "darknoon@darkcity.fr",
       "homepage": "https://github.com/darknoon29",
-      "role" : "Lead Developer"
+      "role": "Lead Developer"
     },
     {
-      "name" : "Machine",
+      "name": "Machine",
       "homepage": "https://github.com/machine62",
-      "role" : "Developer"
+      "role": "Developer"
     }
   ],
-  "require" : {
-    "php" : ">=7.3",
+  "require": {
+    "php": ">=8.0",
     "tooltipster/tooltipster": "4.2.*",
     "ext-mysqli": "*",
     "ext-json": "*",
-    "ext-zlib": "*"
+    "ext-zlib": "*",
+    "phpmailer/phpmailer": "^6.6"
   },
   "autoload": {
     "psr-4": {
@@ -33,11 +36,10 @@
       "Ogsteam\\Ogspy\\Model\\": "model/"
     }
   },
-  "homepage" : "https://github.com/ogsteam/ogspy",
+  "homepage": "https://github.com/ogsteam/ogspy",
   "support": {
     "issues": "https://github.com/ogsteam/ogspy/issues",
     "source": "https://github.com/ogsteam/ogspy/tree/master",
-    "chat" : "https://discord.gg/Azcb67b"
+    "chat": "https://discord.gg/Azcb67b"
   }
 }
-
