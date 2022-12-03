@@ -1,4 +1,5 @@
 <?php
+
 /**
  * OGSpy Log Functions
  * @package OGSpy
@@ -13,7 +14,7 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 global $ogspy_phperror;
-$ogspy_phperror = Array();
+$ogspy_phperror = array();
 /**
  * Function log_() to add a line to the Log File
  *
@@ -34,7 +35,7 @@ function log_($parameter, $option = 0)
     }
 
     switch ($parameter) {
-        /* ----------- Entrée Journal générique de Mod ----------- */
+            /* ----------- Entrée Journal générique de Mod ----------- */
         case 'mod':
             $line = "[$pub_action] " . $member . " ";
             if (is_array($option)) {
@@ -44,90 +45,90 @@ function log_($parameter, $option = 0)
             }
             break;
 
-        /* ----------- Administration ----------- */
-        case 'set_serverconfig' :
+            /* ----------- Administration ----------- */
+        case 'set_serverconfig':
             $line = "[admin] " . $member . " modifie les paramètres du serveur";
             break;
 
-        case 'set_server_view' :
+        case 'set_server_view':
             $line = "[admin] " . $member . " modifie les paramètres d'affichage du serveur";
             break;
 
-        case 'set_db_size' :
+        case 'set_db_size':
             $line = "[admin] " . $member . " modifie la taille de l'univers sa nouvelle taille est galaxy:" . $server_config['num_of_galaxies'] . " et system:" . $server_config['num_of_systems'];
             break;
 
-        case 'mod_install' :
+        case 'mod_install':
             $line = "[admin] " . $member . " installe le mod \"" . $option . "\"";
             break;
 
-        case 'mod_update' :
+        case 'mod_update':
             $line = "[admin] " . $member . " met à jour le mod \"" . $option . "\"";
             break;
 
-        case 'mod_uninstall' :
+        case 'mod_uninstall':
             $line = "[admin] " . $member . " désinstalle le mod \"" . $option . "\"";
             break;
 
-        case 'mod_active' :
+        case 'mod_active':
             $line = "[admin] " . $member . " active le mod \"" . $option . "\"";
             break;
 
-        case 'mod_disable' :
+        case 'mod_disable':
             $line = "[admin] " . $member . " désactive le mod \"" . $option . "\"";
             break;
 
-        case 'mod_order' :
+        case 'mod_order':
             $line = "[admin] " . $member . " repositionne le mod \"" . $option . "\"";
             break;
 
-        case 'mod_normal' :
+        case 'mod_normal':
             $line = "[admin] " . $member . " affiche le mod aux utilisateurs \"" . $option . "\"";
             break;
 
-        case 'mod_admin' :
+        case 'mod_admin':
             $line = "[admin] " . $member . " cache le mod aux utilisateurs \"" . $option . "\"";
             break;
 
-        /* ----------- Erreur gestion mod ----------- */
-        case 'mod_erreur_install_php' :
+            /* ----------- Erreur gestion mod ----------- */
+        case 'mod_erreur_install_php':
             $line = "[admin][mod_erreur] " . $member . " fichier mod/" . $option . "/install.php introuvable ";
             break;
 
-        case 'mod_erreur_install_txt' :
+        case 'mod_erreur_install_txt':
             $line = "[admin][mod_erreur] " . $member . " fichier mod/" . $option . "/version.txt introuvable ";
             break;
 
-        case 'mod_erreur_update' :
+        case 'mod_erreur_update':
             $line = "[admin][mod_erreur] " . $member . " fichier mod/" . $option . "/update.php introuvable ";
             break;
 
-        case 'mod_erreur_minuscule' :
+        case 'mod_erreur_minuscule':
             $line = "[admin][mod_erreur] " . $member . " dossier mod/" . $option . "/ n'est pas en minuscule ";
             break;
 
-        case 'mod_erreur_install_bis' :
+        case 'mod_erreur_install_bis':
             $line = "[admin][mod_erreur] " . $member . "  mod " . $option . " déjà installé ";
             break;
 
-        case 'mod_erreur_txt_warning' :
+        case 'mod_erreur_txt_warning':
             $line = "[admin][mod_erreur] " . $member . "  mod/" . $option . "/version.txt mal formé ";
             break;
 
-        case 'mod_erreur_txt_version' :
+        case 'mod_erreur_txt_version':
             $line = "[admin][mod_erreur] Le mod " . $option . " nécessite une version supérieure d'OGSpy";
             break;
 
-        /* ----------- Gestion systèmes solaires et rapports ----------- */
-        case 'load_system' :
+            /* ----------- Gestion systèmes solaires et rapports ----------- */
+        case 'load_system':
             $line = $member . " charge le système solaire " . $option[0] . ":" . $option[1];
             break;
 
-        case 'load_system_OGS' :
+        case 'load_system_OGS':
             $line = $member . " charge " . $option[0] . " planetes via OGS : " . $option[1] . " insertion(" . $option[1] . "), mise à jour(" . $option[2] . "), obsolète(" . $option[3] . "), échec(" . $option[4] . ") - " . $option[5] . " sec";
             break;
 
-        case 'get_system_OGS' :
+        case 'get_system_OGS':
             if ($option != 0) {
                 $line = $member . " récupère les planètes de la galaxie " . $option;
             } else {
@@ -135,27 +136,27 @@ function log_($parameter, $option = 0)
             }
             break;
 
-        case 'load_spy' :
+        case 'load_spy':
             $line = $member . " charge " . $option . " rapport(s) d'espionnage";
             break;
 
-        case 'load_spy_OGS' :
+        case 'load_spy_OGS':
             $line = $member . " charge " . $option . " rapport(s) d'espionnage via OGS";
             break;
 
-        case 'export_spy_sector' :
+        case 'export_spy_sector':
             list($nb_spy, $galaxy, $system) = $option;
             $line = $member . " récupère " . $nb_spy . " rapport(s) d'espionnage du système [" . $galaxy . ":" . $system . "]";
             break;
 
-        case 'export_spy_date' :
+        case 'export_spy_date':
             list($nb_spy, $timestamp) = $option;
-            $date = strftime("%d %b %Y %H:%M", $timestamp);
+            $date =  date("d F o G:i", $timestamp);
             $line = $member . " récupère " . $nb_spy . " rapport(s) d'espionnage postérieur au " . $date;
             break;
 
-        /* ----------- Gestion des erreurs ----------- */
-        case 'mysql_error' :
+            /* ----------- Gestion des erreurs ----------- */
+        case 'mysql_error':
             $line = 'Erreur critique mysql - Req : ' . $option[0] . ' - Erreur n°' . $option[1] . ' ' . $option[2];
             $i = 0;
             foreach ($option[3] as $l) {
@@ -170,80 +171,79 @@ function log_($parameter, $option = 0)
                         $line .= "\n";
                         $line .= "\t\t\t" . '[' . $j . '] => ' . $arg;
                         $j++;
-
                     }
                 }
                 $i++;
             }
             break;
 
-        /* ----------- Gestion des membres ----------- */
-        case 'login' :
+            /* ----------- Gestion des membres ----------- */
+        case 'login':
             $line = $member . " se connecte";
             break;
 
-        case 'login_ogs' :
+        case 'login_ogs':
             $line = $member . " se connecte via OGS";
             break;
 
-        case 'logout' :
+        case 'logout':
             $line = $member . " se déconnecte";
             break;
 
-        case 'modify_account' :
+        case 'modify_account':
             $line = $member . " change son profil";
             break;
 
-        case 'modify_account_admin' :
+        case 'modify_account_admin':
             $user_info = user_get($option);
             $line = "[admin] " . $member . " change le profil de " . $user_info[0]['user_name'];
             break;
 
-        case 'create_account' :
+        case 'create_account':
             $user_info = user_get($option);
             $line = "[admin] " . $member . " créé le compte de " . $user_info[0]['user_name'];
             break;
 
-        case 'regeneratepwd' :
+        case 'regeneratepwd':
             $user_info = user_get($option);
             $line = "[admin] " . $member . " génère un nouveau mot de passe pour " . $user_info[0]['user_name'];
             break;
 
-        case 'delete_account' :
+        case 'delete_account':
             $user_info = user_get($option);
             $line = "[admin] " . $member . " supprime le compte de " . $user_info[0]['user_name'];
             break;
 
-        case 'create_usergroup' :
+        case 'create_usergroup':
             $line = "[admin] " . $member . " créé le groupe " . $option;
             break;
 
-        case 'modify_usergroup' :
+        case 'modify_usergroup':
             $usergroup_info = usergroup_get($option);
             $line = "[admin] " . $member . " modifie les paramètres du groupe " . $usergroup_info["group_name"];
             break;
 
-        case 'delete_usergroup' :
+        case 'delete_usergroup':
             $usergroup_info = usergroup_get($option);
             $line = "[admin] " . $member . " supprime le groupe " . $usergroup_info["group_name"];
             break;
 
-        case 'add_usergroup' :
+        case 'add_usergroup':
             list($group_id, $user_id) = $option;
             $usergroup_info = usergroup_get($group_id);
             $user_info = user_get($user_id);
-            $line = "[admin] " . $member . " ajoute " . $user_info[0]["user_name"] . " dans le groupe " . $usergroup_info["group_name"]; ;
+            $line = "[admin] " . $member . " ajoute " . $user_info[0]["user_name"] . " dans le groupe " . $usergroup_info["group_name"];;
             break;
 
-        case 'del_usergroup' :
+        case 'del_usergroup':
             list($group_id, $user_id) = $option;
             $usergroup_info = usergroup_get($group_id);
             $user_info = user_get($user_id);
-            $line = "[admin] " . $member . " supprime " . $user_info[0]["user_name"] . " du groupe " . $usergroup_info["group_name"]; ;
+            $line = "[admin] " . $member . " supprime " . $user_info[0]["user_name"] . " du groupe " . $usergroup_info["group_name"];;
             break;
 
-        /* ----------- Classement ----------- */
-        case 'load_rank' :
+            /* ----------- Classement ----------- */
+        case 'load_rank':
             list($support, $typerank, $typerank2, $timestamp, $countrank) = $option;
             switch ($support) {
                 case "OGS":
@@ -272,13 +272,13 @@ function log_($parameter, $option = 0)
                     $typerank2 = "alliance";
                     break;
             }
-            $date = strftime("%d %b %Y %Hh", $timestamp);
+            $date =  date("d F o G:i", $timestamp);
             $line = $member . " envoie le classement " . $typerank . " " . $typerank2 . " du " . $date . " via " . $support . " [" . $countrank . " lignes]";
             break;
 
-        case 'get_rank' :
+        case 'get_rank':
             list($typerank, $timestamp) = $option;
-            $date = strftime("%d %b %Y %H:%M", $timestamp);
+            $date =  date("d F o G:i", $timestamp);
             switch ($typerank) {
                 case "points":
                     $typerank = "général";
@@ -293,40 +293,37 @@ function log_($parameter, $option = 0)
             $line = $member . " récupère le classement " . $typerank . " du " . $date;
             break;
 
-        /* ----------- cache ----------- */
-        case 'erreur_config_cache' :
+            /* ----------- cache ----------- */
+        case 'erreur_config_cache':
             $line = $member . " Impossible d écrire sur le fichier donfig_cache. Vérifier les droits d acces au dossier  \'cache\' ";
             break;
 
-        case 'erreur_mod_cache' :
+        case 'erreur_mod_cache':
             $line = $member . " Impossible d écrire sur le fichier mod_cache. Vérifier les droits d acces au dossier  \'cache\' ";
             break;
 
-        /* ----------- cache ----------- */
+            /* ----------- cache ----------- */
 
-        /* ----------- Mail ----------- */
-        case 'Mail' :
-            $line = "[mail] ". $option ;
+            /* ----------- Mail ----------- */
+        case 'Mail':
+            $line = "[mail] " . $option;
             break;
 
-        /* ----------- Mail ----------- */
-
-
-
-        case 'key' :
+            /* ----------- Mail ----------- */
+        case 'key':
             $line = $member . " Impossible de retrouver le fichier key.php. Vérifier les droits d acces au dossier  \'parameters\' ";
             break;
 
-        /* ----------------------------------------- */
+            /* ----------------------------------------- */
 
-        case 'check_var' :
+        case 'check_var':
             $line = $member . " envoie des données refusées par le contrôleur : " . $option[0] . " - " . $option[1];
             break;
 
-        case 'debug' :
+        case 'debug':
             $line = 'DEBUG : ' . $option;
             break;
-        case 'php_error' :
+        case 'php_error':
             $option[0] = FriendlyErrorType($option[0]);
             $line = "[PHP-ERROR] " . $option[0] . " - " . $option[1];
             if (isset($option[2])) {
@@ -344,14 +341,13 @@ function log_($parameter, $option = 0)
     }
 
     $fichier = "log_" . date("ymd") . '.log';
-    $line = "/*" . date("d/m/Y H:i:s") . '*/ ' . $line;
+    $line = "/*" . date("d/m/Y H:i") . '*/ ' . $line;
     write_file(PATH_LOG_TODAY . $fichier, "a", $line);
 }
 
 function FriendlyErrorType($type)
 {
-    switch($type)
-    {
+    switch ($type) {
         case E_ERROR: // 1 //
             return 'E_ERROR';
         case E_WARNING: // 2 //
@@ -397,10 +393,10 @@ function FriendlyErrorType($type)
 function ogspy_error_handler($code, $message, $file, $line)
 {
     global $ogspy_phperror;
-    
-    $option = Array($code, $message, $file, $line);
+
+    $option = array($code, $message, $file, $line);
     $option[0] = FriendlyErrorType($code);
-    log_("php_error", Array($code, $message, $file, $line));
+    log_("php_error", array($code, $message, $file, $line));
     $line = "[PHP-ERROR] " . $option[0] . " - " . $option[1];
     if (isset($option[2])) {
         $line .= " ; Fichier: " . $option[2];
@@ -447,11 +443,11 @@ function log_size_info()
     $bytes = array('Octets', 'Ko', 'Mo', 'Go', 'To');
 
     if ($logSize < 1024) {
-            $logSize = 1;
+        $logSize = 1;
     }
 
     for ($i = 0; $logSize > 1024; $i++) {
-            $logSize /= 1024;
+        $logSize /= 1024;
     }
 
     $log_size_info['size'] = round($logSize, 2);
@@ -468,7 +464,7 @@ function log_size_info()
 function log_check_exist($date)
 {
     if (!isset($date)) {
-            redirection("index.php?action=message&id_message=errorfatal&info");
+        redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
     $typelog = array("sql", "log", "txt");
@@ -480,7 +476,7 @@ function log_check_exist($date)
     while ($file = readdir($path)) {
         if ($file != "." && $file != "..") {
             if (is_dir($root . $file) && preg_match("/^" . $date . "/", $file)) {
-                            $directories[] = $file;
+                $directories[] = $file;
             }
         }
     }
@@ -524,7 +520,7 @@ function log_extractor()
     }
 
     if (!isset($pub_date)) {
-            redirection("index.php?action=message&id_message=errorfatal&info");
+        redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
     $typelog = array("sql", "log", "txt");
@@ -538,7 +534,7 @@ function log_extractor()
     while ($file = readdir($path)) {
         if ($file != "." && $file != "..") {
             if (is_dir($root . $file) && preg_match("/^" . $pub_date . "/", $file)) {
-                            $directories[] = $file;
+                $directories[] = $file;
             }
         }
     }
@@ -599,7 +595,7 @@ function log_remove()
     global $pub_date, $user_data, $pub_directory;
 
     if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
-            redirection("index.php?action=message&id_message=forbidden&info");
+        redirection("index.php?action=message&id_message=forbidden&info");
     }
 
     if ($pub_directory == true) {

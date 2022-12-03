@@ -178,7 +178,7 @@ require_once("views/page_header.php");
             $timestamp = intval($v["timestamp"]);
             $poster = "&nbsp;";
             if ($timestamp != 0) {
-                $timestamp = strftime("%d %b %Y %H:%M", $timestamp);
+                $timestamp =  date("d F o G:i", $timestamp);
                 $poster = $timestamp . " - " . $v["poster"];
             }
 
@@ -196,7 +196,7 @@ require_once("views/page_header.php");
 
                 $individual_ranking = galaxy_show_ranking_unique_ally($ally);
                 while ($ranking = current($individual_ranking)) {
-                    $datadate = strftime("%d %b %Y %H:%M", key($individual_ranking));
+                    $datadate =  date("d F o G:i", key($individual_ranking));
                     $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
                     $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
                     $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : "&nbsp;";
@@ -247,7 +247,7 @@ require_once("views/page_header.php");
 
                 $individual_ranking = galaxy_show_ranking_unique_player($player);
                 while ($ranking = current($individual_ranking)) {
-                    $datadate = strftime("%d %b %Y %H:%M", key($individual_ranking));
+                    $datadate =  date("d F o G:i", key($individual_ranking));
                     $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
                     $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
                     $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : "&nbsp;";
@@ -405,7 +405,7 @@ require_once("views/page_header.php");
                 $tooltip = "<table width=\"250\" style=\"color:white;\">";
                 $tooltip .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">" . $lang['GALAXY_PLAYER'] . " " . $value["player"] . "</td></tr>";
                 while ($ranking = current($individual_ranking)) {
-                    $datadate = strftime("%d %b %Y à %Hh", key($individual_ranking));
+                    $datadate =  date("d F o G:i", key($individual_ranking));
                     $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
                     $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
                     $fleet_rank = isset($ranking["fleet"]) ? formate_number($ranking["fleet"]["rank"]) : "&nbsp;";

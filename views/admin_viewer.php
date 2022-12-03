@@ -63,7 +63,7 @@ if (file_exists($file)) {
     $log = array($lang['ADMIN_LOGS_NOLOGS']);
 }
 
-echo "<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] . strftime("%d %b %Y", mktime(0, 0, 0, $show_month, $show_day, $show_year)) . "</a>";
+echo "<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0, 0, $show_month, $show_day, $show_year)) . "</a>";
 ?>
 
 <table width="100%">

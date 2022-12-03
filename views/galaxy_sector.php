@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Affichage Galaxie Sector
  * @package OGSpy
@@ -50,7 +51,7 @@ for ($lines = 0; $lines < ceil($totalsystem / 5); $lines++) {
     for ($cols = $system; $cols < $system + 5; $cols++) {
         $last_update = "&nbsp;";
         if (isset($population[$cols]["last_update"])) {
-            $last_update = strftime("%d %b %Y %H:%M", $population[$cols]["last_update"]);
+            $last_update =  date("d F o G:i", $population[$cols]["last_update"]);
         }
 
         echo "\t" . "<td valign='top'>" . "\n";

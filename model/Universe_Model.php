@@ -372,7 +372,7 @@ class Universe_Model extends Model_Abstract
     }
 
 
-    public function find(SearchCriteria_Helper $criteria, array $order_by = array(), $start, $number = 30)
+    public function find(SearchCriteria_Helper $criteria, array $order_by = array(), $start = 0, $number = 30)
     {
         $start = (int)$start;
         $number = (int)$number;

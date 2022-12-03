@@ -132,7 +132,7 @@ if ($since >= 56) {
                     echo "<tr>";
                 }
                 if ($value["last_update"] != 0) {
-                    $date = strftime("%d %b %Y %H:%M", $value["last_update"]);
+                    $date =  date("d F o G:i", $value["last_update"]);
                 } else {
                     $date = "-";
                 }
@@ -188,7 +188,7 @@ if ($since >= 42) {
                     echo "</tr>" . "\n";
                     echo "<tr>";
                 }
-                $date = strftime("%d %b %Y %H:%M", $value["last_update"]);
+                $date =  date("d F o G:i", $value["last_update"]);
                 $color = $i & 1 ? "magenta" : "lime";
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
@@ -241,7 +241,7 @@ if ($since >= 28) {
                     echo "</tr>" . "\n";
                     echo "<tr>";
                 }
-                $date = strftime("%d %b %Y %H:%M", $value["last_update"]);
+                $date =  date("d F o G:i", $value["last_update"]);
                 $color = $i & 1 ? "magenta" : "lime";
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
@@ -294,18 +294,18 @@ if ($since >= 21) {
                     echo "</tr>" . "\n";
                     echo "<tr>";
                 }
-                $date = strftime("%d %b %Y %H:%M", $value["last_update"]);
+                $date =  date("d F o G:i", $value["last_update"]);
                 $color = $i & 1 ? "magenta" : "lime";
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
                 if ($typesearch == "M") {
                     $coordinates .= ":" . $value["row"];
                 }
-                echo "<th><span style=\"color:" . $color . "\">" . $coordinates . "</font></th><th><span style=\"color:" . $color . "\">" . $date . "</font></th>";
+                echo "<th><span style=\"color:" . $color . "\">" . $coordinates . "</span></th><th><span style=\"color:" . $color . "\">" . $date . "</span></th>";
                 $i++;
 
                 if ($index == 50) {
-                    echo "<th colspan='4'><span style=\"color: orange; \"><font color='orange'><i>" . $lang['GALAXY_OLD_LIMITED_50SYSTEMS'] . "</i></font></span></th>";
+                    echo "<th colspan='4'><span style=\"color: orange; \"><i>" . $lang['GALAXY_OLD_LIMITED_50SYSTEMS'] . "</i></span></th>";
                     $i = 4;
                     break;
                 }
@@ -324,17 +324,17 @@ if ($since >= 14) {
     ?>
     <table>
         <tr>
-            <td class="c" colspan="8"><?php echo($lang['GALAXY_OLD_OLDERTHAN_2WEEKS']); ?></td>
+            <td class="c" colspan="8"><?php echo $lang['GALAXY_OLD_OLDERTHAN_2WEEKS']; ?></td>
         </tr>
         <tr>
-            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-            <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+            <td class="c" width="110"><?php echo $lang['GALAXY_OLD_SOLAR_SYSTEM']; ?></td>
+            <td class="c" width="110"><?php echo $lang['GALAXY_OLD_LAST_UPDATE']; ?></td>
+            <td class="c" width="110"><?php echo $lang['GALAXY_OLD_SOLAR_SYSTEM']; ?></td>
+            <td class="c" width="110"><?php echo $lang['GALAXY_OLD_LAST_UPDATE']; ?></td>
+            <td class="c" width="110"><?php echo $lang['GALAXY_OLD_SOLAR_SYSTEM']; ?></td>
+            <td class="c" width="110"><?php echo $lang['GALAXY_OLD_LAST_UPDATE']; ?></td>
+            <td class="c" width="110"><?php echo $lang['GALAXY_OLD_SOLAR_SYSTEM']; ?></td>
+            <td class="c" width="110"><?php echo $lang['GALAXY_OLD_LAST_UPDATE']; ?></td>
         </tr>
         <?php
         if (isset($obsolete_listing[14])) {
@@ -347,7 +347,7 @@ if ($since >= 14) {
                     echo "</tr>" . "\n";
                     echo "<tr>";
                 }
-                $date = strftime("%d %b %Y %H:%M", $value["last_update"]);
+                $date =  date("d F o G:i", $value["last_update"]);
                 $color = $i & 1 ? "magenta" : "lime";
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];
@@ -376,9 +376,9 @@ if ($since >= 14) {
 if ($since >= 7) {
     ?>
     <table>
-        <tr>
+        <th>
             <td class="c" colspan="8"><?php echo($lang['GALAXY_OLD_OLDERTHAN_1WEEKS']); ?></td>
-        </tr>
+        </th>
         <tr>
             <td class="c" width="110"><?php echo($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
             <td class="c" width="110"><?php echo($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
@@ -400,7 +400,7 @@ if ($since >= 7) {
                     echo "</tr>" . "\n";
                     echo "<tr>";
                 }
-                $date = strftime("%d %b %Y %H:%M", $value["last_update"]);
+                $date =  date("d F o G:i", $value["last_update"]);
                 $color = $i & 1 ? "magenta" : "lime";
 
                 $coordinates = $value["galaxy"] . ":" . $value["system"];

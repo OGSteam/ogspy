@@ -176,13 +176,13 @@ $usergroup_list = usergroup_get();
                 <?php $user_id = $v["user_id"];?>
                 <?php $name = $v["user_name"]; ?>
                 <?php $email = $v["user_email"]; ?>
-                <?php $reg_date = strftime("%d %b %Y %H:%M", $v["user_regdate"]); ?>
+                <?php $reg_date =  date("d F o G:i", $v["user_regdate"]); ?>
                 <?php $active_off = !$v["user_active"] ? " selected" : ""; ?>
                 <?php $user_coadmin_off = (!$v["user_coadmin"] && !$v["user_admin"]) ? " selected" : ""; ?>
                 <?php $management_user_off = (!$v["management_user"] && !$v["user_admin"]) ? " selected" : ""; ?>
                 <?php $management_ranking_off = (!$v["management_ranking"] && !$v["user_admin"]) ? " selected" : ""; ?>
                 <?php if ($v["user_lastvisit"] != 0): ?>
-                    <?php $last_visit = strftime("%d %b %Y %H:%M", $v["user_lastvisit"]); ?>
+                    <?php $last_visit =  date("d F o G:i", $v["user_lastvisit"]); ?>
                 <?php else : ?>
                     <?php $last_visit = "--"; ?>
                 <?php endif; ?>
