@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fichier de configuration communes
  * @package OGSpy
@@ -27,7 +28,7 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     define("TABLE_SESSIONS", $table_prefix . "sessions");
     define("TABLE_STATISTIC", $table_prefix . "statistics");
     define("TABLE_USER", $table_prefix . "user");
-    define("TABLE_USER_TOKEN", $table_prefix. "user_tokens");
+    define("TABLE_USER_TOKEN", $table_prefix . "user_tokens");
     define("TABLE_USER_FAVORITE", $table_prefix . "user_favorite");
     define("TABLE_USER_GROUP", $table_prefix . "user_group");
 
@@ -88,7 +89,7 @@ if (!defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS") && !defin
 $path_log_today = PATH_LOG . date("ymd") . "/";
 if (!is_dir($path_log_today)) {
     mkdir($path_log_today);
-    chmod($path_log_today, 0777);
+    chmod($path_log_today, 0640);
     fclose(fopen("$path_log_today/index.htm", "a"));
 }
 define("PATH_LOG_TODAY", PATH_LOG . date("ymd") . "/");
