@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Main file which do includes et set up all data for the application
  * @package OGSpy
@@ -14,36 +15,36 @@ if (!defined('IN_SPYOGAME')) {
 
 //Récupération des paramètres de connexion à la base de données
 if (file_exists("parameters/id.php")) {
-    require_once ("parameters/id.php");
+    require_once("parameters/id.php");
 } else {
     if (!defined("OGSPY_INSTALLED") && !defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS")) {
         header("Location: install/index.php?lang=fr");
         exit();
     } elseif (file_exists('../parameters/id.php')) {
-            require_once ('../parameters/id.php');
+        require_once('../parameters/id.php');
     }
-    }
+}
 
 //Appel des fonctions
 require __DIR__ . '/vendor/autoload.php';
 
-require_once ("includes/config.php");
-require_once ("includes/admin_functions.php");
-require_once ("includes/functions.php");
-require_once ("includes/mysql.php");
-require_once ("includes/log.php");
-require_once ("includes/galaxy.php");
-require_once ("includes/user.php");
-require_once ("includes/sessions.php");
-require_once ("includes/help.php");
-require_once ("includes/mod.php");
-require_once ("includes/ogame.php");
-require_once ("includes/cache.php");
-require_once ("includes/chart_js.php");
+require_once("includes/config.php");
+require_once("includes/admin_functions.php");
+require_once("includes/functions.php");
+require_once("includes/mysql.php");
+require_once("includes/log.php");
+require_once("includes/galaxy.php");
+require_once("includes/user.php");
+require_once("includes/sessions.php");
+require_once("includes/help.php");
+require_once("includes/mod.php");
+require_once("includes/ogame.php");
+require_once("includes/cache.php");
+require_once("includes/chart_js.php");
 
-if (defined("OGSPY_INSTALLED")){
-    require_once ("includes/mail.php");
-    require_once ("includes/token.php");
+if (defined("OGSPY_INSTALLED")) {
+    require_once("includes/mail.php");
+    require_once("includes/token.php");
 }
 
 //Récupération des valeur GET, POST, COOKIE
@@ -69,19 +70,19 @@ if (!isset($ui_lang)) { // Checks the ui_lang value from parameters file
     if (isset($pub_lang)) {
         $ui_lang = $pub_lang; //This value is used during installation
     } else {
-            $ui_lang = "fr";
+        $ui_lang = "fr";
     }
     //If no language is available in id.php file we take fr by default
 }
-require_once ("lang/lang_main.php");
+require_once("lang/lang_main.php");
 
 // ajout fichier clef unique
 if (!defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS")) {
-if (file_exists('parameters/key.php')) {
-    require_once ('parameters/key.php');
-} else {
-    generate_key();
-}
+    if (file_exists('parameters/key.php')) {
+        require_once('parameters/key.php');
+    } else {
+        generate_key();
+    }
 }
 
 //Connexion à la base de donnnées
@@ -113,4 +114,3 @@ if (!isset($server_config["log_phperror"])) {
 if ($server_config["log_phperror"] == 1) {
     set_error_handler('ogspy_error_handler');
 }
-

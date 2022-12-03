@@ -5,7 +5,7 @@
 Le projet crée en 2006 est une aide pour un jeu de gestion de vaisseaux spatiaux.
 Le but de cet outil est de récupérer l'ensemble des informations du Jeu pour ensuite les regrouper et les exploiter.
 
-Visitez notre forum [OGSteam.fr](https://forum.ogsteam.eu) pour en savoir plus.
+Visitez notre forum [OGSteam.eu](https://forum.ogsteam.eu) pour en savoir plus.
 
 ---
 
