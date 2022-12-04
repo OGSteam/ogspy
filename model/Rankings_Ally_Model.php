@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Database Model
  *
@@ -32,11 +33,11 @@ class Rankings_Ally_Model extends Rankings_Model
      */
     public function get_all_ranktable_byally($allyName)
     {
-        $ally_name=$this->db->sql_escape_string($allyName);
+        $ally_name = $this->db->sql_escape_string($allyName);
 
 
-        $request  = "SELECT  general.datadate, general.rank, general.ally, general.number_member, general.rank, general.points, eco.rank, 
-        eco.points, techno.rank, techno.points, military.rank, military.points, military_b.rank, military_b.points, military_l.rank, 
+        $request  = "SELECT  general.datadate, general.rank, general.ally, general.number_member, general.rank, general.points, eco.rank,
+        eco.points, techno.rank, techno.points, military.rank, military.points, military_b.rank, military_b.points, military_l.rank,
         military_l.points, military_d.rank, military_d.points, honnor.rank, honnor.points";
 
         $request .= " FROM `" . TABLE_RANK_ALLY_POINTS . "` AS general";
@@ -68,25 +69,25 @@ class Rankings_Ally_Model extends Rankings_Model
             $ranking_content[$row]['general_pts_mb'] = (int) ($general_pts / $member);
             $ranking_content[$row]['eco_rank'] = $eco_rank;
             $ranking_content[$row]['eco_pts'] = $eco_pts;
-            $ranking_content[$row]['eco_pts_mb'] = (is_numeric($eco_pts)) ? (int) ($eco_pts / $member) : null; ;
+            $ranking_content[$row]['eco_pts_mb'] = (is_numeric($eco_pts)) ? (int) ($eco_pts / $member) : null;;
             $ranking_content[$row]['tech_rank'] = $tech_rank;
             $ranking_content[$row]['tech_pts'] = $tech_pts;
-            $ranking_content[$row]['tech_pts_mb'] = (is_numeric($tech_pts)) ? (int) ($tech_pts / $member) : null; ;
+            $ranking_content[$row]['tech_pts_mb'] = (is_numeric($tech_pts)) ? (int) ($tech_pts / $member) : null;;
             $ranking_content[$row]['mil_rank'] = $mil_rank;
             $ranking_content[$row]['mil_pts'] = $mil_pts;
-            $ranking_content[$row]['mil_pts_mb'] = (is_numeric($mil_pts)) ? (int) ($tech_pts / $member) : null; ;
+            $ranking_content[$row]['mil_pts_mb'] = (is_numeric($mil_pts)) ? (int) ($tech_pts / $member) : null;;
             $ranking_content[$row]['milb_rank'] = $milb_rank;
             $ranking_content[$row]['milb_pts'] = $milb_pts;
-            $ranking_content[$row]['milb_pts_mb'] = (is_numeric($milb_pts)) ? (int) ($tech_pts / $member) : null; ;
+            $ranking_content[$row]['milb_pts_mb'] = (is_numeric($milb_pts)) ? (int) ($tech_pts / $member) : null;;
             $ranking_content[$row]['mill_rank'] = $mill_rank;
             $ranking_content[$row]['mill_pts'] = $mill_pts;
-            $ranking_content[$row]['mill_pts_mb'] = (is_numeric($mill_pts)) ? (int) ($tech_pts / $member) : null; ;
+            $ranking_content[$row]['mill_pts_mb'] = (is_numeric($mill_pts)) ? (int) ($tech_pts / $member) : null;;
             $ranking_content[$row]['mild_rank'] = $mild_rank;
             $ranking_content[$row]['mild_pts'] = $mild_pts;
-            $ranking_content[$row]['mild_pts_mb'] = (is_numeric($mild_pts)) ? (int) ($mild_pts / $member) : null; ;
+            $ranking_content[$row]['mild_pts_mb'] = (is_numeric($mild_pts)) ? (int) ($mild_pts / $member) : null;;
             $ranking_content[$row]['milh_rank'] = $milh_rank;
             $ranking_content[$row]['milh_pts'] = $milh_pts;
-            $ranking_content[$row]['milh_pts_mb'] = (is_numeric($milh_pts)) ? (int) ($milh_pts / $member) : null; ;
+            $ranking_content[$row]['milh_pts_mb'] = (is_numeric($milh_pts)) ? (int) ($milh_pts / $member) : null;;
             $row++;
         }
 
@@ -104,20 +105,20 @@ class Rankings_Ally_Model extends Rankings_Model
      * @return array
      * todo fonction ecrrite pour 3.4 modification page view necessaire pour usage ...
      */
-    public function get_all_ranktable_bydate($datadate, $higher_rank = 1, $lower_rank = 100 , $ref = "general")
+    public function get_all_ranktable_bydate($datadate, $higher_rank = 1, $lower_rank = 100, $ref = "general")
     {
-        $datadate=(int)$datadate;
-        $higher_rank=(int)$higher_rank;
-        $lower_rank=(int)$lower_rank;
-        $ref=$this->db->sql_escape_string($ref);
+        $datadate = (int)$datadate;
+        $higher_rank = (int)$higher_rank;
+        $lower_rank = (int)$lower_rank;
+        $ref = $this->db->sql_escape_string($ref);
 
 
         if (!in_array($ref, $this->rank_table_ref)) {
             $ref = "general";
         }
 
-        $request  = "SELECT " . $ref . ".rank, general.ally, general.number_member, general.rank, general.points, eco.rank, 
-        eco.points, techno.rank, techno.points, military.rank, military.points, military_b.rank, military_b.points, military_l.rank, 
+        $request  = "SELECT " . $ref . ".rank, general.ally, general.number_member, general.rank, general.points, eco.rank,
+        eco.points, techno.rank, techno.points, military.rank, military.points, military_b.rank, military_b.points, military_l.rank,
         military_l.points, military_d.rank, military_d.points, honnor.rank, honnor.points";
 
         $request .= " FROM `" . TABLE_RANK_ALLY_POINTS . "` AS general";
@@ -148,28 +149,27 @@ class Rankings_Ally_Model extends Rankings_Model
             $ranking_content[$row]['general_pts_mb'] = (int) ($general_pts / $member);
             $ranking_content[$row]['eco_rank'] = $eco_rank;
             $ranking_content[$row]['eco_pts'] = $eco_pts;
-            $ranking_content[$row]['eco_pts_mb'] = (is_numeric($eco_pts)) ? (int) ($eco_pts / $member) : null; ;
+            $ranking_content[$row]['eco_pts_mb'] = (is_numeric($eco_pts)) ? (int) ($eco_pts / $member) : null;;
             $ranking_content[$row]['tech_rank'] = $tech_rank;
             $ranking_content[$row]['tech_pts'] = $tech_pts;
-            $ranking_content[$row]['tech_pts_mb'] = (is_numeric($tech_pts)) ? (int) ($tech_pts / $member) : null; ;
+            $ranking_content[$row]['tech_pts_mb'] = (is_numeric($tech_pts)) ? (int) ($tech_pts / $member) : null;;
             $ranking_content[$row]['mil_rank'] = $mil_rank;
             $ranking_content[$row]['mil_pts'] = $mil_pts;
-            $ranking_content[$row]['mil_pts_mb'] = (is_numeric($mil_pts)) ? (int) ($tech_pts / $member) : null; ;
+            $ranking_content[$row]['mil_pts_mb'] = (is_numeric($mil_pts)) ? (int) ($tech_pts / $member) : null;;
             $ranking_content[$row]['milb_rank'] = $milb_rank;
             $ranking_content[$row]['milb_pts'] = $milb_pts;
-            $ranking_content[$row]['milb_pts_mb'] = (is_numeric($milb_pts)) ? (int) ($tech_pts / $member) : null; ;
+            $ranking_content[$row]['milb_pts_mb'] = (is_numeric($milb_pts)) ? (int) ($tech_pts / $member) : null;;
             $ranking_content[$row]['mill_rank'] = $mill_rank;
             $ranking_content[$row]['mill_pts'] = $mill_pts;
-            $ranking_content[$row]['mill_pts_mb'] = (is_numeric($mill_pts)) ? (int) ($tech_pts / $member) : null; ;
+            $ranking_content[$row]['mill_pts_mb'] = (is_numeric($mill_pts)) ? (int) ($tech_pts / $member) : null;;
             $ranking_content[$row]['mild_rank'] = $mild_rank;
             $ranking_content[$row]['mild_pts'] = $mild_pts;
-            $ranking_content[$row]['mild_pts_mb'] = (is_numeric($mild_pts)) ? (int) ($mild_pts / $member) : null; ;
+            $ranking_content[$row]['mild_pts_mb'] = (is_numeric($mild_pts)) ? (int) ($mild_pts / $member) : null;;
             $ranking_content[$row]['milh_rank'] = $milh_rank;
             $ranking_content[$row]['milh_pts'] = $milh_pts;
-            $ranking_content[$row]['milh_pts_mb'] = (is_numeric($milh_pts)) ? (int) ($milh_pts / $member) : null; ;
+            $ranking_content[$row]['milh_pts_mb'] = (is_numeric($milh_pts)) ? (int) ($milh_pts / $member) : null;;
             $row++;
         }
         return $ranking_content;
     }
-
 }

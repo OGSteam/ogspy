@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Database Model
  *
@@ -23,7 +24,6 @@ class Rankings_Player_Model extends Rankings_Model
         $this->rank_tables = array(TABLE_RANK_PLAYER_POINTS, TABLE_RANK_PLAYER_ECO, TABLE_RANK_PLAYER_TECHNOLOGY, TABLE_RANK_PLAYER_MILITARY, TABLE_RANK_PLAYER_MILITARY_BUILT, TABLE_RANK_PLAYER_MILITARY_LOOSE, TABLE_RANK_PLAYER_MILITARY_DESTRUCT, TABLE_RANK_PLAYER_HONOR);
         $this->rank_tables_sql_table = array("rank", "player", "ally", "points");
         $this->rank_table_ref = array('general', 'eco', 'techno', 'military', 'military_b', 'military_l', 'military_d', 'honnor');
-
     }
 
     /**
@@ -34,10 +34,10 @@ class Rankings_Player_Model extends Rankings_Model
      */
     public function get_all_ranktable_bydate($datadate, $higher_rank = 1, $lower_rank = 100, $ref = "general")
     {
-        $datadate=(int)$datadate;
-        $higher_rank=(int)$higher_rank;
-        $lower_rank=(int)$lower_rank;
-        $ref=$this->db->sql_escape_string($ref);
+        $datadate = (int)$datadate;
+        $higher_rank = (int)$higher_rank;
+        $lower_rank = (int)$lower_rank;
+        $ref = $this->db->sql_escape_string($ref);
 
 
         if (!in_array($ref, $this->rank_table_ref)) {
@@ -156,6 +156,4 @@ class Rankings_Player_Model extends Rankings_Model
 
         return $ranking_content;
     }
-
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Database Model
  *
@@ -23,10 +24,10 @@ class Universe_Model extends Model_Abstract
      */
     public function update(array $planet)
     {
-        $query = 'UPDATE ' . TABLE_UNIVERSE . ' 
-                  SET `name` = "' . quote($this->db->sql_escape_string($planet['planet_name'])) . '",
-                      `player` = "' . quote($this->db->sql_escape_string($planet['player_name'])) . '",
-                      `ally` = "' . quote($this->db->sql_escape_string($planet['ally_tag'])) . '",
+        $query = 'UPDATE ' . TABLE_UNIVERSE . '
+                  SET `name` = "' . $this->db->sql_escape_string($planet['planet_name']) . '",
+                      `player` = "' . $this->db->sql_escape_string($planet['player_name']) . '",
+                      `ally` = "' . $this->db->sql_escape_string($planet['ally_tag']) . '",
                       `status` = "' . $this->db->sql_escape_string($planet['status']) . '",
                       `moon` = "' . $this->db->sql_escape_string($planet['moon']) . '",
                       `last_update` = ' . (int)$planet['last_update'] . ',
@@ -46,14 +47,14 @@ class Universe_Model extends Model_Abstract
         $query = 'INSERT INTO ' . TABLE_UNIVERSE . ' (`galaxy`, `system`, `row`, `name`, `player`, `ally`, `status`, `last_update`, `last_update_user_id`, `moon`)
                          VALUES (' . (int)$planet['galaxy'] . ',
                                  ' . (int)$planet['system'] . ',
-                                 ' . (int)$planet['row'] . ', 
-                                 "' . quote($this->db->sql_escape_string($planet['planet_name'])) . '",
-                                 "' . quote($this->db->sql_escape_string($planet['player_name'])) . '", 
-                                 "' . quote($this->db->sql_escape_string($planet['ally_tag'])) . '", 
-                                 "' . $this->db->sql_escape_string($planet['status']) . '", 
-                                 ' . (int)$planet['last_update'] . ', 
-                                 ' . (int)$planet['last_update_user_id'] . ', 
-                                 "' . $this->db->sql_escape_string(quote($planet['moon'])) . '")';
+                                 ' . (int)$planet['row'] . ',
+                                 "' . $this->db->sql_escape_string($planet['planet_name']) . '",
+                                 "' . $this->db->sql_escape_string($planet['player_name']) . '",
+                                 "' . $this->db->sql_escape_string($planet['ally_tag']) . '",
+                                 "' . $this->db->sql_escape_string($planet['status']) . '",
+                                 ' . (int)$planet['last_update'] . ',
+                                 ' . (int)$planet['last_update_user_id'] . ',
+                                 "' . $this->db->sql_escape_string($planet['moon']) . '")';
         $this->db->sql_query($query);
     }
 
@@ -85,17 +86,18 @@ class Universe_Model extends Model_Abstract
         $system_up = (int)$system_up;
 
         $request = "SELECT `galaxy`, `system`, `row`, `name`, `ally`, `player`, `moon`, `phalanx`, `gate`, `last_update_moon`, `status`, last_update, user_name
-                    FROM " . TABLE_UNIVERSE . " 
-                        LEFT JOIN " . TABLE_USER . " 
+                    FROM " . TABLE_UNIVERSE . "
+                        LEFT JOIN " . TABLE_USER . "
                             ON `user_id` = `last_update_user_id`
-                    WHERE `galaxy` = $galaxy AND `system` BETWEEN $system_down AND $system_up 
+                    WHERE `galaxy` = $galaxy AND `system` BETWEEN $system_down AND $system_up
                     ORDER BY `system`, `row`";
         $result = $this->db->sql_query($request);
 
         $population = array();
         for ($system = $system_down; $system <= $system_up; $system++) {
             foreach (range(1, 15) as $row) {
-                $population[$system][$row] = array("galaxy" => $galaxy,
+                $population[$system][$row] = array(
+                    "galaxy" => $galaxy,
                     "system" => $system,
                     "row" => $row,
                     "ally" => "",
@@ -107,7 +109,8 @@ class Universe_Model extends Model_Abstract
                     "planet" => "",
                     "status" => "",
                     "timestamp" => "",
-                    "poster" => "");
+                    "poster" => ""
+                );
             }
         }
 
@@ -307,14 +310,16 @@ class Universe_Model extends Model_Abstract
         $data = array();
         //Construction liste phalanges
         while ($row = $this->db->sql_fetch_assoc($result)) {
-            $data[] = array('galaxy' => $row["galaxy"],
+            $data[] = array(
+                'galaxy' => $row["galaxy"],
                 'system' => $row["system"],
                 'row' => $row["row"],
                 'name' => $row["name"],
                 'ally' => $row["ally"],
                 'player' => $row["player"],
                 'gate' => $row["gate"],
-                'level' => $row["phalanx"]);
+                'level' => $row["phalanx"]
+            );
         }
 
         return $data;
@@ -368,7 +373,6 @@ class Universe_Model extends Model_Abstract
             $obsolete[$since[$indice]][] = $row;
         }
         return $obsolete;
-
     }
 
 
@@ -396,7 +400,7 @@ class Universe_Model extends Model_Abstract
             }
             $where .= " `ally` LIKE '" . $this->db->sql_escape_string($criteria->getAllyName()) . "'";
         }
-		//Binu : changement de la comparaison
+        //Binu : changement de la comparaison
         if ($criteria->getPlanetName() !== null) {
             if ($where != "") {
                 $where .= " AND ";
@@ -431,7 +435,7 @@ class Universe_Model extends Model_Abstract
             }
             //Binu : ajout des cotes
             $where .= " `moon` = '1'";
-			//fin
+            //fin
         }
 
         if ($criteria->getIsInactive()) {
@@ -440,64 +444,64 @@ class Universe_Model extends Model_Abstract
             }
             $where .= " `status` LIKE ('%i%')";
         }
-		
-		//Binu : Ajout du critère espionné
-		if ($criteria->getIsSpied()){
-			
-			//Binu : Récupération des planètes espionnées
-			
-			$spy_query = "SELECT `coordinates`, `active` FROM " . TABLE_PARSEDSPY . " WHERE `active` = '1'";
-			$spy_where = "";
-			if (($criteria->getGalaxyDown() !== null && $criteria->getGalaxyUp() !== null) || ($criteria->getSystemDown() !== null && $criteria->getSystemUp() !== null) || ($criteria->getRowDown() !== null && $criteria->getRowUp() !== null)){
-				$coordinates = $criteria->getArrayCoordinates();
-				$spy_where .= " AND ";
-				$nb_coord = count($coordinates);
-				if ($nb_coord > 1){
-					$spy_where .= "(";
-				}
-				for ($i = 0 ; $i<$nb_coord ; $i++){
-					$spy_where .= "`coordinates` = '" . $coordinates[$i] . "'";
-					if ($nb_coord > 1 && $i != ($nb_coord - 1)){
-						$spy_where .= " OR ";
-					}
-				}
-				if ($nb_coord > 1){
-					$spy_where .= ")";
-				}
-			}
-			$spy_query .= $spy_where . " ORDER BY `coordinates`";
-			$spy_result = $this->db->sql_query($spy_query);
-			while ($spy_coordinate = $this->db->sql_fetch_assoc($spy_result)) {
-				$spy_coordinates[] = $spy_coordinate['coordinates'];
-			}
-			
-			//Binu : Sélection des planètes ayant été espionnées
-			if (isset($spy_coordinates)){
-				if ($where != "") {
-					$where .= " AND ";
-				}
-				for ($i = 0 ; $i<count($spy_coordinates) ; $i++){
-					$split = explode(":",$spy_coordinates[$i]);
-					$galaxy = $split[0];
-					$system = $split[1];
-					$row = $split[2];
-					if (count($spy_coordinates) > 1){
-						$where .= "(";
-					}
-					$where .= "`galaxy` = " . $galaxy . " AND `system` = " . $system . " AND `row` = " . $row;
-					if (count($spy_coordinates) > 1){
-						$where .= ")";
-						if ($i < (count($spy_coordinates) - 1)){
-							$where .= " OR ";
-						}
-					}
-				}
-			}else{
-				//Binu : Si aucune planète de l'intervalle paramétré n'a été espionné, on s'assure qu'il n'y aura pas de résultat
-				$where .= "`galaxy` = 0";
-			}
-		}
-		//Fin correctif
+
+        //Binu : Ajout du critère espionné
+        if ($criteria->getIsSpied()) {
+
+            //Binu : Récupération des planètes espionnées
+
+            $spy_query = "SELECT `coordinates`, `active` FROM " . TABLE_PARSEDSPY . " WHERE `active` = '1'";
+            $spy_where = "";
+            if (($criteria->getGalaxyDown() !== null && $criteria->getGalaxyUp() !== null) || ($criteria->getSystemDown() !== null && $criteria->getSystemUp() !== null) || ($criteria->getRowDown() !== null && $criteria->getRowUp() !== null)) {
+                $coordinates = $criteria->getArrayCoordinates();
+                $spy_where .= " AND ";
+                $nb_coord = count($coordinates);
+                if ($nb_coord > 1) {
+                    $spy_where .= "(";
+                }
+                for ($i = 0; $i < $nb_coord; $i++) {
+                    $spy_where .= "`coordinates` = '" . $coordinates[$i] . "'";
+                    if ($nb_coord > 1 && $i != ($nb_coord - 1)) {
+                        $spy_where .= " OR ";
+                    }
+                }
+                if ($nb_coord > 1) {
+                    $spy_where .= ")";
+                }
+            }
+            $spy_query .= $spy_where . " ORDER BY `coordinates`";
+            $spy_result = $this->db->sql_query($spy_query);
+            while ($spy_coordinate = $this->db->sql_fetch_assoc($spy_result)) {
+                $spy_coordinates[] = $spy_coordinate['coordinates'];
+            }
+
+            //Binu : Sélection des planètes ayant été espionnées
+            if (isset($spy_coordinates)) {
+                if ($where != "") {
+                    $where .= " AND ";
+                }
+                for ($i = 0; $i < count($spy_coordinates); $i++) {
+                    $split = explode(":", $spy_coordinates[$i]);
+                    $galaxy = $split[0];
+                    $system = $split[1];
+                    $row = $split[2];
+                    if (count($spy_coordinates) > 1) {
+                        $where .= "(";
+                    }
+                    $where .= "`galaxy` = " . $galaxy . " AND `system` = " . $system . " AND `row` = " . $row;
+                    if (count($spy_coordinates) > 1) {
+                        $where .= ")";
+                        if ($i < (count($spy_coordinates) - 1)) {
+                            $where .= " OR ";
+                        }
+                    }
+                }
+            } else {
+                //Binu : Si aucune planète de l'intervalle paramétré n'a été espionné, on s'assure qu'il n'y aura pas de résultat
+                $where .= "`galaxy` = 0";
+            }
+        }
+        //Fin correctif
 
         $query = $select . $request;
         if ($where != "") {
@@ -536,6 +540,4 @@ class Universe_Model extends Model_Abstract
 
         return array('total_row' => $total_row, 'planets' => $planets);
     }
-
-
 }

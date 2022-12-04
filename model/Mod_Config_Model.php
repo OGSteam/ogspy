@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Database Model
  *
@@ -28,7 +29,7 @@ class Mod_Config_Model extends Model_Abstract
 
         $request = "SELECT `value` FROM `" . TABLE_MOD_CFG . "` WHERE `mod` = '" . $module . "'";
         if ($config != null) {
-            $config= $this->db->sql_escape_string($config);
+            $config = $this->db->sql_escape_string($config);
             $request .= " AND `config` = '" . $config . "'";
         }
 
@@ -57,7 +58,7 @@ class Mod_Config_Model extends Model_Abstract
 
         $query = "DELETE FROM `" . TABLE_MOD_CFG . "` WHERE `mod` = '" . $module . "'";
         if ($config != null) {
-            $config=$this->db->sql_escape_string($config);
+            $config = $this->db->sql_escape_string($config);
             $query .= " AND `config` = '" . $config . "'";
         }
 
@@ -77,9 +78,9 @@ class Mod_Config_Model extends Model_Abstract
      */
     public function set_mod_config($module, $config, $value)
     {
-        $module= $this->db->sql_escape_string($module);
-        $config=$this->db->sql_escape_string($config);
-        $value=$this->db->sql_escape_string($value);
+        $module = $this->db->sql_escape_string($module);
+        $config = $this->db->sql_escape_string($config);
+        $value = $this->db->sql_escape_string($value);
 
         $query = 'REPLACE INTO `' . TABLE_MOD_CFG . '` VALUES ("' . $module . '", "' . $config . '", "' . $value . '")';
 

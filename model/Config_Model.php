@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Database Model
  *
@@ -9,6 +10,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.4.0
  */
+
 namespace Ogsteam\Ogspy\Model;
 
 use Ogsteam\Ogspy\Abstracts\Model_Abstract;
@@ -22,7 +24,7 @@ class Config_Model  extends Model_Abstract
      */
     public function get_all()
     {
-        $output=array();
+        $output = array();
         $request = "select * from " . TABLE_CONFIG;
         $result = $this->db->sql_query($request);
         // Output config as PHP code
@@ -67,7 +69,7 @@ class Config_Model  extends Model_Abstract
      */
     public function update(array $config)
     {
-        $query = "UPDATE " . TABLE_CONFIG . " SET 
+        $query = "UPDATE " . TABLE_CONFIG . " SET
                     `config_value` = '" . $this->db->sql_escape_string($config['config_value']) . "'
                  WHERE `config_name` = '" . $this->db->sql_escape_string($config['config_name']) . "'";
         $this->db->sql_query($query);
@@ -80,13 +82,11 @@ class Config_Model  extends Model_Abstract
      * @param $config_value
      * @param $config_name
      */
-    public function update_one( $config_value,$config_name)
+    public function update_one($config_value, $config_name)
     {
-        $query = "UPDATE " . TABLE_CONFIG . " SET 
+        $query = "UPDATE " . TABLE_CONFIG . " SET
                     `config_value` = '" . $this->db->sql_escape_string($config_value) . "'
                  WHERE `config_name` = '" . $this->db->sql_escape_string($config_name) . "'";
         $this->db->sql_query($query);
     }
-
-
 }
