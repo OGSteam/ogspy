@@ -1,6 +1,5 @@
 <?php
 
-/** $Id: about_ogsteam.php 7665 2012-07-09 14:44:26Z luke_skywalker $ **/
 /**
  *  Panneau d'affichage: A propos de l'OGsteam et des contributeurs à OGSpy
  * @package OGSpy
@@ -22,11 +21,11 @@ require_once("views/page_header.php");
 
 <table width="70%" border="1" cellpadding="0" cellspacing="5" align="center">
     <tr>
-        <th align="center" class="c" colspan="5"><span style="color: Yellow; font-size: small; "><?php echo ($lang['ABOUT_PROJECT_TEAM']); ?></span></th>
+        <th align="center" class="c" colspan="5"><span style="color: Yellow; font-size: small; "><?php echo $lang['ABOUT_PROJECT_TEAM']; ?></span></th>
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/default_avatar.svg" width="40" title="Kyser">
+            <img src="images/avatars/default_avatar.svg" alt="Kyser Picture" width="40" title="Kyser">
         </td>
         <td class="l">
             &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Kyser</span></a><br>
@@ -35,7 +34,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/default_avatar.svg" width="40" title="Rica">
+            <img src="images/avatars/default_avatar.svg" alt="Rica Picture" width="40" title="Rica">
         </td>
         <td class="l">
             &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Rica</span></a><br>
@@ -45,28 +44,28 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/ogsteam_avatar_aeris.png" width="80" title="Aeris">
+            <img src="images/avatars/ogsteam_avatar_aeris.png" alt="Aeris Picture" width="80" title="Aeris">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Aéris</span></strong><br />
-            <div style="text-align: center;"><strong><?php echo ($lang['ABOUT_PROJECT_AERIS']); ?></strong></div>
+            <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_AERIS']; ?></strong></div>
             <br />
         </td>
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/default_avatar.svg" width="40" title="Capi">
+            <img src="images/avatars/default_avatar.svg" alt="Capi Picture" width="40" title="Capi">
         </td>
         <td class="l">
             &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Capi</span></a><br />
-            <div style="text-align: center;"><strong><?php echo ($lang['ABOUT_PROJECT_CAPI']); ?><br />
+            <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_CAPI']; ?><br />
                     <span style="color: orange; ">Capi capi, capo...</span></strong></div>
             <br />
         </td>
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/default_avatar.svg" width="40" title="Chris Alys">
+            <img src="images/avatars/default_avatar.svg" alt="Chris Alys Picture" width="40" title="Chris Alys">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Chris Alys</span></strong><br />
@@ -76,7 +75,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/ogsteam_avatar_darknoon.png" width="80" title="DarkNoon">
+            <img src="images/avatars/ogsteam_avatar_darknoon.png" alt="DarkNoon Picture" width="80" title="DarkNoon">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">DarkNoon</span></strong>
@@ -89,74 +88,74 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/ogsteam_avatar_jedinight.png" width="80" title="Jedinight">
+            <img src="images/avatars/ogsteam_avatar_jedinight.png" alt="Jedinight Picture" width="80" title="Jedinight">
         </td>
         <td class="l">
             <strong><span style="color: Yellow; font-size: x-small; ">Jedinight</span></strong>
-            <div style="text-align: center;"><strong><?php echo ($lang['ABOUT_PROJECT_JEDINIGHT']); ?></strong></div>
+            <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_JEDINIGHT']; ?></strong></div>
             <br />
             <ul>
-                <li><strong><?php echo ($lang['ABOUT_PROJECT_JEDINIGHT1']); ?></strong></li>
+                <li><strong><?php echo $lang['ABOUT_PROJECT_JEDINIGHT1']; ?></strong></li>
             </ul>
         </td>
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/ogsteam_avatar_machine.jpg" width="80" title="Machine">
+            <img src="images/avatars/ogsteam_avatar_machine.jpg" alt="Machine Picture" width="80" title="Machine">
         </td>
         <td class="l">
             <strong><span style="color: Yellow; font-size: x-small; ">Machine</span></strong><br />
-            <div style="text-align: center;"><strong><?php echo ($lang['ABOUT_PROJECT_MACHINE']); ?></strong></div>
+            <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_MACHINE']; ?></strong></div>
             <br />
         </td>
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/default_avatar.svg" width="40" title="Ninety">
+            <img src="images/avatars/default_avatar.svg" alt="Ninety Picture" width="40" title="Ninety">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Ninety</span></strong><br />
-            <div style="text-align: center;"><strong><?php echo ($lang['ABOUT_PROJECT_NINETY']); ?></strong></div>
+            <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_NINETY']; ?></strong></div>
             <br />
         </td>
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/default_avatar.svg" width="40" title="Shad">
+            <img src="images/avatars/default_avatar.svg" alt="Shad Picture" width="40" title="Shad">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Shad</span></strong><br />
-            <div style="text-align: center;"><strong><?php echo ($lang['ABOUT_PROJECT_SHAD']); ?></strong></div>
+            <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_SHAD']; ?></strong></div>
             <br />
         </td>
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/default_avatar.svg" width="40" title="Superbox">
+            <img src="images/avatars/default_avatar.svg" alt="SuperBox Picture" width="40" title="Superbox">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Superbox</span></strong><br />
-            <div style="text-align: center;"><strong><?php echo ($lang['ABOUT_PROJECT_SUPERBOX']); ?></strong></div>
+            <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_SUPERBOX']; ?></strong></div>
             <br />
         </td>
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/ogsteam_avatar_xaviernuma.jpg" width="80" title="Xaviernuma">
+            <img src="images/avatars/ogsteam_avatar_xaviernuma.jpg" alt="XNurma Picture" width="80" title="Xaviernuma">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Xaviernuma</span></strong><br />
-            <div style="text-align: center;"><strong><?php echo ($lang['ABOUT_PROJECT_XAVIERNUMA']); ?></strong></div>
+            <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_XAVIERNUMA']; ?></strong></div>
             <br />
         </td>
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/ogsteam_avatar_pitch314.jpg" width="80" title="pitch314">
+            <img src="images/avatars/ogsteam_avatar_pitch314.jpg" alt="pitch314 Picture" width="80" title="pitch314">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Pitch314</span></strong><br />
-            <div style="text-align: center;"><strong><?php echo ($lang['ABOUT_PROJECT_PITCH314']); ?></strong></div>
+            <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_PITCH314']; ?></strong></div>
             <ul>
                 <li><strong><?php echo ($lang['ABOUT_PROJECT_PITCH314_1']); ?></strong></li>
                 <li><strong><?php echo ($lang['ABOUT_PROJECT_PITCH314_2']); ?></strong></li>
@@ -165,10 +164,12 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" width="80" title="Testeurs">
+            <img src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" alt="Test Team Picture" width="80" title="Testeurs">
         </td>
         <td class="l">
-            <strong><span style="color: Yellow; font-size: x-small; "><?php echo ($lang['ABOUT_TEST_TEAM']); ?></span></strong>
+            <strong>
+                <span style="color: Yellow; font-size: x-small; "><?php echo $lang['ABOUT_TEST_TEAM']; ?></span>
+            </strong>
             <br />
             <ul>
                 <li>Skyline-ch</li>
