@@ -1,4 +1,5 @@
 <?php
+
 /** $Id: admin.php 7596 2012-03-25 16:10:55Z ninety $ **/
 /**
  * Fonctions d'administrations
@@ -140,31 +141,31 @@ require_once("views/page_header.php");
         <td>
             <?php
             switch ($pub_subaction) {
-                case "member" :
+                case "member":
                     require_once("admin_members.php");
                     break;
 
-                case "group" :
+                case "group":
                     require_once("admin_members_group.php");
                     break;
 
-                case "parameter" :
+                case "parameter":
                     require_once("admin_parameters.php");
                     break;
 
-                case "affichage" :
+                case "affichage":
                     require_once("admin_affichage.php");
                     break;
 
-                case "viewer" :
+                case "viewer":
                     require_once("admin_viewer.php");
                     break;
 
-                case "helper" :
+                case "helper":
                     require_once("admin_helper.php");
                     break;
 
-                case "mod" :
+                case "mod":
                     require_once("admin_mod.php");
                     break;
 

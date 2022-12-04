@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Affichage Empire - Pages Espionnages favoris
  * @package OGSpy
@@ -25,20 +26,15 @@ if (!isset($sort2)) {
 
 <table align="center">
     <tr>
-        <td class="c" width="75"><a
-                href="index.php?action=home&amp;subaction=spy&amp;sort=1&amp;sort2=<?php echo $sort2; ?>"><?php echo($lang['HOME_SPY_POSITIONS']); ?></a>
+        <td class="c" width="75"><a href="index.php?action=home&amp;subaction=spy&amp;sort=1&amp;sort2=<?php echo $sort2; ?>"><?php echo ($lang['HOME_SPY_POSITIONS']); ?></a>
         </td>
-        <td class="c" width="120"><a
-                href="index.php?action=home&amp;subaction=spy&amp;sort=2&amp;sort2=<?php echo $sort2; ?>"><?php echo($lang['HOME_SPY_ALLIANCES']); ?></a>
+        <td class="c" width="120"><a href="index.php?action=home&amp;subaction=spy&amp;sort=2&amp;sort2=<?php echo $sort2; ?>"><?php echo ($lang['HOME_SPY_ALLIANCES']); ?></a>
         </td>
-        <td class="c" width="120"><a
-                href="index.php?action=home&amp;subaction=spy&amp;sort=3&amp;sort2=<?php echo $sort2; ?>"><?php echo($lang['HOME_SPY_PLAYERS']); ?></a>
+        <td class="c" width="120"><a href="index.php?action=home&amp;subaction=spy&amp;sort=3&amp;sort2=<?php echo $sort2; ?>"><?php echo ($lang['HOME_SPY_PLAYERS']); ?></a>
         </td>
-        <td class="c" width="20"><a
-                href="index.php?action=home&amp;subaction=spy&amp;sort=4&amp;sort2=<?php echo $sort2; ?>"><?php echo($lang['HOME_SPY_MOON']); ?></a></td>
+        <td class="c" width="20"><a href="index.php?action=home&amp;subaction=spy&amp;sort=4&amp;sort2=<?php echo $sort2; ?>"><?php echo ($lang['HOME_SPY_MOON']); ?></a></td>
         <td class="c" width="20">&nbsp;</td>
-        <td class="c" width="250"><a
-                href="index.php?action=home&amp;subaction=spy&amp;sort=5&amp;sort2=<?php echo $sort2; ?>"><?php echo($lang['HOME_SPY_UPDATE']); ?></a></td>
+        <td class="c" width="250"><a href="index.php?action=home&amp;subaction=spy&amp;sort=5&amp;sort2=<?php echo $sort2; ?>"><?php echo ($lang['HOME_SPY_UPDATE']); ?></a></td>
         <td class="c" width="40">&nbsp;</td>
         <td class="c" width="120">&nbsp;</td>
     </tr>

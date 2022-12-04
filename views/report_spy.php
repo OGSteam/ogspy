@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spy Report Rendering
  * @package OGSpy

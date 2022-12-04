@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Panneau d'Administration : Paramètres et affichage des Journaux
  * @package OGSpy
@@ -15,8 +16,9 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
+
 $ToolTip_Helper = new ToolTip_Helper();
-$TtlCounter=0;
+$TtlCounter = 0;
 
 $galaxy_step = $server_config['galaxy_by_line_ally'];
 $galaxy_down = 1;
@@ -63,29 +65,28 @@ require_once("views/page_header.php");
             ?>
         </tr>
         <tr>
-            <td class="c" colspan="<?php echo $nb_colonnes_ally * 2; ?>" align="center"><input type="submit"
-                                                                                               value="<?php echo($lang['CARTO_DISPLAYPOSITIONS']); ?>">
+            <td class="c" colspan="<?php echo $nb_colonnes_ally * 2; ?>" align="center"><input type="submit" value="<?php echo ($lang['CARTO_DISPLAYPOSITIONS']); ?>">
             </td>
         </tr>
     </table>
 </form>
-<br/>
+<br />
 <table border='1'>
     <?php
     do {
         $galaxy_up = $galaxy_down + $galaxy_step;
-        ?>
+    ?>
         <tr>
             <td class="c" width="45">&nbsp;</td>
 
             <?php
             if ($galaxy > intval($server_config['num_of_galaxies'])) {
-                            $galaxy_up = intval($server_config['num_of_galaxies']);
+                $galaxy_up = intval($server_config['num_of_galaxies']);
             }
             for ($i = $galaxy_down; $i < $galaxy_up; $i++) {
                 echo "<td class='c' width='60' colspan=" . $nb_colonnes_ally . ">";
                 if ($i <= intval($server_config['num_of_galaxies'])) {
-                                    echo "G$i";
+                    echo "G$i";
                 }
                 echo "</td>";
             }
@@ -93,7 +94,7 @@ require_once("views/page_header.php");
 
             <td class="c" width="45">&nbsp;</td>
         </tr>
-        <?php
+    <?php
         for ($system = 1; $system <= intval($server_config['num_of_systems']); $system = $system + $step) {
             $up = $system + $step - 1;
             if ($up > intval($server_config['num_of_systems'])) {
@@ -125,14 +126,14 @@ require_once("views/page_header.php");
                         }
                         $tooltip[$i] .= "</table>";
                         if (version_compare(phpversion(), '5.4.0', '>=')) {
-                            $ToolTip_Helper->addTooltip("ttp_cartographie_".$value["player"]."_".$TtlCounter,  htmlentities($tooltip[$i], ENT_COMPAT | ENT_HTML401, "UTF-8")  );
+                            $ToolTip_Helper->addTooltip("ttp_cartographie_" . $value["player"] . "_" . $TtlCounter,  htmlentities($tooltip[$i], ENT_COMPAT | ENT_HTML401, "UTF-8"));
                             $tooltip[$i] = $ToolTip_Helper->GetHTMLClassContent();
                             $TtlCounter++;
-                          } else {
-                            $ToolTip_Helper->addTooltip("ttp_cartographie_".$value["player"]."_".$TtlCounter,  htmlentities($tooltip[$i], ENT_COMPAT, "UTF-8")   );
+                        } else {
+                            $ToolTip_Helper->addTooltip("ttp_cartographie_" . $value["player"] . "_" . $TtlCounter,  htmlentities($tooltip[$i], ENT_COMPAT, "UTF-8"));
                             $tooltip[$i] = $ToolTip_Helper->GetHTMLClassContent();
                             $TtlCounter++;
-                          }
+                        }
                         $nb_player[$i] = $galaxy_ally_position[$ally_name][$galaxy][$system]["planet"];
                     }
                     $i++;

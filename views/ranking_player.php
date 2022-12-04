@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Rankings - Player Page
  * @package OGSpy
@@ -101,23 +102,21 @@ switch ($order_by) {
         </form>
 
         <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_ranking"] == 1) { ?>
-            <form method="POST" action="index.php"
-                  onsubmit="return confirm('<?php echo($lang['RANK_DELETE_CONFIRMATION']); ?>');">
+            <form method="POST" action="index.php" onsubmit="return confirm('<?php echo ($lang['RANK_DELETE_CONFIRMATION']); ?>');">
                 <input type="hidden" name="action" value="drop_ranking">
                 <input type="hidden" name="subaction" value="player">
                 <input type="hidden" name="datadate" value="<?php echo $datadate; ?>">
-                <td align="right"><input type="image" src="images/drop.png"
-                                         title="<?php echo $lang['RANK_DELETE'] . " " . $date_selected; ?>"></td>
+                <td align="right"><input type="image" src="images/drop.png" title="<?php echo $lang['RANK_DELETE'] . " " . $date_selected; ?>"></td>
             </form>
-        <?php }?>
+        <?php } ?>
     </tr>
 </table>
 
 <table width="1200">
     <tr>
-        <td class="c" width="30"><?php echo($lang['RANK_ID']); ?></td>
-        <td class="c"><?php echo($lang['RANK_PLAYER']); ?></td>
-        <td class="c"><?php echo($lang['RANK_ALLY']); ?></td>
+        <td class="c" width="30"><?php echo ($lang['RANK_ID']); ?></td>
+        <td class="c"><?php echo ($lang['RANK_PLAYER']); ?></td>
+        <td class="c"><?php echo ($lang['RANK_ALLY']); ?></td>
         <td class="c_classement_points" colspan="2"><?php echo $link_general; ?></td>
         <td class="c" colspan="2"><?php echo $link_eco; ?></td>
         <td class="c_classement_recherche" colspan="2"><?php echo $link_techno; ?></td>

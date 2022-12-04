@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Panneau administration des options de groupes de Membres
  * @package OGSpy
@@ -31,12 +32,12 @@ if (isset($pub_group_id)) {
 <table>
     <form method="POST" action="index.php?action=usergroup_create">
         <tr>
-            <td class="c" colspan="3"><?php echo($lang['ADMIN_GROUP_CREATE']); ?></td>
+            <td class="c" colspan="3"><?php echo ($lang['ADMIN_GROUP_CREATE']); ?></td>
         </tr>
         <tr>
-            <th width="150"><?php echo($lang['ADMIN_GROUP_NAME']); ?></th>
+            <th width="150"><?php echo ($lang['ADMIN_GROUP_NAME']); ?></th>
             <th width="150"><input name="groupname" type="text" maxlength="15" size="20"></th>
-            <th width="150"><input type="submit" value="<?php echo($lang['ADMIN_GROUP_CREATENEW']); ?>"></th>
+            <th width="150"><input type="submit" value="<?php echo ($lang['ADMIN_GROUP_CREATENEW']); ?>"></th>
         </tr>
     </form>
     <tr>
@@ -44,13 +45,13 @@ if (isset($pub_group_id)) {
     </tr>
     <form method="POST" action="index.php?action=administration&subaction=group">
         <tr>
-            <td class="c" colspan="2"><?php echo($lang['ADMIN_GROUP_RIGHTS']); ?></td>
+            <td class="c" colspan="2"><?php echo ($lang['ADMIN_GROUP_RIGHTS']); ?></td>
             <td></td>
         </tr>
         <tr>
             <th>
                 <select name="group_id">
-                    <option><?php echo($lang['ADMIN_GROUP_SELECT']); ?></option>
+                    <option><?php echo ($lang['ADMIN_GROUP_SELECT']); ?></option>
                     <?php
                     foreach ($usergroup_list as $value) {
                         echo "\t\t\t\t" . "<option value='" . $value["group_id"] . "'>" . $value["group_name"] . "</option>";
@@ -58,7 +59,7 @@ if (isset($pub_group_id)) {
                     ?>
                 </select>
             </th>
-            <th><input type="submit" value="<?php echo($lang['ADMIN_GROUP_SEEPERMISSIONS']); ?>"></th>
+            <th><input type="submit" value="<?php echo ($lang['ADMIN_GROUP_SEEPERMISSIONS']); ?>"></th>
             <td></td>
         </tr>
     </form>
@@ -66,11 +67,11 @@ if (isset($pub_group_id)) {
 <?php
 if ($usergroup_info !== false) {
     $usergroup_member = usergroup_member($group_id);
-    ?>
-    <br/>
+?>
+    <br />
     <table border="1" align="center" width="800">
         <tr>
-            <td class="c" colspan="8"><?php echo($lang['ADMIN_GROUP_MEMBERS']); ?></td>
+            <td class="c" colspan="8"><?php echo ($lang['ADMIN_GROUP_MEMBERS']); ?></td>
         </tr>
         <?php
         if (sizeof($usergroup_member) > 0) {
@@ -109,16 +110,15 @@ if ($usergroup_info !== false) {
         echo "</form>" . "\n";
         ?>
     </table>
-    <br/>
+    <br />
     <table align="center">
         <?php
         if ($group_id != 1) { ?>
-            <form method="POST" action="index.php?action=usergroup_delete"
-                  onsubmit="return confirm('<?php echo($lang['ADMIN_GROUP_DELETE']); ?>');">
+            <form method="POST" action="index.php?action=usergroup_delete" onsubmit="return confirm('<?php echo ($lang['ADMIN_GROUP_DELETE']); ?>');">
                 <input type="hidden" name="group_id" value="<?php echo $group_id; ?>">
                 <tr>
                     <td>
-                        <input type="submit" value="<?php echo($lang['ADMIN_GROUP_DELETE_BUTTON']); ?>">
+                        <input type="submit" value="<?php echo ($lang['ADMIN_GROUP_DELETE_BUTTON']); ?>">
                     </td>
                 </tr>
             </form>
@@ -129,46 +129,40 @@ if ($usergroup_info !== false) {
                 <td valign="top" width="450">
                     <table align="center" width="100%">
                         <tr>
-                            <td class="c" width="300"><?php echo($lang['ADMIN_GROUP_NAME']); ?></td>
+                            <td class="c" width="300"><?php echo ($lang['ADMIN_GROUP_NAME']); ?></td>
                             <th>
-                            <td class="c" width="150" align="center"><input type="text" name="group_name"
-                                                                            value="<?php echo $usergroup_info["group_name"]; ?>">
-                            </th>
+                            <td class="c" width="150" align="center"><input type="text" name="group_name" value="<?php echo $usergroup_info["group_name"]; ?>">
+                                </th>
                         </tr>
                         <tr>
                             <td colspan="2">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td class="c" width="300"><?php echo($lang['ADMIN_GROUP_SERVERRIGHTS']); ?></td>
-                            <td class="c" width="150"><?php echo($lang['ADMIN_GROUP_RIGHTS']); ?></td>
+                            <td class="c" width="300"><?php echo ($lang['ADMIN_GROUP_SERVERRIGHTS']); ?></td>
+                            <td class="c" width="150"><?php echo ($lang['ADMIN_GROUP_RIGHTS']); ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo($lang['ADMIN_GROUP_RIGHTS_ADDSYSTEMS']); ?></th>
-                            <th><input name="server_set_system" type="checkbox"
-                                       value="1" <?php echo ($usergroup_info["server_set_system"]) ? "checked" : "" ?>>
+                            <th><?php echo ($lang['ADMIN_GROUP_RIGHTS_ADDSYSTEMS']); ?></th>
+                            <th><input name="server_set_system" type="checkbox" value="1" <?php echo ($usergroup_info["server_set_system"]) ? "checked" : "" ?>>
                             </th>
                         </tr>
                         <tr>
-                            <th><?php echo($lang['ADMIN_GROUP_RIGHTS_ADDCOMBAT']); ?></th>
-                            <th><input name="server_set_rc" type="checkbox"
-                                       value="1" <?php echo ($usergroup_info["server_set_rc"]) ? "checked" : "" ?>></th>
+                            <th><?php echo ($lang['ADMIN_GROUP_RIGHTS_ADDCOMBAT']); ?></th>
+                            <th><input name="server_set_rc" type="checkbox" value="1" <?php echo ($usergroup_info["server_set_rc"]) ? "checked" : "" ?>></th>
                         </tr>
                         <tr>
-                            <th><?php echo($lang['ADMIN_GROUP_RIGHTS_ADDSPY']); ?></th>
-                            <th><input name="server_set_spy" type="checkbox"
-                                       value="1" <?php echo ($usergroup_info["server_set_spy"]) ? "checked" : "" ?>>
+                            <th><?php echo ($lang['ADMIN_GROUP_RIGHTS_ADDSPY']); ?></th>
+                            <th><input name="server_set_spy" type="checkbox" value="1" <?php echo ($usergroup_info["server_set_spy"]) ? "checked" : "" ?>>
                             </th>
                         </tr>
                         <tr>
-                            <th><?php echo($lang['ADMIN_GROUP_RIGHTS_ADDRANK']); ?></th>
-                            <th><input name="server_set_ranking" type="checkbox"
-                                       value="1" <?php echo ($usergroup_info["server_set_ranking"]) ? "checked" : "" ?>>
+                            <th><?php echo ($lang['ADMIN_GROUP_RIGHTS_ADDRANK']); ?></th>
+                            <th><input name="server_set_ranking" type="checkbox" value="1" <?php echo ($usergroup_info["server_set_ranking"]) ? "checked" : "" ?>>
                             </th>
                         </tr>
                         <tr>
-                            <th><?php echo($lang['ADMIN_GROUP_RIGHTS_PROTECTEDALLY']); ?></th>
-                            <th><input name="server_show_positionhided" type="checkbox"
-                                       value="1" <?php echo ($usergroup_info["server_show_positionhided"]) ? "checked" : "" ?>>
+                            <th><?php echo ($lang['ADMIN_GROUP_RIGHTS_PROTECTEDALLY']); ?></th>
+                            <th><input name="server_show_positionhided" type="checkbox" value="1" <?php echo ($usergroup_info["server_show_positionhided"]) ? "checked" : "" ?>>
                             </th>
                         </tr>
                     </table>
@@ -177,47 +171,40 @@ if ($usergroup_info !== false) {
                 <td valign="top" width="450">
                     <table align="center" width="100%">
                         <tr>
-                            <td class="c" width="300"><?php echo($lang['ADMIN_GROUP_RIGHTS_EXTCLIENTS']); ?></td>
-                            <td class="c" width="150"><?php echo($lang['ADMIN_GROUP_RIGHTS']); ?></td>
+                            <td class="c" width="300"><?php echo ($lang['ADMIN_GROUP_RIGHTS_EXTCLIENTS']); ?></td>
+                            <td class="c" width="150"><?php echo ($lang['ADMIN_GROUP_RIGHTS']); ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo($lang['ADMIN_GROUP_RIGHTS_CONNECT']); ?></th>
-                            <th><input name="ogs_connection" type="checkbox"
-                                       value="1" <?php echo ($usergroup_info["ogs_connection"]) ? "checked" : "" ?>>
+                            <th><?php echo ($lang['ADMIN_GROUP_RIGHTS_CONNECT']); ?></th>
+                            <th><input name="ogs_connection" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_connection"]) ? "checked" : "" ?>>
                             </th>
                         </tr>
                         <tr>
-                            <th><?php echo($lang['ADMIN_GROUP_EXTERNAL_ADDSYSTEM']); ?></th>
-                            <th><input name="ogs_set_system" type="checkbox"
-                                       value="1" <?php echo ($usergroup_info["ogs_set_system"]) ? "checked" : "" ?>>
+                            <th><?php echo ($lang['ADMIN_GROUP_EXTERNAL_ADDSYSTEM']); ?></th>
+                            <th><input name="ogs_set_system" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_set_system"]) ? "checked" : "" ?>>
                             </th>
                         </tr>
                         <tr>
-                            <th><?php echo($lang['ADMIN_GROUP_EXTERNAL_GETSYSTEM']); ?></th>
-                            <th><input name="ogs_get_system" type="checkbox"
-                                       value="1" <?php echo ($usergroup_info["ogs_get_system"]) ? "checked" : "" ?>>
+                            <th><?php echo ($lang['ADMIN_GROUP_EXTERNAL_GETSYSTEM']); ?></th>
+                            <th><input name="ogs_get_system" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_get_system"]) ? "checked" : "" ?>>
                             </th>
                         </tr>
                         <tr>
-                            <th><?php echo($lang['ADMIN_GROUP_EXTERNAL_ADDREPORT']); ?></th>
-                            <th><input name="ogs_set_spy" type="checkbox"
-                                       value="1" <?php echo ($usergroup_info["ogs_set_spy"]) ? "checked" : "" ?>></th>
+                            <th><?php echo ($lang['ADMIN_GROUP_EXTERNAL_ADDREPORT']); ?></th>
+                            <th><input name="ogs_set_spy" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_set_spy"]) ? "checked" : "" ?>></th>
                         </tr>
                         <tr>
-                            <th><?php echo($lang['ADMIN_GROUP_EXTERNAL_GETREPORT']); ?></th>
-                            <th><input name="ogs_get_spy" type="checkbox"
-                                       value="1" <?php echo ($usergroup_info["ogs_get_spy"]) ? "checked" : "" ?>></th>
+                            <th><?php echo ($lang['ADMIN_GROUP_EXTERNAL_GETREPORT']); ?></th>
+                            <th><input name="ogs_get_spy" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_get_spy"]) ? "checked" : "" ?>></th>
                         </tr>
                         <tr>
-                            <th><?php echo($lang['ADMIN_GROUP_EXTERNAL_ADDRANK']); ?></th>
-                            <th><input name="ogs_set_ranking" type="checkbox"
-                                       value="1" <?php echo ($usergroup_info["ogs_set_ranking"]) ? "checked" : "" ?>>
+                            <th><?php echo ($lang['ADMIN_GROUP_EXTERNAL_ADDRANK']); ?></th>
+                            <th><input name="ogs_set_ranking" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_set_ranking"]) ? "checked" : "" ?>>
                             </th>
                         </tr>
                         <tr>
-                            <th><?php echo($lang['ADMIN_GROUP_EXTERNAL_GETRANK']); ?></th>
-                            <th><input name="ogs_get_ranking" type="checkbox"
-                                       value="1" <?php echo ($usergroup_info["ogs_get_ranking"]) ? "checked" : "" ?>>
+                            <th><?php echo ($lang['ADMIN_GROUP_EXTERNAL_GETRANK']); ?></th>
+                            <th><input name="ogs_get_ranking" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_get_ranking"]) ? "checked" : "" ?>>
                             </th>
                         </tr>
                     </table>
@@ -225,12 +212,14 @@ if ($usergroup_info !== false) {
             </tr>
             <tr>
                 <td colspan="3">&nbsp;
-                </th></tr>
+                    </th>
+            </tr>
             <tr>
-                <td align="center" colspan="3"><input type="submit" value="<?php echo($lang['ADMIN_GROUP_EXTERNAL_VALIDATE']); ?>">
+                <td align="center" colspan="3"><input type="submit" value="<?php echo ($lang['ADMIN_GROUP_EXTERNAL_VALIDATE']); ?>">
         </form>
-        </th></tr>
+        </th>
+        </tr>
     </table>
-    <?php
+<?php
 }
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Panneau administration des options Membres
  * @package OGSpy
@@ -27,13 +28,12 @@ $usergroup_list = usergroup_get();
     <table width="200" style="margin-left: auto; margin-right: auto;">
         <tr>
             <td class="c" colspan="3">
-                <?php echo($lang['ADMIN_MEMBERS_NEWACCOUNT']); ?>
+                <?php echo ($lang['ADMIN_MEMBERS_NEWACCOUNT']); ?>
             </td>
         </tr>
         <tr>
             <th width="100">
-                <input type="button" value="<?php echo($lang['ADMIN_MEMBERS_NEWACCOUNT_BUTTON']); ?>"
-                       onclick=ogspy_beginCreateUser()>
+                <input type="button" value="<?php echo ($lang['ADMIN_MEMBERS_NEWACCOUNT_BUTTON']); ?>" onclick=ogspy_beginCreateUser()>
             </th>
         </tr>
     </table>
@@ -48,12 +48,12 @@ $usergroup_list = usergroup_get();
                     <table width="400" cellpadding="3">
                         <tr>
                             <td align="center" class="c" colspan="2">
-                                <?php echo($lang['ADMIN_MEMBERS_POPUP_NEWACCOUNT']); ?>
+                                <?php echo ($lang['ADMIN_MEMBERS_POPUP_NEWACCOUNT']); ?>
                             </td>
                         </tr>
                         <tr>
                             <th align="center">
-                                <?php echo($lang['ADMIN_MEMBERS_POPUP_NAME'] . help("profile_login")); ?>
+                                <?php echo ($lang['ADMIN_MEMBERS_POPUP_NAME'] . help("profile_login")); ?>
                             </th>
                             <th align="center">
                                 <input name="pseudo" type="text" maxlength="15" size="20">
@@ -61,7 +61,7 @@ $usergroup_list = usergroup_get();
                         </tr>
                         <tr>
                             <th align="center">
-                                <?php echo($lang['ADMIN_MEMBERS_POPUP_PASSWORD'] . help("profile_password")); ?>
+                                <?php echo ($lang['ADMIN_MEMBERS_POPUP_PASSWORD'] . help("profile_password")); ?>
                             </th>
                             <th align="center">
                                 <input name="pass" type="text" maxlength="64" size="20">
@@ -69,7 +69,7 @@ $usergroup_list = usergroup_get();
                         </tr>
                         <tr>
                             <th align="center">
-                                <?php echo($lang['ADMIN_MEMBERS_POPUP_EMAIL']); ?>
+                                <?php echo ($lang['ADMIN_MEMBERS_POPUP_EMAIL']); ?>
                             </th>
                             <th align="center">
                                 <input name="email" type="text" maxlength="50" size="35">
@@ -77,7 +77,7 @@ $usergroup_list = usergroup_get();
                         </tr>
                         <tr>
                             <th align="center">
-                                <?php echo($lang['ADMIN_MEMBERS_POPUP_RIGHTS']); ?>
+                                <?php echo ($lang['ADMIN_MEMBERS_POPUP_RIGHTS']); ?>
                             </th>
                             <th align="center">
                                 <!-- gestion des membres-->
@@ -85,23 +85,22 @@ $usergroup_list = usergroup_get();
                                     <?php echo "\t" . $lang['ADMIN_MEMBERS_POPUP_MGTMEMBERS'] . " : "; ?>
                                     <select name='user_coadmin'>"?>
                                         <option value='1'><?php echo $lang['ADMIN_MEMBERS_YES']; ?></option>
-                                        <option value='0'
-                                                selected='selected'> <?php echo $lang['ADMIN_MEMBERS_NO']; ?></option>
+                                        <option value='0' selected='selected'> <?php echo $lang['ADMIN_MEMBERS_NO']; ?></option>
                                     </select><br>
                                 <?php endif; ?>
                                 <!-- gestion des Classements-->
                                 <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
                                     <?php echo "\t" . $lang['ADMIN_MEMBERS_POPUP_MGTRANKS'] . help('admin_member_manager') . " : "; ?>
                                     <select name='management_user'>"?>
-                                        <option value='1'  selected='selected'><?php echo $lang['ADMIN_MEMBERS_YES']; ?></option>
+                                        <option value='1' selected='selected'><?php echo $lang['ADMIN_MEMBERS_YES']; ?></option>
                                         <option value='0'> <?php echo $lang['ADMIN_MEMBERS_NO']; ?></option>
                                     </select><br>
                                 <?php endif; ?>
                                 <!--creation d un nouveau compte-->
                                 <?php echo "\t" . $lang['ADMIN_MEMBERS_POPUP_GROUP'] . help('admin_ranking_manager') . " : "; ?>
                                 <select name='management_ranking'>"?>
-                                    <option value='1' ><?php echo $lang['ADMIN_MEMBERS_YES']; ?></option>
-                                    <option value='0' > <?php echo $lang['ADMIN_MEMBERS_NO']; ?></option>
+                                    <option value='1'><?php echo $lang['ADMIN_MEMBERS_YES']; ?></option>
+                                    <option value='0'> <?php echo $lang['ADMIN_MEMBERS_NO']; ?></option>
                                 </select><br>
                             </th>
                         </tr>
@@ -121,9 +120,8 @@ $usergroup_list = usergroup_get();
                         </tr>
                         <tr>
                             <th align="center" colspan="2">
-                                <input type="submit" value="<?php echo($lang['ADMIN_MEMBERS_PASSWORDOK']); ?>">
-                                <input type="button" value="<?php echo($lang['ADMIN_MEMBERS_PASSWORDCANCEL']); ?>"
-                                       onclick=ogspy_endCreateUser()>
+                                <input type="submit" value="<?php echo ($lang['ADMIN_MEMBERS_PASSWORDOK']); ?>">
+                                <input type="button" value="<?php echo ($lang['ADMIN_MEMBERS_PASSWORDCANCEL']); ?>" onclick=ogspy_endCreateUser()>
                             </th>
                         </tr>
                     </table>
@@ -140,40 +138,40 @@ $usergroup_list = usergroup_get();
     <table style="margin-left: auto; margin-right: auto;">
         <tr>
             <td class="c" width="120">
-                <?php echo($lang['ADMIN_MEMBERS_PLAYER']); ?>
+                <?php echo ($lang['ADMIN_MEMBERS_PLAYER']); ?>
             </td>
             <td class="c" width="120">
-                <?php echo($lang['ADMIN_MEMBERS_EMAIL']); ?>
+                <?php echo ($lang['ADMIN_MEMBERS_EMAIL']); ?>
             </td>
             <td class="c" width="120">
-                <?php echo($lang['ADMIN_MEMBERS_REGISTERED']); ?>
+                <?php echo ($lang['ADMIN_MEMBERS_REGISTERED']); ?>
             </td>
             <td class="c" width="120">
-                <?php echo($lang['ADMIN_MEMBERS_ENABLED']); ?>
+                <?php echo ($lang['ADMIN_MEMBERS_ENABLED']); ?>
             </td>
-            <?php if ($user_data["user_admin"] == 1): ?>
+            <?php if ($user_data["user_admin"] == 1) : ?>
                 <td class="c" width="120">
-                    <?php echo($lang['ADMIN_MEMBERS_COADMIN']); ?>
+                    <?php echo ($lang['ADMIN_MEMBERS_COADMIN']); ?>
                 </td>
             <?php endif; ?>
-            <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1): ?>
+            <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
                 <td class="c" width="120">
-                    <?php echo($lang['ADMIN_MEMBERS_MGMEMBERS']); ?>
+                    <?php echo ($lang['ADMIN_MEMBERS_MGMEMBERS']); ?>
                     <?php echo help("admin_member_manager"); ?>
                 </td>
             <?php endif; ?>
             <td class="c" width="120">
-                <?php echo($lang['ADMIN_MEMBERS_MGRANKS']); ?>
+                <?php echo ($lang['ADMIN_MEMBERS_MGRANKS']); ?>
                 <?php echo help("admin_ranking_manager"); ?>
             </td>
             <td class="c" width="120">
-                <?php echo($lang['ADMIN_MEMBERS_LASTCONNECT']); ?>
+                <?php echo ($lang['ADMIN_MEMBERS_LASTCONNECT']); ?>
             </td>
             <td class="c" colspan="4">&nbsp;</td>
         </tr>
         <?php foreach ($user_info as $v) : ?>
             <tr>
-                <?php $user_id = $v["user_id"];?>
+                <?php $user_id = $v["user_id"]; ?>
                 <?php $name = $v["user_name"]; ?>
                 <?php $email = $v["user_email"]; ?>
                 <?php $reg_date =  date("d F o G:i", $v["user_regdate"]); ?>
@@ -181,14 +179,15 @@ $usergroup_list = usergroup_get();
                 <?php $user_coadmin_off = (!$v["user_coadmin"] && !$v["user_admin"]) ? " selected" : ""; ?>
                 <?php $management_user_off = (!$v["management_user"] && !$v["user_admin"]) ? " selected" : ""; ?>
                 <?php $management_ranking_off = (!$v["management_ranking"] && !$v["user_admin"]) ? " selected" : ""; ?>
-                <?php if ($v["user_lastvisit"] != 0): ?>
+                <?php if ($v["user_lastvisit"] != 0) : ?>
                     <?php $last_visit =  date("d F o G:i", $v["user_lastvisit"]); ?>
                 <?php else : ?>
                     <?php $last_visit = "--"; ?>
                 <?php endif; ?>
-                <form method='POST' action='index.php?action=admin_modify_member&amp;user_id=<?php echo $user_id;?>'>
+                <form method='POST' action='index.php?action=admin_modify_member&amp;user_id=<?php echo $user_id; ?>'>
                     <th>
-                        <a><?php echo $name; ?></a><!--todo voir pour popUp-->
+                        <a><?php echo $name; ?></a>
+                        <!--todo voir pour popUp-->
                     </th>
                     <th>
                         <?php echo $email; ?>
@@ -219,10 +218,12 @@ $usergroup_list = usergroup_get();
                                 </option>
                             </select>
                         </th>
-                    <?php endif; //si l'utilisateur est co admin que ce passe t-il  ?'?>
+                    <?php endif; //si l'utilisateur est co admin que ce passe t-il  ?'
+                    ?>
 
-                    <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1): ?>
-                        <th> <!--gestion membres-->
+                    <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
+                        <th>
+                            <!--gestion membres-->
                             <select name='management_user'>
                                 <option value='1'>
                                     <?php echo $lang['ADMIN_MEMBERS_YES']; ?>
@@ -232,7 +233,8 @@ $usergroup_list = usergroup_get();
                                 </option>
                             </select>
                         </th>
-                    <?php endif; //section visible que des admin verif pertinente ???'?>
+                    <?php endif; //section visible que des admin verif pertinente ???'
+                    ?>
                     <th>
                         <select name='management_ranking'>
                             <option value='1'>
@@ -251,21 +253,20 @@ $usergroup_list = usergroup_get();
                         <input type='image' src='images/usercheck.png' title='<?php echo $lang['ADMIN_MEMBERS_VALIDATE'] . $name ?>'>
                     </th>
                 </form>
-                <form method='POST' action='index.php?action=delete_member&amp;user_id=<?php echo $user_id ;?>' onsubmit="return  confirm('<?php echo $lang['ADMIN_MEMBERS_DELETE_TITLE'] . $name?>');">
-                <th>
-                    <input type='image' src='images/userdrop.png' title='<?php echo $lang['ADMIN_MEMBERS_DELETE'] . $name;?>'>
+                <form method='POST' action='index.php?action=delete_member&amp;user_id=<?php echo $user_id; ?>' onsubmit="return  confirm('<?php echo $lang['ADMIN_MEMBERS_DELETE_TITLE'] . $name ?>');">
+                    <th>
+                        <input type='image' src='images/userdrop.png' title='<?php echo $lang['ADMIN_MEMBERS_DELETE'] . $name; ?>'>
                     </th>
                 </form>
-                <form method='POST' action='index.php?action=new_password&amp;user_id=<?php echo $user_id;?>'>
+                <form method='POST' action='index.php?action=new_password&amp;user_id=<?php echo $user_id; ?>'>
                     <th>
-                        <input type='image' src='images/userpwd.png' title='<?php echo $lang['ADMIN_MEMBERS_PWDCHANGE_TITLE'] . $name;?>'>
+                        <input type='image' src='images/userpwd.png' title='<?php echo $lang['ADMIN_MEMBERS_PWDCHANGE_TITLE'] . $name; ?>'>
                     </th>
                 </form>
                 <th>
                     <!-- Todo ajouter ici l'envoi direct du nouveau mdp via mail -->
                 </th>
-           </tr>
+            </tr>
         <?php endforeach; ?>
     </table>
 </div>
-

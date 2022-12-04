@@ -157,8 +157,8 @@ require_once("views/page_header.php");
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Pitch314</span></strong><br />
             <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_PITCH314']; ?></strong></div>
             <ul>
-                <li><strong><?php echo ($lang['ABOUT_PROJECT_PITCH314_1']); ?></strong></li>
-                <li><strong><?php echo ($lang['ABOUT_PROJECT_PITCH314_2']); ?></strong></li>
+                <li><strong><?php echo $lang['ABOUT_PROJECT_PITCH314_1']; ?></strong></li>
+                <li><strong><?php echo $lang['ABOUT_PROJECT_PITCH314_2']; ?></strong></li>
             </ul>
         </td>
     </tr>

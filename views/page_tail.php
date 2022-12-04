@@ -1,4 +1,5 @@
 <?php
+
 /**
  * HTML Footer
  * @package OGSpy
@@ -12,6 +13,7 @@
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
+
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 
 $php_end = benchmark();
@@ -45,14 +47,11 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
         </tr>
         <tr>
             <td style="width:33%;text-align:left;font-size:11px;font-style:italic">
-                <a style="font-weight:bold;font-size: 12px" href="https://www.ogsteam.eu"
-                   target="_blank">OGSpy</a> <?php echo $server_config["version"] . " " . $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2020<br/>
+                <a style="font-weight:bold;font-size: 12px" href="https://www.ogsteam.eu" target="_blank">OGSpy</a> <?php echo $server_config["version"] . " " . $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2020<br />
             </td>
-            <td style="width:34%;text-align:center;font-size:11px;font-style:italic;font-weight:bold;"><?php echo("<span id='nb_users'>" . $nb_users . "</span> " . $lang['FOOTER_CONTRIBUTORS'] . (($nb_users > 1) ? "s" : "") . " " . $lang['FOOTER_ON_SITE']); ?></td>
+            <td style="width:34%;text-align:center;font-size:11px;font-style:italic;font-weight:bold;"><?php echo ("<span id='nb_users'>" . $nb_users . "</span> " . $lang['FOOTER_CONTRIBUTORS'] . (($nb_users > 1) ? "s" : "") . " " . $lang['FOOTER_ON_SITE']); ?></td>
             <td style="width:33%;text-align:right;font-size:11px;font-style:italic">
-                 <?php echo $lang['FOOTER_RENDERING'] . " " . round($php_timing + $sql_timing, 3); ?> sec (<span
-                    style="font-weight:bold;">PHP</span> : <?php echo round($php_timing, 3); ?> / <span
-                    style="font-weight:bold;">SQL</span> : <?php echo round($sql_timing, 3); ?>)
+                <?php echo $lang['FOOTER_RENDERING'] . " " . round($php_timing + $sql_timing, 3); ?> sec (<span style="font-weight:bold;">PHP</span> : <?php echo round($php_timing, 3); ?> / <span style="font-weight:bold;">SQL</span> : <?php echo round($sql_timing, 3); ?>)
                 [<?php echo ($nb_requete . " " . $lang['FOOTER_QUERY'] . (($nb_requete > 1) ? "s" : "")); ?>]
             </td>
         </tr>
@@ -60,4 +59,5 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 </div>
 <?php echo (new ToolTip_Helper())->GetHTMLHideContent(); ?>
 </body>
+
 </html>

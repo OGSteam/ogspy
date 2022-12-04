@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Main menu
  * @package OGSpy
@@ -18,15 +19,15 @@ if (!defined('IN_SPYOGAME')) {
 <table border="0" cellpadding="0" cellspacing="0">
     <tr align="center">
         <td>
-            <b><?php echo($lang['MENU_SERVER_TIME']); ?></b><br/>
-            <span id="datetime"><?php echo($lang['MENU_WAITING']); ?></span>
+            <b><?php echo ($lang['MENU_SERVER_TIME']); ?></b><br />
+            <span id="datetime"><?php echo ($lang['MENU_WAITING']); ?></span>
         </td>
     </tr>
 
     <tr>
         <td>
             <div><a href="index.php" class="menu">
-            <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="65" border="0"/></a></div>
+                    <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="65" border="0" /></a></div>
         </td>
     </tr>
 
@@ -49,22 +50,21 @@ if (!defined('IN_SPYOGAME')) {
                         echo "<li><a href='index.php?action=administration' class='menu_items'>" . $lang['MENU_ADMIN'] . "</a></li>";
                     }
                     ?>
-                    <li><a href='index.php?action=profile' class='menu_items'><?php echo($lang['MENU_PROFILE']); ?></a>
+                    <li><a href='index.php?action=profile' class='menu_items'><?php echo ($lang['MENU_PROFILE']); ?></a>
                     </li>
                     <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-                    <li><a href='index.php?action=home' class='menu_items'><?php echo($lang['MENU_HOME']); ?></a></li>
-                    <li><a href='index.php?action=galaxy' class='menu_items'><?php echo($lang['MENU_GALAXY']); ?></a>
+                    <li><a href='index.php?action=home' class='menu_items'><?php echo ($lang['MENU_HOME']); ?></a></li>
+                    <li><a href='index.php?action=galaxy' class='menu_items'><?php echo ($lang['MENU_GALAXY']); ?></a>
                     </li>
-                    <li><a href='index.php?action=cartography'
-                           class='menu_items'><?php echo($lang['MENU_ALLIANCES']); ?></a></li>
-                    <li><a href='index.php?action=search' class='menu_items'><?php echo($lang['MENU_RESEARCH']); ?></a>
+                    <li><a href='index.php?action=cartography' class='menu_items'><?php echo ($lang['MENU_ALLIANCES']); ?></a></li>
+                    <li><a href='index.php?action=search' class='menu_items'><?php echo ($lang['MENU_RESEARCH']); ?></a>
                     </li>
-                    <li><a href='index.php?action=ranking' class='menu_items'><?php echo($lang['MENU_RANKINGS']); ?></a>
+                    <li><a href='index.php?action=ranking' class='menu_items'><?php echo ($lang['MENU_RANKINGS']); ?></a>
                     </li>
                     <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-                    <li><a href='index.php?action=statistic'
-                           class='menu_items'><?php echo($lang['MENU_UPDATE_STATUS']); ?></a></li>
-                    <li><p class='menu_items'><?php echo($lang['MENU_MODULES']); ?></p>
+                    <li><a href='index.php?action=statistic' class='menu_items'><?php echo ($lang['MENU_UPDATE_STATUS']); ?></a></li>
+                    <li>
+                        <p class='menu_items'><?php echo ($lang['MENU_MODULES']); ?></p>
                         <ul class='menu_mods'>
                             <?php
                             //todo sortir requete de la vue
@@ -95,13 +95,14 @@ if (!defined('IN_SPYOGAME')) {
                     }
                     ?>
                     <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-                    <li><a href="index.php?action=about" class='menu_items'><?php echo($lang['MENU_ABOUT']); ?></a></li>
+                    <li><a href="index.php?action=about" class='menu_items'><?php echo ($lang['MENU_ABOUT']); ?></a></li>
                     <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-                    <li><a href='index.php?action=logout' class='menu_items'><?php echo($lang['MENU_LOGOUT']); ?></a>
+                    <li><a href='index.php?action=logout' class='menu_items'><?php echo ($lang['MENU_LOGOUT']); ?></a>
                     </li>
                 </ul>
 
-            </div><!---->
+            </div>
+            <!---->
         </td>
 
 

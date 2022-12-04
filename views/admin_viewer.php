@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Panneau d'Administration : Paramètres et affichage des Journaux
  * @package OGSpy
@@ -42,7 +43,7 @@ if (!isset($pub_typelog)) {
     } else {
         $typelog = "log";
     }
-    }
+}
 if ($typelog != "log" && $typelog != "sql") {
     $typelog = "log";
 }
@@ -68,7 +69,7 @@ echo "<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0, 0, 
 
 <table width="100%">
     <th>
-        <td class="c" colspan="12"><?php echo($lang['ADMIN_LOGS_SELECTED_DATE']); ?></td>
+    <td class="c" colspan="12"><?php echo ($lang['ADMIN_LOGS_SELECTED_DATE']); ?></td>
     </th>
     <?php
     $date = mktime(0, 0, 0, date("n"), 1) - 60 * 60 * 24 * 365;
@@ -103,10 +104,10 @@ echo "<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0, 0, 
     ?>
 </table>
 
-<br/>
+<br />
 <table width="100%">
     <tr>
-        <td class="c" colspan="20"><?php echo($lang['ADMIN_LOGS_SELECT_DAY']); ?></td>
+        <td class="c" colspan="20"><?php echo ($lang['ADMIN_LOGS_SELECT_DAY']); ?></td>
     </tr>
     <?php
     $max_day = date("d");
@@ -155,10 +156,10 @@ echo "<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0, 0, 
     ?>
 </table>
 
-<br/>
+<br />
 <table width="100%">
     <tr>
-        <td class="c" colspan="3"><?php echo($lang['ADMIN_LOGS_SELECTTYPE']); ?></td>
+        <td class="c" colspan="3"><?php echo ($lang['ADMIN_LOGS_SELECTTYPE']); ?></td>
     </tr>
     <?php
     $show = $show_year . "~" . $show_month . "~" . $show_day;
@@ -173,14 +174,14 @@ echo "<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0, 0, 
     echo "</tr>";
     ?>
     <tr>
-        <td colspan='2'><span style="color: Red; "><i><?php echo($lang['ADMIN_LOGS_SEE_TRANSACTIONALS']); ?></i></span></td>
+        <td colspan='2'><span style="color: Red; "><i><?php echo ($lang['ADMIN_LOGS_SEE_TRANSACTIONALS']); ?></i></span></td>
     </tr>
 </table>
 
-<br/>
+<br />
 <table width="100%">
     <tr>
-        <td class="l" colspan="3"><b><?php echo($lang['ADMIN_LOGS_VIEWER']); ?></b> <i><span style="color: red; "><b><?php echo $typelog == "log" ? $lang['ADMIN_LOGS_GENERAL'] : $lang['ADMIN_LOGS_SQL']; ?></b></span></i><br>
+        <td class="l" colspan="3"><b><?php echo ($lang['ADMIN_LOGS_VIEWER']); ?></b> <i><span style="color: red; "><b><?php echo $typelog == "log" ? $lang['ADMIN_LOGS_GENERAL'] : $lang['ADMIN_LOGS_SQL']; ?></b></span></i><br>
             <?php
             end($log);
             while ($line = current($log)) {

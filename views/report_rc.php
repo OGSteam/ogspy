@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Combat Report Rendering
  * @package OGSpy
