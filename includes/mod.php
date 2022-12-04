@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Functions used for OGSpy Mods
  * @package OGSpy
@@ -53,7 +54,7 @@ function mod_list()
         }
         closedir($path);
         if (sizeof($directories[$d]) == 0) {
-            unset ($directories[$d]);
+            unset($directories[$d]);
         }
     }
 
@@ -99,8 +100,6 @@ function mod_list()
         } else { //Mod absent du répertoire "mod"
             $mod_list["wrong"][] = array("id" => $id, "title" => $title);
         }
-
-
     }
 
     while ($files = @current($directories)) {
@@ -130,7 +129,7 @@ function mod_check($check)
     }
 
     switch ($check) {
-        case "mod_id" :
+        case "mod_id":
             if (!check_var($pub_mod_id, "Num")) {
                 redirection("index.php?action=message&id_message=errordata&info");
             }
@@ -139,7 +138,7 @@ function mod_check($check)
             }
             break;
 
-        case "directory" :
+        case "directory":
             if (!check_var($pub_directory, "Text")) {
                 redirection("index.php?action=message&id_message=errordata&info");
             }
@@ -161,9 +160,9 @@ function mod_install()
     $Mod_Model = new Mod_Model();
 
     mod_check("directory");
-    // modif pour 3.0.7 
+    // modif pour 3.0.7
     // check d un mod " normalisé"
-    // voir @ shad 
+    // voir @ shad
 
     // fichier install non present
     if (!file_exists("mod/" . $pub_directory . "/install.php")) {
@@ -172,7 +171,7 @@ function mod_install()
         exit();
     }
 
-    //fichier . txt non present 
+    //fichier . txt non present
     if (!file_exists("mod/" . $pub_directory . "/version.txt")) {
         log_("mod_erreur_install_txt", $pub_directory);
         redirection("index.php?action=message&id_message=errormod&info");
@@ -229,17 +228,15 @@ function mod_install()
     $position = $Mod_Model->get_position_max();
 
     ///update emplacement
-    $Mod_Model->update_posisiton($mod_id,(int)($position + 1));
+    $Mod_Model->update_posisiton($mod_id, (int)($position + 1));
 
     //récuperation du titre en base
     $mod = $Mod_Model->find_by(array("id" => $mod_id));
 
-    if (count($mod) !=0 )
-    {
+    if (count($mod) != 0) {
         log_("mod_install", $mod[0]['title']);
-    }
-    else{
-        log_("mod_install", "undefined ".$pub_directory);
+    } else {
+        log_("mod_install", "undefined " . $pub_directory);
     }
 
     generate_mod_cache();
@@ -260,11 +257,11 @@ function mod_update()
 
     //recuperation du mod
     //récuperation du titre en base
-    $mod =$Mod_Model->find_one_by(array("id" => $pub_mod_id));
+    $mod = $Mod_Model->find_one_by(array("id" => $pub_mod_id));
 
     // modif pour 3.0.7
     // check d un mod " normalisé"
-    // voir @ shad 
+    // voir @ shad
 
     // fichier mod_erreur_update non present
     if (!file_exists("mod/" . $mod['root'] . "/update.php")) {
@@ -273,7 +270,7 @@ function mod_update()
         exit();
     }
 
-    //fichier . txt non present 
+    //fichier . txt non present
     if (!file_exists("mod/" . $mod['root'] . "/version.txt")) {
         log_("mod_erreur_install_txt", $mod['root']);
         redirection("index.php?action=message&id_message=errormod&info");
@@ -285,7 +282,6 @@ function mod_update()
         log_("mod_erreur_minuscule", $mod['root']);
         redirection("index.php?action=message&id_message=errormod&info");
         exit();
-
     }
 
     // verification sur le fichier .txt
@@ -336,7 +332,7 @@ function mod_uninstall()
     mod_check("mod_id");
 
     // selection du mod
-    $mod = $Mod_Model->find_one_by(array("id"=>$pub_mod_id));
+    $mod = $Mod_Model->find_one_by(array("id" => $pub_mod_id));
 
     $root = $mod["root"];
     $title = $mod["title"];
@@ -349,7 +345,7 @@ function mod_uninstall()
 
     $Mod_Model->delete($pub_mod_id);
 
-    log_("mod_uninstall",$title);
+    log_("mod_uninstall", $title);
     generate_mod_cache();
     redirection("index.php?action=administration&subaction=mod");
 }
@@ -366,7 +362,7 @@ function mod_active()
 
     mod_check("mod_id");
 
-    $mod =$Mod_Model->find_one_by(array("id" => $pub_mod_id));
+    $mod = $Mod_Model->find_one_by(array("id" => $pub_mod_id));
     $mod['active'] = 1;
     $Mod_Model->update($mod);
 
@@ -385,7 +381,7 @@ function mod_disable()
     mod_check("mod_id");
 
     $Mod_Model = new Mod_Model();
-    $mod =$Mod_Model->find_one_by(array("id" => $pub_mod_id));
+    $mod = $Mod_Model->find_one_by(array("id" => $pub_mod_id));
     $mod['active'] = 0;
     $Mod_Model->update($mod);
 
@@ -406,7 +402,7 @@ function mod_admin()
     mod_check("mod_id");
 
     $Mod_Model = new Mod_Model();
-    $mod =$Mod_Model->find_one_by(array("id" => $pub_mod_id));
+    $mod = $Mod_Model->find_one_by(array("id" => $pub_mod_id));
     $mod['admin_only'] = 1;
     $Mod_Model->update($mod);
 
@@ -425,7 +421,7 @@ function mod_normal()
     mod_check("mod_id");
 
     $Mod_Model = new Mod_Model();
-    $mod =$Mod_Model->find_one_by(array("id" => $pub_mod_id));
+    $mod = $Mod_Model->find_one_by(array("id" => $pub_mod_id));
     $mod['admin_only'] = 0;
     $Mod_Model->update($mod);
 
@@ -443,42 +439,40 @@ function mod_sort($order)
     global $pub_mod_id;
     $changed = false;
     $change_msg = '-Pas de changement-';
-    
+
     mod_check("mod_id");
 
     //récupérration des mods
     $Mod_Model = new Mod_Model();
     $tMod = $Mod_Model->find_by(null, array('position' => 'ASC', 'title' => 'ASC'));
 
-    $oldModOrder  =array();
-    $oldModPosition=0;
-    foreach ($tMod as $mod)
-    {
-        $oldModOrder[$mod["position"]]= $mod;
-        if ($pub_mod_id ==$mod["id"] )
-        {
-            $oldModPosition=$mod["position"];
+    $oldModOrder  = array();
+    $oldModPosition = 0;
+    foreach ($tMod as $mod) {
+        $oldModOrder[$mod["position"]] = $mod;
+        if ($pub_mod_id == $mod["id"]) {
+            $oldModPosition = $mod["position"];
         }
     }
 
     //changement de position
-    $myMod=$oldModOrder[$oldModPosition];
+    $myMod = $oldModOrder[$oldModPosition];
     switch ($order) {
-        case "down" :
+        case "down":
             //si on veut monter la position (donc descendre en visu)
-            if (isset($oldModOrder[$oldModPosition+1])) {
-                $Mod_Model->update_posisiton($myMod['id'],$oldModPosition+1); //mod courant
-                $modToMove = $oldModOrder[$oldModPosition+1]; //mod à bouger
-                $Mod_Model->update_posisiton($modToMove['id'],$oldModPosition);
+            if (isset($oldModOrder[$oldModPosition + 1])) {
+                $Mod_Model->update_posisiton($myMod['id'], $oldModPosition + 1); //mod courant
+                $modToMove = $oldModOrder[$oldModPosition + 1]; //mod à bouger
+                $Mod_Model->update_posisiton($modToMove['id'], $oldModPosition);
                 $changed = true;
             }
             break;
-        case "up" :
+        case "up":
             //si on veut descendre la position (donc monter en visu)
-            if (isset($oldModOrder[$oldModPosition-1])) {
-                $Mod_Model->update_posisiton($myMod['id'],$oldModPosition-1); //mod courant
-                $modToMove = $oldModOrder[$oldModPosition-1]; //mod à bouger
-                $Mod_Model->update_posisiton($modToMove['id'],$oldModPosition);
+            if (isset($oldModOrder[$oldModPosition - 1])) {
+                $Mod_Model->update_posisiton($myMod['id'], $oldModPosition - 1); //mod courant
+                $modToMove = $oldModOrder[$oldModPosition - 1]; //mod à bouger
+                $Mod_Model->update_posisiton($modToMove['id'], $oldModPosition);
                 $changed = true;
             }
             break;
@@ -504,9 +498,8 @@ function mod_version()
     global $pub_action;
 
     $Mod_Model = new Mod_Model();
-    $mod =$Mod_Model->find_one_by(array("root" => $pub_action));
-    if (!is_null($mod))
-    {
+    $mod = $Mod_Model->find_one_by(array("root" => $pub_action));
+    if (!is_null($mod)) {
         return $mod["version"];
     }
     return "(ModInconnu:'{$pub_action}')";
@@ -527,7 +520,7 @@ function mod_set_option($param, $value, $nom_mod = '')
     if (!check_var($param, "Text")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
-    return (new Mod_Config_Model)->set_mod_config($nom_mod, $param,$value);
+    return (new Mod_Config_Model)->set_mod_config($nom_mod, $param, $value);
 }
 
 /**
@@ -576,7 +569,7 @@ function mod_get_option($param)
 function mod_get_nom()
 {
 
-    global $pub_action,$pub_mod_id;
+    global $pub_action, $pub_mod_id;
 
     $nom_mod = '';
     if ($pub_action == 'mod_install') {
@@ -647,14 +640,13 @@ function install_mod($mod_folder)
     $Mod_Model = new Mod_Model();
     $mod = $Mod_Model->find_one_by(array("title" => $value_mod[0]));
 
-    if (!isset($mod['title']) )
-    {
+    if (!isset($mod['title'])) {
         if (count($value_mod) == 7) {
             $newMod = array();
             $newMod['title'] =  $value_mod[0];
             $newMod['menu'] = $value_mod[1];
             $newMod['action'] = $value_mod[2];
-            $newMod['root'] =$value_mod[3] ;
+            $newMod['root'] = $value_mod[3];
             $newMod['link'] = $value_mod[4];
             $newMod['version'] = $mod_version;
             $newMod['active'] = $value_mod[5];
@@ -674,14 +666,13 @@ function install_mod($mod_folder)
  * @param string $mod_uninstall_table : Name of the Database table used by the Mod that we need to remove
  * @api
  */
-function uninstall_mod($mod_uninstall_name, $mod_uninstall_table=null)
+function uninstall_mod($mod_uninstall_name, $mod_uninstall_table = null)
 {
     $Mod_Model = new Mod_Model();
 
     $Mod_Model->delete_by_title($mod_uninstall_name);
 
-    if ($mod_uninstall_table!=null)
-    {
+    if ($mod_uninstall_table != null) {
         //todo MOD factory ?
         log_("debug", "DROP TABLE IF EXISTS " . $mod_uninstall_table);
         $Mod_Model->drop_custum_table($mod_uninstall_table);
@@ -721,7 +712,7 @@ function update_mod($mod_folder, $mod_name)
 
     $Mod_Model = new Mod_Model(); //récuperation du mod
     $mod = $Mod_Model->find_one_by(array("title" => $mod_name));
-    $mod['version']=$mod_version;
+    $mod['version'] = $mod_version;
     $Mod_Model->update($mod);
 
     $is_oki = true;

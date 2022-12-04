@@ -68,7 +68,7 @@ $current_ogspy_version = github_get_latest_release('ogspy');
 if (version_compare($current_ogspy_version['release'], $server_config['version'], '>')) {
     $ogspy_version_message = "<span style=\"color:red\">" . $current_ogspy_version['release'] . " : " . $lang['ADMIN_SERVER_NEWVERSION'] . "</span><br><br><span>" . $current_ogspy_version['description'] . "</span>";
 } else {
-    $ogspy_version_message = $current_ogspy_version['release'] . "<br><span>" . $current_ogspy_version['description'] . "</span><br><br>" . " (<a href='https://github.com/ogsteam/ogspy/releases' target='_blank'>" . $lang['ADMIN_SERVER_RELEASENOTE'] . "</a>)";
+    $ogspy_version_message = $current_ogspy_version['release'] . "<br><span>" . $current_ogspy_version['description'] . "</span><br><br>" . " (<a href='https://github.com/ogsteam/ogspy/releases' target='_blank' rel='noopener'>" . $lang['ADMIN_SERVER_RELEASENOTE'] . "</a>)";
 }
 ?>
 
@@ -132,8 +132,8 @@ if (version_compare($current_ogspy_version['release'], $server_config['version']
         <td class="c" colspan="4">&nbsp;</td>
     </tr>
     <tr>
-        <th colspan="2"><a href="php/phpinfo.php" target="_blank"><?php echo ($lang['ADMIN_SERVER_PHPINFO']); ?></a></th>
-        <th colspan="2"><a href="php/phpmodules.php" target="_blank"><?php echo ($lang['ADMIN_SERVER_PHPMODULES']); ?></a></th>
+        <th colspan="2"><a href="php/phpinfo.php" target="_blank" rel="noopener"><?php echo ($lang['ADMIN_SERVER_PHPINFO']); ?></a></th>
+        <th colspan="2"><a href="php/phpmodules.php" target="_blank" rel="noopener"><?php echo ($lang['ADMIN_SERVER_PHPMODULES']); ?></a></th>
     </tr>
 </table>
 <br />

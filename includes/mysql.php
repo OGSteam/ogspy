@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MySql database Managment Class
  * @package OGSpy
@@ -88,12 +89,12 @@ class sql_db
 
         /* Vérification de la connexion */
         if ($this->db_connect_id->connect_errno) {
-            echo("Échec de la connexion : " . $this->db_connect_id->connect_error);
+            echo ("Échec de la connexion : " . $this->db_connect_id->connect_error);
             exit();
         }
-		
+
         if (!$this->db_connect_id->set_charset("utf8")) {
-            echo("Erreur lors du chargement du jeu de caractères utf8 : " . $this->db_connect_id->error);
+            echo ("Erreur lors du chargement du jeu de caractères utf8 : " . $this->db_connect_id->error);
         } else {
             /*printf("Jeu de caractères courant : %s\n", $this->db_connect_id->character_set_name());*/
         }
@@ -139,7 +140,6 @@ class sql_db
 
                 $this->DieSQLError($query);
             }
-
         } else {
             $this->last_query = $query;
             $this->result = $this->db_connect_id->query($query);
@@ -148,11 +148,10 @@ class sql_db
         if ($save && isset($server_config["debug_log"])) {
 
             if ($server_config["debug_log"] == "1") {
-                    $fichier = "sql_" . date("ymd") . ".sql";
-                    $date = date("d/m/Y H:i:s");
-                    $ligne = "/* " . $date . " - " . $_SERVER["REMOTE_ADDR"] . " */ " . $query . ";";
-                    write_file(PATH_LOG_TODAY . $fichier, "a", $ligne);
-
+                $fichier = "sql_" . date("ymd") . ".sql";
+                $date = date("d/m/Y H:i:s");
+                $ligne = "/* " . $date . " - " . $_SERVER["REMOTE_ADDR"] . " */ " . $query . ";";
+                write_file(PATH_LOG_TODAY . $fichier, "a", $ligne);
             }
         }
 
@@ -260,9 +259,9 @@ class sql_db
     {
         $result["message"] = $this->db_connect_id->connect_error;
         $result["code"] = $this->db_connect_id->connect_errno;
-        echo("<h3 style='color: #FF0000;text-align: center'>Erreur lors de la requête MySQL</h3>");
-        echo("<b>- " . $result["message"] . "</b>");
-        echo($this->last_query);
+        echo ("<h3 style='color: #FF0000;text-align: center'>Erreur lors de la requête MySQL</h3>");
+        echo ("<b>- " . $result["message"] . "</b>");
+        echo ($this->last_query);
         exit();
     }
 
@@ -305,7 +304,4 @@ class sql_db
         log_("mysql_error", array($query, $this->db_connect_id->errno, $this->db_connect_id->error, debug_backtrace()));
         die();
     }
-
-
 }
-

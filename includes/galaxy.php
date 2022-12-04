@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fonctions relatives aux donnees galaxies/planetes
  *
@@ -310,11 +311,11 @@ function galaxy_search()
         case "away":
             $criteria->setIsInactive(true);
             break;
-		//Binu : ajout du critère spy
-		case "spy":
-			$criteria->setIsSpied(true);
+            //Binu : ajout du critère spy
+        case "spy":
+            $criteria->setIsSpied(true);
             break;
-		//fin
+            //fin
     }
     if (!$criteria->isValid()) {
         return array($search_result, $total_page);
@@ -367,7 +368,8 @@ function galaxy_search()
         }
         $data_spy = new Spy_Model();
         $nb_spy_reports = $data_spy->get_nb_spy_by_planet($planet["galaxy"], $planet["system"], $planet["row"]);
-        $search_result[] = array("galaxy" => $planet["galaxy"],
+        $search_result[] = array(
+            "galaxy" => $planet["galaxy"],
             "system" => $planet["system"],
             "row" => $planet["row"],
             "phalanx" => $planet["phalanx"],
@@ -477,7 +479,7 @@ function galaxy_ally_position($step = 50)
     $pub_ally_protection = array();
     // $allied = array();       //TODO:Unused_code
     // if ($server_config["allied"] != "") {
-        // $allied = explode(",", $server_config["allied"]);
+    // $allied = explode(",", $server_config["allied"]);
     // }
     if ($server_config["ally_protection"] != "") {
         $pub_ally_protection = explode(",", $server_config["ally_protection"]);
@@ -498,7 +500,7 @@ function galaxy_ally_position($step = 50)
         }
         // $friend = false; //TODO:Unused_code
         // if (in_array($pub_ally_name, $allied)) {
-            // $friend = true;
+        // $friend = true;
         // }
 
         for ($galaxy = 1; $galaxy <= $server_config['num_of_galaxies']; $galaxy++) {
@@ -566,7 +568,7 @@ function galaxy_reportspy_show()
  */
 function galaxy_reportrc_show()
 {
-    global $pub_galaxy, $pub_system, $pub_row, $server_config; 
+    global $pub_galaxy, $pub_system, $pub_row, $server_config;
 
     if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_row, "Num")) {
         return false;
@@ -701,7 +703,6 @@ function galaxy_show_ranking_player()
 
     if (!isset($pub_date)) {
         $last_ranking = $Rankings_Player_Model->get_rank_latest_table_date($orderTableName);
-
     } else {
         $last_ranking = $pub_date;
     }
@@ -730,7 +731,6 @@ function galaxy_show_ranking_player()
         $ranking[$currentPlayer]["military_b"] = array("rank" => $ranktable_bydate["milb_rank"], "points" => $ranktable_bydate["milb_pts"]);
         $ranking[$currentPlayer]["military_l"] = array("rank" => $ranktable_bydate["mill_rank"], "points" => $ranktable_bydate["mill_pts"]);
         $ranking[$currentPlayer]["military_d"] = array("rank" => $ranktable_bydate["mild_rank"], "points" => $ranktable_bydate["mild_pts"]);
-
     }
 
     $ranking_available = $Rankings_Player_Model->get_all_distinct_date_ranktable($orderTableName);
@@ -770,9 +770,9 @@ function galaxy_show_ranking_ally()
     $maxrank = max($Rankings_Ally_Model->select_max_rank_row());
 
     // if (isset($pub_suborder) && $pub_suborder == "member") {
-        // $pub_order_by2 = "points_per_member desc";
+    // $pub_order_by2 = "points_per_member desc";
     // } else {
-        // $pub_order_by2 = "rank";
+    // $pub_order_by2 = "rank";
     // }
 
     if (!isset($pub_interval)) {
@@ -795,7 +795,6 @@ function galaxy_show_ranking_ally()
 
     if (!isset($pub_date)) {
         $last_ranking = $Rankings_Ally_Model->get_rank_latest_table_date($orderTableName);
-
     } else {
         $last_ranking = $pub_date;
     }
@@ -946,8 +945,6 @@ function galaxy_show_ranking_unique_player_forJS($player, $date_min = null, $dat
                 break;
             }
         }
-
-
     }
 
     return $ranking;
@@ -1054,10 +1051,8 @@ function galaxy_purge_ranking()
                 /// dans ce cas, suppression des datas
                 $removeDatadate = $ranking_available[$max_keeprank]; // recuperation de la date limit
                 $Rankings_Player_Model->remove_all_rank_older_than($removeDatadate, $table);
-
             }
         }
-
     }
 }
 
@@ -1144,11 +1139,13 @@ function galaxy_get_phalanx($galaxy, $system, $classe = 'none')
                 $add_to_list = true;
                 //Cas 2 : Phanlange en début de galaxie -> 2 zones possibles : 1 en fin de galaxie et 1 en début
             } elseif (($system <= $system_higher_range && $system <= $system_lower_range && $arrondi_type == 1) ||
-                ($system >= $system_higher_range && $system >= $system_lower_range && $arrondi_type == 1)) {
+                ($system >= $system_higher_range && $system >= $system_lower_range && $arrondi_type == 1)
+            ) {
                 $add_to_list = true;
                 //Cas 3 : Phanlange en fin de galaxie -> 2 zones possibles : 1 en fin de galaxie et 1 en début
             } elseif (($system >= $system_lower_range && $system >= $system_higher_range && $arrondi_type == 2) ||
-                ($system <= $system_lower_range && $system <= $system_higher_range && $arrondi_type == 2)) {
+                ($system <= $system_lower_range && $system <= $system_higher_range && $arrondi_type == 2)
+            ) {
                 $add_to_list = true;
             } else {
                 // Phalange non hostile
@@ -1227,8 +1224,6 @@ function galaxy_obsolete()
             $formoon = false;
         }
         $obsolete = (new Universe_Model())->get_galaxy_obsolete($pub_perimeter, $indice_inf, $indice_sup, $indice, $since, $formoon);
-
-
     }
 
 
@@ -1341,9 +1336,9 @@ function UNparseRE($id_RE)
 
     // /!\ todo pattern "Lune" n'ezst plus determinant
     // if (preg_match('/\(Lune\)/', $row['planet_name'])) {
-        // $moon = 1;
+    // $moon = 1;
     // } else {
-        // $moon = 0;
+    // $moon = 0;
     // }
 
     $dateRE = date('m-d H:i:s', $row['dateRE']);
@@ -1384,7 +1379,7 @@ function UNparseRE($id_RE)
             if ($row["planet_name"] == $tmpRow["planet_name"] && $show['flotte'] == 0) // on recherche sur la meme planete ou lune
             {
 
-                $total = $tmpRow["PT"] + $tmpRow["GT"] + $tmpRow["CLE"] + $tmpRow["CLO"] + $tmpRow["CR"] + $tmpRow["VB"] + $tmpRow["VC"] + $tmpRow["REC"] + $tmpRow["SE"] + $tmpRow["BMD"] + $tmpRow["DST"] + $tmpRow["EDLM"] + $tmpRow["SAT"] + $tmpRow["TRA"]+ $tmpRow["FOR"]+ $tmpRow["FAU"]+ $tmpRow["ECL"];
+                $total = $tmpRow["PT"] + $tmpRow["GT"] + $tmpRow["CLE"] + $tmpRow["CLO"] + $tmpRow["CR"] + $tmpRow["VB"] + $tmpRow["VC"] + $tmpRow["REC"] + $tmpRow["SE"] + $tmpRow["BMD"] + $tmpRow["DST"] + $tmpRow["EDLM"] + $tmpRow["SAT"] + $tmpRow["TRA"] + $tmpRow["FOR"] + $tmpRow["FAU"] + $tmpRow["ECL"];
                 if ((int)$total != -17) {
                     $row["PT"] = $tmpRow["PT"];
                     $row["GT"] = $tmpRow["GT"];
@@ -1689,7 +1684,7 @@ function galaxy_portee_missiles($galaxy, $system)
 
             // calcul de la fenetre
             $vari_missil_moins_tmp = ($sysSol_missil - $porte_missil) % $server_config['num_of_systems'];     // ne peux pas
-            $vari_missil_moins = (($sysSol_missil - $porte_missil) < 1 )  ? 1     : $vari_missil_moins_tmp;   //  etre negatif !!!!
+            $vari_missil_moins = (($sysSol_missil - $porte_missil) < 1)  ? 1     : $vari_missil_moins_tmp;   //  etre negatif !!!!
             $vari_missil_plus = ($sysSol_missil + $porte_missil) % $server_config['num_of_systems'];
 
 
@@ -1739,7 +1734,7 @@ function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_
     $missil_ready = "<span style='color: #DBBADC; '> " . $total_missil . " " . $lang['GALAXY_MIP_MIPS'] . " </span>";
 
     //<a href="index.htm" onmouseover="return escape('Some text')">Homepage </a>
-    $ok_missil .= $nom_missil_joueur ." - ". $door . $missil_ready . $color_missil_ally1 . $base_coord . $color_missil_ally2;
+    $ok_missil .= $nom_missil_joueur . " - " . $door . $missil_ready . $color_missil_ally1 . $base_coord . $color_missil_ally2;
 
 
     if ($ok_missil) {

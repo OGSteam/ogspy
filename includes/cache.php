@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Functions relatives to the data cache file system
  * @package OGSpy
@@ -32,14 +33,11 @@ function generate_config_cache()
             echo '<p>Impossible d écrire sur le fichier cache. Vérifier les droits d acces au dossier  \'cache\' </p>';
             log_("erreur_config_cache");
         }
-
     } else {
         fwrite($fh, '<?php' . "\n\n" . 'define(\'OGSPY_CONFIG_LOADED\', 1);' . "\n\n" . '$server_config = ' . var_export($output, true) . ';' . "\n\n" . '?>');
 
         fclose($fh);
-
     }
-
 }
 
 
@@ -55,9 +53,9 @@ function generate_mod_cache()
     $Mod_Model = new Mod_Model();
     $tMods = $Mod_Model->find_by(array('active' => 1), array('position' => 'ASC', 'title' => 'ASC'));
     // On extrait les propriétés souhaitées
-    foreach ($tMods as $mod)
-    {
-        $modExport[$mod['action']] = array('action' => $mod['action'],
+    foreach ($tMods as $mod) {
+        $modExport[$mod['action']] = array(
+            'action' => $mod['action'],
             'menu' => $mod['menu'],
             'root' => $mod['root'],
             'link' => $mod['link'],
@@ -71,14 +69,11 @@ function generate_mod_cache()
             echo '<p>Impossible d écrire sur le fichier cache. Vérifier les droits d acces au dossier  \'cache\' </p>';
             log_("erreur_mod_cache");
         }
-
     } else {
         fwrite($fh, '<?php' . "\n\n" . 'define(\'OGSPY_MOD_LOADED\', 1);' . "\n\n" . '$cache_mod = ' . var_export($modExport, true) . ';' . "\n\n" . '?>');
 
         fclose($fh);
-
     }
-
 }
 
 /**
@@ -97,4 +92,3 @@ function generate_all_cache()
     generate_config_cache();
     generate_mod_cache();
 }
-

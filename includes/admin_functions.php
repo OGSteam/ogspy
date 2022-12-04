@@ -1,4 +1,5 @@
 <?php
+
 /**
  * OGSpy Admin functions
  * PHP Version 7.3
@@ -20,11 +21,12 @@ if (!defined('IN_SPYOGAME')) {
 /**
  *  php8 -r "$a='le toekn';for($i=0;$i<strlen($a);$i++){$b=ord($a[$i]);$a[$i]=chr(++$b);}echo $a;"
  */
-function get_aTokenOGSpy($sep) {
+function get_aTokenOGSpy($sep)
+{
     $result = '';
     $tokens = array('eee455gb', 'g3g986f', 'c2664c9764', '4c73dg6fb921');
     foreach ($tokens as $token) {
-        for ($i = 0 ; $i < strlen($token) ; $i++) {
+        for ($i = 0; $i < strlen($token); $i++) {
             $tmp = ord($token[$i]);
             $result .= chr(--$tmp);
         }
@@ -77,7 +79,7 @@ function github_get_latest_release($repository)
 {
     $release = 'no_release_available';
     $description = 'NA';
-    $url = "https://api.github.com/repos/ogsteam/".$repository."/releases/latest";
+    $url = "https://api.github.com/repos/ogsteam/" . $repository . "/releases/latest";
     $data = github_api_Request($url);
 
     $mod_data = json_decode($data, true);
@@ -90,5 +92,4 @@ function github_get_latest_release($repository)
     }
 
     return array('release' => $release, 'description' => $description);
-
 }

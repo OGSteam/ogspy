@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fichier de gestion des sessions utilisateurs sur OGSpy
  * @package OGSpy
@@ -68,15 +69,13 @@ function session()
 
         //Vérification de la validité de le session
         if (!$Sessions_Model->is_valid_session_id($cookie_id, $user_ip)) {
-            if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] == 1) {
+            if (isset($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] == 1) {
                 //Mise à jour de l'adresse ip de session si le contrôle des ip est désactivé
                 if (!$Sessions_Model->update_session_public_ip($cookie_id, $user_ip)) {
                     $cookie_id = "";
                 }
-
             } else {
                 $cookie_id = "";
-
             }
         }
     }
@@ -100,7 +99,7 @@ function session_set_user_id($user_id, $lastvisit = 0)
     global $user_ip, $cookie_id, $server_config;
     $Sessions_Model = new Sessions_Model();
 
-    if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) {
+    if (isset($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) {
         $Sessions_Model->update_session($user_id, $lastvisit, $cookie_id, $user_ip);
     } else {
         $Sessions_Model->update_session($user_id, $lastvisit, $cookie_id);
@@ -118,10 +117,9 @@ function session_set_user_data($cookie_id)
 {
     global $user_ip, $user_data, $user_auth, $user_token;
 
-    $user_data = (new Sessions_Model())->select_user_data_session($cookie_id,$user_ip);
+    $user_data = (new Sessions_Model())->select_user_data_session($cookie_id, $user_ip);
 
-    if ($user_data==false)
-    {
+    if ($user_data == false) {
         unset($user_data);
         unset($user_auth);
         unset($user_token);
@@ -165,14 +163,13 @@ function session_close($user_id = false)
         $cookie_name = COOKIE_NAME;
         $cookie_id = $_COOKIE[$cookie_name];
 
-        if (isset ($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) {
+        if (isset($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) {
             $Sessions_Model->close_session_by_cookie_session_ip($cookie_id, $user_ip);
         } else {
             $Sessions_Model->close_session_by_cookie($cookie_id);
         }
     } else {
         $Sessions_Model->close_user_session($user_id);
-
     }
 }
 
@@ -204,7 +201,6 @@ function session_whois_online()
     $online = array_merge($members, $guests);
 
     return $online;
-
 }
 
 /**
