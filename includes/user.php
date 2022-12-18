@@ -63,11 +63,12 @@ function user_check_auth($action, $user_id = null)
                 redirection("index.php?action=message&id_message=deleteuser_failed&info");
             }
 
-            if (($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
-                1) || ($info_user[0]["user_admin"] == 1) || (($user_data["user_coadmin"] == 1) &&
-                ($info_user[0]["user_coadmin"] == 1)) || (($user_data["user_coadmin"] != 1 && $user_data["management_user"] ==
-                1) && ($info_user[0]["user_coadmin"] == 1 || $info_user[0]["management_user"] ==
-                1))) {
+            if (($user_data["user_admin"] != 1 &&
+                $user_data["user_coadmin"] != 1 &&
+                $user_data["management_user"] != 1) || ($info_user[0]["user_admin"] == 1) || (($user_data["user_coadmin"] == 1) &&
+                ($info_user[0]["user_coadmin"] == 1)) || (($user_data["user_coadmin"] != 1 &&
+                $user_data["management_user"] == 1) &&
+                ($info_user[0]["user_coadmin"] == 1 || $info_user[0]["management_user"] == 1))) {
                 redirection("index.php?action=message&id_message=forbidden&info");
             }
 
@@ -186,7 +187,10 @@ function admin_user_set()
     global $pub_user_id, $pub_active, $pub_user_coadmin, $pub_management_user, $pub_management_ranking;
 
     if (
-        !check_var($pub_user_id, "Num") || !check_var($pub_active, "Num") || !check_var($pub_user_coadmin, "Num") || !check_var($pub_management_user, "Num") ||
+        !check_var($pub_user_id, "Num") ||
+        !check_var($pub_active, "Num") ||
+        !check_var($pub_user_coadmin, "Num") ||
+        !check_var($pub_management_user, "Num") ||
         !check_var($pub_management_ranking, "Num")
     ) {
         redirection("index.php?action=message&id_message=errordata&info");
@@ -284,18 +288,19 @@ function member_user_set()
 {
     global $user_data, $user_technology;
     global $pub_pseudo, $pub_old_password, $pub_new_password, $pub_new_password2, $pub_galaxy,
-        $pub_system, $pub_disable_ip_check, $pub_off_commandant, $pub_off_amiral, $pub_off_ingenieur,
-        $pub_off_geologue, $pub_off_technocrate, $pub_pseudo_ingame, $pub_pseudo_email, $pub_renew_user_token, $pub_user_class;
-
-
+        $pub_system, $pub_disable_ip_check,
+        $pub_off_commandant, $pub_off_amiral, $pub_off_ingenieur, $pub_off_geologue, $pub_off_technocrate,
+        $pub_pseudo_ingame, $pub_pseudo_email, $pub_renew_user_token, $pub_user_class;
 
     if (
         !check_var($pub_pseudo, "Text") || !check_var($pub_old_password, "Text") ||
-        !check_var($pub_new_password, "Password") || !check_var(
-            $pub_new_password2,
-            "Password"
-        ) || !check_var($pub_pseudo_email, "Email")
-        || !check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_disable_ip_check, "Num") || !check_var($pub_pseudo_ingame, "Pseudo_ingame")
+        !check_var($pub_new_password, "Password") ||
+        !check_var($pub_new_password2, "Password") ||
+        !check_var($pub_pseudo_email, "Email") ||
+        !check_var($pub_galaxy, "Num") ||
+        !check_var($pub_system, "Num") ||
+        !check_var($pub_disable_ip_check, "Num") ||
+        !check_var($pub_pseudo_ingame, "Pseudo_ingame")
     ) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
