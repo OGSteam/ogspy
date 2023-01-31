@@ -21,7 +21,7 @@
     }
   ],
   "require": {
-    "php": ">=8.0",
+    "php": ">=8.2",
     "tooltipster/tooltipster": "4.2.*",
     "ext-mysqli": "*",
     "ext-json": "*",

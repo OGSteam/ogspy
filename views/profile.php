@@ -24,7 +24,7 @@ $user_class = $user_data["user_class"];
 
 
 $user_token = (new Ogsteam\Ogspy\Model\Tokens_Model)->get_token($user_data["user_id"], "PAT");
-if ($user_token != false) {
+if (!$user_token) {
     $user_token_displayed = $user_token;
 } else {
     $user_token_displayed = $lang['PROFILE_TOKEN_TO_BE_UPDATED'];
