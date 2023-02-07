@@ -118,6 +118,7 @@ CREATE TABLE `ogspy_game_ally`
   `ally_id`       INT(6)      NOT NULL,
   `ally`          VARCHAR(65) NOT NULL COMMENT 'Nom de l alliance',
   `tag`           VARCHAR(65) NOT NULL DEFAULT '',
+  `class`         VARCHAR(65) NOT NULL DEFAULT '',
   `number_member` INT(3)      NOT NULL COMMENT 'nombre de membre',
   `datadate`      INT(11)     NOT NULL DEFAULT '0',
   PRIMARY KEY (`ally_id`)
