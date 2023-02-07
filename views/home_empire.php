@@ -267,10 +267,10 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
         <th><a><?php echo ($lang['HOME_EMPIRE_ENERGY']); ?></a></th>
         <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                if (!isset($user_production['reel'][$i])) {
-                    $user_production['reel'][$i]['prod_E'] = 0;
+                if (!isset($user_production[$i]['NRJ'])) {
+                    $user_production[$i]['NRJ'] = 0;
                 }
-                echo "\t" . "<th>" . number_format($user_production[$i]['prod_reel']['prod_E'], 0, ',', ' ') . "</th>" . "\n";
+                echo "\t" . "<th>" . number_format($user_production[$i]['NRJ'], 0, ',', ' ') . "</th>" . "\n";
             }
 
         ?>
@@ -281,17 +281,17 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
         <th><a><?php echo ($lang['HOME_EMPIRE_RATIO']); ?></a></th>
         <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                if (!isset($user_production['prod_reel'][$i]['ratio'])) {
-                    $user_production[$i]['prod_reel']['ratio'] = 0;
+                if (!isset($user_production[$i]['ratio'])) {
+                    $user_production[$i]['ratio'] = 0;
                 }
                 echo "\t" . "<th style='font-weight:bold; color:";
-                if ($user_production[$i]['prod_reel']['ratio'] != 1) {
+                if ($user_production[$i]['ratio'] != 1) {
                     echo "red";
                 } else {
                     echo "green";
                 }
                 echo ";'>";
-                echo number_format(round($user_production[$i]['prod_reel']['ratio'], 3), 3, ',', ' ');
+                echo number_format(round($user_production[$i]['ratio'], 3), 3, ',', ' ');
                 echo "</th>" . "\n";
             }
         ?>
