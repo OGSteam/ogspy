@@ -17,15 +17,15 @@ if (!defined('IN_SPYOGAME')) {
 
 require_once("includes/ogame.php");
 
-global $server_config;
+global $server_config, $console;
 
 $user_empire = user_get_empire($user_data['user_id']);
 
 $user_building   = $user_empire['building'];
 $user_defence    = $user_empire['defence'];
 $user_technology = $user_empire['technology'];
-$user_production = user_empire_production($user_empire, $user_data, $server_config);
 $nb_planete      = find_nb_planete_user($user_data['user_id']);
+
 
 if (!isset($pub_view)) {
     $pub_view = 'planets';
@@ -118,6 +118,8 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
         <th>&nbsp;</th>
         <?php
         for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
+
+            $user_production[$i] = ogame_production_planet($user_building[$i], $user_technology, $user_data, $server_config);
             echo "<th>";
             if (!isset($pub_view) || $pub_view == "planets") {
                 // echo "<input type='image' title='" . $lang['HOME_EMPIRE_MOVELEFT'] . " " . $user_building[$i]["planet_name"] . "' src='images/previous.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;left';\">&nbsp;&nbsp;";
@@ -130,6 +132,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
             }
             echo "</th>\n";
         }
+        $console->log($user_production);
         ?>
     </tr>
     <tr>
@@ -227,7 +230,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $M = $user_building[$i]['M'];
                 if ($M != "") {
-                    echo "\t" . "<th>" . $user_production['theorique'][$i]['M'] . "</th>" . "\n";
+                    echo "\t" . "<th>" . $user_production[$i]['prod_theorique']['M'] . "</th>" . "\n";
                 } else {
                     echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
@@ -240,7 +243,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $C = $user_building[$i]['C'];
                 if ($C != "") {
-                    echo "\t" . "<th>" . $user_production['theorique'][$i]['C'] . "</th>" . "\n";
+                    echo "\t" . "<th>" . $user_production[$i]['prod_theorique']['C'] . "</th>" . "\n";
                 } else {
                     echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
@@ -253,7 +256,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 $D = $user_building[$i]['D'];
                 if ($D != "") {
-                    echo "\t" . "<th>" . $user_production['theorique'][$i]['D'] . "</th>" . "\n";
+                    echo "\t" . "<th>" . $user_production[$i]['prod_theorique']['D'] . "</th>" . "\n";
                 } else {
                     echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
@@ -267,7 +270,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
                 if (!isset($user_production['reel'][$i])) {
                     $user_production['reel'][$i]['prod_E'] = 0;
                 }
-                echo "\t" . "<th>" . number_format($user_production['reel'][$i]['prod_E'], 0, ',', ' ') . "</th>" . "\n";
+                echo "\t" . "<th>" . number_format($user_production[$i]['prod_reel']['prod_E'], 0, ',', ' ') . "</th>" . "\n";
             }
 
         ?>
@@ -278,17 +281,17 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
         <th><a><?php echo ($lang['HOME_EMPIRE_RATIO']); ?></a></th>
         <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                if (!isset($user_production['reel'][$i]['ratio'])) {
-                    $user_production['reel'][$i]['ratio'] = 0;
+                if (!isset($user_production['prod_reel'][$i]['ratio'])) {
+                    $user_production[$i]['prod_reel']['ratio'] = 0;
                 }
                 echo "\t" . "<th style='font-weight:bold; color:";
-                if ($user_production['reel'][$i]['ratio'] != 1) {
+                if ($user_production[$i]['prod_reel']['ratio'] != 1) {
                     echo "red";
                 } else {
                     echo "green";
                 }
                 echo ";'>";
-                echo number_format(round($user_production['reel'][$i]['ratio'], 3), 3, ',', ' ');
+                echo number_format(round($user_production[$i]['prod_reel']['ratio'], 3), 3, ',', ' ');
                 echo "</th>" . "\n";
             }
         ?>
@@ -298,7 +301,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
         <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 if ($user_building[$i]['M'] != "") {
-                    echo "\t" . "<th>" . number_format(floor($user_production['reel'][$i]['M']), 0, ',', ' ') . "</th>" . "\n";
+                    echo "\t" . "<th>" . number_format(floor($user_production[$i]['prod_reel']['M']), 0, ',', ' ') . "</th>" . "\n";
                 } else {
                     echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
@@ -310,7 +313,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
         <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 if ($user_building[$i]['C'] != "") {
-                    echo "\t" . "<th>" . number_format(floor($user_production['reel'][$i]['C']), 0, ',', ' ') . "</th>" . "\n";
+                    echo "\t" . "<th>" . number_format(floor($user_production[$i]['prod_reel']['C']), 0, ',', ' ') . "</th>" . "\n";
                 } else {
                     echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }
@@ -322,7 +325,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
         <?php
             for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                 if ($user_building[$i]['D'] != "") {
-                    echo "\t" . "<th>" . number_format(floor($user_production['reel'][$i]['D']), 0, ',', ' ') . "</th>" . "\n";
+                    echo "\t" . "<th>" . number_format(floor($user_production[$i]['prod_reel']['D']), 0, ',', ' ') . "</th>" . "\n";
                 } else {
                     echo "\t" . "<th>&nbsp;</th>" . "\n";
                 }

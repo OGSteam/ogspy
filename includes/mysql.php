@@ -49,6 +49,7 @@ class sql_db
     var $last_query;
 
 
+
     /**
      * Get the current class database instance. Creates it if dosen't exists (singleton)
      * @param string $sqlserver MySQL Server Name

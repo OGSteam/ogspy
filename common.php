@@ -9,6 +9,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.7 */
 
+
+use bdk\Debug;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -64,6 +67,15 @@ foreach ($_POST as $secvalue) {
         die();
     }
 }
+
+// Logs
+$console = new \bdk\Debug(array(
+    'collect' => true,
+    'output' => true,
+));
+
+//$console->log('');
+
 
 //Language File
 if (!isset($ui_lang)) { // Checks the ui_lang value from parameters file
