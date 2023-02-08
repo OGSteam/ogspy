@@ -88,24 +88,24 @@ if (sizeof($dates) > 0) {
     $min_date = time();
 }
 ?>
-<div style="text-align: center;">
+<div style="display:flex; flex-direction: column; justify-content: center;">
     <form method="get" action="index.php">
         <input type="hidden" name="action" value="home" />
         <input type="hidden" name="subaction" value="stat" />
-        <input type="hidden" name="zoom" value="<?php echo $zoom; ?>" />
+        <input type="hidden" name="zoom" value="<?= $zoom; ?>" />
         <table>
             <tr>
-                <td class='c'><?php echo ($lang['HOME_STATS_STATISTICS']); ?></td>
-                <td class='c' colspan='2'><?php echo ($lang['HOME_STATS_OPTIONS']); ?></td>
+                <td class='c'><?= $lang['HOME_STATS_STATISTICS'] ?></td>
+                <td class='c' colspan='2'><?= $lang['HOME_STATS_OPTIONS']; ?></td>
             </tr>
             <tr>
-                <th><input type="text" name="user_stat_name" value="<?php echo $user_data["user_stat_name"]; ?>" />
-                    <input type="submit" value="<?php echo ($lang['HOME_STATS_GETSTATS']); ?>" />
+                <th><input type="text" name="user_stat_name" value="<?= $user_data["user_stat_name"] ?>" />
+                    <input type="submit" value="<?= $lang['HOME_STATS_GETSTATS'] ?>" />
                 </th>
-                <th rowspan="2"><span style="text-decoration: underline;"><?php echo ($lang['HOME_STATS_INTERVAL']); ?></span> : <?php echo ($lang['HOME_STATS_FROM']); ?>
-                    <input type="text" size="10" maxlength="10" name="start_date" value="<?php echo strftime("%d/%m/%Y", $min_date + 60 * 60 * 2); ?>" />
+                <th rowspan="2"><span style="text-decoration: underline;"><?= $lang['HOME_STATS_INTERVAL'] ?></span> : <?= $lang['HOME_STATS_FROM'] ?>
+                    <input type="text" size="10" maxlength="10" name="start_date" value="<?php echo date("Y-m-d", $min_date + 60 * 60 * 2); ?>" />
                     <?php echo ($lang['HOME_STATS_TO']); ?>
-                    <input type="text" size="10" maxlength="10" name="end_date" value="<?php echo strftime("%d/%m/%Y", $max_date); ?>" />
+                    <input type="text" size="10" maxlength="10" name="end_date" value="<?php echo date("Y-m-d", $max_date); ?>" />
                     <input type="submit" value="<?php echo ($lang['HOME_STATS_SEND']); ?>" />
                 </th>
                 <th rowspan="2"><?php echo ($lang['HOME_STATS_ZOOM']); ?> : <input type="image" align="absmiddle" name="zoom_change" src="images/<?php echo ($zoom == "true" ? "zoom_in.png" : "zoom_out.png"); ?>" alt="zoom" />
@@ -265,7 +265,7 @@ if (sizeof($dates) > 0) {
         $tab_rank = "\t\t\t" . "<th style='width:70px;'>" . $eco_points . "</th>" . "\n" . $tab_rank;
         $tab_rank = "\t\t\t" . "<th style='width:40px;'><span style=\"color: lime; \"><i>" . $general_rank . "</i></span></th>" . "\n" . $tab_rank;
         $tab_rank = "\t\t\t" . "<th style='width:70px;'>" . $general_points . "</th>" . "\n" . $tab_rank;
-        $tab_rank = "\t\t\t" . "<th style='width:180px;'>" . strftime("%d %b %Y %H:%M", $v) . "</th>" . "\n" . $tab_rank;
+        $tab_rank = "\t\t\t" . "<th style='width:180px;'>" . date("d M Y H:i", $v) . "</th>" . "\n" . $tab_rank;
         $tab_rank = "\t\t" . "<tr>" . "\n" . $tab_rank;
 
         next($individual_ranking);
@@ -274,7 +274,7 @@ if (sizeof($dates) > 0) {
     echo "<p><b><u style='font-size:14px;'>" . $lang['HOME_STATS_PALYERSTATS'] . " " . $user_data["user_stat_name"] .
         "</u></b></p>";
 
-    echo "<table width='1000'>";
+    echo "<table>";
 
     if ($player_comp != "" && isset($player_comp)) : ?>
         <tr>
@@ -309,10 +309,10 @@ if (sizeof($dates) > 0) {
     if (!empty($user_data["user_stat_name"])) {
         $title .= " " . $lang['HOME_STATS_GRAPHIC_TITLE2'] . " " . $user_data["user_stat_name"];
         if (!empty($last_date["general"])) {
-            $title .= " " . $lang['HOME_STATS_GRAPHIC_FROM'] . " " . strftime("%d %b %Y %H:%M", $last_date["general"]);
+            $title .= " " . $lang['HOME_STATS_GRAPHIC_FROM'] . " " . date("d M Y H:i", $last_date["general"]);
         }
     }
-    echo "<tr><td class='c' colspan='2'>" . $lang['HOME_STATS_GRAPHIC_DIVERS'] . " " . help(null, $title) . "</td></tr>";
+    echo "<tr><td class='c' colspan=2 >" . $lang['HOME_STATS_GRAPHIC_DIVERS'] . " " . help(null, $title) . "</td></tr>";
 
     $user_empire = user_get_empire($user_data["user_id"]);
     $user_building = $user_empire["building"];
@@ -333,18 +333,14 @@ if (sizeof($dates) > 0) {
     echo "<tr>";
     // affichage premier camembert
     $pie_point = "";
-    echo "<th align='center' width='400'>";
-    echo "<div id='pie_point'>";
+    echo "<td style='width:50%;'>";
+    echo "<div id='pie_point' >";
     // pas d info
     if ($b == 0 && $d == 0 && $l == 0 && $t == 0) { // calcul impossible ( non connaissance du classement)
         echo $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'];
-    }
-    // elseif ($last["general_pts"] == 0) { // autrement on affiche rien : on prepare juste l affichage du script
-    // echo $lang['HOME_STATS_GRAPHIC_NOSTATSDATA'];
-    // }
-    else {
+    } else {
         if ($last["general_pts"] == 0) {
-            echo $lang['HOME_STATS_GRAPHIC_NOSTATSDATA'] . "<br>/n";
+            echo $lang['HOME_STATS_GRAPHIC_NOSTATSDATA'] . "<br>\n";
             $f = round(all_fleet_cumulate($user_building) / 1000); // only FOR et Sat, pour le moment
         }
         $pie_point = create_pie(
@@ -355,7 +351,7 @@ if (sizeof($dates) > 0) {
         );
     }
     echo "</div>";
-    echo "</th>\n";
+    echo "</td>\n";
 
 
     $planet = array();
@@ -372,8 +368,8 @@ if (sizeof($dates) > 0) {
 
     // affichage second camembert
     $pie_empire = "";
-    echo "<th align='center' width='400'>";
-    echo "<div id='pie_empire'  width='400'>";
+    echo "<td style='width:50%;'>";
+    echo "<div id='pie_empire'>";
     if ($b == 0 && $d == 0 && $l == 0 && $t == 0) { // pas d info
         echo $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'];
     } else { // autrement on affiche rien : on prepare juste l affichage du script
@@ -386,7 +382,7 @@ if (sizeof($dates) > 0) {
     }
 
     echo "</div>";
-    echo "</th></tr></table>";
+    echo "</td></tr></table>";
 
     ?>
     <br />

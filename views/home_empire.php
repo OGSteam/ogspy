@@ -26,6 +26,8 @@ $user_defence    = $user_empire['defence'];
 $user_technology = $user_empire['technology'];
 $nb_planete      = find_nb_planete_user($user_data['user_id']);
 
+$console->log($user_technology);
+
 
 if (!isset($pub_view)) {
     $pub_view = 'planets';
@@ -51,7 +53,7 @@ $technology_requirement["NRJ"] = array(1);
 $technology_requirement["Hyp"] = array(1, "NRJ" => 3, "Bouclier" => 5);
 $technology_requirement["RC"] = array(1, "NRJ" => 1);
 $technology_requirement["RI"] = array(2, "NRJ" => 1);
-$technology_requirement["PH"] = array(7, "HYP" => 3);
+$technology_requirement["PH"] = array(7, "Hyp" => 3);
 $technology_requirement["Laser"] = array(1, "NRJ" => 2);
 $technology_requirement["Ions"] = array(4, "Laser" => 5, "NRJ" => 4);
 $technology_requirement["Plasma"] = array(4, "NRJ" => 8, "Laser" => 10, "Ions" => 5);
@@ -824,7 +826,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
                     $Lab = $user_building[$i]["Lab"];
                     $Hyp = "&nbsp;";
 
-                    if ($user_building[$i][0] == true) {
+                    if ($user_building[$i][0]) {
                         $Hyp = $user_technology["Hyp"] != "" ? $user_technology["Hyp"] : "0";
                         $requirement = $technology_requirement["Hyp"];
 
@@ -936,7 +938,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
                     $Lab = $user_building[$i]["Lab"];
                     $Laser = "&nbsp;";
 
-                    if ($user_building[$i][0] == true) {
+                    if ($user_building[$i][0]) {
                         $Laser = $user_technology["Laser"] != "" ? $user_technology["Laser"] : "0";
                         $requirement = $technology_requirement["Laser"];
 
@@ -964,7 +966,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
                     $Lab = $user_building[$i]["Lab"];
                     $Ions = "&nbsp;";
 
-                    if ($user_building[$i][0] == true) {
+                    if ($user_building[$i][0]) {
                         $Ions = $user_technology["Ions"] != "" ? $user_technology["Ions"] : "0";
                         $requirement = $technology_requirement["Ions"];
 
@@ -991,7 +993,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
                 for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
                     $Lab = $user_building[$i]["Lab"];
                     $Plasma = "&nbsp;";
-                    if ($user_building[$i][0] == true) {
+                    if ($user_building[$i][0]) {
                         $Plasma = $user_technology["Plasma"] != "" ? $user_technology["Plasma"] : "0";
                         $requirement = $technology_requirement["Plasma"];
 
@@ -1018,7 +1020,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
                     $Lab = $user_building[$i]["Lab"];
                     $RRI = "&nbsp;";
 
-                    if ($user_building[$i][0] == true) {
+                    if ($user_building[$i][0]) {
                         $RRI = $user_technology["RRI"] != "" ? $user_technology["RRI"] : "0";
                         $requirement = $technology_requirement["RRI"];
 
@@ -1046,7 +1048,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
                     $Lab = $user_building[$i]["Lab"];
                     $Astrophysique = "&nbsp;";
 
-                    if ($user_building[$i][0] == true) {
+                    if ($user_building[$i][0]) {
                         $Astrophysique = $user_technology["Astrophysique"] != "" ? $user_technology["Astrophysique"] : "0";
                         $requirement = $technology_requirement["Astrophysique"];
 
@@ -1074,7 +1076,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
                     $Lab = $user_building[$i]["Lab"];
                     $Graviton = "&nbsp;";
 
-                    if ($user_building[$i][0] == true) {
+                    if ($user_building[$i][0]) {
                         $Graviton = $user_technology["Graviton"] != "" ? $user_technology["Graviton"] : "0";
                         $requirement = $technology_requirement["Graviton"];
 
