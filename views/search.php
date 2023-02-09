@@ -317,7 +317,7 @@ require_once("views/page_header.php");
                         $tooltip[$v["ally"]] .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">" . $lang['SEARCH_ALLIANCE'] . " " . $v["ally"] . "</td></tr>";
                         $individual_ranking_ally = galaxy_show_ranking_unique_ally($v["ally"]);
                         while ($ranking = current($individual_ranking_ally)) {
-                            $datadate = strftime("%d %b %Y à %Hh", key($individual_ranking_ally));
+                            $datadate = date("d M Y H", key($individual_ranking_ally)) . "h";
                             $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
                             $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) . " <i>( " . formate_number($ranking["general"]["points_per_member"]) . " )</i>" : "&nbsp;";
                             $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : "&nbsp;";
@@ -367,7 +367,7 @@ require_once("views/page_header.php");
                             $tooltip[$v["player"]] .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">" . $lang['SEARCH_PLAYER'] . " " . $v["player"] . "</td></tr>";
                             $individual_ranking_player = galaxy_show_ranking_unique_player($v["player"]);
                             while ($ranking = current($individual_ranking_player)) {
-                                $datadate = strftime("%d %b %Y à %Hh", key($individual_ranking_player));
+                                $datadate = date("d M Y H", key($individual_ranking_player)) . "h";
                                 $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
                                 $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
                                 $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : "&nbsp;";
@@ -440,7 +440,7 @@ require_once("views/page_header.php");
 
                     $poster = "&nbsp;";
                     if ($timestamp != 0) {
-                        $timestamp = strftime("%d %b %Y %H:%M", $timestamp);
+                        $timestamp = date("d M Y H:i", $timestamp);
                         $poster = $timestamp . " - " . $v["poster"];
                     }
 
@@ -581,7 +581,7 @@ if ($type_search == "ally" || $type_search == "player") {
         }
         while ($ranking = current($individual_ranking)) {
 
-            $datadate = strftime("%d %b %Y %H:%M", key($individual_ranking));
+            $datadate = date("d M Y H:i", key($individual_ranking));
             $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
             $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
             $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : "&nbsp;";

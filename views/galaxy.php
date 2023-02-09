@@ -369,7 +369,7 @@ require_once("views/page_header.php");
                     $tooltip = "<table width=\"250\" style=\"color:white;\">";
                     $tooltip .= "<tr><td colspan=\"3\" class=\"c\" align=\"center\">" . $lang['GALAXY_ALLY'] . " " . $value["ally"] . "</td></tr>";
                     while ($ranking = current($individual_ranking)) {
-                        $datadate = strftime("%d %b %Y à %Hh", key($individual_ranking));
+                        $datadate = date("d M Y H", key($individual_ranking)) . "h";
                         $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
                         $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) . " <i>( " . formate_number($ranking["general"]["points_per_member"]) . " )</i>" : "&nbsp;";
                         $fleet_rank = isset($ranking["fleet"]) ? formate_number($ranking["fleet"]["rank"]) : "&nbsp;";

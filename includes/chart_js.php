@@ -676,7 +676,7 @@ $(document).ready(function() {
 
       credits: {
         text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
-        href: 'http://www.ogsteam.eu'
+        href: 'https://www.ogsteam.eu'
     },
 
       title: {
@@ -712,7 +712,7 @@ $(document).ready(function() {
 });";
 
     // insertion du theme par defaut
-    if ($theme == true) {
+    if ($theme) {
         $retour .= graph_theme();
     }
 

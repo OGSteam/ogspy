@@ -51,7 +51,7 @@ if (!isset($sort2)) {
         $timestamp = $v["datadate"];
 
         if ($timestamp != 0) {
-            $timestamp = strftime("%d %b %Y %H:%M", $timestamp);
+            $timestamp = date("d M Y H:i", $timestamp);
             $poster = $timestamp . " - " . $v["poster"];
         }
 

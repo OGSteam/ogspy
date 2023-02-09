@@ -72,14 +72,14 @@ switch ($order_by) {
                         $selected = "";
                         if (!isset($pub_date_selected) && !isset($datadate)) {
                             $datadate = $v;
-                            $date_selected = strftime("%d %b %Y %Hh", $v);
+                            $date_selected = date("d M Y H", $v) . "h";
                         }
                         if ($pub_date == $v) {
                             $selected = "selected";
                             $datadate = $v;
-                            $date_selected = strftime("%d %b %Y %Hh", $v);
+                            $date_selected = date("d M Y H", $v) . "h";
                         }
-                        $string_date = strftime("%d %b %Y %Hh", $v);
+                        $string_date = date("d M Y H", $v) . "h";
                         echo "\t\t\t" . "<option value='" . $v . "' " . $selected . ">" . $string_date . "</option>" . "\n";
                     }
                     ?>
