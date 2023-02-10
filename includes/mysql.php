@@ -28,25 +28,45 @@ class sql_db
      */
     private static $_instance = false; //(singleton)
     /**
+     * Username
+     * @var int
+     */
+    private $user;
+    /**
+     * Password
+     * @var int
+     */
+    private $password;
+    /**
+     * server
+     * @var int
+     */
+    private $server;
+    /**
+     * dbname
+     * @var int
+     */
+    private $dbname;
+    /**
      * Connection ID
      * @var int
      */
-    var $db_connect_id;
+    public $db_connect_id;
     /**
      * DB Result
      * @var mixed
      */
-    var $result;
+    public $result;
     /**
      * Nb of Queries done
      * @var int
      */
-    var $nb_requete = 0;
+    public $nb_requete = 0;
     /**
      * last query
      * @var int
      */
-    var $last_query;
+    public $last_query;
 
 
 
