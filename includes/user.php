@@ -850,13 +850,15 @@ function user_set_all_empire_resync_id()
         $User_Defense_Model->update_planet_id($user_data["user_id"], $valeur, $new_planet_id);
         $new_planet_id++;
     }
-    //Resync moons
-    // on ressort les complexes planete / lune ayant la meme cle
-    $complexe = array_intersect_key($planet_position, $moon_position);
-    /// on passe les id se modifiant a 300
-    foreach (array_keys($complexe) as $cle_com) {
-        $User_Defense_Model->update_moon_id($user_data["user_id"], $moon_position[$cle_com], $planet_position[$cle_com] + 200);
-        $User_Building_Model->update_moon_id($user_data["user_id"], $moon_position[$cle_com], $planet_position[$cle_com] + 200);
+    if (!empty($moon_position)) {
+        //Resync moons
+        // on ressort les complexes planete / lune ayant la meme cle
+        $complexe = array_intersect_key($planet_position, $moon_position);
+        /// on passe les id se modifiant a 300
+        foreach (array_keys($complexe) as $cle_com) {
+            $User_Defense_Model->update_moon_id($user_data["user_id"], $moon_position[$cle_com], $planet_position[$cle_com] + 200);
+            $User_Building_Model->update_moon_id($user_data["user_id"], $moon_position[$cle_com], $planet_position[$cle_com] + 200);
+        }
     }
 }
 
@@ -1692,7 +1694,7 @@ function UNparseRC($id_RC)
                 if (isset($key) && $key > 0) {
                     $vivant_att = true;
                     $ship_type .= "\t" . $ship;
-                    $ship_nombre .= "\t" . number_format($key, 0, ',', '.');;
+                    $ship_nombre .= "\t" . number_format(intval($key), 0, ',', '.');;
                     $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
                     $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
                     $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
@@ -1819,9 +1821,11 @@ function UNparseRC($id_RC)
                 "\n\n";
             break;
         case 'A':
-            $template .= $lang['GAME_CREPORT_RESULT_WIN'] . ' ' .
-                $nf_gain_M . ' ' . $lang['GAME_CREPORT_RESULT_WIN_1'] . ', ' . $nf_gain_C . ' ' . $lang['GAME_CREPORT_RESULT_WIN_2'] . ' ' . $nf_gain_D .
-                ' ' . $lang['GAME_CREPORT_RESULT_WIN_3'] . '.' . "\n\n";
+            $template .= $lang['GAME_CREPORT_RESULT_WIN'] . ' ';
+            if (isset($nf_gain_M) && isset($nf_gain_M) && isset($nf_gain_M)) {
+                $template .= $nf_gain_M . ' ' . $lang['GAME_CREPORT_RESULT_WIN_1'] . ', ' . $nf_gain_C . ' ' . $lang['GAME_CREPORT_RESULT_WIN_2'] . ' ' . $nf_gain_D .
+                    ' ' . $lang['GAME_CREPORT_RESULT_WIN_3'] . '.' . "\n\n";
+            }
             break;
         case 'D':
             $template .= $lang['GAME_CREPORT_RESULT_LOST'] . "\n\n";
@@ -1829,12 +1833,15 @@ function UNparseRC($id_RC)
     }
 
     // Pertes et champs de débris
-    $template .= $lang['GAME_CREPORT_RESULT_LOSTPOINTS_A'] . ' ' . $nf_pertes_A . ' ' . $lang['GAME_CREPORT_RESULT_UNITS'] . '.' . "\n";
-    $template .= $lang['GAME_CREPORT_RESULT_LOSTPOINTS_D'] . ' ' . $nf_pertes_D . ' ' . $lang['GAME_CREPORT_RESULT_UNITS'] . '.' . "\n";
-    $template .= $lang['GAME_CREPORT_RESULT_DEBRIS'] . ' ' . $nf_debris_M .
-        ' ' . $lang['GAME_CREPORT_RESULT_DEBRIS_M'] . ' ' . $nf_debris_C . ' ' . $lang['GAME_CREPORT_RESULT_DEBRIS_C'] .
-        "\n";
-
+    if (isset($nf_pertes_A) && isset($nf_pertes_D)) {
+        $template .= $lang['GAME_CREPORT_RESULT_LOSTPOINTS_A'] . ' ' . $nf_pertes_A . ' ' . $lang['GAME_CREPORT_RESULT_UNITS'] . '.' . "\n";
+        $template .= $lang['GAME_CREPORT_RESULT_LOSTPOINTS_D'] . ' ' . $nf_pertes_D . ' ' . $lang['GAME_CREPORT_RESULT_UNITS'] . '.' . "\n";
+    }
+    if (isset($nf_debris_M) && isset($nf_debris_C)) {
+        $template .= $lang['GAME_CREPORT_RESULT_DEBRIS'] . ' ' . $nf_debris_M .
+            ' ' . $lang['GAME_CREPORT_RESULT_DEBRIS_M'] . ' ' . $nf_debris_C . ' ' . $lang['GAME_CREPORT_RESULT_DEBRIS_C'] .
+            "\n";
+    }
     $lunePourcent = floor(($debris_M + $debris_C) / 100000);
     $lunePourcent = ($lunePourcent < 0 ? 0 : ($lunePourcent > 20 ? 20 : $lunePourcent));
     if ($lunePourcent > 0) {
