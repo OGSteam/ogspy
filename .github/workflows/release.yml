@@ -66,7 +66,7 @@ jobs:
         # Working directory before zipping
         #directory: # optional, default is .
         # List of excluded files / directories
-        exclusions: /.github, ./vscode, ./docker
+        exclusions: /.github, ./vscode, ./docker, ./git
         # List of excluded files / directories with recursive wildcards (only applies on Windows with `zip` type)
         #recursive_exclusions: # optional, default is 
         # Provide any custom parameters to the command
