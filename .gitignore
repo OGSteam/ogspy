@@ -67,3 +67,5 @@ install*
 !install/schemas/ogspy_structure.sql
 !install/upgrade_to_latest.php
 !install/version.php
+
+vendor/*
