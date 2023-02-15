@@ -15,7 +15,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name : Checkout OGSPY
+      uses: actions/checkout@v3
+    
+    - name: Checkout Xtense
+      uses: actions/checkout@v3
+      with:
+        repository: 'ogsteam/mod-xtense'
+        ref: 'master'
+        path: 'mod/xtense'
+        
+    - name: Checkout AutoUpdate
+      uses: actions/checkout@v3
+      with:
+        repository: 'ogsteam/mod-autoupdate'
+        ref: 'master'
+        path: 'mod/autoupdate'
     
     - name: Git Version
       id: version
