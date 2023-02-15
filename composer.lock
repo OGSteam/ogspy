@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b6311c80532334f4fb8628fb6ae591c",
+    "content-hash": "99bd415a2de201b183fc4fca80d96d07",
     "packages": [
         {
             "name": "bdk/debug",
