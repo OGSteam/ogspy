@@ -19,6 +19,12 @@ if (!isset($pub_verbose)) {
     $pub_verbose = true;
 }
 
+if (!isset($ogspy_version)) {
+    require_once("./version.php");
+    if ($ogspy_version == '%%version%%') {
+        $ogspy_version = 'X.Y.Z-dev';
+    }
+}
 
 if ($pub_verbose == true) {
 ?>
@@ -38,7 +44,7 @@ if ($pub_verbose == true) {
 
 // on réinitialise la sequense config
 // evite d utiliser le cache ( qui sera périmé ))
-$request = "select * from " . TABLE_CONFIG;
+$request = "SELECT * from " . TABLE_CONFIG;
 $result = $db->sql_query($request);
 while (list($name, $value) = $db->sql_fetch_row($result)) {
     $server_config[$name] = stripslashes($value);

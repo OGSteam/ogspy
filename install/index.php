@@ -62,7 +62,7 @@ if (isset($pub_redirection)) {
             <td align="center">
                 <table>
                     <tr>
-                        <td align="left"><span style="font-size: small; "><b><?php echo $lang['INSTALL_WELCOME']; ?> <?php echo $install_version; ?></b></span></td>
+                        <td align="left"><span style="font-size: small; "><b><?php echo $lang['INSTALL_WELCOME']; ?> <?php echo $ogspy_version; ?></b></span></td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
@@ -71,16 +71,16 @@ if (isset($pub_redirection)) {
                         <td>
                             <span style="font-size: x-small; ">
                                 <ul>
-                                    <li><?php echo $lang['INSTALL_PROJECT_L1']; ?></li>
-                                    <li><?php echo $lang['INSTALL_PROJECT_L2']; ?></li><br>
+                                    <li><?= $lang['INSTALL_PROJECT_L1'] ?></li>
+                                    <li><?= $lang['INSTALL_PROJECT_L2'] ?></li><br>
                                     <ul>
-                                        <li type="disc"><?php echo $lang['INSTALL_PROJECT_L3']; ?></li>
-                                        <li type="disc"><?php echo $lang['INSTALL_PROJECT_L4']; ?></li>
-                                        <li type="disc"><?php echo $lang['INSTALL_PROJECT_L5']; ?></li>
-                                        <li type="disc"><?php echo $lang['INSTALL_PROJECT_L6']; ?></li>
+                                        <li type="disc"><?= $lang['INSTALL_PROJECT_L3'] ?></li>
+                                        <li type="disc"><?= $lang['INSTALL_PROJECT_L4'] ?></li>
+                                        <li type="disc"><?= $lang['INSTALL_PROJECT_L5'] ?></li>
+                                        <li type="disc"><?= $lang['INSTALL_PROJECT_L6'] ?></li>
                                     </ul>
                                 </ul>
-                                <div style="text-align: center;"><?php echo $lang['INSTALL_FORUM']; ?></div>
+                                <div style="text-align: center;"><?= $lang['INSTALL_FORUM'] ?></div>
                             </span>
                         </td>
                     </tr>
@@ -88,7 +88,7 @@ if (isset($pub_redirection)) {
                         <td>&nbsp;</td>
                     </tr>
                     <?php
-                    if (!(version_compare(PHP_VERSION, "7.0.0") >= 0)) {
+                    if (!(version_compare(PHP_VERSION, "8.0.0") >= 0)) {
                         echo "<tr><td style='c'><span style=\"color: red\">" . $lang['INSTALL_PHPERROR'] . "</span></td></tr>";
                         echo "<tr><td><span style=\"color: blue; \">" . $lang['INSTALL_PHP_ADVISE'];
                         echo "<br><br>" . $lang['INSTALL_PHPVERSION'] . PHP_VERSION;
@@ -98,7 +98,7 @@ if (isset($pub_redirection)) {
                         <tr>
                             <td>&nbsp;</td>
                         </tr>
-                        <form action="index.php?lang=<?php echo ($ui_lang); ?>" method="POST">
+                        <form action="index.php?lang=<?= $ui_lang ?>" method="POST">
                             <tr>
                                 <td align="center"><span style="color: orange; "><b><?php echo $lang['INSTALL_ACTION']; ?></b></span>
                                     <select name="redirection" onchange="this.form.submit();" onkeyup="this.form.submit();">

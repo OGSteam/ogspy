@@ -85,7 +85,7 @@ class token
     public function checkToken($tokenA, $TokenB = null)
     {
         $tokenA = trim((string)$tokenA);
-        if (stristr($tokenA, $this->splitter) === FALSE) // si pas de splitteur, ce n'est pas notre token
+        if (stristr($tokenA, $this->splitter) === false) // si pas de splitteur, ce n'est pas notre token
         {
             $this->resetInCookie();
             return false;

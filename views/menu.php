@@ -27,7 +27,7 @@ if (!defined('IN_SPYOGAME')) {
     <tr>
         <td>
             <div><a href="index.php" class="menu">
-                    <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="65" border="0" /></a></div>
+                    <img src="./skin/OGSpy_skin/transpa.gif" alt="----------" width="166" height="65" border="0" /></a></div>
         </td>
     </tr>
 
@@ -52,7 +52,7 @@ if (!defined('IN_SPYOGAME')) {
                     ?>
                     <li><a href='index.php?action=profile' class='menu_items'><?php echo ($lang['MENU_PROFILE']); ?></a>
                     </li>
-                    <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+                    <img src="./skin/OGSpy_skin/transpa.gif" alt="----------" width="166" height="19">
                     <li><a href='index.php?action=home' class='menu_items'><?php echo ($lang['MENU_HOME']); ?></a></li>
                     <li><a href='index.php?action=galaxy' class='menu_items'><?php echo ($lang['MENU_GALAXY']); ?></a>
                     </li>
@@ -61,7 +61,7 @@ if (!defined('IN_SPYOGAME')) {
                     </li>
                     <li><a href='index.php?action=ranking' class='menu_items'><?php echo ($lang['MENU_RANKINGS']); ?></a>
                     </li>
-                    <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+                    <img src="./skin/OGSpy_skin/transpa.gif" alt="----------" width="166" height="19">
                     <li><a href='index.php?action=statistic' class='menu_items'><?php echo ($lang['MENU_UPDATE_STATUS']); ?></a></li>
                     <li>
                         <p class='menu_items'><?php echo ($lang['MENU_MODULES']); ?></p>
@@ -79,7 +79,7 @@ if (!defined('IN_SPYOGAME')) {
                             <?php endforeach; ?>
                             <!-- mod admin -->
                             <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
-                                <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+                                <img src="./skin/OGSpy_skin/transpa.gif" alt="----------" width="166" height="19">
                                 <?php foreach ($tMods as $mod) : ?>
                                     <?php if ($mod['admin_only'] == 1) : ?>
                                         <?php echo '<span>&nbsp;&nbsp;- <a class=\'menu_mods\' href="index.php?action=' . $mod['action'] . '">' . $mod['menu'] . '</a></span>' . '<br>'; ?>
@@ -88,26 +88,20 @@ if (!defined('IN_SPYOGAME')) {
                             <?php endif; ?>
                         </ul>
                     </li>
-                    <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
+                    <img src="./skin/OGSpy_skin/transpa.gif" alt="----------" width="166" height="19">
                     <?php
                     if ($server_config["url_forum"] != "") {
                         echo "<li><a href='" . $server_config["url_forum"] . "' class='menu_items'>" . $lang['MENU_FORUM'] . "</a></li>";
                     }
                     ?>
-                    <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-                    <li><a href="index.php?action=about" class='menu_items'><?php echo ($lang['MENU_ABOUT']); ?></a></li>
-                    <img src="./skin/OGSpy_skin/transpa.gif" width="166" height="19">
-                    <li><a href='index.php?action=logout' class='menu_items'><?php echo ($lang['MENU_LOGOUT']); ?></a>
+                    <img src="./skin/OGSpy_skin/transpa.gif" alt="----------" width="166" height="19">
+                    <li><a href="index.php?action=about" class='menu_items'><?= $lang['MENU_ABOUT'] ?></a></li>
+                    <img src="./skin/OGSpy_skin/transpa.gif" alt="----------" width="166" height="19">
+                    <li><a href='index.php?action=logout' class='menu_items'><?= $lang['MENU_LOGOUT'] ?></a>
                     </li>
                 </ul>
 
             </div>
-            <!---->
         </td>
-
-
     </tr>
-
 </table>
-
-<!--<script>$( "#menu" ).menu();</script> (Encore pas mal de travail pour mettre ce menu en place) -->

@@ -21,6 +21,7 @@ require_once("views/page_header.php");
 ?>
 
 <table width="500" text-align="center">
+    <caption>Server Down</caption>
     <tr>
         <td class="c"><?php echo ($lang['SERVERDOWN_TITLE']); ?></td>
     </tr>

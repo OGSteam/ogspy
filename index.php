@@ -36,7 +36,7 @@ if (!isset($pub_action)) {
 
 if (is_file("install/version.php")) {
     require_once("install/version.php");
-    if (version_compare($server_config["version"], $install_version, '<')) {
+    if (version_compare($server_config["version"], $ogspy_version, '<')) {
         redirection("install/index.php");
     }
 }

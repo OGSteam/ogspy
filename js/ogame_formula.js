@@ -504,10 +504,10 @@ function ogame_fleetSubDetailsBase(name = 'all') {
  *  @return array('nom','vitesse','fret','conso',(bool)'civil') of the wanted fleet.
  */
 function ogame_fleetSubDetails(name, user_techno = null, classe = 'none') {
-  var RC_COEF = 0.1;
-  var RI_COEF = 0.2;
-  var PH_COEF = 0.3;
-  var HYP_COEF = 0.05;
+  const RC_COEF = 0.1;
+  const RI_COEF = 0.2;
+  const PH_COEF = 0.3;
+  const HYP_COEF = 0.05;
   var names = ogame_getElementNames();
   //Valeurs IN par défaut :
   if (user_techno === null) { user_techno = new Array(); }

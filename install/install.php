@@ -39,19 +39,19 @@
      * Affiche une boite d'erreur de permission
      */
     $error = "";
-    $alerte = FALSE;
+    $alerte = false;
     if (is_writeable("../parameters")) {
         $error .= "<tr><td width=\"250\">- \"parameters\" : </td><td><font color='green'>" . $lang['INSTALL_WRITE_ALLOWED'] . "</font></td></tr>";
     } else {
         $error .= "<tr><td width=\"250\">- \"parameters\" : </td><td><font color='red'>" . $lang['INSTALL_WRITE_DENIED'] . "</font></td></tr>";
-        $alerte = TRUE;
+        $alerte = true;
     }
 
     if (is_writeable("../journal")) {
         $error .= "<tr><td width=\"250\">- \"journal\" : </td><td><font color='green'>" . $lang['INSTALL_WRITE_ALLOWED'] . "</font></td></tr>";
     } else {
         $error .= "<tr><td width=\"250\">- \"journal\" : </td><td><font color='red'>" . $lang['INSTALL_WRITE_DENIED'] . "</font></td></tr>";
-        $alerte = TRUE;
+        $alerte = true;
     }
 
     $error2 = "";
@@ -129,7 +129,7 @@
         $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('num_of_galaxies','$num_of_galaxies')";
         $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('num_of_systems','$num_of_systems')";
         $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('speed_uni','$uni_speed')";
-        $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('version','$install_version')";
+        $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('version','$ogspy_version')";
         $sql_query[] = "ALTER DATABASE " . $sgbd_dbname . " charset=utf8"; /*Passage de interclassement en utf8*/
 
         foreach ($sql_query as $request) {
@@ -327,11 +327,11 @@
                             <th><input name="admin_username" type="text" value="<?php echo isset($pub_admin_username) ? $pub_admin_username : ""; ?>"></th>
                         </tr>
                         <tr>
-                            <th><?php echo $lang['INSTALL_VIEW_ADMINPWD']; ?><?php echo help("profile_password", "", "../"); ?></th>
+                            <th><?= $lang['INSTALL_VIEW_ADMINPWD'] ?><?= help("profile_password", "", "../") ?></th>
                             <th><input name="admin_password" type="password"></th>
                         </tr>
                         <tr>
-                            <th><?php echo $lang['INSTALL_VIEW_ADMINPWD2']; ?></th>
+                            <th><?= $lang['INSTALL_VIEW_ADMINPWD2'] ?></th>
                             <th><input name="admin_password2" type="password"></th>
                         </tr>
 
@@ -348,7 +348,7 @@
                         <tr>
                             <td colspan="2" align="center">
                                 <a target="_blank" href="https://forum.ogsteam.eu/">
-                                    <i><span style="color: orange; "><?php echo $lang['INSTALL_VIEW_INSTALLHELP']; ?></span></i>
+                                    <i><span style="color: orange; "><?= $lang['INSTALL_VIEW_INSTALLHELP'] ?></span></i>
                                 </a>
                             </td>
                         </tr>
@@ -358,7 +358,7 @@
             <tr align="center">
                 <td>
                     <div style="text-align: center;"><span style="font-size: x-small; "><i><b>OGSpy</b> is an
-                                <b>OGSteam Software</b> (c)2005-2023</i><br />v <?php echo $install_version; ?></span></div>
+                                <b>OGSteam Software</b> (c)2005-2023</i><br />v <?= $ogspy_version ?></span></div>
                 </td>
             </tr>
         </table>

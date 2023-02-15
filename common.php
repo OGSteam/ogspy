@@ -42,12 +42,12 @@ require_once("includes/sessions.php");
 require_once("includes/help.php");
 require_once("includes/mod.php");
 require_once("includes/ogame.php");
-require_once("includes/cache.php");
 require_once("includes/chart_js.php");
 
 if (defined("OGSPY_INSTALLED")) {
     require_once("includes/mail.php");
     require_once("includes/token.php");
+    require_once("includes/cache.php");
 }
 
 //Récupération des valeur GET, POST, COOKIE
@@ -70,12 +70,8 @@ foreach ($_POST as $secvalue) {
 
 // Logs
 $console = new \bdk\Debug(array(
-    'collect' => true,
-    'output' => true,
+    'key' => 'debugMyOGSpy'
 ));
-
-//$console->log('');
-
 
 //Language File
 if (!isset($ui_lang)) { // Checks the ui_lang value from parameters file
@@ -103,6 +99,7 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     $db = sql_db::getInstance($db_host, $db_user, $db_password, $db_database);
 
     if (!$db->db_connect_id) {
+        $console->error("Impossible de se connecter à la base de données");
         die("Impossible de se connecter à la base de données");
     }
 
@@ -120,9 +117,32 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     }
 }
 
-if (!isset($server_config["log_phperror"])) {
-    $server_config["log_phperror"] = 0;
+if (!isset($server_config['log_phperror'])) {
+    $server_config['log_phperror'] = 0;
 }
-if ($server_config["log_phperror"] == 1) {
-    set_error_handler('ogspy_error_handler');
+
+if (!$server_config['log_phperror']) {
+    setcookie('debug', 'debugMyOGSpy', 1); /* Deletes the cookie */
 }
+
+if ($server_config['log_phperror']) {
+    setcookie('debug', 'debugMyOGSpy', time() + 3600);  /* expire in 1 hour */
+    $console->info("Debug Tool Enabled");
+}
+
+set_error_handler('ogspy_error_handler');
+set_exception_handler('ogspyExceptionHandler');
+
+register_shutdown_function(function () {
+    $error = error_get_last();
+    if ($error !== null) {
+        $e = new ErrorException(
+            $error['message'],
+            0,
+            $error['type'],
+            $error['file'],
+            $error['line']
+        );
+        ogspyExceptionHandler($e);
+    }
+});

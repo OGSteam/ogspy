@@ -324,15 +324,7 @@ function log_($parameter, $option = 0)
             $line = 'DEBUG : ' . $option;
             break;
         case 'php_error':
-            $option[0] = FriendlyErrorType($option[0]);
-            $line = "[PHP-ERROR] " . $option[0] . " - " . $option[1];
-            if (isset($option[2])) {
-                $line .= " ; Fichier: " . $option[2];
-            }
-            if (isset($option[3])) {
-                $line .= " ; Ligne: " . $option[3];
-            }
-
+            $line = $option[0] . " - " . $option[1] . " ; Fichier: " . $option[2] . " ; Ligne: " . $option[3];
             break;
 
         default:
@@ -345,68 +337,43 @@ function log_($parameter, $option = 0)
     write_file(PATH_LOG_TODAY . $fichier, "a", $line);
 }
 
-function FriendlyErrorType($type)
-{
-    switch ($type) {
-        case E_ERROR: // 1 //
-            return 'E_ERROR';
-        case E_WARNING: // 2 //
-            return 'E_WARNING';
-        case E_PARSE: // 4 //
-            return 'E_PARSE';
-        case E_NOTICE: // 8 //
-            return 'E_NOTICE';
-        case E_CORE_ERROR: // 16 //
-            return 'E_CORE_ERROR';
-        case E_CORE_WARNING: // 32 //
-            return 'E_CORE_WARNING';
-        case E_COMPILE_ERROR: // 64 //
-            return 'E_COMPILE_ERROR';
-        case E_COMPILE_WARNING: // 128 //
-            return 'E_COMPILE_WARNING';
-        case E_USER_ERROR: // 256 //
-            return 'E_USER_ERROR';
-        case E_USER_WARNING: // 512 //
-            return 'E_USER_WARNING';
-        case E_USER_NOTICE: // 1024 //
-            return 'E_USER_NOTICE';
-        case E_STRICT: // 2048 //
-            return 'E_STRICT';
-        case E_RECOVERABLE_ERROR: // 4096 //
-            return 'E_RECOVERABLE_ERROR';
-        case E_DEPRECATED: // 8192 //
-            return 'E_DEPRECATED';
-        case E_USER_DEPRECATED: // 16384 //
-            return 'E_USER_DEPRECATED';
-    }
-    return $type;
-}
-
 /**
  * Error handler PHP : Loging PHP errors
  * Works only if php errors are enabled in the server configuration $server_config["no_phperror"].
- * @param int $code Error code
+ * @param int $level Error code
  * @param string $message Error message
  * @param string $file Filename
  * @param int $line Error line
  */
-function ogspy_error_handler($code, $message, $file, $line)
+function ogspy_error_handler($level, $message, $file = '', $line = 0)
 {
-    global $ogspy_phperror;
+    log_("php_error", array($level, $message, $file, $line));
+    throw new ErrorException($message, 0, $level, $file, $line);
+}
 
-    $option = array($code, $message, $file, $line);
-    $option[0] = FriendlyErrorType($code);
-    log_("php_error", array($code, $message, $file, $line));
-    $line = "[PHP-ERROR] " . $option[0] . " - " . $option[1];
-    if (isset($option[2])) {
-        $line .= " ; Fichier: " . $option[2];
+/**
+ * Exception handler PHP : Loging PHP errors
+ * Works only if php errors are enabled in the server configuration $server_config["no_phperror"].
+ * @param int $level Error code
+ * @param string $message Error message
+ * @param string $file Filename
+ * @param int $line Error line
+ */
+
+function ogspyExceptionHandler($e)
+{
+    global $server_config;
+
+    error_log($e);
+    http_response_code(500);
+    if ($server_config["log_phperror"]) {
+        echo  $e;
+    } else {
+        echo "<h1>500 Internal Server Error</h1>
+              An internal server error has been occurred.<br>
+              Please try again later.";
     }
-    if (isset($option[3])) {
-        $line .= " ; Ligne: " . $option[3];
-    }
-    if ($option[0] != 8) {
-        $ogspy_phperror[] = $line;
-    }
+    exit;
 }
 
 /**

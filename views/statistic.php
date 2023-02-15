@@ -218,9 +218,9 @@ require_once 'views/page_header.php';
 
         if ($result < 0) {
             $color = 'red';
-        } else if ($result == 0) {
+        } elseif ($result == 0) {
             $color = 'white';
-        } else if ($result < 100) {
+        } elseif ($result < 100) {
             $color = 'orange';
         } else {
             $color = 'lime';
