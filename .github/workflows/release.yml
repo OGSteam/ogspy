@@ -63,10 +63,10 @@ jobs:
     - name: Substitute String
       # You may pin to the exact commit or the version.
       # uses: bluwy/substitute-string-action@e960a2ca5cfbb2174acafb8be90b7c16218f8dae
-      uses: bluwy/substitute-string-action@v1
+      uses: bluwy/substitute-string-action@v2.0.1
       id: sub
       with:
-          _input-file: './install/version.php'
+          _input-file: 'install/version.php'
           _format-key: '%%key%%'
           version: ${{ steps.version.outputs.version }}
      
