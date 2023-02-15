@@ -1,4 +1,5 @@
 <?php
+
 /**
  * OGSpy installation : Version number
  * @package OGSpy
@@ -8,4 +9,5 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04
  */
-$install_version = "3.3.7";
+$ogspy_version = "%%version%%";
+$database_version = "0";
