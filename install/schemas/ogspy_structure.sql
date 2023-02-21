@@ -118,7 +118,7 @@ CREATE TABLE `ogspy_game_ally`
   `ally_id`       INT(6)      NOT NULL,
   `ally`          VARCHAR(65) NOT NULL COMMENT 'Nom de l alliance',
   `tag`           VARCHAR(65) NOT NULL DEFAULT '',
-  `class`         VARCHAR(65) NOT NULL DEFAULT '',
+  `class`         ENUM ('none', 'MAR', 'WAR', 'RES') NOT NULL DEFAULT 'none',
   `number_member` INT(3)      NOT NULL COMMENT 'nombre de membre',
   `datadate`      INT(11)     NOT NULL DEFAULT '0',
   PRIMARY KEY (`ally_id`)
@@ -133,6 +133,7 @@ CREATE TABLE `ogspy_game_player`
   `player_id` INT(6)      NOT NULL,
   `player`    VARCHAR(65) NOT NULL COMMENT 'Nom du joueur',
   `status`    VARCHAR(6)  NOT NULL DEFAULT '',
+  `class`     ENUM ('none', 'COL', 'GEN', 'EXP') NOT NULL DEFAULT 'none',
   `ally_id`   INT(6)      NOT NULL COMMENT 'Action transmise en get et traitée dans index.php',
   `datadate`  INT(11)     NOT NULL DEFAULT '0',
   PRIMARY KEY (`player_id`)
@@ -530,6 +531,7 @@ CREATE TABLE `ogspy_user`
   `user_skin`          VARCHAR(255)    NOT NULL DEFAULT '',
   `user_stat_name`     VARCHAR(50)     NOT NULL DEFAULT '',
   `user_class`         ENUM ('none', 'COL', 'GEN', 'EXP') NOT NULL DEFAULT 'none',
+  `ally_class`         ENUM ('none', 'MAR', 'WAR', 'RES') NOT NULL DEFAULT 'none',
   `management_user`    ENUM ('0', '1') NOT NULL DEFAULT '0',
   `management_ranking` ENUM ('0', '1') NOT NULL DEFAULT '0',
   `disable_ip_check`   ENUM ('0', '1') NOT NULL DEFAULT '0',

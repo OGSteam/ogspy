@@ -375,7 +375,10 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE " . TABLE_PARSEDRCROUND . " MODIFY `defense_tir` BIGINT";
         $requests[] = "ALTER TABLE " . TABLE_PARSEDRCROUND . " MODIFY `defense_puissance` BIGINT";
 
-        $requests[] = "ALTER TABLE " . TABLE_GAME_ALLY . " ADD `class` VARCHAR(65) NOT NULL DEFAULT '' ";
+        $requests[] = "ALTER TABLE " . TABLE_GAME_ALLY . " ADD `class` ENUM ('none', 'MAR', 'WAR', 'RES') NOT NULL DEFAULT 'none' AFTER `tag`";
+        $requests[] = "ALTER TABLE " . TABLE_GAME_PLAYER . " ADD `class` ENUM ('none', 'COL', 'GEN', 'EXP') NOT NULL DEFAULT 'none' AFTER `status`";
+        $requests[] = "ALTER TABLE " . TABLE_USER . " ADD `ally_class` ENUM ('none', 'MAR', 'WAR', 'RES') NOT NULL DEFAULT 'none' AFTER `user_class`";
+
 
         // $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '3.3.8-beta1' WHERE config_name = 'version'";
         // $ogsversion = '3.3.8-beta1'; //pas encore !!
