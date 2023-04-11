@@ -61,17 +61,13 @@ jobs:
       run: composer install --prefer-dist --no-progress
       
     - name: Replace Value
-      # You may pin to the exact commit or the version.
-      # uses: visiosto/replace-value@7f3c03b1e89bac94997b4cac35d56b97c4eb4ebf
-      uses: visiosto/replace-value@v1.2.1
+      uses: jacobtomlinson/gha-find-replace@v3
       with:
-        # The file where the content to replace is.
-        file: 'install/version.php'
-        # The value that will be replaced.
-        replaced: '%%version%%'
-        # The value that the original value is replaced with.
-        value: ${{ steps.version.outputs.version }}
-     
+          include : 'install/version.php'
+          find : '%%version%%'
+          replace: ${{ steps.version.outputs.version }}
+          regex: false
+    
     - name: Zip Release
       # You may pin to the exact commit or the version.
       # uses: TheDoctor0/zip-release@a24011d8d445e4da5935a7e73c1f98e22a439464
