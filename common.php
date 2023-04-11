@@ -7,10 +7,8 @@
  * @author Kyser
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 3.3.7 */
+ * @version 3.3.8 */
 
-
-use bdk\Debug;
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
@@ -68,10 +66,12 @@ foreach ($_POST as $secvalue) {
     }
 }
 
-// Logs
-$console = new \bdk\Debug(array(
-    'key' => 'debugMyOGSpy'
-));
+/* Exception Handler */
+$whoops = new \Whoops\Run;
+$whoops->allowQuit(true);
+$whoops->writeToOutput(true); //Passer à autre
+$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+$whoops->register();
 
 //Language File
 if (!isset($ui_lang)) { // Checks the ui_lang value from parameters file
@@ -117,32 +117,3 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     }
 }
 
-if (!isset($server_config['log_phperror'])) {
-    $server_config['log_phperror'] = 0;
-}
-
-if (!$server_config['log_phperror']) {
-    setcookie('debug', 'debugMyOGSpy', 1); /* Deletes the cookie */
-}
-
-if ($server_config['log_phperror']) {
-    setcookie('debug', 'debugMyOGSpy', time() + 3600);  /* expire in 1 hour */
-    $console->info("Debug Tool Enabled");
-}
-
-set_error_handler('ogspy_error_handler');
-set_exception_handler('ogspyExceptionHandler');
-
-register_shutdown_function(function () {
-    $error = error_get_last();
-    if ($error !== null) {
-        $e = new ErrorException(
-            $error['message'],
-            0,
-            $error['type'],
-            $error['file'],
-            $error['line']
-        );
-        ogspyExceptionHandler($e);
-    }
-});

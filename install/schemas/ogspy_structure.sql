@@ -1,6 +1,6 @@
 --
--- OGSpy version 3.3.7
--- Février 2020
+-- OGSpy version 3.3.8
+-- Avril 2023
 --
 --
 
@@ -98,7 +98,7 @@ CREATE TABLE `ogspy_mod`
   `action`     VARCHAR(255)    NOT NULL COMMENT 'Action transmise en get et traitée dans index.php',
   `root`       VARCHAR(255)    NOT NULL COMMENT 'Répertoire où se situe le mod (relatif au répertoire mods)',
   `link`       VARCHAR(255)    NOT NULL COMMENT 'fichier principale du mod',
-  `version`    VARCHAR(10)     NOT NULL COMMENT 'Version du mod',
+  `version`    VARCHAR(100)    NOT NULL COMMENT 'Version du mod',
   `position`   INT(11)         NOT NULL DEFAULT '-1',
   `active`     TINYINT(1)      NOT NULL COMMENT 'Permet de désactiver un mod sans le désinstaller, évite les mods#pirates',
   `admin_only` ENUM ('0', '1') NOT NULL DEFAULT '0' COMMENT 'Affichage des mods de l utilisateur',

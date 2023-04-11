@@ -26,9 +26,6 @@ $user_defence    = $user_empire['defence'];
 $user_technology = $user_empire['technology'];
 $nb_planete      = find_nb_planete_user($user_data['user_id']);
 
-$console->log($user_technology);
-
-
 if (!isset($pub_view)) {
     $pub_view = 'planets';
 }
@@ -134,7 +131,6 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
             }
             echo "</th>\n";
         }
-        $console->log($user_production);
         ?>
     </tr>
     <tr>

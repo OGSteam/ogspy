@@ -10,6 +10,8 @@
  * @version 3.1.1 ($Rev: 7690 $)
  */
 
+use bdk\HttpMessage\Message;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -335,45 +337,6 @@ function log_($parameter, $option = 0)
     $fichier = "log_" . date("ymd") . '.log';
     $line = "/*" . date("d/m/Y H:i") . '*/ ' . $line;
     write_file(PATH_LOG_TODAY . $fichier, "a", $line);
-}
-
-/**
- * Error handler PHP : Loging PHP errors
- * Works only if php errors are enabled in the server configuration $server_config["no_phperror"].
- * @param int $level Error code
- * @param string $message Error message
- * @param string $file Filename
- * @param int $line Error line
- */
-function ogspy_error_handler($level, $message, $file = '', $line = 0)
-{
-    log_("php_error", array($level, $message, $file, $line));
-    throw new ErrorException($message, 0, $level, $file, $line);
-}
-
-/**
- * Exception handler PHP : Loging PHP errors
- * Works only if php errors are enabled in the server configuration $server_config["no_phperror"].
- * @param int $level Error code
- * @param string $message Error message
- * @param string $file Filename
- * @param int $line Error line
- */
-
-function ogspyExceptionHandler($e)
-{
-    global $server_config;
-
-    error_log($e);
-    http_response_code(500);
-    if ($server_config["log_phperror"]) {
-        echo  $e;
-    } else {
-        echo "<h1>500 Internal Server Error</h1>
-              An internal server error has been occurred.<br>
-              Please try again later.";
-    }
-    exit;
 }
 
 /**
