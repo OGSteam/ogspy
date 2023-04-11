@@ -1,0 +1,46 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ develop ]
+
+# Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - uses: azure/login@v1
+        with:
+           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure WebApp
+        uses: Azure/webapps-deploy@v2
+        with:
+          # Name of the Azure Web App
+          app-name: ogspy-testapp
+          # Applies to Web Apps(Windows and Linux) and Web App Containers(linux). Multi container scenario not supported. Publish profile (*.publishsettings) file contents with Web Deploy secrets
+          #publish-profile: # optional
+          # Enter an existing Slot other than the Production slot
+          #slot-name: # optional, default is production
+          # Applies to Web App only: Path to package or folder. *.zip, *.war, *.jar or a folder to deploy
+          #package: # optional, default is .
+          # Applies to Web App Containers only: Specify the fully qualified container image(s) name. For example, 'myregistry.azurecr.io/nginx:latest' or 'python:3.7.2-alpine/'. For multi-container scenario multiple container image names can be provided (multi-line separated)
+          #images: 
+          # Applies to Web App Containers only: Path of the Docker-Compose file. Should be a fully qualified path or relative to the default working directory. Required for multi-container scenario
+          #configuration-file: # optional
+          # Enter the start up command. For ex. dotnet run or dotnet run
+          #startup-command: # optional
