@@ -21,9 +21,6 @@ if (!isset($pub_verbose)) {
 
 if (!isset($ogspy_version)) {
     require_once("./version.php");
-    if ($ogspy_version == '%%version%%') {
-        $ogspy_version = 'X.Y.Z-dev';
-    }
 }
 
 if ($pub_verbose == true) {

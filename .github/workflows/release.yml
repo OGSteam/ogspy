@@ -64,7 +64,7 @@ jobs:
       uses: jacobtomlinson/gha-find-replace@v3
       with:
           include : 'install/version.php'
-          find : '%%version%%'
+          find : '0.0.0-dev'
           replace: ${{ steps.version.outputs.version }}
           regex: false
     

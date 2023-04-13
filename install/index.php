@@ -14,7 +14,12 @@ define("IN_SPYOGAME", true);
 define("INSTALL_IN_PROGRESS", true);
 
 require_once("../common.php");
-require_once("version.php");
+
+if (!isset($ogspy_version)) {
+    require_once("./version.php");
+}
+
+
 if (isset($pub_redirection)) {
     switch ($pub_redirection) {
         case "install";

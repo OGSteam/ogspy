@@ -105,7 +105,7 @@
 
     function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $admin_username, $admin_password, $num_of_galaxies, $num_of_systems, $uni_speed, $ui_lang)
     {
-        global $lang, $install_version;
+        global $lang, $ogspy_version;
         $db = sql_db::getInstance($sgbd_server, $sgbd_username, $sgbd_password, $sgbd_dbname);
         if (!$db->db_connect_id) {
             error_sql($lang['INSTALL_SQL_CONNECTION_ERROR']);
@@ -269,7 +269,7 @@
                 <td align="center">
                     <table width="800">
                         <tr>
-                            <td colspan="2" align="center"><span style="font-size: small; "><b><?php echo ($lang['INSTALL_VIEW_WELCOME'] . $install_version); ?></b></span></td>
+                            <td colspan="2" align="center"><span style="font-size: small; "><b><?php echo ($lang['INSTALL_VIEW_WELCOME'] . $ogspy_version); ?></b></span></td>
                         </tr>
                         <tr>
                             <td colspan="2" align="center">&nbsp;</td>
