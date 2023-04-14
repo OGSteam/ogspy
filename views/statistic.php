@@ -137,11 +137,7 @@ require_once 'views/page_header.php';
     $legend .= '<tr><td class="c">' . $lang['STATS_UPDATED_PLANETS'] . '</td><th style="color: lime; text-decoration: blink;"><b>xx</b></th></tr>';
     $legend .= '</table>';
 
-    if (version_compare(phpversion(), '5.4.0', '>=')) {
-        $legend = htmlentities($legend, ENT_COMPAT | ENT_HTML401, "UTF-8");
-    } else {
-        $legend = htmlentities($legend, ENT_COMPAT, "UTF-8");
-    }
+    $legend = htmlentities($legend);
 
     ?>
 

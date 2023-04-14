@@ -348,11 +348,7 @@ require_once("views/page_header.php");
                         }
                         $tooltip[$v["ally"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=" . $v["ally"] . "&amp;strict=on\">" . $lang['SEARCH_DETAILS'] . "</a></td></tr>";
                         $tooltip[$v["ally"]] .= "</table>";
-                        if (version_compare(phpversion(), '5.4.0', '>=')) {
-                            $tooltip[$v["ally"]] = htmlentities($tooltip[$v["ally"]], ENT_COMPAT | ENT_HTML401, "UTF-8");
-                        } else {
-                            $tooltip[$v["ally"]] = htmlentities($tooltip[$v["ally"]], ENT_COMPAT, "UTF-8");
-                        }
+                        $tooltip[$v["ally"]] = htmlentities($tooltip[$v["ally"]]);
 
                         //------------  Affichage Tooltip ----------------
                         $ToolTip_Helper->addTooltip("ttp_alliance_" . $v["ally"], $tooltip[$v["ally"]]);
@@ -397,11 +393,7 @@ require_once("views/page_header.php");
                             }
                             $tooltip[$v["player"]] .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $v["player"] . "&amp;strict=on\">" . $lang['SEARCH_DETAILS'] . "</a></td></tr>";
                             $tooltip[$v["player"]] .= "</table>";
-                            if (version_compare(phpversion(), '5.4.0', '>=')) {
-                                $tooltip[$v["player"]] = htmlentities($tooltip[$v["player"]], ENT_COMPAT | ENT_HTML401, "UTF-8");
-                            } else {
-                                $tooltip[$v["player"]] = htmlentities($tooltip[$v["player"]], ENT_COMPAT, "UTF-8");
-                            }
+                            $tooltip[$v["player"]] = htmlentities($tooltip[$v["player"]]);
                         }
                         //------------  Affichage Tooltip ----------------
                         $ToolTip_Helper->addTooltip("ttp_player_" . $v["player"], $tooltip[$v["player"]]);
@@ -465,11 +457,7 @@ require_once("views/page_header.php");
                 $legend .= "<tr><td class=\"c\">" . $lang['SEARCH_ALLY_FRIEND'] . "</td><th><a><blink>abc</blink></a></th></tr>";
                 $legend .= "<tr><td class=\"c\">" . $lang['SEARCH_ALLY_HIDDEN'] . "</td><th><span style=\"color: lime; \">abc</span></th></tr>";
                 $legend .= "</table>";
-                if (version_compare(phpversion(), '5.4.0', '>=')) {
-                    $legend = htmlentities($legend, ENT_COMPAT | ENT_HTML401, "UTF-8");
-                } else {
-                    $legend = htmlentities($legend, ENT_COMPAT, "UTF-8");
-                }
+                $legend = htmlentities($legend);
                 //------------  Affichage Tooltip ----------------
                 $ToolTip_Helper->addTooltip("legende",  $legend);
                 echo "<td class='c' colspan='9' style='text-align:center;'>";

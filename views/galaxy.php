@@ -223,11 +223,8 @@ require_once("views/page_header.php");
                 }
                 $tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
                 $tooltip .= "</table>";
-                if (version_compare(phpversion(), '5.4.0', '>=')) {
-                    $tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
-                } else {
-                    $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
-                }
+
+                $tooltip = htmlentities($tooltip);
 
                 //------------  Affichage Tooltip ----------------
                 $ToolTip_Helper->addTooltip("ttp_alliance_" . $ally,  $tooltip);
@@ -273,11 +270,7 @@ require_once("views/page_header.php");
                 }
                 $tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $player . "&amp;strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
                 $tooltip .= "</table>";
-                if (version_compare(phpversion(), '5.4.0', '>=')) {
-                    $tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
-                } else {
-                    $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
-                }
+                $tooltip = htmlentities($tooltip);
                 //------------  Affichage Tooltip ----------------
                 $ToolTip_Helper->addTooltip("ttp_player_" . $player,  $tooltip);
                 $player = '<a ' . $ToolTip_Helper->GetHTMLClassContent() . ' href="index.php?action=search&amp;type_search=player&amp;string_search=' . $player . '&amp;strict=on">  ' . $begin_allied . $begin_hided . $player . $end_hided . $end_allied . '  </a>';
@@ -342,11 +335,8 @@ require_once("views/page_header.php");
         $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_ALLY_FRIEND'] . "</td><th><blink><a>abc</a></blink></th></tr>";
         $legend .= "<tr><td class=\"c\">" . $lang['GALAXY_ALLY_HIDDEN'] . "</td><th><span style=\"color: lime; \">abc</span></th></tr>";
         $legend .= "</table>";
-        if (version_compare(phpversion(), '5.4.0', '>=')) {
-            $legend = htmlentities($legend, ENT_COMPAT | ENT_HTML401, "UTF-8");
-        } else {
-            $legend = htmlentities($legend, ENT_COMPAT, "UTF-8");
-        }
+        $legend = htmlentities($legend);
+
         //------------  Affichage Tooltip ----------------
         $ToolTip_Helper->addTooltip("legende",  $legend);
         echo "<tr align='center'><td class='c' colspan='9'>";
@@ -386,11 +376,8 @@ require_once("views/page_header.php");
                     }
                     $tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=" . $value["ally"] . "&amp;strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
                     $tooltip .= "</table>";
-                    if (version_compare(phpversion(), '5.4.0', '>=')) {
-                        $tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
-                    } else {
-                        $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
-                    }
+                    $tooltip = htmlentities($tooltip);
+
 
                     $ToolTip_Helper->addTooltip("ttp_alliance_" . $value["ally"],  $tooltip);
                     echo "[<a href='index.php?action=search&&amp;type_search=ally&amp;string_search=" . $value["ally"] . "&amp;strict=on'  " . $ToolTip_Helper->GetHTMLClassContent() . ">" . $value["ally"] . "</a>]" . " ";
@@ -416,11 +403,8 @@ require_once("views/page_header.php");
                 }
                 $tooltip .= "<tr><td class=\"c\" colspan=\"3\" align=\"center\"><a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $value["player"] . "&amp;strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
                 $tooltip .= "</table>";
-                if (version_compare(phpversion(), '5.4.0', '>=')) {
-                    $tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
-                } else {
-                    $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
-                }
+                $tooltip = htmlentities($tooltip);
+
 
                 //------------  Affichage Tooltip ----------------
                 $ToolTip_Helper->addTooltip("ttp_player_" . $player,  $tooltip);

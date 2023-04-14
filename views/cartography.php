@@ -125,15 +125,10 @@ require_once("views/page_header.php");
                             $last_player = $value["player"];
                         }
                         $tooltip[$i] .= "</table>";
-                        if (version_compare(phpversion(), '5.4.0', '>=')) {
-                            $ToolTip_Helper->addTooltip("ttp_cartographie_" . $value["player"] . "_" . $TtlCounter,  htmlentities($tooltip[$i], ENT_COMPAT | ENT_HTML401, "UTF-8"));
-                            $tooltip[$i] = $ToolTip_Helper->GetHTMLClassContent();
-                            $TtlCounter++;
-                        } else {
-                            $ToolTip_Helper->addTooltip("ttp_cartographie_" . $value["player"] . "_" . $TtlCounter,  htmlentities($tooltip[$i], ENT_COMPAT, "UTF-8"));
-                            $tooltip[$i] = $ToolTip_Helper->GetHTMLClassContent();
-                            $TtlCounter++;
-                        }
+                        $ToolTip_Helper->addTooltip("ttp_cartographie_" . $value["player"] . "_" . $TtlCounter,  htmlentities($tooltip[$i]));
+                        $tooltip[$i] = $ToolTip_Helper->GetHTMLClassContent();
+                        $TtlCounter++;
+
                         $nb_player[$i] = $galaxy_ally_position[$ally_name][$galaxy][$system]["planet"];
                     }
                     $i++;

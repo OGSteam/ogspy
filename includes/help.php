@@ -37,16 +37,7 @@ function help($key, $value = null, $prefixe = "")
     $text .= '<tr><th style="color:white; ">' . ($value) . "</th></tr>";
     $text .= '</table>';
 
-    if (version_compare(phpversion(), '5.4.0', '>=')) {
-        $text = htmlentities($text, ENT_COMPAT | ENT_HTML401, "UTF-8");
-    } else {
-        $text = htmlentities($text, ENT_COMPAT, "UTF-8");
-    }
-
+    $text = htmlentities($text);
     $tth->addTooltip($key, $text);
     return "<img style=\"cursor:pointer\" src=\"" . $prefixe . "images/help_2.png\" " . $tth->GetHTMLClassContent() . ">";
-
-
-    //$text = "this.T_WIDTH=210;this.T_TEMP=0;return encodeURI('" . $text . "')";
-    //return "<img style=\"cursor:pointer\" src=\"" . $prefixe . "images/help_2.png\" onmouseover=\"" . $text . "\">";
 }

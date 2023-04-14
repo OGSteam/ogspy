@@ -185,11 +185,8 @@ echo "<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0, 0, 
             <?php
             end($log);
             while ($line = current($log)) {
-                if (version_compare(phpversion(), '5.4.0', '>=')) {
-                    $line = trim(nl2br(htmlspecialchars($line, ENT_COMPAT | ENT_HTML401, "UTF-8")));
-                } else {
-                    $line = trim(nl2br(htmlspecialchars($line, ENT_COMPAT, "UTF-8")));
-                }
+
+                $line = trim(nl2br(htmlspecialchars($line)));
                 $line = preg_replace("#/\*(.*)\*/#", "<span style=\"color: orange; \">$1 : </span>", $line);
 
                 echo $line;

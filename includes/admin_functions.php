@@ -64,6 +64,7 @@ function github_api_Request($request)
             log_('mod', "[ERROR_github_Request] Unable to get: " . $request);
         }
     } catch (Exception $e) {
+        log_('mod', "[ERROR_github_Request] API Response Code: " . http_response_code());
         log_('mod', "[ERROR_github_Request] Exception: " . $e->getMessage());
     }
 

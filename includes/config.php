@@ -15,10 +15,8 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 setlocale(LC_CTYPE, 'fr_FR.UTF-8');
+date_default_timezone_set("Europe/Paris");
 
-if (version_compare(PHP_VERSION, "5.1.0RC1") >= 0) {
-    date_default_timezone_set("Europe/Paris");
-}
 
 // Définitions des noms des tables de la BDD
 if (!defined("INSTALL_IN_PROGRESS")) {
