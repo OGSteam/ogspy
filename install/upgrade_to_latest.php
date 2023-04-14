@@ -87,6 +87,8 @@ switch ($ogsversion) {
                         PRIMARY KEY (`mod`, `user_id`, `config`),
                         UNIQUE KEY `config` (`config`)
                     ) DEFAULT CHARSET = UTF8;";
+        $requests[] = "INSERT INTO " . TABLE_CONFIG . "config VALUES ('ddr','1')";
+        $requests[] = "INSERT INTO " . TABLE_CONFIG . "config VALUES ('astro_strict','1')";
         $requests[] = "INSERT INTO " . TABLE_CONFIG . "config VALUES ('donutSystem','1')";
         $requests[] = "INSERT INTO " . TABLE_CONFIG . "config VALUES ('donutGalaxy','1')";
         $requests[] = "INSERT INTO " . TABLE_CONFIG . "config VALUES ('speed_fleet_peaceful','1')";
@@ -110,6 +112,8 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE " . TABLE_USER . " ADD `ally_class` ENUM ('none', 'MAR', 'WAR', 'RES') NOT NULL DEFAULT 'none' AFTER `user_class`";
 
         $requests[] = "ALTER TABLE " . TABLE_MOD . " MODIFY `version` VARCHAR(100) NOT NULL";
+
+        $requests[] = "ALTER TABLE " . TABLE_USER_BUILDING . " MODIFY `boosters` VARCHAR(64) NOT NULL DEFAULT 'm:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0'";
 
 
         $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '$ogspy_version' WHERE config_name = 'version'";
