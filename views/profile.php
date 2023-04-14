@@ -11,6 +11,8 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
+ use Ogsteam\Ogspy\Model\Tokens_Model;
+
 if (!defined("IN_SPYOGAME")) {
     die("Hacking attempt");
 }
@@ -23,8 +25,8 @@ $user_class = $user_data["user_class"];
 
 
 
-$user_token = (new Ogsteam\Ogspy\Model\Tokens_Model)->get_token($user_data["user_id"], "PAT");
-if (!$user_token) {
+$user_token = (new Tokens_Model)->get_token($user_data["user_id"], "PAT");
+if (!empty($user_token)) {
     $user_token_displayed = $user_token;
 } else {
     $user_token_displayed = $lang['PROFILE_TOKEN_TO_BE_UPDATED'];
@@ -48,7 +50,7 @@ $message .= "',PROFILE_ERROR_ILLEGAL: '" . $lang['PROFILE_ERROR_ILLEGAL'] . "'}"
 
 require_once("views/page_header.php");
 
-if ($user_data['user_pwd_change'] == 1) {
+if ($user_data['user_pwd_change']) {
     echo '<div id="pwdchange">' . $lang['PROFILE_CHANGEPWD'] . "</div>\n";
 }
 ?>

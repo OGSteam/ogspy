@@ -104,8 +104,7 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     }
 
     //Récupération et encodage de l'adresse ip
-    $user_ip = $_SERVER['REMOTE_ADDR'];
-    $user_ip = encode_ip($user_ip);
+    $user_ip = encode_ip($_SERVER['REMOTE_ADDR']);
 
     // initialisation des variables en cache
     init_serverconfig();
