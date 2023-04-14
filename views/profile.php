@@ -11,7 +11,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
- use Ogsteam\Ogspy\Model\Tokens_Model;
+use Ogsteam\Ogspy\Model\Tokens_Model;
 
 if (!defined("IN_SPYOGAME")) {
     die("Hacking attempt");
