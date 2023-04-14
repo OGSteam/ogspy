@@ -79,8 +79,6 @@ switch ($ogsversion) {
 
 
     case '3.3.7':
-        $requests[] = "ALTER TABLE `" . TABLE_UNIVERSE . "` ADD `ally_id` INT(6) NOT NULL DEFAULT '-1' AFTER `ally`";
-        $requests[] = "ALTER TABLE `" . TABLE_UNIVERSE . "` ADD `player_id` INT(6) NOT NULL DEFAULT '-1' AFTER `player`";
         $requests[] = "CREATE TABLE IF NOT EXISTS `" . TABLE_MOD_USER_CFG . "` (
                         `mod`     VARCHAR(50) NOT NULL,
                         `userid` INT(11) NOT NULL,
