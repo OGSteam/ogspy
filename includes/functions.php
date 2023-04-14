@@ -114,17 +114,16 @@ function remove_dir_from_ogspy($folder)
  */
 function encode_ip($ip)
 {
-    $d = explode('.', $ip);
-    if (count($d) == 4) {
-        return sprintf('%02x%02x%02x%02x', $d[0], $d[1], $d[2], $d[3]);
+    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        $bin_ip = inet_pton($ip);
+    } elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        $bin_ip = inet_pton('[' . $ip . ']');
+    } else {
+        throw new Exception('Adresse IP invalide');
     }
+    $hex_ip = bin2hex($bin_ip);
 
-    $d = explode(':', preg_replace('/(^:)|(:$)/', '', $ip));
-    $res = '';
-    foreach ($d as $x) {
-        $res .= sprintf('%0' . ($x == '' ? (9 - count($d)) * 4 : 4) . 's', $x);
-    }
-    return $res;
+    return $hex_ip;
 }
 
 /**
@@ -132,35 +131,11 @@ function encode_ip($ip)
  * @param string $int_ip IP encoded
  * @return string $ip format xxx.xxx.xxx.xxx in IPv4 and xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx in IPv6
  */
-function decode_ip($int_ip)
+function decode_ip($hex_ip)
 {
-    if (strlen($int_ip) == 32) {
-        $int_ip = substr(chunk_split($int_ip, 4, ':'), 0, 39);
-        $int_ip = ':' . implode(':', array_map("hexhex", explode(':', $int_ip))) . ':';
-        preg_match_all("/(:0)+/", $int_ip, $zeros);
-        if (count($zeros[0]) > 0) {
-            $match = '';
-            foreach ($zeros[0] as $zero) {
-                if (strlen($zero) > strlen($match)) {
-                    $match = $zero;
-                }
-            }
-            $int_ip = preg_replace('/' . $match . '/', ':', $int_ip, 1);
-        }
-        return preg_replace('/(^:([^:]))|(([^:]):$)/', '$2$4', $int_ip);
-    }
-    $hexipbang = explode('.', chunk_split($int_ip, 2, '.'));
-    return hexdec($hexipbang[0]) . '.' . hexdec($hexipbang[1]) . '.' . hexdec($hexipbang[2]) . '.' . hexdec($hexipbang[3]);
-}
-
-/**
- * Converts a hex value to another hew value (depnding of the current php version on the server)
- * @param string $value The initial hexvalue
- * @return string the new hew value
- */
-function hexhex($value)
-{
-    return dechex(hexdec($value));
+    $bin_ip = hex2bin($hex_ip);
+    $ip = inet_ntop($bin_ip);
+    return $ip;
 }
 
 /**
