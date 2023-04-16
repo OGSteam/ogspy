@@ -21,22 +21,6 @@ jobs:
         ref: ${{ github.head_ref }}   # checkout the correct branch name
         fetch-depth: 0  
       
-#    - name: Get All tags
-#      run: |  
-#        git fetch -t
-      
-#    - name: 'Get Previous tag'
-#      id: previoustag
-#      uses: "WyriHaximus/github-action-get-previous-tag@v1.3.0"
-#      with:
-#        fallback: 3.3.0 # Optional fallback tag to use when no tag can be found
-
-#    - name: 'Get next minor version'
-#      id: semvers
-#      uses: "WyriHaximus/github-action-next-semvers@v1"
-#      with:
-#         version: ${{ steps.previoustag.outputs.tag }}
-
     - name: Git Version
       id: version
       # You may pin to the exact commit or the version.
