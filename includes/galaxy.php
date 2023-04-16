@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Fonctions relatives aux donnees galaxies/planetes
  *
  * @package OGSpy
  * @subpackage galaxy
  * @author Kyser
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.05 ($Rev: 7699 $)
  */
@@ -238,7 +239,6 @@ function galaxy_show_sector()
  * @global int $pub_system_up
  * @global int $pub_row_down
  * @global int $pub_row_up
- * @global ??? $pub_row_active
  * @global int $pub_page page courante ( pagination )
  * @return array resultat de la recherche + numero de la page
  */
@@ -246,8 +246,8 @@ function galaxy_search()
 {
     //todo voir possible pb recherche strict ou non
     global $user_data, $server_config;
-    global $pub_string_search, $pub_type_search, $pub_strict, $pub_sort, $pub_sort2, $pub_galaxy_down, $pub_galaxy_up, $pub_system_down, $pub_system_up, $pub_row_down, $pub_row_up, $pub_row_active, $pub_page;
-    if (!check_var($pub_type_search, "Char") || !check_var($pub_strict, "Char") || !check_var($pub_sort, "Num") || !check_var($pub_sort2, "Num") || !check_var($pub_galaxy_down, "Num") || !check_var($pub_galaxy_up, "Num") || !check_var($pub_system_down, "Num") || !check_var($pub_system_up, "Num") || !check_var($pub_row_down, "Num") || !check_var($pub_row_up, "Num") || !check_var($pub_row_active, "Char") || !check_var($pub_page, "Num")) {
+    global $pub_string_search, $pub_type_search, $pub_strict, $pub_sort, $pub_sort2, $pub_galaxy_down, $pub_galaxy_up, $pub_system_down, $pub_system_up, $pub_row_down, $pub_row_up, $pub_page;
+    if (!check_var($pub_type_search, "Char") || !check_var($pub_strict, "Char") || !check_var($pub_sort, "Num") || !check_var($pub_sort2, "Num") || !check_var($pub_galaxy_down, "Num") || !check_var($pub_galaxy_up, "Num") || !check_var($pub_system_down, "Num") || !check_var($pub_system_up, "Num") || !check_var($pub_row_down, "Num") || !check_var($pub_row_up, "Num")  || !check_var($pub_page, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
     $search_result = array();
@@ -276,7 +276,7 @@ function galaxy_search()
         $criteria->setSystemDown(intval($pub_system_down));
         $criteria->setSystemUp(intval($pub_system_up));
     }
-    if ($pub_row_active && isset($pub_row_down) && isset($pub_row_up)) {
+    if (isset($pub_row_down) && isset($pub_row_up)) {
         $criteria->setRowDown(intval($pub_row_down));
         $criteria->setRowUp(intval($pub_row_up));
     }
@@ -311,6 +311,11 @@ function galaxy_search()
         case "away":
             $criteria->setIsInactive(true);
             break;
+            //Binu : ajout du critère spy
+        case "spy":
+            $criteria->setIsSpied(true);
+            break;
+            //fin
     }
     if (!$criteria->isValid()) {
         return array($search_result, $total_page);
@@ -363,7 +368,8 @@ function galaxy_search()
         }
         $data_spy = new Spy_Model();
         $nb_spy_reports = $data_spy->get_nb_spy_by_planet($planet["galaxy"], $planet["system"], $planet["row"]);
-        $search_result[] = array("galaxy" => $planet["galaxy"],
+        $search_result[] = array(
+            "galaxy" => $planet["galaxy"],
             "system" => $planet["system"],
             "row" => $planet["row"],
             "phalanx" => $planet["phalanx"],
@@ -387,14 +393,14 @@ function galaxy_search()
  * Recuperation des statistiques des galaxies
  *
  * @param int $step
- * @global       object mysql $db
+ * @global       object mysql
  * @global array $user_data
  * @global array $server_config
  * @return array contenant planete colonise ou non, par galaxy / systems
  */
 function galaxy_statistic($step = 50)
 {
-    global $db, $user_data, $server_config;
+    global $user_data, $server_config;
 
     $Universe_Model = new Universe_Model();
 
@@ -462,21 +468,21 @@ function galaxy_ally_position($step = 50)
     $Universe_Model = new Universe_Model();
 
     for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
-        if (!check_var($pub_ally_[$i], "Text")) {
-            redirection("index.php?action=message&id_message=errordata&info");
-        }
-
         if (!isset($pub_ally_[$i])) {
             return array();
         }
+        if (!check_var($pub_ally_[$i], "Text")) {
+            redirection("index.php?action=message&id_message=errordata&info");
+        }
     }
 
-    $pub_ally_protection = $allied = array();
+    $pub_ally_protection = array();
+    // $allied = array();       //TODO:Unused_code
+    // if ($server_config["allied"] != "") {
+    // $allied = explode(",", $server_config["allied"]);
+    // }
     if ($server_config["ally_protection"] != "") {
         $pub_ally_protection = explode(",", $server_config["ally_protection"]);
-    }
-    if ($server_config["allied"] != "") {
-        $allied = explode(",", $server_config["allied"]);
     }
 
     $statistics = array();
@@ -492,10 +498,10 @@ function galaxy_ally_position($step = 50)
             $statistics[$pub_ally_name][0][0] = null;
             continue;
         }
-        $friend = false;
-        if (in_array($pub_ally_name, $allied)) {
-            $friend = true;
-        }
+        // $friend = false; //TODO:Unused_code
+        // if (in_array($pub_ally_name, $allied)) {
+        // $friend = true;
+        // }
 
         for ($galaxy = 1; $galaxy <= $server_config['num_of_galaxies']; $galaxy++) {
             for ($system = 1; $system <= $server_config['num_of_systems']; $system = $system + $step) {
@@ -503,7 +509,7 @@ function galaxy_ally_position($step = 50)
                 $population = array();
                 $population = $Universe_Model->get_ally_position($galaxy, $system, ($system + $step - 1), $pub_ally_name);
                 $nb_planet = $Universe_Model->sql_affectedrows();
-                //$nb_planet =  count($population);
+                //$nb_planet =  count($population);     //TODO:Unused_code
 
                 $statistics[$pub_ally_name][$galaxy][$system] = array("planet" => $nb_planet, "population" => $population);
             }
@@ -526,8 +532,7 @@ function galaxy_ally_position($step = 50)
  */
 function galaxy_reportspy_show()
 {
-    global $pub_galaxy, $pub_system, $pub_row, $pub_spy_id, $server_config;
-    //todo $pub_spy_id a gerer ?
+    global $pub_galaxy, $pub_system, $pub_row, $server_config;
 
     if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_row, "Num")) {
         return false;
@@ -559,12 +564,11 @@ function galaxy_reportspy_show()
  * @global int $pub_galaxy
  * @global int $pub_system
  * @global int $pub_row
- * @global int $pub_rc_id
  * @return array|bool $reports contenant les rc mis en forme
  */
 function galaxy_reportrc_show()
 {
-    global $pub_galaxy, $pub_system, $pub_row, $pub_rc_id, $server_config;
+    global $pub_galaxy, $pub_system, $pub_row, $server_config;
 
     if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_row, "Num")) {
         return false;
@@ -619,7 +623,6 @@ function galaxy_getfavorites()
     return $favorite;
 }
 
-
 /**
  * Affichage classement
  *
@@ -646,7 +649,6 @@ function galaxy_show_ranking($model, $ranking_table, $date = null)
     $ranking = $data_rankings->get_all_ranktable_bydate($last_ranking, 1, 99999);
     return $ranking;
 }
-
 
 /**
  * Affichage classement des joueurs
@@ -693,7 +695,6 @@ function galaxy_show_ranking_player()
     $order = array();
     $ranking = array();
     $ranking_available = array();
-    $table = array();
 
     // on determine l id du pub order
     $id = (array_keys($name, $pub_order_by));
@@ -702,7 +703,6 @@ function galaxy_show_ranking_player()
 
     if (!isset($pub_date)) {
         $last_ranking = $Rankings_Player_Model->get_rank_latest_table_date($orderTableName);
-
     } else {
         $last_ranking = $pub_date;
     }
@@ -731,7 +731,6 @@ function galaxy_show_ranking_player()
         $ranking[$currentPlayer]["military_b"] = array("rank" => $ranktable_bydate["milb_rank"], "points" => $ranktable_bydate["milb_pts"]);
         $ranking[$currentPlayer]["military_l"] = array("rank" => $ranktable_bydate["mill_rank"], "points" => $ranktable_bydate["mill_pts"]);
         $ranking[$currentPlayer]["military_d"] = array("rank" => $ranktable_bydate["mild_rank"], "points" => $ranktable_bydate["mild_pts"]);
-
     }
 
     $ranking_available = $Rankings_Player_Model->get_all_distinct_date_ranktable($orderTableName);
@@ -770,11 +769,11 @@ function galaxy_show_ranking_ally()
     // selection de rank max !
     $maxrank = max($Rankings_Ally_Model->select_max_rank_row());
 
-    if (isset($pub_suborder) && $pub_suborder == "member") {
-        $pub_order_by2 = "points_per_member desc";
-    } else {
-        $pub_order_by2 = "rank";
-    }
+    // if (isset($pub_suborder) && $pub_suborder == "member") {
+    // $pub_order_by2 = "points_per_member desc";
+    // } else {
+    // $pub_order_by2 = "rank";
+    // }
 
     if (!isset($pub_interval)) {
         $pub_interval = 1;
@@ -788,7 +787,6 @@ function galaxy_show_ranking_ally()
     $order = array();
     $ranking = array();
     $ranking_available = array();
-    $table = array();
 
     // on determine l id du pub order
     $id = (array_keys($name, $pub_order_by));
@@ -797,7 +795,6 @@ function galaxy_show_ranking_ally()
 
     if (!isset($pub_date)) {
         $last_ranking = $Rankings_Ally_Model->get_rank_latest_table_date($orderTableName);
-
     } else {
         $last_ranking = $pub_date;
     }
@@ -948,8 +945,6 @@ function galaxy_show_ranking_unique_player_forJS($player, $date_min = null, $dat
                 break;
             }
         }
-
-
     }
 
     return $ranking;
@@ -1056,10 +1051,8 @@ function galaxy_purge_ranking()
                 /// dans ce cas, suppression des datas
                 $removeDatadate = $ranking_available[$max_keeprank]; // recuperation de la date limit
                 $Rankings_Player_Model->remove_all_rank_older_than($removeDatadate, $table);
-
             }
         }
-
     }
 }
 
@@ -1107,9 +1100,10 @@ function galaxy_drop_ranking()
  * @global array $server_config
  * @global array $user_data
  * @global array $user_auth
+ * @param string $classe Classe option chosen ('none','COL','GEN','EXP')
  * @return array $phalanxer (galaxy, system, row, phalanx, gate, name, ally, player)
  */
-function galaxy_get_phalanx($galaxy, $system)
+function galaxy_get_phalanx($galaxy, $system, $classe = 'none')
 {
     global $server_config, $user_data, $user_auth;
 
@@ -1127,7 +1121,7 @@ function galaxy_get_phalanx($galaxy, $system)
         //Construction liste phalanges
         foreach ($data as $phalanx) {
             $arrondi_type = 0;
-            $phalanx_range = (pow($phalanx['level'], 2) - 1);
+            $phalanx_range = ogame_phalanx_range($phalanx['level'], $classe);
             $system_lower_range = $phalanx['system'] - $phalanx_range;
             if ($system_lower_range < 1) {
                 $system_lower_range = $system_lower_range + $server_config['num_of_systems'];
@@ -1145,11 +1139,13 @@ function galaxy_get_phalanx($galaxy, $system)
                 $add_to_list = true;
                 //Cas 2 : Phanlange en début de galaxie -> 2 zones possibles : 1 en fin de galaxie et 1 en début
             } elseif (($system <= $system_higher_range && $system <= $system_lower_range && $arrondi_type == 1) ||
-                ($system >= $system_higher_range && $system >= $system_lower_range && $arrondi_type == 1)) {
+                ($system >= $system_higher_range && $system >= $system_lower_range && $arrondi_type == 1)
+            ) {
                 $add_to_list = true;
                 //Cas 3 : Phanlange en fin de galaxie -> 2 zones possibles : 1 en fin de galaxie et 1 en début
             } elseif (($system >= $system_lower_range && $system >= $system_higher_range && $arrondi_type == 2) ||
-                ($system <= $system_lower_range && $system <= $system_higher_range && $arrondi_type == 2)) {
+                ($system <= $system_lower_range && $system <= $system_higher_range && $arrondi_type == 2)
+            ) {
                 $add_to_list = true;
             } else {
                 // Phalange non hostile
@@ -1184,7 +1180,6 @@ function galaxy_get_phalanx($galaxy, $system)
 /**
  * Affichage des systemes solaires obsoletes
  *
- * @global        object mysql $db
  * @global int $pub_perimeter
  * @global int $pub_since
  * @global string $pub_typesearch (M|P)
@@ -1194,7 +1189,6 @@ function galaxy_get_phalanx($galaxy, $system)
  */
 function galaxy_obsolete()
 {
-    global $db;
     global $pub_perimeter, $pub_since, $pub_typesearch;
 
     $obsolete = array();
@@ -1230,8 +1224,6 @@ function galaxy_obsolete()
             $formoon = false;
         }
         $obsolete = (new Universe_Model())->get_galaxy_obsolete($pub_perimeter, $indice_inf, $indice_sup, $indice, $since, $formoon);
-
-
     }
 
 
@@ -1242,14 +1234,12 @@ function galaxy_obsolete()
  * Reconstruction des RE
  *
  * @global array $table_prefix
- * @global       object mysql $db
  * @param string $id_RE RE a reconstituer
  * @return string $template_RE reconstitue
  */
 function UNparseRE($id_RE)
 {
-    //todo nom de variable pas du tout expressive :/
-    global $db, $lang;
+    global $lang;
 
     $Spy_Model = new Spy_Model();
     $Universe_Model = new Universe_Model();
@@ -1345,11 +1335,11 @@ function UNparseRE($id_RE)
     $sep_mille = ".";
 
     // /!\ todo pattern "Lune" n'ezst plus determinant
-    if (preg_match('/\(Lune\)/', $row['planet_name'])) {
-        $moon = 1;
-    } else {
-        $moon = 0;
-    }
+    // if (preg_match('/\(Lune\)/', $row['planet_name'])) {
+    // $moon = 1;
+    // } else {
+    // $moon = 0;
+    // }
 
     $dateRE = date('m-d H:i:s', $row['dateRE']);
     $template = '<table border="0" cellpadding="2" cellspacing="0" align="center">
@@ -1389,7 +1379,7 @@ function UNparseRE($id_RE)
             if ($row["planet_name"] == $tmpRow["planet_name"] && $show['flotte'] == 0) // on recherche sur la meme planete ou lune
             {
 
-                $total = $tmpRow["PT"] + $tmpRow["GT"] + $tmpRow["CLE"] + $tmpRow["CLO"] + $tmpRow["CR"] + $tmpRow["VB"] + $tmpRow["VC"] + $tmpRow["REC"] + $tmpRow["SE"] + $tmpRow["BMD"] + $tmpRow["DST"] + $tmpRow["EDLM"] + $tmpRow["SAT"] + $tmpRow["TRA"]+ $tmpRow["FOR"]+ $tmpRow["FAU"]+ $tmpRow["ECL"];
+                $total = $tmpRow["PT"] + $tmpRow["GT"] + $tmpRow["CLE"] + $tmpRow["CLO"] + $tmpRow["CR"] + $tmpRow["VB"] + $tmpRow["VC"] + $tmpRow["REC"] + $tmpRow["SE"] + $tmpRow["BMD"] + $tmpRow["DST"] + $tmpRow["EDLM"] + $tmpRow["SAT"] + $tmpRow["TRA"] + $tmpRow["FOR"] + $tmpRow["FAU"] + $tmpRow["ECL"];
                 if ((int)$total != -17) {
                     $row["PT"] = $tmpRow["PT"];
                     $row["GT"] = $tmpRow["GT"];
@@ -1635,7 +1625,6 @@ function UNparseRE($id_RE)
     return ($template);
 }
 
-
 /**
  * coordonnees des missiles A PORTEE
  *
@@ -1643,7 +1632,7 @@ function UNparseRE($id_RE)
  * @param int $system
  * @return string
  */
-function portee_missiles($galaxy, $system)
+function galaxy_portee_missiles($galaxy, $system)
 {
     global  $server_config;
     //todo prevoir jointure de table
@@ -1667,13 +1656,13 @@ function portee_missiles($galaxy, $system)
         $base_joueur = $User_building["user_id"];
         $base_id_planet = $User_building["planet_id"];
         $base_coord = $User_building["coordinates"];
-        $base_missil = $User_building["Silo"];
+        // $base_missil = $User_building["Silo"];
 
         // sépare les coords
         $missil_coord = explode(':', $base_coord);
         $galaxie_missil = $missil_coord[0];
         $sysSol_missil = $missil_coord[1];
-        $planet_missil = $missil_coord[2]; // Inutile ?
+        // $planet_missil = $missil_coord[2]; // Inutile ?
 
         // recherche le niveau du réacteur du joueur
         $tUser_Technology =  $User_Technology_Model->select_user_technologies($base_joueur);
@@ -1683,7 +1672,7 @@ function portee_missiles($galaxy, $system)
 
             // recherche du nombre de missile dispo
             $tUser_defense = $User_Defense_Model->select_user_defense_planete($base_joueur, $base_id_planet);
-            $missil_dispo =  $tUser_defense["MIP"];
+            $missil_dispo = (!isset($tUser_defense['MIP']) ? 0 : $tUser_defense['MIP']);
 
 
             $info_users = $User_Model->select_user_data($base_joueur);
@@ -1691,11 +1680,11 @@ function portee_missiles($galaxy, $system)
 
 
             // calcul de la porté du silo
-            $porte_missil = ($niv_reac_impuls * 5) - 1; // Portée : (Lvl 10 * 5) - 1 = 49
+            $porte_missil = ogame_missile_range($niv_reac_impuls); // Portée : (Lvl 10 * 5) - 1 = 49
 
             // calcul de la fenetre
             $vari_missil_moins_tmp = ($sysSol_missil - $porte_missil) % $server_config['num_of_systems'];     // ne peux pas
-            $vari_missil_moins = (($sysSol_missil - $porte_missil) < 1 )  ? 1     : $vari_missil_moins_tmp;   //  etre negatif !!!!
+            $vari_missil_moins = (($sysSol_missil - $porte_missil) < 1)  ? 1     : $vari_missil_moins_tmp;   //  etre negatif !!!!
             $vari_missil_plus = ($sysSol_missil + $porte_missil) % $server_config['num_of_systems'];
 
 
@@ -1734,18 +1723,15 @@ function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_
     $tooltip .= '<tr><td class=\'c\' width=\'70\'>' . $lang['GALAXY_MIP_NAME'] . ' : </td><th width=\'30\'>' . $nom_missil_joueur . '</th></tr>';
     $tooltip .= '<tr><td class=\'c\' width=\'70\'>' . $lang['GALAXY_MIP_AVAILABLE_MISSILES'] . ' : </td><th width=\'30\'>' . $missil_dispo . '</th></tr>';
     $tooltip .= '</table>';
-    if (version_compare(phpversion(), '5.4.0', '>=')) {
-        $tooltip = htmlentities($tooltip, ENT_COMPAT | ENT_HTML401, "UTF-8");
-    } else {
-        $tooltip = htmlentities($tooltip, ENT_COMPAT, "UTF-8");
-    }
+    $tooltip = htmlentities($tooltip);
+    
     $door = '<a id="linkdoor" href="?action=galaxy&galaxy=' . $galaxie_missil . '&system=' . $sysSol_missil . '"';
     //$door .= ' onmouseover="this.T_WIDTH=260;this.T_TEMP=15000;return escape(' . $tooltip . ')"';
     $total_missil += (int)$missil_dispo;
     $missil_ready = "<span style='color: #DBBADC; '> " . $total_missil . " " . $lang['GALAXY_MIP_MIPS'] . " </span>";
 
     //<a href="index.htm" onmouseover="return escape('Some text')">Homepage </a>
-    $ok_missil .= $nom_missil_joueur ." - ". $door . $missil_ready . $color_missil_ally1 . $base_coord . $color_missil_ally2;
+    $ok_missil .= $nom_missil_joueur . " - " . $door . $missil_ready . $color_missil_ally1 . $base_coord . $color_missil_ally2;
 
 
     if ($ok_missil) {

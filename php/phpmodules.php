@@ -19,7 +19,7 @@ Auteurs : julp et hachesse
         }
         ?>
     </ol>
-    <br/><br/>
+    <br /><br />
 
     <h2>Detail des fonctions par module:</h2>
     <ul>

@@ -1,14 +1,16 @@
 <?php
+
 /**
  * Database Model
  *
  * @package OGSpy
  * @subpackage Model
  * @author DarkNoon
- * @copyright Copyright &copy; 2017, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2017, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.4.0
  */
+
 namespace Ogsteam\Ogspy\Model;
 
 use Ogsteam\Ogspy\Abstracts\Model_Abstract;
@@ -20,10 +22,12 @@ abstract class Rankings_Model extends Model_Abstract
     protected  $rank_tables_sql_table;
     protected  $rank_table_ref;
 
-    public function get_rank_tables() {
+    public function get_rank_tables()
+    {
         return $this->rank_tables;
     }
-    public function get_rank_table_ref() {
+    public function get_rank_table_ref()
+    {
         return $this->rank_table_ref;
     }
     /**
@@ -46,8 +50,9 @@ abstract class Rankings_Model extends Model_Abstract
     /**
      * @param $rank_table
      */
-    public function get_rank_latest_table_date($rank_table) {
-        $rank_table=$this->db->sql_escape_string($rank_table);
+    public function get_rank_latest_table_date($rank_table)
+    {
+        $rank_table = $this->db->sql_escape_string($rank_table);
 
         $request = "SELECT MAX(`datadate`) FROM `" . $rank_table . "`" . " LIMIT 0,1";
         $request = "SELECT datadate FROM `" . $rank_table . "`" . " LIMIT 0,1";
@@ -62,7 +67,7 @@ abstract class Rankings_Model extends Model_Abstract
      */
     public function get_all_distinct_date_ranktable($rank_table)
     {
-        $rank_table=$this->db->sql_escape_string($rank_table);
+        $rank_table = $this->db->sql_escape_string($rank_table);
 
         $ranking_available = array();
         $request = "SELECT DISTINCT datadate FROM `" . $rank_table . "`  ORDER BY datadate DESC";
@@ -81,18 +86,18 @@ abstract class Rankings_Model extends Model_Abstract
      * @param int $lower_rank
      * @return array
      */
-    public function get_ranktable($rank_table, $datadate, $bydate = false, $higher_rank = 1, $lower_rank = 100) {
-        $rank_table=$this->db->sql_escape_string($rank_table);
-        $datadate=(int)$datadate;
-        $bydate=(bool)$bydate;
-        $higher_rank=(int)$higher_rank;
-        $lower_rank=(int)$lower_rank;
+    public function get_ranktable($rank_table, $datadate, $bydate = false, $higher_rank = 1, $lower_rank = 100)
+    {
+        $rank_table = $this->db->sql_escape_string($rank_table);
+        $datadate = (int)$datadate;
+        $bydate = (bool)$bydate;
+        $higher_rank = (int)$higher_rank;
+        $lower_rank = (int)$lower_rank;
 
 
         $request  = "SELECT `" . implode("`,`", $this->rank_tables_sql_table) . "`";
         $request .= " FROM `" . $rank_table . "`";
-        if ($bydate)
-        {
+        if ($bydate) {
             $request .= " WHERE `datadate` = '" . $datadate . "'" . " AND `rank` >= '" . $higher_rank . "' AND `rank` <= '" . $lower_rank . "'";
         }
         $result = $this->db->sql_query($request);
@@ -108,18 +113,18 @@ abstract class Rankings_Model extends Model_Abstract
      * @param $table nom de la table impacté
      * remove entry from database when datadate is out of time
      */
-    public function remove_all_rank_older_than($datadate,$table=null) {
-        $datadate=(int)$datadate;
-        $table=$this->db->sql_escape_string($table);
+    public function remove_all_rank_older_than($datadate, $table = null)
+    {
+        $datadate = (int)$datadate;
+        $table = $this->db->sql_escape_string($table);
 
-        $tTables =$this->rank_tables;
-        if (in_array($table, $this->rank_tables))
-        {
+        $tTables = $this->rank_tables;
+        if (in_array($table, $this->rank_tables)) {
             // suppression pour une seule table
-            $tTables= array($table);
+            $tTables = array($table);
         }
 
-         foreach ($tTables as $table) {
+        foreach ($tTables as $table) {
             $request = "DELETE FROM " . $table . " WHERE datadate < " . $datadate;
             $this->db->sql_query($request);
         }
@@ -130,14 +135,14 @@ abstract class Rankings_Model extends Model_Abstract
      * @param datadate  temps en seconde
      * remove entry from database by datadate
      */
-    public function remove_all_rank_by_datadate($datadate,$table=null) {
-        $datadate=(int)$datadate;
-        $table=$this->db->sql_escape_string($table);
-        $tTables =$this->rank_tables;
-        if (in_array($table, $this->rank_tables))
-        {
+    public function remove_all_rank_by_datadate($datadate, $table = null)
+    {
+        $datadate = (int)$datadate;
+        $table = $this->db->sql_escape_string($table);
+        $tTables = $this->rank_tables;
+        if (in_array($table, $this->rank_tables)) {
             // suppression pour une seule table
-            $tTables= array($table);
+            $tTables = array($table);
         }
 
         foreach ($tTables as $table) {
@@ -159,6 +164,3 @@ abstract class Rankings_Model extends Model_Abstract
      */
     abstract public function get_all_ranktable_bydate($datadate, $higher_rank = 1, $lower_rank = 100);
 }
-
-
-

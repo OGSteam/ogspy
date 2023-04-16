@@ -1,6 +1,6 @@
 --
--- OGSpy version 3.3.7
--- Février 2020
+-- OGSpy version 3.3.8
+-- Avril 2023
 --
 --
 
@@ -98,7 +98,7 @@ CREATE TABLE `ogspy_mod`
   `action`     VARCHAR(255)    NOT NULL COMMENT 'Action transmise en get et traitée dans index.php',
   `root`       VARCHAR(255)    NOT NULL COMMENT 'Répertoire où se situe le mod (relatif au répertoire mods)',
   `link`       VARCHAR(255)    NOT NULL COMMENT 'fichier principale du mod',
-  `version`    VARCHAR(10)     NOT NULL COMMENT 'Version du mod',
+  `version`    VARCHAR(100)    NOT NULL COMMENT 'Version du mod',
   `position`   INT(11)         NOT NULL DEFAULT '-1',
   `active`     TINYINT(1)      NOT NULL COMMENT 'Permet de désactiver un mod sans le désinstaller, évite les mods#pirates',
   `admin_only` ENUM ('0', '1') NOT NULL DEFAULT '0' COMMENT 'Affichage des mods de l utilisateur',
@@ -118,6 +118,7 @@ CREATE TABLE `ogspy_game_ally`
   `ally_id`       INT(6)      NOT NULL,
   `ally`          VARCHAR(65) NOT NULL COMMENT 'Nom de l alliance',
   `tag`           VARCHAR(65) NOT NULL DEFAULT '',
+  `class`         ENUM ('none', 'MAR', 'WAR', 'RES') NOT NULL DEFAULT 'none',
   `number_member` INT(3)      NOT NULL COMMENT 'nombre de membre',
   `datadate`      INT(11)     NOT NULL DEFAULT '0',
   PRIMARY KEY (`ally_id`)
@@ -132,6 +133,7 @@ CREATE TABLE `ogspy_game_player`
   `player_id` INT(6)      NOT NULL,
   `player`    VARCHAR(65) NOT NULL COMMENT 'Nom du joueur',
   `status`    VARCHAR(6)  NOT NULL DEFAULT '',
+  `class`     ENUM ('none', 'COL', 'GEN', 'EXP') NOT NULL DEFAULT 'none',
   `ally_id`   INT(6)      NOT NULL COMMENT 'Action transmise en get et traitée dans index.php',
   `datadate`  INT(11)     NOT NULL DEFAULT '0',
   PRIMARY KEY (`player_id`)
@@ -303,9 +305,9 @@ CREATE TABLE `ogspy_rank_player_economique`
   `ally_id`   INT(6)       NOT NULL DEFAULT '-1',
   `points`    BIGINT       NOT NULL DEFAULT '0',
   `sender_id` INT(11)      NOT NULL DEFAULT '0',
-  PRIMARY KEY (`rank`, datadate),
-  KEY datadate (datadate, player),
-  KEY player (player)
+  PRIMARY KEY (`rank`, `datadate`),
+  KEY `datadate` (`datadate`, `player`),
+  KEY `player` (`player`)
 )
   DEFAULT CHARSET = UTF8;
 
@@ -341,7 +343,7 @@ CREATE TABLE `ogspy_rank_player_military`
   `ally_id`       INT(6)       NOT NULL DEFAULT '-1',
   `points`        BIGINT       NOT NULL DEFAULT '0',
   `sender_id`     INT(11)      NOT NULL DEFAULT '0',
-  `nb_spacecraft` INT(11)      NOT NULL DEFAULT '0',
+  `nb_spacecraft` BIGINT       NOT NULL DEFAULT '0',
   PRIMARY KEY (`rank`, `datadate`),
   KEY `datadate` (`datadate`, `player`),
   KEY `player` (`player`)
@@ -504,7 +506,9 @@ CREATE TABLE `ogspy_user`
   `user_name`          VARCHAR(20)     NOT NULL DEFAULT '',
   `user_password`      VARCHAR(32)     NOT NULL DEFAULT '',
   `user_password_s`    VARCHAR(255)    NOT NULL DEFAULT '',
+  `user_pwd_change`    TINYINT(1)      NOT NULL DEFAULT '1',
   `user_email`         VARCHAR(50)     NOT NULL DEFAULT '',
+  `user_email_valid`   TINYINT(1)      NOT NULL DEFAULT '0',
   `user_admin`         ENUM ('0', '1') NOT NULL DEFAULT '0',
   `user_coadmin`       ENUM ('0', '1') NOT NULL DEFAULT '0',
   `user_active`        ENUM ('0', '1') NOT NULL DEFAULT '0',
@@ -527,6 +531,7 @@ CREATE TABLE `ogspy_user`
   `user_skin`          VARCHAR(255)    NOT NULL DEFAULT '',
   `user_stat_name`     VARCHAR(50)     NOT NULL DEFAULT '',
   `user_class`         ENUM ('none', 'COL', 'GEN', 'EXP') NOT NULL DEFAULT 'none',
+  `ally_class`         ENUM ('none', 'MAR', 'WAR', 'RES') NOT NULL DEFAULT 'none',
   `management_user`    ENUM ('0', '1') NOT NULL DEFAULT '0',
   `management_ranking` ENUM ('0', '1') NOT NULL DEFAULT '0',
   `disable_ip_check`   ENUM ('0', '1') NOT NULL DEFAULT '0',
@@ -564,7 +569,7 @@ CREATE TABLE `ogspy_user_building`
   `planet_name`     VARCHAR(20) NOT NULL DEFAULT '',
   `coordinates`     VARCHAR(10) NOT NULL DEFAULT '',
   `fields`          SMALLINT(3) NOT NULL DEFAULT '0',
-  `boosters`        VARCHAR(64) NOT NULL DEFAULT 'm:0:0_c:0:0_d:0:0_p:0_m:0',
+  `boosters`        VARCHAR(64) NOT NULL DEFAULT 'm:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0',
   `temperature_min` SMALLINT(2) NOT NULL DEFAULT '0',
   `temperature_max` SMALLINT(2) NOT NULL DEFAULT '0',
   `Sat`             SMALLINT(5) NOT NULL DEFAULT '0',
@@ -693,6 +698,19 @@ CREATE TABLE `ogspy_mod_config`
   DEFAULT CHARSET = UTF8;
 
 --
+-- Structure de la table `ogspy_mod_user_config`
+--
+CREATE TABLE `ogspy_mod_user_config` (
+    `mod`     VARCHAR(50)  NOT NULL,
+    `user_id` INT(11)      NOT NULL,
+    `config`  VARCHAR(255) NOT NULL,
+    `value`   VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`mod`, `config`, `user_id`),
+    UNIQUE KEY `config` (`config`)
+)
+    DEFAULT CHARSET = UTF8;
+
+--
 -- Structure de la table `ogspy_parsedspy`
 --
 CREATE TABLE `ogspy_parsedspy`
@@ -807,12 +825,12 @@ CREATE TABLE `ogspy_parsedRCRound`
   `id_rcround`        INT(11) NOT NULL AUTO_INCREMENT,
   `id_rc`             INT(11) NOT NULL,
   `numround`          INT(2)  NOT NULL,
-  `attaque_tir`       INT(11) NOT NULL DEFAULT '-1',
-  `attaque_puissance` INT(11) NOT NULL DEFAULT '-1',
-  `defense_bouclier`  INT(11) NOT NULL DEFAULT '-1',
-  `attaque_bouclier`  INT(11) NOT NULL DEFAULT '-1',
-  `defense_tir`       INT(11) NOT NULL DEFAULT '-1',
-  `defense_puissance` INT(11) NOT NULL DEFAULT '-1',
+  `attaque_tir`       BIGINT  NOT NULL DEFAULT '-1',
+  `attaque_puissance` BIGINT  NOT NULL DEFAULT '-1',
+  `defense_bouclier`  BIGINT  NOT NULL DEFAULT '-1',
+  `attaque_bouclier`  BIGINT  NOT NULL DEFAULT '-1',
+  `defense_tir`       BIGINT  NOT NULL DEFAULT '-1',
+  `defense_puissance` BIGINT  NOT NULL DEFAULT '-1',
   PRIMARY KEY (`id_rcround`),
   KEY `rcround` (`id_rc`, `numround`),
   KEY `id_rc` (`id_rc`)
@@ -922,12 +940,20 @@ INSERT INTO `ogspy_config` VALUES ('reason', '');
 INSERT INTO `ogspy_config` VALUES ('servername', 'Cartographie');
 INSERT INTO `ogspy_config` VALUES ('server_active', '1');
 INSERT INTO `ogspy_config` VALUES ('session_time', '30');
-INSERT INTO `ogspy_config` VALUES ('url_forum', 'https://forum.ogsteam.fr/');
+INSERT INTO `ogspy_config` VALUES ('url_forum', 'https://forum.ogsteam.eu/');
 INSERT INTO `ogspy_config` VALUES ('log_phperror', '0');
 INSERT INTO `ogspy_config` VALUES ('block_ratio', '0');
 INSERT INTO `ogspy_config` VALUES ('ratio_limit', '0');
 INSERT INTO `ogspy_config` VALUES ('config_cache', '3600');
 INSERT INTO `ogspy_config` VALUES ('mod_cache', '604800');
+INSERT INTO `ogspy_config` VALUES ('ddr','1');
+INSERT INTO `ogspy_config` VALUES ('astro_strict','1');
+INSERT INTO `ogspy_config` VALUES ('donutSystem','1');
+INSERT INTO `ogspy_config` VALUES ('donutGalaxy','1');
+INSERT INTO `ogspy_config` VALUES ('speed_fleet_peaceful','1');
+INSERT INTO `ogspy_config` VALUES ('speed_fleet_war','1');
+INSERT INTO `ogspy_config` VALUES ('speed_fleet_holding','1');
+INSERT INTO `ogspy_config` VALUES ('speed_research_divisor','1');
 
 -- Partie affichage
 INSERT INTO `ogspy_config` VALUES ('enable_stat_view', '1');

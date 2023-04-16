@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Database Model
  *
  * @package OGSpy
  * @subpackage Model
  * @author DarkNoon
- * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2016, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.4.0
  */
@@ -22,10 +23,11 @@ class Combat_Report_Model  extends Model_Abstract
      * @param int $row
      * @return int $nb_spy
      */
-    public function get_nb_combat_report_by_planet($galaxy, $system, $row) {
-        $galaxy =(int)$galaxy;
-        $system=(int)$system;
-        $row=(int)$row;
+    public function get_nb_combat_report_by_planet($galaxy, $system, $row)
+    {
+        $galaxy = (int)$galaxy;
+        $system = (int)$system;
+        $row = (int)$row;
 
 
         $request = "SELECT * FROM " . TABLE_PARSEDRC . " WHERE `coordinates` = '" . $galaxy . ":" . $system . ":" . $row . "'";
@@ -41,10 +43,11 @@ class Combat_Report_Model  extends Model_Abstract
      * @param int $row
      * @return array $tResult
      */
-    public function get_cr_id_list_by_planet($galaxy, $system, $row) {
-        $galaxy =(int)$galaxy;
-        $system=(int)$system;
-        $row=(int)$row;
+    public function get_cr_id_list_by_planet($galaxy, $system, $row)
+    {
+        $galaxy = (int)$galaxy;
+        $system = (int)$system;
+        $row = (int)$row;
 
         $request = "SELECT `id_rc` FROM " . TABLE_PARSEDRC;
         $request .= " WHERE `coordinates` = '" . $galaxy . ':' . $system . ':' . $row . "'";
@@ -64,7 +67,7 @@ class Combat_Report_Model  extends Model_Abstract
      */
     public function get_combat_report($id_rc)
     {
-        $id_rc =(int)$id_rc;
+        $id_rc = (int)$id_rc;
 
         // Get the RC with id $id_rc
         $query = "SELECT `dateRC`, `coordinates`, `nb_rounds`, `victoire`, `pertes_A`, `pertes_D`, `gain_M`, `gain_C`, `gain_D`, `debris_M`, `debris_C`, `lune` FROM " . TABLE_PARSEDRC . " WHERE `id_rc` = $id_rc";
@@ -110,8 +113,9 @@ class Combat_Report_Model  extends Model_Abstract
     /**
      * @param $id_rc
      */
-    public function delete_combat_report($id_rc) {
-        $id_rc=(int)$id_rc;
+    public function delete_combat_report($id_rc)
+    {
+        $id_rc = (int)$id_rc;
 
         $request = "DELETE FROM " . TABLE_PARSEDRC . " WHERE `id_rc` = '" . $id_rc . "'";
         $this->db->sql_query($request);

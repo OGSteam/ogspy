@@ -4,449 +4,430 @@ by Erreur32 for OGSpsy
 ______________________________________________________________ */
 
 #barre {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    max-width: 100%;
-    background: url("img/toolbar.png") repeat-x;
-    height: 30px;
-    font-size: small;
-    color: #ECFF00
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 100%;
+  background: url("img/toolbar.png") repeat-x;
+  height: 30px;
+  font-size: small;
+  color: #ecff00;
 }
 
 img {
-    border: 0;
+  border: 0;
 }
 
 p table {
-    border: 0;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 11px;
+  border: 0;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 11px;
 }
 
 p td {
-    text-align: center;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 11px;
+  text-align: center;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 11px;
 }
 
 #maintable {
-    border: 0;
-    width: 100%;
-    padding: 10px;
-    border-spacing: 0;
-    border-collapse: collapse;
-    text-align: center;
+  border: 0;
+  width: 100%;
+  padding: 10px;
+  border-spacing: 0;
+  border-collapse: collapse;
+  text-align: center;
 }
 
-table table /* fond global des zones descriptifs et temps recherche, construction  et de la barre des ressources en haut au milieu*/
-{
-    border: 0;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 11px;
+table table { /* fond global des zones descriptifs et temps recherche, construction  et de la barre des ressources en haut au milieu */
+  border: 0;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 11px;
 }
 
-table table td /* police de la zone donnant les ressources sur chaque planète en haut au milieu */
-{
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 11px;
-    color: #00FF0D;
+table table td { /* police de la zone donnant les ressources sur chaque planète en haut au milieu */
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  color: #00ff0d;
 }
 
-body /* allg font etc. *//* option du fond et générales */
-{
-    color: #E4E4E4;
-    margin-top: 0;
-    margin-left: 0;
-    background: #000000 url("fond_1.jpg") no-repeat fixed left top;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    text-align: left;
-    font-size: 11px;
+body { /* allg font etc. *//* option du fond et générales */
+  color: #e4e4e4;
+  margin-top: 0;
+  margin-left: 0;
+  background: #000 url("fond_1.jpg") no-repeat fixed left top;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  text-align: left;
+  font-size: 11px;
 }
 
-body.style /* paramétrage barre de menu sur le côté */
-{
-    color: #E4E4E4;
-    margin-top: 1px;
-    margin-left: 1px;
-    background: #000000 url("img/pic.png") no-repeat 14% 7%;
-    font-family: Tahoma, Helvetica, sans-serif;
-    font-size: 11px;
-    text-align: left;
-    width: 172px;
+body.style { /* paramétrage barre de menu sur le côté */
+  color: #e4e4e4;
+  margin-top: 1px;
+  margin-left: 1px;
+  background: #000 url("img/pic.png") no-repeat 14% 7%;
+  font-family: Tahoma, Helvetica, sans-serif;
+  font-size: 11px;
+  text-align: left;
+  width: 172px;
 }
 
 body form table th table input {
-    width: 60px;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 11px;
+  width: 60px;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 11px;
 }
 
 td.a, td.b, td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, td.c_batiments, td.c_satellite, td.c_defense, td.c_classement_points, td.c_classement_flotte, td.c_classement_recherche, td.f, input, select, td.g, td.h, td.i, td.j, td.k, td.l, td.m, td.n, td.o, td.q, td.r, td.v, .style td, textarea, p td, table.s th img {
-    border: 1px #F0ECED solid;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 11px;
+  border: 1px #f0eced solid;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 11px;
 }
 
 th, td.a, td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, td.c_batiments, td.c_satellite, td.c_defense, td.c_classement_points, td.c_classement_flotte, td.c_classement_recherche, td.f, input, select, td.g, td.h, td.i, td.j, td.k, td.m, td.o, td.q, td.r, td.v, td.s, .style td, p td {
-    background-color: transparent;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 11px;
+  background-color: transparent;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 11px;
 }
 
-td.b /* modifie le fond message */
-{
-    background-color: #232E30;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 11px;
+td.b { /* modifie le fond message */
+  background-color: #232e30;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  padding: 3px;
 }
 
 th {
-    border: 1px solid #3F2158;
-    text-align: center;
-    padding-left: 3px;
-    padding-right: 3px;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 11px;
-    background: url("tableaux/th.png") repeat;
+  border: 1px solid #3f2158;
+  text-align: center;
+  padding-left: 3px;
+  padding-right: 3px;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  background: url("tableaux/th.png") repeat;
 }
 
 td.a {
-    height: 37px;
-    text-align: center;
-}
-
-td.b {
-    padding: 3px;
+  height: 37px;
+  text-align: center;
 }
 
 td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, td.c_batiments, td.c_satellite, td.c_defense, td.c_classement_points, td.c_classement_flotte, td.c_classement_recherche {
-    font-weight: bold;
-    color: #ffffff;
-    padding-left: 3px;
-    height: 22px;
+  font-weight: bold;
+  color: #fff;
+  padding-left: 3px;
+  height: 22px;
 }
 
-td.c /* modifie la police des noms de catégorie dans le menu recherche et des titres de certaines pages barress.PNG */
-{
-    background: url("tableaux/td_c.png") repeat-y right;
+td.c { /* modifie la police des noms de catégorie dans le menu recherche et des titres de certaines pages barress.PNG */
+  background: url("tableaux/td_c.png") repeat-y right;
 }
 
 td.c_tech {
-    background: url("tableaux/td_tech.png") no-repeat right;
+  background: url("tableaux/td_tech.png") no-repeat right;
 }
 
 td.c_stats {
-    background: url("tableaux/td_stats.png") no-repeat right;
+  background: url("tableaux/td_stats.png") no-repeat right;
 }
 
 td.c_recherche {
-    background: url("tableaux/td_recherche.png") no-repeat right;
+  background: url("tableaux/td_recherche.png") no-repeat right;
 }
 
 td.c_user {
-    background: url("tableaux/td_utilisateur.png") no-repeat right;
+  background: url("tableaux/td_utilisateur.png") no-repeat right;
 }
 
 td.c_ogspy {
-    background: url("tableaux/td_ogspy.png") no-repeat right;
+  background: url("tableaux/td_ogspy.png") no-repeat right;
 }
 
 td.c_ogame {
-    background: url("tableaux/td_ogame.png") no-repeat right;
+  background: url("tableaux/td_ogame.png") no-repeat right;
 }
 
 td.c_batiments {
-    background: url("tableaux/td_batiments.png") no-repeat right;
+  background: url("tableaux/td_batiments.png") no-repeat right;
 }
 
 td.c_satellite {
-    background: url("tableaux/td_satellite.png") no-repeat right;
+  background: url("tableaux/td_satellite.png") no-repeat right;
 }
 
 td.c_defense {
-    background: url("tableaux/td_defense.png") no-repeat right;
+  background: url("tableaux/td_defense.png") no-repeat right;
 }
 
 td.c_classement_points {
-    background: url("tableaux/td_classement_points.png") no-repeat right;
+  background: url("tableaux/td_classement_points.png") no-repeat right;
 }
 
 td.c_classement_flotte {
-    background: url("tableaux/td_classement_flotte.png") no-repeat right;
+  background: url("tableaux/td_classement_flotte.png") no-repeat right;
 }
 
 td.c_classement_recherche {
-    background: url("tableaux/td_classement_recherche.png") no-repeat right;
+  background: url("tableaux/td_classement_recherche.png") no-repeat right;
 }
 
 td.f, input, select, textarea {
-    border: 1px solid #606060;
-    color: #ffffff;
-    background-color: #232425;
+  border: 1px solid #606060;
+  color: #fff;
+  background-color: #232425;
 }
 
-textarea /* couleur du fond lorsque vous écrivez un message */
-{
-    width: 100%;
+textarea { /* couleur du fond lorsque vous écrivez un message */
+  width: 100%;
 }
 
 td.g {
-    text-align: right;
-    color: #B6C6E5;
+  text-align: right;
+  color: #b6c6e5;
 }
 
 td.h {
-    text-align: center;
-    color: #B6C6E5;
+  text-align: center;
+  color: #b6c6e5;
 }
 
 td.i {
-    text-align: center;
-    color: #000000;
+  text-align: center;
+  color: #000;
 }
 
 td.j {
-    text-align: center;
-    color: #B6C6E5;
+  text-align: center;
+  color: #b6c6e5;
 }
 
-td.k, td.k input /* berechne calculer? button  background-image: url("img/bl01.PNG");*/
-{
-    text-align: center;
-    color: #FFFFFF;
-    background: transparent url("img/barredroite.PNG") no-repeat;
+td.k, td.k input { /* berechne calculer? button  background-image: url("img/bl01.PNG"); */
+  text-align: center;
+  color: #fff;
+  background: transparent url("img/barredroite.PNG") no-repeat;
 }
 
-td.l /* police du texte de description des batiments, chantier spatial et recherche */
-{
-    color: #FFFFFF;
-    vertical-align: top;
-    padding: 0;
-    background: #000000 url("img/grandebarre.PNG") no-repeat;
+td.l { /* police du texte de description des batiments, chantier spatial et recherche */
+  color: #fff;
+  vertical-align: top;
+  padding: 0;
+  background: #000 url("img/grandebarre.PNG") no-repeat;
 }
 
 td.m {
-    text-align: right;
-    width: 86px;
-    color: #B6C6E5;
+  text-align: right;
+  width: 86px;
+  color: #b6c6e5;
 }
 
 td.n {
-    font-weight: bold;
-    width: 88px;
-    text-align: center;
-    color: #B6C6E5;
+  font-weight: bold;
+  width: 88px;
+  text-align: center;
+  color: #b6c6e5;
 }
 
 td.o {
-    text-align: center;
-    color: #B6C6E5;
+  text-align: center;
+  color: #b6c6e5;
 }
 
 td.q {
-    font-weight: bold;
-    font-size: 11px;
-    text-align: center;
-    vertical-align: middle;
-    color: #B6C6E5;
+  font-weight: bold;
+  font-size: 11px;
+  text-align: center;
+  vertical-align: middle;
+  color: #b6c6e5;
 }
 
 td.r {
-    text-align: right;
-    color: #B6C6E5;
+  text-align: right;
+  color: #b6c6e5;
 }
 
 td.v {
-    text-align: right;
-    color: #B6C6E5;
-    font-weight: bold;
+  text-align: right;
+  color: #b6c6e5;
+  font-weight: bold;
 }
 
 td.s {
-    color: #B6C6E5;
+  color: #b6c6e5;
 }
 
 table.s th {
-    border: 0;
+  border: 0;
 }
 
 table.s th img {
-    width: 60px;
-    height: 60px;
+  width: 60px;
+  height: 60px;
 }
 
-div.z /* réglage du format auquel s'affiche le temps de recherche et construction des batiments */
-{
-    font-weight: bold;
-    color: #FF6F3C;
+div.z { /* réglage du format auquel s'affiche le temps de recherche et construction des batiments */
+  font-weight: bold;
+  color: #ff6f3c;
 }
 
-a /* paramétrage des liens 00C8FF*/
-{
-    color: #5CCCE8;
-    text-decoration: none;
-    font-weight: bold;
+a { /* paramétrage des liens 00C8FF */
+  color: #5ccce8;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 a.s {
-    color: #FFFFFF;
+  color: #fff;
 }
 
 a.t {
-    color: #FFFFFF;
+  color: #fff;
 }
 
-a:hover /* Planet Title hover */
-{
-    font-weight: bold;
-    color: #A8FF66;
-    text-decoration: underline;
+a:hover { /* Planet Title hover */
+  font-weight: bold;
+  color: #a8ff66;
+  text-decoration: underline;
 }
 
-.style td /* taille cases barres latérales */
-{
-    color: #8A4FFF;
-    border-top: 0;
-    font-size: 11px;
-    font-family: Tahoma, sans-serif;
+.style td { /* taille cases barres latérales */
+  color: #8a4fff;
+  border-top: 0;
+  font-size: 11px;
+  font-family: Tahoma, sans-serif;
 }
 
-.style td:hover /*taille cases barres latérales */
-{
-    background-image: url("img/Mod01.jpg");
-    border-top: 0;
-    font-size: 11px;
-    font-family: Tahoma, Ringbearer, sans-serif;
+.style td:hover { /* taille cases barres latérales */
+  background-image: url("img/Mod01.jpg");
+  border-top: 0;
+  font-size: 11px;
+  font-family: Tahoma, Ringbearer, sans-serif;
 }
 
 .style div a {
-    height: 100%;
-    width: 100%;
-    font-size: 11px;
+  height: 100%;
+  width: 100%;
+  font-size: 11px;
 }
 
-.style div a:link /* police lien internes dans les menus, tous sauf aide et forum */
-{
-    height: 100%;
-    width: 100%;
-    color: #FFFFFF;
-    font-size: 11px;
+.style div a:link { /* police lien internes dans les menus, tous sauf aide et forum */
+  height: 100%;
+  width: 100%;
+  color: #fff;
+  font-size: 11px;
 }
 
-.style div a:visited /* barre de menu lien forum et aide */
-{
-    height: 100%;
-    width: 100%;
-    color: #FFFFFF;
-    font-size: 11px;
+.style div a:visited { /* barre de menu lien forum et aide */
+  height: 100%;
+  width: 100%;
+  color: #fff;
+  font-size: 11px;
 }
 
-.style div a:hover /* barre de menu quand on est sur le lien */
-{
-    background-color: transparent;
-    height: 100%;
-    width: 100%;
-    text-decoration: none;
-    font-size: 11px;
-    color: #FFFFFF;
+.style div a:hover { /* barre de menu quand on est sur le lien */
+  background-color: transparent;
+  height: 100%;
+  width: 100%;
+  text-decoration: none;
+  font-size: 11px;
+  color: #fff;
 }
 
-.style /* navigation */
-{
-    margin-top: 5px;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 11px;
+.style { /* navigation */
+  margin-top: 5px;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 11px;
 }
 
-h1 /* titre (fenêtre batiments et recherche) */
-{
-    font-size: 12px;
-    border-bottom: 0 #2C2C2C solid;
-    width: 98%;
-    text-align: right;
-    font-weight: bold;
-    color: #CC0000;
+h1 { /* titre (fenêtre batiments et recherche) */
+  font-size: 12px;
+  border-bottom: 0 #2c2c2c solid;
+  width: 98%;
+  text-align: right;
+  font-weight: bold;
+  color: #cc0;
 }
 
 a.menu {
-    background-image: url("menu/menu_title.png");
-    margin-top: 7px;
-    margin-bottom: 14px;
-    display: block;
+  background-image: url("menu/menu_title.png");
+  margin-top: 7px;
+  margin-bottom: 14px;
+  display: block;
 }
 
 a.menu:hover {
-    color: #26F33D;
+  color: #26f33d;
 }
 
 a.menu_items, p.menu_items {
-    display: block;
-    color: #FFFFFF;
-    font-family: Verdana;
-    font-kerning: auto;
-    font-style: normal;
-    font-size: 1em;
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    line-height: 1.5em;
-    text-align: left;
-    text-decoration: none;
-    text-transform: uppercase;
-    word-spacing: 0;
+  display: block;
+  color: #fff;
+  font-family: Helvetica, Arial, Verdana, Tahoma, sans-serif;
+  font-kerning: auto;
+  font-style: normal;
+  font-size: 1em;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.5em;
+  text-align: left;
+  text-decoration: none;
+  text-transform: uppercase;
+  word-spacing: 0;
 }
 
 a.menu_items:hover {
-    color: lightseagreen;
-}
-
-ul.menu {
-    padding-left: 20px;
+  color: lightseagreen;
 }
 
 a.menu1 {
-    background-image: url("menu/profil0.png");
-    display: block;
+  background-image: url("menu/profil0.png");
+  display: block;
 }
 
 a.menu1:hover {
-    background-image: url("menu/profil1.png");
-    color: #26F33D;
+  background-image: url("menu/profil1.png");
+  color: #26f33d;
 }
 
 ul.menu_mods {
-    padding-left: 0;
-
+  padding-left: 0;
 }
 
 a.menu_mods {
-    color: #26F33D;
-    text-decoration: none;
-    text-align: left;
-
+  color: #26f33d;
+  text-decoration: none;
+  text-align: left;
 }
 
 ul.a.menu_mods:hover {
-    color: #56F39F;
-    text-decoration: none;
+  color: #56f39f;
+  text-decoration: none;
 }
 
 center {
-    color: #ECFF00;
+  color: #ecff00;
 }
 
 ul.menu {
-    list-style-image: url('./menu/list.png');
-    color: grey;
-    text-align: left;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1em;
-    display: block;
+  list-style-image: url('./menu/list.png');
+  color: grey;
+  text-align: left;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1em;
+  display: block;
+  padding-left: 20px;
 }
 
 ul.menu.a.hover {
-    color: #56F39F;
-    text-decoration: none;
+  color: #56f39f;
+  text-decoration: none;
+}
+
+#pwdchange {
+  color: red;
+  background-color: black;
+  font-weight: bold;
+  font-size: 3em;
+  text-align: center;
 }

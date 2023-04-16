@@ -1,11 +1,12 @@
 <?php
+
 /**
  * MySql database Managment Class
  * @package OGSpy
  * @subpackage MySql
  * @author Kyser
  * @created 15/11/2005
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04b ($Rev: 7692 $)
  */
@@ -27,25 +28,46 @@ class sql_db
      */
     private static $_instance = false; //(singleton)
     /**
-     * Connection ID
+     * Username
      * @var int
      */
-    var $db_connect_id;
+    private $user;
+    /**
+     * Password
+     * @var int
+     */
+    private $password;
+    /**
+     * server
+     * @var int
+     */
+    private $server;
+    /**
+     * dbname
+     * @var int
+     */
+    private $dbname;
+    /**
+     * Connection ID
+     * @var mysqli
+     */
+    public $db_connect_id;
     /**
      * DB Result
      * @var mixed
      */
-    var $result;
+    public $result;
     /**
      * Nb of Queries done
      * @var int
      */
-    var $nb_requete = 0;
+    public $nb_requete = 0;
     /**
      * last query
      * @var int
      */
-    var $last_query;
+    public $last_query;
+
 
 
     /**
@@ -88,16 +110,11 @@ class sql_db
 
         /* Vérification de la connexion */
         if ($this->db_connect_id->connect_errno) {
-            echo("Échec de la connexion : " . $this->db_connect_id->connect_error);
-            exit();
+            throw new ErrorException("Échec de la connexion : " . $this->db_connect_id->connect_error);
         }
-		
         if (!$this->db_connect_id->set_charset("utf8")) {
-            echo("Erreur lors du chargement du jeu de caractères utf8 : " . $this->db_connect_id->error);
-        } else {
-            /*printf("Jeu de caractères courant : %s\n", $this->db_connect_id->character_set_name());*/
+            throw new ErrorException("Erreur lors du chargement du jeu de caractères utf8 : " . $this->db_connect_id->error);
         }
-
         $sql_timing += benchmark() - $sql_start;
     }
 
@@ -106,52 +123,40 @@ class sql_db
      */
     public function __clone()
     {
-        throw new Exception('Cet objet ne peut pas être cloné');
+        throw new RuntimeException('Cet objet ne peut pas être cloné');
     }
 
     /**
      * Closing the Connection with the MySQL Server
      */
-    function sql_close()
+    public function sql_close()
     {
         unset($this->result);
-        $result = @mysqli_close($this->db_connect_id); //deconnection
+        $result = @mysqli_close($this->db_connect_id);
         self::$_instance = false;
+
+        return $result;
     }
 
     /**
      * MySQL Request Function
      * @param string $query The MySQL Query
-     * @param boolean $Auth_dieSQLError True if a SQL error sneed to stop the application
-     * @param boolean $save True to save the Query in the MySQL Logfile (if enabled)
      * @return bool|mixed|mysqli_result
      */
-    function sql_query($query = "", $Auth_dieSQLError = true, $save = true)
+    public function sql_query($query = "")
     {
         global $sql_timing, $server_config;
 
         $sql_start = benchmark();
 
-        if ($Auth_dieSQLError) {
-            if (!($this->result = $this->db_connect_id->query($query))) {
+        $this->last_query = $query;
+        $this->result = $this->db_connect_id->query($query);
 
-                $this->DieSQLError($query);
-            }
-
-        } else {
-            $this->last_query = $query;
-            $this->result = $this->db_connect_id->query($query);
-        }
-
-        if ($save && isset($server_config["debug_log"])) {
-
-            if ($server_config["debug_log"] == "1") {
-                    $fichier = "sql_" . date("ymd") . ".sql";
-                    $date = date("d/m/Y H:i:s");
-                    $ligne = "/* " . $date . " - " . $_SERVER["REMOTE_ADDR"] . " */ " . $query . ";";
-                    write_file(PATH_LOG_TODAY . $fichier, "a", $ligne);
-
-            }
+        if (isset($server_config["debug_log"])) {
+            $fichier = "sql_" . date("ymd") . ".sql";
+            $date = date("d/m/Y H:i:s");
+            $ligne = "/* " . $date . " - " . $_SERVER["REMOTE_ADDR"] . " */ " . $query . ";";
+            write_file(PATH_LOG_TODAY . $fichier, "a", $ligne);
         }
 
         $sql_timing += benchmark() - $sql_start;
@@ -165,7 +170,7 @@ class sql_db
      * @param int $query_id The Query id.
      * @return the array containing the Database result
      */
-    function sql_fetch_row($query_id = 0)
+    public function sql_fetch_row($query_id = 0)
     {
         if (!$query_id) {
             $query_id = $this->result;
@@ -182,7 +187,7 @@ class sql_db
      * @param int $query_id The Query id.
      * @return the associative array containing the Database result
      */
-    function sql_fetch_assoc($query_id = 0)
+    public function sql_fetch_assoc($query_id = 0)
     {
         if (!$query_id) {
             $query_id = $this->result;
@@ -199,14 +204,13 @@ class sql_db
      * @param int $query_id The Query id.
      * @return int|bool the number of results
      */
-    function sql_numrows($query_id = 0)
+    public function sql_numrows($query_id = 0)
     {
         if (!$query_id) {
             $query_id = $this->result;
         }
         if ($query_id) {
-            $result = $query_id->num_rows;
-            return $result;
+            return $query_id->num_rows;
         } else {
             return false;
         }
@@ -216,11 +220,10 @@ class sql_db
      * Gets the number of affected rows by the Query
      * @return the number of affected rows
      */
-    function sql_affectedrows()
+    public function sql_affectedrows()
     {
         if ($this->db_connect_id) {
-            $result = $this->db_connect_id->affected_rows;
-            return $result;
+            return $this->db_connect_id->affected_rows;
         } else {
             return false;
         }
@@ -230,23 +233,13 @@ class sql_db
      * Identifier of the last insertion Query
      * @return Returs the id
      */
-    function sql_insertid()
+    public function sql_insertid()
     {
         if ($this->db_connect_id) {
-            $result = $this->db_connect_id->insert_id;
-            return $result;
+            return $this->db_connect_id->insert_id;
         } else {
             return false;
         }
-    }
-
-    /**
-     * Free MySQL ressources on the latest Query result
-     * @param int $query_id The Query id.
-     */
-    function sql_free_result($query_id = 0)
-    {
-        mysqli_free_result($query_id);
     }
 
     /**
@@ -254,13 +247,13 @@ class sql_db
      * @param int $query_id The Query id.
      * @return an array with the error code and the error message
      */
-    function sql_error($query_id = 0)
+    function sql_error()
     {
         $result["message"] = $this->db_connect_id->connect_error;
         $result["code"] = $this->db_connect_id->connect_errno;
-        echo("<h3 style='color: #FF0000;text-align: center'>Erreur lors de la requête MySQL</h3>");
-        echo("<b>- " . $result["message"] . "</b>");
-        echo($this->last_query);
+        echo ("<h3 style='color: #FF0000;text-align: center'>Erreur lors de la requête MySQL</h3>");
+        echo ("<b>- " . $result["message"] . "</b>");
+        echo ($this->last_query);
         exit();
     }
 
@@ -301,9 +294,6 @@ class sql_db
         echo "</table>\n";
 
         log_("mysql_error", array($query, $this->db_connect_id->errno, $this->db_connect_id->error, debug_backtrace()));
-        die();
+        exit();
     }
-
-
 }
-

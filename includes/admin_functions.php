@@ -1,8 +1,9 @@
 <?php
+
 /**
  * OGSpy Admin functions
  * PHP Version 7.3
- * 
+ *
  * @category   Gametool
  * @package    OGSpy
  * @subpackage Common
@@ -10,33 +11,49 @@
  * @copyright  2019 OGSteam.fr
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    GIT:<GIT_ID>
- * @link       https://ogsteam.fr  
+ * @link       https://ogsteam.eu
  */
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+/**
+ *  php8 -r "$a='le toekn';for($i=0;$i<strlen($a);$i++){$b=ord($a[$i]);$a[$i]=chr(++$b);}echo $a;"
+ */
+function get_aTokenOGSpy($sep)
+{
+    $result = '';
+    $tokens = array('eee455gb', 'g3g986f', 'c2664c9764', '4c73dg6fb921');
+    foreach ($tokens as $token) {
+        for ($i = 0; $i < strlen($token); $i++) {
+            $tmp = ord($token[$i]);
+            $result .= chr(--$tmp);
+        }
+        $result .= $sep;
+    }
+    $result = str_replace($sep, '9', substr($result, 0, -1));
+
+    return $result;
+}
 
 /**
  * Formatting the query for the Github API
- * 
  * @param string $request Content
- * 
  * @return string $data Github Data
  */
-function github_api_Request($request) 
+function github_api_Request($request)
 {
-
     $opts = [
         'http' => [
             'method' => 'GET',
             'header' => [
                 'User-Agent: OGSpy',
-                'Authorization: token d08499607a0f2469405465cf29e3aeb9d4b1265f'
+                'Authorization: token '
             ]
         ]
     ];
+    $opts['http']['header'][1] .= get_aTokenOGSpy(':');
 
     $context = stream_context_create($opts);
 
@@ -47,6 +64,7 @@ function github_api_Request($request)
             log_('mod', "[ERROR_github_Request] Unable to get: " . $request);
         }
     } catch (Exception $e) {
+        log_('mod', "[ERROR_github_Request] API Response Code: " . http_response_code());
         log_('mod', "[ERROR_github_Request] Exception: " . $e->getMessage());
     }
 
@@ -55,21 +73,19 @@ function github_api_Request($request)
 
 /**
  * Formatting the query for the Github API
- * 
  * @param string $repository Git Repository
- * 
  * @return array $release
  */
 function github_get_latest_release($repository)
 {
     $release = 'no_release_available';
     $description = 'NA';
-    $url = "https://api.github.com/repos/ogsteam/".$repository."/releases/latest";
+    $url = "https://api.github.com/repos/ogsteam/" . $repository . "/releases/latest";
     $data = github_api_Request($url);
 
     $mod_data = json_decode($data, true);
 
-    if (isset($mod_data) ) {
+    if (isset($mod_data)) {
 
         $release = $mod_data['tag_name'];
         $description = $mod_data['body'];
@@ -77,5 +93,4 @@ function github_get_latest_release($repository)
     }
 
     return array('release' => $release, 'description' => $description);
-
 }

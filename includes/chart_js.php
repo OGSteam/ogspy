@@ -1,9 +1,10 @@
 <?php
+
 /** OGSpy Charts library (Hightcharts)
  * @package OGSpy
  * @subpackage Charts
  * @author Machine
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.1.0
  */
@@ -31,8 +32,11 @@ function create_pie($_data, $_legend, $_title, $conteneur, $theme = true)
     $retour = "";
 
     // test erreurs donnés
-    if (!check_var($_data, "Special", "#^[0-9(_x_)]+$#") || !check_var($_legend,
-            "Text") || !check_var($_title, "Text") || !check_var($conteneur, "Text")
+    if (
+        !check_var($_data, "Special", "#^[0-9(_x_)]+$#") || !check_var(
+            $_legend,
+            "Text"
+        ) || !check_var($_title, "Text") || !check_var($conteneur, "Text")
     ) {
         $retour .= affiche_error($conteneur, 'erreur 1');
         return $retour;
@@ -75,7 +79,7 @@ $(document).ready(function() {
       },
       credits: {
         text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
-        href: 'http://www.ogsteam.fr'
+        href: 'http://www.ogsteam.eu'
     },
       title: {
          text: '" . $title . "'
@@ -92,7 +96,7 @@ $(document).ready(function() {
             dataLabels: {
                 color: '#666666',
                enabled: true
-               
+
             },
             showInLegend: true
          }
@@ -100,7 +104,7 @@ $(document).ready(function() {
        series: [{
          type: 'pie',
          name: 'Browser share',
-         
+
          data: [
             " . $format_data . "
          ]
@@ -141,8 +145,11 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
     $retour = "";
 
     // test erreurs donnés
-    if (!check_var($_data, "Special", "#^[0-9(_x_)]+$#") || !check_var($_legend,
-            "Text") || !check_var($_title, "Text") || !check_var($conteneur, "Text")
+    if (
+        !check_var($_data, "Special", "#^[0-9(_x_)]+$#") || !check_var(
+            $_legend,
+            "Text"
+        ) || !check_var($_title, "Text") || !check_var($conteneur, "Text")
     ) {
         $retour .= affiche_error($conteneur, 'erreur 1');
         return $retour;
@@ -172,46 +179,46 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 
     // création du script
     $retour .= "<script type=\"text/javascript\">
-	var " . $conteneur . ";
-	$(document).ready(function() {
+    var " . $conteneur . ";
+    $(document).ready(function() {
 
 
     " . $conteneur . " = new Highcharts.Chart({
-		chart: {
-	        renderTo: '" . $conteneur . "',
-	        plotBackgroundColor: null,
-	        plotBorderWidth: null,
-			plotShadow: false
-		},
-      	credits: {
-			text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
-        	href: 'http://www.ogsteam.fr'
-	  	},
-		title: {
-			text: '" . $title . "'
+        chart: {
+            renderTo: '" . $conteneur . "',
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        credits: {
+            text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
+            href: 'http://www.ogsteam.eu'
+        },
+        title: {
+            text: '" . $title . "'
         },
         tooltip: {
             formatter: function() {
-				return '<b>' + this.point.name + '</b>: ' + number_format(this.point.y, 0, ',', ' ');
+                return '<b>' + this.point.name + '</b>: ' + number_format(this.point.y, 0, ',', ' ');
             }
         },
-      	plotOptions: {
-        	pie: {
-	            allowPointSelect: true,
-	            cursor: 'pointer',
-	            dataLabels: {
-	                color: '#FFFFFF',
-	                enabled: true
-	            },
-	            showInLegend: true
-         	}
-		},
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    color: '#FFFFFF',
+                    enabled: true
+                },
+                showInLegend: true
+            }
+        },
         series: [{
-        	type: 'pie',
-         	name: 'Browser share',
-         	data: [" . $format_data . "]
-      	}]
-   	});
+            type: 'pie',
+            name: 'Browser share',
+            data: [" . $format_data . "]
+        }]
+    });
 }); ";
 
 
@@ -241,7 +248,6 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 
 function create_curves($_player, $_date_min, $_date_max, $_comp)
 {
-    global $db;
     $retour = "";
 
     // todo quel est ce $contenur ?
@@ -250,7 +256,8 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
         return $retour;
     }
 
-    if (!isset($_date_min) || !is_numeric($_date_min) || !isset($_date_max) || !is_numeric($_date_max)
+    if (
+        !isset($_date_min) || !is_numeric($_date_min) || !isset($_date_max) || !is_numeric($_date_max)
     ) {
         $retour .= affiche_error($conteneur, 'erreur 4');
         return $retour;
@@ -263,7 +270,7 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
 
     // récuperation des datas
     $name = array();
-    $data = galaxy_show_ranking_unique_player_forJS($player ,$date_min , $date_max);
+    $data = galaxy_show_ranking_unique_player_forJS($player, $date_min, $date_max);
     $nametpl = array('general', 'Economique', 'Recherche', 'Militaire', 'Militaire Construits', 'Perte militaire', 'destruction', 'honorifique');
 
     if ($player_comp == "") {
@@ -272,7 +279,7 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
             $name[] = $n . " (" . $player . ")";
         }
     } else {
-        $dataplayer_comp = galaxy_show_ranking_unique_player_forJS($player_comp,$date_min , $date_max);
+        $dataplayer_comp = galaxy_show_ranking_unique_player_forJS($player_comp, $date_min, $date_max);
 
         // fusion des datas
         $names = array("rank", "points");
@@ -283,25 +290,33 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
         }
 
         // formatages des noms pour deux joueurs
-        $players = array($player,$player_comp);
-        $name=array();
-        foreach ($players as $p)
-        {
+        $players = array($player, $player_comp);
+        $name = array();
+        foreach ($players as $p) {
             foreach ($nametpl as $n) {
                 $name[] = $n . " (" . $p . ")";
             }
-
         }
     }
 
     if (isset($data['points'])) {
-        $retour .= create_multi_curve("Points", $player, $data['points'], $name,
-            "points"); // points
+        $retour .= create_multi_curve(
+            "Points",
+            $player,
+            $data['points'],
+            $name,
+            "points"
+        ); // points
     }
 
     if (isset($data['rank'])) {
-        $retour .= create_multi_curve("Classement", $player, $data['rank'], $name,
-            "rank"); // rank
+        $retour .= create_multi_curve(
+            "Classement",
+            $player,
+            $data['rank'],
+            $name,
+            "rank"
+        ); // rank
 
     }
     return $retour;
@@ -336,14 +351,14 @@ function affiche_error($conteneur, $error)
  */
 function graph_theme()
 {
-    $retour = " 
+    $retour = "
 /**
  * Dark blue theme for Highcharts JS
  * @author Torstein Hønsi
  */
 
 Highcharts.theme = {
-   colors: [\"#DDDF0D\", \"#55BF3B\", \"#DF5353\", \"#7798BF\", \"#aaeeee\", \"#ff0066\", \"#eeaaee\", 
+   colors: [\"#DDDF0D\", \"#55BF3B\", \"#DF5353\", \"#7798BF\", \"#aaeeee\", \"#ff0066\", \"#eeaaee\",
       \"#55BF3B\", \"#DF5353\", \"#7798BF\", \"#aaeeee\"],
    chart: {
       backgroundColor: {
@@ -367,7 +382,7 @@ Highcharts.theme = {
       }
    },
    subtitle: {
-      style: { 
+      style: {
          color: '#666666',
          font: 'bold 12px \"Trebuchet MS\", Verdana, sans-serif'
       }
@@ -389,7 +404,7 @@ Highcharts.theme = {
             fontSize: '12px',
             fontFamily: 'Trebuchet MS, Verdana, sans-serif'
 
-         }            
+         }
       }
    },
    yAxis: {
@@ -409,7 +424,7 @@ Highcharts.theme = {
             fontWeight: 'bold',
             fontSize: '12px',
             fontFamily: 'Trebuchet MS, Verdana, sans-serif'
-         }            
+         }
       }
    },
    legend: {
@@ -425,7 +440,7 @@ Highcharts.theme = {
       }
    },
    toolbar: {
-      itemStyle: { 
+      itemStyle: {
          color: 'silver'
       }
    },
@@ -451,7 +466,7 @@ Highcharts.theme = {
       candlestick: {
          lineColor: 'white'
       }
-   },      
+   },
    legend: {
       itemStyle: {
          color: '#CCC'
@@ -473,7 +488,7 @@ Highcharts.theme = {
          color: '#660066'
       }
    },
-   
+
    navigation: {
       buttonOptions: {
          backgroundColor: {
@@ -488,7 +503,7 @@ Highcharts.theme = {
          hoverSymbolStroke: '#FFFFFF'
       }
    },
-   
+
    exporting: {
       buttons: {
          exportButton: {
@@ -499,7 +514,7 @@ Highcharts.theme = {
          }
       }
    },
-   
+
    // scroll charts
    rangeSelector: {
       buttonTheme: {
@@ -542,7 +557,7 @@ Highcharts.theme = {
                   color: 'yellow'
                }
             }
-         }               
+         }
       },
       inputStyle: {
          backgroundColor: '#333',
@@ -552,7 +567,7 @@ Highcharts.theme = {
          color: 'silver'
       }
    },
-   
+
    navigator: {
       handles: {
          backgroundColor: '#666',
@@ -565,7 +580,7 @@ Highcharts.theme = {
          lineColor: '#A6C7ED'
       }
    },
-   
+
    scrollbar: {
       barBackgroundColor: {
             linearGradient: [0, 0, 0, 20],
@@ -594,7 +609,7 @@ Highcharts.theme = {
       },
       trackBorderColor: '#666'
    },
-   
+
    // special colors for some of the
    legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
    legendBackgroundColorSolid: 'rgb(35, 35, 70)',
@@ -654,25 +669,25 @@ $(document).ready(function() {
       chart: {
          renderTo: '" . $conteneur . "',
          zoomType: 'xy'
-         
-        
+
+
       },
 
-    
+
       credits: {
         text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
-        href: 'http://www.ogsteam.fr'
+        href: 'https://www.ogsteam.eu'
     },
-    
+
       title: {
          text: '" . $titre . "'
       },
       subtitle: {
-         text: '" . $sous_titre . "'   
+         text: '" . $sous_titre . "'
       },
       xAxis: {
-         type: 'datetime' 
-        
+         type: 'datetime'
+
       },
       yAxis: {
          title: {
@@ -680,7 +695,7 @@ $(document).ready(function() {
          },
        " . $zoom_yAxis . "
       },
-      
+
       tooltip: {
          formatter: function() {
                return '<b>'+ this.series.name +'</b><br/>'+
@@ -692,12 +707,12 @@ $(document).ready(function() {
       " . $serie . "
       ]
    });
-   
-   
+
+
 });";
 
     // insertion du theme par defaut
-    if ($theme == true) {
+    if ($theme) {
         $retour .= graph_theme();
     }
 
@@ -706,4 +721,3 @@ $(document).ready(function() {
 
     return $retour;
 }
-

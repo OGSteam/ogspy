@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Panneau administration des options Helpers
  */
@@ -11,7 +12,7 @@ $thelper = get_Helpers();
 
 <table align="center">
     <tr>
-        <td class="c" colspan="3" ><?php echo $lang['ADMIN_HELPER_HERE'] ; ?></td>
+        <td class="c" colspan="3"><?php echo $lang['ADMIN_HELPER_HERE']; ?></td>
     </tr>
 
 

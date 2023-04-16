@@ -4,7 +4,7 @@
  * @package OGSpy
  * @subpackage i18n
  * @author DarkNoon
- * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2016, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.0
  */
@@ -98,6 +98,8 @@ $lang['HOME_EMPIRE_WEAPONS_SMALLSHIELD'] = "Petit bouclier";
 $lang['HOME_EMPIRE_WEAPONS_LARGESHIELD'] = "Grand bouclier";
 $lang['HOME_EMPIRE_WEAPONS_ANTI'] = "Missile Interception";
 $lang['HOME_EMPIRE_WEAPONS_INTER'] = "Missile Interplanétaire";
+$lang['HOME_EMPIRE_POINTS_TITLE'] = "Points";
+$lang['HOME_EMPIRE_FLEET_TITLE'] = "Flottes";
 
 /* home_simulation.php */
 
@@ -107,10 +109,10 @@ $lang['HOME_SIMU_FIELDS'] = "Cases";
 $lang['HOME_SIMU_MINTEMP'] = "Température Min.";
 $lang['HOME_SIMU_MAXTEMP'] = "Température Max.";
 $lang['HOME_SIMU_EXTENSION'] = "Extension";
-$lang['HOME_SIMU_TECH_ENERGY'] = "Technologie Énergie";
-$lang['HOME_SIMU_TECH_PLASMA'] = "Technologie Plasma";
-$lang['HOME_SIMU_OFF_INGE'] = "Officier ingénieur";
-$lang['HOME_SIMU_OFF_GEO'] = "Officier géologue";
+$lang['HOME_SIMU_TECH_ENERGY'] = "Techno Énergie";
+$lang['HOME_SIMU_TECH_PLASMA'] = "Techno Plasma";
+$lang['HOME_SIMU_OFF_INGE'] = "Ingénieur";
+$lang['HOME_SIMU_OFF_GEO'] = "Géologue";
 $lang['HOME_SIMU_OFF_FULL'] = "Full officier";
 $lang['HOME_SIMU_CLASS_COLLECT'] = "Collecteur";
 $lang['HOME_SIMU_SOLARPLANT_SHORT'] = "CES";
@@ -127,6 +129,7 @@ $lang['HOME_SIMU_PRODUCTION'] = "Production";
 $lang['HOME_SIMU_BOOSTERMETAL'] = "Booster Métal";
 $lang['HOME_SIMU_BOOSTERCRYSTAL'] = "Booster Cristal";
 $lang['HOME_SIMU_BOOSTERDEUT'] = "Booster Deutérium";
+$lang['HOME_SIMU_BOOSTERNRJ'] = "Booster d'énergie";
 $lang['HOME_SIMU_LEVEL'] = "Niveau";
 $lang['HOME_SIMU_PRODUCTION'] = "Production";
 $lang['HOME_SIMU_POINTSBYPLANET'] = "Poids en points de chaque planète";

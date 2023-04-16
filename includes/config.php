@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Fichier de configuration communes
  * @package OGSpy
  * @subpackage Main
  * @author Kyser
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04b ( $Rev: 7388 $ )
  */
@@ -14,10 +15,8 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 setlocale(LC_CTYPE, 'fr_FR.UTF-8');
+date_default_timezone_set("Europe/Paris");
 
-if (version_compare(PHP_VERSION, "5.1.0RC1") >= 0) {
-    date_default_timezone_set("Europe/Paris");
-}
 
 // Définitions des noms des tables de la BDD
 if (!defined("INSTALL_IN_PROGRESS")) {
@@ -27,12 +26,13 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     define("TABLE_SESSIONS", $table_prefix . "sessions");
     define("TABLE_STATISTIC", $table_prefix . "statistics");
     define("TABLE_USER", $table_prefix . "user");
-    define("TABLE_USER_TOKEN", $table_prefix. "user_tokens");
+    define("TABLE_USER_TOKEN", $table_prefix . "user_tokens");
     define("TABLE_USER_FAVORITE", $table_prefix . "user_favorite");
     define("TABLE_USER_GROUP", $table_prefix . "user_group");
 
     define("TABLE_MOD", $table_prefix . "mod");
     define("TABLE_MOD_CFG", $table_prefix . "mod_config");
+    define("TABLE_MOD_USER_CFG", $table_prefix . "mod_user_config");
 
     // Tables Player
     define("TABLE_UNIVERSE", $table_prefix . "universe");
@@ -87,7 +87,7 @@ if (!defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS") && !defin
 $path_log_today = PATH_LOG . date("ymd") . "/";
 if (!is_dir($path_log_today)) {
     mkdir($path_log_today);
-    chmod($path_log_today, 0777);
+    chmod($path_log_today, 0640);
     fclose(fopen("$path_log_today/index.htm", "a"));
 }
 define("PATH_LOG_TODAY", PATH_LOG . date("ymd") . "/");

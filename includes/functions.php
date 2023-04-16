@@ -1,10 +1,11 @@
 <?php
+
 /**
  * OGSpy Global functions
  * @package OGSpy
  * @subpackage Common
  * @author Kyser
- * @copyright Copyright &copy; 2012, http://www.ogsteam.fr/
+ * @copyright Copyright &copy; 2012, http://www.ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.1.1 ($Rev: 7752 $)
  */
@@ -96,7 +97,7 @@ function remove_dir_from_ogspy($folder)
     $dir_iterator = new RecursiveDirectoryIterator($folder);
     $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::CHILD_FIRST);
 
-    // On supprime chaque dossier et chaque fichier	du dossier cible
+    // On supprime chaque dossier et chaque fichier du dossier cible
     foreach ($iterator as $fichier) {
         $fichier->isDir() ? rmdir($fichier) : unlink($fichier);
     }
@@ -113,17 +114,16 @@ function remove_dir_from_ogspy($folder)
  */
 function encode_ip($ip)
 {
-    $d = explode('.', $ip);
-    if (count($d) == 4) {
-        return sprintf('%02x%02x%02x%02x', $d[0], $d[1], $d[2], $d[3]);
+    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        $bin_ip = inet_pton($ip);
+    } elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        $bin_ip = inet_pton('[' . $ip . ']');
+    } else {
+        throw new Exception('Adresse IP invalide');
     }
+    $hex_ip = bin2hex($bin_ip);
 
-    $d = explode(':', preg_replace('/(^:)|(:$)/', '', $ip));
-    $res = '';
-    foreach ($d as $x) {
-        $res .= sprintf('%0' . ($x == '' ? (9 - count($d)) * 4 : 4) . 's', $x);
-    }
-    return $res;
+    return $hex_ip;
 }
 
 /**
@@ -131,35 +131,294 @@ function encode_ip($ip)
  * @param string $int_ip IP encoded
  * @return string $ip format xxx.xxx.xxx.xxx in IPv4 and xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx in IPv6
  */
-function decode_ip($int_ip)
+function decode_ip($hex_ip)
 {
-    if (strlen($int_ip) == 32) {
-        $int_ip = substr(chunk_split($int_ip, 4, ':'), 0, 39);
-        $int_ip = ':' . implode(':', array_map("hexhex", explode(':', $int_ip))) . ':';
-        preg_match_all("/(:0)+/", $int_ip, $zeros);
-        if (count($zeros[0]) > 0) {
-            $match = '';
-            foreach ($zeros[0] as $zero) {
-                if (strlen($zero) > strlen($match)) {
-                    $match = $zero;
-                }
-            }
-            $int_ip = preg_replace('/' . $match . '/', ':', $int_ip, 1);
-        }
-        return preg_replace('/(^:([^:]))|(([^:]):$)/', '$2$4', $int_ip);
-    }
-    $hexipbang = explode('.', chunk_split($int_ip, 2, '.'));
-    return hexdec($hexipbang[0]) . '.' . hexdec($hexipbang[1]) . '.' . hexdec($hexipbang[2]) . '.' . hexdec($hexipbang[3]);
+    $bin_ip = hex2bin($hex_ip);
+    $ip = inet_ntop($bin_ip);
+    return $ip;
 }
 
 /**
- * Converts a hex value to another hew value (depnding of the current php version on the server)
- * @param string $value The initial hexvalue
- * @return string the new hew value
+ *  @brief Get the RGB color (red, green, blue) of the desired color.
+ *
+ *  @param[in] $Colorname The wanted color ('all' to retrieve all RGB HTML color code name)
+ *  @return array('red,'green','blue') 0 as default ('black'), all=array of name with RGB
  */
-function hexhex($value)
+function color_getColor($Colorname = 'all')
 {
-    return dechex(hexdec($value));
+    $Colorname = strtolower($Colorname);
+    $Colors  =  array(
+        //  Colors  as  they  are  defined  in  HTML  3.2
+        'black' => array('red' => 0x00, 'green' => 0x00, 'blue' => 0x00),
+        'maroon' => array('red' => 0x80, 'green' => 0x00, 'blue' => 0x00),
+        'green' => array('red' => 0x00, 'green' => 0x80, 'blue' => 0x00),
+        'olive' => array('red' => 0x80, 'green' => 0x80, 'blue' => 0x00),
+        'navy' => array('red' => 0x00, 'green' => 0x00, 'blue' => 0x80),
+        'purple' => array('red' => 0x80, 'green' => 0x00, 'blue' => 0x80),
+        'teal' => array('red' => 0x00, 'green' => 0x80, 'blue' => 0x80),
+        'gray' => array('red' => 0x80, 'green' => 0x80, 'blue' => 0x80),
+        'silver' => array('red' => 0xC0, 'green' => 0xC0, 'blue' => 0xC0),
+        'red' => array('red' => 0xFF, 'green' => 0x00, 'blue' => 0x00),
+        'lime' => array('red' => 0x00, 'green' => 0xFF, 'blue' => 0x00),
+        'yellow' => array('red' => 0xFF, 'green' => 0xFF, 'blue' => 0x00),
+        'blue' => array('red' => 0x00, 'green' => 0x00, 'blue' => 0xFF),
+        'fuchsia' => array('red' => 0xFF, 'green' => 0x00, 'blue' => 0xFF),
+        'aqua' => array('red' => 0x00, 'green' => 0xFF, 'blue' => 0xFF),
+        'white' => array('red' => 0xFF, 'green' => 0xFF, 'blue' => 0xFF),
+        'magenta' => array('red' => 0xFF, 'green' => 0x00, 'blue' => 0xFF),
+        //  Additional  colors  as  they  are  used  by  Netscape  and  IE
+        'aliceblue' => array('red' => 0xF0, 'green' => 0xF8, 'blue' => 0xFF),
+        'antiquewhite' => array('red' => 0xFA, 'green' => 0xEB, 'blue' => 0xD7),
+        'aquamarine' => array('red' => 0x7F, 'green' => 0xFF, 'blue' => 0xD4),
+        'azure' => array('red' => 0xF0, 'green' => 0xFF, 'blue' => 0xFF),
+        'beige' => array('red' => 0xF5, 'green' => 0xF5, 'blue' => 0xDC),
+        'blueviolet' => array('red' => 0x8A, 'green' => 0x2B, 'blue' => 0xE2),
+        'brown' => array('red' => 0xA5, 'green' => 0x2A, 'blue' => 0x2A),
+        'burlywood' => array('red' => 0xDE, 'green' => 0xB8, 'blue' => 0x87),
+        'cadetblue' => array('red' => 0x5F, 'green' => 0x9E, 'blue' => 0xA0),
+        'chartreuse' => array('red' => 0x7F, 'green' => 0xFF, 'blue' => 0x00),
+        'chocolate' => array('red' => 0xD2, 'green' => 0x69, 'blue' => 0x1E),
+        'coral' => array('red' => 0xFF, 'green' => 0x7F, 'blue' => 0x50),
+        'cornflowerblue' => array('red' => 0x64, 'green' => 0x95, 'blue' => 0xED),
+        'cornsilk' => array('red' => 0xFF, 'green' => 0xF8, 'blue' => 0xDC),
+        'crimson' => array('red' => 0xDC, 'green' => 0x14, 'blue' => 0x3C),
+        'darkblue' => array('red' => 0x00, 'green' => 0x00, 'blue' => 0x8B),
+        'darkcyan' => array('red' => 0x00, 'green' => 0x8B, 'blue' => 0x8B),
+        'darkgoldenrod' => array('red' => 0xB8, 'green' => 0x86, 'blue' => 0x0B),
+        'darkgray' => array('red' => 0xA9, 'green' => 0xA9, 'blue' => 0xA9),
+        'darkgreen' => array('red' => 0x00, 'green' => 0x64, 'blue' => 0x00),
+        'darkkhaki' => array('red' => 0xBD, 'green' => 0xB7, 'blue' => 0x6B),
+        'darkmagenta' => array('red' => 0x8B, 'green' => 0x00, 'blue' => 0x8B),
+        'darkolivegreen' => array('red' => 0x55, 'green' => 0x6B, 'blue' => 0x2F),
+        'darkorange' => array('red' => 0xFF, 'green' => 0x8C, 'blue' => 0x00),
+        'darkorchid' => array('red' => 0x99, 'green' => 0x32, 'blue' => 0xCC),
+        'darkred' => array('red' => 0x8B, 'green' => 0x00, 'blue' => 0x00),
+        'darksalmon' => array('red' => 0xE9, 'green' => 0x96, 'blue' => 0x7A),
+        'darkseagreen' => array('red' => 0x8F, 'green' => 0xBC, 'blue' => 0x8F),
+        'darkslateblue' => array('red' => 0x48, 'green' => 0x3D, 'blue' => 0x8B),
+        'darkslategray' => array('red' => 0x2F, 'green' => 0x4F, 'blue' => 0x4F),
+        'darkturquoise' => array('red' => 0x00, 'green' => 0xCE, 'blue' => 0xD1),
+        'darkviolet' => array('red' => 0x94, 'green' => 0x00, 'blue' => 0xD3),
+        'deeppink' => array('red' => 0xFF, 'green' => 0x14, 'blue' => 0x93),
+        'deepskyblue' => array('red' => 0x00, 'green' => 0xBF, 'blue' => 0xFF),
+        'dimgray' => array('red' => 0x69, 'green' => 0x69, 'blue' => 0x69),
+        'dodgerblue' => array('red' => 0x1E, 'green' => 0x90, 'blue' => 0xFF),
+        'firebrick' => array('red' => 0xB2, 'green' => 0x22, 'blue' => 0x22),
+        'floralwhite' => array('red' => 0xFF, 'green' => 0xFA, 'blue' => 0xF0),
+        'forestgreen' => array('red' => 0x22, 'green' => 0x8B, 'blue' => 0x22),
+        'gainsboro' => array('red' => 0xDC, 'green' => 0xDC, 'blue' => 0xDC),
+        'ghostwhite' => array('red' => 0xF8, 'green' => 0xF8, 'blue' => 0xFF),
+        'gold' => array('red' => 0xFF, 'green' => 0xD7, 'blue' => 0x00),
+        'goldenrod' => array('red' => 0xDA, 'green' => 0xA5, 'blue' => 0x20),
+        'greenyellow' => array('red' => 0xAD, 'green' => 0xFF, 'blue' => 0x2F),
+        'honeydew' => array('red' => 0xF0, 'green' => 0xFF, 'blue' => 0xF0),
+        'hotpink' => array('red' => 0xFF, 'green' => 0x69, 'blue' => 0xB4),
+        'indianred' => array('red' => 0xCD, 'green' => 0x5C, 'blue' => 0x5C),
+        'indigo' => array('red' => 0x4B, 'green' => 0x00, 'blue' => 0x82),
+        'ivory' => array('red' => 0xFF, 'green' => 0xFF, 'blue' => 0xF0),
+        'khaki' => array('red' => 0xF0, 'green' => 0xE6, 'blue' => 0x8C),
+        'lavender' => array('red' => 0xE6, 'green' => 0xE6, 'blue' => 0xFA),
+        'lavenderblush' => array('red' => 0xFF, 'green' => 0xF0, 'blue' => 0xF5),
+        'lawngreen' => array('red' => 0x7C, 'green' => 0xFC, 'blue' => 0x00),
+        'lemonchiffon' => array('red' => 0xFF, 'green' => 0xFA, 'blue' => 0xCD),
+        'lightblue' => array('red' => 0xAD, 'green' => 0xD8, 'blue' => 0xE6),
+        'lightcoral' => array('red' => 0xF0, 'green' => 0x80, 'blue' => 0x80),
+        'lightcyan' => array('red' => 0xE0, 'green' => 0xFF, 'blue' => 0xFF),
+        'lightgoldenrodyellow' => array('red' => 0xFA, 'green' => 0xFA, 'blue' => 0xD2),
+        'lightgreen' => array('red' => 0x90, 'green' => 0xEE, 'blue' => 0x90),
+        'lightgrey' => array('red' => 0xD3, 'green' => 0xD3, 'blue' => 0xD3),
+        'lightpink' => array('red' => 0xFF, 'green' => 0xB6, 'blue' => 0xC1),
+        'lightsalmon' => array('red' => 0xFF, 'green' => 0xA0, 'blue' => 0x7A),
+        'lightseagreen' => array('red' => 0x20, 'green' => 0xB2, 'blue' => 0xAA),
+        'lightskyblue' => array('red' => 0x87, 'green' => 0xCE, 'blue' => 0xFA),
+        'lightslategray' => array('red' => 0x77, 'green' => 0x88, 'blue' => 0x99),
+        'lightsteelblue' => array('red' => 0xB0, 'green' => 0xC4, 'blue' => 0xDE),
+        'lightyellow' => array('red' => 0xFF, 'green' => 0xFF, 'blue' => 0xE0),
+        'limegreen' => array('red' => 0x32, 'green' => 0xCD, 'blue' => 0x32),
+        'linen' => array('red' => 0xFA, 'green' => 0xF0, 'blue' => 0xE6),
+        'mediumaquamarine' => array('red' => 0x66, 'green' => 0xCD, 'blue' => 0xAA),
+        'mediumblue' => array('red' => 0x00, 'green' => 0x00, 'blue' => 0xCD),
+        'mediumorchid' => array('red' => 0xBA, 'green' => 0x55, 'blue' => 0xD3),
+        'mediumpurple' => array('red' => 0x93, 'green' => 0x70, 'blue' => 0xD0),
+        'mediumseagreen' => array('red' => 0x3C, 'green' => 0xB3, 'blue' => 0x71),
+        'mediumslateblue' => array('red' => 0x7B, 'green' => 0x68, 'blue' => 0xEE),
+        'mediumspringgreen' => array('red' => 0x00, 'green' => 0xFA, 'blue' => 0x9A),
+        'mediumturquoise' => array('red' => 0x48, 'green' => 0xD1, 'blue' => 0xCC),
+        'mediumvioletred' => array('red' => 0xC7, 'green' => 0x15, 'blue' => 0x85),
+        'midnightblue' => array('red' => 0x19, 'green' => 0x19, 'blue' => 0x70),
+        'mintcream' => array('red' => 0xF5, 'green' => 0xFF, 'blue' => 0xFA),
+        'mistyrose' => array('red' => 0xFF, 'green' => 0xE4, 'blue' => 0xE1),
+        'moccasin' => array('red' => 0xFF, 'green' => 0xE4, 'blue' => 0xB5),
+        'navajowhite' => array('red' => 0xFF, 'green' => 0xDE, 'blue' => 0xAD),
+        'oldlace' => array('red' => 0xFD, 'green' => 0xF5, 'blue' => 0xE6),
+        'olivedrab' => array('red' => 0x6B, 'green' => 0x8E, 'blue' => 0x23),
+        'orange' => array('red' => 0xFF, 'green' => 0xA5, 'blue' => 0x00),
+        'orangered' => array('red' => 0xFF, 'green' => 0x45, 'blue' => 0x00),
+        'orchid' => array('red' => 0xDA, 'green' => 0x70, 'blue' => 0xD6),
+        'palegoldenrod' => array('red' => 0xEE, 'green' => 0xE8, 'blue' => 0xAA),
+        'palegreen' => array('red' => 0x98, 'green' => 0xFB, 'blue' => 0x98),
+        'paleturquoise' => array('red' => 0xAF, 'green' => 0xEE, 'blue' => 0xEE),
+        'palevioletred' => array('red' => 0xDB, 'green' => 0x70, 'blue' => 0x93),
+        'papayawhip' => array('red' => 0xFF, 'green' => 0xEF, 'blue' => 0xD5),
+        'peachpuff' => array('red' => 0xFF, 'green' => 0xDA, 'blue' => 0xB9),
+        'peru' => array('red' => 0xCD, 'green' => 0x85, 'blue' => 0x3F),
+        'pink' => array('red' => 0xFF, 'green' => 0xC0, 'blue' => 0xCB),
+        'plum' => array('red' => 0xDD, 'green' => 0xA0, 'blue' => 0xDD),
+        'powderblue' => array('red' => 0xB0, 'green' => 0xE0, 'blue' => 0xE6),
+        'rosybrown' => array('red' => 0xBC, 'green' => 0x8F, 'blue' => 0x8F),
+        'royalblue' => array('red' => 0x41, 'green' => 0x69, 'blue' => 0xE1),
+        'saddlebrown' => array('red' => 0x8B, 'green' => 0x45, 'blue' => 0x13),
+        'salmon' => array('red' => 0xFA, 'green' => 0x80, 'blue' => 0x72),
+        'sandybrown' => array('red' => 0xF4, 'green' => 0xA4, 'blue' => 0x60),
+        'seagreen' => array('red' => 0x2E, 'green' => 0x8B, 'blue' => 0x57),
+        'seashell' => array('red' => 0xFF, 'green' => 0xF5, 'blue' => 0xEE),
+        'sienna' => array('red' => 0xA0, 'green' => 0x52, 'blue' => 0x2D),
+        'skyblue' => array('red' => 0x87, 'green' => 0xCE, 'blue' => 0xEB),
+        'slateblue' => array('red' => 0x6A, 'green' => 0x5A, 'blue' => 0xCD),
+        'slategray' => array('red' => 0x70, 'green' => 0x80, 'blue' => 0x90),
+        'snow' => array('red' => 0xFF, 'green' => 0xFA, 'blue' => 0xFA),
+        'springgreen' => array('red' => 0x00, 'green' => 0xFF, 'blue' => 0x7F),
+        'steelblue' => array('red' => 0x46, 'green' => 0x82, 'blue' => 0xB4),
+        'tan' => array('red' => 0xD2, 'green' => 0xB4, 'blue' => 0x8C),
+        'thistle' => array('red' => 0xD8, 'green' => 0xBF, 'blue' => 0xD8),
+        'tomato' => array('red' => 0xFF, 'green' => 0x63, 'blue' => 0x47),
+        'turquoise' => array('red' => 0x40, 'green' => 0xE0, 'blue' => 0xD0),
+        'violet' => array('red' => 0xEE, 'green' => 0x82, 'blue' => 0xEE),
+        'wheat' => array('red' => 0xF5, 'green' => 0xDE, 'blue' => 0xB3),
+        'whitesmoke' => array('red' => 0xF5, 'green' => 0xF5, 'blue' => 0xF5),
+        'yellowgreen' => array('red' => 0x9A, 'green' => 0xCD, 'blue' => 0x32)
+    );
+
+    if ($Colorname === 'all') {
+        return $Colors;
+    }
+    if (!isset($Colors[$Colorname])) {
+        return false;
+    }
+    return $Colors[$Colorname];
+}
+/**
+ *  @brief Get color name or 'hex'.
+ *
+ *  @param[in] string|int $couleur_id An hexa value (0xffddee) or a string with the exa value ('ffddee')
+ *  @return string code name if exist else #hex ('ffddee')
+ */
+function color_getName($couleur_id)
+{
+    $couleur_str = '';
+    if (is_numeric($couleur_id)) {
+        $couleur_str = dechex($couleur_id);
+    }
+    if (is_string($couleur_id)) {
+        $couleur_id  = str_replace('#', '', $couleur_id);
+        $couleur_str = $couleur_id;
+    }
+    $result = $couleur_str;
+    $colors = color_getColor();
+    $rgb    = color_hex_to_rgb($couleur_str);
+    foreach ($colors as $color => $color_rgb) {
+        if ($color_rgb['red'] == $rgb['red'] && $color_rgb['green'] == $rgb['green'] && $color_rgb['blue'] == $rgb['blue']) {
+            $result = $color;
+            break;
+        }
+    }
+    return $result;
+}
+/**
+ *  @brief Convert hexadecimal color to rgb color.
+ *
+ *  @param[in] string|int $couleur_id An hexa value (0xffddee) or a string with the exa value ('ffddee')
+ *  @return array('red,'green','blue')
+ */
+function color_hex_to_rgb($couleur_id)
+{
+    $couleur_str = '';
+    if (is_numeric($couleur_id)) {
+        $couleur_str = sprintf('%06x', $couleur_id);
+    }
+    if (is_string($couleur_id)) {
+        $couleur_str = $couleur_id;
+        if (!ctype_xdigit($couleur_id)) {
+            $couleur_str = '';
+        }
+    }
+    $rouge = substr($couleur_str, 0, 2);
+    $vert  = substr($couleur_str, 2, 2);
+    $bleu  = substr($couleur_str, 4, 2);
+    $tab_rgb = array(
+        'red'   => hexdec($rouge),
+        'green' => hexdec($vert),
+        'blue'  => hexdec($bleu)
+    );
+    return $tab_rgb;
+}
+/**
+ *  @brief Convert rgb color to hexadecimal color.
+ *
+ *  @param[in] int $r,$g, $b The RGB value
+ *  @return string hexadecimal color value in string
+ */
+function color_rgb_to_hex($r, $g, $b)
+{
+    $rouge = sprintf('%02x', $r);
+    $vert  = sprintf('%02x', $g);
+    $bleu  = sprintf('%02x', $b);
+
+    return strtoupper($rouge . $vert . $bleu);
+}
+
+/**
+ *  @brief Return valid HTML value for an input color.
+ *
+ *  @param[in] string|int $color    The color (name 'red' or '#ffddee' or value 'ffddee' or 0xffddee)
+ *  @return array('name','value') value=HTML valid color input value ('#xxx'), 0 as default (black)
+ */
+function color_convert_to_html_input($color)
+{
+    $color_name = $color;
+    $color_rgb  = color_getColor($color);
+    if ($color_rgb === false) {
+        if (is_string($color)) {
+            $color = str_replace('#', '', $color);
+        }
+        $color_rgb = color_hex_to_rgb($color);
+    }
+    $hex_string = color_rgb_to_hex($color_rgb['red'], $color_rgb['green'], $color_rgb['blue']);
+    $color_name = color_getName($hex_string);
+    return array('name' => $color_name, 'value' => '#' . $hex_string);
+}
+
+/**
+ *  @brief Construct HTML double input for color, one for text and one for HTML5 color picker and link these with the JS.
+ *
+ *  @param[in] string     $label        HTML id of the input
+ *  @param[in] string|int $value        Color value (string 'red'/'#ff0000', int 0xffddee)
+ *  @param[in] array      $html_arg1     HTML attributes for text box (default = array('size'=>15, 'maxlength'=>20))
+ *  @param[in] array      $html_arg2     HTML attributes for color box (default = $html_arg1)
+ *  @return string HTML content with 2 inputs linked for color text+HTML5 color
+ */
+function color_html_create_double_input($label, $value, $html_arg1 = array('size' => 15, 'maxlength' => 20), $html_arg2 = null)
+{
+    if ($html_arg2 === null) {
+        $html_arg2 = $html_arg1;
+    }
+    $color = color_convert_to_html_input($value);
+    $id = 'colorname_' . $label;
+    $result = '<input name="' . $id . '" id="' . $id . '" type="text" ';
+    foreach ($html_arg1 as $key => $elem) {
+        $result .= $key . '="' . $elem . '" ';
+    }
+    $result .= 'value="' . $color['name'] . '" onchange="ogspy_colorDoubleChange(\'' . $id . '\');">' . "\n";
+
+    $result .= '<input name="' . $label . '" id="' . $label . '" type="color" ';
+    foreach ($html_arg2 as $key => $elem) {
+        if ($key !== 'maxlength') {
+            $result .= $key . '="' . $elem . '" ';
+        }
+    }
+    $result .= 'value="' . $color['value'] . '" onchange="ogspy_colorDoubleChange(\'' . $label . '\');">' . "\n";
+
+    return $result;
 }
 
 /**
@@ -169,7 +428,7 @@ function hexhex($value)
 function password_generator()
 {
     $string = "abBDEFcdefghijkmnPQRSTUVWXYpqrst23456789";
-    srand((double)microtime() * 1000000);
+    srand((float)microtime() * 1000000);
     $password = '';
     for ($i = 0; $i < 6; $i++) {
         $password .= $string[rand() % strlen($string)];
@@ -184,7 +443,7 @@ function password_generator()
  */
 function init_mod_cache()
 {
-    global $cache_mod, $server_config;
+    global $cache_mod, $server_config;      //$cache_mod nécessaire, définie dans cache/cache_mod.php !!
 
     // Load cached config
     $filename = 'cache/cache_mod.php';
@@ -195,15 +454,12 @@ function init_mod_cache()
         if ((filemtime($filename) + $server_config['mod_cache']) < time()) {
             generate_mod_cache();
         }
-
     } else {
         generate_mod_cache();
         if (file_exists($filename)) {
             include $filename; // on reinjecte le fichier s'il existe'
         }
-
     }
-
 }
 
 /**
@@ -224,15 +480,12 @@ function init_serverconfig()
         if ((filemtime($filename) + $server_config['config_cache']) < time()) {
             generate_config_cache();
         }
-
     } else {
         generate_config_cache();
         if (file_exists($filename)) {
             include $filename; // on reinjecte le fichier s'il existe'
         }
-
     }
-
 }
 
 /**
@@ -242,18 +495,25 @@ function set_server_view()
 {
     global $user_data;
     global $pub_enable_portee_missil, $pub_enable_members_view, $pub_enable_stat_view,
-           $pub_galaxy_by_line_stat, $pub_system_by_line_stat, $pub_galaxy_by_line_ally, $pub_system_by_line_ally,
-           $pub_nb_colonnes_ally, $pub_color_ally, $pub_enable_register_view, $pub_register_alliance,
-           $pub_register_forum, $pub_open_user, $pub_open_admin;
+        $pub_galaxy_by_line_stat, $pub_system_by_line_stat, $pub_galaxy_by_line_ally, $pub_system_by_line_ally,
+        $pub_nb_colonnes_ally, $pub_color_ally, $pub_enable_register_view, $pub_register_alliance,
+        $pub_register_forum, $pub_open_user, $pub_open_admin;
 
     //appel de la couche" Model"
     $Config_Model = new Config_Model();
 
 
-    if (!check_var($pub_enable_members_view, "Num") || !check_var($pub_enable_stat_view,
-            "Num") || !check_var($pub_galaxy_by_line_stat, "Num") || !check_var($pub_system_by_line_stat,
-            "Num") || !check_var($pub_galaxy_by_line_ally, "Num") || !check_var($pub_system_by_line_ally,
-            "Num")
+    if (
+        !check_var($pub_enable_members_view, "Num") || !check_var(
+            $pub_enable_stat_view,
+            "Num"
+        ) || !check_var($pub_galaxy_by_line_stat, "Num") || !check_var(
+            $pub_system_by_line_stat,
+            "Num"
+        ) || !check_var($pub_galaxy_by_line_ally, "Num") || !check_var(
+            $pub_system_by_line_ally,
+            "Num"
+        )
     ) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
@@ -261,7 +521,8 @@ function set_server_view()
         redirection("planetindex.php?action=message&id_message=forbidden&info");
     }
 
-    if (!isset($pub_galaxy_by_line_stat) || !isset($pub_system_by_line_stat) || !isset($pub_galaxy_by_line_ally) || !isset($pub_system_by_line_ally)
+    if (
+        !isset($pub_galaxy_by_line_stat) || !isset($pub_system_by_line_stat) || !isset($pub_galaxy_by_line_ally) || !isset($pub_system_by_line_ally)
     ) {
         redirection("index.php?action=message&id_message=setting_server_view_failed&info");
     }
@@ -334,7 +595,7 @@ function set_server_view()
     $Config_Model->update_one($pub_enable_members_view, "enable_members_view");
     $Config_Model->update_one($pub_nb_colonnes_ally, "nb_colonnes_ally");
 
-    $array = $pub_color_ally; //die(var_dump($pub_color_ally));
+    $array = $pub_color_ally; // var_dump('set_server_view :',$pub_color_ally);
     $color_ally = implode("_", $array);
     $Config_Model->update_one($color_ally, "color_ally");
 
@@ -371,12 +632,14 @@ function set_serverconfig()
 {
     global $user_data, $server_config;
     global $pub_max_battlereport, $pub_max_favorites, $pub_max_favorites_spy, $pub_max_spyreport,
-           $pub_server_active, $pub_session_time, $pub_max_keeplog, $pub_debug_log,
-           $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
-           $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
-           $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit, $pub_speed_uni,
-           $pub_ddr, $pub_astro_strict, $pub_config_cache, $pub_mod_cache,
-           $pub_mail_use, $pub_mail_smtp_use, $pub_mail_smtp_secure, $pub_mail_smtp_port, $pub_mail_smtp_host, $pub_mail_smtp_username, $pub_mail_smtp_password, $pub_enable_mail_smtp_password;
+        $pub_server_active, $pub_session_time, $pub_max_keeplog, $pub_debug_log,
+        $pub_reason, $pub_ally_protection, $pub_url_forum, $pub_max_keeprank, $pub_keeprank_criterion,
+        $pub_max_keepspyreport, $pub_servername, $pub_allied, $pub_disable_ip_check, $pub_num_of_galaxies,
+        $pub_num_of_systems, $pub_log_phperror, $pub_block_ratio, $pub_ratio_limit,
+        $pub_speed_uni, $pub_speed_fleet_peaceful, $pub_speed_fleet_war, $pub_speed_fleet_holding,
+        $pub_ddr, $pub_astro_strict, $pub_donutSystem, $pub_donutGalaxy, $pub_config_cache, $pub_mod_cache,
+        $pub_mail_use, $pub_mail_smtp_use, $pub_mail_smtp_secure, $pub_mail_smtp_port, $pub_mail_smtp_host,
+        $pub_mail_smtp_username, $pub_mail_smtp_password, $pub_enable_mail_smtp_password;
 
     //appel de la couche" Model"
     $Config_Model = new Config_Model();
@@ -388,15 +651,30 @@ function set_serverconfig()
         $pub_num_of_systems = intval($server_config['num_of_systems']);
     }
 
-    if (!check_var($pub_max_battlereport, "Num") || !check_var($pub_max_favorites,
-            "Num") || !check_var($pub_max_favorites_spy, "Num") || !check_var($pub_ratio_limit,
-            "Special", "#^[\w\s,\.\-]+$#") || !check_var($pub_max_spyreport, "Num") || !check_var($pub_server_active, "Num") || !check_var($pub_session_time, "Num") ||
-        !check_var($pub_max_keeplog, "Num") || !check_var($pub_debug_log, "Num") || !check_var($pub_block_ratio, "Num") || !check_var(stripslashes($pub_reason), "Text") || !check_var($pub_ally_protection,
-            "Special", "#^[\w\s,\.\-]+$#") || !check_var($pub_url_forum, "URL") || !check_var($pub_max_keeprank, "Num") || !check_var($pub_keeprank_criterion,
-            "Char") || !check_var($pub_max_keepspyreport, "Num") || !check_var(stripslashes($pub_servername), "Text") || !check_var($pub_allied, "Special", "#^[\w\s,\.\-]+$#") ||
-        !check_var($pub_disable_ip_check, "Num") || !check_var($pub_num_of_galaxies,
-            "Galaxies") || !check_var($pub_num_of_systems, "Galaxies") || !check_var($pub_config_cache,
-            "Num") || !check_var($pub_mod_cache, "Num")
+    if (
+        !check_var($pub_max_battlereport, "Num") || !check_var(
+            $pub_max_favorites,
+            "Num"
+        ) || !check_var($pub_max_favorites_spy, "Num") || !check_var(
+            $pub_ratio_limit,
+            "Special",
+            "#^[\w\s,\.\-]+$#"
+        ) || !check_var($pub_max_spyreport, "Num") || !check_var($pub_server_active, "Num") || !check_var($pub_session_time, "Num") ||
+        !check_var($pub_max_keeplog, "Num") || !check_var($pub_debug_log, "Num") || !check_var($pub_block_ratio, "Num") || !check_var(stripslashes($pub_reason), "Text") || !check_var(
+            $pub_ally_protection,
+            "Special",
+            "#^[\w\s,\.\-]+$#"
+        ) || !check_var($pub_url_forum, "URL") || !check_var($pub_max_keeprank, "Num") || !check_var(
+            $pub_keeprank_criterion,
+            "Char"
+        ) || !check_var($pub_max_keepspyreport, "Num") || !check_var(stripslashes($pub_servername), "Text") || !check_var($pub_allied, "Special", "#^[\w\s,\.\-]+$#") ||
+        !check_var($pub_disable_ip_check, "Num") || !check_var(
+            $pub_num_of_galaxies,
+            "Galaxies"
+        ) || !check_var($pub_num_of_systems, "Galaxies") || !check_var(
+            $pub_config_cache,
+            "Num"
+        ) || !check_var($pub_mod_cache, "Num")
     ) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
@@ -404,7 +682,8 @@ function set_serverconfig()
         redirection("planetindex.php?action=message&id_message=forbidden&info");
     }
 
-    if (!isset($pub_max_battlereport) || !isset($pub_max_favorites) || !isset($pub_max_favorites_spy) ||
+    if (
+        !isset($pub_max_battlereport) || !isset($pub_max_favorites) || !isset($pub_max_favorites_spy) ||
         !isset($pub_ratio_limit) || !isset($pub_max_spyreport) || !isset($pub_session_time) ||
         !isset($pub_max_keeplog) || !isset($pub_reason) ||
         !isset($pub_ally_protection) || !isset($pub_url_forum) || !isset($pub_max_keeprank) ||
@@ -423,7 +702,6 @@ function set_serverconfig()
     if (is_null($pub_log_phperror)) {
         $pub_log_phperror = 0;
     }
-
     if (is_null($pub_debug_log)) {
         $pub_debug_log = 0;
     }
@@ -431,17 +709,16 @@ function set_serverconfig()
         $pub_block_ratio = 0;
     }
     if (is_null($pub_mail_use)) {
-        $mail_use = 0;
+        $pub_mail_use = 0;
     }
     if (is_null($pub_mail_smtp_use)) {
-        $mail_smtp_use = 0;
+        $pub_mail_smtp_use = 0;
     }
     if (is_null($pub_mail_smtp_secure)) {
-        $mail_smtp_secure = 0;
+        $pub_mail_smtp_secure = 0;
     }
+
     $break = false;
-
-
     if ($pub_server_active != 0 && $pub_server_active != 1) {
         $break = true;
     }
@@ -557,8 +834,8 @@ function set_serverconfig()
     }
     $Config_Model->update_one($pub_ally_protection, "ally_protection");
 
-    if ($pub_url_forum != "" && !preg_match("#[^http://]|[^https://]#", $pub_url_forum)) {
-        $pub_url_forum = "http://" . $pub_url_forum;
+    if ($pub_url_forum != "" && !preg_match("#[^https://]#", $pub_url_forum)) {
+        $pub_url_forum = "https://" . $pub_url_forum;
     }
     $Config_Model->update_one($pub_url_forum, "url_forum");
 
@@ -597,12 +874,12 @@ function set_serverconfig()
     $Config_Model->update_one($pub_num_of_systems, "num_of_systems");
 
     if (!isset($pub_ddr) || !is_numeric($pub_ddr)) {
-        $pub_ddr = 0;
+        $pub_ddr = 1;
     }
     $Config_Model->update_one($pub_ddr, "ddr");
 
     if (!isset($pub_astro_strict) || !is_numeric($pub_astro_strict)) {
-        $pub_astro_strict = 0;
+        $pub_astro_strict = 1;
     }
     $Config_Model->update_one($pub_astro_strict, "astro_strict");
 
@@ -610,6 +887,23 @@ function set_serverconfig()
         $pub_speed_uni = 1;
     }
     $Config_Model->update_one($pub_speed_uni, "speed_uni");
+
+    foreach (array('speed_fleet_peaceful', 'speed_fleet_war', 'speed_fleet_holding') as $speed) {
+        if (!is_numeric(${'pub_' . $speed}) || ${'pub_' . $speed} < 1) {
+            ${'pub_' . $speed} = 1;
+        }
+        $Config_Model->update_one(${'pub_' . $speed}, $speed);
+    }
+
+    if (!isset($pub_donutSystem) || !is_numeric($pub_donutSystem)) {
+        $pub_donutSystem = 1;
+    }
+    $Config_Model->update_one($pub_donutSystem, "donutSystem");
+
+    if (!isset($pub_donutGalaxy) || !is_numeric($pub_donutGalaxy)) {
+        $pub_donutGalaxy = 1;
+    }
+    $Config_Model->update_one($pub_donutGalaxy, "donutGalaxy");
 
     $Config_Model->update_one($pub_mod_cache, "mod_cache");
     $Config_Model->update_one($pub_config_cache, "config_cache");
@@ -671,8 +965,6 @@ function db_size_info()
  */
 function db_optimize($maintenance_action = false)
 {
-    global $db;
-
     $dbSize_before = db_size_info();
     $dbSize_before = $dbSize_before["Total"];
 
@@ -739,7 +1031,7 @@ function formate_number($number, $decimal = 0)
  */
 function maintenance_action()
 {
-    global $db, $server_config;
+    global $server_config;
 
 
     $time = mktime(0, 0, 0);
@@ -767,7 +1059,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
     }
 
     switch ($type_check) {
-        //Pseudo des membres
+            //Pseudo des membres
         case "Pseudo_Groupname":
             if (!preg_match("/^[\w\s\-]{3,15}$/", $value)) {
                 log_("check_var", array("Pseudo_Groupname", $value));
@@ -775,7 +1067,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-        //Pseudo ingame
+            //Pseudo ingame
         case "Pseudo_ingame": // caracteres autorises entre 3 et 20 + espace ( interdit au 05/11/11 = > &"'()# `/,;+ )
             if (!preg_match("/^[\w@äàçéèêëïîöôûü \^\{\}\[\]\.\*\-_~%§]{3,20}$/", $value)) {
                 log_("check_var", array("Text", $value));
@@ -783,14 +1075,17 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-        //Mot de passe des membres
-        case "Password":
-            if (!preg_match("/^[\w\s\-]{6,64}$/", $value)) {
+            //Mot de passe des membres
+        case "Password": //Tout caractère sauf ; ' et ".
+            // if (!preg_match("/^[\w\s\-]{6,64}$/", $value)) {
+            // return false;
+            // }
+            if (!preg_match("/^[^;'\"]{6,64}$/", $value)) { //Protection encore supplémentaire (même si sql_escape_string fait)
                 return false;
             }
             break;
 
-        //Chaîne de caractères avec espace
+            //Chaîne de caractères avec espace
         case "Text":
             if (!preg_match("/^[\w'äàçéèêëïîöôûü\s\.\*\-]+$/", $value)) {
                 log_("check_var", array("Text", $value));
@@ -798,7 +1093,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-        //Chaîne de caractères et  chiffre
+            //Chaîne de caractères et  chiffre
         case "CharNum":
             if (!preg_match("/^[\w\.\*\-\#]+$/", $value)) {
                 log_("check_var", array("CharNum", $value));
@@ -806,7 +1101,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-        //Caractères
+            //Caractères
         case "Char":
             if (!preg_match("/^[[:alpha:]_\.\*\-]+$/", $value)) {
                 log_("check_var", array("Char", $value));
@@ -814,14 +1109,14 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-        //Chiffres
+            //Chiffres
         case "Num":
             if (!preg_match("/^[[:digit:]]+$/", $value)) {
                 log_("check_var", array("Num", $value));
                 return false;
             }
             break;
-        //Email
+            //Email
         case "Email":
             if (!preg_match('/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}$/', $value)) {
                 log_("check_var", array("Email", $value));
@@ -829,7 +1124,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-        //Galaxies
+            //Galaxies
         case "Galaxies":
             if ($value < 1 || $value > 999) {
                 log_("check_var", array("Galaxy or system", $value));
@@ -837,33 +1132,34 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             }
             break;
 
-        //Adresse internet
+            //Adresse internet
         case "URL":
-            if (!preg_match("/^(((https|http):\/\/)?(?(2)(www\.)?|(www\.){1})?[-a-z0-9~_]{2,}(\.[-a-z0-9~._]{2,})?[-a-z0-9~_\/&\?=.]{2,})$/i",
-                $value)
-            ) {
+            if (!preg_match(
+                "/^(((https|http):\/\/)?(?(2)(www\.)?|(www\.){1})?[-a-z0-9~_]{2,}(\.[-a-z0-9~._]{2,})?[-a-z0-9~_\/&\?=.]{2,})$/i",
+                $value
+            )) {
                 log_("check_var", array("URL", $value));
                 return false;
             }
             break;
 
-        //Planète, Joueur et alliance
+            //Planète, Joueur et alliance
         case "Galaxy":
-            //		if (!preg_match("#^[\w\s\.\*\-]+$#", $value)) {
-            //			log_("check_var", array("Galaxy", $value));
-            //			return false;
-            //		}
+            //      if (!preg_match("#^[\w\s\.\*\-]+$#", $value)) {
+            //          log_("check_var", array("Galaxy", $value));
+            //          return false;
+            //      }
             break;
 
-        //Rapport d'espionnage
+            //Rapport d'espionnage
         case "Spyreport":
-            //		if (!preg_match("#^[\w\s\[\]\:\-'%\.\*]+$#", $value)) {
-            //			log_("check_var", array("Spyreport", $value));
-            //			return false;
-            //		}
+            //      if (!preg_match("#^[\w\s\[\]\:\-'%\.\*]+$#", $value)) {
+            //          log_("check_var", array("Spyreport", $value));
+            //          return false;
+            //      }
             break;
 
-        //Masque paramétrable
+            //Masque paramétrable
         case "Special":
             if (!preg_match($mask, $value)) {
                 log_("check_var", array("Special", $value));
@@ -884,9 +1180,10 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
  */
 function admin_raz_ratio($maintenance_action = false)
 {
-    global $db, $user_data;
+    global $user_data;
 
-    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
+    if (
+        $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
         1
     ) {
         die("Acces interdit");
@@ -920,11 +1217,19 @@ function benchmark()
 function check_getvalue($secvalue)
 {
     if (!is_array($secvalue)) {
-        if ((preg_match("/<[^>]*script*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*object*\"?[^>]*>/i",
-                $secvalue)) || (preg_match("/<[^>]*iframe*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*applet*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*meta*\"?[^>]*>/i",
-                $secvalue)) || (preg_match("/<[^>]*style*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*form*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*img*\"?[^>]*>/i",
-                $secvalue)) || (preg_match("/\([^>]*\"?[^)]*\)/i", $secvalue)) || (preg_match("/\"/i",
-                $secvalue))
+        if ((preg_match("/<[^>]*script*\"?[^>]*>/i", $secvalue)) || (preg_match(
+                "/<[^>]*object*\"?[^>]*>/i",
+                $secvalue
+            )) || (preg_match("/<[^>]*iframe*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*applet*\"?[^>]*>/i", $secvalue)) || (preg_match(
+                "/<[^>]*meta*\"?[^>]*>/i",
+                $secvalue
+            )) || (preg_match("/<[^>]*style*\"?[^>]*>/i", $secvalue)) || (preg_match("/<[^>]*form*\"?[^>]*>/i", $secvalue)) || (preg_match(
+                "/<[^>]*img*\"?[^>]*>/i",
+                $secvalue
+            )) || (preg_match("/\([^>]*\"?[^)]*\)/i", $secvalue)) || (preg_match(
+                "/\"/i",
+                $secvalue
+            ))
         ) {
             return false;
         }
@@ -946,8 +1251,10 @@ function check_getvalue($secvalue)
 function check_postvalue($secvalue)
 {
     if (!is_array($secvalue)) {
-        if ((preg_match("/<[^>]*script*\"?[^>]*>/", $secvalue)) || (preg_match("/<[^>]*style*\"?[^>]*>/",
-                $secvalue))
+        if ((preg_match("/<[^>]*script*\"?[^>]*>/", $secvalue)) || (preg_match(
+                "/<[^>]*style*\"?[^>]*>/",
+                $secvalue
+            ))
         ) {
             return false;
         }
@@ -980,7 +1287,7 @@ function generate_key()
 {
     //création de la clef
     $str = "abcdefghijklmnopqrstuvwxyzABCDEVGHIJKLMOPQRSTUVWXYZ";
-    srand((double)microtime() * 1000000);
+    srand((float)microtime() * 1000000);
     $pass = time();
     for ($i = 0; $i < 20; $i++) {
         $pass .= $str[rand() % strlen($str)];
@@ -992,8 +1299,8 @@ function generate_key()
 
     $key_php[] = '<?php';
     $key_php[] = '/***************************************************************************';
-    $key_php[] = '*	filename	: key.php';
-    $key_php[] = '*	generated	: ' . date("d/M/Y H:i:s");
+    $key_php[] = '* filename    : key.php';
+    $key_php[] = '* generated   : ' . date("d/M/Y H:i:s");
     $key_php[] = '***************************************************************************/';
     $key_php[] = '';
     $key_php[] = 'if (!defined("IN_SPYOGAME")) die("Hacking attempt");';
@@ -1008,45 +1315,6 @@ function generate_key()
     if (!write_file("./parameters/key.php", "w", $key_php)) {
         die("Echec , impossible de générer le fichier 'parameters/key.php'");
     }
-
-}
-
-/**
- * Calcule la distance entre a et b, a - b ; en tenant en compte des univers arrondis.
- * type = Représente le type de distance à calculer
- *      0 : Galaxie
- *      1 : Système
- *      2 : Planète
- * typeArrondi = true pour un univers arrondi selon le type donnée
- * @param $a
- * @param $b
- * @param $type
- * @param bool $typeArrondi
- * @return number
- */
-function calc_distance($a, $b, $type, $typeArrondi = true)
-{//a-b
-    global $server_config;
-
-    $max_type = 0;
-
-    switch ($type) {
-        case 0: //Galaxy
-            $max_type = $server_config['num_of_galaxies']; //9
-            break;
-        case 1: //System
-            $max_type = $server_config['num_of_systems']; //499
-            break;
-    }
-    if ($typeArrondi) {
-        if (abs($a - $b) < $max_type / 2) {
-            return abs($a - $b); //|a-b|
-        } else {
-            return abs(abs($a - $b) - $max_type); //||a-b| - base|
-        }
-    } else {
-        return abs($a - $b); //|a-b|
-    }
 }
 
 /********************************************************************************/
@@ -1056,23 +1324,21 @@ function calc_distance($a, $b, $type, $typeArrondi = true)
  * @return array|null
  */
 /* Description :
-  "m:0:0_c:0:0_d:0:0_p:0_m:0" =>booster_m;booster_c;booster_d;extension_p;extension_moon
-  booster_x    => ressource:%:date_de_fin  (ressource= m|c|d)
+  "m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0" =>booster_m;booster_c;booster_d;booster_e;extension_p;extension_moon
+  booster_x    => ressource:%:date_de_fin  (ressource= m|c|d|e)
   extension_x  => type:+" (type= p|m)
-  "m:0:0_c:0:0_d:0:0_p:0_m:0" = string de stockage par défaut
+  "m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0" = string de stockage par défaut
 */
 /*##Base de donnée  ##*/
 /* Lit les informations des objets Ogame dans la BDD et les transformes en un tableau
  * @arg id_player id du joueur
  * @arg id_planet id de la planète à rechercher
  * @return tableau associatif des boosters ou NULL en cas d'échec
- * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
+ * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date', 'extention_p', 'extention_m')
  *
- *  * TODo A verifier, est elle utilisée ???????
 */
 function booster_lire_bdd($id_player, $id_planet)
 {
-    global $db;
     $result = NULL;
     $User_Building_Model = new User_Building_Model();
     $tBoosters = $User_Building_Model->get_all_booster_player($id_player);
@@ -1096,7 +1362,6 @@ function booster_lire_bdd($id_player, $id_planet)
  * @param $tab_booster
  * @return bool|mixed|\mysqli_result
  *
- * TODo A verifier, est elle utilisée ???????
  */
 function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster)
 {
@@ -1105,7 +1370,6 @@ function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster)
 }
 
 /* Mets à jour les boosters de tous les users en fonction de la date de fin dans la BDD
-* TODo A verifier, est elle utilisée ???????
 */
 function booster_maj_bdd()
 {
@@ -1137,11 +1401,11 @@ function booster_maj_bdd()
 /**
  * Contrôle la date de validité des boosters et reset si la date est dépassée
  * @param $boosters tableau infos des boosters (donnée par les fonctions booster_lire_bdd() ou booster_decode())
- * @return tableau associatif des boosters mis à jour array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'extention_p', 'extention_m')
+ * @return tableau associatif des boosters mis à jour array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date', 'extention_p', 'extention_m')
  */
 function booster_verify($boosters)
 {
-    $b_control = array('booster_m_', 'booster_c_', 'booster_d_');
+    $b_control = array('booster_m_', 'booster_c_', 'booster_d_', 'booster_e_');
     $current_time = time();
 
     foreach ($b_control as $b) {
@@ -1157,7 +1421,7 @@ function booster_verify($boosters)
  * Contrôle la date de validité des boosters et reset si la date est dépassée
  * @param $str     string de stockage des boosters (donnée par les fonctions booster_encode() ou booster_encodev() ou directement from BDD)
  * @return tableau associatif des boosters mis à jour
- * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'extention_p', 'extention_m')
+ * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date', 'extention_p', 'extention_m')
  */
 function booster_verify_str($str)
 {
@@ -1173,39 +1437,103 @@ function booster_verify_str($str)
  *      'string'     donne un tableau asso de string uuid=>'x:valeur:0'|'x:valeur'
  *      'full'       donne les tableaux simple : définition, uuid, string, array)
  *      'separateur' donne le char qui sert de séparateur entre les objets Ogame
- *      'default_str' donne la string de stockage par défaut : "m:0:0_c:0:0_d:0:0_p:0_m:0"
+ *      'default_str' donne la string de stockage par défaut : "m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0"
  * @return  le tableau correspondant au type
  */
 function booster_objets_tab($type = '')
 {
-    $objet_str = array('Booster de métal en or', 'Booster de métal en argent', 'Booster de métal en bronze',
-        'Booster de cristal en or', 'Booster de cristal en argent', 'Booster de cristal en bronze',
-        'Booster de deutérium en or', 'Booster de deutérium en argent', 'Booster de deutérium en bronze',
-        'Extension planétaire en or', 'Extension planétaire en argent', 'Extension planétaire en bronze',
-        'Extension lunaire en or', 'Extension lunaire en argent', 'Extension lunaire en bronze');
-    $objet_uuid = array('05294270032e5dc968672425ab5611998c409166', //'Booster de métal +30%'
-        'ba85cc2b8a5d986bbfba6954e2164ef71af95d4a', //'Booster de métal +20%'
-        'de922af379061263a56d7204d1c395cefcfb7d75', //'Booster de métal +10%'
-        '118d34e685b5d1472267696d1010a393a59aed03', //'Booster de cristal +30%'
-        '422db99aac4ec594d483d8ef7faadc5d40d6f7d3', //'Booster de cristal +20%'
-        '3c9f85221807b8d593fa5276cdf7af9913c4a35d', //'Booster de cristal +10%'
-        '5560a1580a0330e8aadf05cb5bfe6bc3200406e2', //'Booster de deutérium +30%'
-        'e4b78acddfa6fd0234bcb814b676271898b0dbb3', //'Booster de deutérium +20%'
-        'd9fa5f359e80ff4f4c97545d07c66dbadab1d1be', //'Booster de deutérium +10%'
+    $objet_str = array(
+        'Booster de métal en platine', 'Booster de métal en or', 'Booster de métal en argent', 'Booster de métal en bronze',
+        'Booster de cristal en platine', 'Booster de cristal en or', 'Booster de cristal en argent', 'Booster de cristal en bronze',
+        'Booster de deutérium en platine', 'Booster de deutérium en or', 'Booster de deutérium en argent', 'Booster de deutérium en bronze',
+        'Boosteurs d`énergie en platine', 'Boosteurs d`énergie en or', 'Boosteurs d`énergie en argent', 'Boosteurs d`énergie en bronze',
+        'Extension planétaire en platine', 'Extension planétaire en or', 'Extension planétaire en argent', 'Extension planétaire en bronze',
+        'Extension lunaire en platine', 'Extension lunaire en or', 'Extension lunaire en argent', 'Extension lunaire en bronze'
+    );
+    $objet_uuid = array(
+        'a83cfdc15b8dba27c82962d57e50d8101d263cfb', //'Booster de métal +40% 1s'
+        '05294270032e5dc968672425ab5611998c409166', //'Booster de métal +30% 1s'
+        'ba85cc2b8a5d986bbfba6954e2164ef71af95d4a', //'Booster de métal +20% 1s'
+        'de922af379061263a56d7204d1c395cefcfb7d75', //'Booster de métal +10% 1s'
+        '35d96e441c21ef112a84c618934d9d0f026998fd', //'Booster de cristal +40% 1s'
+        '118d34e685b5d1472267696d1010a393a59aed03', //'Booster de cristal +30% 1s'
+        '422db99aac4ec594d483d8ef7faadc5d40d6f7d3', //'Booster de cristal +20% 1s'
+        '3c9f85221807b8d593fa5276cdf7af9913c4a35d', //'Booster de cristal +10% 1s'
+        '4b51d903560edd102467b110586000bd64fdb954', //'Booster de deutérium +40% 1s'
+        '5560a1580a0330e8aadf05cb5bfe6bc3200406e2', //'Booster de deutérium +30% 1s'
+        'e4b78acddfa6fd0234bcb814b676271898b0dbb3', //'Booster de deutérium +20% 1s'
+        'd9fa5f359e80ff4f4c97545d07c66dbadab1d1be', //'Booster de deutérium +10% 1s'
+        '77c36199102e074dca46f5f26ef57ce824d044dd', //'Booster d'énergie +80% 1s'
+        '55b52cbfb148ec80cd4e5b0580f7bed01149d643', //'Booster d'énergie +60% 1s'
+        'c2bad58fcec374d709099d11d0549e59ea7e233e', //'Booster d'énergie +40% 1s'
+        '3f6f381dc9b92822406731a942c028adf8dc978f', //'Booster d'énergie +20% 1s'
+        'f3d9b82e10f2e969209c1a5ad7d22181c703bb36', //'Extension planétaire +20'
         '04e58444d6d0beb57b3e998edc34c60f8318825a', //'Extension planétaire +15'
         '0e41524dc46225dca21c9119f2fb735fd7ea5cb3', //'Extension planétaire +9'
         '16768164989dffd819a373613b5e1a52e226a5b0', //'Extension planétaire +4'
+        '8a426241572b2fea57844acd99bc326fe40e35cf', //'Extension lunaire +8'
         '05ee9654bd11a261f1ff0e5d0e49121b5e7e4401', //'Extension lunaire +6'
         'c21ff33ba8f0a7eadb6b7d1135763366f0c4b8bf', //'Extension lunaire +4'
-        'be67e009a5894f19bbf3b0c9d9b072d49040a2cc'); //'Extension lunaire +2'
-    $objet_uuid_str = array('m:30:0', 'm:20:0', 'm:10:0', 'c:30:0', 'c:20:0', 'c:10:0', 'd:30:0', 'd:20:0', 'd:10:0', 'p:15', 'p:9', 'p:4', 'm:6', 'm:4', 'm:2');
-    $objet_uuid_tab = array(array('booster_m', 30), array('booster_m', 20), array('booster_m', 10),
-        array('booster_c', 30), array('booster_c', 20), array('booster_c', 10),
-        array('booster_d', 30), array('booster_d', 20), array('booster_d', 10),
-        array('extention_p', 15), array('extention_p', 9), array('extention_p', 4),
-        array('extention_m', 6), array('extention_m', 4), array('extention_m', 2));
+        'be67e009a5894f19bbf3b0c9d9b072d49040a2cc', //'Extension lunaire +2'
+        'c690f492cffe5f9f2952337e8eed307a8a62d6cf', //'Booster de métal +40% 30j'
+        '6fecb993169fe918d9c63cd37a2e541cc067664e', //'Booster de métal +30% 30j'
+        '742743b3b0ae1f0b8a1e01921042810b58f12f39', //'Booster de métal +20% 30j'
+        '6bf45fcba8a6a68158273d04a924452eca75cf39', //'Booster de cristal +40% 30j'
+        '36fb611e71d42014f5ebd0aa5a52bc0c81a0c1cb', //'Booster de cristal +30% 30j'
+        '5b69663e3ba09a1fe77cf72c5094e246cfe954d6', //'Booster de cristal +20% 30j'
+        '620f779dbffa1011aded69b091239727910a3d03', //'Booster de deutérium +40% 30j'
+        '300493ddc756869578cb2888a3a1bc0c3c66765f', //'Booster de deutérium +30% 30j'
+        '26416a3cdb94613844b1d3ca78b9057fd6ae9b15', //'Booster de deutérium +20% 30j'
+        'dfe86378f8c3d7f3ee0790ea64603bc44e83ca47', //'Booster d'énergie +80% 30j'
+        '4fa9a2273ee446284d5177fd9d60a22de01e932b', //'Booster d'énergie +60% 30j'
+        'bedd248aaf288c27e9351cfacfa6be03f1dbb898', //'Booster d'énergie +40% 30j'
+        'ca7f903a65467b70411e513b0920d66c417aa3a2', //'Booster de métal +40% 90j'
+        '21c1a65ca6aecf54ffafb94c01d0c60d821b325d', //'Booster de métal +30% 90j'
+        '6f44dcd2bd84875527abba69158b4e976c308bbc', //'Booster de métal +20% 90j'
+        '7c2edf40c5cd54ad11c6439398b83020c0a7a6be', //'Booster de cristal +40% 90j'
+        'd45f00e8b909f5293a83df4f369737ea7d69c684', //'Booster de cristal +30% 90j'
+        '04d8afd5936976e32ce894b765ea8bd168aa07ef', //'Booster de cristal +20% 90j'
+        '831c3ea8d868eb3601536f4d5e768842988a1ba9', //'Booster de deutérium +40% 90j'
+        'dc5896bed3311434224d511fa7ced6fdbe41b4e8', //'Booster de deutérium +30% 90j'
+        '6f0952a919fd2ab9c009e9ccd83c1745f98f758f', //'Booster de deutérium +20% 90j'
+        'c39aa972a971e94b1d9b4d7a8f734b3d8be12534', //'Booster d'énergie +80% 90j'
+        '5ad783dcfce3655ef97b36197425718a0dad6b66', //'Booster d'énergie +60% 90j'
+        'e05aa5b9e3df5be3857b43da8403eafbf5ad3b96', //'Booster d'énergie +40% 90j'
+    );
+    $objet_uuid_str = array('m:40:0', 'm:30:0', 'm:20:0', 'm:10:0', 'c:40:0', 'c:30:0', 'c:20:0', 'c:10:0', 'd:40:0', 'd:30:0', 'd:20:0', 'd:10:0', 'e:80:0', 'e:60:0', 'e:40:0', 'e:20:0', 'p:20', 'p:15', 'p:9', 'p:4', 'm:8', 'm:6', 'm:4', 'm:2');
+    $objet_uuid_tab = array(
+        array('booster_m', 40), array('booster_m', 30), array('booster_m', 20), array('booster_m', 10),
+        array('booster_c', 40), array('booster_c', 30), array('booster_c', 20), array('booster_c', 10),
+        array('booster_d', 40), array('booster_d', 30), array('booster_d', 20), array('booster_d', 10),
+        array('booster_e', 80), array('booster_e', 60), array('booster_e', 40), array('booster_e', 20),
+        array('extention_p', 20), array('extention_p', 15), array('extention_p', 9), array('extention_p', 4),
+        array('extention_m', 8), array('extention_m', 6), array('extention_m', 4), array('extention_m', 2)
+    );
     $separateur = '_';
-    $default_str = array('m:0:0', 'c:0:0', 'd:0:0', 'p:0', 'm:0');
+    $default_str = array('m:0:0', 'c:0:0', 'd:0:0', 'e:0:0', 'p:0', 'm:0');
+
+    //Protection débordement tableau, pour éviter les oublis sur la listes des boosters
+    $n = count($objet_str);
+    $ni = count($objet_uuid);
+    $nb_type_booster = 4; //Type de booster x4 (métal, cristal, deutérium, énergie)
+    $nb_booster_temps = 3; //Nombre de booster à temps (7j, 30j, 90j)
+    if ($ni != $n + $nb_type_booster * 3 * ($nb_booster_temps - 1)) { //Erreur de codage, protection débordement tableau
+        throw new Exception("Erreur interne : mauvais inventaire des boosters (uid=$ni, n=$n, add=" . ($n + $nb_type_booster * 3) . ")");
+    }
+    //Préparation des mêmes valeurs pour les boosters à différent temps.
+    for ($i = 0; $i < $nb_booster_temps - 1; $i++) {   //Par booster à temps supplémentaire x2 (30j, 90j)
+        for ($j = 0; $j < $nb_type_booster; $j++) {  //Par type de booster x3 (métal, cristal, deutérium)
+            for ($k = 0; $k < 3; $k++) {             //Par nouveau % du booster x3 (+40%, +30%, +20%)
+                // echo "$ni, $n, $k, $j, " . ($n + $j*3 + $k + $i*$nb_type_booster*3) . " ,$objet_str[$k]\n";
+                $objet_str[$n + $k + $j * 3 + $i * $nb_type_booster * 3] = $objet_str[$k + $j * 4];
+                $objet_uuid_str[$n + $k + $j * 3 + $i * $nb_type_booster * 3] = $objet_uuid_str[$k + $j * 4];
+                $objet_uuid_tab[$n + $k + $j * 3 + $i * $nb_type_booster * 3] = $objet_uuid_tab[$k + $j * 4];
+            }
+        }
+    }
+    if ($ni != count($objet_uuid)) { //Erreur de codage, remplissage des tableaux
+        throw new Exception("Erreur interne : mauvais inventaire des boosters, remplissage (uid=$ni, n=" . count($objet_uuid) . ")");
+    }
 
     switch ($type) {
         case 'definition':
@@ -1286,7 +1614,6 @@ function booster_lire_date($str)
 
     if (preg_match("/(\d+)s.(\d+)j.(\d+)h/", $str, $matches)) {
         $time = ($matches[1] * 604800 + $matches[2] * 86400 + $matches[3] * 3600);
-
     } elseif (preg_match("/(\d+)j.(\d+)h/", $str, $matches)) {
 
         $time = ($matches[1] * 86400 + $matches[2] * 3600);
@@ -1305,27 +1632,45 @@ function booster_lire_date($str)
  */
 function booster_decode($str = NULL, $boosters = NULL)
 {
-    if ($str) {
-        $s = booster_objets_tab('separateur');
-
-        if (preg_match("/m:(\\d+):(\\d+)" . $s . "c:(\\d+):(\\d+)" . $s . "d:(\\d+):(\\d+)" . $s . "p:(\\d+)" . $s . "m:(\\d+)/", $str, $boosters) === 1) {
-            $i = 1;
-            return array('booster_m_val' => intval($boosters[$i++]), 'booster_m_date' => intval($boosters[$i++]),
-                'booster_c_val' => intval($boosters[$i++]), 'booster_c_date' => intval($boosters[$i++]),
-                'booster_d_val' => intval($boosters[$i++]), 'booster_d_date' => intval($boosters[$i++]),
-                'extention_p' => intval($boosters[$i++]), 'extention_m' => intval($boosters[$i++]));
-        }
-    }
-    return array('booster_m_val' => 0, 'booster_m_date' => 0,
+    $result = array(
+        'booster_m_val' => 0, 'booster_m_date' => 0,
         'booster_c_val' => 0, 'booster_c_date' => 0,
         'booster_d_val' => 0, 'booster_d_date' => 0,
-        'extention_p' => 0, 'extention_m' => 0);
+        'booster_e_val' => 0, 'booster_e_date' => 0,
+        'extention_p' => 0, 'extention_m' => 0
+    );
+    $tab_boos = array('m', 'c', 'd', 'e');
+    $tab_ex = array('p', 'm');
+
+    if ($str) {
+        $s = booster_objets_tab('separateur');
+        $str_split = explode($s, $str);
+        foreach ($str_split as $objet) {
+            $i = 0;
+            foreach ($tab_boos as $booster) {
+                if (preg_match("/$booster:(\\d+):(\\d+)/", $objet, $boosters) === 1) {
+                    $i = 1;
+                    $result['booster_' . $booster . '_val'] = intval($boosters[$i++]);
+                    $result['booster_' . $booster . '_date'] = intval($boosters[$i]);
+                }
+            }
+            if ($i === 0) {
+                foreach ($tab_ex as $booster) {
+                    if (preg_match("/$booster:(\\d+)$/", $objet, $boosters) === 1) {
+                        $i = 1;
+                        $result['extention_' . $booster] = intval($boosters[$i]);
+                    }
+                }
+            }
+        }
+    }
+    return $result;
 }
 
 /**
  * Transforme le tableau des informations des objets Ogame en une string de stockage.
- * @b tableau associatif des infos array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
- * @return objet sous format string de stockage ("m:0:0_c:0:0_d:0:0_p:0_m:0 si pas d'argument)
+ * @b tableau associatif des infos array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date','extention_p', 'extention_m')
+ * @return objet sous format string de stockage ("m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0 si pas d'argument)
  */
 function booster_encode($b = NULL)
 {
@@ -1335,27 +1680,38 @@ function booster_encode($b = NULL)
         $str .= 'm:' . $b['booster_m_val'] . ':' . $b['booster_m_date'] . $separateur;
         $str .= 'c:' . $b['booster_c_val'] . ':' . $b['booster_c_date'] . $separateur;
         $str .= 'd:' . $b['booster_d_val'] . ':' . $b['booster_d_date'] . $separateur;
+        $str .= 'e:' . $b['booster_e_val'] . ':' . $b['booster_e_date'] . $separateur;
         $str .= 'p:' . $b['extention_p'] . $separateur;
         $str .= 'm:' . $b['extention_m'];
     } else {
-        $str = booster_objets_tab('default_str'); //"m:0:0_c:0:0_d:0:0_p:0_m:0";
+        $str = booster_objets_tab('default_str'); //"m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0";
     }
     return $str;
 }
 
 /**
  * Transforme les valeurs des objets Ogame en une string de stockage.
- * string de stockage par défaut = m:0:0_c:0:0_d:0:0_p:0_m:0
- * @return string sous format string de stockage ("m:0:0_c:0:0_d:0:0_p:0_m:0" si pas d'argument)
+ * string de stockage par défaut = m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0
+ * @return string sous format string de stockage ("m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0" si pas d'argument)
  */
-function booster_encodev($booster_m_val = 0, $booster_m_date = 0, $booster_c_val = 0, $booster_c_date = 0,
-                         $booster_d_val = 0, $booster_d_date = 0, $extention_p = 0, $extention_m = 0)
-{
+function booster_encodev(
+    $booster_m_val = 0,
+    $booster_m_date = 0,
+    $booster_c_val = 0,
+    $booster_c_date = 0,
+    $booster_d_val = 0,
+    $booster_d_date = 0,
+    $booster_e_val = 0,
+    $booster_e_date = 0,
+    $extention_p = 0,
+    $extention_m = 0
+) {
     $separateur = booster_objets_tab('separateur');
     $str = '';
     $str .= 'm:' . $booster_m_val . ':' . $booster_m_date . $separateur;
     $str .= 'c:' . $booster_c_val . ':' . $booster_c_date . $separateur;
     $str .= 'd:' . $booster_d_val . ':' . $booster_d_date . $separateur;
+    $str .= 'e:' . $booster_e_val . ':' . $booster_e_date . $separateur;
     $str .= 'p:' . $extention_p . $separateur;
     $str .= 'm:' . $extention_m;
     return $str;
@@ -1384,4 +1740,3 @@ function get_Helpers()
     }
     return $tHelpers;
 }
-

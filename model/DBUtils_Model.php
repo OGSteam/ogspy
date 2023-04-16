@@ -1,4 +1,5 @@
 <?php
+
 namespace Ogsteam\Ogspy\Model;
 
 use Ogsteam\Ogspy\Abstracts\Model_Abstract;
@@ -30,7 +31,7 @@ class DBUtils_Model extends Model_Abstract
             }
         }
 
-        return array("dbSizeServer"=>$dbSizeServer, "dbSizeTotal"=>$dbSizeTotal);
+        return array("dbSizeServer" => $dbSizeServer, "dbSizeTotal" => $dbSizeTotal);
     }
 
     /**
@@ -45,6 +46,4 @@ class DBUtils_Model extends Model_Abstract
             $this->db->sql_query($request);
         }
     }
-
-
 }

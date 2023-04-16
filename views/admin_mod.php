@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Panneau administration des options Modules
  * @package OGSpy
@@ -6,7 +7,7 @@
  * @subpackage views
  * @author Aeris
  * @created 07/04/2007
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
@@ -22,19 +23,19 @@ $mod_list = mod_list();
     </tr>
 
     <tr>
-        <td class="c" colspan="6" width="550"><?php echo($lang['ADMIN_MOD_LIST']); ?></td>
+        <td class="c" colspan="6" width="550"><?php echo ($lang['ADMIN_MOD_LIST']); ?></td>
     </tr>
     <tr>
-        <td><?php echo($lang['ADMIN_MOD_USER']); ?></td>
+        <td><?php echo ($lang['ADMIN_MOD_USER']); ?></td>
         <td colspan="4"></td>
-        <th><?php echo($lang['ADMIN_MOD_MENUVIEW']); ?></th>
+        <th><?php echo ($lang['ADMIN_MOD_MENUVIEW']); ?></th>
     </tr>
     <?php
     $mods = $mod_list["actived"];
     while ($mod = current($mods)) {
         if ($mod["admin_only"] == 0) {
             echo "\t" . "<tr>";
-            echo "<th width='200'>" . $mod["title"] . " (" . $mod["version"] . ")</th>";
+            echo "<th width='200'>(" . $mod['position'] . ') ' . $mod["title"] . " (" . $mod["version"] . ")</th>";
             echo "<th width='50'><a href='index.php?action=mod_up&amp;mod_id=" . $mod['id'] . "'><img src='images/asc.png' title='Monter'></a>&nbsp;<a href='index.php?action=mod_down&amp;mod_id=" . $mod['id'] . "'><img src='images/desc.png' title='Descendre'></a></th>";
             echo "<th width='100'><a href='index.php?action=mod_disable&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_DISABLE'] . "</a></th>";
             echo "<th width='100'><a href='index.php?action=mod_uninstall&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_REMOVE'] . "</a></th>";
@@ -46,8 +47,6 @@ $mod_list = mod_list();
             echo "<th width='100'><a href='index.php?action=mod_admin&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_NORMAL'] . "</a></th>";
             echo "</tr>";
             echo "\n";
-
-
         }
         next($mods);
     }
@@ -56,7 +55,7 @@ $mod_list = mod_list();
     while ($mod = current($mods)) {
         if ($mod["admin_only"] == 1) {
             echo "\t" . "<tr>";
-            echo "<th width='200'>" . $mod["title"] . " (" . $mod["version"] . ")</th>";
+            echo "<th width='200'>(" . $mod['position'] . ') ' . $mod["title"] . " (" . $mod["version"] . ")</th>";
             echo "<th width='50'><a href='index.php?action=mod_up&amp;mod_id=" . $mod['id'] . "'><img src='images/asc.png' title='Monter'></a>&nbsp;<a href='index.php?action=mod_down&amp;mod_id=" . $mod['id'] . "'><img src='images/desc.png' title='Descendre'></a></th>";
             echo "<th width='100'><a href='index.php?action=mod_disable&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_DISABLE'] . "</a></th>";
             echo "<th width='100'><a href='index.php?action=mod_uninstall&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_REMOVE'] . "</a></th>";
@@ -68,8 +67,6 @@ $mod_list = mod_list();
             echo "<th width='100'><a href='index.php?action=mod_normal&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_ADMIN'] . "</a></th>";
             echo "</tr>";
             echo "\n";
-
-
         }
         next($mods);
     }
@@ -79,7 +76,7 @@ $mod_list = mod_list();
     </tr>
 
     <tr>
-        <td class="c" colspan="6" width="550"><?php echo($lang['ADMIN_MOD_LIST_INACTIVE']); ?></td>
+        <td class="c" colspan="6" width="550"><?php echo ($lang['ADMIN_MOD_LIST_INACTIVE']); ?></td>
     </tr>
     <?php
     $mods = $mod_list["disabled"];
@@ -105,7 +102,7 @@ $mod_list = mod_list();
     </tr>
 
     <tr>
-        <td class="c" colspan="6" width="550"><?php echo($lang['ADMIN_MOD_NOT_INSTALLED']); ?></td>
+        <td class="c" colspan="6" width="550"><?php echo ($lang['ADMIN_MOD_NOT_INSTALLED']); ?></td>
     </tr>
     <?php
     $mods = $mod_list["install"];
@@ -124,7 +121,7 @@ $mod_list = mod_list();
     </tr>
 
     <tr>
-        <td class="c" colspan="6" width="550"><?php echo($lang['ADMIN_MOD_INVALID']); ?></td>
+        <td class="c" colspan="6" width="550"><?php echo ($lang['ADMIN_MOD_INVALID']); ?></td>
     </tr>
     <?php
     $mods = $mod_list["wrong"];

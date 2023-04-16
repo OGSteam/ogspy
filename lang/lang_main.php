@@ -4,7 +4,7 @@
  * @package OGSpy
  * @subpackage i18n
  * @author DarkNoon
- * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2016, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.0
  */
@@ -24,6 +24,38 @@ function load_lang_file($ui_lang, $filename, $parent_dir = ".") {
     trigger_error($file_path . " does not exist! Please consider helping with the translation!", E_USER_WARNING);
     trigger_error("Loading " . $default_file_path, E_USER_WARNING);
     require_once ($default_file_path);
+}
+
+/**
+ * Encode du texte pour un affichage sans problème en HTML avec prise en compte \n.
+ *
+ * @param string $texte Le texte à sécuriser
+ * @param string $format Le type de format final à encoder [défaut=HTML]
+ * @return string le texte encodé.
+ */
+function lang_print($texte, $format = 'HTML') {
+    $text = '';
+    if ($format === 'HTML') { //Pour HTML
+        $text = htmlspecialchars($texte, ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE, 'UTF-8');
+        // $text = nl2br($text, false);
+        $text = str_replace( array("\r\n", "\r", "\n"), '<br>', $text ); //Afin de retirer les retours à ligne, non supp par nl2br
+    }
+
+    return $text;
+}
+
+/**
+ * @brief Sécurise en formatant correctement les textes de langues.
+ *
+ * @param [in] $s_lang Tableau des textes de langue
+ * @return tableau encodé
+ *
+ */
+function lang_secure($s_lang) {
+    foreach($s_lang as $key => $value){
+        $s_lang[$key] = lang_print($value);
+    }
+    return $s_lang;
 }
 
 global $lang;
@@ -55,4 +87,5 @@ if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
     load_lang_file($ui_lang, "lang_help.php");
 }
 
-
+//TODO: Nettoyer les fichiers de lang avant ! 
+// $lang = lang_secure($lang);

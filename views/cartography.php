@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Panneau d'Administration : Paramètres et affichage des Journaux
  * @package OGSpy
@@ -6,7 +7,7 @@
  * @subpackage views
  * @author Kyser
  * @created 15/12/2005
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
@@ -15,8 +16,9 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
+
 $ToolTip_Helper = new ToolTip_Helper();
-$TtlCounter=0;
+$TtlCounter = 0;
 
 $galaxy_step = $server_config['galaxy_by_line_ally'];
 $galaxy_down = 1;
@@ -28,18 +30,16 @@ $color_ally = explode("_", $color_ally_n);
 
 $galaxy_ally_position = galaxy_ally_position($step);
 $position = array_keys($galaxy_ally_position);
-$ally = "";
-for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
-    $ally .= $pub_ally_[$i];
-    $options_[$i] = "<option></option>" . "\n";
 
+for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
+    $options_[$i] = "<option></option>" . "\n";
 }
 
 $ally_list = galaxy_ally_listing();
 foreach ($ally_list as $ally_name) {
     for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
         $selected_[$i] = "";
-        if ($ally_name == $pub_ally_[$i]) {
+        if (isset($pub_ally_[$i]) && ($ally_name == $pub_ally_[$i])) {
             $selected_[$i] = "selected";
         }
         $options_[$i] .= "<option " . $selected_[$i] . ">" . $ally_name . "</option>" . "\n";
@@ -48,7 +48,6 @@ foreach ($ally_list as $ally_name) {
 
 require_once("views/page_header.php");
 ?>
-<script language="JavaScript" src="js/autocomplete.js"></script>
 
 <form method="POST" action="index.php?action=cartography">
     <table>
@@ -66,29 +65,28 @@ require_once("views/page_header.php");
             ?>
         </tr>
         <tr>
-            <td class="c" colspan="<?php echo $nb_colonnes_ally * 2; ?>" align="center"><input type="submit"
-                                                                                               value="<?php echo($lang['CARTO_DISPLAYPOSITIONS']); ?>">
+            <td class="c" colspan="<?php echo $nb_colonnes_ally * 2; ?>" align="center"><input type="submit" value="<?php echo ($lang['CARTO_DISPLAYPOSITIONS']); ?>">
             </td>
         </tr>
     </table>
 </form>
-<br/>
+<br />
 <table border='1'>
     <?php
     do {
         $galaxy_up = $galaxy_down + $galaxy_step;
-        ?>
+    ?>
         <tr>
             <td class="c" width="45">&nbsp;</td>
 
             <?php
             if ($galaxy > intval($server_config['num_of_galaxies'])) {
-                            $galaxy_up = intval($server_config['num_of_galaxies']);
+                $galaxy_up = intval($server_config['num_of_galaxies']);
             }
             for ($i = $galaxy_down; $i < $galaxy_up; $i++) {
                 echo "<td class='c' width='60' colspan=" . $nb_colonnes_ally . ">";
                 if ($i <= intval($server_config['num_of_galaxies'])) {
-                                    echo "G$i";
+                    echo "G$i";
                 }
                 echo "</td>";
             }
@@ -96,7 +94,7 @@ require_once("views/page_header.php");
 
             <td class="c" width="45">&nbsp;</td>
         </tr>
-        <?php
+    <?php
         for ($system = 1; $system <= intval($server_config['num_of_systems']); $system = $system + $step) {
             $up = $system + $step - 1;
             if ($up > intval($server_config['num_of_systems'])) {
@@ -127,15 +125,10 @@ require_once("views/page_header.php");
                             $last_player = $value["player"];
                         }
                         $tooltip[$i] .= "</table>";
-                        if (version_compare(phpversion(), '5.4.0', '>=')) {
-                            $ToolTip_Helper->addTooltip("ttp_cartographie_".$value["player"]."_".$TtlCounter,  htmlentities($tooltip[$i], ENT_COMPAT | ENT_HTML401, "UTF-8")  );
-                            $tooltip[$i] = $ToolTip_Helper->GetHTMLClassContent();
-                            $TtlCounter++;
-                          } else {
-                            $ToolTip_Helper->addTooltip("ttp_cartographie_".$value["player"]."_".$TtlCounter,  htmlentities($tooltip[$i], ENT_COMPAT, "UTF-8")   );
-                            $tooltip[$i] = $ToolTip_Helper->GetHTMLClassContent();
-                            $TtlCounter++;
-                          }
+                        $ToolTip_Helper->addTooltip("ttp_cartographie_" . $value["player"] . "_" . $TtlCounter,  htmlentities($tooltip[$i]));
+                        $tooltip[$i] = $ToolTip_Helper->GetHTMLClassContent();
+                        $TtlCounter++;
+
                         $nb_player[$i] = $galaxy_ally_position[$ally_name][$galaxy][$system]["planet"];
                     }
                     $i++;

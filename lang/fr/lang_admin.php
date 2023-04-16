@@ -4,7 +4,7 @@
  * @package OGSpy
  * @subpackage i18n
  * @author DarkNoon
- * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2016, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.0
  */
@@ -224,8 +224,13 @@ $lang['ADMIN_PARAMS_GAME_SYSTEMS'] = "Nombre de systèmes par galaxies";
 $lang['ADMIN_PARAMS_GAME_SYSTEMS_POPUP'] = "Êtes-vous sûr de vouloir modifier le nombre de systèmes solaires?\nsi vous réduisez ce nombre\nLes membres qui sont définis comme étant dans l'une des galaxies supprimées se verront mis dans la galaxie 1, système 1\n et leurs favoris supprimés";
 $lang['ADMIN_PARAMS_GAME_SPEED'] = "Vitesse de l'univers";
 $lang['ADMIN_PARAMS_GAME_SPEED_POPUP'] = "Êtes-vous sur de vouloir modifier la vitesse du jeu?";
+$lang['ADMIN_PARAMS_GAME_SPEED_FLEET_PEACEFUL'] = "Vitesse des flottes pacifiques";
+$lang['ADMIN_PARAMS_GAME_SPEED_FLEET_WAR'] = "Vitesse des flottes hostiles";
+$lang['ADMIN_PARAMS_GAME_SPEED_FLEET_HOLDING'] = "Vitesse stationnement allié";
 $lang['ADMIN_PARAMS_GAME_DDR'] = "Dépôt de ravitaillement";
 $lang['ADMIN_PARAMS_GAME_ASTRO'] = "Technologie astrophysique stricte";
+$lang['ADMIN_PARAMS_GAME_DONUT_SYSTEM'] = "Univers ayant les système rond";
+$lang['ADMIN_PARAMS_GAME_DONUT_GALAXY'] = "Univers ayant les galaxie rond";
 $lang['ADMIN_PARAMS_CACHE'] = "Options de cache";
 $lang['ADMIN_PARAMS_CACHE_RESET'] = "Régénérer tous les fichiers caches";
 $lang['ADMIN_PARAMS_CACHE_DURATION_CONFIG'] = "Durée de conservation du cache 'config'";

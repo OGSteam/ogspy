@@ -1,30 +1,22 @@
-OGSpy Docker
+# OGSpy Docker
 
 PHP 7.06 Maria DB
 
 Based on work done by tutumcloud
 https://github.com/tutumcloud/lamp
 
-Usage :
+## Usage
 
-- Get the image:
+-   Get the image: `docker pull ogsteam/ogspy`
 
-docker pull ogsteam/ogspy
+-   Run the image: `docker run -d -p80:80 --name ogspy_container ogsteam/ogspy`
 
-- Run the image:
+-   Install OGSpy with Database settings:  
+  Open with your browser http://127.0.0.1 (The page could appear after some time corresponding to the service startup time)
 
-docker run -d -p80:80 --name ogspy_container ogsteam/ogspy
+    >   Database : ogspy  
+    >   user : ogsteam  
+    >   password : password
 
-- Install OGSpy with Database settings:
-
-Open with your browser http://127.0.0.1 (The page could appear after some time corresponding to the service startup time)
-
-Database : ogspy
-user : admin
-Password : ogsteam
-
-- When installation is finished remove install Folder:
-
-docker exec ogspy_container rm -Rf /app/install
-
-
+-   When installation is finished remove install Folder:
+  `docker exec ogspy_container rm -Rf /app/install`

@@ -5,7 +5,7 @@
  * @package OGSpy
  * @subpackage Entity\Universe
  * @author Itori
- * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2016, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.4.0
  */
@@ -32,6 +32,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     private $row_up;
     private $is_moon = false;
     private $is_inactive = false;
+	private $is_spied = false;
     /**
      * Search_Criteria constructor.
      * @param $server_config
@@ -217,9 +218,26 @@ class SearchCriteria_Helper  extends Helper_Abstract
         return $this;
     }
     /**
-     * Indique si les critÃ¨res sont valides
-     * @return bool
+     * @return boolean
      */
+	 
+	 //Binu : ajout de fonctions relatives aux espionnages
+	public function getIsSpied()
+    {
+        return $this->is_spied;
+    }
+    /**
+     * @param boolean $is_spied
+     * @return Search_Criteria
+     */
+	
+	public function setIsSpied($is_spied)
+    {
+        $this->is_spied = $is_spied;
+        return $this;
+    }
+	//Fin
+	 
     public function isValid()
     {
         if ($this->galaxy_up != null || $this->galaxy_down != null) {
@@ -252,6 +270,41 @@ class SearchCriteria_Helper  extends Helper_Abstract
         if (!is_bool($this->is_inactive)) {
             return false;
         }
+		if (!is_bool($this->is_spied)) {
+			return false;
+		}
         return true;
     }
+	
+	//Binu : ajout d'une fonction pour convertir les coordonnées de la table universe en coordonnées de la table spy
+	public function getArrayCoordinates()
+	{
+		if (!empty($this->galaxy_down) && !empty($this->galaxy_up)){
+			$galaxy = array($this->galaxy_down,$this->galaxy_up);
+		}else{
+			$galaxy = array(1,$this->server_config['num_of_galaxies']);
+		}
+		if (!empty($this->system_down) && !empty($this->system_up)){
+			$system = array($this->system_down,$this->system_up);
+		}else{
+			$system = array(1,$this->server_config['num_of_systems']);
+		}
+		if (!empty($this->row_down) && !empty($this->row_up)){
+			$row = array($this->row_down,$this->row_up);
+		}else{
+			$row = array(1,15);
+		}
+		$coordinates = array();
+		$ind = 0;
+		for ($i = $galaxy[0] ; $i<=$galaxy[1] ; $i++){
+			for ($j = $system[0] ; $j<=$system[1] ; $j++){
+				for ($k = $row[0] ; $k<=$row[1] ; $k++){
+					$coordinates[$ind] = $i.":".$j.":".$k;
+					$ind++;
+				}
+			}
+		}
+		return $coordinates;
+	}
+	//Fin
 }

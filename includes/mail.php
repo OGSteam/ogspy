@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Fonctions relatives aux mail  (via PHPMailer)
  *
  * @package OGSpy
  * @subpackage mail
  * @author machine
- * @copyright Copyright &copy; 2007, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
@@ -16,18 +17,11 @@ if (!defined('IN_SPYOGAME')) {
 $folder = "";
 if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
 
-	$folder= "../";
+    $folder = "../";
 }
 
-//-----accès PHPMailer------\\\
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
-
-require_once($folder."includes/PHPMailer/PHPMailer.php");
-require_once($folder."includes/PHPMailer/SMTP.php");
-require_once($folder."includes/PHPMailer/Exception.php");
-//-----fin accès PHPMailer---\\\
 
 /**
  * @param $dest string/array tableau de destinataire
@@ -91,7 +85,6 @@ function sendMail($dest, $subject, $HTMLBody)
             $is_dest = true;
             $mail->addAddress($dest, $dest);
         }
-
     }
     if (!$is_dest) {
         log_("Mail", "Aucun destinataire valide");
@@ -140,7 +133,6 @@ function sendMail($dest, $subject, $HTMLBody)
         mailCounter();
         return true;
     }
-
 }
 
 
@@ -148,29 +140,21 @@ function sendMail($dest, $subject, $HTMLBody)
 function mailCounter()
 {
     global  $server_config;
-    if (!isset($server_config['count_mail']))
-    {
+    if (!isset($server_config['count_mail'])) {
         $server_config['count_mail'] = 0;
     }
-   $total =  $server_config['count_mail'] + 1;
+    $total =  $server_config['count_mail'] + 1;
 
-    (new Config_Model())->update_one($total,"count_mail");
+    (new Config_Model())->update_one($total, "count_mail");
 
     // mise a jour des caches avec les mofids
     generate_config_cache();
-
 }
 
 //passage du mdp en system de fichier (pas de mdp en clair dans variables sessions et BDD
 function setMailSMTPPassword($password)
 {
     $fh = @fopen('parameters/mail.php', 'wb');
-    fwrite($fh, '<?php' . "\n\n" . 'if (!defined("IN_SPYOGAME")) die("Hacking attempt");' . "\n\n" . '$mail_smtp_password ="'.$password.'";' . "\n\n" . '?>');
+    fwrite($fh, '<?php' . "\n\n" . 'if (!defined("IN_SPYOGAME")) die("Hacking attempt");' . "\n\n" . '$mail_smtp_password ="' . $password . '";' . "\n\n" . '?>');
     fclose($fh);
 }
-
-
-
-
-
-

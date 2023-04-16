@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Database Model
  *
  * @package OGSpy
  * @subpackage Model
  * @author Itori
- * @copyright Copyright &copy; 2016, http://ogsteam.fr/
+ * @copyright Copyright &copy; 2016, https://ogsteam.eu/
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.4.0
  */
@@ -39,13 +40,13 @@ class Mod_Model  extends Model_Abstract
             $orderBy = array();
         }
 
-        $query = "SELECT `id`, 
-                             `title`, 
-                             `menu`, 
-                             `action`, 
-                             `root`, 
-                             `link`, 
-                             `version`, 
+        $query = "SELECT `id`,
+                             `title`,
+                             `menu`,
+                             `action`,
+                             `root`,
+                             `link`,
+                             `version`,
                              `position`,
                              `active`,
                              `admin_only`
@@ -59,7 +60,7 @@ class Mod_Model  extends Model_Abstract
                 $query .= " AND ";
             }
 
-            $query .= "`" .$this->db->sql_escape_string($key) . "` = '" .$this->db->sql_escape_string($value) . "'";
+            $query .= "`" . $this->db->sql_escape_string($key) . "` = '" . $this->db->sql_escape_string($value) . "'";
             $i++;
         }
 
@@ -71,16 +72,16 @@ class Mod_Model  extends Model_Abstract
                 $query .= ", ";
             }
 
-            $query .=$this->db->sql_escape_string($key);
+            $query .= $this->db->sql_escape_string($key);
             if ($value == 'DESC') {
                 $query .= ' DESC';
             }
             $i++;
         }
 
-        $result =$this->db->sql_query($query);
+        $result = $this->db->sql_query($query);
         $mods = array();
-        while ($mod =$this->db->sql_fetch_assoc($result)) {
+        while ($mod = $this->db->sql_fetch_assoc($result)) {
             $mods[] = $mod;
         }
 
@@ -95,15 +96,11 @@ class Mod_Model  extends Model_Abstract
      */
     public function find_one_by($filter = array(), $orderBy = array())
     {
-        $tMod = $this->find_by($filter,$orderBy);
-        if (count($tMod)==0)
-        {
+        $tMod = $this->find_by($filter, $orderBy);
+        if (count($tMod) === 0) {
             return NULL;
         }
-        else
-        {
-            return $tMod[0];
-        }
+        return $tMod[0];
     }
 
 
@@ -120,17 +117,17 @@ class Mod_Model  extends Model_Abstract
 
         // On vérifie le nombre de valeur de l'explode
         $query = "INSERT INTO " . TABLE_MOD . " (title, menu, action, root, link, version, position, active,admin_only) VALUES (
-                    '" .$this->db->sql_escape_string($mod['title']) . "',
-                    '" .$this->db->sql_escape_string($mod['menu']) . "',
-                    '" .$this->db->sql_escape_string($mod['action']) . "',
-                    '" .$this->db->sql_escape_string($mod['root']) . "',
-                    '" .$this->db->sql_escape_string($mod['link']) . "',
-                    '" .$this->db->sql_escape_string($mod['version']) . "',
-                    '" .$this->db->sql_escape_string($mod['position']) . "',
-                    '" .$this->db->sql_escape_string($mod['active']) . "',
-                    '" .$this->db->sql_escape_string($mod['admin_only']) . "')";
+                    '" . $this->db->sql_escape_string($mod['title']) . "',
+                    '" . $this->db->sql_escape_string($mod['menu']) . "',
+                    '" . $this->db->sql_escape_string($mod['action']) . "',
+                    '" . $this->db->sql_escape_string($mod['root']) . "',
+                    '" . $this->db->sql_escape_string($mod['link']) . "',
+                    '" . $this->db->sql_escape_string($mod['version']) . "',
+                    '" . $this->db->sql_escape_string($mod['position']) . "',
+                    '" . $this->db->sql_escape_string($mod['active']) . "',
+                    '" . $this->db->sql_escape_string($mod['admin_only']) . "')";
 
-       $this->db->sql_query($query);
+        $this->db->sql_query($query);
     }
 
     /**
@@ -140,8 +137,8 @@ class Mod_Model  extends Model_Abstract
     public function get_position_max()
     {
         $query = "select max(position) from " . TABLE_MOD;
-        $result =$this->db->sql_query($query);
-        list($position) =$this->db->sql_fetch_row($result);
+        $result = $this->db->sql_query($query);
+        list($position) = $this->db->sql_fetch_row($result);
 
         return $position;
     }
@@ -152,9 +149,9 @@ class Mod_Model  extends Model_Abstract
      */
     public function get_mod_id_by_root($root)
     {
-        $root =$this->db->sql_escape_string($root);
+        $root = $this->db->sql_escape_string($root);
 
-        $request = "select id from " . TABLE_MOD . " where root = '".$root."'";
+        $request = "select id from " . TABLE_MOD . " where root = '" . $root . "'";
         $result = $this->db->sql_query($request);
         list($id) = $this->db->sql_fetch_row($result);
 
@@ -168,17 +165,17 @@ class Mod_Model  extends Model_Abstract
     {
 
 
-        $query = "UPDATE " . TABLE_MOD . " SET 
-                    `title` = '" .$this->db->sql_escape_string($mod['title']) . "',
-                    `menu` = '" .$this->db->sql_escape_string($mod['menu']) . "',
-                    `action` = '" .$this->db->sql_escape_string($mod['action']) . "',
-                    `root` = '" .$this->db->sql_escape_string($mod['root']) . "',
-                    `link` = '" .$this->db->sql_escape_string($mod['link']) . "',
-                    `version`= '" .$this->db->sql_escape_string($mod['version']) . "',
-                    `position` = '" .$this->db->sql_escape_string($mod['position']) . "',
-                    `active` = '" .$this->db->sql_escape_string($mod['active']) . "',
-                    `admin_only` = '" .$this->db->sql_escape_string($mod['admin_only']) . "'
-                 WHERE `id` = '" .$this->db->sql_escape_string($mod['id']) . "'";
+        $query = "UPDATE " . TABLE_MOD . " SET
+                    `title` = '" . $this->db->sql_escape_string($mod['title']) . "',
+                    `menu` = '" . $this->db->sql_escape_string($mod['menu']) . "',
+                    `action` = '" . $this->db->sql_escape_string($mod['action']) . "',
+                    `root` = '" . $this->db->sql_escape_string($mod['root']) . "',
+                    `link` = '" . $this->db->sql_escape_string($mod['link']) . "',
+                    `version`= '" . $this->db->sql_escape_string($mod['version']) . "',
+                    `position` = '" . $this->db->sql_escape_string($mod['position']) . "',
+                    `active` = '" . $this->db->sql_escape_string($mod['active']) . "',
+                    `admin_only` = '" . $this->db->sql_escape_string($mod['admin_only']) . "'
+                 WHERE `id` = '" . $this->db->sql_escape_string($mod['id']) . "'";
         $this->db->sql_query($query);
     }
 
@@ -186,12 +183,12 @@ class Mod_Model  extends Model_Abstract
     /**
      * Actualise la position du mod
      */
-    public function update_posisiton($mod_id,$position)
+    public function update_posisiton($mod_id, $position)
     {
-        $mod_id=(int)$mod_id;
-        $position=(int)$position;
+        $mod_id = (int)$mod_id;
+        $position = (int)$position;
 
-        $request = "update " . TABLE_MOD . " set position = " . $position . " where id = '".$mod_id."'";
+        $request = "update " . TABLE_MOD . " set position = " . $position . " where id = '" . $mod_id . "'";
         $this->db->sql_query($request);
     }
 
@@ -202,7 +199,7 @@ class Mod_Model  extends Model_Abstract
      */
     public function delete($mod_id)
     {
-        $mod_id=(int)$mod_id;
+        $mod_id = (int)$mod_id;
 
         $request = "delete from " . TABLE_MOD . " where id = '{$this->db->sql_escape_string($mod_id)}'";
         $this->db->sql_query($request);
@@ -228,27 +225,19 @@ class Mod_Model  extends Model_Abstract
      */
     public function drop_custum_table($table_name)
     {
-        if (is_array($table_name))
-        {
-            foreach ($table_name as $tablename)
-            {
-                $table_name=$this->db->sql_escape_string($tablename);
+        if (is_array($table_name)) {
+            foreach ($table_name as $tablename) {
+                $table_name = $this->db->sql_escape_string($tablename);
 
-                $request ="DROP TABLE IF EXISTS " . $table_name ;
+                $request = "DROP TABLE IF EXISTS " . $table_name;
                 $this->db->sql_query($request);
             }
+        } else {
+            $table_name = $this->db->sql_escape_string($table_name);
 
-        }
-        else
-        {
-            $table_name=$this->db->sql_escape_string($table_name);
-
-            $request ="DROP TABLE IF EXISTS " . $table_name ;
+            $request = "DROP TABLE IF EXISTS " . $table_name;
             $this->db->sql_query($request);
-
         }
-
-
     }
 
 
@@ -257,15 +246,12 @@ class Mod_Model  extends Model_Abstract
     {
         $title = $this->db->sql_escape_string($title);
 
-        $request = "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $title ."'";
+        $request = "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $title . "'";
         $this->db->sql_query($request);
         $number = $this->db->sql_numrows();
-         if ($number > 0)
-         {
-             return True;
-         }
-        Return False;
-
+        if ($number > 0) {
+            return True;
+        }
+        return False;
     }
-
 }
