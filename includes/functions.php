@@ -44,7 +44,7 @@ function redirection($url)
  */
 function write_file($file, $mode, $text)
 {
-    if ($fp = fopen($file, $mode)) {
+    if ($fp = @fopen($file, $mode)) {
         if (is_array($text)) {
             foreach ($text as $t) {
                 fwrite($fp, rtrim($t));

@@ -10,9 +10,6 @@
  * @version 3.04
  */
 
-define("IN_SPYOGAME", true);
-define("UPGRADE_IN_PROGRESS", true);
-
 require_once("../common.php");
 
 if (!isset($pub_verbose)) {
