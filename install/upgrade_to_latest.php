@@ -20,7 +20,7 @@ if (!isset($ogspy_version)) {
     require_once("./version.php");
 }
 
-if ($pub_verbose == true) {
+if ($pub_verbose) {
 ?>
 
     <html lang="fr">
@@ -76,6 +76,9 @@ switch ($ogsversion) {
 
     case '3.3.7':
         // New Table
+        if (!defined('TABLE_MOD_USER_CFG')) {
+            define("TABLE_MOD_USER_CFG", $table_prefix . "mod_user_config");
+        }
         $requests[] = "CREATE TABLE IF NOT EXISTS `" . TABLE_MOD_USER_CFG . "` (
                         `mod`     VARCHAR(50) NOT NULL,
                         `user_id` INT(11) NOT NULL,
@@ -137,7 +140,7 @@ if (count($files) > 0) {
         unlink($filename);
     }
 }
-
+if ($pub_verbose) { //Silent Upgrade
     ?>
     <h3 align='center'><span style="color: yellow; ">Mise à jour du serveur OGSpy vers la version <?php echo $ogspy_version; ?> réussie</span></h3>
     <div style="text-align: center;">
@@ -148,3 +151,6 @@ if (count($files) > 0) {
     </body>
 
     </html>
+<?php
+}
+?>
