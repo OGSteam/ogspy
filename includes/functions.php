@@ -39,26 +39,38 @@ function redirection($url)
  * Write a text or a table in a file
  * @param string $file Filename
  * @param string $mode File Opening Mode
- * @param string $text String or table to write
+ * @param string|Array $content String or table to write
  * @return boolean false if failed
  */
-function write_file($file, $mode, $text)
+function write_file($file, $mode, $content)
 {
-    if ($fp = @fopen($file, $mode)) {
-        if (is_array($text)) {
-            foreach ($text as $t) {
-                fwrite($fp, rtrim($t));
-                fwrite($fp, "\r\n");
-            }
-        } else {
-            fwrite($fp, $text);
-            fwrite($fp, "\r\n");
-        }
-        fclose($fp);
-        return true;
-    } else {
+
+    if (!is_writable($file)) {
         return false;
     }
+
+    // Open the file with the specified mode
+    $file = fopen($file, $mode);
+
+   // Check if the file was successfully opened
+   if ($file === false) {
+    return false;
+    }
+
+    // If the content is an array, join it into a single string with newlines
+    if (is_array($content)) {
+        $content = implode("\n", $content);
+    }
+
+    // Write the content to the file
+    fwrite($file, $content . "\n");
+
+    // Close the file
+    fclose($file);
+
+    // Return true to indicate success
+    return true;
+
 }
 
 /**
@@ -68,23 +80,34 @@ function write_file($file, $mode, $text)
  * @param string $text String or table to write
  * @return boolean false if failed
  */
-function write_file_gz($file, $mode, $text)
+function write_file_gz($file, $mode, $content)
 {
-    if ($fp = gzopen($file . ".gz", $mode)) {
-        if (is_array($text)) {
-            foreach ($text as $t) {
-                gzwrite($fp, rtrim($t));
-                gzwrite($fp, "\r\n");
-            }
-        } else {
-            gzwrite($fp, $text);
-            gzwrite($fp, "\r\n");
-        }
-        gzclose($fp);
-        return true;
-    } else {
+    if (!is_writable($file . ".gz")) {
         return false;
     }
+
+    // Open the file with the specified mode
+    $file = gzopen($file . ".gz", $mode);
+
+   // Check if the file was successfully opened
+   if ($file === false) {
+    return false;
+    }
+
+    // If the content is an array, join it into a single string with newlines
+    if (is_array($content)) {
+        $content = implode("\n", $content);
+    }
+
+    // Write the content to the file
+    gzwrite($file, $content . "\n");
+
+    // Close the file
+    gzclose($file);
+
+    // Return true to indicate success
+    return true;
+
 }
 
 /**
@@ -1311,7 +1334,7 @@ function generate_key()
     $key_php[] = '$serveur_path = "' . $path . '";';
     $key_php[] = '';
     $key_php[] = 'define("OGSPY_KEY", TRUE);';
-    $key_php[] = '?>';
+
     if (!write_file("./parameters/key.php", "w", $key_php)) {
         die("Echec , impossible de générer le fichier 'parameters/key.php'");
     }
