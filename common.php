@@ -66,13 +66,6 @@ foreach ($_POST as $secvalue) {
     }
 }
 
-/* Exception Handler */
-$whoops = new \Whoops\Run;
-$whoops->allowQuit(true);
-$whoops->writeToOutput(true); //Passer à autre
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
-$whoops->register();
-
 //Language File
 if (!isset($ui_lang)) { // Checks the ui_lang value from parameters file
     if (isset($pub_lang)) {
@@ -99,7 +92,6 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     $db = sql_db::getInstance($db_host, $db_user, $db_password, $db_database);
 
     if (!$db->db_connect_id) {
-        $console->error("Impossible de se connecter à la base de données");
         die("Impossible de se connecter à la base de données");
     }
 
@@ -114,5 +106,15 @@ if (!defined("INSTALL_IN_PROGRESS")) {
         session();
         maintenance_action();
     }
+
+    /* Exception Handler */
+    $whoops = new \Whoops\Run;
+    $whoops->allowQuit(true);
+    $whoops->writeToOutput(true); //Passer à autre
+    if (!$server_config['log_phperror']) {
+        $whoops->silenceErrorsInPaths('mod/*', 'E_ALL');
+    }
+    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+    $whoops->register();
 }
 

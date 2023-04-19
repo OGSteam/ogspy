@@ -309,12 +309,6 @@ function ogame_production_building($building, $user_building = null, $user_techn
  */
 function ogame_production_planet($user_building, $user_technology = null, $user_data = null, $server_config = null)
 {
-    /*global $console;
-    $console->log($user_building);
-    $console->log($user_technology);
-    $console->log($user_data);
-    $console->log($server_config);*/
-
     static $DEFAULT_TYPE_RESS = array('M' => 0, 'C' => 0, 'D' => 0, 'NRJ' => 0, 'AM' => 0);
     static $NRJ_BONUS_COL     = 0.1;   //+10% pour COL
     static $NRJ_BONUS_ING     = 0.1;   //+10% pour ingénieur

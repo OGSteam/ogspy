@@ -17,7 +17,7 @@ if (!defined('IN_SPYOGAME')) {
 
 require_once("includes/ogame.php");
 
-global $server_config, $console;
+global $server_config;
 
 $user_empire = user_get_empire($user_data['user_id']);
 
