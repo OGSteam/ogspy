@@ -247,13 +247,13 @@ class sql_db
      * @param int $query_id The Query id.
      * @return an array with the error code and the error message
      */
-    function sql_error()
+    public function sql_error()
     {
         $result["message"] = $this->db_connect_id->connect_error;
         $result["code"] = $this->db_connect_id->connect_errno;
-        echo ("<h3 style='color: #FF0000;text-align: center'>Erreur lors de la requête MySQL</h3>");
-        echo ("<b>- " . $result["message"] . "</b>");
-        echo ($this->last_query);
+        echo "<h3 style='color: #FF0000;text-align: center'>Erreur lors de la requête MySQL</h3>";
+        echo "<b>- " . $result["message"] . "</b>";
+        echo $this->last_query;
         exit();
     }
 
@@ -261,7 +261,7 @@ class sql_db
      * Returns the number of queries done.
      * @return integer number of queries done.
      */
-    function sql_nb_requete()
+    public function sql_nb_requete()
     {
         return $this->nb_requete;
     }
@@ -271,7 +271,7 @@ class sql_db
      * @param string $str The string to escape
      * @return string|false escaped string
      */
-    function sql_escape_string($str)
+    public function sql_escape_string($str)
     {
         if (isset($str)) {
             return mysqli_real_escape_string($this->db_connect_id, $str);
@@ -284,7 +284,7 @@ class sql_db
      * Displays an Error message and exits OGSpy
      * @param string $query Faulty SQL Request
      */
-    function DieSQLError($query)
+    public function DieSQLError($query)
     {
         echo "<table align=center border=1>\n";
         echo "<tr><td class='c' colspan='3'>Database MySQL Error</td></tr>\n";

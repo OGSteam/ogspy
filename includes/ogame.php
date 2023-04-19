@@ -874,7 +874,7 @@ function ratio(
     $prod_SAT = production('SAT', $SAT, $off_ing, $temperature_max, $NRJ, 0, $classe) * $per_SAT;
     $production_E += $prod_CES + $prod_CEF + $prod_SAT;
 
-    if ($booster != NULL) { // si booster
+    if ($booster != null) { // si booster
         $boost_CES = ($booster['booster_e_val'] / 100) * (production('CES', $CES, 0, $temperature_max, $NRJ) * $per_CES);
         $boost_CEF = ($booster['booster_e_val'] / 100) * (production('CEF', $CEF, 0, $temperature_max, $NRJ) * $per_CEF);
         $boost_SAT = ($booster['booster_e_val'] / 100) * (production('SAT', $SAT, 0, $temperature_max, $NRJ) * $per_SAT);
@@ -1015,7 +1015,7 @@ function bilan_production_ratio(
         $prod_FOR = production_foreuse(0, 0, 0, 0, 0, 0, $position, $speed_uni);
     }
 
-    if ($booster != NULL) { // si booster
+    if ($booster != null) { // si booster
         //Bonus position
         $bonus_position_M = 0;
         $bonus_position_C = 0;

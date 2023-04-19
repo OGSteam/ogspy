@@ -1362,7 +1362,7 @@ function generate_key()
 */
 function booster_lire_bdd($id_player, $id_planet)
 {
-    $result = NULL;
+    $result = null;
     $User_Building_Model = new User_Building_Model();
     $tBoosters = $User_Building_Model->get_all_booster_player($id_player);
 
@@ -1605,7 +1605,7 @@ function booster_is_uuid($uuid)
 
 function booster_uuid($boosters, $uuid = '', $date = 0)
 {
-    if ($boosters == NULL || $uuid == '') {
+    if ($boosters == null || $uuid == '') {
         $boosters = booster_decode();
         return $boosters;
     } else {
@@ -1618,12 +1618,12 @@ function booster_uuid($boosters, $uuid = '', $date = 0)
             } elseif ($objet_uuid[$uuid][0][0] == 'e') { //1er lettre de extension
                 $boosters[$objet_uuid[$uuid][0]] = $objet_uuid[$uuid][1];
             } else {
-                return NULL;
+                return null;
             } //Ne devrait jamais arriver si les tableaux dans booster_objets_tab() sont bien construit
             return $boosters;
         }
     }
-    return NULL;
+    return null;
 }
 
 /**
@@ -1653,7 +1653,7 @@ function booster_lire_date($str)
  * @param null $boosters
  * @return  array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
  */
-function booster_decode($str = NULL, $boosters = NULL)
+function booster_decode($str = null, $boosters = null)
 {
     $result = array(
         'booster_m_val' => 0, 'booster_m_date' => 0,
@@ -1695,7 +1695,7 @@ function booster_decode($str = NULL, $boosters = NULL)
  * @b tableau associatif des infos array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date','extention_p', 'extention_m')
  * @return objet sous format string de stockage ("m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0 si pas d'argument)
  */
-function booster_encode($b = NULL)
+function booster_encode($b = null)
 {
     $str = '';
     if ($b) {

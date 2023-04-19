@@ -16,7 +16,7 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 
 class Tokens_Model extends Model_Abstract
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->delete_expired_tokens();

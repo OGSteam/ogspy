@@ -606,7 +606,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
         <th><a><?php echo ($lang['HOME_SIMU_TECHNOLOGIES']); ?></a></th>
         <?php
         for ($i = 101; $i <= $nb_planete + 100; $i++) {
-            if ($user_empire["technology"] != NULL && $user_building[$i]["Lab"] == $lab_max) {
+            if ($user_empire["technology"] != null && $user_building[$i]["Lab"] == $lab_max) {
                 echo "\t" . "<th colspan='2'><span style=\"color:lime;\"><div id='techno_pts'>-</div></span>" . "\n";
                 echo "\t<input type='hidden' id='techno' value='" . implode('<>', $user_empire['technology']) . "' /></th>";
             } else {

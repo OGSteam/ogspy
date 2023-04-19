@@ -48,7 +48,7 @@ function generate_config_cache()
  */
 function generate_mod_cache()
 {
-    $modExport = NULL;
+    $modExport = null;
     // On récupère les mods actifs
     $Mod_Model = new Mod_Model();
     $tMods = $Mod_Model->find_by(array('active' => 1), array('position' => 'ASC', 'title' => 'ASC'));

@@ -98,7 +98,7 @@ class Mod_Model  extends Model_Abstract
     {
         $tMod = $this->find_by($filter, $orderBy);
         if (count($tMod) === 0) {
-            return NULL;
+            return null;
         }
         return $tMod[0];
     }

@@ -1822,7 +1822,7 @@ function UNparseRC($id_RC)
             break;
         case 'A':
             $template .= $lang['GAME_CREPORT_RESULT_WIN'] . ' ';
-            if (isset($nf_gain_M) && isset($nf_gain_M) && isset($nf_gain_M)) {
+            if (isset($nf_gain_M) && isset($nf_gain_C) && isset($nf_gain_D)) {
                 $template .= $nf_gain_M . ' ' . $lang['GAME_CREPORT_RESULT_WIN_1'] . ', ' . $nf_gain_C . ' ' . $lang['GAME_CREPORT_RESULT_WIN_2'] . ' ' . $nf_gain_D .
                     ' ' . $lang['GAME_CREPORT_RESULT_WIN_3'] . '.' . "\n\n";
             }
