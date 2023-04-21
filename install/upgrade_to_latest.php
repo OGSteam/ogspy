@@ -10,6 +10,11 @@
  * @version 3.04
  */
 
+ if (!defined('IN_SPYOGAME')) {
+    define("IN_SPYOGAME", true);
+    define("UPGRADE_IN_PROGRESS", true);
+ }
+
 require_once("../common.php");
 
 if (!isset($pub_verbose)) {
@@ -24,7 +29,6 @@ if ($pub_verbose) {
 ?>
 
     <html lang="fr">
-
     <head>
         <title>Mise à jour OGSpy</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -50,7 +54,6 @@ $result = $db->sql_query($request);
 list($ogsversion) = $db->sql_fetch_row($result);
 
 $requests = array();
-$up_to_date = false;
 switch ($ogsversion) {
     case '3.3.6':
 
@@ -116,17 +119,14 @@ switch ($ogsversion) {
 
         $requests[] = "ALTER TABLE " . TABLE_MOD . " MODIFY `version` VARCHAR(100) NOT NULL";
         $requests[] = "ALTER TABLE " . TABLE_USER_BUILDING . " MODIFY `boosters` VARCHAR(64) NOT NULL DEFAULT 'm:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0'";
-
-
-        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '$ogspy_version' WHERE config_name = 'version'";
-        $up_to_date = true;
         //no break pour faire toutes les mises à jour d'un coup !
 
         break;
     default:
-        die("Aucune mise à jour n'est disponible");
+        echo "Aucune mise à jour de base de données trouvée";
 }
 
+$requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '$ogspy_version' WHERE config_name = 'version'";
 
 foreach ($requests as $request) {
     $db->sql_query($request);

@@ -93,7 +93,7 @@ if (isset($pub_redirection)) {
                         <td>&nbsp;</td>
                     </tr>
                     <?php
-                    if (!(version_compare(PHP_VERSION, "8.1.0") >= 0)) {
+                    if (!(version_compare(PHP_VERSION, "7.4.0") >= 0)) {
                         echo "<tr><td style='c'><span style=\"color: red\">" . $lang['INSTALL_PHPERROR'] . "</span></td></tr>";
                         echo "<tr><td><span style=\"color: blue; \">" . $lang['INSTALL_PHP_ADVISE'];
                         echo "<br><br>" . $lang['INSTALL_PHPVERSION'] . PHP_VERSION;
