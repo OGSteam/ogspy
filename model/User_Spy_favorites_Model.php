@@ -31,7 +31,7 @@ class User_Spy_favorites_Model  extends Model_Abstract
     {
         $user_id = (int)$user_id;
 
-        $request = "SELECT * FROM " . TABLE_USER_SPY . " where `user_id` = $user_id ";
+        $request = "SELECT * FROM " . TABLE_USER_SPY . " WHERE `user_id` = $user_id ";
         $result = $this->db->sql_query($request);
 
         $tResult = array();
@@ -49,7 +49,7 @@ class User_Spy_favorites_Model  extends Model_Abstract
             $request = "SELECT * FROM " . TABLE_USER_SPY . " ";
         } else {
             $user_id = (int)$user_id;
-            $request = "SELECT * FROM " . TABLE_USER_SPY . " where `user_id` = $user_id ";
+            $request = "SELECT * FROM " . TABLE_USER_SPY . " WHERE `user_id` = $user_id ";
         }
         $result = $this->db->sql_query($request);
 

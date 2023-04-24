@@ -44,7 +44,7 @@ class Config_Model  extends Model_Abstract
         if ($filter == null) {
             $filter = array();
         }
-        $query = "SELECT config_name, config_value FROM " . TABLE_CONFIG;
+        $query = "SELECT `config_name`, `config_value` FROM " . TABLE_CONFIG;
         $i = 0;
         foreach ($filter as $key => $value) {
             if ($i == 0) {

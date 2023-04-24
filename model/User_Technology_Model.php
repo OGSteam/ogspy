@@ -26,9 +26,9 @@ class User_Technology_Model  extends Model_Abstract
     {
         $user_id = (int)$user_id;
 
-        $request = "SELECT Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique";
+        $request = "SELECT `Esp`, `Ordi`, `Armes`, `Bouclier`, `Protection`, `NRJ`, `Hyp`, `RC`, `RI`, `PH`, `Laser`, `Ions`, `Plasma`, `RRI`, `Graviton`, `Astrophysique`";
         $request .= " FROM " . TABLE_USER_TECHNOLOGY;
-        $request .= " WHERE user_id = " . $user_id;
+        $request .= " WHERE `user_id` = " . $user_id;
         $result = $this->db->sql_query($request);
         return  $this->db->sql_fetch_assoc($result);
     }

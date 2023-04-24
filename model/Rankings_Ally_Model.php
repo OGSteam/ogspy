@@ -36,22 +36,22 @@ class Rankings_Ally_Model extends Rankings_Model
         $ally_name = $this->db->sql_escape_string($allyName);
 
 
-        $request  = "SELECT  general.datadate, general.rank, general.ally, general.number_member, general.rank, general.points, eco.rank,
-        eco.points, techno.rank, techno.points, military.rank, military.points, military_b.rank, military_b.points, military_l.rank,
+        $request  = "SELECT  `general`.`datadate`, `general`.`rank`, `general`.`ally`, `general`.`number_member`, `general`.`rank`, `general`.`points`, `eco`.`rank`,
+        `eco`.`points`, `techno`.`rank`, `techno`.`points`, `military`.`rank`, `military`.`points`, `military_b`.`rank`, `military_b`.`points`, `military_l`.`rank`,
         military_l.points, military_d.rank, military_d.points, honnor.rank, honnor.points";
 
-        $request .= " FROM `" . TABLE_RANK_ALLY_POINTS . "` AS general";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_ECO . " AS eco ON general.ally = eco.ally AND eco.`datadate`  = general.`datadate` ";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_TECHNOLOGY . " AS techno ON general.ally = techno.ally AND techno.`datadate` = general.`datadate` ";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY . " AS military ON general.ally = military.ally  AND military.`datadate` = general.`datadate` ";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_BUILT . " AS military_b ON general.ally = military_b.ally AND military_b.`datadate` = general.`datadate` ";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_LOOSE . " AS military_l ON general.ally = military_l.ally  AND military_l.`datadate`  = general.`datadate` ";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " AS military_d ON general.ally = military_d.ally AND military_d.`datadate`  = general.`datadate` ";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_HONOR . " AS honnor ON general.ally = honnor.ally AND honnor.`datadate`  = general.`datadate` ";
+        $request .= " FROM `" . TABLE_RANK_ALLY_POINTS . "` AS `general`";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_ECO . " AS `eco` ON `general`.`ally` = `eco`.`ally` AND `eco`.`datadate`  = `general`.`datadate` ";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_TECHNOLOGY . " AS `techno` ON `general`.`ally` = `techno`.`ally` AND `techno`.`datadate` = `general`.`datadate` ";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY . " AS `military` ON `general`.`ally` = `military`.`ally`  AND `military`.`datadate` = `general`.`datadate` ";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_BUILT . " AS `military_b` ON `general`.`ally` = `military_b`.`ally` AND `military_b`.`datadate` = `general`.`datadate` ";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_LOOSE . " AS `military_l` ON `general`.`ally` = `military_l`.`ally`  AND `military_l`.`datadate`  = `general`.`datadate` ";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " AS `military_d` ON `general`.`ally` = `military_d`.`ally` AND `military_d`.`datadate`  = `general`.`datadate` ";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_HONOR . " AS `honnor` ON `general`.`ally` = `honnor`.`ally` AND `honnor`.`datadate`  = `general`.`datadate` ";
 
 
-        $request .= " WHERE general.`ally` = '" . $allyName . "'";
-        $request .= " ORDER BY general.`datadate` DESC ";
+        $request .= " WHERE `general`.`ally` = '" . $allyName . "'";
+        $request .= " ORDER BY `general`.`datadate` DESC ";
 
 
         $result = $this->db->sql_query($request);
@@ -69,25 +69,25 @@ class Rankings_Ally_Model extends Rankings_Model
             $ranking_content[$row]['general_pts_mb'] = (int) ($general_pts / $member);
             $ranking_content[$row]['eco_rank'] = $eco_rank;
             $ranking_content[$row]['eco_pts'] = $eco_pts;
-            $ranking_content[$row]['eco_pts_mb'] = (is_numeric($eco_pts)) ? (int) ($eco_pts / $member) : null;;
+            $ranking_content[$row]['eco_pts_mb'] = (is_numeric($eco_pts)) ? (int) ($eco_pts / $member) : null;
             $ranking_content[$row]['tech_rank'] = $tech_rank;
             $ranking_content[$row]['tech_pts'] = $tech_pts;
-            $ranking_content[$row]['tech_pts_mb'] = (is_numeric($tech_pts)) ? (int) ($tech_pts / $member) : null;;
+            $ranking_content[$row]['tech_pts_mb'] = (is_numeric($tech_pts)) ? (int) ($tech_pts / $member) : null;
             $ranking_content[$row]['mil_rank'] = $mil_rank;
             $ranking_content[$row]['mil_pts'] = $mil_pts;
-            $ranking_content[$row]['mil_pts_mb'] = (is_numeric($mil_pts)) ? (int) ($tech_pts / $member) : null;;
+            $ranking_content[$row]['mil_pts_mb'] = (is_numeric($mil_pts)) ? (int) ($tech_pts / $member) : null;
             $ranking_content[$row]['milb_rank'] = $milb_rank;
             $ranking_content[$row]['milb_pts'] = $milb_pts;
-            $ranking_content[$row]['milb_pts_mb'] = (is_numeric($milb_pts)) ? (int) ($tech_pts / $member) : null;;
+            $ranking_content[$row]['milb_pts_mb'] = (is_numeric($milb_pts)) ? (int) ($tech_pts / $member) : null;
             $ranking_content[$row]['mill_rank'] = $mill_rank;
             $ranking_content[$row]['mill_pts'] = $mill_pts;
-            $ranking_content[$row]['mill_pts_mb'] = (is_numeric($mill_pts)) ? (int) ($tech_pts / $member) : null;;
+            $ranking_content[$row]['mill_pts_mb'] = (is_numeric($mill_pts)) ? (int) ($tech_pts / $member) : null;
             $ranking_content[$row]['mild_rank'] = $mild_rank;
             $ranking_content[$row]['mild_pts'] = $mild_pts;
-            $ranking_content[$row]['mild_pts_mb'] = (is_numeric($mild_pts)) ? (int) ($mild_pts / $member) : null;;
+            $ranking_content[$row]['mild_pts_mb'] = (is_numeric($mild_pts)) ? (int) ($mild_pts / $member) : null;
             $ranking_content[$row]['milh_rank'] = $milh_rank;
             $ranking_content[$row]['milh_pts'] = $milh_pts;
-            $ranking_content[$row]['milh_pts_mb'] = (is_numeric($milh_pts)) ? (int) ($milh_pts / $member) : null;;
+            $ranking_content[$row]['milh_pts_mb'] = (is_numeric($milh_pts)) ? (int) ($milh_pts / $member) : null;
             $row++;
         }
 
@@ -117,20 +117,20 @@ class Rankings_Ally_Model extends Rankings_Model
             $ref = "general";
         }
 
-        $request  = "SELECT " . $ref . ".rank, general.ally, general.number_member, general.rank, general.points, eco.rank,
-        eco.points, techno.rank, techno.points, military.rank, military.points, military_b.rank, military_b.points, military_l.rank,
-        military_l.points, military_d.rank, military_d.points, honnor.rank, honnor.points";
+        $request  = "SELECT " . $ref . ".`rank`, `general`.`ally`, `general`.`number_member`, `general`.`rank`, `general`.`points`, `eco`.`rank`,
+        `eco`.`points`, `techno`.`rank`, `techno`.`points`, `military`.`rank`, `military`.`points`, `military_b`.`rank`, `military_b`.`points`, `military_l`.`rank`,
+        `military_l`.`points`, `military_d`.`rank`, `military_d`.`points`, `honnor`.`rank`, `honnor`.`points`";
 
-        $request .= " FROM `" . TABLE_RANK_ALLY_POINTS . "` AS general";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_ECO . " AS eco ON general.ally = eco.ally AND eco.`datadate` = '" . $datadate . "'";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_TECHNOLOGY . " AS techno ON general.ally = techno.ally AND techno.`datadate` = '" . $datadate . "'";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY . " AS military ON general.ally = military.ally  AND military.`datadate` = '" . $datadate . "'";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_BUILT . " AS military_b ON general.ally = military_b.ally AND military_b.`datadate` = '" . $datadate . "'";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_LOOSE . " AS military_l ON general.ally = military_l.ally  AND military_l.`datadate` = '" . $datadate . "'";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " AS military_d ON general.ally = military_d.ally AND military_d.`datadate` = '" . $datadate . "'";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_HONOR . " AS honnor ON general.ally = honnor.ally AND honnor.`datadate` = '" . $datadate . "'";
+        $request .= " FROM `" . TABLE_RANK_ALLY_POINTS . "` AS `general`";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_ECO . " AS `eco` ON `general`.`ally` = `eco`.`ally` AND `eco`.`datadate` = '" . $datadate . "'";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_TECHNOLOGY . " AS `techno` ON `general`.`ally` = `techno`.`ally` AND `techno`.`datadate` = '" . $datadate . "'";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY . " AS `military` ON `general`.`ally` = `military`.`ally`  AND `military`.`datadate` = '" . $datadate . "'";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_BUILT . " AS `military_b` ON `general`.`ally` = `military_b`.`ally` AND `military_b`.`datadate` = '" . $datadate . "'";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_LOOSE . " AS `military_l` ON `general`.`ally` = `military_l`.`ally`  AND `military_l`.`datadate` = '" . $datadate . "'";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " AS `military_d` ON `general`.`ally` = `military_d`.`ally` AND `military_d`.`datadate` = '" . $datadate . "'";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_HONOR . " AS `honnor` ON `general`.`ally` = `honnor`.`ally` AND `honnor`.`datadate` = '" . $datadate . "'";
 
-        $request .= " WHERE general.`datadate` = '" . $datadate . "'";
+        $request .= " WHERE `general`.`datadate` = '" . $datadate . "'";
         $request .= " AND " . $ref . ".`rank` >= '" . $higher_rank . "'";
         $request .= " AND " . $ref . ".`rank` <= '" . $lower_rank . "'";
         $request .= " ORDER BY " . $ref . ".`rank` ASC ";
@@ -149,25 +149,25 @@ class Rankings_Ally_Model extends Rankings_Model
             $ranking_content[$row]['general_pts_mb'] = (int) ($general_pts / $member);
             $ranking_content[$row]['eco_rank'] = $eco_rank;
             $ranking_content[$row]['eco_pts'] = $eco_pts;
-            $ranking_content[$row]['eco_pts_mb'] = (is_numeric($eco_pts)) ? (int) ($eco_pts / $member) : null;;
+            $ranking_content[$row]['eco_pts_mb'] = (is_numeric($eco_pts)) ? (int) ($eco_pts / $member) : null;
             $ranking_content[$row]['tech_rank'] = $tech_rank;
             $ranking_content[$row]['tech_pts'] = $tech_pts;
-            $ranking_content[$row]['tech_pts_mb'] = (is_numeric($tech_pts)) ? (int) ($tech_pts / $member) : null;;
+            $ranking_content[$row]['tech_pts_mb'] = (is_numeric($tech_pts)) ? (int) ($tech_pts / $member) : null;
             $ranking_content[$row]['mil_rank'] = $mil_rank;
             $ranking_content[$row]['mil_pts'] = $mil_pts;
-            $ranking_content[$row]['mil_pts_mb'] = (is_numeric($mil_pts)) ? (int) ($tech_pts / $member) : null;;
+            $ranking_content[$row]['mil_pts_mb'] = (is_numeric($mil_pts)) ? (int) ($tech_pts / $member) : null;
             $ranking_content[$row]['milb_rank'] = $milb_rank;
             $ranking_content[$row]['milb_pts'] = $milb_pts;
-            $ranking_content[$row]['milb_pts_mb'] = (is_numeric($milb_pts)) ? (int) ($tech_pts / $member) : null;;
+            $ranking_content[$row]['milb_pts_mb'] = (is_numeric($milb_pts)) ? (int) ($tech_pts / $member) : null;
             $ranking_content[$row]['mill_rank'] = $mill_rank;
             $ranking_content[$row]['mill_pts'] = $mill_pts;
-            $ranking_content[$row]['mill_pts_mb'] = (is_numeric($mill_pts)) ? (int) ($tech_pts / $member) : null;;
+            $ranking_content[$row]['mill_pts_mb'] = (is_numeric($mill_pts)) ? (int) ($tech_pts / $member) : null;
             $ranking_content[$row]['mild_rank'] = $mild_rank;
             $ranking_content[$row]['mild_pts'] = $mild_pts;
-            $ranking_content[$row]['mild_pts_mb'] = (is_numeric($mild_pts)) ? (int) ($mild_pts / $member) : null;;
+            $ranking_content[$row]['mild_pts_mb'] = (is_numeric($mild_pts)) ? (int) ($mild_pts / $member) : null;
             $ranking_content[$row]['milh_rank'] = $milh_rank;
             $ranking_content[$row]['milh_pts'] = $milh_pts;
-            $ranking_content[$row]['milh_pts_mb'] = (is_numeric($milh_pts)) ? (int) ($milh_pts / $member) : null;;
+            $ranking_content[$row]['milh_pts_mb'] = (is_numeric($milh_pts)) ? (int) ($milh_pts / $member) : null;
             $row++;
         }
         return $ranking_content;

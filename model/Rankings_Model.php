@@ -39,7 +39,7 @@ abstract class Rankings_Model extends Model_Abstract
         $max_rank = array();
         $i = 0;
         foreach ($this->rank_tables as $table) {
-            $request = "SELECT max(`rank`) FROM `" . $table . "`    LIMIT 0,1";
+            $request = "SELECT MAX(`rank`) FROM `" . $table . "` LIMIT 0,1";
             $result = $this->db->sql_query($request);
             $max = $this->db->sql_fetch_row($result);
             $max_rank[$i] = $max[0];
@@ -54,8 +54,7 @@ abstract class Rankings_Model extends Model_Abstract
     {
         $rank_table = $this->db->sql_escape_string($rank_table);
 
-        $request = "SELECT MAX(`datadate`) FROM `" . $rank_table . "`" . " LIMIT 0,1";
-        $request = "SELECT datadate FROM `" . $rank_table . "`" . " LIMIT 0,1";
+        $request = "SELECT MAX(`datadate`) FROM `" . $rank_table . "` LIMIT 0,1";
         $result = $this->db->sql_query($request);
         list($max) = $this->db->sql_fetch_row($result);
         return $max;
@@ -70,10 +69,10 @@ abstract class Rankings_Model extends Model_Abstract
         $rank_table = $this->db->sql_escape_string($rank_table);
 
         $ranking_available = array();
-        $request = "SELECT DISTINCT datadate FROM `" . $rank_table . "`  ORDER BY datadate DESC";
+        $request = "SELECT DISTINCT `datadate` FROM `" . $rank_table . "`  ORDER BY `datadate` DESC";
         $result = $this->db->sql_query($request);
         while ($row = $this->db->sql_fetch_assoc($result)) {
-            $ranking_available[] = $row["datadate"];
+            $ranking_available[] = $row['datadate'];
         }
         return $ranking_available;
     }
@@ -125,7 +124,7 @@ abstract class Rankings_Model extends Model_Abstract
         }
 
         foreach ($tTables as $table) {
-            $request = "DELETE FROM " . $table . " WHERE datadate < " . $datadate;
+            $request = "DELETE FROM " . $table . " WHERE `datadate` < " . $datadate;
             $this->db->sql_query($request);
         }
     }
@@ -146,15 +145,10 @@ abstract class Rankings_Model extends Model_Abstract
         }
 
         foreach ($tTables as $table) {
-            $request = "DELETE FROM " . $table . " WHERE datadate = " . $datadate;
+            $request = "DELETE FROM " . $table . " WHERE `datadate` = " . $datadate;
             $this->db->sql_query($request);
         }
     }
-
-
-
-
-
 
     /**
      * @param $datadate

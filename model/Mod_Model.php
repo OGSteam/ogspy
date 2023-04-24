@@ -18,7 +18,7 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 /***
  * Class Mod_Model
  *
- * todo revoir tout ca avec refonte des mods (mod factory => cf old 3.4 )
+ * TODO revoir tout ca avec refonte des mods (mod factory => cf old 3.4 )
  * @package Ogsteam\Ogspy\Model
  */
 class Mod_Model  extends Model_Abstract
@@ -116,7 +116,7 @@ class Mod_Model  extends Model_Abstract
         }
 
         // On vérifie le nombre de valeur de l'explode
-        $query = "INSERT INTO " . TABLE_MOD . " (title, menu, action, root, link, version, position, active,admin_only) VALUES (
+        $query = "INSERT INTO " . TABLE_MOD . " (`title`, `menu`, `action`, `root`, `link`, `version`, `position`, `active`, `admin_only`) VALUES (
                     '" . $this->db->sql_escape_string($mod['title']) . "',
                     '" . $this->db->sql_escape_string($mod['menu']) . "',
                     '" . $this->db->sql_escape_string($mod['action']) . "',
@@ -136,7 +136,7 @@ class Mod_Model  extends Model_Abstract
      */
     public function get_position_max()
     {
-        $query = "select max(position) from " . TABLE_MOD;
+        $query = "SELECT MAX(`position`) from " . TABLE_MOD;
         $result = $this->db->sql_query($query);
         list($position) = $this->db->sql_fetch_row($result);
 
@@ -151,7 +151,7 @@ class Mod_Model  extends Model_Abstract
     {
         $root = $this->db->sql_escape_string($root);
 
-        $request = "select id from " . TABLE_MOD . " where root = '" . $root . "'";
+        $request = "SELECT `id` from " . TABLE_MOD . " WHERE `root` = '" . $root . "'";
         $result = $this->db->sql_query($request);
         list($id) = $this->db->sql_fetch_row($result);
 
@@ -188,7 +188,7 @@ class Mod_Model  extends Model_Abstract
         $mod_id = (int)$mod_id;
         $position = (int)$position;
 
-        $request = "update " . TABLE_MOD . " set position = " . $position . " where id = '" . $mod_id . "'";
+        $request = "UPDATE " . TABLE_MOD . " SET `position` = " . $position . " WHERE `id` = '" . $mod_id . "'";
         $this->db->sql_query($request);
     }
 
@@ -201,7 +201,7 @@ class Mod_Model  extends Model_Abstract
     {
         $mod_id = (int)$mod_id;
 
-        $request = "delete from " . TABLE_MOD . " where id = '{$this->db->sql_escape_string($mod_id)}'";
+        $request = "DELETE FROM " . TABLE_MOD . " WHERE `id` = '{$this->db->sql_escape_string($mod_id)}'";
         $this->db->sql_query($request);
     }
 
@@ -214,7 +214,7 @@ class Mod_Model  extends Model_Abstract
     {
         $mod_uninstall_title = $this->db->sql_escape_string($mod_uninstall_title);
 
-        $request = "delete from " . TABLE_MOD . " where title = '{$this->db->sql_escape_string($mod_uninstall_title)}'";
+        $request = "DELETE FROM " . TABLE_MOD . " WHERE `title` = '{$this->db->sql_escape_string($mod_uninstall_title)}'";
         $this->db->sql_query($request);
     }
 
@@ -246,12 +246,12 @@ class Mod_Model  extends Model_Abstract
     {
         $title = $this->db->sql_escape_string($title);
 
-        $request = "SELECT title FROM " . TABLE_MOD . " WHERE title='" . $title . "'";
+        $request = "SELECT `title` FROM " . TABLE_MOD . " WHERE `title` ='" . $title . "'";
         $this->db->sql_query($request);
         $number = $this->db->sql_numrows();
         if ($number > 0) {
-            return True;
+            return true;
         }
-        return False;
+        return false;
     }
 }

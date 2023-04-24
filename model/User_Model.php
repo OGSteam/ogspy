@@ -231,7 +231,7 @@ class User_Model extends Model_Abstract
 
         $request = "SELECT `user_id`, `user_name`, `planet_added_ogs`, `search`, `spy_added_ogs`, `rank_added_ogs`, `xtense_type`, `xtense_version`, `user_active`, `user_admin`";
         $request .= " FROM " . TABLE_USER;
-        $request .= " WHERE user_id='" . $user_id . "'";
+        $request .= " WHERE `user_id`='" . $user_id . "'";
         $result = $this->db->sql_query($request);
 
         list($planet_added_ogs, $search, $spy_added_ogs, $rank_added_ogs) = $this->db->sql_fetch_row($result);
@@ -267,10 +267,10 @@ class User_Model extends Model_Abstract
 
 
         $request = "SELECT `server_set_system`, `server_set_spy`, `server_set_rc`, `server_set_ranking`, `server_show_positionhided`,";
-        $request .= " ogs_connection, ogs_set_system, ogs_get_system, ogs_set_spy, ogs_get_spy, ogs_set_ranking, ogs_get_ranking";
-        $request .= " from " . TABLE_GROUP . " g, " . TABLE_USER_GROUP . " u";
-        $request .= " where g.group_id = u.group_id";
-        $request .= " and user_id = " . $user_id;
+        $request .= " `ogs_connection`, `ogs_set_system`, `ogs_get_system`, `ogs_set_spy`, `ogs_get_spy`, `ogs_set_ranking`, `ogs_get_ranking`";
+        $request .= " FROM " . TABLE_GROUP . " g, " . TABLE_USER_GROUP . " u";
+        $request .= " WHERE g.`group_id` = u.`group_id`";
+        $request .= " and `user_id` = " . $user_id;
         $result = $this->db->sql_query($request);
 
         if ($this->db->sql_numrows($result) == 1) { //Un seul retour possible ici
@@ -372,7 +372,6 @@ class User_Model extends Model_Abstract
     public function set_default_galaxy_after_resize($nb_galaxy)
     {
         $nb_galaxy = (int)$nb_galaxy;
-
         $request = "UPDATE " . TABLE_USER . " SET `user_galaxy` = 1 WHERE `user_galaxy` > $nb_galaxy";
         $this->db->sql_query($request);
     }
@@ -478,7 +477,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $value = (int)$value;
 
-        $request = "UPDATE " . TABLE_USER . " SET `planet_added_ogs` = planet_added_ogs + '" . $value . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `planet_added_ogs` = `planet_added_ogs` + '" . $value . "' WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
         //todo a implementer ( en remplacement dOGS )
         //$request = "UPDATE " . TABLE_USER . " SET `planet_added_xtense` = planet_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
@@ -495,7 +494,7 @@ class User_Model extends Model_Abstract
         $value = (int)$value;
 
 
-        $request = "UPDATE " . TABLE_USER . " SET `spy_added_ogs` = spy_added_ogs + '" . $value . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `spy_added_ogs` = `spy_added_ogs` + '" . $value . "' WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
         //todo a implementer ( en remplacement dOGS )
         //$request = "UPDATE " . TABLE_USER . " SET `spy_added_xtense` = spy_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
@@ -536,7 +535,7 @@ class User_Model extends Model_Abstract
      */
     public function all_raz_ratio_search()
     {
-        $request = "UPDATE " . TABLE_USER . " set search='0'";
+        $request = "UPDATE " . TABLE_USER . " SET `search`='0'";
         $this->db->sql_query($request);
     }
 
@@ -568,7 +567,7 @@ class User_Model extends Model_Abstract
     public function add_new_user($pseudo, $password)
     {
         $encrypted_password = password_hash($password, PASSWORD_DEFAULT);
-        $request = "INSERT INTO " . TABLE_USER . " (user_name, user_password_s, user_regdate, user_active)"
+        $request = "INSERT INTO " . TABLE_USER . " (`user_name`, `user_password_s`, `user_regdate`, `user_active`)"
             . " VALUES ('" . $pseudo . "', '" . $encrypted_password . "', " . time() . ", '1')";
         $this->db->sql_query($request);
 
@@ -584,7 +583,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $group_id = (int)$group_id;
 
-        $request = "INSERT INTO " . TABLE_USER_GROUP . " (group_id, user_id) VALUES (" . $group_id . ", " . $user_id . ")";
+        $request = "INSERT INTO " . TABLE_USER_GROUP . " (`group_id`, `user_id`) VALUES (" . $group_id . ", " . $user_id . ")";
         $this->db->sql_query($request);
     }
 
@@ -595,80 +594,37 @@ class User_Model extends Model_Abstract
     {
         $user_id = (int)$user_id;
 
-        $request = "DELETE FROM " . TABLE_USER . " WHERE `user_id` = " . $user_id;
-        $this->db->sql_query($request);
+        $requests = array();
 
-        $request = "DELETE FROM " . TABLE_USER_GROUP . " where user_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "DELETE FROM " . TABLE_USER_BUILDING . " where user_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "DELETE FROM " . TABLE_USER_FAVORITE . " where user_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "DELETE FROM " . TABLE_USER_DEFENCE . " where user_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "DELETE FROM " . TABLE_USER_SPY . " where user_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "DELETE FROM " . TABLE_USER_TECHNOLOGY . " where user_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_PLAYER_POINTS . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_PLAYER_ECO . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_PLAYER_TECHNOLOGY . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_PLAYER_MILITARY . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_PLAYER_MILITARY_BUILT . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_PLAYER_HONOR . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_ALLY_POINTS . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_ALLY_ECO . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_ALLY_TECHNOLOGY . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_ALLY_MILITARY . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_ALLY_MILITARY_BUILT . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_ALLY_MILITARY_LOOSE . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_RANK_ALLY_HONOR . " set sender_id = 0 where sender_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "update " . TABLE_UNIVERSE . " set last_update_user_id = 0 where last_update_user_id = " . $user_id;
-        $this->db->sql_query($request);
-
-        $request = "DELETE FROM " . TABLE_MOD_USER_CFG . " where user_id = " . $user_id;
-        $this->db->sql_query($request);
+        $requests[] = "DELETE FROM " . TABLE_USER . " WHERE `user_id` = " . $user_id;
+        $requests[] = "DELETE FROM " . TABLE_USER_GROUP . " WHERE `user_id` = " . $user_id;
+        $requests[] = "DELETE FROM " . TABLE_USER_BUILDING . " WHERE `user_id` = " . $user_id;
+        $requests[] = "DELETE FROM " . TABLE_USER_FAVORITE . " WHERE `user_id` = " . $user_id;
+        $requests[] = "DELETE FROM " . TABLE_USER_DEFENCE . " WHERE `user_id` = " . $user_id;
+        $requests[] = "DELETE FROM " . TABLE_USER_SPY . " WHERE `user_id` = " . $user_id;
+        $requests[] = "DELETE FROM " . TABLE_USER_TECHNOLOGY . " WHERE `user_id` = " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_POINTS . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_ECO . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_TECHNOLOGY . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_MILITARY . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_MILITARY_BUILT . " SET `sender_id`= 0 WHERE `sender_id`= " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " SET `sender_id`= 0 WHERE `sender_id`= " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " SET `sender_id`= 0 WHERE `sender_id`= " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_HONOR . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_ALLY_POINTS . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_ALLY_ECO . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_ALLY_TECHNOLOGY . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_ALLY_MILITARY . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_ALLY_MILITARY_BUILT . " SET `sender_id`= 0 WHERE `sender_id`= " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_ALLY_MILITARY_LOOSE . " SET `sender_id`= 0 WHERE `sender_id`= " . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " SET `sender_id`=0 WHERE `sender_id`=" . $user_id;
+        $requests[] = "UPDATE " . TABLE_RANK_ALLY_HONOR . " SET `sender_id`=0 WHERE `sender_id`=" . $user_id;
+        $requests[] = "UPDATE " . TABLE_UNIVERSE . " SET `last_update_user_id` = 0 WHERE `last_update_user_id` = " . $user_id;
+        $requests[] = "DELETE FROM " . TABLE_MOD_USER_CFG . " WHERE `user_id` = " . $user_id;
+       
+        foreach ($requests as $request) {
+            $this->db->sql_query($request);
+        }
     }
 
     /* Fonctions concerning game account */
@@ -684,7 +640,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $user_stat_name = $this->db->sql_escape_string($user_stat_name);
 
-        $request = "update " . TABLE_USER . " set user_stat_name = '" . $user_stat_name . "' where user_id = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " `set user_stat_name` = '" . $user_stat_name . "' WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request);
     }
 
@@ -697,7 +653,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $user_class = $this->db->sql_escape_string($user_class);
 
-        $request = "update " . TABLE_USER . " set user_class  = '" . $user_class . "' where user_id = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " set `user_class`  = '" . $user_class . "' WHERE `user_id` = " . $user_id;
 
         $this->db->sql_query($request);
     }

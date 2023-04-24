@@ -27,10 +27,10 @@ class User_Defense_Model  extends Model_Abstract
 
         $tElemList = array("planet_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP");
 
-        $request = "SELECT " . implode(", ", $tElemList) . " ";;
+        $request = "SELECT `" . implode("`, `", $tElemList) . "` ";
         $request .= " FROM " . TABLE_USER_DEFENCE;
-        $request .= " WHERE user_id = " . $user_id;
-        $request .= " ORDER BY planet_id";
+        $request .= " WHERE `user_id` = " . $user_id;
+        $request .= " ORDER BY `planet_id`";
         $result = $this->db->sql_query($request);
 
         $tDefense = array();
@@ -50,10 +50,10 @@ class User_Defense_Model  extends Model_Abstract
 
         $tElemList = array("planet_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP");
 
-        $request = "SELECT " . implode(", ", $tElemList) . " ";;
+        $request = "SELECT `" . implode("`, `", $tElemList) . "` ";
         $request .= " FROM " . TABLE_USER_DEFENCE;
-        $request .= " WHERE user_id = " . $user_id;
-        $request .= "  AND planet_id = " . $planet_id . " ";
+        $request .= " WHERE `user_id` = " . $user_id;
+        $request .= "  AND `planet_id` = " . $planet_id . " ";
 
         $result = $this->db->sql_query($request);
 
@@ -73,12 +73,12 @@ class User_Defense_Model  extends Model_Abstract
         $previous_id = (int)$previous_id;
         $new_id = (int)$new_id;
 
-        $request = "UPDATE " . TABLE_USER_DEFENCE . " SET planet_id  = " . $new_id .
-            " WHERE  planet_id = " . $previous_id . " and user_id = " . $user_id;
+        $request = "UPDATE " . TABLE_USER_DEFENCE . " SET `planet_id`  = " . $new_id .
+            " WHERE `planet_id` = " . $previous_id . " and `user_id` = " . $user_id;
         $this->db->sql_query($request);
         //We adjust the id if we go upper than 299
         $request = "UPDATE " . TABLE_USER_DEFENCE .
-            " SET planet_id  = planet_id -100 WHERE  planet_id > 299 and user_id = " . $user_id;
+            " SET `planet_id`  = `planet_id` -100 WHERE `planet_id` > 299 and `user_id` = " . $user_id;
         $this->db->sql_query($request);
     }
     /**
@@ -92,8 +92,8 @@ class User_Defense_Model  extends Model_Abstract
         $previous_id = (int)$previous_id;
         $new_id = (int)$new_id;
 
-        $request = "UPDATE " . TABLE_USER_DEFENCE . " SET planet_id  = " . $new_id .
-            " WHERE  planet_id = " . $previous_id . " and user_id = " . $user_id;
+        $request = "UPDATE " . TABLE_USER_DEFENCE . " SET `planet_id`  = " . $new_id .
+            " WHERE `planet_id` = " . $previous_id . " and `user_id` = " . $user_id;
         $this->db->sql_query($request);
     }
     /**
