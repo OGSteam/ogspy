@@ -44,17 +44,17 @@ function redirection($url)
  */
 function write_file($file, $mode, $content)
 {
-
-    if (!is_writable($file)) {
+    // un fichier non present n'est pas a tester comme modifiable
+    if (file_exists($file) && !is_writable($file)) {
         return false;
     }
 
     // Open the file with the specified mode
     $file = fopen($file, $mode);
 
-   // Check if the file was successfully opened
-   if ($file === false) {
-    return false;
+    // Check if the file was successfully opened
+    if ($file === false) {
+        return false;
     }
 
     // If the content is an array, join it into a single string with newlines
@@ -70,7 +70,6 @@ function write_file($file, $mode, $content)
 
     // Return true to indicate success
     return true;
-
 }
 
 /**
