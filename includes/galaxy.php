@@ -551,7 +551,7 @@ function galaxy_reportspy_show()
     $reports = array();
     foreach ($spy_list as $row) {
         $data = UNparseRE($row["id_spy"]);
-        $reports[] = array("spy_id" => $row["id_spy"], "sender" => $row["user_name"], "data" => $data, "moon" => $row['is_moon'], "dateRE" => $row['dateRE']);
+        $reports[] = array("spy_id" => $row["id_spy"], "sender" => $row["user_name"], "data" => $data, "moon" => $row['is_moon'] ?? 0 , "dateRE" => $row['dateRE']);
     }
     return $reports;
 }

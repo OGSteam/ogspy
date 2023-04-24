@@ -53,6 +53,8 @@ if (!isset($sort2)) {
         if ($timestamp != 0) {
             $timestamp = date("d M Y H:i", $timestamp);
             $poster = $timestamp . " - " . $v["poster"];
+        }else {
+            $poster = $v["poster"];
         }
 
         if ($ally == "") {
