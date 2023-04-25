@@ -21,6 +21,8 @@ use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\User_Favorites_Model;
 
 
+class FileAccessException extends Exception {}
+
 /**
  * URL Redirection
  * @param string $url target URL
@@ -42,24 +44,23 @@ function redirection($url)
  * @param string|Array $content String or table to write
  * @return boolean false if failed
  */
-function write_file($file, $mode, $content)
+function write_file($filename, $mode, $content)
 {
-    // un fichier non present n'est pas a tester comme modifiable
-    if (file_exists($file) && !is_writable($file)) {
-        return false;
-    }
-
-    // Open the file with the specified mode
-    $file = fopen($file, $mode);
-
-    // Check if the file was successfully opened
-    if ($file === false) {
-        return false;
-    }
-
     // If the content is an array, join it into a single string with newlines
     if (is_array($content)) {
         $content = implode("\n", $content);
+    }
+
+    if (!is_writable(dirname($filename))) {
+        throw new FileAccessException("Parent directory is not writable for file $filename");
+    }
+
+    // Open the file with the specified mode
+    $file = fopen($filename, $mode);
+
+    // Check if the file was successfully opened
+    if ($file === false) {
+        throw new FileAccessException("Failed to create the file $filename");
     }
 
     // Write the content to the file
@@ -1334,9 +1335,7 @@ function generate_key()
     $key_php[] = '';
     $key_php[] = 'define("OGSPY_KEY", TRUE);';
 
-    if (!write_file("./parameters/key.php", "w", $key_php)) {
-        die("Echec , impossible de générer le fichier 'parameters/key.php'");
-    }
+    write_file("./parameters/key.php", "w", $key_php);
 }
 
 /********************************************************************************/

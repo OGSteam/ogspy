@@ -25,7 +25,7 @@ class Config_Model  extends Model_Abstract
     public function get_all()
     {
         $output = array();
-        $request = "select * from " . TABLE_CONFIG;
+        $request = "SELECT * from " . TABLE_CONFIG;
         $result = $this->db->sql_query($request);
         // Output config as PHP code
         while ($cur_config_item = $this->db->sql_fetch_row($result)) {

@@ -155,8 +155,8 @@ class sql_db
         if (isset($server_config["debug_log"])) {
             $fichier = "sql_" . date("ymd") . ".sql";
             $date = date("d/m/Y H:i:s");
-            $ligne = "$date - " . $_SERVER["REMOTE_ADDR"] . " */ " . $query . ";";
-            write_file(PATH_LOG_TODAY . $fichier, "a", $ligne);
+            $ligne = "$date - $query ;";
+            write_file(PATH_LOG_TODAY . $fichier, 'a', $ligne);
         }
 
         $sql_timing += benchmark() - $sql_start;
