@@ -10,12 +10,15 @@
  * @version 3.04
  */
 
- if (!defined('IN_SPYOGAME')) {
+if (!defined('IN_SPYOGAME')) {
     define("IN_SPYOGAME", true);
-    define("UPGRADE_IN_PROGRESS", true);
- }
+}
 
-require_once("../common.php");
+if (!defined('UPGRADE_IN_PROGRESS')) {
+    define("UPGRADE_IN_PROGRESS", true);
+}
+
+require("../common.php");
 
 if (!isset($pub_verbose)) {
     $pub_verbose = true;
@@ -29,6 +32,7 @@ if ($pub_verbose) {
 ?>
 
     <html lang="fr">
+
     <head>
         <title>Mise à jour OGSpy</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -142,12 +146,12 @@ if (count($files) > 0) {
 }
 if ($pub_verbose) { //Silent Upgrade
     ?>
-    <h3 align='center'><span style="color: yellow; ">Mise à jour du serveur OGSpy vers la version <?= $ogspy_version ?> réussie</span></h3>
-    <div style="text-align: center;">
-        <br>
-        <b><i>Voulez-vous supprimer le dossier 'install' ?</i></b><br>
-        <br><a href='../index.php'>Oui</a>
-    </div>
+        <h3 align='center'><span style="color: yellow; ">Mise à jour du serveur OGSpy vers la version <?= $ogspy_version ?> réussie</span></h3>
+        <div style="text-align: center;">
+            <br>
+            <b><i>Voulez-vous supprimer le dossier 'install' ?</i></b><br>
+            <br><a href='../index.php'>Oui</a>
+        </div>
     </body>
 
     </html>
