@@ -152,7 +152,7 @@ class sql_db
         $this->last_query = $query;
         $this->result = $this->db_connect_id->query($query);
 
-        if (isset($server_config["debug_log"])) {
+        if (isset($server_config["debug_log"]) && $server_config["debug_log"] == 1) {
             $fichier = "sql_" . date("ymd") . ".sql";
             $date = date("d/m/Y H:i:s");
             $ligne = "$date - $query ;";
