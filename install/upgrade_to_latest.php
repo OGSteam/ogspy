@@ -126,7 +126,7 @@ switch ($ogsversion) {
         echo "Aucune mise à jour de base de données trouvée";
 }
 
-$requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '$ogspy_version' WHERE config_name = 'version'";
+$requests[] = "UPDATE " . TABLE_CONFIG . " SET `config_value` = '$ogspy_version' WHERE `config_name` = 'version'";
 
 foreach ($requests as $request) {
     $db->sql_query($request);
@@ -142,7 +142,7 @@ if (count($files) > 0) {
 }
 if ($pub_verbose) { //Silent Upgrade
     ?>
-    <h3 align='center'><span style="color: yellow; ">Mise à jour du serveur OGSpy vers la version <?php echo $ogspy_version; ?> réussie</span></h3>
+    <h3 align='center'><span style="color: yellow; ">Mise à jour du serveur OGSpy vers la version <?= $ogspy_version ?> réussie</span></h3>
     <div style="text-align: center;">
         <br>
         <b><i>Voulez-vous supprimer le dossier 'install' ?</i></b><br>

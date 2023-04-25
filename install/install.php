@@ -212,9 +212,7 @@
         $id_php[] = '';
         $id_php[] = 'define("OGSPY_INSTALLED", TRUE);';
 
-        if (!write_file("../parameters/id.php", "w", $id_php)) {
-            die($lang['INSTALL_IDFILE_ERROR']);
-        }
+        write_file("../parameters/id.php", "w", $id_php);
     }
 
     if (

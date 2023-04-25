@@ -43,7 +43,6 @@ $lang['INSTALL_SQL_CONNECTION_ERROR'] = "Can't connect to database";
 $lang['INSTALL_SUCCESS'] = "Installing the server OGSpy done successfully!";
 $lang['INSTALL_SUCCESS_REMOVE_FOLDER'] = "Remember to delete the folder 'install'";
 $lang['INSTALL_SUCCESS_BACK'] = "Back";
-$lang['INSTALL_IDFILE_ERROR'] = "Installation Error, unable to generate configuration file 'config/id.php'";
 $lang['INSTALL_FORM_ERROR_PREFIX'] = "The characters used for the prefix of the database are incorrect.";
 $lang['INSTALL_FORM_ERROR_USER'] = "The characters used for the username and password are incorrect";
 $lang['INSTALL_FORM_ERROR_GALAXY'] = "You did not come home the correct values ​​for the numbers of galaxies and (or) systems";

@@ -42,7 +42,6 @@ $lang['INSTALL_SQL_CONNECTION_ERROR'] = "Nije se moguće spojiti na bazu";
 $lang['INSTALL_SUCCESS'] = "Instalacija OGSpy servera izvršena uspješno!";
 $lang['INSTALL_SUCCESS_REMOVE_FOLDER'] = "Ne zaboravite obrisati folder \"install\"";
 $lang['INSTALL_SUCCESS_BACK'] = "Natrag";
-$lang['INSTALL_IDFILE_ERROR'] = "Instalacijska greška, nemoguće je kreirati konfiguracijski fajl 'config/id.php'";
 $lang['INSTALL_FORM_ERROR_PREFIX'] = "Znakovi korišteni za prefiks baze podataka su neispravni.";
 $lang['INSTALL_FORM_ERROR_USER'] = "Znakovi korišteni za korisničko ime i lozinku su neispravni.";
 $lang['INSTALL_FORM_ERROR_GALAXY'] = "Niste unijeli ispravne vrijednosti za brojeve galaksija i (ili) sistema";

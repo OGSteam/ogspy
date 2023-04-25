@@ -145,7 +145,7 @@ function session_set_user_data($cookie_id)
  *  {
  *      $user_auth = user_get_auth($user_data["user_id"]);
  *  }
- *}
+ *}*/
 
 /**
  * Closing an user session

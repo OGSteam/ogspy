@@ -335,7 +335,7 @@ function log_($parameter, $option = 0)
     }
 
     $fichier = "log_" . date("ymd") . '.log';
-    $line = "/*" . date("d/m/Y H:i") . '*/ ' . $line;
+    $line = date("d/m/Y H:i:s") . ' - ' . $line;
     write_file(PATH_LOG_TODAY . $fichier, "a", $line);
 }
 
