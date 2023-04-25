@@ -46,14 +46,14 @@ if ($pub_verbose) {
 
 // on réinitialise la sequense config
 // evite d utiliser le cache ( qui sera périmé ))
-$request = "SELECT * from " . TABLE_CONFIG;
+$request = "SELECT * FROM " . TABLE_CONFIG;
 $result = $db->sql_query($request);
 while (list($name, $value) = $db->sql_fetch_row($result)) {
     $server_config[$name] = stripslashes($value);
 }
 
 
-$request = "SELECT config_value FROM " . TABLE_CONFIG . " WHERE config_name = 'version'";
+$request = "SELECT `config_value` FROM " . TABLE_CONFIG . " WHERE config_name = 'version'";
 $result = $db->sql_query($request);
 list($ogsversion) = $db->sql_fetch_row($result);
 
