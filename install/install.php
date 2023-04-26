@@ -126,11 +126,11 @@
 
 
         $sql_query = explode(";", $sql_query);
-        $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('num_of_galaxies','$num_of_galaxies')";
-        $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('num_of_systems','$num_of_systems')";
-        $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('speed_uni','$uni_speed')";
-        $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('version','$ogspy_version')";
-        $sql_query[] = "ALTER DATABASE " . $sgbd_dbname . " charset=utf8"; /*Passage de interclassement en utf8*/
+        $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('num_of_galaxies','$num_of_galaxies')";
+        $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('num_of_systems','$num_of_systems')";
+        $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('speed_uni','$uni_speed')";
+        $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('version','$ogspy_version')";
+        $sql_query[] = "ALTER DATABASE `$sgbd_dbname` CHARACTER SET='utf8'  COLLATE='utf8_bin'"; /*Passage de interclassement en utf8*/
 
         foreach ($sql_query as $request) {
             if (trim($request) != "") {
