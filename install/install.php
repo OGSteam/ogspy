@@ -27,8 +27,8 @@
     define("IN_SPYOGAME", true);
     define("INSTALL_IN_PROGRESS", true);
 
-    @chmod("../parameters", 0777);
-    @chmod("../journal", 0777);
+    @chmod("../parameters", 0740);
+    @chmod("../journal", 0740);
     @chmod("../mod", 0777);
     @chmod("../mod/autoupdate/tmp", 0777);
 
