@@ -81,9 +81,7 @@ class Tokens_Model extends Model_Abstract
         $result = $this->db->sql_query($request);
         $tRetour = array();
         if ($this->db->sql_numrows($result) > 0) {
-            echo "retour ";
             while ($row = $this->db->sql_fetch_assoc($result)) {
-                echo "boucle ";
                 $tRetour[$row['name']] = $row;
             }
             return $tRetour;
