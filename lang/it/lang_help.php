@@ -4,8 +4,8 @@
  * @package OGSpy
  * @subpackage i18n
  * @author DarkNoon
- * @copyright Copyright &copy; 2016, http://ogsteam.fr/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @copyright Copyright &copy; 2016, https://ogsteam.eu/
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.0
  */
 $lang["help_admin_server_status"] = "Poiché il server è stato disattivato, solo i membri con ruolo di amministratore hanno accesso alle funzionalità del server";

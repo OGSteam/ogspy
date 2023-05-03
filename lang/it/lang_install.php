@@ -4,8 +4,8 @@
  * @package OGSpy
  * @subpackage i18n
  * @author DarkNoon
- * @copyright Copyright &copy; 2016, http://ogsteam.fr/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @copyright Copyright &copy; 2016, https://ogsteam.eu/
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.0
  */
 
@@ -18,7 +18,7 @@ $lang['INSTALL_PROJECT_L3'] = "Censimento di tutte le coordinate libere visualiz
 $lang['INSTALL_PROJECT_L4'] = "Censimento di tutti i pianeti di un giocatore o un alleato. Informazioni vitali in tempi di guerra.";
 $lang['INSTALL_PROJECT_L5'] = "Possibilità di estensione quasi illimitate grazie alle mod.";
 $lang['INSTALL_PROJECT_L6'] = "Ecc ...";
-$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href='https://www.ogsteam.fr/' target='_blank'>https://www.ogsteam.fr/</a>";
+$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href='https://www.ogsteam.eu/' target='_blank'>https://www.ogsteam.eu/</a>";
 
 $lang['INSTALL_PHPERROR'] = "Versione di PHP non sufficiente.";
 $lang['INSTALL_PHP_ADVISE'] = "Pour pouvoir effectuer une installation complète d'OGSpy, votre hébergement doit être doté au minimum de la version 7 de PHP.";
