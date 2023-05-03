@@ -8,7 +8,7 @@
  * @author Kyser
  * @created 15/12/2005
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  */
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");

@@ -7,7 +7,7 @@
  * @author Kyser
  * @created 15/11/2005
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04b ($Rev: 7692 $)
  */
 

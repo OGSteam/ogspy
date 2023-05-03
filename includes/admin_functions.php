@@ -8,8 +8,8 @@
  * @package    OGSpy
  * @subpackage Common
  * @author     DarkNoon29 <darknoon@darkcity.fr>
- * @copyright  2019 OGSteam.fr
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @copyright  2019 ogsteam.eu
+ * @license    https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    GIT:<GIT_ID>
  * @link       https://ogsteam.eu
  */

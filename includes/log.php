@@ -6,7 +6,7 @@
  * @subpackage Log
  * @author Kyser
  * @copyright Copyright &copy; 2012, https://www.ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.1.1 ($Rev: 7690 $)
  */
 

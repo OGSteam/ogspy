@@ -5,8 +5,8 @@
  * @package OGSpy
  * @subpackage Common
  * @author Kyser
- * @copyright Copyright &copy; 2012, http://www.ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @copyright Copyright &copy; 2012, https://www.ogsteam.eu/
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.1.1 ($Rev: 7752 $)
  */
 if (!defined('IN_SPYOGAME')) {

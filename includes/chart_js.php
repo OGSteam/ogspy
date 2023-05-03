@@ -5,7 +5,7 @@
  * @subpackage Charts
  * @author Machine
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.1.0
  */
 if (!defined('IN_SPYOGAME')) {
@@ -79,7 +79,7 @@ $(document).ready(function() {
       },
       credits: {
         text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
-        href: 'http://www.ogsteam.eu'
+        href: 'https://www.ogsteam.eu'
     },
       title: {
          text: '" . $title . "'
@@ -192,7 +192,7 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
         },
         credits: {
             text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
-            href: 'http://www.ogsteam.eu'
+            href: 'https://www.ogsteam.eu'
         },
         title: {
             text: '" . $title . "'

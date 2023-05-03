@@ -6,7 +6,7 @@
  * @subpackage Ogame formula library
  * @author Pitch314
  * @copyright Copyright &copy; 2021, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 4
  * @created 15/11/2005 by Kyser
  */

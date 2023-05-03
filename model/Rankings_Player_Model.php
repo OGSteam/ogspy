@@ -7,7 +7,7 @@
  * @subpackage Model
  * @author DarkNoon
  * @copyright Copyright &copy; 2017, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.4.0
  */
 
