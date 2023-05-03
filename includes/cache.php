@@ -71,7 +71,6 @@ function generate_mod_cache()
         }
     } else {
         fwrite($fh, '<?php' . "\n\n" . 'define(\'OGSPY_MOD_LOADED\', 1);' . "\n\n" . '$cache_mod = ' . var_export($modExport, true) . ';' . "\n\n" . '?>');
-
         fclose($fh);
     }
 }

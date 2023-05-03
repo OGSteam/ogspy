@@ -19,8 +19,8 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 /**
- *  php8 -r "$a='le toekn';for($i=0;$i<strlen($a);$i++){$b=ord($a[$i]);$a[$i]=chr(++$b);}echo $a;"
- */
+ *
+ *  */
 function get_aTokenOGSpy($sep)
 {
     $result = '';
