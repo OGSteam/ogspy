@@ -6,7 +6,7 @@
  * @subpackage main
  * @author Kyser
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https:///opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.8 */
 
 
@@ -29,9 +29,10 @@ if (file_exists("parameters/id.php")) {
 //Appel des fonctions
 require __DIR__ . '/vendor/autoload.php';
 
-require_once("includes/config.php");
+
 require_once("includes/admin_functions.php");
 require_once("includes/functions.php");
+require_once("includes/config.php");
 require_once("includes/mysql.php");
 require_once("includes/log.php");
 require_once("includes/galaxy.php");
@@ -66,13 +67,6 @@ foreach ($_POST as $secvalue) {
     }
 }
 
-/* Exception Handler */
-$whoops = new \Whoops\Run;
-$whoops->allowQuit(true);
-$whoops->writeToOutput(true); //Passer à autre
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
-$whoops->register();
-
 //Language File
 if (!isset($ui_lang)) { // Checks the ui_lang value from parameters file
     if (isset($pub_lang)) {
@@ -99,7 +93,6 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     $db = sql_db::getInstance($db_host, $db_user, $db_password, $db_database);
 
     if (!$db->db_connect_id) {
-        $console->error("Impossible de se connecter à la base de données");
         die("Impossible de se connecter à la base de données");
     }
 
@@ -114,5 +107,15 @@ if (!defined("INSTALL_IN_PROGRESS")) {
         session();
         maintenance_action();
     }
+
+    /* Exception Handler */
+    $whoops = new \Whoops\Run;
+    $whoops->allowQuit(true);
+    $whoops->writeToOutput(true); //Passer à autre
+    if (!$server_config['log_phperror']) {
+        $whoops->silenceErrorsInPaths('mod/*', 'E_ALL');
+    }
+    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+    $whoops->register();
 }
 

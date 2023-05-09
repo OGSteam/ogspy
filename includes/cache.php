@@ -6,7 +6,7 @@
  * @subpackage Data Cache
  * @author Machine ( inspired by fluxbb cache system )
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.0.7
  */
 
@@ -48,7 +48,7 @@ function generate_config_cache()
  */
 function generate_mod_cache()
 {
-    $modExport = NULL;
+    $modExport = null;
     // On récupère les mods actifs
     $Mod_Model = new Mod_Model();
     $tMods = $Mod_Model->find_by(array('active' => 1), array('position' => 'ASC', 'title' => 'ASC'));
@@ -71,7 +71,6 @@ function generate_mod_cache()
         }
     } else {
         fwrite($fh, '<?php' . "\n\n" . 'define(\'OGSPY_MOD_LOADED\', 1);' . "\n\n" . '$cache_mod = ' . var_export($modExport, true) . ';' . "\n\n" . '?>');
-
         fclose($fh);
     }
 }

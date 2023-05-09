@@ -6,7 +6,7 @@
  * @subpackage Main
  * @author Kyser
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04b
  * @created 06/12/2005
  */
@@ -145,7 +145,7 @@ function session_set_user_data($cookie_id)
  *  {
  *      $user_auth = user_get_auth($user_data["user_id"]);
  *  }
- *}
+ *}*/
 
 /**
  * Closing an user session

@@ -34,7 +34,7 @@ Auteurs : julp et hachesse
             sort($listfonctions);
             echo "\t\t\t\t<ol type=\"1\">\n";
             foreach ($listfonctions as $fonctionKey => $fonctions) {
-                echo "\t\t\t\t\t<li>Fonction supportée : <a href=\"http://fr.php.net/$fonctions\">$fonctions</a><br>\n";
+                echo "\t\t\t\t\t<li>Fonction supportée : <a href=\"https://fr.php.net/$fonctions\">$fonctions</a><br>\n";
             }
             echo "\t\t\t\t</ol>\n";
             echo "\t\t\t</td>\n\t\t</tr>\n";

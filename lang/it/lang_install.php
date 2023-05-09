@@ -4,8 +4,8 @@
  * @package OGSpy
  * @subpackage i18n
  * @author DarkNoon
- * @copyright Copyright &copy; 2016, http://ogsteam.fr/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @copyright Copyright &copy; 2016, https://ogsteam.eu/
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.0
  */
 
@@ -18,7 +18,7 @@ $lang['INSTALL_PROJECT_L3'] = "Censimento di tutte le coordinate libere visualiz
 $lang['INSTALL_PROJECT_L4'] = "Censimento di tutti i pianeti di un giocatore o un alleato. Informazioni vitali in tempi di guerra.";
 $lang['INSTALL_PROJECT_L5'] = "Possibilità di estensione quasi illimitate grazie alle mod.";
 $lang['INSTALL_PROJECT_L6'] = "Ecc ...";
-$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href='https://www.ogsteam.fr/' target='_blank'>https://www.ogsteam.fr/</a>";
+$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href='https://www.ogsteam.eu/' target='_blank'>https://www.ogsteam.eu/</a>";
 
 $lang['INSTALL_PHPERROR'] = "Versione di PHP non sufficiente.";
 $lang['INSTALL_PHP_ADVISE'] = "Pour pouvoir effectuer une installation complète d'OGSpy, votre hébergement doit être doté au minimum de la version 7 de PHP.";
@@ -42,7 +42,6 @@ $lang['INSTALL_SQL_CONNECTION_ERROR'] = "Impossibile connettersi al database";
 $lang['INSTALL_SUCCESS'] = "Installazione del server OGSpy riuscita con successo!";
 $lang['INSTALL_SUCCESS_REMOVE_FOLDER'] = "Si prega di eliminare la cartella 'install'";
 $lang['INSTALL_SUCCESS_BACK'] = "Indietro";
-$lang['INSTALL_IDFILE_ERROR'] = "Installazione fallita, impossibile generare il file 'config/id.php'";
 $lang['INSTALL_FORM_ERROR_PREFIX'] = "I caratteri utilizzati per il prefisso del database sono incorretti.";
 $lang['INSTALL_FORM_ERROR_USER'] = "I caratteri utilizzati per il nome utente e la password sono incorretti.";
 $lang['INSTALL_FORM_ERROR_GALAXY'] = "Non avete inserito i valori corretti per i numeri delle galassi e (o) dei sistemi";

@@ -4,8 +4,8 @@
  * @package OGSpy
  * @subpackage i18n
  * @author DarkNoon
- * @copyright Copyright &copy; 2016, http://ogsteam.fr/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @copyright Copyright &copy; 2016, https://ogsteam.eu/
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.0
  */
 
@@ -18,7 +18,7 @@ $lang['INSTALL_PROJECT_L3'] = "Identificação de todas as coordenadas livres se
 $lang['INSTALL_PROJECT_L4'] = "Identificação de todos os planetas de um jogador ou de uma aliança. Informação vital durante os períodos de guerra.";
 $lang['INSTALL_PROJECT_L5'] = "Possibilidades de extensões quase ilimitadas graças aos mods.";
 $lang['INSTALL_PROJECT_L6'] = "Etc ...";
-$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href='https://www.ogsteam.fr/' target='_blank'>https://www.ogsteam.fr/</a>";
+$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href='https://www.ogsteam.eu/' target='_blank'>https://www.ogsteam.eu/</a>";
 
 $lang['INSTALL_PHPERROR'] = "Versão de PHP insuficiente";
 $lang['INSTALL_PHP_ADVISE'] = "Pour pouvoir effectuer une installation complète d'OGSpy, votre hébergement doit être doté au minimum de la version 7 de PHP.";
@@ -42,7 +42,6 @@ $lang['INSTALL_SQL_CONNECTION_ERROR'] = "Impossível se conectar à base de dado
 $lang['INSTALL_SUCCESS'] = "Instalação do servidor OGSpy efetuada com sucesso !";
 $lang['INSTALL_SUCCESS_REMOVE_FOLDER'] = "Tente deletar a pasta 'install'";
 $lang['INSTALL_SUCCESS_BACK'] = "Voltar";
-$lang['INSTALL_IDFILE_ERROR'] = "Falha na instalação, foi impossível gerar o ficheiro 'config/id.php'";
 $lang['INSTALL_FORM_ERROR_PREFIX'] = "Os caracteres utilizados para o prefixo da base de dados são incorretos.";
 $lang['INSTALL_FORM_ERROR_USER'] = "Os caracteres utilizados para o nome de usuário ou a senha não são corretos";
 $lang['INSTALL_FORM_ERROR_GALAXY'] = "Você não preencheu os valores corretos para os números das galáxias e/ou dos sistemas";

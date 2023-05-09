@@ -4,8 +4,8 @@
  * @package OGSpy
  * @subpackage i18n
  * @author DarkNoon
- * @copyright Copyright &copy; 2016, http://ogsteam.fr/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @copyright Copyright &copy; 2016, https://ogsteam.eu/
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.0
  */
 
@@ -18,7 +18,7 @@ $lang['INSTALL_PROJECT_L3'] = "Registro de todas las coordenadas segun distintos
 $lang['INSTALL_PROJECT_L4'] = "Registro de todos los planetas de un jugador o alianza. Información primordial en períodos de guerras";
 $lang['INSTALL_PROJECT_L5'] = "Posibilidades practicamente ilimitadas gracias a los módulos";
 $lang['INSTALL_PROJECT_L6'] = "Etc ...";
-$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href='https://www.ogsteam.fr/' target='_blank'>https://www.ogsteam.fr/</a>";
+$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href='https://www.ogsteam.eu/' target='_blank'>https://www.ogsteam.eu/</a>";
 
 $lang['INSTALL_PHPERROR'] = "Versión de PHP insuficiciente";
 $lang['INSTALL_PHP_ADVISE'] = "Pour pouvoir effectuer une installation complète d'OGSpy, votre hébergement doit être doté au minimum de la version 7 de PHP.";
@@ -42,7 +42,6 @@ $lang['INSTALL_SQL_CONNECTION_ERROR'] = "No se puede conectar a la base de datos
 $lang['INSTALL_SUCCESS'] = "Instalación completada del servidor OGSpy";
 $lang['INSTALL_SUCCESS_REMOVE_FOLDER'] = "Recuerde eliminar la carpeta 'install'";
 $lang['INSTALL_SUCCESS_BACK'] = "Volver";
-$lang['INSTALL_IDFILE_ERROR'] = "instalación fallida, imposible generar el archivo \"config / id.php\"";
 $lang['INSTALL_FORM_ERROR_PREFIX'] = "Los caracteres utilizados en la base de datos son incorrectos.";
 $lang['INSTALL_FORM_ERROR_USER'] = "Los caracteres utilizados para el nombre de usuario y la contraseña son incorrectos.";
 $lang['INSTALL_FORM_ERROR_GALAXY'] = "No se han introducido valores correctos de galaxias y/o de sistemas.";

@@ -7,7 +7,7 @@
  * @subpackage Model
  * @author DarkNoon
  * @copyright Copyright &copy; 2016, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
 namespace Ogsteam\Ogspy\Model;
@@ -24,11 +24,11 @@ class User_Building_Model  extends Model_Abstract
     {
         $user_id = (int)$user_id;
 
-        $request = "select planet_id, coordinates";
-        $request .= " from " . TABLE_USER_BUILDING;
-        $request .= " where user_id = " . $user_id;
-        $request .= " and planet_id <= 199";
-        $request .= " order by planet_id";
+        $request = "SELECT `planet_id`, `coordinates`";
+        $request .= " FROM " . TABLE_USER_BUILDING;
+        $request .= " WHERE `user_id` = " . $user_id;
+        $request .= " AND `planet_id` <= 199";
+        $request .= " ORDER BY `planet_id`";
         $result =  $this->db->sql_query($request);
         while (list($planet_id, $coordinates) = $this->db->sql_fetch_row($result)) {
             $planet_position[$coordinates] = $planet_id;
@@ -44,11 +44,11 @@ class User_Building_Model  extends Model_Abstract
         $user_id = (int)$user_id;
 
         // les lunes
-        $request = "select planet_id, coordinates";
-        $request .= " from " . TABLE_USER_BUILDING;
-        $request .= " where user_id = " . $user_id;
-        $request .= " and planet_id > 199";
-        $request .= " order by planet_id";
+        $request = "SELECT `planet_id`, `coordinates`";
+        $request .= " FROM " . TABLE_USER_BUILDING;
+        $request .= " WHERE `user_id` = " . $user_id;
+        $request .= " AND `planet_id` > 199";
+        $request .= " ORDER BY `planet_id`";
         $result =  $this->db->sql_query($request);
         while (list($planet_id, $coordinates) = $this->db->sql_fetch_row($result)) {
             $moon_position[$coordinates] = $planet_id;
@@ -63,11 +63,11 @@ class User_Building_Model  extends Model_Abstract
     {
         $user_id = (int)$user_id;
 
-        $request = "SELECT planet_id ";
+        $request = "SELECT `planet_id` ";
         $request .= " FROM " . TABLE_USER_BUILDING;
-        $request .= " WHERE user_id = " . $user_id;
-        $request .= " AND planet_id < 199 ";
-        $request .= " ORDER BY planet_id";
+        $request .= " WHERE `user_id` = " . $user_id;
+        $request .= " AND `planet_id` < 199 ";
+        $request .= " ORDER BY `planet_id`";
         $result =  $this->db->sql_query($request);
         return  $this->db->sql_numrows($result);
     }
@@ -79,11 +79,11 @@ class User_Building_Model  extends Model_Abstract
     {
         $user_id = (int)$user_id;
 
-        $request = "select planet_id ";
-        $request .= " from " . TABLE_USER_BUILDING;
-        $request .= " where user_id = " . $user_id;
-        $request .= " and planet_id > 199 ";
-        $request .= " order by planet_id";
+        $request = "SELECT `planet_id` ";
+        $request .= " FROM " . TABLE_USER_BUILDING;
+        $request .= " WHERE `user_id` = " . $user_id;
+        $request .= " AND `planet_id` > 199 ";
+        $request .= " ORDER BY `planet_id`";
         $result =  $this->db->sql_query($request);
         return  $this->db->sql_numrows($result);
     }
@@ -97,7 +97,7 @@ class User_Building_Model  extends Model_Abstract
     {
         $id_player = (int)$id_player;
 
-        $request = "SELECT user_id, planet_id, boosters FROM " . TABLE_USER_BUILDING . " WHERE user_id=" . $id_player;
+        $request = "SELECT `user_id`, `planet_id`, `boosters` FROM " . TABLE_USER_BUILDING . " WHERE `user_id`=" . $id_player;
         $result = $this->db->sql_query($request);
 
         $Boosters = array();
@@ -112,7 +112,7 @@ class User_Building_Model  extends Model_Abstract
      */
     public function get_all_booster()
     {
-        $request = "SELECT user_id, planet_id, boosters FROM " . TABLE_USER_BUILDING;
+        $request = "SELECT `user_id`, `planet_id`, `boosters` FROM " . TABLE_USER_BUILDING;
         $result = $this->db->sql_query($request);
 
         $Boosters = array();
@@ -140,9 +140,9 @@ class User_Building_Model  extends Model_Abstract
         $planet_id = (int)$planet_id;
         $boosters = $this->db->sql_escape_string($boosters);
 
-        $requests = "UPDATE " . TABLE_USER_BUILDING . " SET boosters = '" . $boosters . "' " .
-            " WHERE user_id = " . $user_id .
-            " AND planet_id = " . $planet_id;
+        $requests = "UPDATE " . TABLE_USER_BUILDING . " SET `boosters` = '" . $boosters . "' " .
+            " WHERE `user_id` = " . $user_id .
+            " AND `planet_id` = " . $planet_id;
 
         return $this->db->sql_query($requests);
     }
@@ -159,8 +159,8 @@ class User_Building_Model  extends Model_Abstract
 
         $request = "SELECT `" . implode("`, `", $tElemList) . "` ";
         $request .= " FROM " . TABLE_USER_BUILDING;
-        $request .= " WHERE user_id = " . $user_id;
-        $request .= " ORDER BY planet_id";
+        $request .= " WHERE `user_id` = " . $user_id;
+        $request .= " ORDER BY `planet_id`";
         $result =  $this->db->sql_query($request);
 
         $tbuilding = array();
@@ -177,7 +177,7 @@ class User_Building_Model  extends Model_Abstract
     {
         $silo_level = (int)$silo_level;
 
-        $request =  "SELECT user_id, planet_id, coordinates, Silo FROM " . TABLE_USER_BUILDING . " WHERE Silo >= " . $silo_level . " ";
+        $request =  "SELECT `user_id`, `planet_id`, `coordinates`, `Silo` FROM " . TABLE_USER_BUILDING . " WHERE `Silo` >= $silo_level ";
         $result =  $this->db->sql_query($request);
 
         $tbuilding = array();
@@ -199,12 +199,12 @@ class User_Building_Model  extends Model_Abstract
         $previous_id = (int)$previous_id;
         $new_id = (int)$new_id;
 
-        $request = "UPDATE " . TABLE_USER_BUILDING . " SET planet_id  = " . $new_id .
-            " WHERE  planet_id = " . $previous_id . " and user_id = " . $user_id;
+        $request = "UPDATE " . TABLE_USER_BUILDING . " SET `planet_id`  = " . $new_id .
+            " WHERE `planet_id` = " . $previous_id . " and `user_id` = " . $user_id;
         $this->db->sql_query($request);
         //We adjust the id if we go upper than 299
         $request = "UPDATE " . TABLE_USER_BUILDING .
-            " SET planet_id  = planet_id -100 WHERE  planet_id > 299 and user_id = " . $user_id;
+            " SET planet_id  = `planet_id` -100 WHERE `planet_id` > 299 and `user_id` = " . $user_id;
         $this->db->sql_query($request);
     }
     /**
@@ -218,8 +218,8 @@ class User_Building_Model  extends Model_Abstract
         $previous_id = (int)$previous_id;
         $new_id = (int)$new_id;
 
-        $request = "UPDATE " . TABLE_USER_BUILDING . " SET planet_id  = " . $new_id .
-            " WHERE  planet_id = " . $previous_id . " and user_id = " . $user_id;
+        $request = "UPDATE " . TABLE_USER_BUILDING . " SET `planet_id`  = " . $new_id .
+            " WHERE `planet_id` = " . $previous_id . " and `user_id` = " . $user_id;
         $this->db->sql_query($request);
     }
     /**

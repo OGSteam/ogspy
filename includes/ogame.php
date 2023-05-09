@@ -6,7 +6,7 @@
  * @subpackage Ogame formula library
  * @author Pitch314
  * @copyright Copyright &copy; 2021, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 4
  * @created 15/11/2005 by Kyser
  */
@@ -309,12 +309,6 @@ function ogame_production_building($building, $user_building = null, $user_techn
  */
 function ogame_production_planet($user_building, $user_technology = null, $user_data = null, $server_config = null)
 {
-    /*global $console;
-    $console->log($user_building);
-    $console->log($user_technology);
-    $console->log($user_data);
-    $console->log($server_config);*/
-
     static $DEFAULT_TYPE_RESS = array('M' => 0, 'C' => 0, 'D' => 0, 'NRJ' => 0, 'AM' => 0);
     static $NRJ_BONUS_COL     = 0.1;   //+10% pour COL
     static $NRJ_BONUS_ING     = 0.1;   //+10% pour ingénieur
@@ -812,7 +806,6 @@ function consumption($building, $level, $speed_uni = 1)
         return -$result['NRJ'];
     }
     return 0;
-    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach($names['BAT'] as $e){if(consumption2($e,1)!=consumption($e,1))print_r($e);}"
 }
 
 /**
@@ -874,7 +867,7 @@ function ratio(
     $prod_SAT = production('SAT', $SAT, $off_ing, $temperature_max, $NRJ, 0, $classe) * $per_SAT;
     $production_E += $prod_CES + $prod_CEF + $prod_SAT;
 
-    if ($booster != NULL) { // si booster
+    if ($booster != null) { // si booster
         $boost_CES = ($booster['booster_e_val'] / 100) * (production('CES', $CES, 0, $temperature_max, $NRJ) * $per_CES);
         $boost_CEF = ($booster['booster_e_val'] / 100) * (production('CEF', $CEF, 0, $temperature_max, $NRJ) * $per_CEF);
         $boost_SAT = ($booster['booster_e_val'] / 100) * (production('SAT', $SAT, 0, $temperature_max, $NRJ) * $per_SAT);
@@ -1015,7 +1008,7 @@ function bilan_production_ratio(
         $prod_FOR = production_foreuse(0, 0, 0, 0, 0, 0, $position, $speed_uni);
     }
 
-    if ($booster != NULL) { // si booster
+    if ($booster != null) { // si booster
         //Bonus position
         $bonus_position_M = 0;
         $bonus_position_C = 0;
@@ -1282,7 +1275,6 @@ function ogame_elements_details_base($name = 'all')
         return ogame_array_detail(0, 0, 0);
     }
     return $details_base[$name];
-    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['VSO'], $names['DEF']) as $e){$b=ogame_elements_details($e);unset($b['nom']);unset($b['cout']);if(ogame_elements_details_base($e)!=$b)print_r($e);}"
 }
 
 /**
@@ -1440,7 +1432,6 @@ function ogame_elements_details($name, $user_techno = null, $classe = 'none')
     $base_detail['nom']       = $name;
 
     return $base_detail;
-    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();$b=array('Esp'=>23,'Ordi'=>20,'Armes'=>22,'Bouclier'=>20,'Protection'=>20,'NRJ'=>20,'Hyp'=>18,'RC'=>21,'RI'=>17,'PH'=>16,'Laser'=>20,'Ions'=>20,'Plasma'=>19,'RRI'=>13,'Graviton'=>2,'Astrophysique'=>23);foreach(array_merge($names['VSO'], $names['DEF']) as $e){if(ogame_elements_details2($e,$b,'GEN')!=ogame_elements_details($e,$b,'GEN'))print_r($e);}"
 }
 
 /**
@@ -1553,7 +1544,6 @@ function ogame_elements_requirement($name = 'all')
         $name = 'rien';
     }
     return $requis[$name];
-    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['BAT'], $names['RECH'], $names['VSO'], $names['DEF']) as $e){if(ogame_elements_requirement($e)!=ogame_elements_requirement2($e))print_r($e);}"
 }
 
 /**
@@ -1656,7 +1646,6 @@ function ogame_element_cout_base($name = 'all')
         return ogame_array_ressource(0, 0, 0);
     }
     return $cout_base[$name];
-    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['BAT'], $names['RECH'], $names['VSO'], $names['DEF']) as $e){if(ogame_element_cout_base($e)!=ogame_element_cumulate($e,1))print_r($e);}"
 }
 
 ///////////////////// COUT fonctions : /////////////////////////////////////////
@@ -1745,8 +1734,6 @@ function ogame_element_cout($name, $level)
     }
 
     return $result;
-    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['BAT'], $names['RECH']) as $e){if(ogame_element_cout($e,10)!=ogame_element_upgrade($e,10))print_r($e);}"
-    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['VSO'], $names['DEF']) as $e){if(ogame_element_cout($e,10)!=ogame_element_cumulate($e,10))print_r($e);}"
 }
 
 /**
@@ -1779,7 +1766,6 @@ function ogame_element_cumulate($name, $level)
     }
 
     return $result;
-    //php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();foreach(array_merge($names['BAT'], $names['RECH'], $names['VSO'], $names['DEF']) as $e){if(ogame_element_cumulate2($e,1)!=ogame_element_cumulate($e,1))print_r($e);}"
 }
 
 /**
@@ -2085,7 +2071,6 @@ function ogame_fleet_send($coord_from, $coord_to, $fleet, $speed_per = 100, $use
     $result['conso'] = ceil($result['conso']);
 
     return $result;
-    // php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');$names=ogame_get_element_names();var_dump($a=ogame_fleet_send('1:1:1','1:1:1',array('PT'=>260),100,array('RC'=>20,'RI'=>17,'PH'=>16),'COL'));echo gmdate('z:H:i:s',$a['time']);"
 }
 
 ///////////////////// TEMPS fonctions : ////////////////////////////////////////
@@ -2200,7 +2185,6 @@ function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0,
 
     return $result;
 }
-// php8 -r "define('IN_SPYOGAME',true);include('includes/ogame.php');var_dump($a=ogame_construction_time('NRJ',21,array('Lab'=>18,'CSp'=>12,'UdR'=>10,'UdN'=>7),234));$year=gmdate('Y',$a)-1970;$week=gmdate('W',$a)-1;$day=gmdate('z',$a)-$week*7; echo $year.'a '.$week.'s '.$day.'j '.gmdate('H:i:s',$a);"
 
 ///////////////////// DIVERS fonctions : ///////////////////////////////////////
 /**

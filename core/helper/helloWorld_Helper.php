@@ -12,9 +12,9 @@ use Ogsteam\Ogspy\Abstracts\Helper_Abstract;
 class helloWorld_Helper extends Helper_Abstract
 {
 
-    static protected $name ="hello World" ;
-    static protected $description ="Helper hello World" ;
-    static protected $version ="0.0.1" ;
+    protected static  $name = "hello World";
+    protected static  $description = "Helper hello World";
+    protected static  $version = "0.0.1";
 
 
     /**
@@ -22,7 +22,6 @@ class helloWorld_Helper extends Helper_Abstract
      */
     public function __construct()
     {
-
     }
 
     /**
@@ -30,7 +29,6 @@ class helloWorld_Helper extends Helper_Abstract
      */
     public function __toString()
     {
-        return $this->getName()." (".$this->version.") [".$this->description."]";
+        return $this->getName() . " (" . $this->version . ") [" . $this->description . "]";
     }
-
 }

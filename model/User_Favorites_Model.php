@@ -7,7 +7,7 @@
  * @subpackage Model
  * @author DarkNoon
  * @copyright Copyright &copy; 2016, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.4.0
  */
 
@@ -28,9 +28,9 @@ class User_Favorites_Model  extends Model_Abstract
 
         $favorite = array();
 
-        $request = "SELECT galaxy, system FROM " . TABLE_USER_FAVORITE;
-        $request .= " where user_id = " . $user_id;
-        $request .= " order by galaxy, system";
+        $request = "SELECT `galaxy`, system FROM " . TABLE_USER_FAVORITE;
+        $request .= " WHERE `user_id` = " . $user_id;
+        $request .= " ORDER BY `galaxy`, `system`";
         $result = $this->db->sql_query($request);
 
         while (list($galaxy, $system) = $this->db->sql_fetch_row($result)) {
@@ -49,7 +49,7 @@ class User_Favorites_Model  extends Model_Abstract
         $user_id = (int)$user_id;
 
 
-        $request = "SELECT * FROM " . TABLE_USER_FAVORITE . " WHERE user_id = " . $user_id;
+        $request = "SELECT * FROM " . TABLE_USER_FAVORITE . " WHERE `user_id` = " . $user_id;
         $result = $this->db->sql_query($request);
         return $this->db->sql_numrows($result);
     }
@@ -66,7 +66,7 @@ class User_Favorites_Model  extends Model_Abstract
         $system = (int)$system;
 
         $request = "INSERT IGNORE INTO " . TABLE_USER_FAVORITE .
-            " (user_id, galaxy, system) VALUES (" . $user_id . ", '" . $galaxy . "', " . $system . ")";
+            " (`user_id`, `galaxy`, `system`) VALUES (" . $user_id . ", '" . $galaxy . "', " . $system . ")";
         $this->db->sql_query($request);
     }
 
@@ -82,8 +82,8 @@ class User_Favorites_Model  extends Model_Abstract
         $system = (int)$system;
 
 
-        $request = "delete from " . TABLE_USER_FAVORITE . " where user_id = " . $user_id .
-            " and galaxy = '" . $galaxy . "' and system = " . $system;
+        $request = "DELETE FROM " . TABLE_USER_FAVORITE . " WHERE `user_id` = " . $user_id .
+            " AND `galaxy` = '" . $galaxy . "' and `system` = " . $system;
         $this->db->sql_query($request);
     }
 

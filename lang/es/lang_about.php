@@ -4,8 +4,8 @@
  * @package OGSpy
  * @subpackage i18n
  * @author DarkNoon
- * @copyright Copyright &copy; 2016, http://ogsteam.fr/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @copyright Copyright &copy; 2016, https://ogsteam.eu/
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.0
  */
 
@@ -22,7 +22,7 @@ $lang['ABOUT_DESCRIPTION'] = "Descripcion";
 /*about_ogsteam.php*/
 
 $lang['ABOUT_PROJECT_TEAM'] = "Equipo de Proyecto";
-$lang['ABOUT_PROJECT_AERIS'] = "Administrador de OGSteam.fr";
+$lang['ABOUT_PROJECT_AERIS'] = "Administrador de OGSteam.eu";
 $lang['ABOUT_PROJECT_CAPI'] = "Desarrollador / Probador";
 $lang['ABOUT_PROJECT_CHRYS'] = "Diseñador grafico";
 $lang['ABOUT_PROJECT_DARKNOON'] = "Responsable de Proyecto";

@@ -7,7 +7,7 @@
  * @subpackage Model
  * @author DarkNoon
  * @copyright Copyright &copy; 2016, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
 namespace Ogsteam\Ogspy\Model;
@@ -16,7 +16,7 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 
 class Tokens_Model extends Model_Abstract
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->delete_expired_tokens();
@@ -81,9 +81,7 @@ class Tokens_Model extends Model_Abstract
         $result = $this->db->sql_query($request);
         $tRetour = array();
         if ($this->db->sql_numrows($result) > 0) {
-            echo "retour ";
             while ($row = $this->db->sql_fetch_assoc($result)) {
-                echo "boucle ";
                 $tRetour[$row['name']] = $row;
             }
             return $tRetour;

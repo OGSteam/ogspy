@@ -7,7 +7,7 @@
  * @author Kyser
  * @created 21/07/2006
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04b ($Rev: 7692 $)
  */
 
@@ -514,13 +514,13 @@ function mod_version()
  * @return boolean returns true if the parameter is correctly saved. false in other cases.
  * @api
  */
-function mod_set_option($param, $value, $nom_mod = '')
+function mod_set_option($param, $value, $modName = null)
 {
-    $nom_mod = mod_get_nom();
+    $modName = $modName ?? mod_get_nom();
     if (!check_var($param, "Text")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
-    return (new Mod_Config_Model)->set_mod_config($nom_mod, $param, $value);
+    return (new Mod_Config_Model)->set_mod_config($modName, $param, $value);
 }
 
 /**
@@ -530,13 +530,13 @@ function mod_set_option($param, $value, $nom_mod = '')
  * @return boolean returns true if the parameter is correctly saved. false in other cases.
  * @api
  */
-function mod_del_option($param)
+function mod_del_option($param, $modName = null)
 {
-    $nom_mod = mod_get_nom();
+    $modName = $modName ?? mod_get_nom();
     if (!check_var($param, "Text")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
-    return (new Mod_Config_Model)->delete_mod_config($nom_mod, $param);
+    return (new Mod_Config_Model)->delete_mod_config($modName, $param);
 }
 
 /**
@@ -546,16 +546,14 @@ function mod_del_option($param)
  * @return string Returns the value of the requested parameter
  * @api
  */
-function mod_get_option($param)
+function mod_get_option($param, $modName = null)
 {
-    $nom_mod = mod_get_nom();
+    $modName = $modName ?? mod_get_nom();
     if (!check_var($param, "Text")) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    $retour = (new Mod_Config_Model)->get_mod_config($nom_mod, $param);
-
-    return $retour;
+    return (new Mod_Config_Model)->get_mod_config($modName, $param);
 }
 
 /**
@@ -568,20 +566,19 @@ function mod_get_option($param)
  */
 function mod_get_nom()
 {
-
     global $pub_action, $pub_mod_id;
 
-    $nom_mod = '';
+    $modName = '';
     if ($pub_action == 'mod_install') {
         global $pub_directory;
-        $nom_mod = $pub_directory;
+        $modName = $pub_directory;
     } elseif ($pub_action == 'mod_update' || $pub_action == 'mod_uninstall') {
         $Mod_Model = (new Mod_Model())->find_one_by(array("id" => $pub_mod_id));
-        $nom_mod = $Mod_Model["action"];
+        $modName = $Mod_Model["action"];
     } else {
-        $nom_mod = $pub_action;
+        $modName = $pub_action;
     }
-    return $nom_mod;
+    return $modName;
 }
 
 /**
@@ -589,10 +586,10 @@ function mod_get_nom()
  * @global $db
  * @return boolean Returns true if at least one entry has been deleted. False if nothing has been removed.
  */
-function mod_del_all_option()
+function mod_del_all_option($modName = null)
 {
-    $nom_mod = mod_get_nom();
-    return (new Mod_Config_Model)->delete_mod_config($nom_mod);
+    $modName = $modName ?? mod_get_nom();
+    return (new Mod_Config_Model)->delete_mod_config($modName);
 }
 
 //\\ fonctions utilisable pour les mods //\\

@@ -6,14 +6,19 @@
  * @subpackage install
  * @author Kyser
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04
  */
 
-define("IN_SPYOGAME", true);
-define("UPGRADE_IN_PROGRESS", true);
+if (!defined('IN_SPYOGAME')) {
+    define("IN_SPYOGAME", true);
+}
 
-require_once("../common.php");
+if (!defined('UPGRADE_IN_PROGRESS')) {
+    define("UPGRADE_IN_PROGRESS", true);
+}
+
+require("../common.php");
 
 if (!isset($pub_verbose)) {
     $pub_verbose = true;
@@ -23,7 +28,7 @@ if (!isset($ogspy_version)) {
     require_once("./version.php");
 }
 
-if ($pub_verbose == true) {
+if ($pub_verbose) {
 ?>
 
     <html lang="fr">
@@ -41,19 +46,18 @@ if ($pub_verbose == true) {
 
 // on réinitialise la sequense config
 // evite d utiliser le cache ( qui sera périmé ))
-$request = "SELECT * from " . TABLE_CONFIG;
+$request = "SELECT * FROM " . TABLE_CONFIG;
 $result = $db->sql_query($request);
 while (list($name, $value) = $db->sql_fetch_row($result)) {
     $server_config[$name] = stripslashes($value);
 }
 
 
-$request = "SELECT config_value FROM " . TABLE_CONFIG . " WHERE config_name = 'version'";
+$request = "SELECT `config_value` FROM " . TABLE_CONFIG . " WHERE config_name = 'version'";
 $result = $db->sql_query($request);
 list($ogsversion) = $db->sql_fetch_row($result);
 
 $requests = array();
-$up_to_date = false;
 switch ($ogsversion) {
     case '3.3.6':
 
@@ -79,6 +83,9 @@ switch ($ogsversion) {
 
     case '3.3.7':
         // New Table
+        if (!defined('TABLE_MOD_USER_CFG')) {
+            define("TABLE_MOD_USER_CFG", $table_prefix . "mod_user_config");
+        }
         $requests[] = "CREATE TABLE IF NOT EXISTS `" . TABLE_MOD_USER_CFG . "` (
                         `mod`     VARCHAR(50) NOT NULL,
                         `user_id` INT(11) NOT NULL,
@@ -116,17 +123,14 @@ switch ($ogsversion) {
 
         $requests[] = "ALTER TABLE " . TABLE_MOD . " MODIFY `version` VARCHAR(100) NOT NULL";
         $requests[] = "ALTER TABLE " . TABLE_USER_BUILDING . " MODIFY `boosters` VARCHAR(64) NOT NULL DEFAULT 'm:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0'";
-
-
-        $requests[] = "UPDATE " . TABLE_CONFIG . " SET config_value = '$ogspy_version' WHERE config_name = 'version'";
-        $up_to_date = true;
         //no break pour faire toutes les mises à jour d'un coup !
 
         break;
     default:
-        die("Aucune mise à jour n'est disponible");
+        echo "Aucune mise à jour de base de données trouvée";
 }
 
+$requests[] = "UPDATE " . TABLE_CONFIG . " SET `config_value` = '$ogspy_version' WHERE `config_name` = 'version'";
 
 foreach ($requests as $request) {
     $db->sql_query($request);
@@ -140,14 +144,17 @@ if (count($files) > 0) {
         unlink($filename);
     }
 }
-
+if ($pub_verbose) { //Silent Upgrade
     ?>
-    <h3 align='center'><span style="color: yellow; ">Mise à jour du serveur OGSpy vers la version <?php echo $ogspy_version; ?> réussie</span></h3>
-    <div style="text-align: center;">
-        <br>
-        <b><i>Voulez-vous supprimer le dossier 'install' ?</i></b><br>
-        <br><a href='../index.php'>Oui</a>
-    </div>
+        <h3 align='center'><span style="color: yellow; ">Mise à jour du serveur OGSpy vers la version <?= $ogspy_version ?> réussie</span></h3>
+        <div style="text-align: center;">
+            <br>
+            <b><i>Voulez-vous supprimer le dossier 'install' ?</i></b><br>
+            <br><a href='../index.php'>Oui</a>
+        </div>
     </body>
 
     </html>
+<?php
+}
+?>

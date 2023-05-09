@@ -7,7 +7,7 @@
  * @subpackage Model
  * @author DarkNoon
  * @copyright Copyright &copy; 2016, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.4.0
  */
 
@@ -20,8 +20,8 @@ class Statistics_Model extends Model_Abstract
     public function add_user_connection()
     {
         $request = "UPDATE " . TABLE_STATISTIC .
-            " SET statistic_value = statistic_value + 1";
-        $request .= " WHERE statistic_name = 'connection_server'";
+            " SET `statistic_value` = `statistic_value` + 1";
+        $request .= " WHERE `statistic_name` = 'connection_server'";
         $this->db->sql_query($request);
 
         if ($this->db->sql_affectedrows() == 0) {
@@ -34,7 +34,7 @@ class Statistics_Model extends Model_Abstract
         $name = $this->db->sql_escape_string($name);
 
         $request = "INSERT IGNORE INTO " . TABLE_STATISTIC .
-            " VALUES ('" . $name . "', '1')";
+            " VALUES ('$name', '1')";
         $this->db->sql_query($request);
     }
 
@@ -43,7 +43,7 @@ class Statistics_Model extends Model_Abstract
      */
     public function find()
     {
-        $request = "select statistic_name, statistic_value from " . TABLE_STATISTIC;
+        $request = "SELECT `statistic_name`, `statistic_value` from " . TABLE_STATISTIC;
         $result = $this->db->sql_query($request);
 
         $stats = array();
@@ -58,10 +58,10 @@ class Statistics_Model extends Model_Abstract
     public function get_users_stat_sum()
     {
         $query = 'SELECT
-                SUM(planet_added_web + planet_added_ogs),
-                SUM(spy_added_web + spy_added_ogs),
-                SUM(rank_added_web + rank_added_ogs),
-                SUM(search)
+                SUM(`planet_added_web` + `planet_added_ogs`),
+                SUM(`spy_added_web` + `spy_added_ogs`),
+                SUM(`rank_added_web` + `rank_added_ogs`),
+                SUM(`search`)
               FROM ' . TABLE_USER;
 
         $result = $this->db->sql_query($query);

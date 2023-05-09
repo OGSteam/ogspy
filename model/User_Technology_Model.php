@@ -7,7 +7,7 @@
  * @subpackage Model
  * @author DarkNoon
  * @copyright Copyright &copy; 2016, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.4.0
  */
 
@@ -26,9 +26,9 @@ class User_Technology_Model  extends Model_Abstract
     {
         $user_id = (int)$user_id;
 
-        $request = "SELECT Esp, Ordi, Armes, Bouclier, Protection, NRJ, Hyp, RC, RI, PH, Laser, Ions, Plasma, RRI, Graviton, Astrophysique";
+        $request = "SELECT `Esp`, `Ordi`, `Armes`, `Bouclier`, `Protection`, `NRJ`, `Hyp`, `RC`, `RI`, `PH`, `Laser`, `Ions`, `Plasma`, `RRI`, `Graviton`, `Astrophysique`";
         $request .= " FROM " . TABLE_USER_TECHNOLOGY;
-        $request .= " WHERE user_id = " . $user_id;
+        $request .= " WHERE `user_id` = " . $user_id;
         $result = $this->db->sql_query($request);
         return  $this->db->sql_fetch_assoc($result);
     }

@@ -7,7 +7,7 @@
  * @subpackage Model
  * @author DarkNoon
  * @copyright Copyright &copy; 2016, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
 namespace Ogsteam\Ogspy\Model;
@@ -60,9 +60,9 @@ class Sessions_Model extends Model_Abstract
         $user_ip = (bool)$user_ip;
 
 
-        $request = "UPDATE " . TABLE_SESSIONS . " SET session_user_id = " . $user_id . ", session_lastvisit = " . $lastvisit . " WHERE session_id = '" . $cookie_id . "'";
-        if ($user_ip != False) {
-            $request .= " and session_ip = '" . $user_ip . "'";
+        $request = "UPDATE " . TABLE_SESSIONS . " SET `session_user_id` = " . $user_id . ", `session_lastvisit` = " . $lastvisit . " WHERE `session_id` = '" . $cookie_id . "'";
+        if ($user_ip) {
+            $request .= " and `session_ip` = '" . $user_ip . "'";
         }
         $this->db->sql_query($request);
     }
@@ -79,7 +79,7 @@ class Sessions_Model extends Model_Abstract
         $request = "SELECT `session_id` FROM " . TABLE_SESSIONS . " LEFT JOIN " . TABLE_USER . " ON `session_user_id` = `user_id`" . " WHERE `session_id` = '" . $cookie_id . "'" . " and `disable_ip_check` = '1'";
         $result = $this->db->sql_query($request);
         if ($this->db->sql_numrows($result) > 0) {
-            $request = "update " . TABLE_SESSIONS . " set session_ip = '" . $user_ip . "' where session_id = '" . $cookie_id . "'";
+            $request = "UPDATE " . TABLE_SESSIONS . " SET `session_ip` = '" . $user_ip . "' WHERE `session_id` = '" . $cookie_id . "'";
             $this->db->sql_query($request, true, false);
             return true;
         }
@@ -168,7 +168,7 @@ class Sessions_Model extends Model_Abstract
      */
     public function clean_expired_sessions()
     {
-        $request = "DELETE FROM " . TABLE_SESSIONS . " WHERE session_expire < " . time();
+        $request = "DELETE FROM " . TABLE_SESSIONS . " WHERE `session_expire` < " . time();
         $this->db->sql_query($request, true, false);
     }
     /**
@@ -184,9 +184,9 @@ class Sessions_Model extends Model_Abstract
         $request = "SELECT `user_id`, `user_name`, `user_admin`, `user_coadmin`, `user_email`, `user_galaxy`, `user_system`, `session_lastvisit`, `user_stat_name`, ";
         $request .= "`management_user`, `management_ranking`, `disable_ip_check`, `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate` , `user_class`, `user_pwd_change`, `user_email_valid` ";
         $request .= " FROM " . TABLE_USER . " u, " . TABLE_SESSIONS . " s";
-        $request .= " WHERE u.user_id = s.session_user_id";
-        $request .= " AND session_id = '" . $cookie_id . "'";
-        $request .= " AND session_ip = '" . $user_ip . "'";
+        $request .= " WHERE u.`user_id` = s.`session_user_id`";
+        $request .= " AND `session_id` = '" . $cookie_id . "'";
+        $request .= " AND `session_ip` = '" . $user_ip . "'";
         $result = $this->db->sql_query($request);
 
         if ($this->db->sql_numrows($result) == 1) {
@@ -219,7 +219,7 @@ class Sessions_Model extends Model_Abstract
      */
     public function count_online()
     {
-        $request = "SELECT COUNT(session_ip) FROM " . TABLE_SESSIONS;
+        $request = "SELECT COUNT(`session_ip`) FROM " . TABLE_SESSIONS;
         $connectes_req = $this->db->sql_query($request);
         list($connectes) = $this->db->sql_fetch_row($connectes_req);
         return $connectes;

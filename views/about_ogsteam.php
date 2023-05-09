@@ -8,7 +8,7 @@
  * @author Kyser
  * @created 17/01/2006
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
 if (!defined('IN_SPYOGAME')) {
@@ -25,7 +25,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/default_avatar.svg" alt="Kyser Picture" width="40" title="Kyser">
+            <img src="images/avatars/default_avatar.png" alt="Kyser Picture" width="100" title="Kyser">
         </td>
         <td class="l">
             &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Kyser</span></a><br>
@@ -34,7 +34,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/default_avatar.svg" alt="Rica Picture" width="40" title="Rica">
+            <img src="images/avatars/default_avatar.png" alt="Rica Picture" width="100" title="Rica">
         </td>
         <td class="l">
             &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Rica</span></a><br>
@@ -44,7 +44,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/ogsteam_avatar_aeris.png" alt="Aeris Picture" width="80" title="Aeris">
+            <img src="images/avatars/ogsteam_avatar_aeris.png" alt="Aeris Picture" width="100" title="Aeris">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Aéris</span></strong><br />
@@ -54,7 +54,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/default_avatar.svg" alt="Capi Picture" width="40" title="Capi">
+            <img src="images/avatars/default_avatar.png" alt="Capi Picture" width="100" title="Capi">
         </td>
         <td class="l">
             &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Capi</span></a><br />
@@ -65,7 +65,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/default_avatar.svg" alt="Chris Alys Picture" width="40" title="Chris Alys">
+            <img src="images/avatars/default_avatar.png" alt="Chris Alys Picture" width="100" title="Chris Alys">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Chris Alys</span></strong><br />
@@ -75,7 +75,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/ogsteam_avatar_darknoon.png" alt="DarkNoon Picture" width="80" title="DarkNoon">
+            <img src="images/avatars/ogsteam_avatar_darknoon.png" alt="DarkNoon Picture" width="100" title="DarkNoon">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">DarkNoon</span></strong>
@@ -88,7 +88,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/ogsteam_avatar_jedinight.png" alt="Jedinight Picture" width="80" title="Jedinight">
+            <img src="images/avatars/ogsteam_avatar_jedinight.png" alt="Jedinight Picture" width="100" title="Jedinight">
         </td>
         <td class="l">
             <strong><span style="color: Yellow; font-size: x-small; ">Jedinight</span></strong>
@@ -101,7 +101,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/ogsteam_avatar_machine.jpg" alt="Machine Picture" width="80" title="Machine">
+            <img src="images/avatars/ogsteam_avatar_machine.jpg" alt="Machine Picture" width="100" title="Machine">
         </td>
         <td class="l">
             <strong><span style="color: Yellow; font-size: x-small; ">Machine</span></strong><br />
@@ -111,7 +111,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/default_avatar.svg" alt="Ninety Picture" width="40" title="Ninety">
+            <img src="images/avatars/default_avatar.png" alt="Ninety Picture" width="100" title="Ninety">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Ninety</span></strong><br />
@@ -121,7 +121,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/default_avatar.svg" alt="Shad Picture" width="40" title="Shad">
+            <img src="images/avatars/default_avatar.png" alt="Shad Picture" width="100" title="Shad">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Shad</span></strong><br />
@@ -131,7 +131,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/default_avatar.svg" alt="SuperBox Picture" width="40" title="Superbox">
+            <img src="images/avatars/default_avatar.png" alt="SuperBox Picture" width="100" title="Superbox">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Superbox</span></strong><br />
@@ -141,7 +141,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/ogsteam_avatar_xaviernuma.jpg" alt="XNurma Picture" width="80" title="Xaviernuma">
+            <img src="images/avatars/ogsteam_avatar_xaviernuma.jpg" alt="XNurma Picture" width="100" title="Xaviernuma">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Xaviernuma</span></strong><br />
@@ -151,7 +151,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="images/avatars/ogsteam_avatar_pitch314.jpg" alt="pitch314 Picture" width="80" title="pitch314">
+            <img src="images/avatars/ogsteam_avatar_pitch314.jpg" alt="pitch314 Picture" width="100" title="pitch314">
         </td>
         <td class="l">
             &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Pitch314</span></strong><br />
@@ -164,7 +164,7 @@ require_once("views/page_header.php");
     </tr>
     <tr>
         <td class="c" width="100" height="100" align="center" valign="middle">
-            <img src="skin/OGSpy_skin/gfx/ogame-produktion.jpg" alt="Test Team Picture" width="80" title="Testeurs">
+            <img src="images/avatars/default_avatar.png" alt="Test Team Picture" width="100" title="Testeurs">
         </td>
         <td class="l">
             <strong>
@@ -176,6 +176,8 @@ require_once("views/page_header.php");
                 <li>Anubys</li>
                 <li>Néo32</li>
                 <li>Lorenzo</li>
+                <li>EVH</li>
+                <li>Dardarmotus</li>
             </ul>
         </td>
     </tr>
@@ -183,4 +185,3 @@ require_once("views/page_header.php");
 
 <?php
 require_once("views/page_tail.php");
-?>

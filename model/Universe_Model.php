@@ -7,7 +7,7 @@
  * @subpackage Model
  * @author Itori
  * @copyright Copyright &copy; 2016, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.4.0
  */
 
@@ -85,7 +85,7 @@ class Universe_Model extends Model_Abstract
         $system_down = (int)$system_down;
         $system_up = (int)$system_up;
 
-        $request = "SELECT `galaxy`, `system`, `row`, `name`, `ally`, `player`, `moon`, `phalanx`, `gate`, `last_update_moon`, `status`, last_update, user_name
+        $request = "SELECT `galaxy`, `system`, `row`, `name`, `ally`, `player`, `moon`, `phalanx`, `gate`, `last_update_moon`, `status`, `last_update`, `user_name`
                     FROM " . TABLE_UNIVERSE . "
                         LEFT JOIN " . TABLE_USER . "
                             ON `user_id` = `last_update_user_id`
@@ -352,20 +352,20 @@ class Universe_Model extends Model_Abstract
         $moon = 0;
         if ($forMoon) {
             $field = "last_update_moon";
-            $row_field = ", row";
+            $row_field = ", `row`";
             $moon = 1;
         }
 
-        $request = "select distinct galaxy, system" . $row_field . " from " . TABLE_UNIVERSE . " where moon = '" . $moon . "' and " . $field . " between " . $system_up . " and " . $system_down;
+        $request = "SELECT DISTINCT `galaxy`, `system`" . $row_field . " FROM " . TABLE_UNIVERSE . " WHERE moon = '" . $moon . "' AND " . $field . " BETWEEN " . $system_up . " AND " . $system_down;
         if ($galaxy != 0) {
-            $request .= " and galaxy = " . (int)$galaxy;
+            $request .= " AND `galaxy` = " . (int)$galaxy;
         }
-        $request .= " order by galaxy, system, row limit 0, 51";
+        $request .= " ORDER BY `galaxy`, `system`, `row` LIMIT 0, 51";
         $result = $this->db->sql_query($request);
 
 
         while ($row = $this->db->sql_fetch_assoc($result)) {
-            $request = "select min(" . $field . ") from " . TABLE_UNIVERSE . " where galaxy = " . $row["galaxy"] . " and system = " . $row["system"];
+            $request = "SELECT MIN(" . $field . ") FROM " . TABLE_UNIVERSE . " WHERE `galaxy` = " . $row["galaxy"] . " AND `system` = " . $row["system"];
             $result2 = $this->db->sql_query($request);
             list($last_update) = $this->db->sql_fetch_row($result2);
             $row["last_update"] = $last_update;

@@ -4,8 +4,8 @@
  * @package OGSpy
  * @subpackage i18n
  * @author DarkNoon
- * @copyright Copyright &copy; 2016, http://ogsteam.fr/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @copyright Copyright &copy; 2016, https://ogsteam.eu/
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.0
  */
 
@@ -18,7 +18,7 @@ $lang['INSTALL_PROJECT_L3'] = "Skup svih slobodnih koordinata prema nekoliko kri
 $lang['INSTALL_PROJECT_L4'] = "Skup svih planeta igrača ili nekog saveza. Vitalne informacije u ratnim vremenima.";
 $lang['INSTALL_PROJECT_L5'] = "Mogućnost proširenja zahvaljujući modovima";
 $lang['INSTALL_PROJECT_L6'] = "Itd ...";
-$lang['INSTALL_FORUM'] = "Za više informacija posjetite službeni forum: https://www.ogsteam.fr/";
+$lang['INSTALL_FORUM'] = "Za više informacija posjetite službeni forum: https://www.ogsteam.eu/";
 
 $lang['INSTALL_PHPERROR'] = "PHP verzija nije dovoljna";
 $lang['INSTALL_PHP_ADVISE'] = "Da bi mogli izvršiti potpunu instalaciju OGSpya, vaš hosting mora imati najmanje verziju 7 PHPa. ";
@@ -42,7 +42,6 @@ $lang['INSTALL_SQL_CONNECTION_ERROR'] = "Nije se moguće spojiti na bazu";
 $lang['INSTALL_SUCCESS'] = "Instalacija OGSpy servera izvršena uspješno!";
 $lang['INSTALL_SUCCESS_REMOVE_FOLDER'] = "Ne zaboravite obrisati folder \"install\"";
 $lang['INSTALL_SUCCESS_BACK'] = "Natrag";
-$lang['INSTALL_IDFILE_ERROR'] = "Instalacijska greška, nemoguće je kreirati konfiguracijski fajl 'config/id.php'";
 $lang['INSTALL_FORM_ERROR_PREFIX'] = "Znakovi korišteni za prefiks baze podataka su neispravni.";
 $lang['INSTALL_FORM_ERROR_USER'] = "Znakovi korišteni za korisničko ime i lozinku su neispravni.";
 $lang['INSTALL_FORM_ERROR_GALAXY'] = "Niste unijeli ispravne vrijednosti za brojeve galaksija i (ili) sistema";

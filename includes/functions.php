@@ -5,8 +5,8 @@
  * @package OGSpy
  * @subpackage Common
  * @author Kyser
- * @copyright Copyright &copy; 2012, http://www.ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @copyright Copyright &copy; 2012, https://www.ogsteam.eu/
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.1.1 ($Rev: 7752 $)
  */
 if (!defined('IN_SPYOGAME')) {
@@ -20,6 +20,8 @@ use Ogsteam\Ogspy\Model\User_Building_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\User_Favorites_Model;
 
+
+class FileAccessException extends Exception {}
 
 /**
  * URL Redirection
@@ -39,26 +41,36 @@ function redirection($url)
  * Write a text or a table in a file
  * @param string $file Filename
  * @param string $mode File Opening Mode
- * @param string $text String or table to write
+ * @param string|Array $content String or table to write
  * @return boolean false if failed
  */
-function write_file($file, $mode, $text)
+function write_file($filename, $mode, $content)
 {
-    if ($fp = fopen($file, $mode)) {
-        if (is_array($text)) {
-            foreach ($text as $t) {
-                fwrite($fp, rtrim($t));
-                fwrite($fp, "\r\n");
-            }
-        } else {
-            fwrite($fp, $text);
-            fwrite($fp, "\r\n");
-        }
-        fclose($fp);
-        return true;
-    } else {
-        return false;
+    // If the content is an array, join it into a single string with newlines
+    if (is_array($content)) {
+        $content = implode("\n", $content);
     }
+
+    if (!is_writable(dirname($filename))) {
+        throw new FileAccessException("Parent directory is not writable for file $filename");
+    }
+
+    // Open the file with the specified mode
+    $file = fopen($filename, $mode);
+
+    // Check if the file was successfully opened
+    if ($file === false) {
+        throw new FileAccessException("Failed to create the file $filename");
+    }
+
+    // Write the content to the file
+    fwrite($file, $content . "\n");
+
+    // Close the file
+    fclose($file);
+
+    // Return true to indicate success
+    return true;
 }
 
 /**
@@ -68,23 +80,34 @@ function write_file($file, $mode, $text)
  * @param string $text String or table to write
  * @return boolean false if failed
  */
-function write_file_gz($file, $mode, $text)
+function write_file_gz($file, $mode, $content)
 {
-    if ($fp = gzopen($file . ".gz", $mode)) {
-        if (is_array($text)) {
-            foreach ($text as $t) {
-                gzwrite($fp, rtrim($t));
-                gzwrite($fp, "\r\n");
-            }
-        } else {
-            gzwrite($fp, $text);
-            gzwrite($fp, "\r\n");
-        }
-        gzclose($fp);
-        return true;
-    } else {
+    if (!is_writable($file . ".gz")) {
         return false;
     }
+
+    // Open the file with the specified mode
+    $file = gzopen($file . ".gz", $mode);
+
+   // Check if the file was successfully opened
+   if ($file === false) {
+    return false;
+    }
+
+    // If the content is an array, join it into a single string with newlines
+    if (is_array($content)) {
+        $content = implode("\n", $content);
+    }
+
+    // Write the content to the file
+    gzwrite($file, $content . "\n");
+
+    // Close the file
+    gzclose($file);
+
+    // Return true to indicate success
+    return true;
+
 }
 
 /**
@@ -1311,10 +1334,8 @@ function generate_key()
     $key_php[] = '$serveur_path = "' . $path . '";';
     $key_php[] = '';
     $key_php[] = 'define("OGSPY_KEY", TRUE);';
-    $key_php[] = '?>';
-    if (!write_file("./parameters/key.php", "w", $key_php)) {
-        die("Echec , impossible de générer le fichier 'parameters/key.php'");
-    }
+
+    write_file("./parameters/key.php", "w", $key_php);
 }
 
 /********************************************************************************/
@@ -1339,7 +1360,7 @@ function generate_key()
 */
 function booster_lire_bdd($id_player, $id_planet)
 {
-    $result = NULL;
+    $result = null;
     $User_Building_Model = new User_Building_Model();
     $tBoosters = $User_Building_Model->get_all_booster_player($id_player);
 
@@ -1582,7 +1603,7 @@ function booster_is_uuid($uuid)
 
 function booster_uuid($boosters, $uuid = '', $date = 0)
 {
-    if ($boosters == NULL || $uuid == '') {
+    if ($boosters == null || $uuid == '') {
         $boosters = booster_decode();
         return $boosters;
     } else {
@@ -1595,12 +1616,12 @@ function booster_uuid($boosters, $uuid = '', $date = 0)
             } elseif ($objet_uuid[$uuid][0][0] == 'e') { //1er lettre de extension
                 $boosters[$objet_uuid[$uuid][0]] = $objet_uuid[$uuid][1];
             } else {
-                return NULL;
+                return null;
             } //Ne devrait jamais arriver si les tableaux dans booster_objets_tab() sont bien construit
             return $boosters;
         }
     }
-    return NULL;
+    return null;
 }
 
 /**
@@ -1630,7 +1651,7 @@ function booster_lire_date($str)
  * @param null $boosters
  * @return  array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
  */
-function booster_decode($str = NULL, $boosters = NULL)
+function booster_decode($str = null, $boosters = null)
 {
     $result = array(
         'booster_m_val' => 0, 'booster_m_date' => 0,
@@ -1672,7 +1693,7 @@ function booster_decode($str = NULL, $boosters = NULL)
  * @b tableau associatif des infos array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date','extention_p', 'extention_m')
  * @return objet sous format string de stockage ("m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0 si pas d'argument)
  */
-function booster_encode($b = NULL)
+function booster_encode($b = null)
 {
     $str = '';
     if ($b) {

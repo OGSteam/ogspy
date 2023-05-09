@@ -6,7 +6,7 @@
  * @subpackage install
  * @author Kyser
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.4
  */
 ?>
@@ -27,8 +27,8 @@
     define("IN_SPYOGAME", true);
     define("INSTALL_IN_PROGRESS", true);
 
-    @chmod("../parameters", 0777);
-    @chmod("../journal", 0777);
+    @chmod("../parameters", 0740);
+    @chmod("../journal", 0740);
     @chmod("../mod", 0777);
     @chmod("../mod/autoupdate/tmp", 0777);
 
@@ -126,11 +126,11 @@
 
 
         $sql_query = explode(";", $sql_query);
-        $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('num_of_galaxies','$num_of_galaxies')";
-        $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('num_of_systems','$num_of_systems')";
-        $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('speed_uni','$uni_speed')";
-        $sql_query[] = "INSERT INTO " . $sgbd_tableprefix . "config (config_name, config_value) VALUES ('version','$ogspy_version')";
-        $sql_query[] = "ALTER DATABASE " . $sgbd_dbname . " charset=utf8"; /*Passage de interclassement en utf8*/
+        $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('num_of_galaxies','$num_of_galaxies')";
+        $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('num_of_systems','$num_of_systems')";
+        $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('speed_uni','$uni_speed')";
+        $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('version','$ogspy_version')";
+        $sql_query[] = "ALTER DATABASE `$sgbd_dbname` CHARACTER SET='utf8'  COLLATE='utf8_bin'"; /*Passage de interclassement en utf8*/
 
         foreach ($sql_query as $request) {
             if (trim($request) != "") {
@@ -212,9 +212,7 @@
         $id_php[] = '';
         $id_php[] = 'define("OGSPY_INSTALLED", TRUE);';
 
-        if (!write_file("../parameters/id.php", "w", $id_php)) {
-            die($lang['INSTALL_IDFILE_ERROR']);
-        }
+        write_file("../parameters/id.php", "w", $id_php);
     }
 
     if (

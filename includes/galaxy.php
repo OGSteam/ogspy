@@ -7,7 +7,7 @@
  * @subpackage galaxy
  * @author Kyser
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.05 ($Rev: 7699 $)
  */
 
@@ -551,7 +551,7 @@ function galaxy_reportspy_show()
     $reports = array();
     foreach ($spy_list as $row) {
         $data = UNparseRE($row["id_spy"]);
-        $reports[] = array("spy_id" => $row["id_spy"], "sender" => $row["user_name"], "data" => $data, "moon" => $row['is_moon'], "dateRE" => $row['dateRE']);
+        $reports[] = array("spy_id" => $row["id_spy"], "sender" => $row["user_name"], "data" => $data, "moon" => $row['is_moon'] ?? 0 , "dateRE" => $row['dateRE']);
     }
     return $reports;
 }
@@ -1724,7 +1724,7 @@ function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_
     $tooltip .= '<tr><td class=\'c\' width=\'70\'>' . $lang['GALAXY_MIP_AVAILABLE_MISSILES'] . ' : </td><th width=\'30\'>' . $missil_dispo . '</th></tr>';
     $tooltip .= '</table>';
     $tooltip = htmlentities($tooltip);
-    
+
     $door = '<a id="linkdoor" href="?action=galaxy&galaxy=' . $galaxie_missil . '&system=' . $sysSol_missil . '"';
     //$door .= ' onmouseover="this.T_WIDTH=260;this.T_TEMP=15000;return escape(' . $tooltip . ')"';
     $total_missil += (int)$missil_dispo;

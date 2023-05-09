@@ -6,7 +6,7 @@
  * @subpackage Log
  * @author Kyser
  * @copyright Copyright &copy; 2012, https://www.ogsteam.eu/
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.1.1 ($Rev: 7690 $)
  */
 
@@ -335,7 +335,7 @@ function log_($parameter, $option = 0)
     }
 
     $fichier = "log_" . date("ymd") . '.log';
-    $line = "/*" . date("d/m/Y H:i") . '*/ ' . $line;
+    $line = date("d/m/Y H:i:s") . ' - ' . $line;
     write_file(PATH_LOG_TODAY . $fichier, "a", $line);
 }
 
