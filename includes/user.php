@@ -957,7 +957,15 @@ function user_get_empire($user_id)
     }
 
     $user_technology = (new User_Technology_Model())->select_user_technologies($user_id);
-
+    $technology_list = array("Esp","Ordi","Armes","Bouclier","Protection","NRJ","Hyp","RC","RI","PH","Laser","Ions","Plasma","RRI","Graviton","Astrophysique");
+    foreach ($technology_list as $technologyName) {
+         if(!isset($user_technology[$technologyName]))
+         {
+             $user_technology[$technologyName]=""; // alimentation des technology tel qu'attendu dans page empire ("" et non 0)
+         }
+     }
+    
+    
     $tDefenseList = (new User_Defense_Model())->select_user_defense($user_id);
     //$user_defence = array_fill(1, $nb_planete_lune, $defence);
     foreach ($tDefenseList as $tmpDefense) {

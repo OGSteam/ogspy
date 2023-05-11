@@ -24,6 +24,7 @@ $user_empire = user_get_empire($user_data['user_id']);
 $user_building   = $user_empire['building'];
 $user_defence    = $user_empire['defence'];
 $user_technology = $user_empire['technology'];
+
 $nb_planete      = find_nb_planete_user($user_data['user_id']);
 
 if (!isset($pub_view)) {
