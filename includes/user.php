@@ -840,7 +840,7 @@ function user_set_all_empire_resync_id()
 
     // les planetes
     $planet_position = $User_Building_Model->get_planet_list($user_data["user_id"]);
-    // les lunes
+    // les lunes   
     $moon_position = $User_Building_Model->get_moon_list($user_data["user_id"]);
 
 
@@ -1034,10 +1034,13 @@ function user_del_building()
     if ($iNBPlanet == 0) {
         (new User_Technology_Model())->delete_user_technologies($user_data["user_id"]);
     }
-
+    
+    if ($iNBPlanet != 0) {
     // remise en ordre des planetes :
-    user_set_all_empire_resync_id();
-
+    //uniquement s'il en reste
+    user_set_all_empire_resync_id(); 
+        
+    }
     redirection("index.php?action=home&subaction=empire&view=" . $pub_view);
 }
 
