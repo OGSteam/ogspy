@@ -16,16 +16,24 @@ session_start();
 define("IN_SPYOGAME", true);
 
 /**
+ * Repère de début de traitement par OGSpy
+ * @name $php_start
+ */
+$php_start = microtime(true);
+
+/**
  * Tout les includes se font à partir de là
  */
 require_once("common.php");
 
 /**
- * Repère de début de traitement par OGSpy
- * @name $php_start
+ * Utilisation de la class benchmark
+ * @name $benchogspy
  */
-$php_start = benchmark();
-$sql_timing = 0;
+$benchogspy = new Ogsteam\Ogspy\Helper\Benchmark_Helper('ogspy');
+$benchogspy->addCustomBench($php_start,microtime(true),"initialisation Ogspy/include" ); // Ajout du temps d'execution include common
+$benchogspy->start();
+//$benchSQL pour temps sql
 
 /**
  * @global string $pub_action

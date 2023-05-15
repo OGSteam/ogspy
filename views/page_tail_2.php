@@ -15,12 +15,16 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
+use Ogsteam\Ogspy\Helper\Benchmark_Helper;
 
-
-$php_end = benchmark();
-$php_timing = $php_end - $php_start - $sql_timing;
 $db->sql_close(); // fermeture de la connexion à la base de données
+$benchogspy->stop("fin");// Arret calcul temps
+
+$ogspy_timing = $benchogspy->getAllElapsed(); // temps total
+$sql_timing = $benchSQL->getAllElapsed(); //temps sql
+$php_timing = $ogspy_timing - $sql_timing ; // delta => temps php
 
 ?>
 </td>
