@@ -98,9 +98,10 @@ class sql_db
 
     private function __construct($sqlserver, $sqluser, $sqlpassword, $database)
     {
-        global $sql_timing;
-        $sql_start = benchmark();
-
+        global $benchSQL;
+        $benchSQL = new Ogsteam\Ogspy\Helper\Benchmark_Helper('SQL');
+        $benchSQL->start();
+        
         $this->user = $sqluser;
         $this->password = $sqlpassword;
         $this->server = $sqlserver;
@@ -115,7 +116,7 @@ class sql_db
         if (!$this->db_connect_id->set_charset("utf8")) {
             throw new ErrorException("Erreur lors du chargement du jeu de caractères utf8 : " . $this->db_connect_id->error);
         }
-        $sql_timing += benchmark() - $sql_start;
+        $benchSQL->stop("initialistion SQL");
     }
 
     /**
@@ -145,10 +146,10 @@ class sql_db
      */
     public function sql_query($query = "")
     {
-        global $sql_timing, $server_config;
-
-        $sql_start = benchmark();
-
+        global $server_config;
+        global $benchSQL;
+        $benchSQL->start();
+        
         $this->last_query = $query;
         $this->result = $this->db_connect_id->query($query);
 
@@ -159,8 +160,7 @@ class sql_db
             write_file(PATH_LOG_TODAY . $fichier, 'a', $ligne);
         }
 
-        $sql_timing += benchmark() - $sql_start;
-
+        $benchSQL->stop("sql_query ".$this->nb_requete." ");
         $this->nb_requete += 1;
         return $this->result;
     }

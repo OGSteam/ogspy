@@ -1,5 +1,4 @@
 <?php
-
 /**
  * HTML Footer
  * @package OGSpy
@@ -15,12 +14,19 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
+use Ogsteam\Ogspy\Helper\Benchmark_Helper;
 
-$php_end = benchmark();
-$php_timing = $php_end - $php_start - $sql_timing;
 $nb_requete = $db->nb_requete;
 $nb_users = user_get_nb_active_users();
 $db->sql_close(); // fermeture de la connexion à la base de données
+$benchogspy->stop("fin");// Arret calcul temps
+
+$ogspy_timing = $benchogspy->getAllElapsed(); // temps total
+$sql_timing = $benchSQL->getAllElapsed(); //temps sql
+$php_timing = $ogspy_timing - $sql_timing ; // delta => temps php
+
+
+
 ?>
 </td>
 </tr>
@@ -55,7 +61,9 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
                 [<?php echo ($nb_requete . " " . $lang['FOOTER_QUERY'] . (($nb_requete > 1) ? "s" : "")); ?>]
             </td>
         </tr>
+
     </table>
+
 </div>
 <?php echo (new ToolTip_Helper())->GetHTMLHideContent(); ?>
 </body>
