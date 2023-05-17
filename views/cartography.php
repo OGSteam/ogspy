@@ -48,105 +48,106 @@ foreach ($ally_list as $ally_name) {
 
 require_once("views/page_header.php");
 ?>
+<div class="page_cartography">
+    <form method="POST" action="index.php?action=cartography">
+        <table>
+            <tr>
+                <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
+                    echo "<td class='c' align='center' colspan='2' width='300'><font color='" . $color_ally[$i - 1] . "'>" . $lang['CARTO_ALLY'] . $i . "</font></td>";
+                }
+                ?>
+            </tr>
+            <tr>
+                <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
+                    echo "<th width='125'><input type='text' name='select_ally_[" . $i . "]' onkeyup=\"autoComplete(this,this.form.elements['ally_[" . $i . "]'],'text',false)\"></th>";
+                    echo "<th width='175'><select name='ally_[" . $i . "]'>" . $options_[$i] . "</select></th>";
+                }
+                ?>
+            </tr>
+            <tr>
+                <td class="c" colspan="<?php echo $nb_colonnes_ally * 2; ?>" align="center"><input type="submit" value="<?php echo ($lang['CARTO_DISPLAYPOSITIONS']); ?>">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br />
+    <table border='1'>
+        <?php
+        do {
+            $galaxy_up = $galaxy_down + $galaxy_step;
+        ?>
+            <tr>
+                <td class="c" width="45">&nbsp;</td>
 
-<form method="POST" action="index.php?action=cartography">
-    <table>
-        <tr>
-            <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
-                echo "<td class='c' align='center' colspan='2' width='300'><font color='" . $color_ally[$i - 1] . "'>" . $lang['CARTO_ALLY'] . $i . "</font></td>";
+                <?php
+                if ($galaxy > intval($server_config['num_of_galaxies'])) {
+                    $galaxy_up = intval($server_config['num_of_galaxies']);
+                }
+                for ($i = $galaxy_down; $i < $galaxy_up; $i++) {
+                    echo "<td class='c' width='60' colspan=" . $nb_colonnes_ally . ">";
+                    if ($i <= intval($server_config['num_of_galaxies'])) {
+                        echo "G$i";
+                    }
+                    echo "</td>";
+                }
+                ?>
+
+                <td class="c" width="45">&nbsp;</td>
+            </tr>
+        <?php
+            for ($system = 1; $system <= intval($server_config['num_of_systems']); $system = $system + $step) {
+                $up = $system + $step - 1;
+                if ($up > intval($server_config['num_of_systems'])) {
+                    $up = intval($server_config['num_of_systems']);
+                }
+
+                echo "<tr>" . "\n";
+                echo "\t" . "<td class='c' align='center' nowrap>" . $system . " - " . $up . "</td>";
+                for ($galaxy = $galaxy_down; $galaxy < $galaxy_up; $galaxy++) {
+                    for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
+                        $nb_player[$i - 1] = "&nbsp;";
+                        $tooltip[$i - 1] = "";
+                    }
+                    $i = 0;
+                    foreach ($position as $ally_name) {
+                        if ($galaxy_ally_position[$ally_name][$galaxy][$system]["planet"] > 0) {
+                            $tooltip[$i] = "<table width=\'200\'>";
+                            $tooltip[$i] .= "<tr><td class=\'c\' colspan=\'2\' align=\'center\'>" . $lang['CARTO_PLAYER_POSITIONS'] . "</td></tr>";
+                            $last_player = "";
+                            foreach ($galaxy_ally_position[$ally_name][$galaxy][$system]["population"] as $value) {
+                                $player = "";
+                                if ($last_player != $value["player"]) {
+                                    $player = "<a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $value["player"] . "&strict=on\">" . $value["player"] . "</a>";
+                                }
+                                $row = "<a href=\"index.php?action=galaxy&amp;galaxy=" . $value["galaxy"] . "&system=" . $value["system"] . "\">" . $value["galaxy"] . ":" . $value["system"] . ":" . $value["row"] . "</a>";
+
+                                $tooltip[$i] .= "<tr><td class=\'c\' align=\'center\'>" . $player . "</td><th>" . $row . "</th></tr>";
+                                $last_player = $value["player"];
+                            }
+                            $tooltip[$i] .= "</table>";
+                            $ToolTip_Helper->addTooltip("ttp_cartographie_" . $value["player"] . "_" . $TtlCounter,  htmlentities($tooltip[$i]));
+                            $tooltip[$i] = $ToolTip_Helper->GetHTMLClassContent();
+                            $TtlCounter++;
+
+                            $nb_player[$i] = $galaxy_ally_position[$ally_name][$galaxy][$system]["planet"];
+                        }
+                        $i++;
+                    }
+                    for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
+                        echo "\t" . "<th width='20'><a style='cursor:pointer'" . $tooltip[$i - 1] . "><font color='" . $color_ally[$i - 1] . "'>" . $nb_player[$i - 1] . "</font></a></th>" . "\n";
+                    }
+                }
+                echo "\t" . "<td class='c' align='center' nowrap>" . $system . " - " . $up . "</td>";
+                echo "</tr>" . "\n";
             }
-            ?>
-        </tr>
+            $galaxy_down = $galaxy_up;
+        } while ($galaxy_up < intval($server_config['num_of_galaxies']));
+        ?>
         <tr>
-            <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
-                echo "<th width='125'><input type='text' name='select_ally_[" . $i . "]' onkeyup=\"autoComplete(this,this.form.elements['ally_[" . $i . "]'],'text',false)\"></th>";
-                echo "<th width='175'><select name='ally_[" . $i . "]'>" . $options_[$i] . "</select></th>";
-            }
-            ?>
-        </tr>
-        <tr>
-            <td class="c" colspan="<?php echo $nb_colonnes_ally * 2; ?>" align="center"><input type="submit" value="<?php echo ($lang['CARTO_DISPLAYPOSITIONS']); ?>">
-            </td>
+            <td class="c" colspan="<?php echo $galaxy_step * $nb_colonnes_ally + 2; ?>">&nbsp;</td>
         </tr>
     </table>
-</form>
-<br />
-<table border='1'>
-    <?php
-    do {
-        $galaxy_up = $galaxy_down + $galaxy_step;
-    ?>
-        <tr>
-            <td class="c" width="45">&nbsp;</td>
-
-            <?php
-            if ($galaxy > intval($server_config['num_of_galaxies'])) {
-                $galaxy_up = intval($server_config['num_of_galaxies']);
-            }
-            for ($i = $galaxy_down; $i < $galaxy_up; $i++) {
-                echo "<td class='c' width='60' colspan=" . $nb_colonnes_ally . ">";
-                if ($i <= intval($server_config['num_of_galaxies'])) {
-                    echo "G$i";
-                }
-                echo "</td>";
-            }
-            ?>
-
-            <td class="c" width="45">&nbsp;</td>
-        </tr>
-    <?php
-        for ($system = 1; $system <= intval($server_config['num_of_systems']); $system = $system + $step) {
-            $up = $system + $step - 1;
-            if ($up > intval($server_config['num_of_systems'])) {
-                $up = intval($server_config['num_of_systems']);
-            }
-
-            echo "<tr>" . "\n";
-            echo "\t" . "<td class='c' align='center' nowrap>" . $system . " - " . $up . "</td>";
-            for ($galaxy = $galaxy_down; $galaxy < $galaxy_up; $galaxy++) {
-                for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
-                    $nb_player[$i - 1] = "&nbsp;";
-                    $tooltip[$i - 1] = "";
-                }
-                $i = 0;
-                foreach ($position as $ally_name) {
-                    if ($galaxy_ally_position[$ally_name][$galaxy][$system]["planet"] > 0) {
-                        $tooltip[$i] = "<table width=\'200\'>";
-                        $tooltip[$i] .= "<tr><td class=\'c\' colspan=\'2\' align=\'center\'>" . $lang['CARTO_PLAYER_POSITIONS'] . "</td></tr>";
-                        $last_player = "";
-                        foreach ($galaxy_ally_position[$ally_name][$galaxy][$system]["population"] as $value) {
-                            $player = "";
-                            if ($last_player != $value["player"]) {
-                                $player = "<a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $value["player"] . "&strict=on\">" . $value["player"] . "</a>";
-                            }
-                            $row = "<a href=\"index.php?action=galaxy&amp;galaxy=" . $value["galaxy"] . "&system=" . $value["system"] . "\">" . $value["galaxy"] . ":" . $value["system"] . ":" . $value["row"] . "</a>";
-
-                            $tooltip[$i] .= "<tr><td class=\'c\' align=\'center\'>" . $player . "</td><th>" . $row . "</th></tr>";
-                            $last_player = $value["player"];
-                        }
-                        $tooltip[$i] .= "</table>";
-                        $ToolTip_Helper->addTooltip("ttp_cartographie_" . $value["player"] . "_" . $TtlCounter,  htmlentities($tooltip[$i]));
-                        $tooltip[$i] = $ToolTip_Helper->GetHTMLClassContent();
-                        $TtlCounter++;
-
-                        $nb_player[$i] = $galaxy_ally_position[$ally_name][$galaxy][$system]["planet"];
-                    }
-                    $i++;
-                }
-                for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
-                    echo "\t" . "<th width='20'><a style='cursor:pointer'" . $tooltip[$i - 1] . "><font color='" . $color_ally[$i - 1] . "'>" . $nb_player[$i - 1] . "</font></a></th>" . "\n";
-                }
-            }
-            echo "\t" . "<td class='c' align='center' nowrap>" . $system . " - " . $up . "</td>";
-            echo "</tr>" . "\n";
-        }
-        $galaxy_down = $galaxy_up;
-    } while ($galaxy_up < intval($server_config['num_of_galaxies']));
-    ?>
-    <tr>
-        <td class="c" colspan="<?php echo $galaxy_step * $nb_colonnes_ally + 2; ?>">&nbsp;</td>
-    </tr>
-</table>
+</div> <!-- fin div class="page_cartography" -->
 <?php
 require_once("views/page_tail.php");
 ?>
