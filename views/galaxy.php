@@ -57,7 +57,7 @@ if ($tInfosGroups["server_show_positionhided"] == 1) {
 
 require_once("views/page_header.php");
 ?>
-
+<div class="page_galaxy">
 <form>
     <input name="action" value="galaxy" type="hidden">
     <table border="0">
@@ -467,7 +467,7 @@ require_once("views/page_header.php");
         echo "<th colspan='20'>" . $lang['GALAXY_SURROUNDING_SYSTEMS'] . "</th>";
         echo "</tr>";
         echo "</table>";
-
+        echo "</div><!-- fin class='page_galaxy'-->";
 
         require_once("views/page_tail.php");
         ?>

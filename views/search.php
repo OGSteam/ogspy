@@ -131,7 +131,7 @@ $row_up = isset($row_up) ? $row_up : "";
 
 require_once("views/page_header.php");
 ?>
-
+<div class="page_search">
 <table>
     <tr>
         <td width="400" valign="top">
@@ -610,5 +610,8 @@ if ($type_search == "ally" || $type_search == "player") {
         ?>
 
     </table>
-<?php }
+ 
+<?php };?>
+</div> <!-- fin div class="page_search" -->   
+<?php
 require_once("views/page_tail.php");

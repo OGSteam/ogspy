@@ -28,8 +28,7 @@ $php_timing = $ogspy_timing - $sql_timing ; // delta => temps php
 
 
 ?>
-</td>
-</tr>
+</section><!-- Fin Contenu principal compat legacy -->
 <?php
 global $ogspy_phperror;
 if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
@@ -40,13 +39,9 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
     echo "</table>\n\t</td>\n</tr>";
 }
 ?>
-</table>
-<table style="height:30px;">
-    <tr>
-        <td></td>
-    </tr>
-</table> <!-- Place pour bas de pages -->
-<div id='barre'>
+
+
+<footer id='barre'>
     <table style="width:100%">
         <tr>
             <td></td>
@@ -64,7 +59,7 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 
     </table>
 
-</div>
+</footer> <!-- fin pied de page footer html -->
 <?php echo (new ToolTip_Helper())->GetHTMLHideContent(); ?>
 </body>
 
