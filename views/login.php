@@ -33,15 +33,15 @@ require_once('views/page_header_2.php');
             <td class="c" colspan="2" style="text-align:left"><?= $lang['LOGIN_CONNEXION_PARAMETERS'] ?></td>
         </tr>
         <tr>
-            <th style="width:150px"><?= $lang['LOGIN_USER'] ?></th>
-            <th style="width:150px"><input type='text' name='login' /></th>
+            <th scope="row" style="width:150px"><?= $lang['LOGIN_USER'] ?></th>
+            <th scope="row" style="width:150px"><input type='text' name='login' /></th>
         </tr>
         <tr>
-            <th style="width:150px"><?= $lang['LOGIN_PASSWORD'] ?></th>
-            <th style="width:150px"><input type='password' name='password' /></th>
+            <th scope="row" style="width:150px"><?= $lang['LOGIN_PASSWORD'] ?></th>
+            <th scope="row" style="width:150px"><input type='password' name='password' /></th>
         </tr>
         <tr>
-            <th colspan='2'><input type='submit' value='<?= $lang['LOGIN_CONNEXION_BUTTON'] ?>' /></th>
+            <th scope="row" colspan='2'><input type='submit' value='<?= $lang['LOGIN_CONNEXION_BUTTON'] ?>' /></th>
         </tr>
         <?php
         if ($enable_register_view) {
@@ -50,11 +50,11 @@ require_once('views/page_header_2.php');
                 <td class="c" colspan="2" style="text-align:left"><?= $lang['LOGIN_ACCOUNT_REQUEST'] ?></td>
             </tr>
             <tr>
-                <th colspan='2'><?= $lang['LOGIN_ACCOUNT_REQUEST_DESC'] ?>
+                <th scope="row" colspan='2'><?= $lang['LOGIN_ACCOUNT_REQUEST_DESC'] ?>
                 </th>
             </tr>
             <tr>
-                <th colspan='2'><input type="button" value="<?= $lang['LOGIN_ACCOUNT_REQUEST_BUTTON'] ?>" onclick="window.open('<?= $server_config['register_forum'] ?>');" /></th>
+                <th scope="row" colspan='2'><input type="button" value="<?= $lang['LOGIN_ACCOUNT_REQUEST_BUTTON'] ?>" onclick="window.open('<?= $server_config['register_forum'] ?>');" /></th>
             </tr>
         <?php
         }
