@@ -22,8 +22,8 @@ $lang['ABOUT_DESCRIPTION'] = "Opis";
 /*about_ogsteam.php*/
 
 $lang['ABOUT_PROJECT_TEAM'] = "Projekt tim";
-$lang['ABOUT_PROJECT_AERIS'] = "OGSteam.eu administrator stranice";
-$lang['ABOUT_PROJECT_CAPI'] = "OGSteam.eu Website-Administrator / Programer / Tester";
+$lang['ABOUT_PROJECT_AERIS'] = "Administrateur du Site OGSteam.eu";
+$lang['ABOUT_PROJECT_CAPI'] = "OGSteam.fr Website-Administrator / Programer / Tester";
 $lang['ABOUT_PROJECT_CHRYS'] = "Dizajner";
 $lang['ABOUT_PROJECT_DARKNOON'] = "Menadžer projekta";
 $lang['ABOUT_PROJECT_DARKNOON1'] = "Xtense programer - GreaseMonkey skripta";
