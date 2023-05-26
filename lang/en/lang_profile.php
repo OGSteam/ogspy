@@ -17,9 +17,9 @@
 /* profile.php */
 
 $lang['PROFILE_ERROR_RETRY'] = "Enter your new password with the confirmation";
-$lang['PROFILE_ERROR_OLDPWD'] = "Enter your previous password";
+$lang['PROFILE_ERROR_OLDPWD'] = "Saisissez l&rsquo;ancien mot de passe";
 $lang['PROFILE_ERROR_ERROR'] = "The entered password is not the identical to the password confirmation";
-$lang['PROFILE_ERROR_ILLEGAL'] = "The password must have at least 6 characters and less than 15 characters";
+$lang['PROFILE_ERROR_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 15 caractères et pas les caractères suivants : ; &rsquo; et &quot;";
 
 $lang['PROFILE_TITLE'] = "OGSpy Informations";
 $lang['PROFILE_PSEUDO'] = "Player name";
@@ -47,8 +47,5 @@ $lang['PROFILE_TECHNOCRAT'] = "Technocrat";
 $lang['PROFILE_OTHERS'] = "Miscellaneous";
 $lang['PROFILE_IPCHECK_DISABLE'] = "Disable the IP address verification";
 $lang['PROFILE_SAVE'] = "Save";
-
-
-
-
+$lang['PROFILE_CHANGEPWD'] = "Vous devez changer votre mot de passe !!!";
 
