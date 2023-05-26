@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Install Language File
  * @package OGSpy
@@ -18,7 +19,7 @@ $lang['INSTALL_PROJECT_L3'] = "Registro de todas las coordenadas segun distintos
 $lang['INSTALL_PROJECT_L4'] = "Registro de todos los planetas de un jugador o alianza. Información primordial en períodos de guerras";
 $lang['INSTALL_PROJECT_L5'] = "Posibilidades practicamente ilimitadas gracias a los módulos";
 $lang['INSTALL_PROJECT_L6'] = "Etc ...";
-$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href='https://www.ogsteam.eu/' target='_blank'>https://www.ogsteam.eu/</a>";
+$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href='https://www.ogsteam.eu/' target='_blank' rel='noopener'>https://www.ogsteam.eu/</a>";
 
 $lang['INSTALL_PHPERROR'] = "Versión de PHP insuficiciente";
 $lang['INSTALL_PHP_ADVISE'] = "Pour pouvoir effectuer une installation complète d'OGSpy, votre hébergement doit être doté au minimum de la version 7 de PHP.";
@@ -66,4 +67,3 @@ $lang['INSTALL_VIEW_ADMINPWD2'] = "Confirmar contraseña";
 $lang['INSTALL_VIEW_INSTALLFULL'] = "Iniciar la instalación";
 $lang['INSTALL_VIEW_INSTALLCONFIG'] = "Generar el fichero 'id.php'";
 $lang['INSTALL_VIEW_INSTALLHELP'] = "¿Necesita ayuda?";
-
