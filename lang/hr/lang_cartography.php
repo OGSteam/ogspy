@@ -18,4 +18,4 @@
 
 $lang['CARTO_ALLY'] = "Savez";
 $lang['CARTO_DISPLAYPOSITIONS'] = "Pozicije za prikaz";
-$lang['CARTO_PLAYER_POSITIONS'] = "Postojeći igrač(i)";
+$lang['CARTO_PLAYER_POSITIONS'] = "Postojeće(i) igrač(i)";
