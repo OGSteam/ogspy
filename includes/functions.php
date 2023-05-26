@@ -463,6 +463,7 @@ function password_generator()
  * Initialisation of the cache for all Mod settings
  *
  * Generates a file which contains all configurations for different installed OGSpy Modules
+ * @return void
  */
 function init_mod_cache()
 {
@@ -489,6 +490,7 @@ function init_mod_cache()
  * Initialisation of the cache for all Server settings
  *
  * Generates a file which contains all configurations for the OGSpy Server
+ * @return void
  */
 function init_serverconfig()
 {
@@ -1158,7 +1160,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             //Adresse internet
         case "URL":
             if (!preg_match(
-                "/^(((https|http):\/\/)?(?(2)(www\.)?|(www\.){1})?[-a-z0-9~_]{2,}(\.[-a-z0-9~._]{2,})?[-a-z0-9~_\/&\?=.]{2,})$/i",
+                "/^((https:\/\/(www\.)?)?[-a-z0-9~_]{2,}(\.[-a-z0-9~._]{2,})?[-a-z0-9~_\/&\?=.]{2,})$/i",
                 $value
             )) {
                 log_("check_var", array("URL", $value));
