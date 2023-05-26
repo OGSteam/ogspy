@@ -48,7 +48,7 @@ $color_ally_e = explode("_", $color_ally_n);
             <td class="c_ogspy" colspan="2"><?php echo ($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?></td>
         </tr>
         <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_DISPLAY_GALAXY_MIPS']); ?><?php echo help("display_mips"); ?></th>
+            <th scope="row" width="60%"><?php echo ($lang['ADMIN_DISPLAY_GALAXY_MIPS']); ?><?php echo help("display_mips"); ?></th>
             <th><input name="enable_portee_missil" type="checkbox" value="1" <?php echo $enable_portee_missil; ?> onClick="if (view.enable_portee_missil.checked == false)view.enable_portee_missil.checked=false;">
             </th>
         </tr>
@@ -56,35 +56,35 @@ $color_ally_e = explode("_", $color_ally_n);
             <td class="c_ogspy" colspan="2"><?php echo ($lang['ADMIN_DISPLAY_STATS_TITLE']); ?></td>
         </tr>
         <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_DISPLAY_STATS_MEMBER']); ?><?php echo help("member_stats"); ?></th>
+            <th scope="row" width="60%"><?php echo ($lang['ADMIN_DISPLAY_STATS_MEMBER']); ?><?php echo help("member_stats"); ?></th>
             <th><input name="enable_stat_view" type="checkbox" value="1" <?php echo $enable_stat_view; ?> onClick="if (view.enable_stat_view.checked == false)view.enable_members_view.checked=false;">
             </th>
         </tr>
         <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_DISPLAY_STATS_CONNECTED']); ?><?php echo help("member_connected"); ?></th>
+            <th scope="row" width="60%"><?php echo ($lang['ADMIN_DISPLAY_STATS_CONNECTED']); ?><?php echo help("member_connected"); ?></th>
             <th><input name="enable_members_view" type="checkbox" value="1" <?php echo $enable_members_view; ?> onClick="if (view.enable_stat_view.checked == false)view.enable_members_view.checked=false;">
             </th>
         </tr>
         <tr>
-            <th><?php echo ($lang['ADMIN_DISPLAY_STATS_GVIEW']); ?></th>
+            <th scope="row"><?php echo ($lang['ADMIN_DISPLAY_STATS_GVIEW']); ?></th>
             <th><input name="galaxy_by_line_stat" type="text" size="5" maxlength="3" value="<?php echo $galaxy_by_line_stat; ?>"></th>
         </tr>
         <tr>
-            <th><?php echo ($lang['ADMIN_DISPLAY_STATS_SVIEW']); ?></th>
+            <th scope="row"><?php echo ($lang['ADMIN_DISPLAY_STATS_SVIEW']); ?></th>
             <th><input name="system_by_line_stat" type="text" size="5" maxlength="3" value="<?php echo $system_by_line_stat; ?>"></th>
         </tr>
         <tr>
             <td class="c_ogspy" colspan="2"><?php echo ($lang['ADMIN_DISPLAY_ALLY_TITLE']); ?></td>
         </tr>
         <tr>
-            <th><?php echo ($lang['ADMIN_DISPLAY_ALLY_COLUMS']); ?></th>
+            <th scope="row"><?php echo ($lang['ADMIN_DISPLAY_ALLY_COLUMS']); ?></th>
             <th><input name="nb_colonnes_ally" type="text" size="3" maxlength="20" value="<?php echo $nb_colonnes_ally; ?>"></th>
         </tr>
         <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
             $color_input = color_html_create_double_input('color_ally[' . $i . ']', $color_ally_e[$i - 1], array('size' => 15, 'maxlength' => 20));
         ?>
             <tr>
-                <th>
+                <th scope="row">
                     <span style="color: <?php echo $color_ally_e[$i - 1]; ?>; "><?php echo ($lang['ADMIN_DISPLAY_ALLY_COLOR']); ?><?php echo $i; ?></span>
                     <br />
 
@@ -94,33 +94,32 @@ $color_ally_e = explode("_", $color_ally_n);
             </tr>
         <?php } ?>
         <tr>
-            <th><?php echo ($lang['ADMIN_DISPLAY_ALLY_GVIEW']); ?></th>
+            <th scope="row"><?php echo ($lang['ADMIN_DISPLAY_ALLY_GVIEW']); ?></th>
             <th><input name="galaxy_by_line_ally" type="text" size="5" maxlength="3" value="<?php echo $galaxy_by_line_ally; ?>"></th>
         </tr>
         <tr>
-            <th><?php echo ($lang['ADMIN_DISPLAY_ALLY_SVIEW']); ?></th>
+            <th scope="row"><?php echo ($lang['ADMIN_DISPLAY_ALLY_SVIEW']); ?></th>
             <th><input name="system_by_line_ally" type="text" size="5" maxlength="3" value="<?php echo $system_by_line_ally; ?>"></th>
         </tr>
         <tr>
             <td class="c_ogspy" colspan="2"><?php echo ($lang['ADMIN_DISPLAY_LOGIN_TITLE']); ?></td>
         </tr>
         <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_DISPLAY_LOGIN_REGISTER']); ?><?php echo help("member_registration"); ?></th>
+            <th scope="row" scope="row" width="60%"><?php echo ($lang['ADMIN_DISPLAY_LOGIN_REGISTER']); ?><?php echo help("member_registration"); ?></th>
             <th><input name="enable_register_view" type="checkbox" value="1" <?php echo $enable_register_view; ?> onClick="if (view.enable_register_view.checked == false)view.enable_members_view.checked=false;">
             </th>
         </tr>
         <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_DISPLAY_LOGIN_ALLYNAME']); ?><?php echo help("ally_name"); ?></th>
+            <th scope="row" scope="row" width="60%"><?php echo ($lang['ADMIN_DISPLAY_LOGIN_ALLYNAME']); ?><?php echo help("ally_name"); ?></th>
             <th><input type="text" size="60" name="register_alliance" value="<?php echo $register_alliance; ?>"></th>
         </tr>
         <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_DISPLAY_LOGIN_FORUM']); ?><?php echo help("forum_link"); ?></th>
+            <th scope="row" width="60%"><?php echo ($lang['ADMIN_DISPLAY_LOGIN_FORUM']); ?><?php echo help("forum_link"); ?></th>
             <th><input type="text" size="60" name="register_forum" value="<?php echo $register_forum; ?>"></th>
         </tr>
         <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_DISPLAY_LOGIN_MODULE']); ?><?php echo help("first_displayed_module"); ?></th>
-            <th><select name="open_user">
-                    <option>------</option>
+            <th scope="row" width="60%"><?php echo ($lang['ADMIN_DISPLAY_LOGIN_MODULE']); ?><?php echo help("first_displayed_module"); ?></th>
+            <th scope="row"><select name="open_user">
                     <?php if ($open_user == "./views/profile.php") {
                         echo '<option selected value="./views/profile.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_PROFILE'] . '</option>';
                     } else {
@@ -183,8 +182,7 @@ $color_ally_e = explode("_", $color_ally_n);
         </tr>
         <tr>
             <th width="60%"><?php echo ($lang['ADMIN_DISPLAY_LOGIN_ADMINMODULE']); ?><?php echo help("first_displayed_module_admin"); ?></th>
-            <th><select name="open_admin">
-                    <option>------</option>
+            <th scope="row"><select name="open_admin">
                     <?php if ($open_admin == "./views/admin.php") {
                         echo '<option selected value="./views/admin.php">' . $lang['ADMIN_DISPLAY_LOGIN_MODULE_ADMIN'] . '</option>';
                     } else {
@@ -257,7 +255,7 @@ $color_ally_e = explode("_", $color_ally_n);
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <th colspan="2"><input type="submit" value="<?php echo ($lang['ADMIN_DISPLAY_SUBMIT']); ?>">&nbsp;<input type="reset" value="<?php echo ($lang['ADMIN_DISPLAY_RESET']); ?>"></th>
+            <th scope="row_submit" colspan="2"><input type="submit" value="<?php echo ($lang['ADMIN_DISPLAY_SUBMIT']); ?>">&nbsp;<input type="reset" value="<?php echo ($lang['ADMIN_DISPLAY_RESET']); ?>"></th>
         </tr>
     </table>
 </form>
