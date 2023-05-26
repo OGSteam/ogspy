@@ -17,9 +17,9 @@
 /* profile.php */
 
 $lang['PROFILE_ERROR_RETRY'] = "Unesite novu lozinku uz potvrdu";
-$lang['PROFILE_ERROR_OLDPWD'] = "Unesite prijašnju lozinku";
+$lang['PROFILE_ERROR_OLDPWD'] = "Saisissez l&rsquo;ancien mot de passe";
 $lang['PROFILE_ERROR_ERROR'] = "Unesena lozinka se ne poklapa s lozinkom za potvrdu";
-$lang['PROFILE_ERROR_ILLEGAL'] = "Lozinka mora imati minimalno 6 znakova i manje od 15 znakova";
+$lang['PROFILE_ERROR_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 15 caractères et pas les caractères suivants : ; &rsquo; et &quot;";
 
 $lang['PROFILE_TITLE'] = "OGSpy informacije";
 $lang['PROFILE_PSEUDO'] = "Ime igrača";
@@ -47,8 +47,5 @@ $lang['PROFILE_TECHNOCRAT'] = "Tehnokrat";
 $lang['PROFILE_OTHERS'] = "Razno";
 $lang['PROFILE_IPCHECK_DISABLE'] = "Isključi potvrdu IP adrese";
 $lang['PROFILE_SAVE'] = "Spremi";
-
-
-
-
+$lang['PROFILE_CHANGEPWD'] = "Vous devez changer votre mot de passe !!!";
 
