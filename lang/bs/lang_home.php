@@ -98,6 +98,8 @@ $lang['HOME_EMPIRE_WEAPONS_SMALLSHIELD'] = "Mala štitna kupola";
 $lang['HOME_EMPIRE_WEAPONS_LARGESHIELD'] = "Velika štitna kupola";
 $lang['HOME_EMPIRE_WEAPONS_ANTI'] = "Anti balistička raketa";
 $lang['HOME_EMPIRE_WEAPONS_INTER'] = "Interplanetarna raketa";
+$lang['HOME_EMPIRE_POINTS_TITLE'] = "Points";
+$lang['HOME_EMPIRE_FLEET_TITLE'] = "Flottes";
 
 /* home_simulation.php */
 
@@ -107,10 +109,10 @@ $lang['HOME_SIMU_FIELDS'] = "polja";
 $lang['HOME_SIMU_MINTEMP'] = "Minimalna temperatura";
 $lang['HOME_SIMU_MAXTEMP'] = "Maksimalna temperatura";
 $lang['HOME_SIMU_EXTENSION'] = "Ekstenzija";
-$lang['HOME_SIMU_TECH_ENERGY'] = "Tehnologija za energiju";
-$lang['HOME_SIMU_TECH_PLASMA'] = "Tehnologija za plazmu";
-$lang['HOME_SIMU_OFF_INGE'] = "Oficir inženjer";
-$lang['HOME_SIMU_OFF_GEO'] = "Oficir geolog";
+$lang['HOME_SIMU_TECH_ENERGY'] = "Techno Énergie";
+$lang['HOME_SIMU_TECH_PLASMA'] = "Techno Plasma";
+$lang['HOME_SIMU_OFF_INGE'] = "Inženjer";
+$lang['HOME_SIMU_OFF_GEO'] = "Geolog";
 $lang['HOME_SIMU_OFF_FULL'] = "Svi oficiri";
 $lang['HOME_SIMU_CLASS_COLLECT'] = "Kolektor";
 $lang['HOME_SIMU_SOLARPLANT_SHORT'] = "SP";
@@ -127,6 +129,7 @@ $lang['HOME_SIMU_PRODUCTION'] = "Produkcija";
 $lang['HOME_SIMU_BOOSTERMETAL'] = "Pojačivač metala";
 $lang['HOME_SIMU_BOOSTERCRYSTAL'] = "Pojačivač kristala";
 $lang['HOME_SIMU_BOOSTERDEUT'] = "Pojačivač deuterija";
+$lang['HOME_SIMU_BOOSTERNRJ'] = "Booster d'énergie";
 $lang['HOME_SIMU_LEVEL'] = "Razina";
 $lang['HOME_SIMU_PRODUCTION'] = "Produkcija";
 $lang['HOME_SIMU_POINTSBYPLANET'] = "Raspodjela bodova za svaki planet";
