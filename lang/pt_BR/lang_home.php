@@ -98,6 +98,8 @@ $lang['HOME_EMPIRE_WEAPONS_SMALLSHIELD'] = "Pequeno Escudo Planetário";
 $lang['HOME_EMPIRE_WEAPONS_LARGESHIELD'] = "Grande Escudo Planetário";
 $lang['HOME_EMPIRE_WEAPONS_ANTI'] = "Míssil de Interceptação";
 $lang['HOME_EMPIRE_WEAPONS_INTER'] = "Míssil Interplanetário";
+$lang['HOME_EMPIRE_POINTS_TITLE'] = "Points";
+$lang['HOME_EMPIRE_FLEET_TITLE'] = "Flottes";
 
 /* home_simulation.php */
 
@@ -107,10 +109,10 @@ $lang['HOME_SIMU_FIELDS'] = "Tamanho";
 $lang['HOME_SIMU_MINTEMP'] = "Temperatura Mín.";
 $lang['HOME_SIMU_MAXTEMP'] = "Temperatura Máx.";
 $lang['HOME_SIMU_EXTENSION'] = "Diâmetro";
-$lang['HOME_SIMU_TECH_ENERGY'] = "Tecnologia de Energia";
-$lang['HOME_SIMU_TECH_PLASMA'] = "Tecnologia de Plasma";
-$lang['HOME_SIMU_OFF_INGE'] = "Oficial Engenheiro";
-$lang['HOME_SIMU_OFF_GEO'] = "Oficial Geólogo";
+$lang['HOME_SIMU_TECH_ENERGY'] = "Techno Énergie";
+$lang['HOME_SIMU_TECH_PLASMA'] = "Techno Plasma";
+$lang['HOME_SIMU_OFF_INGE'] = "Engenheiro";
+$lang['HOME_SIMU_OFF_GEO'] = "Geólogo";
 $lang['HOME_SIMU_OFF_FULL'] = "Equipa de comando";
 $lang['HOME_SIMU_CLASS_COLLECT'] = "Collecteur";
 $lang['HOME_SIMU_SOLARPLANT_SHORT'] = "Solar";
@@ -127,6 +129,7 @@ $lang['HOME_SIMU_PRODUCTION'] = "Produção";
 $lang['HOME_SIMU_BOOSTERMETAL'] = "Reforço Metal";
 $lang['HOME_SIMU_BOOSTERCRYSTAL'] = "Reforço Cristal";
 $lang['HOME_SIMU_BOOSTERDEUT'] = "Reforço Deutério";
+$lang['HOME_SIMU_BOOSTERNRJ'] = "Booster d'énergie";
 $lang['HOME_SIMU_LEVEL'] = "Níveal";
 $lang['HOME_SIMU_PRODUCTION'] = "Produção";
 $lang['HOME_SIMU_POINTSBYPLANET'] = "Peso dos pontos de cada planeta";
