@@ -22,7 +22,7 @@ $lang['ABOUT_DESCRIPTION'] = "Descripcion";
 /*about_ogsteam.php*/
 
 $lang['ABOUT_PROJECT_TEAM'] = "Equipo de Proyecto";
-$lang['ABOUT_PROJECT_AERIS'] = "Administrador de OGSteam.eu";
+$lang['ABOUT_PROJECT_AERIS'] = "Administrateur du Site OGSteam.eu";
 $lang['ABOUT_PROJECT_CAPI'] = "Desarrollador / Probador";
 $lang['ABOUT_PROJECT_CHRYS'] = "Diseñador grafico";
 $lang['ABOUT_PROJECT_DARKNOON'] = "Responsable de Proyecto";
