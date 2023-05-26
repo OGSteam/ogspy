@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Install Language File
  * @package OGSpy
@@ -18,7 +19,7 @@ $lang['INSTALL_PROJECT_L3'] = "Skup svih slobodnih koordinata prema nekoliko kri
 $lang['INSTALL_PROJECT_L4'] = "Skup svih planeta igrača ili nekog saveza. Vitalne informacije u ratnim vremenima.";
 $lang['INSTALL_PROJECT_L5'] = "Mogućnost proširenja zahvaljujući modovima";
 $lang['INSTALL_PROJECT_L6'] = "Itd ...";
-$lang['INSTALL_FORUM'] = "Za više informacija posjetite službeni forum: https://www.ogsteam.eu/";
+$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href='https://www.ogsteam.eu/' target='_blank' rel='noopener'>https://www.ogsteam.eu/</a>";
 
 $lang['INSTALL_PHPERROR'] = "PHP verzija nije dovoljna";
 $lang['INSTALL_PHP_ADVISE'] = "Da bi mogli izvršiti potpunu instalaciju OGSpya, vaš hosting mora imati najmanje verziju 7 PHPa. ";
@@ -66,4 +67,3 @@ $lang['INSTALL_VIEW_ADMINPWD2'] = "Lozinka [Potvrdi]";
 $lang['INSTALL_VIEW_INSTALLFULL'] = "Pokreni potpunu instalaciju";
 $lang['INSTALL_VIEW_INSTALLCONFIG'] = "Generiraj file 'id.php'";
 $lang['INSTALL_VIEW_INSTALLHELP'] = "Potrebna vam je pomoć?";
-
