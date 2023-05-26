@@ -24,7 +24,7 @@ $lang["help_home_commandant"] = "Página império da conta comandante";
 $lang["help_profile_login"] = "Deve conter entre 3 e 15 caracteres (os caracteres especiais não são aceitos)";
 $lang["help_profile_pseudo_email"] = "Se estiver cheio, você receberá os mails da parte de alguns mods";
 $lang["help_profile_main_planet"] = "A vista da Galáxia será aberta diretamente no seu sistema solar";
-$lang["help_profile_password"] = "Deve conter entre 6 e 15 caracteres (os caracteres especiais não são aceitos)";
+$lang["help_profile_password"] = "Doit contenir entre 6 et 15 caractères (les caractères spéciaux (; &rsquo; &quot;) ne sont pas acceptés)";
 $lang["help_profile_galaxy"] = "Deve conter um número<br> de 1 à 999";
 $lang["help_profile_disable_ip_check"] = "A verificação do endereço IP permite que você proteja contra session hijacking. <br><br>";
 $lang["help_profile_disable_ip_check"] .= "Si vous êtes déconnecté régulièrement (AOL, Proxy, etc), désactivez la vérification.<br><br>";
@@ -34,9 +34,14 @@ $lang["help_galaxy_phalanx"] = "Carregue os relatórios de espionagem para visua
 
 $lang["help_ratio_block"] = "Você possui uma proporção inferior ao limite mínimo, você não pode acessar os mods";
 $lang["help_profile_speed_uni"] = "Indique o multiplicador de velocidade do seu universo (1 por padrão)";
+$lang["profile_speed_fleet_peaceful"] = "Indiquez le multiplicateur de vitesse des flottes pacifiques de votre univers (1 par défaut)";
+$lang["profile_speed_fleet_war"] = "Indiquez le multiplicateur de vitesse des flottes hostiles de votre univers (1 par défaut)";
+$lang["profile_speed_fleet_holding"] = "Indiquez le multiplicateur de vitesse de stationnement chez un allié de votre univers (1 par défaut)";
 $lang["help_profile_ddr"] = "Assinale se o depósito da aliança está presente no seu universo";
 $lang["help_astro_strict"] = "Assinale se o universo é antigo. Isto permite possuir 9 planetas sem precisar da tecnologia astrofísica correspondente.";
 $lang["help_config_cache"] = "Duração da vida do cache configurado em segundos.";
+$lang["help_donutSystem"] = "Si les sytèmes sont ronds alors 499 vers 1 est une distane de 1.";
+$lang["help_donutGalaxy"] = "Si les galaxie sont rondes alors 9 vers 1 est une distane de 1.";
 $lang["help_mod_cache"] = "Duração da vida do cache mod em segundos.";
 
 /* admin page */
