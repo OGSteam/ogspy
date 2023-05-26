@@ -24,7 +24,7 @@ $lang["help_home_commandant"] = "Stranica carstva računa s komanderom";
 $lang["help_profile_login"] = "Mora sadržavati između 3 i 15 znakova (specijalni znakovi nisu dozvoljeni)";
 $lang["help_profile_pseudo_email"] = "Ako je odabrano, primat ćete emailove za neke modove";
 $lang["help_profile_main_planet"] = "Pregled galaksije će se otvoriti direktno na taj solarni sistem";
-$lang["help_profile_password"] = "Mora sadržavati između 6 i 15 znakova (specijalni znakovi nisu dopušteni)";
+$lang["help_profile_password"] = "Doit contenir entre 6 et 15 caractères (les caractères spéciaux (; &rsquo; &quot;) ne sont pas acceptés)";
 $lang["help_profile_galaxy"] = "Treba sadržavati broj <br> između 1 i 999";
 $lang["help_profile_disable_ip_check"] = "Verifikacija IP adrese sprječava vaš račun od krađe sesije.";
 $lang["help_profile_disable_ip_check"] .= "Si vous êtes déconnecté régulièrement (AOL, Proxy, etc), désactivez la vérification.<br><br>";
@@ -34,9 +34,14 @@ $lang["help_galaxy_phalanx"] = "Učitajte izvještaje o špijunaži kako bi prik
 
 $lang["help_ratio_block"] = "Niži vam je omjer nego prag, ne možete pristupiti modovima.";
 $lang["help_profile_speed_uni"] = "Odredite brzinu multipliera u svom univerzumu (1 po defaultu)";
+$lang["profile_speed_fleet_peaceful"] = "Indiquez le multiplicateur de vitesse des flottes pacifiques de votre univers (1 par défaut)";
+$lang["profile_speed_fleet_war"] = "Indiquez le multiplicateur de vitesse des flottes hostiles de votre univers (1 par défaut)";
+$lang["profile_speed_fleet_holding"] = "Indiquez le multiplicateur de vitesse de stationnement chez un allié de votre univers (1 par défaut)";
 $lang["help_profile_ddr"] = "Provjerite da li je opskrbni terminal dostupan u vašem univerzumu";
 $lang["help_astro_strict"] = "Provjerite da li je univerz star, Odnosi se na posjedovanje 9 planeta, bez astrofizike.";
 $lang["help_config_cache"] = "Life config cache u sekundama.";
+$lang["help_donutSystem"] = "Si les sytèmes sont ronds alors 499 vers 1 est une distane de 1.";
+$lang["help_donutGalaxy"] = "Si les galaxie sont rondes alors 9 vers 1 est une distane de 1.";
 $lang["help_mod_cache"] = "Life mod cache sekunda ..";
 
 /* admin page */
