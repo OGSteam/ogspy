@@ -17,9 +17,9 @@
 /* profile.php */
 
 $lang['PROFILE_ERROR_RETRY'] = "Introducir la nueva contraseña y confirmar";
-$lang['PROFILE_ERROR_OLDPWD'] = "Introducir la contraseña antigua";
+$lang['PROFILE_ERROR_OLDPWD'] = "Saisissez l&rsquo;ancien mot de passe";
 $lang['PROFILE_ERROR_ERROR'] = "La contraseña introducida es diferente a la de la confirmación";
-$lang['PROFILE_ERROR_ILLEGAL'] = "La contraseña debe tener entre 6 y 15 caractéres";
+$lang['PROFILE_ERROR_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 15 caractères et pas les caractères suivants : ; &rsquo; et &quot;";
 
 $lang['PROFILE_TITLE'] = "Información de OGSpy";
 $lang['PROFILE_PSEUDO'] = "Apodo";
@@ -47,8 +47,5 @@ $lang['PROFILE_TECHNOCRAT'] = "Tecnócrata";
 $lang['PROFILE_OTHERS'] = "Todos";
 $lang['PROFILE_IPCHECK_DISABLE'] = "Desactivar la verificación de la IP";
 $lang['PROFILE_SAVE'] = "Validar";
-
-
-
-
+$lang['PROFILE_CHANGEPWD'] = "Vous devez changer votre mot de passe !!!";
 
