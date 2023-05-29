@@ -54,7 +54,7 @@
   },
   "scripts": {
   "test": [
-    "phpunit tests/unit/GameTest.php"
+    "phpunit tests/unit/."
     ]
   }
 }
