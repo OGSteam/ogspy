@@ -123,18 +123,15 @@
             $sql_query = preg_replace("#ogspy_#", $sgbd_tableprefix, $sql_query);
         }
 
-
-
         $sql_query = explode(";", $sql_query);
         $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('num_of_galaxies','$num_of_galaxies')";
         $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('num_of_systems','$num_of_systems')";
         $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('speed_uni','$uni_speed')";
         $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('version','$ogspy_version')";
-        $sql_query[] = "ALTER DATABASE `$sgbd_dbname` CHARACTER SET='utf8'  COLLATE='utf8_bin'"; /*Passage de interclassement en utf8*/
 
         foreach ($sql_query as $request) {
             if (trim($request) != "") {
-                if (!($result = $db->sql_query($request, false, false))) {
+                if (!($result = $db->sql_query($request))) {
                     $error = $db->sql_error($result);
                     print $request;
                     error_sql($error['message']);
@@ -146,14 +143,14 @@
             "user (user_id, user_name, user_password_s , user_regdate, user_active, user_admin, user_pwd_change)" .
             " values (1, '" . mysqli_real_escape_string($db->db_connect_id, $admin_username) . "', '" .
             password_hash($admin_password, PASSWORD_DEFAULT) . "', " . time() . ", '1', '1', '0')";
-        if (!($result = $db->sql_query($request, false, false))) {
+        if (!($result = $db->sql_query($request))) {
             $error = $db->sql_error($result);
             print $request;
             error_sql($error['message']);
         }
 
         $request = "INSERT INTO " . $sgbd_tableprefix . "user_group (group_id, user_id) values (1, 1)";
-        if (!($result = $db->sql_query($request, false, false))) {
+        if (!($result = $db->sql_query($request))) {
             $error = $db->sql_error($result);
             print $request;
             error_sql($error['message']);
