@@ -59,6 +59,7 @@ body { /* allg font etc. *//* option du fond et générales */
     margin-top: 0;
     margin-left: 0;
     background: #000 url("fond_1.jpg") no-repeat fixed left top;
+    background-size: cover;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     text-align: left;
     font-size: 11px;
@@ -68,7 +69,7 @@ body.style { /* paramétrage barre de menu sur le côté */
     color: #e4e4e4;
     margin-top: 1px;
     margin-left: 1px;
-    background: #000 url("img/pic.png") no-repeat 14% 7%;
+    background: #000 url("img/pi2.png") no-repeat 14% 7%;
     font-family: Tahoma, Helvetica, sans-serif;
     font-size: 11px;
     text-align: left;
@@ -444,6 +445,21 @@ Resdesign
 ______________________________________________________________ */
 
 
+/* _____ Centre les tables dans le content - Compatibilité ___________________ */
+#content table{
+    margin:auto;
+}
+
+#content {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* _____ fin Centre les tables dans le content  ___________________ */
+
+
+
+/* suppressio header + menu horizontal */
 
 /* grille principale */
 body {
@@ -451,13 +467,35 @@ body {
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-rows: 150px 1fr 30px;
-    grid-template-columns: 250px 1fr;
-    grid-template-areas: "navbar header" "navbar content" "footer footer";
+
+    grid-template-rows: 80px 1fr 30px;
+    grid-template-columns: 1fr;
+    grid-template-areas: "navbar" "content" "footer";
 }
 
+#navbar {
+    grid-area: navbar;
+}
 
-header {
+#content {
+    grid-area: content;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 20px;
+    margin-bottom: 2px;
+
+}
+
+#barre{
+    grid-area: footer;
+    /* design actuel dans partie legacy */
+}
+
+header{/* Non visible */
+    display: none;
+    /* si affichage  visible 
+    a ajouter dans la grille principale
+    */
     grid-area: header;
     margin-left: 10px;
     margin-right: 10px;
@@ -466,44 +504,16 @@ header {
 
     text-align: center;
 }
+/* fin grille*/
 
-
-#navbar {
-    grid-area: navbar;
-
-
-}
-
-
-#content {
-    grid-area: content;
-    margin-left: 2px;
-    margin-right: 10px;
-    margin-top: 2px;
-    margin-bottom: 2px;
-
-}
-
-
-#barre{
-    grid-area: footer;
-    /* design actuel dans partie legacy */
-}
-
-/* Fin grille principale*/
-
-/* Menu */
 nav#navbar  {
+    display: flex;
+    flex-direction: row;
+    /* background: linear-gradient(to bottom, rgba(0,0,0,8) 0%, rgba(0,0,0,0.7) 85%, rgba(0,0,0,0) 100%);*/
+    background: black;
 
-}
-
-nav#navbar #menu_timer
-{
-    background-image: url("menu/menu_title.png");
-    background-repeat: no-repeat;
-    text-align: center;
-    background-position: bottom;
-    padding-bottom: 75px;
+    padding-left:10px;
+    padding-right:10px;
 }
 
 nav#navbar #menu_offline
@@ -523,71 +533,191 @@ nav#navbar #menu_offline
     }
 }
 
-#menu_navigate_id {
-  /* background-color: rgba(0,0,0,0.5);*/
-  width: 100%;
-  margin-top: 40px;
-  
+
+nav#navbar #menu_timer
+{
+
+    text-align: left;
+    background-position: top left;
+    background-size: 200px 50px;
+    background-image: url("menu/menu_title.png");
+    background-repeat: no-repeat;
+
+    padding: 0px;
+    padding-left:20px;
+    padding-top : 55px;
+
+    font-size:13px;
+    width: 200px;
+    height: 20px;
+}
+
+/* Menu*/
+#menu_navigate_id
+{
+    margin-top:0;
+    z-index: 1000;
+    width: 100%;
 }
 
 #menu_navigate_id ul {
-    list-style-image: url('./menu/list.png');
+    margin: 0px;
+    padding: 0px;
+
+    list-style:none;
     color: white;
-    text-align: left;
-    text-decoration: none;
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 1em;
-    display: block;
-    padding-left: 30px;
+
+    display: flex;
+    flex-direction : row;
+    justify-content: center;
 }
 
-#menu_navigate_id li{
-    margin-top: 5px;
+#menu_navigate_id ul li {
+    margin: 0px 10px;
+    padding: 0px;
+    list-style:none;
 }
-#menu_navigate_id li.menu-separator {
-    
-margin-top: 15px;;
-  
-}
-
 
 #menu_navigate_id ul.menu_navigate li a {
-  display: block;
-  color: white;
-  text-decoration: none;
-  transition: background-color 0.3s; 
-}  
+    display: block;
+    color: white;
+    transition: background-color 0.5s;
+    font-size:16px;
+    text-align:center;
+    padding: 10px 8px;
+}
+
 
 #menu_navigate_id ul.menu_navigate li a:hover {
-    
     color: lightseagreen;
-    
+    text-decoration: none;
+    background: rgba(0,0,0,0.7);
 }
 
-#menu_navigate_id ul.menu_navigate li .sub_menu_navigate  {
-    padding-left: 10px;
+#menu_navigate_id ul.menu_navigate li:first-child
+{
+    /* alignement centré  pour permettre deco a gauche*/
+    margin-left:auto;
+
+}
+
+#menu_navigate_id li.menuitem-logout
+{
+    margin-left:auto;
+    /* alignement a gauche de la deco */
+}
+
+#menu_navigate_id li.menuitem-mod
+{
+    position: relative;
+}
+
+/* sous menu */
+#menu_navigate_id li:hover > .sub_menu_navigate {
+    display: flex;
+}
+
+#menu_navigate_id ul li  .sub_menu_navigate
+{
     text-decoration: none;
     text-transform: capitalize;
-    list-style-image: none;
     list-style: none;
+    display: none;
+    flex-flow: column wrap;
+    width: 200px;
+    position: absolute;
+    background: rgba(0,0,0,0.8);
+    padding-left:10px;
 }
-
+#menu_navigate_id ul li  .sub_menu_navigate li:first-child
+{
+    margin-top: 25px;
+    margin-left: 10px;
+}
+#menu_navigate_id ul li  .sub_menu_navigate li:last-child
+{
+    margin-bottom: 25px;
+}
 #menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a{
     color: #26f33d;
-
+    text-align: left;
 }
 #menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a:hover{
     color: greenyellow;
+}
+/* decallage pour su menu mod */
+#menu_navigate_id ul li.menuitem-mod  .sub_menu_navigate
+{
+    right:43px;
+}
+#menu_navigate_id ul li.menuitem-mod  .sub_menu_navigate_admin
+{
+    left: 43px;
+}
+/* decallage pour su menu mod */
+#menu_navigate_id ul li  .sub_menu_navigate a
+{
+    margin: 0px;
+    padding: 5px 0px;
+}
+#menu_navigate_id ul li  .sub_menu_navigate a:hover
+{
+    background: rgb(0,0,0);
+    width: 100%;
+}
+/* fin sous menu*/
+/* fin  menu*/
 
+/* test ecran plus petit */
+@media(max-width: 1300px) {
+    #menu_navigate_id ul.menu_navigate li a {
+        font-size:13px;
+        padding-left: 2px;
+        padding-right: 2px;
+        padding-top: 20px;
+    }
+    #menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a:hover{
+        color: greenyellow;
+    }
+    #menu_navigate_id ul li.menuitem-mod  .sub_menu_navigate
+    {
+        right:30px;
+    }
+    #menu_navigate_id ul li.menuitem-mod  .sub_menu_navigate_admin
+    {
+        left: 30px;
+    }
+    #menu_navigate_id ul li  .sub_menu_navigate li a
+    {
+        padding-top: 5px;
+    }
 }
 
+@media(max-width: 1010px) {
+    nav#navbar #menu_timer
+    {
 
-
-/* Fin Menu */
-
-
-/* _____ Centre les tables dans le content  ___________________ */
-#content table{
-    margin:auto;
+        display: none;
+    }
 }
+
+@media(max-width: 720px) {
+
+    #menu_navigate_id ul {
+        flex-wrap: wrap;
+    }
+
+    #menu_navigate_id ul.menu_navigate li
+    {
+        margin: 0px 10px;
+    }
+    #menu_navigate_id ul.menu_navigate li a {
+        padding-top: 15px;
+    }
+
+    /*  affichage devient compliqué ...
+    ;*/
+}
+

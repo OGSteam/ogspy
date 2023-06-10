@@ -19,6 +19,7 @@ require_once("views/page_header.php");
 ?>
 <div class="page_home">
     <table width="100%">
+        <!-- remplacement menu
         <tr>
             <td>
                 <table width="100%">
@@ -72,6 +73,7 @@ require_once("views/page_header.php");
                 </table>
             </td>
         </tr>
+        Fin remplacement menu -->
         <tr>
             <td>
                 <?php
