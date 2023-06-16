@@ -30,9 +30,12 @@ if (!defined('IN_SPYOGAME')) {
             <!--<li class='menuitem-administration'>
                 <a href='index.php?action=administration' ><?php echo $lang['MENU_ADMIN']; ?></a>
             </li>-->
-            <li class='menuitem-admin-grp'>
-                <a><?php echo $lang['MENU_ADMIN']; ?></a>
+            <li class='menuitem-user-grp'>
+                <a><span class="icon-ogspy menuitem-user-grp_icon"></span> <?php echo $lang['MENU_PROFILE']; ?></a>
                 <ul class="sub_menu_navigate">
+                    <li class='menuitem-profile'>
+                        <a href='index.php?action=profile' ><?php echo ($lang['MENU_PROFILE']); ?></a>
+                    </li>
                     <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
                         <li class='menuitem-admin-infoserver'>
                             <a href='index.php?action=administration&amp;subaction=infoserver' ><?php echo ($lang['ADMIN_TITLE_GENERAL_INFO']); ?></a>
@@ -61,16 +64,15 @@ if (!defined('IN_SPYOGAME')) {
                             <a href='index.php?action=administration&amp;subaction=mod' ><?php echo ($lang['ADMIN_TITLE_MODS_CONF']); ?></a>
                         </li>
                     <?php endif; ?>
-
+                    <li class='menuitem-logout'>
+                        <a href='index.php?action=logout'><?php echo $lang['MENU_LOGOUT']; ?></a>
+                    </li>
                 </ul>            
             </li>
         <?php endif; ?>
 
-        <li class='menuitem-profile'>
-            <a href='index.php?action=profile' ><?php echo ($lang['MENU_PROFILE']); ?></a>
-        </li>
-         <li class='menuitem-home-grp'>
-            <a><?php echo ($lang['MENU_HOME']); ?></a>
+        <li class='menuitem-ogspy-grp'>
+            <a><!-- <?php echo ($lang['MENU_GALAXY']); ?>--> <span class="icon-ogspy menuitem-ogspy-grp_icon"></span> Ogspy </a>
             <ul class="sub_menu_navigate">
                 <li class='menuitem-home-empire'>
                     <a href='index.php?action=home&amp;subaction=empire' ><?php echo ($lang['HOME_EMPIRE_TITLE']); ?></a>
@@ -84,12 +86,6 @@ if (!defined('IN_SPYOGAME')) {
                 <li class='menuitem-home-stat'>
                     <a href='index.php?action=home&amp;subaction=stat' ><?php echo ($lang['HOME_STATISTICS_TITLE']); ?></a>
                 </li>
-            </ul>            
-         </li>
-
-        <li class='menuitem-ogspy-grp'>
-            <a><!-- <?php echo ($lang['MENU_GALAXY']); ?>--> Ogspy </a>
-            <ul class="sub_menu_navigate">
                 <li class='menuitem-ogspy-galaxy'>
                     <a href='index.php?action=galaxy' ><?php echo ($lang['MENU_GALAXY']); ?></a>
                 </li>
@@ -109,7 +105,7 @@ if (!defined('IN_SPYOGAME')) {
         </li>
 
         <li class='menuitem-mod'>
-            <a><?php echo ($lang['MENU_MODULES']); ?></a>
+            <a><span class="icon-ogspy menuitem-mod_icon"></span> <?php echo ($lang['MENU_MODULES']); ?></a>
             <ul class="sub_menu_navigate">
                 <?php
 //todo sortir requete de la vue
@@ -139,19 +135,21 @@ if (!defined('IN_SPYOGAME')) {
             </ul>
         </li>
 
-        <?php if ($server_config["url_forum"] != ""): ?>
-            <li class='menuitem-forum'>
-                <a href='<?php echo $server_config["url_forum"]; ?>' ><?php echo $lang['MENU_FORUM']; ?></a>
-            </li>
-        <?php endif; ?>
-
-
-        <li class='menuitem-about'>
-            <a href="index.php?action=about"><?php echo $lang['MENU_ABOUT']; ?></a>
-        </li>
-
-        <li class='menuitem-logout'>
-            <a href='index.php?action=logout'><?php echo $lang['MENU_LOGOUT']; ?></a>
+        <li class='menuitem-about-grp'>
+            <a><span class="icon-ogspy menuitem-about-grp_icon"></span> Liens </a><!--todo faire fichier lang correspondant -->
+            <ul class="sub_menu_navigate">
+                <?php if ($server_config["url_forum"] != ""): ?>
+                    <li class='menuitem-forum'>
+                        <a href='<?php echo $server_config["url_forum"]; ?>' ><?php echo $lang['MENU_FORUM']; ?></a>
+                    </li>
+                <?php endif; ?>
+                <li class='menuitem-ogspylink'>
+                    <a href='https://www.ogsteam.eu'  target="_blank" rel="noopener" >Ogspy</a>
+                </li>
+                <li class='menuitem-about'>
+                    <a href="index.php?action=about"><?php echo $lang['MENU_ABOUT']; ?></a>
+                </li>
+            </ul>
         </li>
 
     </ul>
