@@ -547,7 +547,7 @@ nav#navbar #menu_timer
     padding-left:20px;
     padding-top : 55px;
 
-    font-size:13px;
+    font-size:12px;
     width: 200px;
     height: 20px;
 }
@@ -562,7 +562,7 @@ nav#navbar #menu_timer
 
 #menu_navigate_id ul {
     margin: 0px;
-    padding: 0px;
+    padding: 10px;
 
     list-style:none;
     color: white;
@@ -596,23 +596,44 @@ nav#navbar #menu_timer
     background: rgba(0,0,0,0.7);
 }
 
-#menu_navigate_id ul.menu_navigate li:first-child
-{
-    /* alignement centré  pour permettre deco a gauche*/
-    margin-left:auto;
-
-}
-
-#menu_navigate_id li.menuitem-logout
-{
-    margin-left:auto;
-    /* alignement a gauche de la deco */
-}
-
-#menu_navigate_id li.menuitem-mod
+#menu_navigate_id ul.menu_navigate li a:hover
 {
     position: relative;
 }
+
+/*  icon*/
+/*  https://www.iconfinder.com */
+
+a span.menuitem-user-grp_icon{
+    background-image: url("icon/icon_account.svg");
+}
+a span.menuitem-ogspy-grp_icon{
+    background-image: url("icon/icon_space.svg");
+}
+a span.menuitem-mod_icon{
+    background-image: url("icon/icon_addon.svg");
+}
+a span.menuitem-about-grp_icon{
+    background-image: url("icon/icon_link.svg");
+
+
+}
+#menu_navigate_id   ul.menu_navigate li a:hover span.icon-ogspy{
+    filter: invert(61%) sepia(41%) saturate(806%) hue-rotate(128deg) brightness(89%) contrast(83%);
+}
+
+
+#menu_navigate_id   ul.menu_navigate li a span.icon-ogspy{
+    padding-left :50px;
+    background-size: contain;
+    background-position: center ;
+    background-repeat: no-repeat;
+
+    filter: invert(100%);
+}
+
+/* fin icon*/
+
 
 /* sous menu */
 #menu_navigate_id li:hover > .sub_menu_navigate {
@@ -650,11 +671,13 @@ nav#navbar #menu_timer
 /* decallage pour su menu mod */
 #menu_navigate_id ul li.menuitem-mod  .sub_menu_navigate
 {
-    right:43px;
+    position: absolute;
+
 }
 #menu_navigate_id ul li.menuitem-mod  .sub_menu_navigate_admin
 {
-    left: 43px;
+    left: 220px;
+    position: relative;
 }
 /* decallage pour su menu mod */
 #menu_navigate_id ul li  .sub_menu_navigate a
@@ -667,57 +690,71 @@ nav#navbar #menu_timer
     background: rgb(0,0,0);
     width: 100%;
 }
+
+
+
+
+
 /* fin sous menu*/
 /* fin  menu*/
 
 /* test ecran plus petit */
-@media(max-width: 1300px) {
+@media(max-width: 900px) {
+
+    #menu_navigate_id ul {
+        justify-content: left;
+    }
+
     #menu_navigate_id ul.menu_navigate li a {
         font-size:13px;
         padding-left: 2px;
         padding-right: 2px;
         padding-top: 20px;
     }
-    #menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a:hover{
-        color: greenyellow;
+
+    #menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a{
+        padding-top: 0px;
+        font-size:11px;
+    }
+
+    #menu_navigate_id ul li  .sub_menu_navigate li:first-child
+    {
+        margin-top: 10px;
+
+    }
+
+
+}
+
+@media(max-width: 700px) {
+    body {
+        grid-template-rows: 40px 1fr 30px;
+    }
+    nav#navbar #menu_timer
+    {
+        display: none;
+    }
+    #menu_navigate_id ul.menu_navigate li a {
+        font-size:13px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
     }
     #menu_navigate_id ul li.menuitem-mod  .sub_menu_navigate
     {
-        right:30px;
+        position: absolute;
+        left: 0px;
+        position: absolute;
     }
     #menu_navigate_id ul li.menuitem-mod  .sub_menu_navigate_admin
     {
-        left: 30px;
+        left: 220px;
+        position: absolute;
     }
-    #menu_navigate_id ul li  .sub_menu_navigate li a
-    {
-        padding-top: 5px;
-    }
+
+
+
 }
 
-@media(max-width: 1010px) {
-    nav#navbar #menu_timer
-    {
 
-        display: none;
-    }
-}
-
-@media(max-width: 720px) {
-
-    #menu_navigate_id ul {
-        flex-wrap: wrap;
-    }
-
-    #menu_navigate_id ul.menu_navigate li
-    {
-        margin: 0px 10px;
-    }
-    #menu_navigate_id ul.menu_navigate li a {
-        padding-top: 15px;
-    }
-
-    /*  affichage devient compliqué ...
-    ;*/
-}
 
