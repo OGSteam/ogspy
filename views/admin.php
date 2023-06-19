@@ -71,59 +71,59 @@ switch ($pub_subaction) {
 
 //
 ?>
-<div class="nav-page-menu">
-    <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : //admin/co only ?>
-        <div class="nav-page-menu-item nav-page-menu-item-admin-infoserver <?php echo $tagactiveinfoserver; ?>">
-            <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=infoserver">
-                <?php echo $lang['ADMIN_TITLE_GENERAL_INFO']; ?> 
-            </a>
-        </div>
-        <div class="nav-page-menu-item nav-page-menu-item-admin-parameter <?php echo $tagactiveparameter; ?>">
-            <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=parameter">
-                <?php echo $lang['ADMIN_TITLE_SERVER_CONF']; ?>
-            </a>
-        </div>
-        <div class="nav-page-menu-item nav-page-menu-item-admin-affichage <?php echo $tagactiveaffichage; ?>">
-            <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=affichage">
-                <?php echo $lang['ADMIN_TITLE_DISPLAY_CONF']; ?>
-            </a>
-        </div>
-    <?php endif; ?>
-    <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1): //admin/co + gestion membre only ?>
-        <div class="nav-page-menu-item nav-page-menu-item-admin-member <?php echo $tagactivemember; ?>">
-            <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=member">
-                <?php echo $lang['ADMIN_TITLE_MEMBER_CONF']; ?>
-            </a>
-        </div>
-        <div class="nav-page-menu-item nav-page-menu-item-admin-group <?php echo $tagactivegroup; ?>">
-            <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=group">
-                <?php echo $lang['ADMIN_TITLE_GROUP_CONF']; ?>
-            </a>
-        </div>
-    <?php endif; ?>
-    <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : //admin/co only ?>
-        <div class="nav-page-menu-item nav-page-menu-item-admin-viewer <?php echo $tagactiveviewer; ?>">
-            <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=viewer">
-                <?php echo $lang['ADMIN_TITLE_LOGS_CONF']; ?>
-            </a>
-        </div>
-        <div class="nav-page-menu-item nav-page-menu-item-admin-helper <?php echo $tagactivehelper; ?>">
-            <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=helper">
-                <?php echo $lang['ADMIN_TITLE_HELPER_CONF']; ?>
-            </a>
-        </div>
-        <div class="nav-page-menu-item nav-page-menu-item-admin-mod <?php echo $tagactivemod; ?>">
-            <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=mod">
-                <?php echo $lang['ADMIN_TITLE_MODS_CONF']; ?>
-            </a>
-        </div>
-    <?php endif; ?>
-</div>
-
-
 
 
 <div class="page_administration"> 
+
+    <div class="nav-page-menu">
+        <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : //admin/co only ?>
+            <div class="nav-page-menu-item nav-page-menu-item-admin-infoserver <?php echo $tagactiveinfoserver; ?>">
+                <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=infoserver">
+                    <?php echo $lang['ADMIN_TITLE_GENERAL_INFO']; ?> 
+                </a>
+            </div>
+            <div class="nav-page-menu-item nav-page-menu-item-admin-parameter <?php echo $tagactiveparameter; ?>">
+                <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=parameter">
+                    <?php echo $lang['ADMIN_TITLE_SERVER_CONF']; ?>
+                </a>
+            </div>
+            <div class="nav-page-menu-item nav-page-menu-item-admin-affichage <?php echo $tagactiveaffichage; ?>">
+                <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=affichage">
+                    <?php echo $lang['ADMIN_TITLE_DISPLAY_CONF']; ?>
+                </a>
+            </div>
+        <?php endif; ?>
+        <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1): //admin/co + gestion membre only ?>
+            <div class="nav-page-menu-item nav-page-menu-item-admin-member <?php echo $tagactivemember; ?>">
+                <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=member">
+                    <?php echo $lang['ADMIN_TITLE_MEMBER_CONF']; ?>
+                </a>
+            </div>
+            <div class="nav-page-menu-item nav-page-menu-item-admin-group <?php echo $tagactivegroup; ?>">
+                <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=group">
+                    <?php echo $lang['ADMIN_TITLE_GROUP_CONF']; ?>
+                </a>
+            </div>
+        <?php endif; ?>
+        <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : //admin/co only ?>
+            <div class="nav-page-menu-item nav-page-menu-item-admin-viewer <?php echo $tagactiveviewer; ?>">
+                <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=viewer">
+                    <?php echo $lang['ADMIN_TITLE_LOGS_CONF']; ?>
+                </a>
+            </div>
+            <div class="nav-page-menu-item nav-page-menu-item-admin-helper <?php echo $tagactivehelper; ?>">
+                <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=helper">
+                    <?php echo $lang['ADMIN_TITLE_HELPER_CONF']; ?>
+                </a>
+            </div>
+            <div class="nav-page-menu-item nav-page-menu-item-admin-mod <?php echo $tagactivemod; ?>">
+                <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=mod">
+                    <?php echo $lang['ADMIN_TITLE_MODS_CONF']; ?>
+                </a>
+            </div>
+        <?php endif; ?>
+    </div>
+
     <table width="100%">
         <tr>
             <td>
