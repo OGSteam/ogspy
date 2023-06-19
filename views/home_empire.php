@@ -77,8 +77,41 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
     $temperature_max .= "'" . $user_building[$i]["temperature_max"] . "', ";
     $satellite       .= "'" . $user_building[$i]["Sat"] . "', ";
 }
+
+
+// place le tag active au besoin
+$tagactive = "active";
+$tagactiveplanets = "";
+$tagactivemoons = "";
+
+switch ($view) {
+    case "planets":
+        $tagactiveplanets = $tagactive;
+        break;
+    case "moons":
+        $tagactivemoons = $tagactive;
+        break;
+    default:
+        break;
+}
+
 ?>
+ <div class="nav-page-menu">
+            <div class="nav-page-menu-item nav-page-menu-item-admin-infoserver <?php echo $tagactiveplanets; ?>">
+                <a class="nav-page-menu-link" href="index.php?action=home&amp;view=planets">
+                    <?php echo $lang['HOME_EMPIRE_PLANET']; ?> 
+                </a>
+            </div>
+            <div class="nav-page-menu-item nav-page-menu-item-admin-parameter <?php echo $tagactivemoons; ?>">
+                <a class="nav-page-menu-link" href="index.php?action=home&amp;view=moons">
+                    <?php echo $lang['HOME_EMPIRE_MOON']; ?>
+                </a>
+            </div>
+ </div>
+
+
 <table width="100%">
+    <!--
     <tr>
         <?php
         $colspan = ($nb_planete + 1) / 2;
@@ -94,6 +127,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
         }
         ?>
     </tr>
+    -->
     <?php
     // vérification de compte de planete/lune avec la technologie astro
     if (!isset($user_technology['Astrophysique']) || $user_technology['Astrophysique'] == '') {

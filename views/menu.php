@@ -26,54 +26,65 @@ if (!defined('IN_SPYOGAME')) {
 
 <div id="menu_navigate_id">
     <ul class="menu_navigate">
-        <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) : ?>
-            <!--<li class='menuitem-administration'>
-                <a href='index.php?action=administration' ><?php echo $lang['MENU_ADMIN']; ?></a>
-            </li>-->
-            <li class='menuitem-user-grp'>
-                <a><span class="icon-ogspy menuitem-user-grp_icon"></span> <?php echo $lang['MENU_PROFILE']; ?></a>
-                <ul class="sub_menu_navigate">
-                    <li class='menuitem-profile'>
-                        <a href='index.php?action=profile' ><?php echo ($lang['MENU_PROFILE']); ?></a>
+
+        <!--<li class='menuitem-administration'>
+            <a href='index.php?action=administration' ><?php echo $lang['MENU_ADMIN']; ?></a>
+        </li>-->
+        <li class='menuitem-user-grp'>
+            <a><span class="icon-ogspy menuitem-user-grp_icon"></span> <?php echo $lang['MENU_PROFILE']; ?></a>
+            <ul class="sub_menu_navigate">
+                <li class='menuitem-profile'>
+                    <a href='index.php?action=profile' ><span class=" menuitem-user-grp_icon"><?php echo ($lang['MENU_PROFILE']); ?></a>
+                </li>
+                <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) : ?> 
+                    <li class='menuitem-administration'>
+                        <a href='index.php?action=administration' ><?php echo ($lang['MENU_ADMIN']); ?></a>
                     </li>
-                    <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
-                        <li class='menuitem-admin-infoserver'>
-                            <a href='index.php?action=administration&amp;subaction=infoserver' ><?php echo ($lang['ADMIN_TITLE_GENERAL_INFO']); ?></a>
-                        </li>
-                        <li class='menuitem-admin-parameter'>
-                            <a href='index.php?action=administration&amp;subaction=parameter' ><?php echo ($lang['ADMIN_TITLE_SERVER_CONF']); ?></a>
-                        </li>
-                        <li class='menuitem-admin-affichage'>
-                            <a href='index.php?action=administration&amp;subaction=affichage' ><?php echo ($lang['ADMIN_TITLE_DISPLAY_CONF']); ?></a>
-                        </li>
-                    <?php endif; ?>
-                    <li class='menuitem-admin-member'>
-                        <a href='index.php?action=administration&amp;subaction=member' ><?php echo ($lang['ADMIN_TITLE_MEMBER_CONF']); ?></a>
+                <?php endif; ?>
+                <!-- partie admin prise en charge dans page admin
+                <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
+                    <li class='menuitem-admin-infoserver'>
+                        <a href='index.php?action=administration&amp;subaction=infoserver' ><?php echo ($lang['ADMIN_TITLE_GENERAL_INFO']); ?></a>
                     </li>
-                    <li class='menuitem-admin-group'>
-                        <a href='index.php?action=administration&amp;subaction=group' ><?php echo ($lang['ADMIN_TITLE_GROUP_CONF']); ?></a>
+                    <li class='menuitem-admin-parameter'>
+                        <a href='index.php?action=administration&amp;subaction=parameter' ><?php echo ($lang['ADMIN_TITLE_SERVER_CONF']); ?></a>
                     </li>
-                    <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
-                        <li class='menuitem-admin-viewer'>
-                            <a href='index.php?action=administration&amp;subaction=viewer' ><?php echo ($lang['ADMIN_TITLE_LOGS_CONF']); ?></a>
-                        </li>
-                        <li class='menuitem-admin-helper'>
-                            <a href='index.php?action=administration&amp;subaction=helper' ><?php echo ($lang['ADMIN_TITLE_HELPER_CONF']); ?></a>
-                        </li>
-                        <li class='menuitem-admin-mod'>
-                            <a href='index.php?action=administration&amp;subaction=mod' ><?php echo ($lang['ADMIN_TITLE_MODS_CONF']); ?></a>
-                        </li>
-                    <?php endif; ?>
-                    <li class='menuitem-logout'>
-                        <a href='index.php?action=logout'><?php echo $lang['MENU_LOGOUT']; ?></a>
+                    <li class='menuitem-admin-affichage'>
+                        <a href='index.php?action=administration&amp;subaction=affichage' ><?php echo ($lang['ADMIN_TITLE_DISPLAY_CONF']); ?></a>
                     </li>
-                </ul>            
-            </li>
-        <?php endif; ?>
+                <?php endif; ?>
+                <li class='menuitem-admin-member'>
+                    <a href='index.php?action=administration&amp;subaction=member' ><?php echo ($lang['ADMIN_TITLE_MEMBER_CONF']); ?></a>
+                </li>
+                <li class='menuitem-admin-group'>
+                    <a href='index.php?action=administration&amp;subaction=group' ><?php echo ($lang['ADMIN_TITLE_GROUP_CONF']); ?></a>
+                </li>
+                <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
+                    <li class='menuitem-admin-viewer'>
+                        <a href='index.php?action=administration&amp;subaction=viewer' ><?php echo ($lang['ADMIN_TITLE_LOGS_CONF']); ?></a>
+                    </li>
+                    <li class='menuitem-admin-helper'>
+                        <a href='index.php?action=administration&amp;subaction=helper' ><?php echo ($lang['ADMIN_TITLE_HELPER_CONF']); ?></a>
+                    </li>
+                    <li class='menuitem-admin-mod'>
+                        <a href='index.php?action=administration&amp;subaction=mod' ><?php echo ($lang['ADMIN_TITLE_MODS_CONF']); ?></a>
+                    </li>
+                <?php endif; ?>
+                fin partie admin prise en charge dans page admin-->
+                <li class='menuitem-logout'>
+                    <a href='index.php?action=logout'><?php echo $lang['MENU_LOGOUT']; ?></a>
+                </li>
+            </ul>            
+        </li>
+
 
         <li class='menuitem-ogspy-grp'>
             <a><!-- <?php echo ($lang['MENU_GALAXY']); ?>--> <span class="icon-ogspy menuitem-ogspy-grp_icon"></span> Ogspy </a>
             <ul class="sub_menu_navigate">
+                <li class='menuitem-home'>
+                    <a href='index.php?action=home&amp;subaction=home' ><?php echo ($lang['MENU_HOME']); ?></a>
+                </li>
+                <!-- partie home prise en charge dans page home
                 <li class='menuitem-home-empire'>
                     <a href='index.php?action=home&amp;subaction=empire' ><?php echo ($lang['HOME_EMPIRE_TITLE']); ?></a>
                 </li>
@@ -86,6 +97,7 @@ if (!defined('IN_SPYOGAME')) {
                 <li class='menuitem-home-stat'>
                     <a href='index.php?action=home&amp;subaction=stat' ><?php echo ($lang['HOME_STATISTICS_TITLE']); ?></a>
                 </li>
+                fin partie home prise en charge dans page home -->
                 <li class='menuitem-ogspy-galaxy'>
                     <a href='index.php?action=galaxy' ><?php echo ($lang['MENU_GALAXY']); ?></a>
                 </li>
