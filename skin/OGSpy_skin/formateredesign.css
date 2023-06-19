@@ -481,7 +481,7 @@ body {
     grid-area: content;
     margin-left: 2px;
     margin-right: 2px;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 2px;
 
 }
@@ -584,7 +584,7 @@ nav#navbar #menu_timer
     display: block;
     color: white;
     transition: background-color 0.5s;
-    font-size:16px;
+    font-size:18px;
     text-align:center;
     padding: 10px 8px;
 }
@@ -664,6 +664,7 @@ a span.menuitem-about-grp_icon{
 #menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a{
     color: #26f33d;
     text-align: left;
+    font-size:16px;
 }
 #menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a:hover{
     color: greenyellow;
@@ -692,11 +693,77 @@ a span.menuitem-about-grp_icon{
 }
 
 
-
-
-
 /* fin sous menu*/
 /* fin  menu*/
+
+/* menu dans la page */
+.nav-page-menu {
+    display: flex;
+    background-color: rgba(0,0,0,0.7);
+    perspective: 1000px;
+    font-size: 14px;
+
+}
+
+.nav-page-menu-item {
+    position: relative;
+    flex: 1;
+}
+
+.nav-page-menu-link {
+    display: block;
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+
+}
+
+.nav-page-menu-item::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: rgba(0,0,0,0);
+    transition: color ease 0.3s  ;
+
+}
+
+.nav-page-menu-item:hover::before {
+    height: 3px;
+    background-color: #C7569D;
+
+}
+
+.nav-page-menu .active::before{
+    background-color: #C7569D;
+}
+
+
+.nav-page-menu .active a{
+
+    background-color:black;
+    color:#C7569D;
+}
+
+.nav-page-menu-item:hover{
+    background-color:rgba(0,0,0,0.9);
+
+}
+.nav-page-menu-item:hover a{
+    color:#CC66A6;
+    text-decoration: none;
+}
+
+.nav-page-menu-item-nolink a{
+    cursor: not-allowed;
+}
+
+/*fin menu dans la page
+
+
+
 
 /* test ecran plus petit */
 @media(max-width: 900px) {
@@ -722,8 +789,12 @@ a span.menuitem-about-grp_icon{
         margin-top: 10px;
 
     }
+    /* menu dans la page */
+    .nav-page-menu {
 
+        font-size: 12px;
 
+    }
 }
 
 @media(max-width: 700px) {
