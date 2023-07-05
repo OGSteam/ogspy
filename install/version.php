@@ -9,5 +9,5 @@
  * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.04
  */
-$ogspy_version = "0.0.0-dev";
+$ogspy_version = "3.3.9-beta1";
 $database_version = "0";
