@@ -124,47 +124,42 @@ switch ($pub_subaction) {
         <?php endif; ?>
     </div>
 
-    <table width="100%">
-        <tr>
-            <td>
-                <?php
-                switch ($pub_subaction) {
-                    case "member":
-                        require_once("admin_members.php");
-                        break;
 
-                    case "group":
-                        require_once("admin_members_group.php");
-                        break;
+    <?php
+    switch ($pub_subaction) {
+        case "member":
+            require_once("admin_members.php");
+            break;
 
-                    case "parameter":
-                        require_once("admin_parameters.php");
-                        break;
+        case "group":
+            require_once("admin_members_group.php");
+            break;
 
-                    case "affichage":
-                        require_once("admin_affichage.php");
-                        break;
+        case "parameter":
+            require_once("admin_parameters.php");
+            break;
 
-                    case "viewer":
-                        require_once("admin_viewer.php");
-                        break;
+        case "affichage":
+            require_once("admin_affichage.php");
+            break;
 
-                    case "helper":
-                        require_once("admin_helper.php");
-                        break;
+        case "viewer":
+            require_once("admin_viewer.php");
+            break;
 
-                    case "mod":
-                        require_once("admin_mod.php");
-                        break;
+        case "helper":
+            require_once("admin_helper.php");
+            break;
 
-                    default:
-                        require_once("admin_infoserver.php");
-                        break;
-                }
-                ?>
-            </td>
-        </tr>
-    </table>
+        case "mod":
+            require_once("admin_mod.php");
+            break;
+
+        default:
+            require_once("admin_infoserver.php");
+            break;
+    }
+    ?>
 </div> <!-- fin class="page_administration"  -->
 <?php
 require_once("views/page_tail.php");

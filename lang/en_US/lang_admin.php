@@ -258,7 +258,7 @@ $lang['ADMIN_LOGS_DELETE'] = "Clear logs";
 $lang['ADMIN_LOGS_SELECTTYPE'] = "Select the log type to view";
 $lang['ADMIN_LOGS_SQL'] = "SQL Logs";
 $lang['ADMIN_LOGS_GENERAL'] = "General Logs";
-$lang['ADMIN_LOGS_SEE_TRANSACTIONALS'] = "If you want to view transactional file something: download the <br> logs";
+$lang['ADMIN_LOGS_SEE_TRANSACTIONALS'] = "If you want to view transactional file something: download the logs";
 $lang['ADMIN_LOGS_VIEWER'] = "Viewer :";
 
 

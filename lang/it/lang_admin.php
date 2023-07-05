@@ -258,7 +258,7 @@ $lang['ADMIN_LOGS_DELETE'] = "Cancellare i log di";
 $lang['ADMIN_LOGS_SELECTTYPE'] = "Selezionare il tipo di log da visualizzare";
 $lang['ADMIN_LOGS_SQL'] = "Log SQL";
 $lang['ADMIN_LOGS_GENERAL'] = "Log generale";
-$lang['ADMIN_LOGS_SEE_TRANSACTIONALS'] = "Se volete visualizzare i log delle transazioni, scaricare i <br> log";
+$lang['ADMIN_LOGS_SEE_TRANSACTIONALS'] = "Se volete visualizzare i log delle transazioni, scaricare i log";
 $lang['ADMIN_LOGS_VIEWER'] = "Visualizzazione :";
 
 

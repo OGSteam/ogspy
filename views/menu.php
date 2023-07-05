@@ -34,7 +34,7 @@ if (!defined('IN_SPYOGAME')) {
             <a><span class="icon-ogspy menuitem-user-grp_icon"></span> <?php echo $lang['MENU_PROFILE']; ?></a>
             <ul class="sub_menu_navigate">
                 <li class='menuitem-profile'>
-                    <a href='index.php?action=profile' ><span class=" menuitem-user-grp_icon"><?php echo ($lang['MENU_PROFILE']); ?></a>
+                    <a href='index.php?action=profile' ><?php echo ($lang['MENU_PROFILE']); ?></a>
                 </li>
                 <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) : ?> 
                     <li class='menuitem-administration'>

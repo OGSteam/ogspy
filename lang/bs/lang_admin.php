@@ -258,7 +258,7 @@ $lang['ADMIN_LOGS_DELETE'] = "Očistite logove";
 $lang['ADMIN_LOGS_SELECTTYPE'] = "Odaberite vrstu loga za pregled";
 $lang['ADMIN_LOGS_SQL'] = "SQL Logovi";
 $lang['ADMIN_LOGS_GENERAL'] = "Opći logovi";
-$lang['ADMIN_LOGS_SEE_TRANSACTIONALS'] = "Ako želite pogledati neki transakcijski file: preuzmite <br> log";
+$lang['ADMIN_LOGS_SEE_TRANSACTIONALS'] = "Ako želite pogledati neki transakcijski file: preuzmite log";
 $lang['ADMIN_LOGS_VIEWER'] = "Preglednik :";
 
 
