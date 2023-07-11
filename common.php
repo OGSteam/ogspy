@@ -113,7 +113,7 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     $whoops->allowQuit(true);
     $whoops->writeToOutput(true); //Passer à autre
     if (!$server_config['log_phperror']) {
-        $whoops->silenceErrorsInPaths('mod/*', 'E_ALL');
+        $whoops->silenceErrorsInPaths('mod/*', E_ALL);
     }
     $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
     $whoops->register();
