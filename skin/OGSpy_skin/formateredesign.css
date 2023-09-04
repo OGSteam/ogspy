@@ -562,6 +562,9 @@ nav#navbar #menu_timer
     margin-top:0;
     z-index: 1000;
     width: 100%;
+    position: relative;
+    left: -110px;
+    
 }
 
 #menu_navigate_id ul {
@@ -658,7 +661,7 @@ a span.menuitem-about-grp_icon{
 }
 #menu_navigate_id ul li  .sub_menu_navigate li:first-child
 {
-    margin-top: 25px;
+    margin-top: 0px;
     margin-left: 10px;
 }
 #menu_navigate_id ul li  .sub_menu_navigate li:last-child
@@ -668,7 +671,7 @@ a span.menuitem-about-grp_icon{
 #menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a{
     color: #26f33d;
     text-align: left;
-    font-size:16px;
+    font-size:12px;
 }
 #menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a:hover{
     color: greenyellow;
@@ -716,7 +719,8 @@ a span.menuitem-about-grp_icon{
 
 .nav-page-menu-link {
     display: block;
-    padding: 10px;
+    padding: 10px 0;
+    text-align: center;
     color: white;
     text-decoration: none;
 
@@ -923,8 +927,14 @@ table.og-table tbody td{
 
 
 /* test ecran plus petit */
-@media(max-width: 900px) {
+@media(max-width: 950px) {
+    #menu_navigate_id  {
+        position: relative;
+        left: 0px;
+    }
 
+
+    
     #menu_navigate_id ul {
         justify-content: left;
     }
