@@ -465,7 +465,7 @@ ______________________________________________________________ */
 :root {
     /* body */
     --color-body-background: Black;
-    --img-body-background: url("img/pic1.png");
+    --img-body-background: url("img/pic2.png");
     --color-text: white;
 
     /* global */
@@ -475,12 +475,12 @@ ______________________________________________________________ */
     --color-button-hover : rgb(40,40,40);
 
 
-    --color-warning: #ff9800;
-    --color-warning-lighten:#ffe1b5;
-    --color-success: #1be1a6;
-    --color-success-lighten:#bcf7e5;
-    --color-danger: red;
-    --color-danger-lighten:#ffb5b5;
+    --color-warning: #d9480f;
+    --color-warning-lighten:#ffe8cc;
+    --color-success: #2b8a3e;
+    --color-success-lighten:#d3f9d8;
+    --color-danger: #c92a2a;
+    --color-danger-lighten:#ffe3e3;
 
     /* navbarmenu */
     --color-navbarmenu-backgroung: black;
@@ -529,12 +529,12 @@ body {
     margin: 0;
     padding: 0;
     display: grid;
-    
+
 
     grid-template-rows: 80px 1fr 30px;
     grid-template-columns: 1fr;
     grid-template-areas: "navbar" "content" "footer";
-    
+
 
     color: var(--color-text);
     margin-top: 0;
@@ -576,6 +576,12 @@ header{/* Non visible */
     text-align: center;
 }
 /* fin grille*/
+
+
+
+/* fin grille*/
+
+
 
 nav#navbar  {
     display: flex;
@@ -631,7 +637,7 @@ nav#navbar #menu_timer
     width: 100%;
     position: relative;
     left: -110px;
-    
+
 }
 
 #menu_navigate_id ul {
@@ -691,8 +697,8 @@ a span.menuitem-about-grp_icon{
 
 #menu_navigate_id   ul.menu_navigate li a:hover span.icon-ogspy{
     filter: var(--color-navbarmenu-link-iconfilter);
-    
-    
+
+
 }
 
 
@@ -820,7 +826,7 @@ a span.menuitem-about-grp_icon{
 }
 
 .nav-page-menu-item:hover{
-   background-color:var(--color-navpagemenu-background-hover);
+    background-color:var(--color-navpagemenu-background-hover);
 
 }
 .nav-page-menu-item:hover a{
@@ -841,7 +847,7 @@ table.og-table thead, table.og-table th,table.og-table td,table.og-table tr{
     background: none;
     color: var(--color-table-color);
 }
-  
+
 table.og-table {
     background-image: none;
     border:1px solid var(--color-table-border) ;
@@ -948,15 +954,16 @@ table.og-table tbody td{
 }
 .og-button:hover {
     color: #f7f9fd;
-   color: var(--color-button-border);
+    color: var(--color-button-border);
     background-color: var(--color-button-hover);
     border: 1px solid var(--color-button-color);
 }
 .og-button-image {
-       width: 13px;;
-       height: 13px;
-        padding: 3px 3px;
-        margin: auto;
+    width: 13px;
+    ;
+    height: 13px;
+    padding: 3px 3px;
+    margin: auto;
 }
 
 
@@ -988,7 +995,72 @@ table.og-table tbody td{
 
 /*fin bouton */
 
+/* messagebox */
+.og-msg{
+    border: 1px solid var(--color-button-border);
+    border-left: 10px solid var(--color-button-border);
+    background-color: var(--color-navpagemenu-background);
+    width: 600px;
+    padding: 16px;
+    margin:  20px auto;
+    max-width: 90%;
+    border-radius: 8px;
 
+}
+.og-msg h3.og-title{
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+.og-msg p.og-content{
+    margin: 0;
+    font-size: 14px;
+}
+
+.og-msg button.og-button  {
+    display: block;
+    margin-right:10px;
+    margin-left:auto;
+}
+
+.og-msg-warning{
+    background-color: var(--color-warning-lighten);
+    border-color: var(--color-warning);
+    color : var(--color-warning);
+}
+
+.og-msg-warning button.og-button{
+    background-color: var(--color-warning-lighten);
+}
+.og-msg-warning button.og-button:hover{
+    background-color: var(--color-warning);
+}
+
+.og-msg-danger{
+    background-color: var(--color-danger-lighten);
+    border-color: var(--color-danger);
+    color : var(--color-danger);
+}
+
+
+.og-msg-danger button.og-button{
+    background-color: var(--color-danger-lighten);
+}
+.og-msg-danger button.og-button:hover{
+    background-color: var(--color-danger);
+}
+.og-msg-success{
+    background-color: var(--color-success-lighten);
+    border-color: var(--color-success);
+    color : var(--color-success);
+}
+
+.og-msg-success button.og-button{
+    background-color: var(--color-success-lighten);
+}
+.og-msg-success button.og-button:hover{
+    background-color: var(--color-success);
+}
 
 /* test ecran plus petit */
 @media(max-width: 950px) {
@@ -998,7 +1070,7 @@ table.og-table tbody td{
     }
 
 
-    
+
     #menu_navigate_id ul {
         justify-content: left;
     }
@@ -1063,7 +1135,10 @@ table.og-table tbody td{
         position: absolute;
     }
 
+    .og-msg{
+        width: 90%;
 
+    }
 
 }
 
