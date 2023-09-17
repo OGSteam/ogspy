@@ -862,6 +862,9 @@ table.og-medium-table {
 table.og-little-table {
     width: 600px;
 }
+table.og-small-table {
+    width: 400px;
+}
 
 
 table.og-full-table {
@@ -1061,6 +1064,69 @@ table.og-table tbody td{
 .og-msg-success button.og-button:hover{
     background-color: var(--color-success);
 }
+
+
+/*login*/
+
+.login_panel{
+    background-color: rgba(0,0,0,0.85);
+    background-color:var(--color-navpagemenu-background);
+    width: 500px;
+    margin : 20px auto;
+    text-align:center;
+    border-radius: 4px;
+
+}
+
+.og-login-header h2{
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    margin-top: 30px;
+
+}
+
+.og-login-group{
+    font-size: 14px;
+    padding-right:  50px;
+    padding-left:  50px;
+    margin-top:30px;
+}
+
+
+.og-login-group label{
+
+    text-align:left;
+    display: inline-block;
+    width: 100%;
+    margin-bottom:   15px;
+
+
+}
+.og-login-group input{
+    display: inline-block;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid var(--color-text);
+    border-radius: 0;
+    box-shadow: none;
+    height: 15px;
+    margin-bottom: 15px;
+
+}
+.og-login-group p{
+    text-align: left;
+
+}
+
+.login_panel hr{
+    color: var(--color-text);
+    margin-left: 30%;
+    margin-right: 30%;
+
+}
+
+
 
 /* test ecran plus petit */
 @media(max-width: 950px) {
