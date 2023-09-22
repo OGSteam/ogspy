@@ -72,7 +72,7 @@ function galaxy_check_auth($action)
             break;
 
         case "export_ranking":
-            if ($user_auth["ogs_get_ranking"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+            if ($user_auth["ogs_get_ranking"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1){
                 die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour importer des classements -->" . "\n");
             }
             break;
@@ -1666,7 +1666,7 @@ function galaxy_portee_missiles($galaxy, $system)
 
         // recherche le niveau du réacteur du joueur
         $tUser_Technology =  $User_Technology_Model->select_user_technologies($base_joueur);
-        $niv_reac_impuls = $tUser_Technology["RI"];
+        $niv_reac_impuls = $tUser_Technology["RI"] ?? 0;
 
         if ($niv_reac_impuls > 0) {
 
