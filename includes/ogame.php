@@ -2255,7 +2255,7 @@ function astro_max_planete($level)
  *
  *  @param[in] int   $level         Level of the phalanx
  *  @param[in] array $user_class    User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
- *  @return Range in system
+ *  @return int Range in system
  */
 function ogame_phalanx_range($level, $user_class = 'none')
 {
