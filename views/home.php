@@ -17,9 +17,11 @@ require_once("views/page_header.php");
 ?>
 
 <?php
-if (!isset($pub_subaction)) {
+if (!isset($pub_subaction) || $pub_subaction == 'home') {
     $pub_subaction = "empire";
 }
+
+
 
 
 // place le tag active au besoin
