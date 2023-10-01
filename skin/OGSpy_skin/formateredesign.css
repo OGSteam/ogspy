@@ -42,19 +42,23 @@ p td {
 }
 
 
-table table { /* fond global des zones descriptifs et temps recherche, construction  et de la barre des ressources en haut au milieu */
+table table {
+    /* fond global des zones descriptifs et temps recherche, construction  et de la barre des ressources en haut au milieu */
     border: 0;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 11px;
 }
 
-table table td { /* police de la zone donnant les ressources sur chaque planète en haut au milieu */
+table table td {
+    /* police de la zone donnant les ressources sur chaque planète en haut au milieu */
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 11px;
     color: #00ff0d;
 }
 
-body { /* allg font etc. *//* option du fond et générales */
+body {
+    /* allg font etc. */
+    /* option du fond et générales */
     color: #e4e4e4;
     margin-top: 0;
     margin-left: 0;
@@ -65,7 +69,8 @@ body { /* allg font etc. *//* option du fond et générales */
     font-size: 11px;
 }
 
-body.style { /* paramétrage barre de menu sur le côté */
+body.style {
+    /* paramétrage barre de menu sur le côté */
     color: #e4e4e4;
     margin-top: 1px;
     margin-left: 1px;
@@ -82,19 +87,83 @@ body form table th table input {
     font-size: 11px;
 }
 
-td.a, td.b, td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, td.c_batiments, td.c_satellite, td.c_defense, td.c_classement_points, td.c_classement_flotte, td.c_classement_recherche, td.f, input, select, td.g, td.h, td.i, td.j, td.k, td.l, td.m, td.n, td.o, td.q, td.r, td.v, .style td, textarea, p td, table.s th img {
+td.a,
+td.b,
+td.c,
+td.c_tech,
+td.c_stats,
+td.c_recherche,
+td.c_user,
+td.c_ogspy,
+td.c_ogame,
+td.c_batiments,
+td.c_satellite,
+td.c_defense,
+td.c_classement_points,
+td.c_classement_flotte,
+td.c_classement_recherche,
+td.f,
+input,
+select,
+td.g,
+td.h,
+td.i,
+td.j,
+td.k,
+td.l,
+td.m,
+td.n,
+td.o,
+td.q,
+td.r,
+td.v,
+.style td,
+textarea,
+p td,
+table.s th img {
     border: 1px #f0eced solid;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 11px;
 }
 
-th, td.a, td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, td.c_batiments, td.c_satellite, td.c_defense, td.c_classement_points, td.c_classement_flotte, td.c_classement_recherche, td.f, input, select, td.g, td.h, td.i, td.j, td.k, td.m, td.o, td.q, td.r, td.v, td.s, .style td, p td {
+th,
+td.a,
+td.c,
+td.c_tech,
+td.c_stats,
+td.c_recherche,
+td.c_user,
+td.c_ogspy,
+td.c_ogame,
+td.c_batiments,
+td.c_satellite,
+td.c_defense,
+td.c_classement_points,
+td.c_classement_flotte,
+td.c_classement_recherche,
+td.f,
+input,
+select,
+td.g,
+td.h,
+td.i,
+td.j,
+td.k,
+td.m,
+td.o,
+td.q,
+td.r,
+td.v,
+td.s,
+.style td,
+p td {
     background-color: transparent;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 11px;
 }
 
-td.b { /* modifie le fond message */
+td.b {
+    /* modifie le fond message */
     background-color: #232e30;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 11px;
@@ -116,14 +185,27 @@ td.a {
     text-align: center;
 }
 
-td.c, td.c_tech, td.c_stats, td.c_recherche, td.c_user, td.c_ogspy, td.c_ogame, td.c_batiments, td.c_satellite, td.c_defense, td.c_classement_points, td.c_classement_flotte, td.c_classement_recherche {
+td.c,
+td.c_tech,
+td.c_stats,
+td.c_recherche,
+td.c_user,
+td.c_ogspy,
+td.c_ogame,
+td.c_batiments,
+td.c_satellite,
+td.c_defense,
+td.c_classement_points,
+td.c_classement_flotte,
+td.c_classement_recherche {
     font-weight: bold;
     color: #fff;
     padding-left: 3px;
     height: 22px;
 }
 
-td.c { /* modifie la police des noms de catégorie dans le menu recherche et des titres de certaines pages barress.PNG */
+td.c {
+    /* modifie la police des noms de catégorie dans le menu recherche et des titres de certaines pages barress.PNG */
     background: url("tableaux/td_c.png") repeat-y right;
 }
 
@@ -175,13 +257,17 @@ td.c_classement_recherche {
     background: url("tableaux/td_classement_recherche.png") no-repeat right;
 }
 
-td.f, input, select, textarea {
+td.f,
+input,
+select,
+textarea {
     border: 1px solid #606060;
     color: #fff;
     background-color: #232425;
 }
 
-textarea { /* couleur du fond lorsque vous écrivez un message */
+textarea {
+    /* couleur du fond lorsque vous écrivez un message */
     width: 100%;
 }
 
@@ -205,13 +291,16 @@ td.j {
     color: #b6c6e5;
 }
 
-td.k, td.k input { /* berechne calculer? button  background-image: url("img/bl01.PNG"); */
+td.k,
+td.k input {
+    /* berechne calculer? button  background-image: url("img/bl01.PNG"); */
     text-align: center;
     color: #fff;
     background: transparent url("img/barredroite.PNG") no-repeat;
 }
 
-td.l { /* police du texte de description des batiments, chantier spatial et recherche */
+td.l {
+    /* police du texte de description des batiments, chantier spatial et recherche */
     color: #fff;
     vertical-align: top;
     padding: 0;
@@ -268,12 +357,14 @@ table.s th img {
     height: 60px;
 }
 
-div.z { /* réglage du format auquel s'affiche le temps de recherche et construction des batiments */
+div.z {
+    /* réglage du format auquel s'affiche le temps de recherche et construction des batiments */
     font-weight: bold;
     color: #ff6f3c;
 }
 
-a { /* paramétrage des liens 00C8FF */
+a {
+    /* paramétrage des liens 00C8FF */
     color: #5ccce8;
     text-decoration: none;
     font-weight: bold;
@@ -287,20 +378,23 @@ a.t {
     color: #fff;
 }
 
-a:hover { /* Planet Title hover */
+a:hover {
+    /* Planet Title hover */
     font-weight: bold;
     color: #a8ff66;
     text-decoration: underline;
 }
 
-.style td { /* taille cases barres latérales */
+.style td {
+    /* taille cases barres latérales */
     color: #8a4fff;
     border-top: 0;
     font-size: 11px;
     font-family: Tahoma, sans-serif;
 }
 
-.style td:hover { /* taille cases barres latérales */
+.style td:hover {
+    /* taille cases barres latérales */
     background-image: url("img/Mod01.jpg");
     border-top: 0;
     font-size: 11px;
@@ -313,21 +407,24 @@ a:hover { /* Planet Title hover */
     font-size: 11px;
 }
 
-.style div a:link { /* police lien internes dans les menus, tous sauf aide et forum */
+.style div a:link {
+    /* police lien internes dans les menus, tous sauf aide et forum */
     height: 100%;
     width: 100%;
     color: #fff;
     font-size: 11px;
 }
 
-.style div a:visited { /* barre de menu lien forum et aide */
+.style div a:visited {
+    /* barre de menu lien forum et aide */
     height: 100%;
     width: 100%;
     color: #fff;
     font-size: 11px;
 }
 
-.style div a:hover { /* barre de menu quand on est sur le lien */
+.style div a:hover {
+    /* barre de menu quand on est sur le lien */
     background-color: transparent;
     height: 100%;
     width: 100%;
@@ -336,13 +433,15 @@ a:hover { /* Planet Title hover */
     color: #fff;
 }
 
-.style { /* navigation */
+.style {
+    /* navigation */
     margin-top: 5px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 11px;
 }
 
-h1 { /* titre (fenêtre batiments et recherche) */
+h1 {
+    /* titre (fenêtre batiments et recherche) */
     font-size: 12px;
     border-bottom: 0 #2c2c2c solid;
     width: 98%;
@@ -366,7 +465,8 @@ a.menu:hover {
     color: #26f33d;
 }
 
-a.menu_items, p.menu_items {
+a.menu_items,
+p.menu_items {
     display: block;
     color: #fff;
     font-family: Helvetica, Arial, Verdana, Tahoma, sans-serif;
@@ -430,6 +530,7 @@ ul.menu.a.hover {
     color: #56f39f;
     text-decoration: none;
 }
+
 /* Fin menu legacy a supp*/
 #pwdchange {
     color: red;
@@ -446,13 +547,14 @@ ______________________________________________________________ */
 
 
 /* _____ Centre les tables dans le content - Compatibilité ___________________ */
-#content table{
-    margin:auto;
+#content table {
+    margin: auto;
 }
 
 #content {
+    width: auto;
     padding-left: 20px;
-    padding-right: 20px;
+    padding-right: 20px
 }
 
 /* _____ fin Centre les tables dans le content  ___________________ */
@@ -469,18 +571,23 @@ ______________________________________________________________ */
     --color-text: white;
 
     /* global */
-    --color-button-color : #ffffff;
-    --color-button-background : #000000;
-    --color-button-border : grey;
-    --color-button-hover : rgb(40,40,40);
+    --color-button-color: #ffffff;
+    --color-button-background: #000000;
+    --color-button-border: grey;
+    --color-button-hover: rgb(40, 40, 40);
 
 
     --color-warning: #d9480f;
-    --color-warning-lighten:#ffe8cc;
+    --color-warning-lighten: #ffe8cc;
     --color-success: #2b8a3e;
-    --color-success-lighten:#d3f9d8;
+    --color-success-lighten: #d3f9d8;
     --color-danger: #c92a2a;
-    --color-danger-lighten:#ffe3e3;
+    --color-danger-lighten: #ffe3e3;
+
+    --color-highlight: #ecff00;
+    --color-highlight-lighten: #feffeb;
+
+
 
     /* navbarmenu */
     --color-navbarmenu-backgroung: black;
@@ -494,26 +601,26 @@ ______________________________________________________________ */
     /* nav-pagemenu */
     --color-navpagemenu-link: #C7569D;
     ;
-    --color-navpagemenu-background: rgba(0,0,0,0.7);
-    --color-navpagemenu-background-active: rgba(0,0,0,0.9);
-    --color-navpagemenu-background-hover : rgba(0,0,0,0.8);
+    --color-navpagemenu-background: rgba(0, 0, 0, 0.7);
+    --color-navpagemenu-background-active: rgba(0, 0, 0, 0.9);
+    --color-navpagemenu-background-hover: rgba(0, 0, 0, 0.8);
 
     /*table*/
     --color-table-color: --color-text;
     --color-table-color-tdstat: #3EBAFD;
-    --color-table-border: rgba(255,255,255,0.1);
+    --color-table-border: rgba(255, 255, 255, 0.1);
     --color-table-border-head: white;
     --color-table-background: #272727;
-    --color-table-background-hover:#191919;
+    --color-table-background-hover: #191919;
     --color-table-background-head: black;
 
 
     /* icon */
     /*  https://www.iconfinder.com */
-    --icon-account:  url("icon/icon_account.svg");
-    --icon-space:  url("icon/icon_space.svg");
-    --icon-addon:  url("icon/icon_addon.svg");
-    --icon-link:  url("icon/icon_link.svg");
+    --icon-account: url("icon/icon_account.svg");
+    --icon-space: url("icon/icon_space.svg");
+    --icon-addon: url("icon/icon_addon.svg");
+    --icon-link: url("icon/icon_link.svg");
 
 }
 
@@ -523,8 +630,9 @@ body {
     background-color: var(--color-body-background);
     background-image: var(--img-body-background);
     background-size: cover;
-    background-repeat: repeat ;
+    background-repeat: repeat;
 
+    width: 100vw;
     min-height: 100%;
     margin: 0;
     padding: 0;
@@ -557,12 +665,13 @@ body {
 
 }
 
-#barre{
+#barre {
     grid-area: footer;
     /* design actuel dans partie legacy */
 }
 
-header{/* Non visible */
+header {
+    /* Non visible */
     display: none;
     /* si affichage  visible 
     a ajouter dans la grille principale
@@ -575,29 +684,29 @@ header{/* Non visible */
 
     text-align: center;
 }
-/* fin grille*/
-
-
 
 /* fin grille*/
 
 
 
-nav#navbar  {
+/* fin grille*/
+
+
+
+nav#navbar {
     display: flex;
     flex-direction: row;
     /* background: linear-gradient(to bottom, rgba(0,0,0,8) 0%, rgba(0,0,0,0.7) 85%, rgba(0,0,0,0) 100%);*/
     background: var(--color-navbarmenu-backgroung);
 
-    padding-left:10px;
-    padding-right:10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-nav#navbar #menu_offline
-{
-    padding-bottom : 10px;
-    padding-top : 10px;
-    color:var(--color-warning);
+nav#navbar #menu_offline {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    color: var(--color-warning);
     text-align: center;
     font-size: 16px;
     animation: blink 0.6s cubic-bezier(1, 0, 0, 1) infinite alternate;
@@ -611,8 +720,7 @@ nav#navbar #menu_offline
 }
 
 
-nav#navbar #menu_timer
-{
+nav#navbar #menu_timer {
 
     text-align: left;
     background-position: top left;
@@ -621,18 +729,17 @@ nav#navbar #menu_timer
     background-repeat: no-repeat;
 
     padding: 0px;
-    padding-left:20px;
-    padding-top : 55px;
+    padding-left: 20px;
+    padding-top: 55px;
 
-    font-size:12px;
+    font-size: 12px;
     width: 200px;
     height: 20px;
 }
 
 /* Menu*/
-#menu_navigate_id
-{
-    margin-top:0;
+#menu_navigate_id {
+    margin-top: 0;
     z-index: 1000;
     width: 100%;
     position: relative;
@@ -644,27 +751,27 @@ nav#navbar #menu_timer
     margin: 0px;
     padding: 10px;
 
-    list-style:none;
+    list-style: none;
     text-transform: uppercase;
     font-weight: bold;
 
     display: flex;
-    flex-direction : row;
+    flex-direction: row;
     justify-content: center;
 }
 
 #menu_navigate_id ul li {
     margin: 0px 10px;
     padding: 0px;
-    list-style:none;
+    list-style: none;
 }
 
 #menu_navigate_id ul.menu_navigate li a {
     display: block;
-    color:  var(--color-text);
+    color: var(--color-text);
     transition: background-color 0.5s;
-    font-size:18px;
-    text-align:center;
+    font-size: 18px;
+    text-align: center;
     padding: 10px 8px;
 }
 
@@ -675,37 +782,39 @@ nav#navbar #menu_timer
     /*background: rgba(0,0,0,0.7);*/
 }
 
-#menu_navigate_id ul.menu_navigate li a:hover
-{
+#menu_navigate_id ul.menu_navigate li a:hover {
     position: relative;
 }
 
 /*  icon*/
 
-a span.menuitem-user-grp_icon{
+a span.menuitem-user-grp_icon {
     background-image: var(--icon-account);
 }
-a span.menuitem-ogspy-grp_icon{
+
+a span.menuitem-ogspy-grp_icon {
     background-image: var(--icon-space);
 }
-a span.menuitem-mod_icon{
+
+a span.menuitem-mod_icon {
     background-image: var(--icon-addon);
 }
-a span.menuitem-about-grp_icon{
-    background-image:var(--icon-link);
+
+a span.menuitem-about-grp_icon {
+    background-image: var(--icon-link);
 }
 
-#menu_navigate_id   ul.menu_navigate li a:hover span.icon-ogspy{
+#menu_navigate_id ul.menu_navigate li a:hover span.icon-ogspy {
     filter: var(--color-navbarmenu-link-iconfilter);
 
 
 }
 
 
-#menu_navigate_id   ul.menu_navigate li a span.icon-ogspy{
-    padding-left :50px;
+#menu_navigate_id ul.menu_navigate li a span.icon-ogspy {
+    padding-left: 50px;
     background-size: contain;
-    background-position: center ;
+    background-position: center;
     background-repeat: no-repeat;
 
     filter: invert(100%);
@@ -715,12 +824,11 @@ a span.menuitem-about-grp_icon{
 
 
 /* sous menu */
-#menu_navigate_id li:hover > .sub_menu_navigate {
+#menu_navigate_id li:hover>.sub_menu_navigate {
     display: flex;
 }
 
-#menu_navigate_id ul li  .sub_menu_navigate
-{
+#menu_navigate_id ul li .sub_menu_navigate {
     text-decoration: none;
     text-transform: capitalize;
     list-style: none;
@@ -729,44 +837,46 @@ a span.menuitem-about-grp_icon{
     width: 200px;
     position: absolute;
     background: var(--color-navbarmenu-backgroung);
-    padding-left:10px;
+    padding-left: 10px;
 }
-#menu_navigate_id ul li  .sub_menu_navigate li:first-child
-{
+
+#menu_navigate_id ul li .sub_menu_navigate li:first-child {
     margin-top: 0px;
     margin-left: 10px;
 }
-#menu_navigate_id ul li  .sub_menu_navigate li:last-child
-{
+
+#menu_navigate_id ul li .sub_menu_navigate li:last-child {
     margin-bottom: 25px;
 }
-#menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a{
+
+#menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a {
     color: var(--color-navbarmenu-link);
     text-align: left;
-    font-size:12px;
+    font-size: 12px;
 }
-#menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a:hover{
-    color:  var(--color-navbarmenu-link-hover);
+
+#menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a:hover {
+    color: var(--color-navbarmenu-link-hover);
 }
+
 /* decallage pour su menu mod */
-#menu_navigate_id ul li.menuitem-mod  .sub_menu_navigate
-{
+#menu_navigate_id ul li.menuitem-mod .sub_menu_navigate {
     position: absolute;
 
 }
-#menu_navigate_id ul li.menuitem-mod  .sub_menu_navigate_admin
-{
+
+#menu_navigate_id ul li.menuitem-mod .sub_menu_navigate_admin {
     left: 220px;
     position: relative;
 }
+
 /* decallage pour su menu mod */
-#menu_navigate_id ul li  .sub_menu_navigate a
-{
+#menu_navigate_id ul li .sub_menu_navigate a {
     margin: 0px;
     padding: 5px 0px;
 }
-#menu_navigate_id ul li  .sub_menu_navigate a:hover
-{
+
+#menu_navigate_id ul li .sub_menu_navigate a:hover {
     width: 100%;
 }
 
@@ -777,7 +887,7 @@ a span.menuitem-about-grp_icon{
 /* menu dans la page */
 .nav-page-menu {
     display: flex;
-    background-color:var(--color-navpagemenu-background);
+    background-color: var(--color-navpagemenu-background);
     perspective: 1000px;
     font-size: 14px;
     margin-bottom: 20px;
@@ -792,7 +902,7 @@ a span.menuitem-about-grp_icon{
     display: block;
     padding: 10px 0;
     text-align: center;
-    color:  var(--color-text);
+    color: var(--color-text);
     text-decoration: none;
 
 }
@@ -805,7 +915,7 @@ a span.menuitem-about-grp_icon{
     width: 100%;
     height: 2px;
 
-    transition: color ease 0.3s  ;
+    transition: color ease 0.3s;
 
 }
 
@@ -815,26 +925,27 @@ a span.menuitem-about-grp_icon{
 
 }
 
-.nav-page-menu .active::before{
-    background-color:  var(--color-navpagemenu-link);
+.nav-page-menu .active::before {
+    background-color: var(--color-navpagemenu-link);
 }
 
 
-.nav-page-menu .active a{
-    background-color:var(--color-navpagemenu-background-active);
+.nav-page-menu .active a {
+    background-color: var(--color-navpagemenu-background-active);
     color: var(--color-navpagemenu-link);
 }
 
-.nav-page-menu-item:hover{
-    background-color:var(--color-navpagemenu-background-hover);
+.nav-page-menu-item:hover {
+    background-color: var(--color-navpagemenu-background-hover);
 
 }
-.nav-page-menu-item:hover a{
-    color:var(--color-navpagemenu-link);
+
+.nav-page-menu-item:hover a {
+    color: var(--color-navpagemenu-link);
     text-decoration: none;
 }
 
-.nav-page-menu-item-nolink a{
+.nav-page-menu-item-nolink a {
     cursor: not-allowed;
 }
 
@@ -842,17 +953,20 @@ a span.menuitem-about-grp_icon{
 
 /* TABLE */
 /* petit reset */
-table.og-table thead, table.og-table th,table.og-table td,table.og-table tr{
-    border:none;
+table.og-table thead,
+table.og-table th,
+table.og-table td,
+table.og-table tr {
+    border: none;
     background: none;
     color: var(--color-table-color);
 }
 
 table.og-table {
     background-image: none;
-    border:1px solid var(--color-table-border) ;
-    margin-bottom: 20px!important;
-    border-spacing:0;
+    border: 1px solid var(--color-table-border);
+    margin-bottom: 20px !important;
+    border-spacing: 0;
 }
 
 table.og-medium-table {
@@ -862,6 +976,7 @@ table.og-medium-table {
 table.og-little-table {
     width: 600px;
 }
+
 table.og-small-table {
     width: 400px;
 }
@@ -870,60 +985,65 @@ table.og-small-table {
 table.og-full-table {
     width: 100%;
 }
+
 table.og-little-table td {
     height: 20px;
 }
 
-table.og-table thead{
+table.og-table thead {
     background-image: none;
-    background-color: var( --color-table-background-head);
+    background-color: var(--color-table-background-head);
     font-size: 12px;
     border-collapse: separate;
 }
-table.og-table thead th{
-    border:1px solid var(--color-table-border-head);
+
+table.og-table thead th {
+    border: 1px solid var(--color-table-border-head);
     border-collapse: separate;
-    height:  20px;
+    height: 20px;
     text-align: left;
     padding-left: 16px;
 
 }
 
-table.og-table tbody{
+table.og-table tbody {
     background-color: var(--color-table-background);
     font-size: 12px;
 
 }
-table.og-table tbody td{
-    border-bottom: solid  var(--color-table-border);
+
+table.og-table tbody td {
+    border-bottom: solid var(--color-table-border);
     border-bottom-width: 1px;
-    border-spacing:0;
+    border-spacing: 0;
     border-collapse: separate;
 
 }
 
-table.og-table tbody .tdstat{
-    color:var(--color-table-color-tdstat);
+table.og-table tbody .tdstat {
+    color: var(--color-table-color-tdstat);
     font-size: 12px;
 
 }
-table.og-table tbody .tdvalue{
-    text-align:left;
+
+table.og-table tbody .tdvalue {
+    text-align: left;
     padding-left: 10px;
     font-size: 12px;
 }
 
 
 
-table.og-table tbody tr .tdstat:hover ,  table.og-table tbody tr .tdvalue:hover  {
+table.og-table tbody tr .tdstat:hover,
+table.og-table tbody tr .tdvalue:hover {
     background-color: var(--color-table-background-hover);
 }
 
-table.og-table tbody tr{
-    height:  15px;
+table.og-table tbody tr {
+    height: 15px;
 }
 
-table.og-table tbody td{
+table.og-table tbody td {
 
     text-align: center;
 }
@@ -932,15 +1052,22 @@ table.og-table tbody td{
 /*fin TABLE */
 
 
-.og-alert{
-    color:var(--color-danger);
+.og-alert {
+    color: var(--color-danger);
 }
-.og-warning{
-    color:var(--color-warning);
+
+.og-warning {
+    color: var(--color-warning);
 }
-.og-success{
-    color:var(--color-success);
+
+.og-success {
+    color: var(--color-success);
 }
+
+.og-highlight {
+    color: var(--color-highlight);
+}
+
 
 
 /*fin bouton */
@@ -955,12 +1082,14 @@ table.og-table tbody td{
     margin: 10px 0px;
 
 }
+
 .og-button:hover {
     color: #f7f9fd;
     color: var(--color-button-border);
     background-color: var(--color-button-hover);
     border: 1px solid var(--color-button-color);
 }
+
 .og-button-image {
     width: 13px;
     ;
@@ -970,139 +1099,150 @@ table.og-table tbody td{
 }
 
 
-.og-button-warning{
-    color:var(--color-warning);
+.og-button-warning {
+    color: var(--color-warning);
     border: 1px solid var(--color-warning);
 }
+
 .og-button-warning:hover {
-    color:var(--color-warning-lighten);
+    color: var(--color-warning-lighten);
     border: 1px solid var(--color-warning-lighten);
 }
 
-.og-button-success{
-    color:var(--color-success);
+.og-button-success {
+    color: var(--color-success);
     border: 1px solid var(--color-success);
 }
+
 .og-button-success:hover {
-    color:var(--color-success-lighten);
+    color: var(--color-success-lighten);
     border: 1px solid var(--color-success-lighten);
 }
-.og-button-danger{
-    color:var(--color-danger);
+
+.og-button-danger {
+    color: var(--color-danger);
     border: 1px solid var(--color-danger);
 }
+
 .og-button-danger:hover {
-    color:var(--color-danger-lighten);
+    color: var(--color-danger-lighten);
     border: 1px solid var(--color-danger-lighten);
 }
 
 /*fin bouton */
 
 /* messagebox */
-.og-msg{
+.og-msg {
     border: 1px solid var(--color-button-border);
     border-left: 10px solid var(--color-button-border);
     background-color: var(--color-navpagemenu-background);
     width: 600px;
     padding: 16px;
-    margin:  20px auto;
+    margin: 20px auto;
     max-width: 90%;
     border-radius: 8px;
 
 }
-.og-msg h3.og-title{
+
+.og-msg h3.og-title {
     margin-top: 0;
     margin-bottom: 12px;
     font-size: 18px;
 }
-.og-msg p.og-content{
+
+.og-msg p.og-content {
     margin: 0;
     font-size: 14px;
 }
 
-.og-msg button.og-button  {
+.og-msg button.og-button {
     display: block;
-    margin-right:10px;
-    margin-left:auto;
+    margin-right: 10px;
+    margin-left: auto;
 }
 
-.og-msg-warning{
+.og-msg-warning {
     background-color: var(--color-warning-lighten);
     border-color: var(--color-warning);
-    color : var(--color-warning);
+    color: var(--color-warning);
 }
 
-.og-msg-warning button.og-button{
+.og-msg-warning button.og-button {
     background-color: var(--color-warning-lighten);
 }
-.og-msg-warning button.og-button:hover{
+
+.og-msg-warning button.og-button:hover {
     background-color: var(--color-warning);
 }
 
-.og-msg-danger{
+.og-msg-danger {
     background-color: var(--color-danger-lighten);
     border-color: var(--color-danger);
-    color : var(--color-danger);
+    color: var(--color-danger);
 }
 
 
-.og-msg-danger button.og-button{
+.og-msg-danger button.og-button {
     background-color: var(--color-danger-lighten);
 }
-.og-msg-danger button.og-button:hover{
+
+.og-msg-danger button.og-button:hover {
     background-color: var(--color-danger);
 }
-.og-msg-success{
+
+.og-msg-success {
     background-color: var(--color-success-lighten);
     border-color: var(--color-success);
-    color : var(--color-success);
+    color: var(--color-success);
 }
 
-.og-msg-success button.og-button{
+.og-msg-success button.og-button {
     background-color: var(--color-success-lighten);
 }
-.og-msg-success button.og-button:hover{
+
+.og-msg-success button.og-button:hover {
     background-color: var(--color-success);
 }
 
 
 /*login*/
 
-.login_panel{
-    background-color: rgba(0,0,0,0.85);
-    background-color:var(--color-navpagemenu-background);
+.login_panel {
+    background-color: rgba(0, 0, 0, 0.85);
+    background-color: var(--color-navpagemenu-background);
     width: 500px;
-    margin : 20px auto;
-    text-align:center;
+    margin: 20px auto;
+    text-align: center;
     border-radius: 4px;
 
 }
 
-.og-login-header h2{
+.og-login-header h2 {
     text-transform: uppercase;
     margin-bottom: 30px;
     margin-top: 30px;
 
 }
 
-.og-login-group{
+.og-login-group {
     font-size: 14px;
-    padding-right:  50px;
-    padding-left:  50px;
-    margin-top:30px;
+    padding-right: 50px;
+    padding-left: 50px;
+    margin-top: 30px;
 }
 
 
-.og-login-group label{
+.og-login-group label {
 
-    text-align:left;
+    text-align: left;
     display: inline-block;
     width: 100%;
-    margin-bottom:   15px;
+    margin-bottom: 15px;
 
 
 }
-.og-login-group input{
+
+.og-login-group input {
     display: inline-block;
     width: 100%;
     background-color: transparent;
@@ -1114,23 +1254,57 @@ table.og-table tbody td{
     margin-bottom: 15px;
 
 }
-.og-login-group p{
+
+.og-login-group p {
     text-align: left;
 
 }
 
-.login_panel hr{
+.login_panel hr {
     color: var(--color-text);
     margin-left: 30%;
     margin-right: 30%;
 
 }
 
+/* ranking */
+
+table.og-table-ranking tr:hover td {
+    background-color: var(--color-table-background-hover);
+}
+
+table.og-table-ranking tr td .ranking-subrank-number {
+    display: contents;
+    color: var(--color-highlight);
+}
+
+table.og-table-ranking tr th.active-rank {
+    text-align: center;
+    padding-left: 0px;
+    font-size: 12px;
+}
+
+table.og-table-ranking tr th.active-rank img {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+table.og-table-ranking tr td.active-rank {
+    background-color: var(--color-table-background-hover);
+}
+
+
 
 
 /* test ecran plus petit */
+
+
+
+
+
+
 @media(max-width: 950px) {
-    #menu_navigate_id  {
+    #menu_navigate_id {
         position: relative;
         left: 0px;
     }
@@ -1142,22 +1316,22 @@ table.og-table tbody td{
     }
 
     #menu_navigate_id ul.menu_navigate li a {
-        font-size:13px;
+        font-size: 13px;
         padding-left: 2px;
         padding-right: 2px;
         padding-top: 20px;
     }
 
-    #menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a{
+    #menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a {
         padding-top: 0px;
-        font-size:11px;
+        font-size: 11px;
     }
 
-    #menu_navigate_id ul li  .sub_menu_navigate li:first-child
-    {
+    #menu_navigate_id ul li .sub_menu_navigate li:first-child {
         margin-top: 10px;
 
     }
+
     /* menu dans la page */
     .nav-page-menu {
 
@@ -1170,6 +1344,28 @@ table.og-table tbody td{
         width: 600px;
     }
 
+    /* ranking*/
+    table.og-table-ranking tr td .ranking-subrank-number {
+        display: none;
+    }
+
+    table.og-table-ranking tbody {
+        font-size: 10px;
+    }
+
+    table.og-table-ranking thead {
+        font-size: 11px;
+    }
+    table.og-table-ranking tr th.active-rank {
+        font-size: 11px;
+    }
+    
+    table.og-table-ranking tr th.active-rank img {
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+
+
 
 
 
@@ -1179,34 +1375,46 @@ table.og-table tbody td{
     body {
         grid-template-rows: 40px 1fr 30px;
     }
-    nav#navbar #menu_timer
-    {
+
+    #content {
+        padding-left: 2px;
+        padding-right: 2px
+    }
+
+
+    nav#navbar #menu_timer {
         display: none;
     }
+
     #menu_navigate_id ul.menu_navigate li a {
-        font-size:13px;
+        font-size: 13px;
         padding-left: 0px;
         padding-right: 0px;
         padding-top: 0px;
     }
-    #menu_navigate_id ul li.menuitem-mod  .sub_menu_navigate
-    {
+
+    #menu_navigate_id ul li.menuitem-mod .sub_menu_navigate {
         position: absolute;
         left: 0px;
         position: absolute;
     }
-    #menu_navigate_id ul li.menuitem-mod  .sub_menu_navigate_admin
-    {
+
+    #menu_navigate_id ul li.menuitem-mod .sub_menu_navigate_admin {
         left: 220px;
         position: absolute;
     }
 
-    .og-msg{
+    .og-msg {
         width: 90%;
 
     }
 
+    /* ranking*/
+    table.og-table-ranking td,
+    table.og-table-ranking thead th {
+        padding: 0px;
+    }
+
+    
+
 }
-
-
-
