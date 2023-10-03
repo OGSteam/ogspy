@@ -31,11 +31,12 @@ use Ogsteam\Ogspy\Model\User_Building_Model;
 use Ogsteam\Ogspy\Helper\SearchCriteria_Helper;
 
 /**
- * Vérification des droits OGSpy
+ * Checks the authorization of a user for a specific action.
  *
- * @param string $action Droit interrogé
+ * @param string $action The action to check authorization for.
+ * @throws None
+ * @return None
  */
-
 function galaxy_check_auth($action)
 {
     global $user_data, $user_auth;
@@ -404,6 +405,7 @@ function galaxy_statistic($step = 50)
 
     $Universe_Model = new Universe_Model();
 
+    $statistics = array();
 
     $nb_planets_total = 0;
     $nb_freeplanets_total = 0;
