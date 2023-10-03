@@ -140,7 +140,7 @@ function encode_ip($ip)
     if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
         $bin_ip = inet_pton($ip);
     } elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-        $bin_ip = inet_pton('[' . $ip . ']');
+        $bin_ip = inet_pton($ip);
     } else {
         throw new Exception('Adresse IP invalide');
     }
@@ -154,7 +154,7 @@ function encode_ip($ip)
  * @param string $int_ip IP encoded
  * @return string $ip format xxx.xxx.xxx.xxx in IPv4 and xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx in IPv6
  */
-function decode_ip($hex_ip)
+function decode_ip(string $hex_ip): string
 {
     $bin_ip = hex2bin($hex_ip);
     $ip = inet_ntop($bin_ip);
@@ -669,37 +669,37 @@ function set_serverconfig()
     //appel de la couche" Model"
     $Config_Model = new Config_Model();
 
-    if (!isset($pub_num_of_galaxies)) {
+    if (empty($pub_num_of_galaxies)) {
         $pub_num_of_galaxies = intval($server_config['num_of_galaxies']);
     }
-    if (!isset($pub_num_of_systems)) {
+    if (empty($pub_num_of_systems)) {
         $pub_num_of_systems = intval($server_config['num_of_systems']);
     }
 
     if (
-        !check_var($pub_max_battlereport, "Num") || !check_var(
-            $pub_max_favorites,
-            "Num"
-        ) || !check_var($pub_max_favorites_spy, "Num") || !check_var(
-            $pub_ratio_limit,
-            "Special",
-            "#^[\w\s,\.\-]+$#"
-        ) || !check_var($pub_max_spyreport, "Num") || !check_var($pub_server_active, "Num") || !check_var($pub_session_time, "Num") ||
-        !check_var($pub_max_keeplog, "Num") || !check_var($pub_debug_log, "Num") || !check_var($pub_block_ratio, "Num") || !check_var(stripslashes($pub_reason), "Text") || !check_var(
-            $pub_ally_protection,
-            "Special",
-            "#^[\w\s,\.\-]+$#"
-        ) || !check_var($pub_url_forum, "URL") || !check_var($pub_max_keeprank, "Num") || !check_var(
-            $pub_keeprank_criterion,
-            "Char"
-        ) || !check_var($pub_max_keepspyreport, "Num") || !check_var(stripslashes($pub_servername), "Text") || !check_var($pub_allied, "Special", "#^[\w\s,\.\-]+$#") ||
-        !check_var($pub_disable_ip_check, "Num") || !check_var(
-            $pub_num_of_galaxies,
-            "Galaxies"
-        ) || !check_var($pub_num_of_systems, "Galaxies") || !check_var(
-            $pub_config_cache,
-            "Num"
-        ) || !check_var($pub_mod_cache, "Num")
+        !check_var($pub_max_battlereport, "Num")
+        || !check_var($pub_max_favorites, "Num")
+        || !check_var($pub_max_favorites_spy, "Num")
+        || !check_var($pub_ratio_limit, "Num")
+        || !check_var($pub_max_spyreport, "Num")
+        || !check_var($pub_server_active, "Num")
+        || !check_var($pub_session_time, "Num")
+        || !check_var($pub_max_keeplog, "Num")
+        || !check_var($pub_debug_log, "Num")
+        || !check_var($pub_block_ratio, "Num")
+        || !check_var(stripslashes($pub_reason), "Text")
+        || !check_var($pub_ally_protection, "Special", "#^[\w\s,\.\-]+$#")
+        || !check_var($pub_url_forum, "URL")
+        || !check_var($pub_max_keeprank, "Num")
+        || !check_var($pub_keeprank_criterion, "Char")
+        || !check_var($pub_max_keepspyreport, "Num")
+        || !check_var(stripslashes($pub_servername), "Text")
+        || !check_var($pub_allied, "Special", "#^[\w\s,\.\-]+$#")
+        || !check_var($pub_disable_ip_check, "Num")
+        || !check_var($pub_num_of_galaxies, "Galaxies")
+        || !check_var($pub_num_of_systems, "Galaxies")
+        || !check_var($pub_config_cache, "Num")
+        || !check_var($pub_mod_cache, "Num")
     ) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
@@ -718,30 +718,14 @@ function set_serverconfig()
         redirection("index.php?action=message&id_message=setting_serverconfig_failed&info");
     }
 
-    if (is_null($pub_server_active)) {
-        $pub_server_active = 0;
-    }
-    if (is_null($pub_disable_ip_check)) {
-        $pub_disable_ip_check = 0;
-    }
-    if (is_null($pub_log_phperror)) {
-        $pub_log_phperror = 0;
-    }
-    if (is_null($pub_debug_log)) {
-        $pub_debug_log = 0;
-    }
-    if (is_null($pub_block_ratio)) {
-        $pub_block_ratio = 0;
-    }
-    if (is_null($pub_mail_use)) {
-        $pub_mail_use = 0;
-    }
-    if (is_null($pub_mail_smtp_use)) {
-        $pub_mail_smtp_use = 0;
-    }
-    if (is_null($pub_mail_smtp_secure)) {
-        $pub_mail_smtp_secure = 0;
-    }
+    $pub_server_active = $pub_server_active ?? 0;
+    $pub_disable_ip_check = $pub_disable_ip_check ?? 0;
+    $pub_log_php_error = $pub_log_php_error ?? 0;
+    $pub_debug_log = $pub_debug_log ?? 0;
+    $pub_block_ratio = $pub_block_ratio ?? 0;
+    $pub_mail_use = $pub_mail_use ?? 0;
+    $pub_mail_smtp_use = $pub_mail_smtp_use ?? 0;
+    $pub_mail_smtp_secure = $pub_mail_smtp_secure ?? 0;
 
     $break = false;
     if ($pub_server_active != 0 && $pub_server_active != 1) {
@@ -1151,7 +1135,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
             //Galaxies
         case "Galaxies":
-            if ($value < 1 || $value > 999) {
+            if ($value < 1 || $value > 999 ) {
                 log_("check_var", array("Galaxy or system", $value));
                 return false;
             }
@@ -1461,9 +1445,9 @@ function booster_verify_str($str)
  *      'full'       donne les tableaux simple : définition, uuid, string, array)
  *      'separateur' donne le char qui sert de séparateur entre les objets Ogame
  *      'default_str' donne la string de stockage par défaut : "m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0"
- * @return  le tableau correspondant au type
+ * @return  array le tableau correspondant au type
  */
-function booster_objets_tab($type = '')
+ function booster_objets_tab($type = '')
 {
     $objet_str = array(
         'Booster de métal en platine', 'Booster de métal en or', 'Booster de métal en argent', 'Booster de métal en bronze',

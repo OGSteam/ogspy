@@ -176,7 +176,7 @@ $mail_smtp_password = "";
             </tr>
             <tr>
                 <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_RATIOBLIMIT']); ?></td>
-                <td class="tdvalue"><input name="ratio_limit" type="text" size="10" maxlength="9" value="<?php echo $ratio_limit; ?>"></td>
+                <td class="tdvalue"><input name="ratio_limit" type="number" size="10" maxlength="9" value="<?php echo $ratio_limit; ?>"></td>
             </tr>
         </tbody>
         <thead>
