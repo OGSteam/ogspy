@@ -69,3 +69,4 @@ install*
 !install/version.php
 
 vendor/*
+.phpunit.result.cache
