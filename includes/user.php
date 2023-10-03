@@ -1133,7 +1133,6 @@ function user_del_favorite()
     global $user_data;
     global $pub_galaxy, $pub_system, $server_config;
 
-    new User_Favorites_Model();
     if (!isset($pub_galaxy) || !isset($pub_system)) {
         redirection("index.php");
     }

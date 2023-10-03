@@ -28,7 +28,7 @@ abstract class Model_Abstract
      *
      * @return int The ID generated from the previous INSERT operation.
      */
-    function sql_insertid()
+    public function sql_insertid()
     {
         return $this->db->sql_insertid();
     }
@@ -38,7 +38,7 @@ abstract class Model_Abstract
      *
      * @return int The number of affected rows.
      */
-    function sql_affectedrows()
+    public function sql_affectedrows()
     {
         return $this->db->sql_affectedrows();
     }
