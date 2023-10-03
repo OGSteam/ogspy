@@ -140,7 +140,7 @@ function encode_ip($ip)
     if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
         $bin_ip = inet_pton($ip);
     } elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-        $bin_ip = inet_pton('[' . $ip . ']');
+        $bin_ip = inet_pton($ip);
     } else {
         throw new Exception('Adresse IP invalide');
     }
@@ -154,7 +154,7 @@ function encode_ip($ip)
  * @param string $int_ip IP encoded
  * @return string $ip format xxx.xxx.xxx.xxx in IPv4 and xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx in IPv6
  */
-function decode_ip($hex_ip)
+function decode_ip(string $hex_ip): string
 {
     $bin_ip = hex2bin($hex_ip);
     $ip = inet_ntop($bin_ip);
