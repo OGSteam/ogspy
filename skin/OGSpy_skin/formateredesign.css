@@ -600,7 +600,6 @@ ______________________________________________________________ */
 
     /* nav-pagemenu */
     --color-navpagemenu-link: #C7569D;
-    ;
     --color-navpagemenu-background: rgba(0, 0, 0, 0.7);
     --color-navpagemenu-background-active: rgba(0, 0, 0, 0.9);
     --color-navpagemenu-background-hover: rgba(0, 0, 0, 0.8);
@@ -1092,7 +1091,6 @@ table.og-table tbody td {
 
 .og-button-image {
     width: 13px;
-    ;
     height: 13px;
     padding: 3px 3px;
     margin: auto;
@@ -1396,7 +1394,6 @@ table.og-table-ranking tr td.active-rank {
     #menu_navigate_id ul li.menuitem-mod .sub_menu_navigate {
         position: absolute;
         left: 0px;
-        position: absolute;
     }
 
     #menu_navigate_id ul li.menuitem-mod .sub_menu_navigate_admin {
