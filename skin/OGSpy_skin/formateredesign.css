@@ -581,7 +581,7 @@ ______________________________________________________________ */
     --color-warning-lighten: #ffe8cc;
     --color-success: #2b8a3e;
     --color-success-lighten: #d3f9d8;
-    --color-danger: #c92a2a;
+    --color-danger: #ee0909;
     --color-danger-lighten: #ffe3e3;
 
     --color-highlight: #ecff00;
@@ -607,6 +607,7 @@ ______________________________________________________________ */
     /*table*/
     --color-table-color: --color-text;
     --color-table-color-tdstat: #3EBAFD;
+    --color-table-color-tdname: #3EBAFD;
     --color-table-border: rgba(255, 255, 255, 0.1);
     --color-table-border-head: white;
     --color-table-background: #272727;
@@ -1025,10 +1026,21 @@ table.og-table tbody .tdstat {
 
 }
 
+table.og-table tbody .tdname {
+    color: var(--color-table-color-tdstat);
+    font-size: 12px;
+
+}
+
 table.og-table tbody .tdvalue {
     text-align: left;
     padding-left: 10px;
     font-size: 12px;
+}
+
+table.og-table tbody .tdcontent {
+    font-size: 12px;
+    color: var(--color-text);
 }
 
 
@@ -1272,8 +1284,10 @@ table.og-table-ranking tr:hover td {
 }
 
 table.og-table-ranking tr td .ranking-subrank-number {
-    display: contents;
+    display: inline-block;
     color: var(--color-highlight);
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 table.og-table-ranking tr th.active-rank {
