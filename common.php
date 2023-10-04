@@ -27,7 +27,7 @@ if (file_exists("parameters/id.php")) {
 }
 
 //Appel des fonctions
-require __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 
 require_once("includes/admin_functions.php");
