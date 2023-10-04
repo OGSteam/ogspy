@@ -76,9 +76,7 @@ switch ($pub_subaction) {
         </div>  
     </div>      
 
-    <table width="100%">
-        <tr>
-            <td>
+
                 <?php
                 switch ($pub_subaction) {
                     case "empire":
@@ -102,9 +100,7 @@ switch ($pub_subaction) {
                         break;
                 }
                 ?>
-            </td>
-        </tr>
-    </table>
+
 </div><!-- fin div class="page_home" -->
 <?php
 require_once("views/page_tail.php");
