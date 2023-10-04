@@ -1306,7 +1306,11 @@ table.og-table-ranking tr td.active-rank {
 }
 
 
+/* ranking */
+table.og-table-empire tbody tr:hover td {
+    background-color:var(--color-table-background-hover);
 
+}
 
 /* test ecran plus petit */
 
@@ -1377,7 +1381,14 @@ table.og-table-ranking tr td.active-rank {
         padding-right: 1px;
     }
 
-
+/* ranking */
+}
+table.og-table-empire tbody tr td input{
+ vertical-align: middle;
+ display: inline-block;
+ margin-left: 50%;
+ margin-right: 50%;
+}
 
 
 
