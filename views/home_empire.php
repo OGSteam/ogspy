@@ -278,7 +278,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
                 <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
                     <td class="tdcontent">
                         <?php $NRJ = (!isset($user_production[$i]['NRJ'])) ? "&nbsp;" : $user_production[$i]['NRJ']; ?>
-                        <?php number_format($NRJ, 0, ',', ' ')   ?>
+                        <?php echo number_format($NRJ, 0, ',', ' ') ;  ?>
                     </td>
                 <?php endfor; ?>
             </tr>
