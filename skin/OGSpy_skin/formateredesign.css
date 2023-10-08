@@ -1110,6 +1110,11 @@ table.og-table tbody td {
     margin: auto;
 }
 
+.og-button-image-large {
+    width: 22px;
+    height: 22px;
+}
+
 
 .og-button-warning {
     color: var(--color-warning);
