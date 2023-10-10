@@ -74,10 +74,10 @@ function githubGetLatestRelease($repository)
 
     $config = new Config_Model();
 
-    if ( empty($config->get($param) || $config->get($param)[1] < $currentDateminus1day))  {
+    if ( empty($config->get($param) ) || ( $config->get($param)['config_value'] < $currentDateminus1day ) ) {
 
         $data = githubApiRequest($url);
-        $config->update_one( time(), $param);
+        $config->update_one( time(), 'OGSpylastRelease');
         file_put_contents('./cache/repo_info.json', $data);
     }
 

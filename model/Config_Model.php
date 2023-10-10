@@ -17,7 +17,7 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 
 class Config_Model extends Model_Abstract
 {
-    //TODO: There is no method to create a new configuration
+    //TODO: There is no method to create a new configuration if not exists
     /**
      * Retourne tous les elements de la configuration
      * @return array
