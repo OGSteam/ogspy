@@ -14,54 +14,40 @@
  * @link       https://ogsteam.eu
  */
 
+use Ogsteam\Ogspy\Model\Config_Model;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
 /**
- *
- *  */
-function get_aTokenOGSpy($sep)
-{
-    $result = '';
-    $tokens = array('eee455gb', 'g3g986f', 'c2664c9764', '4c73dg6fb921');
-    foreach ($tokens as $token) {
-        for ($i = 0; $i < strlen($token); $i++) {
-            $tmp = ord($token[$i]);
-            $result .= chr(--$tmp);
-        }
-        $result .= $sep;
-    }
-    $result = str_replace($sep, '9', substr($result, 0, -1));
-
-    return $result;
-}
-
-/**
- * Formatting the query for the Github API
+ * Formatting the query for the GitHub API
  * @param string $request Content
- * @return string $data Github Data
+ * @return string|null $data Github Data
  */
-function github_api_Request($request)
+function githubApiRequest($request)
 {
     $opts = [
         'http' => [
             'method' => 'GET',
             'header' => [
                 'User-Agent: OGSpy',
-                'Authorization: token '
             ]
         ]
     ];
-    $opts['http']['header'][1] .= get_aTokenOGSpy(':');
 
     $context = stream_context_create($opts);
 
     try {
+        $headers = get_headers($request, true, $context);
         $data = file_get_contents($request, false, $context);
 
-        if ($data === false) {
-            log_('mod', "[ERROR_github_Request] Unable to get: " . $request);
+
+        if ($data === false || $headers['X-RateLimit-Remaining'] === 0) {
+            log_('mod', "[ERROR_Github_API] Unable to get: " . $request);
+            log_('mod', "[ERROR_Github_API] GitHub Requests Remaining : " . $headers['X-RateLimit-Remaining']);
+        return null;
+
         }
     } catch (Exception $e) {
         log_('mod', "[ERROR_github_Request] API Response Code: " . http_response_code());
@@ -72,18 +58,33 @@ function github_api_Request($request)
 }
 
 /**
- * Formatting the query for the Github API
+ * Formatting the query for the GitHub API
  * @param string $repository Git Repository
  * @return array $release
  */
-function github_get_latest_release($repository)
+function githubGetLatestRelease($repository)
 {
     $release = 'no_release_available';
     $description = 'NA';
     $url = "https://api.github.com/repos/ogsteam/" . $repository . "/releases/latest";
-    $data = github_api_Request($url);
 
-    $mod_data = json_decode($data, true);
+    $param = ['OGSpylastRelease'];
+
+    $currentDateminus1day= strtotime('-1 day');
+
+    $config = new Config_Model();
+
+    if ( empty($config->get($param) || $config->get($param)[1] < $currentDateminus1day))  {
+
+        $data = githubApiRequest($url);
+        $config->update_one( time(), $param);
+        file_put_contents('./cache/repo_info.json', $data);
+    }
+
+    $repoData = file_get_contents('./cache/repo_info.json');
+
+
+    $mod_data = json_decode($repoData, true);
 
     if (isset($mod_data)) {
 

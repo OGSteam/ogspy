@@ -12,9 +12,9 @@ use Ogsteam\Ogspy\Abstracts\Helper_Abstract;
 class helloWorld_Helper extends Helper_Abstract
 {
 
-    protected static  $name = "hello World";
-    protected static  $description = "Helper hello World";
-    protected static  $version = "0.0.1";
+    protected static string $name = "hello World";
+    protected static string $description = "Helper hello World";
+    protected static string $version = "0.0.1";
 
 
     /**

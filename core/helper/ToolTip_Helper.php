@@ -12,9 +12,9 @@ use Ogsteam\Ogspy\Abstracts\Helper_Abstract;
 class ToolTip_Helper extends Helper_Abstract
 {
 
-    protected static  $name = "Helper ToolTip";
-    protected static  $description = "Aide à l'usage de tooltip dans le code HTML";
-    protected static  $version = "0.0.1";
+    protected static string $name = "Helper ToolTip";
+    protected static string $description = "Aide à l'usage de tooltip dans le code HTML";
+    protected static string $version = "0.0.1";
 
     private static $content = null;
 

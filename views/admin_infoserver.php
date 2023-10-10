@@ -60,7 +60,7 @@ $stats["planetimport_ogs"] = (isset($stats["planetimport_ogs"])) ? $stats["plane
 $online = session_whois_online(); //Personne en ligne
 $connectes = count($online); //Nombre personne en ligne
 // Derniere Version OGSpy
-$current_ogspy_version = github_get_latest_release('ogspy');
+$current_ogspy_version = githubGetLatestRelease('ogspy');
 if (version_compare($current_ogspy_version['release'], $server_config['version'], '>')) {
     $ogspy_version_message = "<span style=\"color:red\">" . $current_ogspy_version['release'] . " : " . $lang['ADMIN_SERVER_NEWVERSION'] . "</span><br><br><span>" . $current_ogspy_version['description'] . "</span>";
 } else {
@@ -74,7 +74,7 @@ if (version_compare($current_ogspy_version['release'], $server_config['version']
             <th><?php echo ($lang['ADMIN_SERVER_STATS_VALUE']); ?></th>
             <th><?php echo ($lang['ADMIN_SERVER_STATS']); ?></th>
             <th><?php echo ($lang['ADMIN_SERVER_STATS_VALUE']); ?></th>
-        </tr>  
+        </tr>
     </thead>
     <tbody>
         <tr>
@@ -132,7 +132,7 @@ if (version_compare($current_ogspy_version['release'], $server_config['version']
         <tr>
             <td colspan="2"><a href="php/phpinfo.php" target="_blank" rel="noopener"><?php echo ($lang['ADMIN_SERVER_PHPINFO']); ?></a></td>
             <td colspan="2"><a href="php/phpmodules.php" target="_blank" rel="noopener"><?php echo ($lang['ADMIN_SERVER_PHPMODULES']); ?></a></td>
-        </tr>  
+        </tr>
     </tbody>
 </table>
 
@@ -142,7 +142,7 @@ if (version_compare($current_ogspy_version['release'], $server_config['version']
     <thead>
         <tr>
             <th><?php echo ($lang['ADMIN_SERVER_INFOVERSION']); ?></th>
-        </tr>   
+        </tr>
 
     </thead>
     <tbody>
@@ -160,7 +160,7 @@ if (version_compare($current_ogspy_version['release'], $server_config['version']
             <th><?php echo ($lang['ADMIN_SERVER_MEMBERCONNECTED']); ?></th>
             <th><?php echo ($lang['ADMIN_SERVER_MEMBERLASTACTIVITY']); ?></th>
             <th><?php echo ($lang['ADMIN_SERVER_MEMBERIP']); ?></th>
-        </tr>   
+        </tr>
 
     </thead>
     <tbody>
@@ -182,7 +182,7 @@ if (version_compare($current_ogspy_version['release'], $server_config['version']
             echo "\t" . "<td>" . $ip . "</td>";
             echo "</tr>";
         }
-        ?>   
+        ?>
 
 
     </tbody>
