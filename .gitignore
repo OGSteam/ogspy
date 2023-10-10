@@ -70,3 +70,4 @@ install*
 
 vendor/*
 .phpunit.result.cache
+cache/repo_info.json
