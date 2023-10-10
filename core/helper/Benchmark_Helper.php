@@ -6,10 +6,10 @@ use Ogsteam\Ogspy\Abstracts\Helper_Abstract;
 
 class Benchmark_Helper extends Helper_Abstract {
 
-    protected static $name = "Helper Benchmark";
-    protected static $description = "Aide pour definir les temps d'execution";
-    protected static $version = "0.0.1";
-  
+    protected static string $name = "Helper Benchmark";
+    protected static string $description = "Aide pour definir les temps d'execution";
+    protected static string $version = "0.0.1";
+
     private $Content = array(); /// conteneur des benchmarkrs de l'objet
     private $BenchName;
     private $startTime;

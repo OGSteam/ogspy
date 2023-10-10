@@ -101,7 +101,7 @@ class sql_db
         global $benchSQL;
         $benchSQL = new Ogsteam\Ogspy\Helper\Benchmark_Helper('SQL');
         $benchSQL->start();
-        
+
         $this->user = $sqluser;
         $this->password = $sqlpassword;
         $this->server = $sqlserver;
@@ -143,13 +143,14 @@ class sql_db
      * MySQL Request Function
      * @param string $query The MySQL Query
      * @return bool|mixed|mysqli_result
+     * @throws FileAccessException
      */
     public function sql_query($query = "")
     {
         global $server_config;
         global $benchSQL;
         $benchSQL->start();
-        
+
         $this->last_query = $query;
         $this->result = $this->db_connect_id->query($query);
 
@@ -167,16 +168,16 @@ class sql_db
 
     /**
      * Gets the result of the Query and returns it in a simple array
-     * @param int $query_id The Query id.
-     * @return the array containing the Database result
+     * @param mysqli_result|null $result The Query Result.
+     * @return array|bool array containing the Database result
      */
-    public function sql_fetch_row($query_id = 0)
+    public function sql_fetch_row(mysqli_result $result = null): array|bool|null
     {
-        if (!$query_id) {
-            $query_id = $this->result;
+        if (!$result) {
+            $result = $this->result;
         }
-        if ($query_id) {
-            return $query_id->fetch_array();
+        if ($result) {
+            return $result->fetch_array();
         } else {
             return false;
         }
@@ -184,16 +185,16 @@ class sql_db
 
     /**
      * Gets the result of the Query and returns it in a associative array
-     * @param int $query_id The Query id.
-     * @return the associative array containing the Database result
+     * @param mysqli_result|null $result The Query id.
+     * @return array|bool the associative array containing the Database result
      */
-    public function sql_fetch_assoc($query_id = 0)
+    public function sql_fetch_assoc(mysqli_result $result = null): array|bool|null
     {
-        if (!$query_id) {
-            $query_id = $this->result;
+        if (!$result) {
+            $result = $this->result;
         }
-        if ($query_id) {
-            return $query_id->fetch_assoc();
+        if ($result) {
+            return $result->fetch_assoc();
         } else {
             return false;
         }
@@ -201,16 +202,16 @@ class sql_db
 
     /**
      * Gets the number of results returned by the Query
-     * @param int $query_id The Query id.
+     * @param mysqli_result|null $result
      * @return int|bool the number of results
      */
-    public function sql_numrows($query_id = 0)
+    public function sql_numrows(mysqli_result $result = null): int|bool
     {
-        if (!$query_id) {
-            $query_id = $this->result;
+        if (!$result) {
+            $result = $this->result;
         }
-        if ($query_id) {
-            return $query_id->num_rows;
+        if ($result) {
+            return $result->num_rows;
         } else {
             return false;
         }
@@ -218,9 +219,9 @@ class sql_db
 
     /**
      * Gets the number of affected rows by the Query
-     * @return the number of affected rows
+     * @return bool|int the number of affected rows
      */
-    public function sql_affectedrows()
+    public function sql_affectedrows(): int|false
     {
         if ($this->db_connect_id) {
             return $this->db_connect_id->affected_rows;
@@ -231,9 +232,9 @@ class sql_db
 
     /**
      * Identifier of the last insertion Query
-     * @return Returs the id
+     * @return int|false the id
      */
-    public function sql_insertid()
+    public function sql_insertid(): int|false
     {
         if ($this->db_connect_id) {
             return $this->db_connect_id->insert_id;
@@ -244,8 +245,6 @@ class sql_db
 
     /**
      * Returns the latest Query Error.
-     * @param int $query_id The Query id.
-     * @return an array with the error code and the error message
      */
     public function sql_error()
     {
@@ -280,20 +279,4 @@ class sql_db
         }
     }
 
-    /**
-     * Displays an Error message and exits OGSpy
-     * @param string $query Faulty SQL Request
-     */
-    public function DieSQLError($query)
-    {
-        echo "<table align=center border=1>\n";
-        echo "<tr><td class='c' colspan='3'>Database MySQL Error</td></tr>\n";
-        echo "<tr><th colspan='3'>ErrNo:" . $this->db_connect_id->errno . "</th></tr>\n";
-        echo "<tr><th colspan='3'><u>Query:</u><br>" . $query . "</th></tr>\n";
-        echo "<tr><th colspan='3'><u>Error:</u><br>" . $this->db_connect_id->error . "</th></tr>\n";
-        echo "</table>\n";
-
-        log_("mysql_error", array($query, $this->db_connect_id->errno, $this->db_connect_id->error, debug_backtrace()));
-        exit();
-    }
 }
