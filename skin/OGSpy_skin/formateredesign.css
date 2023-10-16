@@ -1045,6 +1045,11 @@ table.og-table tbody .tdcontent {
     color: var(--color-text);
 }
 
+table.og-table tbody td.og-highlight {
+    color: var(--color-highlight); 
+    background-color:var(--color-table-background-hover);
+
+}
 
 
 table.og-table tbody tr .tdstat:hover,
@@ -1060,6 +1065,15 @@ table.og-table tbody td {
 
     text-align: center;
 }
+
+table.og-table tbody td {
+
+    text-align: center;
+}
+
+
+
+
 
 
 /*fin TABLE */
@@ -1329,6 +1343,12 @@ table.og-table-empire tbody tr:hover td {
 }
 
 
+/* simu */
+
+
+
+
+
 
 
 
@@ -1443,6 +1463,8 @@ table.og-table-empire tbody tr td input{
  margin-left: 50%;
  margin-right: 50%;
 }
+
+
 
 
 
