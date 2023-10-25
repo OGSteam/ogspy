@@ -1713,6 +1713,7 @@ function galaxy_portee_missiles($galaxy, $system)
 function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_missil, $base_coord, $ok_missil, $total_missil)
 {
     global $lang;
+    //todo tooltip non fonctionnel : affichage en tete dans la table galaxy => a maintenir ?
 
     if (!$missil_dispo) {
         $missil_dispo = $lang['GALAXY_MIP_UNKNOWN'];
@@ -1726,6 +1727,7 @@ function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_
     $tooltip .= '<tr><td class=\'c\' width=\'70\'>' . $lang['GALAXY_MIP_AVAILABLE_MISSILES'] . ' : </td><th width=\'30\'>' . $missil_dispo . '</th></tr>';
     $tooltip .= '</table>';
     $tooltip = htmlentities($tooltip);
+    
 
     $door = '<a id="linkdoor" href="?action=galaxy&galaxy=' . $galaxie_missil . '&system=' . $sysSol_missil . '"';
     //$door .= ' onmouseover="this.T_WIDTH=260;this.T_TEMP=15000;return escape(' . $tooltip . ')"';

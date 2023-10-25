@@ -614,6 +614,9 @@ ______________________________________________________________ */
     --color-table-background-hover: #191919;
     --color-table-background-head: black;
 
+    /*table galaxie*/
+    --color-table-galaxie-hided: black;
+
 
     /* icon */
     /*  https://www.iconfinder.com */
@@ -622,8 +625,9 @@ ______________________________________________________________ */
     --icon-addon: url("icon/icon_addon.svg");
     --icon-link: url("icon/icon_link.svg");
 
-    --icon-moon: url("img/lune.png");
-
+    --icon-moon: url("icon/icon-moon.svg");
+    --icon-phalanx: url("icon/icon-phalanx.svg");
+    --icon-gate: url("icon/icon-gate.svg");
 }
 
 /* grille principale */
@@ -1046,8 +1050,8 @@ table.og-table tbody .tdcontent {
 }
 
 table.og-table tbody td.og-highlight {
-    color: var(--color-highlight); 
-    background-color:var(--color-table-background-hover);
+    color: var(--color-highlight);
+    background-color: var(--color-table-background-hover);
 
 }
 
@@ -1070,6 +1074,14 @@ table.og-table tbody td {
 
     text-align: center;
 }
+
+table.og-table thead tr th.og-legend,
+table.og-table thead tr td.og-legend
+{
+    text-align: center;
+}
+
+
 
 
 
@@ -1160,12 +1172,12 @@ table.og-table tbody td {
     border: 1px solid var(--color-danger-lighten);
 }
 
-.og-button-little{
+.og-button-little {
     font-size: 12px;
     border-radius: 4px;
     padding: 2px 4px;
     cursor: pointer;
-    margin: 2px  0px;
+    margin: 2px 0px;
 
 }
 
@@ -1338,34 +1350,114 @@ table.og-table-ranking tr td.active-rank {
 
 /* ranking */
 table.og-table-empire tbody tr:hover td {
-    background-color:var(--color-table-background-hover);
+    background-color: var(--color-table-background-hover);
 
 }
 
 
-/* simu */
+/* page galaxie */
+
+.page_galaxy select {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    height: 30px;
+    margin-right: 40%;
+}
+
+.page_galaxy input {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    height: 25px;
+}
+
+.page_galaxy table tr {
+    height: 30px;
+}
+
+.page_galaxy table tr.empty .tdcontent {
+    color: rgba(0, 0, 0, 0.0);
+}
+
+.page_galaxy table .tdcontent {
+    height: 25px;
+}
 
 
+table.og-table thead tr td {
+
+    text-align: right;
+}
+
+.page_galaxy .og-button {
+    margin: 3px 3px;
+    ;
+}
+
+table.og-table-galaxy tbody .tr-isallied {
+    /* si allie clignotement*/
+    animation: blink 0.9s cubic-bezier(1, 0, 0, 1) infinite alternate;
+}
 
 
-
-
+table.og-table-galaxy tbody .tr-ishided .tdcontent,
+table.og-table-galaxy tbody .tr-ishided .tdcontent a {
+    /* si caché */
+    color: var(--color-table-galaxie-hided)!important;
+}
 
 
 /* OGAME ELEMENT*/
-
-.ogame-icon-moon{
+.ogame-icon {
     align-content: center;
     display: inline-block;
     height: 20px;
     width: 20px;
-    background-image: var(--icon-moon);
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
-    color: rgba(0,0,0,0);
+    background-size: contain;
+    padding-top: 4px;
 }
 
+
+.ogame-icon-gate {
+    background-image: var(--icon-gate);
+}
+
+.ogame-icon-moon {
+    background-image: var(--icon-moon);
+}
+
+.ogame-icon-phalanx {
+    background-image: var(--icon-phalanx);
+}
+
+
+
+.ogame-status-I,
+.ogame-status-i {
+    /* i et I identique  */
+    color: gray;
+}
+
+.ogame-status-v {
+    color: #0044ff;
+}
+
+.ogame-status-a {
+    color: red;
+}
+
+.ogame-status-d {
+    color: #C7569D;
+}
+
+.ogame-status-o {
+    color: #10e972;
+}
+
+.ogame-status-b {
+    color: #d1d129
+}
 
 /* todo ogame-status-x */
 /* Different status dans BDD*/
@@ -1446,24 +1538,30 @@ io
     table.og-table-ranking thead {
         font-size: 11px;
     }
+
     table.og-table-ranking tr th.active-rank {
         font-size: 11px;
     }
-    
+
     table.og-table-ranking tr th.active-rank img {
         padding-left: 1px;
         padding-right: 1px;
     }
 
-/* ranking */
+    /* ranking */
 
-table.og-table-empire tbody tr td input{
- vertical-align: middle;
- display: inline-block;
- margin-left: 50%;
- margin-right: 50%;
+    table.og-table-empire tbody tr td input {
+        vertical-align: middle;
+        display: inline-block;
+        margin-left: 50%;
+        margin-right: 50%;
+    }
+
+
+/* vue galaxie */
+table.og-table-galaxy .og-galaxy-poster{
+    display: none;
 }
-
 
 
 
@@ -1513,6 +1611,6 @@ table.og-table-empire tbody tr td input{
         padding: 0px;
     }
 
-    
+
 
 }
