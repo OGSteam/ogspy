@@ -1076,8 +1076,7 @@ table.og-table tbody td {
 }
 
 table.og-table thead tr th.og-legend,
-table.og-table thead tr td.og-legend
-{
+table.og-table thead tr td.og-legend {
     text-align: center;
 }
 
@@ -1354,8 +1353,35 @@ table.og-table-empire tbody tr:hover td {
 
 }
 
+/* page cartography */
+
+.og-table-cartography {
+    white-space: nowrap;
+}
+
+.og-table-cartography tbody tr td {
+    border: solid var(--color-table-border);
+    border-width: 1px;
+    width: 20px;
+}
+.og-table-cartography tbody tr td.td3{
+    border-right: solid  var(--color-table-background-hover);
+}
+.og-table-cartography tbody tr td:first-child{
+    border-left: solid  var(--color-table-background-hover);
+}
+
+.og-table-cartography tbody tr:hover td{
+    background-color: var(--color-table-background-hover);
+}
+
+
+/* fin page cartography */
+
 
 /* page galaxie */
+
+
 
 .page_galaxy select {
     margin-top: 3px;
@@ -1402,8 +1428,9 @@ table.og-table-galaxy tbody .tr-isallied {
 table.og-table-galaxy tbody .tr-ishided .tdcontent,
 table.og-table-galaxy tbody .tr-ishided .tdcontent a {
     /* si caché */
-    color: var(--color-table-galaxie-hided)!important;
+    color: var(--color-table-galaxie-hided) !important;
 }
+
 
 
 /* OGAME ELEMENT*/
@@ -1558,10 +1585,10 @@ io
     }
 
 
-/* vue galaxie */
-table.og-table-galaxy .og-galaxy-poster{
-    display: none;
-}
+    /* vue galaxie */
+    table.og-table-galaxy .og-galaxy-poster {
+        display: none;
+    }
 
 
 
