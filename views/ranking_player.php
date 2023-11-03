@@ -26,7 +26,7 @@ $link_eco = "<a href='index.php?action=ranking&amp;subaction=player&amp;order_by
 $link_techno = "<a href='index.php?action=ranking&amp;subaction=player&amp;order_by=techno'>" . $lang['RANK_RESEARCH'] . "</a>";
 $link_military = "<a href='index.php?action=ranking&amp;subaction=player&amp;order_by=military'>" . $lang['RANK_MILITARY'] . "</a>";
 $link_military_b = "<a href='index.php?action=ranking&amp;subaction=player&amp;order_by=military_b'>" . $lang['RANK_MILITARY_BUILT'] . "</a>";
-$link_military_l = "<a href='index.php?action=ranking&amp;subaction=player&amp;order_by=military_l'>M" . $lang['RANK_MILITARY_LOST'] . "</a>";
+$link_military_l = "<a href='index.php?action=ranking&amp;subaction=player&amp;order_by=military_l'>" . $lang['RANK_MILITARY_LOST'] . "</a>";
 $link_military_d = "<a href='index.php?action=ranking&amp;subaction=player&amp;order_by=military_d'>" . $lang['RANK_MILITARY_DESTROYED'] . "</a>";
 $link_honnor = "<a href='index.php?action=ranking&amp;subaction=player&amp;order_by=honnor'>" . $lang['RANK_MILITARY_HONOR'] . "</a>";
 
@@ -60,6 +60,7 @@ switch ($order_by) {
     case "military_b":
         $link_military_b = str_replace($lang['RANK_MILITARY_BUILT'], "<img src='images/asc.png'>&nbsp;" . $lang['RANK_MILITARY_BUILT'] . "&nbsp;<img src='images/asc.png'>", $link_military_b);
         $military_b_active_link = $active_link_value;
+        break;
     case "military_l":
         $link_military_l = str_replace($lang['RANK_MILITARY_LOST'], "<img src='images/asc.png'>&nbsp;" . $lang['RANK_MILITARY_LOST'] . "&nbsp;<img src='images/asc.png'>", $link_military_l);
         $military_l_active_link = $active_link_value;
