@@ -285,7 +285,7 @@ require_once 'views/page_header.php';
         <table>
             <tr>
                 <td>
-                    <a class="og-button og-button-warning" href="index.php?action=raz_ratio"><?php echo $lang['STATS_RAZ']; ?></a>';
+                    <a class="og-button og-button-warning" href="index.php?action=raz_ratio"><?php echo $lang['STATS_RAZ']; ?></a>
                 </td>
             </tr>
         </table>
