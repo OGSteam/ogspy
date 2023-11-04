@@ -73,7 +73,7 @@ function galaxy_check_auth($action)
             break;
 
         case "export_ranking":
-            if ($user_auth["ogs_get_ranking"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1){
+            if ($user_auth["ogs_get_ranking"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
                 die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour importer des classements -->" . "\n");
             }
             break;
@@ -553,7 +553,7 @@ function galaxy_reportspy_show()
     $reports = array();
     foreach ($spy_list as $row) {
         $data = UNparseRE($row["id_spy"]);
-        $reports[] = array("spy_id" => $row["id_spy"], "sender" => $row["user_name"], "data" => $data, "moon" => $row['is_moon'] ?? 0 , "dateRE" => $row['dateRE']);
+        $reports[] = array("spy_id" => $row["id_spy"], "sender" => $row["user_name"], "data" => $data, "moon" => $row['is_moon'] ?? 0, "dateRE" => $row['dateRE']);
     }
     return $reports;
 }
@@ -1254,6 +1254,7 @@ function UNparseRE($id_RE)
         'recherche' => 0
     );
 
+
     $flotte = array(
         'PT' => $lang['GAME_FLEET_PT'],
         'GT' => $lang['GAME_FLEET_GT'],
@@ -1343,32 +1344,8 @@ function UNparseRE($id_RE)
     // $moon = 0;
     // }
 
-    $dateRE = date('m-d H:i:s', $row['dateRE']);
-    $template = '<table border="0" cellpadding="2" cellspacing="0" align="center">
-    <tr>
-        <td class="l" colspan="4" class="c">' . $lang['GAME_SPYREPORT_RES'] . ' ' . $row['planet_name'] . ' [' . $row['coordinates'] . '] (' . $lang['GAME_SPYREPORT_PLAYER'] . ' \'' . $rowPN['player'] . '\') le ' . $dateRE . '</td>
-    </tr>
-    <tr>
-        <td class="c" style="text-align:right;">' . $lang['GAME_RES_METAL'] . ':</td>
-        <th>' . number_format($row['metal'], 0, ',', $sep_mille) . '</th>
-        <td class="c" style="text-align:right;">' . $lang['GAME_RES_CRYSTAL'] . ':</td>
-        <th>' . number_format($row['cristal'], 0, ',', $sep_mille) . '</th>
-    </tr>
-    <tr>
-        <td class="c" style="text-align:right;">' . $lang['GAME_RES_DEUT'] . ':</td>
-        <th>' . number_format($row['deuterium'], 0, ',', $sep_mille) . '</th>
-        <td class="c" style="text-align:right;">' . $lang['GAME_RES_ENERGY'] . ':</td>
-        <th>' . number_format($row['energie'], 0, ',', $sep_mille) . '</th>
-    </tr>
-    <tr>
-        <th colspan="4">';
-    if ($row['activite'] > 0) {
-        $template .= $lang['GAME_SPYREPORT_ACTIVITY'] . ' ' . $row['activite'] . ' ' . $lang['GAME_SPYREPORT_LASTMINUTES'] . '.';
-    } else {
-        $template .= $lang['GAME_SPYREPORT_NOACTIVITY'];
-    }
-    $template .= '</th>
-    </tr>' . "\n";
+
+
     foreach ($flotte as $key => $value) {
         if ($row[$key] != -1) {
             $show['flotte'] = 1;
@@ -1520,110 +1497,133 @@ function UNparseRE($id_RE)
         }
     }
 
-    if ($show['flotte'] == 1) {
-        $template .= '  <tr>
-        <td class="l" colspan="4">' . $lang['GAME_CAT_FLEET'] . '</td>
-    </tr>
-    <tr>' . "\n";
-        $count = 0;
-        foreach ($flotte as $key => $value) {
-            if ($row[$key] > 0) {
-                $template .= '    <td class="c" style="text-align:right;">' . $flotte[$key] . '</td>
-        <th>' . number_format($row[$key], 0, ',', $sep_mille) . '</th>' . "\n";
-                if ($count == 0) {
-                    $count = 1;
-                } else {
-                    $template .= '  </tr>
-    <tr>' . "\n";
-                    $count = 0;
-                }
-            }
-        }
-        if ($count == 1) {
-            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
-        <th>&nbsp;</th>' . "\n";
-        }
-        $template .= '  </tr>' . "\n";
-    }
-    if ($show['defense'] == 1) {
-        $template .= '  <tr>
-        <td class="l" colspan="4">' . $lang['GAME_CAT_DEF'] . '</td>
-    </tr>
-    <tr>' . "\n";
-        $count = 0;
-        foreach ($defs as $key => $value) {
-            if ($row[$key] > 0) {
-                $template .= '    <td class="c" style="text-align:right;">' . $defs[$key] . '</td>
-        <th>' . number_format($row[$key], 0, ',', $sep_mille) . '</th>' . "\n";
-                if ($count == 0) {
-                    $count = 1;
-                } else {
-                    $template .= '  </tr>
-    <tr>' . "\n";
-                    $count = 0;
-                }
-            }
-        }
-        if ($count == 1) {
-            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
-        <th>&nbsp;</th>' . "\n";
-        }
-        $template .= '  </tr>' . "\n";
-    }
-    if ($show['batiment'] == 1) {
-        $template .= '  <tr>
-        <td class="l" colspan="4">' . $lang['GAME_CAT_BUILDINGS'] . '</td>
-    </tr>
-    <tr>' . "\n";
-        $count = 0;
-        foreach ($bats as $key => $value) {
-            if ($row[$key] > 0) {
-                $template .= '    <td class="c" style="text-align:right;">' . $bats[$key] . '</td>
-        <th>' . $row[$key] . '</th>' . "\n";
-                if ($count == 0) {
-                    $count = 1;
-                } else {
-                    $template .= '  </tr>
-    <tr>' . "\n";
-                    $count = 0;
-                }
-            }
-        }
-        if ($count == 1) {
-            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
-        <th>&nbsp;</th>' . "\n";
-        }
-        $template .= '  </tr>' . "\n";
-    }
-    if ($show['recherche'] == 1) {
-        $template .= '  <tr>
-        <td class="l" colspan="4">' . $lang['GAME_CAT_LAB'] . '</td>
-    </tr>
-    <tr>' . "\n";
-        $count = 0;
-        foreach ($techs as $key => $value) {
-            if ($row[$key] > 0) {
-                $template .= '    <td class="c" style="text-align:right;">' . $techs[$key] . '</td>
-        <th>' . $row[$key] . '</th>' . "\n";
-                if ($count == 0) {
-                    $count = 1;
-                } else {
-                    $template .= '  </tr>
-    <tr>' . "\n";
-                    $count = 0;
-                }
-            }
-        }
-        if ($count == 1) {
-            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
-        <th>&nbsp;</th>' . "\n";
-        }
-        $template .= '  </tr>' . "\n";
-    }
-    $template .= '  <tr>
-        <th colspan="4">' . $lang['GAME_SPYREPORT_PROBADEST'] . ' :' . $row['proba'] . '%</th>
-    </tr>
-</table>';
+    $dateRE = date('m-d H:i:s', $row['dateRE']);
+
+    // passage par temporisation pour gain de clarté
+
+    // -- temporisation -- 
+    ob_start(); ?>
+    <table class="og-table  og-table-spy">
+        <thead>
+            <tr>
+                <th colspan="4">
+                    <?php echo $lang['GAME_SPYREPORT_RES'] . ' ' . $row['planet_name'] . ' [' . $row['coordinates'] . '] (' . $lang['GAME_SPYREPORT_PLAYER'] . ' \'' . $rowPN['player'] . '\') le ' . $dateRE; ?>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class=" tdstat">
+                    <?php echo $lang['GAME_RES_METAL']; ?>:
+                </td>
+                <td class="tdvalue">
+                    <?php echo number_format($row['metal'], 0, ',', $sep_mille); ?>
+                </td>
+                <td class="tdstat">
+                    <?php echo $lang['GAME_RES_CRYSTAL']; ?>:
+                </td>
+                <td class="tdvalue">
+                    <?php echo number_format($row['cristal'], 0, ',', $sep_mille); ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdstat">
+                    <?php echo $lang['GAME_RES_DEUT']; ?>:
+                </td>
+                <td class="tdvalue">
+                    <?php echo number_format($row['deuterium'], 0, ',', $sep_mille); ?>
+                </td>
+                <td class="tdstat">
+                    <?php echo $lang['GAME_RES_ENERGY']; ?>:
+                </td>
+                <td class="tdvalue">
+                    <?php echo number_format($row['energie'], 0, ',', $sep_mille); ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdcontent" colspan="4">
+                    <?php if ($row['activite'] > 0) : ?>
+                        <?php echo $lang['GAME_SPYREPORT_ACTIVITY'] . ' ' . $row['activite'] . ' ' . $lang['GAME_SPYREPORT_LASTMINUTES'] . '.'; ?>
+                    <?php else : ?>
+                        <?php echo $lang['GAME_SPYREPORT_NOACTIVITY']; ?>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        </tbody>
+
+        <?php //routine flotte, defense, batiment, recherche
+
+        $showLang = array(
+            'flotte' => $lang['GAME_CAT_FLEET'],
+            'defense' => $lang['GAME_CAT_DEF'],
+            'batiment' => $lang['GAME_CAT_BUILDINGS'],
+            'recherche' => $lang['GAME_CAT_LAB'],
+        );
+        $showName = array(
+            'flotte' => "flotte",
+            'defense' => "defs",
+            'batiment' => "bats",
+            'recherche' => "techs",
+        );
+
+
+        ?>
+        <?php foreach ($show as $type => $count) : ?>
+
+            <?php if ($show[$type] == 1) : ?>
+                <thead>
+                    <tr>
+                        <th colspan="4">
+                            <?php echo  $showLang[$type]; ?>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <?php $count = 0; ?>
+                        <?php $conteneur = $showName[$type]; ?>
+                        <?php foreach ($$conteneur as $key => $value) : ?>
+                            <?php if ($row[$key] > 0) : ?>
+                                <?php if ($count == 0) : ?>
+                                    <?php echo  "<tr>"; ?>
+                                <?php endif; ?>
+                                <td class="tdstat">
+                                    <?php echo  $$conteneur[$key]; ?>:
+                                </td>
+                                <td class="tdvalue">
+                                    <?php echo  number_format($row[$key], 0, ',', $sep_mille); ?>
+                                </td>
+                                <?php if ($count == 1) : ?>
+                                    <?php echo  "</tr>"; ?>
+                                    <?php $count = 0; ?>
+                                <?php else : ?>
+                                    <?php $count = 1; ?>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <?php if ($count == 1) : ?>
+                            <td class="tdstat"></td>
+                            <td class="tdvalue"></td>
+                            <?php echo  "</tr>"; ?>
+                        <?php endif; ?>
+                </tbody>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        <?php //fin routine flotte, defense, batiment, recherche
+        ?>
+        <thead>
+            <tr>
+                <th colspan="4">
+                    <?php echo  $lang['GAME_SPYREPORT_PROBADEST'].' : ' . $row['proba'] . '%'; ?>
+                </th>
+            </tr>
+        </thead>
+    </table>
+    <?php
+    $contents = ob_get_contents();
+    ob_end_clean();
+    $template =  $contents;
+    // -- Fin temporisation -- 
+
     return ($template);
 }
 
@@ -1727,7 +1727,7 @@ function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_
     $tooltip .= '<tr><td class=\'c\' width=\'70\'>' . $lang['GALAXY_MIP_AVAILABLE_MISSILES'] . ' : </td><th width=\'30\'>' . $missil_dispo . '</th></tr>';
     $tooltip .= '</table>';
     $tooltip = htmlentities($tooltip);
-    
+
 
     $door = '<a id="linkdoor" href="?action=galaxy&galaxy=' . $galaxie_missil . '&system=' . $sysSol_missil . '"';
     //$door .= ' onmouseover="this.T_WIDTH=260;this.T_TEMP=15000;return escape(' . $tooltip . ')"';
