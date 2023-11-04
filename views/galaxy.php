@@ -244,7 +244,7 @@ require_once("views/page_header.php");
                         </td>
                         <td class="tdcontent"> <!-- spy -->
                             <?php if ($v["report_spy"] > 0) : ?>
-                                <a href='#' onClick="window.open('index.php?action=show_reportspy&amp;galaxy=$galaxy&amp;system=$system&amp;row=<?php echo $i; ?>','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)">
+                                <a href='#' onClick="window.open('index.php?action=show_reportspy&amp;galaxy=<?php echo $galaxy;?>&amp;system=<?php echo $system;?>&amp;row=<?php echo $i; ?>','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)">
                                     <?php echo $lang['GALAXY_SR']; ?>
                                 </a>
                             <?php else : ?>

@@ -176,7 +176,7 @@ require_once("views/page_header.php");
 
         <thead>
             <tr>
-               </tr>
+            </tr>
         </thead>
     </table>
 
