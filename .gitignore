@@ -4,35 +4,9 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/dictionaries
-.idea/php.xml
-.idea/inspectionProfiles/
-.idea/vcs.xml
-.idea/misc.xml
-.idea/deployment.xml
-.idea/bashsupport_project.xml
-.idea/codeStyles/codeStyleConfig.xml
-.idea/runConfigurations/PHP_OGNMP.xml
-
-# Sensitive or high-churn files:
-.idea/**/dataSources/
-.idea/**/dataSources.ids
-.idea/**/dataSources.xml
-.idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
-.idea/**/dynamic.xml
-.idea/**/uiDesigner.xml
-.idea/webServers.xml
-.idea/sqldialects.xml
-.idea/encodings.xml
-.idea/vcs.xml
+.idea
 
 
-# Gradle:
-.idea/**/gradle.xml
-.idea/**/libraries
 
 # CMake
 cmake-build-debug/
@@ -71,3 +45,4 @@ install*
 vendor/*
 .phpunit.result.cache
 cache/repo_info.json
+*.pb
