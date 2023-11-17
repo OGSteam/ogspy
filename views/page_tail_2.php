@@ -45,24 +45,16 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 
 <!--todo revoir footer de ce type de page -->
 <footer id='barre'>
-    <table style="width:100%">
-        <tr>
-            <td></td>
-        </tr>
-        <tr>
-            <td style="width:33%;text-align:left;font-size:11px;font-style:italic">
-                <a style="font-weight:bold;font-size: 12px" href="https://www.ogsteam.eu" target="_blank" rel="noopener">OGSpy</a> <?php echo $server_config["version"] . " " . $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2023<br />
-            </td>
-            <td style="width:34%;text-align:center;font-size:11px;font-style:italic;font-weight:bold;"><?php echo ("<span id='nb_users'>" . $nb_users . "</span> " . $lang['FOOTER_CONTRIBUTORS'] . (($nb_users > 1) ? "s" : "") . " " . $lang['FOOTER_ON_SITE']); ?></td>
-            <td style="width:33%;text-align:right;font-size:11px;font-style:italic">
-                <?php echo $lang['FOOTER_RENDERING'] . " " . round($php_timing + $sql_timing, 3); ?> sec (<span style="font-weight:bold;">PHP</span> : <?php echo round($php_timing, 3); ?> / <span style="font-weight:bold;">SQL</span> : <?php echo round($sql_timing, 3); ?>)
-                [<?php echo ($nb_requete . " " . $lang['FOOTER_QUERY'] . (($nb_requete > 1) ? "s" : "")); ?>]
-            </td>
-        </tr>
-
-    </table>
-
-</footer> <!-- fin pied de page footer html -->
+    <div class="footerbarre-version">
+        <a href="https://www.ogsteam.eu" target="_blank" rel="noopener">OGSpy</a> <span class="og-highlight"><?php echo $server_config["version"] . "</span> " . $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2023
+    </div>
+    <div class="footerbarre-countuser">
+     </div>
+    <div class="footerbarre-bench">
+        <?php echo $lang['FOOTER_RENDERING'] . " <span class=\"og-highlight\">" . round($php_timing + $sql_timing, 3); ?></span> sec <span class="notviewlittle">(PHP : <span class="og-highlight"><?php echo round($php_timing, 3); ?></span> / SQL : <span class="og-highlight"><?php echo round($sql_timing, 3); ?></span>)
+        [<?php echo ($nb_requete . " " . $lang['FOOTER_QUERY'] . (($nb_requete > 1) ? "s" : "")); ?>]</span>
+    </div>
+</footer>  <!-- fin pied de page footer html -->
 <?php echo (new ToolTip_Helper())->GetHTMLHideContent(); ?>
 </body>
 
