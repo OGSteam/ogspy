@@ -18,159 +18,109 @@ if (!defined('IN_SPYOGAME')) {
 require_once("views/page_header.php");
 ?>
 <div class="page_about">
+    <h2 class="page_about_h2"><?php echo $lang['ABOUT_PROJECT_TEAM']; ?></h2>
 
-    <table width="70%" border="1" cellpadding="0" cellspacing="5" align="center">
-        <tr>
-            <th align="center" class="c" colspan="5"><span style="color: Yellow; font-size: small; "><?php echo $lang['ABOUT_PROJECT_TEAM']; ?></span></th>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle">
-                <img src="images/avatars/default_avatar.png" alt="Kyser Picture" width="100" title="Kyser">
-            </td>
-            <td class="l">
-                &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Kyser</span></a><br>
-                <div style="text-align: center;"><strong>Concepteur du serveur d'alliance OGSpy</strong><br><br></div>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle">
-                <img src="images/avatars/default_avatar.png" alt="Rica Picture" width="100" title="Rica">
-            </td>
-            <td class="l">
-                &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Rica</span></a><br>
-                <div style="text-align: center;"><strong>Concepteur du client OGame Stratege (OGS)<br>
-                        Concepteur de l'ancien serveur d'alliance OGame Stratege Serveur (OGSS)</strong><br></div>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle">
-                <img src="images/avatars/ogsteam_avatar_aeris.png" alt="Aeris Picture" width="100" title="Aeris">
-            </td>
-            <td class="l">
-                &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Aéris</span></strong><br />
-                <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_AERIS']; ?></strong></div>
-                <br />
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle">
-                <img src="images/avatars/default_avatar.png" alt="Capi Picture" width="100" title="Capi">
-            </td>
-            <td class="l">
-                &nbsp;<a><span style="color: Yellow; font-size: x-small; ">Capi</span></a><br />
-                <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_CAPI']; ?><br />
-                        <span style="color: orange; ">Capi capi, capo...</span></strong></div>
-                <br />
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle">
-                <img src="images/avatars/default_avatar.png" alt="Chris Alys Picture" width="100" title="Chris Alys">
-            </td>
-            <td class="l">
-                &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Chris Alys</span></strong><br />
-                <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_CHRYS']; ?></strong></div>
-                <br />
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle">
-                <img src="images/avatars/ogsteam_avatar_darknoon.png" alt="DarkNoon Picture" width="100" title="DarkNoon">
-            </td>
-            <td class="l">
-                &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">DarkNoon</span></strong>
-                <br />
-                <ul>
-                    <li><strong><?php echo $lang['ABOUT_PROJECT_DARKNOON']; ?></strong></li>
-                    <li><strong><?php echo $lang['ABOUT_PROJECT_DARKNOON1']; ?></strong></li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle">
-                <img src="images/avatars/ogsteam_avatar_jedinight.png" alt="Jedinight Picture" width="100" title="Jedinight">
-            </td>
-            <td class="l">
-                <strong><span style="color: Yellow; font-size: x-small; ">Jedinight</span></strong>
-                <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_JEDINIGHT']; ?></strong></div>
-                <br />
-                <ul>
-                    <li><strong><?php echo $lang['ABOUT_PROJECT_JEDINIGHT1']; ?></strong></li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle">
-                <img src="images/avatars/ogsteam_avatar_machine.jpg" alt="Machine Picture" width="100" title="Machine">
-            </td>
-            <td class="l">
-                <strong><span style="color: Yellow; font-size: x-small; ">Machine</span></strong><br />
-                <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_MACHINE']; ?></strong></div>
-                <br />
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle">
-                <img src="images/avatars/default_avatar.png" alt="Ninety Picture" width="100" title="Ninety">
-            </td>
-            <td class="l">
-                &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Ninety</span></strong><br />
-                <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_NINETY']; ?></strong></div>
-                <br />
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle">
-                <img src="images/avatars/default_avatar.png" alt="Shad Picture" width="100" title="Shad">
-            </td>
-            <td class="l">
-                &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Shad</span></strong><br />
-                <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_SHAD']; ?></strong></div>
-                <br />
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle">
-                <img src="images/avatars/default_avatar.png" alt="SuperBox Picture" width="100" title="Superbox">
-            </td>
-            <td class="l">
-                &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Superbox</span></strong><br />
-                <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_SUPERBOX']; ?></strong></div>
-                <br />
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle">
-                <img src="images/avatars/ogsteam_avatar_xaviernuma.jpg" alt="XNurma Picture" width="100" title="Xaviernuma">
-            </td>
-            <td class="l">
-                &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Xaviernuma</span></strong><br />
-                <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_XAVIERNUMA']; ?></strong></div>
-                <br />
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle">
-                <img src="images/avatars/ogsteam_avatar_pitch314.jpg" alt="pitch314 Picture" width="100" title="pitch314">
-            </td>
-            <td class="l">
-                &nbsp;<strong><span style="color: Yellow; font-size: x-small; ">Pitch314</span></strong><br />
-                <div style="text-align: center;"><strong><?php echo $lang['ABOUT_PROJECT_PITCH314']; ?></strong></div>
-                <ul>
-                    <li><strong><?php echo $lang['ABOUT_PROJECT_PITCH314_1']; ?></strong></li>
-                    <li><strong><?php echo $lang['ABOUT_PROJECT_PITCH314_2']; ?></strong></li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td class="c" width="100" height="100" align="center" valign="middle">
-                <img src="images/avatars/default_avatar.png" alt="Test Team Picture" width="100" title="Testeurs">
-            </td>
-            <td class="l">
-                <strong>
-                    <span style="color: Yellow; font-size: x-small; "><?php echo $lang['ABOUT_TEST_TEAM']; ?></span>
-                </strong>
-                <br />
+    <main class="cards">
+        <div class="card">
+            <img src="images/avatars/default_avatar.png" alt="Kyser Picture" title="Kyser">
+            <div class="text">
+                <h3>Kyser</h3>
+                <p>Concepteur du serveur d'alliance OGSpy.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images/avatars/default_avatar.png" alt="Rica Picture" title="Rica">
+            <div class="text">
+                <h3>Rica</h3>
+                <p>Concepteur du client OGame Stratege (OGS)</p>
+                <p> Concepteur de l'ancien serveur d'alliance OGame Stratege Serveur (OGSS).</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images/avatars/ogsteam_avatar_aeris.png" alt="Aéris Picture" title="Aéris">
+            <div class="text">
+                <h3>Aéris</h3>
+                <p><?php echo $lang['ABOUT_PROJECT_AERIS']; ?></p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images/avatars/default_avatar.png" alt="Capi Picture" title="Capi">
+            <div class="text">
+                <h3>Capi</h3>
+                <p><?php echo $lang['ABOUT_PROJECT_CAPI']; ?></p>
+                <p class="og-highlight">Capi capi, capo...</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images/avatars/default_avatar.png" alt="Chris Alys Picture" title="Chris Alys">
+            <div class="text">
+                <h3>Chris Alys</h3>
+                <p><?php echo $lang['ABOUT_PROJECT_CHRYS']; ?></p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images/avatars/ogsteam_avatar_darknoon.png" alt="DarkNoon Picture" title="DarkNoon">
+            <div class="text">
+                <h3>DarkNoon</h3>
+                <p><?php echo $lang['ABOUT_PROJECT_DARKNOON']; ?></p>
+                <p><?php echo $lang['ABOUT_PROJECT_DARKNOON1']; ?></p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images/avatars/ogsteam_avatar_jedinight.png" alt="miJedinightddle Picture" title="Jedinight">
+            <div class="text">
+                <h3>Jedinight</h3>
+                <p><?php echo $lang['ABOUT_PROJECT_JEDINIGHT']; ?></p>
+                <p><?php echo $lang['ABOUT_PROJECT_JEDINIGHT1']; ?></p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images/avatars/ogsteam_avatar_machine.jpg" alt="Machine Picture" title="Machine">
+            <div class="text">
+                <h3>Machine</h3>
+                <p><?php echo $lang['ABOUT_PROJECT_MACHINE']; ?></p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images/avatars/default_avatar.png" alt="Ninety Picture" title="Ninety">
+            <div class="text">
+                <h3>Ninety</h3>
+                <p><?php echo $lang['ABOUT_PROJECT_NINETY']; ?></p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images/avatars/default_avatar.png" alt="Shad Picture" title="Shad">
+            <div class="text">
+                <h3>Shad</h3>
+                <p><?php echo $lang['ABOUT_PROJECT_SHAD']; ?></p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images/avatars/default_avatar.png" alt="Superbox Picture" title="Superbox">
+            <div class="text">
+                <h3>Superbox</h3>
+                <p><?php echo $lang['ABOUT_PROJECT_SUPERBOX']; ?></p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images/avatars/ogsteam_avatar_xaviernuma.jpg" alt="Xaviernuma Picture" title="Xaviernuma">
+            <div class="text">
+                <h3>Xaviernuma</h3>
+                <p><?php echo $lang['ABOUT_PROJECT_XAVIERNUMA']; ?></p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images/avatars/ogsteam_avatar_pitch314.jpg" alt="pitch314 Picture" title="pitch314">
+            <div class="text">
+                <h3>pitch314</h3>
+                <p><?php echo $lang['ABOUT_PROJECT_PITCH314_1']; ?></p>
+                <p><?php echo $lang['ABOUT_PROJECT_PITCH314_2']; ?></p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="images/avatars/default_avatar.png" alt="Test Team Picture" title="Test Team">
+            <div class="text">
+                <h3><?php echo $lang['ABOUT_TEST_TEAM']; ?></h3>
                 <ul>
                     <li>Skyline-ch</li>
                     <li>Anubys</li>
@@ -179,9 +129,10 @@ require_once("views/page_header.php");
                     <li>EVH</li>
                     <li>Dardarmotus</li>
                 </ul>
-            </td>
-        </tr>
-    </table>
+            </div>
+        </div>
+    </main>
+
 </div> <!-- fin div class="page_about" -->
 <?php
 require_once("views/page_tail.php");

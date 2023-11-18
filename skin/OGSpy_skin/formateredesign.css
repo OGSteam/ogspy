@@ -1407,6 +1407,43 @@ table.og-table-empire tbody tr:hover td {
 /* fin page cartography */
 
 
+/* page about */
+h2.page_about_h2 {
+    color: var(--color-navpagemenu-link);
+    text-align: center;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    margin-left: 10%;
+    margin-right: 10%;
+    justify-content: center;
+
+    
+  }
+  .card { 
+    background-color: rgba(0,0,0,0.4);
+    flex: 0 0 200px;
+    margin: 10px 20px;
+    border: 2px solid #ccc;
+    padding: 5px;
+  } 
+  .card img {
+    width: 100%;
+
+  }
+  .card .text {
+    padding: 0 20px 20px;
+  }
+
+/* fin page about */
+
+
+
+
+
 /* page galaxie */
 
 
@@ -1586,6 +1623,21 @@ footer#barre .notviewlittle{
     /* fin pied de page  */
 
     
+/* page about */
+.cards {
+    margin-left: 10px;
+    margin-right: 10px;
+     }
+  .card { 
+    flex: 0 0 300px;
+    margin: 10px 10px;
+  } 
+
+/* fin page about */
+
+
+
+
 
 
     /* table */
