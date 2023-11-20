@@ -316,7 +316,7 @@ require_once('views/page_header_2.php');
     <div class="og-msg og-msg-<?php echo $msgType; ?>">
         <h3 class="og-title"><?php echo $msgTitle; ?></h3>
         <p class="og-content"><?php echo $msgContent; ?></p>
-        <button type="button"  onclick="location.href='<?php echo $msgURLButton; ?>'" class="og-button og-button-<?php echo $msgType; ?>">
+        <button type="button"  onclick="location.href='index.php?<?php echo $msgURLButton; ?>'" class="og-button og-button-<?php echo $msgType; ?>">
             <?php echo $lang['MSG_BACK']; ?>
         </button>
     </div>
