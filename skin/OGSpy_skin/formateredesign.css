@@ -1496,6 +1496,10 @@ table.og-table-galaxy tbody .tr-ishided .tdcontent a {
     color: var(--color-table-galaxie-hided) !important;
 }
 
+/* fin page rc */
+.page_report_rc{
+    text-align: center;
+}
 
 
 /* OGAME ELEMENT*/
