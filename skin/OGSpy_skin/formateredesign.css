@@ -1015,6 +1015,10 @@ table.og-small-table {
     width: 400px;
 }
 
+table.og-mini-table {
+    width: 200px;
+}
+
 
 table.og-full-table {
     width: 100%;
