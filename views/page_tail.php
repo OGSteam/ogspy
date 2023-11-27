@@ -1,4 +1,4 @@
-<?php
+<?php global $benchogspy, $db, $lang;
 
 /**
  * HTML Footer
@@ -26,21 +26,8 @@ $ogspy_timing = $benchogspy->getAllElapsed(); // temps total
 $sql_timing = $benchSQL->getAllElapsed(); //temps sql
 $php_timing = $ogspy_timing - $sql_timing; // delta => temps php
 
-
-
 ?>
 </section><!-- Fin Contenu principal compat legacy -->
-<?php
-global $ogspy_phperror;
-if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
-    echo "\n<tr>\n\t<td><table><tr><th>" . $lang['FOOTER_PHPERRORS'] . "</th></tr>";
-    foreach ($ogspy_phperror as $line) {
-        echo "\n<tr><td>$line</td></tr>";
-    }
-    echo "</table>\n\t</td>\n</tr>";
-}
-?>
-
 
 <footer id='barre'>
     <div class="footerbarre-version">
@@ -53,7 +40,7 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
         <?php echo $lang['FOOTER_RENDERING'] . " <span class=\"og-highlight\">" . round($php_timing + $sql_timing, 3); ?></span> sec <span class="notviewlittle">(PHP : <span class="og-highlight"><?php echo round($php_timing, 3); ?></span> / SQL : <span class="og-highlight"><?php echo round($sql_timing, 3); ?></span>)
         [<?php echo ($nb_requete . " " . $lang['FOOTER_QUERY'] . (($nb_requete > 1) ? "s" : "")); ?>]</span>
     </div>
-</footer> 
+</footer>
 <!-- fin pied de page footer html -->
 
 <?php echo (new ToolTip_Helper())->GetHTMLHideContent(); ?>
