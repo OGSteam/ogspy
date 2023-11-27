@@ -1,4 +1,4 @@
-<?php
+<?php global $banner_selected, $lang, $server_config;
 
 /**
  * HTML Header
@@ -18,7 +18,7 @@ if (!defined('IN_SPYOGAME')) {
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo ($lang['HEAD_LANGUAGE']); ?>">
+<html lang="<?= $lang['HEAD_LANGUAGE']; ?>">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -40,12 +40,12 @@ use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 </head>
 
 <body onload="ogspy_run();">
-    
+
     <header id="ban">
-        <img alt="Logo OGSpy" src="./skin/OGSpy_skin/<?php echo  $banner_selected; ?>">
+        <img alt="Logo OGSpy" src="./skin/OGSpy_skin/<?= $banner_selected; ?>">
     </header> <!-- fin header Banniere ogspy -->
     <nav id="navbar">
-        <?php require_once("menu.php"); ?>
+        <?php require_once "menu.php"; ?>
     </nav><!-- fin partie navigation principale -->
-    
+
 <section id="content"> <!-- Contenu principal Attention, fermeture dans le footer / compat legacy -->
