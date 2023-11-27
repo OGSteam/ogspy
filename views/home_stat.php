@@ -1,4 +1,4 @@
-<?php
+<?php global $user_data, $lang;
 
 /**
  * Affichage Empire - Page Statistiques
@@ -315,23 +315,11 @@ while ($ranking = current($individual_ranking)) {
     }
 
     $rank_row[$i]["date"] = date("d M Y H:i", $v);
-    $rank_row[$i]["general_rank"] = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
-    $rank_row[$i]["general_points"]  = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
-    $rank_row[$i]["eco_rank"]  = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : "&nbsp;";
-    $rank_row[$i]["eco_points"]  = isset($ranking["eco"]) ? formate_number($ranking["eco"]["points"]) : "&nbsp;";
-    $rank_row[$i]["techno_rank"]  = isset($ranking["techno"]) ? formate_number($ranking["techno"]["rank"]) : "&nbsp;";
-    $rank_row[$i]["techno_points"]  = isset($ranking["techno"]) ? formate_number($ranking["techno"]["points"]) : "&nbsp;";
-    $rank_row[$i]["military_rank"]  = isset($ranking["military"]) ? formate_number($ranking["military"]["rank"]) : "&nbsp;";
-    $rank_row[$i]["military_points"]  = isset($ranking["military"]) ? formate_number($ranking["military"]["points"]) : "&nbsp;";
-    $rank_row[$i]["military_b_rank"]  = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["rank"]) : "&nbsp;";
-    $rank_row[$i]["military_b_points"]  = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["points"]) : "&nbsp;";
-    $rank_row[$i]["military_l_rank"]  = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["rank"]) : "&nbsp;";
-    $rank_row[$i]["military_l_points"]  = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) : "&nbsp;";
-    $rank_row[$i]["military_d_rank"]  = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) : "&nbsp;";
-    $rank_row[$i]["military_d_points"]  = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : "&nbsp;";
-    $rank_row[$i]["honnor_rank"]  = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : "&nbsp;";
-    $rank_row[$i]["honnor_points"]  = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : "&nbsp;";
-
+    $rankings = ["general", "eco", "techno", "military", "military_b", "military_l", "military_d", "honnor"];
+    foreach ($rankings as $ranking) {
+        $rank_row[$i][$ranking . "_rank"] = isset($ranking[$ranking]) ? formate_number($ranking[$ranking]["rank"]) : "&nbsp;";
+        $rank_row[$i][$ranking . "_points"] = isset($ranking[$ranking]) ? formate_number($ranking[$ranking]["points"]) : "&nbsp;";
+    }
     $i++;
     next($individual_ranking);
 }
@@ -342,7 +330,7 @@ while ($ranking = current($individual_ranking)) {
 
 <?php
 // on fabrique toutes les courbes ici
-// 
+//
 global $zoom;
 $zoom = 'false';
 $curve = create_curves($user_data["user_stat_name"], $min_date, $max_date, $player_comp);
@@ -384,15 +372,8 @@ for ($i = 1; $i <= $nb_planete; $i++) {
     }
 }
 
-
-
-
-
-
 ?>
-<!-- positionnement des graphhiques -->
-
-
+<!-- positionnement des graphiques -->
 
 <table class="og-table og-full-table og-table-ranking">
     <thead>
@@ -428,7 +409,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
     <thead>
         <tr>
             <th colspan="2">
-                   <?php echo $lang['HOME_STATS_GRAPHIC_DIVERS'] . " " . help(null, $title); ?>         
+                   <?php echo $lang['HOME_STATS_GRAPHIC_DIVERS'] . " " . help(null, $title); ?>
             </th>
        </tr>
     </thead>
@@ -452,11 +433,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
         <td >
             <div id="pie_empire">
                 <?php if ($b == 0 && $d == 0 && $l == 0 && $t == 0) : ?>
-                    <?php // pas d info 
+                    <?php // pas d info
                     ?>
                     <?php echo  $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'];; ?>
                 <?php else : ?>
-                    <?php // autrement on affiche rien : on prepare juste l affichage du script 
+                    <?php // autrement on affiche rien : on prepare juste l affichage du script
                     ?>
                     <?php $pie_empire = create_pie(
                         implode('_x_', $planet),
@@ -481,15 +462,15 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             </th>
         </tr>
         <tr>
-            <th><?php echo ($lang['HOME_STATS_DATE']); ?></td>
-            <th colspan="2"><?php echo ($lang['HOME_STATS_PTS_GENERAL']); ?></th>
-            <th colspan="2"><?php echo ($lang['HOME_STATS_PTS_ECO']); ?></th>
-            <th colspan="2"><?php echo ($lang['HOME_STATS_PTS_RESEARCH']); ?></th>
-            <th colspan="2"><?php echo ($lang['HOME_STATS_PTS_MILITARY']); ?></th>
-            <th colspan="2"><?php echo ($lang['HOME_STATS_PTS_MILITARYBUILT']); ?></th>
-            <th colspan="2"><?php echo ($lang['HOME_STATS_PTS_MILITARYLOST']); ?></th>
-            <th colspan="2"><?php echo ($lang['HOME_STATS_PTS_MILITARYDEST']); ?></th>
-            <th colspan="2"><?php echo ($lang['HOME_STATS_PTS_HONOR']); ?></th>
+            <th><?= $lang['HOME_STATS_DATE'] ?></th>
+            <th colspan="2"><?= $lang['HOME_STATS_PTS_GENERAL'] ?></th>
+            <th colspan="2"><?= $lang['HOME_STATS_PTS_ECO'] ?></th>
+            <th colspan="2"><?= $lang['HOME_STATS_PTS_RESEARCH'] ?></th>
+            <th colspan="2"><?= $lang['HOME_STATS_PTS_MILITARY'] ?></th>
+            <th colspan="2"><?= $lang['HOME_STATS_PTS_MILITARYBUILT'] ?></th>
+            <th colspan="2"><?= $lang['HOME_STATS_PTS_MILITARYLOST'] ?></th>
+            <th colspan="2"><?= $lang['HOME_STATS_PTS_MILITARYDEST'] ?></th>
+            <th colspan="2"><?= $lang['HOME_STATS_PTS_HONOR'] ?></th>
         </tr>
     </thead>
     <tbody>
