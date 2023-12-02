@@ -1,4 +1,5 @@
 <?php
+global $server_config, $ogspy_version, $user_data;
 session_start();
 /**
  * Fichier principal d'ogspy
@@ -13,7 +14,7 @@ session_start();
 /**
  * @abstract Utilisé dans les autres fichiers pour s'assurer qu'index.php est bien appelé
  */
-define("IN_SPYOGAME", true);
+const IN_SPYOGAME = true;
 
 /**
  * Repère de début de traitement par OGSpy
@@ -24,14 +25,14 @@ $php_start = microtime(true);
 /**
  * Tout les includes se font à partir de là
  */
-require_once("common.php");
+require_once "common.php";
 
 /**
  * Utilisation de la class benchmark
  * @name $benchogspy
  */
 $benchogspy = new Ogsteam\Ogspy\Helper\Benchmark_Helper('ogspy');
-$benchogspy->addCustomBench($php_start,microtime(true),"initialisation Ogspy/include" ); // Ajout du temps d'execution include common
+$benchogspy->addCustomBench($php_start,microtime(true),"initialisation Ogspy/include" );
 $benchogspy->start();
 //$benchSQL pour temps sql
 
@@ -43,7 +44,7 @@ if (!isset($pub_action)) {
 }
 
 if (is_file("install/version.php")) {
-    require_once("install/version.php");
+    require_once "install/version.php";
     if (version_compare($server_config["version"], $ogspy_version, '<')) {
         redirection("install/index.php");
     }
@@ -62,12 +63,12 @@ if (
 
 if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "login_web")) {
     if ($pub_action == "message") {
-        require("views/message.php");
+        require "views/message.php";
     } else {
         if (preg_match("/^action=(.*)/", $_SERVER['QUERY_STRING'], $matches)) {
             $goto = $matches[1];
         }
-        require_once("views/login.php");
+        require_once "views/login.php";
     }
     exit();
 }
@@ -77,7 +78,7 @@ if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
         if ($cache_mod[$pub_action]['admin_only'] == 1 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {
             redirection("index.php?action=message&id_message=forbidden&info");
         } else {
-            require_once("mod/" . $cache_mod[$pub_action]['root'] . "/" . $cache_mod[$pub_action]['link']);
+            require_once "mod/" . $cache_mod[$pub_action]['root'] . "/" . $cache_mod[$pub_action]['link'];
             exit();
         }
     }
@@ -113,7 +114,7 @@ switch ($pub_action) {
         //---Administration---//
         //----------------------------------------//
     case "administration":
-        require_once("views/admin.php");
+        require_once "views/admin.php";
         break;
 
     case "set_server_view":
@@ -149,7 +150,7 @@ switch ($pub_action) {
         //---Gestion des membres---//
         //----------------------------------------//
     case "home":
-        require_once("views/home.php");
+        require_once "views/home.php";
         break;
 
     case "del_planet":
@@ -161,7 +162,7 @@ switch ($pub_action) {
         break;
 
     case "profile":
-        require_once("views/profile.php");
+        require_once "views/profile.php";
         break;
 
     case "newaccount":
@@ -169,7 +170,7 @@ switch ($pub_action) {
         break;
 
     case "message":
-        require("views/message.php");
+        require "views/message.php";
         break;
 
     case "admin_modify_member":
@@ -212,21 +213,21 @@ switch ($pub_action) {
         //--- ---//
         //----------------------------------------//
     case "galaxy":
-        require_once("views/galaxy.php");
+        require_once "views/galaxy.php";
         break;
 
     case "galaxy_sector":
-        require_once("views/galaxy_sector.php");
+        require_once "views/galaxy_sector.php";
         break;
 
         //
     case "show_reportspy":
-        require_once("views/report_spy.php");
+        require_once "views/report_spy.php";
         break;
 
         //
     case "show_reportrc":
-        require_once("views/report_rc.php");
+        require_once "views/report_rc.php";
         break;
 
         //
@@ -241,22 +242,22 @@ switch ($pub_action) {
 
         //
     case "search":
-        require_once("views/search.php");
+        require_once "views/search.php";
         break;
 
         //
     case "cartography":
-        require_once("views/cartography.php");
+        require_once "views/cartography.php";
         break;
 
         //
     case "statistic":
-        require_once("views/statistic.php");
+        require_once "views/statistic.php";
         break;
 
         //
     case "ranking":
-        require_once("views/ranking.php");
+        require_once "views/ranking.php";
         break;
 
         //
@@ -266,12 +267,12 @@ switch ($pub_action) {
 
         //
     case "about":
-        require_once("views/about_ogsteam.php");
+        require_once "views/about_ogsteam.php";
         break;
 
         //
     case "galaxy_obsolete":
-        require_once("views/galaxy_obsolete.php");
+        require_once "views/galaxy_obsolete.php";
         break;
 
         //
@@ -343,7 +344,7 @@ switch ($pub_action) {
         //--- ---//
         //----------------------------------------//
     case "server_close":
-        require_once("views/serverdown.php");
+        require_once "views/serverdown.php";
         break;
 
     default:

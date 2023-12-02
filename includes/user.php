@@ -109,7 +109,7 @@ function user_login()
 
     $tlogin = $User_Model->select_user_login($pub_login, $pub_password);
     // si  retour
-    if ($tlogin != false) {
+    if ($tlogin) {
         if (password_verify($pub_password, $tlogin['user_password_s'])) {
             // Format Mot de passe Secure
             user_set_connection($tlogin['user_id'], $tlogin['user_active']);
@@ -117,13 +117,7 @@ function user_login()
             redirection("index.php?action=message&id_message=login_wrong&info");
         }
     } else {
-        // Format Mot de passe Legacy
-        $tlogin = $User_Model->select_user_login_legacy($pub_login, $pub_password);
-        if ($tlogin != false) {
-            user_set_connection($tlogin['user_id'], $tlogin['user_active']);
-        } else {
-            redirection("index.php?action=message&id_message=login_wrong&info");
-        }
+        redirection("index.php?action=message&id_message=login_wrong&info");
     }
 }
 
@@ -132,7 +126,7 @@ function user_set_connection($user_id, $user_active)
     global $pub_goto;
     (new User_Model())->update_lastvisit_time($user_id);
 
-    if ($user_active == 1) {
+    if ($user_active) {
 
         $lastvisit = (new User_Model())->select_last_visit($user_id);
 
@@ -143,7 +137,7 @@ function user_set_connection($user_id, $user_active)
         if (!isset($url_append)) {
             $url_append = "";
         }
-        redirection("index.php?action=" . $pub_goto . "" . $url_append);
+        redirection("index.php?action=" . $pub_goto . $url_append);
     } else {
         redirection("index.php?action=message&id_message=account_lock&info");
     }
@@ -840,7 +834,7 @@ function user_set_all_empire_resync_id()
 
     // les planetes
     $planet_position = $User_Building_Model->get_planet_list($user_data["user_id"]);
-    // les lunes   
+    // les lunes
     $moon_position = $User_Building_Model->get_moon_list($user_data["user_id"]);
 
 
@@ -964,8 +958,8 @@ function user_get_empire($user_id)
              $user_technology[$technologyName]=""; // alimentation des technology tel qu'attendu dans page empire ("" et non 0)
          }
      }
-    
-    
+
+
     $tDefenseList = (new User_Defense_Model())->select_user_defense($user_id);
     //$user_defence = array_fill(1, $nb_planete_lune, $defence);
     foreach ($tDefenseList as $tmpDefense) {
@@ -1034,12 +1028,12 @@ function user_del_building()
     if ($iNBPlanet == 0) {
         (new User_Technology_Model())->delete_user_technologies($user_data["user_id"]);
     }
-    
+
     if ($iNBPlanet != 0) {
     // remise en ordre des planetes :
     //uniquement s'il en reste
-    user_set_all_empire_resync_id(); 
-        
+    user_set_all_empire_resync_id();
+
     }
     redirection("index.php?action=home&subaction=empire&view=" . $pub_view);
 }
@@ -1363,44 +1357,20 @@ function usergroup_setauth()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    if (is_null($pub_server_set_system)) {
-        $pub_server_set_system = 0;
-    }
-    if (is_null($pub_server_set_spy)) {
-        $pub_server_set_spy = 0;
-    }
-    if (is_null($pub_server_set_rc)) {
-        $pub_server_set_rc = 0;
-    }
-    if (is_null($pub_server_set_ranking)) {
-        $pub_server_set_ranking = 0;
-    }
-    if (is_null($pub_server_show_positionhided)) {
-        $pub_server_show_positionhided = 0;
-    }
-    if (is_null($pub_ogs_connection)) {
-        $pub_ogs_connection = 0;
-    }
-    if (is_null($pub_ogs_set_system)) {
-        $pub_ogs_set_system = 0;
-    }
-    if (is_null($pub_ogs_get_system)) {
-        $pub_ogs_get_system = 0;
-    }
-    if (is_null($pub_ogs_set_spy)) {
-        $pub_ogs_set_spy = 0;
-    }
-    if (is_null($pub_ogs_get_spy)) {
-        $pub_ogs_get_spy = 0;
-    }
-    if (is_null($pub_ogs_set_ranking)) {
-        $pub_ogs_set_ranking = 0;
-    }
-    if (is_null($pub_ogs_get_ranking)) {
-        $pub_ogs_get_ranking = 0;
-    }
-
+    $pub_server_set_system = $pub_server_set_system ?? 0;
+    $pub_server_set_spy = $pub_server_set_spy ?? 0;
+    $pub_server_set_rc = $pub_server_set_rc ?? 0;
+    $pub_server_set_ranking = $pub_server_set_ranking ?? 0;
+    $pub_server_show_positionhided = $pub_server_show_positionhided ?? 0;
+    $pub_ogs_connection = $pub_ogs_connection ?? 0;
+    $pub_ogs_set_system = $pub_ogs_set_system ?? 0;
+    $pub_ogs_get_system = $pub_ogs_get_system ?? 0;
+    $pub_ogs_set_spy = $pub_ogs_set_spy ?? 0;
+    $pub_ogs_get_spy = $pub_ogs_get_spy ?? 0;
+    $pub_ogs_set_ranking = $pub_ogs_set_ranking ?? 0;
+    $pub_ogs_get_ranking = $pub_ogs_get_ranking ?? 0;
     //Vérification des droits
+
     user_check_auth("usergroup_manage");
 
     log_("modify_usergroup", $pub_group_id);
@@ -1583,10 +1553,11 @@ function UNparseRC($id_RC)
 
     $key_ships = array(
         'PT' => $lang['GAME_FLEET_PT_S'], 'GT' => $lang['GAME_FLEET_GT_S'], 'CLE' => $lang['GAME_FLEET_CLE_S'],
-        'CLO' => $lang['GAME_FLEET_CLO_S'], 'CR' => $lang['GAME_FLEET_CR_S'], 'VB' => $lang['GAME_FLEET_VB_S'], 'VC' =>
-        $lang['GAME_FLEET_VC_S'], 'REC' => $lang['GAME_FLEET_REC_S'], 'SE' => $lang['GAME_FLEET_SE_S'], 'BMD' => $lang['GAME_FLEET_BMD_S'],
-        'DST' => $lang['GAME_FLEET_DST_S'], 'EDLM' => $lang['GAME_FLEET_EDLM_S'], 'SAT' => $lang['GAME_FLEET_SAT_S'], 'TRA' => $lang['GAME_FLEET_TRA_S'],
-        'ECL' => $lang['GAME_FLEET_ECL'], 'FAU' => $lang['GAME_FLEET_FAU'], 'FOR' => $lang['GAME_FLEET_FOR']
+        'CLO' => $lang['GAME_FLEET_CLO_S'], 'CR' => $lang['GAME_FLEET_CR_S'], 'VB' => $lang['GAME_FLEET_VB_S'],
+        'VC' => $lang['GAME_FLEET_VC_S'], 'REC' => $lang['GAME_FLEET_REC_S'], 'SE' => $lang['GAME_FLEET_SE_S'],
+        'BMD' => $lang['GAME_FLEET_BMD_S'], 'DST' => $lang['GAME_FLEET_DST_S'], 'EDLM' => $lang['GAME_FLEET_EDLM_S'],
+        'SAT' => $lang['GAME_FLEET_SAT_S'], 'TRA' => $lang['GAME_FLEET_TRA_S'], 'ECL' => $lang['GAME_FLEET_ECL'],
+        'FAU' => $lang['GAME_FLEET_FAU'], 'FOR' => $lang['GAME_FLEET_FOR']
     );
     $key_defs = array(
         'LM' => $lang['GAME_DEF_LM_S'], 'LLE' => $lang['GAME_DEF_LLE_S'], 'LLO' => $lang['GAME_DEF_LLO_S'],
