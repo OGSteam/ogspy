@@ -1,4 +1,4 @@
-<?php
+<?php global $user_data, $server_config, $lang;
 
 /**
  * User statistic Page
@@ -40,8 +40,8 @@ require_once 'views/page_header.php';
     <table class="og-table og-medium-table og-table-galaxystatistic ">
         <thead>
             <tr>
-                <th colspan="<?php echo $galaxy_step * 2 + 2; ?>" class="og-legend">
-                    <?php echo ($lang['STATS_TITLE']); ?>
+                <th colspan="<?php echo($galaxy_step * 2 + 2); ?>" class="og-legend">
+                    <?= $lang['STATS_TITLE']; ?>
                 </th>
             </tr>
         </thead>
@@ -79,6 +79,7 @@ require_once 'views/page_header.php';
                             <?php $colonized = '-'; ?>
                             <?php $link_free = ''; ?>
                             <?php $free = '-'; ?>
+                            <?php $tagclass = ''; ?>
 
                             <?php if ($galaxy > intval($server_config['num_of_galaxies'])) : ?>
                                 <td class="tdcontent"></td>
@@ -87,9 +88,9 @@ require_once 'views/page_header.php';
                             <?php endif; ?>
 
                             <?php if ($galaxy_statistic[$galaxy][$system]['planet'] > 0) : ?>
-                                <?php $tagclass = " og-success ";; ?>
+                                <?php $tagclass .= " og-success "; ?>
                                 <?php if ($galaxy_statistic[$galaxy][$system]['new']) : ?>
-                                    <?php $tagclass = " og-highlight "; ?>
+                                    <?php $tagclass .= " og-highlight "; ?>
                                 <?php endif; ?>
 
 
