@@ -1,4 +1,4 @@
-<?php
+<?php global $server_config, $lang;
 
 /**
  * Pop up Messages
@@ -18,14 +18,17 @@ if (!isset($pub_id_message) || !isset($pub_info)) {
     redirection("index.php");
 }
 
-if (!check_var($pub_id_message, "Char") || !check_var($pub_info, "Special", "#^[\sa-zA-Z0-9~¤_.\-\:\[\]]+$#")) {
+if (!check_var($pub_id_message, "Char")) {
     redirection("index.php");
 }
 
+
+$info = htmlentities($pub_info) ?? '';
 $msgTitle=$lang['MSG_SYSTEM']; //titre
 $msgContent=""; //contenu
 $msgURLButton="index.php"; // lien retour par defaut
 $msgType=""; // type : vide|warning|success|danger
+$message="";
 
 
 switch ($pub_id_message) {
@@ -47,18 +50,18 @@ switch ($pub_id_message) {
         break;
 
     case "createuser_success":
-        list($user_id, $password) = explode(':', $pub_info);
+        list($user_id, $password) = explode(':', $info);
         $user_info = user_get($user_id);
         $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
         $server_name = filter_input(INPUT_SERVER, 'SERVER_NAME', FILTER_SANITIZE_URL);
 
         $msgType = "success";
 
-        $msgContent = '' . $lang['MSG_CREATE_USER_TITLE'] . ' <a>' . $user_info[0]['user_name'] . '</a><br/><br/>';
+        $msgContent = '' . $lang['MSG_CREATE_USER_TITLE'] . ' <a>' . $user_info[0]['user_name'] . '</a><br><br>';
         $msgContent .= $lang['MSG_CREATE_USER_INFO'] . '<br/><br/>';
-        $msgContent .= '' . $lang['MSG_CREATE_USER_TITLE'] . ' <a>' . $user_info[0]['user_name'] . '</a></br></br>';
-        $msgContent .= '- ' . $lang['MSG_CREATE_USER_URL'] . ' : <a>https://' . $server_name . $phpSelf . '</a><br/>';
-        $msgContent .= '- ' . $lang['MSG_CREATE_USER_PASSWORD'] . ' : <a>' . $password . '</a><br/>';
+        $msgContent .= '' . $lang['MSG_CREATE_USER_TITLE'] . ' <a>' . $user_info[0]['user_name'] . '</a><br><br>';
+        $msgContent .= '- ' . $lang['MSG_CREATE_USER_URL'] . ' : <a>https://' . $server_name . $phpSelf . '</a><br>';
+        $msgContent .= '- ' . $lang['MSG_CREATE_USER_PASSWORD'] . ' : <a>' . $password . '</a><br>';
 
         $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
@@ -66,7 +69,7 @@ switch ($pub_id_message) {
     case "regeneratepwd_success":
         $msgType = "success";
 
-        list($user_id, $password) = explode(':', $pub_info);
+        list($user_id, $password) = explode(':', $info);
         $user_info = user_get($user_id);
         $msgContent = $lang['MSG_PWD_REGEN_OK'] . '<a>' . $user_info[0]['user_name'] . '</a><br/>';
 
@@ -87,35 +90,35 @@ switch ($pub_id_message) {
 
     case "createuser_failed_pseudolocked":
         $msgType = "danger";
-        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br/>';
-        $msgContent .= $lang['MSG_NEW_ACCOUNT_KO_NAME'] . ' (' . $pub_info . ')';
+        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br>';
+        $msgContent .= $lang['MSG_NEW_ACCOUNT_KO_NAME'] . ' (' . $info . ')';
         $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "createuser_failed_pseudo":
         $msgType = "danger";
-        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br/>';
+        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br>';
         $msgContent .= $lang['MSG_NEW_ACCOUNT_KO_NAME_ILLEGAL'];
         $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "createuser_failed_password":
         $msgType = "danger";
-        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br/>';
+        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br>';
         $msgContent .= $lang['MSG_NEW_ACCOUNT_KO_PASSWORD_ILLEGAL'];
         $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "createuser_failed_email":
         $msgType = "danger";
-        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br/>';
+        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br>';
         $msgContent .= $lang['MSG_NEW_ACCOUNT_KO_EMAIL_ILLEGAL'];
         $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "createuser_failed_general":
         $msgType = "danger";
-        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br/>';
+        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br>';
         $msgContent .= $lang['MSG_NEW_ACCOUNT_KO_OTHER'];
         $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
@@ -124,10 +127,6 @@ switch ($pub_id_message) {
         $msgType = "success";
         $msgContent = $lang['MSG_PROFILE_OK'];
         $msgURLButton = 'index.php?action=administration&amp;subaction=member';
-
-        //$user_info = user_get($pub_info); PK ?
-        //$message .= '<span style="color: lime;">' . $lang['MSG_PROFILE_OK'] . '</span><br/>';
-        //$action = 'action=administration&amp;subaction=member';
         break;
 
     case "admin_modifyuser_failed":
@@ -150,28 +149,28 @@ switch ($pub_id_message) {
 
     case "member_modifyuser_failed_passwordcheck":
         $msgType = "danger";
-        $msgContent = $lang['MSG_PROFILE_SAVE_KO'] . '<br/>';
+        $msgContent = $lang['MSG_PROFILE_SAVE_KO'] . '<br>';
         $msgContent .= $lang['MSG_PROFILE_SAVE_PWD'];
         $msgURLButton = 'index.php?action=profile';
         break;
 
     case "member_modifyuser_failed_password":
         $msgType = "danger";
-        $msgContent = $lang['MSG_PROFILE_SAVE_KO'] . '<br/>';
+        $msgContent = $lang['MSG_PROFILE_SAVE_KO'] . '<br>';
         $msgContent .= $lang['MSG_PROFILE_SAVE_PWD_ILLEGAL'];
         $msgURLButton = 'index.php?action=profile';
         break;
 
     case "member_modifyuser_failed_pseudolocked":
         $msgType = "danger";
-        $msgContent = $lang['MSG_PROFILE_SAVE_KO'] . '<br/>';
+        $msgContent = $lang['MSG_PROFILE_SAVE_KO'] . '<br>';
         $msgContent .= $lang['MSG_PROFILE_SAVE_NAME_INUSE'];
         $msgURLButton = 'index.php?action=profile';
         break;
 
     case "member_modifyuser_failed_pseudo":
         $msgType = "danger";
-        $msgContent = $lang['MSG_PROFILE_SAVE_KO'] . '<br/>';
+        $msgContent = $lang['MSG_PROFILE_SAVE_KO'] . '<br>';
         $msgContent .= $lang['MSG_PROFILE_SAVE_NAME_ILLEGAL'];
         $msgURLButton = 'index.php?action=profile';
         break;
@@ -195,7 +194,7 @@ switch ($pub_id_message) {
 
     case "account_lock":
         $msgType = "danger";
-        $msgContent = $lang['MSG_LOGIN_INACTIVE'] . '<br/>';
+        $msgContent = $lang['MSG_LOGIN_INACTIVE'] . '<br>';
         $msgContent .= $lang['MSG_LOGIN_INACTIVE'];
         break;
 
@@ -259,7 +258,7 @@ switch ($pub_id_message) {
 
     case "createusergroup_failed_groupnamelocked":
         $msgType = "danger";
-        $msgContent = $lang['MSG_GROUP_CREATE_FAILED'] . '<br/>';
+        $msgContent = $lang['MSG_GROUP_CREATE_FAILED'] . '<br>';
         $msgContent .= $lang['MSG_GROUP_CREATE_FAILED_NAME'];
         $msgURLButton = 'index.php?action=administration&amp;subaction=group';
         break;
@@ -267,25 +266,25 @@ switch ($pub_id_message) {
     //
     case "createusergroup_failed_groupname":
         $msgType = "danger";
-        $msgContent = $lang['MSG_GROUP_CREATE_FAILED'] . '<br/>';
+        $msgContent = $lang['MSG_GROUP_CREATE_FAILED'] . '<br>';
         $msgContent .= $lang['MSG_GROUP_CREATE_FAILED_ILLEGAL'];
         $msgURLButton = 'index.php?action=administration&amp;subaction=group';
         break;
 
     case "createusergroup_failed_general":
         $msgType = "danger";
-        $msgContent = $lang['MSG_GROUP_CREATE_FAILED'] . '<br/>';
+        $msgContent = $lang['MSG_GROUP_CREATE_FAILED'] . '<br>';
         $msgContent .= $lang['MSG_GROUP_CREATE_FAILED_OTHER'];
         $msgURLButton = 'index.php?action=administration&amp;subaction=group';
         break;
 
     case "db_optimize":
-        list($dbSize_before, $dbSize_after) = explode('¤', $pub_info);
+        list($dbSize_before, $dbSize_after) = explode('¤', $info);
 
         $msgType = "success";
-        $msgContent = $lang['MSG_DB_OPTIM_OK'] . '<br/>';
-        $msgContent = $lang['MSG_DB_OPTIM_BEFORE'] . ' : ' . $dbSize_before . '<br/>';
-        $msgContent = $lang['MSG_DB_OPTIM_AFTER'] . ' : ' . $dbSize_after . '<br/>';
+        $msgContent = $lang['MSG_DB_OPTIM_OK'] . '<br>';
+        $msgContent = $lang['MSG_DB_OPTIM_BEFORE'] . ' : ' . $dbSize_before . '<br>';
+        $msgContent = $lang['MSG_DB_OPTIM_AFTER'] . ' : ' . $dbSize_after . '<br>';
         $msgURLButton = 'index.php?action=administration&amp;subaction=infoserver';
         break;
 
@@ -301,21 +300,20 @@ switch ($pub_id_message) {
         $msgURLButton = 'action=statistic';
         break;
 
-    //todo : custom message ?
     default:
         redirection('index.php');
         break;
 }
 
-require_once('views/page_header_2.php');
+require_once 'views/page_header_2.php';
 ?>
 
 
 
 <div class="page_message">
-    <div class="og-msg og-msg-<?php echo $msgType; ?>">
-        <h3 class="og-title"><?php echo $msgTitle; ?></h3>
-        <p class="og-content"><?php echo $msgContent; ?></p>
+    <div class="og-msg og-msg-<?= $msgType; ?>">
+        <h3 class="og-title"><?= $msgTitle; ?></h3>
+        <p class="og-content"><?= $msgContent; ?></p>
         <button type="button"  onclick="location.href='index.php?<?php echo $msgURLButton; ?>'" class="og-button og-button-<?php echo $msgType; ?>">
             <?php echo $lang['MSG_BACK']; ?>
         </button>
@@ -323,4 +321,4 @@ require_once('views/page_header_2.php');
 </div>
 
 
-<?php require_once('views/page_tail_2.php'); ?>
+<?php require_once 'views/page_tail_2.php'; ?>
