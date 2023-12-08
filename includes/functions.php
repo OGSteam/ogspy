@@ -134,6 +134,7 @@ function remove_dir_from_ogspy($folder)
  * Convert an IP in Hex Format
  * @param string $ip format xxx.xxx.xxx.xxx in IPv4 and xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx in IPv6
  * @return string IP in hex : HHHHHHHH for IPv4 and HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH for IPv6
+ * @throws Exception
  */
 function encode_ip($ip)
 {
@@ -151,7 +152,7 @@ function encode_ip($ip)
 
 /**
  * Convert an IP in Hex format to an IPv4 or IPv6 format
- * @param string $int_ip IP encoded
+ * @param string $hex_ip
  * @return string $ip format xxx.xxx.xxx.xxx in IPv4 and xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx in IPv6
  */
 function decode_ip(string $hex_ip): string
@@ -165,12 +166,12 @@ function decode_ip(string $hex_ip): string
  *  @brief Get the RGB color (red, green, blue) of the desired color.
  *
  *  @param[in] $Colorname The wanted color ('all' to retrieve all RGB HTML color code name)
- *  @return array('red,'green','blue') 0 as default ('black'), all=array of name with RGB
+ * @return array|false
  */
-function color_getColor($Colorname = 'all')
+function color_getColor($colorName = 'all')
 {
-    $Colorname = strtolower($Colorname);
-    $Colors  =  array(
+    $colorName = strtolower($colorName);
+    $colors  =  array(
         //  Colors  as  they  are  defined  in  HTML  3.2
         'black' => array('red' => 0x00, 'green' => 0x00, 'blue' => 0x00),
         'maroon' => array('red' => 0x80, 'green' => 0x00, 'blue' => 0x00),
@@ -312,13 +313,13 @@ function color_getColor($Colorname = 'all')
         'yellowgreen' => array('red' => 0x9A, 'green' => 0xCD, 'blue' => 0x32)
     );
 
-    if ($Colorname === 'all') {
-        return $Colors;
+    if ($colorName === 'all') {
+        return $colors;
     }
-    if (!isset($Colors[$Colorname])) {
+    if (!isset($colors[$colorName])) {
         return false;
     }
-    return $Colors[$Colorname];
+    return $colors[$colorName];
 }
 /**
  *  @brief Get color name or 'hex'.
@@ -1278,16 +1279,6 @@ function check_postvalue($secvalue)
 }
 
 /**
- * OGSpy Simple Hash Function for unsecure tokens
- * @param string The string to Hash
- * @return string Returns the hash of the input function
- */
-function crypto($str)
-{
-    return md5(sha1($str));
-}
-
-/**
  * OGSpy Key Generator : This key will be the unique id of the current OGSpy installation.
  *
  * The current OGSpy Key is written in a file named parameters/key.php
@@ -1299,12 +1290,11 @@ function generate_key()
     srand((float)microtime() * 1000000);
     $pass = time();
     for ($i = 0; $i < 20; $i++) {
-        $pass .= $str[rand() % strlen($str)];
+        $pass .= $str[random_int(0, strlen($str) - 1)];
     }
-    $key = crypto($pass);
+    $key = md5(sha1($pass));
     // création du path
-    $path = $_SERVER["SCRIPT_FILENAME"];;
-
+    $path = $_SERVER["SCRIPT_FILENAME"];
 
     $key_php[] = '<?php';
     $key_php[] = '/***************************************************************************';
@@ -1321,7 +1311,9 @@ function generate_key()
     $key_php[] = '';
     $key_php[] = 'define("OGSPY_KEY", TRUE);';
 
-    write_file("./parameters/key.php", "w", $key_php);
+    if (!file_exists('parameters/key.php')) {
+        write_file("./parameters/key.php", "w", $key_php);
+    }
 }
 
 /********************************************************************************/
@@ -1724,7 +1716,7 @@ function booster_encodev(
     return $str;
 }
 
-/**                     Fin booster partie                                     **/
+/**  Fin booster partie **/
 /********************************************************************************/
 
 /**

@@ -123,9 +123,9 @@ $color_ally_e = explode("_", $color_ally_n);
                 </td>
             </tr>
             <?php for ($i = 1; $i <= $nb_colonnes_ally; $i++) : ?>
-                <?php $color_input = color_html_create_double_input('color_ally[' . $i . ']', $color_ally_e[$i - 1], array('size' => 15, 'maxlength' => 20)); ?>
+                <?php $color_input = color_html_create_double_input('color_ally[' . $i . ']', $color_ally_e[$i - 1]); ?>
                 <tr>
-                    <td class="tdstat">
+                    <th class="tdstat">
                         <span style="color: <?php echo $color_ally_e[$i - 1]; ?>; ">
                             <?php echo ($lang['ADMIN_DISPLAY_ALLY_COLOR']); ?><?php echo $i; ?>
                         </span>
@@ -246,10 +246,10 @@ $color_ally_e = explode("_", $color_ally_n);
                             <?php endif; ?>
                         <?php endforeach; ?>
                     <?php endforeach; ?>
-                    
+
                  </select>
              </td>
-            
+
         </tr>
         <tr>
             <td colspan="2">

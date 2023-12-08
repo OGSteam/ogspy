@@ -1,4 +1,4 @@
-<?php
+<?php global $server_config, $lang;
 
 /**
  * Fonctions Affichage de la Galaxie

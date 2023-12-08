@@ -16,7 +16,20 @@ class FunctionsTest extends TestCase
 
         // Assert that the password length is 6
         $this->assertEquals(8, strlen($password));
-
-        echo $password;
     }
+
+    public function testPasswgenerateKey()
+    {
+        define("IN_SPYOGAME", true);
+        require_once 'includes/functions.php';
+        $result = generate_key();
+
+        $this->assertFileExists('./parameters/key.php');
+
+    }
+
+
+
+
+
 }
