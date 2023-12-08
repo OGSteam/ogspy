@@ -453,8 +453,8 @@ function password_generator()
     $string = "abBDEFcdefghijkmnPQRSTUVWXYpqrst23456789";
     srand((float)microtime() * 1000000);
     $password = '';
-    for ($i = 0; $i < 6; $i++) {
-        $password .= $string[rand() % strlen($string)];
+    for ($i = 0; $i < 8; $i++) {
+        $password .= $string[random_int(0, strlen($string) - 1)];
     }
     return $password;
 }
