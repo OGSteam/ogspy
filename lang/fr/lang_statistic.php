@@ -9,11 +9,6 @@
  * @version 3.3.0
  */
 
-/*
- * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
- *
- */
-
 /* statistic.php */
 
 $lang['STATS_TITLE'] = "État de la cartographie";
@@ -26,7 +21,7 @@ $lang['STATS_USERNAME'] = "Pseudos";
 $lang['STATS_PLANETS'] = "Planètes";
 $lang['STATS_SPY_REPORTS'] = "Rapports d'espionnage";
 $lang['STATS_RANKINGS'] = "Classement (lignes)";
-$lang['STATS_SEARCHINGS'] = "Recherches<br/>effectuées";
+$lang['STATS_SEARCHINGS'] = "Recherches<br>effectuées";
 $lang['STATS_RATIO'] = "Ratio";
 $lang['STATS_XTENSE'] = "Xtense";
 $lang['STATS_CONNECTED'] = "connecté sur le serveur";
