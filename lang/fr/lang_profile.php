@@ -9,11 +9,6 @@
  * @version 3.3.0
  */
 
-/*
- * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
- *
- */
-
 /* profile.php */
 
 $lang['PROFILE_ERROR_RETRY'] = "Saisissez le nouveau mot de passe et sa confirmation";
