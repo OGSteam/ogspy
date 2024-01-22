@@ -35,8 +35,7 @@ use Ogsteam\Ogspy\Helper\SearchCriteria_Helper;
  * Checks the authorization of a user for a specific action.
  *
  * @param string $action The action to check authorization for.
- * @throws None
- * @return None
+ * @return void
  */
 function galaxy_check_auth($action)
 {
@@ -1029,7 +1028,7 @@ function galaxy_show_ranking_unique_ally($ally, $last = false)
  *
  * @global array $server_config
  */
-function galaxy_purge_ranking()
+function galaxy_purge_ranking(): void
 {
     global $server_config;
 
@@ -1504,7 +1503,7 @@ function UNparseRE($id_RE)
 
     // passage par temporisation pour gain de clarté
 
-    // -- temporisation -- 
+    // -- temporisation --
     ob_start(); ?>
     <table class="og-table  og-table-spy">
         <thead>
@@ -1625,7 +1624,7 @@ function UNparseRE($id_RE)
     $contents = ob_get_contents();
     ob_end_clean();
     $template =  $contents;
-    // -- Fin temporisation -- 
+    // -- Fin temporisation --
 
     return ($template);
 }
@@ -1845,37 +1844,36 @@ function displayGalaxyAllyTooltip($ally)
     $tooltip .= '<tbody>';
 
     $individual_ranking = galaxy_show_ranking_unique_ally($ally);
-    while ($ranking = current($individual_ranking)) {
-        $datadate =  date("d F o G:i", key($individual_ranking));
-        $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
-        $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
-        $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : "&nbsp;";
-        $eco_points = isset($ranking["eco"]) ? formate_number($ranking["eco"]["points"]) : "&nbsp;";
-        $techno_rank = isset($ranking["techno"]) ? formate_number($ranking["techno"]["rank"]) : "&nbsp;";
-        $techno_points = isset($ranking["techno"]) ? formate_number($ranking["techno"]["points"]) : "&nbsp;";
-        $military_rank = isset($ranking["military"]) ? formate_number($ranking["military"]["rank"]) : "&nbsp;";
-        $military_points = isset($ranking["military"]) ? formate_number($ranking["military"]["points"]) : "&nbsp;";
-        $military_b_rank = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["rank"]) : "&nbsp;";
-        $military_b_points = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["points"]) : "&nbsp;";
-        $military_l_rank = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["rank"]) : "&nbsp;";
-        $military_l_points = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) : "&nbsp;";
-        $military_d_rank = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) : "&nbsp;";
-        $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : "&nbsp;";
-        $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : "&nbsp;";
-        $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : "&nbsp;";
+    $ranking = current($individual_ranking);
+    $datadate =  date("d F o G:i", key($individual_ranking));
+    $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
+    $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
+    $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : "&nbsp;";
+    $eco_points = isset($ranking["eco"]) ? formate_number($ranking["eco"]["points"]) : "&nbsp;";
+    $techno_rank = isset($ranking["techno"]) ? formate_number($ranking["techno"]["rank"]) : "&nbsp;";
+    $techno_points = isset($ranking["techno"]) ? formate_number($ranking["techno"]["points"]) : "&nbsp;";
+    $military_rank = isset($ranking["military"]) ? formate_number($ranking["military"]["rank"]) : "&nbsp;";
+    $military_points = isset($ranking["military"]) ? formate_number($ranking["military"]["points"]) : "&nbsp;";
+    $military_b_rank = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["rank"]) : "&nbsp;";
+    $military_b_points = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["points"]) : "&nbsp;";
+    $military_l_rank = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["rank"]) : "&nbsp;";
+    $military_l_points = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) : "&nbsp;";
+    $military_d_rank = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) : "&nbsp;";
+    $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : "&nbsp;";
+    $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : "&nbsp;";
+    $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : "&nbsp;";
 
-        $tooltip .= "<tr><td class=\"tdcontent \" colspan=\"3\" ><span class=\"og-highlight\">" . $lang['GALAXY_RANK'] . " " . $datadate . "</span> </td></tr>";
-        $tooltip .= "<tr><td class=\"tdstat\" >" . $lang['GALAXY_RANK_GENERAL'] . "</td><td class=\"tdcontent\">" . $general_rank . "</td><td class=\"tdcontent\">" . $general_points . "</td></tr>";
-        $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_ECONOMY'] . "</td><td class=\"tdcontent\">" . $eco_rank . "</td><td class=\"tdcontent\">" . $eco_points . "</td></tr>";
-        $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_LAB'] . "</td><td class=\"tdcontent\">" . $techno_rank . "</td><td class=\"tdcontent\">" . $techno_points . "</td></tr>";
-        $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY'] . "</td><td class=\"tdcontent\">" . $military_rank . "</td><td class=\"tdcontent\">" . $military_points . "</td></tr>";
-        $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_BUILT'] . "</td><td class=\"tdcontent\">" . $military_b_rank . "</td><td class=\"tdcontent\">" . $military_b_points . "</td></tr>";
-        $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_LOST'] . "</td><td class=\"tdcontent\">" . $military_l_rank . "</td><td class=\"tdcontent\">" . $military_l_points . "</td></tr>";
-        $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_DESTROYED'] . "</td><td class=\"tdcontent\">" . $military_d_rank . "</td><td class=\"tdcontent\">" . $military_d_points . "</td></tr>";
-        $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_HONNOR'] . "</td><td class=\"tdcontent\">" . $honnor_rank . "</td><td class=\"tdcontent\">" . $honnor_points . "</td></tr>";
-        $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\" ><span class=\"og-highlight\">" . formate_number($ranking["number_member"]) . "</span> " . $lang['GALAXY_MEMBERS'] . "</td></tr>";
-        break;
-    }
+    $tooltip .= "<tr><td class=\"tdcontent \" colspan=\"3\" ><span class=\"og-highlight\">" . $lang['GALAXY_RANK'] . " " . $datadate . "</span> </td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\" >" . $lang['GALAXY_RANK_GENERAL'] . "</td><td class=\"tdcontent\">" . $general_rank . "</td><td class=\"tdcontent\">" . $general_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_ECONOMY'] . "</td><td class=\"tdcontent\">" . $eco_rank . "</td><td class=\"tdcontent\">" . $eco_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_LAB'] . "</td><td class=\"tdcontent\">" . $techno_rank . "</td><td class=\"tdcontent\">" . $techno_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY'] . "</td><td class=\"tdcontent\">" . $military_rank . "</td><td class=\"tdcontent\">" . $military_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_BUILT'] . "</td><td class=\"tdcontent\">" . $military_b_rank . "</td><td class=\"tdcontent\">" . $military_b_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_LOST'] . "</td><td class=\"tdcontent\">" . $military_l_rank . "</td><td class=\"tdcontent\">" . $military_l_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_DESTROYED'] . "</td><td class=\"tdcontent\">" . $military_d_rank . "</td><td class=\"tdcontent\">" . $military_d_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_HONNOR'] . "</td><td class=\"tdcontent\">" . $honnor_rank . "</td><td class=\"tdcontent\">" . $honnor_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\" ><span class=\"og-highlight\">" . formate_number($ranking["number_member"]) . "</span> " . $lang['GALAXY_MEMBERS'] . "</td></tr>";
+
     $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
     $tooltip .= '</tbody>';
     $tooltip .= "</table>";
@@ -1943,7 +1941,7 @@ function displayGalaxyTablethead()
 
 /**
  * @param $populate tableau associatif representnat les elements d'une ligne de la galaxie (row)
- * 
+ *
  * @return string
  */
 function displayGalaxyTabletbodytr($populate, $isGalaxy = true)
@@ -1952,7 +1950,7 @@ function displayGalaxyTabletbodytr($populate, $isGalaxy = true)
     $ToolTip_Helper = new ToolTip_Helper();
 
     $v = $populate;
-    //compatibilite vue search 
+    //compatibilite vue search
 
     $v["planet"] = (isset($v["planet"])) ? $v["planet"] : " ";
 
