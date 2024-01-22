@@ -124,7 +124,7 @@ switch ($ogsversion) {
         $requests[] = "ALTER TABLE " . TABLE_MOD . " MODIFY `version` VARCHAR(100) NOT NULL";
         $requests[] = "ALTER TABLE " . TABLE_USER_BUILDING . " MODIFY `boosters` VARCHAR(64) NOT NULL DEFAULT 'm:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0'";
         //no break pour faire toutes les mises à jour d'un coup !
-
+        case '3.3.8':
         break;
     default:
         echo "Aucune mise à jour de base de données trouvée";
