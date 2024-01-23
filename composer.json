@@ -27,7 +27,8 @@
     "ext-zlib": "*",
     "phpmailer/phpmailer": "^6.6",
     "filp/whoops": "^2.14",
-    "components/jquery": "^3.6"
+    "components/jquery": "^3.6",
+    "ext-zip": "*"
   },
   "config": {
     "platform": {
