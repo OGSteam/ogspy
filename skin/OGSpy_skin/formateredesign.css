@@ -1575,14 +1575,32 @@ vo
 io
 */
 
+/* PARTIE MOD */
+.ogspy-mod-header{
+    padding-top: 1px;
+    padding-bottom: 1px;
+    text-align: center;
+    background: linear-gradient(to right, rgba(0,0,0,0) 30%,var(--color-navpagemenu-background-active) 50%,rgba(0,0,0,0) 70%);
+    margin-bottom: 5px;;
+ /*   background-color: var(--color-navpagemenu-background-active) ;*/
+}
+
+.ogspy-mod-header h2 ,.ogame-mod-header h1   {
+    color: var(--color-navpagemenu-link);
+}
+.ogspy-mod-footer     {
+    position: absolute; 
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+
+}
+
 
 
 
 /* test ecran plus petit */
-
-
-
-
 
 
 @media(max-width: 950px) {
