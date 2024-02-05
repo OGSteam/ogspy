@@ -1589,7 +1589,7 @@ io
     color: var(--color-navpagemenu-link);
 }
 .ogspy-mod-footer     {
-    position: absolute; 
+    position: fixed; 
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
