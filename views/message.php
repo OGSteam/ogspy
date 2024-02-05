@@ -42,7 +42,8 @@ switch ($pub_id_message) {
         break;
 
     case "errormod":
-        $message .= '<span style="color: red;">' . $lang['MSG_ERRORMOD'] . '</span><br/>';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_ERRORMOD'] ;
         break;
     case "errordata":
         $msgType = "danger";
