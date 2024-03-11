@@ -202,7 +202,7 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
 
 <span class="og-alert"><?php echo ($lang['ADMIN_LOGS_SEE_TRANSACTIONALS']); ?></span>
 
-<table class="og-table og-full-table">
+<table class="og-table og-full-table og-table-log">
     <thead>
         <tr>
             <th>
@@ -212,10 +212,11 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
                 </span>
             </th>
         </tr>  
+    </thead>
+    <tbody>
           <tr>
-            <td>
-                
-    
+            <td class="tdvalue" >
+
  <?php
             end($log);
             while ($line = current($log)) {
@@ -229,6 +230,6 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
             ?> 
             </td>
         </tr>
-    </thead>
+        </tbody>
 </table>
 
