@@ -26,6 +26,7 @@ $ogspy_phperror = array();
  * create_usergroup, delete_usergroup, modify_usergroup, add_usergroup, del_usergroup, load_rank, get_rank, erreur_config_cache, erreur_mod_cache, key, check_var, debug, php-error)
  * @param string $parameter Log type
  * @param integer $option Optionnal data
+ * @throws FileAccessException
  */
 function log_($parameter, $option = 0)
 {
@@ -534,7 +535,7 @@ function log_remove()
         redirection("index.php?action=message&id_message=forbidden&info");
     }
 
-    if ($pub_directory == true) {
+    if ($pub_directory) {
         @unlink("journal/" . $pub_date . "/log_" . $pub_date . ".log");
         @unlink("journal/" . $pub_date . "/index.htm");
         if (rmdir("journal/" . $pub_date)) {
@@ -577,13 +578,11 @@ function log_purge()
         return;
     }
 
-    // $files = array();
     foreach ($directories as $d) {
         $path = opendir($root . $d);
 
         while ($file = readdir($path)) {
             if ($file != "." && $file != "..") {
-                // $extension = substr($file, (strrpos($file, ".") + 1));   //TODO:Unused_code
                 unlink($root . $d . "/" . $file);
             }
         }

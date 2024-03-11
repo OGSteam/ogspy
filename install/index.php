@@ -1,4 +1,4 @@
-<?php
+<?php global $ui_lang, $lang;
 
 /**
  * Fichier d'installation d'OGSpy
@@ -13,10 +13,10 @@
 define("IN_SPYOGAME", true);
 define("INSTALL_IN_PROGRESS", true);
 
-require_once("../common.php");
+require_once "../common.php";
 
 if (!isset($ogspy_version)) {
-    require_once("./version.php");
+    require_once "./version.php";
 }
 
 
@@ -55,11 +55,11 @@ if (isset($pub_redirection)) {
         <tr>
             <td height="50">
                 <div align="center">
-                    <a href="index.php?lang=fr"><img src="../images/i18n/France.png"></a>
-                    <a href="index.php?lang=en"><img src="../images/i18n/United_Kingdom.png"></a>
-                    <a href="index.php?lang=pt_BR"><img src="../images/i18n/Brazil.png"></a>
-                    <a href="index.php?lang=es"><img src="../images/i18n/Spain.png"></a>
-                    <a href="index.php?lang=it"><img src="../images/i18n/Italy.png"></a>
+                    <a href="index.php?lang=fr"><img src="../images/i18n/France.png" alt="France"></a>
+                    <a href="index.php?lang=en"><img src="../images/i18n/United_Kingdom.png" alt="United Kingdom"></a>
+                    <a href="index.php?lang=pt_BR"><img src="../images/i18n/Brazil.png" alt="Brazil"></a>
+                    <a href="index.php?lang=es"><img src="../images/i18n/Spain.png" alt="Spain"></a>
+                    <a href="index.php?lang=it"><img src="../images/i18n/Italy.png" alt="Italy"></a>
                 </div>
             </td>
         </tr>
@@ -79,21 +79,23 @@ if (isset($pub_redirection)) {
                                     <li><?= $lang['INSTALL_PROJECT_L1'] ?></li>
                                     <li><?= $lang['INSTALL_PROJECT_L2'] ?></li><br>
                                     <ul>
-                                        <li type="disc"><?= $lang['INSTALL_PROJECT_L3'] ?></li>
-                                        <li type="disc"><?= $lang['INSTALL_PROJECT_L4'] ?></li>
-                                        <li type="disc"><?= $lang['INSTALL_PROJECT_L5'] ?></li>
-                                        <li type="disc"><?= $lang['INSTALL_PROJECT_L6'] ?></li>
+                                        <li style="list-style-type: disc"><?= $lang['INSTALL_PROJECT_L3'] ?></li>
+                                        <li style="list-style-type: disc"><?= $lang['INSTALL_PROJECT_L4'] ?></li>
+                                        <li style="list-style-type: disc"><?= $lang['INSTALL_PROJECT_L5'] ?></li>
+                                        <li style="list-style-type: disc"><?= $lang['INSTALL_PROJECT_L6'] ?></li>
                                     </ul>
                                 </ul>
-                                <div style="text-align: center;"><?= $lang['INSTALL_FORUM'] ?></div>
                             </span>
+                            <div style="text-align: center;"><?= $lang['INSTALL_FORUM'] ?>
+                                <a href='https://www.ogsteam.eu/' target='_blank' rel='noopener'>https://www.ogsteam.eu/</a>
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
                     </tr>
                     <?php
-                    if (!(version_compare(PHP_VERSION, "7.4.0") >= 0)) {
+                    if (version_compare(PHP_VERSION, "7.4.0") < 0) {
                         echo "<tr><td style='c'><span style=\"color: red\">" . $lang['INSTALL_PHPERROR'] . "</span></td></tr>";
                         echo "<tr><td><span style=\"color: blue; \">" . $lang['INSTALL_PHP_ADVISE'];
                         echo "<br><br>" . $lang['INSTALL_PHPVERSION'] . PHP_VERSION;
@@ -105,7 +107,7 @@ if (isset($pub_redirection)) {
                         </tr>
                         <form action="index.php?lang=<?= $ui_lang ?>" method="POST">
                             <tr>
-                                <td align="center"><span style="color: orange; "><b><?php echo $lang['INSTALL_ACTION']; ?></b></span>
+                                <td><span style="color: orange; text-align: center"><b><?= $lang['INSTALL_ACTION']; ?></b></span>
                                     <select name="redirection" onchange="this.form.submit();" onkeyup="this.form.submit();">
                                         <option></option>
                                         <option value="install"><?php echo $lang['INSTALL_ACTION_FULL']; ?></option>
@@ -125,10 +127,10 @@ if (isset($pub_redirection)) {
 
     <div id='barre'>
         <table>
-            <tr align="center">
+            <tr>
                 <td>
                     <div style="text-align: center;font-size: x-small;"><i><b>OGSpy</b> is an <b>OGSteam Software</b>
-                            (c) 2005-2023</i></div>
+                            (c) 2005-2024</i></div>
                 </td>
             </tr>
         </table>
