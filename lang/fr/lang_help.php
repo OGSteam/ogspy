@@ -13,7 +13,7 @@ $lang["help_admin_server_status_message"] = "Le message sera affiché aux membre
 $lang["help_admin_save_transaction"] = "Les transactions correspondent aux :<br>- Systèmes solaires<br>- Rapports d'espionnage<br>- Classements joueurs et alliances";
 $lang["help_admin_member_manager"] = "Autorise la création, la mise à jour et la suppression des utilisateurs";
 $lang["help_admin_ranking_manager"] = "Autorise la suppression des classements joueurs et alliances";
-$lang["help_admin_check_ip"] = "Certains utilisateurs subissent des déconnexions intempestives (AOL, Proxy, etc).<br>Activez cette option afin qu'ils puissent désactiver la vérification dans leur profil";
+$lang["help_admin_check_ip"] = "Certains utilisateurs subissent des déconnexions intempestives. Activez cette option afin qu'ils puissent désactiver la vérification dans leur profil";
 $lang["help_admin_session_infini"] = "Si vous choisissez des sessions indéfinies dans le temps, plusieurs individus ne pourront plus utiliser le même compte en même temps";
 $lang["help_drop_sessions"] = "Vide la table des sessions, cela allége l'administration mais oblige tout les utilisateurs à se reconnecter.";
 
@@ -25,8 +25,8 @@ $lang["help_profile_login"] = "Doit contenir entre 3 et 15 caractères (les cara
 $lang["help_profile_pseudo_email"] = "Si rempli, vous recevrez des mails de la part de certains mods";
 $lang["help_profile_main_planet"] = "La vue Galaxie sera ouverte directement sur ce système solaire";
 $lang["help_profile_password"] = "Doit contenir entre 6 et 15 caractères (les caractères spéciaux (; &rsquo; &quot;) ne sont pas acceptés)";
-$lang["help_profile_galaxy"] = "Doit contenir un nombre<br> de 1 à 999";
-$lang["help_profile_disable_ip_check"] = "La vérification de l'adresse IP permet de vous protéger contre le vol de session.<br><br>";
+$lang["help_profile_galaxy"] = "Doit contenir un nombre de 1 à 999";
+$lang["help_profile_disable_ip_check"] = "La vérification de l'adresse IP permet de vous protéger contre le vol de session.";
 $lang["help_profile_disable_ip_check"] .= "Si vous êtes déconnecté régulièrement (AOL, Proxy, etc), désactivez la vérification.<br><br>";
 $lang["help_profile_disable_ip_check"] .= "<i>L'option est disponible uniquement si l'administrateur l'a activée</i>";
 
@@ -48,7 +48,7 @@ $lang["help_mod_cache"] = "Durée de vie du cache mod en seconde..";
 
 $lang['help_display_mips'] = "Affiche ou cache les MIP des users de OGSpy, mais ne les affichent qu'a ceux qui peuvent voir les alliances protégées.";
 $lang['help_member_stats'] = "Affiche ou cache le tableau de statistique des membres en bas de la page statistiques";
-$lang['help_member_connected'] = "Affiche les (*) qui permettent de savoir qui est connecté<br>Désactivé si l'affichage des membres n'est pas activé";
+$lang['help_member_connected'] = "Affiche les (*) qui permettent de savoir qui est connecté\nDésactivé si l'affichage des membres n'est pas activé";
 $lang['help_member_registration'] = "Affiche ou cache le tableau contenant le lien du forum de cet OGSpy";
 $lang['help_ally_name'] = "Nom de l'alliance de cet OGSpy";
 $lang['help_forum_link'] = "Lien d'une section du forum, voir le PM de l'administrateur OGSpy";

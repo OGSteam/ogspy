@@ -9,11 +9,6 @@
  * @version 3.3.0
  */
 
-/*
- * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
- *
- */
-
 /* home.php */
 $lang['HOME_EMPIRE_TITLE'] = "Empire";
 $lang['HOME_SIMULATION_TITLE'] = "Simulation";
@@ -22,7 +17,7 @@ $lang['HOME_STATISTICS_TITLE'] = "Statistiques";
 
 /* home_empire.php */
 
-$lang['HOME_EMPIRE_TITLEDESC'] = "Empire & Bâtiments & Laboratoire & Défenses";
+$lang['HOME_EMPIRE_TITLEDESC'] = "Empire &amp; Bâtiments &amp; Laboratoire &amp; Défenses";
 $lang['HOME_EMPIRE_PLANET'] = "Planètes";
 $lang['HOME_EMPIRE_MOON'] = "Lunes";
 $lang['HOME_EMPIRE_ERROR'] = "Une incohérence a été trouvée dans votre espace personnel";

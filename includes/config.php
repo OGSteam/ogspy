@@ -48,9 +48,6 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     define("TABLE_GAME_PLAYER", $table_prefix . "game_player");
     define("TABLE_GAME_ALLY", $table_prefix . "game_ally");
 
-    // Google Cloud Messaging users table
-    define("TABLE_GCM_USERS", $table_prefix . "gcm_users");
-
     // Classements joueur
     define("TABLE_RANK_PLAYER_POINTS", $table_prefix . "rank_player_points"); //points
     define("TABLE_RANK_PLAYER_ECO", $table_prefix . "rank_player_economique"); // economique

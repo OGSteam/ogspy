@@ -42,7 +42,7 @@ function session_begin($user_ip)
         $Sessions_Model->insert_xtense_session($cookie_id, $cookie_expire, $user_ip);
     }
 
-    setcookie($cookie_name, $cookie_id, 0);
+    setcookie($cookie_name, $cookie_id, $cookie_expire);
 }
 
 /**

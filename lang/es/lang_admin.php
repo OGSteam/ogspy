@@ -260,7 +260,7 @@ $lang['ADMIN_LOGS_DELETE'] = "Borrar registro";
 $lang['ADMIN_LOGS_SELECTTYPE'] = "Seleccione el tipo de registro para ver";
 $lang['ADMIN_LOGS_SQL'] = "Log en SQL";
 $lang['ADMIN_LOGS_GENERAL'] = "Log general";
-$lang['ADMIN_LOGS_SEE_TRANSACTIONALS'] = "Si desea ver algo de archivos transaccional: descargar los registros <br>";
+$lang['ADMIN_LOGS_SEE_TRANSACTIONALS'] = "Si desea ver algo de archivos transaccional: descargar los registros";
 $lang['ADMIN_LOGS_VIEWER'] = "Espectador: ";
 
 

@@ -25,16 +25,21 @@ if ($reports === false) {
 }
 
 require_once('views/page_header_2.php');
-if (sizeof($reports) == 0) {
-    echo '<p>' . $lang['REPORT_NOREPORTAVAILABLE'] . "</p>\n";
-    echo '<script>window.opener.location.href=window.opener.location.href;</script>';
-} else {
-    foreach ($reports as $v) {
-        echo "<table style='text-align: center'>\n";
-        echo '<tr><td class="c">' . nl2br($v) . "</td></tr>\n";
-        echo "</table>";
-        echo "<br/>\n";
-    }
-}
-echo "<br/>\n";
-require_once('views/page_tail_2.php');
+?>
+<div class="page_report_rc">
+
+    <?php if (sizeof($reports) == 0) : ?>
+        <p><?php echo  $lang['REPORT_NOREPORTAVAILABLE']; ?></p>
+        <script>
+            window.opener.location.href = window.opener.location.href;
+        </script>
+    <?php else : ?>
+        <?php foreach ($reports as $v) : ?>
+            <?php echo nl2br($v); ?>
+            <?php //echo $v; ?>
+            <hr />
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
+
+<?php require_once('views/page_tail_2.php');

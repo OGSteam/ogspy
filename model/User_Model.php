@@ -40,39 +40,6 @@ class User_Model extends Model_Abstract
         return $tlogin;
     }
 
-    /* Fonctions concerning user account */
-    /**
-     * Permet la connexion avec ancien system de login et migre vers le nouveau
-     * @param $login
-     * @param $password
-     * @return array|boolean
-     */
-    public function select_user_login_legacy($login, $password)
-    {
-        $login = $this->db->sql_escape_string($login);
-        $password = $this->db->sql_escape_string($password);
-
-        $request = "SELECT `user_id`, `user_active` FROM " . TABLE_USER .
-            " WHERE `user_name` = '" . $login .
-            "' AND `user_password` = '" . md5(sha1($password)) . "'";
-        $result = $this->db->sql_query($request);
-
-        // si reponse, password non migré / si rien erreur de login
-        if (!$this->db->sql_numrows($result)) {
-            return false;
-        }
-
-        $tlogin = $this->db->sql_fetch_row($result);
-
-        //Ajout du nouveau mot de passe et supression ancien
-        $request = "UPDATE " . TABLE_USER . " SET `user_password_s` = '" . password_hash($password, PASSWORD_DEFAULT) . "' WHERE `user_id` = " . $tlogin['user_id'];
-        $this->db->sql_query($request);
-        $request = "UPDATE " . TABLE_USER . " SET `user_password` = '' WHERE `user_id` = " . $tlogin['user_id'];
-        $this->db->sql_query($request);
-
-        return $tlogin;
-    }
-
     /**
      * @param $username
      * @return bool
@@ -621,7 +588,7 @@ class User_Model extends Model_Abstract
         $requests[] = "UPDATE " . TABLE_RANK_ALLY_HONOR . " SET `sender_id`=0 WHERE `sender_id`=" . $user_id;
         $requests[] = "UPDATE " . TABLE_UNIVERSE . " SET `last_update_user_id` = 0 WHERE `last_update_user_id` = " . $user_id;
         $requests[] = "DELETE FROM " . TABLE_MOD_USER_CFG . " WHERE `user_id` = " . $user_id;
-       
+
         foreach ($requests as $request) {
             $this->db->sql_query($request);
         }
@@ -633,6 +600,7 @@ class User_Model extends Model_Abstract
      * A quoi sert donc cette fonction ? :p
      * Reponse elle sert a mettre a jour le pseudo ingame afin d afficher les stats users dans son espace perso
      *
+     * @param $user_id
      * @param $user_stat_name
      */
     public function set_game_account_name($user_id, $user_stat_name)
@@ -640,7 +608,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $user_stat_name = $this->db->sql_escape_string($user_stat_name);
 
-        $request = "UPDATE " . TABLE_USER . " `set user_stat_name` = '" . $user_stat_name . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `user_stat_name` = '$user_stat_name' WHERE `user_id` = $user_id";
         $this->db->sql_query($request);
     }
 
@@ -653,7 +621,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $user_class = $this->db->sql_escape_string($user_class);
 
-        $request = "UPDATE " . TABLE_USER . " set `user_class`  = '" . $user_class . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `user_class`  = '" . $user_class . "' WHERE `user_id` = " . $user_id;
 
         $this->db->sql_query($request);
     }
@@ -665,29 +633,20 @@ class User_Model extends Model_Abstract
      */
     public function set_player_officer($user_id, $officer, $value)
     {
-        $user_id = (int)$user_id;
         $officer = $this->db->sql_escape_string($officer);
         $value = (int)$value;
 
-        switch ($officer) {
-            case 'off_commandant':
-                $request = "UPDATE " . TABLE_USER . " SET `off_commandant` = '" . $value . "' WHERE `user_id` = " . $user_id;
-                break;
-            case 'off_amiral':
-                $request = "UPDATE " . TABLE_USER . " SET `off_amiral` = '" . $value . "' WHERE `user_id` = " . $user_id;
-                break;
-            case 'off_ingenieur':
-                $request = "UPDATE " . TABLE_USER . " SET `off_ingenieur` = '" . $value . "' WHERE `user_id` = " . $user_id;
-                break;
-            case 'off_geologue':
-                $request = "UPDATE " . TABLE_USER . " SET `off_geologue` = '" . $value . "' WHERE `user_id` = " . $user_id;
-                break;
-            case 'off_technocrate':
-                $request = "UPDATE " . TABLE_USER . " SET `off_technocrate` = '" . $value . "' WHERE `user_id` = " . $user_id;
-                break;
-            default:
-                $request = "";
+        $allowedOfficers = [
+            'off_commandant',
+            'off_amiral',
+            'off_ingenieur',
+            'off_geologue',
+            'off_technocrate',
+        ];
+
+        if (in_array($officer, $allowedOfficers)) {
+            $request = "UPDATE " . TABLE_USER . " SET `" . $officer . "` = " . $value . " WHERE `user_id` = " . (int)$user_id;
+            $this->db->sql_query($request);
         }
-        $this->db->sql_query($request);
     }
 }

@@ -9,11 +9,6 @@
  * @version 3.3.0
  */
 
-/*
- * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
- *
- */
-
 /* message.php */
 $lang['MSG_SYSTEM'] = "Message Système";
 $lang['MSG_FORBIDDEN'] = "Vous ne disposez pas des droits nécessaires pour effectuer cette action";

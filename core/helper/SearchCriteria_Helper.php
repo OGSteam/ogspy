@@ -17,9 +17,9 @@ use Ogsteam\Ogspy\Abstracts\Helper_Abstract;
 
 class SearchCriteria_Helper  extends Helper_Abstract
 {
-    protected static  $name = "Search Criteria";
-    protected static  $description = "";
-    protected static  $version = "0.0.1";
+    protected static string $name = "Search Criteria";
+    protected static string $description = "";
+    protected static string $version = "0.0.1";
 
     private $server_config;
     private $player_name;

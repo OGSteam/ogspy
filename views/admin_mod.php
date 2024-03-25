@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Panneau administration des options Modules
  * @package OGSpy
@@ -10,129 +9,209 @@
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  */
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
 $mod_list = mod_list();
 ?>
-<table align="center">
-    <tr>
-        <td>&nbsp;</td>
-    </tr>
+<!--Mod activé/installé -->
+<table class="og-table og-medium-table">
+    <thead>
+        <tr>
+            <th  colspan="6" ><?php echo ($lang['ADMIN_MOD_LIST']); ?></th>
+        </tr>
+        <tr>
+            <th  colspan="5" ><?php echo ($lang['ADMIN_MOD_USER']); ?></th>
+            <th><?php echo ($lang['ADMIN_MOD_MENUVIEW']); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $mods = $mod_list["actived"]; ?>
+        <?php foreach ($mods as $mod) : ?>
+            <?php if ($mod["admin_only"] == 0) : ?>
+                <tr>
+                    <td>
+                        <?php echo "(" . $mod['position'] . ') ' . $mod["title"] . " (" . $mod["version"] . ")"; ?>
+                    </td>
+                    <td>
+                        <a href='index.php?action=mod_up&amp;mod_id=<?php echo $mod['id']; ?>'>
+                            <img src='images/asc.png' title='Monter'>
+                        </a>
+                        &nbsp;
+                        <a href='index.php?action=mod_down&amp;mod_id=<?php echo $mod['id']; ?>'>
+                            <img src='images/desc.png' title='Descendre'>
+                        </a>
+                    </td>
+                    <td>
+                        <a href='index.php?action=mod_disable&amp;mod_id=<?php echo $mod['id']; ?>'>
+                            <?php echo $lang['ADMIN_MOD_DISABLE']; ?>
+                        </a>
+                    </td>
+                    <td>
+                        <a href='index.php?action=mod_uninstall&amp;mod_id=<?php echo $mod['id']; ?>'>
+                            <?php echo $lang['ADMIN_MOD_REMOVE']; ?>
+                        </a>
+                    </td>
 
-    <tr>
-        <td class="c" colspan="6" width="550"><?php echo ($lang['ADMIN_MOD_LIST']); ?></td>
-    </tr>
-    <tr>
-        <td><?php echo ($lang['ADMIN_MOD_USER']); ?></td>
-        <td colspan="4"></td>
-        <th><?php echo ($lang['ADMIN_MOD_MENUVIEW']); ?></th>
-    </tr>
-    <?php
-    $mods = $mod_list["actived"];
-    while ($mod = current($mods)) {
-        if ($mod["admin_only"] == 0) {
-            echo "\t" . "<tr>";
-            echo "<th width='200'>(" . $mod['position'] . ') ' . $mod["title"] . " (" . $mod["version"] . ")</th>";
-            echo "<th width='50'><a href='index.php?action=mod_up&amp;mod_id=" . $mod['id'] . "'><img src='images/asc.png' title='Monter'></a>&nbsp;<a href='index.php?action=mod_down&amp;mod_id=" . $mod['id'] . "'><img src='images/desc.png' title='Descendre'></a></th>";
-            echo "<th width='100'><a href='index.php?action=mod_disable&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_DISABLE'] . "</a></th>";
-            echo "<th width='100'><a href='index.php?action=mod_uninstall&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_REMOVE'] . "</a></th>";
-            echo "<th width='100'>";
-            if (!$mod["up_to_date"]) {
-                echo "<a href='index.php?action=mod_update&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_UPDATE'] . "</a>";
-            }
-            echo "</th>";
-            echo "<th width='100'><a href='index.php?action=mod_admin&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_NORMAL'] . "</a></th>";
-            echo "</tr>";
-            echo "\n";
-        }
-        next($mods);
-    }
-    echo "<tr><td>" . $lang['ADMIN_MOD_ADMIN'] . "</td><td colspan='5'></td></tr>";
-    $mods = $mod_list["actived"];
-    while ($mod = current($mods)) {
-        if ($mod["admin_only"] == 1) {
-            echo "\t" . "<tr>";
-            echo "<th width='200'>(" . $mod['position'] . ') ' . $mod["title"] . " (" . $mod["version"] . ")</th>";
-            echo "<th width='50'><a href='index.php?action=mod_up&amp;mod_id=" . $mod['id'] . "'><img src='images/asc.png' title='Monter'></a>&nbsp;<a href='index.php?action=mod_down&amp;mod_id=" . $mod['id'] . "'><img src='images/desc.png' title='Descendre'></a></th>";
-            echo "<th width='100'><a href='index.php?action=mod_disable&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_DISABLE'] . "</a></th>";
-            echo "<th width='100'><a href='index.php?action=mod_uninstall&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_REMOVE'] . "</a></th>";
-            echo "<th width='100'>";
-            if (!$mod["up_to_date"]) {
-                echo "<a href='index.php?action=mod_update&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_UPDATE'] . "</a>";
-            }
-            echo "</th>";
-            echo "<th width='100'><a href='index.php?action=mod_normal&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_ADMIN'] . "</a></th>";
-            echo "</tr>";
-            echo "\n";
-        }
-        next($mods);
-    }
-    ?>
-    <tr>
-        <td>&nbsp;</td>
-    </tr>
+                    <td>
+                        <?php if (!$mod["up_to_date"]) : ?>
+                            <a href='index.php?action=mod_update&amp;mod_id=<?php echo $mod['id']; ?>'>
+                                <?php echo $lang['ADMIN_MOD_UPDATE']; ?>
+                            </a>
+                        <?php endif; ?>
+                    </td>
 
-    <tr>
-        <td class="c" colspan="6" width="550"><?php echo ($lang['ADMIN_MOD_LIST_INACTIVE']); ?></td>
-    </tr>
-    <?php
-    $mods = $mod_list["disabled"];
-    while ($mod = current($mods)) {
-        echo "\t" . "<tr>";
-        echo "<th width='250' colspan='2'>" . $mod["title"] . " (" . $mod["version"] . ")</th>";
-        echo "<th width='100'><a href='index.php?action=mod_active&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_ENABLE'] . "</a></th>";
-        echo "<th width='100'><a href='index.php?action=mod_uninstall&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_REMOVE'] . "</a></th>";
-        if (!$mod["up_to_date"]) {
-            echo "<th width='100'><a href='index.php?action=mod_update&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_UPDATE'] . "</a></th>";
-        } else {
-            echo "<th width='100'>&nbsp;</th>";
-        }
-        echo "<th width='100'>&nbsp;</th>";
-        echo "</tr>";
-        echo "\n";
+                    <td>
+                        <a href='index.php?action=mod_admin&amp;mod_id=<?php echo $mod['id']; ?>'>
+                            <?php echo $lang['ADMIN_MOD_NORMAL']; ?>
+                        </a>
+                    </td>
+                </tr>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </tbody>
+    <thead>
 
-        next($mods);
-    }
-    ?>
-    <tr>
-        <td>&nbsp;</td>
-    </tr>
+        <tr>
+            <th  colspan="5" ><?php echo ($lang['ADMIN_MOD_ADMIN']); ?></th>
+            <th><?php echo ($lang['ADMIN_MOD_MENUVIEW']); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($mods as $mod) : ?>
+            <?php if ($mod["admin_only"] == 1) : ?>
+                <tr>
+                    <td>
+                        <?php echo "(" . $mod['position'] . ') ' . $mod["title"] . " (" . $mod["version"] . ")"; ?>
+                    </td>
+                    <td>
+                        <a href='index.php?action=mod_up&amp;mod_id=<?php echo $mod['id']; ?>'>
+                            <img src='images/asc.png' title='Monter'>
+                        </a>
+                        &nbsp;
+                        <a href='index.php?action=mod_down&amp;mod_id=<?php echo $mod['id']; ?>'>
+                            <img src='images/desc.png' title='Descendre'>
+                        </a>
+                    </td>
+                    <td>
+                        <a href='index.php?action=mod_disable&amp;mod_id=<?php echo $mod['id']; ?>'>
+                            <?php echo $lang['ADMIN_MOD_DISABLE']; ?>
+                        </a>
+                    </td>
+                    <td>
+                        <a href='index.php?action=mod_uninstall&amp;mod_id=<?php echo $mod['id']; ?>'>
+                            <?php echo $lang['ADMIN_MOD_REMOVE']; ?>
+                        </a>
+                    </td>
 
-    <tr>
-        <td class="c" colspan="6" width="550"><?php echo ($lang['ADMIN_MOD_NOT_INSTALLED']); ?></td>
-    </tr>
-    <?php
-    $mods = $mod_list["install"];
-    while ($mod = current($mods)) {
-        echo "\t" . "<tr>";
-        echo "<th width='200'>" . $mod["title"] . "</th>";
-        echo "<th width='300' colspan='5'><a href='index.php?action=mod_install&amp;directory=" . $mod['directory'] . "'>" . $lang['ADMIN_MOD_INSTALL'] . "</a></th>";
-        echo "</tr>";
-        echo "\n";
+                    <td>
+                        <?php if (!$mod["up_to_date"]) : ?>
+                            <a href='index.php?action=mod_update&amp;mod_id=<?php echo $mod['id']; ?>'>
+                                <?php echo $lang['ADMIN_MOD_UPDATE']; ?>
+                            </a>
+                        <?php endif; ?>
+                    </td>
 
-        next($mods);
-    }
-    ?>
-    <tr>
-        <td>&nbsp;</td>
-    </tr>
-
-    <tr>
-        <td class="c" colspan="6" width="550"><?php echo ($lang['ADMIN_MOD_INVALID']); ?></td>
-    </tr>
-    <?php
-    $mods = $mod_list["wrong"];
-    while ($mod = current($mods)) {
-        echo "\t" . "<tr>";
-        echo "<th width='200'>" . $mod["title"] . "</th>";
-        echo "<th width='300' colspan='5'><a href='index.php?action=mod_uninstall&amp;mod_id=" . $mod['id'] . "'>" . $lang['ADMIN_MOD_REMOVE'] . "</a></th>";
-        echo "</tr>";
-        echo "\n";
-
-        next($mods);
-    }
-    ?>
+                    <td>
+                        <a href='index.php?action=mod_admin&amp;mod_id=<?php echo $mod['id']; ?>'>
+                            <?php echo $lang['ADMIN_MOD_ADMIN']; ?>
+                        </a>
+                    </td>
+                </tr>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </tbody>
 </table>
+
+<!--Mod desactivé/installé -->
+<?php $mods = $mod_list["disabled"]; ?>
+<?php if (count($mods) != 0): ?>
+    <table class="og-table og-medium-table">
+        <thead>
+            <tr>
+                <th  colspan="4" ><?php echo ($lang['ADMIN_MOD_LIST_INACTIVE']); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <?php foreach ($mods as $mod) : ?>
+                <tr>
+                    <td>
+                        <?php echo $mod["title"] . " (" . $mod["version"] . ")"; ?>
+                    </td>
+                    <td>
+                        <a href='index.php?action=mod_active&amp;mod_id=<?php echo $mod['id']; ?>'>
+                            <?php echo $lang['ADMIN_MOD_ENABLE']; ?>
+                        </a>
+                    </td>
+                    <td>
+                        <a href='index.php?action=mod_uninstall&amp;mod_id=<?php echo $mod['id']; ?>'>
+                            <?php echo $lang['ADMIN_MOD_REMOVE']; ?>
+                        </a>
+                    </td>
+                    <td>
+                        <?php if (!$mod["up_to_date"]) : ?>
+                            <a href='index.php?action=mod_update&amp;mod_id=<?php echo $mod['id']; ?>'>
+                                <?php echo $lang['ADMIN_MOD_UPDATE']; ?>
+                            </a>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
+
+<!--Mod non installé -->
+<?php $mods = $mod_list["install"]; ?>
+<?php if (count($mods) != 0): ?>
+    <table class="og-table og-medium-table">
+        <thead>
+            <tr>
+                <th  colspan="2" ><?php echo ($lang['ADMIN_MOD_NOT_INSTALLED']); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($mods as $mod) : ?>
+                <tr>
+                    <td>
+                        <?php echo $mod["title"]; ?>
+                    </td>
+                    <td>
+                        <a href='index.php?action=mod_install&amp;directory=<?php echo $mod['directory']; ?>'>
+                            <?php echo $lang['ADMIN_MOD_INSTALL']; ?>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
+
+
+<!--Mod non valide -->
+<?php $mods = $mod_list["wrong"]; ?>
+<?php if (count($mods) != 0): ?>
+    <table class="og-table og-medium-table">
+        <thead>
+            <tr>
+                <th  colspan="2" ><?php echo ($lang['ADMIN_MOD_INVALID']); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($mods as $mod) : ?>
+                <tr>
+                    <td>
+                        <?php echo $mod["title"]; ?>
+                    </td>
+                    <td>
+                        <a href='index.php?action=mod_uninstall&amp;mod_id=<?php echo $mod['id']; ?>'>
+                            <?php echo $lang['ADMIN_MOD_REMOVE']; ?>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>

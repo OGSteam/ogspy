@@ -464,6 +464,7 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
         $ratio = 1; // indique le pourcentage à appliquer sur la prod
         $ratio_temp = 1;
         $ratio_temp = ($production_E == 0) ? 0 : ($consommation_E / $production_E); // fix division par 0
+        $ratio_temp = abs($ratio_temp); // le ratio n'est pas negatif / c'est le necessaire  sur la production max
         if ($ratio_temp > 1) {
             $ratio = 1;
         } else {
@@ -2254,7 +2255,7 @@ function astro_max_planete($level)
  *
  *  @param[in] int   $level         Level of the phalanx
  *  @param[in] array $user_class    User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
- *  @return Range in system
+ *  @return int Range in system
  */
 function ogame_phalanx_range($level, $user_class = 'none')
 {

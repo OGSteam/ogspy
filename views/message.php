@@ -1,4 +1,4 @@
-<?php
+<?php global $server_config, $lang;
 
 /**
  * Pop up Messages
@@ -18,250 +18,308 @@ if (!isset($pub_id_message) || !isset($pub_info)) {
     redirection("index.php");
 }
 
-if (!check_var($pub_id_message, "Char") || !check_var($pub_info, "Special", "#^[\sa-zA-Z0-9~¤_.\-\:\[\]]+$#")) {
+if (!check_var($pub_id_message, "Char")) {
     redirection("index.php");
 }
 
-$action = "";
-$message = $lang['MSG_SYSTEM'] . '<br/><br/>';
+
+$info = htmlentities($pub_info) ?? '';
+$msgTitle=$lang['MSG_SYSTEM']; //titre
+$msgContent=""; //contenu
+$msgURLButton="index.php"; // lien retour par defaut
+$msgType=""; // type : vide|warning|success|danger
+$message="";
+
 
 switch ($pub_id_message) {
     case "forbidden":
-        $message .= '<span style="color: red;">' . $lang['MSG_FORBIDDEN'] . '</span><br/>';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_FORBIDDEN'];
         break;
     case "errorfatal":
-        $message .= '<span style="color: red;">' . $lang['MSG_ERRORFATAL'] . '</span><br/>';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_ERRORFATAL'];
         break;
 
     case "errormod":
-        $message .= '<span style="color: red;">' . $lang['MSG_ERRORMOD'] . '</span><br/>';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_ERRORMOD'] ;
         break;
     case "errordata":
-        $message .= '<span style="color: red;">' . $lang['MSG_ERRORDATA'] . '</span><br/>';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_ERRORDATA'];
         break;
 
     case "createuser_success":
-        list($user_id, $password) = explode(':', $pub_info);
+        list($user_id, $password) = explode(':', $info);
         $user_info = user_get($user_id);
         $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
         $server_name = filter_input(INPUT_SERVER, 'SERVER_NAME', FILTER_SANITIZE_URL);
-        $message .= '<span style="color: lime;">' . $lang['MSG_CREATE_USER_TITLE'] . '<a>' . $user_info[0]['user_name'] . '</a></span><br/>';
-        $message .= $lang['MSG_CREATE_USER_INFO'] . '<br/><br/>';
-        $message .= '- ' . $lang['MSG_CREATE_USER_URL'] . ' :<br/><a>https://' . $server_name . $phpSelf . '</a><br/><br/>';
-        $message .= '- ' . $lang['MSG_CREATE_USER_PASSWORD'] . ' :<br/><a>' . $password . '</a><br/>';
-        $action = 'action=administration&amp;subaction=member';
+
+        $msgType = "success";
+
+        $msgContent = '' . $lang['MSG_CREATE_USER_TITLE'] . ' <a>' . $user_info[0]['user_name'] . '</a><br><br>';
+        $msgContent .= $lang['MSG_CREATE_USER_INFO'] . '<br/><br/>';
+        $msgContent .= '' . $lang['MSG_CREATE_USER_TITLE'] . ' <a>' . $user_info[0]['user_name'] . '</a><br><br>';
+        $msgContent .= '- ' . $lang['MSG_CREATE_USER_URL'] . ' : <a>https://' . $server_name . $phpSelf . '</a><br>';
+        $msgContent .= '- ' . $lang['MSG_CREATE_USER_PASSWORD'] . ' : <a>' . $password . '</a><br>';
+
+        $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "regeneratepwd_success":
-        list($user_id, $password) = explode(':', $pub_info);
+        $msgType = "success";
+
+        list($user_id, $password) = explode(':', $info);
         $user_info = user_get($user_id);
-        $message .= '<span style="color: lime;">' . $lang['MSG_PWD_REGEN_OK'] . '<a>' . $user_info[0]['user_name'] . '</a></span><br/>';
+        $msgContent = $lang['MSG_PWD_REGEN_OK'] . '<a>' . $user_info[0]['user_name'] . '</a><br/>';
+
         if ($password == "mail") {
-            $message .= $lang['MSG_PWD_REGEN_INFO_MAIL'];
+            $msgContent .= $lang['MSG_PWD_REGEN_INFO_MAIL'];
         } else {
-            $message .= $lang['MSG_PWD_REGEN_INFO'] . ' : <a>' . $password . '</a>';
+            $msgContent .= $lang['MSG_PWD_REGEN_INFO'] . ' : <a>' . $password . '</a>';
         }
-        $action = 'action=administration&amp;subaction=member';
+        $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "regeneratepwd_failed":
-        $message .= '<span style="color: red;">' . $lang['MSG_PWD_REGEN_KO'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=member';
+
+        $msgType = "danger";
+        $msgContent = $lang['MSG_PWD_REGEN_KO'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "createuser_failed_pseudolocked":
-        $message .= '<span style="color: red;">' . $lang['MSG_NEW_ACCOUNT_KO'] . '</span><br/>';
-        $message .= '<span style="font-style: italic;">' . $lang['MSG_NEW_ACCOUNT_KO_NAME'] . ' (' . $pub_info . ')</span><br/>';
-        $action = 'action=administration&amp;subaction=member';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br>';
+        $msgContent .= $lang['MSG_NEW_ACCOUNT_KO_NAME'] . ' (' . $info . ')';
+        $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "createuser_failed_pseudo":
-        $message .= '<span style="color: red;">' . $lang['MSG_NEW_ACCOUNT_KO'] . '</span><br/>';
-        $message .= '<span style="font-style: italic;">' . $lang['MSG_NEW_ACCOUNT_KO_NAME_ILLEGAL'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=member';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br>';
+        $msgContent .= $lang['MSG_NEW_ACCOUNT_KO_NAME_ILLEGAL'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "createuser_failed_password":
-        $message .= '<span style="color: red;">' . $lang['MSG_NEW_ACCOUNT_KO'] . '</span><br/>';
-        $message .= '<span style="font-style: italic;">' . $lang['MSG_NEW_ACCOUNT_KO_PASSWORD_ILLEGAL'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=member';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br>';
+        $msgContent .= $lang['MSG_NEW_ACCOUNT_KO_PASSWORD_ILLEGAL'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "createuser_failed_email":
-        $message .= '<span style="color: red;">' . $lang['MSG_NEW_ACCOUNT_KO'] . '</span><br/>';
-        $message .= '<span style="font-style: italic;">' . $lang['MSG_NEW_ACCOUNT_KO_EMAIL_ILLEGAL'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=member';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br>';
+        $msgContent .= $lang['MSG_NEW_ACCOUNT_KO_EMAIL_ILLEGAL'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "createuser_failed_general":
-        $message .= '<span style="color: red;">' . $lang['MSG_NEW_ACCOUNT_KO'] . '</span><br>';
-        $message .= '<span style="font-style: italic;">' . $lang['MSG_NEW_ACCOUNT_KO_OTHER'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=member';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_NEW_ACCOUNT_KO'] . '<br>';
+        $msgContent .= $lang['MSG_NEW_ACCOUNT_KO_OTHER'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "admin_modifyuser_success":
-        $user_info = user_get($pub_info);
-        $message .= '<span style="color: lime;">' . $lang['MSG_PROFILE_OK'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=member';
+        $msgType = "success";
+        $msgContent = $lang['MSG_PROFILE_OK'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "admin_modifyuser_failed":
-        $message .= '<span style="color: red;">' . $lang['MSG_PROFILE_KO'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=member';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_PROFILE_KO'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "member_modifyuser_success":
-        $message .= '<span style="color: lime;">' . $lang['MSG_PROFILE_SAVE_OK'] . '</span><br/>';
-        $action = 'action=profile';
+        $msgType = "success";
+        $msgContent = $lang['MSG_PROFILE_SAVE_OK'];
+        $msgURLButton = 'index.php?action=profile';
         break;
 
     case "member_modifyuser_failed":
-        $message .= '<span style="color: red;">' . $lang['MSG_PROFILE_SAVE_KO'] . '</span><br/>';
-        $action = 'action=profile';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_PROFILE_SAVE_KO'];
+        $msgURLButton = 'index.php?action=profile';
         break;
 
     case "member_modifyuser_failed_passwordcheck":
-        $message .= '<span style="color: red;">' . $lang['MSG_PROFILE_SAVE_KO'] . '</span><br/>';
-        $message .= $lang['MSG_PROFILE_SAVE_PWD'];
-        $action = 'action=profile';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_PROFILE_SAVE_KO'] . '<br>';
+        $msgContent .= $lang['MSG_PROFILE_SAVE_PWD'];
+        $msgURLButton = 'index.php?action=profile';
         break;
 
     case "member_modifyuser_failed_password":
-        $message .= '<span style="color: red;">' . $lang['MSG_PROFILE_SAVE_KO'] . '</span><br/>';
-        $message .= $lang['MSG_PROFILE_SAVE_PWD_ILLEGAL'];
-        $action = 'action=profile';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_PROFILE_SAVE_KO'] . '<br>';
+        $msgContent .= $lang['MSG_PROFILE_SAVE_PWD_ILLEGAL'];
+        $msgURLButton = 'index.php?action=profile';
         break;
 
     case "member_modifyuser_failed_pseudolocked":
-        $message .= '<span style="color: red;">' . $lang['MSG_PROFILE_SAVE_KO'] . '</span><br/>';
-        $message .= $lang['MSG_PROFILE_SAVE_NAME_INUSE'];
-        $action = 'action=profile';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_PROFILE_SAVE_KO'] . '<br>';
+        $msgContent .= $lang['MSG_PROFILE_SAVE_NAME_INUSE'];
+        $msgURLButton = 'index.php?action=profile';
         break;
 
     case "member_modifyuser_failed_pseudo":
-        $message .= '<span style="color: red;">' . $lang['MSG_PROFILE_SAVE_KO'] . '</span><br/>';
-        $message .= $lang['MSG_PROFILE_SAVE_NAME_ILLEGAL'];
-        $action = 'action=profile';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_PROFILE_SAVE_KO'] . '<br>';
+        $msgContent .= $lang['MSG_PROFILE_SAVE_NAME_ILLEGAL'];
+        $msgURLButton = 'index.php?action=profile';
         break;
 
     case "deleteuser_success":
-        $message .= '<span style="color: lime;">' . $lang['MSG_DELETE_USER_OK'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=member';
+        $msgType = "success";
+        $msgContent = $lang['MSG_DELETE_USER_OK'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "deleteuser_failed":
-        $message .= '<span style="color: red;">' . $lang['MSG_DELETE_USER_KO'] . '</span><br./>';
-        $action = 'action=administration&amp;subaction=member';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_DELETE_USER_KO'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=member';
         break;
 
     case "login_wrong":
-        $message .= '<span style="color: red;">' . $lang['MSG_LOGIN_WRONG'] . '</span><br/>';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_LOGIN_WRONG'];
         break;
 
     case "account_lock":
-        $message .= '<span style="color: red;">' . $lang['MSG_LOGIN_INACTIVE'] . '</span><br/>';
-        $message .= $lang['MSG_LOGIN_INACTIVE_CONTACT'];
+        $msgType = "danger";
+        $msgContent = $lang['MSG_LOGIN_INACTIVE'] . '<br>';
+        $msgContent .= $lang['MSG_LOGIN_INACTIVE'];
         break;
 
     case "max_favorites":
-        $message .= '<span style="color: orange;>' . $lang['MSG_MAX_FAVORITES'] . ' (' . $server_config["max_favorites"] . ')</span><br/>';
+        $msgType = "warning";
+        $msgContent = $lang['MSG_MAX_FAVORITES'] . ' (' . $server_config["max_favorites"] . ')';
         break;
 
     case "setting_serverconfig_success":
-        $message .= '<span style="color: lime;">' . $lang['MSG_SETTINGS_SERVERCONFIG_OK'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=parameter';
+        $msgType = "success";
+        $msgContent = $lang['MSG_SETTINGS_SERVERCONFIG_OK'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=parameter';
         break;
 
     case "setting_serverconfig_failed":
-        $message .= '<span style="color: red;">' . $lang['MSG_SETTINGS_SERVERCONFIG_KO'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=parameter';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_SETTINGS_SERVERCONFIG_KO'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=parameter';
         break;
 
     case "setting_server_view_success":
-        $message .= '<span style="color: lime;">' . $lang['MSG_SETTINGS_SERVERVIEW_OK'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=affichage';
+        $msgType = "success";
+        $msgContent = $lang['MSG_SETTINGS_SERVERVIEW_OK'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=affichage';
         break;
 
     case "setting_server_view_failed":
-        $message .= '<span style="color: red;">' . $lang['MSG_SETTINGS_SERVERVIEW_KO'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=affichage';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_SETTINGS_SERVERVIEW_KO'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=affichage';
         break;
 
     case "log_missing":
-        $message .= '<span style="color: orange;">' . $lang['MSG_LOG_MISSING'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=viewer';
+        $msgType = "warning";
+        $msgContent = $lang['MSG_LOG_MISSING'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=viewer';
         break;
 
     case "log_remove":
-        $message .= '<span style="color: lime;">' . $lang['MSG_LOG_REMOVE'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=viewer';
+        $msgType = "warning";
+        $msgContent = $lang['MSG_LOG_REMOVE'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=viewer';
         break;
 
     case "set_building_failed_planet_id":
-        $message .= '<span style="color: orange;">' . $lang['MSG_FAILED_PLANETID'] . '</span><br/>';
-        $action = 'action=home&amp;subaction=empire';
+        $msgType = "warning";
+        $msgContent = $lang['MSG_FAILED_PLANETID'];
+        $msgURLButton = 'index.php?action=home&amp;subaction=empire';
         break;
 
     case "install_directory":
-        $message .= '<span style="color: red;">' . $lang['MSG_INSTALLFOLDER'] . '</span><br/>';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_INSTALLFOLDER'];
         break;
 
     case "createusergroup_success":
-        $message .= '<span style="color: lime;">' . $lang['MSG_GROUP_CREATE'] . '</span><br/>';
-        $action = 'action=administration&amp;subaction=group';
+        $msgType = "success";
+        $msgContent = $lang['MSG_GROUP_CREATE'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=group';
         break;
 
     case "createusergroup_failed_groupnamelocked":
-        $message .= '<span style="color: red;">' . $lang['MSG_GROUP_CREATE_FAILED'] . '</span><br/>';
-        $message .= $lang['MSG_GROUP_CREATE_FAILED_NAME'];
-        $action = 'action=administration&amp;subaction=group';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_GROUP_CREATE_FAILED'] . '<br>';
+        $msgContent .= $lang['MSG_GROUP_CREATE_FAILED_NAME'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=group';
         break;
 
-        //
+    //
     case "createusergroup_failed_groupname":
-        $message .= '<span style="color: red;">' . $lang['MSG_GROUP_CREATE_FAILED'] . '</span><br/>';
-        $message .= $lang['MSG_GROUP_CREATE_FAILED_ILLEGAL'];
-        $action = 'action=administration&amp;subaction=group';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_GROUP_CREATE_FAILED'] . '<br>';
+        $msgContent .= $lang['MSG_GROUP_CREATE_FAILED_ILLEGAL'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=group';
         break;
 
     case "createusergroup_failed_general":
-        $message .= '<span style="color: red;">' . $lang['MSG_GROUP_CREATE_FAILED'] . '</span><br/>';
-        $message .= $lang['MSG_GROUP_CREATE_FAILED_OTHER'];
-        $action = 'action=administration&amp;subaction=group';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_GROUP_CREATE_FAILED'] . '<br>';
+        $msgContent .= $lang['MSG_GROUP_CREATE_FAILED_OTHER'];
+        $msgURLButton = 'index.php?action=administration&amp;subaction=group';
         break;
 
     case "db_optimize":
-        list($dbSize_before, $dbSize_after) = explode('¤', $pub_info);
-        $message .= '<span style="color: lime;">' . $lang['MSG_DB_OPTIM_OK'] . '</span><br/>';
-        $message .= $lang['MSG_DB_OPTIM_BEFORE'] . ' : ' . $dbSize_before . '<br/>';
-        $message .= $lang['MSG_DB_OPTIM_AFTER'] . ' : ' . $dbSize_after . '<br/><br/>';
-        $action = 'action=administration&amp;subaction=infoserver';
+        list($dbSize_before, $dbSize_after) = explode('¤', $info);
+
+        $msgType = "success";
+        $msgContent = $lang['MSG_DB_OPTIM_OK'] . '<br>';
+        $msgContent = $lang['MSG_DB_OPTIM_BEFORE'] . ' : ' . $dbSize_before . '<br>';
+        $msgContent = $lang['MSG_DB_OPTIM_AFTER'] . ' : ' . $dbSize_after . '<br>';
+        $msgURLButton = 'index.php?action=administration&amp;subaction=infoserver';
         break;
 
     case "set_empire_failed_data":
-        $message .= '<span style="color: red;">' . $lang['MSG_EMPIRE_DATA_FAILURE'] . '</span><br/>';
-        $action = 'action=home&amp;subaction=empire';
+        $msgType = "danger";
+        $msgContent = $lang['MSG_EMPIRE_DATA_FAILURE'];
+        $msgURLButton = 'index.php?action=home&amp;subaction=empire';
         break;
 
     case "raz_ratio":
-        $message .= '<span style="color: lime;">' . $lang['MSG_RATIO_RAZ'] . '</span><br/>';
-        $action = 'action=statistic';
+        $msgType = "success";
+        $msgContent = $lang['MSG_RATIO_RAZ'];
+        $msgURLButton = 'action=statistic';
         break;
 
     default:
         redirection('index.php');
         break;
 }
-$action = $action != "" ? "?" . $action : "";
-$message .= '<br/><br/><a href="index.php' . $action . '">' . $lang['MSG_BACK'] . '</a>';
 
-require_once('views/page_header_2.php');
+require_once 'views/page_header_2.php';
 ?>
-<table style="display:inline-block">
-    <tr>
-        <td class="c">
-            <div style="font-weight:bold"><?php echo $message; ?></div>
-        </td>
-    </tr>
-</table>
-<?php require_once('views/page_tail_2.php'); ?>
+
+
+
+<div class="page_message">
+    <div class="og-msg og-msg-<?= $msgType; ?>">
+        <h3 class="og-title"><?= $msgTitle; ?></h3>
+        <p class="og-content"><?php echo htmlspecialchars($msgContent); ?></p>
+        <button type="button"  onclick="location.href='index.php?<?php echo $msgURLButton; ?>'" class="og-button og-button-<?php echo $msgType; ?>">
+            <?php echo $lang['MSG_BACK']; ?>
+        </button>
+    </div>
+</div>
+
+
+<?php require_once 'views/page_tail_2.php'; ?>

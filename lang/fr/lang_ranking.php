@@ -8,10 +8,6 @@
  * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.0
  */
-/*
- * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
- *
- */
 
 /* ranking.php */
 $lang['RANK_PLAYERS'] = "Joueurs";

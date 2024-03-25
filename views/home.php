@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Affichage Empire
  * @package OGSpy
@@ -10,7 +9,6 @@
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  */
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -18,89 +16,92 @@ if (!defined('IN_SPYOGAME')) {
 require_once("views/page_header.php");
 ?>
 
-<table width="100%">
-    <tr>
-        <td>
-            <table width="100%">
-                <tr align="center">
-                    <?php
-                    if (!isset($pub_subaction)) {
-                        $pub_subaction = "empire";
-                    }
+<?php
+if (!isset($pub_subaction) || $pub_subaction == 'home') {
+    $pub_subaction = "empire";
+}
 
-                    if ($pub_subaction != "empire") {
-                        echo "\t\t\t" . "<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=empire';\">";
-                        echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['HOME_EMPIRE_TITLE'] . "</span></a>";
-                        echo "</td>";
-                    } else {
-                        echo "\t\t\t" . "<th width='25%'>";
-                        echo "<a>" . $lang['HOME_EMPIRE_TITLE'] . "</a>";
-                        echo "</th>";
-                    }
 
-                    if ($pub_subaction != "simulation") {
-                        echo "\t\t\t" . "<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=simulation';\">";
-                        echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['HOME_SIMULATION_TITLE'] . "</span></a>";
-                        echo "</td>";
-                    } else {
-                        echo "\t\t\t" . "<th width='150'>";
-                        echo "<a>" . $lang['HOME_SIMULATION_TITLE'] . "</a>";
-                        echo "</th>";
-                    }
 
-                    if ($pub_subaction != "spy") {
-                        echo "\t\t\t" . "<td class='c' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=spy';\">";
-                        echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['HOME_REPORTS_TITLE'] . "</span></a>";
-                        echo "</td>";
-                    } else {
-                        echo "\t\t\t" . "<th width='25%'>";
-                        echo "<a>" . $lang['HOME_REPORTS_TITLE'] . "</a>";
-                        echo "</th>";
-                    }
 
-                    if ($pub_subaction != "stat") {
-                        echo "\t\t\t" . "<td class='c_stats' width='25%' onclick=\"window.location = 'index.php?action=home&amp;subaction=stat';\">";
-                        echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['HOME_STATISTICS_TITLE'] . "</span></a>";
-                        echo "</td>";
-                    } else {
-                        echo "\t\t\t" . "<th width='25%'>";
-                        echo "<a>" . $lang['HOME_STATISTICS_TITLE'] . "</a>";
-                        echo "</th>";
-                    }
-                    ?>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <?php
-            switch ($pub_subaction) {
-                case "empire":
-                    require_once("home_empire.php");
-                    break;
+// place le tag active au besoin
+$tagactive = "active";
+$tagactiveempire = "";
+$tagactivesimulation = "";
+$tagactivespy = "";
+$tagactivestat = "";
 
-                case "simulation":
-                    require_once("home_simulation.php");
-                    break;
+switch ($pub_subaction) {
+    case "empire":
+        $tagactiveempire = $tagactive;
+        break;
+    case "simulation":
+        $tagactivesimulation = $tagactive;
+        break;
+    case "spy":
+        $tagactivespy = $tagactive;
+        break;
+    case "stat":
+        $tagactivestat = $tagactive;
+        break;
+    default:
+        break;
+}
 
-                case "stat":
-                    require_once("home_stat.php");
-                    break;
 
-                case "spy":
-                    require_once("home_spy.php");
-                    break;
+//
+?>
+<div class="page_home">
 
-                default:
-                    require_once("home_empire.php");
-                    break;
-            }
-            ?>
-        </td>
-    </tr>
-</table>
+    <div class="nav-page-menu">
+        <div class="nav-page-menu-item nav-page-menu-item-home-infoserver <?php echo $tagactiveempire; ?>">
+            <a class="nav-page-menu-link" href="index.php?action=home&amp;subaction=empire">
+                <?php echo $lang['HOME_EMPIRE_TITLE']; ?> 
+            </a>
+        </div>  
+        <div class="nav-page-menu-item nav-page-menu-item-home-simulation <?php echo $tagactivesimulation; ?>">
+            <a class="nav-page-menu-link" href="index.php?action=home&amp;subaction=simulation">
+                <?php echo $lang['HOME_SIMULATION_TITLE']; ?> 
+            </a>
+        </div>  
+        <div class="nav-page-menu-item nav-page-menu-item-home-spy <?php echo $tagactivespy; ?>">
+            <a class="nav-page-menu-link" href="index.php?action=home&amp;subaction=spy">
+                <?php echo $lang['HOME_REPORTS_TITLE']; ?> 
+            </a>
+        </div>  
+        <div class="nav-page-menu-item nav-page-menu-item-home-stat <?php echo $tagactivestat; ?>">
+            <a class="nav-page-menu-link" href="index.php?action=home&amp;subaction=stat">
+                <?php echo $lang['HOME_STATISTICS_TITLE']; ?> 
+            </a>
+        </div>  
+    </div>      
 
+
+                <?php
+                switch ($pub_subaction) {
+                    case "empire":
+                        require_once("home_empire.php");
+                        break;
+
+                    case "simulation":
+                        require_once("home_simulation.php");
+                        break;
+
+                    case "stat":
+                        require_once("home_stat.php");
+                        break;
+
+                    case "spy":
+                        require_once("home_spy.php");
+                        break;
+
+                    default:
+                        require_once("home_empire.php");
+                        break;
+                }
+                ?>
+
+</div><!-- fin div class="page_home" -->
 <?php
 require_once("views/page_tail.php");
 ?>

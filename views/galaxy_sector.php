@@ -39,7 +39,7 @@ if (($system_down + $totalsystem + 1) <= intval($server_config['num_of_systems']
     $link_right1 = "<a href='index.php?action=galaxy_sector&amp;galaxy=" . $galaxy . "&amp;system_down=" . ($system_up + 1) . "&amp;system_up=" . ($system_up + $totalsystem + 1) . "'>";
     $link_right2 = "</a>";
 }
-
+echo "<div class=\"page_galaxy_sector\">\n";
 echo "<table>" . "\n";
 echo "<tr align='center'>" . "\n";
 echo "<td class='c''>" . $link_left1 . $lang['GALAXY_SECTOR_PREVIOUS'] . " -" . $link_left2 . "</td>";
@@ -120,6 +120,7 @@ echo "<td class='c' colspan='3'>" . $lang['GALAXY_SECTOR_NAVIGATE'] . "<br>" . $
 echo "<td class='c'>" . $link_right1 . $lang['GALAXY_SECTOR_NEXT'] . " +" . $link_right2 . "</td>" . "\n";
 echo "</tr>" . "\n";
 echo "<table>" . "\n";
+echo "</div> <!-- fin div class=\"page_galaxy_sector\"-->";
 ?>
 
 <?php

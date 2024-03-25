@@ -458,7 +458,7 @@ function log_extractor()
     $root = PATH_LOG;
     $zip_file = $root . "log.zip";
     $path = opendir("$root");
-    unlink($zip_file);
+    @unlink($zip_file);
 
     //Récupération de la liste des répertoires correspondant à cette date
     while ($file = readdir($path)) {
@@ -495,24 +495,30 @@ function log_extractor()
     // création d'un objet 'zipfile'
 
     $zip = new ZipArchive;
-    $zip->open($zip_file, ZipArchive::CREATE);
-    foreach ($files as $filename) {
-        // ajout du fichier dans cet objet
-        $zip->addFile($root . $filename);
-        log_('debug', "fichier dans archive:" . $filename);
-    }
+        if ($zip->open($zip_file, ZipArchive::CREATE) === true) {
+        foreach ($files as $filename) {
+            // ajout du fichier dans cet objet
+            if (file_exists($root . $filename)) {
+                $zip->addFile($root . $filename, $filename);
+            } else {
+                log_('error', "File not found: " . $root . $filename);
+            }
 
-    // production de l'archive Zip
-    $zip->close();
+        }
+
+        // Close the zip archive to save changes
+        $zip->close();
+    } else {
+        log_('error', "Failed to create the zip archive");
+    }
 
     // entêtes HTTP
     header('Content-Type: application/x-zip');
     // force le téléchargement
     header('Content-disposition: attachment; filename=log_' . $pub_date . '.zip');
-    header('Content-Transfer-Encoding: binary');
+    header("Content-Length: " . filesize($zip_file));
 
     // envoi du fichier au navigateur
-    flush();
     readfile($zip_file);
 }
 

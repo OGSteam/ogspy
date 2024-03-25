@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Panneau d'Administration : paramètres et options du serveur
  * @package OGSpy
@@ -10,7 +9,6 @@
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  */
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -66,7 +64,7 @@ $mail_smtp_use = $server_config['mail_smtp_use'] == 1 ? "checked" : "";
 $server_config['mail_smtp_secure'] = (isset($server_config['mail_smtp_secure'])) ? $server_config['mail_smtp_secure'] : 0;
 $mail_smtp_secure = $server_config['mail_smtp_secure'] == 1 ? "checked" : "";
 $server_config['mail_smtp_port'] = (isset($server_config['mail_smtp_port'])) ? $server_config['mail_smtp_port'] : 0;
-$mail_smtp_port = (int)$server_config['mail_smtp_port'];
+$mail_smtp_port = (int) $server_config['mail_smtp_port'];
 $mail_smtp_host = (isset($server_config['mail_smtp_host'])) ? $server_config['mail_smtp_host'] : "";
 $mail_smtp_username = (isset($server_config['mail_smtp_username'])) ? $server_config['mail_smtp_username'] : "";
 $mail_smtp_password = "";
@@ -76,232 +74,279 @@ $mail_smtp_password = "";
 <form method="POST" action="index.php">
     <input type="hidden" name="action" value="set_serverconfig">
     <input name="max_battlereport" type="hidden" size="5" value="10">
-    <table width="100%">
-        <tr>
-            <td class="c_ogspy" colspan="2"><?php echo ($lang['ADMIN_PARAMS_GENERAL']); ?></td>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_PARAMS_SERVERNAME']); ?></th>
-            <th><input type="text" name="servername" size="60" value="<?php echo $servername; ?>"></th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_PARAMS_ACTIVATESERVER']); ?><?php echo help("admin_server_status"); ?></th>
-            <th><input name="server_active" type="checkbox" value="1" <?php echo $server_active; ?>></th>
-        </tr>
-        <tr>
-            <th width="60%" <?php echo ($lang['ADMIN_PARAMS_OFFREASON']); ?><?php echo help("admin_server_status_message"); ?></th>
-            <th><input type="text" name="reason" size="60" value="<?php echo $reason; ?>"></th>
-        </tr>
-        <tr>
-            <td class="c" colspan="2"><?php echo ($lang['ADMIN_PARAMS_MEMBEROPTIONS']); ?></td>
-        </tr>
-        <tr>
-            <th><?php echo ($lang['ADMIN_PARAMS_ALLOW_IPCHECKDISABLING']); ?><?php echo help("admin_check_ip"); ?></th>
-            <th><input name="disable_ip_check" type="checkbox" value="1" <?php echo $disable_ip_check; ?>></th>
-        </tr>
-        <tr>
-            <th><?php echo ($lang['ADMIN_PARAMS_MAXSSFAVORITES']); ?></th>
-            <th><input name="max_favorites" type="text" size="5" maxlength="2" value="<?php echo $max_favorites; ?>">
-            </th>
-        </tr>
-        <tr>
-            <th><?php echo ($lang['ADMIN_PARAMS_MAXREFAVORITES']); ?></th>
-            <th><input name="max_favorites_spy" type="text" size="5" maxlength="2" value="<?php echo $max_favorites_spy; ?>"></th>
-        </tr>
-        <tr>
-            <td class="c_tech" colspan="2"><?php echo ($lang['ADMIN_PARAMS_SESSIONS_TITLE']); ?></td>
-        </tr>
-        <tr>
-            <th><?php echo ($lang['ADMIN_PARAMS_SESSIONS_DURATION']); ?><?php echo help("admin_session_infini"); ?></a></th>
-            <th><input name="session_time" type="text" size="5" maxlength="3" value="<?php echo $session_time; ?>"></th>
-        </tr>
-        <tr>
-            <td class="c" colspan="2"><?php echo ($lang['ADMIN_PARAMS_ALLYPROTECT']); ?></td>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_PARAMS_ALLYPROTECTLIST']); ?><br />
-
-                <div class="z"><i><?php echo ($lang['ADMIN_PARAMS_ALLYPROTECTNOTICE']); ?></i></div>
-            </th>
-            <th><input type="text" size="60" name="ally_protection" value="<?php echo $ally_protection; ?>"></th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_PARAMS_ALLYPROTECTFRIENDS']); ?><br />
-
-                <div class="z"><i><?php echo ($lang['ADMIN_PARAMS_ALLYPROTECTNOTICE']); ?></i></div>
-            </th>
-            <th><input type="text" size="60" name="allied" value="<?php echo $allied; ?>"></th>
-        </tr>
-        <tr>
-            <td class="c" colspan="2"><?php echo ($lang['ADMIN_PARAMS_OTHER']); ?></td>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_PARAMS_FORUMLINK']); ?></th>
-            <th><input type="text" size="60" name="url_forum" value="<?php echo $url_forum; ?>"></th>
-        </tr>
-        <tr>
-            <th><?php echo ($lang['ADMIN_PARAMS_DEBUGSQL']); ?><?php echo help("admin_save_transaction"); ?><br />
-
-                <div class="z"><i><?php echo ($lang['ADMIN_PARAMS_DEBUGSQLALERT']); ?></i></div>
-            </th>
-            <th><input name="debug_log" type="checkbox" value="1" <?php echo $debug_log; ?>></th>
-        </tr>
-        <tr>
-            <th><?php echo ($lang['ADMIN_PARAMS_RATIOMOD']); ?></th>
-            <th><input name="block_ratio" type="checkbox" value="1" <?php echo $block_ratio; ?>></th>
-        </tr>
-        <tr>
-            <th><?php echo ($lang['ADMIN_PARAMS_RATIOBLIMIT']); ?></th>
-            <th><input name="ratio_limit" type="text" size="10" maxlength="9" value="<?php echo $ratio_limit; ?>"></th>
-        </tr>
-        <tr>
-            <td class="c_tech" colspan="2"><?php echo ($lang['ADMIN_PARAMS_MAIL']); ?></td>
-        </tr>
-        <tr>
-            <th><?php echo ($lang['ADMIN_PARAMS_MAIL_USE']); ?></th>
-            <th><input name="mail_use" type="checkbox" value="1" <?php echo $mail_use; ?>></th>
-        </tr>
-        <tr>
-            <th><?php echo ($lang['ADMIN_PARAMS_MAIL_SMTP_USE']); ?></th>
-            <th><input name="mail_smtp_use" type="checkbox" value="1" <?php echo $mail_smtp_use; ?>></th>
-        </tr>
-        <tr>
-            <th><?php echo ($lang['ADMIN_PARAMS_MAIL_SMTP_SECURE']); ?></th>
-            <th><input name="mail_smtp_secure" type="checkbox" value="1" <?php echo $mail_smtp_secure; ?>></th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_PARAMS_MAIL_SMTP_HOST']); ?></th>
-            <th><input type="text" size="60" name="mail_smtp_host" value="<?php echo $mail_smtp_host; ?>"></th>
-        </tr>
-        <tr>
-            <th><?php echo ($lang['ADMIN_PARAMS_MAIL_SMTP_PORT']); ?></th>
-            <th><input type="text" name="mail_smtp_port" maxlength="4" size="5" value="<?php echo $mail_smtp_port; ?>"></th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_PARAMS_MAIL_SMTP_USERNAME']); ?></th>
-            <th><input type="text" size="30" name="mail_smtp_username" value="<?php echo $mail_smtp_username; ?>"></th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_PARAMS_MAIL_SMTP_PASSEWORD']); ?></th>
-            <th><input type="password" size="30" name="mail_smtp_password" value="<?php echo $mail_smtp_password; ?>"> (<input type="checkbox" name="enable_mail_smtp_password" />)</th>
-        </tr>
-        <?php if ($server_config['mail_use'] == 1 && check_var($user_data["user_email"], "Email")) : ?>
+    <table class="og-table og-medium-table">
+        <thead>
             <tr>
-                <th width="60%"><?php echo ($lang['ADMIN_PARAMS_MAIL_TEST'] . $user_data["user_email"]); ?></th>
-                <th><a href="index.php?action=administration&subaction=parameter&testmail">TEST</a></th>
+                <th colspan="2">
+                    <?php echo ($lang['ADMIN_PARAMS_GENERAL']); ?>
+                </th>
             </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_SERVERNAME']); ?></td>
+                <td class="tdvalue"><input type="text" name="servername" size="60"  value="<?php echo $servername; ?>"></td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_ACTIVATESERVER']); ?><?php echo help("admin_server_status"); ?></td>
+                <td class="tdvalue"><input name="server_active" type="checkbox" value="1" <?php echo $server_active; ?>></td>
+            </tr>
+            <tr>
+                <td class="tdstat"> <?php echo ($lang['ADMIN_PARAMS_OFFREASON']); ?><?php echo help("admin_server_status_message"); ?></td>
+                <td class="tdvalue"><input type="text" name="reason" size="60" value="<?php echo $reason; ?>"></td>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th colspan="2">
+                    <?php echo ($lang['ADMIN_PARAMS_MEMBEROPTIONS']); ?>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_ALLOW_IPCHECKDISABLING']); ?><?php echo help("admin_check_ip"); ?></td>
+                <td class="tdvalue"><input name="disable_ip_check" type="checkbox" value="1" <?php echo $disable_ip_check; ?>></td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_MAXSSFAVORITES']); ?></td>
+                <td class="tdvalue"><input name="max_favorites" type="text" size="5" maxlength="2" value="<?php echo $max_favorites; ?>">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_MAXREFAVORITES']); ?></td>
+                <td class="tdvalue"><input name="max_favorites_spy" type="text" size="5" maxlength="2" value="<?php echo $max_favorites_spy; ?>"></td>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th colspan="2">
+                    <?php echo ($lang['ADMIN_PARAMS_SESSIONS_TITLE']); ?>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_SESSIONS_DURATION']); ?><?php echo help("admin_session_infini"); ?></th>
+                <td class="tdvalue"><input name="session_time" type="text" size="5" maxlength="3" value="<?php echo $session_time; ?>"></th>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th colspan="2">
+                    <?php echo ($lang['ADMIN_PARAMS_ALLYPROTECT']); ?>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_ALLYPROTECTLIST']); ?><br />
+
+                    <i class="og-warning"><?php echo ($lang['ADMIN_PARAMS_ALLYPROTECTNOTICE']); ?></i>
+                </td>
+                <td class="tdvalue"><input type="text" size="60" name="ally_protection" value="<?php echo $ally_protection; ?>"></td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_ALLYPROTECTFRIENDS']); ?>
+                    <br />
+                    <i class="og-warning"><?php echo ($lang['ADMIN_PARAMS_ALLYPROTECTNOTICE']); ?></i>
+                </td>
+                <td class="tdvalue"><input type="text" size="60" name="allied" value="<?php echo $allied; ?>"></td>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th colspan="2"><?php echo ($lang['ADMIN_PARAMS_OTHER']); ?></th>
+            </tr> 
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_FORUMLINK']); ?></td>
+                <td class="tdvalue"><input type="text" size="60" name="url_forum" value="<?php echo $url_forum; ?>"></td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_DEBUGSQL']); ?><?php echo help("admin_save_transaction"); ?><br />
+                    <i class="og-warning"><?php echo ($lang['ADMIN_PARAMS_DEBUGSQLALERT']); ?></i>
+                </td>
+                <td class="tdvalue"><input name="debug_log" type="checkbox" value="1" <?php echo $debug_log; ?>></td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_RATIOMOD']); ?></td>
+                <td class="tdvalue"><input name="block_ratio" type="checkbox" value="1" <?php echo $block_ratio; ?>></td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_RATIOBLIMIT']); ?></td>
+                <td class="tdvalue"><input name="ratio_limit" type="number" size="10" maxlength="9" value="<?php echo $ratio_limit; ?>"></td>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th colspan="2"><?php echo ($lang['ADMIN_PARAMS_MAIL']); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_MAIL_USE']); ?></td>
+                <td class="tdvalue"><input name="mail_use" type="checkbox" value="1" <?php echo $mail_use; ?>></td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_MAIL_SMTP_USE']); ?></td>
+                <td class="tdvalue"><input name="mail_smtp_use" type="checkbox" value="1" <?php echo $mail_smtp_use; ?>></td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_MAIL_SMTP_SECURE']); ?></td>
+                <td class="tdvalue"><input name="mail_smtp_secure" type="checkbox" value="1" <?php echo $mail_smtp_secure; ?>></td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_MAIL_SMTP_HOST']); ?></td>
+                <td class="tdvalue"><input type="text" size="60" name="mail_smtp_host" value="<?php echo $mail_smtp_host; ?>"></td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_MAIL_SMTP_PORT']); ?></td>
+                <td class="tdvalue"><input type="text" name="mail_smtp_port" maxlength="4" size="5" value="<?php echo $mail_smtp_port; ?>"></td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_MAIL_SMTP_USERNAME']); ?></td>
+                <td class="tdvalue"><input type="text" size="30" name="mail_smtp_username" value="<?php echo $mail_smtp_username; ?>"></td>
+            </tr>
+            <tr>
+                <td class="tdstat""><?php echo ($lang['ADMIN_PARAMS_MAIL_SMTP_PASSEWORD']); ?></td>
+                <td class="tdvalue"><input type="password" size="30" name="mail_smtp_password" value="<?php echo $mail_smtp_password; ?>"> (<input type="checkbox" name="enable_mail_smtp_password" />)</td>
+            </tr>
+            <?php if ($server_config['mail_use'] == 1 && check_var($user_data["user_email"], "Email")) : ?>
+                <tr>
+                    <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_MAIL_TEST'] . $user_data["user_email"]); ?></td>
+                    <td class="tdvalue"><a href="index.php?action=administration&subaction=parameter&testmail">TEST</a></td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+        <thead>
+            <tr>
+                <th colspan="2"><?php echo ($lang['ADMIN_PARAMS_SERVICE']); ?></th>
+            </tr>  
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_DURATION_RANKS']); ?></td>
+                <td class="tdvalue"><input type="text" name="max_keeprank" maxlength="4" size="5" value="<?php echo $max_keeprank; ?>">&nbsp;<select name="keeprank_criterion">
+                        <option value="quantity" <?php echo $keeprank_criterion == "quantity" ? "selected" : ""; ?>><?php echo ($lang['ADMIN_PARAMS_DURATION_NUMBER']); ?></option>
+                        <option value="day" <?php echo $keeprank_criterion == "day" ? "selected" : ""; ?>><?php echo ($lang['ADMIN_PARAMS_DURATION_DAYS']); ?></option>
+                    </select></td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_MAX_SPYREPORTS']); ?></td>
+                <td class="tdvalue"><input type="text" name="max_spyreport" maxlength="4" size="5" value="<?php echo $max_spyreport; ?>">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_DURATION_SPYREPORTS']); ?></td>
+                <td class="tdvalue"><input type="text" name="max_keepspyreport" maxlength="4" size="5" value="<?php echo $max_keepspyreport; ?>"></td>
+            </tr>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_DURATION_LOGS']); ?></td>
+                <td class="tdvalue"><input name="max_keeplog" type="text" size="5" maxlength="3" value="<?php echo $max_keeplog; ?>"></td>
+            </tr>     
+        </tbody>
+        <?php if ($user_data["user_admin"] == 1) : ?>
+            <thead>
+                <tr>
+                    <th colspan="2"><?php echo ($lang['ADMIN_PARAMS_GAME_OPTIONS']); ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_GAME_GALAXIES']); ?><?php echo help("profile_galaxy"); ?></td>
+                    <td class="tdvalue"><input name="num_of_galaxies" id="galaxies" type="text" size="5" maxlength="3" value="<?php echo $num_of_galaxies; ?>" onChange="if (!confirm('<?php echo ($lang['ADMIN_PARAMS_GAME_GALAXIES_POPUP']); ?>')) {
+                                document.getElementById('galaxies').value = '<?php echo $num_of_galaxies; ?>';
+                            }" readonly="readonly">(<input name="enable_input_num_galaxies" type="checkbox" onClick="(this.checked) ? document.getElementById('galaxies').readOnly = false : document.getElementById('galaxies').readOnly = true;">)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_GAME_SYSTEMS']); ?><?php echo help("profile_galaxy"); ?></td>
+                    <td class="tdvalue"><input name="num_of_systems" id="systems" type="text" size="5" maxlength="3" value="<?php echo $num_of_systems; ?>" onChange="if (!confirm('<?php echo ($lang['ADMIN_PARAMS_GAME_SYSTEMS_POPUP']); ?>')) {
+                                document.getElementById('systems').value = '<?php echo $num_of_systems; ?>';
+                            }" readonly="readonly">(<input name="enable_input_num_systems" type="checkbox" onClick="(this.checked) ? document.getElementById('systems').readOnly = false : document.getElementById('systems').readOnly = true;">)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_GAME_SPEED']); ?><?php echo help("profile_speed_uni"); ?></td>
+                    <td class="tdvalue"><input name="speed_uni" id="speed_uni" type="text" size="5" maxlength="2" value="<?php echo $speed_uni; ?>"></td>
+                </tr>
+                <tr>
+                    <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_GAME_SPEED_FLEET_PEACEFUL']); ?><?php echo help("profile_speed_fleet_peaceful"); ?></td>
+                    <td class="tdvalue"><input name="speed_fleet_peaceful" id="speed_fleet_peaceful" type="text" size="5" maxlength="2" value="<?php echo $speed_fleet_peaceful; ?>"></td>
+                </tr>
+                <tr>
+                    <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_GAME_SPEED_FLEET_WAR']); ?><?php echo help("profile_speed_fleet_war"); ?></td>
+                    <td class="tdvalue"><input name="speed_fleet_war" id="speed_fleet_war" type="text" size="5" maxlength="2" value="<?php echo $speed_fleet_war; ?>"></td>
+                </tr>
+                <tr>
+                    <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_GAME_SPEED_FLEET_HOLDING']); ?><?php echo help("profile_speed_fleet_holding"); ?></td>
+                    <td class="tdvalue"><input name="speed_fleet_holding" id="speed_fleet_holding" type="text" size="5" maxlength="2" value="<?php echo $speed_fleet_holding; ?>"></td>
+                </tr>
+                <tr>
+                    <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_GAME_DDR']); ?><?php echo help("profile_ddr"); ?></td>
+                    <td class="tdvalue"><input name="ddr" value="1" type="checkbox" <?php print ($ddr == 1) ? ' checked' : ''  ?>></td>
+                </tr>
+                <tr>
+                    <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_GAME_ASTRO']); ?><?php echo help("astro_strict"); ?></td>
+                    <td class="tdvalue"><input name="astro_strict" value="1" type="checkbox" <?php print ($astro_strict == 1) ? ' checked' : ''  ?>></td>
+                </tr>
+                <tr>
+                    <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_GAME_DONUT_SYSTEM']); ?><?php echo help("donutSystem"); ?></td>
+                    <td class="tdvalue"><input name="donutSystem" value="1" type="checkbox" <?php print ($donutSystem == 1) ? ' checked' : ''  ?>></td>
+                </tr>
+                <tr>
+                    <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_GAME_DONUT_GALAXY']); ?><?php echo help("donutGalaxy"); ?></td>
+                    <td class="tdvalue"><input name="donutGalaxy" value="1" type="checkbox" <?php print ($donutGalaxy == 1) ? ' checked' : ''  ?>></td>
+                </tr>
+            </tbody>
         <?php endif; ?>
-        <tr>
-            <td class="c_tech" colspan="2"><?php echo ($lang['ADMIN_PARAMS_SERVICE']); ?></td>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_PARAMS_DURATION_RANKS']); ?></th>
-            <th><input type="text" name="max_keeprank" maxlength="4" size="5" value="<?php echo $max_keeprank; ?>">&nbsp;<select name="keeprank_criterion">
-                    <option value="quantity" <?php echo $keeprank_criterion == "quantity" ? "selected" : ""; ?>><?php echo ($lang['ADMIN_PARAMS_DURATION_NUMBER']); ?></option>
-                    <option value="day" <?php echo $keeprank_criterion == "day" ? "selected" : ""; ?>><?php echo ($lang['ADMIN_PARAMS_DURATION_DAYS']); ?></option>
-                </select></th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_PARAMS_MAX_SPYREPORTS']); ?></th>
-            <th><input type="text" name="max_spyreport" maxlength="4" size="5" value="<?php echo $max_spyreport; ?>">
-            </th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_PARAMS_DURATION_SPYREPORTS']); ?></th>
-            <th><input type="text" name="max_keepspyreport" maxlength="4" size="5" value="<?php echo $max_keepspyreport; ?>"></th>
-        </tr>
-        <tr>
-            <th width="60%"><?php echo ($lang['ADMIN_PARAMS_DURATION_LOGS']); ?></th>
-            <th><input name="max_keeplog" type="text" size="5" maxlength="3" value="<?php echo $max_keeplog; ?>"></th>
-        </tr>
-        <?php
-        if ($user_data["user_admin"] == 1) {
-        ?>
+        <thead>
             <tr>
-                <td class="c_ogame" colspan="2"><?php echo ($lang['ADMIN_PARAMS_GAME_OPTIONS']); ?></td>
+                <th colspan="2"><?php echo ($lang['ADMIN_PARAMS_CACHE']); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_CACHE_RESET']); ?></td>
+                <td class="tdvalue"><input name="regenere_cache" type="checkbox" value="0" /></td>
             </tr>
             <tr>
-                <th width="60%"><?php echo ($lang['ADMIN_PARAMS_GAME_GALAXIES']); ?><?php echo help("profile_galaxy"); ?></th>
-                <th><input name="num_of_galaxies" id="galaxies" type="text" size="5" maxlength="3" value="<?php echo $num_of_galaxies; ?>" onChange="if (!confirm('<?php echo ($lang['ADMIN_PARAMS_GAME_GALAXIES_POPUP']); ?>')){document.getElementById('galaxies').value='<?php echo $num_of_galaxies; ?>';}" readonly="readonly">(<input name="enable_input_num_galaxies" type="checkbox" onClick="(this.checked)? document.getElementById('galaxies').readOnly=false : document.getElementById('galaxies').readOnly=true;">)
-                </th>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_CACHE_DURATION_CONFIG']); ?> <?php echo help("config_cache"); ?> 
+                    <br />
+                    <i class="og-warning"><?php echo ($lang['ADMIN_PARAMS_CACHE_DURATION_NOTICE']); ?></i>
+                </td>
+                <td class="tdvalue"><input type="text" name="config_cache" maxlength="10" size="10" value="<?php echo $config_cache; ?>">
+                </td>
             </tr>
             <tr>
-                <th width="60%"><?php echo ($lang['ADMIN_PARAMS_GAME_SYSTEMS']); ?><?php echo help("profile_galaxy"); ?></th>
-                <th><input name="num_of_systems" id="systems" type="text" size="5" maxlength="3" value="<?php echo $num_of_systems; ?>" onChange="if (!confirm('<?php echo ($lang['ADMIN_PARAMS_GAME_SYSTEMS_POPUP']); ?>')){document.getElementById('systems').value='<?php echo $num_of_systems; ?>';}" readonly="readonly">(<input name="enable_input_num_systems" type="checkbox" onClick="(this.checked)? document.getElementById('systems').readOnly=false : document.getElementById('systems').readOnly=true;">)
-                </th>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo ($lang['ADMIN_PARAMS_GAME_SPEED']); ?><?php echo help("profile_speed_uni"); ?></th>
-                <th><input name="speed_uni" id="speed_uni" type="text" size="5" maxlength="2" value="<?php echo $speed_uni; ?>"></th>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo ($lang['ADMIN_PARAMS_GAME_SPEED_FLEET_PEACEFUL']); ?><?php echo help("profile_speed_fleet_peaceful"); ?></th>
-                <th><input name="speed_fleet_peaceful" id="speed_fleet_peaceful" type="text" size="5" maxlength="2" value="<?php echo $speed_fleet_peaceful; ?>"></th>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo ($lang['ADMIN_PARAMS_GAME_SPEED_FLEET_WAR']); ?><?php echo help("profile_speed_fleet_war"); ?></th>
-                <th><input name="speed_fleet_war" id="speed_fleet_war" type="text" size="5" maxlength="2" value="<?php echo $speed_fleet_war; ?>"></th>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo ($lang['ADMIN_PARAMS_GAME_SPEED_FLEET_HOLDING']); ?><?php echo help("profile_speed_fleet_holding"); ?></th>
-                <th><input name="speed_fleet_holding" id="speed_fleet_holding" type="text" size="5" maxlength="2" value="<?php echo $speed_fleet_holding; ?>"></th>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo ($lang['ADMIN_PARAMS_GAME_DDR']); ?><?php echo help("profile_ddr"); ?></th>
-                <th><input name="ddr" value="1" type="checkbox" <?php print ($ddr == 1) ? ' checked' : '' ?>></th>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo ($lang['ADMIN_PARAMS_GAME_ASTRO']); ?><?php echo help("astro_strict"); ?></th>
-                <th><input name="astro_strict" value="1" type="checkbox" <?php print ($astro_strict == 1) ? ' checked' : '' ?>></th>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo ($lang['ADMIN_PARAMS_GAME_DONUT_SYSTEM']); ?><?php echo help("donutSystem"); ?></th>
-                <th><input name="donutSystem" value="1" type="checkbox" <?php print ($donutSystem == 1) ? ' checked' : '' ?>></th>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo ($lang['ADMIN_PARAMS_GAME_DONUT_GALAXY']); ?><?php echo help("donutGalaxy"); ?></th>
-                <th><input name="donutGalaxy" value="1" type="checkbox" <?php print ($donutGalaxy == 1) ? ' checked' : '' ?>></th>
-            </tr>
-            <tr>
-            <?php
-        }
-            ?>
-            <tr>
-                <td class="c_tech" colspan="2"><?php echo ($lang['ADMIN_PARAMS_CACHE']); ?></td>
-            </tr>
-            <tr>
-                <th><?php echo ($lang['ADMIN_PARAMS_CACHE_RESET']); ?><br /></th>
-                <th><input name="regenere_cache" type="checkbox" value="0" /></th>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo ($lang['ADMIN_PARAMS_CACHE_DURATION_CONFIG']); ?> <?php echo help("config_cache"); ?> <br />
-
-                    <div class="z"><i><?php echo ($lang['ADMIN_PARAMS_CACHE_DURATION_NOTICE']); ?></i></div>
-                </th>
-                <th><input type="text" name="config_cache" maxlength="10" size="10" value="<?php echo $config_cache; ?>">
-                </th>
-            </tr>
-            <tr>
-                <th width="60%"><?php echo ($lang['ADMIN_PARAMS_CACHE_DURATION_MOD']); ?><?php echo help("mod_cache"); ?></a></th>
-                <th><input type="text" name="mod_cache" maxlength="10" size="10" value="<?php echo $mod_cache; ?>"></th>
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_CACHE_DURATION_MOD']); ?><?php echo help("mod_cache"); ?></a></td>
+                <td class="tdvalue"><input type="text" name="mod_cache" maxlength="10" size="10" value="<?php echo $mod_cache; ?>"></td>
             </tr>
 
+        </tbody>
+        <thead>
             <tr>
-                <td class="c_tech" colspan="2"><?php echo ($lang['ADMIN_PARAMS_DEBUG']); ?></td>
+                <th colspan="2"><?php echo ($lang['ADMIN_PARAMS_DEBUG']); ?></th>
             </tr>
+        </thead>
+        <tbody>
             <tr>
-                <th><?php echo ($lang['ADMIN_PARAMS_DEBUG_PHP']); ?><br />
+                <td class="tdstat"><?php echo ($lang['ADMIN_PARAMS_DEBUG_PHP']); ?><br />
 
-                    <div class="z"><i><?php echo ($lang['ADMIN_PARAMS_DEBUG_PHP_NOTICE']); ?></i></div>
-                </th>
-                <th><input name="log_phperror" type="checkbox" value="1" <?php echo $log_phperror; ?>></th>
+                    <i class="og-warning"><?php echo ($lang['ADMIN_PARAMS_DEBUG_PHP_NOTICE']); ?></i>
+                </td>
+                <td class="tdvalue"><input name="log_phperror" type="checkbox" value="1" <?php echo $log_phperror; ?>></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input class="og-button" type="submit" value="<?php echo ($lang['ADMIN_PARAMS_VALIDATE']); ?>">
+                    <input class="og-button og-button-warning " type="reset" value="<?php echo ($lang['ADMIN_PARAMS_CANCEL']); ?>">
+                </td>
+            </tr>
+        </tbody>
 
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <th colspan="2"><input type="submit" value="<?php echo ($lang['ADMIN_PARAMS_VALIDATE']); ?>">&nbsp;<input type="reset" value="<?php echo ($lang['ADMIN_PARAMS_CANCEL']); ?>"></th>
-            </tr>
     </table>
+
 </form>

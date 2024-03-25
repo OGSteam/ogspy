@@ -9,9 +9,9 @@ if (!defined('IN_SPYOGAME')) {
 
 abstract class Helper_Abstract
 {
-    protected static $name = "undefined";
-    protected static $description = "";
-    protected static $version = "0.0.0";
+    protected static string $name = "undefined";
+    protected static string $description = "";
+    protected static string $version = "0.0.0";
 
     public static function getVersion()
     {

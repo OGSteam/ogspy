@@ -3,8 +3,6 @@ name: OGSpy Release
 on:
   push:
     branches: [ "develop" , "master"]
-  pull_request:
-    branches: [ "develop" ]
 
 permissions:
   contents: write
