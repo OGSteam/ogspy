@@ -28,7 +28,7 @@ class User_Favorites_Model  extends Model_Abstract
 
         $favorite = array();
 
-        $request = "SELECT `galaxy`, system FROM " . TABLE_USER_FAVORITE;
+        $request = "SELECT `galaxy`, `system` FROM " . TABLE_USER_FAVORITE;
         $request .= " WHERE `user_id` = " . $user_id;
         $request .= " ORDER BY `galaxy`, `system`";
         $result = $this->db->sql_query($request);
