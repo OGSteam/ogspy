@@ -23,7 +23,7 @@ $lang['ABOUT_DESCRIPTION'] = "Description";
 
 $lang['ABOUT_PROJECT_TEAM'] = "Project team";
 $lang['ABOUT_PROJECT_AERIS'] = "OGSteam.eu site administrator";
-$lang['ABOUT_PROJECT_CAPI'] = "OGSteam.eu Website-Administrator / Developer / Tester";
+$lang['ABOUT_PROJECT_CAPI'] = "OGSteam.fr Website-Administrator / Developer / Tester";
 $lang['ABOUT_PROJECT_CHRYS'] = "Graphic artist";
 $lang['ABOUT_PROJECT_DARKNOON'] = "Project manager";
 $lang['ABOUT_PROJECT_DARKNOON1'] = "Xtense developer - GreaseMonkey script";
