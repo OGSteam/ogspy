@@ -9,17 +9,12 @@
  * @version 3.3.0
  */
 
-/*
- * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
- *
- */
-
 /* profile.php */
 
 $lang['PROFILE_ERROR_RETRY'] = "Enter your new password with the confirmation";
 $lang['PROFILE_ERROR_OLDPWD'] = "Enter your previous password";
 $lang['PROFILE_ERROR_ERROR'] = "The entered password is not the identical to the password confirmation";
-$lang['PROFILE_ERROR_ILLEGAL'] = "The password must have at least 6 characters and less than 15 characters";
+$lang['PROFILE_ERROR_ILLEGAL'] = "The password must have at least 6 characters and less than 64 characters";
 
 $lang['PROFILE_TITLE'] = "OGSpy Informations";
 $lang['PROFILE_PSEUDO'] = "Player name";
@@ -47,8 +42,5 @@ $lang['PROFILE_TECHNOCRAT'] = "Technocrat";
 $lang['PROFILE_OTHERS'] = "Miscellaneous";
 $lang['PROFILE_IPCHECK_DISABLE'] = "Disable the IP address verification";
 $lang['PROFILE_SAVE'] = "Save";
-
-
-
-
+$lang['PROFILE_CHANGEPWD'] = "You must renew your password !";
 
