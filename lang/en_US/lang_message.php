@@ -9,11 +9,6 @@
  * @version 3.3.0
  */
 
-/*
- * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
- *
- */
-
 /* message.php */
 $lang['MSG_SYSTEM'] = "System Message";
 $lang['MSG_FORBIDDEN'] = "You don't have enough rights to perform this action";
@@ -34,15 +29,15 @@ $lang['MSG_PWD_REGEN_KO'] = "The reset of the password has failed";
 $lang['MSG_NEW_ACCOUNT_KO'] = "Account creation failed";
 $lang['MSG_NEW_ACCOUNT_KO_NAME'] = "That username is already used";
 $lang['MSG_NEW_ACCOUNT_KO_NAME_ILLEGAL'] = "The name must have at least 3 characters and less than 15 characters";
-$lang['MSG_NEW_ACCOUNT_KO_PASSWORD_ILLEGAL'] = "The password must have at least 6 characters and less than 15 characters";
-$lang['MSG_NEW_ACCOUNT_KO_EMAIL_ILLEGAL'] = "Email Adress is incorrect";
+$lang['MSG_NEW_ACCOUNT_KO_PASSWORD_ILLEGAL'] = "The password must have at least 6 characters and less than 64 characters";
+$lang['MSG_NEW_ACCOUNT_KO_EMAIL_ILLEGAL'] = "Email address is incorrect";
 $lang['MSG_NEW_ACCOUNT_KO_OTHER'] = "The username is incorrect";
 $lang['MSG_PROFILE_OK'] = "User profile settings saved";
 $lang['MSG_PROFILE_KO'] = "User profile settings save has failed";
 $lang['MSG_PROFILE_SAVE_OK'] = "Your user profile has been saved successfully";
 $lang['MSG_PROFILE_SAVE_KO'] = "Your user profile has not been saved correctly";
 $lang['MSG_PROFILE_SAVE_PWD'] = "Please enter your old password and twice the new one";
-$lang['MSG_PROFILE_SAVE_PWD_ILLEGAL'] = "The password must have at least 6 characters and less than 15 characters";
+$lang['MSG_PROFILE_SAVE_PWD_ILLEGAL'] = "The password must have at least 6 characters and less than 64 characters";
 $lang['MSG_PROFILE_SAVE_NAME_INUSE'] = "That username is already used";
 $lang['MSG_PROFILE_SAVE_NAME_ILLEGAL'] = "The name must have at least 3 characters and less than 15 characters";
 $lang['MSG_DELETE_USER_OK'] = "Member has been removed sucessfully";

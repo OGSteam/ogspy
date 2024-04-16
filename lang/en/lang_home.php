@@ -9,11 +9,6 @@
  * @version 3.3.0
  */
 
-/*
- * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
- *
- */
-
 /* home.php */
 $lang['HOME_EMPIRE_TITLE'] = "Empire";
 $lang['HOME_SIMULATION_TITLE'] = "Simulation";
@@ -22,7 +17,7 @@ $lang['HOME_STATISTICS_TITLE'] = "Statistics";
 
 /* home_empire.php */
 
-$lang['HOME_EMPIRE_TITLEDESC'] = "Empire & Buildings & Laboratory & Defenses";
+$lang['HOME_EMPIRE_TITLEDESC'] = "Empire &amp; Buildings &amp; Research &amp; Defences";
 $lang['HOME_EMPIRE_PLANET'] = "Planets";
 $lang['HOME_EMPIRE_MOON'] = "Moons";
 $lang['HOME_EMPIRE_ERROR'] = "An inconsistency was found in your personal space";
@@ -98,6 +93,8 @@ $lang['HOME_EMPIRE_WEAPONS_SMALLSHIELD'] = "Small Shield Dome";
 $lang['HOME_EMPIRE_WEAPONS_LARGESHIELD'] = "Large Shield Dome";
 $lang['HOME_EMPIRE_WEAPONS_ANTI'] = "Anti-Ballistic Missile";
 $lang['HOME_EMPIRE_WEAPONS_INTER'] = "Interplanetary Missile";
+$lang['HOME_EMPIRE_POINTS_TITLE'] = "Points";
+$lang['HOME_EMPIRE_FLEET_TITLE'] = "Fleet";
 
 /* home_simulation.php */
 
@@ -109,8 +106,8 @@ $lang['HOME_SIMU_MAXTEMP'] = "Max temperature";
 $lang['HOME_SIMU_EXTENSION'] = "Extension";
 $lang['HOME_SIMU_TECH_ENERGY'] = "Energy Technology";
 $lang['HOME_SIMU_TECH_PLASMA'] = "Plasma Technology";
-$lang['HOME_SIMU_OFF_INGE'] = "Officer Engineer";
-$lang['HOME_SIMU_OFF_GEO'] = "Officer Geologist";
+$lang['HOME_SIMU_OFF_INGE'] = "Engineer";
+$lang['HOME_SIMU_OFF_GEO'] = "Geologist";
 $lang['HOME_SIMU_OFF_FULL'] = "All officers";
 $lang['HOME_SIMU_CLASS_COLLECT'] = "Collecteur";
 $lang['HOME_SIMU_SOLARPLANT_SHORT'] = "SP";
@@ -127,6 +124,7 @@ $lang['HOME_SIMU_PRODUCTION'] = "Production";
 $lang['HOME_SIMU_BOOSTERMETAL'] = "Metal booster";
 $lang['HOME_SIMU_BOOSTERCRYSTAL'] = "Crystal booster ";
 $lang['HOME_SIMU_BOOSTERDEUT'] = "Booster Deuterium";
+$lang['HOME_SIMU_BOOSTERNRJ'] = "Energy Booster";
 $lang['HOME_SIMU_LEVEL'] = "Level";
 $lang['HOME_SIMU_PRODUCTION'] = "Production";
 $lang['HOME_SIMU_POINTSBYPLANET'] = "Points repartition for each planet";

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Page Login
  * @package OGSpy
@@ -10,7 +9,6 @@
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  */
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -20,45 +18,50 @@ if (!isset($goto)) {
 }
 $enable_register_view = isset($server_config['enable_register_view']) ? $server_config['enable_register_view'] : 0;
 
-
 require_once('views/page_header_2.php');
 ?>
-<form style="margin-bottom:40px;" method='post' action=''>
-    <p><input type='hidden' name='action' value='login_web' />
-        <input type='hidden' name='token' value='<?php echo token::staticGetToken(600, "login"); ?>' />
-        <input type='hidden' name='goto' value='<?php echo $goto; ?>' />
-    </p>
-    <table style="margin:0 auto; padding:0; border-collapse:separate; border-spacing:1px">
-        <tr>
-            <td class="c" colspan="2" style="text-align:left"><?= $lang['LOGIN_CONNEXION_PARAMETERS'] ?></td>
-        </tr>
-        <tr>
-            <th style="width:150px"><?= $lang['LOGIN_USER'] ?></th>
-            <th style="width:150px"><input type='text' name='login' /></th>
-        </tr>
-        <tr>
-            <th style="width:150px"><?= $lang['LOGIN_PASSWORD'] ?></th>
-            <th style="width:150px"><input type='password' name='password' /></th>
-        </tr>
-        <tr>
-            <th colspan='2'><input type='submit' value='<?= $lang['LOGIN_CONNEXION_BUTTON'] ?>' /></th>
-        </tr>
-        <?php
-        if ($enable_register_view) {
-        ?>
-            <tr>
-                <td class="c" colspan="2" style="text-align:left"><?= $lang['LOGIN_ACCOUNT_REQUEST'] ?></td>
-            </tr>
-            <tr>
-                <th colspan='2'><?= $lang['LOGIN_ACCOUNT_REQUEST_DESC'] ?>
-                </th>
-            </tr>
-            <tr>
-                <th colspan='2'><input type="button" value="<?= $lang['LOGIN_ACCOUNT_REQUEST_BUTTON'] ?>" onclick="window.open('<?= $server_config['register_forum'] ?>');" /></th>
-            </tr>
-        <?php
-        }
-        ?>
-    </table>
-</form>
+
+<div class="page_login">
+
+    <div class="login_panel">
+        <div class="og-logo">
+            <img alt="Logo OGSpy" src="./skin/OGSpy_skin/logos/logo.png">
+        </div>
+        <div class="og-login-header">
+            <h2><?php echo $lang['LOGIN_CONNEXION_PARAMETERS'] ?></h2>
+        </div>
+        <form method='post' action='' >
+            <input name="action" type="hidden" value="member_modify_member">
+
+            <p><input type='hidden' name='action' value='login_web' />
+                <input type='hidden' name='token' value='<?php echo token::staticGetToken(600, "login"); ?>' />
+                <input type='hidden' name='goto' value='<?php echo $goto; ?>' />
+            </p>
+            <div class="og-login-group">
+                <label for="login" class="control-label"><?php echo $lang['LOGIN_USER']; ?>:</label>
+                <input type='text'  name='login' />
+            </div>
+            <div class="og-login-group">
+                <label for="password" class="control-label"><?php echo $lang['LOGIN_PASSWORD']; ?>:</label>
+                <input type='password' name='password' />
+            </div>
+
+            <input class="og-button"  type='submit' value='<?= $lang['LOGIN_CONNEXION_BUTTON'] ?>' />
+
+        </form>
+        <hr/>
+        <div class="og-login-header">
+            <h2><?php echo $lang['LOGIN_ACCOUNT_REQUEST'] ?></h2>
+        </div>
+        <div class="og-login-group">
+                  <p>
+            <?php echo $lang['LOGIN_ACCOUNT_REQUEST_DESC']; ?>
+        </p>  
+        </div>
+
+
+        <input class="og-button"  type="button" value="<?= $lang['LOGIN_ACCOUNT_REQUEST_BUTTON'] ?>" onclick="window.open('<?= $server_config['register_forum'] ?>');" />
+
+    </div>
+
 <?php require_once('views/page_tail_2.php'); ?>

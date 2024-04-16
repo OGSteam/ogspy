@@ -20,15 +20,15 @@ $reason = $server_config["reason"];
 require_once("views/page_header.php");
 ?>
 
-<table width="500" text-align="center">
-    <caption>Server Down</caption>
-    <tr>
-        <td class="c"><?php echo ($lang['SERVERDOWN_TITLE']); ?></td>
-    </tr>
-    <tr>
-        <th><span style="color: red; "><?php echo $reason; ?></span></th>
-    </tr>
-</table>
+
+
+<div class="page_message">
+    <div class="og-msg og-msg-danger">
+        <h3 class="og-title"><?php  echo ($lang['SERVERDOWN_TITLE']);?></h3>
+        <p class="og-content"><?php echo $reason; ?></p>
+    </div>
+</div>
+
 
 <?php
 require_once("views/page_tail.php");

@@ -9,11 +9,6 @@
  * @version 3.3.0
  */
 
-/*
- * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
- *
- */
-
 /* statistic.php */
 
 $lang['STATS_TITLE'] = "Cartography state";

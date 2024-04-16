@@ -26,16 +26,17 @@ use Ogsteam\Ogspy\Helper;
 use Ogsteam\Ogspy\Model\User_Technology_Model;
 use Ogsteam\Ogspy\Model\User_Defense_Model;
 use Ogsteam\Ogspy\Model\User_Building_Model;
+use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 
 
 use Ogsteam\Ogspy\Helper\SearchCriteria_Helper;
 
 /**
- * Vérification des droits OGSpy
+ * Checks the authorization of a user for a specific action.
  *
- * @param string $action Droit interrogé
+ * @param string $action The action to check authorization for.
+ * @return void
  */
-
 function galaxy_check_auth($action)
 {
     global $user_data, $user_auth;
@@ -383,7 +384,9 @@ function galaxy_search()
             "timestamp" => $planet["last_update"],
             "poster" => $planet["user_name"],
             "allied" => $friend,
-            "hided" => $hided
+            "hided" => $hided,
+            "planet" =>  $planet["name"]
+
         );
     }
     return array($search_result, $total_page);
@@ -404,6 +407,7 @@ function galaxy_statistic($step = 50)
 
     $Universe_Model = new Universe_Model();
 
+    $statistics = array();
 
     $nb_planets_total = 0;
     $nb_freeplanets_total = 0;
@@ -551,7 +555,7 @@ function galaxy_reportspy_show()
     $reports = array();
     foreach ($spy_list as $row) {
         $data = UNparseRE($row["id_spy"]);
-        $reports[] = array("spy_id" => $row["id_spy"], "sender" => $row["user_name"], "data" => $data, "moon" => $row['is_moon'] ?? 0 , "dateRE" => $row['dateRE']);
+        $reports[] = array("spy_id" => $row["id_spy"], "sender" => $row["user_name"], "data" => $data, "moon" => $row['is_moon'] ?? 0, "dateRE" => $row['dateRE']);
     }
     return $reports;
 }
@@ -1024,7 +1028,7 @@ function galaxy_show_ranking_unique_ally($ally, $last = false)
  *
  * @global array $server_config
  */
-function galaxy_purge_ranking()
+function galaxy_purge_ranking(): void
 {
     global $server_config;
 
@@ -1252,6 +1256,7 @@ function UNparseRE($id_RE)
         'recherche' => 0
     );
 
+
     $flotte = array(
         'PT' => $lang['GAME_FLEET_PT'],
         'GT' => $lang['GAME_FLEET_GT'],
@@ -1341,32 +1346,8 @@ function UNparseRE($id_RE)
     // $moon = 0;
     // }
 
-    $dateRE = date('m-d H:i:s', $row['dateRE']);
-    $template = '<table border="0" cellpadding="2" cellspacing="0" align="center">
-    <tr>
-        <td class="l" colspan="4" class="c">' . $lang['GAME_SPYREPORT_RES'] . ' ' . $row['planet_name'] . ' [' . $row['coordinates'] . '] (' . $lang['GAME_SPYREPORT_PLAYER'] . ' \'' . $rowPN['player'] . '\') le ' . $dateRE . '</td>
-    </tr>
-    <tr>
-        <td class="c" style="text-align:right;">' . $lang['GAME_RES_METAL'] . ':</td>
-        <th>' . number_format($row['metal'], 0, ',', $sep_mille) . '</th>
-        <td class="c" style="text-align:right;">' . $lang['GAME_RES_CRYSTAL'] . ':</td>
-        <th>' . number_format($row['cristal'], 0, ',', $sep_mille) . '</th>
-    </tr>
-    <tr>
-        <td class="c" style="text-align:right;">' . $lang['GAME_RES_DEUT'] . ':</td>
-        <th>' . number_format($row['deuterium'], 0, ',', $sep_mille) . '</th>
-        <td class="c" style="text-align:right;">' . $lang['GAME_RES_ENERGY'] . ':</td>
-        <th>' . number_format($row['energie'], 0, ',', $sep_mille) . '</th>
-    </tr>
-    <tr>
-        <th colspan="4">';
-    if ($row['activite'] > 0) {
-        $template .= $lang['GAME_SPYREPORT_ACTIVITY'] . ' ' . $row['activite'] . ' ' . $lang['GAME_SPYREPORT_LASTMINUTES'] . '.';
-    } else {
-        $template .= $lang['GAME_SPYREPORT_NOACTIVITY'];
-    }
-    $template .= '</th>
-    </tr>' . "\n";
+
+
     foreach ($flotte as $key => $value) {
         if ($row[$key] != -1) {
             $show['flotte'] = 1;
@@ -1518,110 +1499,133 @@ function UNparseRE($id_RE)
         }
     }
 
-    if ($show['flotte'] == 1) {
-        $template .= '  <tr>
-        <td class="l" colspan="4">' . $lang['GAME_CAT_FLEET'] . '</td>
-    </tr>
-    <tr>' . "\n";
-        $count = 0;
-        foreach ($flotte as $key => $value) {
-            if ($row[$key] > 0) {
-                $template .= '    <td class="c" style="text-align:right;">' . $flotte[$key] . '</td>
-        <th>' . number_format($row[$key], 0, ',', $sep_mille) . '</th>' . "\n";
-                if ($count == 0) {
-                    $count = 1;
-                } else {
-                    $template .= '  </tr>
-    <tr>' . "\n";
-                    $count = 0;
-                }
-            }
-        }
-        if ($count == 1) {
-            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
-        <th>&nbsp;</th>' . "\n";
-        }
-        $template .= '  </tr>' . "\n";
-    }
-    if ($show['defense'] == 1) {
-        $template .= '  <tr>
-        <td class="l" colspan="4">' . $lang['GAME_CAT_DEF'] . '</td>
-    </tr>
-    <tr>' . "\n";
-        $count = 0;
-        foreach ($defs as $key => $value) {
-            if ($row[$key] > 0) {
-                $template .= '    <td class="c" style="text-align:right;">' . $defs[$key] . '</td>
-        <th>' . number_format($row[$key], 0, ',', $sep_mille) . '</th>' . "\n";
-                if ($count == 0) {
-                    $count = 1;
-                } else {
-                    $template .= '  </tr>
-    <tr>' . "\n";
-                    $count = 0;
-                }
-            }
-        }
-        if ($count == 1) {
-            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
-        <th>&nbsp;</th>' . "\n";
-        }
-        $template .= '  </tr>' . "\n";
-    }
-    if ($show['batiment'] == 1) {
-        $template .= '  <tr>
-        <td class="l" colspan="4">' . $lang['GAME_CAT_BUILDINGS'] . '</td>
-    </tr>
-    <tr>' . "\n";
-        $count = 0;
-        foreach ($bats as $key => $value) {
-            if ($row[$key] > 0) {
-                $template .= '    <td class="c" style="text-align:right;">' . $bats[$key] . '</td>
-        <th>' . $row[$key] . '</th>' . "\n";
-                if ($count == 0) {
-                    $count = 1;
-                } else {
-                    $template .= '  </tr>
-    <tr>' . "\n";
-                    $count = 0;
-                }
-            }
-        }
-        if ($count == 1) {
-            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
-        <th>&nbsp;</th>' . "\n";
-        }
-        $template .= '  </tr>' . "\n";
-    }
-    if ($show['recherche'] == 1) {
-        $template .= '  <tr>
-        <td class="l" colspan="4">' . $lang['GAME_CAT_LAB'] . '</td>
-    </tr>
-    <tr>' . "\n";
-        $count = 0;
-        foreach ($techs as $key => $value) {
-            if ($row[$key] > 0) {
-                $template .= '    <td class="c" style="text-align:right;">' . $techs[$key] . '</td>
-        <th>' . $row[$key] . '</th>' . "\n";
-                if ($count == 0) {
-                    $count = 1;
-                } else {
-                    $template .= '  </tr>
-    <tr>' . "\n";
-                    $count = 0;
-                }
-            }
-        }
-        if ($count == 1) {
-            $template .= '    <td class="c" style="text-align:right;">&nbsp;</td>
-        <th>&nbsp;</th>' . "\n";
-        }
-        $template .= '  </tr>' . "\n";
-    }
-    $template .= '  <tr>
-        <th colspan="4">' . $lang['GAME_SPYREPORT_PROBADEST'] . ' :' . $row['proba'] . '%</th>
-    </tr>
-</table>';
+    $dateRE = date('m-d H:i:s', $row['dateRE']);
+
+    // passage par temporisation pour gain de clarté
+
+    // -- temporisation --
+    ob_start(); ?>
+    <table class="og-table  og-table-spy">
+        <thead>
+            <tr>
+                <th colspan="4">
+                    <?php echo $lang['GAME_SPYREPORT_RES'] . ' ' . $row['planet_name'] . ' [' . $row['coordinates'] . '] (' . $lang['GAME_SPYREPORT_PLAYER'] . ' \'' . $rowPN['player'] . '\') le ' . $dateRE; ?>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class=" tdstat">
+                    <?php echo $lang['GAME_RES_METAL']; ?>:
+                </td>
+                <td class="tdvalue">
+                    <?php echo number_format($row['metal'], 0, ',', $sep_mille); ?>
+                </td>
+                <td class="tdstat">
+                    <?php echo $lang['GAME_RES_CRYSTAL']; ?>:
+                </td>
+                <td class="tdvalue">
+                    <?php echo number_format($row['cristal'], 0, ',', $sep_mille); ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdstat">
+                    <?php echo $lang['GAME_RES_DEUT']; ?>:
+                </td>
+                <td class="tdvalue">
+                    <?php echo number_format($row['deuterium'], 0, ',', $sep_mille); ?>
+                </td>
+                <td class="tdstat">
+                    <?php echo $lang['GAME_RES_ENERGY']; ?>:
+                </td>
+                <td class="tdvalue">
+                    <?php echo number_format($row['energie'], 0, ',', $sep_mille); ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdcontent" colspan="4">
+                    <?php if ($row['activite'] > 0) : ?>
+                        <?php echo $lang['GAME_SPYREPORT_ACTIVITY'] . ' ' . $row['activite'] . ' ' . $lang['GAME_SPYREPORT_LASTMINUTES'] . '.'; ?>
+                    <?php else : ?>
+                        <?php echo $lang['GAME_SPYREPORT_NOACTIVITY']; ?>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        </tbody>
+
+        <?php //routine flotte, defense, batiment, recherche
+
+        $showLang = array(
+            'flotte' => $lang['GAME_CAT_FLEET'],
+            'defense' => $lang['GAME_CAT_DEF'],
+            'batiment' => $lang['GAME_CAT_BUILDINGS'],
+            'recherche' => $lang['GAME_CAT_LAB'],
+        );
+        $showName = array(
+            'flotte' => "flotte",
+            'defense' => "defs",
+            'batiment' => "bats",
+            'recherche' => "techs",
+        );
+
+
+        ?>
+        <?php foreach ($show as $type => $count) : ?>
+
+            <?php if ($show[$type] == 1) : ?>
+                <thead>
+                    <tr>
+                        <th colspan="4">
+                            <?php echo  $showLang[$type]; ?>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $count = 0; ?>
+                    <?php $conteneur = $showName[$type]; ?>
+                    <?php foreach ($$conteneur as $key => $value) : ?>
+                        <?php if ($row[$key] > 0) : ?>
+                            <?php if ($count == 0) : ?>
+                                <?php echo  "<tr>"; ?>
+                            <?php endif; ?>
+                            <td class="tdstat">
+                                <?php echo  $$conteneur[$key]; ?>:
+                            </td>
+                            <td class="tdvalue">
+                                <?php echo  number_format($row[$key], 0, ',', $sep_mille); ?>
+                            </td>
+                            <?php if ($count == 1) : ?>
+                                <?php echo  "</tr>"; ?>
+                                <?php $count = 0; ?>
+                            <?php else : ?>
+                                <?php $count = 1; ?>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                    <?php if ($count == 1) : ?>
+                        <td class="tdstat"></td>
+                        <td class="tdvalue"></td>
+                        <?php echo  "</tr>"; ?>
+                    <?php endif; ?>
+                </tbody>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        <?php //fin routine flotte, defense, batiment, recherche
+        ?>
+        <thead>
+            <tr>
+                <th colspan="4">
+                    <?php echo  $lang['GAME_SPYREPORT_PROBADEST'] . ' : ' . $row['proba'] . '%'; ?>
+                </th>
+            </tr>
+        </thead>
+    </table>
+<?php
+    $contents = ob_get_contents();
+    ob_end_clean();
+    $template =  $contents;
+    // -- Fin temporisation --
+
     return ($template);
 }
 
@@ -1666,7 +1670,7 @@ function galaxy_portee_missiles($galaxy, $system)
 
         // recherche le niveau du réacteur du joueur
         $tUser_Technology =  $User_Technology_Model->select_user_technologies($base_joueur);
-        $niv_reac_impuls = $tUser_Technology["RI"];
+        $niv_reac_impuls = $tUser_Technology["RI"] ?? 0;
 
         if ($niv_reac_impuls > 0) {
 
@@ -1711,6 +1715,7 @@ function galaxy_portee_missiles($galaxy, $system)
 function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_missil, $base_coord, $ok_missil, $total_missil)
 {
     global $lang;
+    //todo tooltip non fonctionnel : affichage en tete dans la table galaxy => a maintenir ?
 
     if (!$missil_dispo) {
         $missil_dispo = $lang['GALAXY_MIP_UNKNOWN'];
@@ -1724,6 +1729,7 @@ function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_
     $tooltip .= '<tr><td class=\'c\' width=\'70\'>' . $lang['GALAXY_MIP_AVAILABLE_MISSILES'] . ' : </td><th width=\'30\'>' . $missil_dispo . '</th></tr>';
     $tooltip .= '</table>';
     $tooltip = htmlentities($tooltip);
+
 
     $door = '<a id="linkdoor" href="?action=galaxy&galaxy=' . $galaxie_missil . '&system=' . $sysSol_missil . '"';
     //$door .= ' onmouseover="this.T_WIDTH=260;this.T_TEMP=15000;return escape(' . $tooltip . ')"';
@@ -1741,4 +1747,339 @@ function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_
     }
 
     return $missil_ok;
+}
+
+/*
+* @return string
+*/
+function displayGalaxyLegend()
+{
+    global $lang;
+
+    //creation de la table
+    $legend = '<table class="og-table og-small-table og-table-galaxy">';
+    $legend .= '<thead>';
+    $legend .= '<tr><th colspan="2">' . $lang['GALAXY_LEGEND'] . "</th></tr>";
+    $legend .= '</thead>';
+    $legend .= '<tbody>';
+    $legend .= "<tr><td>" . $lang['GALAXY_INACTIVE_7Days'] . "</td><td class=\"tdcontent\"><span class=\"ogame-status-i\">" . $lang['GALAXY_INACTIVE_7Days_SYMBOL'] . "</span></th></tr>";
+    $legend .= "<tr><td>" . $lang['GALAXY_INACTIVE_28Days'] . "</td><td class=\"tdcontent\"><span class=\"ogame-status-i\">" . $lang['GALAXY_INACTIVE_28Days_SYMBOL'] . "</span></th></tr>";
+    $legend .= "<tr><td>" . $lang['GALAXY_HOLIDAYS'] . "</td><td class=\"tdcontent\"><span class=\"ogame-status-v\">" . $lang['GALAXY_HOLIDAYS_SYMBOL'] . "<span></th></tr>";
+    $legend .= "<tr><td>" . $lang['GALAXY_WEAK_PROTECTION'] . "</td><td class=\"tdcontent\"><span class=\"ogame-status-d\">" . $lang['GALAXY_WEAK_PROTECTION_SYMBOL'] . "</span></th></tr>";
+    $legend .= "<tr><td>" . $lang['GALAXY_MOON'] . "</td><td class=\"tdcontent\"><span class=\"ogame-icon ogame-icon-moon \"><span></th></tr>";
+    $legend .= "<tr><td>" . $lang['GALAXY_MOON_PHALANX'] . "</td><td class=\"tdcontent\"><span class=\"ogame-icon ogame-icon-phalanx \">4</span><span class=\"ogame-icon ogame-icon-gate \">P</span></th></tr>";
+    $legend .= "<tr><td>" . $lang['GALAXY_SPYREPORT'] . "</td><td class=\"tdcontent\"><a>" . $lang['GALAXY_SPYREPORT_SYMBOL'] . "</a></th></tr>";
+    $legend .= "<tr><td>" . $lang['GALAXY_COMBATREPORT'] . "</td><td class=\"tdcontent\"><a>" . $lang['GALAXY_COMBATREPORT_SYMBOL'] . "</a></th></tr>";
+    $legend .= "<tr class=\"tr-ishided\"><td >" . $lang['GALAXY_ALLY_FRIEND'] . "</td><td class=\"tdcontent\"><a>abc</a></td></tr>";
+    $legend .= "<tr class=\"tr-isallied\"><td>" . $lang['GALAXY_ALLY_HIDDEN'] . "</td><td class=\"tdcontent\">abc</td></tr>";
+    $legend .= '</tbody>';
+    $legend .= "</table>";
+    $legend = htmlentities($legend);
+
+    return $legend;
+}
+
+
+/**
+ * @param $player Nom du joueur
+ * @return string
+ */
+function displayGalaxyPlayerTooltip($player)
+{
+    global $lang;
+
+    $tooltip = '<table class="og-table og-small-table">';
+    $tooltip .= "<thead><tr><th colspan=\"3\" >" . $lang['GALAXY_PLAYER'] . " " . $player . "</th></tr></thead>";
+    $tooltip .= '<tbody>';
+    $individual_ranking = galaxy_show_ranking_unique_player($player);
+    while ($ranking = current($individual_ranking)) {
+        $datadate =  date("d F o G:i", key($individual_ranking));
+        $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
+        $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
+        $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : "&nbsp;";
+        $eco_points = isset($ranking["eco"]) ? formate_number($ranking["eco"]["points"]) : "&nbsp;";
+        $techno_rank = isset($ranking["techno"]) ? formate_number($ranking["techno"]["rank"]) : "&nbsp;";
+        $techno_points = isset($ranking["techno"]) ? formate_number($ranking["techno"]["points"]) : "&nbsp;";
+        $military_rank = isset($ranking["military"]) ? formate_number($ranking["military"]["rank"]) : "&nbsp;";
+        $military_points = isset($ranking["military"]) ? formate_number($ranking["military"]["points"]) : "&nbsp;";
+        $military_b_rank = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["rank"]) : "&nbsp;";
+        $military_b_points = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["points"]) : "&nbsp;";
+        $military_l_rank = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["rank"]) : "&nbsp;";
+        $military_l_points = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) : "&nbsp;";
+        $military_d_rank = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) : "&nbsp;";
+        $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : "&nbsp;";
+        $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : "&nbsp;";
+        $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : "&nbsp;";
+
+        $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\"><span class=\"og-highlight\">" . $lang['GALAXY_RANK'] . " " . $datadate . "</span></td></tr>";
+        $tooltip .= "<tr><td class=\"tdstat\" >" . $lang['GALAXY_RANK_GENERAL'] . "</td><td class=\"tdcontent\">" . $general_rank . "</td><td class=\"tdcontent\">" . $general_points . "</td></tr>";
+        $tooltip .= "<tr><td class=\"tdstat\" >" . $lang['GALAXY_RANK_ECONOMY'] . "</td><td class=\"tdcontent\">" . $eco_rank . "</td><td class=\"tdcontent\">" . $eco_points . "</td></tr>";
+        $tooltip .= "<tr><td class=\"tdstat\" >" . $lang['GALAXY_RANK_LAB'] . "</td><td class=\"tdcontent\">" . $techno_rank . "</td><td class=\"tdcontent\">" . $techno_points . "</td></tr>";
+        $tooltip .= "<tr><td class=\"tdstat\" >" . $lang['GALAXY_RANK_MILITARY'] . "</td><td class=\"tdcontent\">" . $military_rank . "</td><td class=\"tdcontent\">" . $military_points . "</td></tr>";
+        $tooltip .= "<tr><td class=\"tdstat\" >" . $lang['GALAXY_RANK_MILITARY_BUILT'] . "</td><td class=\"tdcontent\">" . $military_b_rank . "</td><td class=\"tdcontent\">" . $military_b_points . "</td></tr>";
+        $tooltip .= "<tr><td class=\"tdstat\" >" . $lang['GALAXY_RANK_MILITARY_LOST'] . "</td><td class=\"tdcontent\">" . $military_l_rank . "</td><td class=\"tdcontent\">" . $military_l_points . "</td></tr>";
+        $tooltip .= "<tr><td class=\"tdstat\" >" . $lang['GALAXY_RANK_MILITARY_DESTROYED'] . "</td><td class=\"tdcontent\">" . $military_d_rank . "</td><td class=\"tdcontent\">" . $military_d_points . "</td></tr>";
+        $tooltip .= "<tr><td class=\"tdstat\" >" . $lang['GALAXY_RANK_MILITARY_HONNOR'] . "</td><td class=\"tdcontent\">" . $honnor_rank . "</td><td class=\"tdcontent\">" . $honnor_points . "</td></tr>";
+        break;
+    }
+    $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\"><a href=\"index.php?action=search&amp;type_search=player&amp;string_search=" . $player . "&amp;strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
+    $tooltip .= '</tbody>';
+    $tooltip .= "</table>";
+
+    $tooltip = htmlentities($tooltip);
+    return $tooltip;
+}
+
+
+/**
+ * @param $ally Nom de l'alliance
+ * @return string
+ */
+function displayGalaxyAllyTooltip($ally)
+{
+    global $lang;
+
+    $tooltip = '<table class="og-table og-small-table">';
+    $tooltip .= '<thead><tr><th colspan="3">' . $lang['GALAXY_ALLY'] . " " . $ally . '</th></tr></thead>';
+    $tooltip .= '<tbody>';
+
+    $individual_ranking = galaxy_show_ranking_unique_ally($ally);
+    $ranking = current($individual_ranking);
+    $datadate =  date("d F o G:i", key($individual_ranking));
+    $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
+    $general_points = isset($ranking["general"]) ? formate_number($ranking["general"]["points"]) : "&nbsp;";
+    $eco_rank = isset($ranking["eco"]) ? formate_number($ranking["eco"]["rank"]) : "&nbsp;";
+    $eco_points = isset($ranking["eco"]) ? formate_number($ranking["eco"]["points"]) : "&nbsp;";
+    $techno_rank = isset($ranking["techno"]) ? formate_number($ranking["techno"]["rank"]) : "&nbsp;";
+    $techno_points = isset($ranking["techno"]) ? formate_number($ranking["techno"]["points"]) : "&nbsp;";
+    $military_rank = isset($ranking["military"]) ? formate_number($ranking["military"]["rank"]) : "&nbsp;";
+    $military_points = isset($ranking["military"]) ? formate_number($ranking["military"]["points"]) : "&nbsp;";
+    $military_b_rank = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["rank"]) : "&nbsp;";
+    $military_b_points = isset($ranking["military_b"]) ? formate_number($ranking["military_b"]["points"]) : "&nbsp;";
+    $military_l_rank = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["rank"]) : "&nbsp;";
+    $military_l_points = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) : "&nbsp;";
+    $military_d_rank = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) : "&nbsp;";
+    $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : "&nbsp;";
+    $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : "&nbsp;";
+    $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : "&nbsp;";
+
+    $tooltip .= "<tr><td class=\"tdcontent \" colspan=\"3\" ><span class=\"og-highlight\">" . $lang['GALAXY_RANK'] . " " . $datadate . "</span> </td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\" >" . $lang['GALAXY_RANK_GENERAL'] . "</td><td class=\"tdcontent\">" . $general_rank . "</td><td class=\"tdcontent\">" . $general_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_ECONOMY'] . "</td><td class=\"tdcontent\">" . $eco_rank . "</td><td class=\"tdcontent\">" . $eco_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_LAB'] . "</td><td class=\"tdcontent\">" . $techno_rank . "</td><td class=\"tdcontent\">" . $techno_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY'] . "</td><td class=\"tdcontent\">" . $military_rank . "</td><td class=\"tdcontent\">" . $military_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_BUILT'] . "</td><td class=\"tdcontent\">" . $military_b_rank . "</td><td class=\"tdcontent\">" . $military_b_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_LOST'] . "</td><td class=\"tdcontent\">" . $military_l_rank . "</td><td class=\"tdcontent\">" . $military_l_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_DESTROYED'] . "</td><td class=\"tdcontent\">" . $military_d_rank . "</td><td class=\"tdcontent\">" . $military_d_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_HONNOR'] . "</td><td class=\"tdcontent\">" . $honnor_rank . "</td><td class=\"tdcontent\">" . $honnor_points . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\" ><span class=\"og-highlight\">" . formate_number($ranking["number_member"]) . "</span> " . $lang['GALAXY_MEMBERS'] . "</td></tr>";
+
+    $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
+    $tooltip .= '</tbody>';
+    $tooltip .= "</table>";
+
+    $tooltip = htmlentities($tooltip);
+    return $tooltip;
+}
+
+
+function displayGalaxyTablethead()
+{
+    global $lang;
+    global $link_order_coordinates,  $link_order_ally, $link_order_player;
+    ob_start();
+?>
+    <tr>
+        <th>
+            <?php if (is_null($link_order_coordinates)) : ?>
+                &nbsp;
+            <?php else : ?>
+                <?php echo $link_order_coordinates; ?>
+            <?php endif; ?>
+        </th>
+        <th>
+            <?php echo ($lang['GALAXY_PLANETS']); ?>
+        </th>
+        <th>
+            <?php if (is_null($link_order_ally)) : ?>
+                <?php echo ($lang['GALAXY_ALLIES']); ?>
+            <?php else : ?>
+                <?php echo $link_order_ally; ?>
+            <?php endif; ?>
+        </th>
+        <th>
+            <?php if (is_null($link_order_player)) : ?>
+                <?php echo ($lang['GALAXY_PLAYERS']); ?>
+            <?php else : ?>
+                <?php echo $link_order_player; ?>
+            <?php endif; ?>
+        </th>
+        <th>
+            L
+        </th>
+        <th>
+            P
+        </th>
+        <th>
+            Ph
+        </th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+        <th>
+            <?php echo ($lang['GALAXY_UPDATES']); ?>
+        </th>
+    </tr>
+<?php
+
+    $displayGalaxyTablethead = ob_get_contents();
+    ob_end_clean();
+
+    return ($displayGalaxyTablethead);
+}
+
+
+/**
+ * @param $populate tableau associatif representnat les elements d'une ligne de la galaxie (row)
+ *
+ * @return string
+ */
+function displayGalaxyTabletbodytr($populate, $isGalaxy = true)
+{
+    global $lang;
+    $ToolTip_Helper = new ToolTip_Helper();
+
+    $v = $populate;
+    //compatibilite vue search
+
+    $v["planet"] = (isset($v["planet"])) ? $v["planet"] : " ";
+
+
+    ob_start();
+?>
+    <?php
+    $ally = $v["ally"];
+    $player = $v["player"];
+    $row = $v["row"];
+    $galaxy = $v["galaxy"];
+    $system = $v["system"];
+
+
+    if ($ally != "" && !isset($tooltiptab["ally"][$ally])) {
+        $tooltiptab["ally"][] = $ally;  //tab de creation du tooltip alliance si necessaire
+    }
+
+
+    if ($player != "" && !isset($tooltiptab["player"][$player])) {
+        $tooltiptab["player"][] = $player;  //tab de creation du tooltip joueur si necessaire
+    }
+
+    ?>
+
+    <?php $classishided =  ($v["hided"]) ? "tr-ishided" : ""; ?>
+    <?php $classisallied =  ($v["allied"]) ? "tr-isallied" : ""; ?>
+    <?php $empytag =  ($v["planet"] == "") ? "empty" : ""; ?>
+    <tr class="<?php echo $classishided . " " . $classisallied . " " . $empytag; ?>">
+        <td class="tdcontent"> <!-- compteur -->
+            <?php if ($isGalaxy) : ?>
+                <?php echo $v["row"]; ?>
+            <?php else : ?>
+                <?php $coordinates = $v["galaxy"] . ":" . $v["system"] . ":" . $v["row"]; ?>
+                <a href='index.php?action=galaxy&amp;galaxy=<?php echo $v["galaxy"]; ?>&amp;system=<?php echo $v["system"]; ?>'><?php echo $coordinates; ?></a>
+            <?php endif; ?>
+
+        </td>
+        <td class="tdcontent">
+            <?php if ($v["planet"] == "") : ?>
+                &nbsp;
+            <?php else : ?>
+                <a href='index.php?action=search&amp;type_search=planet&amp;string_search=<?php echo $v["planet"]; ?>&amp;strict=on'>
+                    <?php echo $v["planet"]; ?>
+                </a>
+            <?php endif; ?>
+        </td>
+        <td class="tdcontent"><!-- alliance -->
+            <?php if ($v["ally"] != "") : ?>
+                <a <?php echo $ToolTip_Helper->GetHTMLClassContent(array("tooltipstered"), "ttp_alliance_" . $v["ally"]); ?> href="index.php?action=search&amp;type_search=ally&amp;string_search=<?php echo $ally; ?>&strict=on">
+                    <?php echo $ally; ?>
+                </a>
+            <?php else : ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <td class="tdcontent"><!-- player -->
+            <?php if ($v["player"] != "") : ?>
+                <a <?php echo $ToolTip_Helper->GetHTMLClassContent(array("tooltipstered"), "ttp_player_" . $v["player"]); ?> href="index.php?action=search&amp;type_search=ally&amp;string_search=<?php echo $player; ?>&strict=on">
+                    <?php echo  $player; ?>
+                </a>
+            <?php else : ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <td class="tdcontent">
+            <?php if ($v["moon"] == 1) : ?>
+                <span class="ogame-icon ogame-icon-moon ">
+                    &nbsp;
+                </span>
+            <?php else : ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <td class="tdcontent"> <!-- Porte -->
+            <?php if ($v["gate"] == 1) : ?>
+                <span class="ogame-icon ogame-icon-gate ">
+                    P
+                </span>
+            <?php else : ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <td class="tdcontent">
+            <?php if ($v["last_update_moon"] > 0) : ?>
+                <span class="ogame-icon ogame-icon-phalanx ">
+                    <?php echo $v["phalanx"]; ?>
+                </span>
+            <?php else : ?>
+                &nbsp;
+            <?php endif; ?>
+            <!-- todo icon-->
+        </td>
+        <td class="tdcontent"> <!-- status -->
+            <?php $states = ($v["status"] != "") ? str_split($v["status"]) : array(); ?>
+            <?php foreach ($states as $state) : ?>
+                <span class="ogame-status-<?php echo $state; ?>"><?php echo $state; ?></span>
+            <?php endforeach; ?>
+        </td>
+        <td class="tdcontent"> <!-- spy -->
+            <?php if ($v["report_spy"] > 0) : ?>
+                <a href='#' onClick="window.open('index.php?action=show_reportspy&amp;galaxy=<?php echo $galaxy; ?>&amp;system=<?php echo $system; ?>&amp;row=<?php echo $row; ?>','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)">
+                    <?php echo $lang['GALAXY_SR']; ?>
+                </a>
+            <?php else : ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <td class="tdcontent"> <!-- RC -->
+            <?php if (isset($v["report_rc"]) && $v["report_rc"] > 0) : ?>
+                <a href='#' onClick="window.open('index.php?action=show_reportrc&amp;galaxy=<?php echo $galaxy; ?>&amp;system=<?php echo $system; ?>&amp;row=<?php echo $row; ?>','_blank','width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0');return(false)">
+                    <?php echo $v["report_rc"] . $lang['GALAXY_CR']; ?>
+                </a>
+            <?php else : ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <td class="tdcontent og-galaxy-tdtimestamp"> <!-- info maj -->
+            <?php $timestamp = (intval($v["timestamp"]) != 0) ?  date("d F o G:i", $v["timestamp"]) : "&nbsp;"; ?>
+            <span class="og-galaxy-timestamp"><?php echo $timestamp; ?></span>
+            <span class="og-galaxy-poster">
+                - <?php echo $v["poster"]; ?>
+            </span>
+        </td>
+    </tr>
+
+<?php
+    $displayGalaxyTabletbodytr = ob_get_contents();
+    ob_end_clean();
+
+    return ($displayGalaxyTabletbodytr);
 }

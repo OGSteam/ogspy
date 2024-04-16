@@ -12,9 +12,9 @@ use Ogsteam\Ogspy\Abstracts\Helper_Abstract;
 class ToolTip_Helper extends Helper_Abstract
 {
 
-    protected static  $name = "Helper ToolTip";
-    protected static  $description = "Aide à l'usage de tooltip dans le code HTML";
-    protected static  $version = "0.0.1";
+    protected static string $name = "Helper ToolTip";
+    protected static string $description = "Aide à l'usage de tooltip dans le code HTML";
+    protected static string $version = "0.0.1";
 
     private static $content = null;
 
@@ -47,11 +47,11 @@ class ToolTip_Helper extends Helper_Abstract
     public function addTooltip($key, $value)
     {
         $retour = true;
-        $key=$this->preventJqueryError($key);
-        $this->currentKey=$key;
+        $key = $this->preventJqueryError($key);
+        $this->currentKey = $key;
         if (isset(self::$content[$key])) {
             //gestion de l'erreur dans code ogspy et/ou mod
-            $this->currentKey=$key;
+            $this->currentKey = $key;
             return false;
         }
         self::$content[$key] = $value;
@@ -65,25 +65,21 @@ class ToolTip_Helper extends Helper_Abstract
      * @param $tclass contient les differents tags à placer en plus du tooltip
      * @return string
      */
-    public function GetHTMLClassContent($tClass=array(),$key = null)
+    public function GetHTMLClassContent($tClass = array(), $key = null)
     {
         $retour = "";
-        if ($key == null)
-        {
-            $key=$this->getCurentKey();
-        }
-        else
-        {
+        if ($key == null) {
+            $key = $this->getCurentKey();
+        } else {
             $key = $this->preventJqueryError($key);
         }
         $retour .= "class=\"";
         $retour .= "tooltip";
-        foreach ($tClass as $classTag)
-        {
-            $retour .= " ".$classTag." ";
+        foreach ($tClass as $classTag) {
+            $retour .= " " . $classTag . " ";
         }
         $retour .= "\"";
-        $retour .= " data-tooltip-content=\"#".$key."\" ";
+        $retour .= " data-tooltip-content=\"#" . $key . "\" ";
 
         return $retour;
     }
@@ -154,20 +150,20 @@ class ToolTip_Helper extends Helper_Abstract
         $retour .= "\t }\n";
         $retour .= "\t</style>\n";
         return $retour;
-}
+    }
 
 
-        //.tooltipster-sidetip.tooltipster-noir.tooltipster-noir-customized .tooltipster-box {
+    //.tooltipster-sidetip.tooltipster-noir.tooltipster-noir-customized .tooltipster-box {
     // background: grey;
     //   border: 3px solid red;
-//	border-radius: 6px;
-//	box-shadow: 5px 5px 2px 0 rgba(0,0,0,0.4);
-//}
+    //	border-radius: 6px;
+    //	box-shadow: 5px 5px 2px 0 rgba(0,0,0,0.4);
+    //}
 
-//.tooltipster-sidetip.tooltipster-noir.tooltipster-noir-customized .tooltipster-content {
+    //.tooltipster-sidetip.tooltipster-noir.tooltipster-noir-customized .tooltipster-content {
     //       color: blue;
     //     padding: 8px;
-//}
+    //}
     //  }
 
     /**
@@ -177,5 +173,4 @@ class ToolTip_Helper extends Helper_Abstract
     {
         return $this->getName() . " (" . $this->version . ") [" . $this->description . "]";
     }
-
 }

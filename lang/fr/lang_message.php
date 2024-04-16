@@ -9,11 +9,6 @@
  * @version 3.3.0
  */
 
-/*
- * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
- *
- */
-
 /* message.php */
 $lang['MSG_SYSTEM'] = "Message Système";
 $lang['MSG_FORBIDDEN'] = "Vous ne disposez pas des droits nécessaires pour effectuer cette action";
@@ -34,15 +29,15 @@ $lang['MSG_PWD_REGEN_KO'] = "Génération du nouveau mot de passe échouée";
 $lang['MSG_NEW_ACCOUNT_KO'] = "Création du compte de échouée";
 $lang['MSG_NEW_ACCOUNT_KO_NAME'] = "Le pseudo est déjà utilisé";
 $lang['MSG_NEW_ACCOUNT_KO_NAME_ILLEGAL'] = "Le pseudo doit contenir entre 3 et 15 caractères standards";
-$lang['MSG_NEW_ACCOUNT_KO_PASSWORD_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 15 caractères";
-$lang['MSG_NEW_ACCOUNT_KO_EMAIL_ILLEGAL'] = "L'addresse Email est incorrecte";
+$lang['MSG_NEW_ACCOUNT_KO_PASSWORD_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 64 caractères";
+$lang['MSG_NEW_ACCOUNT_KO_EMAIL_ILLEGAL'] = "L'adresse Email est incorrecte";
 $lang['MSG_NEW_ACCOUNT_KO_OTHER'] = "Le pseudo est incorrect";
 $lang['MSG_PROFILE_OK'] = "Modification du profil réussie";
 $lang['MSG_PROFILE_KO'] = "Modification du profil échouée";
 $lang['MSG_PROFILE_SAVE_OK'] = "Sauvegarde de votre profil réussie";
 $lang['MSG_PROFILE_SAVE_KO'] = "Sauvegarde de votre profil échouée";
 $lang['MSG_PROFILE_SAVE_PWD'] = "Saisissez correctement votre ancien mot de passe et deux fois le nouveau";
-$lang['MSG_PROFILE_SAVE_PWD_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 15 caractères standards";
+$lang['MSG_PROFILE_SAVE_PWD_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 64 caractères";
 $lang['MSG_PROFILE_SAVE_NAME_INUSE'] = "Le pseudo est déjà utilisé par un autre membre";
 $lang['MSG_PROFILE_SAVE_NAME_ILLEGAL'] = "Le pseudo saisi doit contenir entre 3 et 15 caractères standards";
 $lang['MSG_DELETE_USER_OK'] = "Suppression du membre réussie";
@@ -56,7 +51,7 @@ $lang['MSG_SETTINGS_SERVERCONFIG_KO'] = "La configuration des paramètres serveu
 $lang['MSG_SETTINGS_SERVERVIEW_OK'] = "Configuration des paramètres d'affichage achevée avec succès";
 $lang['MSG_SETTINGS_SERVERVIEW_KO'] = "La configuration des paramètres d'affichage a échouée";
 $lang['MSG_LOG_MISSING'] = "Il n'y a pas de fichiers logs à cette période";
-$lang['MSG_LOG_REMOVE'] = "Le fichier log séléctionné a bien été supprimé";
+$lang['MSG_LOG_REMOVE'] = "Le fichier log sélectionné a bien été supprimé";
 $lang['MSG_FAILED_PLANETID'] = "Veuillez préciser la planète concernée";
 $lang['MSG_INSTALLFOLDER'] = "Le dossier 'install' a été supprimé";
 $lang['MSG_GROUP_CREATE'] = "Création du groupe réussie";

@@ -10,6 +10,6 @@
  */
 
 /* mail.php */
-$lang['MAIL_RESET_PASSWORD_SUBJECT'] = "OGSpy : Votre Mot de passe a été Réinitialisé par votre Administrateur";
+$lang['MAIL_RESET_PASSWORD_SUBJECT'] = "OGSpy : Votre Mot de passe a été réinitialisé par votre Administrateur";
 $lang['MAIL_RESET_PASSWORD_MESSAGE'] = "Votre nouveau mot de passe est : ";
 

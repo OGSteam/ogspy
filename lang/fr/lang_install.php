@@ -19,10 +19,10 @@ $lang['INSTALL_PROJECT_L3'] = "Recensement de toutes les coordonnées libres sel
 $lang['INSTALL_PROJECT_L4'] = "Recensement de toutes les planètes d'un joueur ou d'une ally. Information vitale durant les périodes de guerre.";
 $lang['INSTALL_PROJECT_L5'] = "Possibilités d'extensions quasi illimitées grâce aux mods.";
 $lang['INSTALL_PROJECT_L6'] = "Etc ...";
-$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href='https://www.ogsteam.eu/' target='_blank' rel='noopener'>https://www.ogsteam.eu/</a>";
+$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : ";
 
 $lang['INSTALL_PHPERROR'] = "Version de PHP insuffisante";
-$lang['INSTALL_PHP_ADVISE'] = "Pour pouvoir effectuer une installation complète d'OGSpy, votre hébergement doit être doté au minimum de la version 7 de PHP.";
+$lang['INSTALL_PHP_ADVISE'] = "Pour pouvoir effectuer une installation complète d'OGSpy, votre hébergement doit être doté au minimum de la version 8 de PHP.";
 $lang['INSTALL_PHPVERSION'] = "Vous disposez actuellement de la version : ";
 $lang['INSTALL_ACTION'] = "Choisissez quelle action vous désirez effectuer : ";
 $lang['INSTALL_ACTION_FULL'] = "Installation complète";
@@ -45,7 +45,7 @@ $lang['INSTALL_SUCCESS_REMOVE_FOLDER'] = "Pensez à supprimer le dossier 'instal
 $lang['INSTALL_SUCCESS_BACK'] = "Retour";
 $lang['INSTALL_FORM_ERROR_PREFIX'] = "Des caractères utilisés pour le préfixe de la base de donnée sont incorrects.";
 $lang['INSTALL_FORM_ERROR_USER'] = "Des caractères utilisés pour le nom d'utilisateur ou le mot de passe ne sont pas corrects";
-$lang['INSTALL_FORM_ERROR_GALAXY'] = "Vous n'avez pas rentrez des valeurs correcte pour le nombres de galaxies et (ou) de systemes";
+$lang['INSTALL_FORM_ERROR_GALAXY'] = "Vous n'avez pas rentrez des valeurs correcte pour le nombres de galaxies et (ou) de systèmes";
 $lang['INSTALL_FORM_ERROR_CONNECTION'] = "Saisissez correctement les champs de connexion à la base de données et du compte administrateur";
 $lang['INSTALL_FORM_ERROR_CONNECTION_PARAMS'] = "Saisissez correctement les champs de connexion à la base de données";
 

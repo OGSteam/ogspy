@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Main menu
  * @package OGSpy
@@ -10,98 +9,163 @@
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  */
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
-
 ?>
-<table border="0" cellpadding="0" cellspacing="0">
-    <tr align="center">
-        <td>
-            <b><?php echo ($lang['MENU_SERVER_TIME']); ?></b><br />
-            <span id="datetime"><?php echo ($lang['MENU_WAITING']); ?></span>
-        </td>
-    </tr>
+<div id="menu_timer">
+    <!--<?php echo ($lang['MENU_SERVER_TIME']); ?><br /> // Limite la place utilisé-->
+    <span id="datetime"><?php echo ($lang['MENU_WAITING']); ?></span>
+</div>
 
-    <tr>
-        <td>
-            <div><a href="index.php" class="menu">
-                    <img src="./skin/OGSpy_skin/transpa.gif" alt="----------" width="166" height="65" border="0" /></a></div>
-        </td>
-    </tr>
+<?php if ($server_config["server_active"] == 0) : ?>
+    <div id="menu_offline">
+        <?php echo $lang['MENU_SERVER_OFFLINE']; ?>
+    </div>
+<?php endif; ?>
 
-    <?php
+<div id="menu_navigate_id">
+    <ul class="menu_navigate">
 
-    if ($server_config["server_active"] == 0) {
-        echo "<tr>\n";
-        echo "\t" . "<td><div align='center'><font color='red'><b><blink>" . $lang['MENU_SERVER_OFFLINE'] . "</blink></b></font></div></td>\n";
-        echo "</tr>\n";
-    }
+        <!--<li class='menuitem-administration'>
+            <a href='index.php?action=administration' ><?php echo $lang['MENU_ADMIN']; ?></a>
+        </li>-->
+        <li class='menuitem-user-grp'>
+            <a><span class="icon-ogspy menuitem-user-grp_icon"></span> <?php echo $lang['MENU_PROFILE']; ?></a>
+            <ul class="sub_menu_navigate">
+                <li class='menuitem-profile'>
+                    <a href='index.php?action=profile' ><?php echo ($lang['MENU_PROFILE']); ?></a>
+                </li>
+                <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) : ?> 
+                    <li class='menuitem-administration'>
+                        <a href='index.php?action=administration' ><?php echo ($lang['MENU_ADMIN']); ?></a>
+                    </li>
+                <?php endif; ?>
+                <!-- partie admin prise en charge dans page admin
+                <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
+                    <li class='menuitem-admin-infoserver'>
+                        <a href='index.php?action=administration&amp;subaction=infoserver' ><?php echo ($lang['ADMIN_TITLE_GENERAL_INFO']); ?></a>
+                    </li>
+                    <li class='menuitem-admin-parameter'>
+                        <a href='index.php?action=administration&amp;subaction=parameter' ><?php echo ($lang['ADMIN_TITLE_SERVER_CONF']); ?></a>
+                    </li>
+                    <li class='menuitem-admin-affichage'>
+                        <a href='index.php?action=administration&amp;subaction=affichage' ><?php echo ($lang['ADMIN_TITLE_DISPLAY_CONF']); ?></a>
+                    </li>
+                <?php endif; ?>
+                <li class='menuitem-admin-member'>
+                    <a href='index.php?action=administration&amp;subaction=member' ><?php echo ($lang['ADMIN_TITLE_MEMBER_CONF']); ?></a>
+                </li>
+                <li class='menuitem-admin-group'>
+                    <a href='index.php?action=administration&amp;subaction=group' ><?php echo ($lang['ADMIN_TITLE_GROUP_CONF']); ?></a>
+                </li>
+                <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
+                    <li class='menuitem-admin-viewer'>
+                        <a href='index.php?action=administration&amp;subaction=viewer' ><?php echo ($lang['ADMIN_TITLE_LOGS_CONF']); ?></a>
+                    </li>
+                    <li class='menuitem-admin-helper'>
+                        <a href='index.php?action=administration&amp;subaction=helper' ><?php echo ($lang['ADMIN_TITLE_HELPER_CONF']); ?></a>
+                    </li>
+                    <li class='menuitem-admin-mod'>
+                        <a href='index.php?action=administration&amp;subaction=mod' ><?php echo ($lang['ADMIN_TITLE_MODS_CONF']); ?></a>
+                    </li>
+                <?php endif; ?>
+                fin partie admin prise en charge dans page admin-->
+                <li class='menuitem-logout'>
+                    <a href='index.php?action=logout'><?php echo $lang['MENU_LOGOUT']; ?></a>
+                </li>
+            </ul>            
+        </li>
 
-    ?>
-    <tr>
-        <td>
-            <div style="text-align:left;">
 
-                <ul class="menu" id="menu">
-                    <?php
-                    if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) {
-                        echo "<li><a href='index.php?action=administration' class='menu_items'>" . $lang['MENU_ADMIN'] . "</a></li>";
-                    }
-                    ?>
-                    <li><a href='index.php?action=profile' class='menu_items'><?php echo ($lang['MENU_PROFILE']); ?></a>
-                    </li>
-                    <img src="./skin/OGSpy_skin/transpa.gif" alt="----------" width="166" height="19">
-                    <li><a href='index.php?action=home' class='menu_items'><?php echo ($lang['MENU_HOME']); ?></a></li>
-                    <li><a href='index.php?action=galaxy' class='menu_items'><?php echo ($lang['MENU_GALAXY']); ?></a>
-                    </li>
-                    <li><a href='index.php?action=cartography' class='menu_items'><?php echo ($lang['MENU_ALLIANCES']); ?></a></li>
-                    <li><a href='index.php?action=search' class='menu_items'><?php echo ($lang['MENU_RESEARCH']); ?></a>
-                    </li>
-                    <li><a href='index.php?action=ranking' class='menu_items'><?php echo ($lang['MENU_RANKINGS']); ?></a>
-                    </li>
-                    <img src="./skin/OGSpy_skin/transpa.gif" alt="----------" width="166" height="19">
-                    <li><a href='index.php?action=statistic' class='menu_items'><?php echo ($lang['MENU_UPDATE_STATUS']); ?></a></li>
-                    <li>
-                        <p class='menu_items'><?php echo ($lang['MENU_MODULES']); ?></p>
-                        <ul class='menu_mods'>
-                            <?php
-                            //todo sortir requete de la vue
-                            $mod_model = new \Ogsteam\Ogspy\Model\Mod_Model();
-                            $tMods = $mod_model->find_by(array("active" => "1"), array("position" => 'ASC', "title" => 'ASC'));
-                            ?>
-                            <!-- mod non admin -->
-                            <?php foreach ($tMods as $mod) : ?>
-                                <?php if ($mod['admin_only'] == 0) : ?>
-                                    <?php echo '<span>&nbsp;&nbsp;- <a class=\'menu_mods\' href="index.php?action=' . $mod['action'] . '">' . $mod['menu'] . '</a></span>' . '<br>'; ?>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                            <!-- mod admin -->
-                            <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
-                                <img src="./skin/OGSpy_skin/transpa.gif" alt="----------" width="166" height="19">
-                                <?php foreach ($tMods as $mod) : ?>
-                                    <?php if ($mod['admin_only'] == 1) : ?>
-                                        <?php echo '<span>&nbsp;&nbsp;- <a class=\'menu_mods\' href="index.php?action=' . $mod['action'] . '">' . $mod['menu'] . '</a></span>' . '<br>'; ?>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </ul>
-                    </li>
-                    <img src="./skin/OGSpy_skin/transpa.gif" alt="----------" width="166" height="19">
-                    <?php
-                    if ($server_config["url_forum"] != "") {
-                        echo "<li><a href='" . $server_config["url_forum"] . "' class='menu_items'>" . $lang['MENU_FORUM'] . "</a></li>";
-                    }
-                    ?>
-                    <img src="./skin/OGSpy_skin/transpa.gif" alt="----------" width="166" height="19">
-                    <li><a href="index.php?action=about" class='menu_items'><?= $lang['MENU_ABOUT'] ?></a></li>
-                    <img src="./skin/OGSpy_skin/transpa.gif" alt="----------" width="166" height="19">
-                    <li><a href='index.php?action=logout' class='menu_items'><?= $lang['MENU_LOGOUT'] ?></a>
-                    </li>
-                </ul>
+        <li class='menuitem-ogspy-grp'>
+            <a><!-- <?php echo ($lang['MENU_GALAXY']); ?>--> <span class="icon-ogspy menuitem-ogspy-grp_icon"></span> Ogspy </a>
+            <ul class="sub_menu_navigate">
+                <li class='menuitem-home'>
+                    <a href='index.php?action=home&amp;subaction=home' ><?php echo ($lang['MENU_HOME']); ?></a>
+                </li>
+                <!-- partie home prise en charge dans page home
+                <li class='menuitem-home-empire'>
+                    <a href='index.php?action=home&amp;subaction=empire' ><?php echo ($lang['HOME_EMPIRE_TITLE']); ?></a>
+                </li>
+                <li class='menuitem-home-simulation'>
+                    <a href='index.php?action=home&amp;subaction=simulation'><?php echo ($lang['HOME_SIMULATION_TITLE']); ?></a>
+                </li>
+                <li class='menuitem-home-spy'>
+                    <a href='index.php?action=home&amp;subaction=spy' ><?php echo ($lang['HOME_REPORTS_TITLE']); ?></a>
+                </li>
+                <li class='menuitem-home-stat'>
+                    <a href='index.php?action=home&amp;subaction=stat' ><?php echo ($lang['HOME_STATISTICS_TITLE']); ?></a>
+                </li>
+                fin partie home prise en charge dans page home -->
+                <li class='menuitem-ogspy-galaxy'>
+                    <a href='index.php?action=galaxy' ><?php echo ($lang['MENU_GALAXY']); ?></a>
+                </li>
+                <li class='menuitem-ogspy-cartography'>
+                    <a href='index.php?action=cartography'><?php echo ($lang['MENU_ALLIANCES']); ?></a>
+                </li>
+                <li class='menuitem-ogspy-search'>
+                    <a href='index.php?action=search' ><?php echo ($lang['MENU_RESEARCH']); ?></a>
+                </li>
+                <li class='menuitem-ogspy-ranking'>
+                    <a href='index.php?action=ranking' ><?php echo ($lang['MENU_RANKINGS']); ?></a>
+                </li>
+                <li class='menuitem-ogspy-statistic'>
+                    <a href='index.php?action=statistic' ><?php echo ($lang['MENU_UPDATE_STATUS']); ?></a>
+                </li>
+            </ul>            
+        </li>
 
-            </div>
-        </td>
-    </tr>
-</table>
+        <li class='menuitem-mod'>
+            <a><span class="icon-ogspy menuitem-mod_icon"></span> <?php echo ($lang['MENU_MODULES']); ?></a>
+            <ul class="sub_menu_navigate">
+                <?php
+//todo sortir requete de la vue
+                $mod_model = new \Ogsteam\Ogspy\Model\Mod_Model();
+                $tMods = $mod_model->find_by(array("active" => "1"), array("position" => 'ASC', "title" => 'ASC'));
+                ?>
+                <!-- mod non admin -->
+                <?php foreach ($tMods as $mod) : ?>
+                    <?php if ($mod['admin_only'] == 0) : ?>
+                        <li class='menusubitem-mod menusubitem-mod-<?php echo $mod['action']; ?>'>
+                            <a href="index.php?action=<?php echo $mod['action']; ?>"><?php echo $mod['menu']; ?></a>
+                        </li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                <!-- mod admin -->
+            </ul>            
+            <ul class="sub_menu_navigate sub_menu_navigate_admin">
+                <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
+                    <?php foreach ($tMods as $mod) : ?>
+                        <?php if ($mod['admin_only'] == 1) : ?>
+                            <li class='menusubitem-mod-admin menusubitem-mod-<?php echo $mod['action']; ?>'>
+                                <a href="index.php?action=<?php echo $mod['action']; ?>"><?php echo $mod['menu']; ?></a>
+                            </li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </ul>
+        </li>
+
+        <li class='menuitem-about-grp'>
+            <a><span class="icon-ogspy menuitem-about-grp_icon"></span> Liens </a><!--todo faire fichier lang correspondant -->
+            <ul class="sub_menu_navigate">
+                <?php if ($server_config["url_forum"] != ""): ?>
+                    <li class='menuitem-forum'>
+                        <a href='<?php echo $server_config["url_forum"]; ?>' ><?php echo $lang['MENU_FORUM']; ?></a>
+                    </li>
+                <?php endif; ?>
+                <li class='menuitem-ogspylink'>
+                    <a href='https://www.ogsteam.eu'  target="_blank" rel="noopener" >Ogspy</a>
+                </li>
+                <li class='menuitem-about'>
+                    <a href="index.php?action=about"><?php echo $lang['MENU_ABOUT']; ?></a>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+</div>    
+
+
+

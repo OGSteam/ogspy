@@ -64,125 +64,160 @@ if (file_exists($file)) {
     $log = array($lang['ADMIN_LOGS_NOLOGS']);
 }
 
-echo "<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0, 0, $show_month, $show_day, $show_year)) . "</a>";
+echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0, 0, $show_month, $show_day, $show_year)) . "</a>-->";
 ?>
 
-<table width="100%">
-    <th>
-    <td class="c" colspan="12"><?php echo ($lang['ADMIN_LOGS_SELECTED_DATE']); ?></td>
-    </th>
-    <?php
-    $date = mktime(0, 0, 0, date("n"), 1) - 60 * 60 * 24 * 365;
-    echo "<tr>";
-    for ($i = 0; $i < 12; $i++) {
-        $date += 60 * 60 * 24 * 31;
-        $show = date("y~m", $date) . "~" . $show_day;
+<table class="og-table og-full-table">
+    <thead>
+        <tr>
+            <th  colspan="12">
+                <?php echo ($lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0, 0, $show_month, $show_day, $show_year))); ?></th>
+                    
+        </tr>  
+    </thead>
+    <tbody>
+         <?php $date = mktime(0, 0, 0, date("n"), 1) - 60 * 60 * 24 * 365; ?>
+    <tr> <!-- Mois -->
+    <?php for ($i = 0; $i < 12; $i++)  :?>
+        <?php $date += 60 * 60 * 24 * 31;?>
+        <?php $show = date("y~m", $date) . "~" . $show_day;?>
 
-        if ($show == $show_year . "~" . $show_month . "~" . $show_day) {
-            if (log_check_exist(date("ym", $date))) {
-                echo "\t" . "<th><a>" . date("F o", $date) . "</a></th>" . "\n";
-                echo "\t" . "<th width='40px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . date("Fo", $date) . "'\" title='" . $lang['ADMIN_LOGS_DOWNLOAD'] . date("F o", $date) . "'><input type='image' src='images/drop.png' onclick=\"window.location = 'index.php?action=remove&amp;date=" . date("ym", $date) . $show_day . "&directory=TRUE'\" title='" . $lang['ADMIN_LOGS_DELETE'] . date("F o", $date) . "'>";
-            } else {
-                echo "\t" . "<th colspan='2'><a>" . date("F o", $date) . "</a></th>" . "\n";
-            }
-            echo "</th>" . "\n";
-        } else {
-            if (log_check_exist(date("ym", $date))) {
-                echo "\t" . "<th onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=" . $typelog . "';\">";
-                echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . date("F o", $date) . "</span></a></th>" . "\n";
-                echo "\t" . "<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . date("ym", $date) . "'\" title='" . $lang['ADMIN_LOGS_DOWNLOAD'] . date("F o", $date) . "'></th>";
-            } else {
-                echo "\t" . "<th colspan='2' onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=" . $typelog . "';\">";
-                echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . date("F o", $date) . "</span></a></th>" . "\n";
-            }
-        }
-        if ($i == 5) {
-            echo "</tr>" . "\n" . "<tr>";
-        }
-    }
-    echo "</tr>";
-    ?>
+        <?php if ($show == $show_year . "~" . $show_month . "~" . $show_day) :  ?>
+            <?php if (log_check_exist(date("ym", $date))) :?>
+            <td>
+                <span class="og-success"><?php echo date("F o", $date);?></span>
+            </td>
+             <td>
+                 <input  class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?php echo date("Fo", $date)?>'" title='<?php echo $lang['ADMIN_LOGS_DOWNLOAD'] . date("F o", $date);?>'>
+                 <input  class="og-button og-button-image  og-button-danger" type='image' src='images/drop.png' onclick="window.location = 'index.php?action=remove&amp;date=<?php date("ym", $date) . $show_day?>&directory=TRUE'" title='<?php echo $lang['ADMIN_LOGS_DELETE'] . date("F o", $date);?>'>
+            <?php else : ?>
+                <td colspan='2'>
+                    <?php echo date("F o", $date);?>
+                </td>
+            <?php endif ;?>
+           </td>
+        <?php else :?>
+            <?php if (log_check_exist(date("ym", $date))) :?>
+                <td onclick="window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=<?php echo $show;?>&amp;typelog=<?php echo $typelog;?>';">
+                    <?php echo date("F o", $date);?>
+                </td>
+                <td>
+                    <input class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?php echo date("ym", $date);?>'" title='<?php echo $lang['ADMIN_LOGS_DOWNLOAD'] . date("F o", $date);?>'>
+                </td>
+            <?php else : ?>
+               <td colspan='2' onclick="window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=<?php $show . "&amp;typelog=" . $typelog;?>';">
+                 <?php echo date("F o", $date);?>
+               </td>
+            <?php endif ;?>
+        <?php endif;?>
+        <?php if ($i == 5) :?>
+            </tr>
+            <tr>
+        <?php endif ;?>
+    <?php endfor;?>
+    </tr>
+    </tbody>
 </table>
 
-<br />
-<table width="100%">
-    <tr>
-        <td class="c" colspan="20"><?php echo ($lang['ADMIN_LOGS_SELECT_DAY']); ?></td>
+<table class="og-table og-full-table">
+    <thead>
+        <tr>
+            <th  colspan="20">
+                <?php echo ($lang['ADMIN_LOGS_SELECT_DAY']); ?>
+             </th>
+        </tr>  
+    </thead>
+    <tbody>
+         <?php $max_day = (intval($show_month) != date("m")) ? date("t", mktime(0, 0, 0, $show_month, 1, $show_year)) : date("d") ;?>
+    <tr> <!-- Jour -->
+   <?php  for ($i = 1; $i <= $max_day; $i++) :?>
+        <?php $day = $i;?>
+        <?php if ($i < 10) :?>
+            <?php $day = "0" . $i;?>
+        <?php endif;?>
+        <?php $show = $show_year . "~" . $show_month . "~" . $day;?>
+        <?php $date = mktime(0, 0, 0, $show_month, $day, $show_year);?>
+
+        <?php if ($show == $show_year . "~" . $show_month . "~" . $show_day) :?>
+            <?php if (log_check_exist($show_year . $show_month . $day)): ?>
+        <td>
+            <span class="og-success"><?php echo $day; ?></span>
+        </td>
+                <td>
+                    <input class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?php echo $show_year . $show_month . $day; ?>'" title='<?php echo $lang['ADMIN_LOGS_DOWNLOAD'] . date("d F o", $date); ?>'>
+                    <input class="og-button og-button-image  og-button-danger"  type='image' src='images/drop.png' onclick="window.location = 'index.php?action=remove&amp;date=<?php echo $show_year . $show_month . $day; ?>'" title='<?php echo $lang['ADMIN_LOGS_DELETE'] . date("d F o", $date); ?>'>
+                </td>
+            <?php else : ?>
+                <td colspan='2'>
+                    <?php echo $day; ?>
+                </td>
+            <?php endif; ?>
+    
+        <?php else :?>
+            <?php if (log_check_exist($show_year . $show_month . $day)) :?>
+                <td onclick="window.location='index.php?action=administration&amp;subaction=viewer&amp;show=<?php echo $show;?>&amp;typelog=<?php echo $typelog;?>';">
+                    <?php echo $day;?>
+                 </td>
+                 <td>
+                     <input class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?php echo $show_year . $show_month . $day;?>'" title='<?php echo $lang['ADMIN_LOGS_DOWNLOAD'] . date("d F o G:i", $date)?>'>
+            <?php else : ?>
+                <td colspan='2' onclick="window.location='index.php?action=administration&amp;subaction=viewer&amp;show=<?php echo $show;?>&amp;typelog=<?php echo $typelog;?>';">
+                    <?php echo $day;?>
+                </td>
+            <?php endif ;?>
+        <?php endif ;?>
+        <?php if ($i % 10 == 0) :?>
+            </tr>
+            <tr>
+        <?php endif ;?>
+    <?php endfor ;?>
+    <?php $j = 1; // $j ??>
+    <?php while (($i - 1) % 10 != 0) :?>
+       <td colspan='2'></td>
+        <?php $i++;?>
+    <?php endwhile;?>
+
     </tr>
-    <?php
-    $max_day = date("d");
-    if (intval($show_month) != date("m")) {
-        $max_day = date("t", mktime(0, 0, 0, $show_month, 1, $show_year));
-    }
-
-    echo "<tr>";
-    for ($i = 1; $i <= $max_day; $i++) {
-        $day = $i;
-        if ($i < 10) {
-            $day = "0" . $i;
-        }
-        $show = $show_year . "~" . $show_month . "~" . $day;
-        $date = mktime(0, 0, 0, $show_month, $day, $show_year);
-
-        if ($show == $show_year . "~" . $show_month . "~" . $show_day) {
-
-            if (log_check_exist($show_year . $show_month . $day)) {
-                echo "\t" . "<th><a>" . $day . "</a></th>";
-                echo "\t" . "<th width='40px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . $show_year . $show_month . $day . "'\" title='" . $lang['ADMIN_LOGS_DOWNLOAD'] . date("d F o", $date) . "'><input type='image' src='images/drop.png' onclick=\"window.location = 'index.php?action=remove&amp;date=" . $show_year . $show_month . $day . "'\" title='" . $lang['ADMIN_LOGS_DELETE'] . date("d F o", $date) . "'>";
-            } else {
-                echo "\t" . "<th colspan='2'><a>" . $day . "</a></th>";
-            }
-            echo "</th>" . "\n";
-        } else {
-            if (log_check_exist($show_year . $show_month . $day)) {
-                echo "\t" . "<th onclick=\"window.location='index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=" . $typelog . "';\">";
-                echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $day . "</span></a></th>";
-                echo "\t" . "<th width='16px'><input type='image' src='images/save.png' onclick=\"window.location = 'index.php?action=extractor&amp;date=" . $show_year . $show_month . $day . "'\" title='" . $lang['ADMIN_LOGS_DOWNLOAD'] . date("d F o G:i", $date) . "'>";
-            } else {
-                echo "\t" . "<th colspan='2' onclick=\"window.location='index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=" . $typelog . "';\">";
-                echo "<a style='cursor:pointer'><span style=\"color: lime; \">" . $day . "</span></a></th>";
-            }
-        }
-        if ($i % 10 == 0) {
-            echo "</tr>" . "\n" . "<tr>";
-        }
-    }
-    $j = 1;
-    while (($i - 1) % 10 != 0) {
-        echo "<th colspan='2'></th>";
-        $i++;
-    }
-    echo "</tr>";
-    ?>
+    </tbody>
 </table>
 
-<br />
-<table width="100%">
-    <tr>
-        <td class="c" colspan="3"><?php echo ($lang['ADMIN_LOGS_SELECTTYPE']); ?></td>
-    </tr>
-    <?php
-    $show = $show_year . "~" . $show_month . "~" . $show_day;
-    echo "<tr>";
-    if ($typelog == "log") {
-        echo "\t" . "<th width='50%'><a>" . $lang['ADMIN_LOGS_GENERAL'] . "</a></th>";
-        echo "\t" . "<th width='50%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=sql';\"><a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['ADMIN_LOGS_SQL'] . "</span></a></td>";
-    } else {
-        echo "\t" . "<th width='50%' onclick=\"window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=" . $show . "&amp;typelog=log';\"><a style='cursor:pointer'><span style=\"color: lime; \">" . $lang['ADMIN_LOGS_GENERAL'] . "</span></a></td>";
-        echo "\t" . "<th width='50%'><a>" . $lang['ADMIN_LOGS_SQL'] . "</a></td>";
-    }
-    echo "</tr>";
-    ?>
-    <tr>
-        <td colspan='2'><span style="color: Red; "><i><?php echo ($lang['ADMIN_LOGS_SEE_TRANSACTIONALS']); ?></i></span></td>
-    </tr>
-</table>
+<span class="og-alert"><?php echo ($lang['ADMIN_LOGS_SELECTTYPE']); ?></span>
+<div class="nav-page-menu">
+    
+    <?php $activelog = ($typelog == "log") ? " active " : "";?>
+    <?php $activelogsql = ($typelog != "log") ? " active " : "";?>
+    
+    <div class="nav-page-menu-item nav-page-menu-item-admin-infoserver <?php echo $activelog;?>">
+        <a class="nav-page-menu-link" href='index.php?action=administration&amp;subaction=viewer&amp;show=<?php echo $show;?>&amp;typelog=log'>
+            <?php echo $lang['ADMIN_LOGS_GENERAL'];?>
+        </a>
+    </div>
+    <div class="nav-page-menu-item nav-page-menu-item-admin-parameter <?php echo $activelogsql;?>">
+        <a class="nav-page-menu-link" href='index.php?action=administration&amp;subaction=viewer&amp;show=<?php echo $show;?>&amp;typelog=sql'>
+         <?php echo  $lang['ADMIN_LOGS_SQL']   ;?> 
+        </a>
+    </div>
+  
+</div>
 
-<br />
-<table width="100%">
-    <tr>
-        <td class="l" colspan="3"><b><?php echo ($lang['ADMIN_LOGS_VIEWER']); ?></b> <i><span style="color: red; "><b><?php echo $typelog == "log" ? $lang['ADMIN_LOGS_GENERAL'] : $lang['ADMIN_LOGS_SQL']; ?></b></span></i><br>
-            <?php
+<span class="og-alert"><?php echo ($lang['ADMIN_LOGS_SEE_TRANSACTIONALS']); ?></span>
+
+<table class="og-table og-full-table og-table-log">
+    <thead>
+        <tr>
+            <th>
+                <?php echo ($lang['ADMIN_LOGS_VIEWER']); ?>
+                <span class="og-alert">
+                    <?php echo $typelog == "log" ? $lang['ADMIN_LOGS_GENERAL'] : $lang['ADMIN_LOGS_SQL']; ?>
+                </span>
+            </th>
+        </tr>  
+    </thead>
+    <tbody>
+          <tr>
+            <td class="tdvalue" >
+
+ <?php
             end($log);
             while ($line = current($log)) {
 
@@ -192,7 +227,9 @@ echo "<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0, 0, 
                 echo $line;
                 prev($log);
             }
-            ?>
-        </td>
-    </tr>
+            ?> 
+            </td>
+        </tr>
+        </tbody>
 </table>
+

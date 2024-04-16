@@ -134,13 +134,14 @@ function remove_dir_from_ogspy($folder)
  * Convert an IP in Hex Format
  * @param string $ip format xxx.xxx.xxx.xxx in IPv4 and xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx in IPv6
  * @return string IP in hex : HHHHHHHH for IPv4 and HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH for IPv6
+ * @throws Exception
  */
 function encode_ip($ip)
 {
     if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
         $bin_ip = inet_pton($ip);
     } elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-        $bin_ip = inet_pton('[' . $ip . ']');
+        $bin_ip = inet_pton($ip);
     } else {
         throw new Exception('Adresse IP invalide');
     }
@@ -151,10 +152,10 @@ function encode_ip($ip)
 
 /**
  * Convert an IP in Hex format to an IPv4 or IPv6 format
- * @param string $int_ip IP encoded
+ * @param string $hex_ip
  * @return string $ip format xxx.xxx.xxx.xxx in IPv4 and xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx in IPv6
  */
-function decode_ip($hex_ip)
+function decode_ip(string $hex_ip): string
 {
     $bin_ip = hex2bin($hex_ip);
     $ip = inet_ntop($bin_ip);
@@ -165,12 +166,12 @@ function decode_ip($hex_ip)
  *  @brief Get the RGB color (red, green, blue) of the desired color.
  *
  *  @param[in] $Colorname The wanted color ('all' to retrieve all RGB HTML color code name)
- *  @return array('red,'green','blue') 0 as default ('black'), all=array of name with RGB
+ * @return array|false
  */
-function color_getColor($Colorname = 'all')
+function color_getColor($colorName = 'all')
 {
-    $Colorname = strtolower($Colorname);
-    $Colors  =  array(
+    $colorName = strtolower($colorName);
+    $colors  =  array(
         //  Colors  as  they  are  defined  in  HTML  3.2
         'black' => array('red' => 0x00, 'green' => 0x00, 'blue' => 0x00),
         'maroon' => array('red' => 0x80, 'green' => 0x00, 'blue' => 0x00),
@@ -312,13 +313,13 @@ function color_getColor($Colorname = 'all')
         'yellowgreen' => array('red' => 0x9A, 'green' => 0xCD, 'blue' => 0x32)
     );
 
-    if ($Colorname === 'all') {
-        return $Colors;
+    if ($colorName === 'all') {
+        return $colors;
     }
-    if (!isset($Colors[$Colorname])) {
+    if (!isset($colors[$colorName])) {
         return false;
     }
-    return $Colors[$Colorname];
+    return $colors[$colorName];
 }
 /**
  *  @brief Get color name or 'hex'.
@@ -453,8 +454,8 @@ function password_generator()
     $string = "abBDEFcdefghijkmnPQRSTUVWXYpqrst23456789";
     srand((float)microtime() * 1000000);
     $password = '';
-    for ($i = 0; $i < 6; $i++) {
-        $password .= $string[rand() % strlen($string)];
+    for ($i = 0; $i < 8; $i++) {
+        $password .= $string[random_int(0, strlen($string) - 1)];
     }
     return $password;
 }
@@ -463,6 +464,7 @@ function password_generator()
  * Initialisation of the cache for all Mod settings
  *
  * Generates a file which contains all configurations for different installed OGSpy Modules
+ * @return void
  */
 function init_mod_cache()
 {
@@ -489,6 +491,7 @@ function init_mod_cache()
  * Initialisation of the cache for all Server settings
  *
  * Generates a file which contains all configurations for the OGSpy Server
+ * @return void
  */
 function init_serverconfig()
 {
@@ -667,37 +670,37 @@ function set_serverconfig()
     //appel de la couche" Model"
     $Config_Model = new Config_Model();
 
-    if (!isset($pub_num_of_galaxies)) {
+    if (empty($pub_num_of_galaxies)) {
         $pub_num_of_galaxies = intval($server_config['num_of_galaxies']);
     }
-    if (!isset($pub_num_of_systems)) {
+    if (empty($pub_num_of_systems)) {
         $pub_num_of_systems = intval($server_config['num_of_systems']);
     }
 
     if (
-        !check_var($pub_max_battlereport, "Num") || !check_var(
-            $pub_max_favorites,
-            "Num"
-        ) || !check_var($pub_max_favorites_spy, "Num") || !check_var(
-            $pub_ratio_limit,
-            "Special",
-            "#^[\w\s,\.\-]+$#"
-        ) || !check_var($pub_max_spyreport, "Num") || !check_var($pub_server_active, "Num") || !check_var($pub_session_time, "Num") ||
-        !check_var($pub_max_keeplog, "Num") || !check_var($pub_debug_log, "Num") || !check_var($pub_block_ratio, "Num") || !check_var(stripslashes($pub_reason), "Text") || !check_var(
-            $pub_ally_protection,
-            "Special",
-            "#^[\w\s,\.\-]+$#"
-        ) || !check_var($pub_url_forum, "URL") || !check_var($pub_max_keeprank, "Num") || !check_var(
-            $pub_keeprank_criterion,
-            "Char"
-        ) || !check_var($pub_max_keepspyreport, "Num") || !check_var(stripslashes($pub_servername), "Text") || !check_var($pub_allied, "Special", "#^[\w\s,\.\-]+$#") ||
-        !check_var($pub_disable_ip_check, "Num") || !check_var(
-            $pub_num_of_galaxies,
-            "Galaxies"
-        ) || !check_var($pub_num_of_systems, "Galaxies") || !check_var(
-            $pub_config_cache,
-            "Num"
-        ) || !check_var($pub_mod_cache, "Num")
+        !check_var($pub_max_battlereport, "Num")
+        || !check_var($pub_max_favorites, "Num")
+        || !check_var($pub_max_favorites_spy, "Num")
+        || !check_var($pub_ratio_limit, "Num")
+        || !check_var($pub_max_spyreport, "Num")
+        || !check_var($pub_server_active, "Num")
+        || !check_var($pub_session_time, "Num")
+        || !check_var($pub_max_keeplog, "Num")
+        || !check_var($pub_debug_log, "Num")
+        || !check_var($pub_block_ratio, "Num")
+        || !check_var(stripslashes($pub_reason), "Text")
+        || !check_var($pub_ally_protection, "Special", "#^[\w\s,\.\-]+$#")
+        || !check_var($pub_url_forum, "URL")
+        || !check_var($pub_max_keeprank, "Num")
+        || !check_var($pub_keeprank_criterion, "Char")
+        || !check_var($pub_max_keepspyreport, "Num")
+        || !check_var(stripslashes($pub_servername), "Text")
+        || !check_var($pub_allied, "Special", "#^[\w\s,\.\-]+$#")
+        || !check_var($pub_disable_ip_check, "Num")
+        || !check_var($pub_num_of_galaxies, "Galaxies")
+        || !check_var($pub_num_of_systems, "Galaxies")
+        || !check_var($pub_config_cache, "Num")
+        || !check_var($pub_mod_cache, "Num")
     ) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
@@ -716,30 +719,14 @@ function set_serverconfig()
         redirection("index.php?action=message&id_message=setting_serverconfig_failed&info");
     }
 
-    if (is_null($pub_server_active)) {
-        $pub_server_active = 0;
-    }
-    if (is_null($pub_disable_ip_check)) {
-        $pub_disable_ip_check = 0;
-    }
-    if (is_null($pub_log_phperror)) {
-        $pub_log_phperror = 0;
-    }
-    if (is_null($pub_debug_log)) {
-        $pub_debug_log = 0;
-    }
-    if (is_null($pub_block_ratio)) {
-        $pub_block_ratio = 0;
-    }
-    if (is_null($pub_mail_use)) {
-        $pub_mail_use = 0;
-    }
-    if (is_null($pub_mail_smtp_use)) {
-        $pub_mail_smtp_use = 0;
-    }
-    if (is_null($pub_mail_smtp_secure)) {
-        $pub_mail_smtp_secure = 0;
-    }
+    $pub_server_active = $pub_server_active ?? 0;
+    $pub_disable_ip_check = $pub_disable_ip_check ?? 0;
+    $pub_log_php_error = $pub_log_php_error ?? 0;
+    $pub_debug_log = $pub_debug_log ?? 0;
+    $pub_block_ratio = $pub_block_ratio ?? 0;
+    $pub_mail_use = $pub_mail_use ?? 0;
+    $pub_mail_smtp_use = $pub_mail_smtp_use ?? 0;
+    $pub_mail_smtp_secure = $pub_mail_smtp_secure ?? 0;
 
     $break = false;
     if ($pub_server_active != 0 && $pub_server_active != 1) {
@@ -1149,7 +1136,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
 
             //Galaxies
         case "Galaxies":
-            if ($value < 1 || $value > 999) {
+            if ($value < 1 || $value > 999 ) {
                 log_("check_var", array("Galaxy or system", $value));
                 return false;
             }
@@ -1158,7 +1145,7 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
             //Adresse internet
         case "URL":
             if (!preg_match(
-                "/^(((https|http):\/\/)?(?(2)(www\.)?|(www\.){1})?[-a-z0-9~_]{2,}(\.[-a-z0-9~._]{2,})?[-a-z0-9~_\/&\?=.]{2,})$/i",
+                "/^((https:\/\/(www\.)?)?[-a-z0-9~_]{2,}(\.[-a-z0-9~._]{2,})?[-a-z0-9~_\/&\?=.]{2,})$/i",
                 $value
             )) {
                 log_("check_var", array("URL", $value));
@@ -1292,16 +1279,6 @@ function check_postvalue($secvalue)
 }
 
 /**
- * OGSpy Simple Hash Function for unsecure tokens
- * @param string The string to Hash
- * @return string Returns the hash of the input function
- */
-function crypto($str)
-{
-    return md5(sha1($str));
-}
-
-/**
  * OGSpy Key Generator : This key will be the unique id of the current OGSpy installation.
  *
  * The current OGSpy Key is written in a file named parameters/key.php
@@ -1313,12 +1290,11 @@ function generate_key()
     srand((float)microtime() * 1000000);
     $pass = time();
     for ($i = 0; $i < 20; $i++) {
-        $pass .= $str[rand() % strlen($str)];
+        $pass .= $str[random_int(0, strlen($str) - 1)];
     }
-    $key = crypto($pass);
+    $key = md5(sha1($pass));
     // création du path
-    $path = $_SERVER["SCRIPT_FILENAME"];;
-
+    $path = $_SERVER["SCRIPT_FILENAME"];
 
     $key_php[] = '<?php';
     $key_php[] = '/***************************************************************************';
@@ -1335,7 +1311,9 @@ function generate_key()
     $key_php[] = '';
     $key_php[] = 'define("OGSPY_KEY", TRUE);';
 
-    write_file("./parameters/key.php", "w", $key_php);
+    if (!file_exists('parameters/key.php')) {
+        write_file("./parameters/key.php", "w", $key_php);
+    }
 }
 
 /********************************************************************************/
@@ -1459,9 +1437,9 @@ function booster_verify_str($str)
  *      'full'       donne les tableaux simple : définition, uuid, string, array)
  *      'separateur' donne le char qui sert de séparateur entre les objets Ogame
  *      'default_str' donne la string de stockage par défaut : "m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0"
- * @return  le tableau correspondant au type
+ * @return  array le tableau correspondant au type
  */
-function booster_objets_tab($type = '')
+ function booster_objets_tab($type = '')
 {
     $objet_str = array(
         'Booster de métal en platine', 'Booster de métal en or', 'Booster de métal en argent', 'Booster de métal en bronze',
@@ -1738,7 +1716,7 @@ function booster_encodev(
     return $str;
 }
 
-/**                     Fin booster partie                                     **/
+/**  Fin booster partie **/
 /********************************************************************************/
 
 /**

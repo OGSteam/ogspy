@@ -77,7 +77,9 @@ class Combat_Report_Model  extends Model_Abstract
         // récupération des Rounds
         $rounds = array();
         $tRcroundId = array();
-        $query = "SELECT `id_rcround`, `id_rc`, `numround`, `attaque_tir`, `attaque_puissance`, `attaque_bouclier`, `defense_tir`, `defense_puissance`, `defense_bouclier` FROM " . TABLE_PARSEDRCROUND . " WHERE `id_rc` =  $id_rc  ORDER BY `numround`";
+        $query = "SELECT `id_rcround`, `id_rc`, `numround`, `attaque_tir`, `attaque_puissance`, `attaque_bouclier`,
+       `defense_tir`, `defense_puissance`, `defense_bouclier`
+                  FROM " . TABLE_PARSEDRCROUND . " WHERE `id_rc` =  $id_rc  ORDER BY `numround`";
         $result_round = $this->db->sql_query($query);
         // on indique le rounrc afin de pouvoir relier les infos (attaque / defenseusr)
         while ($round = $this->db->sql_fetch_assoc($result_round)) {

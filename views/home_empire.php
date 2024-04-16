@@ -24,6 +24,7 @@ $user_empire = user_get_empire($user_data['user_id']);
 $user_building   = $user_empire['building'];
 $user_defence    = $user_empire['defence'];
 $user_technology = $user_empire['technology'];
+
 $nb_planete      = find_nb_planete_user($user_data['user_id']);
 
 if (!isset($pub_view)) {
@@ -41,6 +42,8 @@ switch ($pub_view) {
 }
 
 /* Restes du Lang Empire :-) */
+/* prerequis : ogame_elements_requirement() + prerequis_Valid */
+/*
 $technology_requirement["Esp"] = array(3);
 $technology_requirement["Ordi"] = array(1);
 $technology_requirement["Armes"] = array(4);
@@ -57,6 +60,7 @@ $technology_requirement["Plasma"] = array(4, "NRJ" => 8, "Laser" => 10, "Ions" =
 $technology_requirement["RRI"] = array(10, "Ordi" => 8, "Hyp" => 8);
 $technology_requirement["Graviton"] = array(12);
 $technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
+*/
 
 $name = $coordinates = $fields = $temperature_min = $temperature_max = $satellite = "";
 //Planète
@@ -77,1227 +81,1152 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
     $temperature_max .= "'" . $user_building[$i]["temperature_max"] . "', ";
     $satellite       .= "'" . $user_building[$i]["Sat"] . "', ";
 }
+
+
+// place le tag active au besoin
+$tagactive = "active";
+$tagactiveplanets = "";
+$tagactivemoons = "";
+
+switch ($view) {
+    case "planets":
+        $tagactiveplanets = $tagactive;
+        break;
+    case "moons":
+        $tagactivemoons = $tagactive;
+        break;
+    default:
+        break;
+}
+
 ?>
-<table width="100%">
-    <tr>
-        <?php
-        $colspan = ($nb_planete + 1) / 2;
-        $colspan_planete = floor($colspan);
-        $colspan_lune = ceil($colspan);
+<div class="nav-page-menu">
+    <div class="nav-page-menu-item nav-page-menu-item-admin-infoserver <?php echo $tagactiveplanets; ?>">
+        <a class="nav-page-menu-link" href="index.php?action=home&amp;view=planets">
+            <?php echo $lang['HOME_EMPIRE_PLANET']; ?>
+        </a>
+    </div>
+    <div class="nav-page-menu-item nav-page-menu-item-admin-parameter <?php echo $tagactivemoons; ?>">
+        <a class="nav-page-menu-link" href="index.php?action=home&amp;view=moons">
+            <?php echo $lang['HOME_EMPIRE_MOON']; ?>
+        </a>
+    </div>
+</div>
 
-        if ($view == 'planets') {
-            echo "<th colspan='$colspan_planete'><a>" . $lang['HOME_EMPIRE_PLANET'] . "</a></th>\n";
-            echo "<td class='c' align='center' colspan='$colspan_lune' onClick=\"window.location = 'index.php?action=home&amp;view=moons';\"><a style='cursor:pointer'><font color='lime'>" . $lang['HOME_EMPIRE_MOON'] . "</font></a></td>\n";
-        } else {
-            echo "<th colspan='$colspan_lune'><a>" . $lang['HOME_EMPIRE_MOON'] . "</a></th>\n";
-            echo "<td class='c' align='center' colspan='$colspan_planete' onClick=\"window.location = 'index.php?action=home&amp;view=planets';\"><a style='cursor:pointer'><font color='lime'>" . $lang['HOME_EMPIRE_PLANET'] . "</font></a></td>\n";
-        }
-        ?>
-    </tr>
-    <?php
-    // vérification de compte de planete/lune avec la technologie astro
-    if (!isset($user_technology['Astrophysique']) || $user_technology['Astrophysique'] == '') {
-        $user_technology['Astrophysique'] = 0;
-    }
-    $astro = astro_max_planete($user_technology['Astrophysique']);
+<?php
+// vérification de compte de planete/lune avec la technologie astro
+if (!isset($user_technology['Astrophysique']) || $user_technology['Astrophysique'] == '') {
+    $user_technology['Astrophysique'] = 0;
+}
+$astro = astro_max_planete($user_technology['Astrophysique']);
+?>
+<?php if (((find_nb_planete_user($user_data['user_id']) > $astro) || (find_nb_moon_user($user_data['user_id']) > $astro)) && ($user_technology != false)) : ?>
+    <div class="og-msg og-msg-danger">
+        <h3 class="og-title"><?php echo $lang['HOME_EMPIRE_ERROR']; ?></h3>
+        <p class="og-content">
+            <?php echo (find_nb_planete_user($user_data['user_id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_PLANET'] . '<br>' : ''; ?>
+            <?php echo (find_nb_moon_user($user_data['user_id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_MOON'] . '<br>' : ''; ?>
+        </p>
+    </div>
+<?php endif; ?>
+<?php // fin vérification de compte de planete/lune avec la technologie astro
+?>
 
-    if (((find_nb_planete_user($user_data['user_id']) > $astro) || (find_nb_moon_user($user_data['user_id']) > $astro)) && ($user_technology != false)) {
-        echo '<tr>';
-        echo '<td class="c" colspan="' . ($nb_planete < 10 ? '10' : $nb_planete + 1) . '">';
-        echo $lang['HOME_EMPIRE_ERROR'] . ' ';
-        echo (find_nb_planete_user($user_data['user_id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_PLANET'] . '<br>' : '';
-        echo (find_nb_moon_user($user_data['user_id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_MOON'] . '<br>' : '';
-        echo "</td></tr>\n";
-    }
-    ?>
-    <tr>
-        <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>"><?php echo ($lang['HOME_EMPIRE_SUMMARY']); ?></td>
-    </tr>
-    <tr>
-        <th>&nbsp;</th>
-        <?php
-        for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-
-            $user_production[$i] = ogame_production_planet($user_building[$i], $user_technology, $user_data, $server_config);
-            echo "<th>";
-            if (!isset($pub_view) || $pub_view == "planets") {
-                // echo "<input type='image' title='" . $lang['HOME_EMPIRE_MOVELEFT'] . " " . $user_building[$i]["planet_name"] . "' src='images/previous.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;left';\">&nbsp;&nbsp;";
-                echo "<input type='image' title='" . $lang['HOME_EMPIRE_MOVELEFT'] . " " . $user_building[$i]["planet_name"] . "' src='images/previous.png'>&nbsp;&nbsp;";
-                echo "<input type='image' title='" . $lang['HOME_EMPIRE_DELETE_PLANET'] . " " . $user_building[$i]["planet_name"] . "' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "';\">&nbsp;&nbsp;";
-                // echo "<input type='image' title='" . $lang['HOME_EMPIRE_MOVERIGHT'] . " " . $user_building[$i]["planet_name"] . "' src='images/next.png' onclick=\"window.location = 'index.php?action=move_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "&amp;right';\">";
-                echo "<input type='image' title='" . $lang['HOME_EMPIRE_MOVERIGHT'] . " " . $user_building[$i]["planet_name"] . "' src='images/next.png'>";
-            } else {
-                echo "<input type='image' title='" . $lang['HOME_EMPIRE_DELETE_MOON'] . " " . $user_building[$i]["planet_name"] . "' src='images/drop.png' onclick=\"window.location = 'index.php?action=del_planet&amp;planet_id=" . $i . "&amp;view=" . $view . "';\">&nbsp;&nbsp;";
-            }
-            echo "</th>\n";
-        }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_NAME']); ?></a></th>
-        <?php
-        for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            $name = $user_building[$i]["planet_name"];
-            if ($name == "") {
-                $name = "&nbsp;";
-            }
-            echo "\t" . "<th><a>" . $name . "</a></th>" . "\n";
-        }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_COORD']); ?></a></th>
-        <?php
-        for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            $coordinates = $user_building[$i]["coordinates"];
-            if ($coordinates == "" || ($user_building[$i]["planet_name"] == "" && $view == "moons")) {
-                $coordinates = "&nbsp;";
-            } else {
-                $coordinates = "[" . $coordinates . "]";
-            }
-
-            echo "\t" . "<th>" . $coordinates . "</th>" . "\n";
-        }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_FIELDS']); ?></a></th>
-        <?php
-        for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            $fields = $user_building[$i]["fields"];
-            if ($fields == "0") {
-                $fields = 0;
-            }
-            $fields_used = $user_building[$i]["fields_used"];
-
-            echo "\t" . "<th>" . $fields_used . " / " . ($fields != 0 ? $fields : "") . "</th>" . "\n";
-        }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_MINTEMP']); ?></a></th>
-        <?php
-        for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            $temperature_min = $user_building[$i]["temperature_min"];
-            if ($temperature_min == "") {
-                $temperature_min = "&nbsp;";
-            }
-
-            echo "\t" . "<th>" . $temperature_min . "</th>" . "\n";
-        }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_MAXTEMP']); ?></a></th>
-        <?php
-        for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            $temperature_max = $user_building[$i]["temperature_max"];
-            if ($temperature_max == "") {
-                $temperature_max = "&nbsp;";
-            }
-
-            echo "\t" . "<th>" . $temperature_max . "</th>" . "\n";
-        }
-        ?>
-    </tr>
-    <tr style='font-style:italic;'>
-        <th><a><?php echo ($lang['HOME_EMPIRE_EXTENSION']); ?></a></th>
-        <?php
-        for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            $booster = "&nbsp;";
-            $booster_tab = booster_decode($user_building[$i]["boosters"]);
-
-            if ($view == "planets") {
-                $booster = $booster_tab['extention_p'];
-            } else {
-                $booster = $booster_tab['extention_m'];
-            }
-
-            echo "\t" . "<th>" . $booster . "</th>" . "\n";
-        }
-
-        if ($view == "planets") {
-        ?>
-    </tr>
-    <tr>
-        <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>"><?php echo ($lang['HOME_EMPIRE_PRODUCTION_EXPECTED']); ?></td>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_METAL']); ?></a></th>
-        <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $M = $user_building[$i]['M'];
-                if ($M != "") {
-                    echo "\t" . "<th>" . $user_production[$i]['prod_theorique']['M'] . "</th>" . "\n";
-                } else {
-                    echo "\t" . "<th>&nbsp;</th>" . "\n";
-                }
-            }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_CRYSTAL']); ?></a></th>
-        <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $C = $user_building[$i]['C'];
-                if ($C != "") {
-                    echo "\t" . "<th>" . $user_production[$i]['prod_theorique']['C'] . "</th>" . "\n";
-                } else {
-                    echo "\t" . "<th>&nbsp;</th>" . "\n";
-                }
-            }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_DEUT']); ?></a></th>
-        <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $D = $user_building[$i]['D'];
-                if ($D != "") {
-                    echo "\t" . "<th>" . $user_production[$i]['prod_theorique']['D'] . "</th>" . "\n";
-                } else {
-                    echo "\t" . "<th>&nbsp;</th>" . "\n";
-                }
-            }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_ENERGY']); ?></a></th>
-        <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                if (!isset($user_production[$i]['NRJ'])) {
-                    $user_production[$i]['NRJ'] = 0;
-                }
-                echo "\t" . "<th>" . number_format($user_production[$i]['NRJ'], 0, ',', ' ') . "</th>" . "\n";
-            }
-
-        ?>
-    <tr>
-        <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>"><?php echo ($lang['HOME_EMPIRE_PRODUCTION_REAL']); ?></td>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_RATIO']); ?></a></th>
-        <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                if (!isset($user_production[$i]['ratio'])) {
-                    $user_production[$i]['ratio'] = 0;
-                }
-                echo "\t" . "<th style='font-weight:bold; color:";
-                if ($user_production[$i]['ratio'] != 1) {
-                    echo "red";
-                } else {
-                    echo "green";
-                }
-                echo ";'>";
-                echo number_format(round($user_production[$i]['ratio'], 3), 3, ',', ' ');
-                echo "</th>" . "\n";
-            }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_METAL']); ?></a></th>
-        <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                if ($user_building[$i]['M'] != "") {
-                    echo "\t" . "<th>" . number_format(floor($user_production[$i]['prod_reel']['M']), 0, ',', ' ') . "</th>" . "\n";
-                } else {
-                    echo "\t" . "<th>&nbsp;</th>" . "\n";
-                }
-            }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_CRYSTAL']); ?></a></th>
-        <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                if ($user_building[$i]['C'] != "") {
-                    echo "\t" . "<th>" . number_format(floor($user_production[$i]['prod_reel']['C']), 0, ',', ' ') . "</th>" . "\n";
-                } else {
-                    echo "\t" . "<th>&nbsp;</th>" . "\n";
-                }
-            }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_DEUT']); ?></a></th>
-        <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                if ($user_building[$i]['D'] != "") {
-                    echo "\t" . "<th>" . number_format(floor($user_production[$i]['prod_reel']['D']), 0, ',', ' ') . "</th>" . "\n";
-                } else {
-                    echo "\t" . "<th>&nbsp;</th>" . "\n";
-                }
-            }
-        ?>
-    </tr>
-    <tr style='font-style:italic;'>
-        <th><a><?php echo ($lang['HOME_EMPIRE_BOOSTER']); ?></a></th>
-        <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $booster_tab = booster_decode($user_building[$i]["boosters"]);
-                echo "\t" . "<th>m:" . $booster_tab['booster_m_val'] . '%, c:' . $booster_tab['booster_c_val'] . '%, d:' . $booster_tab['booster_d_val'] . '%, e:' . $booster_tab['booster_e_val'] . "%</th>" . "\n";
-            }
-        ?>
-    </tr>
-    <tr>
-        <td class="c_batiments" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
-            <?php echo ($lang['HOME_EMPIRE_BUILDINGS']); ?>
-        </td>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_MINE_METAL']); ?></a></th>
-        <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $M = $user_building[$i]["M"];
-                if ($M == "") {
-                    $M = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='15" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $M . "</span></th>" . "\n";
-            }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_MINE_CRYSTAL']); ?></a></th>
-        <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $C = $user_building[$i]["C"];
-                if ($C == "") {
-                    $C = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='16" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $C . "</span></th>" . "\n";
-            }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_MINE_DEUT']); ?></a></th>
-        <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $D = $user_building[$i]["D"];
-                if ($D == "") {
-                    $D = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='17" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $D . "</span></th>" . "\n";
-            }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_SOLAR_PLANT']); ?></a></th>
-        <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $CES = $user_building[$i]["CES"];
-                if ($CES == "") {
-                    $CES = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='20" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $CES . "</span></th>" . "\n";
-            }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_FUSION_PLANT']); ?></a></th>
-    <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $CEF = $user_building[$i]["CEF"];
-                if ($CEF == "") {
-                    $CEF = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='21" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $CEF . "</span></th>" . "\n";
-            }
-        } // fin de si view="planets"
-        else {
-            echo '</tr><tr> <td class="c" colspan="';
-            print ($nb_planete < 10) ? '10' : $nb_planete + 1;
-            echo '">' . $lang['HOME_EMPIRE_BUILDINGS'] . '</td>';
-        }
-    ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_ROBOTS_PLANT']); ?></a></th>
-        <?php
-        for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            $UdR = $user_building[$i]["UdR"];
-            if ($UdR == "") {
-                $UdR = "&nbsp;";
-            }
-
-            echo "\t" . "<th><span  id='1" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $UdR . "</span></th>" . "\n";
-        }
-
-        if ($view == "planets") {
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_NANITES_PLANT']); ?></a></th>
-    <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $UdN = $user_building[$i]["UdN"];
-                if ($UdN == "") {
-                    $UdN = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='22" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $UdN . "</span></th>" . "\n";
-            }
-        } // fin de si view="planets"
-    ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_SHIPYARD']); ?></a></th>
-        <?php
-        for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            $CSp = $user_building[$i]["CSp"];
-            if ($CSp == "") {
-                $CSp = "&nbsp;";
-            }
-
-            echo "\t" . "<th><span  id='2" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $CSp . "</span></th>" . "\n";
-        }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_METALSTORAGE']); ?></a></th>
-        <?php
-        for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            $HM = $user_building[$i]["HM"];
-            if ($HM == "") {
-                $HM = "&nbsp;";
-            }
-
-            echo "\t" . "<th><span  id='3" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $HM . "</span></th>" . "\n";
-        }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_CRYSTALSTORAGE']); ?></a></th>
-        <?php
-        for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            $HC = $user_building[$i]["HC"];
-            if ($HC == "") {
-                $HC = "&nbsp;";
-            }
-
-            echo "\t" . "<th><span  id='4" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $HC . "</span></th>" . "\n";
-        }
-        ?>
-    </tr>
-    <tr>
-        <th><a><?php echo ($lang['HOME_EMPIRE_DEUTSTORAGE']); ?></a></th>
-        <?php
-        for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-            $HD = $user_building[$i]["HD"];
-            if ($HD == "") {
-                $HD = "&nbsp;";
-            }
-
-            echo "\t" . "<th><span  id='5" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $HD . "</span></th>" . "\n";
-        }
-        ?>
-    </tr>
-    <?php
-    if ($view == "planets") { ?>
-
+<table class="og-table og-full-table og-table-empire">
+    <thead>
         <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_RESEARCHLAB']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $Lab = $user_building[$i]["Lab"];
-                if ($Lab == "") {
-                    $Lab = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='23" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Lab . "</span></th>" . "\n";
-            }
-            if ($server_config['ddr'] == 1) {
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_ALLIANCEDEPOT']); ?></a></th>
-        <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $DdR = $user_building[$i]["DdR"];
-                    if ($DdR == "") {
-                        $DdR = "&nbsp;";
-                    }
-
-                    echo "\t" . "<th><span  id='42" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $DdR . "</span></th>" . "\n";
-                }
-            } //Fin de si $server_config['ddr']
-        ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TERRAFORMER']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $Ter = $user_building[$i]["Ter"];
-                if ($Ter == "") {
-                    $Ter = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='24" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Ter . "</span></th>" . "\n";
-            }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_MISSILESSILO']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $Silo = $user_building[$i]["Silo"];
-                if ($Silo == "") {
-                    $Silo = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='25" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Silo . "</span></th>" . "\n";
-            }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_DOCK']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $Dock = $user_building[$i]["Dock"];
-                if ($Dock == "") {
-                    $Dock = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='25" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Dock . "</span></th>" . "\n";
-            }
-        } else {
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_LUNARSTATION']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $BaLu = $user_building[$i]["BaLu"];
-                if ($BaLu == "") {
-                    $BaLu = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='15" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $BaLu . "</span></th>" . "\n";
-            }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_LUNARPHALANX']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $Pha = $user_building[$i]["Pha"];
-                if ($Pha == "") {
-                    $Pha = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='16" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Pha . "</span></th>" . "\n";
-            }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_LUNARJUMPGATE']); ?></a></th>
-        <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $PoSa = $user_building[$i]["PoSa"];
-                if ($PoSa == "") {
-                    $PoSa = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='17" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $PoSa . "</span></th>" . "\n";
-            }
-        } // fin de sinon view="planets"
-        ?>
-        </tr>
-        <tr>
-            <td class="c_satellite" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1; ?>"><?php echo ($lang['HOME_EMPIRE_OTHERS']); ?></td>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_SATELLITES']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $Sat = $user_building[$i]["Sat"];
-                if ($Sat == "") {
-                    $Sat = "&nbsp;";
-                } else {
-                    $Sat = number_format($Sat, 0, ',', ' ');
-                }
-
-                echo "\t" . "<th><span  id='6" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Sat . "</span></th>" . "\n";
-            }
-
-            if ($view == "planets") {
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_CRAWLER']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $For = $user_building[$i]["FOR"];
-                    $class_collect = ($user_data['user_class'] === 'COL') ? '1' : '0';
-                    $nb_max = foreuse_max($user_building[$i]['M'], $user_building[$i]['C'], $user_building[$i]['D'], $user_data['off_geologue'], $class_collect);
-                    if ($For == "") {
-                        $For = "&nbsp;";
-                    } else {
-                        $For = number_format($For, 0, ',', ' ');
-                    }
-
-                    echo "\t" . "<th><span  id='43" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $For . " / " . $nb_max . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <td class="c_classement_recherche" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>"><?php echo ($lang['HOME_EMPIRE_TECHNOS']); ?></td>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_SPY']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $Esp = "&nbsp;";
-
-                    if ($user_building[$i][0] == true) {
-                        $Esp = $user_technology["Esp"] != "" ? $user_technology["Esp"] : "0";
-                        $requirement = $technology_requirement["Esp"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $Esp = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $Esp = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='26" . (($i + 1 - $start)) . "' style=\"color: lime; \">" . $Esp . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_COMPUTER']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $Ordi = "&nbsp;";
-
-                    if ($user_building[$i][0] == true) {
-                        $Ordi = $user_technology["Ordi"] != "" ? $user_technology["Ordi"] : "0";
-                        $requirement = $technology_requirement["Ordi"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $Ordi = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $Ordi = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='27" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Ordi . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_WEAPONS']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $Armes = "&nbsp;";
-
-                    if ($user_building[$i][0] == true) {
-                        $Armes = $user_technology["Armes"] != "" ? $user_technology["Armes"] : "0";
-                        $requirement = $technology_requirement["Armes"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $Armes = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $Armes = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='28" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Armes . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_SHIELD']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $Bouclier = "&nbsp;";
-
-                    if ($user_building[$i][0] == true) {
-                        $Bouclier = $user_technology["Bouclier"] != "" ? $user_technology["Bouclier"] : "0";
-                        $requirement = $technology_requirement["Bouclier"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $Bouclier = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $Bouclier = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='29" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Bouclier . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_PROTECTION']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $Protection = "&nbsp;";
-
-                    if ($user_building[$i][0] == true) {
-                        $Protection = $user_technology["Protection"] != "" ? $user_technology["Protection"] : "0";
-                        $requirement = $technology_requirement["Protection"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $Protection = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $Protection = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='30" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Protection . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_ENERGY']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $NRJ = "&nbsp;";
-
-                    if ($user_building[$i][0] == true) {
-                        $NRJ = $user_technology["NRJ"] != "" ? $user_technology["NRJ"] : "0";
-                        $requirement = $technology_requirement["NRJ"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $NRJ = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $NRJ = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='31" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $NRJ . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_HYPERSPACE']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $Hyp = "&nbsp;";
-
-                    if ($user_building[$i][0]) {
-                        $Hyp = $user_technology["Hyp"] != "" ? $user_technology["Hyp"] : "0";
-                        $requirement = $technology_requirement["Hyp"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $Hyp = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $Hyp = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='32" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Hyp . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_COMBUSTION_DRIVE']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $RC = "&nbsp;";
-
-                    if ($user_building[$i][0] == true) {
-                        $RC = $user_technology["RC"] != "" ? $user_technology["RC"] : "0";
-                        $requirement = $technology_requirement["RC"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $RC = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $RC = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='33" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $RC . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_IMPULSE_DRIVE']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $RI = "&nbsp;";
-
-                    if ($user_building[$i][0] == true) {
-                        $RI = $user_technology["RI"] != "" ? $user_technology["RI"] : "0";
-                        $requirement = $technology_requirement["RI"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $RI = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $RI = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='34" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $RI . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_HYPER_DRIVE']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $PH = "&nbsp;";
-
-                    if ($user_building[$i][0] == true) {
-                        $PH = $user_technology["PH"] != "" ? $user_technology["PH"] : "0";
-                        $requirement = $technology_requirement["PH"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $PH = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $PH = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='35" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $PH . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_LASER']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $Laser = "&nbsp;";
-
-                    if ($user_building[$i][0]) {
-                        $Laser = $user_technology["Laser"] != "" ? $user_technology["Laser"] : "0";
-                        $requirement = $technology_requirement["Laser"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $Laser = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $Laser = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='36" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Laser . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_IONS']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $Ions = "&nbsp;";
-
-                    if ($user_building[$i][0]) {
-                        $Ions = $user_technology["Ions"] != "" ? $user_technology["Ions"] : "0";
-                        $requirement = $technology_requirement["Ions"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $Ions = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $Ions = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='37" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Ions . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_PLASMA']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $Plasma = "&nbsp;";
-                    if ($user_building[$i][0]) {
-                        $Plasma = $user_technology["Plasma"] != "" ? $user_technology["Plasma"] : "0";
-                        $requirement = $technology_requirement["Plasma"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key === 0) {
-                                if ($Lab < $value) {
-                                    $Plasma = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $Plasma = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-                    echo "\t" . "<th><span  id='38" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Plasma . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_RESEARCH_NETWORK']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $RRI = "&nbsp;";
-
-                    if ($user_building[$i][0]) {
-                        $RRI = $user_technology["RRI"] != "" ? $user_technology["RRI"] : "0";
-                        $requirement = $technology_requirement["RRI"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $RRI = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $RRI = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='39" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $RRI . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_ASTRO']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $Astrophysique = "&nbsp;";
-
-                    if ($user_building[$i][0]) {
-                        $Astrophysique = $user_technology["Astrophysique"] != "" ? $user_technology["Astrophysique"] : "0";
-                        $requirement = $technology_requirement["Astrophysique"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $Astrophysique = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $Astrophysique = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='41" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Astrophysique . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS_GRAVITY']); ?></a></th>
-        <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $Lab = $user_building[$i]["Lab"];
-                    $Graviton = "&nbsp;";
-
-                    if ($user_building[$i][0]) {
-                        $Graviton = $user_technology["Graviton"] != "" ? $user_technology["Graviton"] : "0";
-                        $requirement = $technology_requirement["Graviton"];
-
-                        while ($value = current($requirement)) {
-                            $key = key($requirement);
-                            if ($key == 0) {
-                                if ($Lab < $value) {
-                                    $Graviton = "-";
-                                }
-                            } elseif ($user_technology[$key] < $value) {
-                                $Graviton = "-";
-                            }
-                            next($requirement);
-                        }
-                    }
-
-                    echo "\t" . "<th><span  id='40" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $Graviton . "</span></th>" . "\n";
-                }
-            } // fin de si view="planets"
-        ?>
-        </tr>
-        <tr>
-            <td class="c_defense" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>"><?php echo ($lang['HOME_EMPIRE_WEAPONS_TITLE']); ?></td>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_WEAPONS_MISSILES']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $LM = $user_defence[$i]["LM"];
-                if ($LM == "") {
-                    $LM = "&nbsp;";
-                } else {
-                    $LM = number_format($LM, 0, ',', ' ');
-                }
-
-                echo "\t" . "<th><span  id='7" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $LM . "</span></th>" . "\n";
-            }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_WEAPONS_LLASERS']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $LLE = $user_defence[$i]["LLE"];
-                if ($LLE == "") {
-                    $LLE = "&nbsp;";
-                } else {
-                    $LLE = number_format($LLE, 0, ',', ' ');
-                }
-
-                echo "\t" . "<th><span  id='8" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $LLE . "</span></th>" . "\n";
-            }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_WEAPONS_HLASERS']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $LLO = $user_defence[$i]["LLO"];
-                if ($LLO == "") {
-                    $LLO = "&nbsp;";
-                } else {
-                    $LLO = number_format($LLO, 0, ',', ' ');
-                }
-
-                echo "\t" . "<th><span  id='9" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $LLO . "</span></th>" . "\n";
-            }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_WEAPONS_GAUSS']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $CG = $user_defence[$i]["CG"];
-                if ($CG == "") {
-                    $CG = "&nbsp;";
-                } else {
-                    $CG = number_format($CG, 0, ',', ' ');
-                }
-
-                echo "\t" . "<th><span  id='10" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $CG . "</span></th>" . "\n";
-            }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_WEAPONS_IONS']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $AI = $user_defence[$i]["AI"];
-                if ($AI == "") {
-                    $AI = "&nbsp;";
-                } else {
-                    $AI = number_format($AI, 0, ',', ' ');
-                }
-
-                echo "\t" . "<th><span  id='11" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $AI . "</span></th>" . "\n";
-            }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_WEAPONS_PLASMA']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $LP = $user_defence[$i]["LP"];
-                if ($LP == "") {
-                    $LP = "&nbsp;";
-                } else {
-                    $LP = number_format($LP, 0, ',', ' ');
-                }
-
-                echo "\t" . "<th><span  id='12" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $LP . "</span></th>" . "\n";
-            }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_WEAPONS_SMALLSHIELD']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $PB = $user_defence[$i]["PB"];
-                if ($PB == "") {
-                    $PB = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='13" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $PB . "</span></th>" . "\n";
-            }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_WEAPONS_LARGESHIELD']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $GB = $user_defence[$i]["GB"];
-                if ($GB == "") {
-                    $GB = "&nbsp;";
-                }
-
-                echo "\t" . "<th><span  id='14" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $GB . "</span></th>" . "\n";
-            }
-
-            if ($view == "planets") {
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_WEAPONS_ANTI']); ?></a></th>
-            <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $MIC = $user_defence[$i]["MIC"];
-                    if ($MIC == "") {
-                        $MIC = "&nbsp;";
-                    } else {
-                        $MIC = number_format($MIC, 0, ',', ' ');
-                    }
-
-                    echo "\t" . "<th><span  id='19" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $MIC . "</span></th>" . "\n";
-                }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_WEAPONS_INTER']); ?></a></th>
-        <?php
-                for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                    $MIP = $user_defence[$i]["MIP"];
-                    if ($MIP == "") {
-                        $MIP = "&nbsp;";
-                    } else {
-                        $MIP = number_format($MIP, 0, ',', ' ');
-                    }
-
-                    echo "\t" . "<th><span  id='18" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $MIP . "</span></th>" . "\n";
-                }
-            } // fin de si view="planets"
-        ?>
-        </tr>
-        <tr>
-            <td class="c" colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>"><?php echo ($lang['HOME_EMPIRE_POINTS_TITLE']); ?></td>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_BUILDINGS']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $point = all_building_cumulate(array(1 => $user_building[$i]));
-                $point = round($point / 1000);
-                $point = number_format($point, 0, ',', ' ');
-
-                echo "\t" . "<th><span  id='19" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $point . "</span></th>" . "\n";
-            }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_WEAPONS_TITLE']); ?></a></th>
-            <?php
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $point = all_defence_cumulate(array(1 => $user_defence[$i]));
-                $point = round($point / 1000);
-                $point = number_format($point, 0, ',', ' ');
-
-                echo "\t" . "<th><span  id='20" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $point . "</span></th>" . "\n";
-            }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_FLEET_TITLE']); ?></a></th>
-            <?php
-            // Pour le moment seulement les FOR et les SAT !!
-            for ($i = $start; $i <= $start + $nb_planete - 1; $i++) {
-                $point = all_fleet_cumulate(array(1 => $user_building[$i])); //FOR et Sat
-                $point = round($point / 1000);
-                $point = number_format($point, 0, ',', ' ');
-
-                echo "\t" . "<th><span  id='20" . ($i + 1 - $start) . "' style=\"color: lime; \">" . $point . "</span></th>" . "\n";
-            }
-            ?>
-        </tr>
-        <tr>
-            <th><a><?php echo ($lang['HOME_EMPIRE_TECHNOS']); ?></a></th>
-            <th colspan="<?php print ($nb_planete < 10) ? '9' : $nb_planete ?>"><span id='21' style="color: lime;">
-                    <?php
-                    $point = all_technology_cumulate($user_technology);
-                    $point = round($point / 1000);
-                    $point = number_format($point, 0, ',', ' ');
-                    echo $point;
-                    ?></span>
+            <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+                <?php echo ($lang['HOME_EMPIRE_SUMMARY']); ?>
             </th>
         </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>&nbsp;</td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <?php $user_production[$i] = ogame_production_planet($user_building[$i], $user_technology, $user_data, $server_config); ?>
+                <td>
+                    <?php if (!isset($pub_view) || $pub_view == "planets") : ?>
+                        <input type='image' class="og-button og-button-image" title='<?php echo $lang['HOME_EMPIRE_MOVELEFT'] . " " . $user_building[$i]["planet_name"]; ?>' src='images/previous.png'>
+                        <input type='image' class="og-button og-button-image og-button-danger" title='<?php echo $lang['HOME_EMPIRE_DELETE_PLANET'] . " " . $user_building[$i]["planet_name"]; ?>' src='images/drop.png' onclick="window.location = 'index.php?action=del_planet&amp;planet_id=<?php echo $i ?>&amp;view=<?php echo $view; ?>';">
+                        <input type='image' class="og-button og-button-image" title='<?php echo $lang['HOME_EMPIRE_MOVERIGHT'] . " " . $user_building[$i]["planet_name"]; ?>' src='images/next.png'>
+                    <?php else : ?>
+                        <input type='image' class="og-button og-button-image" title='<?php $lang['HOME_EMPIRE_DELETE_MOON'] . " " . $user_building[$i]["planet_name"]; ?>' src='images/drop.png' onclick="window.location = 'index.php?action=del_planet&amp;planet_id=<?php echo $i; ?>&amp;view=<?php echo $view; ?>';">
+                    <?php endif; ?>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_NAME']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <span class="og-highlight">
+                        <?php echo ($user_building[$i]["planet_name"] == "") ?  "&nbsp;" : $user_building[$i]["planet_name"]; ?>
+                    </span>
+
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_COORD']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    [<?php echo ($user_building[$i]["coordinates"] == "" || ($user_building[$i]["planet_name"] == "" && $view == "moons"))  ?  "&nbsp;" : $user_building[$i]["coordinates"]; ?>]
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_FIELDS']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $fields = ($user_building[$i]["fields"] == "0") ? 0 : $user_building[$i]["fields"]; ?>
+                    <?php echo $user_building[$i]["fields_used"] . " / " . $fields; ?>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_MINTEMP']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php echo ($user_building[$i]["temperature_min"] == "") ?  "&nbsp;" : $user_building[$i]["temperature_min"]; ?>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_MAXTEMP']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php echo ($user_building[$i]["temperature_max"] == "") ?  "&nbsp;" : $user_building[$i]["temperature_max"]; ?>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_EXTENSION']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $booster = "&nbsp;"; ?>
+                    <?php $booster_tab = booster_decode($user_building[$i]["boosters"]); ?>
+                    <?php if ($view == "planets") : ?>
+                        <?php echo $booster_tab['extention_p']; ?>
+                    <?php else : ?>
+                        <?php echo  $booster_tab['extention_m']; ?>
+                    <?php endif; ?>
+                </td>
+            <?php endfor; ?>
+        </tr>
+    </tbody>
+
+
+    <?php if ($view == "planets") :  // si view = planets
+    ?>
+        <thead>
+            <thead>
+                <tr>
+                    <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+                        <?php echo ($lang['HOME_EMPIRE_PRODUCTION_EXPECTED']); ?>
+                    </th>
+                </tr>
+            </thead>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_METAL']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php echo ($M = $user_building[$i]['M'] == "") ?  "&nbsp;" : $user_production[$i]['prod_theorique']['M']; ?>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_CRYSTAL']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php echo ($M = $user_building[$i]['C'] == "") ?  "&nbsp;" : $user_production[$i]['prod_theorique']['C']; ?>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_DEUT']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php echo ($M = $user_building[$i]['D'] == "") ?  "&nbsp;" : $user_production[$i]['prod_theorique']['D']; ?>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_ENERGY']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $NRJ = (!isset($user_production[$i]['NRJ'])) ? "&nbsp;" : $user_production[$i]['NRJ']; ?>
+                        <?php echo number_format($NRJ, 0, ',', ' ') ;  ?>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+                    <?php echo ($lang['HOME_EMPIRE_PRODUCTION_REAL']); ?>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tdname"><?php echo ($lang['HOME_EMPIRE_RATIO']); ?></td>
+
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $user_production[$i]['ratio'] = (!isset($user_production[$i]['ratio'])) ? 0 : $user_production[$i]['ratio']; ?>
+                        <?php if ($user_production[$i]['ratio'] != 1) : ?>
+                            <span class="og-alert"><?php echo number_format(round($user_production[$i]['ratio'], 3), 3, ',', ' '); ?></span>
+                        <?php else : ?>
+                            <span class="og-success"><?php echo number_format(round($user_production[$i]['ratio'], 3), 3, ',', ' '); ?></span>
+                        <?php endif; ?>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_METAL']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php if ($user_building[$i]['M'] != "") : ?>
+                            <?php echo number_format(floor($user_production[$i]['prod_reel']['M']), 0, ',', ' '); ?>
+                        <?php endif; ?>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_CRYSTAL']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php if ($user_building[$i]['C'] != "") : ?>
+                            <?php echo number_format(floor($user_production[$i]['prod_reel']['C']), 0, ',', ' '); ?>
+                        <?php endif; ?>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_DEUT']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php if ($user_building[$i]['D'] != "") : ?>
+                            <?php echo number_format(floor($user_production[$i]['prod_reel']['D']), 0, ',', ' '); ?>
+                        <?php endif; ?>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_BOOSTER']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $booster_tab = booster_decode($user_building[$i]["boosters"]); ?>
+                        m:<?php echo $booster_tab['booster_m_val']; ?>%, c:<?php echo $booster_tab['booster_c_val']; ?>, d:<?php echo $booster_tab['booster_d_val']; ?>, e:<?php echo $booster_tab['booster_e_val']; ?>%
+
+                    </td>
+                <?php endfor; ?>
+            </tr>
+        </tbody>
+        <thead>
+            <thead>
+                <tr>
+                    <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+                        <?php echo ($lang['HOME_EMPIRE_BUILDINGS']); ?>
+                    </th>
+                </tr>
+            </thead>
+        <tbody>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_MINE_METAL']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $M = ($user_building[$i]["M"] == "") ? "&nbsp;" : $user_building[$i]["M"]; ?>
+                        <span id='15<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo $M ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_MINE_CRYSTAL']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $C = ($user_building[$i]["C"] == "") ? "&nbsp;" : $user_building[$i]["C"]; ?>
+                        <span id='16<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo $C ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_MINE_DEUT']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $D = ($user_building[$i]["D"] == "") ? "&nbsp;" : $user_building[$i]["D"]; ?>
+                        <span id='17<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo $D ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_SOLAR_PLANT']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $CES = ($user_building[$i]["CES"] == "") ? "&nbsp;" : $user_building[$i]["CES"]; ?>
+                        <span id='20<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo $CES ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_FUSION_PLANT']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $CEF = ($user_building[$i]["CEF"] == "") ? "&nbsp;" : $user_building[$i]["CEF"]; ?>
+                        <span id='21<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo $CEF ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+        </tbody>
+    <?php else :  // autre que  view = planets ;
+    ?>
+        <thead>
+            <thead>
+                <tr>
+                    <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+                        <?php echo ($lang['HOME_EMPIRE_BUILDINGS']); ?>
+                    </th>
+                </tr>
+            </thead>
+        </thead>
+
+    <?php endif; // FIN  view = planets ;
+    ?>
+    <tboby>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_ROBOTS_PLANT']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $UdR = ($user_building[$i]["UdR"] == "") ? "&nbsp;" : $user_building[$i]["UdR"]; ?>
+                    <span id='1<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo $UdR ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <?php if ($view == "planets") :  ?>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_NANITES_PLANT']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $UdN = ($user_building[$i]["UdN"] == "") ? "&nbsp;" : $user_building[$i]["UdN"]; ?>
+                        <span id='22<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo $UdN ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+        <?php endif; ?>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_SHIPYARD']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $CSp = ($user_building[$i]["CSp"] == "") ? "&nbsp;" : $user_building[$i]["CSp"]; ?>
+                    <span id='2<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo $CSp ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_METALSTORAGE']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $HM = ($user_building[$i]["HM"] == "") ? "&nbsp;" : $user_building[$i]["HM"]; ?>
+                    <span id='3<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo $HM ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_CRYSTALSTORAGE']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $HC = ($user_building[$i]["HC"] == "") ? "&nbsp;" : $user_building[$i]["HC"]; ?>
+                    <span id='4<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo $HC ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_DEUTSTORAGE']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $HD = ($user_building[$i]["HD"] == "") ? "&nbsp;" : $user_building[$i]["HD"]; ?>
+                    <span id='5<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo $HD ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <?php if ($view == "planets") :  ?>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_RESEARCHLAB']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $Lab = ($user_building[$i]["Lab"] == "") ? "&nbsp;" : $user_building[$i]["Lab"]; ?>
+                        <span id='23<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo $Lab ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+
+            <?php if ($server_config['ddr'] == 1) :  ?>
+                <tr>
+                    <td class="tdname">
+                        <?php echo ($lang['HOME_EMPIRE_ALLIANCEDEPOT']); ?>
+                    </td>
+                    <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                        <td class="tdcontent">
+                            <?php $DdR = ($user_building[$i]["DdR"] == "") ? "&nbsp;" : $user_building[$i]["DdR"]; ?>
+                            <span id='42<?php echo ($i + 1 - $start) ?>'>
+                                <?php echo $DdR ?>
+                            </span>
+                        </td>
+                    <?php endfor; ?>
+                </tr>
+            <?php endif; ?>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TERRAFORMER']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $Ter = ($user_building[$i]["Ter"] == "") ? "&nbsp;" : $user_building[$i]["Ter"]; ?>
+                        <span id='24<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo $Ter ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_MISSILESSILO']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $Silo = ($user_building[$i]["Silo"] == "") ? "&nbsp;" : $user_building[$i]["Silo"]; ?>
+                        <span id='25<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo $Silo ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_DOCK']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $Dock = ($user_building[$i]["Dock"] == "") ? "&nbsp;" : $user_building[$i]["Dock"]; ?>
+                        <!-- todo ID ??? -->
+                        <span id='25<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo $Dock ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+        <?php else : ?>
+            <?php echo "<!--autre que view == \"planets\" -->" ?>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_LUNARSTATION']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $BaLu = ($user_building[$i]["BaLu"] == "") ? "&nbsp;" : $user_building[$i]["BaLu"]; ?>
+                        <span id='15<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo $BaLu ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_LUNARPHALANX']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $Pha = ($user_building[$i]["Pha"] == "") ? "&nbsp;" : $user_building[$i]["Pha"]; ?>
+                        <span id='16<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo $Pha ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_LUNARJUMPGATE']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $PoSa = ($user_building[$i]["PoSa"] == "") ? "&nbsp;" : $user_building[$i]["PoSa"]; ?>
+                        <span id='17<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo $PoSa ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <?php echo "<!--fin de sinon view == \"planets\" -->" ?>
+        <?php endif; ?>
+    </tboby>
+
+    <thead>
+        <tr>
+            <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+                <?php echo ($lang['HOME_EMPIRE_OTHERS']); ?>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_SATELLITES']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $Sat = ($user_building[$i]["Sat"] == "") ? "&nbsp;" : $user_building[$i]["Sat"]; ?>
+                    <span id='6<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo $Sat ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <?php if ($view == "planets") :  ?>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_CRAWLER']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $For = ($user_building[$i]["FOR"] == "") ? "&nbsp;" : number_format($user_building[$i]["FOR"], 0, ',', ' '); ?>
+                        <?php $class_collect = ($user_data['user_class'] === 'COL') ? '1' : '0'; ?>
+                        <?php $nb_max = foreuse_max($user_building[$i]['M'], $user_building[$i]['C'], $user_building[$i]['D'], $user_data['off_geologue'], $class_collect); ?>
+                        <span id=43<?php echo ($i + 1 - $start); ?>>
+                            <?php echo $For . " / " . $nb_max; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+
+
+        <?php endif; ?>
+    </tbody>
+    <?php if ($view == "planets") : ?>
+        <thead>
+            <tr>
+                <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS']); ?>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_SPY']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='26<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("Esp",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["Esp"] != "") ? $user_technology["Esp"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_COMPUTER']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='27<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("Ordi",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["Ordi"] != "") ? $user_technology["Ordi"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_WEAPONS']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='28<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("Armes",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["Armes"] != "") ? $user_technology["Armes"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_SHIELD']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='29<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("Bouclier",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["Bouclier"] != "") ? $user_technology["Bouclier"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_PROTECTION']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='30<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("Protection",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["Protection"] != "") ? $user_technology["Protection"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_ENERGY']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='31<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("NRJ",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["NRJ"] != "") ? $user_technology["NRJ"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_HYPERSPACE']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='32<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("Hyp",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["Hyp"] != "") ? $user_technology["Hyp"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_COMBUSTION_DRIVE']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='33<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("RC",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["RC"] != "") ? $user_technology["RC"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_IMPULSE_DRIVE']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='34<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("RI",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["RI"] != "") ? $user_technology["RI"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_HYPER_DRIVE']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='35<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("PH",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["PH"] != "") ? $user_technology["PH"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_LASER']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='36<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("Laser",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["Laser"] != "") ? $user_technology["Laser"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_IONS']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='37<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("Ions",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["Ions"] != "") ? $user_technology["Ions"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_PLASMA']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='38<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("Plasma",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["Plasma"] != "") ? $user_technology["Plasma"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_RESEARCH_NETWORK']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='39<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("RRI",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["RRI"] != "") ? $user_technology["RRI"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_ASTRO']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='41<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("Astrophysique",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["Astrophysique"] != "") ? $user_technology["Astrophysique"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_GRAVITY']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <span id='40<?php echo (($i + 1 - $start)); ?>'>
+                            <?php if (prerequis_Valid("Graviton",  $user_building[$i], $user_technology)) : ?>
+                                <span class="og-success">
+                                    <?php echo ($user_technology["Graviton"] != "") ? $user_technology["Graviton"] : "0"; ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="og-alert">
+                                    -
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+        </tbody>
+    <?php endif; ?>
+
+    <thead>
+        <tr>
+            <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+                <?php echo ($lang['HOME_EMPIRE_WEAPONS_TITLE']); ?>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_WEAPONS_MISSILES']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $LM = ($user_defence[$i]["LM"] == "") ? "0" : $user_defence[$i]["LM"]; ?>
+                    <span id='7<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo number_format($LM, 0, ',', ' '); ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_WEAPONS_LLASERS']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $LLE = ($user_defence[$i]["LLE"] == "") ? "0" : $user_defence[$i]["LLE"]; ?>
+                    <span id='8<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo number_format($LLE, 0, ',', ' '); ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_WEAPONS_HLASERS']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $LLO = ($user_defence[$i]["LLO"] == "") ? "0" : $user_defence[$i]["LLO"]; ?>
+                    <span id='9<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo number_format($LLO, 0, ',', ' '); ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_WEAPONS_GAUSS']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $CG = ($user_defence[$i]["CG"] == "") ? "0" : $user_defence[$i]["CG"]; ?>
+                    <span id='10<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo number_format($CG, 0, ',', ' '); ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_WEAPONS_IONS']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $AI = ($user_defence[$i]["AI"] == "") ? "0" : $user_defence[$i]["AI"]; ?>
+                    <span id='11<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo number_format($AI, 0, ',', ' '); ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_WEAPONS_PLASMA']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $LP = ($user_defence[$i]["LP"] == "") ? "0" : $user_defence[$i]["LP"]; ?>
+                    <span id='12<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo number_format($LP, 0, ',', ' '); ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_WEAPONS_SMALLSHIELD']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $PB = ($user_defence[$i]["PB"] == "") ? "0" : $user_defence[$i]["PB"]; ?>
+                    <span id='13<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo number_format($PB, 0, ',', ' '); ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_WEAPONS_LARGESHIELD']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $GB = ($user_defence[$i]["GB"] == "") ? "0" : $user_defence[$i]["GB"]; ?>
+                    <span id='14<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo number_format($GB, 0, ',', ' '); ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <?php if ($view == "planets") : ?>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_WEAPONS_ANTI']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $MIC = ($user_defence[$i]["MIC"] == "") ? "0" : $user_defence[$i]["MIC"]; ?>
+                        <span id='19<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo number_format($MIC, 0, ',', ' '); ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+            <tr>
+                <td class="tdname">
+                    <?php echo ($lang['HOME_EMPIRE_WEAPONS_INTER']); ?>
+                </td>
+                <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                    <td class="tdcontent">
+                        <?php $MIP = ($user_defence[$i]["MIP"] == "") ? "0" : $user_defence[$i]["MIP"]; ?>
+                        <span id='18<?php echo ($i + 1 - $start) ?>'>
+                            <?php echo number_format($MIP, 0, ',', ' '); ?>
+                        </span>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+        <?php endif; ?>
+
+        <thead>
+            <tr>
+                <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+                    <?php echo ($lang['HOME_EMPIRE_POINTS_TITLE']); ?>
+                </th>
+            </tr>
+        </thead>
+    <tbody>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_BUILDINGS']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $point = all_building_cumulate(array(1 => $user_building[$i])); ?>
+                    <?php $point = round($point / 1000); ?>
+
+                    <span id='19<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo number_format($point, 0, ',', ' '); ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_WEAPONS_TITLE']); ?>
+            </td>
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $point = all_defence_cumulate(array(1 => $user_defence[$i])); ?>
+                    <?php $point = round($point / 1000); ?>
+                    <span id='20<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo number_format($point, 0, ',', ' '); ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_FLEET_TITLE']); ?>
+            </td>
+            <!-- // Pour le moment seulement les FOR et les SAT !! -->
+            <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
+                <td class="tdcontent">
+                    <?php $point = all_fleet_cumulate(array(1 => $user_building[$i])); //FOR et Sat
+                    ?>
+                    <?php $point = round($point / 1000); ?>
+                    <span id='20<?php echo ($i + 1 - $start) ?>'>
+                        <?php echo number_format($point, 0, ',', ' '); ?>
+                    </span>
+                </td>
+            <?php endfor; ?>
+        </tr>
+        <tr>
+            <td class="tdname">
+                <?php echo ($lang['HOME_EMPIRE_TECHNOS']); ?>
+            </td>
+            <td colspan="<?php print ($nb_planete < 10) ? '9' : $nb_planete ?>" class="tdcontent">
+                <span id='21'>
+                    <?php $point = all_technology_cumulate($user_technology); ?>
+                    <?php $point = round($point / 1000); ?>
+                    <?php echo number_format($point, 0, ',', ' '); ?>
+                </span>
+            </td>
+        </tr>
+    </tbody>
 </table>
+
+
+
+
 
 <?php
 /**
@@ -1314,4 +1243,38 @@ function read_th($txt, $nb_planete)
         }
     }
     return $retour;
+}
+
+
+/**
+ * Indique si les prerequis sont valides
+ * 
+ * @param $ogame_element_name nom de l'element recherché
+ * @param $user_building_list liste des buildings situé sur le meme astre que l'element recherché
+ * @param $user_technology_list liste des technologies 
+ * 
+ *  */
+function prerequis_Valid($ogame_element_name, $user_building_list, $user_technology_list)
+{
+    // recuperation des prerequis pour l element indiqué 
+    $reqs = ogame_elements_requirement($ogame_element_name);
+
+    foreach ($reqs as $reqName => $reqValue) {
+        //prerequis recherche
+        if (ogame_is_a_research($reqName) && $reqValue > 0) {
+            if ($reqValue > $user_technology_list[$reqName]) {
+                //prerequis non ok
+                return false;
+            }
+        }
+        // prerequis bat
+        if (ogame_is_a_building($reqName) && $reqValue > 0) {
+            if ($reqValue > $user_building_list[$reqName]) {
+                //prerequis non ok
+                return false;
+            }
+        }
+    }
+    // tout autre cas, les prerequis sont bons
+    return true;
 }
