@@ -660,7 +660,7 @@ function install_mod($mod_folder)
 /**
  * Function to uninstall an OGSpy Module
  * @param string $mod_uninstall_name : Mod name
- * @param string $mod_uninstall_table : Name of the Database table used by the Mod that we need to remove
+ * @param string|array $mod_uninstall_table : Name or list of Name of the Database table used by the Mod that we need to remove
  * @api
  */
 function uninstall_mod($mod_uninstall_name, $mod_uninstall_table = null)
@@ -671,7 +671,14 @@ function uninstall_mod($mod_uninstall_name, $mod_uninstall_table = null)
 
     if ($mod_uninstall_table != null) {
         //todo MOD factory ?
-        log_("debug", "DROP TABLE IF EXISTS " . $mod_uninstall_table);
+        if(is_array($mod_uninstall_table))
+        {
+            log_("debug", "DROP TABLE IF EXISTS " . implode(", ",$mod_uninstall_table));
+        }
+        else
+        {
+            log_("debug", "DROP TABLE IF EXISTS " . $mod_uninstall_table);
+        }
         $Mod_Model->drop_custum_table($mod_uninstall_table);
     }
 }
