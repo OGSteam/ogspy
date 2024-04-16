@@ -44,8 +44,6 @@ if ($pub_verbose) {
     <?php
 }
 
-// on réinitialise la sequense config
-// evite d utiliser le cache ( qui sera périmé ))
 $request = "SELECT * FROM " . TABLE_CONFIG;
 $result = $db->sql_query($request);
 while (list($name, $value) = $db->sql_fetch_row($result)) {

@@ -1,4 +1,4 @@
-<?php global $benchogspy, $db, $lang;
+<?php global $benchogspy, $db, $lang, $server_config;
 
 /**
  * HTML Footer
