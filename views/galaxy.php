@@ -49,7 +49,7 @@ $tInfosGroups = (new Group_Model())->get_group_rights($user_group);
 //si autorisé server_show_positionhided doit etre a 1 !!!!!!!!!!!
 //todo info a communiquer avec release
 if ($tInfosGroups["server_show_positionhided"] == 1) {
-    if (($server_config["portee_missil"] != "0" && $server_config["portee_missil"] != "")) {
+    if ($server_config["portee_missil"] != "0" && $server_config["portee_missil"] != "") {
         $missil = galaxy_portee_missiles($galaxy, $system);
     }
 }
@@ -131,7 +131,7 @@ require_once 'views/page_header.php';
                             <?php $string_delfavorites = "alert('" . $lang['GALAXY_NO_FAVORITES_MESSAGE'] . "')"; ?>
                         <?php endif; ?>
 
-                        <input class="og-button og-button-success" type="button" value="<?=($lang['GALAXY_ADD_FAVORITES'] ?>" onclick="<?= $string_addfavorites ?>">
+                        <input class="og-button og-button-success" type="button" value="<?= $lang['GALAXY_ADD_FAVORITES'] ?>" onclick="<?= $string_addfavorites ?>">
                         <input class="og-button og-button-danger" type="button" value="<?= $lang['GALAXY_REMOVE_FAVORITES'] ?>" onclick="<?= $string_delfavorites ?>">
                     </td>
                 </tr>
