@@ -1,4 +1,4 @@
-<?php
+<?php global $db, $table_prefix;
 
 /**
  * OGSpy installation : Script Upgrade

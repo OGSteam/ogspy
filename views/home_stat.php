@@ -96,16 +96,16 @@ if (sizeof($dates) > 0) {
         <input type="hidden" name="zoom" value="<?= $zoom; ?>" />
         <thead>
             <tr>
-                <th colspan='3'><?php echo $lang['HOME_STATS_STATISTICS'] ?></th>
+                <th colspan='3'><?= $lang['HOME_STATS_STATISTICS'] ?></th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td class="tdstat">
-                    <?php echo $lang['HOME_STATS_STATISTICS'] ?>
+                    <?= $lang['HOME_STATS_STATISTICS'] ?>
                 </td>
                 <td>
-                    <input type="text" name="user_stat_name" value="<?php echo $user_data["user_stat_name"]; ?>" />
+                    <input type="text" name="user_stat_name" value="<?= $user_data["user_stat_name"] ?>" />
                 </td>
                 <td>
                     <input class="og-button og-button-little" type="submit" value="<?= $lang['HOME_STATS_GETSTATS'] ?>" />
@@ -114,53 +114,53 @@ if (sizeof($dates) > 0) {
 
             <tr>
                 <td class="tdstat">
-                    <?php echo ($lang['HOME_STATS_COMPARE']); ?>
+                    <?= $lang['HOME_STATS_COMPARE'] ?>
                 </td>
                 <td>
-                    <input type="text" name="player_comp" value="<?php echo $player_comp; ?>" />
+                    <input type="text" name="player_comp" value="<?= $player_comp ?>" />
                 </td>
                 <td>
-                    <input class="og-button og-button-little" type="submit" value="<?php echo ($lang['HOME_STATS_COMPARE']); ?>" />
+                    <input class="og-button og-button-little" type="submit" value="<?= $lang['HOME_STATS_COMPARE'] ?>" />
                 </td>
             </tr>
 
         </tbody>
         <thead>
-            <th colspan='3'><?php echo  $lang['HOME_STATS_INTERVAL']; ?></th>
+            <th colspan='3'><?= $lang['HOME_STATS_INTERVAL'] ?></th>
         </thead>
         <tbody>
             <tr>
                 <td class="tdstat">
-                    <?php echo $lang['HOME_STATS_FROM'] ?>
+                    <?= $lang['HOME_STATS_FROM'] ?>
                 </td>
                 <td>
-                    <input type="text" maxlength="10" name="start_date" value="<?php echo date("Y-m-d", $min_date + 60 * 60 * 2); ?>" />
+                    <input type="text" maxlength="10" name="start_date" value="<?= date("Y-m-d", $min_date + 60 * 60 * 2) ?>" />
                 </td>
                 <td rowspan="2">
-                    <input class="og-button og-button-little" type="submit" value="<?php echo ($lang['HOME_STATS_SEND']); ?>" />
+                    <input class="og-button og-button-little" type="submit" value="<?= ($lang['HOME_STATS_SEND']) ?>" />
                 </td>
 
             </tr>
             <tr>
                 <td class="tdstat">
-                    <?php echo $lang['HOME_STATS_TO'] ?>
+                    <?= $lang['HOME_STATS_TO'] ?>
                 </td>
                 <td>
-                    <input type="text" maxlength="10" name="end_date" value="<?php echo date("Y-m-d", $max_date); ?>" />
+                    <input type="text" maxlength="10" name="end_date" value="<?= date("Y-m-d", $max_date) ?>" />
                 </td>
             </tr>
         </tbody>
         <thead>
-            <th colspan='3'><?php echo  $lang['HOME_STATS_OPTIONS']; ?></th>
+            <th colspan='3'><?= $lang['HOME_STATS_OPTIONS'] ?></th>
         </thead>
         <tbod>
             <tr>
                 <td class="tdstat">
-                    <?php echo ($lang['HOME_STATS_ZOOM']); ?>
+                    <?= ($lang['HOME_STATS_ZOOM']) ?>
                 </td>
                 <td></td>
                 <td>
-                    <input class="og-button og-button-image og-button-image-large" type="image" name="zoom_change" src="images/<?php echo ($zoom == "true" ? "zoom_in.png" : "zoom_out.png"); ?>" alt="zoom" />
+                    <input class="og-button og-button-image og-button-image-large" type="image" name="zoom_change" src="images/<?= ($zoom == "true" ? "zoom_in.png" : "zoom_out.png") ?>" alt="zoom" />
                 </td>
 
             </tr>
@@ -184,17 +184,17 @@ if (sizeof($dates) > 0) {
                     <input type="submit" value="<?= $lang['HOME_STATS_GETSTATS'] ?>" />
                 </th>
                 <th rowspan="2"><span style="text-decoration: underline;"><?= $lang['HOME_STATS_INTERVAL'] ?></span> : <?= $lang['HOME_STATS_FROM'] ?>
-                    <input type="text" size="10" maxlength="10" name="start_date" value="<?php echo date("Y-m-d", $min_date + 60 * 60 * 2); ?>" />
-                    <?php echo ($lang['HOME_STATS_TO']); ?>
-                    <input type="text" size="10" maxlength="10" name="end_date" value="<?php echo date("Y-m-d", $max_date); ?>" />
-                    <input type="submit" value="<?php echo ($lang['HOME_STATS_SEND']); ?>" />
+                    <input type="text" size="10" maxlength="10" name="start_date" value="<?= date("Y-m-d", $min_date + 60 * 60 * 2) ?>" />
+                    <?= ($lang['HOME_STATS_TO']) ?>
+                    <input type="text" size="10" maxlength="10" name="end_date" value="<?= date("Y-m-d", $max_date) ?>" />
+                    <input type="submit" value="<?= ($lang['HOME_STATS_SEND']) ?>" />
                 </th>
-                <th rowspan="2"><?php echo ($lang['HOME_STATS_ZOOM']); ?> : <input type="image" align="absmiddle" name="zoom_change" src="images/<?php echo ($zoom == "true" ? "zoom_in.png" : "zoom_out.png"); ?>" alt="zoom" />
+                <th rowspan="2"><?= ($lang['HOME_STATS_ZOOM']) ?> : <input type="image" align="absmiddle" name="zoom_change" src="images/<?= ($zoom == "true" ? "zoom_in.png" : "zoom_out.png") ?>" alt="zoom" />
                 </th>
             </tr>
             <tr>
-                <th><input type="text" name="player_comp" value="<?php echo $player_comp; ?>" />
-                    <input type="submit" value="<?php echo ($lang['HOME_STATS_COMPARE']); ?>" />
+                <th><input type="text" name="player_comp" value="<?= $player_comp ?>" />
+                    <input type="submit" value="<?= ($lang['HOME_STATS_COMPARE']) ?>" />
                 </th>
             </tr>
         </table>
@@ -325,7 +325,7 @@ while ($ranking = current($individual_ranking)) {
 }
 ?>
 <h2>
-    <?php echo $lang['HOME_STATS_PALYERSTATS'] . " " . $user_data["user_stat_name"]; ?>
+    <?= $lang['HOME_STATS_PALYERSTATS'] . " " . $user_data["user_stat_name"] ?>
 </h2>
 
 <?php
@@ -380,9 +380,9 @@ for ($i = 1; $i <= $nb_planete; $i++) {
         <tr>
             <th colspan="2">
                 <?php if ($player_comp != "" && isset($player_comp)) : ?>
-                    <?php echo ($lang['HOME_STATS_COMP']); ?> <?php echo $user_data["user_stat_name"]; ?>
+                    <?= ($lang['HOME_STATS_COMP']) ?> <?= $user_data["user_stat_name"] ?>
                 <?php else : ?>
-                    <?php echo ($lang['HOME_STATS_RANKINGS']); ?> <?php echo $user_data["user_stat_name"]; ?>
+                    <?= ($lang['HOME_STATS_RANKINGS']) ?> <?= $user_data["user_stat_name"] ?>
                 <?php endif; ?>
             </th>
         </tr>
@@ -391,15 +391,15 @@ for ($i = 1; $i <= $nb_planete; $i++) {
         <tr>
             <td colspan='2'>
 
-                <div id="<?php echo "points"; ?>">
-                    <?php echo ($lang['HOME_STATS_NOGRAPHIC']); ?>
+                <div id="<?= "points" ?>">
+                    <?= ($lang['HOME_STATS_NOGRAPHIC']) ?>
                 </div>
             </td>
         </tr>
         <tr>
             <td colspan='2'>
-                <div id="<?php echo "rank"; ?>">
-                    <?php echo ($lang['HOME_STATS_NOGRAPHIC']); ?>
+                <div id="<?= "rank" ?>">
+                    <?= ($lang['HOME_STATS_NOGRAPHIC']) ?>
                 </div>
             </td>
         </tr>
@@ -409,7 +409,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
     <thead>
         <tr>
             <th colspan="2">
-                   <?php echo $lang['HOME_STATS_GRAPHIC_DIVERS'] . " " . help(null, $title); ?>
+                <?= $lang['HOME_STATS_GRAPHIC_DIVERS'] . " " . help(null, $title) ?>
             </th>
        </tr>
     </thead>
@@ -422,7 +422,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
 
                 <?php else : ?>
                     <?php if ($last["general_pts"] == 0) : ?>
-                        <?php echo $lang['HOME_STATS_GRAPHIC_NOSTATSDATA'] . "<br>"; ?>
+                        <?= $lang['HOME_STATS_GRAPHIC_NOSTATSDATA'] . "<br>" ?>
                         <?php $f = round(all_fleet_cumulate($user_building) / 1000); ?> <!-- only FOR et Sat, pour le moment-->
                     <?php endif; ?>
                     <?php $pie_point = create_pie($b . "_x_" . $d . "_x_" . $l . "_x_" . $f . "_x_" . $t, "Batiments_x_Défenses_x_Lunes_x_Flotte_x_Technologies", $lang['HOME_STATS_GRAPHIC_LASTREPARTITION'], "pie_point"); ?>
@@ -435,7 +435,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                 <?php if ($b == 0 && $d == 0 && $l == 0 && $t == 0) : ?>
                     <?php // pas d info
                     ?>
-                    <?php echo  $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'];; ?>
+                    <?= $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'];; ?>
                 <?php else : ?>
                     <?php // autrement on affiche rien : on prepare juste l affichage du script
                     ?>
@@ -458,7 +458,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
     <thead>
         <tr>
             <th colspan="17">
-                <?php echo ($lang['HOME_STATS_RANKING']); ?> <span class=og-highlight><?php echo $user_data["user_stat_name"]; ?></span>
+                <?= ($lang['HOME_STATS_RANKING']) ?> <span class=og-highlight><?= $user_data["user_stat_name"] ?></span>
             </th>
         </tr>
         <tr>
@@ -478,73 +478,73 @@ for ($i = 1; $i <= $nb_planete; $i++) {
         <?php foreach ($rank_row as $row) : ?>
             <tr>
                 <td>
-                    <?php echo $row["date"]; ?>
+                    <?= $row["date"] ?>
                 </td>
                 <td>
-                    <?php echo $row["general_points"]; ?>
+                    <?= $row["general_points"] ?>
                 </td>
                 <td class="table-ranking-td-subrank">
                     <span class="ranking-subrank-number">
-                        <?php echo $row["general_rank"]; ?>
+                        <?= $row["general_rank"] ?>
                     </span>
                 </td>
                 <td>
-                    <?php echo $row["eco_points"]; ?>
+                    <?= $row["eco_points"] ?>
                 </td>
                 <td class="table-ranking-td-subrank">
                     <span class="ranking-subrank-number">
-                        <?php echo $row["eco_rank"]; ?>
+                        <?= $row["eco_rank"] ?>
                     </span>
                 </td>
                 <td>
-                    <?php echo $row["techno_points"]; ?>
+                    <?= $row["techno_points"] ?>
                 </td>
                 <td class="table-ranking-td-subrank">
                     <span class="ranking-subrank-number">
-                        <?php echo $row["techno_rank"]; ?>
+                        <?= $row["techno_rank"] ?>
                     </span>
                 </td>
                 <td>
-                    <?php echo $row["military_points"]; ?>
+                    <?= $row["military_points"] ?>
                 </td>
 
                 <td class="table-ranking-td-subrank">
                     <span class="ranking-subrank-number">
-                        <?php echo $row["military_rank"]; ?>
+                        <?= $row["military_rank"] ?>
                     </span>
                 </td>
 
                 <td>
-                    <?php echo $row["military_b_points"]; ?>
+                    <?= $row["military_b_points"] ?>
                 </td>
                 <td class="table-ranking-td-subrank">
                     <span class="ranking-subrank-number">
-                        <?php echo $row["military_b_rank"]; ?>
+                        <?= $row["military_b_rank"] ?>
                     </span>
                 </td>
                 <td>
-                    <?php echo $row["military_l_points"]; ?>
+                    <?= $row["military_l_points"] ?>
                 </td>
                 <td class="table-ranking-td-subrank">
                     <span class="ranking-subrank-number">
 
-                        <?php echo $row["military_l_rank"]; ?>
+                        <?= $row["military_l_rank"] ?>
                     </span>
                 </td>
                 <td>
-                    <?php echo $row["military_d_points"]; ?>
+                    <?= $row["military_d_points"] ?>
                 </td>
                 <td class="table-ranking-td-subrank">
                     <span class="ranking-subrank-number">
-                        <?php echo $row["military_d_rank"]; ?>
+                        <?= $row["military_d_rank"] ?>
                     </span>
                 </td>
                 <td>
-                    <?php echo $row["honnor_points"]; ?>
+                    <?= $row["honnor_points"] ?>
                 </td>
                 <td class="table-ranking-td-subrank">
                     <span class="ranking-subrank-number">
-                        <?php echo $row["honnor_rank"]; ?>
+                        <?= $row["honnor_rank"] ?>
                     </span>
                 </td>
 
@@ -554,7 +554,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
         <tr>
             <td>
                 <span class="og-highlight">
-                    <?php echo $lang['HOME_STATS_PROGRESS_RATE']; ?>
+                    <?= $lang['HOME_STATS_PROGRESS_RATE'] ?>
                 </span>
             </td>
             <td>
@@ -564,11 +564,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["general_pts"] - $first["general_pts"]) * 60 * 60 * 24 / ($last_date["general"] - $first_date["general"]); ?>
                     <?php if ($prog < 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -580,11 +580,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["general_rank"] - $first["general_rank"]) * 60 * 60 * 24 / ($last_date["general"] - $first_date["general"]); ?>
                     <?php if ($prog > 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -598,11 +598,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["eco_pts"] - $first["eco_pts"]) * 60 * 60 * 24 / ($last_date["eco"] - $first_date["eco"]); ?>
                     <?php if ($prog < 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -614,11 +614,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["eco_rank"] - $first["eco_rank"]) * 60 * 60 * 24 / ($last_date["eco"] - $first_date["eco"]); ?>
                     <?php if ($prog > 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -630,11 +630,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["techno_pts"] - $first["techno_pts"]) * 60 * 60 * 24 / ($last_date["techno"] - $first_date["techno"]); ?>
                     <?php if ($prog < 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -646,11 +646,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["techno_rank"] - $first["techno_rank"]) * 60 * 60 * 24 / ($last_date["techno"] - $first_date["techno"]); ?>
                     <?php if ($prog > 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -662,11 +662,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["military_pts"] - $first["military_pts"]) * 60 * 60 * 24 / ($last_date["military"] - $first_date["military"]); ?>
                     <?php if ($prog < 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -678,11 +678,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["military_rank"] - $first["military_rank"]) * 60 * 60 * 24 / ($last_date["military"] - $first_date["military"]); ?>
                     <?php if ($prog > 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -695,11 +695,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["military_b_pts"] - $first["military_b_pts"]) * 60 * 60 * 24 / ($last_date["military_b"] - $first_date["military_b"]); ?>
                     <?php if ($prog < 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -711,11 +711,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["military_b_rank"] - $first["military_b_rank"]) * 60 * 60 * 24 / ($last_date["military_b"] - $first_date["military_b"]); ?>
                     <?php if ($prog > 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -727,11 +727,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["military_l_pts"] - $first["military_l_pts"]) * 60 * 60 * 24 / ($last_date["military_l"] - $first_date["military_l"]); ?>
                     <?php if ($prog < 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -743,11 +743,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["military_l_rank"] - $first["military_l_rank"]) * 60 * 60 * 24 / ($last_date["military_l"] - $first_date["military_l"]); ?>
                     <?php if ($prog > 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -759,11 +759,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["military_d_pts"] - $first["military_d_pts"]) * 60 * 60 * 24 / ($last_date["military_d"] - $first_date["military_d"]); ?>
                     <?php if ($prog < 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -775,11 +775,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["military_d_rank"] - $first["military_d_rank"]) * 60 * 60 * 24 / ($last_date["military_d"] - $first_date["military_d"]); ?>
                     <?php if ($prog > 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -791,11 +791,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["honnor_pts"] - $first["honnor_pts"]) * 60 * 60 * 24 / ($last_date["honnor"] - $first_date["honnor"]); ?>
                     <?php if ($prog < 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -807,11 +807,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     <?php $prog = ($last["honnor_rank"] - $first["honnor_rank"]) * 60 * 60 * 24 / ($last_date["honnor"] - $first_date["honnor"]); ?>
                     <?php if ($prog > 0) : ?>
                         <span class="og-alert">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php else : ?>
                         <span class="og-success">
-                            <?php echo round($prog, 2); ?>
+                            <?= round($prog, 2) ?>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>

@@ -9,11 +9,6 @@
  * @version 3.3.0
  */
 
-/*
- * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
- *
- */
-
 /* message.php */
 $lang['MSG_SYSTEM'] = "Sistemska poruka";
 $lang['MSG_FORBIDDEN'] = "Nemate dovoljnu razinu prava za izvršenje ove akcije";

@@ -1,4 +1,4 @@
-<?php
+<?php global $user_data, $lang;
 
 /**
  * Panneau d'Administration : Paramètres et affichage des Journaux
@@ -71,9 +71,9 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
     <thead>
         <tr>
             <th  colspan="12">
-                <?php echo ($lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0, 0, $show_month, $show_day, $show_year))); ?></th>
-                    
-        </tr>  
+                <?= ($lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0, 0, $show_month, $show_day, $show_year))) ?></th>
+
+        </tr>
     </thead>
     <tbody>
          <?php $date = mktime(0, 0, 0, date("n"), 1) - 60 * 60 * 24 * 365; ?>
@@ -85,28 +85,28 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
         <?php if ($show == $show_year . "~" . $show_month . "~" . $show_day) :  ?>
             <?php if (log_check_exist(date("ym", $date))) :?>
             <td>
-                <span class="og-success"><?php echo date("F o", $date);?></span>
+                <span class="og-success"><?= date("F o", $date) ?></span>
             </td>
              <td>
-                 <input  class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?php echo date("Fo", $date)?>'" title='<?php echo $lang['ADMIN_LOGS_DOWNLOAD'] . date("F o", $date);?>'>
-                 <input  class="og-button og-button-image  og-button-danger" type='image' src='images/drop.png' onclick="window.location = 'index.php?action=remove&amp;date=<?php date("ym", $date) . $show_day?>&directory=TRUE'" title='<?php echo $lang['ADMIN_LOGS_DELETE'] . date("F o", $date);?>'>
+                 <input class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?= date("Fo", $date)?>'" title='<?= $lang['ADMIN_LOGS_DOWNLOAD'] . date("F o", $date) ?>'>
+                 <input  class="og-button og-button-image  og-button-danger" type='image' src='images/drop.png' onclick="window.location = 'index.php?action=remove&amp;date=<?php date("ym", $date) . $show_day?>&directory=TRUE'" title='<?= $lang['ADMIN_LOGS_DELETE'] . date("F o", $date) ?>'>
             <?php else : ?>
                 <td colspan='2'>
-                    <?php echo date("F o", $date);?>
+                    <?= date("F o", $date) ?>
                 </td>
             <?php endif ;?>
            </td>
         <?php else :?>
             <?php if (log_check_exist(date("ym", $date))) :?>
-                <td onclick="window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=<?php echo $show;?>&amp;typelog=<?php echo $typelog;?>';">
-                    <?php echo date("F o", $date);?>
+                <td onclick="window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=<?= $show ?>&amp;typelog=<?= $typelog ?>';">
+                    <?= date("F o", $date) ?>
                 </td>
                 <td>
-                    <input class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?php echo date("ym", $date);?>'" title='<?php echo $lang['ADMIN_LOGS_DOWNLOAD'] . date("F o", $date);?>'>
+                    <input class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?= date("ym", $date) ?>'" title='<?= $lang['ADMIN_LOGS_DOWNLOAD'] . date("F o", $date) ?>'>
                 </td>
             <?php else : ?>
                <td colspan='2' onclick="window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=<?php $show . "&amp;typelog=" . $typelog;?>';">
-                 <?php echo date("F o", $date);?>
+                   <?= date("F o", $date) ?>
                </td>
             <?php endif ;?>
         <?php endif;?>
@@ -123,9 +123,9 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
     <thead>
         <tr>
             <th  colspan="20">
-                <?php echo ($lang['ADMIN_LOGS_SELECT_DAY']); ?>
+                <?= ($lang['ADMIN_LOGS_SELECT_DAY']) ?>
              </th>
-        </tr>  
+        </tr>
     </thead>
     <tbody>
          <?php $max_day = (intval($show_month) != date("m")) ? date("t", mktime(0, 0, 0, $show_month, 1, $show_year)) : date("d") ;?>
@@ -141,28 +141,28 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
         <?php if ($show == $show_year . "~" . $show_month . "~" . $show_day) :?>
             <?php if (log_check_exist($show_year . $show_month . $day)): ?>
         <td>
-            <span class="og-success"><?php echo $day; ?></span>
+            <span class="og-success"><?= $day ?></span>
         </td>
                 <td>
-                    <input class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?php echo $show_year . $show_month . $day; ?>'" title='<?php echo $lang['ADMIN_LOGS_DOWNLOAD'] . date("d F o", $date); ?>'>
-                    <input class="og-button og-button-image  og-button-danger"  type='image' src='images/drop.png' onclick="window.location = 'index.php?action=remove&amp;date=<?php echo $show_year . $show_month . $day; ?>'" title='<?php echo $lang['ADMIN_LOGS_DELETE'] . date("d F o", $date); ?>'>
+                    <input class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?= $show_year . $show_month . $day ?>'" title='<?= $lang['ADMIN_LOGS_DOWNLOAD'] . date("d F o", $date) ?>'>
+                    <input class="og-button og-button-image  og-button-danger" type='image' src='images/drop.png' onclick="window.location = 'index.php?action=remove&amp;date=<?= $show_year . $show_month . $day ?>'" title='<?= $lang['ADMIN_LOGS_DELETE'] . date("d F o", $date) ?>'>
                 </td>
             <?php else : ?>
                 <td colspan='2'>
-                    <?php echo $day; ?>
+                    <?= $day ?>
                 </td>
             <?php endif; ?>
-    
+
         <?php else :?>
             <?php if (log_check_exist($show_year . $show_month . $day)) :?>
-                <td onclick="window.location='index.php?action=administration&amp;subaction=viewer&amp;show=<?php echo $show;?>&amp;typelog=<?php echo $typelog;?>';">
-                    <?php echo $day;?>
+                <td onclick="window.location='index.php?action=administration&amp;subaction=viewer&amp;show=<?= $show ?>&amp;typelog=<?= $typelog ?>';">
+                    <?= $day ?>
                  </td>
                  <td>
-                     <input class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?php echo $show_year . $show_month . $day;?>'" title='<?php echo $lang['ADMIN_LOGS_DOWNLOAD'] . date("d F o G:i", $date)?>'>
+                     <input class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?= $show_year . $show_month . $day ?>'" title='<?= $lang['ADMIN_LOGS_DOWNLOAD'] . date("d F o G:i", $date)?>'>
             <?php else : ?>
-                <td colspan='2' onclick="window.location='index.php?action=administration&amp;subaction=viewer&amp;show=<?php echo $show;?>&amp;typelog=<?php echo $typelog;?>';">
-                    <?php echo $day;?>
+                <td colspan='2' onclick="window.location='index.php?action=administration&amp;subaction=viewer&amp;show=<?= $show ?>&amp;typelog=<?= $typelog ?>';">
+                    <?= $day ?>
                 </td>
             <?php endif ;?>
         <?php endif ;?>
@@ -171,7 +171,7 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
             <tr>
         <?php endif ;?>
     <?php endfor ;?>
-    <?php $j = 1; // $j ??>
+    <?php $j = 1; /* $j ?*/?>
     <?php while (($i - 1) % 10 != 0) :?>
        <td colspan='2'></td>
         <?php $i++;?>
@@ -181,37 +181,37 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
     </tbody>
 </table>
 
-<span class="og-alert"><?php echo ($lang['ADMIN_LOGS_SELECTTYPE']); ?></span>
+<span class="og-alert"><?= ($lang['ADMIN_LOGS_SELECTTYPE']) ?></span>
 <div class="nav-page-menu">
-    
+
     <?php $activelog = ($typelog == "log") ? " active " : "";?>
     <?php $activelogsql = ($typelog != "log") ? " active " : "";?>
-    
-    <div class="nav-page-menu-item nav-page-menu-item-admin-infoserver <?php echo $activelog;?>">
-        <a class="nav-page-menu-link" href='index.php?action=administration&amp;subaction=viewer&amp;show=<?php echo $show;?>&amp;typelog=log'>
-            <?php echo $lang['ADMIN_LOGS_GENERAL'];?>
+
+    <div class="nav-page-menu-item nav-page-menu-item-admin-infoserver <?= $activelog ?>">
+        <a class="nav-page-menu-link" href='index.php?action=administration&amp;subaction=viewer&amp;show=<?= $show ?>&amp;typelog=log'>
+            <?= $lang['ADMIN_LOGS_GENERAL'] ?>
         </a>
     </div>
-    <div class="nav-page-menu-item nav-page-menu-item-admin-parameter <?php echo $activelogsql;?>">
-        <a class="nav-page-menu-link" href='index.php?action=administration&amp;subaction=viewer&amp;show=<?php echo $show;?>&amp;typelog=sql'>
-         <?php echo  $lang['ADMIN_LOGS_SQL']   ;?> 
+    <div class="nav-page-menu-item nav-page-menu-item-admin-parameter <?= $activelogsql ?>">
+        <a class="nav-page-menu-link" href='index.php?action=administration&amp;subaction=viewer&amp;show=<?= $show ?>&amp;typelog=sql'>
+            <?= $lang['ADMIN_LOGS_SQL'] ?>
         </a>
     </div>
-  
+
 </div>
 
-<span class="og-alert"><?php echo ($lang['ADMIN_LOGS_SEE_TRANSACTIONALS']); ?></span>
+<span class="og-alert"><?= ($lang['ADMIN_LOGS_SEE_TRANSACTIONALS']) ?></span>
 
 <table class="og-table og-full-table og-table-log">
     <thead>
         <tr>
             <th>
-                <?php echo ($lang['ADMIN_LOGS_VIEWER']); ?>
+                <?= ($lang['ADMIN_LOGS_VIEWER']) ?>
                 <span class="og-alert">
-                    <?php echo $typelog == "log" ? $lang['ADMIN_LOGS_GENERAL'] : $lang['ADMIN_LOGS_SQL']; ?>
+                    <?= $typelog == "log" ? $lang['ADMIN_LOGS_GENERAL'] : $lang['ADMIN_LOGS_SQL'] ?>
                 </span>
             </th>
-        </tr>  
+        </tr>
     </thead>
     <tbody>
           <tr>
@@ -227,7 +227,7 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
                 echo $line;
                 prev($log);
             }
-            ?> 
+            ?>
             </td>
         </tr>
         </tbody>

@@ -1,4 +1,4 @@
-<?php
+<?php global $user_data, $lang;
 /** $Id: admin.php 7596 2012-03-25 16:10:55Z ninety $ * */
 /**
  * Fonctions d'administrations
@@ -73,13 +73,13 @@ switch ($pub_subaction) {
 ?>
 
 
-<div class="page_administration"> 
+<div class="page_administration">
 
     <div class="nav-page-menu">
         <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : //admin/co only ?>
             <div class="nav-page-menu-item nav-page-menu-item-admin-infoserver <?php echo $tagactiveinfoserver; ?>">
                 <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=infoserver">
-                    <?php echo $lang['ADMIN_TITLE_GENERAL_INFO']; ?> 
+                    <?php echo $lang['ADMIN_TITLE_GENERAL_INFO']; ?>
                 </a>
             </div>
             <div class="nav-page-menu-item nav-page-menu-item-admin-parameter <?php echo $tagactiveparameter; ?>">

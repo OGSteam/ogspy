@@ -1,4 +1,4 @@
-<?php
+<?php global $server_config, $lang;
 
 /**
  * Panneau d'Administration : Paramètres et affichage des Journaux

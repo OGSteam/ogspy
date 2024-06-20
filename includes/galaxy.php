@@ -1898,18 +1898,18 @@ function displayGalaxyTablethead()
             <?php endif; ?>
         </th>
         <th>
-            <?php echo ($lang['GALAXY_PLANETS']); ?>
+            <?php echo $lang['GALAXY_PLANETS']; ?>
         </th>
         <th>
             <?php if (is_null($link_order_ally)) : ?>
-                <?php echo ($lang['GALAXY_ALLIES']); ?>
+                <?php echo $lang['GALAXY_ALLIES']; ?>
             <?php else : ?>
                 <?php echo $link_order_ally; ?>
             <?php endif; ?>
         </th>
         <th>
             <?php if (is_null($link_order_player)) : ?>
-                <?php echo ($lang['GALAXY_PLAYERS']); ?>
+                <?php echo $lang['GALAXY_PLAYERS']; ?>
             <?php else : ?>
                 <?php echo $link_order_player; ?>
             <?php endif; ?>
@@ -1927,7 +1927,7 @@ function displayGalaxyTablethead()
         <th>&nbsp;</th>
         <th>&nbsp;</th>
         <th>
-            <?php echo ($lang['GALAXY_UPDATES']); ?>
+            <?php echo $lang['GALAXY_UPDATES']; ?>
         </th>
     </tr>
 <?php
