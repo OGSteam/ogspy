@@ -474,7 +474,7 @@ function init_mod_cache()
     $filename = 'cache/cache_mod.php';
 
     if (file_exists($filename)) {
-        include $filename;
+        require_once $filename;
         // regeneration si besoin
         if ((filemtime($filename) + $server_config['mod_cache']) < time()) {
             generate_mod_cache();
@@ -482,7 +482,7 @@ function init_mod_cache()
     } else {
         generate_mod_cache();
         if (file_exists($filename)) {
-            include $filename; // on reinjecte le fichier s'il existe'
+            require_once $filename;
         }
     }
 }
@@ -501,7 +501,7 @@ function init_serverconfig()
     $filename = 'cache/cache_config.php';
 
     if (file_exists($filename)) {
-        include $filename;
+        require_once $filename;
         // regeneration si besoin
         if ((filemtime($filename) + $server_config['config_cache']) < time()) {
             generate_config_cache();
@@ -509,7 +509,7 @@ function init_serverconfig()
     } else {
         generate_config_cache();
         if (file_exists($filename)) {
-            include $filename; // on reinjecte le fichier s'il existe'
+            require_once $filename;
         }
     }
 }
