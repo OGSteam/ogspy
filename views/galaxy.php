@@ -120,13 +120,13 @@ require_once 'views/page_header.php';
                         </select>
 
                         <?php if (sizeof($favorites) < $server_config['max_favorites']) : ?>
-                            <?php $string_addfavorites = "window.location = 'index.php?action=add_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "';"; ?>
+                            <?php $string_addfavorites = "window.location = 'index.php?action=add_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "'"; ?>
                         <?php else : ?>
                             <?php $string_addfavorites = "alert('" . $lang['GALAXY_NO_FAVORITES_MESSAGE'] . "')"; ?>
                         <?php endif; ?>
 
                         <?php if (sizeof($favorites) > 0) : ?>
-                            <?php $string_delfavorites = "window.location ='index.php?action=del_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "';"; ?>
+                            <?php $string_delfavorites = "window.location ='index.php?action=del_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "'"; ?>
                         <?php else : ?>
                             <?php $string_delfavorites = "alert('" . $lang['GALAXY_NO_FAVORITES_MESSAGE'] . "')"; ?>
                         <?php endif; ?>
