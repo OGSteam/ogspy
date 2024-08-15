@@ -23,7 +23,7 @@ const IN_SPYOGAME = true;
 $php_start = microtime(true);
 
 /**
- * Tout les includes se font à partir de là
+ * Tous les includes se font à partir de là
  */
 require_once "common.php";
 

@@ -17,11 +17,11 @@ if (!defined('IN_SPYOGAME')) {
 
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 ?>
-<!DOCTYPE html>
+<!doctype html>
 <html lang="<?= $lang['HEAD_LANGUAGE']; ?>">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8">
     <title><?php echo $server_config["servername"] . " - OGSpy " . $server_config["version"]; ?></title>
     <link rel="stylesheet" type="text/css" href="./skin/OGSpy_skin/formateredesign.css" />
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
