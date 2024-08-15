@@ -669,7 +669,7 @@ body {
 header {
     /* Non visible */
     display: none;
-    /* si affichage  visible 
+    /* si affichage  visible
     a ajouter dans la grille principale
     */
     grid-area: header;
@@ -957,7 +957,7 @@ footer#barre {
     height: 30px;
     background: linear-gradient(rgba(0, 0, 0,0.0), rgba(0, 0, 0, 0.8));
     display: flex;
-    
+
 
 }
 
@@ -1112,13 +1112,6 @@ table.og-table thead tr td.og-legend {
     text-align: center;
 }
 
-
-
-
-
-
-
-
 /*fin TABLE */
 
 
@@ -1208,7 +1201,7 @@ table.og-table thead tr td.og-legend {
     border-radius: 4px;
     padding: 2px 4px;
     cursor: pointer;
-    margin: 2px 0px;
+    margin: 2px 0;
 
 }
 
@@ -1425,15 +1418,15 @@ h2.page_about_h2 {
     margin-right: 10%;
     justify-content: center;
 
-    
+
   }
-  .card { 
+  .card {
     background-color: rgba(0,0,0,0.4);
     flex: 0 0 200px;
     margin: 10px 20px;
     border: 2px solid #ccc;
     padding: 5px;
-  } 
+  }
   .card img {
     width: 100%;
 
@@ -1561,7 +1554,7 @@ table.og-table-galaxy tbody .tr-ishided .tdcontent a {
 
 /* todo ogame-status-x */
 /* Different status dans BDD*/
-/* 
+/*
 a
 I
 vI
@@ -1589,7 +1582,7 @@ io
     color: var(--color-navpagemenu-link);
 }
 .ogspy-mod-footer     {
-    position: fixed; 
+    position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
@@ -1642,22 +1635,22 @@ io
     /*pied de page  */
 footer#barre .notviewlittle{
     display: none;
-    
+
     }
-    
-    
+
+
     /* fin pied de page  */
 
-    
+
 /* page about */
 .cards {
     margin-left: 10px;
     margin-right: 10px;
      }
-  .card { 
+  .card {
     flex: 0 0 300px;
     margin: 10px 10px;
-  } 
+  }
 
 /* fin page about */
 

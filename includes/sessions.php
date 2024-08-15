@@ -22,10 +22,10 @@ use Ogsteam\Ogspy\Model\Sessions_Model;
 
 
 /**
- * Stating an user Session
+ * Starting a user Session
  * @param $user_ip
  */
-function session_begin($user_ip)
+function session_begin($user_ip): void
 {
     global $cookie_id, $server_config, $pub_toolbar_type;
     $Sessions_Model = new Sessions_Model();
@@ -48,7 +48,7 @@ function session_begin($user_ip)
 /**
  * Gets the current session and creates it if the session for the current user does not exists
  */
-function session()
+function session(): void
 {
     global $user_ip, $cookie_id, $server_config;
     global $_COOKIE;
@@ -94,7 +94,7 @@ function session()
  * @param int $user_id The current user
  * @param int $lastvisit Lastvisit timestamp
  */
-function session_set_user_id($user_id, $lastvisit = 0)
+function session_set_user_id($user_id, $lastvisit = 0): void
 {
     global $user_ip, $cookie_id, $server_config;
     $Sessions_Model = new Sessions_Model();
@@ -110,16 +110,16 @@ function session_set_user_id($user_id, $lastvisit = 0)
 
 /**
  * Set the user_data array according to the user parameters in the database
- * @param int $cookie_id The cookie id of the user
- * @todo Y a comme un probleme dans cette fonction... ne semble pas prendre de parametres alors que la fonction precedente lui en donne un...
+ * @param string $cookie_id The cookie id of the user
+ *
  */
-function session_set_user_data($cookie_id)
+function session_set_user_data(string $cookie_id)
 {
     global $user_ip, $user_data, $user_auth, $user_token;
 
     $user_data = (new Sessions_Model())->select_user_data_session($cookie_id, $user_ip);
 
-    if ($user_data == false) {
+    if (!$user_data) {
         unset($user_data);
         unset($user_auth);
         unset($user_token);
@@ -127,31 +127,10 @@ function session_set_user_data($cookie_id)
 }
 
 /**
- * Get the user token (list) for the current user
- * @return mixed
- *
- *function session_set_user_tokens_data()
- *{
- *  global $db, $user_data, $user_token;
- *
- *  $request_tokens = "SELECT `name`,`token`,`expiration_date` FROM " . TABLE_USER_TOKEN . " WHERE `user_id` = " . $user_data["user_id"];
- *  $result_tokens = $db->sql_query($request_tokens);
- *
- *  if ($db->sql_numrows($result_tokens) > 0) {
- *
- *      $user_token = $db->sql_fetch_assoc($result_tokens);
- *  }
- *  else
- *  {
- *      $user_auth = user_get_auth($user_data["user_id"]);
- *  }
- *}*/
-
-/**
- * Closing an user session
+ * Closing a user session
  * @param boolean $user_id ID user session
  */
-function session_close($user_id = false)
+function session_close(bool $user_id = false): void
 {
     global $user_ip, $cookie_id, $server_config;
 
@@ -198,9 +177,7 @@ function session_whois_online()
             $members[] = array("user" => $username, "time_start" => $online["session_start"], "time_lastactivity" => $time_lastactivity, "ip" => $session_ip, "ogs" => $online["session_ogs"]);
         }
     }
-    $online = array_merge($members, $guests);
-
-    return $online;
+    return array_merge($members, $guests);
 }
 
 /**

@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-LABEL VERSION ="0.3"
+LABEL VERSION="0.3"
 LABEL DESCRIPTION="APACHE PHP OGSPY"
 LABEL MAINTENER="darknoon@darkcity.fr"
 
@@ -45,7 +45,7 @@ RUN chmod 755 /app/.docker/*.sh
 WORKDIR /app/.docker/
 RUN /app/.docker/configure.sh
 
-# Add volumes for MySQL 
+# Add volumes for MySQL
 VOLUME  ["/etc/mysql", "/var/lib/mysql", "/app" ]
 
 EXPOSE 80 3306

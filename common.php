@@ -67,11 +67,7 @@ foreach ($_POST as $secvalue) {
 
 //Language File
 if (!isset($ui_lang)) { // Checks the ui_lang value from parameters file
-    if (isset($pub_lang)) {
-        $ui_lang = $pub_lang; //This value is used during installation
-    } else {
-        $ui_lang = "fr";
-    }
+    $ui_lang = $pub_lang ?? "fr";
     //If no language is available in id.php file we take fr by default
 }
 require_once "lang/lang_main.php";
