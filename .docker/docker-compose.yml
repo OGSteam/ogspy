@@ -1,0 +1,65 @@
+name: my-ogspy
+
+networks:
+  ogspy-network:
+    driver: bridge
+
+volumes:
+  ogspy-db:
+    driver: local
+  ogspy-app:
+    driver: local
+
+services:
+  db:
+    image: mariadb
+    expose:
+      - 3306
+    networks:
+      - ogspy-network
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: demo
+      MYSQL_PASSWORD: ogsteam
+    volumes:
+      - ogspy-db:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
+    restart: always
+
+  ogspy:
+    build:
+      context: .
+      dockerfile: Dockerfile.ogspy
+    networks:
+      - ogspy-network
+    volumes:
+      - ogspy-app:/var/www/html
+      - ./parameters:/var/www/html/parameters
+    restart: always
+    depends_on:
+      - db
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    volumes:
+      - ogspy-app:/var/www/html
+    ports:
+      - "16005:80"
+    networks:
+      - ogspy-network
+
+
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "16006:80"
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+      - UPLOAD_LIMIT=50000000
+    networks:
+      - ogspy-network
+    restart: always
