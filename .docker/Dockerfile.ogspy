@@ -33,9 +33,6 @@ RUN git clone -b master https://github.com/ogsteam/mod-production /var/www/html/
 RUN git clone -b master https://github.com/ogsteam/mod-tempsvols /var/www/html/mod/tempsvols
 RUN git clone -b master https://github.com/ogsteam/mod-bthof /var/www/html/mod/bthof
 
-COPY id.php /var/www/html/parameters/id.php
-COPY key.php /var/www/html/parameters/key.php
-
 WORKDIR /var/www/html
 
 RUN composer install
