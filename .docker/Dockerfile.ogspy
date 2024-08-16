@@ -1,4 +1,4 @@
-FROM php:8.2-fpm-alpine3.19 AS build
+FROM php:8.3-fpm-alpine3.20 AS build
 
 RUN apk --no-cache add php-session \
     php-tokenizer \
@@ -18,24 +18,51 @@ RUN apk --no-cache add php-session \
     php-ctype \
     php-xmlwriter \
     php-simplexml \
+    php-zip \
+    libzip-dev \
     git \
     composer
 
-RUN docker-php-ext-install mysqli pdo_mysql
-RUN docker-php-ext-enable mysqli pdo_mysql
+RUN docker-php-ext-install mysqli pdo_mysql zip
+RUN docker-php-ext-enable mysqli pdo_mysql zip
 
 # RUN apk --no-cache add --update nodejs npm
 
+# Get OGSpy
 RUN git clone -b develop https://github.com/ogsteam/ogspy /var/www/html
+
+# Get OGSpy Mods
+RUN git clone -b master https://github.com/ogsteam/mod-allyranking /var/www/html/mod/allyranking
+RUN git clone -b master https://github.com/ogsteam/mod-attaques /var/www/html/mod/attaques
+RUN git clone -b master https://github.com/ogsteam/mod-autonomie /var/www/html/mod/autonomie
 RUN git clone -b master https://github.com/ogsteam/mod-autoupdate /var/www/html/mod/autoupdate
-RUN git clone -b master https://github.com/ogsteam/mod-xtense /var/www/html/mod/xtense
-RUN git clone -b master https://github.com/ogsteam/mod-production /var/www/html/mod/production
-RUN git clone -b master https://github.com/ogsteam/mod-tempsvols /var/www/html/mod/tempsvols
 RUN git clone -b master https://github.com/ogsteam/mod-bthof /var/www/html/mod/bthof
+RUN git clone -b master https://github.com/ogsteam/mod-cdr /var/www/html/mod/cdr
+RUN git clone -b master https://github.com/ogsteam/mod-densite /var/www/html/mod/densite
+RUN git clone -b master https://github.com/ogsteam/mod-emspyre /var/www/html/mod/emspyre
+RUN git clone -b master https://github.com/ogsteam/mod-expedition /var/www/html/mod/expedition
+RUN git clone -b master https://github.com/ogsteam/mod-flottes /var/www/html/mod/flottes
+RUN git clone -b master https://github.com/ogsteam/mod-gestionmod /var/www/html/mod/gestionmod
+RUN git clone -b master https://github.com/ogsteam/mod-graviton /var/www/html/mod/graviton
+RUN git clone -b master https://github.com/ogsteam/mod-hof /var/www/html/mod/hof
+RUN git clone -b master https://github.com/ogsteam/mod-hofrc /var/www/html/mod/hofrc
+RUN git clone -b master https://github.com/ogsteam/mod-inactifs /var/www/html/mod/inactifs
+RUN git clone -b master https://github.com/ogsteam/mod-majvisu /var/www/html/mod/majvisu
+RUN git clone -b master https://github.com/ogsteam/mod-ogscalc /var/www/html/mod/ogscalc
+RUN git clone -b master https://github.com/ogsteam/mod-oversight /var/www/html/mod/oversight
+RUN git clone -b master https://github.com/ogsteam/mod-production /var/www/html/mod/production
+RUN git clone -b master https://github.com/ogsteam/mod-quimsonde /var/www/html/mod/quimsonde
+RUN git clone -b master https://github.com/ogsteam/mod-recycleurs /var/www/html/mod/recycleurs
+RUN git clone -b master https://github.com/ogsteam/mod-sign /var/www/html/mod/sign
+RUN git clone -b master https://github.com/ogsteam/mod-superapix /var/www/html/mod/superapix
+RUN git clone -b master https://github.com/ogsteam/mod-tempsvols /var/www/html/mod/tempsvols
+RUN git clone -b master https://github.com/ogsteam/mod-timeobservatory /var/www/html/mod/timeobservatory
+RUN git clone -b master https://github.com/ogsteam/mod-varally /var/www/html/mod/varally
+RUN git clone -b master https://github.com/ogsteam/mod-xtense /var/www/html/mod/xtense
 
 WORKDIR /var/www/html
 
-RUN composer install
+RUN composer install --prefer-dist --no-progress --no-dev
 # RUN npm install
 
 EXPOSE 9000
