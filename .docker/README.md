@@ -1,22 +1,44 @@
+
 # OGSpy Docker
 
-PHP 7.06 Maria DB
+This is the environment to test your development Branch.
 
-Based on work done by tutumcloud
-https://github.com/tutumcloud/lamp
+It contains all the necessary tools to run OGSpy.:
 
-## Usage
+- Alpine Linux
+- NGINX
+- Maria DB
+- PHP 8.3
+- PHPMyAdmin
 
--   Get the image: `docker pull ogsteam/ogspy`
+## Run Locally
 
--   Run the image: `docker run -d -p80:80 --name ogspy_container ogsteam/ogspy`
+Run the Docker Compose to set up the environment.
 
--   Install OGSpy with Database settings:  
-  Open with your browser http://127.0.0.1 (The page could appear after some time corresponding to the service startup time)
+```bash
+  docker.exe compose -f docker-compose.yml -p my-ogspy up -d
+```
 
-    >   Database : ogspy  
-    >   user : ogsteam  
-    >   password : password
+## Connect to OGSpy
 
--   When installation is finished remove install Folder:
-  `docker exec ogspy_container rm -Rf /app/install`
+http://127.0.0.1:16005/
+
+User : ogsteam
+Password : ogsteam
+
+## Connect to PHPMyAdmin
+
+http://127.0.0.1:16006/
+
+User : root
+Password : password
+
+## Volumes
+
+The image will create the following volumes to let you see your files in your local environment.
+- `ogspy-db` - MariaDB
+- `ogspy-app` - NGINX + OGSPY
+
+## Customize your image
+
+You can edit the `Dockerfile.ogspy` file to customize your image and select a customer branch to test and the PHP Version.
