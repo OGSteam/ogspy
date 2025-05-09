@@ -1,5 +1,6 @@
 <?php
 global $server_config, $ogspy_version, $user_data;
+ob_start();
 session_start();
 /**
  * Fichier principal d'ogspy
