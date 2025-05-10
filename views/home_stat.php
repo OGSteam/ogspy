@@ -34,7 +34,7 @@ if (
 
 $zoom = $pub_zoom;
 $player_comp = $pub_player_comp;
-$user_stat_name = $pub_user_stat_name;
+$player_stat_name = $pub_player_stat_name;
 
 if (!isset($zoom)) {
     $zoom = "true";
@@ -45,13 +45,8 @@ if (isset($pub_zoom_change_y) && isset($pub_zoom_change_x)) {
 if (!isset($player_comp)) {
     $player_comp = "";
 }
-if (isset($user_stat_name) && $user_stat_name != "" && $user_stat_name != $user_data["user_stat_name"]) {
-    user_set_stat_name($user_stat_name);
-    redirection("index.php?action=home&amp;subaction=stat&amp;zoom=" . $zoom .
-        "&player_comp=" . $player_comp);
-}
 
-$individual_ranking = galaxy_show_ranking_unique_player($user_data["user_stat_name"]);
+$individual_ranking = galaxy_show_ranking_unique_player($player_data["user_stat_name"]);
 
 ksort($individual_ranking);
 
@@ -105,7 +100,7 @@ if (sizeof($dates) > 0) {
                     <?= $lang['HOME_STATS_STATISTICS'] ?>
                 </td>
                 <td>
-                    <input type="text" name="user_stat_name" value="<?= $user_data["user_stat_name"] ?>" />
+                    <input type="text" name="user_stat_name" value="<?= $player_data["name"] ?>" />
                 </td>
                 <td>
                     <input class="og-button og-button-little" type="submit" value="<?= $lang['HOME_STATS_GETSTATS'] ?>" />
@@ -180,7 +175,7 @@ if (sizeof($dates) > 0) {
                 <td class='c' colspan='2'><?= $lang['HOME_STATS_OPTIONS']; ?></td>
             </tr>
             <tr>
-                <th><input type="text" name="user_stat_name" value="<?= $user_data["user_stat_name"] ?>" />
+                <th><input type="text" name="user_stat_name" value="<?= $player_data["name"] ?>" />
                     <input type="submit" value="<?= $lang['HOME_STATS_GETSTATS'] ?>" />
                 </th>
                 <th rowspan="2"><span style="text-decoration: underline;"><?= $lang['HOME_STATS_INTERVAL'] ?></span> : <?= $lang['HOME_STATS_FROM'] ?>
@@ -201,17 +196,18 @@ if (sizeof($dates) > 0) {
     </form>
 -->
 <?php
-$first = array(
-    "general_pts" => -1, "eco_pts" => -1, "techno_pts" => -1, "military_pts" => -1, "military_b_pts" => -1, "military_l_pts" => -1,
-    "military_d_pts" => -1, "honnor_pts" => -1
-);
-$last = array(
-    "general_pts" => 0, "eco_pts" => 0, "techno_pts" => 0, "military_pts" => 0, "military_b_pts" => 0, "military_l_pts" => 0,
-    "military_d_pts" => 0, "honnor_pts" => 0, "general_rank" => 0, "eco_rank" => 0, "techno_rank" => 0, "military_rank" => 0,
+$first = [
+    "general_pts" => -1, "eco_pts" => -1, "techno_pts" => -1, "military_pts" => -1,
+    "military_b_pts" => -1, "military_l_pts" => -1, "military_d_pts" => -1, "honnor_pts" => -1
+];
+$last = [
+    "general_pts" => 0, "eco_pts" => 0, "techno_pts" => 0, "military_pts" => 0,
+    "military_b_pts" => 0, "military_l_pts" => 0, "military_d_pts" => 0, "honnor_pts" => 0,
+    "general_rank" => 0, "eco_rank" => 0, "techno_rank" => 0, "military_rank" => 0,
     "military_b_rank" => 0, "military_l_rank" => 0, "military_d_rank" => 0, "honnor_rank" => 0
-);
+];
 $tab_rank = "";
-$rank_row = array();
+$rank_row = [];
 $i = 0;
 
 
@@ -325,7 +321,7 @@ while ($ranking = current($individual_ranking)) {
 }
 ?>
 <h2>
-    <?= $lang['HOME_STATS_PALYERSTATS'] . " " . $user_data["user_stat_name"] ?>
+    <?= $lang['HOME_STATS_PALYERSTATS'] . " " . $player_data["name"] ?>
 </h2>
 
 <?php
@@ -333,22 +329,22 @@ while ($ranking = current($individual_ranking)) {
 //
 global $zoom;
 $zoom = 'false';
-$curve = create_curves($user_data["user_stat_name"], $min_date, $max_date, $player_comp);
+$curve = create_curves($player_data["name"], $min_date, $max_date, $player_comp);
 
 $title = $lang['HOME_STATS_GRAPHIC_TITLE'];
-if (!empty($user_data["user_stat_name"])) {
-    $title .= " " . $lang['HOME_STATS_GRAPHIC_TITLE2'] . " " . $user_data["user_stat_name"];
+if (!empty($player_data["name"])) {
+    $title .= " " . $lang['HOME_STATS_GRAPHIC_TITLE2'] . " " . $player_data["name"];
     if (!empty($last_date["general"])) {
         $title .= " " . $lang['HOME_STATS_GRAPHIC_FROM'] . " " . date("d M Y H:i", $last_date["general"]);
     }
 }
 
-$user_empire = user_get_empire($user_data["user_id"]);
+$user_empire = user_get_empire($user_data["id"]);
 $user_building = $user_empire["building"];
 $user_defence = $user_empire["defence"];
 $user_technology = $user_empire["technology"];
 
-$nb_planete = find_nb_planete_user($user_data["user_id"]);
+$nb_planete = find_nb_planete_user($user_data["id"]);
 
 $b = round(all_building_cumulate(array_slice($user_building, 0, $nb_planete)) / 1000);
 $d = round(all_defence_cumulate(array_slice($user_defence, 0, $nb_planete)) / 1000);
@@ -380,9 +376,9 @@ for ($i = 1; $i <= $nb_planete; $i++) {
         <tr>
             <th colspan="2">
                 <?php if ($player_comp != "" && isset($player_comp)) : ?>
-                    <?= ($lang['HOME_STATS_COMP']) ?> <?= $user_data["user_stat_name"] ?>
+                    <?= ($lang['HOME_STATS_COMP']) ?> <?= $player_data["name"] ?>
                 <?php else : ?>
-                    <?= ($lang['HOME_STATS_RANKINGS']) ?> <?= $user_data["user_stat_name"] ?>
+                    <?= ($lang['HOME_STATS_RANKINGS']) ?> <?= $player_data["name"] ?>
                 <?php endif; ?>
             </th>
         </tr>
@@ -458,7 +454,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
     <thead>
         <tr>
             <th colspan="17">
-                <?= ($lang['HOME_STATS_RANKING']) ?> <span class=og-highlight><?= $user_data["user_stat_name"] ?></span>
+                <?= ($lang['HOME_STATS_RANKING']) ?> <span class=og-highlight><?= $player_data["name"] ?></span>
             </th>
         </tr>
         <tr>

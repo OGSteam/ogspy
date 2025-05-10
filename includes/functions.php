@@ -543,7 +543,7 @@ function set_server_view()
     ) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
-    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+    if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
         redirection("planetindex.php?action=message&id_message=forbidden&info");
     }
 
@@ -595,7 +595,7 @@ function set_server_view()
         redirection("index.php?action=message&id_message=setting_server_view_failed&info");
     }
 
-    $Config_Model->update(array("config_value" => $pub_enable_portee_missil, "config_name" => "portee_missil"));
+    $Config_Model->update(array("value" => $pub_enable_portee_missil, "name" => "portee_missil"));
 
     if ($pub_galaxy_by_line_stat < 1) {
         $pub_galaxy_by_line_stat = 1;
@@ -704,7 +704,7 @@ function set_serverconfig()
     ) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
-    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+    if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
         redirection("planetindex.php?action=message&id_message=forbidden&info");
     }
 
@@ -1193,7 +1193,7 @@ function admin_raz_ratio($maintenance_action = false)
     global $user_data;
 
     if (
-        $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
+        $user_data["admin"] != 1 && $user_data["coadmin"] != 1 && $user_data["management_user"] !=
         1
     ) {
         die("Acces interdit");

@@ -85,10 +85,10 @@ class Universe_Model extends Model_Abstract
         $system_down = (int)$system_down;
         $system_up = (int)$system_up;
 
-        $request = "SELECT `galaxy`, `system`, `row`, `name`, `ally`, `player`, `moon`, `phalanx`, `gate`, `last_update_moon`, `status`, `last_update`, `user_name`
-                    FROM " . TABLE_UNIVERSE . "
-                        LEFT JOIN " . TABLE_USER . "
-                            ON `user_id` = `last_update_user_id`
+        $request = "SELECT uni.`galaxy`, uni.`system`, uni.`row`, uni.`name`, uni.`ally`, uni.`player`, uni.`moon`, uni.`phalanx`, uni.`gate`, uni.`last_update_moon`, uni.`status`, uni.`last_update`, user.`name`
+                    FROM " . TABLE_UNIVERSE . " uni
+                        LEFT JOIN " . TABLE_USER . " user
+                            ON user.`id` = uni.`last_update_user_id`
                     WHERE `galaxy` = $galaxy AND `system` BETWEEN $system_down AND $system_up
                     ORDER BY `system`, `row`";
         $result = $this->db->sql_query($request);

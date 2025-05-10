@@ -213,7 +213,7 @@ require_once 'views/page_header.php';
                     $classtag = " og-success ";
                 }
 
-                if ($enable_stat_view || ($v['user_name'] == $user_data['user_name']) || $user_data['user_admin'] || $user_data['user_coadmin']) {
+                if ($enable_stat_view || ($v['user_name'] == $user_data['name']) || $user_data['admin'] || $user_data['coadmin']) {
 
                     switch ($v['xtense_type']) {
                         case 'FF':
@@ -235,7 +235,7 @@ require_once 'views/page_header.php';
                     //todo voir si seulement admin on le visuel ...
                     if ($v['user_active'] == "1" || $v['user_admin'] == "1") {
                         echo '<tr>';
-                        echo '<td><span class="' . $classtag . '">' . $v['user_name'] . (($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) ? ' ' . $v['here'] : '') . '</span></td>';
+                        echo '<td><span class="' . $classtag . '">' . $v['name'] . (($enable_members_view || $user_data['admin'] || $user_data['coadmin']) ? ' ' . $v['here'] : '') . '</span></td>';
                         echo '<td>' . formate_number($v['planet_added_ogs']) . '</td>';
                         echo '<td>' . formate_number($v['spy_added_ogs']) . '</td>';
                         echo '<td>' . formate_number($v['rank_added_ogs']) . '</td>';
@@ -254,7 +254,7 @@ require_once 'views/page_header.php';
             ?>
         </tbody>
 
-        <?php if ($enable_members_view || $user_data['user_admin'] || $user_data['user_coadmin']) : ?>
+        <?php if ($enable_members_view || $user_data['admin'] || $user_data['coadmin']) : ?>
             <?php
             $legend = '<table class="og-table og-small-table ">';
             $legend .= '<thead>';
@@ -282,7 +282,7 @@ require_once 'views/page_header.php';
         <?php endif; ?>
     </table>
 
-    <?php if ($user_data['user_admin'] == 1 || $user_data['user_coadmin'] == 1 || $user_data['management_user'] == 1) : ?>
+    <?php if ($user_data['admin'] == 1 || $user_data['coadmin'] == 1 || $user_data['management_user'] == 1) : ?>
         <table>
             <tr>
                 <td>

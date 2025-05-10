@@ -32,8 +32,8 @@ function log_($parameter, $option = 0)
     global $user_data, $server_config, $pub_action;
 
     $member = "Inconnu";
-    if (isset($user_data['user_name'])) {
-        $member = $user_data['user_name'];
+    if (isset($user_data['name'])) {
+        $member = $user_data['name'];
     }
 
     switch ($parameter) {
@@ -445,7 +445,7 @@ function log_extractor()
 {
     global $pub_date, $user_data;
 
-    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+    if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
         redirection("index.php?action=message&id_message=forbidden&info");
     }
 
@@ -530,7 +530,7 @@ function log_remove()
 {
     global $pub_date, $user_data, $pub_directory;
 
-    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+    if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
         redirection("index.php?action=message&id_message=forbidden&info");
     }
 

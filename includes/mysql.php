@@ -147,7 +147,7 @@ class sql_db
      */
     public function sql_query($query = "")
     {
-        global $server_config;
+        global $server_config, $logSQL;
         global $benchSQL;
         $benchSQL->start();
 
@@ -161,6 +161,7 @@ class sql_db
             write_file(PATH_LOG_TODAY . $fichier, 'a', $ligne);
         }
 
+        $logSQL->info($query);
         $benchSQL->stop("sql_query ".$this->nb_requete." ");
         $this->nb_requete += 1;
         return $this->result;

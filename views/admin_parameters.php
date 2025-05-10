@@ -13,13 +13,13 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
     redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 
 //check mail
 if (isset($pub_testmail)) {
-    sendMail($user_data["user_email"], "TEST", "<h1>TEST OK</h1>");
+    sendMail($user_data["email"], "TEST", "<h1>TEST OK</h1>");
 }
 
 
@@ -213,9 +213,9 @@ $mail_smtp_password = "";
                 <td class="tdstat""><?= ($lang['ADMIN_PARAMS_MAIL_SMTP_PASSEWORD']) ?></td>
                 <td class="tdvalue"><input type="password" size="30" name="mail_smtp_password" value="<?= $mail_smtp_password ?>"> (<input type="checkbox" name="enable_mail_smtp_password" />)</td>
             </tr>
-            <?php if ($server_config['mail_use'] == 1 && check_var($user_data["user_email"], "Email")) : ?>
+            <?php if ($server_config['mail_use'] == 1 && check_var($user_data["email"], "Email")) : ?>
                 <tr>
-                    <td class="tdstat"><?= ($lang['ADMIN_PARAMS_MAIL_TEST'] . $user_data["user_email"]) ?></td>
+                    <td class="tdstat"><?= ($lang['ADMIN_PARAMS_MAIL_TEST'] . $user_data["email"]) ?></td>
                     <td class="tdvalue"><a href="index.php?action=administration&subaction=parameter&testmail">TEST</a></td>
                 </tr>
             <?php endif; ?>
@@ -247,7 +247,7 @@ $mail_smtp_password = "";
                 <td class="tdvalue"><input name="max_keeplog" type="text" size="5" maxlength="3" value="<?= $max_keeplog ?>"></td>
             </tr>
         </tbody>
-        <?php if ($user_data["user_admin"] == 1) : ?>
+        <?php if ($user_data["admin"] == 1) : ?>
             <thead>
                 <tr>
                     <th colspan="2"><?= ($lang['ADMIN_PARAMS_GAME_OPTIONS']) ?></th>

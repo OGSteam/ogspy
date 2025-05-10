@@ -13,7 +13,7 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] != 1) {
+if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1 && $user_data["management_user"] != 1) {
     redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 

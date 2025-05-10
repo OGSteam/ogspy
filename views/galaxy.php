@@ -17,6 +17,7 @@ if (!defined('IN_SPYOGAME')) {
 
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 use Ogsteam\Ogspy\Model\Group_Model;
+use \Ogsteam\Ogspy\Model\Player_Model;
 
 global $user_data;
 $ToolTip_Helper = new ToolTip_Helper();
@@ -25,8 +26,13 @@ $info_system = galaxy_show();
 $population = $info_system["population"];
 $galaxy = $info_system["galaxy"];
 $system = $info_system["system"];
+$my_player_data = (new Player_Model())->select_player_data($user_data['player_id']);
 
-$phalanx_list = galaxy_get_phalanx($galaxy, $system, $user_data['user_class']);
+if( isset($my_player_data['class']) && $my_player_data['class'] != 0) {
+    $phalanx_list = galaxy_get_phalanx($galaxy, $system, $my_player_data['class']);
+} else {
+    $phalanx_list = galaxy_get_phalanx($galaxy, $system);
+}
 
 $galaxy_down = (($galaxy - 1) < 1) ? 1 : $galaxy - 1;
 $galaxy_up = (($galaxy - 1) > intval($server_config['num_of_galaxies'])) ? intval($server_config['num_of_galaxies']) : $galaxy + 1;
@@ -41,7 +47,7 @@ $tooltiptab = array("player" => array(), "ally" => array()); // conteneur des to
 $missil = "";
 //TODO sortir requete de la vue
 //recherche du group
-$user_group = (new Group_Model())->get_user_group($user_data["user_id"]);
+$user_group = (new Group_Model())->get_user_group($user_data["id"]);
 //recherche des droits liés
 $tInfosGroups = (new Group_Model())->get_group_rights($user_group);
 

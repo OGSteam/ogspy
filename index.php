@@ -1,5 +1,5 @@
 <?php
-global $server_config, $ogspy_version, $user_data;
+global $server_config, $ogspy_version, $user_data, $log;
 ob_start();
 session_start();
 /**
@@ -46,6 +46,7 @@ if (!isset($pub_action)) {
 
 if (is_file("install/version.php")) {
     require_once "install/version.php";
+    $log->info("Version : " . $ogspy_version);
     if (version_compare($server_config["version"], $ogspy_version, '<')) {
         redirection("install/index.php");
     }
@@ -54,15 +55,16 @@ if (is_file("install/version.php")) {
 if (
     $server_config["server_active"] == 0
     && $pub_action != "login_web"
-    && $pub_action != "logout" && $user_data['user_admin'] != 1
-    && $user_data['user_coadmin'] != 1
+    && $pub_action != "logout" && $user_data['admin'] != 1
+    && $user_data['coadmin'] != 1
 ) {
     $pub_action = "server_close";
 }
 
 //  Visiteur non identifié
 
-if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "login_web")) {
+if (!isset($user_data["id"]) && !(isset($pub_action) && $pub_action == "login_web")) {
+    $log->info("Visiteur non identifié");
     if ($pub_action == "message") {
         require "views/message.php";
     } else {
@@ -73,10 +75,12 @@ if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "log
     }
     exit();
 }
-
+$log->debug("user_data : " . print_r($user_data, true));
+//$log->info("Visiteur identifié : " . $user_data["name"] . " (id : " . $user_data["id"] . ")");
 if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
+    $log->info("Action : " . $pub_action);
     if (ratio_is_ok()) {
-        if ($cache_mod[$pub_action]['admin_only'] == 1 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {
+        if ($cache_mod[$pub_action]['admin_only'] == 1 && $user_data["admin"] == 0 && $user_data["coadmin"] == 0) {
             redirection("index.php?action=message&id_message=forbidden&info");
         } else {
             require_once "mod/" . $cache_mod[$pub_action]['root'] . "/" . $cache_mod[$pub_action]['link'];
@@ -85,9 +89,9 @@ if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
     }
 }
 
-if (isset($user_data['user_pwd_change'])) {
+if (isset($user_data['pwd_change'])) {
     //Changer le mdp :
-    if ($pub_action !== 'logout' && $user_data['user_pwd_change'] == 1 && $pub_action !== 'member_modify_member') {
+    if ($pub_action !== 'logout' && $user_data['pwd_change'] == 1 && $pub_action !== 'member_modify_member') {
         $pub_action = 'profile';
     }
 }
@@ -353,14 +357,14 @@ switch ($pub_action) {
         break;
 
     default:
-        if ($server_config['open_user'] != "" && $user_data['user_admin'] != 1 && $user_data['user_coadmin'] != 1) {
+        if ($server_config['open_user'] != "" && $user_data['admin'] != 1 && $user_data['coadmin'] != 1) {
 
             if (file_exists($server_config['open_user'])) {
                 require_once($server_config['open_user']);
             } else {
                 require_once("views/galaxy.php");
             }
-        } elseif ($server_config['open_admin'] != "" && ($user_data['user_admin'] == 1 || $user_data['user_coadmin'] == 1)) {
+        } elseif ($server_config['open_admin'] != "" && ($user_data['admin'] == 1 || $user_data['coadmin'] == 1)) {
             if (file_exists($server_config['open_admin'])) {
                 require_once($server_config['open_admin']);
             } else {

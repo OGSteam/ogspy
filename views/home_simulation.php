@@ -16,7 +16,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 
-$user_empire = user_get_empire($user_data['user_id']);
+$user_empire = user_get_empire($user_data['id']);
 $user_building = $user_empire["building"];
 $user_defence = $user_empire["defence"];
 $user_percentage = $user_empire["user_percentage"];
@@ -30,17 +30,18 @@ if ($user_empire["technology"]) {
 }
 
 
-$nb_planete = find_nb_planete_user($user_data['user_id']);
+$nb_planete = find_nb_planete_user($user_data['player_id']);
 
 
 // ajout infos pour gestion js ...
-$officier = $user_data['off_commandant'] + $user_data['off_amiral'] + $user_data['off_ingenieur']
-    + $user_data['off_geologue'] + $user_data['off_technocrate'];
+
+$officier = $player_data['off_commandant'] + $player_data['off_amiral'] + $player_data['off_ingenieur']
+    + $player_data['off_geologue'] + $player_data['off_technocrate'];
 $off_full = ($officier == 5) ? '1' : '0';
-$class_collect = ($user_data['user_class'] === 'COL') ? '1' : '0';
+$class_collect = ($player_data['user_class'] === 'COL') ? '1' : '0';
 echo "<input type='hidden' id='vitesse_uni' size='2' maxlength='5' value='" . $server_config['speed_uni'] . "'/>";
-echo "<input type='hidden' id='off_ingenieur' value='" . $user_data["off_ingenieur"] . "'/>";
-echo "<input type='hidden' id='off_geologue' value='" . $user_data["off_geologue"] . "'/>";
+echo "<input type='hidden' id='off_ingenieur' value='" . $player_data["off_ingenieur"] . "'/>";
+echo "<input type='hidden' id='off_geologue' value='" . $player_data["off_geologue"] . "'/>";
 echo "<input type='hidden' id='off_full' value='" . $off_full . "'/>";
 echo "<input type='hidden' id='class_collect' value='" . $class_collect . "'/>";
 

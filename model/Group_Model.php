@@ -23,11 +23,11 @@ class Group_Model extends Model_Abstract
     public function get_all_group_rights()
     {
 
-        $request = "SELECT `group_id`, `group_name`, ";
+        $request = "SELECT `id`, `name`, ";
         $request .= " `server_set_system`, `server_set_spy`, `server_set_rc`, `server_set_ranking`, `server_show_positionhided`,";
         $request .= " `ogs_connection`, `ogs_set_system`, `ogs_get_system`, `ogs_set_spy` , `ogs_get_spy`, `ogs_set_ranking`, `ogs_get_ranking`";
         $request .= " FROM " . TABLE_GROUP;
-        $request .= " ORDER BY `group_id`";
+        $request .= " ORDER BY `id`";
 
         $result = $this->db->sql_query($request);
 
@@ -46,12 +46,12 @@ class Group_Model extends Model_Abstract
 
         $group_id = intval($group_id);
 
-        $request = "SELECT `group_id`, `group_name`, ";
+        $request = "SELECT `id`, `name`, ";
         $request .= " `server_set_system`, `server_set_spy`, `server_set_rc`, `server_set_ranking`, `server_show_positionhided`,";
         $request .= " `ogs_connection`, `ogs_set_system`, `ogs_get_system`, `ogs_set_spy`, `ogs_get_spy`, `ogs_set_ranking`, `ogs_get_ranking`";
         $request .= " FROM " . TABLE_GROUP;
-        $request .= " WHERE `group_id` = " . $group_id;
-        $request .= " ORDER BY `group_id`";
+        $request .= " WHERE `id` = " . $group_id;
+        $request .= " ORDER BY `id`";
 
         $result = $this->db->sql_query($request);
 
@@ -66,9 +66,9 @@ class Group_Model extends Model_Abstract
      */
     public function get_group_list()
     {
-        $request = "SELECT `group_id`, `group_name` ";
+        $request = "SELECT `id`, `name` ";
         $request .= " FROM " . TABLE_GROUP;
-        $request .= " ORDER BY `group_id`";
+        $request .= " ORDER BY `id`";
 
         $result = $this->db->sql_query($request);
 
@@ -129,11 +129,11 @@ class Group_Model extends Model_Abstract
 
         $name = $this->db->sql_escape_string($name);
 
-        $request = "SELECT `group_id` FROM " . TABLE_GROUP . " WHERE `group_name` = '" . $name . "'";
+        $request = "SELECT `id` FROM " . TABLE_GROUP . " WHERE `name` = '" . $name . "'";
         $result = $this->db->sql_query($request);
 
         if ($this->db->sql_numrows($result) == 0) {
-            $request = "INSERT INTO " . TABLE_GROUP . " (`group_name`)" . " VALUES ('" . $name . "')";
+            $request = "INSERT INTO " . TABLE_GROUP . " (`name`)" . " VALUES ('" . $name . "')";
             $this->db->sql_query($request);
             $group_id = $this->db->sql_insertid();
             return $group_id;
@@ -215,23 +215,21 @@ class Group_Model extends Model_Abstract
 
 
 
-        $request = "UPDATE " . TABLE_GROUP;
-        $request .= " SET `group_name` = '" . $name .
-            "',";
-        $request .= " `server_set_system` = '" . $server_set_system .
-            "', `server_set_spy` = '" . $server_set_spy .
-            "', `server_set_rc` = '" . $server_set_rc .
-            "', `server_set_ranking` = '" . $server_set_ranking .
-            "', `server_show_positionhided` = '" . $server_show_positionhided .
-            "', `ogs_connection` = '" . $ogs_connection .
-            "', `ogs_set_system` = '" . $ogs_set_system .
-            "', `ogs_get_system` = '" . $ogs_get_system .
-            "', `ogs_set_spy` = '" . $ogs_set_spy .
-            "', `ogs_get_spy` = '" . $ogs_get_spy .
-            "', `ogs_set_ranking` = '" . $ogs_set_ranking .
-            "', `ogs_get_ranking` = '" . $ogs_get_ranking .
-            "'";
-        $request .= " WHERE `group_id` = " . $group_id;
+        $request = "UPDATE " . TABLE_GROUP . " SET
+            `name` = '$name',
+            `server_set_system` = '$server_set_system',
+            `server_set_spy` = '$server_set_spy',
+            `server_set_rc` = '$server_set_rc',
+            `server_set_ranking` = '$server_set_ranking',
+            `server_show_positionhided` = '$server_show_positionhided',
+            `ogs_connection` = '$ogs_connection',
+            `ogs_set_system` = '$ogs_set_system',
+            `ogs_get_system` = '$ogs_get_system',
+            `ogs_set_spy` = '$ogs_set_spy',
+            `ogs_get_spy` = '$ogs_get_spy',
+            `ogs_set_ranking` = '$ogs_set_ranking',
+            `ogs_get_ranking` = '$ogs_get_ranking'
+        WHERE `id` = $group_id";
         $this->db->sql_query($request);
     }
 
@@ -284,7 +282,7 @@ class Group_Model extends Model_Abstract
         $request = "DELETE FROM " . TABLE_USER_GROUP . " WHERE `group_id` = " . $group_id;
         $this->db->sql_query($request);
 
-        $request = "DELETE FROM " . TABLE_GROUP . " WHERE `group_id` = " . $group_id;
+        $request = "DELETE FROM " . TABLE_GROUP . " WHERE `id` = " . $group_id;
         $this->db->sql_query($request);
     }
 
@@ -295,7 +293,7 @@ class Group_Model extends Model_Abstract
     {
         $group_id = intval($group_id);
 
-        $request = "SELECT `group_id` FROM " . TABLE_GROUP . " WHERE `group_id` = " . $group_id;
+        $request = "SELECT `id` FROM " . TABLE_GROUP . " WHERE `id` = " . $group_id;
         $result = $this->db->sql_query($request);
         if ($this->db->sql_numrows($result) == 0) {
             return false;
@@ -310,7 +308,7 @@ class Group_Model extends Model_Abstract
     {
         $group_name =  $this->db->sql_escape_string($group_name);
 
-        $request = "SELECT `group_id` FROM " . TABLE_GROUP . " WHERE `group_name` = '" . $group_name . "'";
+        $request = "SELECT `id` FROM " . TABLE_GROUP . " WHERE `name` = '" . $group_name . "'";
         $result = $this->db->sql_query($request);
 
         if ($this->db->sql_numrows($result) == 0) {

@@ -1,5 +1,5 @@
 <?php
-global $user_data;
+global $user_data, $lang;
 
 /**
  * Affichage Empire - Page Planetes
@@ -20,60 +20,28 @@ require_once("includes/ogame.php");
 
 global $server_config;
 
-$user_empire = user_get_empire($user_data['user_id']);
+$user_empire = user_get_empire($player_data['id']);
 
 $user_building   = $user_empire['building'];
 $user_defence    = $user_empire['defence'];
 $user_technology = $user_empire['technology'];
 
-$nb_planete      = find_nb_planete_user($user_data['user_id']);
+$nb_planete      = find_nb_planete_user($player_data['user_id']);
 
-if (!isset($pub_view)) {
-    $pub_view = 'planets';
-}
-switch ($pub_view) {
-    case 'moons':
-        $view = $pub_view;
-        $start = 201;
-        break;
-    case 'planets':    //no break
-    default:
-        $view = 'planets';
-        $start = 101;
-}
-
-/* Restes du Lang Empire :-) */
-/* prerequis : ogame_elements_requirement() + prerequis_Valid */
-/*
-$technology_requirement["Esp"] = array(3);
-$technology_requirement["Ordi"] = array(1);
-$technology_requirement["Armes"] = array(4);
-$technology_requirement["Bouclier"] = array(6, "NRJ" => 3);
-$technology_requirement["Protection"] = array(2);
-$technology_requirement["NRJ"] = array(1);
-$technology_requirement["Hyp"] = array(1, "NRJ" => 3, "Bouclier" => 5);
-$technology_requirement["RC"] = array(1, "NRJ" => 1);
-$technology_requirement["RI"] = array(2, "NRJ" => 1);
-$technology_requirement["PH"] = array(7, "Hyp" => 3);
-$technology_requirement["Laser"] = array(1, "NRJ" => 2);
-$technology_requirement["Ions"] = array(4, "Laser" => 5, "NRJ" => 4);
-$technology_requirement["Plasma"] = array(4, "NRJ" => 8, "Laser" => 10, "Ions" => 5);
-$technology_requirement["RRI"] = array(10, "Ordi" => 8, "Hyp" => 8);
-$technology_requirement["Graviton"] = array(12);
-$technology_requirement["Astrophysique"] = array(3, "Esp" => 4, "RI" => 3);
-*/
+$view = isset($pub_view) && $pub_view === 'moons' ? 'moons' : 'planets';
 
 $name = $coordinates = $fields = $temperature_min = $temperature_max = $satellite = "";
 //Planète
-for ($i = 101; $i <= $nb_planete + 100; $i++) {
-    $name            .= "'" . $user_building[$i]['planet_name'] . "', ";
-    $coordinates     .= "'" . $user_building[$i]['coordinates'] . "', ";
-    $fields          .= "'" . $user_building[$i]['fields'] . "', ";
-    $temperature_min .= "'" . $user_building[$i]['temperature_min'] . "', ";
-    $temperature_max .= "'" . $user_building[$i]['temperature_max'] . "', ";
-    $satellite       .= "'" . $user_building[$i]['Sat'] . "', ";
+print_r($user_building);
+foreach ($user_building as $planet_id => $planet) {
+    $name            .= "'" . $planet['planet_name'] . "', ";
+    $coordinates     .= "'" . $planet['coordinates'] . "', ";
+    $fields          .= "'" . $planet['fields'] . "', ";
+    $temperature_min .= "'" . $planet['temperature_min'] . "', ";
+    $temperature_max .= "'" . $planet['temperature_max'] . "', ";
+    $satellite       .= "'" . $planet['Sat'] . "', ";
 }
-
+/*
 for ($i = 201; $i <= $nb_planete + 200; $i++) {
     $name            .= "'" . $user_building[$i]['planet_name'] . " (lune)', ";
     $coordinates     .= "'" . $user_building[$i]['coordinates'] . "', ";
@@ -81,7 +49,7 @@ for ($i = 201; $i <= $nb_planete + 200; $i++) {
     $temperature_min .= "'" . $user_building[$i]["temperature_min"] . "', ";
     $temperature_max .= "'" . $user_building[$i]["temperature_max"] . "', ";
     $satellite       .= "'" . $user_building[$i]["Sat"] . "', ";
-}
+}*/
 
 
 // place le tag active au besoin
@@ -121,12 +89,12 @@ if (!isset($user_technology['Astrophysique']) || $user_technology['Astrophysique
 }
 $astro = astro_max_planete($user_technology['Astrophysique']);
 ?>
-<?php if (((find_nb_planete_user($user_data['user_id']) > $astro) || (find_nb_moon_user($user_data['user_id']) > $astro)) && ($user_technology != false)) : ?>
+<?php if (((find_nb_planete_user($user_data['id']) > $astro) || (find_nb_moon_user($user_data['id']) > $astro)) && ($user_technology != false)) : ?>
     <div class="og-msg og-msg-danger">
         <h3 class="og-title"><?php echo $lang['HOME_EMPIRE_ERROR']; ?></h3>
         <p class="og-content">
-            <?php echo (find_nb_planete_user($user_data['user_id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_PLANET'] . '<br>' : ''; ?>
-            <?php echo (find_nb_moon_user($user_data['user_id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_MOON'] . '<br>' : ''; ?>
+            <?php echo (find_nb_planete_user($user_data['id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_PLANET'] . '<br>' : ''; ?>
+            <?php echo (find_nb_moon_user($user_data['id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_MOON'] . '<br>' : ''; ?>
         </p>
     </div>
 <?php endif; ?>
@@ -670,7 +638,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
                 <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
                     <td class="tdcontent">
                         <?php $For = ($user_building[$i]["FOR"] == "") ? "&nbsp;" : number_format($user_building[$i]["FOR"], 0, ',', ' '); ?>
-                        <?php $class_collect = ($user_data['user_class'] === 'COL') ? '1' : '0'; ?>
+                        <?php $class_collect = ($player_data['user_class'] === 'COL') ? '1' : '0'; ?>
                         <?php $nb_max = foreuse_max($user_building[$i]['M'], $user_building[$i]['C'], $user_building[$i]['D'], $user_data['off_geologue'], $class_collect); ?>
                         <span id=43<?php echo ($i + 1 - $start); ?>>
                             <?php echo $For . " / " . $nb_max; ?>
@@ -793,7 +761,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
             </tr>
             <tr>
                 <td class="tdname">
-                    <?php echo ($lang['HOME_EMPIRE_TECHNOS_ENERGY']); ?>
+                    <?= $lang['HOME_EMPIRE_TECHNOS_ENERGY'] ?>
                 </td>
                 <?php for ($i = $start; $i <= $start + $nb_planete - 1; $i++) : ?>
                     <td class="tdcontent">

@@ -5,18 +5,15 @@
  *  @author pitch314
  *  @version 2.0, 2021-01-22
  */
-//uglifyjs js/ogame_formula.js -c -m -b -o js/ogame_formula.min.js
-// 'use strict';    //Pour débug !!
-// const DEFAULT_ARRAY_RESSOURCE = {'M':0,'C':0,'D':0,'NRJ':0};
-// Object.freeze(DEFAULT_ARRAY_RESSOURCE);
-// var a = JSON.parse(JSON.stringify(DEFAULT_ARRAY_RESSOURCE));
 
 function ogame_arrayRessource(metal, cristal, deut, NRJ = 0) {
   return { 'M': metal, 'C': cristal, 'D': deut, 'NRJ': NRJ };
 }
+
 function ogame_arraySubDetail(vitesse = 0, fret = 0, conso = 0, civil = true) {
   return { 'vitesse': vitesse, 'fret': fret, 'conso': conso, 'civil': civil };
 }
+
 function ogame_getElementNames() {
   const names = {
     'BAT': ['M', 'C', 'D', 'CES', 'CEF', 'UdR', 'UdN', 'CSp', 'HM', 'HC', 'HD', 'Lab', 'Ter', 'DdR', 'Silo', 'Dock', 'BaLu', 'Pha', 'PoSa'],
@@ -29,12 +26,10 @@ function ogame_getElementNames() {
   return names;
 }
 function ogame_isElement(nom) {
-  var names = ogame_getElementNames();
-  for (var type in names) {
-    for (var elem in names[type]) {
-      if (nom === names[type][elem]) {
-        return type;
-      }
+  const names = ogame_getElementNames();
+  for (const type in names) {
+    if (names[type].includes(nom)) {
+      return type;
     }
   }
   return false;
@@ -65,17 +60,15 @@ function ogame_productionPosition(position) {
   }
   return { 'M': prod['M'][position], 'C': prod['C'][position], 'D': 0, 'NRJ': 0 };
 }
-function ogame_productionForeuseMax(mine_M, mine_C, mine_D, user_data) {
-  if (typeof (user_data) === 'undefined') { user_data = new Array(); }
-  if (typeof (user_data['off_geologue']) === 'undefined') { user_data['off_geologue'] = 0; }
-  if (typeof (user_data['off_full']) === 'undefined') { user_data['off_full'] = 0; }
-  if (typeof (user_data['user_class']) === 'undefined') { user_data['user_class'] = 'none'; }
+function ogame_productionForeuseMax(mine_M, mine_C, mine_D, user_data = {}) {
+  const { off_geologue = 0, off_full = 0, user_class = 'none' } = user_data;
+  const FOR_BONUS_COL_GEO = 0.1; // +10% foreuse bonus for COL+GEO
+  let nb_foreuse_max = 8 * (mine_M + mine_C + mine_D);
 
-  var FOR_BONUS_COL_GEO = 0.1;    //+10% de foreuse pour COL+GEO
-  var nb_foreuse_max = 8 * (mine_M + mine_C + mine_D);
-  if (user_data['user_class'] === 'COL' && (user_data['off_geologue'] !== 0 || user_data['off_full'] !== 0)) {
-    nb_foreuse_max = nb_foreuse_max * (1 + FOR_BONUS_COL_GEO);
+  if (user_class === 'COL' && (off_geologue || off_full)) {
+    nb_foreuse_max *= (1 + FOR_BONUS_COL_GEO);
   }
+
   return Math.floor(nb_foreuse_max);
 }
 function ogame_productionForeuseBonus(user_building, user_data) {
@@ -84,8 +77,8 @@ function ogame_productionForeuseBonus(user_building, user_data) {
   //Valeurs OUT par défaut :
   var result = { 'bonus': 0, 'nb_FOR_maxed': 0 };
   //Valeurs IN par défaut :
-  if (typeof (user_building) === 'undefined') { user_building = new Array(); }
-  if (typeof (user_data) === 'undefined') { user_data = new Array(); }
+  if (typeof (user_building) === 'undefined') { user_building = []; }
+  if (typeof (user_data) === 'undefined') { user_data = []; }
   if (typeof (user_building['M']) === 'undefined') { user_building['M'] = 0; }
   if (typeof (user_building['C']) === 'undefined') { user_building['C'] = 0; }
   if (typeof (user_building['D']) === 'undefined') { user_building['D'] = 0; }
@@ -113,10 +106,10 @@ function ogame_productionBuilding(building, user_building = null, user_technolog
   //Valeurs OUT par défaut :
   var result = ogame_arrayRessource(0, 0, 0);
   //Valeurs IN par défaut :
-  if (user_building === null) { user_building = new Array(); }
-  if (user_technology === null) { user_technology = new Array(); }
-  if (user_data === null) { user_data = new Array(); }
-  if (server_config === null) { server_config = new Array(); }
+  if (user_building === null) { user_building = []; }
+  if (user_technology === null) { user_technology = []; }
+  if (user_data === null) { user_data = []; }
+  if (server_config === null) { server_config = []; }
   if (typeof (user_technology['NRJ']) === 'undefined') { user_technology['NRJ'] = 0; }
   if (typeof (user_building['M']) === 'undefined') { user_building['M'] = 0; }
   if (typeof (user_building['C']) === 'undefined') { user_building['C'] = 0; }
@@ -240,7 +233,7 @@ function ogame_productionPlanet(user_building, user_technology = null, user_data
   if (typeof (user_building['CEF_percentage']) === 'undefined') { user_building['CEF_percentage'] = 100; }
   if (typeof (user_building['Sat_percentage']) === 'undefined') { user_building['Sat_percentage'] = 100; }
   if (typeof (user_building['FOR_percentage']) === 'undefined') { user_building['FOR_percentage'] = 100; }
-  if (typeof (user_building['booster_tab']) === 'undefined') { user_building['booster_tab'] = new Array(); }
+  if (typeof (user_building['booster_tab']) === 'undefined') { user_building['booster_tab'] = []; }
   if (typeof (user_building['booster_tab']['booster_e_val']) === 'undefined') { user_building['booster_tab']['booster_e_val'] = 0; }
   if (typeof (user_building['booster_tab']['booster_m_val']) === 'undefined') { user_building['booster_tab']['booster_m_val'] = 0; }
   if (typeof (user_building['booster_tab']['booster_c_val']) === 'undefined') { user_building['booster_tab']['booster_c_val'] = 0; }
@@ -510,7 +503,7 @@ function ogame_fleetSubDetails(name, user_techno = null, classe = 'none') {
   const HYP_COEF = 0.05;
   var names = ogame_getElementNames();
   //Valeurs IN par défaut :
-  if (user_techno === null) { user_techno = new Array(); }
+  if (user_techno === null) { user_techno = []; }
   if (typeof (user_techno['RC']) === 'undefined') { user_techno['RC'] = 0; }
   if (typeof (user_techno['RI']) === 'undefined') { user_techno['RI'] = 0; }
   if (typeof (user_techno['PH']) === 'undefined') { user_techno['PH'] = 0; }
@@ -622,8 +615,8 @@ function ogame_fleetSlowestSpeed(fleet, user_techno = null, classe = 'none') {
 }
 function ogame_fleetDistance(a, b, user_techno = null, classe = 'none', server_config = null) {
   var result = { 'distance': 0, 'type': 'p' };
-  if (user_techno === null) { user_techno = new Array(); }
-  if (server_config === null) { server_config = new Array(); }
+  if (user_techno === null) { user_techno = []; }
+  if (server_config === null) { server_config = []; }
   if (typeof (user_techno['RC']) === 'undefined') { user_techno['RC'] = 0; }
   if (typeof (server_config['num_of_galaxies']) === 'undefined') { server_config['num_of_galaxies'] = 9; }
   if (typeof (server_config['num_of_systems']) === 'undefined') { server_config['num_of_systems'] = 499; }

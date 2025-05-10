@@ -26,7 +26,7 @@ class Sessions_Model extends Model_Abstract
         $cookie_id = $this->db->sql_escape_string($cookie_id);
         $user_ip = $this->db->sql_escape_string($user_ip);
 
-        $request = "SELECT `session_id` FROM " . TABLE_SESSIONS . " WHERE `session_id` = '" . $cookie_id . "'" . " AND `session_ip` = '" . $user_ip . "'";
+        $request = "SELECT `id` FROM " . TABLE_SESSIONS . " WHERE `id` = '" . $cookie_id . "'" . " AND `session_ip` = '" . $user_ip . "'";
         $result = $this->db->sql_query($request);
         if ($this->db->sql_numrows($result) != 1) {
             return false;
@@ -38,7 +38,7 @@ class Sessions_Model extends Model_Abstract
     {
         $user_id = (int)$user_id;
 
-        $request = "SELECT `session_ogs` FROM " . TABLE_SESSIONS . " WHERE `session_user_id` = " . $user_id;
+        $request = "SELECT `session_type` FROM " . TABLE_SESSIONS . " WHERE `user_id` = " . $user_id;
         $result = $this->db->sql_query($request);
         if ($this->db->sql_numrows($result) > 0) {
             list($session_ogs) = $this->db->sql_fetch_row($result);
@@ -60,7 +60,7 @@ class Sessions_Model extends Model_Abstract
         $user_ip = (bool)$user_ip;
 
 
-        $request = "UPDATE " . TABLE_SESSIONS . " SET `session_user_id` = " . $user_id . ", `session_lastvisit` = " . $lastvisit . " WHERE `session_id` = '" . $cookie_id . "'";
+        $request = "UPDATE " . TABLE_SESSIONS . " SET `user_id` = " . $user_id . ", `session_lastvisit` = " . $lastvisit . " WHERE `id` = '" . $cookie_id . "'";
         if ($user_ip) {
             $request .= " and `session_ip` = '" . $user_ip . "'";
         }
@@ -76,10 +76,10 @@ class Sessions_Model extends Model_Abstract
         $user_ip = $this->db->sql_escape_string($user_ip);
 
         //Mise à jour de l'adresse ip de session si le contrôle des ip est désactivé
-        $request = "SELECT `session_id` FROM " . TABLE_SESSIONS . " LEFT JOIN " . TABLE_USER . " ON `session_user_id` = `user_id`" . " WHERE `session_id` = '" . $cookie_id . "'" . " and `disable_ip_check` = '1'";
+        $request = "SELECT s.`id` FROM " . TABLE_SESSIONS . " AS s LEFT JOIN " . TABLE_USER . " AS u ON s.`user_id` = u.`id`" . " WHERE s.`id` = '" . $cookie_id . "'" . " AND  u.`disable_ip_check` = '1'";
         $result = $this->db->sql_query($request);
         if ($this->db->sql_numrows($result) > 0) {
-            $request = "UPDATE " . TABLE_SESSIONS . " SET `session_ip` = '" . $user_ip . "' WHERE `session_id` = '" . $cookie_id . "'";
+            $request = "UPDATE " . TABLE_SESSIONS . " SET `session_ip` = '" . $user_ip . "' WHERE `id` = '" . $cookie_id . "'";
             $this->db->sql_query($request, true, false);
             return true;
         }
@@ -94,7 +94,7 @@ class Sessions_Model extends Model_Abstract
         $cookie_id = $this->db->sql_escape_string($cookie_id);
         $cookie_expire = (int)$cookie_expire;
 
-        $request = "UPDATE " . TABLE_SESSIONS . " SET `session_expire` = " . $cookie_expire . " WHERE `session_id` = '" . $cookie_id . "'";
+        $request = "UPDATE " . TABLE_SESSIONS . " SET `session_expire` = " . $cookie_expire . " WHERE `id` = '" . $cookie_id . "'";
         $this->db->sql_query($request, true, false);
     }
     /**
@@ -108,7 +108,7 @@ class Sessions_Model extends Model_Abstract
         $cookie_expire = (int)$cookie_expire;
         $user_ip = $this->db->sql_escape_string($user_ip);
 
-        $request = "INSERT INTO " . TABLE_SESSIONS . " (`session_id`, `session_user_id`, `session_start`, `session_expire`, `session_ip`) VALUES ('" . $cookie_id . "', 0, " . time() . ", " . $cookie_expire . ", '" . $user_ip . "')";
+        $request = "INSERT INTO " . TABLE_SESSIONS . " (`id`, `user_id`, `session_start`, `session_expire`, `session_ip`) VALUES ('" . $cookie_id . "', 0, " . time() . ", " . $cookie_expire . ", '" . $user_ip . "')";
         $this->db->sql_query($request, true, false);
     }
     /**
@@ -122,9 +122,9 @@ class Sessions_Model extends Model_Abstract
         $cookie_expire = (int)$cookie_expire;
         $user_ip = $this->db->sql_escape_string($user_ip);
 
-        $request = "DELETE FROM " . TABLE_SESSIONS . " WHERE `session_ip` = '" . $user_ip . "' AND `session_ogs` = '1'";
+        $request = "DELETE FROM " . TABLE_SESSIONS . " WHERE `session_ip` = '" . $user_ip . "' AND `session_type` = '1'";
         $this->db->sql_query($request, true, false);
-        $request = "INSERT INTO " . TABLE_SESSIONS . " (`session_id`, `session_user_id`, `session_start`, `session_expire`, `session_ip`, `session_ogs`) VALUES ('" . $cookie_id . "', 0, " . time() . ", " . $cookie_expire . ", '" . $user_ip . "', '1')";
+        $request = "INSERT INTO " . TABLE_SESSIONS . " (`id`, `user_id`, `session_start`, `session_expire`, `session_ip`, `session_type`) VALUES ('" . $cookie_id . "', 0, " . time() . ", " . $cookie_expire . ", '" . $user_ip . "', '1')";
         $this->db->sql_query($request, true, false);
     }
     /**
@@ -141,7 +141,7 @@ class Sessions_Model extends Model_Abstract
     {
         $cookie_id = $this->db->sql_escape_string($cookie_id);
 
-        $request = "DELETE FROM " . TABLE_SESSIONS . " WHERE `session_id` = '" . $cookie_id . "'";
+        $request = "DELETE FROM " . TABLE_SESSIONS . " WHERE `id` = '" . $cookie_id . "'";
         $this->db->sql_query($request, true, false);
     }
 
@@ -150,7 +150,7 @@ class Sessions_Model extends Model_Abstract
         $cookie_id = $this->db->sql_escape_string($cookie_id);
         $user_ip = $this->db->sql_escape_string($user_ip);
 
-        $request = "DELETE FROM " . TABLE_SESSIONS . " WHERE `session_id` = '" . $cookie_id . "' AND session_ip = '" . $user_ip . "' ";
+        $request = "DELETE FROM " . TABLE_SESSIONS . " WHERE `id` = '" . $cookie_id . "' AND session_ip = '" . $user_ip . "' ";
         $this->db->sql_query($request, true, false);
     }
     /**
@@ -160,7 +160,7 @@ class Sessions_Model extends Model_Abstract
     {
         $user_id = (int)$user_id;
 
-        $request = "DELETE FROM " . TABLE_SESSIONS . " WHERE `session_user_id` = " . $user_id;
+        $request = "DELETE FROM " . TABLE_SESSIONS . " WHERE `user_id` = " . $user_id;
         $this->db->sql_query($request, true, false);
     }
     /**
@@ -178,20 +178,22 @@ class Sessions_Model extends Model_Abstract
      */
     public function select_user_data_session($cookie_id, $user_ip)
     {
+        global $log;
         $cookie_id = $this->db->sql_escape_string($cookie_id);
         $user_ip = $this->db->sql_escape_string($user_ip);
 
-        $request = "SELECT `user_id`, `user_name`, `user_admin`, `user_coadmin`, `user_email`, `user_galaxy`, `user_system`, `session_lastvisit`, `user_stat_name`, ";
-        $request .= "`management_user`, `management_ranking`, `disable_ip_check`, `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate` , `user_class`, `user_pwd_change`, `user_email_valid` ";
+        $request = "SELECT u.`id`, u.`name`, u.`admin`, u.`coadmin`, u.`email`, u.`default_galaxy`, u.`default_system`, s.`session_lastvisit`, u.`player_id`, ";
+        $request .= "u.`management_user`, u.`management_ranking`, u.`disable_ip_check`, u.`pwd_change`, u.`email_valid` ";
         $request .= " FROM " . TABLE_USER . " u, " . TABLE_SESSIONS . " s";
-        $request .= " WHERE u.`user_id` = s.`session_user_id`";
-        $request .= " AND `session_id` = '" . $cookie_id . "'";
-        $request .= " AND `session_ip` = '" . $user_ip . "'";
+        $request .= " WHERE u.`id` = s.`user_id`";
+        $request .= " AND s.`id` = '" . $cookie_id . "'";
+        $request .= " AND s.`session_ip` = '" . $user_ip . "'";
         $result = $this->db->sql_query($request);
 
         if ($this->db->sql_numrows($result) == 1) {
             return $this->db->sql_fetch_assoc($result);
         }
+        $log->warning("Session not found for cookie_id: " . $cookie_id . " and user_ip: " . $user_ip);
         return false;
     }
 

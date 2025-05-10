@@ -27,7 +27,6 @@ class User_Building_Model  extends Model_Abstract
         $request = "SELECT `planet_id`, `coordinates`";
         $request .= " FROM " . TABLE_USER_BUILDING;
         $request .= " WHERE `user_id` = " . $user_id;
-        $request .= " AND `planet_id` <= 199";
         $request .= " ORDER BY `planet_id`";
         $result =  $this->db->sql_query($request);
         while (list($planet_id, $coordinates) = $this->db->sql_fetch_row($result)) {
@@ -66,7 +65,6 @@ class User_Building_Model  extends Model_Abstract
         $request = "SELECT `planet_id` ";
         $request .= " FROM " . TABLE_USER_BUILDING;
         $request .= " WHERE `user_id` = " . $user_id;
-        $request .= " AND `planet_id` < 199 ";
         $request .= " ORDER BY `planet_id`";
         $result =  $this->db->sql_query($request);
         return  $this->db->sql_numrows($result);
@@ -77,6 +75,7 @@ class User_Building_Model  extends Model_Abstract
      */
     public function get_nb_moons($user_id)
     {
+        //TODO : PRévoir un simple count()
         $user_id = (int)$user_id;
 
         $request = "SELECT `planet_id` ";
@@ -91,7 +90,17 @@ class User_Building_Model  extends Model_Abstract
 
 
     /**
-     * Recupere les boosters d'un utilisateur
+     * Récupère les boosters d'un joueur spécifique.
+     *
+     * Cette méthode interroge la table `TABLE_USER_BUILDING` pour récupérer
+     * les informations sur les boosters associés à un joueur donné.
+     *
+     * @param int $id_player L'identifiant du joueur dont les boosters doivent être récupérés.
+     * @return array Un tableau associatif contenant les boosters pour chaque planète du joueur.
+     *               Chaque élément du tableau est une entrée associative avec les clés :
+     *               - `user_id` : L'identifiant de l'utilisateur.
+     *               - `planet_id` : L'identifiant de la planète.
+     *               - `boosters` : Les boosters associés.
      */
     public function get_all_booster_player($id_player)
     {
@@ -108,7 +117,16 @@ class User_Building_Model  extends Model_Abstract
     }
 
     /**
-     * Recupere les boosters de tous les utilisateurs
+     * Récupère les boosters de tous les utilisateurs.
+     *
+     * Cette méthode interroge la table `TABLE_USER_BUILDING` pour récupérer
+     * les informations sur les boosters associés à chaque utilisateur et planète.
+     *
+     * @return array Un tableau contenant les boosters pour chaque utilisateur et planète.
+     *               Chaque élément du tableau est une entrée associative avec les clés :
+     *               - `user_id` : L'identifiant de l'utilisateur.
+     *               - `planet_id` : L'identifiant de la planète.
+     *               - `boosters` : Les boosters associés.
      */
     public function get_all_booster()
     {
@@ -188,40 +206,6 @@ class User_Building_Model  extends Model_Abstract
         return $tbuilding;
     }
 
-    /**
-     * @param $user_id
-     * @param $previous_id
-     * @param $new_id
-     */
-    public function update_moon_id($user_id, $previous_id, $new_id)
-    {
-        $user_id = (int)$user_id;
-        $previous_id = (int)$previous_id;
-        $new_id = (int)$new_id;
-
-        $request = "UPDATE " . TABLE_USER_BUILDING . " SET `planet_id`  = " . $new_id .
-            " WHERE `planet_id` = " . $previous_id . " and `user_id` = " . $user_id;
-        $this->db->sql_query($request);
-        //We adjust the id if we go upper than 299
-        $request = "UPDATE " . TABLE_USER_BUILDING .
-            " SET planet_id  = `planet_id` -100 WHERE `planet_id` > 299 and `user_id` = " . $user_id;
-        $this->db->sql_query($request);
-    }
-    /**
-     * @param $user_id
-     * @param $previous_id
-     * @param $new_id
-     */
-    public function update_planet_id($user_id, $previous_id, $new_id)
-    {
-        $user_id = (int)$user_id;
-        $previous_id = (int)$previous_id;
-        $new_id = (int)$new_id;
-
-        $request = "UPDATE " . TABLE_USER_BUILDING . " SET `planet_id`  = " . $new_id .
-            " WHERE `planet_id` = " . $previous_id . " and `user_id` = " . $user_id;
-        $this->db->sql_query($request);
-    }
     /**
      * @param $user_id
      * @param $aster_id Planet or moon to be deleted

@@ -43,55 +43,55 @@ function galaxy_check_auth($action)
 
     switch ($action) {
         case "import_planet":
-            if ($user_auth["ogs_set_system"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+            if ($user_auth["ogs_set_system"] != 1 && $user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
                 die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour exporter des systèmes solaires -->" . "\n");
             }
             break;
 
         case "export_planet":
-            if ($user_auth["ogs_get_system"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+            if ($user_auth["ogs_get_system"] != 1 && $user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
                 die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour importer des systèmes solaires -->" . "\n");
             }
             break;
 
         case "import_spy":
-            if ($user_auth["ogs_set_spy"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+            if ($user_auth["ogs_set_spy"] != 1 && $user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
                 die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour exporter des rapports d'espionnage -->" . "\n");
             }
             break;
 
         case "export_spy":
-            if ($user_auth["ogs_get_spy"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+            if ($user_auth["ogs_get_spy"] != 1 && $user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
                 die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour importer des rapports d'espionnage -->" . "\n");
             }
             break;
 
         case "import_ranking":
-            if ($user_auth["ogs_set_ranking"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+            if ($user_auth["ogs_set_ranking"] != 1 && $user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
                 die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour exporter des classements -->" . "\n");
             }
             break;
 
         case "export_ranking":
-            if ($user_auth["ogs_get_ranking"] != 1 && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+            if ($user_auth["ogs_get_ranking"] != 1 && $user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
                 die("<!-- [AccessDenied] Accès refusé -->" . "\n" . "<!-- Vous n'avez pas les droits pour importer des classements -->" . "\n");
             }
             break;
 
         case "drop_ranking":
-            if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_ranking"] != 1) {
+            if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1 && $user_data["management_ranking"] != 1) {
                 redirection("index.php?action=message&id_message=forbidden&info");
             }
             break;
 
         case "set_ranking":
-            if (($user_auth["server_set_ranking"] != 1) && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+            if (($user_auth["server_set_ranking"] != 1) && $user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
                 redirection("index.php?action=message&id_message=forbidden&info");
             }
             break;
 
         case "set_rc":
-            if (($user_auth["server_set_rc"] != 1) && $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+            if (($user_auth["server_set_rc"] != 1) && $user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
                 redirection("index.php?action=message&id_message=forbidden&info");
             }
             break;
@@ -134,8 +134,8 @@ function galaxy_show()
         }
     }
     if (!isset($pub_galaxy) || !isset($pub_system)) {
-        $pub_galaxy = $user_data["user_galaxy"];
-        $pub_system = $user_data["user_system"];
+        $pub_galaxy = $user_data["default_galaxy"];
+        $pub_system = $user_data["default_system"];
         if ($pub_galaxy == 0 || $pub_system == 0) {
             $pub_galaxy = 1;
             $pub_system = 1;
@@ -266,7 +266,7 @@ function galaxy_search()
         return array($search_result, $total_page);
     }
     $data_user = new User_Model();
-    $data_user->add_stat_search_made($user_data['user_id'], 1);
+    $data_user->add_stat_search_made($user_data['id'], 1);
     $universeRepository = new Universe_Model();
     $criteria = new SearchCriteria_Helper($server_config);
     if (isset($pub_galaxy_down) && isset($pub_galaxy_up)) {
@@ -498,7 +498,7 @@ function galaxy_ally_position($step = 50)
         if ($pub_ally_name == "") {
             continue;
         }
-        if (in_array($pub_ally_name, $pub_ally_protection) && $user_auth["server_show_positionhided"] == 0 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {
+        if (in_array($pub_ally_name, $pub_ally_protection) && $user_auth["server_show_positionhided"] == 0 && $user_data["admin"] == 0 && $user_data["coadmin"] == 0) {
             $statistics[$pub_ally_name][0][0] = null;
             continue;
         }
@@ -623,7 +623,7 @@ function galaxy_purge_spy()
 function galaxy_getfavorites()
 {
     global $user_data;
-    $favorite = (new User_Favorites_Model())->select_user_favorites($user_data["user_id"]);
+    $favorite = (new User_Favorites_Model())->select_user_favorites($user_data["id"]);
     return $favorite;
 }
 
@@ -1173,7 +1173,7 @@ function galaxy_get_phalanx($galaxy, $system, $classe = 'none')
         }
 
         foreach ($data_computed as $phalange) { // Filtre alliance amies et masquées
-            if (!in_array($phalange["ally"], $ally_protection) || $phalange["ally"] == "" || $user_auth["server_show_positionhided"] == 1 || $user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
+            if (!in_array($phalange["ally"], $ally_protection) || $phalange["ally"] == "" || $user_auth["server_show_positionhided"] == 1 || $user_data["admin"] == 1 || $user_data["coadmin"] == 1) {
                 $phalanxer[] = $phalange;
             }
         }

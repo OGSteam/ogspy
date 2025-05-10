@@ -120,7 +120,7 @@ switch ($order_by) {
                 </form>
             </th>
 
-            <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_ranking"] == 1) { ?>
+            <?php if ($user_data["admin"] == 1 || $user_data["coadmin"] == 1 || $user_data["management_ranking"] == 1) { ?>
                 <th>
                     <form method="POST" action="index.php" onsubmit="return confirm('<?php echo ($lang['RANK_DELETE_CONFIRMATION']); ?>');">
                         <input type="hidden" name="action" value="drop_ranking">
@@ -184,7 +184,7 @@ switch ($order_by) {
     <tbody>
         <?php while ($value = current($order)) : ?>
             <?php
-            //par defaut 
+            //par defaut
             $general_pts = "&nbsp;";
             $general_pts_per_member = "&nbsp;";
             $general_rank = "&nbsp;";

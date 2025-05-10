@@ -15,14 +15,14 @@ use Ogsteam\Ogspy\Model\Tokens_Model;
 if (!defined("IN_SPYOGAME")) {
     die("Hacking attempt");
 }
-$user_name = $user_data["user_name"];
-$user_galaxy = $user_data["user_galaxy"];
-$user_system = $user_data["user_system"];
-$user_email = $user_data["user_email"];
-$user_stat_name = $user_data["user_stat_name"];
+$user_name = $user_data["name"];
+$user_galaxy = $user_data["default_galaxy"];
+$user_system = $user_data["default_system"];
+$user_email = $user_data["email"];
+$user_stat_name = $player_data["name"];
 $user_class = $user_data["user_class"];
 
-$user_token = (new Tokens_Model)->get_token($user_data["user_id"], "PAT");
+$user_token = (new Tokens_Model)->get_token($user_data["id"], "PAT");
 if (!empty($user_token)) {
     $user_token_displayed = $user_token;
 } else {
@@ -115,7 +115,7 @@ if ($user_data['user_pwd_change']) {
             <thead>
                 <tr>
                     <th colspan="2"><?php echo ($lang['PROFILE_GAME']); ?></th>
-                </tr>   
+                </tr>
             </thead>
             <tbody>
                 <tr>
@@ -159,7 +159,7 @@ if ($user_data['user_pwd_change']) {
             <thead>
                 <tr>
                     <th colspan="2"><?php echo ($lang['PROFILE_OFFICERS']); ?></th>
-                </tr>                
+                </tr>
             </thead>
             <tbody>
                 <tr>
@@ -211,7 +211,7 @@ if ($user_data['user_pwd_change']) {
                             <input name="off_technocrate" value="1" type="checkbox" <?php echo $off_technocrate; ?>>
                         </label>
                     </td>
-                </tr>               
+                </tr>
             </tbody>
             <thead>
                 <tr>
@@ -233,7 +233,7 @@ if ($user_data['user_pwd_change']) {
                     <td colspan="2">
                         <input class="og-button" type="submit" value="<?php echo ($lang['PROFILE_SAVE']); ?>">
                     </td>
-                </tr>         
+                </tr>
             </tbody>
         </table>
 

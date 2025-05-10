@@ -27,17 +27,15 @@ class User_Model extends Model_Abstract
         $login = $this->db->sql_escape_string($login);
         $password = $this->db->sql_escape_string($password);
 
-        // quand tous les password seront mirgés, utilisation de password directement ici a prevoir
-        $request = "SELECT `user_id`, `user_active`, `user_password_s` FROM " . TABLE_USER .
-            " WHERE `user_name` = '" . $login . "' AND NOT `user_password_s` = ''";
+        $request = "SELECT `id`, `active`, `password_s` FROM " . TABLE_USER . " WHERE `name` = '$login'";
         $result = $this->db->sql_query($request);
         // si pas de retour, user_password_s non encore initialisé
         if (!$this->db->sql_numrows($result)) {
             return false;
         }
         /// autrement faire retour
-        $tlogin = $this->db->sql_fetch_row($result);
-        return $tlogin;
+        $userLoginData = $this->db->sql_fetch_row($result);
+        return $userLoginData;
     }
 
     /**
@@ -48,7 +46,7 @@ class User_Model extends Model_Abstract
     {
         $username = $this->db->sql_escape_string($username);
 
-        $request = "SELECT * FROM " . TABLE_USER . " WHERE `user_name` = '" . $username . "'";
+        $request = "SELECT * FROM " . TABLE_USER . " WHERE `name` = '$username'";
         $result = $this->db->sql_query($request);
         if ($result !== false && $result->num_rows !== 0) {
             return true;
@@ -65,7 +63,7 @@ class User_Model extends Model_Abstract
         $username = $this->db->sql_escape_string($username);
         $user_id  = (int) $user_id;
 
-        $request = "SELECT * FROM " . TABLE_USER . " WHERE `user_name` = '" . $username . "' AND `user_id` <> " . $user_id;
+        $request = "SELECT * FROM " . TABLE_USER . " WHERE `name` = '" . $username . "' AND `id` <> " . $user_id;
         $result = $this->db->sql_query($request);
         if ($this->db->sql_numrows($result) != 0) {
             return true;
@@ -78,7 +76,7 @@ class User_Model extends Model_Abstract
      */
     public function select_user_list()
     {
-        $request = "SELECT `user_name` FROM " . TABLE_USER;
+        $request = "SELECT `name` FROM " . TABLE_USER;
         $list_user_name = array();
 
         $result = $this->db->sql_query($request);
@@ -93,7 +91,7 @@ class User_Model extends Model_Abstract
      */
     public function select_userid_list()
     {
-        $request = "SELECT `user_id` FROM " . TABLE_USER;
+        $request = "SELECT `id` FROM " . TABLE_USER;
         $list_user_id = array();
 
         $result = $this->db->sql_query($request);
@@ -111,8 +109,8 @@ class User_Model extends Model_Abstract
     {
         $user_id = (int)$user_id;
 
-        $request = "SELECT `user_lastvisit` FROM " . TABLE_USER;
-        $request .= " WHERE `user_id` = '" . $user_id . "'";
+        $request = "SELECT `lastvisit` FROM " . TABLE_USER;
+        $request .= " WHERE `id` = '" . $user_id . "'";
         $result = $this->db->sql_query($request);
         list($lastvisit) = $this->db->sql_fetch_row($result);
 
@@ -127,12 +125,12 @@ class User_Model extends Model_Abstract
     {
         $user_id = (int)$user_id;
 
-        $request = "SELECT `user_id`, `user_name`, `user_password`, `user_email`, `user_active`, `user_regdate`, `user_lastvisit`," .
-            " `user_galaxy`, `user_system`, `user_admin`, `user_coadmin`, `management_user`, `management_ranking`, `disable_ip_check`," .
-            " `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate` , `user_class`, `user_pwd_change`, `user_email_valid` " .
+        $request = "SELECT `id`, `name`, `email`, `active`, `regdate`, `lastvisit`," .
+            " `default_galaxy`, `default_system`, `admin`, `coadmin`, `management_user`, `management_ranking`, `disable_ip_check`," .
+            " `user_pwd_change`, `user_email_valid` " .
             " FROM " . TABLE_USER;
-        $request .= " WHERE `user_id` = " . $user_id;
-        $request .= " ORDER BY `user_name`";
+        $request .= " WHERE `id` = " . $user_id;
+        $request .= " ORDER BY `name`";
         $result = $this->db->sql_query($request);
 
         $info_users = array();
@@ -152,12 +150,12 @@ class User_Model extends Model_Abstract
      */
     public function select_all_user_data()
     {
-        $request = "SELECT `user_id`, `user_name`, `user_password`, `user_email`, `user_active`, `user_regdate`, `user_lastvisit`," .
-            " `user_galaxy`, `user_system`, `user_admin`, `user_coadmin`, `management_user`, `management_ranking`, `disable_ip_check`," .
-            " `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate` , `user_class`, `user_pwd_change`, `user_email_valid` " .
+        $request = "SELECT `id`, `name`, `email`, `active`, `regdate`, `lastvisit`," .
+            " `default_galaxy`, `default_system`, `admin`, `coadmin`, `management_user`, `management_ranking`, `disable_ip_check`," .
+            " `user_pwd_change`, `user_email_valid` " .
             " FROM " . TABLE_USER;
 
-        $request .= " ORDER BY `user_name`";
+        $request .= " ORDER BY `name`";
         $result = $this->db->sql_query($request);
 
         $info_users = array();
@@ -176,8 +174,8 @@ class User_Model extends Model_Abstract
      */
     public function select_all_user_stats_data()
     {
-        $request = "SELECT `user_id`, `user_name`, `planet_added_ogs`, `search`, `spy_added_ogs`, `rank_added_ogs`, `xtense_type`, `xtense_version`, `user_active`, `user_admin`";
-        $request .= " FROM " . TABLE_USER . " ORDER BY `planet_added_ogs` DESC";
+        $request = "SELECT `id`, `name`, `planet_added_web`, `search`, `spy_added_web`, `rank_added_web`, `xtense_type`, `xtense_version`, `active`, `admin`";
+        $request .= " FROM " . TABLE_USER . " ORDER BY `planet_added_web` DESC";
         $result = $this->db->sql_query($request);
         $retour = array();
         while ($row = $this->db->sql_fetch_assoc($result)) {
@@ -196,19 +194,19 @@ class User_Model extends Model_Abstract
         //voir pour modifier bdd et ctualiser fn appelante et vue
         // $request = "SELECT `user_id`, `user_name`, `planet_added_xtense`, `search`, `spy_added_xtense`, `rank_added_xtense`, `xtense_type`, `xtense_version`, `user_active`, `user_admin`";
 
-        $request = "SELECT `user_id`, `user_name`, `planet_added_ogs`, `search`, `spy_added_ogs`, `rank_added_ogs`, `xtense_type`, `xtense_version`, `user_active`, `user_admin`";
+        $request = "SELECT `id`, `name`, `planet_added_web`, `search`, `spy_added_web`, `rank_added_web`, `xtense_type`, `xtense_version`, `active`, `admin`";
         $request .= " FROM " . TABLE_USER;
-        $request .= " WHERE `user_id`='" . $user_id . "'";
+        $request .= " WHERE `id`='" . $user_id . "'";
         $result = $this->db->sql_query($request);
 
-        list($planet_added_ogs, $search, $spy_added_ogs, $rank_added_ogs) = $this->db->sql_fetch_row($result);
+        list($planet_added_web, $search, $spy_added_web, $rank_added_web) = $this->db->sql_fetch_row($result);
 
-        return array("planet_added_ogs" => $planet_added_ogs, "search" => $search, "spy_added_ogs" => $spy_added_ogs, "rank_added_ogs" => $rank_added_ogs);
+        return array("planet_added_ogs" => $planet_added_web, "search" => $search, "spy_added_ogs" => $spy_added_web, "rank_added_ogs" => $rank_added_web);
     }
 
     public function select_user_stats_sum()
     {
-        $request = "SELECT SUM(planet_added_xtense), SUM(spy_added_xtense), SUM(rank_added_xtense), SUM(search)";
+        $request = "SELECT SUM(planet_added_web), SUM(spy_added_web), SUM(rank_added_web), SUM(search)";
         $request .= "FROM " . TABLE_USER;
         $resultat = $this->db->sql_query($request);
 
@@ -270,7 +268,7 @@ class User_Model extends Model_Abstract
     {
         $user_id = (int)$user_id;
 
-        $request = "UPDATE " . TABLE_USER . " SET `user_lastvisit` = " . time() . " WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `lastvisit` = " . time() . " WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
 
@@ -283,8 +281,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $user_name = $this->db->sql_escape_string($user_name);
 
-        $request = "UPDATE " . TABLE_USER . " SET `user_name` = '" . $user_name . "' WHERE `user_id` = " . $user_id;
-        //$request = $this->db->sql_escape_string($request);
+        $request = "UPDATE " . TABLE_USER . " SET `name` = '" . $user_name . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
 
@@ -297,10 +294,11 @@ class User_Model extends Model_Abstract
         $encrypted_password = $this->db->sql_escape_string($encrypted_password);
         $user_id = (int)$user_id;
 
-        $request = "UPDATE " . TABLE_USER . " SET `user_password_s` = '" . $encrypted_password . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . "
+            SET `password_s` = '" . $encrypted_password . "',
+                `pwd_change` = '" . $user_pwd_change . "'
+            WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
-        $request = "UPDATE " . TABLE_USER . " SET `user_pwd_change` = '" . $user_pwd_change . "' WHERE `user_id` = " . $user_id;
-        $this->db->sql_query($request); //TODO : SQL simplification en 1 seule requête ??
     }
 
     /**
@@ -312,9 +310,10 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $user_email = $this->db->sql_escape_string($user_email);
 
-        $request = "UPDATE " . TABLE_USER . " SET `user_email` = '" . $user_email . "' WHERE `user_id` = " . $user_id;
-        $this->db->sql_query($request);
-        $request = "UPDATE " . TABLE_USER . " SET `user_email_valid` = '0' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . "
+            SET `email` = '" . $user_email . "',
+                `email_valid` = '0'
+            WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
 
@@ -324,7 +323,7 @@ class User_Model extends Model_Abstract
      */
     public function set_user_default_galaxy($user_id, $default_galaxy)
     {
-        $request = "UPDATE " . TABLE_USER . " SET `user_galaxy` = '" . $default_galaxy . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `default_galaxy` = '" . $default_galaxy . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
         //Nettoyage Préventif
         //coquille ????  $new_num_of_galaxies ?
@@ -339,7 +338,7 @@ class User_Model extends Model_Abstract
     public function set_default_galaxy_after_resize($nb_galaxy)
     {
         $nb_galaxy = (int)$nb_galaxy;
-        $request = "UPDATE " . TABLE_USER . " SET `user_galaxy` = 1 WHERE `user_galaxy` > $nb_galaxy";
+        $request = "UPDATE " . TABLE_USER . " SET `default_galaxy` = 1 WHERE `default_galaxy` > $nb_galaxy";
         $this->db->sql_query($request);
     }
 
@@ -352,7 +351,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $default_system = (int)$default_system;
 
-        $request = "UPDATE " . TABLE_USER . " SET `user_system` = '" . $default_system . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `default_system` = '" . $default_system . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
 
@@ -364,7 +363,7 @@ class User_Model extends Model_Abstract
     {
         $nb_systems = (int)$nb_systems;
 
-        $request = $this->db->sql_query("UPDATE " . TABLE_USER . " SET `usersystem` = 1 WHERE `user_system` > $nb_systems");
+        $request = $this->db->sql_query("UPDATE " . TABLE_USER . " SET `default_system` = 1 WHERE `default_system` > $nb_systems");
         $this->db->sql_query($request);
     }
 
@@ -378,7 +377,7 @@ class User_Model extends Model_Abstract
         $disable_ip_check = (int)$disable_ip_check;
 
 
-        $request = "UPDATE " . TABLE_USER . " SET `disable_ip_check` = '" . $disable_ip_check . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `disable_ip_check` = '" . $disable_ip_check . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
 
@@ -391,7 +390,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $value = (int)$value;
 
-        $request = "UPDATE " . TABLE_USER . " SET `user_active` = '" . $value . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `user_active` = '" . $value . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
 
@@ -405,7 +404,7 @@ class User_Model extends Model_Abstract
         $value = (int)$value;
 
 
-        $request = "UPDATE " . TABLE_USER . " SET `user_coadmin` = '" . $value . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `coadmin` = '" . $value . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
 
@@ -418,7 +417,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $value = (int)$value;
 
-        $request = "UPDATE " . TABLE_USER . " SET `management_user` = '" . $value . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `management_user` = '" . $value . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
 
@@ -431,7 +430,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $value = (int)$value;
 
-        $request = "UPDATE " . TABLE_USER . " SET `management_ranking` = '" . $value . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `management_ranking` = '" . $value . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
 
@@ -444,11 +443,8 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $value = (int)$value;
 
-        $request = "UPDATE " . TABLE_USER . " SET `planet_added_ogs` = `planet_added_ogs` + '" . $value . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `planet_added_web` = `planet_added_web` + '" . $value . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
-        //todo a implementer ( en remplacement dOGS )
-        //$request = "UPDATE " . TABLE_USER . " SET `planet_added_xtense` = planet_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
-        //$this->db->sql_query($request);
     }
 
     /**
@@ -460,12 +456,8 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $value = (int)$value;
 
-
-        $request = "UPDATE " . TABLE_USER . " SET `spy_added_ogs` = `spy_added_ogs` + '" . $value . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `spy_added_web` = `spy_added_web` + '" . $value . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
-        //todo a implementer ( en remplacement dOGS )
-        //$request = "UPDATE " . TABLE_USER . " SET `spy_added_xtense` = spy_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
-        //$this->db->sql_query($request);
     }
 
     /**
@@ -477,12 +469,8 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $value = (int)$value;
 
-
-        $request = "UPDATE " . TABLE_USER . " SET `rank_added_ogs` = rank_added_ogs + '" . $value . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `rank_added_web` = rank_added_web + '" . $value . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
-        //todo a implementer ( en remplacement dOGS )
-        //$request = "UPDATE " . TABLE_USER . " SET `rank_added_xtense` = rank_added_xtense + '" . $value . "' WHERE `user_id` = " . $user_id;
-        //$this->db->sql_query($request);
     }
 
     /**
@@ -494,7 +482,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $value = (int)$value;
 
-        $request = "UPDATE " . TABLE_USER . " SET `search` = search + '" . $value . "' WHERE `user_id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `search` = search + '" . $value . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
 
@@ -511,7 +499,7 @@ class User_Model extends Model_Abstract
      */
     public function get_nb_active_users()
     {
-        $request = "SELECT `user_id` FROM " . TABLE_USER . " WHERE `user_active` = '1'";
+        $request = "SELECT `id` FROM " . TABLE_USER . " WHERE `active` = '1'";
         $this->db->sql_query($request);
         return $this->db->sql_numrows();
     }
@@ -521,9 +509,9 @@ class User_Model extends Model_Abstract
      */
     public function get_nb_users()
     {
-        $request = "SELECT `user_id` FROM " . TABLE_USER;
-        $this->db->sql_query($request);
-        return $this->db->sql_numrows();
+        $result = $this->db->sql_query("SELECT COUNT(*) FROM " . TABLE_USER);
+        list($count) = $this->db->sql_fetch_row($result);
+        return $count;
     }
 
     /**
@@ -534,7 +522,7 @@ class User_Model extends Model_Abstract
     public function add_new_user($pseudo, $password)
     {
         $encrypted_password = password_hash($password, PASSWORD_DEFAULT);
-        $request = "INSERT INTO " . TABLE_USER . " (`user_name`, `user_password_s`, `user_regdate`, `user_active`)"
+        $request = "INSERT INTO " . TABLE_USER . " (`name`, `password_s`, `regdate`, `active`)"
             . " VALUES ('" . $pseudo . "', '" . $encrypted_password . "', " . time() . ", '1')";
         $this->db->sql_query($request);
 
@@ -563,89 +551,13 @@ class User_Model extends Model_Abstract
 
         $requests = array();
 
-        $requests[] = "DELETE FROM " . TABLE_USER . " WHERE `user_id` = " . $user_id;
+        $requests[] = "DELETE FROM " . TABLE_USER . " WHERE `id` = " . $user_id;
         $requests[] = "DELETE FROM " . TABLE_USER_GROUP . " WHERE `user_id` = " . $user_id;
-        $requests[] = "DELETE FROM " . TABLE_USER_BUILDING . " WHERE `user_id` = " . $user_id;
         $requests[] = "DELETE FROM " . TABLE_USER_FAVORITE . " WHERE `user_id` = " . $user_id;
-        $requests[] = "DELETE FROM " . TABLE_USER_DEFENCE . " WHERE `user_id` = " . $user_id;
         $requests[] = "DELETE FROM " . TABLE_USER_SPY . " WHERE `user_id` = " . $user_id;
-        $requests[] = "DELETE FROM " . TABLE_USER_TECHNOLOGY . " WHERE `user_id` = " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_POINTS . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_ECO . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_TECHNOLOGY . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_MILITARY . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_MILITARY_BUILT . " SET `sender_id`= 0 WHERE `sender_id`= " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " SET `sender_id`= 0 WHERE `sender_id`= " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " SET `sender_id`= 0 WHERE `sender_id`= " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_PLAYER_HONOR . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_ALLY_POINTS . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_ALLY_ECO . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_ALLY_TECHNOLOGY . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_ALLY_MILITARY . " SET `sender_id` = 0 WHERE `sender_id` = " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_ALLY_MILITARY_BUILT . " SET `sender_id`= 0 WHERE `sender_id`= " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_ALLY_MILITARY_LOOSE . " SET `sender_id`= 0 WHERE `sender_id`= " . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " SET `sender_id`=0 WHERE `sender_id`=" . $user_id;
-        $requests[] = "UPDATE " . TABLE_RANK_ALLY_HONOR . " SET `sender_id`=0 WHERE `sender_id`=" . $user_id;
-        $requests[] = "UPDATE " . TABLE_UNIVERSE . " SET `last_update_user_id` = 0 WHERE `last_update_user_id` = " . $user_id;
         $requests[] = "DELETE FROM " . TABLE_MOD_USER_CFG . " WHERE `user_id` = " . $user_id;
 
         foreach ($requests as $request) {
-            $this->db->sql_query($request);
-        }
-    }
-
-    /* Fonctions concerning game account */
-
-    /**
-     * A quoi sert donc cette fonction ? :p
-     * Reponse elle sert a mettre a jour le pseudo ingame afin d afficher les stats users dans son espace perso
-     *
-     * @param $user_id
-     * @param $user_stat_name
-     */
-    public function set_game_account_name($user_id, $user_stat_name)
-    {
-        $user_id = (int)$user_id;
-        $user_stat_name = $this->db->sql_escape_string($user_stat_name);
-
-        $request = "UPDATE " . TABLE_USER . " SET `user_stat_name` = '$user_stat_name' WHERE `user_id` = $user_id";
-        $this->db->sql_query($request);
-    }
-
-    /**
-     *
-     * @param user_class
-     */
-    public function set_game_class_type($user_id, $user_class)
-    {
-        $user_id = (int)$user_id;
-        $user_class = $this->db->sql_escape_string($user_class);
-
-        $request = "UPDATE " . TABLE_USER . " SET `user_class`  = '" . $user_class . "' WHERE `user_id` = " . $user_id;
-
-        $this->db->sql_query($request);
-    }
-
-    /**
-     * @param $user_id
-     * @param $officer
-     * @param $value
-     */
-    public function set_player_officer($user_id, $officer, $value)
-    {
-        $officer = $this->db->sql_escape_string($officer);
-        $value = (int)$value;
-
-        $allowedOfficers = [
-            'off_commandant',
-            'off_amiral',
-            'off_ingenieur',
-            'off_geologue',
-            'off_technocrate',
-        ];
-
-        if (in_array($officer, $allowedOfficers)) {
-            $request = "UPDATE " . TABLE_USER . " SET `" . $officer . "` = " . $value . " WHERE `user_id` = " . (int)$user_id;
             $this->db->sql_query($request);
         }
     }

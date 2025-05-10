@@ -22,6 +22,7 @@ parameters/id.php
 journal/*/*.htm
 journal/*/*.log
 journal/*/*.sql
+logs/*
 cache/*.php
 config/id.php
 config/key.php

@@ -26,7 +26,7 @@ function mod_list()
 {
     global $user_data;
 
-    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+    if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
         redirection("index.php?action=message&id_message=forbidden&info");
     }
 
@@ -124,7 +124,7 @@ function mod_check($check)
     global $user_data;
     global $pub_mod_id, $pub_directory;
 
-    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+    if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
         redirection("index.php?action=message&id_message=forbidden&info");
     }
 

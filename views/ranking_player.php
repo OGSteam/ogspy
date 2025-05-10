@@ -123,7 +123,7 @@ switch ($order_by) {
                 </form>
             </th>
 
-            <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_ranking"] == 1) { ?>
+            <?php if ($user_data["admin"] == 1 || $user_data["coadmin"] == 1 || $user_data["management_ranking"] == 1) { ?>
                 <th>
                     <form method="POST" action="index.php" onsubmit="return confirm('<?php echo ($lang['RANK_DELETE_CONFIRMATION']); ?>');">
                         <input type="hidden" name="action" value="drop_ranking">
@@ -238,7 +238,7 @@ switch ($order_by) {
                 </td>
                 <td>
                     <a href='index.php?action=search&amp;type_search=player&amp;string_search=<?php echo $value; ?>&strict=on'>
-                        <?php if ($value == $user_data["user_name"]) : ?>
+                        <?php if ($value == $user_data["name"]) : ?>
                             <span class="og-highlight">
                                 <?php echo $value; ?>
                             </span>

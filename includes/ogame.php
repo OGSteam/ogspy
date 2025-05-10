@@ -93,18 +93,18 @@ function ogame_production_position($position)
 function ogame_production_foreuse_max($mine_M, $mine_C, $mine_D, $user_data)
 {
     static $FOR_BONUS_COL_GEO = 0.1;    //+10% de foreuse pour COL+GEO
-    if (!isset($user_data['off_geologue'])) {
-        $user_data['off_geologue'] = 0;
+    if (!isset($player_data['off_geologue'])) {
+        $player_data['off_geologue'] = 0;
     }
-    if (!isset($user_data['off_full'])) {
-        $user_data['off_full'] = 0;
+    if (!isset($player_data['off_full'])) {
+        $player_data['off_full'] = 0;
     }
-    if (!isset($user_data['user_class'])) {
-        $user_data['user_class'] = 'none';
+    if (!isset($player_data['user_class'])) {
+        $player_data['user_class'] = 'none';
     }
 
     $nb_foreuse_max = 8 * ($mine_M + $mine_C + $mine_D);
-    if ($user_data['user_class'] === 'COL' && ($user_data['off_geologue'] != 0 || $user_data['off_full'] != 0)) {
+    if ($player_data['user_class'] === 'COL' && ($player_data['off_geologue'] != 0 || $player_data['off_full'] != 0)) {
         $nb_foreuse_max = $nb_foreuse_max * (1 + $FOR_BONUS_COL_GEO);
     }
 
@@ -138,21 +138,21 @@ function ogame_production_foreuse_bonus($user_building, $user_data)
     if (!isset($user_building['FOR']) || !is_numeric($user_building['FOR'])) {
         $user_building['FOR'] = 0;
     }
-    if (!isset($user_data['off_geologue'])) {
-        $user_data['off_geologue'] = 0;
+    if (!isset($player_data['off_geologue'])) {
+        $player_data['off_geologue'] = 0;
     }
-    if (!isset($user_data['off_full'])) {
-        $user_data['off_full'] = 0;
+    if (!isset($player_data['off_full'])) {
+        $player_data['off_full'] = 0;
     }
-    if (!isset($user_data['user_class'])) {
-        $user_data['user_class'] = 'none';
+    if (!isset($player_data['user_class'])) {
+        $player_data['user_class'] = 'none';
     }
-    if (!in_array($user_data['user_class'], $names['CLASS'], true)) {
-        $user_data['user_class'] = $names['CLASS'][0];
+    if (!in_array($player_data['user_class'], $names['CLASS'], true)) {
+        $player_data['user_class'] = $names['CLASS'][0];
     }
 
     $bonus_foreuse = $FOR_COEF;
-    if ($user_data['user_class'] === 'COL') {
+    if ($player_data['user_class'] === 'COL') {
         $bonus_foreuse = $bonus_foreuse * (1 + $FOR_BONUS_COL);
     }
     $nb_foreuse_max = ogame_production_foreuse_max($user_building['M'], $user_building['C'], $user_building['D'], $user_data);
@@ -354,11 +354,11 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
     if (!isset($user_data['off_full'])) {
         $user_data['off_full'] = 0;
     }
-    if (!isset($user_data['user_class'])) {
-        $user_data['user_class'] = 'none';
+    if (!isset($player_data['user_class'])) {
+        $player_data['user_class'] = 'none';
     }
-    if (!in_array($user_data['user_class'], $names['CLASS'], true)) {
-        $user_data['user_class'] = $names['CLASS'][0];
+    if (!in_array($player_data['user_class'], $names['CLASS'], true)) {
+        $player_data['user_class'] = $names['CLASS'][0];
     }
     if (!isset($user_building['M_percentage'])   || !is_numeric($user_building['M_percentage'])) {
         $user_building['M_percentage'] = 100;
@@ -393,18 +393,18 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
     if (!isset($user_building['booster_tab']['booster_d_val'])) {
         $user_building['booster_tab']['booster_d_val'] = 0;
     }
-    if (!isset($user_data['production_theorique']) || !is_bool($user_data['production_theorique'])) {
-        $user_data['production_theorique'] = false;
+    if (!isset($player_data['production_theorique']) || !is_bool($player_data['production_theorique'])) {
+        $player_data['production_theorique'] = false;
     }
 
-    if ($user_data['off_full'] != 0) {
-        $user_data['off_ingenieur'] = 1;
-        $user_data['off_geologue']  = 1;
+    if ($player_data['off_full'] != 0) {
+        $player_data['off_ingenieur'] = 1;
+        $player_data['off_geologue']  = 1;
     }
-    if ($user_data['off_commandant'] != 0 && $user_data['off_amiral'] != 0 && $user_data['off_ingenieur'] != 0 && $user_data['off_geologue'] != 0) {
-        $user_data['off_full'] = 1;
+    if ($player_data['off_commandant'] != 0 && $player_data['off_amiral'] != 0 && $player_data['off_ingenieur'] != 0 && $player_data['off_geologue'] != 0) {
+        $player_data['off_full'] = 1;
     }
-    if ($user_data['user_class'] !== 'COL' && $user_building['FOR_percentage'] > 100) {
+    if ($player_data['user_class'] !== 'COL' && $user_building['FOR_percentage'] > 100) {
         $user_building['FOR_percentage'] = 100;
     }
 
@@ -445,13 +445,13 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
         $prod_SAT = $prod_vso_SAT['NRJ'] * $user_building['Sat_percentage'] / 100;
         $production_E = $prod_CES + $prod_CEF + $prod_SAT;
         $result['prod_booster']['NRJ']    = round($production_E * $user_building['booster_tab']['booster_e_val'] / 100);
-        if ($user_data['user_class'] === 'COL') {
+        if ($player_data['user_class'] === 'COL') {
             $result['prod_classe']['NRJ'] = round($production_E * $NRJ_BONUS_COL);
         }
-        if ($user_data['off_ingenieur'] != 0) {
+        if ($player_data['off_ingenieur'] != 0) {
             $result['prod_off']['NRJ']    = round($production_E * $NRJ_BONUS_ING);
         }
-        if ($user_data['off_full'] != 0) {
+        if ($player_data['off_full'] != 0) {
             $result['prod_off']['NRJ']   += round($production_E * $NRJ_BONUS_FULL);
         }
         $result['prod_CES']['NRJ'] = round($prod_CES);
@@ -485,13 +485,13 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
         $production_E = $result['prod_CES']['NRJ'] + $result['prod_CEF']['NRJ'] + $result['prod_SAT']['NRJ'];
 
         $result['prod_booster']['NRJ']    = round($production_E * $user_building['booster_tab']['booster_e_val'] / 100);
-        if ($user_data['user_class'] === 'COL') {
+        if ($player_data['user_class'] === 'COL') {
             $result['prod_classe']['NRJ'] = round($production_E * $NRJ_BONUS_COL);
         }
-        if ($user_data['off_ingenieur'] != 0) {
+        if ($player_data['off_ingenieur'] != 0) {
             $result['prod_off']['NRJ']    = round($production_E * $NRJ_BONUS_ING);
         }
-        if ($user_data['off_full'] != 0) {
+        if ($player_data['off_full'] != 0) {
             $result['prod_off']['NRJ']   += round($production_E * $NRJ_BONUS_FULL);
         }
         $result['prod_CES']['NRJ'] = round($result['prod_CES']['NRJ']);
@@ -504,10 +504,10 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
     $result['prod_E'] = $production_E;
 
     //Calcul de la production
-    $bonus_off_geo  = ($user_data['off_geologue'] != 0)    ? $RESS_BONUS_GEO  : 0;
-    $bonus_off_full = ($user_data['off_full'] != 0)        ? $RESS_BONUS_FULL : 0;
-    $bonus_class    = ($user_data['user_class'] === 'COL') ? $RESS_BONUS_COL  : 0;
-    $bonus_for      = ogame_production_foreuse_bonus($user_building, $user_data);
+    $bonus_off_geo  = ($player_data['off_geologue'] != 0)    ? $RESS_BONUS_GEO  : 0;
+    $bonus_off_full = ($player_data['off_full'] != 0)        ? $RESS_BONUS_FULL : 0;
+    $bonus_class    = ($player_data['user_class'] === 'COL') ? $RESS_BONUS_COL  : 0;
+    $bonus_for      = ogame_production_foreuse_bonus($user_building, $player_data);
     $result['nb_FOR_maxed'] = $bonus_for['nb_FOR_maxed'];
 
     //*Métal :
