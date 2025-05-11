@@ -90,7 +90,7 @@ function ogame_production_position($position)
  *  @param[in] array $user_data                 array with class and officiers infos (array('user_class'=>'COL'/...,'off_geologue' or 'off_full'))
  *  @return int The max
  */
-function ogame_production_foreuse_max($mine_M, $mine_C, $mine_D, $user_data)
+function ogame_production_foreuse_max($mine_M, $mine_C, $mine_D, $player_data)
 {
     static $FOR_BONUS_COL_GEO = 0.1;    //+10% de foreuse pour COL+GEO
     if (!isset($player_data['off_geologue'])) {
@@ -99,12 +99,12 @@ function ogame_production_foreuse_max($mine_M, $mine_C, $mine_D, $user_data)
     if (!isset($player_data['off_full'])) {
         $player_data['off_full'] = 0;
     }
-    if (!isset($player_data['user_class'])) {
-        $player_data['user_class'] = 'none';
+    if (!isset($player_data['class'])) {
+        $player_data['class'] = 'none';
     }
 
     $nb_foreuse_max = 8 * ($mine_M + $mine_C + $mine_D);
-    if ($player_data['user_class'] === 'COL' && ($player_data['off_geologue'] != 0 || $player_data['off_full'] != 0)) {
+    if ($player_data['class'] === 'COL' && ($player_data['off_geologue'] != 0 || $player_data['off_full'] != 0)) {
         $nb_foreuse_max = $nb_foreuse_max * (1 + $FOR_BONUS_COL_GEO);
     }
 
@@ -118,7 +118,7 @@ function ogame_production_foreuse_max($mine_M, $mine_C, $mine_D, $user_data)
  *  @param[in] array $user_data     array with class and officiers infos (array('user_class'=>'COL'/...,'off_geologue' or 'off_full'))
  *  @return array('bonus', 'nb_FOR_maxed') bonus=foreuse bonus coefficient ; nb_FOR_maxed=limit nb if too much
  */
-function ogame_production_foreuse_bonus($user_building, $user_data)
+function ogame_production_foreuse_bonus($user_building, $player_data)
 {
     static $FOR_COEF          = 0.0002; //0.02% / foreuse
     static $FOR_BONUS_COL     = 0.5;    //+50% pour COL
@@ -144,15 +144,15 @@ function ogame_production_foreuse_bonus($user_building, $user_data)
     if (!isset($player_data['off_full'])) {
         $player_data['off_full'] = 0;
     }
-    if (!isset($player_data['user_class'])) {
-        $player_data['user_class'] = 'none';
+    if (!isset($player_data['class'])) {
+        $player_data['class'] = 'none';
     }
-    if (!in_array($player_data['user_class'], $names['CLASS'], true)) {
-        $player_data['user_class'] = $names['CLASS'][0];
+    if (!in_array($player_data['class'], $names['CLASS'], true)) {
+        $player_data['class'] = $names['CLASS'][0];
     }
 
     $bonus_foreuse = $FOR_COEF;
-    if ($player_data['user_class'] === 'COL') {
+    if ($player_data['class'] === 'COL') {
         $bonus_foreuse = $bonus_foreuse * (1 + $FOR_BONUS_COL);
     }
     $nb_foreuse_max = ogame_production_foreuse_max($user_building['M'], $user_building['C'], $user_building['D'], $user_data);
@@ -179,7 +179,7 @@ function ogame_production_foreuse_bonus($user_building, $user_data)
  *
  *  @details remplace les fonctions consumption et partiellement production,production_sat,production_foreuse
  */
-function ogame_production_building($building, $user_building = null, $user_technology = null, $user_data = null, $server_config = null)
+function ogame_production_building($building, $user_building = null, $user_technology = null, $player_data = null, $server_config = null)
 {
     static $BASE_M = 30;
     static $BASE_C = 15;
@@ -307,7 +307,7 @@ function ogame_production_building($building, $user_building = null, $user_techn
  *
  *  @details remplace les fonctions ratio et bilan_production_ratio
  */
-function ogame_production_planet($user_building, $user_technology = null, $user_data = null, $server_config = null)
+function ogame_production_planet($user_building, $user_technology = null, $player_data = null, $server_config = null)
 {
     static $DEFAULT_TYPE_RESS = array('M' => 0, 'C' => 0, 'D' => 0, 'NRJ' => 0, 'AM' => 0);
     static $NRJ_BONUS_COL     = 0.1;   //+10% pour COL
@@ -339,20 +339,20 @@ function ogame_production_planet($user_building, $user_technology = null, $user_
     if (!isset($user_technology['Plasma']) || !is_numeric($user_technology['Plasma'])) {
         $user_technology['Plasma'] = 0;
     }
-    if (!isset($user_data['off_commandant'])) {
-        $user_data['off_commandant'] = 0;
+    if (!isset($player_data['off_commandant'])) {
+        $player_data['off_commandant'] = 0;
     }
-    if (!isset($user_data['off_amiral'])) {
-        $user_data['off_amiral'] = 0;
+    if (!isset($player_data['off_amiral'])) {
+        $player_data['off_amiral'] = 0;
     }
-    if (!isset($user_data['off_ingenieur'])) {
-        $user_data['off_ingenieur'] = 0;
+    if (!isset($player_data['off_ingenieur'])) {
+        $player_data['off_ingenieur'] = 0;
     }
-    if (!isset($user_data['off_geologue'])) {
-        $user_data['off_geologue'] = 0;
+    if (!isset($player_data['off_geologue'])) {
+        $player_data['off_geologue'] = 0;
     }
-    if (!isset($user_data['off_full'])) {
-        $user_data['off_full'] = 0;
+    if (!isset($player_data['off_full'])) {
+        $player_data['off_full'] = 0;
     }
     if (!isset($player_data['user_class'])) {
         $player_data['user_class'] = 'none';
@@ -1051,91 +1051,90 @@ function bilan_production_ratio(
  */
 function ogame_get_element_names()
 {
-    $names = array();
-
-    $names['BAT'] = array(  // Bâtiments :
-        'M',    //Mine de métal
-        'C',    //Mine de cristal
-        'D',    //Synthétiseur de deutérium
-        'CES',  //Centrale électrique solaire
-        'CEF',  //Centrale électrique de fusion
-        'UdR',  //Usine de robots
-        'UdN',  //Usine de nanites
-        'CSp',  //Chantier spatial
-        'HM',   //Hangar de métal
-        'HC',   //Hangar de cristal
-        'HD',   //Réservoir de deutérium
-        'Lab',  //Laboratoire
-        'Ter',  //Terraformeur
-        'DdR',  //Dépôt de ravitaillement
-        'Silo', //Silo de missiles
-        'Dock', //Dock spatial
-        'BaLu', //Base lunaire
-        'Pha',  //Phalange de capteur
-        'PoSa', //Porte de saut spatial
-    );
-    $names['RECH'] = array( // Recherches :
-        'Esp',           //Technologie espionnage
-        'Ordi',          //Technologie ordinateur
-        'Armes',         //Technologie armes
-        'Bouclier',      //Technologie bouclier
-        'Protection',    //Technologie protection des vaisseaux spatiaux
-        'NRJ',           //Technologie énergie
-        'Hyp',           //Technologie hyperespace
-        'RC',            //Réacteur à combustion
-        'RI',            //Réacteur à impulsion
-        'PH',            //Propulsion hyperespace
-        'Laser',         //Technologie laser
-        'Ions',          //Technologie à ions
-        'Plasma',        //Technologie plasma
-        'RRI',           //Réseau de recherche intergalactique
-        'Graviton',      //Technologie graviton
-        'Astrophysique', //Astrophysique
-    );
-    $names['VSO'] = array(  // Flottes :
-        'PT',   //Petit transporteur
-        'GT',   //Grand transporteur
-        'CLE',  //Chasseur léger
-        'CLO',  //Chasseur lourd
-        'CR',   //Croiseur
-        'VB',   //Vaisseau de bataille
-        'VC',   //Vaisseau de colonisation
-        'REC',  //Recycleur
-        'SE',   //Sonde d'espionnage
-        'BMD',  //Bombardier
-        'DST',  //Destructeur
-        'EDLM', //Étoile de la mort
-        'TRA',  //Traqueur
-        'SAT',  //Satellite solaire
-        'FOR',  //Foreuse
-        'FAU',  //Faucheur
-        'ECL',  //Éclaireur
-    );
-    $names['DEF'] = array(  // Défenses :
-        'LM',  //Lanceur de missiles
-        'LLE', //Artillerie laser légère
-        'LLO', //Artillerie laser lourde
-        'CG',  //Canon de Gauss
-        'AI',  //Artillerie à ions
-        'LP',  //Lanceur de plasma
-        'PB',  //Petit bouclier
-        'GB',  //Grand bouclier
-        'MIC', //Missile d'interception
-        'MIP', //Missile interplanétaire
-    );
-    $names['CLASS'] = array(
-        'none', //Aucune classe
-        'COL',  //Classe collecteur
-        'GEN',  //Classe général
-        'EXP',  //Classe explorateur
-    );
-    $names['RESS'] = array(
-        'M',   //métal
-        'C',   //cristal
-        'D',   //deutérium
-        'NRJ', //énergie
-        'AM',  //AM
-    );
+    $names = [];
+    $names['BAT'] = [
+        'M',    // Mine de métal
+        'C',    // Mine de cristal
+        'D',    // Synthétiseur de deutérium
+        'CES',  // Centrale électrique solaire
+        'CEF',  // Centrale électrique de fusion
+        'UdR',  // Usine de robots
+        'UdN',  // Usine de nanites
+        'CSp',  // Chantier spatial
+        'HM',   // Hangar de métal
+        'HC',   // Hangar de cristal
+        'HD',   // Réservoir de deutérium
+        'Lab',  // Laboratoire
+        'Ter',  // Terraformeur
+        'DdR',  // Dépôt de ravitaillement
+        'Silo', // Silo de missiles
+        'Dock', // Dock spatial
+        'BaLu', // Base lunaire
+        'Pha',  // Phalange de capteur
+        'PoSa', // Porte de saut spatial
+    ];
+    $names['RECH'] = [ // Recherches :
+        'Esp',           // Technologie espionnage
+        'Ordi',          // Technologie ordinateur
+        'Armes',         // Technologie armes
+        'Bouclier',      // Technologie bouclier
+        'Protection',    // Technologie protection des vaisseaux spatiaux
+        'NRJ',           // Technologie énergie
+        'Hyp',           // Technologie hyperespace
+        'RC',            // Réacteur à combustion
+        'RI',            // Réacteur à impulsion
+        'PH',            // Propulsion hyperespace
+        'Laser',         // Technologie laser
+        'Ions',          // Technologie à ions
+        'Plasma',        // Technologie plasma
+        'RRI',           // Réseau de recherche intergalactique
+        'Graviton',      // Technologie graviton
+        'Astrophysique', // Astrophysique
+    ];
+    $names['VSO'] = [ // Flottes :
+        'PT',   // Petit transporteur
+        'GT',   // Grand transporteur
+        'CLE',  // Chasseur léger
+        'CLO',  // Chasseur lourd
+        'CR',   // Croiseur
+        'VB',   // Vaisseau de bataille
+        'VC',   // Vaisseau de colonisation
+        'REC',  // Recycleur
+        'SE',   // Sonde d'espionnage
+        'BMD',  // Bombardier
+        'DST',  // Destructeur
+        'EDLM', // Étoile de la mort
+        'TRA',  // Traqueur
+        'SAT',  // Satellite solaire
+        'FOR',  // Foreuse
+        'FAU',  // Faucheur
+        'ECL',  // Éclaireur
+    ];
+    $names['DEF'] = [ // Défenses :
+        'LM',   // Lanceur de missiles
+        'LLE',  // Artillerie laser légère
+        'LLO',  // Artillerie laser lourde
+        'CG',   // Canon de Gauss
+        'AI',   // Artillerie à ions
+        'LP',   // Lanceur de plasma
+        'PB',   // Petit bouclier
+        'GB',   // Grand bouclier
+        'MIC',  // Missile d'interception
+        'MIP',  // Missile interplanétaire
+    ];
+    $names['CLASS'] = [ // Classes :
+        'none', // Aucune classe
+        'COL',  // Classe collecteur
+        'GEN',  // Classe général
+        'EXP',  // Classe explorateur
+    ];
+    $names['RESS'] = [ // Ressources :
+        'M',   // Métal
+        'C',   // Cristal
+        'D',   // Deutérium
+        'NRJ', // Énergie
+        'AM',  // AM
+    ];
 
     return $names;
 }
@@ -1462,62 +1461,62 @@ function ogame_all_details($user_techno = null, $classe = 0)
  */
 function ogame_elements_requirement($name = 'all')
 {
-    $requis = array();
-    $requis['rien']          = array();
-    $requis['CEF']           = array('D'   => 5, 'NRJ' => 3);
-    $requis['UdN']           = array('UdR' => 10, 'Ordi' => 10);
-    $requis['CSp']           = array('UdR' => 2);
-    $requis['Ter']           = array('UdN' => 1, 'NRJ' => 12);
-    $requis['Silo']          = array('CSp' => 1);
-    $requis['Dock']          = array('CSp' => 2);
-    $requis['Pha']           = array('BaLu' => 1);
-    $requis['PoSa']          = array('BaLu' => 1, 'Hyp' => 7);
-    //Prérequis des technos
-    $requis['Esp']           = array('Lab' => 3);
-    $requis['Ordi']          = array('Lab' => 1);
-    $requis['Armes']         = array('Lab' => 4);
-    $requis['Bouclier']      = array('Lab' => 6, 'NRJ' => 3);
-    $requis['Protection']    = array('Lab' => 2);
-    $requis['NRJ']           = array('Lab' => 1);
-    $requis['Hyp']           = array('Lab' => 7, 'NRJ' => 5, 'Bouclier' => 5);
-    $requis['RC']            = array('Lab' => 1, 'NRJ' => 1);
-    $requis['RI']            = array('Lab' => 2, 'NRJ' => 1);
-    $requis['PH']            = array('Lab' => 7, 'Hyp' => 3);
-    $requis['Laser']         = array('Lab' => 1, 'NRJ' => 2);
-    $requis['Ions']          = array('Lab' => 4, 'NRJ' => 4, 'Laser' => 5);
-    $requis['Plasma']        = array('Lab' => 4, 'NRJ' => 8, 'Laser' => 10, 'Ions' => 5);
-    $requis['RRI']           = array('Lab' => 10, 'Hyp' => 8, 'Ordi' => 8);
-    $requis['Graviton']      = array('Lab' => 12);
-    $requis['Astrophysique'] = array('Lab' => 3, 'Esp' => 4, 'RI' => 3);
-    //Prérequis des vaisseaux
-    $requis['PT']            = array('CSp' => 2, 'RC' => 2);
-    $requis['GT']            = array('CSp' => 4, 'RC' => 6);
-    $requis['CLE']           = array('CSp' => 1, 'RC' => 1);
-    $requis['CLO']           = array('CSp' => 3, 'Protection' => 2, 'RI' => 2);
-    $requis['CR']            = array('CSp' => 5, 'RI' => 4, 'Ions' => 2);
-    $requis['VB']            = array('CSp' => 7, 'PH' => 4);
-    $requis['VC']            = array('CSp' => 4, 'RI' => 3);
-    $requis['REC']           = array('CSp' => 4, 'RC' => 6, 'Bouclier' => 2);
-    $requis['SE']            = array('CSp' => 3, 'RC' => 3, 'Esp' => 2);
-    $requis['BMD']           = array('CSp' => 8, 'RI' => 6, 'Plasma' => 5);
-    $requis['DST']           = array('CSp' => 9, 'Hyp' => 5, 'PH' => 6);
-    $requis['EDLM']          = array('CSp' => 12, 'Hyp' => 6, 'PH' => 7, 'Graviton' => 1);
-    $requis['TRA']           = array('CSp' => 8, 'Hyp' => 5, 'PH' => 5, 'Laser' => 12);
-    $requis['SAT']           = array('CSp' => 1);
-    $requis['FOR']           = array('CSp' => 5, 'RC' => 4, 'Protection' => 4, 'Laser' => 4, 'COL' => true);
-    $requis['FAU']           = array('CSp' => 10, 'Hyp' => 6, 'PH' => 7, 'Bouclier' => 6, 'GEN' => true);
-    $requis['ECL']           = array('CSp' => 5, 'PH' => 2, 'EXP' => true);
-    //Prérequis des défense
-    $requis['LM']            = array('CSp' => 1);
-    $requis['LLE']           = array('CSp' => 2, 'Laser'   => 3);
-    $requis['LLO']           = array('CSp' => 4, 'Laser'   => 6, 'NRJ'  => 3);
-    $requis['CG']            = array('CSp' => 6, 'NRJ'     => 6, 'Armes' => 3, 'Bouclier' => 1);
-    $requis['AI']            = array('CSp' => 4, 'Ions'    => 4);
-    $requis['LP']            = array('CSp' => 8, 'Plasma'  => 7);
-    $requis['PB']            = array('CSp' => 1, 'Bouclier' => 2);
-    $requis['GB']            = array('CSp' => 6, 'Bouclier' => 6);
-    $requis['MIC']           = array('CSp' => 1, 'Silo'    => 1);
-    $requis['MIP']           = array('CSp' => 1, 'Silo'    => 4, 'RI' => 1);
+    $requis = [];
+    $requis['rien']          = [];
+    $requis['CEF']           = ['D' => 5, 'NRJ' => 3];
+    $requis['UdN']           = ['UdR' => 10, 'Ordi' => 10];
+    $requis['CSp']           = ['UdR' => 2];
+    $requis['Ter']           = ['UdN' => 1, 'NRJ' => 12];
+    $requis['Silo']          = ['CSp' => 1];
+    $requis['Dock']          = ['CSp' => 2];
+    $requis['Pha']           = ['BaLu' => 1];
+    $requis['PoSa']          = ['BaLu' => 1, 'Hyp' => 7];
+// Prérequis des technos
+    $requis['Esp']           = ['Lab' => 3];
+    $requis['Ordi']          = ['Lab' => 1];
+    $requis['Armes']         = ['Lab' => 4];
+    $requis['Bouclier']      = ['Lab' => 6, 'NRJ' => 3];
+    $requis['Protection']    = ['Lab' => 2];
+    $requis['NRJ']           = ['Lab' => 1];
+    $requis['Hyp']           = ['Lab' => 7, 'NRJ' => 5, 'Bouclier' => 5];
+    $requis['RC']            = ['Lab' => 1, 'NRJ' => 1];
+    $requis['RI']            = ['Lab' => 2, 'NRJ' => 1];
+    $requis['PH']            = ['Lab' => 7, 'Hyp' => 3];
+    $requis['Laser']         = ['Lab' => 1, 'NRJ' => 2];
+    $requis['Ions']          = ['Lab' => 4, 'NRJ' => 4, 'Laser' => 5];
+    $requis['Plasma']        = ['Lab' => 4, 'NRJ' => 8, 'Laser' => 10, 'Ions' => 5];
+    $requis['RRI']           = ['Lab' => 10, 'Hyp' => 8, 'Ordi' => 8];
+    $requis['Graviton']      = ['Lab' => 12];
+    $requis['Astrophysique'] = ['Lab' => 3, 'Esp' => 4, 'RI' => 3];
+// Prérequis des vaisseaux
+    $requis['PT']            = ['CSp' => 2, 'RC' => 2];
+    $requis['GT']            = ['CSp' => 4, 'RC' => 6];
+    $requis['CLE']           = ['CSp' => 1, 'RC' => 1];
+    $requis['CLO']           = ['CSp' => 3, 'Protection' => 2, 'RI' => 2];
+    $requis['CR']            = ['CSp' => 5, 'RI' => 4, 'Ions' => 2];
+    $requis['VB']            = ['CSp' => 7, 'PH' => 4];
+    $requis['VC']            = ['CSp' => 4, 'RI' => 3];
+    $requis['REC']           = ['CSp' => 4, 'RC' => 6, 'Bouclier' => 2];
+    $requis['SE']            = ['CSp' => 3, 'RC' => 3, 'Esp' => 2];
+    $requis['BMD']           = ['CSp' => 8, 'RI' => 6, 'Plasma' => 5];
+    $requis['DST']           = ['CSp' => 9, 'Hyp' => 5, 'PH' => 6];
+    $requis['EDLM']          = ['CSp' => 12, 'Hyp' => 6, 'PH' => 7, 'Graviton' => 1];
+    $requis['TRA']           = ['CSp' => 8, 'Hyp' => 5, 'PH' => 5, 'Laser' => 12];
+    $requis['SAT']           = ['CSp' => 1];
+    $requis['FOR']           = ['CSp' => 5, 'RC' => 4, 'Protection' => 4, 'Laser' => 4, 'COL' => true];
+    $requis['FAU']           = ['CSp' => 10, 'Hyp' => 6, 'PH' => 7, 'Bouclier' => 6, 'GEN' => true];
+    $requis['ECL']           = ['CSp' => 5, 'PH' => 2, 'EXP' => true];
+// Prérequis des défenses
+    $requis['LM']            = ['CSp' => 1];
+    $requis['LLE']           = ['CSp' => 2, 'Laser' => 3];
+    $requis['LLO']           = ['CSp' => 4, 'Laser' => 6, 'NRJ' => 3];
+    $requis['CG']            = ['CSp' => 6, 'NRJ' => 6, 'Armes' => 3, 'Bouclier' => 1];
+    $requis['AI']            = ['CSp' => 4, 'Ions' => 4];
+    $requis['LP']            = ['CSp' => 8, 'Plasma' => 7];
+    $requis['PB']            = ['CSp' => 1, 'Bouclier' => 2];
+    $requis['GB']            = ['CSp' => 6, 'Bouclier' => 6];
+    $requis['MIC']           = ['CSp' => 1, 'Silo' => 1];
+    $requis['MIP']           = ['CSp' => 1, 'Silo' => 4, 'RI' => 1];
 
     $names  = ogame_get_element_names();
     foreach ($requis as &$elem_requis) { //fill with other building/research
