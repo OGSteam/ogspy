@@ -565,35 +565,35 @@ function user_set_grant(
 
 /**
  * Enregistrement des statistiques utilisateurs
- * @param null $planet_added_web
- * @param null $planet_added_ogs
+ * @param null $planet_imports
+ * @param null $planet_imports
  * @param integer $search
- * @param null $spy_added_web
- * @param null $spy_added_ogs
- * @param null $rank_added_web
- * @param null $rank_added_ogs
+ * @param null $spy_imports
+ * @param null $spy_imports
+ * @param null $rank_imports
+ * @param null $rank_imports
  * @param null $planet_exported
  * @param null $spy_exported
  * @param null $rank_exported
  */
-function user_set_stat($planet_added_web = null, $search = null, $spy_added_web = null, $rank_added_web = null
+function user_set_stat($planet_imports = null, $search = null, $spy_imports = null, $rank_imports = null
 ) {
     global $user_data;
 
     $User_Model = new User_Model();
     //Statistiques envoi systèmes solaires et rapports d'espionnage
 
-    if (!is_null($planet_added_web)) {
-        $User_Model->add_stat_planet_inserted($user_data["id"], $planet_added_web);
+    if (!is_null($planet_imports)) {
+        $User_Model->add_stat_planet_inserted($user_data["id"], $planet_imports);
     }
     if (!is_null($search)) {
         $User_Model->add_stat_search_made($user_data["id"], $search);
     }
-    if (!is_null($spy_added_web)) {
-        $User_Model->add_stat_spy_inserted($user_data["id"], $spy_added_web);
+    if (!is_null($spy_imports)) {
+        $User_Model->add_stat_spy_inserted($user_data["id"], $spy_imports);
     }
-    if (!is_null($rank_added_web)) {
-        $User_Model->add_stat_rank_inserted($user_data["id"], $rank_added_web);
+    if (!is_null($rank_imports)) {
+        $User_Model->add_stat_rank_inserted($user_data["id"], $rank_imports);
     }
 }
 
@@ -733,7 +733,7 @@ function user_statistic()
     $user_statistic = array();
     foreach ($all_user_stats_data as $row) {
         $here = "";
-        $session_ogs = (new Sessions_Model())->get_xtense_session($row["user_id"]);
+        $session_ogs = (new Sessions_Model())->get_xtense_session($row["id"]);
         if ($session_ogs != -1) {
             $here = "(*)";
             if ($session_ogs == 1) {

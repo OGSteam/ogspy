@@ -17,6 +17,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
+use Ogsteam\Ogspy\Model\Statistics_Model;
 
 $ToolTip_Helper = new ToolTip_Helper();
 
@@ -177,21 +178,21 @@ require_once 'views/page_header.php';
 
             // Statistiques participation des membres actifs
             //todo sortir de la vue
-            $sumStats = (new \Ogsteam\Ogspy\Model\Statistics_Model())->get_users_stat_sum();
-            $planetimport = ($sumStats["planetimport"] != 0) ? $sumStats["planetimport"] : 1;
-            $spyimport = ($sumStats["spyimport"] != 0) ? $sumStats["spyimport"] : 1;
-            $rankimport = ($sumStats["rankimport"] != 0) ? $sumStats["rankimport"] : 1;
+            $sumStats = new Statistics_Model()->get_users_stat_sum();
+            $planetimport = ($sumStats["planet_imports"] != 0) ? $sumStats["planet_imports"] : 1;
+            $spyimport = ($sumStats["spy_imports"] != 0) ? $sumStats["spy_imports"] : 1;
+            $rankimport = ($sumStats["rank_imports"] != 0) ? $sumStats["rank_imports"] : 1;
             $search = ($sumStats["search"] != 0) ? $sumStats["search"] : 1;
 
             foreach ($user_statistic as $v) {
-                $ratio_planet = ($v['planet_added_ogs']) / $planetimport;
-                $ratio_spy = ($v['spy_added_ogs']) / $spyimport;
-                $ratio_rank = ($v['rank_added_ogs']) / $rankimport;
+                $ratio_planet = ($v['planet_imports']) / $planetimport;
+                $ratio_spy = ($v['spy_imports']) / $spyimport;
+                $ratio_rank = ($v['rank_imports']) / $rankimport;
                 $ratio = (3 * $ratio_planet + 2 * $ratio_spy + $ratio_rank) / 6;
 
-                $ratio_planet_penality = ($v['planet_added_ogs']) / $planetimport;
-                $ratio_spy_penality = ($v['spy_added_ogs']) / $spyimport;
-                $ratio_rank_penality = ($v['rank_added_ogs']) / $rankimport;
+                $ratio_planet_penality = ($v['planet_imports']) / $planetimport;
+                $ratio_spy_penality = ($v['spy_imports']) / $spyimport;
+                $ratio_rank_penality = ($v['rank_imports']) / $rankimport;
                 $ratio_penality = (3 * $ratio_planet_penality + 2 * $ratio_spy_penality + $ratio_rank_penality) / 6;
 
                 $ratio_search = $v['search'] / $search;
@@ -216,29 +217,26 @@ require_once 'views/page_header.php';
                 if ($enable_stat_view || ($v['user_name'] == $user_data['name']) || $user_data['admin'] || $user_data['coadmin']) {
 
                     switch ($v['xtense_type']) {
-                        case 'FF':
+                        case 'GM-FF':
                             $xtense_type = 'Firefox (' . $v['xtense_version'] . ')';
                             break;
-                        case 'GM-FF':
-                            $xtense_type = 'GreaseMonkey Firefox (' . $v['xtense_version'] . ')';
-                            break;
                         case 'GM-GC':
-                            $xtense_type = 'GreaseMonkey Google Chrome (' . $v['xtense_version'] . ')';
+                            $xtense_type = 'Google Chrome (' . $v['xtense_version'] . ')';
                             break;
                         case 'GM-OP':
-                            $xtense_type = 'GreaseMonkey Opéra (' . $v['xtense_version'] . ')';
+                            $xtense_type = 'Opéra (' . $v['xtense_version'] . ')';
                             break;
                         default:
                             $xtense_type = 'N/A (' . $v['xtense_type'] . ')';
                     }
 
                     //todo voir si seulement admin on le visuel ...
-                    if ($v['user_active'] == "1" || $v['user_admin'] == "1") {
+                    if ($v['active'] == "1" || $v['admin'] == "1") {
                         echo '<tr>';
                         echo '<td><span class="' . $classtag . '">' . $v['name'] . (($enable_members_view || $user_data['admin'] || $user_data['coadmin']) ? ' ' . $v['here'] : '') . '</span></td>';
-                        echo '<td>' . formate_number($v['planet_added_ogs']) . '</td>';
-                        echo '<td>' . formate_number($v['spy_added_ogs']) . '</td>';
-                        echo '<td>' . formate_number($v['rank_added_ogs']) . '</td>';
+                        echo '<td>' . formate_number($v['planet_imports']) . '</td>';
+                        echo '<td>' . formate_number($v['spy_imports']) . '</td>';
+                        echo '<td>' . formate_number($v['rank_imports']) . '</td>';
                         echo '<td>' . formate_number($v['search']) . '</td>';
                         echo '<td><span class="' . $classtag . '">' . formate_number($result) . '</span></td>';
                         echo '<td>' . $xtense_type . '</td>';

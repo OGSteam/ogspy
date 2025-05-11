@@ -89,11 +89,3 @@ if (!is_dir($path_log_today)) {
     write_file($path_log_today . "index.htm", 'a', '');
 }
 define("PATH_LOG_TODAY", PATH_LOG . date("ymd") . "/");
-
-
-//Bannière OGSPY
-$banner[] = "logos/logo.png";
-
-srand(time());
-shuffle($banner);
-$banner_selected = $banner[0];

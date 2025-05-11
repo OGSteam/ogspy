@@ -174,8 +174,8 @@ class User_Model extends Model_Abstract
      */
     public function select_all_user_stats_data()
     {
-        $request = "SELECT `id`, `name`, `planet_added_web`, `search`, `spy_added_web`, `rank_added_web`, `xtense_type`, `xtense_version`, `active`, `admin`";
-        $request .= " FROM " . TABLE_USER . " ORDER BY `planet_added_web` DESC";
+        $request = "SELECT `id`, `name`, `planet_imports`, `search`, `spy_imports`, `rank_imports`, `xtense_type`, `xtense_version`, `active`, `admin`";
+        $request .= " FROM " . TABLE_USER . " ORDER BY `planet_imports` DESC";
         $result = $this->db->sql_query($request);
         $retour = array();
         while ($row = $this->db->sql_fetch_assoc($result)) {
@@ -194,19 +194,19 @@ class User_Model extends Model_Abstract
         //voir pour modifier bdd et ctualiser fn appelante et vue
         // $request = "SELECT `user_id`, `user_name`, `planet_added_xtense`, `search`, `spy_added_xtense`, `rank_added_xtense`, `xtense_type`, `xtense_version`, `user_active`, `user_admin`";
 
-        $request = "SELECT `id`, `name`, `planet_added_web`, `search`, `spy_added_web`, `rank_added_web`, `xtense_type`, `xtense_version`, `active`, `admin`";
+        $request = "SELECT `id`, `name`, `planet_imports`, `search`, `spy_imports`, `rank_imports`, `xtense_type`, `xtense_version`, `active`, `admin`";
         $request .= " FROM " . TABLE_USER;
         $request .= " WHERE `id`='" . $user_id . "'";
         $result = $this->db->sql_query($request);
 
-        list($planet_added_web, $search, $spy_added_web, $rank_added_web) = $this->db->sql_fetch_row($result);
+        list($planet_imports, $search, $spy_imports, $rank_imports) = $this->db->sql_fetch_row($result);
 
-        return array("planet_added_ogs" => $planet_added_web, "search" => $search, "spy_added_ogs" => $spy_added_web, "rank_added_ogs" => $rank_added_web);
+        return array("planet_imports" => $planet_imports, "search" => $search, "spy_imports" => $spy_imports, "rank_imports" => $rank_imports);
     }
 
     public function select_user_stats_sum()
     {
-        $request = "SELECT SUM(planet_added_web), SUM(spy_added_web), SUM(rank_added_web), SUM(search)";
+        $request = "SELECT SUM(planet_imports), SUM(spy_imports), SUM(rank_imports), SUM(search)";
         $request .= "FROM " . TABLE_USER;
         $resultat = $this->db->sql_query($request);
 
@@ -443,7 +443,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $value = (int)$value;
 
-        $request = "UPDATE " . TABLE_USER . " SET `planet_added_web` = `planet_added_web` + '" . $value . "' WHERE `id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `planet_imports` = `planet_imports` + '" . $value . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
 
@@ -456,7 +456,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $value = (int)$value;
 
-        $request = "UPDATE " . TABLE_USER . " SET `spy_added_web` = `spy_added_web` + '" . $value . "' WHERE `id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `spy_imports` = `spy_imports` + '" . $value . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
 
@@ -469,7 +469,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $value = (int)$value;
 
-        $request = "UPDATE " . TABLE_USER . " SET `rank_added_web` = rank_added_web + '" . $value . "' WHERE `id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `rank_imports` = rank_imports + '" . $value . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
 
