@@ -26,7 +26,7 @@ $info_system = galaxy_show();
 $population = $info_system["population"];
 $galaxy = $info_system["galaxy"];
 $system = $info_system["system"];
-$my_player_data = (new Player_Model())->select_player_data($user_data['player_id']);
+$my_player_data = (new Player_Model())->get_player_data($user_data['player_id']);
 
 if( isset($my_player_data['class']) && $my_player_data['class'] != 0) {
     $phalanx_list = galaxy_get_phalanx($galaxy, $system, $my_player_data['class']);

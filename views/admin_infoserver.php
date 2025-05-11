@@ -151,7 +151,7 @@ $connectes = count($online); //Nombre personne en ligne
             $time_start = date("d F o G:i:s", $v["time_start"]);
             $time_lastactivity = date("d F o G:i:s", $v["time_lastactivity"]);
             $ip = $v["ip"];
-            $ogs = $v["ogs"] == 1 ? "(OGS)" : "";
+            $ogs = $v["session_type"] == 1 ? "(Xtense)" : "";
 
             echo "<tr>";
             echo "\t" . "<td>" . $user . " " . $ogs . "</td>";

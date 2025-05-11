@@ -45,7 +45,7 @@ $num_of_galaxies = (isset($pub_num_of_galaxies)) ? $pub_num_of_galaxies : $serve
 $num_of_systems = (isset($pub_num_of_systems)) ? $pub_num_of_systems : $server_config['num_of_systems'];
 $block_ratio = $server_config['block_ratio'] == 1 ? "checked" : "";
 $ratio_limit = $server_config['ratio_limit'];
-$speed_uni = $server_config['speed_uni'];
+$speed_uni = $server_config['speed_uni'] ?? 1;
 $speed_fleet_peaceful = $server_config['speed_fleet_peaceful'];
 $speed_fleet_war = $server_config['speed_fleet_war'];
 $speed_fleet_holding = $server_config['speed_fleet_holding'];

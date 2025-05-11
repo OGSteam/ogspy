@@ -127,7 +127,7 @@ class User_Model extends Model_Abstract
 
         $request = "SELECT `id`, `name`, `email`, `active`, `regdate`, `lastvisit`," .
             " `default_galaxy`, `default_system`, `admin`, `coadmin`, `management_user`, `management_ranking`, `disable_ip_check`," .
-            " `user_pwd_change`, `user_email_valid` " .
+            " `pwd_change`, `email_valid` " .
             " FROM " . TABLE_USER;
         $request .= " WHERE `id` = " . $user_id;
         $request .= " ORDER BY `name`";
@@ -152,7 +152,7 @@ class User_Model extends Model_Abstract
     {
         $request = "SELECT `id`, `name`, `email`, `active`, `regdate`, `lastvisit`," .
             " `default_galaxy`, `default_system`, `admin`, `coadmin`, `management_user`, `management_ranking`, `disable_ip_check`," .
-            " `user_pwd_change`, `user_email_valid` " .
+            " `pwd_change`, `email_valid` " .
             " FROM " . TABLE_USER;
 
         $request .= " ORDER BY `name`";
@@ -390,7 +390,7 @@ class User_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $value = (int)$value;
 
-        $request = "UPDATE " . TABLE_USER . " SET `user_active` = '" . $value . "' WHERE `id` = " . $user_id;
+        $request = "UPDATE " . TABLE_USER . " SET `active` = '" . $value . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
 

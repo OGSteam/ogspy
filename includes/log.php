@@ -16,7 +16,7 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 global $ogspy_phperror;
-$ogspy_phperror = array();
+$ogspy_phperror = [];
 /**
  * Function log_() to add a line to the Log File
  *
@@ -198,22 +198,22 @@ function log_($parameter, $option = 0)
 
         case 'modify_account_admin':
             $user_info = user_get($option);
-            $line = "[admin] " . $member . " change le profil de " . $user_info[0]['user_name'];
+            $line = "[admin] " . $member . " change le profil de " . $user_info[0]['name'];
             break;
 
         case 'create_account':
             $user_info = user_get($option);
-            $line = "[admin] " . $member . " créé le compte de " . $user_info[0]['user_name'];
+            $line = "[admin] " . $member . " créé le compte de " . $user_info[0]['name'];
             break;
 
         case 'regeneratepwd':
             $user_info = user_get($option);
-            $line = "[admin] " . $member . " génère un nouveau mot de passe pour " . $user_info[0]['user_name'];
+            $line = "[admin] " . $member . " génère un nouveau mot de passe pour " . $user_info[0]['name'];
             break;
 
         case 'delete_account':
             $user_info = user_get($option);
-            $line = "[admin] " . $member . " supprime le compte de " . $user_info[0]['user_name'];
+            $line = "[admin] " . $member . " supprime le compte de " . $user_info[0]['name'];
             break;
 
         case 'create_usergroup':
@@ -222,26 +222,26 @@ function log_($parameter, $option = 0)
 
         case 'modify_usergroup':
             $usergroup_info = usergroup_get($option);
-            $line = "[admin] " . $member . " modifie les paramètres du groupe " . $usergroup_info["group_name"];
+            $line = "[admin] " . $member . " modifie les paramètres du groupe " . $usergroup_info["name"];
             break;
 
         case 'delete_usergroup':
             $usergroup_info = usergroup_get($option);
-            $line = "[admin] " . $member . " supprime le groupe " . $usergroup_info["group_name"];
+            $line = "[admin] " . $member . " supprime le groupe " . $usergroup_info["name"];
             break;
 
         case 'add_usergroup':
             list($group_id, $user_id) = $option;
             $usergroup_info = usergroup_get($group_id);
             $user_info = user_get($user_id);
-            $line = "[admin] " . $member . " ajoute " . $user_info[0]["user_name"] . " dans le groupe " . $usergroup_info["group_name"];;
+            $line = "[admin] " . $member . " ajoute " . $user_info[0]["name"] . " dans le groupe " . $usergroup_info["name"];
             break;
 
         case 'del_usergroup':
             list($group_id, $user_id) = $option;
             $usergroup_info = usergroup_get($group_id);
             $user_info = user_get($user_id);
-            $line = "[admin] " . $member . " supprime " . $user_info[0]["user_name"] . " du groupe " . $usergroup_info["group_name"];;
+            $line = "[admin] " . $member . " supprime " . $user_info[0]["name"] . " du groupe " . $usergroup_info["name"];
             break;
 
             /* ----------- Classement ----------- */

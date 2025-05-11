@@ -39,13 +39,14 @@ class Config_Model extends Model_Abstract
      * @param array|null $filter
      * @return array|bool
      */
-    public function get(array $filter = null): bool|array|null
+    public function get(?array $filter): bool|array
     {
         if ($filter === null) {
             return false;
         }
 
-        $queryStr = "'" . implode("','", $filter) . "'";
+        $escapedFilter = array_map([$this->db, 'sql_escape_string'], $filter);
+        $queryStr = "'" . implode("','", $escapedFilter) . "'";
         $query = "SELECT `name`, `value` FROM " . TABLE_CONFIG . " WHERE `name` IN ($queryStr)";
 
         $result = $this->db->sql_query($query);

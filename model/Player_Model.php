@@ -18,7 +18,7 @@ class Player_Model extends Model_Abstract
      * - Parcours des résultats pour les stocker dans un tableau associatif.
      * - Vérification si le tableau est vide, auquel cas false est retourné.
      */
-    public function select_player_data($player_id)
+    public function get_player_data($player_id)
     {
         $player_id = (int)$player_id;
 

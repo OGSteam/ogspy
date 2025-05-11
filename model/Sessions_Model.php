@@ -41,8 +41,8 @@ class Sessions_Model extends Model_Abstract
         $request = "SELECT `session_type` FROM " . TABLE_SESSIONS . " WHERE `user_id` = " . $user_id;
         $result = $this->db->sql_query($request);
         if ($this->db->sql_numrows($result) > 0) {
-            list($session_ogs) = $this->db->sql_fetch_row($result);
-            return $session_ogs;
+            list($session_type) = $this->db->sql_fetch_row($result);
+            return $session_type;
         }
         return -1;
     }
@@ -182,10 +182,10 @@ class Sessions_Model extends Model_Abstract
         $cookie_id = $this->db->sql_escape_string($cookie_id);
         $user_ip = $this->db->sql_escape_string($user_ip);
 
-        $request = "SELECT u.`id`, u.`name`, u.`admin`, u.`coadmin`, u.`email`, u.`default_galaxy`, u.`default_system`, s.`session_lastvisit`, u.`player_id`, ";
-        $request .= "u.`management_user`, u.`management_ranking`, u.`disable_ip_check`, u.`pwd_change`, u.`email_valid` ";
-        $request .= " FROM " . TABLE_USER . " u, " . TABLE_SESSIONS . " s";
-        $request .= " WHERE u.`id` = s.`user_id`";
+        $request = "SELECT user.`id`, user.`name`, user.`admin`, user.`coadmin`, user.`email`, user.`default_galaxy`, user.`default_system`, s.`session_lastvisit`, user.`player_id`, ";
+        $request .= "user.`management_user`, user.`management_ranking`, user.`disable_ip_check`, user.`pwd_change`, user.`email_valid` ";
+        $request .= " FROM " . TABLE_USER . " user, " . TABLE_SESSIONS . " s";
+        $request .= " WHERE user.`id` = s.`user_id`";
         $request .= " AND s.`id` = '" . $cookie_id . "'";
         $request .= " AND s.`session_ip` = '" . $user_ip . "'";
         $result = $this->db->sql_query($request);
@@ -202,11 +202,11 @@ class Sessions_Model extends Model_Abstract
      */
     public function who_is_online()
     {
-        $request = "SELECT `user_name`, `session_start`, `session_expire`, `session_ip`, `session_ogs`";
-        $request .= " FROM " . TABLE_SESSIONS . " LEFT JOIN " . TABLE_USER;
-        $request .= " ON `session_user_id` = `user_id`";
-        $request .= " GROUP BY `user_name`,`session_ip`,`session_ogs`";
-        $request .= " ORDER BY `user_name`";
+        $request = "SELECT user.`name`, session.`session_start`, session.`session_expire`, session.`session_ip`, session.`session_type`";
+        $request .= " FROM " . TABLE_SESSIONS . " session LEFT JOIN " . TABLE_USER. " user";
+        $request .= " ON session.`user_id` = user.`id`";
+        $request .= " GROUP BY user.`name`, session.`session_ip`, session.`session_type`";
+        $request .= " ORDER BY user.`name`";
         $result = $this->db->sql_query($request);
 
         $retour = array();

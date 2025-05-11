@@ -382,9 +382,9 @@ class Universe_Model extends Model_Abstract
         $number = (int)$number;
 
 
-        $select = "SELECT `galaxy`, `system`, `row`, `moon`, `phalanx`, `gate`, `last_update_moon`, `ally`, `player`, `status`, `last_update`, `user_name`, `name`";
-        $request = " FROM " . TABLE_UNIVERSE . " LEFT JOIN " . TABLE_USER .
-            "    ON `last_update_user_id` = `user_id`";
+        $select = "SELECT `galaxy`, `system`, `row`, `moon`, `phalanx`, `gate`, `last_update_moon`, `ally`, `player`, `status`, `last_update`, user.`name`,  uni.`name`";
+        $request = " FROM " . TABLE_UNIVERSE . " uni ".
+        " LEFT JOIN " . TABLE_USER . "  user  ON `last_update_user_id` = user.`id`";
 
         $where = "";
         if ($criteria->getPlayerName() != null) {
@@ -405,7 +405,7 @@ class Universe_Model extends Model_Abstract
             if ($where != "") {
                 $where .= " AND ";
             }
-            $where .= " `name` LIKE '" . $this->db->sql_escape_string($criteria->getPlanetName()) . "'";
+            $where .= " uni.`name` LIKE '" . $this->db->sql_escape_string($criteria->getPlanetName()) . "'";
         }
 
         if ($criteria->getGalaxyDown() != null && $criteria->getGalaxyUp() != null && !$criteria->getIsSpied()) {

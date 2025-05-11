@@ -89,11 +89,11 @@ class Group_Model extends Model_Abstract
 
         $usergroup_member = array();
 
-        $request = "SELECT u.`user_id`, u.`user_name` FROM " . TABLE_USER . " AS  u, " .
+        $request = "SELECT u.`id`, u.`name` FROM " . TABLE_USER . " AS  u, " .
             TABLE_USER_GROUP . " AS g";
-        $request .= " WHERE u.`user_id` = g.`user_id`";
+        $request .= " WHERE u.`id` = g.`user_id`";
         $request .= " AND g.`group_id` = " . $group_id;
-        $request .= " ORDER BY u.`user_name`";
+        $request .= " ORDER BY u.`name`";
         $result = $this->db->sql_query($request);
         while ($row = $this->db->sql_fetch_assoc($result)) {
             $usergroup_member[] = $row;

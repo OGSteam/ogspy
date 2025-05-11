@@ -733,10 +733,10 @@ function user_statistic()
     $user_statistic = array();
     foreach ($all_user_stats_data as $row) {
         $here = "";
-        $session_ogs = (new Sessions_Model())->get_xtense_session($row["id"]);
-        if ($session_ogs != -1) {
+        $session_type = (new Sessions_Model())->get_xtense_session($row["id"]);
+        if ($session_type != -1) {
             $here = "(*)";
-            if ($session_ogs == 1) {
+            if ($session_type == 1) {
                 $here = "(**)";
             }
         }
@@ -1173,8 +1173,6 @@ function usergroup_delete()
  */
 function usergroup_get($group_id = false)
 {
-    $Group_Model = new Group_Model();
-
     //Vérification des droits
     user_check_auth("usergroup_manage");
 

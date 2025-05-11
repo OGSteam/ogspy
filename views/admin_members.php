@@ -118,9 +118,9 @@ $usergroup_list = usergroup_get();
                     </td>
                     <td class="tdvalue">
                         <select name="group_id">
-                            <?php foreach ($usergroup_list as $value) : ?>
-                                <option value="<?= $value["group_id"] ?>">
-                                    <?= $value["group_name"] ?>
+                            <?php foreach ($usergroup_list as $usergroup_) : ?>
+                                <option value="<?= $usergroup_["id"] ?>">
+                                    <?= $usergroup_["name"] ?>
                                 </option>
                             <?php endforeach ?>
                         </select>
@@ -181,18 +181,18 @@ $usergroup_list = usergroup_get();
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($user_info as $v) : ?>
+            <?php foreach ($user_info as $user) : ?>
                 <tr>
-                    <?php $user_id = $v["user_id"]; ?>
-                    <?php $name = $v["user_name"]; ?>
-                    <?php $email = $v["user_email"]; ?>
-                    <?php $reg_date = date("d F o G:i", $v["user_regdate"]); ?>
-                    <?php $active_off = !$v["user_active"] ? " selected" : ""; ?>
-                    <?php $user_coadmin_off = (!$v["user_coadmin"] && !$v["user_admin"]) ? " selected" : ""; ?>
-                    <?php $management_user_off = (!$v["management_user"] && !$v["user_admin"]) ? " selected" : ""; ?>
-                    <?php $management_ranking_off = (!$v["management_ranking"] && !$v["user_admin"]) ? " selected" : ""; ?>
-                    <?php if ($v["user_lastvisit"] != 0) : ?>
-                        <?php $last_visit = date("d F o G:i", $v["user_lastvisit"]); ?>
+                    <?php $user_id = $user["id"]; ?>
+                    <?php $name = $user["name"]; ?>
+                    <?php $email = $user["email"]; ?>
+                    <?php $reg_date = date("d F o G:i", $user["regdate"]); ?>
+                    <?php $active_off = !$user["active"] ? " selected" : ""; ?>
+                    <?php $user_coadmin_off = (!$user["coadmin"] && !$user["admin"]) ? " selected" : ""; ?>
+                    <?php $management_user_off = (!$user["management_user"] && !$user["admin"]) ? " selected" : ""; ?>
+                    <?php $management_ranking_off = (!$user["management_ranking"] && !$user["admin"]) ? " selected" : ""; ?>
+                    <?php if ($user["lastvisit"] != 0) : ?>
+                        <?php $last_visit = date("d F o G:i", $user["lastvisit"]); ?>
                     <?php else : ?>
                         <?php $last_visit = "--"; ?>
                     <?php endif; ?>

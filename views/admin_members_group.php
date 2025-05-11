@@ -63,9 +63,9 @@ if (isset($pub_group_id)) {
                     <td>
                         <select name="group_id">
                             <option><?= ($lang['ADMIN_GROUP_SELECT']) ?></option>
-                            <?php foreach ($usergroup_list as $value) : ?>
-                                <option value='<?= $value["group_id"] ?>'>
-                                    <?= $value["group_name"] ?>
+                            <?php foreach ($usergroup_list as $usergroup) : ?>
+                                <option value='<?= $usergroup["id"] ?>'>
+                                    <?= $usergroup["name"] ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -95,12 +95,12 @@ if (isset($pub_group_id)) {
                             </tr><!-- retour ligne -->
                             <tr>
                             <?php endif; ?>
-                    <form method='POST' action='index.php?action=usergroup_delmember&amp;user_id=<?= $user["user_id"] ?>&group_id=<?= $group_id ?>' onsubmit="return confirm("<?= $lang['ADMIN_GROUP_DELETE_CONFIRMATION'] . $user["user_name"] ?>?");>
+                    <form method='POST' action='index.php?action=usergroup_delmember&amp;user_id=<?= $user["id"] ?>&group_id=<?= $group_id ?>' onsubmit="return confirm("<?= $lang['ADMIN_GROUP_DELETE_CONFIRMATION'] . $user["name"] ?>?");>
                         <td>
-                            <?= $user["user_name"] ?>
+                            <?= $user["name"] ?>
                         </td>
                         <td>
-                            <input class="og-button og-button-image  og-button-danger"  type="image" src='images/userdrop.png' title="<?= $lang['ADMIN_GROUP_DELETE'] . $user["user_name"] ?> ">
+                            <input class="og-button og-button-image  og-button-danger"  type="image" src='images/userdrop.png' title="<?= $lang['ADMIN_GROUP_DELETE'] . $user["name"] ?> ">
                         </td>
                     </form>
                     <?php $index++; ?>
@@ -118,7 +118,7 @@ if (isset($pub_group_id)) {
                         <select name='user_id'>
                             <option><?= $lang['ADMIN_GROUP_MEMBERLIST'] ?></option>";
                             <?php foreach ($user_list as $user): ?>
-                                <option value='<?= $user["user_id"] ?>'><?= $user["user_name"] ?></option>
+                                <option value='<?= $user["id"] ?>'><?= $user["name"] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </td>
@@ -137,19 +137,19 @@ if (isset($pub_group_id)) {
         <table class="og-table og-little-table">
             <thead>
                 <tr>
-                    <th colspan="2"><?= $usergroup_info["group_name"] ?></th>
+                    <th colspan="2"><?= $usergroup_info["name"] ?></th>
                 </tr>
             </thead>
 
             <form method="POST" action="index.php?action=usergroup_setauth">
-                <input type="hidden" name="group_id" value="<?= $usergroup_info["group_id"] ?>">
+                <input type="hidden" name="group_id" value="<?= $usergroup_info["id"] ?>">
                 <tbody>
                     <tr>
                         <td class="tdstat">
                             <?= ($lang['ADMIN_GROUP_NAME']) ?>
                         </td>
                         <td class="tdvalue">
-                            <input type="text" name="group_name" value="<?= $usergroup_info["group_name"] ?>">
+                            <input type="text" name="group_name" value="<?= $usergroup_info["name"] ?>">
                         </td>
                     </tr>
                 </tbody>

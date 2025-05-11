@@ -15,7 +15,7 @@ namespace Ogsteam\Ogspy\Helper;
 
 use Ogsteam\Ogspy\Abstracts\Helper_Abstract;
 
-class SearchCriteria_Helper  extends Helper_Abstract
+class SearchCriteria_Helper extends Helper_Abstract
 {
     protected static string $name = "Search Criteria";
     protected static string $description = "";
@@ -34,6 +34,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     private $is_moon = false;
     private $is_inactive = false;
     private $is_spied = false;
+
     /**
      * Search_Criteria constructor.
      * @param $server_config
@@ -42,6 +43,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     {
         $this->server_config = $server_config;
     }
+
     /**
      * @return string
      */
@@ -49,6 +51,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     {
         return $this->planet_name;
     }
+
     /**
      * @param string $planet_name
      * @return Search_Criteria
@@ -58,6 +61,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
         $this->planet_name = $planet_name;
         return $this;
     }
+
     /**
      * @return int
      */
@@ -65,6 +69,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     {
         return $this->galaxy_up;
     }
+
     /**
      * @param int $galaxy_up
      * @return Search_Criteria
@@ -74,6 +79,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
         $this->galaxy_up = $galaxy_up;
         return $this;
     }
+
     /**
      * @return int
      */
@@ -81,6 +87,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     {
         return $this->galaxy_down;
     }
+
     /**
      * @param int $galaxy_down
      * @return Search_Criteria
@@ -90,6 +97,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
         $this->galaxy_down = $galaxy_down;
         return $this;
     }
+
     /**
      * @return int
      */
@@ -97,6 +105,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     {
         return $this->system_up;
     }
+
     /**
      * @param int $system_up
      * @return Search_Criteria
@@ -106,6 +115,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
         $this->system_up = $system_up;
         return $this;
     }
+
     /**
      * @return int
      */
@@ -113,6 +123,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     {
         return $this->system_down;
     }
+
     /**
      * @param int $system_down
      * @return Search_Criteria
@@ -122,6 +133,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
         $this->system_down = $system_down;
         return $this;
     }
+
     /**
      * @return int
      */
@@ -129,6 +141,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     {
         return $this->row_down;
     }
+
     /**
      * @param int $row_down
      * @return Search_Criteria
@@ -138,6 +151,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
         $this->row_down = $row_down;
         return $this;
     }
+
     /**
      * @return int
      */
@@ -145,6 +159,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     {
         return $this->row_up;
     }
+
     /**
      * @param int $row_up
      * @return Search_Criteria
@@ -154,6 +169,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
         $this->row_up = $row_up;
         return $this;
     }
+
     /**
      * @return string
      */
@@ -161,6 +177,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     {
         return $this->ally_name;
     }
+
     /**
      * @param string $ally_name
      * @return Search_Criteria
@@ -170,6 +187,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
         $this->ally_name = $ally_name;
         return $this;
     }
+
     /**
      * @return string
      */
@@ -177,6 +195,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     {
         return $this->player_name;
     }
+
     /**
      * @param string $player_name
      * @return Search_Criteria
@@ -186,6 +205,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
         $this->player_name = $player_name;
         return $this;
     }
+
     /**
      * @param boolean $is_moon
      * @return Search_Criteria
@@ -195,6 +215,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
         $this->is_moon = $is_moon;
         return $this;
     }
+
     /**
      * @return boolean
      */
@@ -202,6 +223,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     {
         return $this->is_moon;
     }
+
     /**
      * @return boolean
      */
@@ -209,6 +231,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     {
         return $this->is_inactive;
     }
+
     /**
      * @param boolean $is_inactive
      * @return Search_Criteria
@@ -227,6 +250,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
     {
         return $this->is_spied;
     }
+
     /**
      * @param boolean $is_spied
      * @return Search_Criteria
@@ -237,6 +261,7 @@ class SearchCriteria_Helper  extends Helper_Abstract
         $this->is_spied = $is_spied;
         return $this;
     }
+
     //Fin
 
     public function isValid()

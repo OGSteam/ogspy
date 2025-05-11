@@ -191,18 +191,18 @@ function session_whois_online()
 
     $tOnline = (new Sessions_Model())->who_is_online();
 
-    $guests = array();
-    $members = array();
+    $guests = [];
+    $members = [];
     foreach ($tOnline as $online) {
         $time_lastactivity = $online["session_expire"] - $cookie_time * 60;
         $session_ip = decode_ip($online["session_ip"]);
 
-        if (is_null($online["user_name"])) {
+        if (is_null($online["name"])) {
             $username = "Visiteur non identifié";
-            $guests[] = array("user" => $username, "time_start" => $online["session_start"], "time_lastactivity" => $time_lastactivity, "ip" => $session_ip, "ogs" => 0);
+            $guests[] = array("user" => $username, "time_start" => $online["session_start"], "time_lastactivity" => $time_lastactivity, "ip" => $session_ip, "session_type" => 0);
         } else {
-            $username = $online["user_name"];
-            $members[] = array("user" => $username, "time_start" => $online["session_start"], "time_lastactivity" => $time_lastactivity, "ip" => $session_ip, "ogs" => $online["session_ogs"]);
+            $username = $online["name"];
+            $members[] = array("user" => $username, "time_start" => $online["session_start"], "time_lastactivity" => $time_lastactivity, "ip" => $session_ip, "session_type" => $online["session_type"]);
         }
     }
     return array_merge($members, $guests);

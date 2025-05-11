@@ -454,7 +454,7 @@ CREATE TABLE `ogspy_sessions`
   `session_start`     INT(11)         NOT NULL DEFAULT '0',
   `session_expire`    INT(11)         NOT NULL DEFAULT '0',
   `session_ip`        CHAR(32)        NOT NULL DEFAULT '',
-  `session_ogs`       ENUM ('0', '1') NOT NULL DEFAULT '0',
+  `session_type`       ENUM ('0', '1') NOT NULL DEFAULT '0',
   `session_lastvisit` INT(11)         NOT NULL DEFAULT '0',
   UNIQUE KEY `session_id` (`session_id`, `session_ip`)
 )
