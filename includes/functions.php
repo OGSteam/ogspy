@@ -16,7 +16,7 @@ if (!defined('IN_SPYOGAME')) {
 use Ogsteam\Ogspy\Model\DBUtils_Model;
 use Ogsteam\Ogspy\Model\Config_Model;
 use Ogsteam\Ogspy\Model\Universe_Model;
-use Ogsteam\Ogspy\Model\User_Building_Model;
+use Ogsteam\Ogspy\Model\Player_Building_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\User_Favorites_Model;
 
@@ -1339,7 +1339,7 @@ function generate_key()
 function booster_lire_bdd($id_player, $id_planet)
 {
     $result = null;
-    $User_Building_Model = new User_Building_Model();
+    $User_Building_Model = new Player_Building_Model();
     $tBoosters = $User_Building_Model->get_all_booster_player($id_player);
 
     if (isset($tBoosters[$id_planet])) {
@@ -1364,7 +1364,7 @@ function booster_lire_bdd($id_player, $id_planet)
  */
 function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster)
 {
-    $User_Building_Model = new User_Building_Model();
+    $User_Building_Model = new Player_Building_Model();
     return $User_Building_Model->update_booster($id_player, $id_planet, booster_encode($tab_booster));
 }
 
@@ -1372,7 +1372,7 @@ function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster)
 */
 function booster_maj_bdd()
 {
-    $User_Building_Model = new User_Building_Model();
+    $User_Building_Model = new Player_Building_Model();
 
     // recupération de tous les booster et verification
     $tUserBoosters = $User_Building_Model->get_all_booster();

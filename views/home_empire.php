@@ -20,7 +20,7 @@ require_once("includes/ogame.php");
 
 global $server_config;
 
-$user_empire = user_get_empire($player_data['id']);
+$user_empire = player_get_empire($player_data['id']);
 
 $user_building   = $user_empire['building'];
 $user_defence    = $user_empire['defence'];

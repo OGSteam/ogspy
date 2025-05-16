@@ -15,7 +15,7 @@ namespace Ogsteam\Ogspy\Model;
 
 use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 
-class User_Defense_Model  extends Model_Abstract
+class Player_Defense_Model  extends Model_Abstract
 {
     /**
      * @param $user_id
@@ -28,7 +28,7 @@ class User_Defense_Model  extends Model_Abstract
         $tElemList = array("planet_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP");
 
         $request = "SELECT `" . implode("`, `", $tElemList) . "` ";
-        $request .= " FROM " . TABLE_USER_DEFENCE;
+        $request .= " FROM " . TABLE_USER_DEFENSE;
         $request .= " WHERE `user_id` = " . $user_id;
         $request .= " ORDER BY `planet_id`";
         $result = $this->db->sql_query($request);
@@ -51,7 +51,7 @@ class User_Defense_Model  extends Model_Abstract
         $tElemList = array("planet_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP");
 
         $request = "SELECT `" . implode("`, `", $tElemList) . "` ";
-        $request .= " FROM " . TABLE_USER_DEFENCE;
+        $request .= " FROM " . TABLE_USER_DEFENSE;
         $request .= " WHERE `user_id` = " . $user_id;
         $request .= "  AND `planet_id` = " . $planet_id . " ";
 
@@ -73,11 +73,11 @@ class User_Defense_Model  extends Model_Abstract
         $previous_id = (int)$previous_id;
         $new_id = (int)$new_id;
 
-        $request = "UPDATE " . TABLE_USER_DEFENCE . " SET `planet_id`  = " . $new_id .
+        $request = "UPDATE " . TABLE_USER_DEFENSE . " SET `planet_id`  = " . $new_id .
             " WHERE `planet_id` = " . $previous_id . " and `user_id` = " . $user_id;
         $this->db->sql_query($request);
         //We adjust the id if we go upper than 299
-        $request = "UPDATE " . TABLE_USER_DEFENCE .
+        $request = "UPDATE " . TABLE_USER_DEFENSE .
             " SET `planet_id`  = `planet_id` -100 WHERE `planet_id` > 299 and `user_id` = " . $user_id;
         $this->db->sql_query($request);
     }
@@ -92,7 +92,7 @@ class User_Defense_Model  extends Model_Abstract
         $previous_id = (int)$previous_id;
         $new_id = (int)$new_id;
 
-        $request = "UPDATE " . TABLE_USER_DEFENCE . " SET `planet_id`  = " . $new_id .
+        $request = "UPDATE " . TABLE_USER_DEFENSE . " SET `planet_id`  = " . $new_id .
             " WHERE `planet_id` = " . $previous_id . " and `user_id` = " . $user_id;
         $this->db->sql_query($request);
     }
@@ -105,7 +105,7 @@ class User_Defense_Model  extends Model_Abstract
         $user_id = (int)$user_id;
         $aster_id = (int)$aster_id;
 
-        $request = "DELETE FROM " . TABLE_USER_DEFENCE . " WHERE `user_id` = " . $user_id . " AND `planet_id` = " . intval($aster_id);
+        $request = "DELETE FROM " . TABLE_USER_DEFENSE . " WHERE `user_id` = " . $user_id . " AND `planet_id` = " . intval($aster_id);
         $this->db->sql_query($request);
     }
 }

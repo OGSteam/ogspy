@@ -163,7 +163,7 @@ class User_Model extends Model_Abstract
             $info_users[] = $row;
         }
 
-        if (count($info_users) == 0) {
+        if (empty($info_users)) {
             return false;
         }
         return $info_users;

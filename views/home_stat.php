@@ -339,7 +339,7 @@ if (!empty($player_data["name"])) {
     }
 }
 
-$user_empire = user_get_empire($user_data["id"]);
+$user_empire = player_get_empire($user_data["id"]);
 $user_building = $user_empire["building"];
 $user_defence = $user_empire["defence"];
 $user_technology = $user_empire["technology"];

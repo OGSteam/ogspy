@@ -16,7 +16,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 
-$user_empire = user_get_empire($user_data['id']);
+$user_empire = player_get_empire($user_data['id']);
 $user_building = $user_empire["building"];
 $user_defence = $user_empire["defence"];
 $user_percentage = $user_empire["user_percentage"];

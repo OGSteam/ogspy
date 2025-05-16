@@ -18,9 +18,9 @@ if (!defined('IN_SPYOGAME')) {
 use Ogsteam\Ogspy\Model\Group_Model;
 use Ogsteam\Ogspy\Model\Sessions_Model;
 use Ogsteam\Ogspy\Model\Statistics_Model;
-use Ogsteam\Ogspy\Model\User_Building_Model;
-use Ogsteam\Ogspy\Model\User_Defense_Model;
-use Ogsteam\Ogspy\Model\User_Technology_Model;
+use Ogsteam\Ogspy\Model\Player_Building_Model;
+use Ogsteam\Ogspy\Model\Player_Defense_Model;
+use Ogsteam\Ogspy\Model\Player_Technology_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\Player_Model;
 use Ogsteam\Ogspy\Model\User_Favorites_Model;
@@ -325,7 +325,8 @@ function member_user_set()
     $user_id = $user_data["id"];
     $user_info = user_get($user_id);
 
-    $user_empire = user_get_empire($user_id);
+    $player_id = $user_data["player_id"];
+    $user_empire = player_get_empire($player_id);
     $user_technology = $user_empire["technology"];
 
     $password_change_validated = false;
@@ -357,6 +358,10 @@ function member_user_set()
     if (!check_var($pub_pseudo, "Pseudo_Groupname")) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudo&info");
     }
+
+    $player_id = $user_data["player_id"];
+    $user_empire = player_get_empire($player_id);
+    $user_technology = $user_empire["technology"];
 
     //pseudo ingame
     if ($user_data["player_id"] !== $pub_pseudo_ingame) {
@@ -759,10 +764,10 @@ function user_get_nb_active_users()
 /**
  * Récupération des données empire de l'utilisateur loggé.
  * @comment On pourrait mettre un paramètre $user_id optionnel
- * @param $user_id
+ * @param $player_id
  * @return array
  */
-function user_get_empire($user_id)
+function player_get_empire($player_id)
 {
     $planet = array(
         false, "user_id" => "", "planet_name" => "", "coordinates" => "",
@@ -775,11 +780,11 @@ function user_get_empire($user_id)
         "Ter" => 0, "Silo" => 0, "Dock" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0
     );
 
-    $defence = ["LM" => 0, "LLE" => 0, "LLO" => 0, "CG" => 0, "AI" => 0, "LP" =>
+    $defense = ["LM" => 0, "LLE" => 0, "LLO" => 0, "CG" => 0, "AI" => 0, "LP" =>
     0, "PB" => 0, "GB" => 0, "MIC" => 0, "MIP" => 0];
 
 
-    $tBuildingList = (new User_Building_Model())->select_user_building_list($user_id);
+    $tBuildingList = (new Player_Building_Model())->select_player_building_list($player_id);
 
     // mise en forme des valeurs
     foreach ($tBuildingList as $BuildingList) {
@@ -821,58 +826,57 @@ function user_get_empire($user_id)
         $BuildingList["boosters"] = booster_verify_str($BuildingList["boosters"]); //Correction et mise à jour booster from date
         $BuildingList["booster_tab"] = booster_decode($BuildingList["boosters"]); // ajout booster dans get_empire
         // incrémentation field
-        if ($BuildingList["planet_id"] > 200) {
+        if (isset($BuildingList["moon_id"])) {
             $BuildingList["fields"] += $BuildingList["booster_tab"]["extention_m"];
         } else {
             $BuildingList["fields"] += $BuildingList["booster_tab"]["extention_p"];
         }
 
-        $user_building[$BuildingList["planet_id"]] = $BuildingList;
-        $user_building[$BuildingList["planet_id"]][0] = true;
+        $player_building[$BuildingList["planet_id"]] = $BuildingList;
+        $player_building[$BuildingList["planet_id"]][0] = true;
     }
 
-    $user_technology = (new User_Technology_Model())->select_user_technologies($user_id);
+    $player_technology = (new Player_Technology_Model())->select_user_technologies($player_id);
     $technology_list = array("Esp","Ordi","Armes","Bouclier","Protection","NRJ","Hyp","RC","RI","PH","Laser","Ions","Plasma","RRI","Graviton","Astrophysique");
     foreach ($technology_list as $technologyName) {
-         if(!isset($user_technology[$technologyName]))
+         if(!isset($player_technology[$technologyName]))
          {
-             $user_technology[$technologyName]=""; // alimentation des technology tel qu'attendu dans page empire ("" et non 0)
+             $player_technology[$technologyName]=""; // alimentation des technology tel qu'attendu dans page empire ("" et non 0)
          }
      }
 
 
-    $tDefenseList = (new User_Defense_Model())->select_user_defense($user_id);
-    //$user_defence = array_fill(1, $nb_planete_lune, $defence);
+    $tDefenseList = (new Player_Defense_Model())->select_user_defense($player_id);
+    //$player_defense = array_fill(1, $nb_planete_lune, $defence);
     foreach ($tDefenseList as $tmpDefense) {
         $planet_id = $tmpDefense["planet_id"];
         unset($tmpDefense["planet_id"]);
-        $user_defence[$planet_id] = $tmpDefense;
+        $player_defense[$planet_id] = $tmpDefense;
     }
 
     return array(
-        "building" => $user_building, "technology" => $user_technology,
-        "defence" => $user_defence, "user_percentage" => $pct
+        "building" => $player_building, "technology" => $player_technology, "defence" => $player_defense, "user_percentage" => $pct
     );
 }
 
 /**
  * Récuperation du nombre de  planete de l utilisateur.
  *
- * @param $user_id
+ * @param $player_id
  * @return int|the
  */
-function find_nb_planete_user($user_id)
+function find_nb_planete_user($player_id)
 {
-    return (new User_Building_Model())->get_nb_planets($user_id);
+    return (new Player_Building_Model())->get_nb_planets($player_id);
 }
 
 /**
  * @param $user_id
  * @return int Nb of moons
  */
-function find_nb_moon_user($user_id)
+function find_nb_moon_user($player_id)
 {
-    return (new User_Building_Model())->get_nb_moons($user_id);
+    return (new Player_Building_Model())->get_nb_moons($player_id);
 }
 
 /**
@@ -883,8 +887,8 @@ function user_del_building()
     global $user_data;
     global $pub_planet_id, $pub_view;
 
-    $User_Building_Model = new User_Building_Model();
-    $User_Defense_Model = new User_Defense_Model();
+    $User_Building_Model = new Player_Building_Model();
+    $User_Defense_Model = new Player_Defense_Model();
 
     if (!check_var($pub_planet_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
@@ -893,21 +897,21 @@ function user_del_building()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $User_Building_Model->delete_user_aster($user_data["id"], intval($pub_planet_id)); //batiment
-    $User_Defense_Model->delete_user_aster($user_data["id"], intval($pub_planet_id)); //defense
+    $User_Building_Model->delete_user_aster($user_data["player_id"], intval($pub_planet_id)); //batiment
+    $User_Defense_Model->delete_user_aster($user_data["player_id"], intval($pub_planet_id)); //defense
 
 
     // si on supprime une planete; la lune doit suivre
     if (intval($pub_planet_id) < 199) {
         $moon_id = (intval($pub_planet_id) + 100);
-        $User_Building_Model->delete_user_aster($user_data["id"], $moon_id); //batiment
-        $User_Defense_Model->delete_user_aster($user_data["id"], $moon_id); //defense
+        $User_Building_Model->delete_user_aster($user_data["player_id"], $moon_id); //batiment
+        $User_Defense_Model->delete_user_aster($user_data["player_id"], $moon_id); //defense
     }
 
     //si plus de planete
-    $iNBPlanet = $User_Building_Model->get_nb_planets($user_data["id"]);
+    $iNBPlanet = $User_Building_Model->get_nb_planets($user_data["player_id"]);
     if ($iNBPlanet == 0) {
-        (new User_Technology_Model())->delete_user_technologies($user_data["id"]);
+        (new Player_Technology_Model())->delete_user_technologies($user_data["player_id"]);
     }
 
     if ($iNBPlanet != 0) {
@@ -919,57 +923,6 @@ function user_del_building()
     redirection("index.php?action=home&subaction=empire&view=" . $pub_view);
 }
 
-/**
- * Déplacement des données de planète de la page empire
- */
-function user_move_empire()
-{
-    global $user_data;
-    global $pub_planet_id, $pub_left, $pub_right;
-
-    $User_Building_Model = new User_Building_Model();
-    $User_Defense_Model = new User_Defense_Model();
-
-    $nb_planete = find_nb_planete_user($user_data["id"]);
-
-    if (!check_var($pub_planet_id, "Num")) {
-        redirection("index.php?action=message&id_message=errordata&info");
-    }
-    if (!isset($pub_planet_id) || (!isset($pub_left) && !isset($pub_right))) {
-        redirection("index.php?action=message&id_message=errorfatal&info");
-    }
-
-    $pub_planet_id = intval($pub_planet_id);
-    if ($pub_planet_id < 101 || $pub_planet_id > (100 + $nb_planete)) {
-        redirection("index.php?action=message&id_message=errorfatal&info");
-    }
-    if (isset($pub_left)) {
-        if ($pub_planet_id == 101) {
-            redirection("index.php?action=home&subaction=empire");
-        }
-        $new_position = $pub_planet_id - 1;
-    } elseif (isset($pub_right)) {
-        if ($pub_planet_id == (100 + $nb_planete)) {
-            redirection("index.php?action=home&subaction=empire");
-        }
-        $new_position = $pub_planet_id + 1;
-    }
-
-    $tmpPosition = 9999;
-    // deplacement building
-    $User_Building_Model->update_planet_id($user_data["id"], $pub_planet_id, $tmpPosition);
-    $User_Building_Model->update_planet_id($user_data["id"], $new_position, $pub_planet_id);
-    $User_Building_Model->update_planet_id($user_data["id"], $tmpPosition, $new_position);
-    // deplacement defense
-    $User_Defense_Model->update_planet_id($user_data["id"], $pub_planet_id, $tmpPosition);
-    $User_Defense_Model->update_planet_id($user_data["id"], $new_position, $pub_planet_id);
-    $User_Defense_Model->update_planet_id($user_data["id"], $tmpPosition, $new_position);
-
-    // remise en ordre des planetes :
-    user_set_all_empire_resync_id();
-
-    redirection("index.php?action=home&subaction=empire");
-}
 
 /**
  * Ajout d'un système favori
@@ -1778,9 +1731,7 @@ function ratio_is_ok()
     }
     if (isset($server_config["block_ratio"]) && $server_config["block_ratio"] == 1) {
         if (
-            $user_data["admin"] == 1 || $user_data["coadmin"] == 1 || $user_data["management_user"] ==
-            1
-        ) {
+            $user_data["admin"] == 1 || $user_data["coadmin"] == 1 || $user_data["management_user"] == 1) {
             return true;
         } else {
             $result = ratio_calc($user_data['id']);

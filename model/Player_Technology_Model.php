@@ -15,7 +15,7 @@ namespace Ogsteam\Ogspy\Model;
 
 use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 
-class User_Technology_Model  extends Model_Abstract
+class Player_Technology_Model  extends Model_Abstract
 {
 
     /**

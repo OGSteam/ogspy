@@ -14,7 +14,7 @@ namespace Ogsteam\Ogspy\Model;
 
 use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 
-class User_Building_Model  extends Model_Abstract
+class Player_Building_Model  extends Model_Abstract
 {
     /**
      * @param $user_id
@@ -169,15 +169,15 @@ class User_Building_Model  extends Model_Abstract
      * @param $user_id
      * @return array
      */
-    public function select_user_building_list($user_id)
+    public function select_player_building_list($player_id)
     {
-        $user_id = (int)$user_id;
+        $player_id = (int)$player_id;
 
         $tElemList = array("planet_id", "planet_name", "coordinates", "fields", "boosters", "temperature_min", "temperature_max", "Sat", "Sat_percentage", "FOR", "FOR_percentage", "M", "M_percentage", "C", "C_percentage", "D", "D_percentage", "CES", "CES_percentage", "CEF", "CEF_percentage", "UdR", "UdN", "CSp", "HM", "HC", "HD", "Lab", "Ter", "Silo", "Dock", "BaLu", "Pha", "PoSa", "DdR");
 
         $request = "SELECT `" . implode("`, `", $tElemList) . "` ";
         $request .= " FROM " . TABLE_USER_BUILDING;
-        $request .= " WHERE `user_id` = " . $user_id;
+        $request .= " WHERE `player_id` = " . $player_id;
         $request .= " ORDER BY `planet_id`";
         $result =  $this->db->sql_query($request);
 

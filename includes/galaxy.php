@@ -23,9 +23,9 @@ use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Combat_Report_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Helper;
-use Ogsteam\Ogspy\Model\User_Technology_Model;
-use Ogsteam\Ogspy\Model\User_Defense_Model;
-use Ogsteam\Ogspy\Model\User_Building_Model;
+use Ogsteam\Ogspy\Model\Player_Technology_Model;
+use Ogsteam\Ogspy\Model\Player_Defense_Model;
+use Ogsteam\Ogspy\Model\Player_Building_Model;
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 
 
@@ -1642,9 +1642,9 @@ function galaxy_portee_missiles($galaxy, $system)
     //todo prevoir jointure de table
 
     $User_Model = new User_Model();
-    $User_Building_Model = new User_Building_Model();
-    $User_Technology_Model = new User_Technology_Model();
-    $User_Defense_Model = new User_Defense_Model();
+    $User_Building_Model = new Player_Building_Model();
+    $User_Technology_Model = new Player_Technology_Model();
+    $User_Defense_Model = new Player_Defense_Model();
 
 
     $missil_ok = '';
