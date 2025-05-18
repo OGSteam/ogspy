@@ -94,4 +94,25 @@ class Player_Model extends Model_Abstract
             $this->db->sql_query($request);
         }
     }
+
+    /**
+     * Récupère l'ID du joueur en jeu associé à un utilisateur OGSpy.
+     *
+     * @param int $ogspy_user_id L'identifiant de l'utilisateur OGSpy.
+     * @return int|null Retourne l'ID du joueur en jeu, ou null si non trouvé ou non défini.
+     */
+    public function get_game_player_id_for_user($ogspy_user_id)
+    {
+        $ogspy_user_id = (int)$ogspy_user_id;
+
+        $request = "SELECT `player_id` FROM " . TABLE_USER . " WHERE `id` = " . $ogspy_user_id;
+        $result = $this->db->sql_query($request);
+
+        if ($row = $this->db->sql_fetch_assoc($result)) {
+            // La colonne player_id peut être NULL dans la base de données
+            return $row['player_id'] !== null ? (int)$row['player_id'] : null;
+        }
+
+        return null; // Utilisateur non trouvé ou player_id non défini
+    }
 }

@@ -182,8 +182,8 @@ class Sessions_Model extends Model_Abstract
         $cookie_id = $this->db->sql_escape_string($cookie_id);
         $user_ip = $this->db->sql_escape_string($user_ip);
 
-        $request = "SELECT user.`id`, user.`name`, user.`admin`, user.`coadmin`, user.`email`, user.`default_galaxy`, user.`default_system`, s.`session_lastvisit`, user.`player_id`, ";
-        $request .= "user.`management_user`, user.`management_ranking`, user.`disable_ip_check`, user.`pwd_change`, user.`email_valid` ";
+        $request = "SELECT user.`id`, user.`name`, user.`admin`, user.`coadmin`, user.`email`, user.`default_galaxy`, user.`default_system`, s.`session_lastvisit`, ";
+        $request .= "user.`management_user`, user.`management_ranking`, user.`disable_ip_check`, user.`pwd_change`, user.`email_valid`, user.`player_id` ";
         $request .= " FROM " . TABLE_USER . " user, " . TABLE_SESSIONS . " s";
         $request .= " WHERE user.`id` = s.`user_id`";
         $request .= " AND s.`id` = '" . $cookie_id . "'";

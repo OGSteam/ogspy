@@ -15,7 +15,7 @@ if (!defined('IN_SPYOGAME')) {
 
 use Ogsteam\Ogspy\Model\DBUtils_Model;
 use Ogsteam\Ogspy\Model\Config_Model;
-use Ogsteam\Ogspy\Model\Universe_Model;
+use Ogsteam\Ogspy\Model\AstroObject_Model;
 use Ogsteam\Ogspy\Model\Player_Building_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\User_Favorites_Model;
@@ -1005,7 +1005,7 @@ function resize_db($new_num_of_galaxies, $new_num_of_systems)
     $User_Favorites_Model = new User_Favorites_Model();
 
     // si on reduit on doit supprimez toutes les entrées qui font reference au systemes ou galaxies que l'on va enlever
-    (new Universe_Model())->resize_universe($new_num_of_galaxies, $new_num_of_systems);
+    (new AstroObject_Model())->resize_universe($new_num_of_galaxies, $new_num_of_systems);
     $User_Favorites_Model->delete_favorites_after_resize($new_num_of_galaxies, $new_num_of_systems); //suppression des favoris plus utils
     if ($new_num_of_galaxies < intval($server_config['num_of_galaxies'])) {
         $User_Model->set_default_galaxy_after_resize($new_num_of_galaxies);

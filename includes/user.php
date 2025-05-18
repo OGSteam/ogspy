@@ -832,8 +832,8 @@ function player_get_empire($player_id)
             $BuildingList["fields"] += $BuildingList["booster_tab"]["extention_p"];
         }
 
-        $player_building[$BuildingList["planet_id"]] = $BuildingList;
-        $player_building[$BuildingList["planet_id"]][0] = true;
+        $player_building[$BuildingList["id"]] = $BuildingList;
+        $player_building[$BuildingList["id"]][0] = true;
     }
 
     $player_technology = (new Player_Technology_Model())->select_user_technologies($player_id);
@@ -846,16 +846,16 @@ function player_get_empire($player_id)
      }
 
 
-    $tDefenseList = (new Player_Defense_Model())->select_user_defense($player_id);
-    //$player_defense = array_fill(1, $nb_planete_lune, $defence);
+    $tDefenseList = (new Player_Defense_Model())->select_player_defense($player_id);
+    $player_defense = [];
     foreach ($tDefenseList as $tmpDefense) {
-        $planet_id = $tmpDefense["planet_id"];
-        unset($tmpDefense["planet_id"]);
+        $planet_id = $tmpDefense["id"];
+        unset($tmpDefense["id"]);
         $player_defense[$planet_id] = $tmpDefense;
     }
 
     return array(
-        "building" => $player_building, "technology" => $player_technology, "defence" => $player_defense, "user_percentage" => $pct
+        "building" => $player_building, "technology" => $player_technology, "defense" => $player_defense, "user_percentage" => $pct
     );
 }
 

@@ -15,7 +15,7 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-use Ogsteam\Ogspy\Model\Universe_Model;
+use Ogsteam\Ogspy\Model\AstroObject_Model;
 use Ogsteam\Ogspy\Model\Rankings_Player_Model;
 use Ogsteam\Ogspy\Model\Rankings_Ally_Model;
 use Ogsteam\Ogspy\Model\User_Favorites_Model;
@@ -141,7 +141,7 @@ function galaxy_show()
             $pub_system = 1;
         }
     }
-    $Universe_Model = new Universe_Model();
+    $Universe_Model = new AstroObject_Model();
     $population = $Universe_Model->get_system($pub_galaxy, $pub_system, $pub_system);
     $population = filter_system($population[$pub_system]);
     return array("population" => $population, "galaxy" => $pub_galaxy, "system" => $pub_system);
@@ -214,7 +214,7 @@ function galaxy_show_sector()
         $pub_system_down = 1;
         $pub_system_up = 25;
     }
-    $Universe_Model = new Universe_Model();
+    $Universe_Model = new AstroObject_Model();
     $population = $Universe_Model->get_system($pub_galaxy, $pub_system_down, $pub_system_up);
     for ($system = $pub_system_down; $system <= $pub_system_up; $system++) {
         $population[$system] = filter_system($population[$system]);
@@ -267,7 +267,7 @@ function galaxy_search()
     }
     $data_user = new User_Model();
     $data_user->add_stat_search_made($user_data['id'], 1);
-    $universeRepository = new Universe_Model();
+    $universeRepository = new AstroObject_Model();
     $criteria = new SearchCriteria_Helper($server_config);
     if (isset($pub_galaxy_down) && isset($pub_galaxy_up)) {
         $criteria->setGalaxyDown(intval($pub_galaxy_down));
@@ -405,7 +405,7 @@ function galaxy_statistic($step = 50)
 {
     global $user_data, $server_config;
 
-    $Universe_Model = new Universe_Model();
+    $Universe_Model = new AstroObject_Model();
 
     $statistics = array();
 
@@ -448,7 +448,7 @@ function galaxy_statistic($step = 50)
  */
 function galaxy_ally_listing()
 {
-    $ally_list = (new Universe_Model())->get_ally_list();
+    $ally_list = (new AstroObject_Model())->get_ally_list();
     return $ally_list;
 }
 
@@ -469,7 +469,7 @@ function galaxy_ally_position($step = 50)
     global $user_auth, $user_data, $server_config;
     global $pub_ally_, $nb_colonnes_ally;
 
-    $Universe_Model = new Universe_Model();
+    $Universe_Model = new AstroObject_Model();
 
     for ($i = 1; $i <= $nb_colonnes_ally; $i++) {
         if (!isset($pub_ally_[$i])) {
@@ -1119,7 +1119,7 @@ function galaxy_get_phalanx($galaxy, $system, $classe = 'none')
     $phalanxer = array();
     $data_computed = array();
 
-    $data = (new Universe_Model())->get_phalanx($galaxy);
+    $data = (new AstroObject_Model())->get_phalanx($galaxy);
 
     if (count($data) > 0) {
         //Construction liste phalanges
@@ -1227,7 +1227,7 @@ function galaxy_obsolete()
         if ($pub_typesearch == "P") {
             $formoon = false;
         }
-        $obsolete = (new Universe_Model())->get_galaxy_obsolete($pub_perimeter, $indice_inf, $indice_sup, $indice, $since, $formoon);
+        $obsolete = (new AstroObject_Model())->get_galaxy_obsolete($pub_perimeter, $indice_inf, $indice_sup, $indice, $since, $formoon);
     }
 
 
@@ -1246,7 +1246,7 @@ function UNparseRE($id_RE)
     global $lang;
 
     $Spy_Model = new Spy_Model();
-    $Universe_Model = new Universe_Model();
+    $Universe_Model = new AstroObject_Model();
 
 
     $show = array(
@@ -1675,7 +1675,7 @@ function galaxy_portee_missiles($galaxy, $system)
         if ($niv_reac_impuls > 0) {
 
             // recherche du nombre de missile dispo
-            $tUser_defense = $User_Defense_Model->select_user_defense_planete($base_joueur, $base_id_planet);
+            $tUser_defense = $User_Defense_Model->select_player_defense_planete($base_joueur, $base_id_planet);
             $missil_dispo = (!isset($tUser_defense['MIP']) ? 0 : $tUser_defense['MIP']);
 
 
@@ -2072,7 +2072,7 @@ function displayGalaxyTabletbodytr($populate, $isGalaxy = true)
             <?php $timestamp = (intval($v["timestamp"]) != 0) ?  date("d F o G:i", $v["timestamp"]) : "&nbsp;"; ?>
             <span class="og-galaxy-timestamp"><?php echo $timestamp; ?></span>
             <span class="og-galaxy-poster">
-                - <?php echo $v["poster"]; ?>
+                - <?php echo $v["last_update_user_id"]; ?>
             </span>
         </td>
     </tr>

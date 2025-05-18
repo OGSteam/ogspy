@@ -36,13 +36,13 @@ if (!defined('IN_SPYOGAME')) {
                 <li class='menuitem-profile'>
                     <a href='index.php?action=profile' ><?php echo ($lang['MENU_PROFILE']); ?></a>
                 </li>
-                <?php if ($user_data["admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1) : ?>
+                <?php if ($user_data["admin"] == 1 || $user_data["coadmin"] == 1 || $user_data["management_user"] == 1) : ?>
                     <li class='menuitem-administration'>
                         <a href='index.php?action=administration' ><?php echo ($lang['MENU_ADMIN']); ?></a>
                     </li>
                 <?php endif; ?>
                 <!-- partie admin prise en charge dans page admin
-                <?php if ($user_data["admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
+                <?php if ($user_data["admin"] == 1 || $user_data["coadmin"] == 1) : ?>
                     <li class='menuitem-admin-infoserver'>
                         <a href='index.php?action=administration&amp;subaction=infoserver' ><?php echo ($lang['ADMIN_TITLE_GENERAL_INFO']); ?></a>
                     </li>
@@ -59,7 +59,7 @@ if (!defined('IN_SPYOGAME')) {
                 <li class='menuitem-admin-group'>
                     <a href='index.php?action=administration&amp;subaction=group' ><?php echo ($lang['ADMIN_TITLE_GROUP_CONF']); ?></a>
                 </li>
-                <?php if ($user_data["admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
+                <?php if ($user_data["admin"] == 1 || $user_data["coadmin"] == 1) : ?>
                     <li class='menuitem-admin-viewer'>
                         <a href='index.php?action=administration&amp;subaction=viewer' ><?php echo ($lang['ADMIN_TITLE_LOGS_CONF']); ?></a>
                     </li>
@@ -135,7 +135,7 @@ if (!defined('IN_SPYOGAME')) {
                 <!-- mod admin -->
             </ul>
             <ul class="sub_menu_navigate sub_menu_navigate_admin">
-                <?php if ($user_data["admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
+                <?php if ($user_data["admin"] == 1 || $user_data["coadmin"] == 1) : ?>
                     <?php foreach ($tMods as $mod) : ?>
                         <?php if ($mod['admin_only'] == 1) : ?>
                             <li class='menusubitem-mod-admin menusubitem-mod-<?php echo $mod['action']; ?>'>
@@ -166,6 +166,3 @@ if (!defined('IN_SPYOGAME')) {
 
     </ul>
 </div>
-
-
-

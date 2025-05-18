@@ -16,7 +16,7 @@ namespace Ogsteam\Ogspy\Model;
 use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 use Ogsteam\Ogspy\Helper\SearchCriteria_Helper;
 
-class Universe_Model extends Model_Abstract
+class AstroObject_Model extends Model_Abstract
 {
     /**
      * Mettre à jour une planète
@@ -24,7 +24,7 @@ class Universe_Model extends Model_Abstract
      */
     public function update(array $planet)
     {
-        $query = 'UPDATE ' . TABLE_UNIVERSE . '
+        $query = 'UPDATE ' . TABLE_USER_BUILDING . '
                   SET `name` = "' . $this->db->sql_escape_string($planet['planet_name']) . '",
                       `player` = "' . $this->db->sql_escape_string($planet['player_name']) . '",
                       `ally` = "' . $this->db->sql_escape_string($planet['ally_tag']) . '",
@@ -44,7 +44,7 @@ class Universe_Model extends Model_Abstract
     public function add(array $planet)
     {
 
-        $query = 'INSERT INTO ' . TABLE_UNIVERSE . ' (`galaxy`, `system`, `row`, `name`, `player`, `ally`, `status`, `last_update`, `last_update_user_id`, `moon`)
+        $query = 'INSERT INTO ' . TABLE_USER_BUILDING . ' (`galaxy`, `system`, `row`, `name`, `player`, `ally`, `status`, `last_update`, `last_update_user_id`, `moon`)
                          VALUES (' . (int)$planet['galaxy'] . ',
                                  ' . (int)$planet['system'] . ',
                                  ' . (int)$planet['row'] . ',
@@ -68,12 +68,12 @@ class Universe_Model extends Model_Abstract
         $newGalaxy = (int)$newGalaxy;
         $newSystem = (int)$newSystem;
 
-        $query = "DELETE FROM `" . TABLE_UNIVERSE . "` WHERE `galaxy` > $newGalaxy OR `system` > $newSystem";
+        $query = "DELETE FROM `" . TABLE_USER_BUILDING . "` WHERE `galaxy` > $newGalaxy OR `system` > $newSystem";
         $this->db->sql_query($query);
     }
 
     /**
-     * Obtiens la liste des planètes situés dans les systèmes requis
+     * Obtiens la liste des planètes située dans les systèmes requis
      * @param $galaxy integer Galaxie
      * @param $system_down integer Limite basse pour les systèmes
      * @param $system_up integer Limite haute pour les systèmes
@@ -85,57 +85,96 @@ class Universe_Model extends Model_Abstract
         $system_down = (int)$system_down;
         $system_up = (int)$system_up;
 
-        $request = "SELECT uni.`galaxy`, uni.`system`, uni.`row`, uni.`name`, uni.`ally`, uni.`player`, uni.`moon`, uni.`phalanx`, uni.`gate`, uni.`last_update_moon`, uni.`status`, uni.`last_update`, user.`name`
-                    FROM " . TABLE_UNIVERSE . " uni
-                        LEFT JOIN " . TABLE_USER . " user
-                            ON user.`id` = uni.`last_update_user_id`
-                    WHERE `galaxy` = $galaxy AND `system` BETWEEN $system_down AND $system_up
-                    ORDER BY `system`, `row`";
-        $result = $this->db->sql_query($request);
-
         $population = array();
-        for ($system = $system_down; $system <= $system_up; $system++) {
-            foreach (range(1, 15) as $row) {
-                $population[$system][$row] = array(
+        // Initialize population array for all slots
+        for ($s_idx = $system_down; $s_idx <= $system_up; $s_idx++) {
+            foreach (range(1, 15) as $r_idx) {
+                $population[$s_idx][$r_idx] = array(
                     "galaxy" => $galaxy,
-                    "system" => $system,
-                    "row" => $row,
+                    "system" => $s_idx,
+                    "row" => $r_idx,
                     "ally" => "",
                     "player" => "",
-                    "moon" => "",
-                    "last_update_moon" => "",
+                    "moon" => "0", // Default to '0' (no moon)
+                    "last_update_moon" => "", // From planet's record: p.last_update_moon
                     "phalanx" => "",
                     "gate" => "",
-                    "planet" => "",
+                    "planet" => "", // Planet name
                     "status" => "",
-                    "timestamp" => "",
-                    "poster" => ""
+                    "timestamp" => "", // Planet last update (p.last_update)
+                    "last_update_user_id" => "", // Added for user ID of last update
+                    "player_last_active" => "" // Player's datadate: gp.datadate
                 );
             }
         }
 
-        if ($this->db->sql_numrows($result) > 0) {
+        // 1. Fetch Planets and their direct associated data (player, ally)
+        $planet_request = "SELECT p.`galaxy`, p.`system`, p.`row`, " .
+                   "       p.`name` AS planet_name, p.`last_update` AS planet_last_update, p.`last_update_moon` AS planet_last_update_moon_field, p.`last_update_user_id`, " .
+                   "       gp.`name` AS player_name, gp.`status` AS player_status, gp.`datadate` AS player_datadate, " .
+                   "       ga.`tag` AS ally_tag " .
+                   "FROM `" . TABLE_USER_BUILDING . "` p " .
+                   "LEFT JOIN `" . TABLE_GAME_PLAYER . "` gp ON gp.`id` = p.`player_id` " .
+                   "LEFT JOIN `" . TABLE_GAME_ALLY . "` ga ON ga.`id` = p.`ally_id` " .
+                   "WHERE p.`type` = 'planet' " .
+                   "  AND p.`galaxy` = " . $galaxy .
+                   "  AND p.`system` BETWEEN " . $system_down . " AND " . $system_up . " " .
+                   "ORDER BY p.`system`, p.`row`";
 
-            while ($row = $this->db->sql_fetch_assoc($result)) {
-                $population[$row['system']][$row['row']]['galaxy'] = $row['galaxy'];
-                $population[$row['system']][$row['row']]['system'] = $row['system'];
-                $population[$row['system']][$row['row']]['row'] = $row['row'];
-                $population[$row['system']][$row['row']]['planet'] = $row['name'];
-                $population[$row['system']][$row['row']]['ally'] = $row['ally'];
-                $population[$row['system']][$row['row']]['player'] = $row['player'];
-                $population[$row['system']][$row['row']]['moon'] = $row['moon'];
-                $population[$row['system']][$row['row']]['phalanx'] = $row['phalanx'];
-                $population[$row['system']][$row['row']]['gate'] = $row['gate'];
-                $population[$row['system']][$row['row']]['last_update_moon'] = $row['last_update_moon'];
-                $population[$row['system']][$row['row']]['status'] = $row['status'];
-                $population[$row['system']][$row['row']]['timestamp'] = $row['last_update'];
-                $population[$row['system']][$row['row']]['poster'] = $row['user_name'];
+        $planet_result = $this->db->sql_query($planet_request);
+
+        if ($this->db->sql_numrows($planet_result) > 0) {
+            while ($p_row = $this->db->sql_fetch_assoc($planet_result)) {
+                $s = $p_row['system'];
+                $r = $p_row['row'];
+
+                // $population[$s][$r] is guaranteed to exist due to pre-initialization
+                $population[$s][$r]['planet'] = $p_row['planet_name'] ?? "";
+                $population[$s][$r]['ally'] = $p_row['ally_tag'] ?? "";
+                $population[$s][$r]['player'] = $p_row['player_name'] ?? "";
+                $population[$s][$r]['status'] = $p_row['player_status'] ?? "";
+                $population[$s][$r]['timestamp'] = $p_row['planet_last_update'] ?? "";
+                $population[$s][$r]['last_update_user_id'] = $p_row['last_update_user_id'] ?? ""; // Added user ID
+                $population[$s][$r]['player_last_active'] = $p_row['player_datadate'] ?? "";
+                $population[$s][$r]['last_update_moon'] = $p_row['planet_last_update_moon_field'] ?? "";
+            }
+        }
+
+        // 2. Fetch Moons in the same range
+        $moon_request = "SELECT `galaxy`, `system`, `row`, `name` AS moon_name, `Pha` AS phalanx_level, `PoSa` AS gate_level " .
+                  "FROM `" . TABLE_USER_BUILDING . "` " .
+                  "WHERE `type` = 'moon' " .
+                  "  AND `galaxy` = " . $galaxy .
+                  "  AND `system` BETWEEN " . $system_down . " AND " . $system_up;
+
+        $moon_result = $this->db->sql_query($moon_request);
+        $moons_details = [];
+        if ($this->db->sql_numrows($moon_result) > 0) {
+            while ($m_row = $this->db->sql_fetch_assoc($moon_result)) {
+                $s = $m_row['system'];
+                $r = $m_row['row'];
+                if (!isset($moons_details[$s])) {
+                    $moons_details[$s] = [];
+                }
+                $moons_details[$s][$r] = $m_row;
+            }
+        }
+
+        // 3. Merge Moon data into Population array
+        for ($s_idx = $system_down; $s_idx <= $system_up; $s_idx++) {
+            foreach (range(1, 15) as $r_idx) {
+                if (isset($moons_details[$s_idx][$r_idx])) {
+                    $moon_info = $moons_details[$s_idx][$r_idx];
+                    $population[$s_idx][$r_idx]['moon'] = '1';
+                    // $population[$s_idx][$r_idx]['moon_name'] = $moon_info['moon_name'] ?? ""; // Uncomment if moon name is needed in the view
+                    $population[$s_idx][$r_idx]['phalanx'] = $moon_info['phalanx_level'] ?? "";
+                    $population[$s_idx][$r_idx]['gate'] = $moon_info['gate_level'] ?? "";
+                }
             }
         }
 
         return $population;
     }
-
 
     /**
      * Obtiens le nombre de planètes présentes dans les systèmes demandés
@@ -150,8 +189,8 @@ class Universe_Model extends Model_Abstract
         $system_down = (int)$system_down;
         $system_up = (int)$system_up;
 
-        $request = "SELECT count(*) FROM " . TABLE_UNIVERSE;
-        $request .= " WHERE `galaxy` = " . $galaxy;
+        $request = "SELECT count(*) FROM " . TABLE_USER_BUILDING;
+        $request .= " WHERE `type` = 'planet' AND `galaxy` = " . $galaxy;
         $request .= " AND `system` BETWEEN " . $system_down . " AND " . ($system_up);
 
         $result = $this->db->sql_query($request);
@@ -173,14 +212,16 @@ class Universe_Model extends Model_Abstract
         $system_down = (int)$system_down;
         $system_up = (int)$system_up;
 
-        $request = "SELECT count(*) FROM " . TABLE_UNIVERSE;
-        $request .= " WHERE `player` = '' AND `galaxy` = " . $galaxy;
+        $totalPlanets = (1 + ($system_up - $system_down)) * 15;
+
+        $request = "SELECT count(*) FROM " . TABLE_USER_BUILDING;
+        $request .= " WHERE `type` = 'planet' AND `galaxy` = " . $galaxy;
         $request .= " AND `system` BETWEEN " . $system_down . " AND " . ($system_up);
 
         $result = $this->db->sql_query($request);
-        list($nb_planet) = $this->db->sql_fetch_row($result);
+        list($nb_planet_used) = $this->db->sql_fetch_row($result);
 
-        return $nb_planet;
+        return $totalPlanets - $nb_planet_used;
     }
 
     /**
@@ -196,7 +237,7 @@ class Universe_Model extends Model_Abstract
         $system_down = (int)$system_down;
         $system_up = (int)$system_up;
 
-        $request = "SELECT MAX(`last_update`) FROM " . TABLE_UNIVERSE;
+        $request = "SELECT MAX(`last_update`) FROM " . TABLE_USER_BUILDING;
         $request .= " WHERE `galaxy` = " . $galaxy;
         $request .= " AND `system` BETWEEN " . $system_down . " AND " . ($system_up);
 
@@ -214,14 +255,18 @@ class Universe_Model extends Model_Abstract
     {
         $ally_list = array();
 
-        $request = "SELECT DISTINCT `ally` FROM " . TABLE_UNIVERSE . " ORDER BY `ally`";
+        $request = "SELECT DISTINCT ga.`tag` AS `ally` FROM `" . TABLE_USER_BUILDING . "` aub ";
+        $request .= "INNER JOIN `" . TABLE_GAME_ALLY . "` ga ON aub.`ally_id` = ga.`id` ";
+        $request .= "WHERE ga.`tag` IS NOT NULL AND ga.`tag` != '' ";
+        $request .= "ORDER BY `ally` ASC"; // Order by the alias
+
         $result = $this->db->sql_query($request);
-        while ($row = $this->db->sql_fetch_assoc($result)) {
-            if ($row["ally"] != "") {
+
+        if ($result) {
+            while ($row = $this->db->sql_fetch_assoc($result)) {
                 $ally_list[] = $row["ally"];
             }
         }
-
         return $ally_list;
     }
 
@@ -230,26 +275,44 @@ class Universe_Model extends Model_Abstract
      * @param $galaxy
      * @param $system_down
      * @param $system_up
-     * @param $ally_name
+     * @param $ally_tag_filter
      * @return array
      */
-    public function get_ally_position($galaxy, $system_down, $system_up, $ally_name)
+    public function get_ally_position($galaxy, $system_down, $system_up, $ally_tag_filter)
     {
+        global $log;
         $galaxy = (int)$galaxy;
         $system_down = (int)$system_down;
         $system_up = (int)$system_up;
-        $ally_name = $this->db->sql_escape_string($ally_name);
+        $escaped_ally_tag = $this->db->sql_escape_string($ally_tag_filter);
 
-        $request = "SELECT `galaxy`, `system`, `row`, `player` FROM " . TABLE_UNIVERSE;
-        $request .= " WHERE `galaxy` = " . $galaxy;
-        $request .= " AND `system` BETWEEN " . $system_down . " AND " . ($system_up);
-        $request .= " AND `ally` LIKE '" . $ally_name . "'";
-        $request .= " ORDER BY `player`, `galaxy`, `system`, `row`";
+        $request = "SELECT aub.`galaxy`, aub.`system`, aub.`row`, gp.`name` AS player_name ";
+        $request .= "FROM `" . TABLE_USER_BUILDING . "` aub ";
+        $request .= "INNER JOIN `" . TABLE_GAME_PLAYER . "` gp ON aub.`player_id` = gp.`id` ";
+        $request .= "INNER JOIN `" . TABLE_GAME_ALLY . "` ga ON aub.`ally_id` = ga.`id` ";
+        $request .= "WHERE aub.`galaxy` = " . $galaxy . " ";
+        $request .= "AND aub.`system` BETWEEN " . $system_down . " AND " . $system_up . " ";
+        $request .= "AND ga.`tag` LIKE '" . $escaped_ally_tag . "' ";
+        $request .= "ORDER BY gp.`name`, aub.`galaxy`, aub.`system`, aub.`row`";
+
         $result = $this->db->sql_query($request);
-
         $population = array();
-        while (list($galaxy_, $system_, $row_, $player) = $this->db->sql_fetch_row($result)) {
-            $population[] = array("galaxy" => $galaxy_, "system" => $system_, "row" => $row_, "player" => $player);
+
+        if (!$result) {
+            $log->error("[OGSpy_AstroObject_Model] get_ally_position - SQL Query FAILED!", ['error' => $this->db->sql_error()]);
+        } else {
+            // The query selects 4 columns: aub.galaxy, aub.system, aub.row, gp.name AS player_name
+            // list() assignment will map these in order.
+            while ($row_data = $this->db->sql_fetch_row($result)) {
+                $population[] = array(
+                    "galaxy" => $row_data[0],
+                    "system" => $row_data[1],
+                    "row" => $row_data[2],
+                    "player" => $row_data[3] // player_name from gp.name is stored in 'player' key for consistency
+                );
+            }
+            $log->info("[OGSpy_AstroObject_Model] get_ally_position - Number of positions found: " . count($population));
+            $log->debug("[OGSpy_AstroObject_Model] get_ally_position - Returned population data:", ['population' => $population]); // Changed to debug for potentially large data
         }
 
         return $population;
@@ -268,7 +331,7 @@ class Universe_Model extends Model_Abstract
         $system = (int)$system;
         $row = (int)$row;
 
-        $request_astre_name = "SELECT `name` FROM " . TABLE_UNIVERSE . " WHERE `galaxy` = " . intval($galaxy) . " AND `system` = " . intval($system) . " AND `row` = " . intval($row);
+        $request_astre_name = "SELECT `name` FROM " . TABLE_USER_BUILDING . " WHERE `galaxy` = " . intval($galaxy) . " AND `system` = " . intval($system) . " AND `row` = " . intval($row);
         $result_astre_name = $this->db->sql_query($request_astre_name);
         $astre_name = $this->db->sql_fetch_assoc($result_astre_name); //Récupère le nom de la planète
 
@@ -288,7 +351,7 @@ class Universe_Model extends Model_Abstract
         $system = (int)$system;
         $row = (int)$row;
 
-        $request_player_name = "SELECT `player` FROM " . TABLE_UNIVERSE . " WHERE `galaxy` = " . intval($galaxy) . " AND `system` = " . intval($system) . " AND `row` = " . intval($row);
+        $request_player_name = "SELECT `player` FROM " . TABLE_USER_BUILDING . " WHERE `galaxy` = " . intval($galaxy) . " AND `system` = " . intval($system) . " AND `row` = " . intval($row);
         $result_player_name = $this->db->sql_query($request_player_name);
         $player_name = $this->db->sql_fetch_assoc($result_player_name); //Récupère le nom de la planète
 
@@ -304,7 +367,11 @@ class Universe_Model extends Model_Abstract
     {
         $galaxy = (int)$galaxy;
 
-        $req = "SELECT `galaxy`, `system`, `row`, `phalanx`, `gate`, `name`, `ally`, `player` FROM " . TABLE_UNIVERSE . " WHERE `galaxy` = '" . $galaxy . "' AND `moon` = '1' AND `phalanx` > 0";
+        $req = "SELECT ub.`galaxy`, ub.`system`, ub.`row`, ub.`Pha`, ub.`PoSa`, ub.`name`, gp.`name` AS player_name, ga.`tag` AS ally_tag
+                FROM " . TABLE_USER_BUILDING . " ub
+                LEFT JOIN " . TABLE_GAME_PLAYER . " gp ON ub.`player_id` = gp.`id`
+                LEFT JOIN " . TABLE_GAME_ALLY . " ga ON ub.`ally_id` = ga.`id`
+                WHERE ub.`galaxy` = '" . $galaxy . "' AND ub.`type` = 'moon' AND ub.`Pha` > 0";
 
         $result = $this->db->sql_query($req);
         $data = array();
@@ -315,10 +382,10 @@ class Universe_Model extends Model_Abstract
                 'system' => $row["system"],
                 'row' => $row["row"],
                 'name' => $row["name"],
-                'ally' => $row["ally"],
-                'player' => $row["player"],
-                'gate' => $row["gate"],
-                'level' => $row["phalanx"]
+                'ally' => $row["ally_tag"], // Changed from $row["ally"]
+                'player' => $row["player_name"], // Changed from $row["player"]
+                'gate' => $row["PoSa"], // Assuming PoSa is gate, if not, this might need adjustment based on actual DB schema for gate
+                'level' => $row["Pha"] // Assuming Pha is phalanx, if not, this might need adjustment
             );
         }
 
@@ -356,7 +423,7 @@ class Universe_Model extends Model_Abstract
             $moon = 1;
         }
 
-        $request = "SELECT DISTINCT `galaxy`, `system`" . $row_field . " FROM " . TABLE_UNIVERSE . " WHERE moon = '" . $moon . "' AND " . $field . " BETWEEN " . $system_up . " AND " . $system_down;
+        $request = "SELECT DISTINCT `galaxy`, `system`" . $row_field . " FROM " . TABLE_USER_BUILDING . " WHERE moon = '" . $moon . "' AND " . $field . " BETWEEN " . $system_up . " AND " . $system_down;
         if ($galaxy != 0) {
             $request .= " AND `galaxy` = " . (int)$galaxy;
         }
@@ -365,7 +432,7 @@ class Universe_Model extends Model_Abstract
 
 
         while ($row = $this->db->sql_fetch_assoc($result)) {
-            $request = "SELECT MIN(" . $field . ") FROM " . TABLE_UNIVERSE . " WHERE `galaxy` = " . $row["galaxy"] . " AND `system` = " . $row["system"];
+            $request = "SELECT MIN(" . $field . ") FROM " . TABLE_USER_BUILDING . " WHERE `galaxy` = " . $row["galaxy"] . " AND `system` = " . $row["system"];
             $result2 = $this->db->sql_query($request);
             list($last_update) = $this->db->sql_fetch_row($result2);
             $row["last_update"] = $last_update;
@@ -383,7 +450,7 @@ class Universe_Model extends Model_Abstract
 
 
         $select = "SELECT `galaxy`, `system`, `row`, `moon`, `phalanx`, `gate`, `last_update_moon`, `ally`, `player`, `status`, `last_update`, user.`name`,  uni.`name`";
-        $request = " FROM " . TABLE_UNIVERSE . " uni ".
+        $request = " FROM " . TABLE_USER_BUILDING . " uni ".
         " LEFT JOIN " . TABLE_USER . "  user  ON `last_update_user_id` = user.`id`";
 
         $where = "";

@@ -5,9 +5,6 @@
  *
  * @package OGSpy
  * @subpackage Model
- * @author DarkNoon
- * @copyright Copyright &copy; 2016, https://ogsteam.eu/
- * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.4.0
  */
 
@@ -18,42 +15,61 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class Player_Defense_Model  extends Model_Abstract
 {
     /**
-     * @param $user_id
+     * @param $playerId
      * @return array
      */
-    public function select_user_defense($user_id)
+    public function select_player_defense($playerId)
     {
-        $user_id = (int)$user_id;
+        global $log;
+        $playerId = (int)$playerId;
+        $log->info("[OGSpy_Player_Defense_Model] select_player_defense - Player ID: " . $playerId);
 
-        $tElemList = array("planet_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP");
+        $tElemList = array("astro_object_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP");
 
-        $request = "SELECT `" . implode("`, `", $tElemList) . "` ";
-        $request .= " FROM " . TABLE_USER_DEFENSE;
-        $request .= " WHERE `user_id` = " . $user_id;
-        $request .= " ORDER BY `planet_id`";
+        // Colonnes préfixées par l'alias de la table udef pour éviter toute ambiguïté
+        $selectFields = array();
+        foreach ($tElemList as $field) {
+            $selectFields[] = "udef.`" . $field . "`";
+        }
+
+        $request = "SELECT " . implode(", ", $selectFields) . " ";
+        $request .= " FROM " . TABLE_USER_DEFENSE . " AS udef";
+        // Utilisation des alias dans la clause ON et qualification de player_id dans WHERE
+        $request .= " INNER JOIN " . TABLE_USER_BUILDING . " AS object ON udef.`astro_object_id` = object.`id`";
+        $request .= " WHERE object.`player_id` = " . $playerId;
+        $request .= " ORDER BY udef.`astro_object_id`";
+        $log->info("[OGSpy_Player_Defense_Model] select_player_defense - SQL Query: " . $request);
+
         $result = $this->db->sql_query($request);
 
+        if (!$result) {
+            $log->error("[OGSpy_Player_Defense_Model] select_player_defense - SQL Query FAILED!", ['error' => $this->db->sql_error()]);
+        }
+
         $tDefense = array();
-        while ($row =  $this->db->sql_fetch_assoc($result)) {
-            $tDefense[$row["planet_id"]] = array();
-            foreach ($tElemList as $elem) {
-                $tDefense[$row["planet_id"]][$elem] = $row[$elem];
+        if ($result) {
+            while ($row =  $this->db->sql_fetch_assoc($result)) {
+                $tDefense[$row["astro_object_id"]] = array();
+                foreach ($tElemList as $elem) {
+                    $tDefense[$row["astro_object_id"]][$elem] = $row[$elem] ?? 0;
+                }
             }
         }
+        $log->info("[OGSpy_Player_Defense_Model] select_player_defense - Number of defense entries found: " . count($tDefense));
+        $log->info("[OGSpy_Player_Defense_Model] select_player_defense - Returned Defense Data:", ['data' => $tDefense]);
         return $tDefense;
     }
 
-    public function select_user_defense_planete($user_id, $planet_id)
+    public function select_player_defense_planete($planet_id)
     {
-        $user_id = (int)$user_id;
         $planet_id = (int)$planet_id;
 
-        $tElemList = array("planet_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP");
+        $tElemList = array("astro_object_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP");
 
         $request = "SELECT `" . implode("`, `", $tElemList) . "` ";
         $request .= " FROM " . TABLE_USER_DEFENSE;
-        $request .= " WHERE `user_id` = " . $user_id;
-        $request .= "  AND `planet_id` = " . $planet_id . " ";
+        // Corrigé: Utilisation de WHERE au lieu de AND
+        $request .= " WHERE `astro_object_id` = " . $planet_id . " ";
 
         $result = $this->db->sql_query($request);
 
@@ -62,50 +78,14 @@ class Player_Defense_Model  extends Model_Abstract
 
 
     /**
-     * @param $user_id
-     * @param $previous_id
-     * @param $new_id
-     * @todo Could we do that in one request ?
-     */
-    public function update_moon_id($user_id, $previous_id, $new_id)
-    {
-        $user_id = (int)$user_id;
-        $previous_id = (int)$previous_id;
-        $new_id = (int)$new_id;
-
-        $request = "UPDATE " . TABLE_USER_DEFENSE . " SET `planet_id`  = " . $new_id .
-            " WHERE `planet_id` = " . $previous_id . " and `user_id` = " . $user_id;
-        $this->db->sql_query($request);
-        //We adjust the id if we go upper than 299
-        $request = "UPDATE " . TABLE_USER_DEFENSE .
-            " SET `planet_id`  = `planet_id` -100 WHERE `planet_id` > 299 and `user_id` = " . $user_id;
-        $this->db->sql_query($request);
-    }
-    /**
-     * @param $user_id
-     * @param $previous_id
-     * @param $new_id
-     */
-    public function update_planet_id($user_id, $previous_id, $new_id)
-    {
-        $user_id = (int)$user_id;
-        $previous_id = (int)$previous_id;
-        $new_id = (int)$new_id;
-
-        $request = "UPDATE " . TABLE_USER_DEFENSE . " SET `planet_id`  = " . $new_id .
-            " WHERE `planet_id` = " . $previous_id . " and `user_id` = " . $user_id;
-        $this->db->sql_query($request);
-    }
-    /**
-     * @param $user_id
      * @param $aster_id Planet or moon to be deleted
      */
-    public function delete_user_aster($user_id, $aster_id)
+    public function delete_user_aster($aster_id)
     {
-        $user_id = (int)$user_id;
         $aster_id = (int)$aster_id;
 
-        $request = "DELETE FROM " . TABLE_USER_DEFENSE . " WHERE `user_id` = " . $user_id . " AND `planet_id` = " . intval($aster_id);
+        // Corrigé: Utilisation de astro_object_id au lieu de planet_id
+        $request = "DELETE FROM " . TABLE_USER_DEFENSE . " WHERE `astro_object_id` = " . intval($aster_id);
         $this->db->sql_query($request);
     }
 }
