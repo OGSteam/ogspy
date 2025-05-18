@@ -283,7 +283,7 @@ CREATE TABLE `ogspy_game_ally`
 --
 CREATE TABLE `ogspy_game_astro_object`
 (
-    `id`                  INT(11)     NOT NULL AUTO_INCREMENT,
+    `id`                  INT(11)     NOT NULL,
     `type`                VARCHAR(10) NOT NULL DEFAULT 'planet' COMMENT 'Type astre : planet, moon, debris,...',
     `galaxy`              SMALLINT(2) NOT NULL DEFAULT '1',
     `system`              SMALLINT(3) NOT NULL DEFAULT '1',
