@@ -90,12 +90,12 @@ class AstroObject_Model extends Model_Abstract
         for ($s_idx = $system_down; $s_idx <= $system_up; $s_idx++) {
             foreach (range(1, 15) as $r_idx) {
                 $population[$s_idx][$r_idx] = array(
-                    "type" => "planet", // Default type is planet
                     "galaxy" => $galaxy,
                     "system" => $s_idx,
                     "row" => $r_idx,
                     "ally_name" => "",
                     "player_name" => "",
+                    "moon" => "0", // Default moon status
                     "last_update_moon" => "", // From planet's record: p.last_update_moon
                     "Pha" => "",
                     "PoSa" => "",
@@ -112,7 +112,6 @@ class AstroObject_Model extends Model_Abstract
         // 1. Fetch Planets and their direct associated data (player, ally)
         $planet_request = "
                 SELECT
-                    p.`type`,
                     p.`galaxy`,
                     p.`system`,
                     p.`row`,
@@ -120,7 +119,6 @@ class AstroObject_Model extends Model_Abstract
                     p.`Pha` AS phalanx,
                     p.`PoSa` AS gate,
                     p.`last_update` AS planet_last_update,
-                    p.`last_update_moon` AS planet_last_update_moon_field,
                     p.`last_update_user_id`,
                     u.name AS last_update_user_name,
                     gp.`name` AS player_name,
@@ -155,21 +153,18 @@ class AstroObject_Model extends Model_Abstract
                 $population[$s][$r]['status'] = $p_row['player_status'] ?? "";
                 $population[$s][$r]['Pha'] = $p_row['phalanx'] ?? "0";
                 $population[$s][$r]['PoSa'] = $p_row['gate'] ?? "0";
-                $population[$s][$r]['type'] =  $p_row['type'] ; // Set type to planet
                 $population[$s][$r]['timestamp'] = $p_row['planet_last_update'] ?? "";
                 $population[$s][$r]['last_update_user_id'] = $p_row['last_update_user_id'] ?? ""; // Added user ID
                 $population[$s][$r]['last_update_user_name'] = $p_row['last_update_user_name'] ?? ""; // Added user ID
                 $population[$s][$r]['player_last_active'] = $p_row['player_datadate'] ?? "";
-                $population[$s][$r]['last_update_moon'] = $p_row['planet_last_update_moon_field'] ?? "";
             }
         }
-
         // 2. Fetch Moons in the same range
         $moon_request = "SELECT `galaxy`, `system`, `row`, `name` AS moon_name, `Pha` AS phalanx, `PoSa` AS gate " .
-                  "FROM `" . TABLE_USER_BUILDING . "` " .
-                  "WHERE `type` = 'moon' " .
-                  "  AND `galaxy` = " . $galaxy .
-                  "  AND `system` BETWEEN " . $system_down . " AND " . $system_up;
+            "FROM `" . TABLE_USER_BUILDING . "` " .
+            "WHERE `type` = 'moon' " .
+            "  AND `galaxy` = " . $galaxy .
+            "  AND `system` BETWEEN " . $system_down . " AND " . $system_up;
 
         $moon_result = $this->db->sql_query($moon_request);
         $moons_details = [];
@@ -196,6 +191,8 @@ class AstroObject_Model extends Model_Abstract
                 }
             }
         }
+
+
 
         return $population;
     }
