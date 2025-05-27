@@ -1981,7 +1981,7 @@ function displayGalaxyTabletbodytr($populate, $isGalaxy = true)
         ($v["PoSa"] > 0 ? '<span class="ogame-icon ogame-icon-gate ">P</span>' : '&nbsp;') .
         '</td>' .
         '<td class="tdcontent">' .
-        ($v["last_update_moon"] > 0 ? '<span class="ogame-icon ogame-icon-phalanx ">' . $v["Pha"] . '</span>' : '&nbsp;') .
+        ($v["Pha"] > 0 ? '<span class="ogame-icon ogame-icon-phalanx ">' . $v["Pha"] . '</span>' : '&nbsp;') .
         '</td>' .
         '<td class="tdcontent">' .
         implode('', array_map(fn($state) => '<span class="ogame-status-' . $state . '">' . $state . '</span>', $states)) .
