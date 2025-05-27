@@ -160,7 +160,7 @@ class AstroObject_Model extends Model_Abstract
             }
         }
         // 2. Fetch Moons in the same range
-        $moon_request = "SELECT `galaxy`, `system`, `row`, `name` AS moon_name, `Pha` AS phalanx, `PoSa` AS gate " .
+        $moon_request = "SELECT `galaxy`, `system`, `row`, `name` AS moon_name, `Pha` AS phalanx_level, `PoSa` AS gate_level, `last_update_moon` " .
             "FROM `" . TABLE_USER_BUILDING . "` " .
             "WHERE `type` = 'moon' " .
             "  AND `galaxy` = " . $galaxy .
@@ -186,8 +186,9 @@ class AstroObject_Model extends Model_Abstract
                     $moon_info = $moons_details[$s_idx][$r_idx];
                     $population[$s_idx][$r_idx]['moon'] = '1';
                     // $population[$s_idx][$r_idx]['moon_name'] = $moon_info['moon_name'] ?? ""; // Uncomment if moon name is needed in the view
-                    $population[$s_idx][$r_idx]['phalanx'] = $moon_info['phalanx_level'] ?? "";
-                    $population[$s_idx][$r_idx]['gate'] = $moon_info['gate_level'] ?? "";
+                    $population[$s_idx][$r_idx]['Pha'] = $moon_info['phalanx_level'] ?? "";
+                    $population[$s_idx][$r_idx]['PoSa'] = $moon_info['gate_level'] ?? "";
+                    $population[$s_idx][$r_idx]['last_update_moon'] = $moon_info['last_update_moon'] ?? "";
                 }
             }
         }
