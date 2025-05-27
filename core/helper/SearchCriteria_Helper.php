@@ -305,28 +305,24 @@ class SearchCriteria_Helper extends Helper_Abstract
     //Binu : ajout d'une fonction pour convertir les coordonn�es de la table universe en coordonn�es de la table spy
     public function getArrayCoordinates()
     {
-        if (!empty($this->galaxy_down) && !empty($this->galaxy_up)) {
-            $galaxy = array($this->galaxy_down, $this->galaxy_up);
-        } else {
-            $galaxy = array(1, $this->server_config['num_of_galaxies']);
-        }
-        if (!empty($this->system_down) && !empty($this->system_up)) {
-            $system = array($this->system_down, $this->system_up);
-        } else {
-            $system = array(1, $this->server_config['num_of_systems']);
-        }
-        if (!empty($this->row_down) && !empty($this->row_up)) {
-            $row = array($this->row_down, $this->row_up);
-        } else {
-            $row = array(1, 15);
-        }
-        $coordinates = array();
-        $ind = 0;
-        for ($i = $galaxy[0]; $i <= $galaxy[1]; $i++) {
-            for ($j = $system[0]; $j <= $system[1]; $j++) {
-                for ($k = $row[0]; $k <= $row[1]; $k++) {
-                    $coordinates[$ind] = $i . ":" . $j . ":" . $k;
-                    $ind++;
+        $galaxy = [
+            $this->galaxy_down ?? 1,
+            $this->galaxy_up ?? $this->server_config['num_of_galaxies']
+        ];
+        $system = [
+            $this->system_down ?? 1,
+            $this->system_up ?? $this->server_config['num_of_systems']
+        ];
+        $row = [
+            $this->row_down ?? 1,
+            $this->row_up ?? 15
+        ];
+
+        $coordinates = [];
+        foreach (range($galaxy[0], $galaxy[1]) as $i) {
+            foreach (range($system[0], $system[1]) as $j) {
+                foreach (range($row[0], $row[1]) as $k) {
+                    $coordinates[] = "$i:$j:$k";
                 }
             }
         }

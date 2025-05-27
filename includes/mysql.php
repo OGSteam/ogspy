@@ -149,19 +149,20 @@ class sql_db
     {
         global $server_config, $logSQL;
         global $benchSQL;
+
+        $logSQL->info($query);
         $benchSQL->start();
 
         $this->last_query = $query;
         $this->result = $this->db_connect_id->query($query);
 
-        if (isset($server_config["debug_log"]) && $server_config["debug_log"] == 1) {
+        /*if (isset($server_config["debug_log"]) && $server_config["debug_log"] == 1) {
             $fichier = "sql_" . date("ymd") . ".sql";
             $date = date("d/m/Y H:i:s");
             $ligne = "$date - $query ;";
             write_file(PATH_LOG_TODAY . $fichier, 'a', $ligne);
-        }
+        }*/
 
-        $logSQL->info($query);
         $benchSQL->stop("sql_query ".$this->nb_requete." ");
         $this->nb_requete += 1;
         return $this->result;

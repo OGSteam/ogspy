@@ -82,22 +82,22 @@ require_once 'views/page_header.php';
             </thead>
             <tbody>
                 <tr>
-                    <td clas="content">
+                    <td class="content">
                         <input type="button" class="og-button " value="<<<" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?= $galaxy_down ?>&amp;system=<?= $system ?>';">
                     </td>
-                    <td clas="content">
+                    <td class="content">
                         <input type="text" name="galaxy" maxlength="3" size="5" value="<?= $galaxy ?>" tabindex="1">
                     </td>
-                    <td clas="content">
+                    <td class="content">
                         <input type="button" class="og-button" value=">>>" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?= $galaxy_up ?>&amp;system=<?= $system ?>';">
                     </td>
-                    <td clas="content">
+                    <td class="content">
                         <input type="button" class="og-button" value="<<<" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?= $galaxy ?>&amp;system=<?= $system_down ?>';">
                     </td>
-                    <td clas="content">
+                    <td class="content">
                         <input type="text" name="system" maxlength="3" size="5" value="<?= $system ?>" tabindex="2">
                     </td>
-                    <td clas="content">
+                    <td class="content">
                         <input type="button" class="og-button" value=">>>" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?= $galaxy ?>&amp;system=<?= $system_up ?>';">
                     </td>
                 </tr>

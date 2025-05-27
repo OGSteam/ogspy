@@ -90,36 +90,56 @@ class AstroObject_Model extends Model_Abstract
         for ($s_idx = $system_down; $s_idx <= $system_up; $s_idx++) {
             foreach (range(1, 15) as $r_idx) {
                 $population[$s_idx][$r_idx] = array(
+                    "type" => "planet", // Default type is planet
                     "galaxy" => $galaxy,
                     "system" => $s_idx,
                     "row" => $r_idx,
-                    "ally" => "",
-                    "player" => "",
-                    "moon" => "0", // Default to '0' (no moon)
+                    "ally_name" => "",
+                    "player_name" => "",
                     "last_update_moon" => "", // From planet's record: p.last_update_moon
-                    "phalanx" => "",
-                    "gate" => "",
-                    "planet" => "", // Planet name
+                    "Pha" => "",
+                    "PoSa" => "",
+                    "planet_name" => "", // Planet name
                     "status" => "",
                     "timestamp" => "", // Planet last update (p.last_update)
                     "last_update_user_id" => "", // Added for user ID of last update
+                    "last_update_user_name" => "", // Added for user name of last update
                     "player_last_active" => "" // Player's datadate: gp.datadate
                 );
             }
         }
 
         // 1. Fetch Planets and their direct associated data (player, ally)
-        $planet_request = "SELECT p.`galaxy`, p.`system`, p.`row`, " .
-                   "       p.`name` AS planet_name, p.`last_update` AS planet_last_update, p.`last_update_moon` AS planet_last_update_moon_field, p.`last_update_user_id`, " .
-                   "       gp.`name` AS player_name, gp.`status` AS player_status, gp.`datadate` AS player_datadate, " .
-                   "       ga.`tag` AS ally_tag " .
-                   "FROM `" . TABLE_USER_BUILDING . "` p " .
-                   "LEFT JOIN `" . TABLE_GAME_PLAYER . "` gp ON gp.`id` = p.`player_id` " .
-                   "LEFT JOIN `" . TABLE_GAME_ALLY . "` ga ON ga.`id` = p.`ally_id` " .
-                   "WHERE p.`type` = 'planet' " .
-                   "  AND p.`galaxy` = " . $galaxy .
-                   "  AND p.`system` BETWEEN " . $system_down . " AND " . $system_up . " " .
-                   "ORDER BY p.`system`, p.`row`";
+        $planet_request = "
+                SELECT
+                    p.`type`,
+                    p.`galaxy`,
+                    p.`system`,
+                    p.`row`,
+                    p.`name` AS planet_name,
+                    p.`Pha` AS phalanx,
+                    p.`PoSa` AS gate,
+                    p.`last_update` AS planet_last_update,
+                    p.`last_update_moon` AS planet_last_update_moon_field,
+                    p.`last_update_user_id`,
+                    u.name AS last_update_user_name,
+                    gp.`name` AS player_name,
+                    gp.`status` AS player_status,
+                    gp.`datadate` AS player_datadate,
+                    ga.`name` AS ally_name,
+                    ga.`tag` AS ally_tag
+                FROM `" . TABLE_USER_BUILDING . "` p
+                LEFT JOIN `" . TABLE_GAME_PLAYER . "` gp ON gp.`id` = p.`player_id`
+                LEFT JOIN `" . TABLE_GAME_ALLY . "` ga ON ga.`id` = p.`ally_id`
+                LEFT JOIN `" . TABLE_USER . "` u ON u.`id` = p.`last_update_user_id`
+                WHERE
+                    p.`type` = 'planet'
+                    AND p.`galaxy` = " . $galaxy . "
+                    AND p.`system` BETWEEN " . $system_down . " AND " . $system_up . "
+                ORDER BY
+                    p.`system`,
+                    p.`row`
+            ";
 
         $planet_result = $this->db->sql_query($planet_request);
 
@@ -129,19 +149,23 @@ class AstroObject_Model extends Model_Abstract
                 $r = $p_row['row'];
 
                 // $population[$s][$r] is guaranteed to exist due to pre-initialization
-                $population[$s][$r]['planet'] = $p_row['planet_name'] ?? "";
-                $population[$s][$r]['ally'] = $p_row['ally_tag'] ?? "";
-                $population[$s][$r]['player'] = $p_row['player_name'] ?? "";
+                $population[$s][$r]['planet_name'] = $p_row['planet_name'] ?? "";
+                $population[$s][$r]['ally_name'] = $p_row['ally_tag'] ?? "";
+                $population[$s][$r]['player_name'] = $p_row['player_name'] ?? "";
                 $population[$s][$r]['status'] = $p_row['player_status'] ?? "";
+                $population[$s][$r]['Pha'] = $p_row['phalanx'] ?? "0";
+                $population[$s][$r]['PoSa'] = $p_row['gate'] ?? "0";
+                $population[$s][$r]['type'] =  $p_row['type'] ; // Set type to planet
                 $population[$s][$r]['timestamp'] = $p_row['planet_last_update'] ?? "";
                 $population[$s][$r]['last_update_user_id'] = $p_row['last_update_user_id'] ?? ""; // Added user ID
+                $population[$s][$r]['last_update_user_name'] = $p_row['last_update_user_name'] ?? ""; // Added user ID
                 $population[$s][$r]['player_last_active'] = $p_row['player_datadate'] ?? "";
                 $population[$s][$r]['last_update_moon'] = $p_row['planet_last_update_moon_field'] ?? "";
             }
         }
 
         // 2. Fetch Moons in the same range
-        $moon_request = "SELECT `galaxy`, `system`, `row`, `name` AS moon_name, `Pha` AS phalanx_level, `PoSa` AS gate_level " .
+        $moon_request = "SELECT `galaxy`, `system`, `row`, `name` AS moon_name, `Pha` AS phalanx, `PoSa` AS gate " .
                   "FROM `" . TABLE_USER_BUILDING . "` " .
                   "WHERE `type` = 'moon' " .
                   "  AND `galaxy` = " . $galaxy .
@@ -449,23 +473,27 @@ class AstroObject_Model extends Model_Abstract
         $number = (int)$number;
 
 
-        $select = "SELECT `galaxy`, `system`, `row`, `moon`, `phalanx`, `gate`, `last_update_moon`, `ally`, `player`, `status`, `last_update`, user.`name`,  uni.`name`";
-        $request = " FROM " . TABLE_USER_BUILDING . " uni ".
-        " LEFT JOIN " . TABLE_USER . "  user  ON `last_update_user_id` = user.`id`";
+        $select = "SELECT `type`, `galaxy`, `system`, `row`, `Pha`, `PoSa`, `last_update_moon`,
+                  ally.`name` AS ally_name, player.`name` AS player_name, `status`,
+                  `last_update`, user.`name` AS user_name, uni.`name` AS planet_name";
+        $request = " FROM " . TABLE_USER_BUILDING . " uni" .
+        " LEFT JOIN " . TABLE_USER . "  user  ON `last_update_user_id` = user.`id`" .
+        " LEFT JOIN " . TABLE_GAME_PLAYER . "  player  ON player.`id`  = uni.`player_id`" .
+        " LEFT JOIN " . TABLE_GAME_ALLY . "  ally  ON ally.`id` = uni.`ally_id`";
 
         $where = "";
         if ($criteria->getPlayerName() != null) {
             if ($where != "") {
                 $where .= " AND ";
             }
-            $where .= " `player` LIKE '" . $this->db->sql_escape_string($criteria->getPlayerName()) . "'";
+            $where .= " player.`name` LIKE '" . $this->db->sql_escape_string($criteria->getPlayerName()) . "'";
         }
 
         if ($criteria->getAllyName() != null) {
             if ($where != "") {
                 $where .= " AND ";
             }
-            $where .= " `ally` LIKE '" . $this->db->sql_escape_string($criteria->getAllyName()) . "'";
+            $where .= " ally.`name` LIKE '" . $this->db->sql_escape_string($criteria->getAllyName()) . "'";
         }
         //Binu : changement de la comparaison
         if ($criteria->getPlanetName() !== null) {
@@ -501,7 +529,7 @@ class AstroObject_Model extends Model_Abstract
                 $where .= " AND ";
             }
             //Binu : ajout des cotes
-            $where .= " `moon` = '1'";
+            $where .= " `type` = 'moon'";
             //fin
         }
 
@@ -509,7 +537,7 @@ class AstroObject_Model extends Model_Abstract
             if ($where != "") {
                 $where .= " AND ";
             }
-            $where .= " `status` LIKE ('%i%')";
+            $where .= " player.`status` LIKE ('%i%')";
         }
 
         //Binu : Ajout du critère espionné

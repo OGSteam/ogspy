@@ -87,7 +87,8 @@ CREATE TABLE `ogspy_user`
     PRIMARY KEY (`id`),
     UNIQUE KEY `name` (`name`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_user_tokens`
@@ -101,7 +102,8 @@ CREATE TABLE `ogspy_user_tokens`
     `expiration_date` VARCHAR(15)  NOT NULL,
     PRIMARY KEY (`id`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 
 --
@@ -111,9 +113,11 @@ CREATE TABLE `ogspy_config`
 (
     `name`  VARCHAR(255) NOT NULL DEFAULT '',
     `value` VARCHAR(255) NOT NULL DEFAULT '',
-    PRIMARY KEY (`name`)
+    PRIMARY KEY (`name`),
+    UNIQUE KEY `name` (`name`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_group`
@@ -136,7 +140,8 @@ CREATE TABLE `ogspy_group`
     `ogs_get_ranking`           TINYINT(1)   NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_user_group`
@@ -147,7 +152,8 @@ CREATE TABLE `ogspy_user_group`
     `user_id`  MEDIUMINT(8) NOT NULL DEFAULT '0',
     UNIQUE KEY `group_id` (`group_id`, `user_id`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_sessions`
@@ -163,7 +169,8 @@ CREATE TABLE `ogspy_sessions`
     `session_lastvisit` INT(11)    NOT NULL DEFAULT '0',
     UNIQUE KEY `session_id` (`id`, `session_ip`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_statistics`
@@ -174,7 +181,8 @@ CREATE TABLE `ogspy_statistics`
     `statistic_value` VARCHAR(255) NOT NULL DEFAULT '0',
     PRIMARY KEY (`statistic_name`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_mod`
@@ -197,7 +205,8 @@ CREATE TABLE `ogspy_mod`
     UNIQUE KEY `menu` (`menu`),
     UNIQUE KEY `root` (`root`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_mod_config`
@@ -209,7 +218,8 @@ CREATE TABLE `ogspy_mod_config`
     `value`  VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (`mod`, `config`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_mod_user_config`
@@ -223,7 +233,8 @@ CREATE TABLE `ogspy_mod_user_config`
     PRIMARY KEY (`mod`, `config`, `user_id`),
     UNIQUE KEY `config` (`config`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_user_favorite`
@@ -235,7 +246,8 @@ CREATE TABLE `ogspy_game_user_favorites`
     `system`  SMALLINT(3) NOT NULL DEFAULT '0',
     UNIQUE KEY `user_id` (`user_id`, `galaxy`, `system`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 
 -- ---------------------------------------------------------------------------
@@ -260,23 +272,25 @@ CREATE TABLE `ogspy_game_player`
     `datadate`        INT(11)                            NOT NULL DEFAULT '0',
     `ogspy_user_id`   INT(11)                                     DEFAULT NULL,
     PRIMARY KEY (`id`)
+
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_ally`
 --
 CREATE TABLE `ogspy_game_ally`
 (
-    `id`            INT(6)                             NOT NULL,
-    `name`          VARCHAR(65)                        NOT NULL COMMENT 'Nom de l alliance',
-    `tag`           VARCHAR(65)                        NOT NULL DEFAULT '',
-    `class`         ENUM ('none', 'MAR', 'WAR', 'RES') NOT NULL DEFAULT 'none',
-    `number_member` INT(3)                             NOT NULL COMMENT 'nombre de membre',
-    `datadate`      INT(11)                            NOT NULL DEFAULT '0',
+    `id`       INT(6)                             NOT NULL,
+    `name`     VARCHAR(65) COMMENT 'Nom de l alliance',
+    `tag`      VARCHAR(65)                        NOT NULL DEFAULT '',
+    `class`    ENUM ('none', 'MAR', 'WAR', 'RES') NOT NULL DEFAULT 'none',
+    `datadate` INT(11)                            NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_game_astro_object`
@@ -328,8 +342,8 @@ CREATE TABLE `ogspy_game_astro_object`
     `last_update_user_id` INT(11)     NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`),
     KEY `univers` (`galaxy`, `system`, `row`)
-) DEFAULT CHARSET = UTF8;
-
+) DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin;
 --
 -- Structure de la table `ogspy_game_player_defense`
 --
@@ -348,8 +362,10 @@ CREATE TABLE `ogspy_game_player_defense`
     `MIC`             SMALLINT(3) NOT NULL DEFAULT '0',
     `MIP`             SMALLINT(3) NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`),
-    KEY `astro_object_id` (`astro_object_id`)
-) DEFAULT CHARSET = UTF8;
+    KEY `astro_object_id` (`astro_object_id`),
+    UNIQUE KEY `unique_astro_object_id` (`astro_object_id`)
+) DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_user_spy`
@@ -360,14 +376,15 @@ CREATE TABLE `ogspy_game_player_spy`
     `spy_id`  INT(11) NOT NULL DEFAULT '0',
     PRIMARY KEY (`user_id`, `spy_id`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
--- Structure de la table `ogspy_user_technology`
+-- Structure de la table `ogspy_user_technology` // Linked to player
 --
 CREATE TABLE ogspy_game_player_technology
 (
-    `user_id`       INT(11)     NOT NULL DEFAULT '0',
+    `player_id`     INT(11)     NOT NULL DEFAULT '0',
     `Esp`           SMALLINT(2) NOT NULL DEFAULT '0',
     `Ordi`          SMALLINT(2) NOT NULL DEFAULT '0',
     `Armes`         SMALLINT(2) NOT NULL DEFAULT '0',
@@ -384,9 +401,10 @@ CREATE TABLE ogspy_game_player_technology
     `RRI`           SMALLINT(2) NOT NULL DEFAULT '0',
     `Graviton`      SMALLINT(2) NOT NULL DEFAULT '0',
     `Astrophysique` SMALLINT(2) NOT NULL DEFAULT '0',
-    PRIMARY KEY (`user_id`)
+    PRIMARY KEY (`player_id`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 
 
@@ -472,7 +490,8 @@ CREATE TABLE `ogspy_game_parsedspy`
     PRIMARY KEY (`id_spy`),
     KEY `coordinates` (`coordinates`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_parsedRC`
@@ -495,7 +514,8 @@ CREATE TABLE `ogspy_game_parsedRC`
     PRIMARY KEY (`id_rc`),
     KEY `coordinatesrc` (`coordinates`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_parsedRCRound`
@@ -515,7 +535,8 @@ CREATE TABLE `ogspy_game_parsedRCRound`
     KEY `rcround` (`id_rc`, `numround`),
     KEY `id_rc` (`id_rc`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_round_attack`
@@ -548,7 +569,8 @@ CREATE TABLE `ogspy_game_rc_round_attack`
     KEY `id_rcround` (`id_rcround`),
     KEY `player` (`player`, `coordinates`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_round_defense`
@@ -591,7 +613,8 @@ CREATE TABLE `ogspy_game_rc_round_defense`
     KEY `id_rcround` (`id_rcround`),
     KEY `player` (`player`, `coordinates`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 
 --
@@ -611,7 +634,8 @@ CREATE TABLE ogspy_game_rank_ally_economics
     KEY `datadate` (`datadate`, `ally`),
     KEY `ally` (`ally`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_ally_technology`
@@ -630,7 +654,8 @@ CREATE TABLE ogspy_game_rank_ally_technology
     KEY `datadate` (`datadate`, `ally`),
     KEY `ally` (`ally`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_ally_military`
@@ -649,7 +674,8 @@ CREATE TABLE ogspy_game_rank_ally_military
     KEY `datadate` (`datadate`, `ally`),
     KEY `ally` (`ally`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_ally_military_built`
@@ -668,7 +694,8 @@ CREATE TABLE ogspy_game_rank_ally_military_built
     KEY `datadate` (`datadate`, `ally`),
     KEY `ally` (`ally`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_ally_military_loose`
@@ -687,7 +714,8 @@ CREATE TABLE ogspy_game_rank_ally_military_loose
     KEY `datadate` (`datadate`, `ally`),
     KEY `ally` (`ally`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_ally_military_destruct`
@@ -706,7 +734,8 @@ CREATE TABLE ogspy_game_rank_ally_military_destruct
     KEY `datadate` (`datadate`, `ally`),
     KEY `ally` (`ally`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_ally_honor`
@@ -725,7 +754,8 @@ CREATE TABLE ogspy_game_rank_ally_honor
     KEY `datadate` (`datadate`, `ally`),
     KEY `ally` (`ally`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_ally_points`
@@ -744,7 +774,8 @@ CREATE TABLE ogspy_game_rank_ally_points
     KEY `datadate` (`datadate`, `ally`),
     KEY `ally` (`ally`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_player_economique`
@@ -763,7 +794,8 @@ CREATE TABLE ogspy_game_rank_player_economics
     KEY `datadate` (`datadate`, `player`),
     KEY `player` (`player`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_player_technology`
@@ -782,7 +814,8 @@ CREATE TABLE ogspy_game_rank_player_technology
     KEY `datadate` (`datadate`, `player`),
     KEY `player` (`player`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_player_military`
@@ -802,7 +835,8 @@ CREATE TABLE ogspy_game_rank_player_military
     KEY `datadate` (`datadate`, `player`),
     KEY `player` (`player`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_player_military_built`
@@ -821,7 +855,8 @@ CREATE TABLE ogspy_game_rank_player_military_built
     KEY `datadate` (`datadate`, `player`),
     KEY `player` (`player`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_player_military_loose`
@@ -840,7 +875,8 @@ CREATE TABLE ogspy_game_rank_player_military_loose
     KEY `datadate` (`datadate`, `player`),
     KEY `player` (`player`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_player_military_destruct`
@@ -859,7 +895,8 @@ CREATE TABLE ogspy_game_rank_player_military_destruct
     KEY `datadate` (`datadate`, `player`),
     KEY `player` (`player`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_player_honor`
@@ -878,52 +915,53 @@ CREATE TABLE ogspy_game_rank_player_honor
     KEY `datadate` (`datadate`, `player`),
     KEY `player` (`player`)
 )
-    DEFAULT CHARSET = UTF8;
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_bin;
 
 --
 -- Structure de la table `ogspy_rank_player_points`
 --
 CREATE TABLE ogspy_game_rank_player_points
 (
-    `datadate`  INT(11)      NOT NULL DEFAULT '0',
-    `rank`      INT(11)      NOT NULL DEFAULT '0',
+    `datadate`  INT          NOT NULL DEFAULT 0,
+    `rank`      INT          NOT NULL DEFAULT 0,
     `player`    VARCHAR(30)  NOT NULL DEFAULT '',
-    `player_id` INT(6)       NOT NULL DEFAULT '-1',
+    `player_id` INT          NOT NULL DEFAULT -1,
     `ally`      VARCHAR(100) NOT NULL DEFAULT '',
-    `ally_id`   INT(6)       NOT NULL DEFAULT '-1',
-    `points`    BIGINT       NOT NULL DEFAULT '0',
-    `sender_id` INT(11)      NOT NULL DEFAULT '0',
+    `ally_id`   INT          NOT NULL DEFAULT -1,
+    `points`    BIGINT       NOT NULL DEFAULT 0,
+    `sender_id` INT          NOT NULL DEFAULT 0,
     PRIMARY KEY (`rank`, `datadate`),
     KEY `datadate` (`datadate`, `player`),
     KEY `player` (`player`)
-)
-    DEFAULT CHARSET = UTF8;
-
+) DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin;
 --
 -- Structure de la table `ogspy_game_fleet`
 --
 CREATE TABLE `ogspy_game_player_fleet`
 (
-    `id`              INT(11) NOT NULL AUTO_INCREMENT,
-    `astro_object_id` INT(11) NOT NULL,
-    `PT`              INT(11) NOT NULL DEFAULT '0',
-    `GT`              INT(11) NOT NULL DEFAULT '0',
-    `CLE`             INT(11) NOT NULL DEFAULT '0',
-    `CLO`             INT(11) NOT NULL DEFAULT '0',
-    `CR`              INT(11) NOT NULL DEFAULT '0',
-    `VB`              INT(11) NOT NULL DEFAULT '0',
-    `VC`              INT(11) NOT NULL DEFAULT '0',
-    `REC`             INT(11) NOT NULL DEFAULT '0',
-    `SE`              INT(11) NOT NULL DEFAULT '0',
-    `BMD`             INT(11) NOT NULL DEFAULT '0',
-    `DST`             INT(11) NOT NULL DEFAULT '0',
-    `EDLM`            INT(11) NOT NULL DEFAULT '0',
-    `TRA`             INT(11) NOT NULL DEFAULT '0',
-    `FAU`             INT(11) NOT NULL DEFAULT '0',
-    `ECL`             INT(11) NOT NULL DEFAULT '0',
+    `id`              INT NOT NULL AUTO_INCREMENT,
+    `astro_object_id` INT NOT NULL,
+    `PT`              INT NOT NULL DEFAULT 0,
+    `GT`              INT NOT NULL DEFAULT 0,
+    `CLE`             INT NOT NULL DEFAULT 0,
+    `CLO`             INT NOT NULL DEFAULT 0,
+    `CR`              INT NOT NULL DEFAULT 0,
+    `VB`              INT NOT NULL DEFAULT 0,
+    `VC`              INT NOT NULL DEFAULT 0,
+    `REC`             INT NOT NULL DEFAULT 0,
+    `SE`              INT NOT NULL DEFAULT 0,
+    `BMD`             INT NOT NULL DEFAULT 0,
+    `DST`             INT NOT NULL DEFAULT 0,
+    `EDLM`            INT NOT NULL DEFAULT 0,
+    `TRA`             INT NOT NULL DEFAULT 0,
+    `FAU`             INT NOT NULL DEFAULT 0,
+    `ECL`             INT NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
-    KEY `astro_object_id` (`astro_object_id`)
-) DEFAULT CHARSET = UTF8;
+    UNIQUE KEY `astro_object_id` (`astro_object_id`)
+) DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin;
 
 -- -----------------------------------------------------------------------------
 -- Partie CREATE

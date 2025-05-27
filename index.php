@@ -75,8 +75,7 @@ if (!isset($user_data["id"]) && !(isset($pub_action) && $pub_action == "login_we
     }
     exit();
 }
-$log->debug("user_data : " . print_r($user_data, true));
-//$log->info("Visiteur identifié : " . $user_data["name"] . " (id : " . $user_data["id"] . ")");
+//  Visiteur identifié
 if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
     $log->info("Action : " . $pub_action);
     if (ratio_is_ok()) {

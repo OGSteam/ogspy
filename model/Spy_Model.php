@@ -30,36 +30,15 @@ class Spy_Model extends Model_Abstract
         $sort2 = (int)$sort2;
 
 
-        switch ($sort2) {
-            case 0:
-                $order = " desc";
-                break;
-            case 1:
-                $order = " asc";
-                break;
-            default:
-                $order = " asc";
-        }
+        $order = $sort2 === 0 ? " desc" : " asc";
 
-        switch ($sort) {
-            case 1:
-                $ordered_by = "coordinates" . $order . "";
-                break;
-            case 2:
-                $ordered_by = "ally " . $order;
-                break;
-            case 3:
-                $ordered_by = "player " . $order;
-                break;
-            case 4:
-                $ordered_by = "moon " . $order;
-                break;
-            case 5:
-                $ordered_by = "dateRE " . $order;
-                break;
-            default:
-                $ordered_by = "dateRE " . $order;
-        }
+        $ordered_by = match ($sort) {
+                1 => "coordinates",
+                2 => "ally",
+                3 => "player",
+                4 => "moon",
+                default => "dateRE"
+            } . $order;
 
 
         $favorite = array();

@@ -38,7 +38,8 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     // Tables Player
     define("TABLE_UNIVERSE", $table_prefix . "game_universe");
     define("TABLE_USER_BUILDING", $table_prefix . "game_astro_object");
-    define("TABLE_USER_DEFENSE", $table_prefix . "game_player_defense");
+    define("TABLE_GAME_PLAYER_DEFENSE", $table_prefix . "game_player_defense");
+    define("TABLE_GAME_PLAYER_FLEET", $table_prefix . "game_player_fleet");
     define("TABLE_USER_SPY", $table_prefix . "game_player_spy");
     define("TABLE_USER_TECHNOLOGY", $table_prefix . "game_player_technology");
     define("TABLE_PARSEDSPY", $table_prefix . "game_parsedspy");
