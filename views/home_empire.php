@@ -32,7 +32,7 @@ $view = isset($pub_view) && $pub_view === 'moons' ? 'moons' : 'planets';
 
 $name = $coordinates = $fields = $temperature_min = $temperature_max = $satellite = "";
 //Planète
-print_r($user_building);
+
 foreach ($user_building as $planet_id => $planet) {
     $name            .= "'" . $planet['planet_name'] . "', ";
     $coordinates     .= "'" . $planet['coordinates'] . "', ";

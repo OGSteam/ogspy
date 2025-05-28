@@ -165,10 +165,6 @@ switch ($pub_action) {
         user_del_building();
         break;
 
-    case "move_planet":
-        user_move_empire();
-        break;
-
     case "profile":
         require_once "views/profile.php";
         break;

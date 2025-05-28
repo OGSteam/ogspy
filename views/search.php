@@ -125,12 +125,12 @@ if (isset($type_search)) {
 }
 
 //Données recherche coordonnées colonisables
-$galaxy_down = isset($galaxy_down) ? $galaxy_down : "";
-$galaxy_up = isset($galaxy_up) ? $galaxy_up : "";
-$system_down = isset($system_down) ? $system_down : "";
-$system_up = isset($system_up) ? $system_up : "";
-$row_down = isset($row_down) ? $row_down : "";
-$row_up = isset($row_up) ? $row_up : "";
+$galaxy_down = $galaxy_down ?? "";
+$galaxy_up = $galaxy_up ?? "";
+$system_down = $system_down ?? "";
+$system_up = $system_up ?? "";
+$row_down = $row_down ?? "";
+$row_up = $row_up ?? "";
 
 require_once("views/page_header.php");
 ?>
@@ -140,7 +140,7 @@ require_once("views/page_header.php");
             <input type="hidden" name="action" value="search">
             <thead>
                 <tr>
-                    <th colspan="3"><?php echo ($lang['SEARCH_GLOBAL']); ?></th>
+                    <th colspan="3"><?php echo $lang['SEARCH_GLOBAL']; ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -149,7 +149,7 @@ require_once("views/page_header.php");
                         <input name="type_search" value="player" type="radio" <?php echo $type_player; ?>>
                     </td>
                     <td>
-                        <?php echo ($lang['SEARCH_PLAYER']); ?>
+                        <?php echo $lang['SEARCH_PLAYER']; ?>
                     </td>
                     <td rowspan="3">
                         <input name="string_search" type="text" maxlength="25" size="25" value="<?php echo $string_search; ?>">
@@ -157,14 +157,14 @@ require_once("views/page_header.php");
                 </tr>
                 <tr>
                     <td><input name="type_search" value="ally" type="radio" <?php echo $type_ally; ?>></td>
-                    <td><?php echo ($lang['SEARCH_ALLIANCE']); ?></td>
+                    <td><?php echo $lang['SEARCH_ALLIANCE']; ?></td>
                 </tr>
                 <tr>
                     <td>
                         <input name="type_search" value="planet" type="radio" <?php echo $type_planet; ?>>
                     </td>
                     <td>
-                        <?php echo ($lang['SEARCH_PLANET']); ?>
+                        <?php echo $lang['SEARCH_PLANET']; ?>
                     </td>
                 </tr>
                 <tr>
@@ -172,12 +172,12 @@ require_once("views/page_header.php");
                         <input name="strict" value="false" type="checkbox" <?php echo $strict; ?>>
                     </td>
                     <td colspan="2">
-                        <?php echo ($lang['SEARCH_STRICT']); ?><?php echo help("search_strict"); ?>
+                        <?php echo $lang['SEARCH_STRICT']; ?><?php echo help("search_strict"); ?>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <input class="og-button" type="submit" value="<?php echo ($lang['SEARCH_GO']); ?>">
+                        <input class="og-button" type="submit" value="<?php echo $lang['SEARCH_GO']; ?>">
                     </td>
                 </tr>
             </tbody>
@@ -190,7 +190,7 @@ require_once("views/page_header.php");
             <thead>
                 <tr>
                     <th colspan="4">
-                        <?php echo ($lang['SEARCH_SPECIAL']); ?>
+                        <?php echo $lang['SEARCH_SPECIAL']; ?>
                     </th>
                 </tr>
             </thead>
@@ -209,30 +209,30 @@ require_once("views/page_header.php");
                             <option value='spy' <?php echo $str_selected['spy'] . ">" . $lang['SEARCH_PLANETS_SPYED'] ?></option>
                         </select>
                     </td>
-                    <td><?php echo ($lang['SEARCH_MINIMUM']); ?></td>
-                    <td><?php echo ($lang['SEARCH_MAXIMUM']); ?></td>
+                    <td><?php echo $lang['SEARCH_MINIMUM']; ?></td>
+                    <td><?php echo $lang['SEARCH_MAXIMUM']; ?></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
-                    <td><?php echo ($lang['SEARCH_GALAXY']); ?></td>
+                    <td><?php echo $lang['SEARCH_GALAXY']; ?></td>
                     <td><input name="galaxy_down" type="text" maxlength="2" size="3" value="<?php echo $galaxy_down; ?>"></td>
                     <td><input name="galaxy_up" type="text" maxlength="2" size="3" value="<?php echo $galaxy_up; ?>"></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
-                    <td><?php echo ($lang['SEARCH_SYSTEM']); ?></td>
+                    <td><?php echo $lang['SEARCH_SYSTEM']; ?></td>
                     <td><input name="system_down" type="text" maxlength="3" size="3" value="<?php echo $system_down; ?>"></td>
                     <td><input name="system_up" type="text" maxlength="3" size="3" value="<?php echo $system_up; ?>"></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><?php echo ($lang['SEARCH_POSITION']); ?></td>
+                    <td><?php echo $lang['SEARCH_POSITION']; ?></td>
                     <td><input name="row_down" type="text" maxlength="2" size="3" value="<?php echo $row_down; ?>">
                     </td>
                     <td><input name="row_up" type="text" maxlength="2" size="3" value="<?php echo $row_up; ?>"></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><input class="og-button" type="submit" value="<?php echo ($lang['SEARCH_GO']); ?>"></td>
+                    <td colspan="4"><input class="og-button" type="submit" value="<?php echo $lang['SEARCH_GO']; ?>"></td>
                 </tr>
 
             </tbody>
@@ -241,10 +241,6 @@ require_once("views/page_header.php");
         </form>
     </table>
 
-
-
-    <? // affichage uniquement si resultat 
-    ?>
     <?php if (count($search_result) > 0) : ?>
         <table class="og-table og-medium-table og-table-galaxy ">
             <thead>
@@ -318,11 +314,11 @@ require_once("views/page_header.php");
                 <!-- affichage contenu de la reponse -->
                 <?php foreach ($search_result as $v) : ?>
 
-                    <?php if ($v["ally"] != "") : ?>
-                        <?php $tooltiptab["ally"][] = $v["ally"]; //pour calcul tooltip ;
+                    <?php if ($v["ally_name"] != "") : ?>
+                        <?php $tooltiptab["ally"][] = $v["ally_name"]; //pour calcul tooltip ;
                         ?>
                     <?php endif; ?>
-                    <?php $tooltiptab["player"][] = $v["player"]; // pour calcul tooltip
+                    <?php $tooltiptab["player"][] = $v["player_name"]; // pour calcul tooltip
                     ?>
 
                     <?php echo displayGalaxyTabletbodytr($v, false); ?>
@@ -346,7 +342,7 @@ require_once("views/page_header.php");
         </table>
 
         <?php if ($type_search == "ally" || $type_search == "player") : ?>
-            <? $individual_ranking = null; ?>
+            <?php $individual_ranking = null; ?>
             <?php if ($type_search == "ally") : ?>
                 <?php $individual_ranking = galaxy_show_ranking_unique_ally($string_search); ?>
             <?php else : ?>
@@ -358,38 +354,38 @@ require_once("views/page_header.php");
                     <tr>
                         <?php if ($type_search == "ally") : ?>
                             <th colspan="16">
-                                <?php echo ($lang['SEARCH_RANKOF']); ?> <a><?php echo $string_search; ?></a>
+                                <?php echo $lang['SEARCH_RANKOF']; ?> <a><?php echo $string_search; ?></a>
                             </th>
                         <?php else : ?>
                             <th colspan="15">
-                                <?php echo ($lang['SEARCH_RANKOF']); ?> <a><?php echo $string_search; ?></a>
+                                <?php echo $lang['SEARCH_RANKOF']; ?> <a><?php echo $string_search; ?></a>
                             </th>
                         <?php endif; ?>
                     </tr>
                     <tr>
                         <th>
-                            <?php echo ($lang['SEARCH_DATE']); ?>
+                            <?php echo $lang['SEARCH_DATE']; ?>
                         </th>
                         <th colspan="2">
-                            <?php echo ($lang['SEARCH_RANK_GENERAL']); ?>
+                            <?php echo $lang['SEARCH_RANK_GENERAL']; ?>
                         </th>
                         <th colspan="2">
-                            <?php echo ($lang['SEARCH_RANK_ECONOMY']); ?>
+                            <?php echo $lang['SEARCH_RANK_ECONOMY']; ?>
                         </th>
                         <th colspan="2">
-                            <?php echo ($lang['SEARCH_RANK_RESEARCH']); ?>
+                            <?php echo $lang['SEARCH_RANK_RESEARCH']; ?>
                         </th>
                         <th colspan="2">
-                            <?php echo ($lang['SEARCH_RANK_MILITARY']); ?>
+                            <?php echo $lang['SEARCH_RANK_MILITARY']; ?>
                         </th>
                         <th colspan="2">
-                            <?php echo ($lang['SEARCH_RANK_MILITARY_LOST']); ?>
+                            <?php echo $lang['SEARCH_RANK_MILITARY_LOST']; ?>
                         </th>
                         <th colspan="2">
-                            <?php echo ($lang['SEARCH_RANK_MILITARY_DESTROYED']); ?>
+                            <?php echo $lang['SEARCH_RANK_MILITARY_DESTROYED']; ?>
                         </th>
                         <th colspan="2">
-                            <?php echo ($lang['SEARCH_RANK_MILITARY_HONOR']); ?>
+                            <?php echo $lang['SEARCH_RANK_MILITARY_HONOR']; ?>
                         </th>
 
                         <?php if ($type_search == "ally") : ?>

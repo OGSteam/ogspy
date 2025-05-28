@@ -357,35 +357,51 @@ function galaxy_search()
     }
     $result = $universeRepository->find($criteria, $order, $limit, $number);
     $total_page = ceil($result['total_row'] / $number);
-    $search_result = array();
-    foreach ($result['planets'] as $planet) {
-        $log->debug('Planet list from Galaxy', $planet);
-        $friend = in_array($planet["ally_name"], $allied);
-        $hided = in_array($planet["ally_name"], $protected);
+    $search_result_1D = array(); // Initialiser comme un tableau 1D
+    $log->debug('Planet list from Galaxy (raw from find method)', $result['planets']);
 
-        $data_spy = new Spy_Model();
-        $nb_spy_reports = $data_spy->get_nb_spy_by_planet($planet["galaxy"], $planet["system"], $planet["row"]);
-        $search_result[] = array(
-            "galaxy" => $planet["galaxy"],
-            "system" => $planet["system"],
-            "row" => $planet["row"],
-            "Pha" => $planet["Pha"],
-            "PoSa" => $planet["PoSa"],
-            "last_update_moon" => $planet["last_update_moon"],
-            "type" => $planet["type"],
-            "ally" => $planet["ally_name"],
-            "player" => $planet["player_name"],
-            "report_spy" => $nb_spy_reports,
-            "status" => $planet["status"],
-            "timestamp" => $planet["last_update"],
-            "last_update_user_name" => $planet["user_name"],
-            "allied" => $friend,
-            "hided" => $hided,
-            "planet" =>  $planet["planet_name"]
+    // $result['planets'] est maintenant un tableau 1D d'objets planète
+    if (is_array($result['planets'])) {
+        foreach ($result['planets'] as $planet_details) {
+            // Vérifier que $planet_details est un tableau et contient les clés nécessaires
+            if (!is_array($planet_details) ||
+                !isset($planet_details['galaxy']) ||
+                !isset($planet_details['system']) ||
+                !isset($planet_details['row']) ||
+                !array_key_exists('ally_name', $planet_details)) { // Utiliser array_key_exists pour 'ally_name' car il peut être null
+                $log->warn('Skipping malformed planet data item in galaxy_search', $planet_details);
+                continue;
+            }
 
-        );
+            $log->debug('Processing planet for search result (1D)', $planet_details);
+
+            $current_planet_output = $planet_details; // Utiliser directement les détails formatés par find()
+
+            // Ajouter les champs spécifiques calculés dans galaxy_search
+            $isFriend = in_array($planet_details["ally_name"], $allied);
+            $isHidden = in_array($planet_details["ally_name"], $protected);
+
+            $data_spy = new Spy_Model();
+            $nb_spy_reports = $data_spy->get_nb_spy_by_planet(
+                $planet_details["galaxy"],
+                $planet_details["system"],
+                $planet_details["row"]
+            );
+
+            $current_planet_output["report_spy"] = $nb_spy_reports;
+            $current_planet_output["allied"] = $isFriend;
+            $current_planet_output["hided"] = $isHidden;
+            // Le champ "planet" n'est plus nécessaire ici car "planet_name" est déjà dans $planet_details
+            // Le champ "type" est également déjà dans $planet_details
+
+            $search_result_1D[] = $current_planet_output; // Ajouter à la liste 1D
+        }
+    } else {
+        $log->warn('No planets data or invalid format from find() in galaxy_search', $result['planets']);
     }
-    return array($search_result, $total_page);
+
+    $log->debug('Final search_result for galaxy_search (1D structure)', $search_result_1D);
+    return array($search_result_1D, $total_page);
 }
 
 /**
@@ -1828,6 +1844,7 @@ function displayGalaxyAllyTooltip($ally)
     $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : "&nbsp;";
     $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : "&nbsp;";
     $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : "&nbsp;";
+    $number_member = isset($ranking["number_member"]) ? formate_number($ranking["number_member"]) : "&nbsp;";
 
     $tooltip .= "<tr><td class=\"tdcontent \" colspan=\"3\" ><span class=\"og-highlight\">" . $lang['GALAXY_RANK'] . " " . $datadate . "</span> </td></tr>";
     $tooltip .= "<tr><td class=\"tdstat\" >" . $lang['GALAXY_RANK_GENERAL'] . "</td><td class=\"tdcontent\">" . $general_rank . "</td><td class=\"tdcontent\">" . $general_points . "</td></tr>";
@@ -1838,7 +1855,7 @@ function displayGalaxyAllyTooltip($ally)
     $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_LOST'] . "</td><td class=\"tdcontent\">" . $military_l_rank . "</td><td class=\"tdcontent\">" . $military_l_points . "</td></tr>";
     $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_DESTROYED'] . "</td><td class=\"tdcontent\">" . $military_d_rank . "</td><td class=\"tdcontent\">" . $military_d_points . "</td></tr>";
     $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_HONNOR'] . "</td><td class=\"tdcontent\">" . $honnor_rank . "</td><td class=\"tdcontent\">" . $honnor_points . "</td></tr>";
-    $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\" ><span class=\"og-highlight\">" . formate_number($ranking["number_member"]) . "</span> " . $lang['GALAXY_MEMBERS'] . "</td></tr>";
+    $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\" ><span class=\"og-highlight\">" . $number_member . "</span> " . $lang['GALAXY_MEMBERS'] . "</td></tr>";
 
     $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
     $tooltip .= '</tbody>';
@@ -1927,8 +1944,8 @@ function displayGalaxyTabletbodytr($populate, $isGalaxy = true)
     $v["planet_name"] = $v["planet_name"] ?? "";
     $tooltiptab = []; // Initialize tooltiptab
 
-    $ally = $v["ally_name"];
-    $player = $v["player_name"];
+    $ally = $v["ally_name"] ?? "";
+    $player = $v["player_name"] ?? "";
     $row = $v["row"];
     $galaxy = $v["galaxy"];
     $system = $v["system"];
@@ -1968,15 +1985,15 @@ function displayGalaxyTabletbodytr($populate, $isGalaxy = true)
         ($isGalaxy ? $v["row"] : '<a href="index.php?action=galaxy&amp;galaxy=' . $v["galaxy"] . '&amp;system=' . $v["system"] . '">' . $v["galaxy"] . ':' . $v["system"] . ':' . $v["row"] . '</a>') .
         '</td>' .
         '<td class="tdcontent">' .
-        ($v["planet_name"] == "" ? '&nbsp;' : '<a href="index.php?action=search&amp;type_search=planet&amp;string_search=' . $v["planet_name"] . '&amp;strict=on">' . $v["planet_name"] . '</a>') .
+        (!empty($v["planet_name"]) ? '&nbsp;' : '<a href="index.php?action=search&amp;type_search=planet&amp;string_search=' . $v["planet_name"] . '&amp;strict=on">' . $v["planet_name"] . '</a>') .
         '</td>' .
         '<td class="tdcontent">' .
-        ($v["ally_name"] != "" ? '<a ' . $ToolTip_Helper->GetHTMLClassContent(["tooltipstered"], "ttp_alliance_" . $v["ally_name"]) . ' href="index.php?action=search&amp;type_search=ally&amp;string_search=' . $ally . '&strict=on">' . $ally . '</a>' : '&nbsp;') .
+        (!empty($v["ally_name"]) ? '<a ' . $ToolTip_Helper->GetHTMLClassContent(["tooltipstered"], "ttp_alliance_" . $v["ally_name"]) . ' href="index.php?action=search&amp;type_search=ally&amp;string_search=' . $ally . '&strict=on">' . $ally . '</a>' : '&nbsp;') .
         '</td>' .
         '<td class="tdcontent">' .
         (!empty($v["player_name"]) ? '<a ' . $ToolTip_Helper->GetHTMLClassContent(["tooltipstered"], "ttp_player_" . $v["player_name"]) . ' href="index.php?action=search&amp;type_search=player&amp;string_search=' . $player . '&strict=on">' . $player . '</a>' : '&nbsp;') .
         '</td>' .
-        '<td class="tdcontent"><span class="' . ($v["moon"] === '1' ? 'ogame-icon ogame-icon-moon ' : '') . '">&nbsp;</span></td>' .
+        '<td class="tdcontent"><span class="' . ($v["type"] === 'moon' ? 'ogame-icon ogame-icon-moon ' : '') . '">&nbsp;</span></td>' .
         '<td class="tdcontent">' .
         ($v["PoSa"] > 0 ? '<span class="ogame-icon ogame-icon-gate ">P</span>' : '&nbsp;') .
         '</td>' .
@@ -1993,7 +2010,7 @@ function displayGalaxyTabletbodytr($populate, $isGalaxy = true)
         (isset($v["report_rc"]) && $v["report_rc"] > 0 ? '<a href="#" onClick="window.open(\'index.php?action=show_reportrc&amp;galaxy=' . $galaxy . '&amp;system=' . $system . '&amp;row=' . $row . '\',\'_blank\',\'width=640, height=480, toolbar=0, location=0, directories=0, status=0, scrollbars=1, resizable=1, copyhistory=0, menuBar=0\');return(false)">' . $v["report_rc"] . $lang['GALAXY_CR'] . '</a>' : '&nbsp;') .
         '</td>' .
         '<td class="tdcontent og-galaxy-tdtimestamp">' .
-        '<span class="og-galaxy-timestamp">' . (intval($v["timestamp"]) != 0 ? date("d F o G:i", $v["timestamp"]) : '&nbsp;') . '</span>' .
+        '<span class="og-galaxy-timestamp">' . (intval($v["last_update"]) != 0 ? date("d F o G:i", $v["last_update"]) : '&nbsp;') . '</span>' .
         '<span class="og-galaxy-poster">- ' . $v["last_update_user_name"] . '</span>' .
         '</td>' .
         '</tr>';

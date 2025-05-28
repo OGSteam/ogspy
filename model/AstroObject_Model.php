@@ -90,18 +90,18 @@ class AstroObject_Model extends Model_Abstract
         for ($s_idx = $system_down; $s_idx <= $system_up; $s_idx++) {
             foreach (range(1, 15) as $r_idx) {
                 $population[$s_idx][$r_idx] = array(
+                    "type" => "planet", // Actual data, can override default type
                     "galaxy" => $galaxy,
                     "system" => $s_idx,
                     "row" => $r_idx,
                     "ally_name" => "",
                     "player_name" => "",
-                    "moon" => "0", // Default moon status
-                    "last_update_moon" => "", // From planet's record: p.last_update_moon
                     "Pha" => "",
                     "PoSa" => "",
                     "planet_name" => "", // Planet name
                     "status" => "",
-                    "timestamp" => "", // Planet last update (p.last_update)
+                    "last_update" => "", // Planet last update (p.last_update)
+                    "last_update_moon" => "", // From planet's record: p.last_update_moon
                     "last_update_user_id" => "", // Added for user ID of last update
                     "last_update_user_name" => "", // Added for user name of last update
                     "player_last_active" => "" // Player's datadate: gp.datadate
@@ -153,7 +153,7 @@ class AstroObject_Model extends Model_Abstract
                 $population[$s][$r]['status'] = $p_row['player_status'] ?? "";
                 $population[$s][$r]['Pha'] = $p_row['phalanx'] ?? "0";
                 $population[$s][$r]['PoSa'] = $p_row['gate'] ?? "0";
-                $population[$s][$r]['timestamp'] = $p_row['planet_last_update'] ?? "";
+                $population[$s][$r]['last_update'] = $p_row['planet_last_update'] ?? "";
                 $population[$s][$r]['last_update_user_id'] = $p_row['last_update_user_id'] ?? ""; // Added user ID
                 $population[$s][$r]['last_update_user_name'] = $p_row['last_update_user_name'] ?? ""; // Added user ID
                 $population[$s][$r]['player_last_active'] = $p_row['player_datadate'] ?? "";
@@ -184,7 +184,7 @@ class AstroObject_Model extends Model_Abstract
             foreach (range(1, 15) as $r_idx) {
                 if (isset($moons_details[$s_idx][$r_idx])) {
                     $moon_info = $moons_details[$s_idx][$r_idx];
-                    $population[$s_idx][$r_idx]['moon'] = '1';
+                    $population[$s_idx][$r_idx]['type'] = 'moon'; // Set type to 'moon' for moon entries
                     // $population[$s_idx][$r_idx]['moon_name'] = $moon_info['moon_name'] ?? ""; // Uncomment if moon name is needed in the view
                     $population[$s_idx][$r_idx]['Pha'] = $moon_info['phalanx_level'] ?? "";
                     $population[$s_idx][$r_idx]['PoSa'] = $moon_info['gate_level'] ?? "";
@@ -470,12 +470,13 @@ class AstroObject_Model extends Model_Abstract
         $start = (int)$start;
         $number = (int)$number;
 
-
-        $select = "SELECT `type`, `galaxy`, `system`, `row`, `Pha`, `PoSa`, `last_update_moon`,
-                  ally.`name` AS ally_name, player.`name` AS player_name, `status`,
-                  `last_update`, user.`name` AS user_name, uni.`name` AS planet_name";
+        // Modifié pour inclure les champs nécessaires et les alias correspondants à get_system
+        $select = "SELECT uni.`type`, uni.`galaxy`, uni.`system`, uni.`row`, uni.`Pha`, uni.`PoSa`, uni.`last_update_moon`," .
+                  " ally.`name` AS ally_name, player.`name` AS player_name, player.`status` AS player_status," .
+                  " uni.`last_update`, user.`name` AS last_update_user_name, uni.`name` AS planet_name," .
+                  " uni.`last_update_user_id`, player.`datadate` AS player_last_active";
         $request = " FROM " . TABLE_USER_BUILDING . " uni" .
-        " LEFT JOIN " . TABLE_USER . "  user  ON `last_update_user_id` = user.`id`" .
+        " LEFT JOIN " . TABLE_USER . "  user  ON uni.`last_update_user_id` = user.`id`" . // uni.last_update_user_id
         " LEFT JOIN " . TABLE_GAME_PLAYER . "  player  ON player.`id`  = uni.`player_id`" .
         " LEFT JOIN " . TABLE_GAME_ALLY . "  ally  ON ally.`id` = uni.`ally_id`";
 
@@ -626,11 +627,38 @@ class AstroObject_Model extends Model_Abstract
         list($total_row) = $this->db->sql_fetch_row($result);
 
         $result = $this->db->sql_query($query);
-        $planets = array();
-        while ($planet = $this->db->sql_fetch_assoc($result)) {
-            $planets[] = $planet;
+
+        // Transformation des résultats pour correspondre au format de get_system
+        $raw_planets_data = array();
+        while ($row = $this->db->sql_fetch_assoc($result)) {
+            $raw_planets_data[] = $row;
         }
 
-        return array('total_row' => $total_row, 'planets' => $planets);
+        $formatted_planets = array();
+        foreach ($raw_planets_data as $planet_data) {
+            $s = $planet_data['system'];
+            $r = $planet_data['row'];
+
+            // Initialiser l'entrée planète/lune avec la structure de type get_system
+            $formatted_planets[] = array(
+                "galaxy" => $planet_data['galaxy'],
+                "system" => $s,
+                "row" => $r,
+                "ally_name" => $planet_data['ally_name'] ?? "",
+                "player_name" => $planet_data['player_name'] ?? "",
+                "type" => $planet_data['type'],
+                "Pha" => $planet_data['Pha'] ?? "",
+                "PoSa" => $planet_data['PoSa'] ?? "",
+                "planet_name" => $planet_data['planet_name'] ?? "",
+                "status" => $planet_data['player_status'] ?? "", // de player.status
+                "last_update" => $planet_data['last_update'] ?? "", // de uni.last_update
+                "last_update_moon" => $planet_data['last_update_moon'] ?? $planet_data['last_update'],
+                "last_update_user_id" => $planet_data['last_update_user_id'] ?? "",
+                "last_update_user_name" => $planet_data['last_update_user_name'] ?? "", // de user.name
+                "player_last_active" => $planet_data['player_last_active'] ?? "" // de player.datadate
+            );
+        }
+
+        return array('total_row' => $total_row, 'planets' => $formatted_planets);
     }
 }

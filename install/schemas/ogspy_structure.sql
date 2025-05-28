@@ -302,7 +302,7 @@ CREATE TABLE `ogspy_game_astro_object`
     `galaxy`              SMALLINT(2) NOT NULL DEFAULT '1',
     `system`              SMALLINT(3) NOT NULL DEFAULT '1',
     `row`                 SMALLINT(2) NOT NULL DEFAULT '1',
-    `name`                VARCHAR(20) NOT NULL DEFAULT '',
+    `name`                VARCHAR(50) NOT NULL DEFAULT '',
     `player_id`           INT(11)     NOT NULL DEFAULT '0',
     `ally_id`             INT(6)      NOT NULL DEFAULT '-1',
     `fields`              SMALLINT(3) NOT NULL DEFAULT '0',
