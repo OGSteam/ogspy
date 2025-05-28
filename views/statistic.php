@@ -178,7 +178,7 @@ require_once 'views/page_header.php';
 
             // Statistiques participation des membres actifs
             //todo sortir de la vue
-            $sumStats = new Statistics_Model()->get_users_stat_sum();
+            $sumStats = (new Statistics_Model())->get_users_stat_sum();
             $planetimport = ($sumStats["planet_imports"] != 0) ? $sumStats["planet_imports"] : 1;
             $spyimport = ($sumStats["spy_imports"] != 0) ? $sumStats["spy_imports"] : 1;
             $rankimport = ($sumStats["rank_imports"] != 0) ? $sumStats["rank_imports"] : 1;
