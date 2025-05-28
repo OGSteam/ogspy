@@ -18,8 +18,13 @@ if (!defined('IN_SPYOGAME')) {
 
 require_once("includes/ogame.php");
 
+use Ogsteam\Ogspy\Model\Player_Model;
+
 global $server_config;
 
+
+// On récupère les données de l'utilisateur
+$player_data = (new Player_Model())->get_player_data($user_data['player_id']);
 $user_empire = player_get_empire($player_data['id']);
 
 $user_building   = $user_empire['building'];

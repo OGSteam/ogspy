@@ -29,10 +29,7 @@ class Player_Model extends Model_Abstract
         $request .= " ORDER BY `name`";
         $result = $this->db->sql_query($request);
 
-        $info_users = [];
-        while ($row = $this->db->sql_fetch_assoc($result)) {
-            $info_users[] = $row;
-        }
+       $info_users = $this->db->sql_fetch_assoc($result);
 
         if (empty($info_users)) {
             return false;

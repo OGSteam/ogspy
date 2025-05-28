@@ -26,18 +26,12 @@ class Player_Defense_Model  extends Model_Abstract
 
         $tElemList = array("astro_object_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP");
 
-        // Colonnes préfixées par l'alias de la table udef pour éviter toute ambiguïté
-        $selectFields = array();
-        foreach ($tElemList as $field) {
-            $selectFields[] = "def.`" . $field . "`";
-        }
 
-        $request = "SELECT " . implode(", ", $selectFields) . " ";
+        $request = "SELECT `astro_object_id`, `LM`, `LLE`, `LLO`, `CG`, `AI`, `LP`, `PB`, `GB`, `MIC`, `MIP`";
         $request .= " FROM " . TABLE_GAME_PLAYER_DEFENSE . " AS def";
         // Jointure avec la table des objets astraux pour obtenir les informations du joueur
-        $request .= " INNER JOIN " . TABLE_GAME_ASTRO_OBJECT . " AS astro ON def.`astro_object_id` = astro.`id`";
+        $request .= " INNER JOIN " . TABLE_USER_BUILDING . " AS astro ON def.`astro_object_id` = astro.`id`";
         $request .= " WHERE astro.`player_id` = " . $playerId;
-        $request .= " ORDER BY def.`astro_object_id`";
         $log->info("[OGSpy_Player_Defense_Model] select_player_defense - SQL Query: " . $request);
 
         $result = $this->db->sql_query($request);
@@ -46,15 +40,8 @@ class Player_Defense_Model  extends Model_Abstract
             $log->error("[OGSpy_Player_Defense_Model] select_player_defense - SQL Query FAILED!", ['error' => $this->db->sql_error()]);
         }
 
-        $tDefense = array();
-        if ($result) {
-            while ($row =  $this->db->sql_fetch_assoc($result)) {
-                $tDefense[$row["astro_object_id"]] = array();
-                foreach ($tElemList as $elem) {
-                    $tDefense[$row["astro_object_id"]][$elem] = $row[$elem] ?? 0;
-                }
-            }
-        }
+        $tDefense = $this->db->sql_fetch_assoc($result);
+
         $log->info("[OGSpy_Player_Defense_Model] select_player_defense - Number of defense entries found: " . count($tDefense));
         $log->info("[OGSpy_Player_Defense_Model] select_player_defense - Returned Defense Data:", ['data' => $tDefense]);
         return $tDefense;
