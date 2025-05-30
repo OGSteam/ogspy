@@ -38,16 +38,16 @@ class Player_Building_Model  extends Model_Abstract
      * @param $user_id
      * @return mixed
      */
-    public function get_moon_list($user_id)
+    public function get_moon_list($player_id)
     {
         $user_id = (int)$user_id;
 
         // les lunes
-        $request = "SELECT `planet_id`, `coordinates`";
+        $request = "SELECT `id`, `coordinates`";
         $request .= " FROM " . TABLE_USER_BUILDING;
-        $request .= " WHERE `user_id` = " . $user_id;
-        $request .= " AND `planet_id` > 199";
-        $request .= " ORDER BY `planet_id`";
+        $request .= " WHERE `player_id` = " . $player_id;
+        $request .= " AND `type` = 'moon'";
+        $request .= " ORDER BY `id`";
         $result =  $this->db->sql_query($request);
         while (list($planet_id, $coordinates) = $this->db->sql_fetch_row($result)) {
             $moon_position[$coordinates] = $planet_id;
@@ -55,36 +55,42 @@ class Player_Building_Model  extends Model_Abstract
         return $moon_position;
     }
     /**
-     * @param $user_id
-     * @return int|\Ogsteam\Ogspy\the
+     * Récupère le nombre de planètes d'un joueur spécifique.
+     *
+     * Cette méthode exécute une requête SQL pour compter le nombre de planètes
+     * associées à un joueur donné dans la table `TABLE_USER_BUILDING`.
+     *
+     * @param int $player_id L'identifiant du joueur dont les planètes doivent être comptées.
+     * @return int Le nombre de planètes du joueur.
      */
-    public function get_nb_planets($user_id)
+    public function get_nb_planets(int $player_id)
     {
-        $user_id = (int)$user_id;
-
-        $request = "SELECT `planet_id` ";
+        $request = "SELECT COUNT(*) ";
         $request .= " FROM " . TABLE_USER_BUILDING;
-        $request .= " WHERE `user_id` = " . $user_id;
-        $request .= " ORDER BY `planet_id`";
+        $request .= " WHERE `player_id` = " . $player_id . " AND `type` = 'planet'";
+
         $result =  $this->db->sql_query($request);
-        return  $this->db->sql_numrows($result);
+        list($count) = $this->db->sql_fetch_row($result);
+        return  $count;
     }
     /**
-     * @param $user_id
-     * @return int|\Ogsteam\Ogspy\the
+     * Récupère le nombre de lunes d'un joueur spécifique.
+     *
+     * Cette méthode exécute une requête SQL pour compter le nombre de lunes
+     * associées à un joueur donné dans la table `TABLE_USER_BUILDING`.
+     *
+     * @param int $player_id L'identifiant du joueur dont les lunes doivent être comptées.
+     * @return int Le nombre de lunes du joueur.
      */
-    public function get_nb_moons($user_id)
+    public function get_nb_moons(int $player_id)
     {
-        //TODO : PRévoir un simple count()
-        $user_id = (int)$user_id;
-
-        $request = "SELECT `planet_id` ";
+        $request = "SELECT COUNT(*) ";
         $request .= " FROM " . TABLE_USER_BUILDING;
-        $request .= " WHERE `user_id` = " . $user_id;
-        $request .= " AND `planet_id` > 199 ";
-        $request .= " ORDER BY `planet_id`";
-        $result =  $this->db->sql_query($request);
-        return  $this->db->sql_numrows($result);
+        $request .= " WHERE `player_id` = " . $player_id . " AND `type` = 'moon'";
+
+        $result = $this->db->sql_query($request);
+        list($count) = $this->db->sql_fetch_row($result);
+        return  $count;
     }
 
 
@@ -95,25 +101,23 @@ class Player_Building_Model  extends Model_Abstract
      * Cette méthode interroge la table `TABLE_USER_BUILDING` pour récupérer
      * les informations sur les boosters associés à un joueur donné.
      *
-     * @param int $id_player L'identifiant du joueur dont les boosters doivent être récupérés.
+     * @param int $player_id L'identifiant du joueur dont les boosters doivent être récupérés.
      * @return array Un tableau associatif contenant les boosters pour chaque planète du joueur.
      *               Chaque élément du tableau est une entrée associative avec les clés :
      *               - `user_id` : L'identifiant de l'utilisateur.
      *               - `planet_id` : L'identifiant de la planète.
      *               - `boosters` : Les boosters associés.
      */
-    public function get_all_booster_player($id_player)
+    public function get_all_booster_player(int $player_id)
     {
-        $id_player = (int)$id_player;
-
-        $request = "SELECT `user_id`, `planet_id`, `boosters` FROM " . TABLE_USER_BUILDING . " WHERE `user_id`=" . $id_player;
+        $request = "SELECT `player_id`, `id`, `boosters` FROM " . TABLE_USER_BUILDING . " WHERE `player_id`=" . $player_id;
         $result = $this->db->sql_query($request);
 
-        $Boosters = array();
-        while (list($user_id, $planet_id, $boosters) = $this->db->sql_fetch_row($result)) {
-            $Boosters[$planet_id] = array("user_id" => $user_id, "planet_id" => $planet_id, "boosters" => $boosters);
+        $playerBoosters = array();
+        while (list($player_id, $id, $boosters) = $this->db->sql_fetch_row($result)) {
+            $playerBoosters[$planet_id] = array("user_id" => $player_id, "planet_id" => $id, "boosters" => $boosters);
         }
-        return $Boosters;
+        return $playerBoosters;
     }
 
     /**

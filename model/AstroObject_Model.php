@@ -192,9 +192,6 @@ class AstroObject_Model extends Model_Abstract
                 }
             }
         }
-
-
-
         return $population;
     }
 
@@ -415,14 +412,17 @@ class AstroObject_Model extends Model_Abstract
     }
 
     /**
-     * Retourne les systemes obsoletes
-     * @param $galaxy Integer si 0 toutes les galaxies
-     * @param $system_down borne systeme basse
-     * @param $row $system_up systeme haute
-     * @param $moon recherche sur lune
-     * @param $indice Indice de recherche
-     * @param $since tableau regroupant les valuers possibles
-     * @return mixed
+     * Récupère les systèmes solaires considérés comme obsolètes selon les critères spécifiés.
+     * Un système est considéré comme obsolète lorsque sa dernière mise à jour est antérieure
+     * à une date limite définie.
+     *
+     * @param int $galaxy Numéro de la galaxie à vérifier. Si 0, recherche dans toutes les galaxies.
+     * @param int $system_down Limite inférieure pour la plage des systèmes solaires à vérifier.
+     * @param int $system_up Limite supérieure pour la plage des systèmes solaires à vérifier.
+     * @param int $indice Index correspondant à la période d'obsolescence à utiliser dans le tableau $since.
+     * @param array $since Tableau contenant les différentes périodes d'obsolescence disponibles.
+     * @param bool $forMoon Si true, recherche les lunes obsolètes. Si false, recherche les planètes obsolètes.
+     * @return array Tableau associatif regroupant les systèmes obsolètes par période, avec leurs informations de galaxie, système, position et dernière mise à jour.
      */
     public function get_galaxy_obsolete($galaxy, $system_down, $system_up, $indice, $since, $forMoon = false)
     {
@@ -472,13 +472,13 @@ class AstroObject_Model extends Model_Abstract
 
         // Modifié pour inclure les champs nécessaires et les alias correspondants à get_system
         $select = "SELECT uni.`type`, uni.`galaxy`, uni.`system`, uni.`row`, uni.`Pha`, uni.`PoSa`, uni.`last_update_moon`," .
-                  " ally.`name` AS ally_name, player.`name` AS player_name, player.`status` AS player_status," .
-                  " uni.`last_update`, user.`name` AS last_update_user_name, uni.`name` AS planet_name," .
-                  " uni.`last_update_user_id`, player.`datadate` AS player_last_active";
+            " ally.`name` AS ally_name, player.`name` AS player_name, player.`status` AS player_status," .
+            " uni.`last_update`, user.`name` AS last_update_user_name, uni.`name` AS planet_name," .
+            " uni.`last_update_user_id`, player.`datadate` AS player_last_active";
         $request = " FROM " . TABLE_USER_BUILDING . " uni" .
-        " LEFT JOIN " . TABLE_USER . "  user  ON uni.`last_update_user_id` = user.`id`" . // uni.last_update_user_id
-        " LEFT JOIN " . TABLE_GAME_PLAYER . "  player  ON player.`id`  = uni.`player_id`" .
-        " LEFT JOIN " . TABLE_GAME_ALLY . "  ally  ON ally.`id` = uni.`ally_id`";
+            " LEFT JOIN " . TABLE_USER . "  user  ON uni.`last_update_user_id` = user.`id`" . // uni.last_update_user_id
+            " LEFT JOIN " . TABLE_GAME_PLAYER . "  player  ON player.`id`  = uni.`player_id`" .
+            " LEFT JOIN " . TABLE_GAME_ALLY . "  ally  ON ally.`id` = uni.`ally_id`";
 
         $where = "";
         if ($criteria->getPlayerName() != null) {

@@ -155,7 +155,7 @@ function ogame_production_foreuse_bonus($user_building, $player_data)
     if ($player_data['class'] === 'COL') {
         $bonus_foreuse = $bonus_foreuse * (1 + $FOR_BONUS_COL);
     }
-    $nb_foreuse_max = ogame_production_foreuse_max($user_building['M'], $user_building['C'], $user_building['D'], $user_data);
+    $nb_foreuse_max = ogame_production_foreuse_max($user_building['M'], $user_building['C'], $user_building['D'], $player_data);
 
     if ($user_building['FOR'] > $nb_foreuse_max) {
         $user_building['FOR'] = $nb_foreuse_max;
@@ -271,7 +271,7 @@ function ogame_production_building($building, $user_building = null, $user_techn
             $production_mine_base['M'] = ogame_production_building('M', $user_building, null, null, $server_config)['M'];
             $production_mine_base['C'] = ogame_production_building('C', $user_building, null, null, $server_config)['C'];
             $production_mine_base['D'] = ogame_production_building('D', $user_building, null, null, $server_config)['D'];
-            $bonus_for = ogame_production_foreuse_bonus($user_building, $user_data);
+            $bonus_for = ogame_production_foreuse_bonus($user_building, $player_data);
 
             $result['M'] = round($production_mine_base['M'] * $bonus_for['bonus']);
             $result['C'] = round($production_mine_base['C'] * $bonus_for['bonus']);
@@ -354,11 +354,11 @@ function ogame_production_planet($user_building, $user_technology = null, $playe
     if (!isset($player_data['off_full'])) {
         $player_data['off_full'] = 0;
     }
-    if (!isset($player_data['user_class'])) {
-        $player_data['user_class'] = 'none';
+    if (!isset($player_data['class'])) {
+        $player_data['class'] = 'none';
     }
-    if (!in_array($player_data['user_class'], $names['CLASS'], true)) {
-        $player_data['user_class'] = $names['CLASS'][0];
+    if (!in_array($player_data['class'], $names['CLASS'], true)) {
+        $player_data['class'] = $names['CLASS'][0];
     }
     if (!isset($user_building['M_percentage'])   || !is_numeric($user_building['M_percentage'])) {
         $user_building['M_percentage'] = 100;
@@ -404,20 +404,20 @@ function ogame_production_planet($user_building, $user_technology = null, $playe
     if ($player_data['off_commandant'] != 0 && $player_data['off_amiral'] != 0 && $player_data['off_ingenieur'] != 0 && $player_data['off_geologue'] != 0) {
         $player_data['off_full'] = 1;
     }
-    if ($player_data['user_class'] !== 'COL' && $user_building['FOR_percentage'] > 100) {
+    if ($player_data['class'] !== 'COL' && $user_building['FOR_percentage'] > 100) {
         $user_building['FOR_percentage'] = 100;
     }
 
     //Calcul valeurs de base
     $prod_base    = ogame_production_building('base', $user_building, null, null, $server_config);
     $server_config['final_calcul'] = false;
-    $prod_mine_M  = ogame_production_building('M', $user_building, $user_technology, $user_data, $server_config);
-    $prod_mine_C  = ogame_production_building('C', $user_building, $user_technology, $user_data, $server_config);
-    $prod_mine_D  = ogame_production_building('D', $user_building, $user_technology, $user_data, $server_config);
-    $prod_bat_CES = ogame_production_building('CES', $user_building, $user_technology, $user_data, $server_config);
-    $prod_bat_CEF = ogame_production_building('CEF', $user_building, $user_technology, $user_data, $server_config);
-    $prod_vso_SAT = ogame_production_building('SAT', $user_building, $user_technology, $user_data, $server_config);
-    $prod_vso_FOR = ogame_production_building('FOR', $user_building, $user_technology, $user_data, $server_config);
+    $prod_mine_M  = ogame_production_building('M', $user_building, $user_technology, $player_data, $server_config);
+    $prod_mine_C  = ogame_production_building('C', $user_building, $user_technology, $player_data, $server_config);
+    $prod_mine_D  = ogame_production_building('D', $user_building, $user_technology, $player_data, $server_config);
+    $prod_bat_CES = ogame_production_building('CES', $user_building, $user_technology, $player_data, $server_config);
+    $prod_bat_CEF = ogame_production_building('CEF', $user_building, $user_technology, $player_data, $server_config);
+    $prod_vso_SAT = ogame_production_building('SAT', $user_building, $user_technology, $player_data, $server_config);
+    $prod_vso_FOR = ogame_production_building('FOR', $user_building, $user_technology, $player_data, $server_config);
     $result['prod_base'] = $prod_base;
     $result['prod_M']    = $prod_mine_M;
     $result['prod_C']    = $prod_mine_C;
@@ -438,14 +438,14 @@ function ogame_production_planet($user_building, $user_technology = null, $playe
     $result['prod_C']['NRJ']   = $conso_C;
     $result['prod_D']['NRJ']   = $conso_D;
     $result['prod_FOR']['NRJ'] = $conso_FOR;
-    if (!$user_data['production_theorique']) {  //Alors calcul du ratio puis sa prod associé
+    if (!$player_data['production_theorique']) {  //Alors calcul du ratio puis sa prod associé
         //Calcul de la production d'énergie
         $prod_CES = $prod_bat_CES['NRJ'] * $user_building['CES_percentage'] / 100;
         $prod_CEF = $prod_bat_CEF['NRJ'] * $user_building['CEF_percentage'] / 100;
         $prod_SAT = $prod_vso_SAT['NRJ'] * $user_building['Sat_percentage'] / 100;
         $production_E = $prod_CES + $prod_CEF + $prod_SAT;
         $result['prod_booster']['NRJ']    = round($production_E * $user_building['booster_tab']['booster_e_val'] / 100);
-        if ($player_data['user_class'] === 'COL') {
+        if ($player_data['class'] === 'COL') {
             $result['prod_classe']['NRJ'] = round($production_E * $NRJ_BONUS_COL);
         }
         if ($player_data['off_ingenieur'] != 0) {
@@ -485,7 +485,7 @@ function ogame_production_planet($user_building, $user_technology = null, $playe
         $production_E = $result['prod_CES']['NRJ'] + $result['prod_CEF']['NRJ'] + $result['prod_SAT']['NRJ'];
 
         $result['prod_booster']['NRJ']    = round($production_E * $user_building['booster_tab']['booster_e_val'] / 100);
-        if ($player_data['user_class'] === 'COL') {
+        if ($player_data['class'] === 'COL') {
             $result['prod_classe']['NRJ'] = round($production_E * $NRJ_BONUS_COL);
         }
         if ($player_data['off_ingenieur'] != 0) {
@@ -506,7 +506,7 @@ function ogame_production_planet($user_building, $user_technology = null, $playe
     //Calcul de la production
     $bonus_off_geo  = ($player_data['off_geologue'] != 0)    ? $RESS_BONUS_GEO  : 0;
     $bonus_off_full = ($player_data['off_full'] != 0)        ? $RESS_BONUS_FULL : 0;
-    $bonus_class    = ($player_data['user_class'] === 'COL') ? $RESS_BONUS_COL  : 0;
+    $bonus_class    = ($player_data['class'] === 'COL') ? $RESS_BONUS_COL  : 0;
     $bonus_for      = ogame_production_foreuse_bonus($user_building, $player_data);
     $result['nb_FOR_maxed'] = $bonus_for['nb_FOR_maxed'];
 
@@ -572,9 +572,9 @@ function ogame_production_planet($user_building, $user_technology = null, $playe
         $result['prod_reel'][$ress] += floor($result['prod_Plasma'][$ress]) + floor($result['prod_booster'][$ress]);
         $result['prod_reel'][$ress] += floor($result['prod_off'][$ress]) + floor($result['prod_classe'][$ress]);
     }
-    if (!$user_data['production_theorique']) {
-        $user_data['production_theorique'] = true;
-        $tmp = ogame_production_planet($user_building, $user_technology, $user_data, $server_config);
+    if (!$player_data['production_theorique']) {
+        $player_data['production_theorique'] = true;
+        $tmp = ogame_production_planet($user_building, $user_technology, $player_data, $server_config);
         $result['prod_theorique'] = $tmp['prod_reel'];
     }
     $result['NRJ'] = $result['prod_reel']['NRJ'];
@@ -782,7 +782,7 @@ function foreuse_max($level_M, $level_C, $level_D, $officier = 0, $classe = 0)
         $classe = $names['CLASS'][0];
     }
 
-    return ogame_production_foreuse_max($level_M, $level_C, $level_D, array('off_geologue' => $officier, 'user_class' => $classe));
+    return ogame_production_foreuse_max($level_M, $level_C, $level_D, array('off_geologue' => $officier, 'class' => $classe));
 }
 
 /**
@@ -810,28 +810,40 @@ function consumption($building, $level, $speed_uni = 1)
 }
 
 /**
- * Gets the production usage of the current planet.
+ * @brief Calculates the energy production-to-consumption ratio along with detailed energy and resource stats.
  *
- * @param int $M Metal Mine Level
- * @param int $C Cristal Mine Level
- * @param int $D Deuterieum Mine Level
- * @param int $CES Solar Plant Level
- * @param int $CEF Fusion Plant Level
- * @param int $SAT Number of sattelites
- * @param int $FOR Number of foreuse
- * @param int $temperature_max Max temprature of the current planet
- * @param int $off_ing Officer ingenieur option enabled (=1) or not(=0) or full Officer(=2)
- * @param int $NRJ Current value of the user Energy Technology
- * @param int $per_M Metal Mine production percent (0=0%, 1=100%)
- * @param int $per_C Cristal Mine production percent (0=0%, 1=100%)
- * @param int $per_D Deuterieum Mine production percent (0=0%, 1=100%)
- * @param int $per_CES Solar Plant production percent (0=0%, 1=100%)
- * @param int $per_CEF Fusion Plant production percent (0=0%, 1=100%)
- * @param int $per_SAT sattelites production percent (0=0%, 1=100%)
- * @param int $per_FOR foreuse production percent (0=0%, 1=100%)
- * @param int $classe Classe option chosen (1=Collectionneur)[0=aucune, 2=général, 3=explorateur]
- * @param null $booster
- * @return array("ratio", "conso_E", "prod_E", "prod_CES", "prod_CEF", "prod_SAT", "conso_M", "conso_C", "conso_D", "conso_FOR")
+ * @param int $M Quantity of Metal mines.
+ * @param int $C Quantity of Crystal mines.
+ * @param int $D Quantity of Deuterium synthesizers.
+ * @param int $CES Quantity of Solar plants.
+ * @param int $CEF Quantity of Fusion reactors.
+ * @param int $SAT Quantity of Solar satellites.
+ * @param int $temperature_max Maximum temperature of the planet for energy calculations.
+ * @param int $off_ing Engineering bonus or research bonus.
+ * @param int $NRJ Energy technology level.
+ * @param float $per_M Percentage factor to apply to Metal mine consumption.
+ * @param float $per_C Percentage factor to apply to Crystal mine consumption.
+ * @param float $per_D Percentage factor to apply to Deuterium synthesizer consumption.
+ * @param float $per_CES Percentage factor to apply to Solar plant production.
+ * @param float $per_CEF Percentage factor to apply to Fusion reactor production.
+ * @param float $per_SAT Percentage factor to apply to Solar satellite production.
+ * @param int $FOR Quantity of Terraformers.
+ * @param float $per_FOR Percentage factor to apply to Terraformer consumption.
+ * @param int $classe Class-specific production bonus.
+ * @param array $booster Array representing energy booster parameters, including booster value.
+ *
+ * @return array Returns an associative array containing:
+ *               - "ratio" (float): The energy production-to-consumption ratio.
+ *               - "conso_E" (int): Total energy consumption.
+ *               - "prod_E" (int): Total energy production.
+ *               - "prod_CES" (float): Energy produced by Solar plants.
+ *               - "prod_CEF" (float): Energy produced by Fusion reactors.
+ *               - "prod_SAT" (float): Energy produced by Solar satellites.
+ *               - "prod_boost_E" (float): Energy boost provided by the booster.
+ *               - "conso_M" (float): Energy consumed by Metal mines.
+ *               - "conso_C" (float): Energy consumed by Crystal mines.
+ *               - "conso_D" (float): Energy consumed by Deuterium synthesizers.
+ *               - "conso_FOR" (float): Energy consumed by Terraformers.
  */
 function ratio(
     $M,
@@ -893,27 +905,48 @@ function ratio(
 }
 
 /**
- * Calculates the Production corresponding to the current ratio
- * @param int $M Metal Mine Level
- * @param int $C Cristal Mine Level
- * @param int $D Deuterieum Mine Level
- * @param int $CES Solar Plant Level
- * @param int $CEF Fusion Plant Level
- * @param int $SAT Number of sattelites
- * @param int $temperature_max Max temprature of the current planet
- * @param int $off_ing Officer ingenieur option enabled (=1) or not(=0)
- * @param int $off_geo Officer geologue option enabled (=1) or not(=0)
- * @param int $off_full full Officer enabled (=1) or not(=0)
- * @param int $NRJ Current value of the user Energy Technology
- * @param int $Plasma Current value of the user Plasma Technology
- * @param int $per_M Metal Mine production percent (0=0%, 1=100%)
- * @param int $per_C Cristal Mine production percent (0=0%, 1=100%)
- * @param int $per_D Deuterieum Mine production percent (0=0%, 1=100%)
- * @param int $per_CES Solar Plant production percent (0=0%, 1=100%)
- * @param int $per_CEF Fusion Plant production percent (0=0%, 1=100%)
- * @param int $per_SAT
- * @param null $booster
- * @return array
+ *  Calculates various production and ratio values of resources.
+ *
+ * @param int $M Level of metal mine.
+ * @param int $C Level of crystal mine.
+ * @param int $D Level of deuterium mine.
+ * @param int $CES Number of solar plants.
+ * @param int $CEF Number of fusion reactors.
+ * @param int $SAT Number of solar satellites.
+ * @param int $temperature_max Maximum planet temperature.
+ * @param int $off_ing Engineer officer level (default 0).
+ * @param int $off_geo Geologist officer level (default 0).
+ * @param int $off_full Enable full officer boost (default 0).
+ * @param int $NRJ Energy technology level (default 0).
+ * @param int $Plasma Plasma technology level (default 0).
+ * @param float $per_M Percentage adjustment for metal production (default 1).
+ * @param float $per_C Percentage adjustment for crystal production (default 1).
+ * @param float $per_D Percentage adjustment for deuterium production (default 1).
+ * @param float $per_CES Percentage adjustment for solar plant energy (default 1).
+ * @param float $per_CEF Percentage adjustment for fusion reactor energy (default 1).
+ * @param float $per_SAT Percentage adjustment for solar satellite energy (default 1).
+ * @param array $booster Boosters active (default null, array with booster_m_val, booster_c_val, booster_d_val keys).
+ * @param int $FOR Number of drills powered (default 0).
+ * @param float $per_FOR Percentage adjustment for drill production (default 0).
+ * @param int $classe Class of the account (default 0, e.g., none, Collector, General, Discoverer).
+ * @param int $position Planet position in the system (default 0).
+ * @param float $speed_uni Universe speed multiplier (default 1).
+ * @return array Returns an associative array with the following keys:
+ *                - M: Total metal production.
+ *                - C: Total crystal production.
+ *                - D: Total deuterium production.
+ *                - FOR: Drill production array ('M', 'C', 'D').
+ *                - ratio: Production ratio.
+ *                - conso_E: Energy consumption.
+ *                - prod_E: Energy production.
+ *                - prod_CES: Energy from solar plants.
+ *                - prod_CEF: Energy from fusion reactors.
+ *                - prod_SAT: Energy from solar satellites.
+ *                - prod_boost_E: Boosted energy production.
+ *                - conso_M: Metal consumption.
+ *                - conso_C: Crystal consumption.
+ *                - conso_D: Deuterium consumption.
+ *                - conso_FOR: Drill consumption.
  */
 function bilan_production_ratio(
     $M,
@@ -1045,9 +1078,15 @@ function bilan_production_ratio(
 
 ////////////////// OGAME CARACTERISTIQUES fonctions : //////////////////////////
 /**
- *  @brief Give database names of a building/research/fleet/defence/class/resources.
+ * @brief Retrieves a structured list of element names categorized by type.
  *
- *  @return array('BAT'=>array, 'RECH'=>array, 'VSO'=>array, 'DEF'=>array, 'CLASS'=>array, 'RESS'=>array)
+ * @return array A multidimensional array containing categorized element names. Categories include:
+ *               'BAT' => Buildings,
+ *               'RECH'=> Research technologies,
+ *               'VSO' => Spaceships (fleet),
+ *               'DEF' => Defensive structures,
+ *               'CLASS'=> Classes,
+ *               'RESS' => Resources.
  */
 function ogame_get_element_names()
 {
@@ -1140,10 +1179,10 @@ function ogame_get_element_names()
 }
 
 /**
- *  @brief Détermine si c'est un bâtiment, une recherche, un vaisseau, une défense ou une classe.
+ * Determines the category label of a given element name.
  *
- *  @param[in] string $nom Nom à rechercher, correspond au nom en BDD
- *  @return false|string 'BAT' bâtiment, 'RECH' recherche, 'DEF' défense, 'VSO' vaisseau, 'CLASS' classe et false sinon
+ * @param string $nom The name of the element to check.
+ * @return string|bool The category label of the element if found (e.g., 'VSO', 'SE'), or false if the element is not found.
  */
 function ogame_is_element($nom)
 {
@@ -1158,36 +1197,43 @@ function ogame_is_element($nom)
 }
 
 /**
- *  @brief Is an Ogame defence ?
- *  @param[in] string $nom Name to look, like name in database
- *  @return bool
+ * @brief Checks if a given element is a defense structure in the game.
+ *
+ * @param string $nom The name or identifier of the element to check.
+ * @return bool Returns true if the element is a defense structure, false otherwise.
  */
 function ogame_is_a_defence($nom)
 {
     return ogame_is_element($nom) === 'DEF';
 }
+
 /**
- *  @brief Is an Ogame fleet ?
- *  @param[in] string $nom Name to look, like name in database
- *  @return bool
+ * Checks if the given element name corresponds to a fleet.
+ *
+ * @param string $nom The name of the element to check.
+ * @return bool Returns true if the element is a fleet, false otherwise.
  */
 function ogame_is_a_fleet($nom)
 {
     return ogame_is_element($nom) === 'VSO';
 }
+
 /**
- *  @brief Is an Ogame building ?
- *  @param[in] string $nom Name to look, like name in database
- *  @return bool
+ * @brief Determines if the given element is a building in OGame.
+ *
+ * @param string $nom The name of the element to be checked.
+ * @return bool True if the element is a building, false otherwise.
  */
 function ogame_is_a_building($nom)
 {
     return ogame_is_element($nom) === 'BAT';
 }
+
 /**
- *  @brief Is an Ogame research ?
- *  @param[in] string $nom Name to look, like name in database
- *  @return bool
+ * Determines if the given element name represents a research element.
+ *
+ * @param string $nom The name of the element to check.
+ * @return bool Returns true if the element is a research element, otherwise false.
  */
 function ogame_is_a_research($nom)
 {
@@ -1561,6 +1607,48 @@ function ogame_all_requirement()
     }
 
     return $result;
+}
+
+/**
+ * Verifies if the prerequisites for a given element in the game are met based on the user's building
+ * and technology levels.
+ *
+ * @param string $ogame_element_name The name of the element to check prerequisites for.
+ * @param array $user_building_list An associative array representing the user's building levels,
+ *                                  where keys are building names and values are their respective levels.
+ * @param array $user_technology_list An associative array representing the user's technology levels,
+ *                                    where keys are technology names and values are their respective levels.
+ * @return bool Returns true if all prerequisites are met; otherwise, returns false.
+ */
+function prerequis_Valid($ogame_element_name, $user_building_list, $user_technology_list)
+{
+    global $log;
+
+    $log->info("Checking prerequisites for element: $ogame_element_name", [
+        'user_building_list' => $user_building_list,
+        'user_technology_list' => $user_technology_list
+    ]);
+    // recuperation des prerequis pour l element indiqué
+    $reqs = ogame_elements_requirement($ogame_element_name);
+
+    foreach ($reqs as $reqName => $reqValue) {
+        //prerequis recherche
+        if (ogame_is_a_research($reqName) && $reqValue > 0) {
+            if ($reqValue > $user_technology_list[$reqName]) {
+                $log->info("Requires $reqName technology for Tech $ogame_element_name");
+                return false;
+            }
+        }
+        // prerequis bat
+        if (ogame_is_a_building($reqName) && $reqValue > 0) {
+            if ($reqValue > $user_building_list[$reqName]) {
+                $log->info("Requires $reqName building for Tech $ogame_element_name");
+                return false;
+            }
+        }
+    }
+    // tout autre cas, les prerequis sont bons
+    return true;
 }
 
 /**
@@ -2127,7 +2215,7 @@ function ogame_labo_cumulate($user_empire, $current_planet_id = -1)
  *  @param[in] array  $user_class    User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
  *  @return float Time in seconds
  */
-function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0, $user_class = 'none')
+function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0, $player_class = 'none')
 {
     static $RECH_BONUS_EXP = 0.25;   //-25% temps de recherche
     //Valeurs OUT par défaut :
@@ -2169,7 +2257,7 @@ function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0,
         case 'RECH':
             //(métal + cristal) / (1000 * (1 + niveau labo + n meilleurs niveaux des labos autres que le labo de la planète effectuant la recherche))
             $result = ($cout['M'] + $cout['C']) / (1000 * (1 + $cumul_labo));
-            if ($user_class === 'EXP') {
+            if ($player_class === 'EXP') {
                 $result = $result * (1 - $RECH_BONUS_EXP);
             }
             break;
@@ -2240,7 +2328,7 @@ function ogame_depot_capacity($level)
 /**
  * Returns the maximum numbers of planet slots available according to the Astrophysic level
  * @param int $level Astrophysic Level
- * @return the maximum number of planets
+ * @return int the maximum number of planets
  */
 function astro_max_planete($level)
 {
@@ -2254,14 +2342,14 @@ function astro_max_planete($level)
  *
  *  @param[in] int   $level         Level of the phalanx
  *  @param[in] array $user_class    User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
- *  @return int Range in system
+ *  @return float Range in system
  */
-function ogame_phalanx_range($level, $user_class = 'none')
+function ogame_phalanx_range($level, $player_class = 'none')
 {
     static $PHA_BONUS_EXP = 0.2;   //-20%
 
     $bonus_class = 0;
-    if ($user_class === 'EXP') {
+    if ($player_class === 'EXP') {
         $bonus_class = $PHA_BONUS_EXP;
     }
 

@@ -1,4 +1,4 @@
-<?php global $server_config, $user_data, $lang;
+<?php global $server_config, $lang;
 
 /**
  * Affichage Empire - Page Simulation
@@ -15,10 +15,12 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+$player_data = (new Player_Model())->get_player_data($user_data['player_id']);
+$user_empire = player_get_empire($player_data['id']);
 
 $user_empire = player_get_empire($user_data['id']);
 $user_building = $user_empire["building"];
-$user_defence = $user_empire["defence"];
+$user_defense = $user_empire["defense"];
 $user_percentage = $user_empire["user_percentage"];
 
 
@@ -38,7 +40,7 @@ $nb_planete = find_nb_planete_user($user_data['player_id']);
 $officier = $player_data['off_commandant'] + $player_data['off_amiral'] + $player_data['off_ingenieur']
     + $player_data['off_geologue'] + $player_data['off_technocrate'];
 $off_full = ($officier == 5) ? '1' : '0';
-$class_collect = ($player_data['user_class'] === 'COL') ? '1' : '0';
+$class_collect = ($player_data['class'] === 'COL') ? '1' : '0';
 echo "<input type='hidden' id='vitesse_uni' size='2' maxlength='5' value='" . $server_config['speed_uni'] . "'/>";
 echo "<input type='hidden' id='off_ingenieur' value='" . $player_data["off_ingenieur"] . "'/>";
 echo "<input type='hidden' id='off_geologue' value='" . $player_data["off_geologue"] . "'/>";
@@ -611,7 +613,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
             <?php for ($i = 101; $i <= $nb_planete + 100; $i++) : ?>
                 <td colspan="2" class="tdcontent">
                     <div id='defence_pts_<?php echo $i; ?>'>-</div>
-                    <input type='hidden' id='defence_<?php echo $i; ?>' value='<?php echo implode('<>', $user_defence[$i]); ?>' />
+                    <input type='hidden' id='defence_<?php echo $i; ?>' value='<?php echo implode('<>', $user_defense[$i]); ?>' />
                 </td>
             <?php endfor; ?>
             <td class="og-highlight">
@@ -627,7 +629,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
                     <div id='lune_pts_<?php echo $i; ?>'>-</div>
                     <?php $lune_b_i_value = ($user_building[$i]) ? implode('<>', array_slice($user_building[$i], 23, -3, true)) : "0"; ?>
                     <input type='hidden' id='lune_b_<?php echo $i; ?>' value='<?php echo $lune_b_i_value; ?>' />
-                    <input type='hidden' id='lune_d_<?php echo $i; ?>' value='<?php echo implode('<>', $user_defence[$i]); ?>' />
+                    <input type='hidden' id='lune_d_<?php echo $i; ?>' value='<?php echo implode('<>', $user_defense[$i]); ?>' />
                 </td>
             <?php endfor; ?>
             <td class="og-highlight">

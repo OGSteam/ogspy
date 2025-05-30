@@ -1,4 +1,4 @@
-<?php
+<?php global $lang, $server_config;
 
 /**
  * User profile
@@ -22,14 +22,14 @@ if (!defined("IN_SPYOGAME")) {
 
 // Get Player Data
 
-$player_data = (new Player_Model)->get_player_data($user_data["id"]);
+$player_data = (new Player_Model)->get_player_data($user_data["player_id"]);
 
 $user_name = $user_data["name"];
 $user_galaxy = $user_data["default_galaxy"];
 $user_system = $user_data["default_system"];
 $user_email = $user_data["email"];
 $user_stat_name = $player_data["name"] ?? "Inconnu";
-$user_class = $player_data["class"] ?? "unknown";
+$player_class = $player_data["class"] ?? "unknown";
 
 $user_token = (new Tokens_Model)->get_token($user_data["id"], "PAT");
 if (!empty($user_token)) {
@@ -153,8 +153,8 @@ if ($user_data['pwd_change']) {
                         <?php $classType = ogame_get_element_names()['CLASS']; ?>
                         <select name='user_class'>
                             <?php foreach ($classType as $class) : ?>
-                                <?php echo $class . "__" . $user_class; ?>
-                                <option value='<?php echo $class; ?>' <?php if (trim($class) == trim($user_class)) : ?> selected='selected'>
+                                <?php echo $class . "__" . $player_class; ?>
+                                <option value='<?php echo $class; ?>' <?php if (trim($class) == trim($player_class)) : ?> selected='selected'>
                                     <?php else : ?>
                                         >
                                     <?php endif; ?>

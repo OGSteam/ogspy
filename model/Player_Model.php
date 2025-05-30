@@ -58,7 +58,7 @@ class Player_Model extends Model_Abstract
      *
      * @param user_class
      */
-    public function set_game_class_type($user_id, $user_class)
+    /*public function set_game_class_type($user_id, $user_class)
     {
         $user_id = (int)$user_id;
         $user_class = $this->db->sql_escape_string($user_class);
@@ -66,7 +66,7 @@ class Player_Model extends Model_Abstract
         $request = "UPDATE " . TABLE_USER . " SET `user_class`  = '" . $user_class . "' WHERE `user_id` = " . $user_id;
 
         $this->db->sql_query($request);
-    }
+    }*/
 
     /**
      * @param $user_id

@@ -15,8 +15,10 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class Player_Defense_Model  extends Model_Abstract
 {
     /**
-     * @param $playerId
-     * @return array
+     * Récupère les données de défense d'un joueur spécifique.
+     *
+     * @param int $playerId L'identifiant unique du joueur.
+     * @return array Un tableau contenant les données de défense du joueur.
      */
     public function select_player_defense($playerId)
     {
@@ -24,33 +26,33 @@ class Player_Defense_Model  extends Model_Abstract
         $playerId = (int)$playerId;
         $log->info("[OGSpy_Player_Defense_Model] select_player_defense - Player ID: " . $playerId);
 
-        $tElemList = array("astro_object_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP");
-
-
         $request = "SELECT `astro_object_id`, `LM`, `LLE`, `LLO`, `CG`, `AI`, `LP`, `PB`, `GB`, `MIC`, `MIP`";
         $request .= " FROM " . TABLE_GAME_PLAYER_DEFENSE . " AS def";
         // Jointure avec la table des objets astraux pour obtenir les informations du joueur
         $request .= " INNER JOIN " . TABLE_USER_BUILDING . " AS astro ON def.`astro_object_id` = astro.`id`";
         $request .= " WHERE astro.`player_id` = " . $playerId;
-        $log->info("[OGSpy_Player_Defense_Model] select_player_defense - SQL Query: " . $request);
-
         $result = $this->db->sql_query($request);
 
         if (!$result) {
             $log->error("[OGSpy_Player_Defense_Model] select_player_defense - SQL Query FAILED!", ['error' => $this->db->sql_error()]);
         }
 
-        $tDefense = $this->db->sql_fetch_assoc($result);
+        while ($row = $this->db->sql_fetch_assoc($result)) {
+            $raw_defense_data[] = $row;
+        }
 
-        $log->info("[OGSpy_Player_Defense_Model] select_player_defense - Number of defense entries found: " . count($tDefense));
-        $log->info("[OGSpy_Player_Defense_Model] select_player_defense - Returned Defense Data:", ['data' => $tDefense]);
-        return $tDefense;
+        $log->info("[OGSpy_Player_Defense_Model] select_player_defense - Number of defense entries found: " . $this->db->sql_numrows($result));
+        $log->info("[OGSpy_Player_Defense_Model] select_player_defense - Returned Defense Data:", [ $raw_defense_data]);
+        return $raw_defense_data;
     }
-
-    public function select_player_defense_planete($planet_id)
+    /**
+     * Récupère les données de défense d'une planète spécifique.
+     *
+     * @param int $planet_id L'identifiant unique de la planète.
+     * @return array Un tableau associatif contenant les données de défense de la planète.
+     */
+    public function select_player_defense_planete(int $planet_id)
     {
-        $planet_id = (int)$planet_id;
-
         $tElemList = array("id", "astro_object_id", "LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP");
 
         $request = "SELECT `" . implode("`, `", $tElemList) . "` ";
@@ -64,7 +66,10 @@ class Player_Defense_Model  extends Model_Abstract
 
 
     /**
-     * @param $aster_id Planet or moon to be deleted
+     * Supprime les données d'un astre (planète ou lune) spécifique.
+     *
+     * @param int $aster_id L'identifiant unique de l'astre à supprimer.
+     * @return void
      */
     public function delete_user_aster($aster_id)
     {
@@ -74,55 +79,4 @@ class Player_Defense_Model  extends Model_Abstract
         $this->db->sql_query($request);
     }
 
-    /**
-     * Insère ou met à jour les informations de défense pour un objet astral
-     * @param $astro_object_id ID de l'objet astral
-     * @param $defense_data Tableau contenant les données de défense
-     * @return bool Succès de l'opération
-     */
-    public function insert_update_defense($astro_object_id, $defense_data)
-    {
-        global $log;
-        $astro_object_id = (int)$astro_object_id;
-
-        // Vérifier si l'enregistrement existe déjà
-        $request = "SELECT `id` FROM " . TABLE_GAME_PLAYER_DEFENSE . " WHERE `astro_object_id` = " . $astro_object_id;
-        $result = $this->db->sql_query($request);
-        $row = $this->db->sql_fetch_assoc($result);
-
-        if ($row) {
-            // Mise à jour
-            $fields = [];
-            foreach ($defense_data as $key => $value) {
-                if (in_array($key, ["LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP"])) {
-                    $fields[] = "`" . $key . "` = " . (int)$value;
-                }
-            }
-
-            if (count($fields) > 0) {
-                $request = "UPDATE " . TABLE_GAME_PLAYER_DEFENSE . " SET " . implode(", ", $fields);
-                $request .= " WHERE `astro_object_id` = " . $astro_object_id;
-                $log->info("[OGSpy_Player_Defense_Model] insert_update_defense - Update SQL Query: " . $request);
-                return $this->db->sql_query($request);
-            }
-
-            return true;
-        } else {
-            // Insertion
-            $fields = ["`astro_object_id`"];
-            $values = [$astro_object_id];
-
-            foreach ($defense_data as $key => $value) {
-                if (in_array($key, ["LM", "LLE", "LLO", "CG", "AI", "LP", "PB", "GB", "MIC", "MIP"])) {
-                    $fields[] = "`" . $key . "`";
-                    $values[] = (int)$value;
-                }
-            }
-
-            $request = "INSERT INTO " . TABLE_GAME_PLAYER_DEFENSE . " (" . implode(", ", $fields) . ")";
-            $request .= " VALUES (" . implode(", ", $values) . ")";
-            $log->info("[OGSpy_Player_Defense_Model] insert_update_defense - Insert SQL Query: " . $request);
-            return $this->db->sql_query($request);
-        }
-    }
 }

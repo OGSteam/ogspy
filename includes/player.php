@@ -10,27 +10,22 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 /**
- * Récupération des données empire de l'utilisateur loggé.
- * @comment On pourrait mettre un paramètre $user_id optionnel
- * @param $player_id
- * @return array
+ * Récupère les données de l'empire d'un joueur spécifique.
+ *
+ * Cette fonction récupère les informations des bâtiments, technologies et défenses
+ * d'un joueur donné, ainsi que les pourcentages associés à certains paramètres.
+ * Elle retourne un tableau structuré contenant ces données.
+ *
+ * @param int $player_id L'identifiant du joueur dont les données doivent être récupérées.
+ * @return array Un tableau contenant les informations suivantes :
+ *               - "building" : Liste des bâtiments du joueur, avec leurs niveaux et autres données.
+ *               - "technology" : Liste des technologies du joueur.
+ *               - "defense" : Liste des défenses du joueur, organisées par planète.
+ *               - "user_percentage" : Pourcentages associés aux ressources et autres paramètres.
  */
 function player_get_empire($player_id)
 {
-    $planet = array(
-        false, "user_id" => "", "planet_name" => "", "coordinates" => "",
-        "fields" => 0, "fields_used" => 0, "boosters" => booster_encode(),
-        "temperature_min" => 0, "temperature_max" => 0,
-        "Sat" => 0, "Sat_percentage" => 100, "FOR" => 0, "FOR_percentage" => 100,
-        "M" => 0, "M_percentage" => 100, "C" => 0, "C_percentage" => 100, "D" => 0, "D_percentage" => 100,
-        "CES" => 0, "CES_percentage" => 100, "CEF" => 0, "CEF_percentage" => 100,
-        "UdR" => 0, "UdN" => 0, "CSp" => 0, "HM" => 0, "HC" => 0, "HD" => 0, "Lab" => 0,
-        "Ter" => 0, "Silo" => 0, "Dock" => 0, "BaLu" => 0, "Pha" => 0, "PoSa" => 0, "DdR" => 0
-    );
-
-    $defense = ["LM" => 0, "LLE" => 0, "LLO" => 0, "CG" => 0, "AI" => 0, "LP" =>
-        0, "PB" => 0, "GB" => 0, "MIC" => 0, "MIP" => 0];
-
+    global $log;
 
     $tBuildingList = (new Player_Building_Model())->select_player_building_list($player_id);
 
@@ -46,29 +41,7 @@ function player_get_empire($player_id)
         $pct["Sat_percentage"] = $BuildingList["Sat_percentage"];
         $pct["FOR_percentage"] = $BuildingList["FOR_percentage"];
 
-
-        //calcul des cases utilisées
-        $arr = $BuildingList;
-        unset($arr["planet_id"]);
-        unset($arr["planet_name"]);
-        unset($arr["coordinates"]);
-        unset($arr["fields"]);
-        unset($arr["boosters"]);
-        unset($arr["temperature_min"]);
-        unset($arr["temperature_max"]);
-        unset($arr["Sat"]);
-        unset($arr["Sat_percentage"]);
-        unset($arr["FOR"]);
-        unset($arr["FOR_percentage"]);
-        unset($arr["M_percentage"]);
-        unset($arr["C_percentage"]);
-        unset($arr["D_percentage"]);
-        unset($arr["CES_percentage"]);
-        unset($arr["CEF_percentage"]);
-        unset($arr["Dock"]);
-        $fields_used = array_sum(array_values($arr));
-
-        $BuildingList["fields_used"] = $fields_used;
+        $BuildingList["fields_used"] = calculate_fields_used($BuildingList);
 
         // modification Booster
         $BuildingList["boosters"] = booster_verify_str($BuildingList["boosters"]); //Correction et mise à jour booster from date
@@ -84,27 +57,58 @@ function player_get_empire($player_id)
         $player_building[$BuildingList["id"]][0] = true;
     }
 
-    $player_technology = (new Player_Technology_Model())->select_user_technologies($player_id);
-    $technology_list = array("Esp","Ordi","Armes","Bouclier","Protection","NRJ","Hyp","RC","RI","PH","Laser","Ions","Plasma","RRI","Graviton","Astrophysique");
-    foreach ($technology_list as $technologyName) {
-        if(!isset($player_technology[$technologyName]))
-        {
-            $player_technology[$technologyName]=""; // alimentation des technology tel qu'attendu dans page empire ("" et non 0)
-        }
-    }
-
+    $player_technology = (new Player_Technology_Model())->select_player_technologies($player_id);
 
     $tDefenseList = (new Player_Defense_Model())->select_player_defense($player_id);
     $player_defense = [];
+
     foreach ($tDefenseList as $tmpDefense) {
-        $planet_id = $tmpDefense["id"];
-        unset($tmpDefense["id"]);
+        $planet_id = $tmpDefense["astro_object_id"];
+        unset($tmpDefense["astro_object_id"]);
         $player_defense[$planet_id] = $tmpDefense;
     }
 
+    $log->info("[OGSpy_Player_Building_Model] player_get_empire - Player Empire Data:", [
+        'buildings' => $player_building,
+        'technologies' => $player_technology,
+        'defenses' => $player_defense
+    ]);
     return array(
         "building" => $player_building, "technology" => $player_technology, "defense" => $player_defense, "user_percentage" => $pct
     );
+}
+
+/**
+ * Calcule le nombre total de cases utilisées sur une planète à partir d'une liste de bâtiments.
+ *
+ * @param array $buildingList Tableau associatif contenant les informations des bâtiments et autres données de la planète.
+ *                            Certaines clés non pertinentes pour le calcul sont exclues.
+ * @return int Nombre total de cases utilisées par les bâtiments.
+ */
+function calculate_fields_used(array $buildingList): int
+{
+    // Liste des clés à exclure du calcul
+    $keys_to_unset = [
+        "planet_id", "planet_name", "galaxy", "system", "row",
+        "fields", "boosters", "temperature_min", "temperature_max",
+        "Sat", "Sat_percentage", "FOR", "FOR_percentage",
+        "M_percentage", "C_percentage", "D_percentage",
+        "CES_percentage", "CEF_percentage", "Dock",
+        // Ajoutez ici d'autres clés qui pourraient apparaître et ne sont pas des bâtiments
+        // comme les clés ajoutées plus loin dans la boucle originale
+        "id", "fields_used", "booster_tab", "moon_id", 0
+    ];
+
+    foreach ($keys_to_unset as $key) {
+        if (isset($buildingList[$key])) {
+            unset($buildingList[$key]);
+        }
+    }
+
+    // Calcul de la somme des valeurs restantes
+    $fields_used = array_sum(array_values($buildingList));
+
+    return $fields_used;
 }
 
 /**

@@ -29,9 +29,9 @@ class Player_Technology_Model  extends Model_Abstract
      *               `Protection`, `NRJ`, `Hyp`, `RC`, `RI`, `PH`, `Laser`, `Ions`,
      *               `Plasma`, `RRI`, `Graviton`, `Astrophysique`.
      */
-    public function select_user_technologies(int $player_id)
+    public function select_player_technologies(int $player_id)
     {
-        $request = "SELECT `Esp`, `Ordi`, `Armes`, `Bouclier`, `Protection`, `NRJ`, `Hyp`, `RC`, `RI`, `PH`, `Laser`, `Ions`, `Plasma`, `RRI`, `Graviton`, `Astrophysique`";
+        $request = "SELECT `player_id`,`Esp`, `Ordi`, `Armes`, `Bouclier`, `Protection`, `NRJ`, `Hyp`, `RC`, `RI`, `PH`, `Laser`, `Ions`, `Plasma`, `RRI`, `Graviton`, `Astrophysique`";
         $request .= " FROM " . TABLE_USER_TECHNOLOGY;
         $request .= " WHERE `player_id` = " . $player_id;
         $result = $this->db->sql_query($request);

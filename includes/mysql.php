@@ -147,7 +147,7 @@ class sql_db
      */
     public function sql_query($query = "")
     {
-        global $server_config, $logSQL;
+        global $logSQL;
         global $benchSQL;
 
         $logSQL->info($query);
@@ -155,13 +155,6 @@ class sql_db
 
         $this->last_query = $query;
         $this->result = $this->db_connect_id->query($query);
-
-        /*if (isset($server_config["debug_log"]) && $server_config["debug_log"] == 1) {
-            $fichier = "sql_" . date("ymd") . ".sql";
-            $date = date("d/m/Y H:i:s");
-            $ligne = "$date - $query ;";
-            write_file(PATH_LOG_TODAY . $fichier, 'a', $ligne);
-        }*/
 
         $benchSQL->stop("sql_query ".$this->nb_requete." ");
         $this->nb_requete += 1;
@@ -186,7 +179,7 @@ class sql_db
     }
 
     /**
-     * Gets the result of the Query and returns it in a associative array
+     * Gets the result of the Query and returns it in an associative array
      * @param mysqli_result|null $result The Query id.
      * @return array|bool the associative array containing the Database result
      */

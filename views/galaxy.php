@@ -1,4 +1,4 @@
-<?php global $server_config, $lang;
+<?php global $server_config, $lang, $user_data;
 
 /**
  * Fonctions Affichage de la Galaxie
@@ -19,7 +19,6 @@ use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 use Ogsteam\Ogspy\Model\Group_Model;
 use \Ogsteam\Ogspy\Model\Player_Model;
 
-global $user_data;
 $ToolTip_Helper = new ToolTip_Helper();
 
 $info_system = galaxy_show();
@@ -45,7 +44,6 @@ $favorites = galaxy_getfavorites();
 $tooltiptab = array("player" => array(), "ally" => array()); // conteneur des tooltips a creer
 
 $missil = "";
-//TODO sortir requete de la vue
 //recherche du group
 $user_group = (new Group_Model())->get_user_group($user_data["id"]);
 //recherche des droits liés
