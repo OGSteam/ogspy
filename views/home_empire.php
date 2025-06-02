@@ -46,7 +46,7 @@ foreach ($user_building as $planet_id => $planet) {
 }
 
 foreach ($user_building as $planet_id => $planet) {
-    $user_production[$planet_id] = ogame_production_planet($planet, $user_technology, $user_data, $server_config);
+    $user_production[$planet_id] = ogame_production_planet($planet, $user_technology, $player_data, $server_config);
 }
 
 
@@ -75,7 +75,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
     <thead>
     <tr>
         <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
-            <?php echo $lang['HOME_EMPIRE_SUMMARY']; ?>
+            <?php echo $lang['HOME_EMPIRE_SUMMARY'] . " (". $player_data['name'] . ")"; ?>
         </th>
     </tr>
     </thead>
