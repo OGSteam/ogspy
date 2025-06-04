@@ -27,8 +27,8 @@ global $server_config;
 $player_data = (new Player_Model())->get_player_data($user_data['player_id']);
 $user_empire = player_get_empire($player_data['id']);
 
-$user_building = $user_empire['building'];
-$user_defense = $user_empire['defense'];
+$player_building = $user_empire['building'];
+$player_defense = $user_empire['defense'];
 $user_technology = $user_empire['technology'];
 
 $nb_planete = find_nb_planete_user($user_data['player_id']);
@@ -36,7 +36,7 @@ $nb_planete = find_nb_planete_user($user_data['player_id']);
 $name = $coordinates = $fields = $temperature_min = $temperature_max = $satellite = "";
 //Planète
 
-foreach ($user_building as $planet_id => $planet) {
+foreach ($player_building as $planet_id => $planet) {
     $name .= "'" . $planet['name'] . "', ";
     $coordinates .= "'" . implode(":", [$planet['galaxy'], $planet['system'], $planet['row']]) . "', ";
     $fields .= "'" . $planet['fields'] . "', ";
@@ -45,7 +45,7 @@ foreach ($user_building as $planet_id => $planet) {
     $satellite .= "'" . $planet['Sat'] . "', ";
 }
 
-foreach ($user_building as $planet_id => $planet) {
+foreach ($player_building as $planet_id => $planet) {
     $user_production[$planet_id] = ogame_production_planet($planet, $user_technology, $player_data, $server_config);
 }
 
@@ -82,7 +82,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
     <tbody>
     <tr>
         <td>&nbsp;</td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td>
             </td>
         <?php endforeach; ?>
@@ -91,7 +91,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_NAME']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                     <span class="og-highlight">
                         <?php echo ($planet["name"] == "") ? "&nbsp;" : $planet["name"]; ?>
@@ -104,7 +104,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_COORD']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 [<?php echo $planet["galaxy"] . "&nbsp;" . $planet["system"] . "&nbsp;" . $planet["row"] ?>
                 ]
@@ -115,7 +115,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_FIELDS']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $fields = ($planet["fields"] == "0") ? 0 : $planet["fields"]; ?>
                 <?php echo $planet["fields_used"] . " / " . $fields; ?>
@@ -126,7 +126,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_MINTEMP']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php echo ($planet["temperature_min"] == "") ? "&nbsp;" : $planet["temperature_min"]; ?>
             </td>
@@ -136,7 +136,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_MAXTEMP']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php echo ($planet["temperature_max"] == "") ? "&nbsp;" : $planet["temperature_max"]; ?>
             </td>
@@ -146,7 +146,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_EXTENSION']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $booster = "&nbsp;"; ?>
                 <?php $booster_tab = booster_decode($planet["boosters"]); ?>
@@ -158,7 +158,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_EXTENSION_MOON']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $booster = "&nbsp;"; ?>
                 <?php $booster_tab = booster_decode($planet["boosters"]); ?>
@@ -181,7 +181,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_METAL']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php echo ($M = $planet['M'] == "") ? "&nbsp;" : $user_production[$i]['prod_theorique']['M']; ?>
             </td>
@@ -191,7 +191,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_CRYSTAL']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php echo ($M = $planet['C'] == "") ? "&nbsp;" : $user_production[$i]['prod_theorique']['C']; ?>
             </td>
@@ -201,7 +201,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_DEUT']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php echo ($M = $planet['D'] == "") ? "&nbsp;" : $user_production[$i]['prod_theorique']['D']; ?>
             </td>
@@ -211,7 +211,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_ENERGY']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $NRJ = (!isset($user_production[$i]['NRJ'])) ? "&nbsp;" : $user_production[$i]['NRJ']; ?>
                 <?php echo number_format($NRJ, 0, ',', ' '); ?>
@@ -230,7 +230,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
     <tr>
         <td class="tdname"><?php echo $lang['HOME_EMPIRE_RATIO']; ?></td>
 
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $user_production[$i]['ratio'] = (!isset($user_production[$i]['ratio'])) ? 0 : $user_production[$i]['ratio']; ?>
                 <?php if ($user_production[$i]['ratio'] != 1) : ?>
@@ -247,7 +247,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_METAL']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php if ($planet['M'] != "") : ?>
                     <?php echo number_format(floor($user_production[$i]['prod_reel']['M']), 0, ',', ' '); ?>
@@ -260,7 +260,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_CRYSTAL']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php if ($planet['C'] != "") : ?>
                     <?php echo number_format(floor($user_production[$i]['prod_reel']['C']), 0, ',', ' '); ?>
@@ -272,7 +272,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_DEUT']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php if ($planet['D'] != "") : ?>
                     <?php echo number_format(floor($user_production[$i]['prod_reel']['D']), 0, ',', ' '); ?>
@@ -284,7 +284,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_BOOSTER']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $booster_tab = booster_decode($planet["boosters"]); ?>
                 m:<?php echo $booster_tab['booster_m_val']; ?>%, c:<?php echo $booster_tab['booster_c_val']; ?>,
@@ -306,7 +306,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_MINE_METAL']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $M = ($planet["M"] == "") ? "&nbsp;" : $planet["M"]; ?>
                 <span id='15<?php echo '_' . $i ?>'>
@@ -319,7 +319,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_MINE_CRYSTAL']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $C = ($planet["C"] == "") ? "&nbsp;" : $planet["C"]; ?>
                 <span id='16<?php echo '_' . $i ?>'>
@@ -332,7 +332,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_MINE_DEUT']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $D = ($planet["D"] == "") ? "&nbsp;" : $planet["D"]; ?>
                 <span id='17<?php echo '_' . $i ?>'>
@@ -345,7 +345,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_METALSTORAGE']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $HM = ($planet["HM"] == "") ? "&nbsp;" : $planet["HM"]; ?>
                 <span id='3<?php echo '_' . $i ?>'>
@@ -358,7 +358,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_CRYSTALSTORAGE']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $HC = ($planet["HC"] == "") ? "&nbsp;" : $planet["HC"]; ?>
                 <span id='4<?php echo '_' . $i ?>'>
@@ -371,7 +371,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_DEUTSTORAGE']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $HD = ($planet["HD"] == "") ? "&nbsp;" : $planet["HD"]; ?>
                 <span id='5<?php echo '_' . $i ?>'>
@@ -384,7 +384,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_SOLAR_PLANT']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $CES = ($planet["CES"] == "") ? "&nbsp;" : $planet["CES"]; ?>
                 <span id='20<?php echo '_' . $i ?>'>
@@ -397,7 +397,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_FUSION_PLANT']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $CEF = ($planet["CEF"] == "") ? "&nbsp;" : $planet["CEF"]; ?>
                 <span id='21<?php echo '_' . $i ?>'>
@@ -422,7 +422,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_ROBOTS_PLANT']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $UdR = ($planet["UdR"] == "") ? "&nbsp;" : $planet["UdR"]; ?>
                 <span id='1<?php echo '_' . $i ?>'>
@@ -435,7 +435,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_NANITES_PLANT']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $UdN = ($planet["UdN"] == "") ? "&nbsp;" : $planet["UdN"]; ?>
                 <span id='22<?php echo '_' . $i ?>'>
@@ -448,7 +448,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_SHIPYARD']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $CSp = ($planet["CSp"] == "") ? "&nbsp;" : $planet["CSp"]; ?>
                 <span id='2<?php echo '_' . $i ?>'>
@@ -461,7 +461,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_RESEARCHLAB']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $Lab = ($planet["Lab"] == "") ? "&nbsp;" : $planet["Lab"]; ?>
                 <span id='23<?php echo '_' . $i ?>'>
@@ -476,7 +476,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
             <td class="tdname">
                 <?php echo $lang['HOME_EMPIRE_ALLIANCEDEPOT']; ?>
             </td>
-            <?php foreach ($user_building as $i => $planet) : ?>
+            <?php foreach ($player_building as $i => $planet) : ?>
                 <td class="tdcontent">
                     <?php $DdR = ($planet["DdR"] == "") ? "&nbsp;" : $planet["DdR"]; ?>
                     <span id='42<?php echo '_' . $i ?>'>
@@ -490,7 +490,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TERRAFORMER']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $Ter = ($planet["Ter"] == "") ? "&nbsp;" : $planet["Ter"]; ?>
                 <span id='24<?php echo '_' . $i ?>'>
@@ -503,7 +503,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_MISSILESSILO']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $Silo = ($planet["Silo"] == "") ? "&nbsp;" : $planet["Silo"]; ?>
                 <span id='25<?php echo '_' . $i ?>'>
@@ -516,7 +516,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_DOCK']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $Dock = ($planet["Dock"] == "") ? "&nbsp;" : $planet["Dock"]; ?>
                 <span id='25<?php echo '_' . $i ?>'>
@@ -538,7 +538,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_LUNARSTATION']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $BaLu = ($planet["BaLu"] == "") ? "&nbsp;" : $planet["BaLu"]; ?>
                 <span id='15<?php echo '_' . $i ?>'>
@@ -551,7 +551,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_LUNARPHALANX']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $Pha = ($planet["Pha"] == "") ? "&nbsp;" : $planet["Pha"]; ?>
                 <span id='16<?php echo '_' . $i ?>'>
@@ -564,7 +564,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_LUNARJUMPGATE']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $PoSa = ($planet["PoSa"] == "") ? "&nbsp;" : $planet["PoSa"]; ?>
                 <span id='17<?php echo '_' . $i ?>'>
@@ -587,7 +587,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_SATELLITES']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $Sat = ($planet["Sat"] == "") ? "&nbsp;" : $planet["Sat"]; ?>
                 <span id='6<?php echo '_' . $i ?>'>
@@ -601,7 +601,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_CRAWLER']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $For = ($planet["FOR"] == "") ? "&nbsp;" : number_format($planet["FOR"], 0, ',', ' '); ?>
                 <?php $class_collect = ($player_data['class'] === 'COL') ? '1' : '0'; ?>
@@ -626,7 +626,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_SPY']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='26<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("Esp", $planet, $user_technology)) : ?>
@@ -646,7 +646,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_COMPUTER']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='27<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("Ordi", $planet, $user_technology)) : ?>
@@ -666,7 +666,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_WEAPONS']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='28<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("Armes", $planet, $user_technology)) : ?>
@@ -686,7 +686,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_SHIELD']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='29<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("Bouclier", $planet, $user_technology)) : ?>
@@ -706,7 +706,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_PROTECTION']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='30<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("Protection", $planet, $user_technology)) : ?>
@@ -726,7 +726,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?= $lang['HOME_EMPIRE_TECHNOS_ENERGY'] ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='31<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("NRJ", $planet, $user_technology)) : ?>
@@ -746,7 +746,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_HYPERSPACE']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='32<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("Hyp", $planet, $user_technology)) : ?>
@@ -766,7 +766,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_COMBUSTION_DRIVE']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='33<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("RC", $planet, $user_technology)) : ?>
@@ -786,7 +786,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_IMPULSE_DRIVE']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='34<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("RI", $planet, $user_technology)) : ?>
@@ -806,7 +806,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_HYPER_DRIVE']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='35<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("PH", $planet, $user_technology)) : ?>
@@ -826,7 +826,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_LASER']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='36<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("Laser", $planet, $user_technology)) : ?>
@@ -846,7 +846,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_IONS']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='37<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("Ions", $planet, $user_technology)) : ?>
@@ -866,7 +866,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_PLASMA']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='38<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("Plasma", $planet, $user_technology)) : ?>
@@ -886,7 +886,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_RESEARCH_NETWORK']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='39<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("RRI", $planet, $user_technology)) : ?>
@@ -906,7 +906,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_ASTRO']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='41<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("Astrophysique", $planet, $user_technology)) : ?>
@@ -927,7 +927,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS_GRAVITY']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                         <span id='40<?php echo '_' . $i; ?>'>
                             <?php if (prerequis_Valid("Graviton", $planet, $user_technology)) : ?>
@@ -956,9 +956,9 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_MISSILES']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $LM = ($user_defense[$i]["LM"] == "") ? "0" : $user_defense[$i]["LM"]; ?>
+                <?php $LM = ($player_defense[$i]["LM"] == "") ? "0" : $player_defense[$i]["LM"]; ?>
                 <span id='7<?php echo '_' . $i ?>'>
                         <?php echo number_format($LM, 0, ',', ' '); ?>
                     </span>
@@ -969,9 +969,9 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_LLASERS']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $LLE = ($user_defense[$i]["LLE"] == "") ? "0" : $user_defense[$i]["LLE"]; ?>
+                <?php $LLE = ($player_defense[$i]["LLE"] == "") ? "0" : $player_defense[$i]["LLE"]; ?>
                 <span id='8<?php echo '_' . $i ?>'>
                         <?php echo number_format($LLE, 0, ',', ' '); ?>
                     </span>
@@ -982,9 +982,9 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_HLASERS']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $LLO = ($user_defense[$i]["LLO"] == "") ? "0" : $user_defense[$i]["LLO"]; ?>
+                <?php $LLO = ($player_defense[$i]["LLO"] == "") ? "0" : $player_defense[$i]["LLO"]; ?>
                 <span id='9<?php echo '_' . $i ?>'>
                         <?php echo number_format($LLO, 0, ',', ' '); ?>
                     </span>
@@ -995,9 +995,9 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_GAUSS']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $CG = ($user_defense[$i]["CG"] == "") ? "0" : $user_defense[$i]["CG"]; ?>
+                <?php $CG = ($player_defense[$i]["CG"] == "") ? "0" : $player_defense[$i]["CG"]; ?>
                 <span id='10<?php echo '_' . $i ?>'>
                         <?php echo number_format($CG, 0, ',', ' '); ?>
                     </span>
@@ -1008,9 +1008,9 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_IONS']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $AI = ($user_defense[$i]["AI"] == "") ? "0" : $user_defense[$i]["AI"]; ?>
+                <?php $AI = ($player_defense[$i]["AI"] == "") ? "0" : $player_defense[$i]["AI"]; ?>
                 <span id='11<?php echo '_' . $i ?>'>
                         <?php echo number_format($AI, 0, ',', ' '); ?>
                     </span>
@@ -1021,9 +1021,9 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_PLASMA']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $LP = ($user_defense[$i]["LP"] == "") ? "0" : $user_defense[$i]["LP"]; ?>
+                <?php $LP = ($player_defense[$i]["LP"] == "") ? "0" : $player_defense[$i]["LP"]; ?>
                 <span id='12<?php echo '_' . $i ?>'>
                         <?php echo number_format($LP, 0, ',', ' '); ?>
                     </span>
@@ -1035,9 +1035,9 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_SMALLSHIELD']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $PB = ($user_defense[$i]["PB"] == "") ? "0" : $user_defense[$i]["PB"]; ?>
+                <?php $PB = ($player_defense[$i]["PB"] == "") ? "0" : $player_defense[$i]["PB"]; ?>
                 <span id='13<?php echo '_' . $i ?>'>
                         <?php echo number_format($PB, 0, ',', ' '); ?>
                     </span>
@@ -1048,9 +1048,9 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_LARGESHIELD']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $GB = ($user_defense[$i]["GB"] == "") ? "0" : $user_defense[$i]["GB"]; ?>
+                <?php $GB = ($player_defense[$i]["GB"] == "") ? "0" : $player_defense[$i]["GB"]; ?>
                 <span id='14<?php echo '_' . $i ?>'>
                         <?php echo number_format($GB, 0, ',', ' '); ?>
                     </span>
@@ -1061,9 +1061,9 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_ANTI']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $MIC = ($user_defense[$i]["MIC"] == "") ? "0" : $user_defense[$i]["MIC"]; ?>
+                <?php $MIC = ($player_defense[$i]["MIC"] == "") ? "0" : $player_defense[$i]["MIC"]; ?>
                 <span id='19<?php echo '_' . $i ?>'>
                             <?php echo number_format($MIC, 0, ',', ' '); ?>
                         </span>
@@ -1074,9 +1074,9 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_INTER']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $MIP = ($user_defense[$i]["MIP"] == "") ? "0" : $user_defense[$i]["MIP"]; ?>
+                <?php $MIP = ($player_defense[$i]["MIP"] == "") ? "0" : $player_defense[$i]["MIP"]; ?>
                 <span id='18<?php echo '_' . $i ?>'>
                             <?php echo number_format($MIP, 0, ',', ' '); ?>
                         </span>
@@ -1096,7 +1096,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_BUILDINGS']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $point = all_building_cumulate(array(1 => $planet)); ?>
                 <?php $point = round($point / 1000); ?>
@@ -1111,9 +1111,9 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_TITLE']; ?>
         </td>
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $point = all_defence_cumulate(array(1 => $user_defense[$i])); ?>
+                <?php $point = all_defence_cumulate(array(1 => $player_defense[$i])); ?>
                 <?php $point = round($point / 1000); ?>
                 <span id='20<?php echo '_' . $i ?>'>
                         <?php echo number_format($point, 0, ',', ' '); ?>
@@ -1126,7 +1126,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
             <?php echo $lang['HOME_EMPIRE_FLEET_TITLE']; ?>
         </td>
         <!-- // seulement les FOR et les SAT !! -->
-        <?php foreach ($user_building as $i => $planet) : ?>
+        <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $point = all_fleet_cumulate(array(1 => $planet)); //FOR et Sat
                 ?>

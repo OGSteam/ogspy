@@ -1,4 +1,4 @@
-<?php global $lang, $server_config;
+<?php global $lang, $server_config, $user_data;
 
 /**
  * User profile

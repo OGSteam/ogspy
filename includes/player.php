@@ -41,6 +41,8 @@ function player_get_empire($player_id)
         $pct["Sat_percentage"] = $BuildingList["Sat_percentage"];
         $pct["FOR_percentage"] = $BuildingList["FOR_percentage"];
 
+        $pctList[$BuildingList["id"]] = $pct;
+
         $BuildingList["fields_used"] = calculate_fields_used($BuildingList);
 
         // modification Booster
@@ -74,7 +76,7 @@ function player_get_empire($player_id)
         'defenses' => $player_defense
     ]);
     return array(
-        "building" => $player_building, "technology" => $player_technology, "defense" => $player_defense, "user_percentage" => $pct
+        "building" => $player_building, "technology" => $player_technology, "defense" => $player_defense, "player_percentage" => $pctList
     );
 }
 
