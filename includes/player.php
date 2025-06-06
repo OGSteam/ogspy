@@ -163,7 +163,7 @@ function user_del_building()
  * @param $player_id
  * @return int|the
  */
-function find_nb_planete_user($player_id)
+function getPlanetCountForPlayer($player_id)
 {
     return (new Player_Building_Model())->get_nb_planets($player_id);
 }

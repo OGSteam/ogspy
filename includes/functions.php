@@ -19,6 +19,7 @@ use Ogsteam\Ogspy\Model\AstroObject_Model;
 use Ogsteam\Ogspy\Model\Player_Building_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\User_Favorites_Model;
+use Random\RandomException;
 
 
 class FileAccessException extends Exception {}
@@ -413,13 +414,14 @@ function color_convert_to_html_input($color)
 }
 
 /**
- *  @brief Construct HTML double input for color, one for text and one for HTML5 color picker and link these with the JS.
+ * Generates HTML for a double input field consisting of a text input and a color picker input,
+ * allowing users to select a color using both text and visual means.
  *
- *  @param[in] string     $label        HTML id of the input
- *  @param[in] string|int $value        Color value (string 'red'/'#ff0000', int 0xffddee)
- *  @param[in] array      $html_arg1     HTML attributes for text box (default = array('size'=>15, 'maxlength'=>20))
- *  @param[in] array      $html_arg2     HTML attributes for color box (default = $html_arg1)
- *  @return string HTML content with 2 inputs linked for color text+HTML5 color
+ * @param string $label The identifier for the input fields.
+ * @param string $value The initial color value (e.g., HEX color code) to prefill the inputs.
+ * @param array $html_arg1 Optional array of HTML attributes for the text input (default: size 15, maxlength 20).
+ * @param array|null $html_arg2 Optional array of HTML attributes for the color input. If null, defaults to $html_arg1.
+ * @return string The generated HTML string for the double input fields.
  */
 function color_html_create_double_input($label, $value, $html_arg1 = array('size' => 15, 'maxlength' => 20), $html_arg2 = null)
 {
@@ -446,24 +448,30 @@ function color_html_create_double_input($label, $value, $html_arg1 = array('size
 }
 
 /**
- * Generates a random password with 6 chars
- * @return string $password The generated password
+ * Generates a random password of the specified length using a predefined character set.
+ *
+ * @param int $length The desired length of the generated password. Defaults to 12.
+ * @return string The randomly generated password.
+ * @throws RandomException
  */
-function password_generator()
+function generateRandomPassword(int $length = 12): string
 {
-    $string = "abBDEFcdefghijkmnPQRSTUVWXYpqrst23456789";
-    srand((float)microtime() * 1000000);
+    $charset = "abBDEFcdefghijkmnPQRSTUVWXYpqrst23456789";
+    $charsetLength = strlen($charset);
     $password = '';
-    for ($i = 0; $i < 8; $i++) {
-        $password .= $string[random_int(0, strlen($string) - 1)];
+
+    for ($i = 0; $i < $length; $i++) {
+        $password .= $charset[random_int(0, $charsetLength - 1)];
     }
+
     return $password;
 }
 
+
 /**
- * Initialisation of the cache for all Mod settings
+ * Initializes the module cache by loading cached configuration data from a file.
+ * If the cached file is outdated or does not exist, the cache is regenerated.
  *
- * Generates a file which contains all configurations for different installed OGSpy Modules
  * @return void
  */
 function init_mod_cache()
@@ -488,9 +496,8 @@ function init_mod_cache()
 }
 
 /**
- * Initialisation of the cache for all Server settings
- *
- * Generates a file which contains all configurations for the OGSpy Server
+ * Initializes the server configuration by loading a cached configuration file.
+ * If the cache file is outdated or does not exist, a new cache file is generated.
  * @return void
  */
 function init_serverconfig()

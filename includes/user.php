@@ -272,7 +272,7 @@ function admin_regeneratepwd()
     if ($new_pass != "") {
         $password = $new_pass;
     } else {
-        $password = password_generator();
+        $password = generateRandomPassword();
     }
     user_set_general($pub_user_id, null, $password);
 
@@ -676,7 +676,7 @@ function user_create()
     if ($pub_pass != "") {
         $password = $pub_pass;
     } else {
-        $password = password_generator();
+        $password = generateRandomPassword();
     }
     $User_Model = new User_Model();
 

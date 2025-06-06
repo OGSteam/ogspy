@@ -1695,11 +1695,52 @@ footer#barre .notviewlittle{
         margin-right: 50%;
     }
 
+		/* Table Home Simulation */
+	#simu {
+		table-layout: fixed;
+		width: 100%; /* Assure que la table utilise toute la largeur disponible */
+		border-collapse: collapse; /* Recommandé pour une meilleure gestion des bordures */
+	}
 
-    /* vue galaxie */
-    table.og-table-galaxy .og-galaxy-poster {
-        display: none;
-    }
+	/* Cible la première colonne (en-têtes de ligne) */
+	#simu > thead > tr > th:first-child,
+	#simu > tbody > tr > td.tdname {
+		width: 180px; /* Ajustez cette valeur (px ou %) selon vos besoins */
+		/* Par exemple, 15% ou 200px */
+	}
+
+	/* Cible la dernière colonne (totaux) */
+	#simu > thead > tr > th:last-child,
+	#simu > tbody > tr > td.og-highlight {
+		width: 120px; /* Ajustez cette valeur (px ou %) selon vos besoins */
+		/* Par exemple, 10% ou 150px */
+	}
+
+
+	#simu.og-table-simu {
+		font-size: 13px !important;
+		min-width: 1100px !important;
+		margin: 20px auto !important;
+	}
+
+	#simu.og-table-simu td,
+	#simu.og-table-simu th {
+		padding: 6px 10px !important;
+		white-space: nowrap !important;
+	}
+
+	#simu.og-table-simu input[type="text"] {
+		width: 55px !important;
+		font-size: 12px !important;
+	}
+
+	#simu.og-table-simu select {
+		width: 75px !important;
+		font-size: 11px !important;
+	}
+
+
+
 
 
 

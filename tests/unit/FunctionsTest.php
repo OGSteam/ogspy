@@ -9,7 +9,7 @@ class FunctionsTest extends TestCase
     {
         define("IN_SPYOGAME", true);
         require_once 'includes/functions.php';
-        $password = password_generator();
+        $password = generateRandomPassword();
 
         // Assert that the password is a string
         $this->assertIsString($password);

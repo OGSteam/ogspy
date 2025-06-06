@@ -948,7 +948,11 @@ function consumption(building, level) {
 }
 
 // Met à jour la page Espace Personel > Simulation
-function update_page() {
+function update_page(planetsIdList, planetBuildings, technologies) {
+  console.log(planetsIdList);
+  console.log(planetBuildings);
+  console.log(technologies);
+
   var j = 0;
   var NRJ = document.getElementById('NRJ').value;
   var Plasma = document.getElementById('Plasma').value;
@@ -1003,92 +1007,90 @@ function update_page() {
 
   var nombrePlanete = parseInt(document.getElementById('simu').title, 10); // on passe par le titre du tableau pour recuperer le nombre de planetes, la recuperation du nb de colonne ne marchant pas ...
 
-  var i = 0;
-  for (j = 101; j <= nombrePlanete + 100; j++) {
-    var temperature_max_1 = document.getElementById('temperature_max_' + j).value;
-    var M_1_percentage = document.getElementById('M_' + j + '_percentage').value;
-    var C_1_percentage = document.getElementById('C_' + j + '_percentage').value;
-    var D_1_percentage = document.getElementById('D_' + j + '_percentage').value;
-    var CES_1_percentage = document.getElementById('CES_' + j + '_percentage').value;
-    var CEF_1_percentage = document.getElementById('CEF_' + j + '_percentage').value;
-    var Sat_1_percentage = document.getElementById('Sat_' + j + '_percentage').value;
-    var For_1_percentage = document.getElementById('For_' + j + '_percentage').value;
-    var M_1_booster = document.getElementById('M_' + j + '_booster').value;
-    var C_1_booster = document.getElementById('C_' + j + '_booster').value;
-    var D_1_booster = document.getElementById('D_' + j + '_booster').value;
-    var E_1_booster = document.getElementById('E_' + j + '_booster').value;
 
-    var position = document.getElementById('position_' + j).value;
+  planetsIdList.forEach(planetId => {
+    var temperature_max_1 = document.getElementById('temperature_max_' + planetId).value;
+    var M_1_percentage = document.getElementById('M_' + planetId + '_percentage').value;
+    var C_1_percentage = document.getElementById('C_' + planetId + '_percentage').value;
+    var D_1_percentage = document.getElementById('D_' + planetId + '_percentage').value;
+    var CES_1_percentage = document.getElementById('CES_' + planetId + '_percentage').value;
+    var CEF_1_percentage = document.getElementById('CEF_' + planetId + '_percentage').value;
+    var Sat_1_percentage = document.getElementById('Sat_' + planetId + '_percentage').value;
+    var For_1_percentage = document.getElementById('For_' + planetId + '_percentage').value;
+    var M_1_booster = document.getElementById('M_' + planetId + '_booster').value;
+    var C_1_booster = document.getElementById('C_' + planetId + '_booster').value;
+    var D_1_booster = document.getElementById('D_' + planetId + '_booster').value;
+    var E_1_booster = document.getElementById('E_' + planetId + '_booster').value;
 
-    M_1[i] = document.getElementById('M_' + j).value;
-    C_1[i] = document.getElementById('C_' + j).value;
-    D_1[i] = document.getElementById('D_' + j).value;
-    CES_1[i] = document.getElementById('CES_' + j).value;
-    CEF_1[i] = document.getElementById('CEF_' + j).value;
-    Sat_1[i] = document.getElementById('Sat_' + j).value;
-    For_1[i] = document.getElementById('For_' + j).value;
+    var position = document.getElementById('position_' + planetId).value;
 
-    M_1_conso[i] = Math.round(consumption('M', M_1[i]) * M_1_percentage / 100);
-    C_1_conso[i] = Math.round(consumption('C', C_1[i]) * C_1_percentage / 100);
-    D_1_conso[i] = Math.round(consumption('D', D_1[i]) * D_1_percentage / 100);
-    FOR_1_conso[i] = Math.round(consumption('FOR', For_1[i]) * For_1_percentage / 100);
-    var energie_conso = M_1_conso[i] + C_1_conso[i] + D_1_conso[i] + FOR_1_conso[i];
+    M_1[planetId] = document.getElementById('M_' + planetId).value;
+    C_1[planetId] = document.getElementById('C_' + planetId).value;
+    D_1[planetId] = document.getElementById('D_' + planetId).value;
+    CES_1[planetId] = document.getElementById('CES_' + planetId).value;
+    CEF_1[planetId] = document.getElementById('CEF_' + planetId).value;
+    Sat_1[planetId] = document.getElementById('Sat_' + planetId).value;
+    For_1[planetId] = document.getElementById('For_' + planetId).value;
 
-    var CES_1_production = production('CES', CES_1[i], temperature_max_1, NRJ) * CES_1_percentage / 100;
-    var CEF_1_production = production('CEF', CEF_1[i], temperature_max_1, NRJ) * CEF_1_percentage / 100;
-    var Sat_1_production = production_sat(temperature_max_1, Sat_1[i]) * Sat_1_percentage / 100;
-    NRJ_1[i] = Math.round((CES_1_production + CEF_1_production + Sat_1_production) * (1 + E_1_booster / 100));
+    M_1_conso[planetId] = Math.round(consumption('M', M_1[planetId]) * M_1_percentage / 100);
+    C_1_conso[planetId] = Math.round(consumption('C', C_1[planetId]) * C_1_percentage / 100);
+    D_1_conso[planetId] = Math.round(consumption('D', D_1[planetId]) * D_1_percentage / 100);
+    FOR_1_conso[planetId] = Math.round(consumption('FOR', For_1[planetId]) * For_1_percentage / 100);
+    var energie_conso = M_1_conso[planetId] + C_1_conso[planetId] + D_1_conso[planetId] + FOR_1_conso[planetId];
 
-    var NRJ_1_delta = NRJ_1[i] - energie_conso;
+    var CES_1_production = production('CES', CES_1[planetId], temperature_max_1, NRJ) * CES_1_percentage / 100;
+    var CEF_1_production = production('CEF', CEF_1[planetId], temperature_max_1, NRJ) * CEF_1_percentage / 100;
+    var Sat_1_production = production_sat(temperature_max_1, Sat_1[planetId]) * Sat_1_percentage / 100;
+    NRJ_1[planetId] = Math.round((CES_1_production + CEF_1_production + Sat_1_production) * (1 + E_1_booster / 100));
+
+    var NRJ_1_delta = NRJ_1[planetId] - energie_conso;
     if (NRJ_1_delta < 0) {
-      document.getElementById('NRJ_' + j).innerHTML = '<span class="og-alert">' + format(NRJ_1_delta) + '</span>' + ' / ' + format(NRJ_1[i]);
+      document.getElementById('NRJ_' + planetId).innerHTML = '<span class="og-alert">' + format(NRJ_1_delta) + '</span>' + ' / ' + format(NRJ_1[planetId]);
     } else {
-      document.getElementById('NRJ_' + j).innerHTML = format(NRJ_1_delta) + ' / ' + format(NRJ_1[i]);
+      document.getElementById('NRJ_' + planetId).innerHTML = format(NRJ_1_delta) + ' / ' + format(NRJ_1[planetId]);
     }
-    if (isNaN(NRJ_1[i])) NRJ_1[i] = 0;
+    if (isNaN(NRJ_1[planetId])) NRJ_1[planetId] = 0;
 
     //Ratio de consommation d'énergie
     var ratio_conso = 0;
     if (energie_conso !== 0) {
-      ratio_conso = NRJ_1[i] / energie_conso;
+      ratio_conso = NRJ_1[planetId] / energie_conso;
       if (ratio_conso > 1) ratio_conso = 1;
     }
     if (ratio_conso > 0) {
-      M_1_prod[i] = Math.round(ratio_conso * production('M', M_1[i], temperature_max_1, NRJ, Plasma, position) * M_1_percentage / 100);
-      C_1_prod[i] = Math.round(ratio_conso * production('C', C_1[i], temperature_max_1, NRJ, Plasma, position) * C_1_percentage / 100);
-      D_1_prod[i] = Math.round(ratio_conso * production('D', D_1[i], temperature_max_1, NRJ, Plasma, position) * D_1_percentage / 100) - Math.round(consumption('CEF', CEF_1[i]) * CEF_1_percentage / 100);
-      prod_for_tmp = production_foreuse(For_1[i], M_1[i], C_1[i], D_1[i], temperature_max_1, position);
+      M_1_prod[planetId] = Math.round(ratio_conso * production('M', M_1[planetId], temperature_max_1, NRJ, Plasma, position) * M_1_percentage / 100);
+      C_1_prod[planetId] = Math.round(ratio_conso * production('C', C_1[planetId], temperature_max_1, NRJ, Plasma, position) * C_1_percentage / 100);
+      D_1_prod[planetId] = Math.round(ratio_conso * production('D', D_1[planetId], temperature_max_1, NRJ, Plasma, position) * D_1_percentage / 100) - Math.round(consumption('CEF', CEF_1[planetId]) * CEF_1_percentage / 100);
+      prod_for_tmp = production_foreuse(For_1[planetId], M_1[planetId], C_1[planetId], D_1[planetId], temperature_max_1, position);
       prod_for_tmp['M'] = Math.round(ratio_conso * prod_for_tmp['M'] * For_1_percentage / 100);
       prod_for_tmp['C'] = Math.round(ratio_conso * prod_for_tmp['C'] * For_1_percentage / 100);
       prod_for_tmp['D'] = Math.round(ratio_conso * prod_for_tmp['D'] * For_1_percentage / 100);
-      FOR_1_prod[i] = prod_for_tmp;
+      FOR_1_prod[planetId] = prod_for_tmp;
 
-      M_1_prod[i] = M_1_prod[i] + Math.round((ratio_conso * production('M', M_1[i], temperature_max_1, NRJ, 0, position) * M_1_percentage / 100) * (M_1_booster / 100));
-      C_1_prod[i] = C_1_prod[i] + Math.round((ratio_conso * production('C', C_1[i], temperature_max_1, NRJ, 0, position) * C_1_percentage / 100) * (C_1_booster / 100));
-      D_1_prod[i] = D_1_prod[i] + Math.round((ratio_conso * production('D', D_1[i], temperature_max_1, NRJ, 0, position) * D_1_percentage / 100) * (D_1_booster / 100));
+      M_1_prod[planetId] = M_1_prod[planetId] + Math.round((ratio_conso * production('M', M_1[planetId], temperature_max_1, NRJ, 0, position) * M_1_percentage / 100) * (M_1_booster / 100));
+      C_1_prod[planetId] = C_1_prod[planetId] + Math.round((ratio_conso * production('C', C_1[planetId], temperature_max_1, NRJ, 0, position) * C_1_percentage / 100) * (C_1_booster / 100));
+      D_1_prod[planetId] = D_1_prod[planetId] + Math.round((ratio_conso * production('D', D_1[planetId], temperature_max_1, NRJ, 0, position) * D_1_percentage / 100) * (D_1_booster / 100));
     } else {
-      M_1_prod[i] = Math.round(production('M', 0, 0, 0, 0, position));
-      C_1_prod[i] = Math.round(production('C', 0, 0, 0, 0, position));
-      D_1_prod[i] = Math.round(production('D', 0, 0, 0, 0, position));
+      M_1_prod[planetId] = Math.round(production('M', 0, 0, 0, 0, position));
+      C_1_prod[planetId] = Math.round(production('C', 0, 0, 0, 0, position));
+      D_1_prod[planetId] = Math.round(production('D', 0, 0, 0, 0, position));
       prod_for_tmp = production_foreuse(0, 0, 0, 0, 0, position);
       prod_for_tmp['M'] = Math.round(ratio_conso * prod_for_tmp['M'] * For_1_percentage / 100);
       prod_for_tmp['C'] = Math.round(ratio_conso * prod_for_tmp['C'] * For_1_percentage / 100);
       prod_for_tmp['D'] = Math.round(ratio_conso * prod_for_tmp['D'] * For_1_percentage / 100);
-      FOR_1_prod[i] = prod_for_tmp;
+      FOR_1_prod[planetId] = prod_for_tmp;
     }
-    document.getElementById('M_' + j + '_conso').innerHTML = format(M_1_conso[i]);
-    document.getElementById('M_' + j + '_prod').innerHTML = format(M_1_prod[i]);
-    document.getElementById('C_' + j + '_conso').innerHTML = format(C_1_conso[i]);
-    document.getElementById('C_' + j + '_prod').innerHTML = format(C_1_prod[i]);
-    document.getElementById('D_' + j + '_conso').innerHTML = format(D_1_conso[i]);
-    document.getElementById('D_' + j + '_prod').innerHTML = format(D_1_prod[i]);
-    document.getElementById('FOR_' + j + '_conso').innerHTML = format(FOR_1_conso[i]);
-    document.getElementById('FOR_' + j + '_prod').innerHTML = format(FOR_1_prod[i]['M']) + ' / ' + format(FOR_1_prod[i]['C']) + ' / ' + format(FOR_1_prod[i]['D']);
+    document.getElementById('M_' + planetId + '_conso').innerHTML = format(M_1_conso[planetId]);
+    document.getElementById('M_' + planetId + '_prod').innerHTML = format(M_1_prod[planetId]);
+    document.getElementById('C_' + planetId + '_conso').innerHTML = format(C_1_conso[planetId]);
+    document.getElementById('C_' + planetId + '_prod').innerHTML = format(C_1_prod[planetId]);
+    document.getElementById('D_' + planetId + '_conso').innerHTML = format(D_1_conso[planetId]);
+    document.getElementById('D_' + planetId + '_prod').innerHTML = format(D_1_prod[planetId]);
+    document.getElementById('FOR_' + planetId + '_conso').innerHTML = format(FOR_1_conso[planetId]);
+    document.getElementById('FOR_' + planetId + '_prod').innerHTML = format(FOR_1_prod[planetId]['M']) + ' / ' + format(FOR_1_prod[planetId]['C']) + ' / ' + format(FOR_1_prod[planetId]['D']);
 
-    document.getElementById('FOR_' + j + '_max').innerHTML = format(foreuse_max(M_1[i], C_1[i], D_1[i]));
-
-    i++;
-  }
+    document.getElementById('FOR_' + planetId + '_max').innerHTML = format(foreuse_max(M_1[planetId], C_1[planetId], D_1[planetId]));
+  });
 
   //
   // Totaux
@@ -1102,16 +1104,16 @@ function update_page() {
   var FOR_conso = 0;
   var NRJ = 0;
 
-  for (i = 0; i < nombrePlanete; i++) {
-    M_conso = M_conso + M_1_conso[i];
-    M_prod = M_prod + M_1_prod[i] + FOR_1_prod[i]["M"];
-    C_conso = C_conso + C_1_conso[i];
-    C_prod = C_prod + C_1_prod[i] + FOR_1_prod[i]["C"];
-    D_conso = D_conso + D_1_conso[i];
-    D_prod = D_prod + D_1_prod[i] + FOR_1_prod[i]["D"];
-    FOR_conso = FOR_conso + FOR_1_conso[i];
-    NRJ += NRJ_1[i];
-  }
+  planetsIdList.forEach(planetId => {
+    M_conso = M_conso + M_1_conso[planetId];
+    M_prod = M_prod + M_1_prod[planetId] + FOR_1_prod[planetId]["M"];
+    C_conso = C_conso + C_1_conso[planetId];
+    C_prod = C_prod + C_1_prod[planetId] + FOR_1_prod[planetId]["C"];
+    D_conso = D_conso + D_1_conso[planetId];
+    D_prod = D_prod + D_1_prod[planetId] + FOR_1_prod[planetId]["D"];
+    FOR_conso = FOR_conso + FOR_1_conso[planetId];
+    NRJ += NRJ_1[planetId];
+  });
   document.getElementById('M_conso').innerHTML = format(M_conso);
   document.getElementById('M_prod').innerHTML = format(M_prod);
   document.getElementById('C_conso').innerHTML = format(C_conso);
@@ -1128,53 +1130,63 @@ function update_page() {
   document.getElementById('E_NRJ').innerHTML = s_delta + ' / ' + '<span>' + format(NRJ) + '</span>';
 
   //
-  // Points
-  //                 UdR, Nanites, CSp,   HM,   HC,   HD, Lab,  TeraF,DepotR,  Silo,Dock, BaseL, Phalg, PdS
-  var init_b_prix = [720, 1600000, 700, 1000, 1500, 2000, 800, 150000, 60000, 41000, 250, 80000, 80000, 8000000];
+  // Building Points
+  //
+  const init_b_prix = {
+    'UdR': 720,
+    'UdN': 1600000,
+    'CSp': 700,
+    'HM': 1000,
+    'HC': 1500,
+    'HD': 2000,
+    'Lab': 800,
+    'Ter': 150000,
+    'DdR': 60000,
+    'Silo': 41000,
+    'Dock': 250,
+    'BaLu': 80000,
+    'Pha': 80000,
+    'PoSa': 8000000
+  };
 
   // Batiments planetes
   var total_b_pts = 0;
   var total_pts_1 = [];
 
-  j = 101;
-  for (i = 0; i < nombrePlanete; i++) {
-    var building_1 = document.getElementById('building_' + j).value;
-    var b_pts_1 = Math.floor(((60 + 15) * (1 - Math.pow(1.5, M_1[i])) / (-0.5)) + ((48 + 24) * (1 - Math.pow(1.6, C_1[i])) / (-0.6)) + ((225 + 75) * (1 - Math.pow(1.5, D_1[i])) / (-0.5)) + ((75 + 30) * (1 - Math.pow(1.5, CES_1[i])) / (-0.5)) + ((900 + 360 + 180) * (1 - Math.pow(1.8, CEF_1[i])) / (-0.8)));
+  planetsIdList.forEach(planetId => {
+    var b_pts_1 = Math.floor(((60 + 15) * (1 - Math.pow(1.5, M_1[planetId])) / (-0.5)) + ((48 + 24) * (1 - Math.pow(1.6, C_1[planetId])) / (-0.6)) + ((225 + 75) * (1 - Math.pow(1.5, D_1[planetId])) / (-0.5)) + ((75 + 30) * (1 - Math.pow(1.5, CES_1[planetId])) / (-0.5)) + ((900 + 360 + 180) * (1 - Math.pow(1.8, CEF_1[planetId])) / (-0.8)));
 
-    building_1 = building_1.split('<>');
-    for (k = 0; k < building_1.length; k++) {
-      if (building_1[k] !== 0 || building_1[k] !== 100) {
-        b_pts_1 += init_b_prix[k] * Math.pow(2, building_1[k] - 1);
+    for (const [key, value] of Object.entries(planetBuildings[planetId])) {
+      if (key in init_b_prix) { // ne calculer que les entries avec un prix
+        b_pts_1 += init_b_prix[key] * (Math.pow(2, value) - 1);
       }
     }
-    total_pts_1[j] = b_pts_1;
+    total_pts_1[planetId] = b_pts_1;
     total_b_pts += b_pts_1;
 
-    document.getElementById('building_pts_' + j).innerHTML = format(Math.round(total_pts_1[j] / 1000));
-    j++;
-  }
+    document.getElementById('building_pts_' + planetId).innerHTML = format(Math.round(total_pts_1[planetId] / 1000));
+
+  });
   document.getElementById('total_b_pts').innerHTML = format(Math.round(total_b_pts / 1000));
 
   var init_d_prix = [2000, 2000, 8000, 37000, 8000, 130000, 20000, 100000, 10000, 25000];
 
   // Defences planetes
   var total_d_pts = 0;
-  j = 101;
-  for (i = 0; i < nombrePlanete; i++) {
-    var defence_1 = document.getElementById('defence_' + j).value;
+  planetsIdList.forEach(planetId => {
+    var defence_1 = document.getElementById('defence_' + planetId).value;
     defence_1 = defence_1.split('<>');
     var d_pts_1 = 0;
     for (k = 0; k < defence_1.length; k++) {
       d_pts_1 = d_pts_1 + init_d_prix[k] * defence_1[k];
     }
-    total_pts_1[j] += d_pts_1;
+    total_pts_1[planetId] += d_pts_1;
     total_d_pts += d_pts_1;
-    document.getElementById('defence_pts_' + j).innerHTML = format(Math.round(total_pts_1[j] / 1000));
-    j++;
-  }
+    document.getElementById('defence_pts_' + planetId).innerHTML = format(Math.round(total_pts_1[planetId] / 1000));
+  });
   document.getElementById('total_d_pts').innerHTML = format(Math.round(total_d_pts / 1000));
 
-  var total_lune_pts = 0;
+  /*var total_lune_pts = 0;
   var lune_pts_1 = [];
   var t = 201;
   for (i = 0; i < nombrePlanete; i++) {
@@ -1198,52 +1210,67 @@ function update_page() {
     document.getElementById('lune_pts_' + t).innerHTML = format(Math.round(lune_pts_1[i] / 1000));
     t++;
   }
-  document.getElementById('total_lune_pts').innerHTML = format(Math.round(total_lune_pts / 1000));
+  document.getElementById('total_lune_pts').innerHTML = format(Math.round(total_lune_pts / 1000));*/
 
   // Sat planetes
   var total_sat_pts = 0;
   var sat_pts_1 = [];
-  j = 101;
-  for (i = 0; i < nombrePlanete; i++) {
-    var sat_lune_1 = document.getElementById('sat_lune_' + j).value;
-    sat_pts_1[i] = Math.round(Sat_1[i] * 2.5 + sat_lune_1 * 2.5);
-    total_sat_pts += sat_pts_1[i];
-    document.getElementById('sat_pts_' + j).innerHTML =  format(sat_pts_1[i]);
-    j++;
-  }
+  planetsIdList.forEach(planetId => {
+    var sat_lune_1 = document.getElementById('sat_lune_' + planetId).value;
+    sat_pts_1[planetId] = Math.round(Sat_1[planetId] * 2.5 + sat_lune_1 * 2.5);
+    total_sat_pts += sat_pts_1[planetId];
+    document.getElementById('sat_pts_' + planetId).innerHTML =  format(sat_pts_1[planetId]);
+  });
   document.getElementById('total_sat_pts').innerHTML = format(total_sat_pts);
 
-  t = 101;
-  for (i = 0; i < nombrePlanete; i++) {
-    j = i + 100;
-    document.getElementById('total_pts_' + t).innerHTML = format(Math.round((total_pts_1[i] + lune_pts_1[j]) / 1000) + sat_pts_1[i]);
-    t++;
-  }
+
+  planetsIdList.forEach(planetId => {
+    document.getElementById('total_pts_' + planetId).innerHTML = format(Math.round((total_pts_1[planetId] /*+ lune_pts_1[planetId]*/) / 1000) + sat_pts_1[planetId]);
+  });
 
   // Technologies planete avec le labo de plus au niveau
-  var init_t_prix = [1400, 1000, 1000, 800, 1000, 1200, 6000, 1000, 6600, 36000, 300, 1400, 7000, 800000, 0, 16000];
+  const technoPrix = {
+    'Esp': 1400,
+    'Ordi': 1000,
+    'Armes': 1000,
+    'Bouclier': 800,
+    'Protection': 1000,
+    'NRJ': 1200,
+    'Hyp': 6000,
+    'RC': 1000,
+    'RI': 6600,
+    'PH': 36000,
+    'Laser': 300,
+    'Ions': 1400,
+    'Plasma': 7000,
+    'RRI': 800000,
+    'Graviton': 0,
+    'Astrophysique': 16000
+  };
 
-  var techno = document.getElementById('techno').value;
-  techno = techno.split('<>');
-  var techno_pts = 0;
-  for (i = 0; i < (techno.length - 1); i++) {
-    techno_pts = techno_pts + init_t_prix[i] * (Math.pow(2, techno[i]) - 1);
+  let techno_pts = 0;
+
+  for (const [key, value] of Object.entries(technologies)) {
+    if (key !== 'player_id') { // Ignorer `player_id`
+      techno_pts += technoPrix[key] * (Math.pow(2, value) - 1);
+    }
   }
 
   // Calcul du cout de la techno astrophysique.
   var techno_astro_pts = 0;
   var techno_astro_pts_prec = 0;
-  if (techno[15] > 0) {
-    techno_astro_pts = init_t_prix[15];
-    techno_astro_pts_prec = init_t_prix[15];
+  if (technologies['Astrophysique'] > 0) {
+    techno_astro_pts = technoPrix['Astrophysique'];
+    techno_astro_pts_prec = technoPrix['Astrophysique'];
   }
-  for (i = 1; i < techno[15]; i++) {
+  for (i = 1; i < technologies['Astrophysique']; i++) {
     techno_astro_pts = techno_astro_pts + techno_astro_pts_prec * 1.75;
     techno_astro_pts_prec = techno_astro_pts_prec * 1.75;
   }
   techno_pts = techno_pts + techno_astro_pts;
+  console.log(`Points totaux des technologies : ${techno_pts}`);
   document.getElementById('techno_pts').innerHTML = format(Math.round(techno_pts / 1000));// Cout Total Techno
-  document.getElementById('total_pts').innerHTML = format(Math.round((total_b_pts + total_d_pts + total_lune_pts + techno_pts) / 1000) + total_sat_pts);// Cout Total
+  document.getElementById('total_pts').innerHTML = format(Math.round((total_b_pts + total_d_pts /*+ total_lune_pts */+ techno_pts) / 1000) + total_sat_pts);// Cout Total
 }
 
 //Affiche les nombres sous format lisible (10 000 à la place de 10000)
@@ -1256,9 +1283,8 @@ function format(x) {
   }
   var str = x.toString(), n = str.length;
   if (n < 4) return (signe + x);
-  else return (signe + ((n % 3) ? str.substr(0, n % 3) + '&nbsp;' : '')) + str.substr(n % 3).match(new RegExp('[0-9]{3}', 'g')).join('&nbsp;');
+  else return (signe + ((n % 3) ? str.substring(0, n % 3) + '&nbsp;' : '')) + str.substring(n % 3).match(/[0-9]{3}/g).join('&nbsp;');
 }
-
 /**
  * Calcule la distance entre a et b, a - b ; en tenant en compte des univers arrondis.
  * type = Représente le type de distance à calculer

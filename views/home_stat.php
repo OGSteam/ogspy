@@ -344,7 +344,7 @@ $user_building = $user_empire["building"];
 $user_defence = $user_empire["defence"];
 $user_technology = $user_empire["technology"];
 
-$nb_planete = find_nb_planete_user($user_data["id"]);
+$nb_planete = getPlanetCountForPlayer($user_data["id"]);
 
 $b = round(all_building_cumulate(array_slice($user_building, 0, $nb_planete)) / 1000);
 $d = round(all_defence_cumulate(array_slice($user_defence, 0, $nb_planete)) / 1000);

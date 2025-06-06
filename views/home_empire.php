@@ -31,7 +31,7 @@ $player_building = $user_empire['building'];
 $player_defense = $user_empire['defense'];
 $user_technology = $user_empire['technology'];
 
-$nb_planete = find_nb_planete_user($user_data['player_id']);
+$nb_planete = getPlanetCountForPlayer($user_data['player_id']);
 
 $name = $coordinates = $fields = $temperature_min = $temperature_max = $satellite = "";
 //Planète
@@ -59,11 +59,11 @@ if (!isset($user_technology['Astrophysique']) || $user_technology['Astrophysique
 }
 $astro = astro_max_planete($user_technology['Astrophysique']);
 ?>
-<?php if (((find_nb_planete_user($user_data['id']) > $astro) || (find_nb_moon_user($user_data['id']) > $astro)) && $user_technology) : ?>
+<?php if (((getPlanetCountForPlayer($user_data['id']) > $astro) || (find_nb_moon_user($user_data['id']) > $astro)) && $user_technology) : ?>
     <div class="og-msg og-msg-danger">
         <h3 class="og-title"><?php echo $lang['HOME_EMPIRE_ERROR']; ?></h3>
         <p class="og-content">
-            <?php echo (find_nb_planete_user($user_data['id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_PLANET'] . '<br>' : ''; ?>
+            <?php echo (getPlanetCountForPlayer($user_data['id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_PLANET'] . '<br>' : ''; ?>
             <?php echo (find_nb_moon_user($user_data['id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_MOON'] . '<br>' : ''; ?>
         </p>
     </div>
