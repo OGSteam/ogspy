@@ -128,7 +128,7 @@ class AstroObject_Model extends Model_Abstract
                     ga.`tag` AS ally_tag
                 FROM `" . TABLE_USER_BUILDING . "` p
                 LEFT JOIN `" . TABLE_GAME_PLAYER . "` gp ON gp.`id` = p.`player_id`
-                LEFT JOIN `" . TABLE_GAME_ALLY . "` ga ON ga.`id` = p.`ally_id`
+                LEFT JOIN `" . TABLE_GAME_ALLY . "` ga ON ga.`id` = gp.`ally_id`
                 LEFT JOIN `" . TABLE_USER . "` u ON u.`id` = p.`last_update_user_id`
                 WHERE
                     p.`type` = 'planet'
@@ -267,16 +267,22 @@ class AstroObject_Model extends Model_Abstract
     }
 
     /**
-     * Obtiens la liste des alliances
-     * @return array
+     * Retrieves a list of ally tags from the database.
+     *
+     * This method executes a SQL query to fetch distinct ally tags
+     * from the user building and game ally tables, where the tags are
+     * not null or empty. The results are ordered alphabetically by ally tag.
+     *
+     * @return array An array of ally tags retrieved from the database.
      */
     public function get_ally_list()
     {
         $ally_list = array();
 
-        $request = "SELECT DISTINCT ga.`tag` AS `ally` FROM `" . TABLE_USER_BUILDING . "` aub ";
-        $request .= "INNER JOIN `" . TABLE_GAME_ALLY . "` ga ON aub.`ally_id` = ga.`id` ";
-        $request .= "WHERE ga.`tag` IS NOT NULL AND ga.`tag` != '' ";
+        $request = "SELECT DISTINCT ally.`tag` AS `ally` FROM `" . TABLE_USER_BUILDING . "` aub ";
+        $request .= "INNER JOIN `" . TABLE_GAME_PLAYER . "` player ON aub.`player_id` = player.`id` ";
+        $request .= "INNER JOIN `" . TABLE_GAME_ALLY . "` ally ON player.`ally_id` = ally.`id` ";
+        $request .= "WHERE ally.`tag` IS NOT NULL AND ally.`tag` != '' ";
         $request .= "ORDER BY `ally` ASC"; // Order by the alias
 
         $result = $this->db->sql_query($request);
@@ -290,12 +296,19 @@ class AstroObject_Model extends Model_Abstract
     }
 
     /**
-     * Obtiens la liste des joueurs d'une alliance
-     * @param $galaxy
-     * @param $system_down
-     * @param $system_up
-     * @param $ally_tag_filter
-     * @return array
+     * Retrieves the positions of ally members within a specific galaxy and system range.
+     *
+     * This method performs a SQL query to fetch positional data and player names
+     * for members of a specified alliance within a given galaxy and system range.
+     * The results are ordered by player name, galaxy, system, and row.
+     *
+     * @param int $galaxy The galaxy number to search within.
+     * @param int $system_down The lower bound of the system range.
+     * @param int $system_up The upper bound of the system range.
+     * @param string $ally_tag_filter The tag of the ally to filter positions by.
+     *
+     * @return array An array of positions, where each position contains the "galaxy",
+     *               "system", "row", and "player" keys.
      */
     public function get_ally_position($galaxy, $system_down, $system_up, $ally_tag_filter)
     {
@@ -382,14 +395,12 @@ class AstroObject_Model extends Model_Abstract
      * @param $galaxy
      * @return array
      */
-    public function get_phalanx($galaxy)
+    public function get_phalanx(int $galaxy)
     {
-        $galaxy = (int)$galaxy;
-
         $req = "SELECT ub.`galaxy`, ub.`system`, ub.`row`, ub.`Pha`, ub.`PoSa`, ub.`name`, gp.`name` AS player_name, ga.`tag` AS ally_tag
                 FROM " . TABLE_USER_BUILDING . " ub
                 LEFT JOIN " . TABLE_GAME_PLAYER . " gp ON ub.`player_id` = gp.`id`
-                LEFT JOIN " . TABLE_GAME_ALLY . " ga ON ub.`ally_id` = ga.`id`
+                LEFT JOIN " . TABLE_GAME_ALLY . " ga ON gp.`ally_id` = ga.`id`
                 WHERE ub.`galaxy` = '" . $galaxy . "' AND ub.`type` = 'moon' AND ub.`Pha` > 0";
 
         $result = $this->db->sql_query($req);

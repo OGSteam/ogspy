@@ -1005,9 +1005,6 @@ function update_page(planetsIdList, planetBuildings, technologies) {
   var Sat_1 = [];
   var For_1 = [];
 
-  var nombrePlanete = parseInt(document.getElementById('simu').title, 10); // on passe par le titre du tableau pour recuperer le nombre de planetes, la recuperation du nb de colonne ne marchant pas ...
-
-
   planetsIdList.forEach(planetId => {
     var temperature_max_1 = document.getElementById('temperature_max_' + planetId).value;
     var M_1_percentage = document.getElementById('M_' + planetId + '_percentage').value;
@@ -1283,7 +1280,7 @@ function format(x) {
   }
   var str = x.toString(), n = str.length;
   if (n < 4) return (signe + x);
-  else return (signe + ((n % 3) ? str.substring(0, n % 3) + '&nbsp;' : '')) + str.substring(n % 3).match(/[0-9]{3}/g).join('&nbsp;');
+  else return (signe + ((n % 3) ? str.substring(0, n % 3) + '&nbsp;' : '')) + str.substring(n % 3).match(/\d{3}/g).join('&nbsp;');
 }
 /**
  * Calcule la distance entre a et b, a - b ; en tenant en compte des univers arrondis.

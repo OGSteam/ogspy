@@ -18,6 +18,14 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 $player_data = (new Player_Model())->get_player_data($user_data['player_id']);
+if (empty($player_data)) {
+    echo '<div class="og-msg og-msg-warning ">' .
+        '<h3 class="og-title">' . $lang['MSG_SYSTEM'] . '</h3>' .
+        '<p class="og-content">' . $lang['MSG_EMPIRE_DATA_FAILURE'] . '</p>' .
+        '</div>';
+    require_once 'views/page_tail.php';
+    exit;
+}
 $player_empire = player_get_empire($player_data['id']);
 
 $player_building = $player_empire["building"];
@@ -56,7 +64,7 @@ foreach ($player_building as $planet_id => $planet) {
 }
 
 ?>
-<table class="og-table og-full-table" id="simu_params" title="">
+<table class="og-table og-full-table" id="simu_params" title="Simulation Parameters">
     <thead>
     <tr>
         <th>
@@ -82,7 +90,7 @@ foreach ($player_building as $planet_id => $planet) {
     </thead>
 </table>
 
-<table class="og-table og-full-table" id="simu" title="<?php echo $nb_planete; ?>">
+<table class="og-table og-full-table" id="simu" title="Simulation">
     <thead>
     <tr>
         <th></th>
@@ -104,8 +112,7 @@ foreach ($player_building as $planet_id => $planet) {
         <?php foreach ($player_building as $planet_id => $planet) : ?>
             <?php $coordinates = "[" . $planet["galaxy"] . "&nbsp;" . $planet["system"] . "&nbsp;" . $planet["row"] . "]"; ?>
             <td colspan='2' class="tdcontent">
-                <?php echo $coordinates; ?><input id='position_<?php echo $planet["id"]; ?>' type='hidden'
-                                                  value='<?php echo $planet["row"]; ?>'>
+                <?php echo $coordinates; ?><input id='position_<?php echo $planet["id"]; ?>' type='hidden' value='<?php echo $planet["row"]; ?>'>
             </td>
         <?php endforeach; ?>
         <td class="og-highlight"></td>
@@ -141,8 +148,7 @@ foreach ($player_building as $planet_id => $planet) {
         <?php foreach ($player_building as $planet_id => $planet) : ?>
             <?php $temperature_min = ($planet["temperature_min"] == "") ? "&nbsp;" : $planet["temperature_min"]; ?>
             <td colspan='2' class="tdcontent">
-                <?php echo $temperature_min; ?><input id='temperature_min_<?php echo $planet_id; ?>' type='hidden'
-                                                      value='<?php echo $temperature_min; ?>'>
+                <?php echo $temperature_min; ?><input id='temperature_min_<?php echo $planet_id; ?>' type='hidden' value='<?php echo $temperature_min; ?>'>
             </td>
             <?php $t_min = (is_numeric($temperature_min) && $temperature_min < $t_min) ? $temperature_min : $t_min; // Pour totaux
             ?>
@@ -161,8 +167,7 @@ foreach ($player_building as $planet_id => $planet) {
         <?php foreach ($player_building as $planet_id => $planet) : ?>
             <?php $temperature_max = ($planet["temperature_max"] == "") ? "&nbsp;" : $planet["temperature_max"]; ?>
             <td colspan='2' class="tdcontent">
-                <?php echo $temperature_max; ?><input id='temperature_max_<?php echo $planet_id; ?>' type='hidden'
-                                                      value='<?php echo $temperature_max; ?>'>
+                <?php echo $temperature_max; ?><input id='temperature_max_<?php echo $planet_id; ?>' type='hidden' value='<?php echo $temperature_max; ?>'>
             </td>
             <?php $t_max = (is_numeric($temperature_max) && $temperature_max > $t_max) ? $temperature_max : $t_max; ?>
         <?php endforeach; ?>
@@ -686,6 +691,7 @@ foreach ($player_building as $planet_id => $planet) {
 
 <script>
     function refresh_page() {
+        //TODO: As planetsIDs are already included in planetbuildings, it could be optimized
         const planetIds = [<?php echo implode(',', array_keys($player_building)); ?>];
         const planetBuildings = <?php echo json_encode($player_building); ?>;
         const technologies = <?php echo json_encode($player_technology); ?>;

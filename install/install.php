@@ -41,24 +41,24 @@
     $error = "";
     $alerte = false;
     if (is_writeable("../parameters")) {
-        $error .= "<tr><td width=\"250\">- \"parameters\" : </td><td><font color='green'>" . $lang['INSTALL_WRITE_ALLOWED'] . "</font></td></tr>";
+        $error .= " : </td><td><span style=\"color: green; \">" . $lang['INSTALL_WRITE_ALLOWED'] . "</span></td></tr>";
     } else {
-        $error .= "<tr><td width=\"250\">- \"parameters\" : </td><td><font color='red'>" . $lang['INSTALL_WRITE_DENIED'] . "</font></td></tr>";
+        $error .= " : </td><td><span style=\"color: red; \">" . $lang['INSTALL_WRITE_DENIED'] . "</span></td></tr>";
         $alerte = true;
     }
 
     if (is_writeable("../journal")) {
-        $error .= "<tr><td width=\"250\">- \"journal\" : </td><td><font color='green'>" . $lang['INSTALL_WRITE_ALLOWED'] . "</font></td></tr>";
+        $error .= " : </td><td><span style=\"color: green; \">" . $lang['INSTALL_WRITE_ALLOWED'] . "</span></td></tr>";
     } else {
-        $error .= "<tr><td width=\"250\">- \"journal\" : </td><td><font color='red'>" . $lang['INSTALL_WRITE_DENIED'] . "</font></td></tr>";
+        $error .= " : </td><td><span style=\"color: red; \">" . $lang['INSTALL_WRITE_DENIED'] . "</span></td></tr>";
         $alerte = true;
     }
 
     $error2 = "";
     if (is_writeable("../mod")) {
-        $error2 .= "<tr><td width=\"250\">- \"mod\" : </td><td><font color='green'>" . $lang['INSTALL_WRITE_ALLOWED'] . "</font></td></tr>";
+        $error2 .= " : </td><td><span style=\"color: green; \">" . $lang['INSTALL_WRITE_ALLOWED'] . "</span></td></tr>";
     } else {
-        $error2 .= "<tr><td width=\"250\">- \"mod\" : </td><td><font color='red'>" . $lang['INSTALL_WRITE_DENIED'] . "</font></td></tr>";
+        $error2 .= " : </td><td><span style=\"color: red; \">" . $lang['INSTALL_WRITE_DENIED'] . "</span></td></tr>";
     }
 
 
@@ -83,25 +83,27 @@
     function error_sql($message)
     {
         global $lang;
-        echo "<h3 align='center'><span style=\"color: red; \">" . $lang['INSTALL_SQL_ERROR'] . "</span></h3>";
-        echo "<div style=\"text-align: center;\"><b>- " . $message . "</b></div>";
+        echo "<h3 style=\"text-align: center;\"><span style=\"color: red; \">" . $lang['INSTALL_SQL_ERROR'] . "</span></h3>";
+        // Le message est maintenant échappé avec htmlspecialchars pour la sécurité et l'affichage correct.
+        echo "<div style=\"text-align: center;\"><b>- " . htmlspecialchars($message, ENT_QUOTES, 'UTF-8') . "</b></div>";
         exit();
     }
 
     /**
-     * Création de la structure de la base de donnée
+     * Installs and initializes the database structure and configuration for the application.
      *
-     * @param string $sgbd_server Serveur MySql (localhost)
-     * @param        $sgbd_dbname Nom de la base de données
-     * @param string $sgbd_username Utilisateur Base de donné
-     * @param string $sgbd_password Mot de passe Base de donné
-     * @param string $sgbd_tableprefix Préfixe à utiliser pour les tables ogspy
-     * @param string $admin_username Nom de l'Administrateur OGSpy
-     * @param string $admin_password Mot de passe Administrateur OGSpy
-     * @param int $num_of_galaxies Nombre de galaxies dans l'univers OGame de cet OGSp
-     * @param int $num_of_systems Nombre de systèmes dans l'univers OGame de cet OGSpy
-     * @param string $ui_lang Langue
-     * @throws FileAccessException
+     * @param string $sgbd_server The database server address.
+     * @param string $sgbd_dbname The name of the database.
+     * @param string $sgbd_username The username for database authentication.
+     * @param string $sgbd_password The password for database authentication.
+     * @param string $sgbd_tableprefix The prefix to use for database table names.
+     * @param string $admin_username The username for the default admin account.
+     * @param string $admin_password The password for the default admin account.
+     * @param int $num_of_galaxies The number of galaxies to configure in the database.
+     * @param int $num_of_systems The number of systems to configure in the database.
+     * @param string $ui_lang The language for the user interface.
+     *
+     * @return void This method does not return a value, it either completes the installation or terminates with an error.
      */
 
     function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $admin_username, $admin_password, $num_of_galaxies, $num_of_systems, $ui_lang)
@@ -116,23 +118,32 @@
         //Création de la structure de la base de données
         if (is_file("schemas/ogspy_structure.sql")) {
             $sql_query = @fread(@fopen("schemas/ogspy_structure.sql", 'r'), @filesize("schemas/ogspy_structure.sql"));
+            $sql_query_data = @fread(@fopen("schemas/ogspy_init-data.sql", 'r'), @filesize("schemas/ogspy_init-data.sql"));
         } else {
             exit("<h1>SQL structure file has not been found</h1>");
         }
 
-        if (trim($sgbd_tableprefix) != "") {
-            $sql_query = preg_replace("#ogspy_#", $sgbd_tableprefix, $sql_query);
+        $sgbd_tableprefix = $sgbd_tableprefix ?? "ogspy_";
+
+        if (isset($sgbd_tableprefix) && trim($sgbd_tableprefix) != "ogspy_") {
+            $sql_query = str_replace("#ogspy_#", $sgbd_tableprefix, $sql_query);
         }
 
-        $sql_query = explode(";", $sql_query);
-        $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('num_of_galaxies','$num_of_galaxies')";
-        $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('num_of_systems','$num_of_systems')";
-        $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('speed_uni','1')";
-        $sql_query[] = "INSERT INTO `" . $sgbd_tableprefix . "config` (`config_name`, `config_value`) VALUES ('version','$ogspy_version')";
+        $sql_query = array_merge(
+            explode(";", $sql_query),
+            explode(";", $sql_query_data),
+            [
+                "UPDATE `{$sgbd_tableprefix}config` (`config_value`) VALUES ('$num_of_galaxies') WHERE `config_name` = 'num_of_galaxies'",
+                "UPDATE `{$sgbd_tableprefix}config` (`config_value`) VALUES ('$num_of_systems') WHERE `config_name` = 'num_of_systems'",
+                "UPDATE `{$sgbd_tableprefix}config` (`config_value`) VALUES ('1') WHERE `config_name` = 'speed_uni'",
+                "UPDATE `{$sgbd_tableprefix}config` (`config_value`) VALUES ('$ogspy_version') WHERE `config_name` = 'version'",
+            ]
+        );
 
         foreach ($sql_query as $request) {
-            if (trim($request) != "") {
-                if (!($result = $db->sql_query($request))) {
+            if (!empty(trim($request))) {
+                $result = $db->sql_query($request);
+                if (!$result) {
                     $error = $db->sql_error($result);
                     print $request;
                     error_sql($error['message']);
@@ -140,17 +151,15 @@
             }
         }
 
-        $request = "INSERT INTO " . $sgbd_tableprefix .
-            "user (id, name, password_s , regdate, active, admin, pwd_change)" .
-            " values (1, '" . mysqli_real_escape_string($db->db_connect_id, $admin_username) . "', '" .
-            password_hash($admin_password, PASSWORD_DEFAULT) . "', " . time() . ", '1', '1', '0')";
-        if (!($result = $db->sql_query($request))) {
-            $error = $db->sql_error($result);
-            print $request;
-            error_sql($error['message']);
-        }
+        $request = "UPDATE " . $sgbd_tableprefix . "user SET " .
+            "name = '" . mysqli_real_escape_string($db->db_connect_id, $admin_username) . "', " .
+            "password_s = '" . password_hash($admin_password, PASSWORD_DEFAULT) . "', " .
+            "regdate = " . time() . ", " .
+            "active = '1', " .
+            "admin = '1', " .
+            "pwd_change = '0' " .
+            "WHERE id = 1";
 
-        $request = "INSERT INTO " . $sgbd_tableprefix . "user_group (group_id, user_id) values (1, 1)";
         if (!($result = $db->sql_query($request))) {
             $error = $db->sql_error($result);
             print $request;

@@ -25,6 +25,15 @@ global $server_config;
 
 // On récupère les données de l'utilisateur
 $player_data = (new Player_Model())->get_player_data($user_data['player_id']);
+if (empty($player_data)) {
+    echo '<div class="og-msg og-msg-warning ">' .
+        '<h3 class="og-title">' . $lang['MSG_SYSTEM'] . '</h3>' .
+        '<p class="og-content">' . $lang['MSG_EMPIRE_DATA_FAILURE'] . '</p>' .
+        '</div>';
+    require_once 'views/page_tail.php';
+    exit;
+}
+
 $user_empire = player_get_empire($player_data['id']);
 
 $player_building = $user_empire['building'];

@@ -170,8 +170,24 @@ class Player_Building_Model  extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @return array
+     * Récupère la liste des bâtiments associés à un joueur spécifique.
+     *
+     * Cette méthode interroge la table `TABLE_USER_BUILDING` pour obtenir les informations
+     * sur tous les bâtiments d'un joueur donné, identifiés par son `player_id`.
+     *
+     * @param int $player_id L'identifiant unique du joueur dont les bâtiments doivent être récupérés.
+     * @return array Un tableau associatif contenant les bâtiments du joueur spécifié.
+     *               Les clés principales du tableau correspondent aux identifiants uniques des bâtiments (`id`).
+     *               Chaque entrée contient un tableau associatif décrivant les attributs du bâtiment,
+     *               tels que :
+     *               - `id` : L'identifiant du bâtiment.
+     *               - `name` : Le nom du bâtiment.
+     *               - `galaxy` : La galaxie dans laquelle le bâtiment se trouve.
+     *               - `system` : Le système dans lequel le bâtiment se trouve.
+     *               - `row` : La rangée dans laquelle le bâtiment se situe.
+     *               - `fields`, `boosters`, `temperature_min`, `temperature_max`, et d'autres attributs
+     *                 spécifiques au bâtiment.
+     *               Les détails de chaque élément correspondent aux colonnes listées dans `$tElemList`.
      */
     public function select_player_building_list($player_id)
     {
@@ -195,12 +211,25 @@ class Player_Building_Model  extends Model_Abstract
         return $tbuilding;
     }
 
-    public function get_building_by_silo($silo_level)
+    /**
+     * Récupère les bâtiments en fonction du niveau de silo spécifié.
+     *
+     * Cette méthode interroge la table `TABLE_USER_BUILDING` pour récupérer
+     * les informations sur les bâtiments qui ont un niveau de silo supérieur ou égal
+     * au niveau fourni en paramètre.
+     *
+     * @param int $silo_level Le niveau de silo minimum requis pour récupérer les bâtiments.
+     * @return array Un tableau contenant les informations des bâtiments correspondant au critère.
+     *               Chaque élément du tableau est une entrée associative avec les clés :
+     *               - `user_id` : L'identifiant de l'utilisateur.
+     *               - `planet_id` : L'identifiant de la planète.
+     *               - `coordinates` : Les coordonnées du bâtiment.
+     *               - `Silo` : Le niveau du silo.
+     */
+    public function get_building_by_silo(int $silo_level)
     {
-        $silo_level = (int)$silo_level;
-
-        $request =  "SELECT `user_id`, `planet_id`, `coordinates`, `Silo` FROM " . TABLE_USER_BUILDING . " WHERE `Silo` >= $silo_level ";
-        $result =  $this->db->sql_query($request);
+        $query =  "SELECT `id`, `player_id`, `galaxy`, `system`, `row`, `Silo` FROM " . TABLE_USER_BUILDING . " WHERE `Silo` >= $silo_level ";
+        $result =  $this->db->sql_query($query);
 
         $tbuilding = array();
         while ($building =  $this->db->sql_fetch_assoc($result)) {
@@ -211,8 +240,14 @@ class Player_Building_Model  extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $aster_id Planet or moon to be deleted
+     * Supprime un astéroïde associé à un utilisateur spécifique.
+     *
+     * Cette méthode supprime l'enregistrement d'un astéroïde spécifique
+     * pour un utilisateur particulier de la table `TABLE_USER_BUILDING`.
+     *
+     * @param int $user_id L'identifiant de l'utilisateur auquel l'astéroïde est associé.
+     * @param int $aster_id L'identifiant de l'astéroïde à supprimer.
+     * @return void Cette méthode ne retourne aucune valeur.
      */
     public function delete_user_aster($user_id, $aster_id)
     {
