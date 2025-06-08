@@ -1939,7 +1939,7 @@ function all_building_cumulate($user_building)
  * @param[in] $user_defence Info of planet or moon
  * @return float Total price (M+C+D)
  */
-function all_defence_cumulate($user_defence)
+function all_defense_cumulate($user_defence)
 {
     return ogame_all_cumulate($user_defence, 'DEF');
 }
@@ -1972,7 +1972,7 @@ function all_technology_cumulate($user_techno)
  */
 function all_lune_cumulate($user_building, $user_defence)
 {
-    return all_defence_cumulate($user_defence) + all_building_cumulate($user_building);
+    return all_defense_cumulate($user_defence) + all_building_cumulate($user_building);
 }
 
 /**

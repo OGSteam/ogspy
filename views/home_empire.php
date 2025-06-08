@@ -967,7 +967,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         </td>
         <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $LM = ($player_defense[$i]["LM"] == "") ? "0" : $player_defense[$i]["LM"]; ?>
+                <?php $LM = $player_defense[$i]["LM"] ?? "0"; ?>
                 <span id='7<?php echo '_' . $i ?>'>
                         <?php echo number_format($LM, 0, ',', ' '); ?>
                     </span>
@@ -980,7 +980,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         </td>
         <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $LLE = ($player_defense[$i]["LLE"] == "") ? "0" : $player_defense[$i]["LLE"]; ?>
+                <?php $LLE = $player_defense[$i]["LLE"] ??  "0"; ?>
                 <span id='8<?php echo '_' . $i ?>'>
                         <?php echo number_format($LLE, 0, ',', ' '); ?>
                     </span>
@@ -993,7 +993,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         </td>
         <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $LLO = ($player_defense[$i]["LLO"] == "") ? "0" : $player_defense[$i]["LLO"]; ?>
+                <?php $LLO = $player_defense[$i]["LLO"] ?? "0"; ?>
                 <span id='9<?php echo '_' . $i ?>'>
                         <?php echo number_format($LLO, 0, ',', ' '); ?>
                     </span>
@@ -1006,7 +1006,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         </td>
         <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $CG = ($player_defense[$i]["CG"] == "") ? "0" : $player_defense[$i]["CG"]; ?>
+                <?php $CG = $player_defense[$i]["CG"] ?? "0"; ?>
                 <span id='10<?php echo '_' . $i ?>'>
                         <?php echo number_format($CG, 0, ',', ' '); ?>
                     </span>
@@ -1019,7 +1019,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         </td>
         <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $AI = ($player_defense[$i]["AI"] == "") ? "0" : $player_defense[$i]["AI"]; ?>
+                <?php $AI = $player_defense[$i]["AI"] ?? "0"; ?>
                 <span id='11<?php echo '_' . $i ?>'>
                         <?php echo number_format($AI, 0, ',', ' '); ?>
                     </span>
@@ -1032,7 +1032,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         </td>
         <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $LP = ($player_defense[$i]["LP"] == "") ? "0" : $player_defense[$i]["LP"]; ?>
+                <?php $LP = $player_defense[$i]["LP"] ?? "0"; ?>
                 <span id='12<?php echo '_' . $i ?>'>
                         <?php echo number_format($LP, 0, ',', ' '); ?>
                     </span>
@@ -1046,7 +1046,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         </td>
         <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $PB = ($player_defense[$i]["PB"] == "") ? "0" : $player_defense[$i]["PB"]; ?>
+                <?php $PB = $player_defense[$i]["PB"] ?? "0"; ?>
                 <span id='13<?php echo '_' . $i ?>'>
                         <?php echo number_format($PB, 0, ',', ' '); ?>
                     </span>
@@ -1059,7 +1059,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         </td>
         <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $GB = ($player_defense[$i]["GB"] == "") ? "0" : $player_defense[$i]["GB"]; ?>
+                <?php $GB = $player_defense[$i]["GB"] ?? "0"; ?>
                 <span id='14<?php echo '_' . $i ?>'>
                         <?php echo number_format($GB, 0, ',', ' '); ?>
                     </span>
@@ -1072,7 +1072,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         </td>
         <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $MIC = ($player_defense[$i]["MIC"] == "") ? "0" : $player_defense[$i]["MIC"]; ?>
+                <?php $MIC = $player_defense[$i]["MIC"] ?? "0"; ?>
                 <span id='19<?php echo '_' . $i ?>'>
                             <?php echo number_format($MIC, 0, ',', ' '); ?>
                         </span>
@@ -1085,10 +1085,10 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         </td>
         <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $MIP = ($player_defense[$i]["MIP"] == "") ? "0" : $player_defense[$i]["MIP"]; ?>
+                <?php $MIP = $player_defense[$i]["MIP"] ?? "0"; ?>
                 <span id='18<?php echo '_' . $i ?>'>
                             <?php echo number_format($MIP, 0, ',', ' '); ?>
-                        </span>
+                </span>
             </td>
         <?php endforeach; ?>
     </tr>
@@ -1122,8 +1122,11 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         </td>
         <?php foreach ($player_building as $i => $planet) : ?>
             <td class="tdcontent">
-                <?php $point = all_defence_cumulate(array(1 => $player_defense[$i])); ?>
-                <?php $point = round($point / 1000); ?>
+                <?php
+                $current_planet_defense = $player_defense[$i] ?? [];
+                $point = all_defense_cumulate(array(1 => $current_planet_defense));
+                $point = round($point / 1000);
+                ?>
                 <span id='20<?php echo '_' . $i ?>'>
                         <?php echo number_format($point, 0, ',', ' '); ?>
                     </span>

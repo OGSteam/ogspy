@@ -347,7 +347,7 @@ $user_technology = $user_empire["technology"];
 $nb_planete = getPlanetCountForPlayer($user_data["id"]);
 
 $b = round(all_building_cumulate(array_slice($user_building, 0, $nb_planete)) / 1000);
-$d = round(all_defence_cumulate(array_slice($user_defence, 0, $nb_planete)) / 1000);
+$d = round(all_defense_cumulate(array_slice($user_defence, 0, $nb_planete)) / 1000);
 $l = round(all_lune_cumulate(array_slice($user_building, $nb_planete, $nb_planete), array_slice($user_defence, $nb_planete, $nb_planete)) / 1000);
 $t = round(all_technology_cumulate($user_technology) / 1000);
 $f = $last["general_pts"] - $b - $d - $l - $t;
@@ -360,7 +360,7 @@ $planet = array();
 $planet_name = array();
 for ($i = 1; $i <= $nb_planete; $i++) {
     $b = round(all_building_cumulate(array_slice($user_building, $i - 1, 1)) / 1000);
-    $d = round(all_defence_cumulate(array_slice($user_defence, $i - 1, 1)) / 1000);
+    $d = round(all_defense_cumulate(array_slice($user_defence, $i - 1, 1)) / 1000);
     $l = round(all_lune_cumulate(array_slice($user_building, $i + $nb_planete - 1, 1), array_slice($user_defence, $i + $nb_planete - 1, 1)) / 1000);
     if ($b != 0 || $d != 0 || $l != 0) {
         $planet[] = $b + $d + $l;

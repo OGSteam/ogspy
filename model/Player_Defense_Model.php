@@ -15,15 +15,14 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class Player_Defense_Model  extends Model_Abstract
 {
     /**
-     * Récupère les données de défense d'un joueur spécifique.
+     * Retrieves the defense data for a specific player.
      *
-     * @param int $playerId L'identifiant unique du joueur.
-     * @return array Un tableau contenant les données de défense du joueur.
+     * @param int $playerId The unique identifier of the player.
+     * @return array An associative array containing the player's defense data.
      */
-    public function select_player_defense($playerId)
+    public function select_player_defense(int $playerId)
     {
         global $log;
-        $playerId = (int)$playerId;
         $log->info("[OGSpy_Player_Defense_Model] select_player_defense - Player ID: " . $playerId);
 
         $request = "SELECT `astro_object_id`, `LM`, `LLE`, `LLO`, `CG`, `AI`, `LP`, `PB`, `GB`, `MIC`, `MIP`";
@@ -36,20 +35,20 @@ class Player_Defense_Model  extends Model_Abstract
         if (!$result) {
             $log->error("[OGSpy_Player_Defense_Model] select_player_defense - SQL Query FAILED!", ['error' => $this->db->sql_error()]);
         }
-
+        $raw_defense_data = [];
         while ($row = $this->db->sql_fetch_assoc($result)) {
             $raw_defense_data[] = $row;
         }
 
         $log->info("[OGSpy_Player_Defense_Model] select_player_defense - Number of defense entries found: " . $this->db->sql_numrows($result));
-        $log->info("[OGSpy_Player_Defense_Model] select_player_defense - Returned Defense Data:", [ $raw_defense_data]);
         return $raw_defense_data;
     }
+
     /**
-     * Récupère les données de défense d'une planète spécifique.
+     * Retrieves the defense configuration for a specified planet.
      *
-     * @param int $planet_id L'identifiant unique de la planète.
-     * @return array Un tableau associatif contenant les données de défense de la planète.
+     * @param int $planet_id The unique identifier of the planet whose defense data is to be retrieved.
+     * @return array|null An associative array containing the defense information for the specified planet, or null if no data is found.
      */
     public function select_player_defense_planete(int $planet_id)
     {
@@ -66,16 +65,14 @@ class Player_Defense_Model  extends Model_Abstract
 
 
     /**
-     * Supprime les données d'un astre (planète ou lune) spécifique.
+     * Deletes a specified asteroid entry from the player defense table.
      *
-     * @param int $aster_id L'identifiant unique de l'astre à supprimer.
+     * @param int $aster_id The unique identifier of the asteroid to be deleted.
      * @return void
      */
-    public function delete_user_aster($aster_id)
+    public function delete_user_aster(int $aster_id)
     {
-        $aster_id = (int)$aster_id;
-
-        $request = "DELETE FROM " . TABLE_GAME_PLAYER_DEFENSE . " WHERE `astro_object_id` = " . intval($aster_id);
+        $request = "DELETE FROM " . TABLE_GAME_PLAYER_DEFENSE . " WHERE `astro_object_id` = " . $aster_id;
         $this->db->sql_query($request);
     }
 
