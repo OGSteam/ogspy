@@ -23,7 +23,7 @@ jobs:
       id: version
       # You may pin to the exact commit or the version.
       # uses: codacy/git-version@fa06788276d7492a2af01662649696d249ecf4cb
-      uses: codacy/git-version@2.8.0
+      uses: codacy/git-version@2.8.2
       with:
         # The name of the release branch
         release-branch: master
