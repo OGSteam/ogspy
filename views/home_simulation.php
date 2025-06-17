@@ -622,8 +622,6 @@ foreach ($player_building as $planet_id => $planet) {
         <?php foreach ($player_building as $planet_id => $planet) : ?>
             <td colspan="2" class="tdcontent">
                 <div id='defence_pts_<?php echo $planet_id; ?>'>-</div>
-                <input type='hidden' id='defence_<?php echo $planet_id; ?>'
-                       value='<?php echo implode('<>', $player_defense[$planet_id]); ?>'/>
             </td>
         <?php endforeach; ?>
         <td class="og-highlight">
@@ -695,7 +693,8 @@ foreach ($player_building as $planet_id => $planet) {
         const planetIds = [<?php echo implode(',', array_keys($player_building)); ?>];
         const planetBuildings = <?php echo json_encode($player_building); ?>;
         const technologies = <?php echo json_encode($player_technology); ?>;
-        update_page(planetIds, planetBuildings, technologies);
+        const planetDefenses = <?php echo json_encode($player_defense); ?>;
+        update_page(planetIds, planetBuildings, technologies, planetDefenses);
     }
 
     refresh_page();

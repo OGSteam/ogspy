@@ -948,10 +948,11 @@ function consumption(building, level) {
 }
 
 // Met à jour la page Espace Personel > Simulation
-function update_page(planetsIdList, planetBuildings, technologies) {
+function update_page(planetsIdList, planetBuildings, technologies, planetDefenses) {
   console.log(planetsIdList);
   console.log(planetBuildings);
   console.log(technologies);
+  console.log(planetDefenses);
 
   var j = 0;
   var NRJ = document.getElementById('NRJ').value;
@@ -1166,23 +1167,38 @@ function update_page(planetsIdList, planetBuildings, technologies) {
   });
   document.getElementById('total_b_pts').innerHTML = format(Math.round(total_b_pts / 1000));
 
-  var init_d_prix = [2000, 2000, 8000, 37000, 8000, 130000, 20000, 100000, 10000, 25000];
 
-  // Defences planetes
-  var total_d_pts = 0;
-  planetsIdList.forEach(planetId => {
-    var defence_1 = document.getElementById('defence_' + planetId).value;
-    defence_1 = defence_1.split('<>');
-    var d_pts_1 = 0;
-    for (k = 0; k < defence_1.length; k++) {
-      d_pts_1 = d_pts_1 + init_d_prix[k] * defence_1[k];
+  const init_d_prix = {
+    'LM': 2000,
+    'LLE': 2000,
+    'LLO': 8000,
+    'CG': 37000,
+    'AI': 8000,
+    'LP': 130000,
+    'PB': 20000,
+    'GB': 100000,
+    'MIC': 10000,
+    'MIP': 25000
+  };
+
+
+// Defenses planetes
+var total_d_pts = 0;
+
+planetsIdList.forEach(planetId => {
+  var d_pts_1 = 0;
+  for (const [key, value] of Object.entries(planetDefenses[planetId])) {
+    if (key in init_d_prix) { // ne calculer que les entries avec un prix
+      d_pts_1 += init_d_prix[key] * value;
     }
-    total_pts_1[planetId] += d_pts_1;
-    total_d_pts += d_pts_1;
-    document.getElementById('defence_pts_' + planetId).innerHTML = format(Math.round(total_pts_1[planetId] / 1000));
-  });
+  }
+  total_pts_1[planetId] += d_pts_1;
+  total_d_pts += d_pts_1;
+  document.getElementById('defence_pts_' + planetId).innerHTML = format(Math.round(total_pts_1[planetId] / 1000));
+});
   document.getElementById('total_d_pts').innerHTML = format(Math.round(total_d_pts / 1000));
 
+  // Lune
   /*var total_lune_pts = 0;
   var lune_pts_1 = [];
   var t = 201;
