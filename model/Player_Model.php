@@ -18,10 +18,8 @@ class Player_Model extends Model_Abstract
      * - Parcours des résultats pour les stocker dans un tableau associatif.
      * - Vérification si le tableau est vide, auquel cas false est retourné.
      */
-    public function get_player_data($player_id)
+    public function get_player_data(int $player_id)
     {
-        $player_id = (int)$player_id;
-
         $request = "SELECT `id`, `name`, `status`, `class`, `ally_id`, `datadate`," .
             " `off_commandant`, `off_amiral`, `off_ingenieur`, `off_geologue`, `off_technocrate`".
             " FROM " . TABLE_GAME_PLAYER;
@@ -37,6 +35,29 @@ class Player_Model extends Model_Abstract
 
         return $info_users;
     }
+
+    /**
+     * Obtient le nom du joueur en jeu à partir de son identifiant.
+     *
+     * @param int $player_id L'identifiant du joueur en jeu.
+     * @return string|false Retourne le nom du joueur en jeu, ou false si non trouvé.
+     */
+    public function get_player_name(int $player_id)
+    {
+        $request = "SELECT `name`".
+            " FROM " . TABLE_GAME_PLAYER;
+        $request .= " WHERE `id` = " . $player_id;
+        $result = $this->db->sql_query($request);
+
+        list($playerName) = $this->db->sql_fetch_row($result);
+
+        if (empty($playerName)) {
+            return false;
+        }
+
+        return $playerName;
+    }
+
 
     /**
      * A quoi sert donc cette fonction ? :p

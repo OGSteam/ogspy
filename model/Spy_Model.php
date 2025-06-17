@@ -41,9 +41,9 @@ class Spy_Model extends Model_Abstract
 
         $favorite = [];
 
-        $request = "SELECT `id_spy`, astro.`galaxy`, astro.`system`, astro.`row`, `dateRE`, `user`.`name`, `astro`.`type`, `player`.`ally_id`, `astro`.`player_id`, `player`.`status`";
+        $request = "SELECT pspy.`id`, astro.`galaxy`, astro.`system`, astro.`row`, `dateRE`, `user`.`name`, `astro`.`type`, `player`.`ally_id`, `astro`.`player_id`, `player`.`status`";
         $request .= " FROM " . TABLE_PARSEDSPY. " `pspy`";
-        $request .= " INNER JOIN " . TABLE_USER_BUILDING . " `astro` ON `pspy`.`coordinates` = CONCAT(`astro`.`galaxy`,':',`astro`.`system`,':',`astro`.`row`)";
+        $request .= " INNER JOIN " . TABLE_USER_BUILDING . " `astro` ON `pspy`.`astro_object_id` = `astro`.`id`";
         $request .= " INNER JOIN " . TABLE_GAME_PLAYER . " `player` ON `astro`.`player_id` = `player`.`id`";
         $request .= " INNER JOIN " . TABLE_USER . " `user` ON `user`.`id` = `pspy`.`sender_id`";
         $request .= " WHERE `pspy`.`sender_id`=$user_id ";
@@ -64,55 +64,38 @@ class Spy_Model extends Model_Abstract
 
 
     /**
-     * Retrieves the spy report details for the given spy ID.
+     * Retrieves detailed information about a specific spy report.
      *
-     * @param int $id_RE The ID of the spy report to retrieve.
-     * @return array An associative array containing the details of the spy report, including:
-     *               'planet_name', 'coordinates', 'metal', 'cristal', 'deuterium', 'energie',
-     *               'activite', 'M', 'C', 'D', 'CES', 'CEF', 'UdR', 'UdN', 'CSp', 'HM', 'HC',
-     *               'HD', 'Lab', 'Ter', 'Silo', 'Dock', 'DdR', 'BaLu', 'Pha', 'PoSa', 'LM',
-     *               'LLE', 'LLO', 'CG', 'AI', 'LP', 'PB', 'GB', 'MIC', 'MIP', 'PT', 'GT', 'CLE',
-     *               'CLO', 'CR', 'VB', 'VC', 'REC', 'SE', 'BMD', 'DST', 'EDLM', 'SAT', 'TRA',
-     *               'FOR', 'FAU', 'ECL', 'Esp', 'Ordi', 'Armes', 'Bouclier', 'Protection', 'NRJ',
-     *               'Hyp', 'RC', 'RI', 'PH', 'Laser', 'Ions', 'Plasma', 'RRI', 'Graviton',
-     *               'Astrophysique', 'dateRE', 'proba'.
+     * @param int $id_RE The unique identifier of the spy report to retrieve.
+     * @return array An associative array containing detailed information about the spy report,
+     *               including resources, activities, structures, fleet, technologies, probabilities,
+     *               and report date.
      */
-    public function get_spy_Id($id_RE)
+    public function get_spy_Id(int $id_RE)
     {
-        $id_RE = (int)$id_RE;
-
-        $query = "SELECT `planet_name`, `coordinates`, `metal`, `cristal`, `deuterium`, `energie`, `activite`, `M`, `C`, `D`, `CES`, `CEF`, `UdR`, `UdN`, `CSp`, `HM`, `HC`,
+        $query = "SELECT `astro_object_id`, `metal`, `cristal`, `deuterium`, `energie`, `activite`, `M`, `C`, `D`, `CES`, `CEF`, `UdR`, `UdN`, `CSp`, `HM`, `HC`,
         `HD`, `Lab`, `Ter`, `Silo`, `Dock`, `DdR`, `BaLu`, `Pha`, `PoSa`, `LM`, `LLE`, `LLO`, `CG`, `AI`, `LP`, `PB`, `GB`, `MIC`, `MIP`, `PT`, `GT`, `CLE`, `CLO`, `CR`, `VB`, `VC`, `REC`, `SE`, `BMD`,
         `DST`, `EDLM`, `SAT`, `TRA`, `FOR`, `FAU`, `ECL`, `Esp`, `Ordi`, `Armes`, `Bouclier`, `Protection`, `NRJ`, `Hyp`, `RC`, `RI`, `PH`, `Laser`, `Ions`, `Plasma`, `RRI`, `Graviton`, `Astrophysique`,
-        `dateRE`, `proba` FROM " . TABLE_PARSEDSPY . " WHERE `id_spy`=$id_RE";
+        `dateRE`, `proba` FROM " . TABLE_PARSEDSPY . " WHERE `id`= {$id_RE}";
         $result = $this->db->sql_query($query);
 
-        $row = $this->db->sql_fetch_assoc($result);
-        return $row;
+        return $this->db->sql_fetch_assoc($result);
     }
 
     /**
-     * Retrieves all spy reports associated with the provided coordinates.
+     * Retrieves spy data for a specific astronomical object.
      *
-     * @param string $coord The coordinates to filter spy reports by.
-     *                      The format is expected to follow the galaxy:system:row pattern.
-     * @return array An array of associative arrays, where each entry contains details about a spy report,
-     *               including 'planet_name', 'coordinates', 'metal', 'cristal', 'deuterium', 'energie',
-     *               'activite', 'M', 'C', 'D', 'CES', 'CEF', 'UdR', 'UdN', 'CSp', 'HM', 'HC', 'HD', 'Lab',
-     *               'Ter', 'Silo', 'Dock', 'DdR', 'BaLu', 'Pha', 'PoSa', 'LM', 'LLE', 'LLO', 'CG', 'AI',
-     *               'LP', 'PB', 'GB', 'MIC', 'MIP', 'PT', 'GT', 'CLE', 'CLO', 'CR', 'VB', 'VC', 'REC', 'SE',
-     *               'BMD', 'DST', 'EDLM', 'SAT', 'TRA', 'FOR', 'FAU', 'ECL', 'Esp', 'Ordi', 'Armes',
-     *               'Bouclier', 'Protection', 'NRJ', 'Hyp', 'RC', 'RI', 'PH', 'Laser', 'Ions', 'Plasma',
-     *               'RRI', 'Graviton', 'Astrophysique', 'dateRE', 'proba', and other report details.
+     * @param int $astro_object_id The ID of the astronomical object for which the spy data is to be retrieved.
+     * @return array An array of associative arrays, where each entry contains detailed spy report information
+     *               such as planet name, resources (metal, crystal, deuterium, energy), activity, building levels,
+     *               defenses, fleet composition, technology levels, report date, and probability.
      */
-    public function get_all_spy_coordinates($coord)
+    public function get_spy_data(int $astro_object_id)
     {
-        $coord = $this->db->sql_escape_string($coord);
-
-        $query = "SELECT `planet_name`, `coordinates`, `metal`, `cristal`, `deuterium`, `energie`, `activite`, `M`, `C`, `D`, `CES`, `CEF`, `UdR`, `UdN`, `CSp`, `HM`, `HC`,
+        $query = "SELECT `planet_name`, `astro_object_id`, `metal`, `cristal`, `deuterium`, `energie`, `activite`, `M`, `C`, `D`, `CES`, `CEF`, `UdR`, `UdN`, `CSp`, `HM`, `HC`,
         `HD`, `Lab`, `Ter`, `Silo`, `Dock`, `DdR`, `BaLu`, `Pha`, `PoSa`, `LM`, `LLE`, `LLO`, `CG`, `AI`, `LP`, `PB`, `GB`, `MIC`, `MIP`, `PT`, `GT`, `CLE`, `CLO`, `CR`, `VB`, `VC`, `REC`, `SE`, `BMD`,
         `DST`, `EDLM`, `SAT`, `TRA`, `FOR`, `FAU`, `ECL`, `Esp`, `Ordi`, `Armes`, `Bouclier`, `Protection`, `NRJ`, `Hyp`, `RC`, `RI`, `PH`, `Laser`, `Ions`, `Plasma`, `RRI`, `Graviton`, `Astrophysique`,
-        `dateRE`, `proba` FROM " . TABLE_PARSEDSPY . " WHERE `coordinates`='$coord' ORDER BY `dateRE` DESC ";
+        `dateRE`, `proba` FROM " . TABLE_PARSEDSPY . " WHERE `astro_object_id`='$astro_object_id' ORDER BY `dateRE` DESC ";
         $result = $this->db->sql_query($query);
 
         $tResult = array();
@@ -143,45 +126,37 @@ class Spy_Model extends Model_Abstract
         $data = $this->db->sql_fetch_assoc($result);
         $nb_spy = $data ? (int)$data['spy_count'] : 0;
 
-        return $nb_spy;;
+        return $nb_spy;
     }
 
     /**
-     * Retrieves a list of spy report IDs associated with a specific planet identified by its galaxy, system, and row.
+     * Retrieves a list of active spy reports for a specific astro object.
      *
-     * @param int $galaxy The galaxy coordinate of the planet.
-     * @param int $system The system coordinate of the planet.
-     * @param int $row The row coordinate of the planet.
-     * @return array An array of associative arrays where each element contains:
-     *               'id_spy' (int): The ID of the spy report,
-     *               'user_name' (string): The name of the user who created the report,
-     *               'dateRE' (string): The date the report was created.
+     * @param int $astroObjectId The ID of the astro object for which active spy reports are to be retrieved.
+     * @return array An array of spy reports, where each report contains the spy ID, user name of the sender,
+     *               and the date of the report.
      */
-    public function get_spy_id_list_by_planet($galaxy, $system, $row)
+    public function get_spy_id_list_by_planet(int $astroObjectId)
     {
-        $galaxy = (int)$galaxy;
-        $system = (int)$system;
-        $row = (int)$row;
-
-        $request = "SELECT `id_spy`, `user_name`, `dateRE` "; //, `is_moon`";
-        $request .= " FROM " . TABLE_PARSEDSPY . " LEFT JOIN " . TABLE_USER . " ON `user_id` = `sender_id`";
-        $request .= " WHERE `active` = '1'  AND `coordinates` = '" . $galaxy . ":" . $system . ":" . $row . "'";
-        $request .= " ORDER BY `dateRE` DESC";
+        $request = "SELECT spy.`id`, u.`name`, spy.`dateRE` "; //, `is_moon`";
+        $request .= " FROM " . TABLE_PARSEDSPY . " spy LEFT JOIN " . TABLE_USER . " u ON u.`id` = spy.`sender_id`";
+        $request .= " WHERE spy.`active` = '1'  AND spy.`astro_object_id` = '$astroObjectId'";
+        $request .= " ORDER BY spy.`dateRE` DESC";
         $result = $this->db->sql_query($request);
         $tResult = array();
         while ($row = $this->db->sql_fetch_assoc($result)) {
             $tResult[] = array(
-                'id_spy' => $row['id_spy'],
-                'user_name' => $row['user_name'],
+                'spy_id' => $row['id'],
+                'user_name' => $row['name'],
                 'dateRE' => $row['dateRE']
             );
             //   ,"is_moon" => $row['is_moon']);
         }
-        return $tResult;
+        return  $tResult;
     }
 
     /**
-     * Deletes a spy report from the database based on the provided spy report ID.
+     * Deletes a specific spy report based on its ID.
      *
      * @param int $spy_id The ID of the spy report to be deleted.
      * @return void
@@ -194,8 +169,6 @@ class Spy_Model extends Model_Abstract
         $this->db->sql_query($request);
 
         //todo prevoir suppression favorite ...
-
-
     }
 
     /**

@@ -325,11 +325,11 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
 
 /**
  * affiche_error()
- * Displays an error message in the selected container
+ * Generates a JavaScript snippet to display an error message in a specific container.
  *
- * @param mixed $conteneur
- * @param string $error
- * @return string js
+ * @param string $conteneur The ID of the HTML container where the error message will be displayed.
+ * @param string $error The error message to be displayed in the specified container.
+ * @return string The generated JavaScript code.
  */
 function affiche_error($conteneur, $error)
 {

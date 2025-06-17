@@ -69,14 +69,14 @@ class sql_db
     public $last_query;
 
 
-
     /**
-     * Get the current class database instance. Creates it if dosen't exists (singleton)
-     * @param string $sqlserver MySQL Server Name
-     * @param string $sqluser MySQL User Name
-     * @param string $sqlpassword MySQL User Password
-     * @param string $database MySQL Database Name
-     * @return int|sql_db
+     * Returns the singleton instance of the sql_db object. If the instance does not exist, it is created.
+     *
+     * @param string $sqlserver The SQL server address.
+     * @param string $sqluser The username for the SQL server.
+     * @param string $sqlpassword The password for the SQL user.
+     * @param string $database The name of the database to connect to.
+     * @return sql_db The singleton instance of the sql_db object.
      */
     public static function getInstance($sqlserver, $sqluser, $sqlpassword, $database)
     {

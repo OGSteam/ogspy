@@ -41,7 +41,10 @@ $system_up = (($system - 1) > intval($server_config['num_of_systems'])) ? intval
 
 $favorites = galaxy_getfavorites();
 
-$tooltiptab = array("player" => array(), "ally" => array()); // conteneur des tooltips a creer
+$tooltiptab = [
+    "playerName" => [],
+    "allyName" => []
+]; // Conteneur des tooltips à créer
 
 $missil = "";
 //recherche du group
@@ -189,13 +192,13 @@ require_once 'views/page_header.php';
                     <tr>
                         <td class="tdcontent">
                             <?php if ($value["ally"] != "") : ?>
-                                <?php $tooltiptab["ally"][] = $value["ally"]; //pour calcul tooltip ;
+                                <?php $tooltiptab["allyName"][] = $value["ally"]; //pour calcul tooltip ;
                                 ?>
                                 [<a href='index.php?action=search&&amp;type_search=ally&amp;string_search=<?= $value["ally"] ?>&amp;strict=on' <?= $ToolTip_Helper->GetHTMLClassContent(array("tooltipstered"), "ttp_alliance_" . $value["ally"]) ?>>
                                     <?= $value["ally"] ?>
                                 </a>]
                             <?php endif; ?>
-                            <?php $tooltiptab["player"][] = $value["player"]; // pour calcul tooltip
+                            <?php $tooltiptab["playerName"][] = $value["player"]; // pour calcul tooltip
                             ?>
                             <a href="index.php?action=search&amp;type_search=player&amp;string_search=<?= $value["player"] ?>&amp;strict=on" <?= $ToolTip_Helper->GetHTMLClassContent(array("tooltipstered"), "ttp_player_" . $value["player"]) ?>>
                                 <?= $value["player"] ?>
@@ -283,14 +286,16 @@ require_once 'views/page_header.php';
 <?php
 // calcul de tous les tooltip player et alliance
 //tooltip player
-foreach ($tooltiptab["player"] as $player) {
-    $tooltip = displayGalaxyPlayerTooltip($player);
+foreach ($tooltiptab["playerName"] as $player) {
+    $playerId = (new Player_Model())->get_player_id_for_name($player);
+    $tooltip = displayGalaxyPlayerTooltip($playerId);
     //------------  Affichage Tooltip ----------------
     $ToolTip_Helper->addTooltip("ttp_player_" . $player,  $tooltip);
 }
 //tooltup ally
-foreach ($tooltiptab["ally"] as $ally) {
-    $tooltip =  displayGalaxyAllyTooltip($ally);
+foreach ($tooltiptab["allyName"] as $ally) {
+    $allyId = (new Ally_Model())->get_ally_id_for_name($ally);
+    $tooltip =  displayGalaxyAllyTooltip($allyId);
     //------------  Affichage Tooltip ----------------
     $ToolTip_Helper->addTooltip("ttp_alliance_" . $ally,  $tooltip);
 }

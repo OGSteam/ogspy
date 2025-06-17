@@ -41,10 +41,13 @@ $link_order_ally = "";
 $link_order_player = "";
 $end_link = "";
 
-$individual_ranking_player = array();
-$individual_ranking_ally = array();
+$individual_ranking_player = [];
+$individual_ranking_ally = [];
 
-$tooltiptab = array("player" => array(), "ally" => array()); // conteneur des tooltips a creer
+$tooltiptab = [
+    "playerName" => [],
+    "allyName" => []
+]; // Conteneur des tooltips à créer
 
 
 $strict_on = "";
@@ -315,11 +318,11 @@ require_once("views/page_header.php");
                 <?php foreach ($search_result as $v) : ?>
 
                     <?php if ($v["ally_name"] != "") : ?>
-                        <?php $tooltiptab["ally"][] = $v["ally_name"]; //pour calcul tooltip ;
-                        ?>
+                        <?php $tooltiptab["allyName"][] = $v["ally_name"]; ?>
+                        <?php $tooltiptab["allyId"][] = $v["ally_id"]; ?>
                     <?php endif; ?>
-                    <?php $tooltiptab["player"][] = $v["player_name"]; // pour calcul tooltip
-                    ?>
+                    <?php $tooltiptab["playerName"][] = $v["player_name"]; ?>
+                    <?php $tooltiptab["playerId"][] = $v["player_id"]; ?>
 
                     <?php echo displayGalaxyTabletbodytr($v, false); ?>
                 <?php endforeach; ?>

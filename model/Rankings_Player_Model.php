@@ -97,21 +97,18 @@ class Rankings_Player_Model extends Rankings_Model
 
 
     /**
-     * @param $playername
-
-     * @return array
+     * Retrieves all rank table data for a given player.
+     *
+     * @param string $playername The name of the player for whom the rank table data will be retrieved.
+     * @return array An array containing rank table data for the specified player, including ranks and points for various categories such as economy, technology, military, and honor. Each item in the array represents a set of data for a specific date.
      */
-    public function get_all_ranktable_byplayer($playername)
+    public function get_all_ranktable_byplayer(int $playerId)
     {
-
-        $playername = $this->db->sql_escape_string($playername);
 
         $request = "SELECT `general`.`rank`, `general`.`datadate`, `general`.`player`, `general`.`ally`, `general`.`rank`, `general`.`points` , `eco`.`rank`,
         `eco`.`points`, `techno`.`rank`, `techno`.`points`, `military`.`rank`, `military`.`points`, `military_b`.`rank`, `military_b`.`points`, `military_l`.`rank`,
        `military_l`.`points`, `military_d`.`rank`, `military_d`.`points`, `honnor`.`rank`, `honnor`.`points`";
         $request .= " FROM `" . TABLE_RANK_PLAYER_POINTS . "` AS `general`";
-
-
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_ECO . " AS `eco` ON `general`.`player` = `eco`.`player` AND `eco`.`datadate` = general.`datadate`";
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_TECHNOLOGY . " AS `techno` ON `general`.`player` = `techno`.`player` AND `techno`.`datadate` = `general`.`datadate` ";
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY . " AS `military` ON `general`.`player` = `military`.`player` AND `military`.`datadate` = `general`.`datadate` ";
@@ -119,8 +116,7 @@ class Rankings_Player_Model extends Rankings_Model
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " AS `military_l` ON `general`.`player` = `military_l`.`player` AND `military_l`.`datadate` = `general`.`datadate` ";
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " AS `military_d` ON `general`.`player` = `military_d`.`player` AND `military_d`.`datadate` = `general`.`datadate` ";
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_HONOR . " AS `honnor` ON `general`.`player` = `honnor`.`player` AND `honnor`.`datadate` = `general`.`datadate` ";
-
-        $request .= " WHERE `general`.`player` = '" . $playername . "'";
+        $request .= " WHERE `general`.`player_id` = '" . $playerId . "'";
         $request .= " ORDER BY `general`.`datadate` DESC ";
 
 

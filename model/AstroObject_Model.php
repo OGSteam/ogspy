@@ -19,8 +19,25 @@ use Ogsteam\Ogspy\Helper\SearchCriteria_Helper;
 class AstroObject_Model extends Model_Abstract
 {
     /**
-     * Mettre à jour une planète
-     * @param array $planet
+     * Updates the details of a planet in the database.
+     *
+     * This method constructs and executes an SQL query to update the record
+     * for a specific planet in the user building table. The update is performed
+     * based on the galaxy, system, and row coordinates of the planet.
+     *
+     * @param array $planet An associative array containing the following keys:
+     *                       - planet_name: The name of the planet (string).
+     *                       - player_name: The name of the player owning the planet (string).
+     *                       - ally_tag: The ally tag associated with the player (string).
+     *                       - status: The status of the planet (string).
+     *                       - moon: Information about the presence of a moon (string).
+     *                       - last_update: The timestamp of the last update (int).
+     *                       - last_update_user_id: The ID of the user who last updated (int).
+     *                       - galaxy: The galaxy in which the planet is located (int).
+     *                       - system: The system in which the planet is located (int).
+     *                       - row: The row in which the planet is located (int).
+     *
+     * @return void This method does not return any value.
      */
     public function update(array $planet)
     {
@@ -38,8 +55,25 @@ class AstroObject_Model extends Model_Abstract
     }
 
     /**
-     * Ajouter une nouvelle planète
-     * @param array $planet
+     * Adds a new planet entry to the database.
+     *
+     * This method inserts a new record into the user building database table with
+     * the provided planet details, including galaxy, system, row, planet name,
+     * player name, ally tag, status, last update, last update user, and moon information.
+     *
+     * @param array $planet An associative array containing the planet details:
+     *                      - 'galaxy' (int): The galaxy number of the planet.
+     *                      - 'system' (int): The system number of the planet.
+     *                      - 'row' (int): The row number where the planet is located.
+     *                      - 'planet_name' (string): The name of the planet.
+     *                      - 'player_name' (string): The name of the player owning the planet.
+     *                      - 'ally_tag' (string): The alliance tag of the player.
+     *                      - 'status' (string): The status of the planet.
+     *                      - 'last_update' (int): The timestamp of the last update.
+     *                      - 'last_update_user_id' (int): The ID of the user who performed the last update.
+     *                      - 'moon' (string): Indicates whether the planet has a moon.
+     *
+     * @return void
      */
     public function add(array $planet)
     {
@@ -59,9 +93,15 @@ class AstroObject_Model extends Model_Abstract
     }
 
     /**
-     * Supprime les galaxies et les systèmes supérieurs aux nouvelles limites
-     * @param $newGalaxy int nouveau nombre de galaxies
-     * @param $newSystem int nouveau nombre de systèmes
+     * Resizes the universe by removing entries in the user building table that exceed the specified galaxy and system limits.
+     *
+     * This method executes a SQL query to delete records from the database where the galaxy number is greater than the specified new galaxy limit
+     * or the system number is greater than the specified new system limit.
+     *
+     * @param int $newGalaxy The maximum allowed galaxy value. Entries with a galaxy number greater than this value will be deleted.
+     * @param int $newSystem The maximum allowed system value. Entries with a system number greater than this value will be deleted.
+     *
+     * @return void This method does not return any value.
      */
     public function resize_universe($newGalaxy, $newSystem)
     {
@@ -73,18 +113,22 @@ class AstroObject_Model extends Model_Abstract
     }
 
     /**
-     * Obtiens la liste des planètes située dans les systèmes requis
-     * @param $galaxy integer Galaxie
-     * @param $system_down integer Limite basse pour les systèmes
-     * @param $system_up integer Limite haute pour les systèmes
-     * @return array
+     * Retrieves a detailed overview of planets and moons within a specified galaxy and system range.
+     *
+     * This method fetches data for all slots (1-15) in each system within a specified range,
+     * including information about planets, players, alliances, and moons. The data is returned
+     * in a multi-dimensional array, organized by system and slot, with each entry containing
+     * attributes such as player status, phalanx level, gate level, and update metadata.
+     *
+     * @param int $galaxy The galaxy number for which data should be retrieved.
+     * @param int $system_down The starting system number of the range.
+     * @param int $system_up The ending system number of the range.
+     *
+     * @return array A multi-dimensional array representing the population in the given galaxy and system range.
+     *               Each entry contains associated data for planets, moons, players, and alliances.
      */
-    public function get_system($galaxy, $system_down, $system_up)
+    public function get_system(int $galaxy, int $system_down, int $system_up)
     {
-        $galaxy = (int)$galaxy;
-        $system_down = (int)$system_down;
-        $system_up = (int)$system_up;
-
         $population = array();
         // Initialize population array for all slots
         for ($s_idx = $system_down; $s_idx <= $system_up; $s_idx++) {
@@ -94,7 +138,9 @@ class AstroObject_Model extends Model_Abstract
                     "galaxy" => $galaxy,
                     "system" => $s_idx,
                     "row" => $r_idx,
+                    "ally_id" => "", // Ally ID from game_ally table
                     "ally_name" => "",
+                    "player_id" => "", // Player ID from game_player table
                     "player_name" => "",
                     "Pha" => "",
                     "PoSa" => "",
@@ -122,8 +168,10 @@ class AstroObject_Model extends Model_Abstract
                     p.`last_update_user_id`,
                     u.name AS last_update_user_name,
                     gp.`name` AS player_name,
+                    gp.`id` AS player_id,
                     gp.`status` AS player_status,
                     gp.`datadate` AS player_datadate,
+                    ga.`id` AS ally_id,
                     ga.`name` AS ally_name,
                     ga.`tag` AS ally_tag
                 FROM `" . TABLE_USER_BUILDING . "` p
@@ -149,7 +197,9 @@ class AstroObject_Model extends Model_Abstract
                 // $population[$s][$r] is guaranteed to exist due to pre-initialization
                 $population[$s][$r]['planet_name'] = $p_row['planet_name'] ?? "";
                 $population[$s][$r]['ally_name'] = $p_row['ally_tag'] ?? "";
+                $population[$s][$r]['ally_id'] = $p_row['ally_id'] ?? "";
                 $population[$s][$r]['player_name'] = $p_row['player_name'] ?? "";
+                $population[$s][$r]['player_id'] = $p_row['player_id'] ?? "";
                 $population[$s][$r]['status'] = $p_row['player_status'] ?? "";
                 $population[$s][$r]['Pha'] = $p_row['phalanx'] ?? "0";
                 $population[$s][$r]['PoSa'] = $p_row['gate'] ?? "0";
@@ -196,18 +246,19 @@ class AstroObject_Model extends Model_Abstract
     }
 
     /**
-     * Obtiens le nombre de planètes présentes dans les systèmes demandés
-     * @param $galaxy
-     * @param $system_down
-     * @param $system_up
-     * @return integer Nombre de planètes
+     * Retrieves the number of planets within a specified galaxy and system range.
+     *
+     * This method counts the number of entries in the user building table
+     * that are of type 'planet' and fall within the specified galaxy and
+     * system range.
+     *
+     * @param int $galaxy The galaxy to search within.
+     * @param int $system_down The lower bound of the system range.
+     * @param int $system_up The upper bound of the system range.
+     * @return int The number of planets found within the specified parameters.
      */
-    public function get_nb_planets($galaxy, $system_down, $system_up)
+    public function get_nb_planets(int $galaxy, int $system_down, int $system_up)
     {
-        $galaxy = (int)$galaxy;
-        $system_down = (int)$system_down;
-        $system_up = (int)$system_up;
-
         $request = "SELECT count(*) FROM " . TABLE_USER_BUILDING;
         $request .= " WHERE `type` = 'planet' AND `galaxy` = " . $galaxy;
         $request .= " AND `system` BETWEEN " . $system_down . " AND " . ($system_up);
@@ -219,18 +270,19 @@ class AstroObject_Model extends Model_Abstract
     }
 
     /**
-     * Obtiens le nombre de planètes vides présentes dans les systèmes demandés
-     * @param $galaxy
-     * @param $system_down
-     * @param $system_up
-     * @return integer Number of planets
+     * Calculates the number of empty planets within a specified range of systems in a galaxy.
+     *
+     * This method determines the total number of potential planets in the given systems
+     * and subtracts the number of planets already occupied. The data is retrieved by
+     * querying the database to count the occupied planets in the specified range.
+     *
+     * @param int $galaxy The galaxy in which to count empty planets.
+     * @param int $system_down The starting system in the range.
+     * @param int $system_up The ending system in the range.
+     * @return int The total number of empty planets in the specified galaxy and system range.
      */
-    public function get_nb_empty_planets($galaxy, $system_down, $system_up)
+    public function get_nb_empty_planets(int $galaxy, int $system_down, int $system_up)
     {
-        $galaxy = (int)$galaxy;
-        $system_down = (int)$system_down;
-        $system_up = (int)$system_up;
-
         $totalPlanets = (1 + ($system_up - $system_down)) * 15;
 
         $request = "SELECT count(*) FROM " . TABLE_USER_BUILDING;
@@ -244,18 +296,18 @@ class AstroObject_Model extends Model_Abstract
     }
 
     /**
-     * Obtiens la date maximale de dernière mise à jour des systèmes demandés
-     * @param $galaxy
-     * @param $system_down
-     * @param $system_up
-     * @return mixed last_update
+     * Retrieves the last update timestamp for systems within a specified range in a galaxy.
+     *
+     * This method executes a SQL query to fetch the maximum value of the `last_update`
+     * column from the user building table for a specified galaxy and a range of systems.
+     *
+     * @param int $galaxy The galaxy identifier to filter the query results.
+     * @param int $system_down The lower bound of the system range.
+     * @param int $system_up The upper bound of the system range.
+     * @return string|null The last update timestamp retrieved from the database, or null if no data is found.
      */
-    public function get_last_update($galaxy, $system_down, $system_up)
+    public function get_last_update(int $galaxy, int $system_down, int $system_up)
     {
-        $galaxy = (int)$galaxy;
-        $system_down = (int)$system_down;
-        $system_up = (int)$system_up;
-
         $request = "SELECT MAX(`last_update`) FROM " . TABLE_USER_BUILDING;
         $request .= " WHERE `galaxy` = " . $galaxy;
         $request .= " AND `system` BETWEEN " . $system_down . " AND " . ($system_up);
@@ -277,7 +329,7 @@ class AstroObject_Model extends Model_Abstract
      */
     public function get_ally_list()
     {
-        $ally_list = array();
+        $ally_list = [];
 
         $request = "SELECT DISTINCT ally.`tag` AS `ally` FROM `" . TABLE_USER_BUILDING . "` aub ";
         $request .= "INNER JOIN `" . TABLE_GAME_PLAYER . "` player ON aub.`player_id` = player.`id` ";
@@ -310,12 +362,9 @@ class AstroObject_Model extends Model_Abstract
      * @return array An array of positions, where each position contains the "galaxy",
      *               "system", "row", and "player" keys.
      */
-    public function get_ally_position($galaxy, $system_down, $system_up, $ally_tag_filter)
+    public function get_ally_position(int $galaxy, int $system_down, int $system_up, string $ally_tag_filter)
     {
         global $log;
-        $galaxy = (int)$galaxy;
-        $system_down = (int)$system_down;
-        $system_up = (int)$system_up;
         $escaped_ally_tag = $this->db->sql_escape_string($ally_tag_filter);
 
         $request = "SELECT aub.`galaxy`, aub.`system`, aub.`row`, gp.`name` AS player_name ";
@@ -351,51 +400,100 @@ class AstroObject_Model extends Model_Abstract
     }
 
     /**
-     * Retourne le nom de la planète
-     * @param $galaxy
-     * @param $system
-     * @param $row
-     * @return mixed
+     * Retrieves the name of a planet by its astronomical object ID.
+     *
+     * This method executes a SQL query to fetch the name of a planet
+     * from the user building table where the ID matches the provided
+     * astronomical object ID and the type is set to 'planet'.
+     *
+     * @param int $astroObjectId The unique ID of the astronomical object used to identify the planet.
+     * @return array|null An associative array containing the planet's name if found, or null if no match is found.
      */
-    public function get_planet_name($galaxy, $system, $row)
+    public function getPlanetNameByObjectId(int $astroObjectId)
     {
-        $galaxy = (int)$galaxy;
-        $system = (int)$system;
-        $row = (int)$row;
-
-        $request_astre_name = "SELECT `name` FROM " . TABLE_USER_BUILDING . " WHERE `galaxy` = " . intval($galaxy) . " AND `system` = " . intval($system) . " AND `row` = " . intval($row);
+        $request_astre_name = "SELECT `name` FROM " . TABLE_USER_BUILDING . " WHERE `id` = " . $astroObjectId . " AND `type` = 'planet'";
         $result_astre_name = $this->db->sql_query($request_astre_name);
-        $astre_name = $this->db->sql_fetch_assoc($result_astre_name); //Récupère le nom de la planète
+        [$astre_name] = $this->db->sql_fetch_row($result_astre_name); //Récupère le nom de la planète
 
         return $astre_name;
     }
 
     /**
-     * Retourne le nom du joueur
-     * @param $galaxy
-     * @param $system
-     * @param $row
-     * @return mixed
+     * Retrieves the name of a player associated with a specific astronomical object.
+     *
+     * This method executes a SQL query to fetch the name of the player
+     * linked to the given astronomical object's ID by joining the user building
+     * and game player tables.
+     *
+     * @param int $astroObject_id The ID of the astronomical object used to identify the player.
+     * @return string The string containing the player's name retrieved from the database.
      */
-    public function get_player_name($galaxy, $system, $row)
+    public function get_player_name(int $astroObject_id): string
     {
-        $galaxy = (int)$galaxy;
-        $system = (int)$system;
-        $row = (int)$row;
-
-        $request_player_name = "SELECT `player` FROM " . TABLE_USER_BUILDING . " WHERE `galaxy` = " . intval($galaxy) . " AND `system` = " . intval($system) . " AND `row` = " . intval($row);
+        $request_player_name = "SELECT p.`name` FROM " . TABLE_USER_BUILDING . " obj INNER JOIN " . TABLE_GAME_PLAYER . " p ON obj.player_id = p.id WHERE obj.`id` = " . $astroObject_id;
         $result_player_name = $this->db->sql_query($request_player_name);
-        $player_name = $this->db->sql_fetch_assoc($result_player_name); //Récupère le nom de la planète
-
-        return $player_name;
+        [$playerName] = $this->db->sql_fetch_row($result_player_name); //Récupère le nom du joueur
+        return $playerName;
     }
 
     /**
-     * Retourne la liste des phalanges d'une galaxie
-     * @param $galaxy
-     * @return array
+     * Retrieves the planet ID based on given galaxy, system, and row coordinates.
+     *
+     * This method executes a SQL query to fetch the ID of a planet from the database
+     * that matches the provided galaxy, system, and row coordinates.
+     *
+     * @param int $galaxy The galaxy coordinate of the planet.
+     * @param int $system The system coordinate of the planet.
+     * @param int $row The row coordinate of the planet.
+     * @return int|null The ID of the planet if found, or null if no match is found.
      */
-    public function get_phalanx(int $galaxy)
+    public function get_planetId_by_coordinates(int $galaxy, int $system, int $row)
+    {
+        $request_planet_id = "SELECT `id` FROM " . TABLE_USER_BUILDING . " WHERE `galaxy` = " . $galaxy . " AND `system` = " . $system . " AND `row` = " . $row;
+        $result_planet_id = $this->db->sql_query($request_planet_id);
+        [$planet_id] = $this->db->sql_fetch_row($result_planet_id); //Récupère le nom de la planète
+
+        return $planet_id;
+    }
+
+    /**
+     * Retrieves the coordinates of a planet based on its object ID.
+     *
+     * This method executes a SQL query to fetch the galaxy, system, and row
+     * values associated with a specific astronomical object ID from the user
+     * building database table.
+     *
+     * @param int $astroobject_id The ID of the astronomical object for which to retrieve the coordinates.
+     * @return array An array containing the galaxy, system, and row coordinates of the planet.
+     */
+    public function getPlanetCoordsByObjectId(int $astroObject_id): array
+    {
+        $galaxy = 0;
+        $system = 0;
+        $row = 0;
+
+        $request_planet_id = "SELECT `galaxy`, `system`, `row` FROM " . TABLE_USER_BUILDING . " WHERE `id` = " . $astroObject_id;
+        $result_planet_id = $this->db->sql_query($request_planet_id);
+        if ($result_planet_id) {
+            [$galaxy, $system, $row] = $this->db->sql_fetch_row($result_planet_id);
+        }
+
+        return [$galaxy, $system, $row];
+    }
+
+
+    /**
+     * Retrieves a list of phalanxes in a specific galaxy.
+     *
+     * This method executes a SQL query to fetch information about moons equipped with phalanxes
+     * in the specified galaxy. The result includes details such as galaxy, system, row, moon name,
+     * player name, ally tag, gate level, and phalanx level.
+     *
+     * @param int $galaxy The galaxy number to search for phalanxes.
+     * @return array An array of data about phalanxes, where each item contains the galaxy, system, row,
+     *               moon name, ally tag, player name, gate level, and phalanx level.
+     */
+    public function get_phalanx(int $galaxy): array
     {
         $req = "SELECT ub.`galaxy`, ub.`system`, ub.`row`, ub.`Pha`, ub.`PoSa`, ub.`name`, gp.`name` AS player_name, ga.`tag` AS ally_tag
                 FROM " . TABLE_USER_BUILDING . " ub
@@ -435,16 +533,8 @@ class AstroObject_Model extends Model_Abstract
      * @param bool $forMoon Si true, recherche les lunes obsolètes. Si false, recherche les planètes obsolètes.
      * @return array Tableau associatif regroupant les systèmes obsolètes par période, avec leurs informations de galaxie, système, position et dernière mise à jour.
      */
-    public function get_galaxy_obsolete($galaxy, $system_down, $system_up, $indice, $since, $forMoon = false)
+    public function get_galaxy_obsolete(int $galaxy, int $system_down, int $system_up, int $indice, int $since, bool $forMoon = false)
     {
-        $galaxy = (int)$galaxy;
-        $system_down = (int)$system_down;
-        $system_up = (int)$system_up;
-        $indice = (int)$indice;
-        $since = (int)$since;
-        $forMoon = (bool)$forMoon;
-
-
         $obsolete = array();
 
         $field = "last_update";
@@ -476,11 +566,8 @@ class AstroObject_Model extends Model_Abstract
     }
 
 
-    public function find(SearchCriteria_Helper $criteria, array $order_by = array(), $start = 0, $number = 30)
+    public function find(SearchCriteria_Helper $criteria, array $order_by = [], int $start = 0, int $number = 30)
     {
-        $start = (int)$start;
-        $number = (int)$number;
-
         // Modifié pour inclure les champs nécessaires et les alias correspondants à get_system
         $select = "SELECT uni.`type`, uni.`galaxy`, uni.`system`, uni.`row`, uni.`Pha`, uni.`PoSa`, uni.`last_update_moon`," .
             " ally.`name` AS ally_name, player.`name` AS player_name, player.`status` AS player_status," .
