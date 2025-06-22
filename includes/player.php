@@ -121,8 +121,8 @@ function user_del_building()
     global $user_data;
     global $pub_planet_id, $pub_view;
 
-    $User_Building_Model = new Player_Building_Model();
-    $User_Defense_Model = new Player_Defense_Model();
+    $userBuildingModel = new Player_Building_Model();
+    $userDefenseModel = new Player_Defense_Model();
 
     if (!check_var($pub_planet_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
@@ -131,19 +131,19 @@ function user_del_building()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $User_Building_Model->delete_user_aster($user_data["player_id"], intval($pub_planet_id)); //batiment
-    $User_Defense_Model->delete_user_aster($user_data["player_id"], intval($pub_planet_id)); //defense
+    $userBuildingModel->delete_user_aster($user_data["player_id"], intval($pub_planet_id)); //batiment
+    $userDefenseModel->delete_user_aster($user_data["player_id"], intval($pub_planet_id)); //defense
 
 
     // si on supprime une planete; la lune doit suivre
     if (intval($pub_planet_id) < 199) {
         $moon_id = (intval($pub_planet_id) + 100);
-        $User_Building_Model->delete_user_aster($user_data["player_id"], $moon_id); //batiment
-        $User_Defense_Model->delete_user_aster($user_data["player_id"], $moon_id); //defense
+        $userBuildingModel->delete_user_aster($user_data["player_id"], $moon_id); //batiment
+        $userDefenseModel->delete_user_aster($user_data["player_id"], $moon_id); //defense
     }
 
     //si plus de planete
-    $iNBPlanet = $User_Building_Model->get_nb_planets($user_data["player_id"]);
+    $iNBPlanet = $userBuildingModel->get_nb_planets($user_data["player_id"]);
     if ($iNBPlanet == 0) {
         (new Player_Technology_Model())->delete_user_technologies($user_data["player_id"]);
     }

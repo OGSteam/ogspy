@@ -16,25 +16,25 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-$search_result = array();
-list($search_result, $total_page) = galaxy_search();
 
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
+global $lang;
 
 $ToolTip_Helper = new ToolTip_Helper();
 
-$string_search = $pub_string_search;
+// Initialisation des variables de recherche
+$string_search = $pub_string_search ?? "";
 $type_search = $pub_type_search;
-$strict = $pub_strict;
-$sort = $pub_sort;
-$sort2 = $pub_sort2;
-$galaxy_down = $pub_galaxy_down;
-$galaxy_up = $pub_galaxy_up;
-$system_down = $pub_system_down;
-$system_up = $pub_system_up;
-$row_down = $pub_row_down;
-$row_up = $pub_row_up;
-$page = $pub_page;
+$strict = $pub_strict ?? true;
+$sort = $pub_sort ?? 1;
+$sort2 = $pub_sort2 ?? 0;
+$galaxy_down = $pub_galaxy_down ?? $pub_galaxy ?? "";
+$galaxy_up = $pub_galaxy_up ?? $galaxy_down;
+$system_down = $pub_system_down ?? $pub_system ?? "";
+$system_up = $pub_system_up ?? $system_down;
+$row_down = $pub_row_down ?? $pub_row ?? "";
+$row_up = $pub_row_up ?? $row_down;
+$page = $pub_page ?? 1;
 
 $link_order_coordinates = "";
 $link_order_ally = "";
@@ -49,10 +49,13 @@ $tooltiptab = [
     "allyName" => []
 ]; // Conteneur des tooltips à créer
 
+$search_result = array();
+list($search_result, $total_page) = galaxy_search();
+
 
 $strict_on = "";
 if ($search_result) {
-    if (isset($strict)) {
+    if (!empty($strict)) {
         $strict_on = "&strict";
     }
     $new_sort2 = 0;
@@ -84,13 +87,13 @@ if ($search_result) {
         } else {
             switch ($sort) {
                 case "1":
-                    $link_order_coordinates = "<img src='images/desc.png'>&nbsp;" . $link_order_coordinates . "&nbsp;<img src='images/desc.png'>";
+                    $link_order_coordinates = "<img src='images/desc.png'>&nbsp;" . $link_order_coordinates . "&nbsp;<img src='images/desc.png' alt='V'>";
                     break;
                 case "2":
-                    $link_order_ally = "<img src='images/desc.png'>&nbsp;" . $link_order_ally . "&nbsp;<img src='images/desc.png'>";
+                    $link_order_ally = "<img src='images/desc.png'>&nbsp;" . $link_order_ally . "&nbsp;<img src='images/desc.png' alt='V'>";
                     break;
                 case "3":
-                    $link_order_player = "<img src='images/desc.png'>&nbsp;" . $link_order_player . "&nbsp;<img src='images/desc.png'>";
+                    $link_order_player = "<img src='images/desc.png'>&nbsp;" . $link_order_player . "&nbsp;<img src='images/desc.png' alt='V'>";
                     break;
             }
         }
@@ -127,13 +130,7 @@ if (isset($type_search)) {
     }
 }
 
-//Données recherche coordonnées colonisables
-$galaxy_down = $galaxy_down ?? "";
-$galaxy_up = $galaxy_up ?? "";
-$system_down = $system_down ?? "";
-$system_up = $system_up ?? "";
-$row_down = $row_down ?? "";
-$row_up = $row_up ?? "";
+
 
 require_once("views/page_header.php");
 ?>
@@ -206,10 +203,10 @@ require_once("views/page_header.php");
                             if (isset($type_search) && isset($str_selected[$type_search])) {
                                 $str_selected[$type_search] = ' selected';
                             } ?>
-                            <option value='colonization' <?php echo $str_selected['colonization'] . ">" . $lang['SEARCH_EMPTY_PLANETS'] ?></option>
-                            <option value='moon' <?php echo $str_selected['moon'] . ">" . $lang['SEARCH_MOONS'] ?></option>
-                            <option value='away' <?php echo $str_selected['away'] . ">" . $lang['SEARCH_INACTIVEPLAYERS'] ?></option>
-                            <option value='spy' <?php echo $str_selected['spy'] . ">" . $lang['SEARCH_PLANETS_SPYED'] ?></option>
+                            <option value='colonization' <?php echo $str_selected['colonization'] . ">" . $lang['SEARCH_EMPTY_PLANETS'] ?>></option>
+                            <option value='moon' <?php echo $str_selected['moon'] . ">" . $lang['SEARCH_MOONS'] ?>></option>
+                            <option value='away' <?php echo $str_selected['away'] . ">" . $lang['SEARCH_INACTIVEPLAYERS'] ?>></option>
+                            <option value='spy' <?php echo $str_selected['spy'] . ">" . $lang['SEARCH_PLANETS_SPYED'] ?>></option>
                         </select>
                     </td>
                     <td><?php echo $lang['SEARCH_MINIMUM']; ?></td>
@@ -347,9 +344,9 @@ require_once("views/page_header.php");
         <?php if ($type_search == "ally" || $type_search == "player") : ?>
             <?php $individual_ranking = null; ?>
             <?php if ($type_search == "ally") : ?>
-                <?php $individual_ranking = galaxy_show_ranking_unique_ally($string_search); ?>
+                <?php $individual_ranking = galaxy_show_ranking_unique_ally($search_result[0]['ally_id']); ?>
             <?php else : ?>
-                <?php $individual_ranking = galaxy_show_ranking_unique_player($string_search); ?>
+                <?php $individual_ranking = galaxy_show_ranking_unique_player($search_result[0]['player_id']); ?>
             <?php endif; ?>
             <table class="og-table og-medium-table og-table-ranking">
 
@@ -493,19 +490,18 @@ require_once("views/page_header.php");
     <?php
     // calcul de tous les tooltip player et alliance
     //tooltip player
-    foreach ($tooltiptab["player"] as $player) {
+    foreach ($tooltiptab["playerId"] as $player) {
         $tooltip = displayGalaxyPlayerTooltip($player);
         //------------  Affichage Tooltip ----------------
         $ToolTip_Helper->addTooltip("ttp_player_" . $player,  $tooltip);
     }
-    //tooltup ally
-    foreach ($tooltiptab["ally"] as $ally) {
+    //tooltip ally
+    foreach ($tooltiptab["allyId"] as $ally) {
         $tooltip =  displayGalaxyAllyTooltip($ally);
         //------------  Affichage Tooltip ----------------
         $ToolTip_Helper->addTooltip("ttp_alliance_" . $ally,  $tooltip);
     }
     ?>
 
-</div> <!-- fin div class="page_search" -->
-<?php
-require_once("views/page_tail.php");
+</div>
+<?php require_once "views/page_tail.php"; ?>

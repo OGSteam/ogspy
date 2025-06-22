@@ -7,16 +7,10 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class Player_Model extends Model_Abstract
 {
     /**
-     * Récupère les données d'un joueur spécifique à partir de la base de données.
+     * Récupère les données d'un joueur en jeu à partir de son identifiant.
      *
-     * @param int $player_id L'identifiant unique du joueur à récupérer.
-     * @return array|false Retourne un tableau contenant les données du joueur si trouvé, ou false si aucun joueur n'est trouvé.
-     *
-     * Le processus inclut :
-     * - Conversion de l'identifiant du joueur en entier pour éviter les injections SQL.
-     * - Exécution d'une requête SQL pour récupérer les données du joueur.
-     * - Parcours des résultats pour les stocker dans un tableau associatif.
-     * - Vérification si le tableau est vide, auquel cas false est retourné.
+     * @param int $player_id L'identifiant du joueur en jeu.
+     * @return array|bool Retourne un tableau contenant les informations du joueur, ou false si non trouvé.
      */
     public function get_player_data(int $player_id)
     {

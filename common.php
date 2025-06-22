@@ -34,6 +34,9 @@ $log->pushHandler(new RotatingFileHandler(__DIR__ . '/logs/OGSpy.log', 365, Leve
 $logSQL = new Logger('OGSpySQL');
 $logSQL->pushHandler(new RotatingFileHandler(__DIR__ . '/logs/OGSpy-sql.log', 365, Level::Debug));
 
+$logSlowSQL = new Logger('OGSpySlowSQL');
+$logSlowSQL->pushHandler(new RotatingFileHandler(__DIR__ . '/logs/OGSpy-sql-slow.log', 365, Level::Debug));
+
 $log->info("OGSpy started");
 
 //Récupération des paramètres de connexion à la base de données

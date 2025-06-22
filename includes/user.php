@@ -91,7 +91,7 @@ function user_login()
 {
     global $pub_login, $pub_password, $pub_goto, $pub_token,$log;
 
-    $User_Model = new User_Model();
+    $userModel = new User_Model();
 
     $log->info("Tentative de connexion pour l'utilisateur: " . $pub_login);
 
@@ -113,7 +113,7 @@ function user_login()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
-    $tlogin = $User_Model->select_user_login($pub_login, $pub_password);
+    $tlogin = $userModel->select_user_login($pub_login, $pub_password);
     // si  retour
     if ($tlogin) {
         if (password_verify($pub_password, $tlogin['password_s'])) {
@@ -320,7 +320,7 @@ function member_user_set()
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    $User_Model = new User_Model();
+    $userModel = new User_Model();
 
     $user_id = $user_data["id"];
     $user_info = user_get($user_id);
@@ -365,11 +365,11 @@ function member_user_set()
 
     //pseudo ingame
     if ($user_data["player_id"] !== $pub_pseudo_ingame) {
-        $User_Model->set_game_account_name($user_id, $pub_pseudo_ingame);
+        $userModel->set_game_account_name($user_id, $pub_pseudo_ingame);
     }
 
     //Contrôle que le pseudo ne soit pas déjà utilisé si changement
-    if ($User_Model->select_is_other_user_name($pub_pseudo, $user_id) === true) {
+    if ($userModel->select_is_other_user_name($pub_pseudo, $user_id) === true) {
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudolocked&info");
     }
 
@@ -377,22 +377,22 @@ function member_user_set()
         $pub_disable_ip_check = 0;
     }
     if (isset($pub_pseudo)) {
-        $User_Model->set_user_pseudo($user_id, $pub_pseudo);
+        $userModel->set_user_pseudo($user_id, $pub_pseudo);
     }
     if (isset($pub_new_password) && $password_change_validated === true) {
-        $User_Model->set_user_password($user_id, password_hash($pub_new_password, PASSWORD_DEFAULT), 0);
+        $userModel->set_user_password($user_id, password_hash($pub_new_password, PASSWORD_DEFAULT), 0);
     }
     if (isset($pub_pseudo_email)) {
-        $User_Model->set_user_email($user_id, $pub_pseudo_email);
+        $userModel->set_user_email($user_id, $pub_pseudo_email);
     }
     if (isset($pub_galaxy)) {
-        $User_Model->set_user_default_galaxy($user_id, $pub_galaxy);
+        $userModel->set_user_default_galaxy($user_id, $pub_galaxy);
     }
     if (isset($pub_system)) {
-        $User_Model->set_user_default_system($user_id, $pub_system);
+        $userModel->set_user_default_system($user_id, $pub_system);
     }
     if (isset($pub_disable_ip_check)) {
-        $User_Model->set_user_ip_check($user_id, $pub_disable_ip_check);
+        $userModel->set_user_ip_check($user_id, $pub_disable_ip_check);
     }
     redirection("index.php?action=profile");
 }
@@ -453,7 +453,7 @@ function user_set_general(
     $disable_ip_check = null
 ) {
     global $user_data, $server_config;
-    $User_Model = new User_Model();
+    $userModel = new User_Model();
 
 
     if (!isset($user_id)) {
@@ -477,33 +477,33 @@ function user_set_general(
 
     //Pseudo et mot de passe
     if (!empty($user_name)) {
-        $User_Model->set_user_pseudo($user_id, $user_name);
+        $userModel->set_user_pseudo($user_id, $user_name);
     }
     if (!empty($user_password_s)) {
-        $User_Model->set_user_password($user_id, password_hash($user_password_s, PASSWORD_DEFAULT));
+        $userModel->set_user_password($user_id, password_hash($user_password_s, PASSWORD_DEFAULT));
     }
 
     //Galaxy et système solaire du membre
     if (!empty($user_galaxy)) {
-        $User_Model->set_user_default_galaxy($user_id, $user_galaxy);
+        $userModel->set_user_default_galaxy($user_id, $user_galaxy);
     }
     if (!empty($user_system)) {
-        $User_Model->set_user_default_system($user_id, $user_system);
+        $userModel->set_user_default_system($user_id, $user_system);
     }
 
     //Dernière visite
     if (!empty($user_lastvisit)) {
-        $User_Model->update_lastvisit_time($user_id);
+        $userModel->update_lastvisit_time($user_id);
     }
 
     //Email
     if (!empty($user_email)) {
-        $User_Model->set_user_email($user_id, $user_email);
+        $userModel->set_user_email($user_id, $user_email);
     }
 
     //Désactivation de la vérification de l'adresse ip
     if (!is_null($disable_ip_check)) {
-        $User_Model->set_user_ip_check($user_id, $disable_ip_check);
+        $userModel->set_user_ip_check($user_id, $disable_ip_check);
     }
 
     if ($user_id == $user_data['id']) {
@@ -585,20 +585,20 @@ function user_set_stat($planet_imports = null, $search = null, $spy_imports = nu
 ) {
     global $user_data;
 
-    $User_Model = new User_Model();
+    $userModel = new User_Model();
     //Statistiques envoi systèmes solaires et rapports d'espionnage
 
     if (!is_null($planet_imports)) {
-        $User_Model->add_stat_planet_inserted($user_data["id"], $planet_imports);
+        $userModel->add_stat_planet_inserted($user_data["id"], $planet_imports);
     }
     if (!is_null($search)) {
-        $User_Model->add_stat_search_made($user_data["id"], $search);
+        $userModel->add_stat_search_made($user_data["id"], $search);
     }
     if (!is_null($spy_imports)) {
-        $User_Model->add_stat_spy_inserted($user_data["id"], $spy_imports);
+        $userModel->add_stat_spy_inserted($user_data["id"], $spy_imports);
     }
     if (!is_null($rank_imports)) {
-        $User_Model->add_stat_rank_inserted($user_data["id"], $rank_imports);
+        $userModel->add_stat_rank_inserted($user_data["id"], $rank_imports);
     }
 }
 
@@ -609,11 +609,11 @@ function user_set_stat($planet_imports = null, $search = null, $spy_imports = nu
  */
 function user_get($user_id = null)
 {
-    $User_Model = new User_Model();
+    $userModel = new User_Model();
     if (isset($user_id)) {
-        $info_users = $User_Model->select_user_data($user_id);
+        $info_users = $userModel->select_user_data($user_id);
     } else {
-        $info_users = $User_Model->select_all_user_data();
+        $info_users = $userModel->select_all_user_data();
     }
     return $info_users;
 }
@@ -644,8 +644,8 @@ function user_get_auth($user_id)
         );
         return $user_auth;
     }
-    $User_Model = new User_Model();
-    $user_auth = $User_Model->select_user_rights($user_id);
+    $userModel = new User_Model();
+    $user_auth = $userModel->select_user_rights($user_id);
     return $user_auth;
 }
 
@@ -678,14 +678,14 @@ function user_create()
     } else {
         $password = generateRandomPassword();
     }
-    $User_Model = new User_Model();
+    $userModel = new User_Model();
 
     //Création de l'utilisateur
     //On vérifie que le nom n'existe pas
-    if ($User_Model->select_is_user_name($pub_pseudo) === false) {
-        $user_id = $User_Model->add_new_user($pub_pseudo, $password);
+    if ($userModel->select_is_user_name($pub_pseudo) === false) {
+        $user_id = $userModel->add_new_user($pub_pseudo, $password);
         // Insertion dans le groupe par défaut
-        $User_Model->add_user_to_group($user_id, $pub_group_id);
+        $userModel->add_user_to_group($user_id, $pub_group_id);
         $info = $user_id . ":" . $password;
         log_("create_account", $user_id);
         user_set_grant(
@@ -1087,8 +1087,8 @@ function usergroup_newmember()
     global $pub_user_id, $pub_group_id, $pub_add_all;
 
     $Group_Model = new Group_Model();
-    $User_Model = new User_Model();
-    $userid_list = $User_Model->select_userid_list();
+    $userModel = new User_Model();
+    $userid_list = $userModel->select_userid_list();
 
     if (isset($pub_add_all) && is_numeric($pub_group_id)) {
         foreach ($userid_list as $userid) {

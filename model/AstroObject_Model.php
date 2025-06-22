@@ -570,13 +570,13 @@ class AstroObject_Model extends Model_Abstract
     {
         // Modifié pour inclure les champs nécessaires et les alias correspondants à get_system
         $select = "SELECT uni.`type`, uni.`galaxy`, uni.`system`, uni.`row`, uni.`Pha`, uni.`PoSa`, uni.`last_update_moon`," .
-            " ally.`name` AS ally_name, player.`name` AS player_name, player.`status` AS player_status," .
+            " ally.`name` AS ally_name, ally.`id` AS ally_id, player.`name` AS player_name, player.`id` AS player_id, player.`status` AS player_status," .
             " uni.`last_update`, user.`name` AS last_update_user_name, uni.`name` AS planet_name," .
             " uni.`last_update_user_id`, player.`datadate` AS player_last_active";
         $request = " FROM " . TABLE_USER_BUILDING . " uni" .
             " LEFT JOIN " . TABLE_USER . "  user  ON uni.`last_update_user_id` = user.`id`" . // uni.last_update_user_id
             " LEFT JOIN " . TABLE_GAME_PLAYER . "  player  ON player.`id`  = uni.`player_id`" .
-            " LEFT JOIN " . TABLE_GAME_ALLY . "  ally  ON ally.`id` = uni.`ally_id`";
+            " LEFT JOIN " . TABLE_GAME_ALLY . "  ally  ON ally.`id` = player.`ally_id`";
 
         $where = "";
         if ($criteria->getPlayerName() != null) {
@@ -743,7 +743,9 @@ class AstroObject_Model extends Model_Abstract
                 "system" => $s,
                 "row" => $r,
                 "ally_name" => $planet_data['ally_name'] ?? "",
+                "ally_id" => $planet_data['ally_id'] ?? "",
                 "player_name" => $planet_data['player_name'] ?? "",
+                "player_id" => $planet_data['player_id'] ?? "",
                 "type" => $planet_data['type'],
                 "Pha" => $planet_data['Pha'] ?? "",
                 "PoSa" => $planet_data['PoSa'] ?? "",

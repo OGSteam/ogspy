@@ -147,14 +147,20 @@ class sql_db
      */
     public function sql_query($query = "")
     {
-        global $logSQL;
+        global $logSQL, $logSlowSQL;
         global $benchSQL;
 
         $logSQL->info($query);
         $benchSQL->start();
+        $start_time = microtime(true);
 
         $this->last_query = $query;
         $this->result = $this->db_connect_id->query($query);
+
+        $execution_time = microtime(true) - $start_time;
+        if ($execution_time > 0.2) {
+            $logSlowSQL->warning("Slow query (".$execution_time."s): ".$query);
+        }
 
         $benchSQL->stop("sql_query ".$this->nb_requete." ");
         $this->nb_requete += 1;

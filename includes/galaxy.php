@@ -32,10 +32,15 @@ use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 use Ogsteam\Ogspy\Helper\SearchCriteria_Helper;
 
 /**
- * Checks the authorization of a user for a specific action.
+ * Checks user permissions for specific galaxy-related actions.
  *
- * @param string $action The action to check authorization for.
- * @return void
+ * @param string $action The action the user wishes to perform, such as 'import_planet', 'export_planet',
+ *                       'import_spy', 'export_spy', 'import_ranking', 'export_ranking', 'drop_ranking',
+ *                       'set_ranking', or 'set_rc'.
+ * @return void This method terminates execution or redirects the user if permissions are insufficient,
+ *              otherwise it proceeds with the requested action.
+ * @global array $user_auth Defines user authorization levels for specific functionalities.
+ * @global array $user_data Contains user-specific data, including roles and permissions.
  */
 function galaxy_check_auth($action)
 {
@@ -103,14 +108,21 @@ function galaxy_check_auth($action)
 
 
 /**
- * Affichage des galaxies
+ * Retrieves and displays population data for a specific galaxy and system.
  *
- * @global int $pub_galaxy
- * @global int $pub_system
- * @global string $pub_coordinates
- * @global array $user_data
- * @global array $server_config
- * @return array contenant un systeme solaire correspondant a $pub_galaxy et $pub_system
+ * This method calculates the galaxy and system based on provided parameters
+ * or defaults to the user's settings. It retrieves the system's population
+ * data from the AstroObject_Model and applies filters before returning.
+ *
+ * @return array Returns an array containing:
+ *               - "population": Filtered population data for the specified system.
+ *               - "galaxy": The resolved galaxy number.
+ *               - "system": The resolved system number.
+ * @global array $server_config Server configuration containing galaxy and system limits.
+ * @global int $pub_galaxy Public galaxy variable.
+ * @global int $pub_system Public system variable.
+ * @global string $pub_coordinates Public coordinates in the format 'galaxy:system'.
+ * @global array $user_data User data containing default galaxy and system values.
  */
 function galaxy_show()
 {
@@ -148,8 +160,11 @@ function galaxy_show()
 }
 
 /**
- * @param $system
- * @return mixed
+ * Filters and processes information for each planet within a given system.
+ *
+ * @param array $system Array of planets, where each planet contains data such as galaxy, system, row, and ally_name.
+ * @return array Modified system array with additional information about spy reports, combat reports, and allied status for each planet.
+ * @global array $server_config Configuration data that includes allied information.
  */
 function filter_system($system)
 {
@@ -175,15 +190,17 @@ function filter_system($system)
 
 
 /**
- * Affichage des systemes
+ * Displays information about a specified sector in the galaxy, including its population and system details.
  *
- * @global int $pub_galaxy
- * @global int $pub_system_down
- * @global int $pub_system_up
- * @global array $user_data
- * @global array $user_auth
- * @global array $server_config
- * @return array contenant les  systeme solaire compris entre $pub_system_down et $pub_system_up
+ * @return array An associative array containing:
+ *  - "population": Array of system data for the specified range of systems filtered by the system settings.
+ *  - "galaxy": The validated galaxy number.
+ *  - "system_down": The validated lower bound of the system range.
+ *  - "system_up": The validated upper bound of the system range.
+ * @global int $pub_galaxy Input value for the galaxy number.
+ * @global int $pub_system_down Lower bound of the system range.
+ * @global int $pub_system_up Upper bound of the system range.
+ * @global array $server_config Configuration details, including the number of galaxies and systems.
  */
 function galaxy_show_sector()
 {
@@ -224,24 +241,26 @@ function galaxy_show_sector()
 }
 
 /**
- * Fonctions de recherches
+ * Searches for celestial objects, such as players, alliances, planets, moons, or specific conditions,
+ * within a galaxy based on various defined criteria.
  *
- * @global array $user_data
- * @global array $user_auth
- * @global array $server_config
- * @global string $pub_string_search
- * @global string $pub_type_search type de recherche a effectuer : (player|ally|planet|colonization|moon|away)
- * @global int $pub_strict
- * @global int $pub_sort (0|1|2) ordre des resultats (order by galaxy/system/row|order by ally/player/galaxy/systems/row|order by player/galaxy/system/row)
- * @global int $pub_sort2 : (0|1) ordre des resultats recherche (asc|desc)
- * @global int $pub_galaxy_down
- * @global int $pub_galaxy_up
- * @global int $pub_system_down
- * @global int $pub_system_up
- * @global int $pub_row_down
- * @global int $pub_row_up
- * @global int $pub_page page courante (pagination)
- * @return array resultat de la recherche + numero de la page
+ * @return array Returns an array containing two elements: a 1D array of search results with detailed information
+ *               about celestial objects, and the total number of pages of results available.
+ * @global array $user_data Contains data on the currently authenticated user.
+ * @global array $server_config Contains server configuration settings.
+ * @global object $log Logging object for debug and warning messages.
+ * @global mixed $pub_string_search The search string used to query specific entities (e.g., player, ally, etc.).
+ * @global mixed $pub_type_search The type of search to perform (e.g., "player", "ally", "planet", etc.).
+ * @global mixed $pub_strict Determines if the search should be strict or partial.
+ * @global mixed $pub_sort Primary sorting parameter for search results.
+ * @global mixed $pub_sort2 Secondary sorting parameter for search results.
+ * @global int $pub_galaxy_down Lower boundary for galaxy in search constraints.
+ * @global int $pub_galaxy_up Upper boundary for galaxy in search constraints.
+ * @global int $pub_system_down Lower boundary for solar system in search constraints.
+ * @global int $pub_system_up Upper boundary for solar system in search constraints.
+ * @global int $pub_row_down Lower boundary for planetary row in search constraints.
+ * @global int $pub_row_up Upper boundary for planetary row in search constraints.
+ * @global int $pub_page Page number used for paginating search results.
  */
 function galaxy_search()
 {
@@ -405,13 +424,17 @@ function galaxy_search()
 }
 
 /**
- * Recuperation des statistiques des galaxies
+ * Retrieves statistics of planets for all galaxies and systems, including total planet count, free planets,
+ * and information about recently updated systems.
  *
- * @param int $step
- * @global       object mysql
- * @global array $user_data
- * @global array $server_config
- * @return array contenant planete colonise ou non, par galaxy / systems
+ * @param int $step The increment of systems to process in each step.
+ * @return array An associative array containing:
+ *               - "map": Statistics of planets indexed by galaxy and system.
+ *               - "nb_planets": Total number of planets across all galaxies and systems.
+ *               - "nb_planets_free": Total number of free planets across all galaxies and systems.
+ * @global array $user_data The user session data, including the last visit timestamp.
+ * @global array $server_config Configuration of the server, including the number of galaxies and systems.
+ * @global object $Universe_Model The model used for querying galaxy and system data.
  */
 function galaxy_statistic($step = 50)
 {
@@ -454,9 +477,9 @@ function galaxy_statistic($step = 50)
 }
 
 /**
- * Listing des alliances
+ * Retrieves the list of alliances.
  *
- * @return array contenant les noms des alliances
+ * @return array $ally_list The list of all alliances available in the database.
  */
 function galaxy_ally_listing()
 {
@@ -465,16 +488,17 @@ function galaxy_ally_listing()
 }
 
 /**
- * Recuperation positions alliance
+ * Analyzes and retrieves the positions of allies across galaxies and systems.
  *
- * @param int $step
- * @global       object mysql $db
- * @global array $user_data
- * @global array $user_auth
- * @global array $server_config
- * @global array $pub_ally_
- * @global int $nb_colonnes_ally
- * @return array $statictics contenant la position de tous les joueurs de toutes les alliances non protegers par galaxie / systeme
+ * This method processes the input data related to ally positions and retrieves
+ * their planet distribution and population statistics based on galaxy and system ranges.
+ * It considers configurations like ally protections and user access rights.
+ *
+ * @param int $step The step value for the system range iteration. Default is 50.
+ *                  Defines the number of systems to process at once.
+ * @return array Returns an associative array containing ally names as keys and
+ *               their statistics by galaxy and system as values. Each statistic
+ *               includes the number of planets and their population details.
  */
 function galaxy_ally_position($step = 50)
 {
@@ -537,14 +561,15 @@ function galaxy_ally_position($step = 50)
 }
 
 /**
- * Retrieve and format espionage reports for a specific galaxy, system, and row position.
+ * Retrieves and processes spy reports for a specific planet based on galaxy, system, and row coordinates.
  *
- * @return array|bool An array of espionage reports with details such as spy ID, sender, data, moon, and report date;
- *                    or false if the input parameters are invalid or out of range.
- * @global mixed $pub_system The system coordinate provided by the user.
- * @global mixed $pub_row The row position within the galaxy/system provided by the user.
- * @global array $server_config The server configuration containing the universe details.
- * @global mixed $pub_galaxy The galaxy coordinate provided by the user.
+ * This method validates the input coordinates against configuration limits and retrieves
+ * the spy report details associated with the specified location. The returned data includes
+ * information about the spies, such as IDs, senders, recorded data, moon indicator, and timestamps.
+ *
+ * @return array|bool Returns an array of spy report details where each report contains
+ *                    the spy ID, sender name, parsed data, moon indicator, and timestamp.
+ *                    Returns false if the input coordinates are invalid or out of range.
  */
 function galaxy_reportspy_show()
 {
@@ -609,10 +634,12 @@ function galaxy_reportrc_show()
 }
 
 /**
- * Purge des rapports d\'espionnage
+ * Purges expired spy reports from the database.
  *
- * @global array $server_config
+ * This method removes spy reports from the system that have exceeded their expiration time,
+ * as defined by the server's maximum retention period configuration.
  *
+ * @return void Does not return any value. Performs a cleanup operation on the spy reports.
  */
 function galaxy_purge_spy()
 {
@@ -628,10 +655,14 @@ function galaxy_purge_spy()
 }
 
 /**
- * Recuperation des systemes favoris
+ * Retrieves the list of user-selected favorite items.
  *
- * @global array $user_data
- * @return array $favorite (galaxy/system)
+ * This method fetches the favorites associated with the currently logged-in user
+ * by querying the user favorites model. It provides an array containing the user's
+ * favorite entries.
+ *
+ * @return array Returns an array containing the user's favorite items. Each item
+ *               represents a favorite entry stored in the database.
  */
 function galaxy_getfavorites()
 {
@@ -641,12 +672,18 @@ function galaxy_getfavorites()
 }
 
 /**
- * Affichage classement
+ * Retrieves and displays rankings from a specified ranking table.
  *
- * @param      $model
- * @param      $ranking_table
- * @param null $date
- * @return int
+ * This method fetches rankings from the provided model and ranking table.
+ * If a specific date is not provided, it retrieves the latest available
+ * rankings. In case no rankings are found, it returns an error indicator.
+ *
+ * @param object $model The model instance used to query ranking data.
+ * @param string $ranking_table The name of the table containing ranking data.
+ * @param string|null $date Optional. The specific date for retrieving rankings.
+ *                           If null, the method uses the latest available date.
+ * @return array|int Returns an array of rankings data if successful, or -1 if
+ *                   no ranking data is available.
  */
 function galaxy_show_ranking($model, $ranking_table, $date = null)
 {
@@ -668,15 +705,20 @@ function galaxy_show_ranking($model, $ranking_table, $date = null)
 }
 
 /**
- * Affichage classement des joueurs
+ * Retrieves and processes the ranking data of players.
  *
- * @global string $pub_order_by general|eco|techno|military|military_b|military_l|military_d|honnor
- * @global int $pub_date timestamp du classement voulu
- * @global int $pub_interval
- * @return array array($order, $ranking, $ranking_available, $maxrank);
+ * This method handles player ranking data based on specified criteria, including order type,
+ * date, and interval. It validates inputs, fetches player ranking data from the model,
+ * processes the data into structured arrays, and retrieves additional metadata such as
+ * available ranking dates and the highest rank.
  *
- * todo revoir entierement affichage de la vue pour simplifier/ameliorer cette fonction,
- * todo verifiction siregression 3.3.4 / 3.3.5 => gain de perf enorme mais si rien dans table general, pas d 'affichage classement (inner join)
+ * @return array Returns an array containing four elements:
+ *               - An associative array where keys are player positions and values are player names.
+ *               - A detailed associative array with player information, including ally names,
+ *                 ranks, and points across categories like general, economy, technology,
+ *                 honor, and military (with subcategories).
+ *               - A unique list of available ranking dates.
+ *               - The maximum rank found for the current ranking criteria.
  */
 function galaxy_show_ranking_player()
 {
@@ -1047,9 +1089,15 @@ function galaxy_show_ranking_unique_ally($ally, $last = false)
 }
 
 /**
- * Suppression automatique de classements joueurs & alliances
+ * Purges outdated player ranking data based on server-defined criteria.
  *
- * @global array $server_config
+ * This method analyzes the current server configuration and removes outdated
+ * ranking data from the database. It supports both time-based and quantity-based
+ * criteria for purging. The time-based criterion deletes data older than a specified
+ * number of days, while the quantity-based criterion retains a maximum number
+ * of rank entries, deleting older data if the limit is exceeded.
+ *
+ * @return void This method does not return a value.
  */
 function galaxy_purge_ranking(): void
 {
@@ -1084,12 +1132,14 @@ function galaxy_purge_ranking(): void
 }
 
 /**
- * Deletes all ranking data of players or alliances based on the specified date.
+ * Deletes all ranking data for players or alliances based on the provided date.
  *
- * @return void The method does not return any value as it handles redirection upon completion
- * @throws RedirectionException Redirects in case of invalid parameters or insufficient permissions
- * @global string $pub_datadate Date of the rankings to be removed
- * @global string $pub_subaction Specifies whether to drop player or alliance rankings
+ * This method verifies user input and permissions before proceeding to remove
+ * ranking data for either players or alliances using the specified date.
+ * The action performed depends on the 'subaction' parameter, which determines
+ * whether player or alliance rankings are targeted.
+ *
+ * @return void No return value. Redirects to the appropriate ranking page upon successful execution.
  */
 function galaxy_drop_ranking()
 {
@@ -1205,14 +1255,15 @@ function galaxy_get_phalanx($galaxy, $system, $classe = 'none')
 }
 
 /**
- * Affichage des systemes solaires obsoletes
+ * Identifies and retrieves objects within a specific galaxy perimeter that are considered obsolete.
  *
- * @global int $pub_perimeter
- * @global int $pub_since
- * @global string $pub_typesearch (M|P)
- * @todo Query :  "select distinct galaxy, system" . $row_field . " from " . TABLE_UNIVERSE . " where moon = '" . $moon . "' and " . $field . " between " . $indice_sup ." and " . $indice_inf ."  and galaxy = " . intval($pub_perimeter) . " order by galaxy, system, row limit 0, 51";
- * @todo Query :  "select distinct galaxy, system" . $row_field . " from " . TABLE_UNIVERSE . " where moon = '" . $moon . "' and " . $field . " between " . $indice_sup ." and " . $indice_inf ."  order by galaxy, system, row limit 0, 51";
- * @return array $obsolete
+ * This method processes the input parameters for perimeter, time since obsolescence,
+ * and type of search (moons or planets) to retrieve a list of obsolete entities.
+ * It validates input data and calculates time indices to perform a query for retrieval.
+ *
+ * @return array Returns an array of obsolete astronomical objects based on the specified
+ *               perimeter, timeframe, and type of object (planets or moons). Returns an
+ *               empty array if input validation fails or no obsolete objects are found.
  */
 function galaxy_obsolete()
 {
@@ -1258,11 +1309,16 @@ function galaxy_obsolete()
 }
 
 /**
- * Reconstruction des RE
+ * Parses and reconstructs espionage report data for a given report ID.
  *
- * @global array $table_prefix
- * @param string $id_RE RE a reconstituer
- * @return string $template_RE reconstitue
+ * This method analyzes and retrieves data related to fleets, defenses, buildings,
+ * and technologies for a specific espionage report. It processes this information
+ * to present a comprehensive view of the espionage target, handling cases where
+ * data reconstruction is required from other related reports.
+ *
+ * @param int $id_RE The ID of the espionage report to process.
+ * @return array Returns an associative array representing the reconstructed espionage
+ *               report, including fleet, defense, building, and technology information.
  */
 function UNparseRE($id_RE)
 {
@@ -1649,13 +1705,11 @@ function buildSpyReportTemplate($row, $rowPlayerName, $lang, $dateRE, $show, $sh
 function galaxy_portee_missiles($galaxy, $system)
 {
     global  $server_config;
-    //todo prevoir jointure de table
 
-    $User_Model = new User_Model();
-    $User_Building_Model = new Player_Building_Model();
-    $User_Technology_Model = new Player_Technology_Model();
-    $User_Defense_Model = new Player_Defense_Model();
-
+    $playerModel = new Player_Model();
+    $userBuildingModel = new Player_Building_Model();
+    $userTechnologyModel = new Player_Technology_Model();
+    $userDefenseModel = new Player_Defense_Model();
 
     $missil_ok = '';
     $ok_missil = '';
@@ -1663,33 +1717,32 @@ function galaxy_portee_missiles($galaxy, $system)
     // recherche niveau missile
 
 
-    $tUser_building = $User_Building_Model->get_building_by_silo(3);
+    $tUser_building = $userBuildingModel->get_building_by_silo(3);
 
     foreach ($tUser_building as $User_building) {
 
-        $base_joueur = $User_building["user_id"];
-        $base_id_planet = $User_building["planet_id"];
-        $base_coord = $User_building["coordinates"];
+        $base_joueur = $User_building["player_id"];
+        $base_id_planet = $User_building["id"];
 
         // sépare les coords
-        $missil_coord = explode(':', $base_coord);
-        $galaxie_missil = $missil_coord[0];
-        $sysSol_missil = $missil_coord[1];
+        $galaxie_missil = $User_building['galaxy'];
+        $sysSol_missil = $User_building['system'];
 
         // recherche le niveau du réacteur du joueur
-        $tUser_Technology =  $User_Technology_Model->select_user_technologies($base_joueur);
+        $tUser_Technology =  $userTechnologyModel->select_player_technologies($base_joueur);
         $niv_reac_impuls = $tUser_Technology["RI"] ?? 0;
 
         if ($niv_reac_impuls > 0) {
 
             // recherche du nombre de missile dispo
-            $tUser_defense = $User_Defense_Model->select_player_defense_planete($base_joueur, $base_id_planet);
+            $tUser_defense = $userDefenseModel->select_player_defense_planete($base_id_planet);
             $missil_dispo = (!isset($tUser_defense['MIP']) ? 0 : $tUser_defense['MIP']);
 
+            // Nom du joueur
+            $nom_missil_joueur = $playerModel->get_player_name($base_joueur);
 
-            $info_users = $User_Model->select_user_data($base_joueur);
-            $nom_missil_joueur = $info_users[0]["user_name"];
-
+            // Coordonnées de la base
+            $base_coord = $galaxie_missil . ':' . $sysSol_missil . ':' . $User_building['row'];
 
             // calcul de la porté du silo
             $porte_missil = ogame_missile_range($niv_reac_impuls); // Portée : (Lvl 10 * 5) - 1 = 49
@@ -1738,7 +1791,7 @@ function displayMIP($nom_missil_joueur, $missil_dispo, $galaxie_missil, $sysSol_
     $tooltip = $tooltip = htmlspecialchars($tooltip, ENT_QUOTES, 'UTF-8');
 
 
-    $door = '<a id="linkdoor" href="?action=galaxy&galaxy=' . $galaxie_missil . '&system=' . $sysSol_missil . '"';
+    $door = '<a id="linkdoor" href="?action=search&type_search=planet&galaxy=' . $galaxie_missil . '&system=' . $sysSol_missil .  '"';
     $total_missil += (int)$missil_dispo;
     $missil_ready = "<span style='color: #DBBADC; '> " . $total_missil . " " . $lang['GALAXY_MIP_MIPS'] . " </span>";
 

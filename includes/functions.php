@@ -1008,17 +1008,17 @@ function resize_db($new_num_of_galaxies, $new_num_of_systems)
 
     //appel de la couche" Model"
     $Config_Model = new Config_Model();
-    $User_Model = new User_Model();
+    $userModel = new User_Model();
     $User_Favorites_Model = new User_Favorites_Model();
 
     // si on reduit on doit supprimez toutes les entrées qui font reference au systemes ou galaxies que l'on va enlever
     (new AstroObject_Model())->resize_universe($new_num_of_galaxies, $new_num_of_systems);
     $User_Favorites_Model->delete_favorites_after_resize($new_num_of_galaxies, $new_num_of_systems); //suppression des favoris plus utils
     if ($new_num_of_galaxies < intval($server_config['num_of_galaxies'])) {
-        $User_Model->set_default_galaxy_after_resize($new_num_of_galaxies);
+        $userModel->set_default_galaxy_after_resize($new_num_of_galaxies);
     }
     if ($new_num_of_systems < intval($server_config['num_of_systems'])) {
-        $User_Model->set_default_system_after_resize($new_num_of_systems);
+        $userModel->set_default_system_after_resize($new_num_of_systems);
     }
 
     $server_config['num_of_galaxies'] = $new_num_of_galaxies;
@@ -1346,8 +1346,8 @@ function generate_key()
 function booster_lire_bdd($id_player, $id_planet)
 {
     $result = null;
-    $User_Building_Model = new Player_Building_Model();
-    $tBoosters = $User_Building_Model->get_all_booster_player($id_player);
+    $userBuildingModel = new Player_Building_Model();
+    $tBoosters = $userBuildingModel->get_all_booster_player($id_player);
 
     if (isset($tBoosters[$id_planet])) {
         return booster_decode($tBoosters[$id_planet]);
@@ -1371,18 +1371,18 @@ function booster_lire_bdd($id_player, $id_planet)
  */
 function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster)
 {
-    $User_Building_Model = new Player_Building_Model();
-    return $User_Building_Model->update_booster($id_player, $id_planet, booster_encode($tab_booster));
+    $userBuildingModel = new Player_Building_Model();
+    return $userBuildingModel->update_booster($id_player, $id_planet, booster_encode($tab_booster));
 }
 
 /* Mets à jour les boosters de tous les users en fonction de la date de fin dans la BDD
 */
 function booster_maj_bdd()
 {
-    $User_Building_Model = new Player_Building_Model();
+    $userBuildingModel = new Player_Building_Model();
 
     // recupération de tous les booster et verification
-    $tUserBoosters = $User_Building_Model->get_all_booster();
+    $tUserBoosters = $userBuildingModel->get_all_booster();
     $tUpdateBoosters = array();
     foreach ($tUserBoosters as $UserBooster) {
         $tmp = booster_verify_str($UserBooster['boosters']);
@@ -1398,7 +1398,7 @@ function booster_maj_bdd()
 
     //sauvegarde des boosters actualisé
     foreach ($tUpdateBoosters as $UpdateBooster) {
-        $User_Building_Model->update_booster($UpdateBooster["user_id"], $UpdateBooster["planet_id"], $UpdateBooster["boosters"]);
+        $userBuildingModel->update_booster($UpdateBooster["user_id"], $UpdateBooster["planet_id"], $UpdateBooster["boosters"]);
     }
 }
 
