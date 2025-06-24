@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "mariadb-mcp-server": "^0.0.1"
+  }
+}

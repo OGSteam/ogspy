@@ -52,6 +52,28 @@ class Player_Model extends Model_Abstract
         return $playerName;
     }
 
+    /**
+     * Retrieves the player ID based on the provided player name.
+     *
+     * @param string $player_name The name of the player to retrieve the ID for.
+     * @return int|false Returns the player ID as an integer if found, or false if the player does not exist.
+     */
+    public function getPlayerId(string $player_name)
+    {
+        $request = "SELECT `id`".
+            " FROM " . TABLE_GAME_PLAYER;
+        $request .= " WHERE `name` = " . $player_name;
+        $result = $this->db->sql_query($request);
+
+        list($playerId) = $this->db->sql_fetch_row($result);
+
+        if (empty($playerId)) {
+            return false;
+        }
+
+        return $playerId;
+    }
+
 
     /**
      * A quoi sert donc cette fonction ? :p

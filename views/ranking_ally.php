@@ -26,7 +26,7 @@ $link_military = "<a href='index.php?action=ranking&amp;view=ally&amp;order_by=m
 $link_military_b = "<a href='index.php?action=ranking&amp;view=ally&amp;order_by=military_b'>" . $lang['RANK_MILITARY_BUILT'] . "</a>";
 $link_military_l = "<a href='index.php?action=ranking&amp;view=ally&amp;order_by=military_l'>" . $lang['RANK_MILITARY_LOST'] . "</a>";
 $link_military_d = "<a href='index.php?action=ranking&amp;view=ally&amp;order_by=military_d'>" . $lang['RANK_MILITARY_DESTROYED'] . "</a>";
-$link_honnor = "<a href='index.php?action=ranking&amp;view=ally&amp;order_by=honnor'>" . $lang['RANK_MILITARY_HONOR'] . "</a>";
+$link_honor = "<a href='index.php?action=ranking&amp;view=ally&amp;order_by=honor'>" . $lang['RANK_MILITARY_HONOR'] . "</a>";
 
 $active_link_value = "active-rank";
 $general_active_link = "";
@@ -36,7 +36,7 @@ $military_active_link = "";
 $military_b_active_link = "";
 $military_l_active_link = "";
 $military_d_active_link = "";
-$honnor_active_link = "";
+$honor_active_link = "";
 
 switch ($order_by) {
     case "general":
@@ -67,9 +67,9 @@ switch ($order_by) {
         $link_military_d = str_replace($lang['RANK_MILITARY_DESTROYED'], "<img src='images/asc.png'>&nbsp;" . $lang['RANK_MILITARY_DESTROYED'] . "&nbsp;<img src='images/asc.png'>", $link_military_d);
         $military_d_active_link = $active_link_value;
         break;
-    case "honnor":
-        $link_honnor = str_replace($lang['RANK_MILITARY_HONOR'], "<img src='images/asc.png'>&nbsp;" . $lang['RANK_MILITARY_HONOR'] . "&nbsp;<img src='images/asc.png'>", $link_honnor);
-        $honnor_active_link = $active_link_value;
+    case "honor":
+        $link_honor = str_replace($lang['RANK_MILITARY_HONOR'], "<img src='images/asc.png'>&nbsp;" . $lang['RANK_MILITARY_HONOR'] . "&nbsp;<img src='images/asc.png'>", $link_honor);
+        $honor_active_link = $active_link_value;
         break;
 }
 ?>
@@ -175,8 +175,8 @@ switch ($order_by) {
             <th colspan="2" class="<?php echo $military_d_active_link; ?>">
                 <?php echo $link_military_d; ?>
             </th>
-            <th colspan="2" class="<?php echo $honnor_active_link; ?>">
-                <?php echo $link_honnor; ?>
+            <th colspan="2" class="<?php echo $honor_active_link; ?>">
+                <?php echo $link_honor; ?>
             </th>
         </tr>
     </thead>
@@ -206,9 +206,9 @@ switch ($order_by) {
             $military_d_pts = "&nbsp;";
             $military_d_pts_per_member = "&nbsp;";
             $military_d_rank = "&nbsp;";
-            $honnor_pts = "&nbsp;";
-            $honnor_pts_per_member = "&nbsp;";
-            $honnor_rank = "&nbsp;";
+            $honor_pts = "&nbsp;";
+            $honor_pts_per_member = "&nbsp;";
+            $honor_rank = "&nbsp;";
 
             if (isset($ranking[$value]["general"]["points"])) {
                 $general_pts = formate_number($ranking[$value]["general"]["points"]);
@@ -248,10 +248,10 @@ switch ($order_by) {
                 $military_d_rank = formate_number($ranking[$value]["military_d"]["rank"]);
             }
 
-            if (isset($ranking[$value]["honnor"]["points"])) {
-                $honnor_pts = formate_number($ranking[$value]["honnor"]["points"]);
-                $honnor_pts_per_member = formate_number($ranking[$value]["honnor"]["points"] / $ranking[$value]["number_member"]);
-                $honnor_rank = formate_number($ranking[$value]["honnor"]["rank"]);
+            if (isset($ranking[$value]["honor"]["points"])) {
+                $honor_pts = formate_number($ranking[$value]["honor"]["points"]);
+                $honor_pts_per_member = formate_number($ranking[$value]["honor"]["points"] / $ranking[$value]["number_member"]);
+                $honor_rank = formate_number($ranking[$value]["honor"]["rank"]);
             }
             ?>
 
@@ -309,11 +309,11 @@ switch ($order_by) {
                 <td class="table-ranking-td-subrank <?php echo $military_d_active_link;?>">
                     <span class="ranking-subrank-number"><?php echo $military_d_rank; ?></span>
                 </td>
-                <td class="<?php echo $honnor_active_link;?>">
-                    <?php echo $honnor_pts; ?><br>(<span class="og-highlight"><?php echo $honnor_pts_per_member; ?></span>)
+                <td class="<?php echo $honor_active_link;?>">
+                    <?php echo $honor_pts; ?><br>(<span class="og-highlight"><?php echo $honor_pts_per_member; ?></span>)
                 </td>
-                <td class="table-ranking-td-subrank <?php echo $honnor_active_link;?>">
-                    <span class="ranking-subrank-number"><?php echo $honnor_rank; ?></span>
+                <td class="table-ranking-td-subrank <?php echo $honor_active_link;?>">
+                    <span class="ranking-subrank-number"><?php echo $honor_rank; ?></span>
                 </td>
 
             </tr>

@@ -210,13 +210,13 @@ if (sizeof($dates) > 0) {
 <?php
 $first = [
     "general_pts" => -1, "eco_pts" => -1, "eco_rank" => -1, "techno_pts" => -1, "techno_rank" => -1, "military_pts" => -1, "military_rank" => -1,
-    "military_b_pts" => -1, "military_b_rank" => -1, "military_l_pts" => -1, "military_l_rank" => -1, "military_d_pts" => -1, "military_d_rank" => -1, "honnor_pts" => -1, "honnor_rank" => -1
+    "military_b_pts" => -1, "military_b_rank" => -1, "military_l_pts" => -1, "military_l_rank" => -1, "military_d_pts" => -1, "military_d_rank" => -1, "honor_pts" => -1, "honor_rank" => -1
 ];
 $last = [
     "general_pts" => 0, "eco_pts" => 0, "techno_pts" => 0, "military_pts" => 0,
-    "military_b_pts" => 0, "military_l_pts" => 0, "military_d_pts" => 0, "honnor_pts" => 0,
+    "military_b_pts" => 0, "military_l_pts" => 0, "military_d_pts" => 0, "honor_pts" => 0,
     "general_rank" => 0, "eco_rank" => 0, "techno_rank" => 0, "military_rank" => 0,
-    "military_b_rank" => 0, "military_l_rank" => 0, "military_d_rank" => 0, "honnor_rank" => 0
+    "military_b_rank" => 0, "military_l_rank" => 0, "military_d_rank" => 0, "honor_rank" => 0
 ];
 $tab_rank = "";
 $rank_row = [];
@@ -269,10 +269,10 @@ while ($ranking = current($individual_ranking)) {
         $first["military_d_rank"] = $ranking["military_d"]["rank"];
         $first_date["military_d"] = $v;
     }
-    if ($first["honnor_pts"] == -1 && isset($ranking["honnor"])) {
-        $first["honnor_pts"] = $ranking["honnor"]["points"];
-        $first["honnor_rank"] = $ranking["honnor"]["rank"];
-        $first_date["honnor"] = $v;
+    if ($first["honor_pts"] == -1 && isset($ranking["honor"])) {
+        $first["honor_pts"] = $ranking["honor"]["points"];
+        $first["honor_rank"] = $ranking["honor"]["rank"];
+        $first_date["honor"] = $v;
     }
 
     if (isset($ranking["general"])) {
@@ -315,14 +315,14 @@ while ($ranking = current($individual_ranking)) {
         $last_date["military_d"] = $v;
     }
 
-    if (isset($ranking["honnor"])) {
-        $last["honnor_pts"] = $ranking["honnor"]["points"];
-        $last["honnor_rank"] = $ranking["honnor"]["rank"];
-        $last_date["honnor"] = $v;
+    if (isset($ranking["honor"])) {
+        $last["honor_pts"] = $ranking["honor"]["points"];
+        $last["honor_rank"] = $ranking["honor"]["rank"];
+        $last_date["honor"] = $v;
     }
 
     $rank_row[$i]["date"] = date("d M Y H:i", $v);
-    $rankings = ["general", "eco", "techno", "military", "military_b", "military_l", "military_d", "honnor"];
+    $rankings = ["general", "eco", "techno", "military", "military_b", "military_l", "military_d", "honor"];
     foreach ($rankings as $ranking) {
         $rank_row[$i][$ranking . "_rank"] = isset($ranking[$ranking]) ? formate_number($ranking[$ranking]["rank"]) : "&nbsp;";
         $rank_row[$i][$ranking . "_points"] = isset($ranking[$ranking]) ? formate_number($ranking[$ranking]["points"]) : "&nbsp;";
@@ -542,11 +542,11 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                     </span>
             </td>
             <td>
-                <?= $row["honnor_points"] ?>
+                <?= $row["honor_points"] ?>
             </td>
             <td class="table-ranking-td-subrank">
                     <span class="ranking-subrank-number">
-                        <?= $row["honnor_rank"] ?>
+                        <?= $row["honor_rank"] ?>
                     </span>
             </td>
 
@@ -787,10 +787,10 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["honnor_pts"] == -1 || $last_date["honnor"] == $first_date["honnor"]) : ?>
+            <?php if ($first["honor_pts"] == -1 || $last_date["honor"] == $first_date["honor"]) : ?>
                 -
             <?php else : ?>
-                <?php $prog = ($last["honnor_pts"] - $first["honnor_pts"]) * 60 * 60 * 24 / ($last_date["honnor"] - $first_date["honnor"]); ?>
+                <?php $prog = ($last["honor_pts"] - $first["honor_pts"]) * 60 * 60 * 24 / ($last_date["honor"] - $first_date["honor"]); ?>
                 <?php if ($prog < 0) : ?>
                     <span class="og-alert">
                             <?= round($prog, 2) ?>
@@ -803,10 +803,10 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["honnor_rank"] == -1 || $last_date["honnor"] == $first_date["honnor"]) : ?>
+            <?php if ($first["honor_rank"] == -1 || $last_date["honor"] == $first_date["honor"]) : ?>
                 -
             <?php else : ?>
-                <?php $prog = ($last["honnor_rank"] - $first["honnor_rank"]) * 60 * 60 * 24 / ($last_date["honnor"] - $first_date["honnor"]); ?>
+                <?php $prog = ($last["honor_rank"] - $first["honor_rank"]) * 60 * 60 * 24 / ($last_date["honor"] - $first_date["honor"]); ?>
                 <?php if ($prog > 0) : ?>
                     <span class="og-alert">
                             <?= round($prog, 2) ?>

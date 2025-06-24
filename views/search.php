@@ -24,7 +24,7 @@ $ToolTip_Helper = new ToolTip_Helper();
 
 // Initialisation des variables de recherche
 $string_search = $pub_string_search ?? "";
-$type_search = $pub_type_search;
+$type_search = $pub_type_search ?? "player"; // par défaut, on recherche les joueurs
 $strict = $pub_strict ?? true;
 $sort = $pub_sort ?? 1;
 $sort2 = $pub_sort2 ?? 0;
@@ -58,14 +58,7 @@ if ($search_result) {
     if (!empty($strict)) {
         $strict_on = "&strict";
     }
-    $new_sort2 = 0;
-    if (isset($sort2)) {
-        if ($sort2 == 0) {
-            $new_sort2 = 1;
-        } else {
-            $new_sort2 = 0;
-        }
-    }
+    $new_sort2 = isset($sort2) && $sort2 == 0 ? 1 : 0;
 
     if ($type_search != "colonization") {
         $link_order_coordinates = "<a href='index.php?action=search&amp;sort=1&amp;sort2=" . $new_sort2 . "&amp;type_search=" . $type_search . "&amp;page=" . $page . "&amp;string_search=" . $string_search . $strict_on . "'>" . $lang['SEARCH_COORDS'];
@@ -316,11 +309,8 @@ require_once("views/page_header.php");
 
                     <?php if ($v["ally_name"] != "") : ?>
                         <?php $tooltiptab["allyName"][] = $v["ally_name"]; ?>
-                        <?php $tooltiptab["allyId"][] = $v["ally_id"]; ?>
                     <?php endif; ?>
                     <?php $tooltiptab["playerName"][] = $v["player_name"]; ?>
-                    <?php $tooltiptab["playerId"][] = $v["player_id"]; ?>
-
                     <?php echo displayGalaxyTabletbodytr($v, false); ?>
                 <?php endforeach; ?>
             </tbody>
@@ -411,8 +401,8 @@ require_once("views/page_header.php");
                         $military_l_points = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) : "&nbsp;";
                         $military_d_rank = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) : "&nbsp;";
                         $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : "&nbsp;";
-                        $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : "&nbsp;";
-                        $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : "&nbsp;";
+                        $honor_rank = isset($ranking["honor"]) ? formate_number($ranking["honor"]["rank"]) : "&nbsp;";
+                        $honor_points = isset($ranking["honor"]) ? formate_number($ranking["honor"]["points"]) : "&nbsp;";
                         ?>
                         <tr>
                             <td>
@@ -468,11 +458,11 @@ require_once("views/page_header.php");
                             </td>
                             <td>
                                 <span class="ranking-subrank-number">
-                                    <?php echo  $honnor_rank; ?>
+                                    <?php echo  $honor_rank; ?>
                                 </span>
                             </td>
                             <td>
-                                <?php echo  $honnor_points; ?>
+                                <?php echo  $honor_points; ?>
                             </td>
                             <?php if ($type_search == "ally") : ?>
                                 <td>
@@ -490,13 +480,13 @@ require_once("views/page_header.php");
     <?php
     // calcul de tous les tooltip player et alliance
     //tooltip player
-    foreach ($tooltiptab["playerId"] as $player) {
+    foreach ($tooltiptab["playerName"] as $player) {
         $tooltip = displayGalaxyPlayerTooltip($player);
         //------------  Affichage Tooltip ----------------
         $ToolTip_Helper->addTooltip("ttp_player_" . $player,  $tooltip);
     }
     //tooltip ally
-    foreach ($tooltiptab["allyId"] as $ally) {
+    foreach ($tooltiptab["allyName"] as $ally) {
         $tooltip =  displayGalaxyAllyTooltip($ally);
         //------------  Affichage Tooltip ----------------
         $ToolTip_Helper->addTooltip("ttp_alliance_" . $ally,  $tooltip);
