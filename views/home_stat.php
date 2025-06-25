@@ -57,54 +57,62 @@ $individual_ranking = galaxy_show_ranking_unique_player($player_data["id"]);
 
 ksort($individual_ranking);
 
+
 $individual_ranking_2 = [];
 if (!empty($player_comp)) {
-    $individual_ranking_2 = galaxy_show_ranking_unique_player($player_comp);
+    $playerId = (new Player_Model())->getPlayerId($player_comp);
+    $individual_ranking_2 = galaxy_show_ranking_unique_player($playerId);
 }
 
 $dates = array_keys($individual_ranking);
 $dates2 = array_keys($individual_ranking_2);
 $dates = sizeof($dates) > sizeof($dates2) ? $dates : $dates2;
 
-if (sizeof($dates) > 0) {
+
+if (!empty($dates)) {
     $max_date = max($dates);
     $min_date = min($dates);
 
-    if (
-        isset($pub_start_date) && isset($pub_end_date) && preg_match(
-            "/^(3[01]|[0-2][0-9]|[1-9])\/([1-9]|0[1-9]|1[012])\/(2[[:digit:]]{3})$/",
-            trim($pub_start_date)
-        ) && preg_match(
-            "/^(3[01]|[0-2][0-9]|[1-9])\/([1-9]|0[1-9]|1[012])\/(2[[:digit:]]{3})$/",
-            trim($pub_end_date)
-        )
-    ) {
-        $min = explode("/", trim($pub_start_date));
-        $min = mktime(22, 0, 0, $min[1], $min[0] - 1, $min[2]);
-        $max = explode("/", trim($pub_end_date));
-        $max = mktime(18, 0, 0, $max[1], $max[0], $max[2]);
-        if ($max > $min) {
-            $max_date = $max;
-            $min_date = $min;
+    if (isset($pub_start_date, $pub_end_date)) {
+        // Valider et créer les objets DateTime à partir du format d/m/Y
+        $start_dt = DateTime::createFromFormat('d/m/Y', trim($pub_start_date));
+        $end_dt = DateTime::createFromFormat('d/m/Y', trim($pub_end_date));
+
+        // Vérifier si les dates sont valides
+        if ($start_dt && $end_dt) {
+            // Modifier les dates de manière lisible
+            $start_dt->setTime(22, 0, 0)->modify('-1 day');
+            $end_dt->setTime(18, 0, 0);
+
+            $min_ts = $start_dt->getTimestamp();
+            $max_ts = $end_dt->getTimestamp();
+
+            // Mettre à jour les dates si l'intervalle est valide
+            if ($max_ts > $min_ts) {
+                $max_date = $max_ts;
+                $min_date = $min_ts;
+            }
         }
     }
 } else {
     $max_date = time();
     $min_date = time();
 }
-?>
 
-<table class="og-table og-little-table">
-    <form method="get" action="index.php">
-        <input type="hidden" name="action" value="home"/>
-        <input type="hidden" name="subaction" value="stat"/>
-        <input type="hidden" name="zoom" value="<?= $zoom; ?>"/>
+
+?>
+<form method="get" action="index.php">
+    <input type="hidden" name="action" value="home"/>
+    <input type="hidden" name="subaction" value="stat"/>
+    <input type="hidden" name="zoom" value="<?= $zoom; ?>"/>
+    <table class="og-table og-little-table">
         <thead>
         <tr>
             <th colspan='3'><?= $lang['HOME_STATS_STATISTICS'] ?></th>
         </tr>
         </thead>
         <tbody>
+
         <tr>
             <td class="tdstat">
                 <?= $lang['HOME_STATS_STATISTICS'] ?>
@@ -154,64 +162,39 @@ if (sizeof($dates) > 0) {
             <td>
                 <input type="text" maxlength="10" name="end_date" value="<?= date("Y-m-d", $max_date) ?>"/>
             </td>
+            <td class="tdstat">
+            </td>
         </tr>
         </tbody>
         <thead>
-        <th colspan='3'><?= $lang['HOME_STATS_OPTIONS'] ?></th>
+        <tr>
+            <th colspan='3'><?= $lang['HOME_STATS_OPTIONS'] ?></th>
+        </tr>
         </thead>
-        <tbod>
-            <tr>
-                <td class="tdstat">
-                    <?= ($lang['HOME_STATS_ZOOM']) ?>
-                </td>
-                <td></td>
-                <td>
-                    <input class="og-button og-button-image og-button-image-large" type="image" name="zoom_change"
-                           src="images/<?= ($zoom == "true" ? "zoom_in.png" : "zoom_out.png") ?>" alt="zoom"/>
-                </td>
+        <tbody>
+        <tr>
+            <td class="tdstat">
+                <?= ($lang['HOME_STATS_ZOOM']) ?>
+            </td>
+            <td></td>
+            <td>
+                <input class="og-button og-button-image og-button-image-large" type="image" name="zoom_change"
+                       src="images/<?= ($zoom == "true" ? "zoom_in.png" : "zoom_out.png") ?>" alt="zoom"/>
+            </td>
 
-            </tr>
-        </tbod>
-    </form>
-</table>
+        </tr>
+        </tbody>
+    </table>
+</form>
 
-<!--
-<div style="display:flex; flex-direction: column; justify-content: center;">
-    <form method="get" action="index.php">
-        <input type="hidden" name="action" value="home" />
-        <input type="hidden" name="subaction" value="stat" />
-        <input type="hidden" name="zoom" value="<?= $zoom; ?>" />
-        <table>
-            <tr>
-                <td class='c'><?= $lang['HOME_STATS_STATISTICS'] ?></td>
-                <td class='c' colspan='2'><?= $lang['HOME_STATS_OPTIONS']; ?></td>
-            </tr>
-            <tr>
-                <th><input type="text" name="user_stat_name" value="<?= $player_data["name"] ?>" />
-                    <input type="submit" value="<?= $lang['HOME_STATS_GETSTATS'] ?>" />
-                </th>
-                <th rowspan="2"><span style="text-decoration: underline;"><?= $lang['HOME_STATS_INTERVAL'] ?></span> : <?= $lang['HOME_STATS_FROM'] ?>
-                    <input type="text" size="10" maxlength="10" name="start_date" value="<?= date("Y-m-d", $min_date + 60 * 60 * 2) ?>" />
-                    <?= ($lang['HOME_STATS_TO']) ?>
-                    <input type="text" size="10" maxlength="10" name="end_date" value="<?= date("Y-m-d", $max_date) ?>" />
-                    <input type="submit" value="<?= ($lang['HOME_STATS_SEND']) ?>" />
-                </th>
-                <th rowspan="2"><?= ($lang['HOME_STATS_ZOOM']) ?> : <input type="image" align="absmiddle" name="zoom_change" src="images/<?= ($zoom == "true" ? "zoom_in.png" : "zoom_out.png") ?>" alt="zoom" />
-                </th>
-            </tr>
-            <tr>
-                <th><input type="text" name="player_comp" value="<?= $player_comp ?>" />
-                    <input type="submit" value="<?= ($lang['HOME_STATS_COMPARE']) ?>" />
-                </th>
-            </tr>
-        </table>
-    </form>
--->
 <?php
 $first = [
-    "general_pts" => -1, "eco_pts" => -1, "eco_rank" => -1, "techno_pts" => -1, "techno_rank" => -1, "military_pts" => -1, "military_rank" => -1,
-    "military_b_pts" => -1, "military_b_rank" => -1, "military_l_pts" => -1, "military_l_rank" => -1, "military_d_pts" => -1, "military_d_rank" => -1, "honor_pts" => -1, "honor_rank" => -1
+    "general_pts" => null, "eco_pts" => null, "eco_rank" => null, "techno_pts" => null, "techno_rank" => null, "military_pts" => null, "military_rank" => null,
+    "military_b_pts" => null, "military_b_rank" => null, "military_l_pts" => null, "military_l_rank" => null, "military_d_pts" => null, "military_d_rank" => null, "honor_pts" => null, "honor_rank" => null
 ];
+$first_date = [];
+$last_date = [];
+
 $last = [
     "general_pts" => 0, "eco_pts" => 0, "techno_pts" => 0, "military_pts" => 0,
     "military_b_pts" => 0, "military_l_pts" => 0, "military_d_pts" => 0, "honor_pts" => 0,
@@ -221,10 +204,11 @@ $last = [
 $tab_rank = "";
 $rank_row = [];
 $i = 0;
+//Array ( [0] => Array ( [date] => 07 Jun 2025 16:00 [general_rank] =>   [general_points] =>   [eco_rank] =>   [eco_points] =>   [techno_rank] =>   [techno_points] =>   [military_rank] =>   [military_points] =>   [military_b_rank] =>   [military_b_points] =>   [military_l_rank] =>   [military_l_points] =>   [military_d_rank] =>   [military_d_points] =>   [honor_rank] =>   [honor_points] =>   ) [1] => Array ( [date] => 08 Jun 2025 16:00 [general_rank] =>   [general_points] =>   [eco_rank] =>   [eco_points] =>   [techno_rank] =>   [techno_points] =>   [military_rank] =>   [military_points] =>   [military_b_rank] =>   [military_b_points] =>   [military_l_rank] =>   [military_l_points] =>   [military_d_rank] =>   [military_d_points] =>   [honor_rank] =>   [honor_points] =>   ) [2] => Array ( [date] => 09 Jun 2025 16:00 [general_rank] =>   [general_points] =>   [eco_rank] =>   [eco_points] =>   [techno_rank] =>   [techno_points] =>   [military_rank] =>   [military_points] =>   [military_b_rank] =>   [military_b_points] =>   [military_l_rank] =>   [military_l_points] =>   [military_d_rank] =>   [military_d_points] =>   [honor_rank] =>   [honor_points] =>   ) [3] => Array ( [date] => 24 Jun 2025 16:00 [general_rank] =>   [general_points] =>   [eco_rank] =>   [eco_points] =>   [techno_rank] =>   [techno_points] =>   [military_rank] =>   [military_points] =>   [military_b_rank] =>   [military_b_points] =>   [military_l_rank] =>   [military_l_points] =>   [military_d_rank] =>   [military_d_points] =>   [honor_rank] =>   [honor_points] =>   ) )
 
+$rankings = ["general", "eco", "techno", "military", "military_b", "military_l", "military_d", "honor"];
 
 while ($ranking = current($individual_ranking)) {
-
     $v = key($individual_ranking);
 
     if ($v < $min_date || $v > $max_date) {
@@ -232,101 +216,29 @@ while ($ranking = current($individual_ranking)) {
         continue;
     }
 
-    if ($first["general_pts"] == -1 && isset($ranking["general"])) {
-        $first["general_pts"] = $ranking["general"]["points"];
-        $first["general_rank"] = $ranking["general"]["rank"];
-        $first_date["general"] = $v;
-    }
+    foreach ($rankings as $type) {
+        // On ne traite que les classements qui ont des points non vides
+        if (isset($ranking[$type]) && !empty(trim($ranking[$type]['points']))) {
+            // Si c'est la première valeur valide qu'on trouve pour ce type
+            if ($first[$type . "_pts"] === null) {
+                $first[$type . "_pts"] = $ranking[$type]["points"];
+                $first[$type . "_rank"] = $ranking[$type]["rank"];
+                $first_date[$type] = $v;
+            }
 
-    if ($first["eco_pts"] == -1 && isset($ranking["eco"])) {
-        $first["eco_pts"] = $ranking["eco"]["points"];
-        $first["eco_rank"] = $ranking["eco"]["rank"];
-        $first_date["eco"] = $v;
-    }
-
-    if ($first["techno_pts"] == -1 && isset($ranking["techno"])) {
-        $first["techno_pts"] = $ranking["techno"]["points"];
-        $first["techno_rank"] = $ranking["techno"]["rank"];
-        $first_date["techno"] = $v;
-    }
-    if ($first["military_pts"] == -1 && isset($ranking["military"])) {
-        $first["military_pts"] = $ranking["military"]["points"];
-        $first["military_rank"] = $ranking["military"]["rank"];
-        $first_date["military"] = $v;
-    }
-    if ($first["military_b_pts"] == -1 && isset($ranking["military_b"])) {
-        $first["military_b_pts"] = $ranking["military_b"]["points"];
-        $first["military_b_rank"] = $ranking["military_b"]["rank"];
-        $first_date["military_b"] = $v;
-    }
-    if ($first["military_l_pts"] == -1 && isset($ranking["military_l"])) {
-        $first["military_l_pts"] = $ranking["military_l"]["points"];
-        $first["military_l_rank"] = $ranking["military_l"]["rank"];
-        $first_date["military_l"] = $v;
-    }
-    if ($first["military_d_pts"] == -1 && isset($ranking["military_d"])) {
-        $first["military_d_pts"] = $ranking["military_d"]["points"];
-        $first["military_d_rank"] = $ranking["military_d"]["rank"];
-        $first_date["military_d"] = $v;
-    }
-    if ($first["honor_pts"] == -1 && isset($ranking["honor"])) {
-        $first["honor_pts"] = $ranking["honor"]["points"];
-        $first["honor_rank"] = $ranking["honor"]["rank"];
-        $first_date["honor"] = $v;
-    }
-
-    if (isset($ranking["general"])) {
-        $last["general_pts"] = $ranking["general"]["points"];
-        $last["general_rank"] = $ranking["general"]["rank"];
-        $last_date["general"] = $v;
-    }
-
-    if (isset($ranking["eco"])) {
-        $last["eco_pts"] = $ranking["eco"]["points"];
-        $last["eco_rank"] = $ranking["eco"]["rank"];
-        $last_date["eco"] = $v;
-    }
-
-    if (isset($ranking["techno"])) {
-        $last["techno_pts"] = $ranking["techno"]["points"];
-        $last["techno_rank"] = $ranking["techno"]["rank"];
-        $last_date["techno"] = $v;
-    }
-
-    if (isset($ranking["military"])) {
-        $last["military_pts"] = $ranking["military"]["points"];
-        $last["military_rank"] = $ranking["military"]["rank"];
-        $last_date["military"] = $v;
-    }
-    if (isset($ranking["military_b"])) {
-        $last["military_b_pts"] = $ranking["military_b"]["points"];
-        $last["military_b_rank"] = $ranking["military_b"]["rank"];
-        $last_date["military_b"] = $v;
-    }
-    if (isset($ranking["military_l"])) {
-        $last["military_l_pts"] = $ranking["military_l"]["points"];
-        $last["military_l_rank"] = $ranking["military_l"]["rank"];
-        $last_date["military_l"] = $v;
-    }
-
-    if (isset($ranking["military_d"])) {
-        $last["military_d_pts"] = $ranking["military_d"]["points"];
-        $last["military_d_rank"] = $ranking["military_d"]["rank"];
-        $last_date["military_d"] = $v;
-    }
-
-    if (isset($ranking["honor"])) {
-        $last["honor_pts"] = $ranking["honor"]["points"];
-        $last["honor_rank"] = $ranking["honor"]["rank"];
-        $last_date["honor"] = $v;
+            // C'est la dernière valeur valide en date
+            $last[$type . "_pts"] = $ranking[$type]["points"];
+            $last[$type . "_rank"] = $ranking[$type]["rank"];
+            $last_date[$type] = $v;
+        }
     }
 
     $rank_row[$i]["date"] = date("d M Y H:i", $v);
-    $rankings = ["general", "eco", "techno", "military", "military_b", "military_l", "military_d", "honor"];
-    foreach ($rankings as $ranking) {
-        $rank_row[$i][$ranking . "_rank"] = isset($ranking[$ranking]) ? formate_number($ranking[$ranking]["rank"]) : "&nbsp;";
-        $rank_row[$i][$ranking . "_points"] = isset($ranking[$ranking]) ? formate_number($ranking[$ranking]["points"]) : "&nbsp;";
+    foreach ($rankings as $type) {
+        $rank_row[$i][$type . "_rank"] = isset($ranking[$type]) ? formate_number($ranking[$type]["rank"]) : "&nbsp;";
+        $rank_row[$i][$type . "_points"] = isset($ranking[$type]) ? formate_number($ranking[$type]["points"]) : "&nbsp;";
     }
+
     $i++;
     next($individual_ranking);
 }
@@ -340,7 +252,7 @@ while ($ranking = current($individual_ranking)) {
 //
 global $zoom;
 $zoom = 'false';
-$curve = create_curves($player_data["id"], $min_date, $max_date, $player_comp);
+$curve = create_curves($player_data["id"], 'points', $min_date, $max_date, $player_comp);
 
 $title = $lang['HOME_STATS_GRAPHIC_TITLE'];
 if (!empty($player_data["name"])) {
@@ -351,27 +263,33 @@ if (!empty($player_data["name"])) {
 }
 
 
-$nb_planete = getPlanetCountForPlayer($user_data["id"]);
+$nb_planete = getPlanetCountForPlayer($player_data["id"]);
 
 $buildings = round(all_building_cumulate(array_slice($player_building, 0, $nb_planete)) / 1000);
 $defenses = round(all_defense_cumulate(array_slice($player_defense, 0, $nb_planete)) / 1000);
 $moons = round(all_lune_cumulate(array_slice($player_building, $nb_planete, $nb_planete), array_slice($player_defense, $nb_planete, $nb_planete)) / 1000);
 $technologies = round(all_technology_cumulate($user_technology) / 1000);
-$fleets = $last["general_pts"] - $buildings - $defenses - $moons - $technologies;
+$fleets = $last["general_pts"] - $buildings - $defenses - $moons - $technologies; // on calcule la flotte restante :-)
 if ($fleets < 0) {
     $fleets = 0;
 }
 
 
-$planet = array();
-$planet_name = array();
-for ($i = 1; $i <= $nb_planete; $i++) {
-    $buildings = round(all_building_cumulate(array_slice($player_building, $i - 1, 1)) / 1000);
-    $defenses = round(all_defense_cumulate(array_slice($player_defense, $i - 1, 1)) / 1000);
-    $moons = round(all_lune_cumulate(array_slice($player_building, $i + $nb_planete - 1, 1), array_slice($player_defense, $i + $nb_planete - 1, 1)) / 1000);
+$planet = [];
+$planet_name = [];
+foreach (array_slice($player_building, 0, $nb_planete) as $index => $planet_building) {
+    $buildings = round(all_building_cumulate([$planet_building]) / 1000);
+    $defenses = 0;
+    if (isset($player_defense[$index])) {
+        $defenses = round(all_defense_cumulate([$player_defense[$index]]) / 1000);
+    }
+    $moons = 0;
+    if (isset($player_building[$index + $nb_planete]) && isset($player_defense[$index + $nb_planete])) {
+        $moons = round(all_lune_cumulate([$player_building[$index + $nb_planete]], [$player_defense[$index + $nb_planete]]) / 1000);
+    }
     if ($buildings != 0 || $defenses != 0 || $moons != 0) {
         $planet[] = $buildings + $defenses + $moons;
-        $planet_name[] = $player_building[$i + 100]['planet_name'];
+        $planet_name[] = $planet_building['name'];
     }
 }
 
@@ -393,16 +311,15 @@ for ($i = 1; $i <= $nb_planete; $i++) {
     <tbody>
     <tr>
         <td colspan='2'>
-
             <div id="<?= "points" ?>">
-                <?= ($lang['HOME_STATS_NOGRAPHIC']) ?>
+                <?= $lang['HOME_STATS_NOGRAPHIC'] ?>
             </div>
         </td>
     </tr>
     <tr>
         <td colspan='2'>
             <div id="<?= "rank" ?>">
-                <?= ($lang['HOME_STATS_NOGRAPHIC']) ?>
+                <?= $lang['HOME_STATS_NOGRAPHIC'] ?>
             </div>
         </td>
     </tr>
@@ -439,7 +356,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                 <?php if ($buildings == 0 && $defenses == 0 && $moons == 0 && $technologies == 0) : ?>
                     <?php // pas d info
                     ?>
-                    <?= $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'];; ?>
+                    <?= $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA']; ?>
                 <?php else : ?>
                     <?php // autrement on affiche rien : on prepare juste l affichage du script
                     ?>
@@ -460,7 +377,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
     <thead>
     <tr>
         <th colspan="17">
-            <?= ($lang['HOME_STATS_RANKING']) ?> <span class=og-highlight><?= $player_data["name"] ?></span>
+            <?= $lang['HOME_STATS_RANKING'] ?> <span class=og-highlight><?= $player_data["name"] ?></span>
         </th>
     </tr>
     <tr>
@@ -560,7 +477,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
                 </span>
         </td>
         <td>
-            <?php if ($first["general_pts"] == -1 || $last_date["general"] == $first_date["general"]) : ?>
+            <?php if ($first["general_pts"] == null || $last_date["general"] == $first_date["general"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["general_pts"] - $first["general_pts"]) * 60 * 60 * 24 / ($last_date["general"] - $first_date["general"]); ?>
@@ -576,7 +493,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["general_rank"] == -1 || $last_date["general"] == $first_date["general"]) : ?>
+            <?php if ($first["general_rank"] == null || $last_date["general"] == $first_date["general"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["general_rank"] - $first["general_rank"]) * 60 * 60 * 24 / ($last_date["general"] - $first_date["general"]); ?>
@@ -594,7 +511,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
 
         </td>
         <td>
-            <?php if ($first["eco_pts"] == -1 || $last_date["eco"] == $first_date["eco"]) : ?>
+            <?php if ($first["eco_pts"] == null || $last_date["eco"] == $first_date["eco"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["eco_pts"] - $first["eco_pts"]) * 60 * 60 * 24 / ($last_date["eco"] - $first_date["eco"]); ?>
@@ -610,7 +527,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["eco_rank"] == -1 || $last_date["eco"] == $first_date["eco"]) : ?>
+            <?php if ($first["eco_rank"] == null || $last_date["eco"] == $first_date["eco"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["eco_rank"] - $first["eco_rank"]) * 60 * 60 * 24 / ($last_date["eco"] - $first_date["eco"]); ?>
@@ -626,7 +543,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["techno_pts"] == -1 || $last_date["techno"] == $first_date["techno"]) : ?>
+            <?php if ($first["techno_pts"] == null || $last_date["techno"] == $first_date["techno"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["techno_pts"] - $first["techno_pts"]) * 60 * 60 * 24 / ($last_date["techno"] - $first_date["techno"]); ?>
@@ -642,7 +559,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["techno_rank"] == -1 || $last_date["techno"] == $first_date["techno"]) : ?>
+            <?php if ($first["techno_rank"] == null || $last_date["techno"] == $first_date["techno"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["techno_rank"] - $first["techno_rank"]) * 60 * 60 * 24 / ($last_date["techno"] - $first_date["techno"]); ?>
@@ -658,7 +575,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["military_pts"] == -1 || $last_date["military"] == $first_date["military"]) : ?>
+            <?php if ($first["military_pts"] == null || $last_date["military"] == $first_date["military"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["military_pts"] - $first["military_pts"]) * 60 * 60 * 24 / ($last_date["military"] - $first_date["military"]); ?>
@@ -674,7 +591,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["military_rank"] == -1 || $last_date["military"] == $first_date["military"]) : ?>
+            <?php if ($first["military_rank"] == null || $last_date["military"] == $first_date["military"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["military_rank"] - $first["military_rank"]) * 60 * 60 * 24 / ($last_date["military"] - $first_date["military"]); ?>
@@ -691,7 +608,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
         </td>
 
         <td>
-            <?php if ($first["military_b_pts"] == -1 || $last_date["military_b"] == $first_date["military_b"]) : ?>
+            <?php if ($first["military_b_pts"] == null || $last_date["military_b"] == $first_date["military_b"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["military_b_pts"] - $first["military_b_pts"]) * 60 * 60 * 24 / ($last_date["military_b"] - $first_date["military_b"]); ?>
@@ -707,7 +624,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["military_b_rank"] == -1 || $last_date["military_b"] == $first_date["military_b"]) : ?>
+            <?php if ($first["military_b_rank"] == null || $last_date["military_b"] == $first_date["military_b"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["military_b_rank"] - $first["military_b_rank"]) * 60 * 60 * 24 / ($last_date["military_b"] - $first_date["military_b"]); ?>
@@ -723,7 +640,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["military_l_pts"] == -1 || $last_date["military_l"] == $first_date["military_l"]) : ?>
+            <?php if ($first["military_l_pts"] == null || $last_date["military_l"] == $first_date["military_l"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["military_l_pts"] - $first["military_l_pts"]) * 60 * 60 * 24 / ($last_date["military_l"] - $first_date["military_l"]); ?>
@@ -739,7 +656,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["military_l_rank"] == -1 || $last_date["military_l"] == $first_date["military_l"]) : ?>
+            <?php if ($first["military_l_rank"] == null || $last_date["military_l"] == $first_date["military_l"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["military_l_rank"] - $first["military_l_rank"]) * 60 * 60 * 24 / ($last_date["military_l"] - $first_date["military_l"]); ?>
@@ -755,7 +672,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["military_d_pts"] == -1 || $last_date["military_d"] == $first_date["military_d"]) : ?>
+            <?php if ($first["military_d_pts"] == null || $last_date["military_d"] == $first_date["military_d"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["military_d_pts"] - $first["military_d_pts"]) * 60 * 60 * 24 / ($last_date["military_d"] - $first_date["military_d"]); ?>
@@ -771,7 +688,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["military_d_rank"] == -1 || $last_date["military_d"] == $first_date["military_d"]) : ?>
+            <?php if ($first["military_d_rank"] == null || $last_date["military_d"] == $first_date["military_d"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["military_d_rank"] - $first["military_d_rank"]) * 60 * 60 * 24 / ($last_date["military_d"] - $first_date["military_d"]); ?>
@@ -787,7 +704,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["honor_pts"] == -1 || $last_date["honor"] == $first_date["honor"]) : ?>
+            <?php if ($first["honor_pts"] == null || $last_date["honor"] == $first_date["honor"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["honor_pts"] - $first["honor_pts"]) * 60 * 60 * 24 / ($last_date["honor"] - $first_date["honor"]); ?>
@@ -803,7 +720,7 @@ for ($i = 1; $i <= $nb_planete; $i++) {
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($first["honor_rank"] == -1 || $last_date["honor"] == $first_date["honor"]) : ?>
+            <?php if ($first["honor_rank"] == null || $last_date["honor"] == $first_date["honor"]) : ?>
                 -
             <?php else : ?>
                 <?php $prog = ($last["honor_rank"] - $first["honor_rank"]) * 60 * 60 * 24 / ($last_date["honor"] - $first_date["honor"]); ?>
@@ -825,14 +742,9 @@ for ($i = 1; $i <= $nb_planete; $i++) {
 
 
 </table>
-
-
 <?php
-/// affichage des script de création graph
-// camembert
+// On affiche les graphiques en incluant les scripts nécessaires
+echo $curve ?? '';
 echo $pie_point ?? '';
 echo $pie_empire ?? '';
-
-
-echo $curve ?? '';
 ?>

@@ -75,9 +75,7 @@ function player_get_empire($player_id)
         'technologies' => $player_technology,
         'defenses' => $player_defense
     ]);
-    return array(
-        "building" => $player_building, "technology" => $player_technology, "defense" => $player_defense, "player_percentage" => $pctList
-    );
+    return array("building" => $player_building, "technology" => $player_technology, "defense" => $player_defense, "player_percentage" => $pctList);
 }
 
 /**

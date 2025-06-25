@@ -97,10 +97,12 @@ class Rankings_Player_Model extends Rankings_Model
 
 
     /**
-     * Retrieves all rank table data for a given player.
+     * Retrieves the rank, scores, and related data of a player across various categories such as economy,
+     * technology, military, etc., by querying the corresponding tables and organizing the data into an array.
      *
-     * @param string $playername The name of the player for whom the rank table data will be retrieved.
-     * @return array An array containing rank table data for the specified player, including ranks and points for various categories such as economy, technology, military, and honor. Each item in the array represents a set of data for a specific date.
+     * @param int $playerId The ID of the player whose ranking data is to be retrieved.
+     * @return array Returns an associative array containing the ranking data for the specified player, including
+     *               general ranking, economy ranking, technology ranking, military rankings, and other categories.
      */
     public function get_all_ranktable_byplayer(int $playerId)
     {
@@ -125,31 +127,33 @@ class Rankings_Player_Model extends Rankings_Model
         //Remplissage du ranking content. Toutes les valeurs doivent être présentes dans l'array sous peine de soucis d'affichages
         $ranking_content = array();
         $row = 0;
-        while (list($position, $datadate, $player_name, $ally_name, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $this->db->sql_fetch_row($result)) {
-            $ranking_content[$row]['postion'] = $position;
-            $ranking_content[$row]['datadate'] = $datadate;
-            $ranking_content[$row]['player_name'] = $player_name;
-            $ranking_content[$row]['ally_name'] = $ally_name;
-            $ranking_content[$row]['general_rank'] = $general_rank;
-            $ranking_content[$row]['general_pts'] = $general_pts;
-            $ranking_content[$row]['eco_rank'] = $eco_rank;
-            $ranking_content[$row]['eco_pts'] = $eco_pts;
-            $ranking_content[$row]['tech_rank'] = $tech_rank;
-            $ranking_content[$row]['tech_pts'] = $tech_pts;
-            $ranking_content[$row]['mil_rank'] = $mil_rank;
-            $ranking_content[$row]['mil_pts'] = $mil_pts;
-            $ranking_content[$row]['milb_rank'] = $milb_rank;
-            $ranking_content[$row]['milb_pts'] = $milb_pts;
-            $ranking_content[$row]['mill_rank'] = $mill_rank;
-            $ranking_content[$row]['mill_pts'] = $mill_pts;
-            $ranking_content[$row]['mild_rank'] = $mild_rank;
-            $ranking_content[$row]['mild_pts'] = $mild_pts;
-            $ranking_content[$row]['milh_rank'] = $milh_rank;
-            $ranking_content[$row]['milh_pts'] = $milh_pts;
+        while ($row_data = $this->db->sql_fetch_row($result)) {
+            list($position, $datadate, $player_name, $ally_name, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $row_data;
+
+            $ranking_content[$row] = [
+                'postion' => $position,
+                'datadate' => $datadate,
+                'player_name' => $player_name,
+                'ally_name' => $ally_name,
+                'general_rank' => $general_rank,
+                'general_pts' => $general_pts,
+                'eco_rank' => $eco_rank,
+                'eco_pts' => $eco_pts,
+                'tech_rank' => $tech_rank,
+                'tech_pts' => $tech_pts,
+                'mil_rank' => $mil_rank,
+                'mil_pts' => $mil_pts,
+                'milb_rank' => $milb_rank,
+                'milb_pts' => $milb_pts,
+                'mill_rank' => $mill_rank,
+                'mill_pts' => $mill_pts,
+                'mild_rank' => $mild_rank,
+                'mild_pts' => $mild_pts,
+                'milh_rank' => $milh_rank,
+                'milh_pts' => $milh_pts,
+            ];
             $row++;
         }
-
-
         return $ranking_content;
     }
 }

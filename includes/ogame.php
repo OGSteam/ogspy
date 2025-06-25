@@ -1955,9 +1955,10 @@ function all_fleet_cumulate($user_fleet)
 }
 
 /**
- * @brief Calculates the price of all research.
- * @param[in] $user_techno Info of technologies
- * @return float Total price (M+C+D)
+ * @brief Calculates the cumulative values of all technologies for a user.
+ *
+ * @param array $user_techno An associative array containing user technologies where keys represent technology codes and values represent their respective levels.
+ * @return array An associative array containing the cumulative values of all applicable technologies.
  */
 function all_technology_cumulate($user_techno)
 {
@@ -1965,23 +1966,25 @@ function all_technology_cumulate($user_techno)
 }
 
 /**
- * Calculates the price of all lunas
- * @param $user_building
- * @param string $user_defence The list of buildings with corresponding levels on the luna
- * @return double bild :-)
+ * @brief Calculates the total cumulative value of all buildings and defenses.
+ *
+ * @param array $user_building Array containing the information and levels of user buildings.
+ * @param array $user_defense Array containing the details and quantities of user defenses.
+ * @return int The total cumulative value of all buildings and defenses.
  */
-function all_lune_cumulate($user_building, $user_defence)
+function all_lune_cumulate($user_building, $user_defense)
 {
-    return all_defense_cumulate($user_defence) + all_building_cumulate($user_building);
+    return all_defense_cumulate($user_defense) + all_building_cumulate($user_building);
 }
 
 /**
- * @brief Calculates destroy price of a building.
+ * @brief Calculates the cost to destroy a building from level X to X-1.
  *
- * @param[in] string $name       Building name, as in Database
- * @param[in] int    $level      Building level
- * @param[in] int    $techno_ions Level of techno ions
- * @return false|array('M', 'C','D, 'NRJ'), false if undestroyable
+ * @param string $name The name of the building to be destroyed.
+ * @param int $level The current level of the building.
+ * @param int $techno_ions The level of Ion Technology which reduces destruction cost (default is 0).
+ * @return array|bool Returns an array with the resources required for destruction (e.g., ['metal' => value, 'crystal' => value, 'deuterium' => value]).
+ *                    Returns false if the building is indestructible.
  */
 function ogame_building_destroy($name, $level, $techno_ions = 0)
 { // Coût de démolition du niveau X à X-1 = arrondi.inf( ((cout construction niveau X à X+1) / coefficient_dévolution^2) * (1 - 0,04 * technologie_ion) )
@@ -2004,11 +2007,11 @@ function ogame_building_destroy($name, $level, $techno_ions = 0)
 
 ///////////////////// FLOTTE fonctions : ///////////////////////////////////////
 /**
- * @brief Calculates deut consummation for parking/expe of a fleet.
+ * Calculates the fuel consumption for a stationary fleet mission over a given duration.
  *
- * @param[in] int $conso The conso of the fleet
- * @param[in] int $hour  Number of hours in parking
- * @return float Deut conso for this hour of parking
+ * @param float $conso The fuel consumption rate of the fleet (consumption per hour at 100% efficiency).
+ * @param int $hour The duration of the stationary mission in hours.
+ * @return int The total fuel consumption for the mission, with a minimum of 1 unit unless the duration is zero.
  */
 function ogame_fleet_conso_statio($conso, $hour)
 {
@@ -2024,12 +2027,13 @@ function ogame_fleet_conso_statio($conso, $hour)
 }
 
 /**
- * @brief Calculates the slowest chip speed of a fleet.
+ * @brief Calculates the slowest speed in a fleet.
  *
- * @param[in] array  $fleet       List of chips
- * @param[in] array  $user_techno List of techno ('RC','RI','PH', le reste est ignoré)
- * @param[in] string $class       User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
- * @return int the slowest speed
+ * @param array $fleet Array of fleet and their number (e.g., array('PT' => 10, etc.)).
+ * @param array $user_techno List of technologies affecting fleet speed (e.g., array('RC', 'RI', 'PH')). Default is null.
+ * @param string $class User class ('COL', 'GEN', 'EXP', 'none'). Default is 'none'.
+ *
+ * @return int The slowest speed of the fleet in units per second.
  */
 function ogame_fleet_slowest_speed($fleet, $user_techno = null, $class = 'none')
 {
@@ -2049,16 +2053,20 @@ function ogame_fleet_slowest_speed($fleet, $user_techno = null, $class = 'none')
 }
 
 /**
- * @brief Calculates distance between 2 coordinates.
+ * Calculates the distance and type of travel between two coordinates.
  *
- * @param[in] string $a, $b         Coordinates ('g:s:p')
- *      'g1:s1:p1'->'g2:s2:p2' : normal distance calcul
- *      ':s1:p1'->'x:s2:p2     : distance between system/planet (only system is ':s1:')
- *      '::p1'->'x:x:p2        : distance between planet
- * @param[in] array  $user_techno List of techno ('RC','RI','PH',  only these are checked)
- * @param[in] string $class       User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
- * @param[in] array  $server_config Info of universe ('num_of_galaxies','num_of_systems','donutGalaxy','donutSystem' only these are checked) default 9/499/1/1
- * @return array(int 'distance','type') [default=O,'p'], type='g' for between galaxy, 's' for between system and 'p' for between a sub-system
+ * @param mixed $a Starting coordinates.
+ * @param mixed $b Target coordinates.
+ * @param array|null $user_techno Optional array containing user technologies ('RC', 'RI', 'PH', etc.).
+ * @param string $class User class ('COL', 'GEN', 'EXP', 'none').
+ * @param array|null $server_config Optional server configuration with the following keys:
+ *                                  - 'num_of_galaxies' (int): Number of available galaxies (default is 9).
+ *                                  - 'num_of_systems' (int): Number of solar systems per galaxy (default is 499).
+ *                                  - 'donutGalaxy' (int): Whether galaxies are donut-shaped (1 for yes, 0 for no, default is 1).
+ *                                  - 'donutSystem' (int): Whether systems are donut-shaped (1 for yes, 0 for no, default is 1).
+ * @return array Returns an array with the following keys:
+ *               - 'distance' (int): The calculated distance.
+ *               - 'type' (string): The travel type ('p', 's', or 'g').
  */
 function ogame_fleet_distance($a, $b, $user_techno = null, $class = 'none', $server_config = null)
 {
