@@ -201,6 +201,10 @@ $last = [
     "general_rank" => 0, "eco_rank" => 0, "techno_rank" => 0, "military_rank" => 0,
     "military_b_rank" => 0, "military_l_rank" => 0, "military_d_rank" => 0, "honor_rank" => 0
 ];
+
+$pie_point = false;
+$pie_empire = false;
+
 $tab_rank = "";
 $rank_row = [];
 $i = 0;
@@ -242,17 +246,10 @@ while ($ranking = current($individual_ranking)) {
     $i++;
     next($individual_ranking);
 }
-?>
-<h2>
-    <?= $lang['HOME_STATS_PALYERSTATS'] . " " . $player_data["name"] ?>
-</h2>
 
-<?php
 // on fabrique toutes les courbes ici
-//
-global $zoom;
-$zoom = 'false';
-$curve = create_curves($player_data["id"], 'points', $min_date, $max_date, $player_comp);
+$curve_points = create_curves($player_data["name"], 'points', $min_date, $max_date, $player_comp);
+$curve_rank = create_curves($player_data["name"], 'rank', $min_date, $max_date, $player_comp);
 
 $title = $lang['HOME_STATS_GRAPHIC_TITLE'];
 if (!empty($player_data["name"])) {
@@ -262,21 +259,26 @@ if (!empty($player_data["name"])) {
     }
 }
 
-
 $nb_planete = getPlanetCountForPlayer($player_data["id"]);
 
-$buildings = round(all_building_cumulate(array_slice($player_building, 0, $nb_planete)) / 1000);
-$defenses = round(all_defense_cumulate(array_slice($player_defense, 0, $nb_planete)) / 1000);
-$moons = round(all_lune_cumulate(array_slice($player_building, $nb_planete, $nb_planete), array_slice($player_defense, $nb_planete, $nb_planete)) / 1000);
+$buildings_total = round(all_building_cumulate(array_slice($player_building, 0, $nb_planete)) / 1000);
+$defenses_total = round(all_defense_cumulate(array_slice($player_defense, 0, $nb_planete)) / 1000);
+$moons_total = round(all_lune_cumulate(array_slice($player_building, $nb_planete, $nb_planete), array_slice($player_defense, $nb_planete, $nb_planete)) / 1000);
 $technologies = round(all_technology_cumulate($user_technology) / 1000);
-$fleets = $last["general_pts"] - $buildings - $defenses - $moons - $technologies; // on calcule la flotte restante :-)
+$fleets = $last["general_pts"] - $buildings_total - $defenses_total - $moons_total - $technologies; // on calcule la flotte restante :-)
 if ($fleets < 0) {
     $fleets = 0;
 }
 
+if ($buildings_total != 0 || $defenses_total != 0 || $moons_total != 0 || $technologies != 0) {
+    if ($last["general_pts"] == 0) {
+        $fleets = round(all_fleet_cumulate($player_building) / 1000); // only FOR et Sat, pour le moment
+    }
+    $pie_point = create_pie($buildings_total . "_x_" . $defenses_total . "_x_" . $moons_total . "_x_" . $fleets . "_x_" . $technologies, "Batiments_x_Défenses_x_Lunes_x_Flotte_x_Technologies", $lang['HOME_STATS_GRAPHIC_LASTREPARTITION'], "pie_point");
+}
 
-$planet = [];
-$planet_name = [];
+$planet_values = [];
+$planet_names = [];
 foreach (array_slice($player_building, 0, $nb_planete) as $index => $planet_building) {
     $buildings = round(all_building_cumulate([$planet_building]) / 1000);
     $defenses = 0;
@@ -288,12 +290,33 @@ foreach (array_slice($player_building, 0, $nb_planete) as $index => $planet_buil
         $moons = round(all_lune_cumulate([$player_building[$index + $nb_planete]], [$player_defense[$index + $nb_planete]]) / 1000);
     }
     if ($buildings != 0 || $defenses != 0 || $moons != 0) {
-        $planet[] = $buildings + $defenses + $moons;
-        $planet_name[] = $planet_building['name'];
+        $planet_values[] = $buildings + $defenses + $moons;
+        $planet_names[] = $planet_building['name'];
+    }
+}
+
+if (!empty($planet_values)) {
+    $pie_empire = create_pie(
+        implode('_x_', $planet_values),
+        implode('_x_', $planet_names),
+        $lang['HOME_STATS_GRAPHIC_REPARTITION'],
+        "pie_empire"
+    );
+}
+
+$title = $lang['HOME_STATS_GRAPHIC_TITLE'];
+if (!empty($player_data["name"])) {
+    $title .= " " . $lang['HOME_STATS_GRAPHIC_TITLE2'] . " " . $player_data["name"];
+    if (!empty($last_date["general"])) {
+        $title .= " " . $lang['HOME_STATS_GRAPHIC_FROM'] . " " . date("d M Y H:i", $last_date["general"]);
     }
 }
 
 ?>
+<h2>
+    <?= $lang['HOME_STATS_PALYERSTATS'] . " " . $player_data["name"] ?>
+</h2>
+
 <!-- positionnement des graphiques -->
 
 <table class="og-table og-full-table og-table-ranking">
@@ -335,38 +358,14 @@ foreach (array_slice($player_building, 0, $nb_planete) as $index => $planet_buil
     </thead>
     <tbody>
     <tr>
-        <td>
+        <td style="width: 50%;">
             <div id="pie_point">
-                <?php if ($buildings == 0 && $defenses == 0 && $moons == 0 && $technologies == 0) : ?>
-                    <?php // calcul impossible ( non connaissance du classement)
-                    echo $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA']; ?>
-
-                <?php else : ?>
-                    <?php if ($last["general_pts"] == 0) : ?>
-                        <?= $lang['HOME_STATS_GRAPHIC_NOSTATSDATA'] . "<br>" ?>
-                        <?php $fleets = round(all_fleet_cumulate($player_building) / 1000); ?> <!-- only FOR et Sat, pour le moment-->
-                    <?php endif; ?>
-                    <?php $pie_point = create_pie($buildings . "_x_" . $defenses . "_x_" . $moons . "_x_" . $fleets . "_x_" . $technologies, "Batiments_x_Défenses_x_Lunes_x_Flotte_x_Technologies", $lang['HOME_STATS_GRAPHIC_LASTREPARTITION'], "pie_point"); ?>
-
-                <?php endif; ?>
+                <?= $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'] ?>
             </div>
         </td>
-        <td>
+        <td style="width: 50%;">
             <div id="pie_empire">
-                <?php if ($buildings == 0 && $defenses == 0 && $moons == 0 && $technologies == 0) : ?>
-                    <?php // pas d info
-                    ?>
-                    <?= $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA']; ?>
-                <?php else : ?>
-                    <?php // autrement on affiche rien : on prepare juste l affichage du script
-                    ?>
-                    <?php $pie_empire = create_pie(
-                        implode('_x_', $planet),
-                        implode('_x_', $planet_name),
-                        $lang['HOME_STATS_GRAPHIC_REPARTITION'],
-                        "pie_empire"
-                    ); ?>
-                <?php endif; ?>
+                <?= $lang['HOME_STATS_GRAPHIC_NOEMPIREDATA'] ?>
             </div>
         </td>
     </tr>
@@ -744,7 +743,8 @@ foreach (array_slice($player_building, 0, $nb_planete) as $index => $planet_buil
 </table>
 <?php
 // On affiche les graphiques en incluant les scripts nécessaires
-echo $curve ?? '';
+echo $curve_points ?? '';
+echo $curve_rank ?? '';
 echo $pie_point ?? '';
 echo $pie_empire ?? '';
 ?>

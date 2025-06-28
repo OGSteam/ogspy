@@ -967,6 +967,7 @@ function galaxy_show_ranking_unique_player_forJS(int $playerId, $date_min = null
     $tRanking = (new Rankings_Player_Model())->get_all_ranktable_byplayer($playerId);
     $player = (new Player_Model())->get_player_data($playerId);
 
+
     foreach ($tRanking as $rank) {
         if ($rank["datadate"] >= $date_min && $rank["datadate"] <= $date_max) // ajouter dans la requete ca serait top
         {
@@ -1013,7 +1014,6 @@ function galaxy_show_ranking_unique_player_forJS(int $playerId, $date_min = null
             }
         }
     }
-
     return $ranking;
 }
 

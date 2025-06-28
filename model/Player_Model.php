@@ -62,7 +62,7 @@ class Player_Model extends Model_Abstract
     {
         $request = "SELECT `id`".
             " FROM " . TABLE_GAME_PLAYER;
-        $request .= " WHERE `name` = " . $player_name;
+        $request .= " WHERE `name` = '" . $player_name . "'";
         $result = $this->db->sql_query($request);
 
         list($playerId) = $this->db->sql_fetch_row($result);

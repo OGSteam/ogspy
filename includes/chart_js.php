@@ -65,63 +65,53 @@ function create_pie($_data, $_legend, $_title, $conteneur, $theme = true)
     $format_data = implode(" , ", $temp);
 
 
-    // création du script
-    $retour .= "<script type=\"text/javascript\">
-var " . $conteneur . ";
-$(document).ready(function() {
-
-
-    " . $conteneur . " = new Highcharts.Chart({
-      chart: {
-         renderTo: '" . $conteneur . "',
-         plotBackgroundColor: null,
-         plotBorderWidth: null,
-         plotShadow: false
-      },
-      credits: {
-        text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
-        href: 'https://www.ogsteam.eu'
-    },
-      title: {
-         text: '" . $title . "'
-      },
-      tooltip: {
-         formatter: function() {
-            return '<b>'+ this.point.name +'</b>: '+ this.percentage.toFixed(2) +' %';
-         }
-      },
-      plotOptions: {
-         pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                color: '#666666',
-               enabled: true
-
-            },
-            showInLegend: true
-         }
-      },
-       series: [{
-         type: 'pie',
-         name: 'Browser share',
-
-         data: [
-            " . $format_data . "
-         ]
-      }]
-   });
-}); ";
-
-
     // insertion du theme par defaut
-    if ($theme) {
-        $retour .= graph_theme();
-    }
+    $theme_script = $theme ? graph_theme() : '';
 
-
-    $retour .= "</script> ";
-
+    // création du script
+    $retour .= <<<JS
+<script type="text/javascript">
+$(document).ready(function() {
+    {$theme_script}
+    var {$conteneur} = new Highcharts.Chart({
+        chart: {
+            renderTo: "{$conteneur}",
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        credits: {
+            text: "<b>OGSteam Software</b> v {$server_config['version']}",
+            href: "https://www.ogsteam.eu"
+        },
+        title: {
+            text: "{$title}"
+        },
+        tooltip: {
+            formatter: function() {
+                return "<b>" + this.point.name + "</b>: " + this.percentage.toFixed(2) + " %";
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: "pointer",
+                dataLabels: {
+                    color: "#666666",
+                    enabled: true
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            type: "pie",
+            name: "Browser share",
+            data: [{$format_data}]
+        }]
+    });
+});
+</script>
+JS;
 
     return $retour;
 }
@@ -175,50 +165,49 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
     // format hightchart
     $format_data = implode(" , ", $temp);
 
-
-    // création du script
-    $retour .= "<script type=\"text/javascript\">
-    var " . $conteneur . ";
-    $(document).ready(function() {
-
-
-    " . $conteneur . " = new Highcharts.Chart({
+    $retour .= <<<JS
+<script type="text/javascript">
+var {$conteneur};
+$(document).ready(function() {
+    {$conteneur} = new Highcharts.Chart({
         chart: {
-            renderTo: '" . $conteneur . "',
+            renderTo: "{$conteneur}",
             plotBackgroundColor: null,
             plotBorderWidth: null,
             plotShadow: false
         },
         credits: {
-            text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
-            href: 'https://www.ogsteam.eu'
+            text: "<b>OGSteam Software</b> v {$server_config['version']}",
+            href: "https://www.ogsteam.eu"
         },
         title: {
-            text: '" . $title . "'
+            text: "{$title}"
         },
         tooltip: {
             formatter: function() {
-                return '<b>' + this.point.name + '</b>: ' + number_format(this.point.y, 0, ',', ' ');
+                return "<b>" + this.point.name + "</b>: " + number_format(this.point.y, 0, ",", " ");
             }
         },
         plotOptions: {
             pie: {
                 allowPointSelect: true,
-                cursor: 'pointer',
+                cursor: "pointer",
                 dataLabels: {
-                    color: '#FFFFFF',
+                    color: "#FFFFFF",
                     enabled: true
                 },
                 showInLegend: true
             }
         },
         series: [{
-            type: 'pie',
-            name: 'Browser share',
-            data: [" . $format_data . "]
+            type: "pie",
+            name: "Browser share",
+            data: [{$format_data}]
         }]
     });
-}); ";
+});
+</script>
+JS;
 
 
     // insertion du theme par defaut
@@ -267,7 +256,7 @@ function create_curves($_player, $conteneur, $_date_min, $_date_max, $_comp)
 
     $playerId = (new Player_Model())->getPlayerId($player);
     if (!empty($player_comp)) {
-        $playerCompId = (new Player_Model())->getPlayerId($player);
+        $playerCompId = (new Player_Model())->getPlayerId($player_comp);
     }
 
     // récuperation des datas
@@ -285,12 +274,7 @@ function create_curves($_player, $conteneur, $_date_min, $_date_max, $_comp)
         $dataplayer_comp = galaxy_show_ranking_unique_player_forJS($playerCompId, $date_min, $date_max);
 
         // fusion des datas
-        $names = array("rank", "points");
-        foreach ($names as $n) {
-            foreach ($dataplayer_comp["points"] as $key => $value) {
-                $data[$n][$key] = $value;
-            }
-        }
+        $data = array_merge_recursive($data, $dataplayer_comp);
 
         // formatages des noms pour deux joueurs
         $players = array($player, $player_comp);
@@ -301,7 +285,7 @@ function create_curves($_player, $conteneur, $_date_min, $_date_max, $_comp)
         }
     }
 
-    if (isset($data['points'])) {
+    if (isset($data['points']) && $conteneur === 'points') {
         $retour .= create_multi_curve(
             "Points",
             $player,
@@ -311,7 +295,7 @@ function create_curves($_player, $conteneur, $_date_min, $_date_max, $_comp)
         ); // points
     }
 
-    if (isset($data['rank'])) {
+    if (isset($data['rank']) && $conteneur === 'rank') {
         $retour .= create_multi_curve(
             "Classement",
             $player,
@@ -642,7 +626,7 @@ function create_multi_curve(string $titre, string $sous_titre, array $data, arra
 {
     global $zoom, $server_config; // on recupere le zoom s il existe
 
-    $series[] = ""; // initialisation du tableau de series
+    $series = []; // initialisation du tableau de series
 
     // traitement des datas recu
 
@@ -664,56 +648,47 @@ function create_multi_curve(string $titre, string $sous_titre, array $data, arra
         $zoom_yAxis = "  min: 0";
     }
 
-
-    $retour = "
-    <script type=\"text/javascript\">
+    $retour = <<<JS
+    <script type="text/javascript">
 var chart3;
 $(document).ready(function() {
    chart3 = new Highcharts.Chart({
       chart: {
-         renderTo: '" . $conteneur . "',
+         renderTo: "{$conteneur}",
          zoomType: 'xy'
-
-
       },
-
-
       credits: {
-        text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
+        text: "<b>OGSteam Software</b> v {$server_config['version']}",
         href: 'https://www.ogsteam.eu'
-    },
-
+      },
       title: {
-         text: '" . $titre . "'
+         text: "{$titre}"
       },
       subtitle: {
-         text: '" . $sous_titre . "'
+         text: "{$sous_titre}"
       },
       xAxis: {
          type: 'datetime'
-
       },
       yAxis: {
          title: {
-            text: '" . $titre . "'
+            text: "{$titre}"
          },
-       " . $zoom_yAxis . "
+         {$zoom_yAxis}
       },
-
       tooltip: {
          formatter: function() {
-               return '<b>'+ this.series.name +'</b><br/>'+
-               Highcharts.dateFormat('%e. %b', this.x) +'<br/>" . $titre .
-        " : '+ Highcharts.numberFormat(this.y, 0, ' ') +' ' ;
+               return '<b>' + this.series.name + '</b><br/>' +
+               Highcharts.dateFormat('%e. %b', this.x) + '<br/>{$titre} : ' +
+               Highcharts.numberFormat(this.y, 0, ' ') + ' ';
          }
       },
       series: [
-      " . $serie . "
+         {$serie}
       ]
    });
-
-
-});";
+});
+JS;
 
     // insertion du theme par defaut
     if ($theme) {

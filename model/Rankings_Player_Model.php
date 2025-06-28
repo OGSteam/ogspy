@@ -131,7 +131,7 @@ class Rankings_Player_Model extends Rankings_Model
             list($position, $datadate, $player_name, $ally_name, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $row_data;
 
             $ranking_content[$row] = [
-                'postion' => $position,
+                'position' => $position,
                 'datadate' => $datadate,
                 'player_name' => $player_name,
                 'ally_name' => $ally_name,
