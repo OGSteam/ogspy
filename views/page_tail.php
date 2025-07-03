@@ -47,3 +47,5 @@ $php_timing = $ogspy_timing - $sql_timing; // delta => temps php
 </body>
 
 </html>
+
+<?php ob_end_flush(); ?>

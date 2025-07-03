@@ -59,3 +59,5 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 </body>
 
 </html>
+
+<?php ob_end_flush(); ?>
