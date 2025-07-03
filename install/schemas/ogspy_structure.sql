@@ -41,6 +41,7 @@ DROP TABLE IF EXISTS `ogspy_user_group`;
 DROP TABLE IF EXISTS `ogspy_user_spy`;
 DROP TABLE IF EXISTS `ogspy_user_technology`;
 DROP TABLE IF EXISTS `ogspy_mod_config`;
+DROP TABLE IF EXISTS `ogspy_mod_user_config`;
 DROP TABLE IF EXISTS `ogspy_parsedspy`;
 DROP TABLE IF EXISTS `ogspy_parsedRC`;
 DROP TABLE IF EXISTS `ogspy_parsedRCRound`;

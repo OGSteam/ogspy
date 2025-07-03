@@ -516,7 +516,7 @@ class Universe_Model extends Model_Abstract
                 $query .= ", ";
             }
 
-            $query .= $this->db->sql_escape_string($key);
+            $query .= "`{$this->db->sql_escape_string($key)}`";
             if ($value == 'DESC') {
                 $query .= ' DESC';
             }
