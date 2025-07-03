@@ -1,4 +1,4 @@
-<?php
+<?php global $lang;
 /**
  * Panneau administration des options Helpers
  */

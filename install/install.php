@@ -1,4 +1,4 @@
-<?php
+<?php global $lang;
 
 /**
  * Fichier d'installation d'OGSpy : Script Installation
@@ -98,9 +98,11 @@
      * @param string $sgbd_tableprefix Préfixe à utiliser pour les tables ogspy
      * @param string $admin_username Nom de l'Administrateur OGSpy
      * @param string $admin_password Mot de passe Administrateur OGSpy
-     * @param int    $num_of_galaxies Nombre de galaxies dans l'univers OGame de cet OGSp
-     * @param int    $num_of_systems Nombre de systèmes dans l'univers OGame de cet OGSpy
-     * @param        $ui_lang Langue
+     * @param int $num_of_galaxies Nombre de galaxies dans l'univers OGame de cet OGSp
+     * @param int $num_of_systems Nombre de systèmes dans l'univers OGame de cet OGSpy
+     * @param int $uni_speed
+     * @param string $ui_lang Langue
+     * @throws FileAccessException
      */
 
     function installation_db($sgbd_server, $sgbd_dbname, $sgbd_username, $sgbd_password, $sgbd_tableprefix, $admin_username, $admin_password, $num_of_galaxies, $num_of_systems, $uni_speed, $ui_lang)
@@ -353,7 +355,7 @@
             <tr align="center">
                 <td>
                     <div style="text-align: center;"><span style="font-size: x-small; "><i><b>OGSpy</b> is an
-                                <b>OGSteam Software</b> (c)2005-2023</i><br />v <?= $ogspy_version ?></span></div>
+                                <b>OGSteam Software</b> (c)2005-2024</i><br />v <?= $ogspy_version ?></span></div>
                 </td>
             </tr>
         </table>

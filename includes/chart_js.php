@@ -250,7 +250,7 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
 {
     $retour = "";
 
-    // todo quel est ce $contenur ?
+    // TODO quel est ce $contenur ?
     if (!isset($_player)) {
         $retour .= affiche_error($conteneur, 'erreur 3');
         return $retour;

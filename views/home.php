@@ -1,4 +1,4 @@
-<?php
+<?php global $lang;
 /**
  * Affichage Empire
  * @package OGSpy
@@ -56,25 +56,25 @@ switch ($pub_subaction) {
     <div class="nav-page-menu">
         <div class="nav-page-menu-item nav-page-menu-item-home-infoserver <?php echo $tagactiveempire; ?>">
             <a class="nav-page-menu-link" href="index.php?action=home&amp;subaction=empire">
-                <?php echo $lang['HOME_EMPIRE_TITLE']; ?> 
+                <?php echo $lang['HOME_EMPIRE_TITLE']; ?>
             </a>
-        </div>  
+        </div>
         <div class="nav-page-menu-item nav-page-menu-item-home-simulation <?php echo $tagactivesimulation; ?>">
             <a class="nav-page-menu-link" href="index.php?action=home&amp;subaction=simulation">
-                <?php echo $lang['HOME_SIMULATION_TITLE']; ?> 
+                <?php echo $lang['HOME_SIMULATION_TITLE']; ?>
             </a>
-        </div>  
+        </div>
         <div class="nav-page-menu-item nav-page-menu-item-home-spy <?php echo $tagactivespy; ?>">
             <a class="nav-page-menu-link" href="index.php?action=home&amp;subaction=spy">
-                <?php echo $lang['HOME_REPORTS_TITLE']; ?> 
+                <?php echo $lang['HOME_REPORTS_TITLE']; ?>
             </a>
-        </div>  
+        </div>
         <div class="nav-page-menu-item nav-page-menu-item-home-stat <?php echo $tagactivestat; ?>">
             <a class="nav-page-menu-link" href="index.php?action=home&amp;subaction=stat">
-                <?php echo $lang['HOME_STATISTICS_TITLE']; ?> 
+                <?php echo $lang['HOME_STATISTICS_TITLE']; ?>
             </a>
-        </div>  
-    </div>      
+        </div>
+    </div>
 
 
                 <?php

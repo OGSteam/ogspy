@@ -1,4 +1,4 @@
-<?php
+<?php global $lang;
 /**
  * Page Login
  * @package OGSpy
@@ -18,7 +18,7 @@ if (!isset($goto)) {
 }
 $enable_register_view = isset($server_config['enable_register_view']) ? $server_config['enable_register_view'] : 0;
 
-require_once('views/page_header_2.php');
+require_once 'views/page_header_2.php';
 ?>
 
 <div class="page_login">
@@ -56,7 +56,7 @@ require_once('views/page_header_2.php');
         <div class="og-login-group">
                   <p>
             <?php echo $lang['LOGIN_ACCOUNT_REQUEST_DESC']; ?>
-        </p>  
+        </p>
         </div>
 
 
@@ -64,4 +64,4 @@ require_once('views/page_header_2.php');
 
     </div>
 
-<?php require_once('views/page_tail_2.php'); ?>
+<?php require_once 'views/page_tail_2.php'; ?>

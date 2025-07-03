@@ -1,4 +1,5 @@
 <?php
+global $table_prefix;
 
 /**
  * Fichier de configuration communes

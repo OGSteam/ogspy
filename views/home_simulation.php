@@ -166,7 +166,7 @@ for ($i = 101; $i <= $nb_planete + 100; $i++) {
     -->
     <thead>
         <tr>
-            <th colspan="<?php echo 2 * ($nb_planete + 1); ?>"><?php echo ($lang['HOME_SIMU_ENERGYS']); ?></th>
+            <th colspan="<?php echo 2 * ($nb_planete + 1); ?>"><?php echo $lang['HOME_SIMU_ENERGYS']; ?></th>
         </tr>
     </thead>
     <tbody>

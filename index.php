@@ -1,5 +1,6 @@
 <?php
 global $server_config, $ogspy_version, $user_data;
+ob_start();
 session_start();
 /**
  * Fichier principal d'ogspy
@@ -23,7 +24,7 @@ const IN_SPYOGAME = true;
 $php_start = microtime(true);
 
 /**
- * Tout les includes se font à partir de là
+ * Tous les includes se font à partir de là
  */
 require_once "common.php";
 
@@ -65,7 +66,7 @@ if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "log
     if ($pub_action == "message") {
         require "views/message.php";
     } else {
-        if (preg_match("/^action=(.*)/", $_SERVER['QUERY_STRING'], $matches)) {
+        if (isset($_SERVER['QUERY_STRING']) && preg_match("/^action=(.*)/", $_SERVER['QUERY_STRING'], $matches)) {
             $goto = $matches[1];
         }
         require_once "views/login.php";
@@ -89,6 +90,10 @@ if (isset($user_data['user_pwd_change'])) {
     if ($pub_action !== 'logout' && $user_data['user_pwd_change'] == 1 && $pub_action !== 'member_modify_member') {
         $pub_action = 'profile';
     }
+}
+
+if (!isset($pub_goto)) {
+    $pub_goto = null;
 }
 
 switch ($pub_action) {

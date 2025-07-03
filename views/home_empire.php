@@ -1,4 +1,5 @@
 <?php
+global $user_data;
 
 /**
  * Affichage Empire - Page Planetes
@@ -1248,15 +1249,15 @@ function read_th($txt, $nb_planete)
 
 /**
  * Indique si les prerequis sont valides
- * 
+ *
  * @param $ogame_element_name nom de l'element recherché
  * @param $user_building_list liste des buildings situé sur le meme astre que l'element recherché
- * @param $user_technology_list liste des technologies 
- * 
+ * @param $user_technology_list liste des technologies
+ *
  *  */
 function prerequis_Valid($ogame_element_name, $user_building_list, $user_technology_list)
 {
-    // recuperation des prerequis pour l element indiqué 
+    // recuperation des prerequis pour l element indiqué
     $reqs = ogame_elements_requirement($ogame_element_name);
 
     foreach ($reqs as $reqName => $reqValue) {

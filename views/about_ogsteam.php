@@ -1,4 +1,5 @@
 <?php
+global $lang;
 
 /**
  *  Panneau d'affichage: A propos de l'OGsteam et des contributeurs à OGSpy
