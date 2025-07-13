@@ -19,6 +19,21 @@ if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
     redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 
+// Niveaux de log Monolog avec leur valeur numérique
+$monolog_levels = [
+    'EMERGENCY' => 600,
+    'ALERT'     => 550,
+    'CRITICAL'  => 500,
+    'ERROR'     => 400,
+    'WARNING'   => 300,
+    'NOTICE'    => 250,
+    'INFO'      => 200,
+    'DEBUG'     => 100,
+];
+
+//Définition du niveau de log sélectionné
+$log_level_filter = isset($pub_level) && isset($monolog_levels[$pub_level]) ? $pub_level : 'INFO';
+
 //Définition de la date sélectionnée
 if (!isset($pub_show)) {
     $show = date("Y~m~d");
@@ -198,6 +213,23 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
 
 </div>
 
+<div style="margin-bottom: 10px;">
+    <form action="index.php" method="get" style="display: inline;">
+        <input type="hidden" name="action" value="administration">
+        <input type="hidden" name="subaction" value="viewer">
+        <input type="hidden" name="show" value="<?= $show ?>">
+        <input type="hidden" name="typelog" value="<?= $typelog ?>">
+        <label for="level">Niveau de log minimum :</label>
+        <select name="level" id="level" onchange="this.form.submit()">
+            <?php foreach ($monolog_levels as $level_name => $level_value) : ?>
+                <option value="<?= $level_name ?>" <?= ($log_level_filter == $level_name) ? 'selected' : '' ?>>
+                    <?= $level_name ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </form>
+</div>
+
 <span class="og-alert"><?= ($lang['ADMIN_LOGS_SEE_TRANSACTIONALS']) ?></span>
 
 <table class="og-table og-full-table og-table-log">
@@ -227,9 +259,24 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
                       'DEBUG'     => 'log-debug',
                   ];
 
+                  $min_level_value = $monolog_levels[$log_level_filter];
+
                   foreach (array_reverse($logFileName) as $line) {
                       $line = rtrim($line, "\r\n");
                       if (empty($line)) {
+                          continue;
+                      }
+
+                      $current_line_level = null;
+                      foreach ($monolog_levels as $level_name => $level_value) {
+                          if (strpos($line, 'OGSpy.' . $level_name . ':') !== false) {
+                              $current_line_level = $level_value;
+                              break;
+                          }
+                      }
+
+                      // Si le niveau de log n'est pas trouvé ou est inférieur au filtre, on passe à la ligne suivante
+                      if ($current_line_level === null || $current_line_level < $min_level_value) {
                           continue;
                       }
 
