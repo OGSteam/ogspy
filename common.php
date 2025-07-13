@@ -11,6 +11,7 @@
 
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
+use Whoops\Handler\CallbackHandler;
 use Monolog\Logger;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Level;
@@ -24,8 +25,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 // Loggers
 $log = new Logger('OGSpy');
-//$log->pushProcessor(new IntrospectionProcessor());
-// Paramètre 7 = nombre de jours de logs à conserver
 $log->pushHandler(new RotatingFileHandler(__DIR__ . '/logs/OGSpy.log', 365, Level::Debug));
 
 
@@ -147,6 +146,18 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     }
 
     $whoops->pushHandler(new PrettyPageHandler());
+
+    // Ajout du handler pour logger les erreurs avec Monolog
+    $whoops->pushHandler(new CallbackHandler(
+        function ($exception, $inspector, $run) use ($log) {
+            $log->error("Whoops! Une erreur est survenue : " . $exception->getMessage(), [
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+                'trace' => $exception->getTraceAsString(),
+            ]);
+        }
+    ));
+
     $whoops->register();
 
 

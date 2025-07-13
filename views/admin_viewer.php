@@ -211,6 +211,11 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
             <?php endforeach; ?>
         </select>
     </form>
+    <?php if (file_exists($file)) : ?>
+        <a href="logs/<?= basename($file) ?>" download title="Télécharger le fichier de log" style="display: inline-block; vertical-align: middle; margin-left: 10px;">
+            <img src="images/save.png" alt="Télécharger le fichier de log" />
+        </a>
+    <?php endif; ?>
 </div>
 
 <span class="og-alert"><?= ($lang['ADMIN_LOGS_SEE_TRANSACTIONALS']) ?></span>
