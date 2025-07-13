@@ -569,12 +569,12 @@ ______________________________________________________________ */
 
     --color-warning: #d9480f;
     --color-warning-lighten: #ffe8cc;
-    --color-success: #2b8a3e;
+    --color-success: #436443; /* Vert sobre */
     --color-success-lighten: #d3f9d8;
     --color-danger: #ee0909;
     --color-danger-lighten: #ffe3e3;
 
-    --color-highlight: #ecff00;
+    --color-highlight: #4682B4; /* Bleu-gris sobre */
     --color-highlight-lighten: #feffeb;
 
 
@@ -1055,7 +1055,7 @@ table.og-table tbody td {
     border-bottom-width: 1px;
     border-spacing: 0;
     border-collapse: separate;
-
+    text-align: center;
 }
 
 table.og-table tbody .tdstat {
@@ -1084,32 +1084,20 @@ table.og-table tbody .tdcontent {
 table.og-table tbody td.og-highlight {
     color: var(--color-highlight);
     background-color: var(--color-table-background-hover);
-
-}
-
-
-table.og-table tbody tr .tdstat:hover,
-table.og-table tbody tr .tdvalue:hover {
-    background-color: var(--color-table-background-hover);
-}
-
-table.og-table tbody tr {
-    height: 15px;
 }
 
 table.og-table tbody td {
-
     text-align: center;
 }
 
-table.og-table tbody td {
-
-    text-align: center;
+table.og-table tbody td.og-success {
+    background-color: var(--color-success);
+    color: var(--color-text);
 }
 
-table.og-table thead tr th.og-legend,
-table.og-table thead tr td.og-legend {
-    text-align: center;
+table.og-table tbody td.og-highlight {
+    background-color: var(--color-highlight);
+    color: #FFFFFF; /* Texte blanc pour le contraste */
 }
 
 /*fin TABLE */
@@ -1796,8 +1784,8 @@ footer#barre .notviewlittle{
  * Styles pour les niveaux de log, utilisés pour afficher les messages de journalisation avec une coloration spécifique.
  * Chaque classe correspond à un niveau de log standard et applique des styles distincts pour améliorer la lisibilité.
  */
-
-.og-table-log .log-line { display: block; font-family: monospace; white-space: pre-wrap; }
+.og-table-log { table-layout: fixed; }
+.og-table-log .log-line { display: block; font-family: monospace; white-space: pre-wrap; overflow-wrap: break-word; }
 .og-table-log .log-debug { color: #cccccc; } /* Gris clair */
 .og-table-log .log-info { color: #88ddff; } /* Bleu clair */
 .og-table-log .log-notice { color: #66bbee; } /* Bleu un peu plus soutenu */

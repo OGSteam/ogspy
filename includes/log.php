@@ -94,13 +94,13 @@ function log_check_exist(string $date)
     if (strlen($date) === 8) {
         // Format AAAAMMJJ : recherche un fichier pour un jour précis
         $day = substr($date, 6, 2);
-        $pattern = '/^OGSpy-sql-' . $year . '-' . $month . '-' . $day . '\.log$/';
+        $pattern = '/^OGSpy-' . $year . '-' . $month . '-' . $day . '\.log$/';
     } else {
         // Format AAAAMM : recherche n'importe quel fichier du mois
-        $pattern = '/^OGSpy-sql-' . $year . '-' . $month . '-\d{2}\.log$/';
+        $pattern = '/^OGSpy-' . $year . '-' . $month . '-\d{2}\.log$/';
     }
 
-    // Recherche de fichiers de log correspondant au format OGSpy-sql-AAAA-MM-JJ.log
+    // Recherche de fichiers de log correspondant au format OGSpy-AAAA-MM-JJ.log
     while (($file = readdir($path)) !== false) {
         if (preg_match($pattern, $file)) {
             $log_found = true;
@@ -110,7 +110,7 @@ function log_check_exist(string $date)
     closedir($path);
 
     if (!$log_found) {
-        $log->info('Aucun fichier de log trouvé pour la date', ['date' => $date]);
+        $log->debug('Aucun fichier de log trouvé pour la date', ['date' => $date]);
     }
 
     return $log_found;
