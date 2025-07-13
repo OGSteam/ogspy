@@ -133,14 +133,6 @@ switch ($pub_action) {
         set_serverconfig();
         break;
 
-    case "extractor":
-        log_extractor();
-        break;
-
-    case "remove":
-        log_remove();
-        break;
-
     case "db_optimize":
         db_optimize();
         break;

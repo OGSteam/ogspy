@@ -14,8 +14,6 @@ use Whoops\Handler\PrettyPageHandler;
 use Monolog\Logger;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Level;
-use Monolog\Processor\IntrospectionProcessor;
-
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");

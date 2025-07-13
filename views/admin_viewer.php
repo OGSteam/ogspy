@@ -21,19 +21,19 @@ if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
 
 //Définition de la date sélectionnée
 if (!isset($pub_show)) {
-    $show = date("y~m~d");
+    $show = date("Y~m~d");
 } else {
     $show = $pub_show;
 }
 
 if (sizeof(explode("~", $show)) != 3) {
-    $show = date("y~m~d");
+    $show = date("Y~m~d");
 }
 list($show_year, $show_month, $show_day) = explode("~", $show);
 if (!checkdate($show_month, $show_day, $show_year)) {
-    list($show_year, $show_month, $show_day) = explode("~", date("y~m~d"));
+    list($show_year, $show_month, $show_day) = explode("~", date("Y~m~d"));
 }
-$show = $show_year . $show_month . $show_day;
+$show = "$show_year-$show_month-$show_day";
 
 if (!isset($pub_typelog)) {
     $typelog = "log";
@@ -48,20 +48,20 @@ if ($typelog != "log" && $typelog != "sql") {
     $typelog = "log";
 }
 if ($typelog == "log") {
-    $file = $typelog . "_" . $show . ".log";
+    $file = "OGSpy-" . $show . ".log";
 }
 if ($typelog == "sql") {
-    $file = $typelog . "_" . $show . ".sql";
+    $file = "OGSpy-sql-" . $show . ".sql";
 }
 
 //Récupération du log
 $dir = $show;
-$file = PATH_LOG . $dir . "/" . $file;
+$file = PATH_LOG . "/" . $file;
 
 if (file_exists($file)) {
-    $log = file($file);
+    $logFileName = file($file);
 } else {
-    $log = array($lang['ADMIN_LOGS_NOLOGS']);
+    $logFileName = array($lang['ADMIN_LOGS_NOLOGS']);
 }
 
 echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0, 0, $show_month, $show_day, $show_year)) . "</a>-->";
@@ -83,13 +83,12 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
         <?php $show = date("y~m", $date) . "~" . $show_day;?>
 
         <?php if ($show == $show_year . "~" . $show_month . "~" . $show_day) :  ?>
-            <?php if (log_check_exist(date("ym", $date))) :?>
+            <?php if (log_check_exist(date("Ym", $date))) :?>
             <td>
                 <span class="og-success"><?= date("F o", $date) ?></span>
             </td>
              <td>
                  <input class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?= date("Fo", $date)?>'" title='<?= $lang['ADMIN_LOGS_DOWNLOAD'] . date("F o", $date) ?>'>
-                 <input  class="og-button og-button-image  og-button-danger" type='image' src='images/drop.png' onclick="window.location = 'index.php?action=remove&amp;date=<?php date("ym", $date) . $show_day?>&directory=TRUE'" title='<?= $lang['ADMIN_LOGS_DELETE'] . date("F o", $date) ?>'>
             <?php else : ?>
                 <td colspan='2'>
                     <?= date("F o", $date) ?>
@@ -97,7 +96,7 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
             <?php endif ;?>
            </td>
         <?php else :?>
-            <?php if (log_check_exist(date("ym", $date))) :?>
+            <?php if (log_check_exist(date("Ym", $date))) :?>
                 <td onclick="window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=<?= $show ?>&amp;typelog=<?= $typelog ?>';">
                     <?= date("F o", $date) ?>
                 </td>
@@ -145,7 +144,6 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
         </td>
                 <td>
                     <input class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?= $show_year . $show_month . $day ?>'" title='<?= $lang['ADMIN_LOGS_DOWNLOAD'] . date("d F o", $date) ?>'>
-                    <input class="og-button og-button-image  og-button-danger" type='image' src='images/drop.png' onclick="window.location = 'index.php?action=remove&amp;date=<?= $show_year . $show_month . $day ?>'" title='<?= $lang['ADMIN_LOGS_DELETE'] . date("d F o", $date) ?>'>
                 </td>
             <?php else : ?>
                 <td colspan='2'>
@@ -161,8 +159,8 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
                  <td>
                      <input class="og-button og-button-image  og-button-warning" type='image' src='images/save.png' onclick="window.location = 'index.php?action=extractor&amp;date=<?= $show_year . $show_month . $day ?>'" title='<?= $lang['ADMIN_LOGS_DOWNLOAD'] . date("d F o G:i", $date)?>'>
             <?php else : ?>
-                <td colspan='2' onclick="window.location='index.php?action=administration&amp;subaction=viewer&amp;show=<?= $show ?>&amp;typelog=<?= $typelog ?>';">
-                    <?= $day ?>
+                <td colspan='2' onclick="window.location = 'index.php?action=administration&amp;subaction=viewer&amp;show=<?= $show ?>&amp;typelog=<?= $typelog ?>';">
+                <?= $day ?>
                 </td>
             <?php endif ;?>
         <?php endif ;?>
@@ -215,21 +213,44 @@ echo "<!--<a>" . $lang['ADMIN_LOGS_SELECTED_DATE'] .  date("d F o", mktime(0, 0,
     </thead>
     <tbody>
           <tr>
-            <td class="tdvalue" >
+              <td class="tdvalue" >
+                  <?php
+                  // Niveaux Monolog et leurs classes CSS associées
+                  $log_levels = [
+                      'EMERGENCY' => 'log-emergency',
+                      'ALERT'     => 'log-alert',
+                      'CRITICAL'  => 'log-critical',
+                      'ERROR'     => 'log-error',
+                      'WARNING'   => 'log-warning',
+                      'NOTICE'    => 'log-notice',
+                      'INFO'      => 'log-info',
+                      'DEBUG'     => 'log-debug',
+                  ];
 
- <?php
-            end($log);
-            while ($line = current($log)) {
+                  foreach (array_reverse($logFileName) as $line) {
+                      $line = rtrim($line, "\r\n");
+                      if (empty($line)) {
+                          continue;
+                      }
 
-                $line = trim(nl2br(htmlspecialchars($line)));
-                $line = preg_replace("#/\*(.*)\*/#", "<span style=\"color: orange; \">$1 : </span>", $line);
+                      $applied_class = 'log-line'; // Classe par défaut
 
-                echo $line;
-                prev($log);
-            }
-            ?>
-            </td>
+                      // Cherche le niveau de log dans l'entrée
+                      foreach ($log_levels as $level => $class) {
+                          if (strpos($line, 'OGSpy.' . $level . ':') !== false) {
+                              $applied_class .= ' ' . $class;
+                              break; // On a trouvé le niveau, on arrête la recherche
+                          }
+                      }
+
+                      // Sécurise l'entrée pour l'affichage HTML
+                      $formatted_entry = htmlspecialchars($line, ENT_QUOTES, 'UTF-8');
+
+                      // Affiche l'entrée formatée.
+                      echo '<span class="' . $applied_class . '">' . $formatted_entry . '</span>';
+                  }
+                  ?>
+              </td>
         </tr>
         </tbody>
 </table>
-

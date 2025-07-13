@@ -16,7 +16,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 setlocale(LC_CTYPE, 'fr_FR.UTF-8');
-date_default_timezone_set("Europe/Paris");
+date_default_timezone_set("UTC");
 
 
 // Définitions des noms des tables de la BDD
@@ -79,14 +79,7 @@ define("COOKIE_NAME", "ogspy_id");
 
 //Chemin d'accès aux ressources
 if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
-    define("PATH_LOG", "../journal/");
+    define("PATH_LOG", "../logs/");
 } else {
-    define("PATH_LOG", "./journal/");
+    define("PATH_LOG", "./logs/");
 }
-$path_log_today = PATH_LOG . date("ymd") . "/";
-if (!is_dir($path_log_today)) {
-    mkdir($path_log_today);
-    chmod($path_log_today, 0740);
-    write_file($path_log_today . "index.htm", 'a', '');
-}
-define("PATH_LOG_TODAY", PATH_LOG . date("ymd") . "/");

@@ -1054,7 +1054,6 @@ function maintenance_action()
     $time = mktime(0, 0, 0);
     if (isset($server_config["last_maintenance_action"]) && $time > $server_config["last_maintenance_action"]) {
         galaxy_purge_ranking();
-        log_purge();
         galaxy_purge_spy();
 
         (new Config_Model())->update_one($time, "last_maintenance_action");

@@ -595,7 +595,7 @@ ______________________________________________________________ */
     --color-navpagemenu-background-hover: rgba(0, 0, 0, 0.8);
 
     /*table*/
-    --color-table-color: --color-text;
+    --color-table-color: var(--color-text);
     --color-table-color-tdstat: #3EBAFD;
     --color-table-color-tdname: #3EBAFD;
     --color-table-border: rgba(255, 255, 255, 0.1);
@@ -1573,13 +1573,13 @@ io
     padding-top: 1px;
     padding-bottom: 1px;
     text-align: center;
-    background: linear-gradient(to right, rgba(0,0,0,0) 30%,var(--color-navpagemenu-background-active) 50%,rgba(0,0,0,0) 70%);
+    background: linear-gradient(to right, rgba(0,0,0,0) 30%,var(--color-navbarmenu-background-active) 50%,rgba(0,0,0,0) 70%);
     margin-bottom: 5px;;
  /*   background-color: var(--color-navpagemenu-background-active) ;*/
 }
 
 .ogspy-mod-header h2 ,.ogame-mod-header h1   {
-    color: var(--color-navpagemenu-link);
+    color: var(--color-navbarmenu-link);
 }
 .ogspy-mod-footer     {
     position: fixed;
@@ -1790,7 +1790,19 @@ footer#barre .notviewlittle{
     table.og-table-ranking thead th {
         padding: 0px;
     }
-
-
-
 }
+
+/*
+ * Styles pour les niveaux de log, utilisés pour afficher les messages de journalisation avec une coloration spécifique.
+ * Chaque classe correspond à un niveau de log standard et applique des styles distincts pour améliorer la lisibilité.
+ */
+
+.og-table-log .log-line { display: block; font-family: monospace; white-space: pre-wrap; }
+.og-table-log .log-debug { color: #cccccc; } /* Gris clair */
+.og-table-log .log-info { color: #88ddff; } /* Bleu clair */
+.og-table-log .log-notice { color: #66bbee; } /* Bleu un peu plus soutenu */
+.og-table-log .log-warning { color: #ffcc00; } /* Jaune vif */
+.og-table-log .log-error { color: #ff8888; font-weight: bold; } /* Rouge clair */
+.og-table-log .log-critical { color: #ff4444; font-weight: bold; text-decoration: underline; } /* Rouge vif */
+.og-table-log .log-alert { background-color: #552222; color: #ffaaaa; font-weight: bold; } /* Fond rouge sombre, texte rouge très clair */
+.og-table-log .log-emergency { background-color: #dd0000; color: white; font-weight: bold; } /* Fond rouge vif, texte blanc */
