@@ -14,8 +14,8 @@ class FunctionsTest extends TestCase
         // Assert that the password is a string
         $this->assertIsString($password);
 
-        // Assert that the password length is 6
-        $this->assertEquals(8, strlen($password));
+        // Assert that the password length is 12
+        $this->assertEquals(12, strlen($password));
     }
 
     public function testPasswgenerateKey()
