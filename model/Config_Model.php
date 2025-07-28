@@ -31,6 +31,7 @@ class Config_Model extends Model_Abstract
         while ($cur_config_item = $this->db->sql_fetch_row($result)) {
             $output[$cur_config_item[0]] = stripslashes($cur_config_item[1]);
         }
+        $this->log->debug("Config Model get: " . print_r($output, true));
         return $output;
     }
 
@@ -50,7 +51,11 @@ class Config_Model extends Model_Abstract
         $query = "SELECT `name`, `value` FROM " . TABLE_CONFIG . " WHERE `name` IN ($queryStr)";
 
         $result = $this->db->sql_query($query);
-        return $this->db->sql_fetch_assoc($result);
+        $output = [];
+        while ($row = $this->db->sql_fetch_row($result)) {
+            $output[$row[0]] = stripslashes($row[1]);
+        }
+        return $output;
     }
 
     /**

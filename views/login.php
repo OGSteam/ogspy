@@ -19,6 +19,7 @@ if (!isset($goto)) {
 $enable_register_view = isset($server_config['enable_register_view']) ? $server_config['enable_register_view'] : 0;
 
 require_once 'views/page_header_2.php';
+require_once dirname(__DIR__) . '/includes/token.php';
 ?>
 
 <div class="page_login">
@@ -60,7 +61,7 @@ require_once 'views/page_header_2.php';
         </div>
 
 
-        <input class="og-button"  type="button" value="<?= $lang['LOGIN_ACCOUNT_REQUEST_BUTTON'] ?>" onclick="window.open('<?= $server_config['register_forum'] ?>');" />
+        <input class="og-button"  type="button" value="<?= $lang['LOGIN_ACCOUNT_REQUEST_BUTTON'] ?>" onclick="window.open('<?= isset($server_config['register_forum']) ? $server_config['register_forum'] : '#' ?>');" />
 
     </div>
 

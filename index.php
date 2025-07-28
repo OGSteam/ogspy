@@ -46,14 +46,70 @@ if (!isset($pub_action)) {
 
 if (is_file("install/version.php")) {
     require_once "install/version.php";
-    $log->info("Version : " . $ogspy_version);
-    if (version_compare($server_config["version"], $ogspy_version, '<')) {
+    $log->info("Version logiciel: " . $ogspy_version);
+
+    // Nouveau système : vérification via MigrationManager
+    try {
+        require_once "install/MigrationManager.php";
+        require_once "install/AutoUpgradeManager.php";
+
+        $migrationManager = new MigrationManager($db, $log);
+        $pendingMigrations = $migrationManager->getPendingMigrations();
+
+        if (!empty($pendingMigrations)) {
+            $log->info("Migrations en attente détectées: " . count($pendingMigrations));
+
+            $autoUpgrade = new AutoUpgradeManager($db, $log);
+
+            // Vérifie si l'auto-upgrade est possible
+            if ($autoUpgrade->canAutoUpgrade()) {
+                $result = $autoUpgrade->checkAndUpgrade();
+
+                switch ($result['status']) {
+                    case 'up_to_date':
+                        $log->info("Base de données déjà à jour");
+                        break;
+
+                    case 'success':
+                        $log->info("Auto-upgrade réussi: " . $result['message']);
+                        $log->info("Nouvelle version DB: " . $result['version']);
+                        break;
+
+                    case 'in_progress':
+                        // Une autre requête traite déjà l'upgrade, on attend
+                        sleep(2);
+                        header("Refresh: 3");
+                        echo "<div style='text-align:center; padding:50px;'>";
+                        echo "<h2>Mise à jour en cours...</h2>";
+                        echo "<p>Veuillez patienter, la page se rechargera automatiquement.</p>";
+                        echo "</div>";
+                        exit();
+
+                    case 'error':
+                    case 'critical_error':
+                        $log->error("Échec auto-upgrade: " . $result['message']);
+                        // Fallback vers l'installeur manuel
+                        redirection("install/index.php");
+                        break;
+                }
+            } else {
+                $log->warning("Conditions non réunies pour l'auto-upgrade, redirection vers installeur");
+                // Conditions non réunies pour l'auto-upgrade, redirection classique
+                redirection("install/index.php");
+            }
+        } else {
+            $log->debug("Aucune migration en attente");
+        }
+
+    } catch (Exception $e) {
+        $log->error("Erreur vérification migrations: " . $e->getMessage());
+        // Fallback vers l'installeur manuel en cas d'erreur
         redirection("install/index.php");
     }
 }
 
 if (
-    $server_config["server_active"] == 0
+    isset($server_config["server_active"]) && $server_config["server_active"] == 0
     && $pub_action != "login_web"
     && $pub_action != "logout" && $user_data['admin'] != 1
     && $user_data['coadmin'] != 1

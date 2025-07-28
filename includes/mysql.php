@@ -172,7 +172,7 @@ class sql_db
      * @param mysqli_result|null $result The Query Result.
      * @return array|bool array containing the Database result
      */
-    public function sql_fetch_row(mysqli_result $result = null): array|bool|null
+    public function sql_fetch_row(?mysqli_result $result = null): array|bool|null
     {
         if (!$result) {
             $result = $this->result;
@@ -189,7 +189,7 @@ class sql_db
      * @param mysqli_result|null $result The Query id.
      * @return array|bool the associative array containing the Database result
      */
-    public function sql_fetch_assoc(mysqli_result $result = null): array|bool|null
+    public function sql_fetch_assoc(?mysqli_result $result = null): array|bool|null
     {
         if (!$result) {
             $result = $this->result;
@@ -206,7 +206,7 @@ class sql_db
      * @param mysqli_result|null $result
      * @return int|bool the number of results
      */
-    public function sql_numrows(mysqli_result $result = null): int|bool
+    public function sql_numrows(?mysqli_result $result = null): int|bool
     {
         if (!$result) {
             $result = $this->result;
@@ -267,7 +267,7 @@ class sql_db
     }
 
     /**
-     * Escapes all characters to set up the Query
+     * Escape String Function
      * @param string $str The string to escape
      * @return string|false escaped string
      */
@@ -277,6 +277,34 @@ class sql_db
             return mysqli_real_escape_string($this->db_connect_id, $str);
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Start MySQL Transaction
+     * @param string $mode Transaction mode ('begin', 'start', 'commit', 'rollback')
+     * @return bool Success or failure
+     */
+    public function sql_transaction($mode = 'begin')
+    {
+        switch (strtolower($mode)) {
+            case 'begin':
+            case 'start':
+                return mysqli_autocommit($this->db_connect_id, false) &&
+                       mysqli_query($this->db_connect_id, "START TRANSACTION");
+
+            case 'commit':
+                $result = mysqli_commit($this->db_connect_id);
+                mysqli_autocommit($this->db_connect_id, true);
+                return $result;
+
+            case 'rollback':
+                $result = mysqli_rollback($this->db_connect_id);
+                mysqli_autocommit($this->db_connect_id, true);
+                return $result;
+
+            default:
+                return false;
         }
     }
 

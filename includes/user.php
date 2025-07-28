@@ -29,6 +29,7 @@ use Ogsteam\Ogspy\Model\Tokens_Model;
 use Ogsteam\Ogspy\Model\User_Spy_favorites_Model;
 use Ogsteam\Ogspy\Model\Combat_Report_Model;
 
+require_once __DIR__ . '/token.php';
 
 /**Tokens_Model
  * Verification des droits utilisateurs sur une action avec redirection le cas echeant
@@ -281,7 +282,7 @@ function admin_regeneratepwd()
         $NovisualisationMdpAdmin = sendMail($user_info["user_email"], $lang['MAIL_RESET_PASSWORD_SUBJECT'], "<h1>" . $lang['MAIL_RESET_PASSWORD_MESSAGE'] . $password . "</h1>");
         log_("debug", "Reset mot de passe : Le mail a été envoyé à " . $user_info["user_email"]);
     } else {
-        // pas d'usage de mail donc visualisation admin à affectuer
+        // pas d'usage de mail donc visualisation admin à affecter
         $NovisualisationMdpAdmin = false;
     }
 

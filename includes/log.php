@@ -108,10 +108,5 @@ function log_check_exist(string $date)
         }
     }
     closedir($path);
-
-    if (!$log_found) {
-        $log->debug('Aucun fichier de log trouvé pour la date', ['date' => $date]);
-    }
-
     return $log_found;
 }
