@@ -262,7 +262,7 @@ class User_Model extends Model_Abstract
 
 
     /**
-     * @param $user_id
+     *
      */
     public function update_lastvisit_time($user_id)
     {
@@ -526,7 +526,14 @@ class User_Model extends Model_Abstract
             . " VALUES ('" . $pseudo . "', '" . $encrypted_password . "', " . time() . ", '1')";
         $this->db->sql_query($request);
 
-        return $this->db->sql_insertid();
+        $user_id = $this->db->sql_insertid();
+
+        // Assigner automatiquement l'utilisateur au groupe par défaut (groupe ID 1)
+        if ($user_id) {
+            $this->add_user_to_group($user_id, 1);
+        }
+
+        return $user_id;
     }
 
     /**

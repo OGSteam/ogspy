@@ -45,6 +45,7 @@ class Group_Model extends Model_Abstract
     {
 
         $group_id = intval($group_id);
+        $info_usergroup = null; // Initialisation de la variable
 
         $request = "SELECT `id`, `name`, ";
         $request .= " `server_set_system`, `server_set_spy`, `server_set_rc`, `server_set_ranking`, `server_show_positionhided`,";

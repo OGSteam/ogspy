@@ -60,44 +60,44 @@ function session(): void
 
     //Purge des sessions expirées
     if ($server_config["session_time"] != 0) {
-        $log->debug("Nettoyage des sessions expirées");
+        $log->debug("Cleaning expired sessions");
         $Sessions_Model->clean_expired_sessions();
     }
 
     //Récupération de l'id de session si cookie présent
     if (isset($_COOKIE[$cookie_name])) {
         $cookie_id = $_COOKIE[$cookie_name];
-        $log->debug("Cookie de session trouvé: " . substr($cookie_id, 0, 8) . "...");
+        $log->debug("Session cookie found: " . substr($cookie_id, 0, 8) . "...");
 
         //Vérification de la validité de le session
         if (!$Sessions_Model->is_valid_session_id($cookie_id, $user_ip)) {
-            $log->warning("Session non valide pour cookie_id: " . $cookie_id . " et user_ip: " . $user_ip);
+            $log->warning("Invalid session for cookie_id: " . $cookie_id . " and user_ip: " . $user_ip);
 
             if (isset($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] == 1) {
                 //Mise à jour de l'adresse ip de session si le contrôle des ip est désactivé
-                $log->info("Tentative de mise à jour de l'adresse IP - contrôle des IP désactivé");
+                $log->info("Attempting to update IP address - IP check disabled");
 
                 if (!$Sessions_Model->update_session_public_ip($cookie_id, $user_ip)) {
-                    $log->warning("Échec de mise à jour de l'adresse IP de session");
+                    $log->warning("Failed to update session IP address");
                     $cookie_id = "";
                 } else {
-                    $log->info("Adresse IP de session mise à jour avec succès");
+                    $log->info("Session IP address updated successfully");
                 }
             } else {
                 $cookie_id = "";
             }
         } else {
-            $log->debug("Session valide trouvée");
+            $log->debug("Valid session found");
         }
     } else {
-        $log->debug("Aucun cookie de session trouvé");
+        $log->debug("No session cookie found");
     }
     if ($cookie_id == "") {
-        $log->info("Création d'une nouvelle session pour l'adresse IP: " . $user_ip);
+        $log->info("Creating new session for IP address: " . $user_ip);
         session_begin($user_ip);
     } else {
         $cookie_expire = time() + $cookie_time * 60;
-        $log->debug("Mise à jour du temps d'expiration de la session");
+        $log->debug("Updating session expiration time");
         $Sessions_Model->update_session_expiration_time($cookie_id, $cookie_expire);
     }
     session_set_user_data($cookie_id);
@@ -113,18 +113,18 @@ function session_set_user_id($user_id, $lastvisit = 0): void
     global $user_ip, $cookie_id, $server_config,$log;
     $Sessions_Model = new Sessions_Model();
 
-    $log->info("Mise à jour de la session pour l'utilisateur ID: " . $user_id);
+    $log->info("Updating session for user ID: " . $user_id);
 
     if (isset($server_config["disable_ip_check"]) && $server_config["disable_ip_check"] != 1) {
-        $log->debug("Mise à jour de session avec vérification d'IP activée");
+        $log->debug("Updating session with IP verification enabled");
         $Sessions_Model->update_session($user_id, $lastvisit, $cookie_id, $user_ip);
     } else {
-        $log->debug("Mise à jour de session sans vérification d'IP");
+        $log->debug("Updating session without IP verification");
         $Sessions_Model->update_session($user_id, $lastvisit, $cookie_id);
     }
-    $log->debug("Récupération des données utilisateur après mise à jour de session");
+    $log->debug("Retrieving user data after session update");
     session_set_user_data($cookie_id);
-    $log->info("Session utilisateur ID: " . $user_id . " mise à jour avec succès");
+    $log->info("User session ID: " . $user_id . " updated successfully");
 }
 
 /**
@@ -136,19 +136,19 @@ function session_set_user_data(string $cookie_id)
 {
     global $user_ip, $user_data, $user_auth, $user_token,$log;
 
-    $log->debug("Récupération des données utilisateur pour cookie_id: " . substr($cookie_id, 0, 8) . "...");
+    $log->debug("Retrieving user data for cookie_id: " . substr($cookie_id, 0, 8) . "...");
     $user_data = (new Sessions_Model())->select_user_data_session($cookie_id, $user_ip);
 
     if (!$user_data) {
-        $log->warning("Aucune donnée utilisateur trouvée pour le cookie_id: " . substr($cookie_id, 0, 8) . "...");
+        $log->warning("No user data found for cookie_id: " . substr($cookie_id, 0, 8) . "...");
         unset($user_data);
         unset($user_auth);
         unset($user_token);
     } else {
         if (isset($user_data["id"])) {
-            $log->info("Utilisateur identifié - ID: " . $user_data["id"] . ", pseudo: " . $user_data["name"]);
+            $log->info("User identified - ID: " . $user_data["id"] . ", username: " . $user_data["name"]);
         } else {
-            $log->info("Visiteur non identifié");
+            $log->info("Unidentified visitor");
         }
 
     }

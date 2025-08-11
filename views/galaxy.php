@@ -52,6 +52,15 @@ $user_group = (new Group_Model())->get_user_group($user_data["id"]);
 //recherche des droits liés
 $tInfosGroups = (new Group_Model())->get_group_rights($user_group);
 
+// Vérification que l'utilisateur a bien des droits de groupe
+if ($tInfosGroups === null) {
+    // Si l'utilisateur n'a pas de groupe ou que le groupe n'existe pas,
+    // on utilise des valeurs par défaut sécurisées
+    $tInfosGroups = [
+        'server_show_positionhided' => 0,
+        // Autres droits par défaut...
+    ];
+}
 
 //si autorisé server_show_positionhided doit etre a 1 !!!!!!!!!!!
 //todo info a communiquer avec release

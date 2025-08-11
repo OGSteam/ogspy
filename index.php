@@ -57,7 +57,7 @@ if (is_file("install/version.php")) {
         $pendingMigrations = $migrationManager->getPendingMigrations();
 
         if (!empty($pendingMigrations)) {
-            $log->info("Migrations en attente détectées: " . count($pendingMigrations));
+            $log->info("Pending migrations detected: " . count($pendingMigrations));
 
             $autoUpgrade = new AutoUpgradeManager($db, $log);
 
@@ -67,12 +67,12 @@ if (is_file("install/version.php")) {
 
                 switch ($result['status']) {
                     case 'up_to_date':
-                        $log->info("Base de données déjà à jour");
+                        $log->info("Database already up to date");
                         break;
 
                     case 'success':
-                        $log->info("Auto-upgrade réussi: " . $result['message']);
-                        $log->info("Nouvelle version DB: " . $result['version']);
+                        $log->info("Auto-upgrade successful: " . $result['message']);
+                        $log->info("New DB version: " . $result['version']);
                         break;
 
                     case 'in_progress':
@@ -87,22 +87,22 @@ if (is_file("install/version.php")) {
 
                     case 'error':
                     case 'critical_error':
-                        $log->error("Échec auto-upgrade: " . $result['message']);
+                        $log->error("Auto-upgrade failed: " . $result['message']);
                         // Fallback vers l'installeur manuel
                         redirection("install/index.php");
                         break;
                 }
             } else {
-                $log->warning("Conditions non réunies pour l'auto-upgrade, redirection vers installeur");
+                $log->warning("Conditions not met for auto-upgrade, redirecting to installer");
                 // Conditions non réunies pour l'auto-upgrade, redirection classique
                 redirection("install/index.php");
             }
         } else {
-            $log->debug("Aucune migration en attente");
+            $log->debug("No pending migrations");
         }
 
     } catch (Exception $e) {
-        $log->error("Erreur vérification migrations: " . $e->getMessage());
+        $log->error("Migration verification error: " . $e->getMessage());
         // Fallback vers l'installeur manuel en cas d'erreur
         redirection("install/index.php");
     }
@@ -120,7 +120,7 @@ if (
 //  Visiteur non identifié
 
 if (!isset($user_data["id"]) && !(isset($pub_action) && $pub_action == "login_web")) {
-    $log->info("Visiteur non identifié");
+    $log->info("Unidentified visitor");
     if ($pub_action == "message") {
         require "views/message.php";
     } else {

@@ -10,8 +10,6 @@
  * @version 3.1.1 ($Rev: 7690 $)
  */
 
-use bdk\HttpMessage\Message;
-
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
@@ -81,7 +79,7 @@ function log_check_exist(string $date)
 
     $root = PATH_LOG;
     if (!is_dir($root) || !($path = opendir($root))) {
-        $log->error('Le répertoire de logs est introuvable ou ne peut être lu', ['path' => $root]);
+        $log->error('Log directory not found or cannot be read', ['path' => $root]);
         return false;
     }
 

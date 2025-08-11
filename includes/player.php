@@ -29,6 +29,10 @@ function player_get_empire($player_id)
 
     $tBuildingList = (new Player_Building_Model())->select_player_building_list($player_id);
 
+    // Initialisation des variables
+    $player_building = [];
+    $pctList = [];
+
     // mise en forme des valeurs
     foreach ($tBuildingList as $BuildingList) {
         //préparationpct
