@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name : Checkout OGSPY
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         ref: ${{ github.ref }}   # checkout the correct branch name
         fetch-depth: 0  
@@ -56,14 +56,14 @@ jobs:
           regex: false
     
     - name: Checkout Xtense
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: 'ogsteam/mod-xtense'
         ref: 'master'
         path: 'mod/xtense'
         
     - name: Checkout AutoUpdate
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: 'ogsteam/mod-autoupdate'
         ref: 'master'
