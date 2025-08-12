@@ -189,7 +189,7 @@ if (!empty($dates)) {
 
 <?php
 $first = [
-    "general_pts" => null, "eco_pts" => null, "eco_rank" => null, "techno_pts" => null, "techno_rank" => null, "military_pts" => null, "military_rank" => null,
+    "general_pts" => null, "general_rank" => null, "eco_pts" => null, "eco_rank" => null, "techno_pts" => null, "techno_rank" => null, "military_pts" => null, "military_rank" => null,
     "military_b_pts" => null, "military_b_rank" => null, "military_l_pts" => null, "military_l_rank" => null, "military_d_pts" => null, "military_d_rank" => null, "honor_pts" => null, "honor_rank" => null
 ];
 $first_date = [];

@@ -2005,3 +2005,82 @@ function ratio_is_ok()
         return true;
     }
 }
+
+/**
+ * Récupération des rapports favoris
+ */
+function user_getfavorites_spy()
+{
+    global $user_data;
+    global $sort, $sort2;
+
+    $Spy_Model = new Spy_Model();
+    if (!is_numeric($sort) || !is_numeric($sort2)) {
+        //Ordering by date Desc
+        $sort = 5;
+        $sort2 = 0;
+    }
+    return $Spy_Model->get_favoriteSpyList($user_data["id"], $sort, $sort2);
+}
+
+/**
+ * Ajout d'un rapport favori
+ */
+function user_add_favorite_spy()
+{
+    global $user_data, $server_config;
+    global $pub_spy_id, $pub_galaxy, $pub_system, $pub_row;
+
+    $User_Spy_favorites_Model = new User_Spy_favorites_Model();
+
+    if (!check_var($pub_spy_id, "Num")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
+
+    if (!isset($pub_spy_id)) {
+        redirection("index.php?action=message&id_message=errorfatal&info");
+    }
+
+    $nb_favorites = $User_Spy_favorites_Model->Count_favorite_spy($user_data["id"]);
+    if ($nb_favorites < $server_config["max_favorites_spy"]) {
+        $User_Spy_favorites_Model->add_favorite_spy($user_data["id"], $pub_spy_id);
+        redirection("index.php?action=show_reportspy&galaxy=" . $pub_galaxy . "&system=" .
+            $pub_system . "&row=" . $pub_row);
+    } else {
+        redirection("index.php?action=message&id_message=max_favorites&info=_spy");
+    }
+}
+
+/**
+ * Suppression d'un rapport favori
+ */
+function user_del_favorite_spy()
+{
+    global $user_data;
+    global $pub_spy_id, $pub_galaxy, $pub_system, $pub_row, $pub_info;
+
+    if (!check_var($pub_spy_id, "Num")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
+
+    if (!isset($pub_spy_id)) {
+        redirection("index.php?action=message&id_message=errorfatal&info");
+    }
+    //(new Spy_Model())->delete_spy_senderId($pub_spy_id, $user_data["id"]);
+    (new User_Spy_favorites_Model())->delete_favorite_spy($user_data["id"], $pub_spy_id);
+
+    if (!isset($pub_info)) {
+        $pub_info = 1;
+    }
+
+    switch ($pub_info) {
+        case 2:
+            redirection("index.php?action=show_reportspy&galaxy=" . $pub_galaxy . "&system=" . $pub_system . "&row=" . $pub_row);
+            break;
+        case 1:
+            redirection("index.php?action=home&subaction=spy");
+            break;
+        default:
+            return true;
+    }
+}
