@@ -1978,3 +1978,30 @@ function user_statistic()
     $userModel = new User_Model();
     return $userModel->select_all_user_stats_data();
 }
+
+/**
+ * Fonction de test d'autorisation d'effectuer une action en fonction du ratio ou de l'appartenance à un groupe qui a un ratio illimité
+ * @return bool vrai si l'utilisateur peut faire des recherches
+ * @author Bousteur 28/11/2006
+ */
+function ratio_is_ok()
+{
+    global $user_data, $server_config;
+    static $result;
+
+    if ($result != null) {
+        return $result;
+    }
+    if (isset($server_config["block_ratio"]) && $server_config["block_ratio"] == 1) {
+        if (
+            $user_data["admin"] == 1 || $user_data["coadmin"] == 1 || $user_data["management_user"] == 1) {
+            return true;
+        } else {
+            $result = ratio_calc($user_data['id']);
+            $result = $result[0] >= $server_config["ratio_limit"];
+            return $result;
+        }
+    } else {
+        return true;
+    }
+}

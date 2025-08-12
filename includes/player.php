@@ -109,8 +109,16 @@ function calculate_fields_used(array $buildingList): int
         }
     }
 
+    // Filtrer les valeurs pour ne garder que les numériques et les convertir en entiers
+    $numeric_values = array_filter(array_values($buildingList), function($value) {
+        return is_numeric($value);
+    });
+
+    // Convertir en entiers pour être sûr
+    $numeric_values = array_map('intval', $numeric_values);
+
     // Calcul de la somme des valeurs restantes
-    $fields_used = array_sum(array_values($buildingList));
+    $fields_used = array_sum($numeric_values);
 
     return $fields_used;
 }
