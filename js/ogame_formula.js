@@ -1059,7 +1059,7 @@ function update_page(planetsIdList, planetBuildings, technologies, planetDefense
       M_1_prod[planetId] = Math.round(ratio_conso * production('M', M_1[planetId], temperature_max_1, NRJ, Plasma, position) * M_1_percentage / 100);
       C_1_prod[planetId] = Math.round(ratio_conso * production('C', C_1[planetId], temperature_max_1, NRJ, Plasma, position) * C_1_percentage / 100);
       D_1_prod[planetId] = Math.round(ratio_conso * production('D', D_1[planetId], temperature_max_1, NRJ, Plasma, position) * D_1_percentage / 100) - Math.round(consumption('CEF', CEF_1[planetId]) * CEF_1_percentage / 100);
-      prod_for_tmp = production_foreuse(For_1[planetId], M_1[planetId], C_1[planetId], D_1[planetId], temperature_max_1, position);
+      let prod_for_tmp = production_foreuse(For_1[planetId], M_1[planetId], C_1[planetId], D_1[planetId], temperature_max_1, position);
       prod_for_tmp['M'] = Math.round(ratio_conso * prod_for_tmp['M'] * For_1_percentage / 100);
       prod_for_tmp['C'] = Math.round(ratio_conso * prod_for_tmp['C'] * For_1_percentage / 100);
       prod_for_tmp['D'] = Math.round(ratio_conso * prod_for_tmp['D'] * For_1_percentage / 100);
@@ -1276,7 +1276,7 @@ planetsIdList.forEach(planetId => {
     techno_astro_pts = technoPrix['Astrophysique'];
     techno_astro_pts_prec = technoPrix['Astrophysique'];
   }
-  for (i = 1; i < technologies['Astrophysique']; i++) {
+  for (let i = 1; i < technologies['Astrophysique']; i++) {
     techno_astro_pts = techno_astro_pts + techno_astro_pts_prec * 1.75;
     techno_astro_pts_prec = techno_astro_pts_prec * 1.75;
   }
