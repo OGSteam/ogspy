@@ -40,8 +40,6 @@ class Player_Building_Model  extends Model_Abstract
      */
     public function get_moon_list($player_id)
     {
-        $user_id = (int)$user_id;
-
         // les lunes
         $request = "SELECT `id`, `coordinates`";
         $request .= " FROM " . TABLE_USER_BUILDING;
@@ -115,7 +113,7 @@ class Player_Building_Model  extends Model_Abstract
 
         $playerBoosters = array();
         while (list($player_id, $id, $boosters) = $this->db->sql_fetch_row($result)) {
-            $playerBoosters[$planet_id] = array("user_id" => $player_id, "planet_id" => $id, "boosters" => $boosters);
+            $playerBoosters[$id] = array("user_id" => $player_id, "planet_id" => $id, "boosters" => $boosters);
         }
         return $playerBoosters;
     }
