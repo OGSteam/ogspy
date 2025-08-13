@@ -17,9 +17,16 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class Player_Building_Model  extends Model_Abstract
 {
     /**
-     * @param $user_id
-     * @return mixed
+     * Retrieves the list of planets associated with a user, organized by coordinates.
+     *
+     * This method executes an SQL query to get the planet IDs and their coordinates
+     * associated with a given user. The results are organized in an associative array
+     * where the keys are the coordinates and the values are the planet IDs.
+     *
+     * @param int $user_id The user identifier.
+     * @return array An associative array containing coordinates as keys and planet IDs as values.
      */
+
     public function get_planet_list($user_id)
     {
         $user_id = (int)$user_id;

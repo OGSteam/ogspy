@@ -395,20 +395,23 @@ function UNparseRC($id_RC)
             $ship_protection = $lang['GAME_CREPORT_PROTECTION'];
 
             foreach ($key_ships as $key => $ship) {
-                if (isset($$key) && $$key > 0) {
+                $ship_count = $defenses[$key] ?? 0; // ou $attak[$key] selon le contexte
+                if ($ship_count > 0) {
                     $vivant_def = true;
                     $ship_type .= "\t" . $ship;
-                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.');
+                    $ship_nombre .= "\t" . number_format($ship_count, 0, ',', '.');
                     $ship_protection .= "\t" . number_format(round(($base_ships[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
                     $ship_bouclier .= "\t" . number_format(round($base_ships[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
                     $ship_armes .= "\t" . number_format(round($base_ships[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
                 }
             }
+
             foreach ($key_defs as $key => $def) {
-                if (isset($$key) && $$key > 0) {
+                $def_count = $defenses[$key] ?? 0;
+                if ($def_count > 0) {
                     $vivant_def = true;
                     $ship_type .= "\t" . $def;
-                    $ship_nombre .= "\t" . number_format($$key, 0, ',', '.');
+                    $ship_nombre .= "\t" . number_format($def_count, 0, ',', '.');
                     $ship_protection .= "\t" . number_format(round(($base_defs[$key][0] * (($Protection / 10) * 0.1 + 1)) / 10), 0, ',', '.');
                     $ship_bouclier .= "\t" . number_format(round($base_defs[$key][1] * (($Bouclier / 10) * 0.1 + 1)), 0, ',', '.');
                     $ship_armes .= "\t" . number_format(round($base_defs[$key][2] * (($Armes / 10) * 0.1 + 1)), 0, ',', '.');
