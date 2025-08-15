@@ -1,4 +1,4 @@
-<?php
+<?php global $server_config, $lang;
 
 /**
  * HTML Footer Light
@@ -46,7 +46,7 @@ if (is_array($ogspy_phperror) && count($ogspy_phperror)) {
 <!--todo revoir footer de ce type de page -->
 <footer id='barre'>
     <div class="footerbarre-version">
-        <a href="https://www.ogsteam.eu" target="_blank" rel="noopener">OGSpy</a> <span class="og-highlight"><?php echo $server_config["version"] . "</span> " . $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2024
+        <a href="https://www.ogsteam.eu" target="_blank" rel="noopener">OGSpy</a> <span class="og-highlight"><?php echo $server_config["version"] . "</span> " . $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2025
     </div>
     <div class="footerbarre-countuser">
      </div>

@@ -35,12 +35,12 @@ function ogame_isElement(nom) {
   return false;
 }
 function ogame_findPlanetPosition(coordinates) {
-  var position = ogame_findCoordinates(coordinates);
+  let position = ogame_findCoordinates(coordinates);
   return position['p'];
 }
 function ogame_findCoordinates(string_coord) {
-  var result = { 'g': 0, 's': 0, 'p': 0 };
-  var coordinates_tmp = string_coord.split(':');
+  let result = { 'g': 0, 's': 0, 'p': 0 };
+  let coordinates_tmp = string_coord.split(':');
   if (coordinates_tmp.length === 3) {
     result['g'] = coordinates_tmp[0];
     result['s'] = coordinates_tmp[1];
@@ -72,10 +72,10 @@ function ogame_productionForeuseMax(mine_M, mine_C, mine_D, user_data = {}) {
   return Math.floor(nb_foreuse_max);
 }
 function ogame_productionForeuseBonus(user_building, user_data) {
-  var FOR_COEF = 2e-4; //0.02% / foreuse
-  var FOR_BONUS_COL = 0.5;    //+50% pour COL
+  let FOR_COEF = 2e-4; //0.02% / foreuse
+  let FOR_BONUS_COL = 0.5;    //+50% pour COL
   //Valeurs OUT par défaut :
-  var result = { 'bonus': 0, 'nb_FOR_maxed': 0 };
+  let result = { 'bonus': 0, 'nb_FOR_maxed': 0 };
   //Valeurs IN par défaut :
   if (typeof (user_building) === 'undefined') { user_building = []; }
   if (typeof (user_data) === 'undefined') { user_data = []; }
@@ -85,9 +85,9 @@ function ogame_productionForeuseBonus(user_building, user_data) {
   if (typeof (user_building['FOR']) === 'undefined') { user_building['FOR'] = 0; }
   if (typeof (user_data['user_class']) === 'undefined') { user_data['user_class'] = 'none'; }
 
-  var bonus_foreuse = FOR_COEF;
-  var nb_foreuse_max = ogame_productionForeuseMax(user_building['M'], user_building['C'], user_building['D'], user_data);
-  var nb_foreuse = user_building['FOR'];
+  let bonus_foreuse = FOR_COEF;
+  let nb_foreuse_max = ogame_productionForeuseMax(user_building['M'], user_building['C'], user_building['D'], user_data);
+  let nb_foreuse = user_building['FOR'];
 
   if (user_data['user_class'] === 'COL') {
     bonus_foreuse = bonus_foreuse * (1 + FOR_BONUS_COL);
@@ -101,10 +101,10 @@ function ogame_productionForeuseBonus(user_building, user_data) {
   return result;
 }
 function ogame_productionBuilding(building, user_building = null, user_technology = null, user_data = null, server_config = null) {
-  var BASE_M = 30;
-  var BASE_C = 15;
+  const BASE_M = 30;
+  const BASE_C = 15;
   //Valeurs OUT par défaut :
-  var result = ogame_arrayRessource(0, 0, 0);
+  let result = ogame_arrayRessource(0, 0, 0);
   //Valeurs IN par défaut :
   if (user_building === null) { user_building = []; }
   if (user_technology === null) { user_technology = []; }
@@ -124,9 +124,9 @@ function ogame_productionBuilding(building, user_building = null, user_technolog
   if (typeof (server_config['final_calcul']) === 'undefined') { server_config['final_calcul'] = true; }
 
   user_building['position'] = ogame_findPlanetPosition(user_building['coordinates']);
-  var bonus_position = ogame_productionPosition(user_building['position']);
-  var level = 0, coef_base = 0, bonus_for = 0, number = 0;
-  var production_mine_base = [];
+  let bonus_position = ogame_productionPosition(user_building['position']);
+  let level = 0, coef_base = 0, bonus_for = 0, number = 0;
+  let production_mine_base = [];
 
   switch (building) {
     case 'base':
@@ -189,18 +189,18 @@ function ogame_productionBuilding(building, user_building = null, user_technolog
 }
 // console.log(ogame_productionBuilding('base',{M:38,CES:38,coordinates:'::8'},null,null,{speed_uni:8}))
 function ogame_productionPlanet(user_building, user_technology = null, user_data = null, server_config = null) {
-  var NRJ_BONUS_COL = 0.1;   //+10% pour COL
-  var NRJ_BONUS_ING = 0.1;   //+10% pour ingénieur
-  var NRJ_BONUS_FULL = 0.02;  //+2% pour full officier
-  var RESS_BONUS_COL = 0.25;  //+25% pour COL
-  var RESS_BONUS_GEO = 0.1;   //+10% pour géologue
-  var RESS_BONUS_FULL = 0.02;  //+2% pour full officier
-  var RESS_PLASMA_M = 0.01;
-  var RESS_PLASMA_C = 6.6e-4;
-  var RESS_PLASMA_D = 3.3e-4;
-  var names = ogame_getElementNames();
+  const NRJ_BONUS_COL = 0.1;   //+10% pour COL
+  const NRJ_BONUS_ING = 0.1;   //+10% pour ingénieur
+  const NRJ_BONUS_FULL = 0.02;  //+2% pour full officier
+  const RESS_BONUS_COL = 0.25;  //+25% pour COL
+  const RESS_BONUS_GEO = 0.1;   //+10% pour géologue
+  const RESS_BONUS_FULL = 0.02;  //+2% pour full officier
+  const RESS_PLASMA_M = 0.01;
+  const RESS_PLASMA_C = 6.6e-4;
+  const RESS_PLASMA_D = 3.3e-4;
+  let names = ogame_getElementNames();
   //Valeurs OUT par défaut :
-  var result = {
+  let result = {
     'prod_reel': 0, 'prod_theorique': 0, 'ratio': 0, 'conso_E': 0, 'prod_E': 0,   //Production totale
     'prod_CES': 0, 'prod_CEF': 0, 'prod_SAT': 0, 'prod_FOR': 0, //production et conso de chaque unité
     'prod_M': 0, 'prod_C': 0, 'prod_D': 0, 'prod_base': 0,  //production et conso de chaque unité
@@ -214,10 +214,10 @@ function ogame_productionPlanet(user_building, user_technology = null, user_data
   result['prod_Plasma'] = ogame_arrayRessource(0, 0, 0);
   result['prod_classe'] = ogame_arrayRessource(0, 0, 0);
   //Valeurs IN par défaut :
-  if (typeof (user_building) === 'undefined') { user_building = new Array(); }
-  if (user_technology === null) { user_technology = new Array(); }
-  if (user_data === null) { user_data = new Array(); }
-  if (server_config === null) { server_config = new Array(); }
+  if (typeof (user_building) === 'undefined') { user_building = []; }
+  if (user_technology === null) { user_technology = []; }
+  if (user_data === null) { user_data = []; }
+  if (server_config === null) { server_config = []; }
   if (typeof (user_technology['Plasma']) === 'undefined') { user_technology['Plasma'] = 0; }
   if (typeof (user_technology['NRJ']) === 'undefined') { user_technology['NRJ'] = 0; }
   if (typeof (user_data['off_commandant']) === 'undefined') { user_data['off_commandant'] = 0; }
@@ -251,21 +251,21 @@ function ogame_productionPlanet(user_building, user_technology = null, user_data
     user_building['FOR_percentage'] = 100;
   }
 
-  var M_per = user_building['M_percentage'];
-  var C_per = user_building['C_percentage'];
-  var D_per = user_building['D_percentage'];
-  var FOR_per = user_building['FOR_percentage'];
+  let M_per = user_building['M_percentage'];
+  let C_per = user_building['C_percentage'];
+  let D_per = user_building['D_percentage'];
+  let FOR_per = user_building['FOR_percentage'];
   //Calcul valeurs de base
-  var tmp = [];
-  var ratio = 1;
-  var prod_base = ogame_arrayRessource(0, 0, 0);
-  var prod_mine_M = ogame_arrayRessource(0, 0, 0);
-  var prod_mine_C = ogame_arrayRessource(0, 0, 0);
-  var prod_mine_D = ogame_arrayRessource(0, 0, 0);
-  var prod_bat_CES = ogame_arrayRessource(0, 0, 0);
-  var prod_bat_CEF = ogame_arrayRessource(0, 0, 0);
-  var prod_vso_SAT = ogame_arrayRessource(0, 0, 0);
-  var prod_vso_FOR = ogame_arrayRessource(0, 0, 0);
+  let tmp = [];
+  let ratio = 1;
+  let prod_base = ogame_arrayRessource(0, 0, 0);
+  let prod_mine_M = ogame_arrayRessource(0, 0, 0);
+  let prod_mine_C = ogame_arrayRessource(0, 0, 0);
+  let prod_mine_D = ogame_arrayRessource(0, 0, 0);
+  let prod_bat_CES = ogame_arrayRessource(0, 0, 0);
+  let prod_bat_CEF = ogame_arrayRessource(0, 0, 0);
+  let prod_vso_SAT = ogame_arrayRessource(0, 0, 0);
+  let prod_vso_FOR = ogame_arrayRessource(0, 0, 0);
   tmp = ogame_productionBuilding('base', user_building, null, null, server_config);
   prod_base['M'] = tmp['M']
   prod_base['C'] = tmp['C']
@@ -301,11 +301,11 @@ function ogame_productionPlanet(user_building, user_technology = null, user_data
   result['prod_FOR'] = prod_vso_FOR;
 
   //Calcul de la consommation d'énergie théorique
-  var conso_M = Math.round(prod_mine_M['NRJ'] * user_building['M_percentage'] / 100);
-  var conso_C = Math.round(prod_mine_C['NRJ'] * user_building['C_percentage'] / 100);
-  var conso_D = Math.round(prod_mine_D['NRJ'] * user_building['D_percentage'] / 100);
-  var conso_FOR = Math.round(prod_vso_FOR['NRJ'] * Math.max(1, user_building['FOR_percentage'] * 2 / 100 - 1));
-  var consommation_E = conso_M + conso_C + conso_D + conso_FOR;
+  let conso_M = Math.round(prod_mine_M['NRJ'] * user_building['M_percentage'] / 100);
+  let conso_C = Math.round(prod_mine_C['NRJ'] * user_building['C_percentage'] / 100);
+  let conso_D = Math.round(prod_mine_D['NRJ'] * user_building['D_percentage'] / 100);
+  let conso_FOR = Math.round(prod_vso_FOR['NRJ'] * Math.max(1, user_building['FOR_percentage'] * 2 / 100 - 1));
+  let consommation_E = conso_M + conso_C + conso_D + conso_FOR;
   result['conso_E'] = consommation_E;
   result['prod_M']['NRJ'] = conso_M;
   result['prod_C']['NRJ'] = conso_C;
@@ -313,10 +313,10 @@ function ogame_productionPlanet(user_building, user_technology = null, user_data
   result['prod_FOR']['NRJ'] = conso_FOR;
   if (!user_data['production_theorique']) {
     //Calcul de la production d'énergie
-    var prod_CES = prod_bat_CES['NRJ'] * user_building['CES_percentage'] / 100;
-    var prod_CEF = prod_bat_CEF['NRJ'] * user_building['CEF_percentage'] / 100;
-    var prod_SAT = prod_vso_SAT['NRJ'] * user_building['Sat_percentage'] / 100;
-    var production_E = prod_CES + prod_CEF + prod_SAT;
+    let prod_CES = prod_bat_CES['NRJ'] * user_building['CES_percentage'] / 100;
+    let prod_CEF = prod_bat_CEF['NRJ'] * user_building['CEF_percentage'] / 100;
+    let prod_SAT = prod_vso_SAT['NRJ'] * user_building['Sat_percentage'] / 100;
+    let production_E = prod_CES + prod_CEF + prod_SAT;
     result['prod_booster']['NRJ'] = Math.round(production_E * user_building['booster_tab']['booster_e_val'] / 100);
     if (user_data['user_class'] === 'COL') {
       result['prod_classe']['NRJ'] = Math.round(production_E * NRJ_BONUS_COL);
@@ -335,8 +335,8 @@ function ogame_productionPlanet(user_building, user_technology = null, user_data
 
     //Calcul ratio
     ratio = 1; // indique le pourcentage à appliquer sur la prod
-    var ratio_temp = 1;
-    ratio_temp = (consommation_E == 0) ? 0 : (- production_E * 100 / consommation_E) / 100; // fix division par 0
+    let ratio_temp = 1;
+    ratio_temp = (consommation_E === 0) ? 0 : (- production_E * 100 / consommation_E) / 100; // fix division par 0
     if (ratio_temp > 1) {
       ratio = 1;
     } else {
@@ -352,7 +352,7 @@ function ogame_productionPlanet(user_building, user_technology = null, user_data
       FOR_per = 100;
     }
     result['prod_FOR']['NRJ'] = Math.round(prod_vso_FOR['NRJ'] * Math.max(1, FOR_per * 2 / 100 - 1));
-    production_E = result['prod_CES']['NRJ'] + result['prod_CEF']['NRJ'] + result['prod_SAT']['NRJ'];
+    let production_E = result['prod_CES']['NRJ'] + result['prod_CEF']['NRJ'] + result['prod_SAT']['NRJ'];
 
     result['prod_booster']['NRJ'] = Math.round(production_E * user_building['booster_tab']['booster_e_val'] / 100);
     if (user_data['user_class'] === 'COL') {
@@ -374,11 +374,11 @@ function ogame_productionPlanet(user_building, user_technology = null, user_data
   result['prod_E'] = production_E;
 
   //Calcul de la production
-  var production_mine_base = 0, conso_CEF = 0, prod_off = 0, prod_Plasma = 0, prod_booster = 0, prod_FOR = 0, prod_Classe = 0;
-  var bonus_off_geo = (user_data['off_geologue'] !== 0) ? RESS_BONUS_GEO : 0;
-  var bonus_off_full = (user_data['off_full'] !== 0) ? RESS_BONUS_FULL : 0;
-  var bonus_class = (user_data['user_class'] === 'COL') ? RESS_BONUS_COL : 0;
-  var bonus_for = ogame_productionForeuseBonus(user_building, user_data);
+  let production_mine_base = 0, conso_CEF = 0, prod_off = 0, prod_Plasma = 0, prod_booster = 0, prod_FOR = 0, prod_Classe = 0;
+  let bonus_off_geo = (user_data['off_geologue'] !== 0) ? RESS_BONUS_GEO : 0;
+  let bonus_off_full = (user_data['off_full'] !== 0) ? RESS_BONUS_FULL : 0;
+  let bonus_class = (user_data['user_class'] === 'COL') ? RESS_BONUS_COL : 0;
+  let bonus_for = ogame_productionForeuseBonus(user_building, user_data);
   result['nb_FOR_maxed'] = bonus_for['nb_FOR_maxed'];
 
   //*Métal :
@@ -434,7 +434,7 @@ function ogame_productionPlanet(user_building, user_technology = null, user_data
   result['prod_CEF']['D'] = conso_CEF;
   result['prod_D']['D'] = production_mine_base;
 
-  for (var RESS in names['RESS']) {
+  for (let RESS in names['RESS']) {
     RESS = names['RESS'][RESS]
     result['prod_reel'][RESS] = Math.floor(result['prod_base'][RESS]);
     result['prod_reel'][RESS] += Math.floor(result['prod_M'][RESS]) + Math.floor(result['prod_C'][RESS]) + Math.floor(result['prod_D'][RESS]);
@@ -463,8 +463,8 @@ function ogame_productionPlanet(user_building, user_technology = null, user_data
  *  @return array('vitesse','fret','conso',(bool)'civil')
  */
 function ogame_fleetSubDetailsBase(name = 'all') {
-  var details_base = {};
-  var names = ogame_getElementNames();
+  let details_base = {};
+  let names = ogame_getElementNames();
   //Coût de base des vaisseaux                   vitesse   ,fret    ,conso,civil)
   details_base['PT'] = ogame_arraySubDetail(5000, 5000, 10);
   details_base['GT'] = ogame_arraySubDetail(7500, 25000, 50);
@@ -501,7 +501,6 @@ function ogame_fleetSubDetails(name, user_techno = null, classe = 'none') {
   const RI_COEF = 0.2;
   const PH_COEF = 0.3;
   const HYP_COEF = 0.05;
-  var names = ogame_getElementNames();
   //Valeurs IN par défaut :
   if (user_techno === null) { user_techno = []; }
   if (typeof (user_techno['RC']) === 'undefined') { user_techno['RC'] = 0; }
@@ -510,11 +509,11 @@ function ogame_fleetSubDetails(name, user_techno = null, classe = 'none') {
   if (typeof (user_techno['Hyp']) === 'undefined') { user_techno['Hyp'] = 0; }
 
   user_techno['speed'] = 0;  //local variable pour la vitesse
-  var base_detail = ogame_fleetSubDetailsBase(name);
-  var techno_RC_coef = user_techno['RC'] * RC_COEF;
-  var techno_RI_coef = user_techno['RI'] * RI_COEF;
-  var techno_PH_coef = user_techno['PH'] * PH_COEF;
-  var techno_Hyp_coef = user_techno['Hyp'] * HYP_COEF;
+  let base_detail = ogame_fleetSubDetailsBase(name);
+  let techno_RC_coef = user_techno['RC'] * RC_COEF;
+  let techno_RI_coef = user_techno['RI'] * RI_COEF;
+  let techno_PH_coef = user_techno['PH'] * PH_COEF;
+  let techno_Hyp_coef = user_techno['Hyp'] * HYP_COEF;
   if (name === 'PT' || name === 'GT' || name === 'CLE' || name === 'SE' || name === 'REC') { //vso avec le réacteur à combustion.
     user_techno['speed'] = techno_RC_coef;
   } else if (name === 'CLO' || name === 'CR' || name === 'VC' || name === 'BMD') {
@@ -544,10 +543,10 @@ function ogame_fleetSubDetails(name, user_techno = null, classe = 'none') {
     user_techno['speed'] = techno_PH_coef;
   }
 
-  var vitesse = base_detail['vitesse'];
-  var fret = base_detail['fret'];
-  var conso = base_detail['conso'];
-  var bonus_class = 0;
+  let vitesse = base_detail['vitesse'];
+  let fret = base_detail['fret'];
+  let conso = base_detail['conso'];
+  let bonus_class = 0;
   //Vitesse
   if (classe === 'COL') {
     if (name === 'PT' || name === 'GT') {
@@ -588,21 +587,21 @@ function ogame_fleetSubDetails(name, user_techno = null, classe = 'none') {
 }
 // console.log(ogame_fleetSubDetails('PT',{'Hyp':18,'RC':21,'RI':17,'PH':16},'GEN'));
 function ogame_fleetConsoStatio(conso, hour) {
-  var result = hour * conso / 10;
+  let result = hour * conso / 10;
   if (result < 1) {
     result = 1;
   }
-  if (hour == 0) {
+  if (hour === 0) {
     result = 0;
   }
   return Math.floor(result);
 }
 function ogame_fleetSlowestSpeed(fleet, user_techno = null, classe = 'none') {
-  var names = ogame_getElementNames();
-  var details = {};
-  var max_speed = ogame_fleetSubDetails('SE', user_techno, classe);   //The fastest fleet
-  var min_speed = max_speed['vitesse'];
-  for (var elem in names['VSO']) {
+  let names = ogame_getElementNames();
+  let details = {};
+  let max_speed = ogame_fleetSubDetails('SE', user_techno, classe);   //The fastest fleet
+  let min_speed = max_speed['vitesse'];
+  for (let elem in names['VSO']) {
     elem = names['VSO'][elem];
     if (typeof (fleet[elem]) !== 'undefined' && fleet[elem] !== 0) {
       details = ogame_fleetSubDetails(elem, user_techno, classe);
@@ -614,7 +613,7 @@ function ogame_fleetSlowestSpeed(fleet, user_techno = null, classe = 'none') {
   return min_speed;
 }
 function ogame_fleetDistance(a, b, user_techno = null, classe = 'none', server_config = null) {
-  var result = { 'distance': 0, 'type': 'p' };
+  let result = { 'distance': 0, 'type': 'p' };
   if (user_techno === null) { user_techno = []; }
   if (server_config === null) { server_config = []; }
   if (typeof (user_techno['RC']) === 'undefined') { user_techno['RC'] = 0; }
@@ -623,9 +622,9 @@ function ogame_fleetDistance(a, b, user_techno = null, classe = 'none', server_c
   if (typeof (server_config['donutGalaxy']) === 'undefined') { server_config['donutGalaxy'] = 1; }
   if (typeof (server_config['donutSystem']) === 'undefined') { server_config['donutSystem'] = 1; }
 
-  var dist_abs = 0;
-  var max_type = { 'g': server_config['num_of_galaxies'], 's': server_config['num_of_systems'], 'p': 0 };
-  var uni_arrondi = { 'g': true, 's': true, 'p': false }; //Par défaut
+  let dist_abs = 0;
+  let max_type = { 'g': server_config['num_of_galaxies'], 's': server_config['num_of_systems'], 'p': 0 };
+  let uni_arrondi = { 'g': true, 's': true, 'p': false }; //Par défaut
   if (server_config['donutGalaxy'] === 0) {
     max_type['g'] = 0;
     uni_arrondi['g'] = false;
@@ -634,10 +633,10 @@ function ogame_fleetDistance(a, b, user_techno = null, classe = 'none', server_c
     max_type['s'] = 0;
     uni_arrondi['s'] = false;
   }
-  var coord_a = ogame_findCoordinates(a);
-  var coord_b = ogame_findCoordinates(b);
-  var key = 'p';
-  for (var key in coord_a) {    //On ne calcule la distance qu'entre des vraies coordonnées.
+  let coord_a = ogame_findCoordinates(a);
+  let coord_b = ogame_findCoordinates(b);
+  let key = 'p';
+  for (let key in coord_a) {    //On ne calcule la distance qu'entre des vraies coordonnées.
     if (coord_a[key] === 0 || coord_b[key] === 0) {
       coord_a[key] = 0;
       coord_b[key] = 0;
@@ -654,16 +653,16 @@ function ogame_fleetDistance(a, b, user_techno = null, classe = 'none', server_c
   }
   return result;
 }
-// console.log(ogame_fleetDistance('1:2:6','9:499:8'))
+
 function ogame_fleetSend(coord_from, coord_to, fleet, speed_per = 100, user_techno = null, classe = 'none', server_config = null, type = '', hour_mission = 0) {
-  var result = { 'conso': 0, 'time': 0 };
-  var names = ogame_getElementNames();
-  var details = {};
-  var consos = {};
-  var max_speed = ogame_fleetSubDetails('SE', user_techno, classe);   //The fastest fleet
-  var min_speed = max_speed['vitesse'];
-  var conso_sum = 0;
-  for (var elem in names['VSO']) {
+  let result = { 'conso': 0, 'time': 0 };
+  let names = ogame_getElementNames();
+  let details = {};
+  let consos = {};
+  let max_speed = ogame_fleetSubDetails('SE', user_techno, classe);   //The fastest fleet
+  let min_speed = max_speed['vitesse'];
+  let conso_sum = 0;
+  for (let elem in names['VSO']) {
     elem = names['VSO'][elem];
     consos[elem] = 0;
     if (typeof (fleet[elem]) !== 'undefined' && fleet[elem] !== 0) {
@@ -675,10 +674,10 @@ function ogame_fleetSend(coord_from, coord_to, fleet, speed_per = 100, user_tech
       conso_sum += consos[elem];
     }
   }
-  if (min_speed == 0) { //Ne devrait jamais arriver mais pour éviter une div/0.
+  if (min_speed === 0) { //Ne devrait jamais arriver mais pour éviter une div/0.
     return $result;
   }
-  var distance = ogame_fleetDistance(coord_from, coord_to, server_config);
+  let distance = ogame_fleetDistance(coord_from, coord_to, server_config);
   if (type === 'fuite') {
     distance['type'] = type;
   }
@@ -714,14 +713,9 @@ function ogame_fleetSend(coord_from, coord_to, fleet, speed_per = 100, user_tech
   result['conso'] = Math.ceil(result['conso']);
   return result;
 }
-// var a=ogame_fleetSend('1:1:1','1:1:1',{'PT':260},100,{'RC':20,'RI':17,'PH':16},'COL');
-// console.log(a);
-// var d = new Date(a['time']*1000);
-// console.log((d.getUTCDate()-1)+ ':'+ d.getUTCHours()+':'+d.getUTCMinutes()+':'+d.getUTCSeconds())
 
-//Cout
 function ogame_elementCoutBase(name = 'all') {
-  var cout_base = {};
+  let cout_base = {};
   //Coût de base des bâtiments                           métal , cristal, deutérium, NRJ
   cout_base['M'] = ogame_arrayRessource(60, 15, 0);
   cout_base['C'] = ogame_arrayRessource(48, 24, 0);
@@ -806,37 +800,40 @@ function production(building, level, temperatureMax, energy, plasma, position) {
   if (typeof (position) == 'undefined') {
     position = 0;
   }
-  var speed = document.getElementById('vitesse_uni').value,
-    ingenieur = document.getElementById('off_ingenieur').value == 1 ? 0.1 : 0,
-    geologue = document.getElementById('off_geologue').value == 1 ? 0.1 : 0;
-  var bonus_class_mine = 0,
+  // Convert position to integer to avoid type coercion issues
+  position = parseInt(position, 10) || 0;
+
+  let speed = Number(document.getElementById('vitesse_uni').value),
+    ingenieur = Number(document.getElementById('off_ingenieur').value) === 1 ? 0.1 : 0,
+    geologue = Number(document.getElementById('off_geologue').value) === 1 ? 0.1 : 0;
+  let bonus_class_mine = 0,
     bonus_class_energie = 0,
     bonus_position = 0;
 
-  if (document.getElementById('off_full').value == 1) {
+  if (Number(document.getElementById('off_full').value) === 1) {
     ingenieur = 0.12;
     geologue = 0.12;
   }
-  if (document.getElementById('class_collect').value == 1) {
+  if (Number(document.getElementById('class_collect').value) === 1) {
     bonus_class_mine = 0.25; //+25%
     bonus_class_energie = 0.10; //+10%
   }
   //Bonus position
   bonus_position = 0;
   if (building === 'C') {
-    if (position == 1) {
+    if (position === 1) {
       bonus_position = 0.4;
-    } else if (position == 2) {
+    } else if (position === 2) {
       bonus_position = 0.3;
-    } else if (position == 3) {
+    } else if (position === 3) {
       bonus_position = 0.2;
     }
   } else if (building === 'M') {
-    if (position == 8) {
+    if (position === 8) {
       bonus_position = 0.35;
-    } else if (position == 9 || position == 7) {
+    } else if (position === 9 || position === 7) {
       bonus_position = 0.23;
-    } else if (position == 10 || position == 6) {
+    } else if (position === 10 || position === 6) {
       bonus_position = 0.17;
     }
   }
@@ -869,10 +866,10 @@ function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax, p
   if (typeof (position) == 'undefined') {
     position = 0;
   }
-  var speed = document.getElementById('vitesse_uni').value;
-  var bonus_foreuse = 0.0002,
+  let speed = document.getElementById('vitesse_uni').value;
+  let bonus_foreuse = 0.0002,
     bonus_foreuse_max = 0;
-  var nb_max;
+  let nb_max;
   if (document.getElementById('class_collect').value == 1) {
     bonus_foreuse = bonus_foreuse * 1.5; //+50%
     if (document.getElementById('off_geologue').value == 1) {
@@ -884,8 +881,8 @@ function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax, p
     nbForeuse = nb_max;
   }
   //Bonus position
-  var bonus_position_M = 0;
-  var bonus_position_C = 0;
+  let bonus_position_M = 0;
+  let bonus_position_C = 0;
   if (position == 1) {
     bonus_position_C = 0.4;
   } else if (position == 2) {
@@ -900,17 +897,17 @@ function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax, p
     bonus_position_M = 0.17;
   }
   //paypass lien externe !!
-  var tmp_class = document.getElementById('class_collect').value;
-  var tmp_geo = document.getElementById('off_geologue').value;
-  var tmp_off_full = document.getElementById('off_full').value;
+  let tmp_class = document.getElementById('class_collect').value;
+  let tmp_geo = document.getElementById('off_geologue').value;
+  let tmp_off_full = document.getElementById('off_full').value;
   document.getElementById('class_collect').value = 0;
   document.getElementById('off_geologue').value = 0;
   document.getElementById('off_full').value = 0;
 
-  final_bonus_foreuse = Math.min(0.5, bonus_foreuse * nbForeuse);
-  result_M = Math.round(final_bonus_foreuse * (production('M', levelM, temperatureMax, 0, 0, position) - Math.floor(speed * 30 * (1 + bonus_position_M))));
-  result_C = Math.round(final_bonus_foreuse * (production('C', levelC, temperatureMax, 0, 0, position) - Math.floor(speed * 15 * (1 + bonus_position_C))));
-  result_D = Math.round(final_bonus_foreuse * production('D', levelD, temperatureMax, 0, 0, position));
+  let final_bonus_foreuse = Math.min(0.5, bonus_foreuse * nbForeuse);
+  let result_M = Math.round(final_bonus_foreuse * (production('M', levelM, temperatureMax, 0, 0, position) - Math.floor(speed * 30 * (1 + bonus_position_M))));
+  let result_C = Math.round(final_bonus_foreuse * (production('C', levelC, temperatureMax, 0, 0, position) - Math.floor(speed * 15 * (1 + bonus_position_C))));
+  let result_D = Math.round(final_bonus_foreuse * production('D', levelD, temperatureMax, 0, 0, position));
 
   document.getElementById('class_collect').value = tmp_class;
   document.getElementById('off_geologue').value = tmp_geo;
@@ -922,7 +919,7 @@ function production_foreuse(nbForeuse, levelM, levelC, levelD, temperatureMax, p
 
 //Max foreuses
 function foreuse_max(levelM, levelC, levelD) {
-  var bonus_foreuse_max = 0;
+  let bonus_foreuse_max = 0;
   if (document.getElementById('class_collect').value == 1 && document.getElementById('off_geologue').value == 1) {
     bonus_foreuse_max = 0.1; //+10%
   }
@@ -954,9 +951,9 @@ function update_page(planetsIdList, planetBuildings, technologies, planetDefense
   console.log(technologies);
   console.log(planetDefenses);
 
-  var j = 0;
-  var NRJ = document.getElementById('NRJ').value;
-  var Plasma = document.getElementById('Plasma').value;
+  let j = 0;
+  let NRJ = document.getElementById('NRJ').value;
+  let Plasma = document.getElementById('Plasma').value;
 
   if (document.getElementById('c_off_ingenieur').checked) {
     document.getElementById('off_ingenieur').value = '1';
@@ -986,41 +983,41 @@ function update_page(planetsIdList, planetBuildings, technologies, planetDefense
   //
   // Planètes
   //
-  var M_1_conso = [];
-  var M_1_prod = [];
-  var C_1_conso = [];
-  var C_1_prod = [];
-  var D_1_conso = [];
-  var D_1_prod = [];
-  var FOR_1_conso = [];
-  var FOR_1_prod = [];
+  let M_1_conso = [];
+  let M_1_prod = [];
+  let C_1_conso = [];
+  let C_1_prod = [];
+  let D_1_conso = [];
+  let D_1_prod = [];
+  let FOR_1_conso = [];
+  let FOR_1_prod = [];
 
-  var NRJ_1 = [];
+  let NRJ_1 = [];
 
-  var M_1 = [];
-  var C_1 = [];
-  var D_1 = [];
+  let M_1 = [];
+  let C_1 = [];
+  let D_1 = [];
 
-  var CES_1 = [];
-  var CEF_1 = [];
-  var Sat_1 = [];
-  var For_1 = [];
+  let CES_1 = [];
+  let CEF_1 = [];
+  let Sat_1 = [];
+  let For_1 = [];
 
   planetsIdList.forEach(planetId => {
-    var temperature_max_1 = document.getElementById('temperature_max_' + planetId).value;
-    var M_1_percentage = document.getElementById('M_' + planetId + '_percentage').value;
-    var C_1_percentage = document.getElementById('C_' + planetId + '_percentage').value;
-    var D_1_percentage = document.getElementById('D_' + planetId + '_percentage').value;
-    var CES_1_percentage = document.getElementById('CES_' + planetId + '_percentage').value;
-    var CEF_1_percentage = document.getElementById('CEF_' + planetId + '_percentage').value;
-    var Sat_1_percentage = document.getElementById('Sat_' + planetId + '_percentage').value;
-    var For_1_percentage = document.getElementById('For_' + planetId + '_percentage').value;
-    var M_1_booster = document.getElementById('M_' + planetId + '_booster').value;
-    var C_1_booster = document.getElementById('C_' + planetId + '_booster').value;
-    var D_1_booster = document.getElementById('D_' + planetId + '_booster').value;
-    var E_1_booster = document.getElementById('E_' + planetId + '_booster').value;
+    let temperature_max_1 = document.getElementById('temperature_max_' + planetId).value;
+    let M_1_percentage = document.getElementById('M_' + planetId + '_percentage').value;
+    let C_1_percentage = document.getElementById('C_' + planetId + '_percentage').value;
+    let D_1_percentage = document.getElementById('D_' + planetId + '_percentage').value;
+    let CES_1_percentage = document.getElementById('CES_' + planetId + '_percentage').value;
+    let CEF_1_percentage = document.getElementById('CEF_' + planetId + '_percentage').value;
+    let Sat_1_percentage = document.getElementById('Sat_' + planetId + '_percentage').value;
+    let For_1_percentage = document.getElementById('For_' + planetId + '_percentage').value;
+    let M_1_booster = document.getElementById('M_' + planetId + '_booster').value;
+    let C_1_booster = document.getElementById('C_' + planetId + '_booster').value;
+    let D_1_booster = document.getElementById('D_' + planetId + '_booster').value;
+    let E_1_booster = document.getElementById('E_' + planetId + '_booster').value;
 
-    var position = document.getElementById('position_' + planetId).value;
+    let position = document.getElementById('position_' + planetId).value;
 
     M_1[planetId] = document.getElementById('M_' + planetId).value;
     C_1[planetId] = document.getElementById('C_' + planetId).value;
@@ -1034,14 +1031,14 @@ function update_page(planetsIdList, planetBuildings, technologies, planetDefense
     C_1_conso[planetId] = Math.round(consumption('C', C_1[planetId]) * C_1_percentage / 100);
     D_1_conso[planetId] = Math.round(consumption('D', D_1[planetId]) * D_1_percentage / 100);
     FOR_1_conso[planetId] = Math.round(consumption('FOR', For_1[planetId]) * For_1_percentage / 100);
-    var energie_conso = M_1_conso[planetId] + C_1_conso[planetId] + D_1_conso[planetId] + FOR_1_conso[planetId];
+    let energie_conso = M_1_conso[planetId] + C_1_conso[planetId] + D_1_conso[planetId] + FOR_1_conso[planetId];
 
-    var CES_1_production = production('CES', CES_1[planetId], temperature_max_1, NRJ) * CES_1_percentage / 100;
-    var CEF_1_production = production('CEF', CEF_1[planetId], temperature_max_1, NRJ) * CEF_1_percentage / 100;
-    var Sat_1_production = production_sat(temperature_max_1, Sat_1[planetId]) * Sat_1_percentage / 100;
+    let CES_1_production = production('CES', CES_1[planetId], temperature_max_1, NRJ) * CES_1_percentage / 100;
+    let CEF_1_production = production('CEF', CEF_1[planetId], temperature_max_1, NRJ) * CEF_1_percentage / 100;
+    let Sat_1_production = production_sat(temperature_max_1, Sat_1[planetId]) * Sat_1_percentage / 100;
     NRJ_1[planetId] = Math.round((CES_1_production + CEF_1_production + Sat_1_production) * (1 + E_1_booster / 100));
 
-    var NRJ_1_delta = NRJ_1[planetId] - energie_conso;
+    let NRJ_1_delta = NRJ_1[planetId] - energie_conso;
     if (NRJ_1_delta < 0) {
       document.getElementById('NRJ_' + planetId).innerHTML = '<span class="og-alert">' + format(NRJ_1_delta) + '</span>' + ' / ' + format(NRJ_1[planetId]);
     } else {
@@ -1050,7 +1047,7 @@ function update_page(planetsIdList, planetBuildings, technologies, planetDefense
     if (isNaN(NRJ_1[planetId])) NRJ_1[planetId] = 0;
 
     //Ratio de consommation d'énergie
-    var ratio_conso = 0;
+    let ratio_conso = 0;
     if (energie_conso !== 0) {
       ratio_conso = NRJ_1[planetId] / energie_conso;
       if (ratio_conso > 1) ratio_conso = 1;
@@ -1072,7 +1069,7 @@ function update_page(planetsIdList, planetBuildings, technologies, planetDefense
       M_1_prod[planetId] = Math.round(production('M', 0, 0, 0, 0, position));
       C_1_prod[planetId] = Math.round(production('C', 0, 0, 0, 0, position));
       D_1_prod[planetId] = Math.round(production('D', 0, 0, 0, 0, position));
-      prod_for_tmp = production_foreuse(0, 0, 0, 0, 0, position);
+      let prod_for_tmp = production_foreuse(0, 0, 0, 0, 0, position);
       prod_for_tmp['M'] = Math.round(ratio_conso * prod_for_tmp['M'] * For_1_percentage / 100);
       prod_for_tmp['C'] = Math.round(ratio_conso * prod_for_tmp['C'] * For_1_percentage / 100);
       prod_for_tmp['D'] = Math.round(ratio_conso * prod_for_tmp['D'] * For_1_percentage / 100);
@@ -1093,14 +1090,14 @@ function update_page(planetsIdList, planetBuildings, technologies, planetDefense
   //
   // Totaux
   //
-  var M_conso = 0;
-  var M_prod = 0;
-  var C_conso = 0;
-  var C_prod = 0;
-  var D_conso = 0;
-  var D_prod = 0;
-  var FOR_conso = 0;
-  var NRJ = 0;
+  let M_conso = 0;
+  let M_prod = 0;
+  let C_conso = 0;
+  let C_prod = 0;
+  let D_conso = 0;
+  let D_prod = 0;
+  let FOR_conso = 0;
+  NRJ = 0;
 
   planetsIdList.forEach(planetId => {
     M_conso = M_conso + M_1_conso[planetId];
@@ -1121,8 +1118,8 @@ function update_page(planetsIdList, planetBuildings, technologies, planetDefense
   document.getElementById('FOR_conso').innerHTML = format(FOR_conso);
 
   //Energie
-  var Delta_NRJ = NRJ - (M_conso + C_conso + D_conso + FOR_conso);
-  var s_delta = "-";
+  let Delta_NRJ = NRJ - (M_conso + C_conso + D_conso + FOR_conso);
+  let s_delta = "-";
   if (Delta_NRJ < 0 || isNaN(Delta_NRJ)) s_delta = '<span class="og-alert">' + format(Delta_NRJ) + '</span>';
   else s_delta = '<span>' + format(Delta_NRJ) + '</span>';
   document.getElementById('E_NRJ').innerHTML = s_delta + ' / ' + '<span>' + format(NRJ) + '</span>';
@@ -1148,11 +1145,11 @@ function update_page(planetsIdList, planetBuildings, technologies, planetDefense
   };
 
   // Batiments planetes
-  var total_b_pts = 0;
-  var total_pts_1 = [];
+  let total_b_pts = 0;
+  let total_pts_1 = [];
 
   planetsIdList.forEach(planetId => {
-    var b_pts_1 = Math.floor(((60 + 15) * (1 - Math.pow(1.5, M_1[planetId])) / (-0.5)) + ((48 + 24) * (1 - Math.pow(1.6, C_1[planetId])) / (-0.6)) + ((225 + 75) * (1 - Math.pow(1.5, D_1[planetId])) / (-0.5)) + ((75 + 30) * (1 - Math.pow(1.5, CES_1[planetId])) / (-0.5)) + ((900 + 360 + 180) * (1 - Math.pow(1.8, CEF_1[planetId])) / (-0.8)));
+    let b_pts_1 = Math.floor(((60 + 15) * (1 - Math.pow(1.5, M_1[planetId])) / (-0.5)) + ((48 + 24) * (1 - Math.pow(1.6, C_1[planetId])) / (-0.6)) + ((225 + 75) * (1 - Math.pow(1.5, D_1[planetId])) / (-0.5)) + ((75 + 30) * (1 - Math.pow(1.5, CES_1[planetId])) / (-0.5)) + ((900 + 360 + 180) * (1 - Math.pow(1.8, CEF_1[planetId])) / (-0.8)));
 
     for (const [key, value] of Object.entries(planetBuildings[planetId])) {
       if (key in init_b_prix) { // ne calculer que les entries avec un prix
@@ -1183,18 +1180,18 @@ function update_page(planetsIdList, planetBuildings, technologies, planetDefense
 
 
 // Defenses planetes
-var total_d_pts = 0;
+  let total_d_pts = 0;
 
-planetsIdList.forEach(planetId => {
-  var d_pts_1 = 0;
-  for (const [key, value] of Object.entries(planetDefenses[planetId])) {
-    if (key in init_d_prix) { // ne calculer que les entries avec un prix
-      d_pts_1 += init_d_prix[key] * value;
+  planetsIdList.forEach(planetId => {
+    let d_pts_1 = 0;
+    for (const [key, value] of Object.entries(planetDefenses[planetId])) {
+      if (key in init_d_prix) { // ne calculer que les entries avec un prix
+        d_pts_1 += init_d_prix[key] * value;
+      }
     }
-  }
-  total_pts_1[planetId] += d_pts_1;
-  total_d_pts += d_pts_1;
-  document.getElementById('defence_pts_' + planetId).innerHTML = format(Math.round(total_pts_1[planetId] / 1000));
+    total_pts_1[planetId] += d_pts_1;
+    total_d_pts += d_pts_1;
+    document.getElementById('defence_pts_' + planetId).innerHTML = format(Math.round(total_pts_1[planetId] / 1000));
 });
   document.getElementById('total_d_pts').innerHTML = format(Math.round(total_d_pts / 1000));
 
@@ -1226,10 +1223,10 @@ planetsIdList.forEach(planetId => {
   document.getElementById('total_lune_pts').innerHTML = format(Math.round(total_lune_pts / 1000));*/
 
   // Sat planetes
-  var total_sat_pts = 0;
-  var sat_pts_1 = [];
+  let total_sat_pts = 0;
+  let sat_pts_1 = [];
   planetsIdList.forEach(planetId => {
-    var sat_lune_1 = document.getElementById('sat_lune_' + planetId).value;
+    let sat_lune_1 = document.getElementById('sat_lune_' + planetId).value;
     sat_pts_1[planetId] = Math.round(Sat_1[planetId] * 2.5 + sat_lune_1 * 2.5);
     total_sat_pts += sat_pts_1[planetId];
     document.getElementById('sat_pts_' + planetId).innerHTML =  format(sat_pts_1[planetId]);
@@ -1270,8 +1267,8 @@ planetsIdList.forEach(planetId => {
   }
 
   // Calcul du cout de la techno astrophysique.
-  var techno_astro_pts = 0;
-  var techno_astro_pts_prec = 0;
+  let techno_astro_pts = 0;
+  let techno_astro_pts_prec = 0;
   if (technologies['Astrophysique'] > 0) {
     techno_astro_pts = technoPrix['Astrophysique'];
     techno_astro_pts_prec = technoPrix['Astrophysique'];
@@ -1288,13 +1285,13 @@ planetsIdList.forEach(planetId => {
 
 //Affiche les nombres sous format lisible (10 000 à la place de 10000)
 function format(x) {
-  var signe = '';
+  let signe = '';
   if (isNaN(x)) return '-';
   if (x < 0) {
     x = Math.abs(x);
     signe = '-';
   }
-  var str = x.toString(), n = str.length;
+  let str = x.toString(), n = str.length;
   if (n < 4) return (signe + x);
   else return (signe + ((n % 3) ? str.substring(0, n % 3) + '&nbsp;' : '')) + str.substring(n % 3).match(/\d{3}/g).join('&nbsp;');
 }
