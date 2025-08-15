@@ -51,7 +51,7 @@ services:
       - PHP_INI_POST_MAX_SIZE=50M
 
   db:
-    image: mariadb:10.11
+    image: mariadb:12.0
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ogspy_root
