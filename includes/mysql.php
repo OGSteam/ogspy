@@ -308,4 +308,27 @@ class sql_db
         }
     }
 
+    /**
+     * Get the current database name
+     * @return string The current database name
+     */
+    public function getDatabaseName()
+    {
+        return $this->dbname;
+    }
+
+    /**
+     * Select a different database
+     * @param string $database The database name to select
+     * @return bool Success or failure
+     */
+    public function sql_select_db($database)
+    {
+        $result = mysqli_select_db($this->db_connect_id, $database);
+        if ($result) {
+            $this->dbname = $database;
+        }
+        return $result;
+    }
+
 }

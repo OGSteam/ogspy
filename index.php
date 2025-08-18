@@ -1,5 +1,5 @@
 <?php
-global $server_config, $ogspy_version, $user_data, $log;
+global $server_config, $ogspy_version, $user_data, $log, $db; // ajout de $db
 ob_start();
 session_start();
 /**
@@ -53,13 +53,14 @@ if (is_file("install/version.php")) {
         require_once "install/MigrationManager.php";
         require_once "install/AutoUpgradeManager.php";
 
-        $migrationManager = new MigrationManager($db, $log);
+        global $table_prefix; // s'assurer de l'utilisation du préfixe courant
+        $migrationManager = new MigrationManager($db, $log, isset($table_prefix)?$table_prefix:null);
         $pendingMigrations = $migrationManager->getPendingMigrations();
 
         if (!empty($pendingMigrations)) {
             $log->info("Pending migrations detected: " . count($pendingMigrations));
 
-            $autoUpgrade = new AutoUpgradeManager($db, $log);
+            $autoUpgrade = new AutoUpgradeManager($db, $log, isset($table_prefix)?$table_prefix:null);
 
             // Vérifie si l'auto-upgrade est possible
             if ($autoUpgrade->canAutoUpgrade()) {
@@ -99,6 +100,12 @@ if (is_file("install/version.php")) {
             }
         } else {
             $log->debug("No pending migrations");
+
+            // Vérifier si l'installation est complète (fichier de verrouillage)
+            if (!file_exists("install/install.lock")) {
+                $log->warning("Installation not completed (no lock file), redirecting to installer");
+                redirection("install/index.php");
+            }
         }
 
     } catch (Exception $e) {

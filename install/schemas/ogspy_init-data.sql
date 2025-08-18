@@ -61,6 +61,3 @@ VALUES ('allied', ''),
 
 INSERT INTO `ogspy_group`
 VALUES (1, 'Standard', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
-
-INSERT INTO `ogspy_user` (`id`, `name`, `password_s`, `regdate`, `active`, `admin`, `pwd_change`) VALUES (1, 'ogsteam', '$2y$10$z.6/280zsg65IoOJ/wmOC.cHIWFnKFE8TaY7JSr0DH3fnQsxg7rRW', '1567070548', '1', '1',  0);
-INSERT INTO `ogspy_user_group` (`group_id`, `user_id`) VALUES (1, 1);
