@@ -539,14 +539,33 @@ class User_Model extends Model_Abstract
     /**
      * @param $user_id
      * @param $group_id
+     * @return bool
+     */
+    public function is_user_in_group($user_id, $group_id)
+    {
+        $user_id = (int)$user_id;
+        $group_id = (int)$group_id;
+
+        $request = "SELECT COUNT(*) FROM " . TABLE_USER_GROUP . " WHERE `group_id` = " . $group_id . " AND `user_id` = " . $user_id;
+        $result = $this->db->sql_query($request);
+        list($count) = $this->db->sql_fetch_row($result);
+        return $count > 0;
+    }
+
+    /**
+     * @param $user_id
+     * @param $group_id
      */
     public function add_user_to_group($user_id, $group_id)
     {
         $user_id = (int)$user_id;
         $group_id = (int)$group_id;
 
-        $request = "INSERT INTO " . TABLE_USER_GROUP . " (`group_id`, `user_id`) VALUES (" . $group_id . ", " . $user_id . ")";
-        $this->db->sql_query($request);
+        // Vérifier si l'utilisateur est déjà dans le groupe pour éviter les doublons
+        if (!$this->is_user_in_group($user_id, $group_id)) {
+            $request = "INSERT INTO " . TABLE_USER_GROUP . " (`group_id`, `user_id`) VALUES (" . $group_id . ", " . $user_id . ")";
+            $this->db->sql_query($request);
+        }
     }
 
     /**

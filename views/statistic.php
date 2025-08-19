@@ -233,7 +233,7 @@ require_once 'views/page_header.php';
                     //todo voir si seulement admin on le visuel ...
                     if ($v['active'] == "1" || $v['admin'] == "1") {
                         echo '<tr>';
-                        echo '<td><span class="' . $classtag . '">' . $v['name'] . (($enable_members_view || $user_data['admin'] || $user_data['coadmin']) ? ' ' . $v['here'] : '') . '</span></td>';
+                        echo '<td><span class="' . $classtag . '">' . $v['name'] . '</span></td>';
                         echo '<td>' . formate_number($v['planet_imports']) . '</td>';
                         echo '<td>' . formate_number($v['spy_imports']) . '</td>';
                         echo '<td>' . formate_number($v['rank_imports']) . '</td>';

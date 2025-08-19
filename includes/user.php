@@ -15,11 +15,12 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-use Ogsteam\Ogspy\Model\Group_Model;
+use Ogsteam\Ogspy\Model\Sessions_Model;
 use Ogsteam\Ogspy\Model\Statistics_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Tokens_Model;
+use Ogsteam\Ogspy\Model\User_Spy_favorites_Model;
 
 require_once __DIR__ . '/token.php';
 
@@ -1101,683 +1102,6 @@ function user_set_general(
 }
 
 /**
- * Enregistrement des droits d'un groupe utilisateurs
- */
-function usergroup_setauth()
-{
-    global $pub_group_id, $pub_group_name, $pub_server_set_system, $pub_server_set_spy,
-        $pub_server_set_rc, $pub_server_set_ranking, $pub_server_show_positionhided, $pub_ogs_connection,
-        $pub_ogs_set_system, $pub_ogs_get_system, $pub_ogs_set_spy, $pub_ogs_get_spy, $pub_ogs_set_ranking,
-        $pub_ogs_get_ranking, $log, $user_data;
-
-    $log->info("Début de la modification des droits de groupe", [
-        'type' => 'usergroup_setauth_attempt',
-        'admin_user_id' => $user_data['id'] ?? 'unknown',
-        'group_id' => $pub_group_id ?? 'undefined',
-        'group_name' => $pub_group_name ?? 'undefined',
-        'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-    ]);
-
-    if (!check_var($pub_group_id, "Num") || !check_var(
-        $pub_group_name,
-        "Pseudo_Groupname"
-    ) || !check_var($pub_server_set_system, "Num") || !check_var(
-        $pub_server_set_spy,
-        "Num"
-    ) || !check_var($pub_server_set_rc, "Num") || !check_var(
-        $pub_server_set_ranking,
-        "Num"
-    ) || !check_var($pub_server_show_positionhided, "Num") || !check_var(
-        $pub_ogs_connection,
-        "Num"
-    ) || !check_var($pub_ogs_set_system, "Num") || !check_var(
-        $pub_ogs_get_system,
-        "Num"
-    ) || !check_var($pub_ogs_set_spy, "Num") || !check_var(
-        $pub_ogs_get_spy,
-        "Num"
-    ) || !check_var($pub_ogs_set_ranking, "Num") || !check_var(
-        $pub_ogs_get_ranking,
-        "Num"
-    )) {
-        $log->warning("Modification droits groupe échouée - Format de données invalide", [
-            'type' => 'usergroup_setauth_failed',
-            'reason' => 'invalid_data_format',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $pub_group_id ?? 'undefined',
-            'group_name' => $pub_group_name ?? 'undefined',
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        redirection("index.php?action=message&id_message=errordata&info");
-    }
-
-    if (!isset($pub_group_id) || !isset($pub_group_name)) {
-        $log->error("Modification droits groupe échouée - Données manquantes", [
-            'type' => 'usergroup_setauth_failed',
-            'reason' => 'missing_required_data',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id_set' => isset($pub_group_id),
-            'group_name_set' => isset($pub_group_name),
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        redirection("index.php?action=message&id_message=errorfatal&info");
-    }
-
-    $pub_server_set_system = $pub_server_set_system ?? 0;
-    $pub_server_set_spy = $pub_server_set_spy ?? 0;
-    $pub_server_set_rc = $pub_server_set_rc ?? 0;
-    $pub_server_set_ranking = $pub_server_set_ranking ?? 0;
-    $pub_server_show_positionhided = $pub_server_show_positionhided ?? 0;
-    $pub_ogs_connection = $pub_ogs_connection ?? 0;
-    $pub_ogs_set_system = $pub_ogs_set_system ?? 0;
-    $pub_ogs_get_system = $pub_ogs_get_system ?? 0;
-    $pub_ogs_set_spy = $pub_ogs_set_spy ?? 0;
-    $pub_ogs_get_spy = $pub_ogs_get_spy ?? 0;
-    $pub_ogs_set_ranking = $pub_ogs_set_ranking ?? 0;
-    $pub_ogs_get_ranking = $pub_ogs_get_ranking ?? 0;
-
-    //Vérification des droits
-    try {
-        user_check_auth("usergroup_manage");
-
-        $log->info("Autorisation vérifiée pour modification des droits de groupe", [
-            'type' => 'usergroup_setauth_authorized',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $pub_group_id,
-            'group_name' => $pub_group_name
-        ]);
-    } catch (Exception $e) {
-        $log->error("Modification droits groupe échouée - Autorisation refusée", [
-            'type' => 'usergroup_setauth_failed',
-            'reason' => 'authorization_denied',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $pub_group_id,
-            'error' => $e->getMessage(),
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        throw $e;
-    }
-
-    // Log des droits qui vont être mis à jour
-    $permissions_summary = [
-        'server_permissions' => [
-            'set_system' => $pub_server_set_system,
-            'set_spy' => $pub_server_set_spy,
-            'set_rc' => $pub_server_set_rc,
-            'set_ranking' => $pub_server_set_ranking,
-            'show_positionhided' => $pub_server_show_positionhided
-        ],
-        'ogs_permissions' => [
-            'connection' => $pub_ogs_connection,
-            'set_system' => $pub_ogs_set_system,
-            'get_system' => $pub_ogs_get_system,
-            'set_spy' => $pub_ogs_set_spy,
-            'get_spy' => $pub_ogs_get_spy,
-            'set_ranking' => $pub_ogs_set_ranking,
-            'get_ranking' => $pub_ogs_get_ranking
-        ]
-    ];
-
-    $log->debug("Droits à appliquer au groupe", [
-        'type' => 'usergroup_setauth_permissions',
-        'group_id' => $pub_group_id,
-        'group_name' => $pub_group_name,
-        'permissions' => $permissions_summary
-    ]);
-
-    try {
-        (new Group_Model())->update_group(
-            $pub_group_id,
-            $pub_group_name,
-            $pub_server_set_system,
-            $pub_server_set_spy,
-            $pub_server_set_rc,
-            $pub_server_set_ranking,
-            $pub_server_show_positionhided,
-            $pub_ogs_connection,
-            $pub_ogs_set_system,
-            $pub_ogs_get_system,
-            $pub_ogs_set_spy,
-            $pub_ogs_get_spy,
-            $pub_ogs_set_ranking,
-            $pub_ogs_get_ranking
-        );
-
-        $log->info("Droits de groupe mis à jour avec succès", [
-            'type' => 'usergroup_setauth_success',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $pub_group_id,
-            'group_name' => $pub_group_name,
-            'permissions_updated' => $permissions_summary,
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-    } catch (Exception $e) {
-        $log->error("Erreur lors de la mise à jour des droits de groupe", [
-            'type' => 'usergroup_setauth_failed',
-            'reason' => 'database_error',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $pub_group_id,
-            'group_name' => $pub_group_name,
-            'error' => $e->getMessage(),
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        throw $e;
-    }
-
-    redirection("index.php?action=administration&subaction=group&group_id=" . $pub_group_id);
-}
-
-/**
- * Récupération des droits d'un groupe d'utilisateurs
- * @param bool $group_id
- * @return array|bool
- */
-function usergroup_get($group_id = false)
-{
-    global $log, $user_data;
-
-    $log->info("Récupération des droits de groupe d'utilisateurs", [
-        'type' => 'usergroup_get_attempt',
-        'admin_user_id' => $user_data['id'] ?? 'unknown',
-        'group_id' => $group_id !== false ? $group_id : 'all_groups',
-        'request_all_groups' => $group_id === false,
-        'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-    ]);
-
-    //Vérification des droits
-    try {
-        user_check_auth("usergroup_manage");
-
-        $log->info("Autorisation vérifiée pour récupération des droits de groupe", [
-            'type' => 'usergroup_get_authorized',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $group_id !== false ? $group_id : 'all_groups'
-        ]);
-    } catch (Exception $e) {
-        $log->error("Récupération droits groupe échouée - Autorisation refusée", [
-            'type' => 'usergroup_get_failed',
-            'reason' => 'authorization_denied',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $group_id !== false ? $group_id : 'all_groups',
-            'error' => $e->getMessage(),
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        throw $e;
-    }
-
-    if (intval($group_id) == 0 && $group_id !== false) {
-        $log->warning("Récupération droits groupe échouée - ID groupe invalide", [
-            'type' => 'usergroup_get_failed',
-            'reason' => 'invalid_group_id',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'provided_id' => $group_id,
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        return false;
-    }
-
-    try {
-        $Group_Model = new Group_Model();
-
-        //demande de tous les groupes
-        if (!$group_id) {
-            $log->debug("Récupération de tous les groupes d'utilisateurs", [
-                'type' => 'usergroup_get_all',
-                'admin_user_id' => $user_data['id'] ?? 'unknown'
-            ]);
-            $info_usergroup = $Group_Model->get_all_group_rights();
-        } else {
-            $log->debug("Récupération d'un groupe spécifique", [
-                'type' => 'usergroup_get_specific',
-                'admin_user_id' => $user_data['id'] ?? 'unknown',
-                'group_id' => $group_id
-            ]);
-            $info_usergroup = $Group_Model->get_group_rights($group_id);
-        }
-
-        if (sizeof($info_usergroup) == 0) {
-            $log->warning("Aucun groupe trouvé", [
-                'type' => 'usergroup_get_empty_result',
-                'admin_user_id' => $user_data['id'] ?? 'unknown',
-                'group_id' => $group_id !== false ? $group_id : 'all_groups',
-                'requested_all' => $group_id === false
-            ]);
-            return false;
-        }
-
-        $groups_count = sizeof($info_usergroup);
-        $group_names = [];
-
-        // Extraction des noms de groupes pour les logs
-        foreach ($info_usergroup as $group_info) {
-            if (isset($group_info['group_name'])) {
-                $group_names[] = $group_info['group_name'];
-            }
-        }
-
-        $log->info("Droits de groupe récupérés avec succès", [
-            'type' => 'usergroup_get_success',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $group_id !== false ? $group_id : 'all_groups',
-            'groups_count' => $groups_count,
-            'group_names' => $group_names,
-            'requested_all' => $group_id === false,
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-
-        return $info_usergroup;
-    } catch (Exception $e) {
-        $log->error("Erreur lors de la récupération des droits de groupe", [
-            'type' => 'usergroup_get_failed',
-            'reason' => 'database_error',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $group_id !== false ? $group_id : 'all_groups',
-            'error' => $e->getMessage(),
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        throw $e;
-    }
-}
-
-/**
- * Suppression d'un groupe utilisateur
- */
-function usergroup_delete()
-{
-    global $pub_group_id, $log, $user_data;
-
-    $log->info("Tentative de suppression de groupe d'utilisateurs", [
-        'type' => 'usergroup_delete_attempt',
-        'admin_user_id' => $user_data['id'] ?? 'unknown',
-        'group_id' => $pub_group_id ?? 'undefined',
-        'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-    ]);
-
-    if (!check_var($pub_group_id, "Num")) {
-        $log->warning("Suppression groupe échouée - ID groupe invalide", [
-            'type' => 'usergroup_delete_failed',
-            'reason' => 'invalid_group_id',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'provided_id' => $pub_group_id ?? 'null',
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        redirection("index.php?action=message&id_message=errordata&info");
-    }
-
-    if (!isset($pub_group_id)) {
-        $log->error("Suppression groupe échouée - ID groupe non défini", [
-            'type' => 'usergroup_delete_failed',
-            'reason' => 'group_id_not_set',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        redirection("index.php?action=message&id_message=createusergroup_failed_general&info");
-    }
-
-    //Vérification des droits
-    try {
-        user_check_auth("usergroup_manage");
-
-        $log->info("Autorisation vérifiée pour suppression de groupe", [
-            'type' => 'usergroup_delete_authorized',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $pub_group_id
-        ]);
-    } catch (Exception $e) {
-        $log->error("Suppression groupe échouée - Autorisation refusée", [
-            'type' => 'usergroup_delete_failed',
-            'reason' => 'authorization_denied',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $pub_group_id,
-            'error' => $e->getMessage(),
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        throw $e;
-    }
-
-    // Protection contre la suppression du groupe par défaut
-    if ($pub_group_id == 1) {
-        $log->warning("Tentative de suppression du groupe par défaut", [
-            'type' => 'usergroup_delete_failed',
-            'reason' => 'default_group_protection',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $pub_group_id,
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        redirection("index.php?action=administration&subaction=group&group_id=1");
-    }
-
-    // Récupération des informations du groupe avant suppression pour les logs
-    try {
-        $Group_Model = new Group_Model();
-        $group_info = $Group_Model->get_group_rights($pub_group_id);
-        $group_name = $group_info[0]['group_name'] ?? 'inconnu';
-        $group_members_count = count($Group_Model->get_user_list($pub_group_id));
-
-        $log->debug("Informations du groupe à supprimer", [
-            'type' => 'usergroup_delete_info',
-            'group_id' => $pub_group_id,
-            'group_name' => $group_name,
-            'members_count' => $group_members_count
-        ]);
-    } catch (Exception $e) {
-        $group_name = 'inconnu';
-        $group_members_count = 0;
-        $log->warning("Impossible de récupérer les infos du groupe avant suppression", [
-            'type' => 'usergroup_delete_warning',
-            'group_id' => $pub_group_id,
-            'error' => $e->getMessage()
-        ]);
-    }
-
-    try {
-        (new Group_Model())->delete_group($pub_group_id);
-
-        $log->info("Groupe d'utilisateurs supprimé avec succès", [
-            'type' => 'usergroup_deleted_success',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $pub_group_id,
-            'group_name' => $group_name,
-            'former_members_count' => $group_members_count,
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-    } catch (Exception $e) {
-        $log->error("Erreur lors de la suppression du groupe", [
-            'type' => 'usergroup_delete_failed',
-            'reason' => 'database_error',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $pub_group_id,
-            'group_name' => $group_name,
-            'error' => $e->getMessage(),
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        throw $e;
-    }
-
-    redirection("index.php?action=administration&subaction=group");
-}
-
-/**
- * Récupération des utilisateurs appartenant à un groupe
- * @param int $group_id Identificateur du groupe demandé
- * @return Array Liste des utilisateurs
- */
-function usergroup_member($group_id)
-{
-    global $log, $user_data;
-
-    $log->info("Récupération des membres d'un groupe", [
-        'type' => 'usergroup_member_attempt',
-        'admin_user_id' => $user_data['id'] ?? 'unknown',
-        'group_id' => $group_id ?? 'undefined',
-        'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-    ]);
-
-    if (!isset($group_id) || !is_numeric($group_id)) {
-        $log->error("Récupération membres groupe échouée - ID groupe invalide", [
-            'type' => 'usergroup_member_failed',
-            'reason' => 'invalid_group_id',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'provided_id' => $group_id ?? 'null',
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        redirection("index.php?action=message&id_message=errorfatal&info");
-    }
-
-    try {
-        $usergroup_member = (new Group_Model())->get_user_list($group_id);
-
-        $members_count = count($usergroup_member);
-
-        $log->info("Membres du groupe récupérés avec succès", [
-            'type' => 'usergroup_member_success',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $group_id,
-            'members_count' => $members_count,
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-
-        return $usergroup_member;
-    } catch (Exception $e) {
-        $log->error("Erreur lors de la récupération des membres du groupe", [
-            'type' => 'usergroup_member_failed',
-            'reason' => 'database_error',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $group_id,
-            'error' => $e->getMessage(),
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        throw $e;
-    }
-}
-
-/**
- * Ajout d'un utilisateur à un groupe
- */
-function usergroup_newmember()
-{
-    global $pub_user_id, $pub_group_id, $pub_add_all, $log, $user_data;
-
-    $log->info("Tentative d'ajout d'utilisateur(s) à un groupe", [
-        'type' => 'usergroup_newmember_attempt',
-        'admin_user_id' => $user_data['id'] ?? 'unknown',
-        'target_user_id' => $pub_user_id ?? 'undefined',
-        'group_id' => $pub_group_id ?? 'undefined',
-        'add_all_users' => isset($pub_add_all),
-        'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-    ]);
-
-    $Group_Model = new Group_Model();
-    $userModel = new User_Model();
-
-    try {
-        $userid_list = $userModel->select_userid_list();
-        $total_users_available = count($userid_list);
-
-        $log->debug("Liste des utilisateurs disponibles récupérée", [
-            'type' => 'usergroup_newmember_users_list',
-            'total_users' => $total_users_available
-        ]);
-    } catch (Exception $e) {
-        $log->error("Erreur lors de la récupération de la liste des utilisateurs", [
-            'type' => 'usergroup_newmember_failed',
-            'reason' => 'users_list_error',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'error' => $e->getMessage(),
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-        redirection("index.php?action=message&id_message=errorfatal&info");
-    }
-
-    // Ajout de tous les utilisateurs au groupe
-    if (isset($pub_add_all) && is_numeric($pub_group_id)) {
-        $log->info("Ajout de tous les utilisateurs au groupe", [
-            'type' => 'usergroup_newmember_add_all',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $pub_group_id,
-            'users_to_add' => $total_users_available
-        ]);
-
-        $success_count = 0;
-        $error_count = 0;
-
-        foreach ($userid_list as $userid) {
-            try {
-                user_check_auth("usergroup_manage");
-
-                if ($Group_Model->insert_user_togroup($userid, $pub_group_id)) {
-                    $success_count++;
-                    $log->debug("Utilisateur ajouté au groupe", [
-                        'type' => 'usergroup_newmember_user_added',
-                        'user_id' => $userid,
-                        'group_id' => $pub_group_id
-                    ]);
-                } else {
-                    $error_count++;
-                    $log->warning("Échec de l'ajout d'un utilisateur au groupe", [
-                        'type' => 'usergroup_newmember_user_failed',
-                        'user_id' => $userid,
-                        'group_id' => $pub_group_id,
-                        'reason' => 'insert_failed'
-                    ]);
-                }
-            } catch (Exception $e) {
-                $error_count++;
-                $log->error("Erreur lors de l'ajout d'un utilisateur au groupe", [
-                    'type' => 'usergroup_newmember_user_error',
-                    'user_id' => $userid,
-                    'group_id' => $pub_group_id,
-                    'error' => $e->getMessage()
-                ]);
-            }
-        }
-
-        $log->info("Ajout de masse terminé", [
-            'type' => 'usergroup_newmember_bulk_completed',
-            'admin_user_id' => $user_data['id'] ?? 'unknown',
-            'group_id' => $pub_group_id,
-            'total_users' => $total_users_available,
-            'success_count' => $success_count,
-            'error_count' => $error_count,
-            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-        ]);
-
-        redirection("index.php?action=administration&subaction=group&group_id=" . $pub_group_id);
-    } else {
-        // Ajout d'un utilisateur spécifique
-        if (!check_var($pub_user_id, "Num") || !check_var($pub_group_id, "Num")) {
-            $log->warning("Ajout utilisateur au groupe échoué - Format de données invalide", [
-                'type' => 'usergroup_newmember_failed',
-                'reason' => 'invalid_data_format',
-                'admin_user_id' => $user_data['id'] ?? 'unknown',
-                'user_id' => $pub_user_id ?? 'undefined',
-                'group_id' => $pub_group_id ?? 'undefined',
-                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-            ]);
-            redirection("index.php?action=message&id_message=errordata&info");
-        }
-
-        if (!isset($pub_user_id) || !isset($pub_group_id)) {
-            $log->error("Ajout utilisateur au groupe échoué - Données manquantes", [
-                'type' => 'usergroup_newmember_failed',
-                'reason' => 'missing_required_data',
-                'admin_user_id' => $user_data['id'] ?? 'unknown',
-                'user_id_set' => isset($pub_user_id),
-                'group_id_set' => isset($pub_group_id),
-                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-            ]);
-            redirection("index.php?action=message&id_message=errorfatal&info");
-        }
-
-        //Vérification des droits
-        try {
-            user_check_auth("usergroup_manage");
-
-            $log->debug("Autorisation vérifiée pour ajout utilisateur au groupe", [
-                'type' => 'usergroup_newmember_authorized',
-                'admin_user_id' => $user_data['id'] ?? 'unknown',
-                'target_user_id' => $pub_user_id,
-                'group_id' => $pub_group_id
-            ]);
-        } catch (Exception $e) {
-            $log->error("Ajout utilisateur au groupe échoué - Autorisation refusée", [
-                'type' => 'usergroup_newmember_failed',
-                'reason' => 'authorization_denied',
-                'admin_user_id' => $user_data['id'] ?? 'unknown',
-                'target_user_id' => $pub_user_id,
-                'group_id' => $pub_group_id,
-                'error' => $e->getMessage(),
-                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-            ]);
-            throw $e;
-        }
-
-        // Vérification de l'existence du groupe
-        if ($Group_Model->group_exist_by_id($pub_group_id) == false) {
-            $log->warning("Ajout utilisateur échoué - Groupe inexistant", [
-                'type' => 'usergroup_newmember_failed',
-                'reason' => 'group_not_found',
-                'admin_user_id' => $user_data['id'] ?? 'unknown',
-                'target_user_id' => $pub_user_id,
-                'group_id' => $pub_group_id,
-                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-            ]);
-            redirection("index.php?action=administration&subaction=group");
-        }
-
-        // Vérification de l'existence de l'utilisateur
-        if (!in_array(intval($pub_user_id), $userid_list)) {
-            $log->warning("Ajout utilisateur échoué - Utilisateur inexistant", [
-                'type' => 'usergroup_newmember_failed',
-                'reason' => 'user_not_found',
-                'admin_user_id' => $user_data['id'] ?? 'unknown',
-                'target_user_id' => $pub_user_id,
-                'group_id' => $pub_group_id,
-                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-            ]);
-            redirection("index.php?action=administration&subaction=group");
-        }
-
-        // Récupération des informations pour les logs
-        try {
-            $user_info = user_get($pub_user_id);
-            $username = $user_info[0]['user_pseudo'] ?? 'inconnu';
-
-            $group_info = $Group_Model->get_group_rights($pub_group_id);
-            $group_name = $group_info[0]['group_name'] ?? 'inconnu';
-        } catch (Exception $e) {
-            $username = 'inconnu';
-            $group_name = 'inconnu';
-            $log->debug("Impossible de récupérer les noms pour les logs", [
-                'type' => 'usergroup_newmember_info_warning',
-                'error' => $e->getMessage()
-            ]);
-        }
-
-        // Insertion de l'utilisateur dans le groupe
-        try {
-            if ($Group_Model->insert_user_togroup($pub_user_id, $pub_group_id)) {
-                $log->info("Utilisateur ajouté au groupe avec succès", [
-                    'type' => 'usergroup_newmember_success',
-                    'admin_user_id' => $user_data['id'] ?? 'unknown',
-                    'target_user_id' => $pub_user_id,
-                    'target_username' => $username,
-                    'group_id' => $pub_group_id,
-                    'group_name' => $group_name,
-                    'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-                ]);
-            } else {
-                $log->warning("Échec de l'ajout de l'utilisateur au groupe", [
-                    'type' => 'usergroup_newmember_failed',
-                    'reason' => 'insert_failed',
-                    'admin_user_id' => $user_data['id'] ?? 'unknown',
-                    'target_user_id' => $pub_user_id,
-                    'target_username' => $username,
-                    'group_id' => $pub_group_id,
-                    'group_name' => $group_name,
-                    'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-                ]);
-            }
-        } catch (Exception $e) {
-            $log->error("Erreur lors de l'ajout de l'utilisateur au groupe", [
-                'type' => 'usergroup_newmember_failed',
-                'reason' => 'database_error',
-                'admin_user_id' => $user_data['id'] ?? 'unknown',
-                'target_user_id' => $pub_user_id,
-                'target_username' => $username,
-                'group_id' => $pub_group_id,
-                'group_name' => $group_name,
-                'error' => $e->getMessage(),
-                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-            ]);
-            throw $e;
-        }
-
-        redirection("index.php?action=administration&subaction=group&group_id=" . $pub_group_id);
-    }
-}
-
-/**
  * Suppression d'un rapport d'espionnage
  */
 function user_del_spy()
@@ -1973,7 +1297,7 @@ function user_get($user_id = null)
  * Get user statistics data
  * @return array
  */
-function user_statistic()
+function user_statistic(): array
 {
     $userModel = new User_Model();
     return $userModel->select_all_user_stats_data();
@@ -1984,7 +1308,7 @@ function user_statistic()
  * @return bool vrai si l'utilisateur peut faire des recherches
  * @author Bousteur 28/11/2006
  */
-function ratio_is_ok()
+function ratio_is_ok(): bool
 {
     global $user_data, $server_config;
     static $result;
@@ -2009,7 +1333,7 @@ function ratio_is_ok()
 /**
  * Récupération des rapports favoris
  */
-function user_getfavorites_spy()
+function user_getfavorites_spy(): array
 {
     global $user_data;
     global $sort, $sort2;
@@ -2026,7 +1350,7 @@ function user_getfavorites_spy()
 /**
  * Ajout d'un rapport favori
  */
-function user_add_favorite_spy()
+function user_add_favorite_spy(): void
 {
     global $user_data, $server_config;
     global $pub_spy_id, $pub_galaxy, $pub_system, $pub_row;
@@ -2054,7 +1378,7 @@ function user_add_favorite_spy()
 /**
  * Suppression d'un rapport favori
  */
-function user_del_favorite_spy()
+function user_del_favorite_spy(): true
 {
     global $user_data;
     global $pub_spy_id, $pub_galaxy, $pub_system, $pub_row, $pub_info;
@@ -2083,4 +1407,103 @@ function user_del_favorite_spy()
         default:
             return true;
     }
+    return true;
+}
+
+/**
+ * Enregistrement des droits et status utilisateurs
+ * @param $user_id
+ * @param null $user_admin
+ * @param null $user_active
+ * @param null $user_coadmin
+ * @param null $management_user
+ * @param null $management_ranking
+ *
+ * todo : ajouter la possibilité de changer admin prinicpal '$useradmin non utilisé ....
+ */
+
+function user_set_grant(
+    $user_id,
+    $user_admin = null,
+    $user_active = null,
+    $user_coadmin = null,
+    $management_user = null,
+    $management_ranking = null
+) {
+    global $user_data, $log;
+
+    if (!isset($user_id)) {
+        redirection("index.php?action=message&id_message=errorfatal&info");
+    }
+    //Vérification des droits
+    user_check_auth("user_update", $user_id);
+    $data_user = new User_Model();
+    //Activation membre
+    if (!is_null($user_active)) {
+        $data_user->set_user_active($user_id, intval($user_active));
+        if (intval($user_active) == 0) {
+            $data_session = new Sessions_Model();
+            $data_session->close_user_session($user_id);
+        }
+    }
+    //Co-administration
+    if (!is_null($user_coadmin)) {
+        $data_user->set_user_coadmin($user_id, intval($user_coadmin));
+    }
+    //Gestion des membres
+    if (!is_null($management_user)) {
+        $data_user->set_user_management_user($user_id, intval($management_user));
+    }
+    //Gestion des classements
+    if (!is_null($management_ranking)) {
+        $data_user->set_user_management_ranking($user_id, intval($management_ranking));
+    }
+    if ($user_id == $user_data['id']) {
+        $log->info("modify_account");
+    } else {
+        $log->info("modify_account_admin", [ $user_id => $user_id ]);
+    }
+}
+
+/**
+ * Suppression d'un utilisateur ($pub_user_id)
+ */
+function user_delete()
+{
+    global $pub_user_id, $user_data, $log;
+
+    if (!check_var($pub_user_id, "Num")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
+
+    if (!isset($pub_user_id)) {
+        redirection("index.php?action=message&id_message=createuser_failed_general&info");
+    }
+
+    // Empêcher la suppression de son propre compte
+    if ($pub_user_id == $user_data['id']) {
+        $log->warning("User attempted to delete their own account", [
+            'user_id' => $user_data['id'],
+            'target_user_id' => $pub_user_id,
+            'ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+        ]);
+        redirection("index.php?action=message&id_message=deleteuser_failed&info");
+    }
+
+    user_check_auth("user_update", $pub_user_id);
+
+    $log->info("User Account Deleted", [
+        'deleted_user_id' => $pub_user_id,
+        'admin_user_id' => $user_data['id'] ?? 'unknown',
+        'ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+    ]);
+
+    // Supprimer l'utilisateur de la base de données
+    (new User_Model())->delete_user($pub_user_id);
+
+    // Fermer uniquement la session de l'utilisateur supprimé (pas la vôtre)
+    $Sessions_Model = new Sessions_Model();
+    $Sessions_Model->close_user_session($pub_user_id);
+
+    redirection("index.php?action=administration&subaction=member");
 }

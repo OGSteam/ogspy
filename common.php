@@ -56,6 +56,7 @@ require_once "includes/mysql.php";
 require_once "includes/log.php";
 require_once "includes/galaxy.php";
 require_once "includes/user.php";
+require_once "includes/usergroups.php";
 require_once "includes/player.php";
 require_once "includes/sessions.php";
 require_once "includes/help.php";

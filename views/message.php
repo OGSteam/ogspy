@@ -58,9 +58,9 @@ switch ($pub_id_message) {
 
         $msgType = "success";
 
-        $msgContent = '' . $lang['MSG_CREATE_USER_TITLE'] . ' <a>' . $user_info[0]['user_name'] . '</a><br><br>';
+        $msgContent = '' . $lang['MSG_CREATE_USER_TITLE'] . ' <a>' . $user_info[0]['name'] . '</a><br><br>';
         $msgContent .= $lang['MSG_CREATE_USER_INFO'] . '<br/><br/>';
-        $msgContent .= '' . $lang['MSG_CREATE_USER_TITLE'] . ' <a>' . $user_info[0]['user_name'] . '</a><br><br>';
+        $msgContent .= '' . $lang['MSG_CREATE_USER_TITLE'] . ' <a>' . $user_info[0]['name'] . '</a><br><br>';
         $msgContent .= '- ' . $lang['MSG_CREATE_USER_URL'] . ' : <a>https://' . $server_name . $phpSelf . '</a><br>';
         $msgContent .= '- ' . $lang['MSG_CREATE_USER_PASSWORD'] . ' : <a>' . $password . '</a><br>';
 
@@ -72,7 +72,7 @@ switch ($pub_id_message) {
 
         list($user_id, $password) = explode(':', $info);
         $user_info = user_get($user_id);
-        $msgContent = $lang['MSG_PWD_REGEN_OK'] . '<a>' . $user_info[0]['user_name'] . '</a><br/>';
+        $msgContent = $lang['MSG_PWD_REGEN_OK'] . '<a>' . $user_info[0]['name'] . '</a><br/>';
 
         if ($password == "mail") {
             $msgContent .= $lang['MSG_PWD_REGEN_INFO_MAIL'];
@@ -280,7 +280,9 @@ switch ($pub_id_message) {
         break;
 
     case "db_optimize":
-        list($dbSize_before, $dbSize_after) = explode('¤', $info);
+        $parts = explode('¤', $info);
+        $dbSize_before = isset($parts[0]) ? $parts[0] : 'N/A';
+        $dbSize_after = isset($parts[1]) ? $parts[1] : 'N/A';
 
         $msgType = "success";
         $msgContent = $lang['MSG_DB_OPTIM_OK'] . '<br>';
@@ -314,12 +316,18 @@ require_once 'views/page_header_2.php';
 <div class="page_message">
     <div class="og-msg og-msg-<?= $msgType; ?>">
         <h3 class="og-title"><?= $msgTitle; ?></h3>
-        <p class="og-content"><?php echo htmlspecialchars($msgContent); ?></p>
-        <button type="button"  onclick="location.href='index.php?<?php echo $msgURLButton; ?>'" class="og-button og-button-<?php echo $msgType; ?>">
+        <?php
+        // Autoriser uniquement <br> et <a> (sans attributs) dans le contenu
+        // Si vous devez ajouter des attributs (href), construisez-les dans le template en échappant chaque valeur.
+        $msgContentSafe = strip_tags($msgContent, '<br><a>');
+        ?>
+        <p class="og-content"><?php echo $msgContentSafe; ?></p>
+        <button type="button"  onclick="location.href='<?php echo htmlspecialchars($msgURLButton, ENT_QUOTES, 'UTF-8'); ?>'" class="og-button og-button-<?php echo $msgType; ?>">
             <?php echo $lang['MSG_BACK']; ?>
         </button>
     </div>
 </div>
+
 
 
 <?php require_once 'views/page_tail_2.php'; ?>

@@ -182,17 +182,18 @@ class Sessions_Model extends Model_Abstract
         $cookie_id = $this->db->sql_escape_string($cookie_id);
         $user_ip = $this->db->sql_escape_string($user_ip);
 
-        $request = "SELECT user.`id`, user.`name`, user.`admin`, user.`coadmin`, user.`email`, user.`default_galaxy`, user.`default_system`, s.`session_lastvisit`, ";
+        // Requête pour récupérer les données de session et utilisateur
+        $request = "SELECT s.*, user.`id`, user.`name`, user.`admin`, user.`coadmin`, user.`email`, user.`default_galaxy`, user.`default_system`, ";
         $request .= "user.`management_user`, user.`management_ranking`, user.`disable_ip_check`, user.`pwd_change`, user.`email_valid`, user.`player_id` ";
-        $request .= " FROM " . TABLE_USER . " user, " . TABLE_SESSIONS . " s";
-        $request .= " WHERE user.`id` = s.`user_id`";
-        $request .= " AND s.`id` = '" . $cookie_id . "'";
+        $request .= " FROM " . TABLE_SESSIONS . " s LEFT JOIN " . TABLE_USER . " user ON user.`id` = s.`user_id`";
+        $request .= " WHERE s.`id` = '" . $cookie_id . "'";
         $request .= " AND s.`session_ip` = '" . $user_ip . "'";
         $result = $this->db->sql_query($request);
 
         if ($this->db->sql_numrows($result) == 1) {
             return $this->db->sql_fetch_assoc($result);
         }
+
         $log->warning("Session not found for cookie_id: " . $cookie_id . " and user_ip: " . $user_ip);
         return false;
     }
