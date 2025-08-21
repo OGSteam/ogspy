@@ -15,10 +15,11 @@ if (!defined('IN_SPYOGAME')) {
 
 use Ogsteam\Ogspy\Model\DBUtils_Model;
 use Ogsteam\Ogspy\Model\Config_Model;
-use Ogsteam\Ogspy\Model\Universe_Model;
-use Ogsteam\Ogspy\Model\User_Building_Model;
+use Ogsteam\Ogspy\Model\AstroObject_Model;
+use Ogsteam\Ogspy\Model\Player_Building_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\User_Favorites_Model;
+use Random\RandomException;
 
 
 class FileAccessException extends Exception {}
@@ -413,13 +414,14 @@ function color_convert_to_html_input($color)
 }
 
 /**
- *  @brief Construct HTML double input for color, one for text and one for HTML5 color picker and link these with the JS.
+ * Generates HTML for a double input field consisting of a text input and a color picker input,
+ * allowing users to select a color using both text and visual means.
  *
- *  @param[in] string     $label        HTML id of the input
- *  @param[in] string|int $value        Color value (string 'red'/'#ff0000', int 0xffddee)
- *  @param[in] array      $html_arg1     HTML attributes for text box (default = array('size'=>15, 'maxlength'=>20))
- *  @param[in] array      $html_arg2     HTML attributes for color box (default = $html_arg1)
- *  @return string HTML content with 2 inputs linked for color text+HTML5 color
+ * @param string $label The identifier for the input fields.
+ * @param string $value The initial color value (e.g., HEX color code) to prefill the inputs.
+ * @param array $html_arg1 Optional array of HTML attributes for the text input (default: size 15, maxlength 20).
+ * @param array|null $html_arg2 Optional array of HTML attributes for the color input. If null, defaults to $html_arg1.
+ * @return string The generated HTML string for the double input fields.
  */
 function color_html_create_double_input($label, $value, $html_arg1 = array('size' => 15, 'maxlength' => 20), $html_arg2 = null)
 {
@@ -446,24 +448,30 @@ function color_html_create_double_input($label, $value, $html_arg1 = array('size
 }
 
 /**
- * Generates a random password with 6 chars
- * @return string $password The generated password
+ * Generates a random password of the specified length using a predefined character set.
+ *
+ * @param int $length The desired length of the generated password. Defaults to 12.
+ * @return string The randomly generated password.
+ * @throws RandomException
  */
-function password_generator()
+function generateRandomPassword(int $length = 12): string
 {
-    $string = "abBDEFcdefghijkmnPQRSTUVWXYpqrst23456789";
-    srand((float)microtime() * 1000000);
+    $charset = "abBDEFcdefghijkmnPQRSTUVWXYpqrst23456789";
+    $charsetLength = strlen($charset);
     $password = '';
-    for ($i = 0; $i < 8; $i++) {
-        $password .= $string[random_int(0, strlen($string) - 1)];
+
+    for ($i = 0; $i < $length; $i++) {
+        $password .= $charset[random_int(0, $charsetLength - 1)];
     }
+
     return $password;
 }
 
+
 /**
- * Initialisation of the cache for all Mod settings
+ * Initializes the module cache by loading cached configuration data from a file.
+ * If the cached file is outdated or does not exist, the cache is regenerated.
  *
- * Generates a file which contains all configurations for different installed OGSpy Modules
  * @return void
  */
 function init_mod_cache()
@@ -488,9 +496,8 @@ function init_mod_cache()
 }
 
 /**
- * Initialisation of the cache for all Server settings
- *
- * Generates a file which contains all configurations for the OGSpy Server
+ * Initializes the server configuration by loading a cached configuration file.
+ * If the cache file is outdated or does not exist, a new cache file is generated.
  * @return void
  */
 function init_serverconfig()
@@ -543,7 +550,7 @@ function set_server_view()
     ) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
-    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+    if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
         redirection("planetindex.php?action=message&id_message=forbidden&info");
     }
 
@@ -595,7 +602,7 @@ function set_server_view()
         redirection("index.php?action=message&id_message=setting_server_view_failed&info");
     }
 
-    $Config_Model->update(array("config_value" => $pub_enable_portee_missil, "config_name" => "portee_missil"));
+    $Config_Model->update(array("value" => $pub_enable_portee_missil, "name" => "portee_missil"));
 
     if ($pub_galaxy_by_line_stat < 1) {
         $pub_galaxy_by_line_stat = 1;
@@ -647,7 +654,6 @@ function set_server_view()
 
     // mise a jour des caches avec les modifs
     generate_config_cache();
-    log_("set_server_view");
     redirection("index.php?action=administration&subaction=affichage");
 }
 
@@ -704,7 +710,7 @@ function set_serverconfig()
     ) {
         redirection("index.php?action=message&id_message=errordata&info");
     }
-    if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+    if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
         redirection("planetindex.php?action=message&id_message=forbidden&info");
     }
 
@@ -934,7 +940,6 @@ function set_serverconfig()
 
     // mise a jour des caches avec les mofids
     generate_config_cache();
-    log_("set_serverconfig");
     redirection("index.php?action=administration&subaction=parameter");
 }
 
@@ -1001,17 +1006,17 @@ function resize_db($new_num_of_galaxies, $new_num_of_systems)
 
     //appel de la couche" Model"
     $Config_Model = new Config_Model();
-    $User_Model = new User_Model();
+    $userModel = new User_Model();
     $User_Favorites_Model = new User_Favorites_Model();
 
     // si on reduit on doit supprimez toutes les entrées qui font reference au systemes ou galaxies que l'on va enlever
-    (new Universe_Model())->resize_universe($new_num_of_galaxies, $new_num_of_systems);
+    (new AstroObject_Model())->resize_universe($new_num_of_galaxies, $new_num_of_systems);
     $User_Favorites_Model->delete_favorites_after_resize($new_num_of_galaxies, $new_num_of_systems); //suppression des favoris plus utils
     if ($new_num_of_galaxies < intval($server_config['num_of_galaxies'])) {
-        $User_Model->set_default_galaxy_after_resize($new_num_of_galaxies);
+        $userModel->set_default_galaxy_after_resize($new_num_of_galaxies);
     }
     if ($new_num_of_systems < intval($server_config['num_of_systems'])) {
-        $User_Model->set_default_system_after_resize($new_num_of_systems);
+        $userModel->set_default_system_after_resize($new_num_of_systems);
     }
 
     $server_config['num_of_galaxies'] = $new_num_of_galaxies;
@@ -1022,7 +1027,6 @@ function resize_db($new_num_of_galaxies, $new_num_of_systems)
 
     // mise a jour des caches avec les modifs
     generate_config_cache();
-    log_("set_db_size");
 }
 
 /**
@@ -1047,7 +1051,6 @@ function maintenance_action()
     $time = mktime(0, 0, 0);
     if (isset($server_config["last_maintenance_action"]) && $time > $server_config["last_maintenance_action"]) {
         galaxy_purge_ranking();
-        log_purge();
         galaxy_purge_spy();
 
         (new Config_Model())->update_one($time, "last_maintenance_action");
@@ -1064,81 +1067,113 @@ function maintenance_action()
  */
 function check_var($value, $type_check, $mask = "", $auth_null = true)
 {
+    global $log, $user_data;
+
+    // Log de démarrage de la validation (uniquement en mode debug pour éviter le spam)
+    if (isset($log) && method_exists($log, 'debug')) {
+        $log->debug("Variable validation", [
+            'type' => 'check_var_attempt',
+            'validation_type' => $type_check,
+            'value_length' => strlen($value ?? ''),
+            'has_mask' => !empty($mask),
+            'auth_null' => $auth_null,
+            'user_id' => $user_data['id'] ?? 'unknown',
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+        ]);
+    }
+
     if ($auth_null && $value == "") {
+        if (isset($log)) {
+            $log->debug("Validation successful - empty value allowed", [
+                'type' => 'check_var_success_empty',
+                'validation_type' => $type_check,
+                'auth_null' => $auth_null
+            ]);
+        }
         return true;
     }
+
+    $validation_success = false;
+    $error_reason = '';
 
     switch ($type_check) {
             //Pseudo des membres
         case "Pseudo_Groupname":
             if (!preg_match("/^[\w\s\-]{3,15}$/", $value)) {
-                log_("check_var", array("Pseudo_Groupname", $value));
-                return false;
+                $error_reason = 'invalid_format_pseudo_groupname';
+            } else {
+                $validation_success = true;
             }
             break;
 
             //Pseudo ingame
         case "Pseudo_ingame": // caracteres autorises entre 3 et 20 + espace ( interdit au 05/11/11 = > &"'()# `/,;+ )
             if (!preg_match("/^[\w@äàçéèêëïîöôûü \^\{\}\[\]\.\*\-_~%§]{3,20}$/", $value)) {
-                log_("check_var", array("Text", $value));
-                return false;
+                $error_reason = 'invalid_format_pseudo_ingame';
+            } else {
+                $validation_success = true;
             }
             break;
 
             //Mot de passe des membres
         case "Password": //Tout caractère sauf ; ' et ".
-            // if (!preg_match("/^[\w\s\-]{6,64}$/", $value)) {
-            // return false;
-            // }
             if (!preg_match("/^[^;'\"]{6,64}$/", $value)) { //Protection encore supplémentaire (même si sql_escape_string fait)
-                return false;
+                $error_reason = 'invalid_format_password';
+            } else {
+                $validation_success = true;
             }
             break;
 
             //Chaîne de caractères avec espace
         case "Text":
             if (!preg_match("/^[\w'äàçéèêëïîöôûü\s\.\*\-]+$/", $value)) {
-                log_("check_var", array("Text", $value));
-                return false;
+                $error_reason = 'invalid_format_text';
+            } else {
+                $validation_success = true;
             }
             break;
 
             //Chaîne de caractères et  chiffre
         case "CharNum":
             if (!preg_match("/^[\w\.\*\-\#]+$/", $value)) {
-                log_("check_var", array("CharNum", $value));
-                return false;
+                $error_reason = 'invalid_format_charnum';
+            } else {
+                $validation_success = true;
             }
             break;
 
             //Caractères
         case "Char":
             if (!preg_match("/^[[:alpha:]_\.\*\-]+$/", $value)) {
-                log_("check_var", array("Char", $value));
-                return false;
+                $error_reason = 'invalid_format_char';
+            } else {
+                $validation_success = true;
             }
             break;
 
             //Chiffres
         case "Num":
             if (!preg_match("/^[[:digit:]]+$/", $value)) {
-                log_("check_var", array("Num", $value));
-                return false;
+                $error_reason = 'invalid_format_number';
+            } else {
+                $validation_success = true;
             }
             break;
             //Email
         case "Email":
             if (!preg_match('/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}$/', $value)) {
-                log_("check_var", array("Email", $value));
-                return false;
+                $error_reason = 'invalid_format_email';
+            } else {
+                $validation_success = true;
             }
             break;
 
             //Galaxies
         case "Galaxies":
             if ($value < 1 || $value > 999 ) {
-                log_("check_var", array("Galaxy or system", $value));
-                return false;
+                $error_reason = 'invalid_range_galaxies';
+            } else {
+                $validation_success = true;
             }
             break;
 
@@ -1148,40 +1183,77 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
                 "/^((https:\/\/(www\.)?)?[-a-z0-9~_]{2,}(\.[-a-z0-9~._]{2,})?[-a-z0-9~_\/&\?=.]{2,})$/i",
                 $value
             )) {
-                log_("check_var", array("URL", $value));
-                return false;
+                $error_reason = 'invalid_format_url';
+            } else {
+                $validation_success = true;
             }
             break;
 
             //Planète, Joueur et alliance
         case "Galaxy":
-            //      if (!preg_match("#^[\w\s\.\*\-]+$#", $value)) {
-            //          log_("check_var", array("Galaxy", $value));
-            //          return false;
-            //      }
+            $validation_success = true; // Validation désactivée pour ce type
             break;
 
             //Rapport d'espionnage
         case "Spyreport":
-            //      if (!preg_match("#^[\w\s\[\]\:\-'%\.\*]+$#", $value)) {
-            //          log_("check_var", array("Spyreport", $value));
-            //          return false;
-            //      }
+            $validation_success = true; // Validation désactivée pour ce type
             break;
 
             //Masque paramétrable
         case "Special":
             if (!preg_match($mask, $value)) {
-                log_("check_var", array("Special", $value));
-                return false;
+                $error_reason = 'invalid_format_special_mask';
+            } else {
+                $validation_success = true;
             }
             break;
 
         default:
+            $error_reason = 'unknown_validation_type';
+            if (isset($log)) {
+                $log->error("Type de validation inconnu", [
+                    'type' => 'check_var_failed',
+                    'reason' => 'unknown_validation_type',
+                    'validation_type' => $type_check,
+                    'value_length' => strlen($value ?? ''),
+                    'user_id' => $user_data['id'] ?? 'unknown',
+                    'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+                ]);
+            }
             return false;
     }
 
-    return true;
+    // Logs de résultat
+    if ($validation_success) {
+        if (isset($log) && method_exists($log, 'debug')) {
+            $log->debug("Validation successful", [
+                'type' => 'check_var_success',
+                'validation_type' => $type_check,
+                'value_length' => strlen($value ?? ''),
+                'has_mask' => !empty($mask),
+                'user_id' => $user_data['id'] ?? 'unknown'
+            ]);
+        }
+        return true;
+    } else {
+        // Log d'erreur de validation - critique pour la sécurité
+        if (isset($log)) {
+            $log->warning("Validation failed - potentially malicious data", [
+                'type' => 'check_var_failed',
+                'reason' => $error_reason,
+                'validation_type' => $type_check,
+                'value_preview' => substr($value ?? '', 0, 50) . (strlen($value ?? '') > 50 ? '...' : ''),
+                'value_length' => strlen($value ?? ''),
+                'has_mask' => !empty($mask),
+                'mask_preview' => !empty($mask) ? substr($mask, 0, 100) : '',
+                'user_id' => $user_data['id'] ?? 'unknown',
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+                'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? 'unknown',
+                'referer' => $_SERVER['HTTP_REFERER'] ?? 'unknown'
+            ]);
+        }
+        return false;
+    }
 }
 
 /**
@@ -1190,19 +1262,75 @@ function check_var($value, $type_check, $mask = "", $auth_null = true)
  */
 function admin_raz_ratio($maintenance_action = false)
 {
-    global $user_data;
+    global $user_data, $log;
+
+    $log->info("Tentative de remise à zéro des ratios utilisateur", [
+        'type' => 'admin_raz_ratio_attempt',
+        'admin_user_id' => $user_data['id'] ?? 'unknown',
+        'admin_username' => $user_data['name'] ?? 'unknown',
+        'maintenance_mode' => $maintenance_action,
+        'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+    ]);
 
     if (
-        $user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] !=
+        $user_data["admin"] != 1 && $user_data["coadmin"] != 1 && $user_data["management_user"] !=
         1
     ) {
+        $log->critical("Tentative d'accès non autorisée à la remise à zéro des ratios", [
+            'type' => 'admin_raz_ratio_access_denied',
+            'user_id' => $user_data['id'] ?? 'unknown',
+            'username' => $user_data['name'] ?? 'unknown',
+            'admin_level' => $user_data["admin"] ?? 'undefined',
+            'coadmin_level' => $user_data["coadmin"] ?? 'undefined',
+            'management_level' => $user_data["management_user"] ?? 'undefined',
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? 'unknown'
+        ]);
         die("Acces interdit");
     }
 
-    (new User_Model())->all_raz_ratio_search();
+    $log->info("Autorisation vérifiée pour remise à zéro des ratios", [
+        'type' => 'admin_raz_ratio_authorized',
+        'admin_user_id' => $user_data['id'] ?? 'unknown',
+        'admin_level' => $user_data["admin"] == 1 ? 'admin' : ($user_data["coadmin"] == 1 ? 'coadmin' : 'management_user')
+    ]);
+
+    try {
+        $user_model = new User_Model();
+        $affected_users = $user_model->all_raz_ratio_search();
+
+        $log->info("Remise à zéro des ratios effectuée avec succès", [
+            'type' => 'admin_raz_ratio_success',
+            'admin_user_id' => $user_data['id'] ?? 'unknown',
+            'admin_username' => $user_data['name'] ?? 'unknown',
+            'affected_users_count' => $affected_users ?? 'unknown',
+            'maintenance_mode' => $maintenance_action,
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+        ]);
+    } catch (Exception $e) {
+        $log->error("Erreur lors de la remise à zéro des ratios", [
+            'type' => 'admin_raz_ratio_failed',
+            'reason' => 'database_error',
+            'admin_user_id' => $user_data['id'] ?? 'unknown',
+            'admin_username' => $user_data['name'] ?? 'unknown',
+            'error' => $e->getMessage(),
+            'maintenance_mode' => $maintenance_action,
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+        ]);
+        throw $e;
+    }
 
     if (!$maintenance_action) {
+        $log->debug("Redirection vers la page de confirmation", [
+            'type' => 'admin_raz_ratio_redirect',
+            'admin_user_id' => $user_data['id'] ?? 'unknown'
+        ]);
         redirection("index.php?action=message&id_message=raz_ratio&info");
+    } else {
+        $log->debug("Mode maintenance - pas de redirection", [
+            'type' => 'admin_raz_ratio_maintenance_mode',
+            'admin_user_id' => $user_data['id'] ?? 'unknown'
+        ]);
     }
 }
 
@@ -1339,8 +1467,8 @@ function generate_key()
 function booster_lire_bdd($id_player, $id_planet)
 {
     $result = null;
-    $User_Building_Model = new User_Building_Model();
-    $tBoosters = $User_Building_Model->get_all_booster_player($id_player);
+    $userBuildingModel = new Player_Building_Model();
+    $tBoosters = $userBuildingModel->get_all_booster_player($id_player);
 
     if (isset($tBoosters[$id_planet])) {
         return booster_decode($tBoosters[$id_planet]);
@@ -1364,18 +1492,18 @@ function booster_lire_bdd($id_player, $id_planet)
  */
 function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster)
 {
-    $User_Building_Model = new User_Building_Model();
-    return $User_Building_Model->update_booster($id_player, $id_planet, booster_encode($tab_booster));
+    $userBuildingModel = new Player_Building_Model();
+    return $userBuildingModel->update_booster($id_player, $id_planet, booster_encode($tab_booster));
 }
 
 /* Mets à jour les boosters de tous les users en fonction de la date de fin dans la BDD
 */
 function booster_maj_bdd()
 {
-    $User_Building_Model = new User_Building_Model();
+    $userBuildingModel = new Player_Building_Model();
 
     // recupération de tous les booster et verification
-    $tUserBoosters = $User_Building_Model->get_all_booster();
+    $tUserBoosters = $userBuildingModel->get_all_booster();
     $tUpdateBoosters = array();
     foreach ($tUserBoosters as $UserBooster) {
         $tmp = booster_verify_str($UserBooster['boosters']);
@@ -1391,7 +1519,7 @@ function booster_maj_bdd()
 
     //sauvegarde des boosters actualisé
     foreach ($tUpdateBoosters as $UpdateBooster) {
-        $User_Building_Model->update_booster($UpdateBooster["user_id"], $UpdateBooster["planet_id"], $UpdateBooster["boosters"]);
+        $userBuildingModel->update_booster($UpdateBooster["user_id"], $UpdateBooster["planet_id"], $UpdateBooster["boosters"]);
     }
 }
 

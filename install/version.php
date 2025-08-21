@@ -7,7 +7,7 @@
  * @author Kyser
  * @copyright Copyright &copy; 2007, https://ogsteam.eu/
  * @license https://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 3.04
+ * @version 4.0.0
  */
-$ogspy_version = "0.0.0-dev";
-$database_version = "0";
+$ogspy_version = "4.0.0-dev";
+$database_version = "20250713001";

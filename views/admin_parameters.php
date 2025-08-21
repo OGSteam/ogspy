@@ -13,13 +13,13 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
     redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 
 //check mail
 if (isset($pub_testmail)) {
-    sendMail($user_data["user_email"], "TEST", "<h1>TEST OK</h1>");
+    sendMail($user_data["email"], "TEST", "<h1>TEST OK</h1>");
 }
 
 
@@ -45,7 +45,7 @@ $num_of_galaxies = (isset($pub_num_of_galaxies)) ? $pub_num_of_galaxies : $serve
 $num_of_systems = (isset($pub_num_of_systems)) ? $pub_num_of_systems : $server_config['num_of_systems'];
 $block_ratio = $server_config['block_ratio'] == 1 ? "checked" : "";
 $ratio_limit = $server_config['ratio_limit'];
-$speed_uni = $server_config['speed_uni'];
+$speed_uni = $server_config['speed_uni'] ?? 1;
 $speed_fleet_peaceful = $server_config['speed_fleet_peaceful'];
 $speed_fleet_war = $server_config['speed_fleet_war'];
 $speed_fleet_holding = $server_config['speed_fleet_holding'];
@@ -213,9 +213,9 @@ $mail_smtp_password = "";
                 <td class="tdstat""><?= ($lang['ADMIN_PARAMS_MAIL_SMTP_PASSEWORD']) ?></td>
                 <td class="tdvalue"><input type="password" size="30" name="mail_smtp_password" value="<?= $mail_smtp_password ?>"> (<input type="checkbox" name="enable_mail_smtp_password" />)</td>
             </tr>
-            <?php if ($server_config['mail_use'] == 1 && check_var($user_data["user_email"], "Email")) : ?>
+            <?php if ($server_config['mail_use'] == 1 && check_var($user_data["email"], "Email")) : ?>
                 <tr>
-                    <td class="tdstat"><?= ($lang['ADMIN_PARAMS_MAIL_TEST'] . $user_data["user_email"]) ?></td>
+                    <td class="tdstat"><?= ($lang['ADMIN_PARAMS_MAIL_TEST'] . $user_data["email"]) ?></td>
                     <td class="tdvalue"><a href="index.php?action=administration&subaction=parameter&testmail">TEST</a></td>
                 </tr>
             <?php endif; ?>
@@ -247,7 +247,7 @@ $mail_smtp_password = "";
                 <td class="tdvalue"><input name="max_keeplog" type="text" size="5" maxlength="3" value="<?= $max_keeplog ?>"></td>
             </tr>
         </tbody>
-        <?php if ($user_data["user_admin"] == 1) : ?>
+        <?php if ($user_data["admin"] == 1) : ?>
             <thead>
                 <tr>
                     <th colspan="2"><?= ($lang['ADMIN_PARAMS_GAME_OPTIONS']) ?></th>

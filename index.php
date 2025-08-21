@@ -1,5 +1,5 @@
 <?php
-global $server_config, $ogspy_version, $user_data;
+global $server_config, $ogspy_version, $user_data, $log, $db; // ajout de $db
 ob_start();
 session_start();
 /**
@@ -46,23 +46,88 @@ if (!isset($pub_action)) {
 
 if (is_file("install/version.php")) {
     require_once "install/version.php";
-    if (version_compare($server_config["version"], $ogspy_version, '<')) {
+    $log->info("Version logiciel: " . $ogspy_version);
+
+    // Nouveau système : vérification via MigrationManager
+    try {
+        require_once "install/MigrationManager.php";
+        require_once "install/AutoUpgradeManager.php";
+
+        global $table_prefix; // s'assurer de l'utilisation du préfixe courant
+        $migrationManager = new MigrationManager($db, $log, isset($table_prefix)?$table_prefix:null);
+        $pendingMigrations = $migrationManager->getPendingMigrations();
+
+        if (!empty($pendingMigrations)) {
+            $log->info("Pending migrations detected: " . count($pendingMigrations));
+
+            $autoUpgrade = new AutoUpgradeManager($db, $log, isset($table_prefix)?$table_prefix:null);
+
+            // Vérifie si l'auto-upgrade est possible
+            if ($autoUpgrade->canAutoUpgrade()) {
+                $result = $autoUpgrade->checkAndUpgrade();
+
+                switch ($result['status']) {
+                    case 'up_to_date':
+                        $log->info("Database already up to date");
+                        break;
+
+                    case 'success':
+                        $log->info("Auto-upgrade successful: " . $result['message']);
+                        $log->info("New DB version: " . $result['version']);
+                        break;
+
+                    case 'in_progress':
+                        // Une autre requête traite déjà l'upgrade, on attend
+                        sleep(2);
+                        header("Refresh: 3");
+                        echo "<div style='text-align:center; padding:50px;'>";
+                        echo "<h2>Mise à jour en cours...</h2>";
+                        echo "<p>Veuillez patienter, la page se rechargera automatiquement.</p>";
+                        echo "</div>";
+                        exit();
+
+                    case 'error':
+                    case 'critical_error':
+                        $log->error("Auto-upgrade failed: " . $result['message']);
+                        // Fallback vers l'installeur manuel
+                        redirection("install/index.php");
+                        break;
+                }
+            } else {
+                $log->warning("Conditions not met for auto-upgrade, redirecting to installer");
+                // Conditions non réunies pour l'auto-upgrade, redirection classique
+                redirection("install/index.php");
+            }
+        } else {
+            $log->debug("No pending migrations");
+
+            // Vérifier si l'installation est complète (fichier de verrouillage)
+            if (!file_exists("install/install.lock")) {
+                $log->warning("Installation not completed (no lock file), redirecting to installer");
+                redirection("install/index.php");
+            }
+        }
+
+    } catch (Exception $e) {
+        $log->error("Migration verification error: " . $e->getMessage());
+        // Fallback vers l'installeur manuel en cas d'erreur
         redirection("install/index.php");
     }
 }
 
 if (
-    $server_config["server_active"] == 0
+    isset($server_config["server_active"]) && $server_config["server_active"] == 0
     && $pub_action != "login_web"
-    && $pub_action != "logout" && $user_data['user_admin'] != 1
-    && $user_data['user_coadmin'] != 1
+    && $pub_action != "logout" && $user_data['admin'] != 1
+    && $user_data['coadmin'] != 1
 ) {
     $pub_action = "server_close";
 }
 
 //  Visiteur non identifié
 
-if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "login_web")) {
+if (!isset($user_data["id"]) && !(isset($pub_action) && $pub_action == "login_web")) {
+    $log->info("Unidentified visitor");
     if ($pub_action == "message") {
         require "views/message.php";
     } else {
@@ -73,10 +138,11 @@ if (!isset($user_data["user_id"]) && !(isset($pub_action) && $pub_action == "log
     }
     exit();
 }
-
+//  Visiteur identifié
 if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
+    $log->info("Action : " . $pub_action);
     if (ratio_is_ok()) {
-        if ($cache_mod[$pub_action]['admin_only'] == 1 && $user_data["user_admin"] == 0 && $user_data["user_coadmin"] == 0) {
+        if ($cache_mod[$pub_action]['admin_only'] == 1 && $user_data["admin"] == 0 && $user_data["coadmin"] == 0) {
             redirection("index.php?action=message&id_message=forbidden&info");
         } else {
             require_once "mod/" . $cache_mod[$pub_action]['root'] . "/" . $cache_mod[$pub_action]['link'];
@@ -85,9 +151,9 @@ if ($pub_action <> '' && isset($cache_mod[$pub_action])) {
     }
 }
 
-if (isset($user_data['user_pwd_change'])) {
+if (isset($user_data['pwd_change'])) {
     //Changer le mdp :
-    if ($pub_action !== 'logout' && $user_data['user_pwd_change'] == 1 && $pub_action !== 'member_modify_member') {
+    if ($pub_action !== 'logout' && $user_data['pwd_change'] == 1 && $pub_action !== 'member_modify_member') {
         $pub_action = 'profile';
     }
 }
@@ -130,14 +196,6 @@ switch ($pub_action) {
         set_serverconfig();
         break;
 
-    case "extractor":
-        log_extractor();
-        break;
-
-    case "remove":
-        log_remove();
-        break;
-
     case "db_optimize":
         db_optimize();
         break;
@@ -160,10 +218,6 @@ switch ($pub_action) {
 
     case "del_planet":
         user_del_building();
-        break;
-
-    case "move_planet":
-        user_move_empire();
         break;
 
     case "profile":
@@ -353,14 +407,14 @@ switch ($pub_action) {
         break;
 
     default:
-        if ($server_config['open_user'] != "" && $user_data['user_admin'] != 1 && $user_data['user_coadmin'] != 1) {
+        if ($server_config['open_user'] != "" && $user_data['admin'] != 1 && $user_data['coadmin'] != 1) {
 
             if (file_exists($server_config['open_user'])) {
                 require_once($server_config['open_user']);
             } else {
                 require_once("views/galaxy.php");
             }
-        } elseif ($server_config['open_admin'] != "" && ($user_data['user_admin'] == 1 || $user_data['user_coadmin'] == 1)) {
+        } elseif ($server_config['open_admin'] != "" && ($user_data['admin'] == 1 || $user_data['coadmin'] == 1)) {
             if (file_exists($server_config['open_admin'])) {
                 require_once($server_config['open_admin']);
             } else {

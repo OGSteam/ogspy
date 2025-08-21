@@ -2,6 +2,7 @@
 
 namespace Ogsteam\Ogspy\Abstracts;
 
+use Monolog\Logger;
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
@@ -11,6 +12,7 @@ if (!defined('IN_SPYOGAME')) {
 abstract class Model_Abstract
 {
     protected $db;
+    protected Logger $log;
 
     /**
      * Constructs a new instance of the class and initializes the database connection.
@@ -19,8 +21,9 @@ abstract class Model_Abstract
      */
     public function __construct()
     {
-        global $db; //todo prevoir un get_instance mysql
+        global $db, $log;
         $this->db = $db;
+        $this->log = $log;
     }
 
     /**

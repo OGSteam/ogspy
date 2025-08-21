@@ -35,11 +35,11 @@ DROP TABLE IF EXISTS `ogspy_statistics`;
 DROP TABLE IF EXISTS `ogspy_universe`;
 DROP TABLE IF EXISTS `ogspy_user`;
 DROP TABLE IF EXISTS `ogspy_user_tokens`;
-DROP TABLE IF EXISTS `ogspy_user_building`;
+DROP TABLE IF EXISTS ogspy_player_building;
 DROP TABLE IF EXISTS `ogspy_user_defence`;
 DROP TABLE IF EXISTS `ogspy_user_favorite`;
 DROP TABLE IF EXISTS `ogspy_user_group`;
-DROP TABLE IF EXISTS `ogspy_user_spy`;
+DROP TABLE IF EXISTS ogspy_player_spy;
 DROP TABLE IF EXISTS `ogspy_user_technology`;
 DROP TABLE IF EXISTS `ogspy_mod_config`;
 DROP TABLE IF EXISTS `ogspy_parsedspy`;
@@ -454,7 +454,7 @@ CREATE TABLE `ogspy_sessions`
   `session_start`     INT(11)         NOT NULL DEFAULT '0',
   `session_expire`    INT(11)         NOT NULL DEFAULT '0',
   `session_ip`        CHAR(32)        NOT NULL DEFAULT '',
-  `session_ogs`       ENUM ('0', '1') NOT NULL DEFAULT '0',
+  `session_type`       ENUM ('0', '1') NOT NULL DEFAULT '0',
   `session_lastvisit` INT(11)         NOT NULL DEFAULT '0',
   UNIQUE KEY `session_id` (`session_id`, `session_ip`)
 )
@@ -515,15 +515,15 @@ CREATE TABLE `ogspy_user`
   `user_lastvisit`     INT(11)         NOT NULL DEFAULT '0',
   `user_galaxy`        SMALLINT(2)     NOT NULL DEFAULT '1',
   `user_system`        SMALLINT(3)     NOT NULL DEFAULT '1',
-  `planet_added_web`   INT(11)         NOT NULL DEFAULT '0',
-  `planet_added_ogs`   INT(11)         NOT NULL DEFAULT '0',
+  `planet_imports`   INT(11)         NOT NULL DEFAULT '0',
+  `planet_imports`   INT(11)         NOT NULL DEFAULT '0',
   `planet_exported`    INT(11)         NOT NULL DEFAULT '0',
   `search`             INT(11)         NOT NULL DEFAULT '0',
-  `spy_added_web`      INT(11)         NOT NULL DEFAULT '0',
-  `spy_added_ogs`      INT(11)         NOT NULL DEFAULT '0',
+  `spy_imports`      INT(11)         NOT NULL DEFAULT '0',
+  `spy_imports`      INT(11)         NOT NULL DEFAULT '0',
   `spy_exported`       INT(11)         NOT NULL DEFAULT '0',
-  `rank_added_web`     INT(11)         NOT NULL DEFAULT '0',
-  `rank_added_ogs`     INT(11)         NOT NULL DEFAULT '0',
+  `rank_imports`     INT(11)         NOT NULL DEFAULT '0',
+  `rank_imports`     INT(11)         NOT NULL DEFAULT '0',
   `xtense_type`        ENUM ('FF', 'GM-FF', 'GM-GC', 'ANDROID'),
   `xtense_version`     VARCHAR(10),
   `rank_exported`      INT(11)         NOT NULL DEFAULT '0',

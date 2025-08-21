@@ -23,7 +23,7 @@ class Rankings_Player_Model extends Rankings_Model
 
         $this->rank_tables = array(TABLE_RANK_PLAYER_POINTS, TABLE_RANK_PLAYER_ECO, TABLE_RANK_PLAYER_TECHNOLOGY, TABLE_RANK_PLAYER_MILITARY, TABLE_RANK_PLAYER_MILITARY_BUILT, TABLE_RANK_PLAYER_MILITARY_LOOSE, TABLE_RANK_PLAYER_MILITARY_DESTRUCT, TABLE_RANK_PLAYER_HONOR);
         $this->rank_tables_sql_table = array('rank', 'player', 'ally', 'points');
-        $this->rank_table_ref = array('general', 'eco', 'techno', 'military', 'military_b', 'military_l', 'military_d', 'honnor');
+        $this->rank_table_ref = array('general', 'eco', 'techno', 'military', 'military_b', 'military_l', 'military_d', 'honor');
     }
 
     /**
@@ -45,7 +45,7 @@ class Rankings_Player_Model extends Rankings_Model
         }
         $request = "SELECT `" . $ref . "`.`rank`, `general`.`player`, `general`.`ally`, `general`.`rank`, `general`.`points` , `eco`.`rank`,
         `eco`.`points`, `techno`.`rank`, `techno`.`points`, `military`.`rank`, `military`.`points`, `military_b`.`rank`, `military_b`.`points`, `military_l`.`rank`,
-        `military_l`.`points`, `military_d`.`rank`, `military_d`.`points`, `honnor`.`rank`, `honnor`.`points`";
+        `military_l`.`points`, `military_d`.`rank`, `military_d`.`points`, `honor`.`rank`, `honor`.`points`";
         $request .= " FROM `" . TABLE_RANK_PLAYER_POINTS . "` AS `general`";
 
 
@@ -55,7 +55,7 @@ class Rankings_Player_Model extends Rankings_Model
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_BUILT . " AS `military_b` ON `general`.`player` = `military_b`.`player` AND `military_b`.`datadate` = '" . $datadate . "'";
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " AS `military_l` ON `general`.`player` = `military_l`.`player`  AND `military_l`.`datadate` = '" . $datadate . "'";
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " AS `military_d` ON `general`.`player` = `military_d`.`player` AND `military_d`.`datadate` = '" . $datadate . "'";
-        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_HONOR . " AS `honnor` ON `general`.`player` = `honnor`.`player` AND `honnor`.`datadate` = '" . $datadate . "'";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_HONOR . " AS `honor` ON `general`.`player` = `honor`.`player` AND `honor`.`datadate` = '" . $datadate . "'";
 
         $request .= " WHERE general.`datadate` = '" . $datadate . "'";
         $request .= " AND " . $ref . ".`rank` >= '" . $higher_rank . "'";
@@ -97,30 +97,28 @@ class Rankings_Player_Model extends Rankings_Model
 
 
     /**
-     * @param $playername
-
-     * @return array
+     * Retrieves the rank, scores, and related data of a player across various categories such as economy,
+     * technology, military, etc., by querying the corresponding tables and organizing the data into an array.
+     *
+     * @param int $playerId The ID of the player whose ranking data is to be retrieved.
+     * @return array Returns an associative array containing the ranking data for the specified player, including
+     *               general ranking, economy ranking, technology ranking, military rankings, and other categories.
      */
-    public function get_all_ranktable_byplayer($playername)
+    public function get_all_ranktable_byplayer(int $playerId)
     {
-
-        $playername = $this->db->sql_escape_string($playername);
 
         $request = "SELECT `general`.`rank`, `general`.`datadate`, `general`.`player`, `general`.`ally`, `general`.`rank`, `general`.`points` , `eco`.`rank`,
         `eco`.`points`, `techno`.`rank`, `techno`.`points`, `military`.`rank`, `military`.`points`, `military_b`.`rank`, `military_b`.`points`, `military_l`.`rank`,
-       `military_l`.`points`, `military_d`.`rank`, `military_d`.`points`, `honnor`.`rank`, `honnor`.`points`";
+       `military_l`.`points`, `military_d`.`rank`, `military_d`.`points`, `honor`.`rank`, `honor`.`points`";
         $request .= " FROM `" . TABLE_RANK_PLAYER_POINTS . "` AS `general`";
-
-
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_ECO . " AS `eco` ON `general`.`player` = `eco`.`player` AND `eco`.`datadate` = general.`datadate`";
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_TECHNOLOGY . " AS `techno` ON `general`.`player` = `techno`.`player` AND `techno`.`datadate` = `general`.`datadate` ";
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY . " AS `military` ON `general`.`player` = `military`.`player` AND `military`.`datadate` = `general`.`datadate` ";
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_BUILT . " AS `military_b` ON `general`.`player` = `military_b`.`player` AND `military_b`.`datadate` = `general`.`datadate` ";
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " AS `military_l` ON `general`.`player` = `military_l`.`player` AND `military_l`.`datadate` = `general`.`datadate` ";
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " AS `military_d` ON `general`.`player` = `military_d`.`player` AND `military_d`.`datadate` = `general`.`datadate` ";
-        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_HONOR . " AS `honnor` ON `general`.`player` = `honnor`.`player` AND `honnor`.`datadate` = `general`.`datadate` ";
-
-        $request .= " WHERE `general`.`player` = '" . $playername . "'";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_HONOR . " AS `honor` ON `general`.`player` = `honor`.`player` AND `honor`.`datadate` = `general`.`datadate` ";
+        $request .= " WHERE `general`.`player_id` = '" . $playerId . "'";
         $request .= " ORDER BY `general`.`datadate` DESC ";
 
 
@@ -129,31 +127,33 @@ class Rankings_Player_Model extends Rankings_Model
         //Remplissage du ranking content. Toutes les valeurs doivent être présentes dans l'array sous peine de soucis d'affichages
         $ranking_content = array();
         $row = 0;
-        while (list($position, $datadate, $player_name, $ally_name, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $this->db->sql_fetch_row($result)) {
-            $ranking_content[$row]['postion'] = $position;
-            $ranking_content[$row]['datadate'] = $datadate;
-            $ranking_content[$row]['player_name'] = $player_name;
-            $ranking_content[$row]['ally_name'] = $ally_name;
-            $ranking_content[$row]['general_rank'] = $general_rank;
-            $ranking_content[$row]['general_pts'] = $general_pts;
-            $ranking_content[$row]['eco_rank'] = $eco_rank;
-            $ranking_content[$row]['eco_pts'] = $eco_pts;
-            $ranking_content[$row]['tech_rank'] = $tech_rank;
-            $ranking_content[$row]['tech_pts'] = $tech_pts;
-            $ranking_content[$row]['mil_rank'] = $mil_rank;
-            $ranking_content[$row]['mil_pts'] = $mil_pts;
-            $ranking_content[$row]['milb_rank'] = $milb_rank;
-            $ranking_content[$row]['milb_pts'] = $milb_pts;
-            $ranking_content[$row]['mill_rank'] = $mill_rank;
-            $ranking_content[$row]['mill_pts'] = $mill_pts;
-            $ranking_content[$row]['mild_rank'] = $mild_rank;
-            $ranking_content[$row]['mild_pts'] = $mild_pts;
-            $ranking_content[$row]['milh_rank'] = $milh_rank;
-            $ranking_content[$row]['milh_pts'] = $milh_pts;
+        while ($row_data = $this->db->sql_fetch_row($result)) {
+            list($position, $datadate, $player_name, $ally_name, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $row_data;
+
+            $ranking_content[$row] = [
+                'position' => $position,
+                'datadate' => $datadate,
+                'player_name' => $player_name,
+                'ally_name' => $ally_name,
+                'general_rank' => $general_rank,
+                'general_pts' => $general_pts,
+                'eco_rank' => $eco_rank,
+                'eco_pts' => $eco_pts,
+                'tech_rank' => $tech_rank,
+                'tech_pts' => $tech_pts,
+                'mil_rank' => $mil_rank,
+                'mil_pts' => $mil_pts,
+                'milb_rank' => $milb_rank,
+                'milb_pts' => $milb_pts,
+                'mill_rank' => $mill_rank,
+                'mill_pts' => $mill_pts,
+                'mild_rank' => $mild_rank,
+                'mild_pts' => $mild_pts,
+                'milh_rank' => $milh_rank,
+                'milh_pts' => $milh_pts,
+            ];
             $row++;
         }
-
-
         return $ranking_content;
     }
 }

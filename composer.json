@@ -20,7 +20,7 @@
     }
   ],
   "require": {
-    "php": ">=8.2",
+    "php": ">=8.3",
     "ext-mysqli": "*",
     "ext-json": "*",
     "ext-zlib": "*",
@@ -28,7 +28,8 @@
     "tooltipster/tooltipster": "^4.2",
     "phpmailer/phpmailer": "^6.6",
     "filp/whoops": "^2.15",
-    "components/jquery": "^3.7"
+    "components/jquery": "^3.7",
+    "monolog/monolog": "^3.9"
   },
   "config": {
     "platform": {

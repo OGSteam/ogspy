@@ -23,7 +23,7 @@ class Rankings_Ally_Model extends Rankings_Model
 
         $this->rank_tables = array(TABLE_RANK_ALLY_POINTS, TABLE_RANK_ALLY_ECO, TABLE_RANK_ALLY_TECHNOLOGY, TABLE_RANK_ALLY_MILITARY, TABLE_RANK_ALLY_MILITARY_BUILT, TABLE_RANK_ALLY_MILITARY_LOOSE, TABLE_RANK_ALLY_MILITARY_DESTRUCT, TABLE_RANK_ALLY_HONOR);
         $this->rank_tables_sql_table = array("rank", "ally", "number_member", "points", "user_name");
-        $this->rank_table_ref = array('general', 'eco', 'techno', 'military', 'military_b', 'military_l', 'military_d', 'honnor');
+        $this->rank_table_ref = array('general', 'eco', 'techno', 'military', 'military_b', 'military_l', 'military_d', 'honor');
     }
 
     /**
@@ -38,7 +38,7 @@ class Rankings_Ally_Model extends Rankings_Model
 
         $request  = "SELECT  `general`.`datadate`, `general`.`rank`, `general`.`ally`, `general`.`number_member`, `general`.`rank`, `general`.`points`, `eco`.`rank`,
         `eco`.`points`, `techno`.`rank`, `techno`.`points`, `military`.`rank`, `military`.`points`, `military_b`.`rank`, `military_b`.`points`, `military_l`.`rank`,
-        military_l.points, military_d.rank, military_d.points, honnor.rank, honnor.points";
+        military_l.points, military_d.rank, military_d.points, honor.rank, honor.points";
 
         $request .= " FROM `" . TABLE_RANK_ALLY_POINTS . "` AS `general`";
         $request .= " LEFT JOIN " . TABLE_RANK_ALLY_ECO . " AS `eco` ON `general`.`ally` = `eco`.`ally` AND `eco`.`datadate`  = `general`.`datadate` ";
@@ -47,7 +47,7 @@ class Rankings_Ally_Model extends Rankings_Model
         $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_BUILT . " AS `military_b` ON `general`.`ally` = `military_b`.`ally` AND `military_b`.`datadate` = `general`.`datadate` ";
         $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_LOOSE . " AS `military_l` ON `general`.`ally` = `military_l`.`ally`  AND `military_l`.`datadate`  = `general`.`datadate` ";
         $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " AS `military_d` ON `general`.`ally` = `military_d`.`ally` AND `military_d`.`datadate`  = `general`.`datadate` ";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_HONOR . " AS `honnor` ON `general`.`ally` = `honnor`.`ally` AND `honnor`.`datadate`  = `general`.`datadate` ";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_HONOR . " AS `honor` ON `general`.`ally` = `honor`.`ally` AND `honor`.`datadate`  = `general`.`datadate` ";
 
 
         $request .= " WHERE `general`.`ally` = '" . $allyName . "'";
@@ -119,7 +119,7 @@ class Rankings_Ally_Model extends Rankings_Model
 
         $request  = "SELECT " . $ref . ".`rank`, `general`.`ally`, `general`.`number_member`, `general`.`rank`, `general`.`points`, `eco`.`rank`,
         `eco`.`points`, `techno`.`rank`, `techno`.`points`, `military`.`rank`, `military`.`points`, `military_b`.`rank`, `military_b`.`points`, `military_l`.`rank`,
-        `military_l`.`points`, `military_d`.`rank`, `military_d`.`points`, `honnor`.`rank`, `honnor`.`points`";
+        `military_l`.`points`, `military_d`.`rank`, `military_d`.`points`, `honor`.`rank`, `honor`.`points`";
 
         $request .= " FROM `" . TABLE_RANK_ALLY_POINTS . "` AS `general`";
         $request .= " LEFT JOIN " . TABLE_RANK_ALLY_ECO . " AS `eco` ON `general`.`ally` = `eco`.`ally` AND `eco`.`datadate` = '" . $datadate . "'";
@@ -128,7 +128,7 @@ class Rankings_Ally_Model extends Rankings_Model
         $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_BUILT . " AS `military_b` ON `general`.`ally` = `military_b`.`ally` AND `military_b`.`datadate` = '" . $datadate . "'";
         $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_LOOSE . " AS `military_l` ON `general`.`ally` = `military_l`.`ally`  AND `military_l`.`datadate` = '" . $datadate . "'";
         $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " AS `military_d` ON `general`.`ally` = `military_d`.`ally` AND `military_d`.`datadate` = '" . $datadate . "'";
-        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_HONOR . " AS `honnor` ON `general`.`ally` = `honnor`.`ally` AND `honnor`.`datadate` = '" . $datadate . "'";
+        $request .= " LEFT JOIN " . TABLE_RANK_ALLY_HONOR . " AS `honor` ON `general`.`ally` = `honor`.`ally` AND `honor`.`datadate` = '" . $datadate . "'";
 
         $request .= " WHERE `general`.`datadate` = '" . $datadate . "'";
         $request .= " AND " . $ref . ".`rank` >= '" . $higher_rank . "'";

@@ -1,4 +1,4 @@
-<?php global $server_config, $lang;
+<?php global $server_config, $lang, $user_data;
 
 /**
  * Fonctions Affichage de la Galaxie
@@ -17,16 +17,21 @@ if (!defined('IN_SPYOGAME')) {
 
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 use Ogsteam\Ogspy\Model\Group_Model;
+use \Ogsteam\Ogspy\Model\Player_Model;
 
-global $user_data;
 $ToolTip_Helper = new ToolTip_Helper();
 
 $info_system = galaxy_show();
 $population = $info_system["population"];
 $galaxy = $info_system["galaxy"];
 $system = $info_system["system"];
+$my_player_data = (new Player_Model())->get_player_data($user_data['player_id']);
 
-$phalanx_list = galaxy_get_phalanx($galaxy, $system, $user_data['user_class']);
+if( isset($my_player_data['class']) && $my_player_data['class'] != 0) {
+    $phalanx_list = galaxy_get_phalanx($galaxy, $system, $my_player_data['class']);
+} else {
+    $phalanx_list = galaxy_get_phalanx($galaxy, $system);
+}
 
 $galaxy_down = (($galaxy - 1) < 1) ? 1 : $galaxy - 1;
 $galaxy_up = (($galaxy - 1) > intval($server_config['num_of_galaxies'])) ? intval($server_config['num_of_galaxies']) : $galaxy + 1;
@@ -36,15 +41,26 @@ $system_up = (($system - 1) > intval($server_config['num_of_systems'])) ? intval
 
 $favorites = galaxy_getfavorites();
 
-$tooltiptab = array("player" => array(), "ally" => array()); // conteneur des tooltips a creer
+$tooltiptab = [
+    "playerName" => [],
+    "allyName" => []
+]; // Conteneur des tooltips à créer
 
 $missil = "";
-//TODO sortir requete de la vue
 //recherche du group
-$user_group = (new Group_Model())->get_user_group($user_data["user_id"]);
+$user_group = (new Group_Model())->get_user_group($user_data["id"]);
 //recherche des droits liés
 $tInfosGroups = (new Group_Model())->get_group_rights($user_group);
 
+// Vérification que l'utilisateur a bien des droits de groupe
+if ($tInfosGroups === null) {
+    // Si l'utilisateur n'a pas de groupe ou que le groupe n'existe pas,
+    // on utilise des valeurs par défaut sécurisées
+    $tInfosGroups = [
+        'server_show_positionhided' => 0,
+        // Autres droits par défaut...
+    ];
+}
 
 //si autorisé server_show_positionhided doit etre a 1 !!!!!!!!!!!
 //todo info a communiquer avec release
@@ -76,22 +92,22 @@ require_once 'views/page_header.php';
             </thead>
             <tbody>
                 <tr>
-                    <td clas="content">
+                    <td class="content">
                         <input type="button" class="og-button " value="<<<" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?= $galaxy_down ?>&amp;system=<?= $system ?>';">
                     </td>
-                    <td clas="content">
+                    <td class="content">
                         <input type="text" name="galaxy" maxlength="3" size="5" value="<?= $galaxy ?>" tabindex="1">
                     </td>
-                    <td clas="content">
+                    <td class="content">
                         <input type="button" class="og-button" value=">>>" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?= $galaxy_up ?>&amp;system=<?= $system ?>';">
                     </td>
-                    <td clas="content">
+                    <td class="content">
                         <input type="button" class="og-button" value="<<<" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?= $galaxy ?>&amp;system=<?= $system_down ?>';">
                     </td>
-                    <td clas="content">
+                    <td class="content">
                         <input type="text" name="system" maxlength="3" size="5" value="<?= $system ?>" tabindex="2">
                     </td>
-                    <td clas="content">
+                    <td class="content">
                         <input type="button" class="og-button" value=">>>" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?= $galaxy ?>&amp;system=<?= $system_up ?>';">
                     </td>
                 </tr>
@@ -185,13 +201,13 @@ require_once 'views/page_header.php';
                     <tr>
                         <td class="tdcontent">
                             <?php if ($value["ally"] != "") : ?>
-                                <?php $tooltiptab["ally"][] = $value["ally"]; //pour calcul tooltip ;
+                                <?php $tooltiptab["allyName"][] = $value["ally"]; //pour calcul tooltip ;
                                 ?>
                                 [<a href='index.php?action=search&&amp;type_search=ally&amp;string_search=<?= $value["ally"] ?>&amp;strict=on' <?= $ToolTip_Helper->GetHTMLClassContent(array("tooltipstered"), "ttp_alliance_" . $value["ally"]) ?>>
                                     <?= $value["ally"] ?>
                                 </a>]
                             <?php endif; ?>
-                            <?php $tooltiptab["player"][] = $value["player"]; // pour calcul tooltip
+                            <?php $tooltiptab["playerName"][] = $value["player"]; // pour calcul tooltip
                             ?>
                             <a href="index.php?action=search&amp;type_search=player&amp;string_search=<?= $value["player"] ?>&amp;strict=on" <?= $ToolTip_Helper->GetHTMLClassContent(array("tooltipstered"), "ttp_player_" . $value["player"]) ?>>
                                 <?= $value["player"] ?>
@@ -279,14 +295,16 @@ require_once 'views/page_header.php';
 <?php
 // calcul de tous les tooltip player et alliance
 //tooltip player
-foreach ($tooltiptab["player"] as $player) {
-    $tooltip = displayGalaxyPlayerTooltip($player);
+foreach ($tooltiptab["playerName"] as $player) {
+    $playerId = (new Player_Model())->get_player_id_for_name($player);
+    $tooltip = displayGalaxyPlayerTooltip($playerId);
     //------------  Affichage Tooltip ----------------
     $ToolTip_Helper->addTooltip("ttp_player_" . $player,  $tooltip);
 }
 //tooltup ally
-foreach ($tooltiptab["ally"] as $ally) {
-    $tooltip =  displayGalaxyAllyTooltip($ally);
+foreach ($tooltiptab["allyName"] as $ally) {
+    $allyId = (new Ally_Model())->get_ally_id_for_name($ally);
+    $tooltip =  displayGalaxyAllyTooltip($allyId);
     //------------  Affichage Tooltip ----------------
     $ToolTip_Helper->addTooltip("ttp_alliance_" . $ally,  $tooltip);
 }

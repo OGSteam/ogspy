@@ -69,14 +69,14 @@ class sql_db
     public $last_query;
 
 
-
     /**
-     * Get the current class database instance. Creates it if dosen't exists (singleton)
-     * @param string $sqlserver MySQL Server Name
-     * @param string $sqluser MySQL User Name
-     * @param string $sqlpassword MySQL User Password
-     * @param string $database MySQL Database Name
-     * @return int|sql_db
+     * Returns the singleton instance of the sql_db object. If the instance does not exist, it is created.
+     *
+     * @param string $sqlserver The SQL server address.
+     * @param string $sqluser The username for the SQL server.
+     * @param string $sqlpassword The password for the SQL user.
+     * @param string $database The name of the database to connect to.
+     * @return sql_db The singleton instance of the sql_db object.
      */
     public static function getInstance($sqlserver, $sqluser, $sqlpassword, $database)
     {
@@ -147,18 +147,19 @@ class sql_db
      */
     public function sql_query($query = "")
     {
-        global $server_config;
+        global $logSQL, $logSlowSQL;
         global $benchSQL;
+
+        $logSQL->info($query);
         $benchSQL->start();
+        $start_time = microtime(true);
 
         $this->last_query = $query;
         $this->result = $this->db_connect_id->query($query);
 
-        if (isset($server_config["debug_log"]) && $server_config["debug_log"] == 1) {
-            $fichier = "sql_" . date("ymd") . ".sql";
-            $date = date("d/m/Y H:i:s");
-            $ligne = "$date - $query ;";
-            write_file(PATH_LOG_TODAY . $fichier, 'a', $ligne);
+        $execution_time = microtime(true) - $start_time;
+        if ($execution_time > 0.2) {
+            $logSlowSQL->warning("Slow query (".$execution_time."s): ".$query);
         }
 
         $benchSQL->stop("sql_query ".$this->nb_requete." ");
@@ -171,7 +172,7 @@ class sql_db
      * @param mysqli_result|null $result The Query Result.
      * @return array|bool array containing the Database result
      */
-    public function sql_fetch_row(mysqli_result $result = null): array|bool|null
+    public function sql_fetch_row(?mysqli_result $result = null): array|bool|null
     {
         if (!$result) {
             $result = $this->result;
@@ -184,11 +185,11 @@ class sql_db
     }
 
     /**
-     * Gets the result of the Query and returns it in a associative array
+     * Gets the result of the Query and returns it in an associative array
      * @param mysqli_result|null $result The Query id.
      * @return array|bool the associative array containing the Database result
      */
-    public function sql_fetch_assoc(mysqli_result $result = null): array|bool|null
+    public function sql_fetch_assoc(?mysqli_result $result = null): array|bool|null
     {
         if (!$result) {
             $result = $this->result;
@@ -205,7 +206,7 @@ class sql_db
      * @param mysqli_result|null $result
      * @return int|bool the number of results
      */
-    public function sql_numrows(mysqli_result $result = null): int|bool
+    public function sql_numrows(?mysqli_result $result = null): int|bool
     {
         if (!$result) {
             $result = $this->result;
@@ -266,7 +267,7 @@ class sql_db
     }
 
     /**
-     * Escapes all characters to set up the Query
+     * Escape String Function
      * @param string $str The string to escape
      * @return string|false escaped string
      */
@@ -277,6 +278,57 @@ class sql_db
         } else {
             return false;
         }
+    }
+
+    /**
+     * Start MySQL Transaction
+     * @param string $mode Transaction mode ('begin', 'start', 'commit', 'rollback')
+     * @return bool Success or failure
+     */
+    public function sql_transaction($mode = 'begin')
+    {
+        switch (strtolower($mode)) {
+            case 'begin':
+            case 'start':
+                return mysqli_autocommit($this->db_connect_id, false) &&
+                       mysqli_query($this->db_connect_id, "START TRANSACTION");
+
+            case 'commit':
+                $result = mysqli_commit($this->db_connect_id);
+                mysqli_autocommit($this->db_connect_id, true);
+                return $result;
+
+            case 'rollback':
+                $result = mysqli_rollback($this->db_connect_id);
+                mysqli_autocommit($this->db_connect_id, true);
+                return $result;
+
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Get the current database name
+     * @return string The current database name
+     */
+    public function getDatabaseName()
+    {
+        return $this->dbname;
+    }
+
+    /**
+     * Select a different database
+     * @param string $database The database name to select
+     * @return bool Success or failure
+     */
+    public function sql_select_db($database)
+    {
+        $result = mysqli_select_db($this->db_connect_id, $database);
+        if ($result) {
+            $this->dbname = $database;
+        }
+        return $result;
     }
 
 }

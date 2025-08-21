@@ -196,24 +196,3 @@ class token
         }
     }
 }
-
-
-//usage
-//$t= new token();
-//
-//$ttokengenere = $t->getToken(600,"forumlaireX");
-//
-//verification
-//$t= new token();
-//if($t->checkToken($ttokengenere))
-//{ ok}
-//else
-//{ pas ok}
-
-// usage static
-//$ttokengenere = token::staticGetToken();
-//verification
-//if( token::staticCheckToken($ttokengenere))
-//{ ok}
-//else
-//{ pas ok}

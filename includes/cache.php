@@ -31,7 +31,6 @@ function generate_config_cache()
     if (!$fh) {
         if (!defined('UPGRADE_IN_PROGRESS')) {
             echo '<p>Impossible d écrire sur le fichier cache. Vérifier les droits d acces au dossier  \'cache\' </p>';
-            log_("erreur_config_cache");
         }
     } else {
         fwrite($fh, '<?php' . "\n\n" . 'define(\'OGSPY_CONFIG_LOADED\', 1);' . "\n\n" . '$server_config = ' . var_export($output, true) . ';' . "\n\n" . '?>');
@@ -67,7 +66,6 @@ function generate_mod_cache()
     if (!$fh) {
         if (!defined('UPGRADE_IN_PROGRESS')) {
             echo '<p>Impossible d écrire sur le fichier cache. Vérifier les droits d acces au dossier  \'cache\' </p>';
-            log_("erreur_mod_cache");
         }
     } else {
         fwrite($fh, '<?php' . "\n\n" . 'define(\'OGSPY_MOD_LOADED\', 1);' . "\n\n" . '$cache_mod = ' . var_export($modExport, true) . ';' . "\n\n" . '?>');

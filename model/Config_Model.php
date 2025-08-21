@@ -31,6 +31,7 @@ class Config_Model extends Model_Abstract
         while ($cur_config_item = $this->db->sql_fetch_row($result)) {
             $output[$cur_config_item[0]] = stripslashes($cur_config_item[1]);
         }
+        $this->log->debug("Config Model get: " . print_r($output, true));
         return $output;
     }
 
@@ -39,17 +40,22 @@ class Config_Model extends Model_Abstract
      * @param array|null $filter
      * @return array|bool
      */
-    public function get(array $filter = null): bool|array|null
+    public function get(?array $filter): bool|array
     {
         if ($filter === null) {
             return false;
         }
 
-        $queryStr = "'" . implode("','", $filter) . "'";
-        $query = "SELECT `config_name`, `config_value` FROM " . TABLE_CONFIG . " WHERE `config_name` IN ($queryStr)";
+        $escapedFilter = array_map([$this->db, 'sql_escape_string'], $filter);
+        $queryStr = "'" . implode("','", $escapedFilter) . "'";
+        $query = "SELECT `name`, `value` FROM " . TABLE_CONFIG . " WHERE `name` IN ($queryStr)";
 
         $result = $this->db->sql_query($query);
-        return $this->db->sql_fetch_assoc($result);
+        $output = [];
+        while ($row = $this->db->sql_fetch_row($result)) {
+            $output[$row[0]] = stripslashes($row[1]);
+        }
+        return $output;
     }
 
     /**
@@ -63,7 +69,7 @@ class Config_Model extends Model_Abstract
             $filter = array();
         }
 
-        $query = "SELECT `config_name`, `config_value` FROM " . TABLE_CONFIG;
+        $query = "SELECT `name`, `value` FROM " . TABLE_CONFIG;
         $i = 0;
         foreach ($filter as $key => $value) {
             if ($i == 0) {
@@ -89,8 +95,8 @@ class Config_Model extends Model_Abstract
     public function update(array $config)
     {
         $query = "UPDATE " . TABLE_CONFIG . " SET
-                    `config_value` = '" . $this->db->sql_escape_string($config['config_value']) . "'
-                 WHERE `config_name` = '" . $this->db->sql_escape_string($config['config_name']) . "'";
+                    `value` = '" . $this->db->sql_escape_string($config['value']) . "'
+                 WHERE `name` = '" . $this->db->sql_escape_string($config['name']) . "'";
         $this->db->sql_query($query);
     }
 
@@ -103,10 +109,10 @@ class Config_Model extends Model_Abstract
      */
     public function update_one( $configValue, $configName)
     {
-        $query = "INSERT INTO " . TABLE_CONFIG . " (`config_name`, `config_value`)
+        $query = "INSERT INTO " . TABLE_CONFIG . " (`name`, `value`)
               VALUES ('" . $this->db->sql_escape_string($configName) . "',
                       '" . $this->db->sql_escape_string($configValue) . "')
-              ON DUPLICATE KEY UPDATE `config_value` = '" . $this->db->sql_escape_string($configValue) . "'";
+              ON DUPLICATE KEY UPDATE `value` = '" . $this->db->sql_escape_string($configValue) . "'";
         $this->db->sql_query($query);
     }
 }

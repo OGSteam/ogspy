@@ -15,7 +15,7 @@ if (!defined('IN_SPYOGAME')) {
 
 use Ogsteam\Ogspy\Model\Statistics_Model;
 
-if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1) {
+if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1) {
     redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 
@@ -151,7 +151,7 @@ $connectes = count($online); //Nombre personne en ligne
             $time_start = date("d F o G:i:s", $v["time_start"]);
             $time_lastactivity = date("d F o G:i:s", $v["time_lastactivity"]);
             $ip = $v["ip"];
-            $ogs = $v["ogs"] == 1 ? "(OGS)" : "";
+            $ogs = $v["session_type"] == 1 ? "(Xtense)" : "";
 
             echo "<tr>";
             echo "\t" . "<td>" . $user . " " . $ogs . "</td>";

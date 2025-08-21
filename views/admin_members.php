@@ -13,7 +13,7 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] != 1) {
+if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1 && $user_data["management_user"] != 1) {
     redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 
@@ -83,7 +83,7 @@ $usergroup_list = usergroup_get();
                     </td>
                     <td class="tdvalue">
                         <!-- gestion des membres-->
-                        <?php if ($user_data["user_admin"] == 1) : ?>
+                        <?php if ($user_data["admin"] == 1) : ?>
                             <?= $lang['ADMIN_MEMBERS_POPUP_MGTMEMBERS'] . " : " ?>
                             <select name='user_coadmin'>"?>
                                 <option value='1'><?= $lang['ADMIN_MEMBERS_YES'] ?></option>
@@ -94,7 +94,7 @@ $usergroup_list = usergroup_get();
                 </tr>
                 <tr>
                     <td class="tdvalue"><!-- gestion des Classements-->
-                        <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
+                        <?php if ($user_data["admin"] == 1 || $user_data["coadmin"] == 1) : ?>
                             <?= $lang['ADMIN_MEMBERS_POPUP_MGTRANKS'] . help('admin_member_manager') . " : " ?>
                             <select name='management_user'>"?>
                                 <option value='1' selected='selected'><?= $lang['ADMIN_MEMBERS_YES'] ?></option>
@@ -118,9 +118,9 @@ $usergroup_list = usergroup_get();
                     </td>
                     <td class="tdvalue">
                         <select name="group_id">
-                            <?php foreach ($usergroup_list as $value) : ?>
-                                <option value="<?= $value["group_id"] ?>">
-                                    <?= $value["group_name"] ?>
+                            <?php foreach ($usergroup_list as $usergroup_) : ?>
+                                <option value="<?= $usergroup_["id"] ?>">
+                                    <?= $usergroup_["name"] ?>
                                 </option>
                             <?php endforeach ?>
                         </select>
@@ -159,12 +159,12 @@ $usergroup_list = usergroup_get();
                 <th>
                     <?= ($lang['ADMIN_MEMBERS_ENABLED']) ?>
                 </th>
-                <?php if ($user_data["user_admin"] == 1) : ?>
+                <?php if ($user_data["admin"] == 1) : ?>
                     <th>
                         <?= ($lang['ADMIN_MEMBERS_COADMIN']) ?>
                     </th>
                 <?php endif; ?>
-                <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
+                <?php if ($user_data["admin"] == 1 || $user_data["coadmin"] == 1) : ?>
                     <th>
                         <?= ($lang['ADMIN_MEMBERS_MGMEMBERS']) ?>
                         <?= help("admin_member_manager") ?>
@@ -181,18 +181,18 @@ $usergroup_list = usergroup_get();
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($user_info as $v) : ?>
+            <?php foreach ($user_info as $user) : ?>
                 <tr>
-                    <?php $user_id = $v["user_id"]; ?>
-                    <?php $name = $v["user_name"]; ?>
-                    <?php $email = $v["user_email"]; ?>
-                    <?php $reg_date = date("d F o G:i", $v["user_regdate"]); ?>
-                    <?php $active_off = !$v["user_active"] ? " selected" : ""; ?>
-                    <?php $user_coadmin_off = (!$v["user_coadmin"] && !$v["user_admin"]) ? " selected" : ""; ?>
-                    <?php $management_user_off = (!$v["management_user"] && !$v["user_admin"]) ? " selected" : ""; ?>
-                    <?php $management_ranking_off = (!$v["management_ranking"] && !$v["user_admin"]) ? " selected" : ""; ?>
-                    <?php if ($v["user_lastvisit"] != 0) : ?>
-                        <?php $last_visit = date("d F o G:i", $v["user_lastvisit"]); ?>
+                    <?php $user_id = $user["id"]; ?>
+                    <?php $name = $user["name"]; ?>
+                    <?php $email = $user["email"]; ?>
+                    <?php $reg_date = date("d F o G:i", $user["regdate"]); ?>
+                    <?php $active_off = !$user["active"] ? " selected" : ""; ?>
+                    <?php $user_coadmin_off = (!$user["coadmin"] && !$user["admin"]) ? " selected" : ""; ?>
+                    <?php $management_user_off = (!$user["management_user"] && !$user["admin"]) ? " selected" : ""; ?>
+                    <?php $management_ranking_off = (!$user["management_ranking"] && !$user["admin"]) ? " selected" : ""; ?>
+                    <?php if ($user["lastvisit"] != 0) : ?>
+                        <?php $last_visit = date("d F o G:i", $user["lastvisit"]); ?>
                     <?php else : ?>
                         <?php $last_visit = "--"; ?>
                     <?php endif; ?>
@@ -219,7 +219,7 @@ $usergroup_list = usergroup_get();
                     </select>
                 </td>
 
-                <?php if ($user_data["user_admin"] == 1) : ?>
+                <?php if ($user_data["admin"]) : ?>
                     <td>
                         <select name='user_coadmin'>
                             <option value='1'>
@@ -233,7 +233,7 @@ $usergroup_list = usergroup_get();
                 <?php endif; //si l'utilisateur est co admin que ce passe t-il  ?'
                 ?>
 
-                <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : ?>
+                <?php if ($user_data["admin"] || $user_data["coadmin"] == 1) : ?>
                     <td>
                         <!--gestion membres-->
                         <select name='management_user'>

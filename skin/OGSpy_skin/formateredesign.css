@@ -569,12 +569,12 @@ ______________________________________________________________ */
 
     --color-warning: #d9480f;
     --color-warning-lighten: #ffe8cc;
-    --color-success: #2b8a3e;
+    --color-success: #436443; /* Vert sobre */
     --color-success-lighten: #d3f9d8;
     --color-danger: #ee0909;
     --color-danger-lighten: #ffe3e3;
 
-    --color-highlight: #ecff00;
+    --color-highlight: #4682B4; /* Bleu-gris sobre */
     --color-highlight-lighten: #feffeb;
 
 
@@ -595,7 +595,7 @@ ______________________________________________________________ */
     --color-navpagemenu-background-hover: rgba(0, 0, 0, 0.8);
 
     /*table*/
-    --color-table-color: --color-text;
+    --color-table-color: var(--color-text);
     --color-table-color-tdstat: #3EBAFD;
     --color-table-color-tdname: #3EBAFD;
     --color-table-border: rgba(255, 255, 255, 0.1);
@@ -1055,7 +1055,7 @@ table.og-table tbody td {
     border-bottom-width: 1px;
     border-spacing: 0;
     border-collapse: separate;
-
+    text-align: center;
 }
 
 table.og-table tbody .tdstat {
@@ -1084,32 +1084,20 @@ table.og-table tbody .tdcontent {
 table.og-table tbody td.og-highlight {
     color: var(--color-highlight);
     background-color: var(--color-table-background-hover);
-
-}
-
-
-table.og-table tbody tr .tdstat:hover,
-table.og-table tbody tr .tdvalue:hover {
-    background-color: var(--color-table-background-hover);
-}
-
-table.og-table tbody tr {
-    height: 15px;
 }
 
 table.og-table tbody td {
-
     text-align: center;
 }
 
-table.og-table tbody td {
-
-    text-align: center;
+table.og-table tbody td.og-success {
+    background-color: var(--color-success);
+    color: var(--color-text);
 }
 
-table.og-table thead tr th.og-legend,
-table.og-table thead tr td.og-legend {
-    text-align: center;
+table.og-table tbody td.og-highlight {
+    background-color: var(--color-highlight);
+    color: #FFFFFF; /* Texte blanc pour le contraste */
 }
 
 /*fin TABLE */
@@ -1573,13 +1561,13 @@ io
     padding-top: 1px;
     padding-bottom: 1px;
     text-align: center;
-    background: linear-gradient(to right, rgba(0,0,0,0) 30%,var(--color-navpagemenu-background-active) 50%,rgba(0,0,0,0) 70%);
+    background: linear-gradient(to right, rgba(0,0,0,0) 30%,var(--color-navbarmenu-background-active) 50%,rgba(0,0,0,0) 70%);
     margin-bottom: 5px;;
  /*   background-color: var(--color-navpagemenu-background-active) ;*/
 }
 
 .ogspy-mod-header h2 ,.ogame-mod-header h1   {
-    color: var(--color-navpagemenu-link);
+    color: var(--color-navbarmenu-link);
 }
 .ogspy-mod-footer     {
     position: fixed;
@@ -1695,11 +1683,52 @@ footer#barre .notviewlittle{
         margin-right: 50%;
     }
 
+		/* Table Home Simulation */
+	#simu {
+		table-layout: fixed;
+		width: 100%; /* Assure que la table utilise toute la largeur disponible */
+		border-collapse: collapse; /* Recommandé pour une meilleure gestion des bordures */
+	}
 
-    /* vue galaxie */
-    table.og-table-galaxy .og-galaxy-poster {
-        display: none;
-    }
+	/* Cible la première colonne (en-têtes de ligne) */
+	#simu > thead > tr > th:first-child,
+	#simu > tbody > tr > td.tdname {
+		width: 180px; /* Ajustez cette valeur (px ou %) selon vos besoins */
+		/* Par exemple, 15% ou 200px */
+	}
+
+	/* Cible la dernière colonne (totaux) */
+	#simu > thead > tr > th:last-child,
+	#simu > tbody > tr > td.og-highlight {
+		width: 120px; /* Ajustez cette valeur (px ou %) selon vos besoins */
+		/* Par exemple, 10% ou 150px */
+	}
+
+
+	#simu.og-table-simu {
+		font-size: 13px !important;
+		min-width: 1100px !important;
+		margin: 20px auto !important;
+	}
+
+	#simu.og-table-simu td,
+	#simu.og-table-simu th {
+		padding: 6px 10px !important;
+		white-space: nowrap !important;
+	}
+
+	#simu.og-table-simu input[type="text"] {
+		width: 55px !important;
+		font-size: 12px !important;
+	}
+
+	#simu.og-table-simu select {
+		width: 75px !important;
+		font-size: 11px !important;
+	}
+
+
+
 
 
 
@@ -1749,7 +1778,19 @@ footer#barre .notviewlittle{
     table.og-table-ranking thead th {
         padding: 0px;
     }
-
-
-
 }
+
+/*
+ * Styles pour les niveaux de log, utilisés pour afficher les messages de journalisation avec une coloration spécifique.
+ * Chaque classe correspond à un niveau de log standard et applique des styles distincts pour améliorer la lisibilité.
+ */
+.og-table-log { table-layout: fixed; }
+.og-table-log .log-line { display: block; font-family: monospace; white-space: pre-wrap; overflow-wrap: break-word; }
+.og-table-log .log-debug { color: #cccccc; } /* Gris clair */
+.og-table-log .log-info { color: #88ddff; } /* Bleu clair */
+.og-table-log .log-notice { color: #66bbee; } /* Bleu un peu plus soutenu */
+.og-table-log .log-warning { color: #ffcc00; } /* Jaune vif */
+.og-table-log .log-error { color: #ff8888; font-weight: bold; } /* Rouge clair */
+.og-table-log .log-critical { color: #ff4444; font-weight: bold; text-decoration: underline; } /* Rouge vif */
+.og-table-log .log-alert { background-color: #552222; color: #ffaaaa; font-weight: bold; } /* Fond rouge sombre, texte rouge très clair */
+.og-table-log .log-emergency { background-color: #dd0000; color: white; font-weight: bold; } /* Fond rouge vif, texte blanc */

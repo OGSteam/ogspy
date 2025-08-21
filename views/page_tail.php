@@ -31,7 +31,7 @@ $php_timing = $ogspy_timing - $sql_timing; // delta => temps php
 
 <footer id='barre'>
     <div class="footerbarre-version">
-        <a href="https://www.ogsteam.eu" target="_blank" rel="noopener">OGSpy</a> <span class="og-highlight"><?php echo $server_config["version"] . "</span> " . $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2024
+        <a href="https://www.ogsteam.eu" target="_blank" rel="noopener">OGSpy</a> <span class="og-highlight"><?php echo $server_config["version"] . "</span> " . $lang['FOOTER_OGSPY']; ?> OGSteam &copy; 2005-2025
     </div>
     <div class="footerbarre-countuser">
         <?php echo ("<span class='og-highlight ' id='nb_users '>" . $nb_users . "</span> " . $lang['FOOTER_CONTRIBUTORS'] . (($nb_users > 1) ? "s" : "") . " " . $lang['FOOTER_ON_SITE']); ?>

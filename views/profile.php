@@ -1,4 +1,4 @@
-<?php
+<?php global $lang, $server_config, $user_data;
 
 /**
  * User profile
@@ -11,18 +11,27 @@
  * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  */
 use Ogsteam\Ogspy\Model\Tokens_Model;
+use Ogsteam\Ogspy\Model\Player_Model;
 
 if (!defined("IN_SPYOGAME")) {
     die("Hacking attempt");
 }
-$user_name = $user_data["user_name"];
-$user_galaxy = $user_data["user_galaxy"];
-$user_system = $user_data["user_system"];
-$user_email = $user_data["user_email"];
-$user_stat_name = $user_data["user_stat_name"];
-$user_class = $user_data["user_class"];
 
-$user_token = (new Tokens_Model)->get_token($user_data["user_id"], "PAT");
+// Get User Data
+
+
+// Get Player Data
+
+$player_data = (new Player_Model)->get_player_data($user_data["player_id"]);
+
+$user_name = $user_data["name"];
+$user_galaxy = $user_data["default_galaxy"];
+$user_system = $user_data["default_system"];
+$user_email = $user_data["email"];
+$user_stat_name = $player_data["name"] ?? "Inconnu";
+$player_class = $player_data["class"] ?? "unknown";
+
+$user_token = (new Tokens_Model)->get_token($user_data["id"], "PAT");
 if (!empty($user_token)) {
     $user_token_displayed = $user_token;
 } else {
@@ -34,11 +43,11 @@ if ($server_config["disable_ip_check"] == 1) {
 } else {
     $disable_ip_check = "disabled";
 }
-$off_commandant = (isset($user_data["off_commandant"]) && $user_data["off_commandant"] == 1) ? "checked" : "";
-$off_amiral = (isset($user_data["off_amiral"]) && $user_data["off_amiral"] == 1) ? "checked" : "";
-$off_ingenieur = (isset($user_data["off_ingenieur"]) && $user_data["off_ingenieur"] == 1) ? "checked" : "";
-$off_geologue = (isset($user_data["off_geologue"]) && $user_data["off_geologue"] == 1) ? "checked" : "";
-$off_technocrate = (isset($user_data["off_technocrate"]) && $user_data["off_technocrate"] == 1) ? "checked" : "";
+$off_commandant = (isset($player_data["off_commandant"]) && $player_data["off_commandant"] == 1) ? "checked" : "";
+$off_amiral = (isset($player_data["off_amiral"]) && $player_data["off_amiral"] == 1) ? "checked" : "";
+$off_ingenieur = (isset($player_data["off_ingenieur"]) && $player_data["off_ingenieur"] == 1) ? "checked" : "";
+$off_geologue = (isset($player_data["off_geologue"]) && $player_data["off_geologue"] == 1) ? "checked" : "";
+$off_technocrate = (isset($player_data["off_technocrate"]) && $player_data["off_technocrate"] == 1) ? "checked" : "";
 
 $message = "{PROFILE_ERROR_RETRY: '" . $lang['PROFILE_ERROR_RETRY'];
 $message .= "',PROFILE_ERROR_OLDPWD: '" . $lang['PROFILE_ERROR_OLDPWD'];
@@ -47,7 +56,7 @@ $message .= "',PROFILE_ERROR_ILLEGAL: '" . $lang['PROFILE_ERROR_ILLEGAL'] . "'}"
 
 require_once("views/page_header.php");
 
-if ($user_data['user_pwd_change']) {
+if ($user_data['pwd_change']) {
     echo '<div id="pwdchange">' . $lang['PROFILE_CHANGEPWD'] . "</div>\n";
 }
 ?>
@@ -115,7 +124,7 @@ if ($user_data['user_pwd_change']) {
             <thead>
                 <tr>
                     <th colspan="2"><?php echo ($lang['PROFILE_GAME']); ?></th>
-                </tr>   
+                </tr>
             </thead>
             <tbody>
                 <tr>
@@ -144,8 +153,8 @@ if ($user_data['user_pwd_change']) {
                         <?php $classType = ogame_get_element_names()['CLASS']; ?>
                         <select name='user_class'>
                             <?php foreach ($classType as $class) : ?>
-                                <?php echo $class . "__" . $user_class; ?>
-                                <option value='<?php echo $class; ?>' <?php if (trim($class) == trim($user_class)) : ?> selected='selected'>
+                                <?php echo $class . "__" . $player_class; ?>
+                                <option value='<?php echo $class; ?>' <?php if (trim($class) == trim($player_class)) : ?> selected='selected'>
                                     <?php else : ?>
                                         >
                                     <?php endif; ?>
@@ -159,7 +168,7 @@ if ($user_data['user_pwd_change']) {
             <thead>
                 <tr>
                     <th colspan="2"><?php echo ($lang['PROFILE_OFFICERS']); ?></th>
-                </tr>                
+                </tr>
             </thead>
             <tbody>
                 <tr>
@@ -211,7 +220,7 @@ if ($user_data['user_pwd_change']) {
                             <input name="off_technocrate" value="1" type="checkbox" <?php echo $off_technocrate; ?>>
                         </label>
                     </td>
-                </tr>               
+                </tr>
             </tbody>
             <thead>
                 <tr>
@@ -233,7 +242,7 @@ if ($user_data['user_pwd_change']) {
                     <td colspan="2">
                         <input class="og-button" type="submit" value="<?php echo ($lang['PROFILE_SAVE']); ?>">
                     </td>
-                </tr>         
+                </tr>
             </tbody>
         </table>
 
