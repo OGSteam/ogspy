@@ -1,5 +1,17 @@
 {
   "dependencies": {
     "mariadb-mcp-server": "^0.0.1"
+  },
+  "devDependencies": {
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "scripts": {
+    "commit": "cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
