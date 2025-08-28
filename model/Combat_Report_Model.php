@@ -127,7 +127,32 @@ class Combat_Report_Model  extends Model_Abstract
     {
         $id_rc = (int)$id_rc;
 
-        $request = "DELETE FROM " . TABLE_PARSEDRC . " WHERE `id_rc` = '" . $id_rc . "'";
+        // Récupérer les IDs des rounds associés au rapport de combat
+        $query = "SELECT `id_rcround` FROM " . TABLE_PARSEDRCROUND . " WHERE `id_rc` = $id_rc";
+        $result = $this->db->sql_query($query);
+        $roundIds = array();
+        while ($row = $this->db->sql_fetch_assoc($result)) {
+            $roundIds[] = $row['id_rcround'];
+        }
+
+        if (!empty($roundIds)) {
+            $sRcroundId = implode(',', $roundIds);
+
+            // Supprimer les données d'attaque des rounds
+            $request = "DELETE FROM " . TABLE_ROUND_ATTACK . " WHERE `id_rcround` IN ($sRcroundId)";
+            $this->db->sql_query($request);
+
+            // Supprimer les données de défense des rounds
+            $request = "DELETE FROM " . TABLE_ROUND_DEFENSE . " WHERE `id_rcround` IN ($sRcroundId)";
+            $this->db->sql_query($request);
+        }
+
+        // Supprimer les rounds
+        $request = "DELETE FROM " . TABLE_PARSEDRCROUND . " WHERE `id_rc` = $id_rc";
+        $this->db->sql_query($request);
+
+        // Supprimer le rapport de combat principal
+        $request = "DELETE FROM " . TABLE_PARSEDRC . " WHERE `id_rc` = $id_rc";
         $this->db->sql_query($request);
     }
 }

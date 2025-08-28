@@ -122,7 +122,8 @@ class ConfigGenerator {
      * Template par défaut pour id.php
      */
     private function getDefaultTemplate() {
-        return '<?php
+        return <<<'PHP'
+<?php
 /**
  * Configuration de base de données OGSpy
  * Généré automatiquement le {{GENERATION_DATE}}
@@ -134,29 +135,29 @@ if (!defined("IN_SPYOGAME")) {
 }
 
 // Configuration de la base de données
-$db_host = "{{DB_HOST}}";
-$db_user = "{{DB_USER}}";
-$db_password = "{{DB_PASSWORD}}";
-$db_database = "{{DB_NAME}}";
+$db_host = '{{DB_HOST}}';
+$db_user = '{{DB_USER}}';
+$db_password = '{{DB_PASSWORD}}';
+$db_database = '{{DB_NAME}}';
 
 // Préfixe des tables
-$table_prefix = "{{TABLE_PREFIX}}";
+$table_prefix = '{{TABLE_PREFIX}}';
 
 // Configuration avancée pour compatibilité
 define("DB_HOST", $db_host);
 define("DB_USER", $db_user);
 define("DB_PASSWORD", $db_password);
 define("DB_NAME", $db_database);
+define("TABLE_PREFIX", $table_prefix);
 define("DB_CHARSET", "utf8");
 define("DB_COLLATE", "utf8_general_ci");
-';
+PHP;
     }
 
     /**
      * Sauvegarde le fichier de configuration
      */
     private function saveConfig($content) {
-        // Création du dossier config s\'il n\'existe pas
         $configDir = dirname($this->configPath);
         if (!is_dir($configDir)) {
             if (!mkdir($configDir, 0755, true)) {

@@ -1631,7 +1631,7 @@ function buildSpyReportTemplate($row, $rowPlayerName, $lang, $dateRE, $show, $sh
         '<td class="tdstat">' . $lang['GAME_RES_METAL'] . ':</td>' .
         '<td class="tdvalue">' . number_format($row['metal'], 0, ',', $sep_mille) . '</td>' .
         '<td class="tdstat">' . $lang['GAME_RES_CRYSTAL'] . ':</td>' .
-        '<td class="tdvalue">' . number_format($row['cristal'], 0, ',', $sep_mille) . '</td>' .
+        '<td class="tdvalue">' . number_format($row['crystal'], 0, ',', $sep_mille) . '</td>' .
         '</tr><tr>' .
         '<td class="tdstat">' . $lang['GAME_RES_DEUT'] . ':</td>' .
         '<td class="tdvalue">' . number_format($row['deuterium'], 0, ',', $sep_mille) . '</td>' .

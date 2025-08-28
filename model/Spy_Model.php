@@ -73,7 +73,7 @@ class Spy_Model extends Model_Abstract
      */
     public function get_spy_Id(int $id_RE)
     {
-        $query = "SELECT `astro_object_id`, `metal`, `cristal`, `deuterium`, `energie`, `activite`, `M`, `C`, `D`, `CES`, `CEF`, `UdR`, `UdN`, `CSp`, `HM`, `HC`,
+        $query = "SELECT `astro_object_id`, `metal`, `crystal`, `deuterium`, `energie`, `activite`, `M`, `C`, `D`, `CES`, `CEF`, `UdR`, `UdN`, `CSp`, `HM`, `HC`,
         `HD`, `Lab`, `Ter`, `Silo`, `Dock`, `DdR`, `BaLu`, `Pha`, `PoSa`, `LM`, `LLE`, `LLO`, `CG`, `AI`, `LP`, `PB`, `GB`, `MIC`, `MIP`, `PT`, `GT`, `CLE`, `CLO`, `CR`, `VB`, `VC`, `REC`, `SE`, `BMD`,
         `DST`, `EDLM`, `SAT`, `TRA`, `FOR`, `FAU`, `ECL`, `Esp`, `Ordi`, `Armes`, `Bouclier`, `Protection`, `NRJ`, `Hyp`, `RC`, `RI`, `PH`, `Laser`, `Ions`, `Plasma`, `RRI`, `Graviton`, `Astrophysique`,
         `dateRE`, `proba` FROM " . TABLE_PARSEDSPY . " WHERE `id`= {$id_RE}";
@@ -92,7 +92,7 @@ class Spy_Model extends Model_Abstract
      */
     public function get_spy_data(int $astro_object_id)
     {
-        $query = "SELECT `planet_name`, `astro_object_id`, `metal`, `cristal`, `deuterium`, `energie`, `activite`, `M`, `C`, `D`, `CES`, `CEF`, `UdR`, `UdN`, `CSp`, `HM`, `HC`,
+        $query = "SELECT `planet_name`, `astro_object_id`, `metal`, `crystal`, `deuterium`, `energie`, `activite`, `M`, `C`, `D`, `CES`, `CEF`, `UdR`, `UdN`, `CSp`, `HM`, `HC`,
         `HD`, `Lab`, `Ter`, `Silo`, `Dock`, `DdR`, `BaLu`, `Pha`, `PoSa`, `LM`, `LLE`, `LLO`, `CG`, `AI`, `LP`, `PB`, `GB`, `MIC`, `MIP`, `PT`, `GT`, `CLE`, `CLO`, `CR`, `VB`, `VC`, `REC`, `SE`, `BMD`,
         `DST`, `EDLM`, `SAT`, `TRA`, `FOR`, `FAU`, `ECL`, `Esp`, `Ordi`, `Armes`, `Bouclier`, `Protection`, `NRJ`, `Hyp`, `RC`, `RI`, `PH`, `Laser`, `Ions`, `Plasma`, `RRI`, `Graviton`, `Astrophysique`,
         `dateRE`, `proba` FROM " . TABLE_PARSEDSPY . " WHERE `astro_object_id`='$astro_object_id' ORDER BY `dateRE` DESC ";

@@ -29,9 +29,9 @@ DROP TABLE IF EXISTS
     `ogspy_game_player_spy`,
     `ogspy_game_player_technology`,
     `ogspy_game_player_fleet`,
-    `ogspy_game_parsedspy`,
-    `ogspy_game_parsedRC`,
-    `ogspy_game_parsedRCRound`,
+    `ogspy_game_spy`,
+    `ogspy_game_rc`,
+    `ogspy_game_rc_round`,
     `ogspy_game_rc_round_attack`,
     `ogspy_game_rc_round_defense`,
     `ogspy_game_rank_ally_economics`,
@@ -411,13 +411,13 @@ CREATE TABLE ogspy_game_player_technology
 --
 -- Structure de la table `ogspy_parsedspy`
 --
-CREATE TABLE `ogspy_game_parsedspy`
+CREATE TABLE `ogspy_game_spy`
 (
     `id`              INT         NOT NULL AUTO_INCREMENT,
     `astro_object_id` INT         NOT NULL,
     `planet_name`     VARCHAR(20) NOT NULL DEFAULT '',
     `metal`           BIGINT      NOT NULL DEFAULT '-1',
-    `cristal`         BIGINT      NOT NULL DEFAULT '-1',
+    `crystal`         BIGINT      NOT NULL DEFAULT '-1',
     `deuterium`       BIGINT      NOT NULL DEFAULT '-1',
     `energie`         INT(7)      NOT NULL DEFAULT '-1',
     `activite`        INT         NOT NULL DEFAULT '-1',
@@ -496,7 +496,7 @@ CREATE TABLE `ogspy_game_parsedspy`
 --
 -- Structure de la table `ogspy_parsedRC`
 --
-CREATE TABLE `ogspy_game_parsedRC`
+CREATE TABLE `ogspy_game_rc`
 (
     `id_rc`           INT    NOT NULL AUTO_INCREMENT,
     `dateRC`          INT    NOT NULL DEFAULT '0',
@@ -520,7 +520,7 @@ CREATE TABLE `ogspy_game_parsedRC`
 --
 -- Structure de la table `ogspy_parsedRCRound`
 --
-CREATE TABLE `ogspy_game_parsedRCRound`
+CREATE TABLE `ogspy_game_rc_round`
 (
     `id_rcround`        INT    NOT NULL AUTO_INCREMENT,
     `id_rc`             INT    NOT NULL,
@@ -546,6 +546,7 @@ CREATE TABLE `ogspy_game_rc_round_attack`
     `id_roundattack`  INT         NOT NULL AUTO_INCREMENT,
     `id_rcround`      INT         NOT NULL,
     `player`          VARCHAR(30) NOT NULL DEFAULT '',
+    `player_id`       INT         NOT NULL DEFAULT -1,
     `astro_object_id` INT         NOT NULL,
     `Armes`           SMALLINT    NOT NULL DEFAULT '-1',
     `Bouclier`        SMALLINT    NOT NULL DEFAULT '-1',
@@ -578,6 +579,7 @@ CREATE TABLE `ogspy_game_rc_round_defense`
 (
     `id_rounddefense` INT         NOT NULL AUTO_INCREMENT,
     `id_rcround`      INT         NOT NULL,
+    `player`          VARCHAR(30) NOT NULL DEFAULT '',
     `player_id`       INT         NOT NULL,
     `astro_object_id` INT         NOT NULL,
     `Armes`           SMALLINT    NOT NULL DEFAULT '-1',

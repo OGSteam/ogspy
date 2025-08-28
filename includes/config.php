@@ -42,9 +42,9 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     define("TABLE_GAME_PLAYER_FLEET", $table_prefix . "game_player_fleet");
     define("TABLE_USER_SPY", $table_prefix . "game_player_spy");
     define("TABLE_USER_TECHNOLOGY", $table_prefix . "game_player_technology");
-    define("TABLE_PARSEDSPY", $table_prefix . "game_parsedspy");
-    define("TABLE_PARSEDRC", $table_prefix . "game_parsedRC");
-    define("TABLE_PARSEDRCROUND", $table_prefix . "game_parsedRCRound");
+    define("TABLE_PARSEDSPY", $table_prefix . "game_spy");
+    define("TABLE_PARSEDRC", $table_prefix . "game_rc");
+    define("TABLE_PARSEDRCROUND", $table_prefix . "game_rc_round");
     define("TABLE_ROUND_ATTACK", $table_prefix . "game_rc_round_attack");
     define("TABLE_ROUND_DEFENSE", $table_prefix . "game_rc_round_defense");
     define("TABLE_GAME_PLAYER", $table_prefix . "game_player");
