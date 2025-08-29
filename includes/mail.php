@@ -214,14 +214,12 @@ function sendMail($dest, $subject, $HTMLBody)
         $mail->Port = (int)$server_config["mail_smtp_port"]; // set the SMTP port for the yahoo server
 
         //get password
-        include_once("parameters/mail.php"); //TODO : A stocker en base non ?
-        //TODO : aucune reference $mail_smtp_password
         if (isset($mail_smtp_password) && $mail_smtp_password != "") {
             $mail->Username = $server_config["mail_smtp_username"];  // yahoo username
             $mail->Password = $mail_smtp_password;  // yahoo password
             $log->debug("SMTP authentication configured", ['username' => $server_config["mail_smtp_username"]]);
         } else {
-            $log->warning("SMTP password not found or empty", ['password_file' => 'parameters/mail.php']);
+            $log->warning("SMTP password not found or empty");
         }
 
         if (!$mail->Send()) {
@@ -312,59 +310,7 @@ function setMailSMTPPassword($password)
         $log->warning("Empty password provided for SMTP configuration");
     }
 
-    $password_file = 'parameters/mail.php';
+    //TODO : Save password in config table
 
-    try {
-        $fh = @fopen($password_file, 'wb');
-        if (!$fh) {
-            $log->error("Failed to open password file for writing", [
-                'file' => $password_file,
-                'error' => error_get_last()['message'] ?? 'Unknown error'
-            ]);
-            return false;
-        }
-
-        $content = '<?php' . "\n\n" .
-                   'if (!defined("IN_SPYOGAME")) die("Hacking attempt");' . "\n\n" .
-                   '$mail_smtp_password ="' . addslashes($password) . '";' . "\n\n" .
-                   '?>';
-
-        $bytes_written = fwrite($fh, $content);
-        fclose($fh);
-
-        if ($bytes_written === false) {
-            $log->error("Failed to write password to file", ['file' => $password_file]);
-            return false;
-        }
-
-        $log->info("SMTP password configured successfully", [
-            'file' => $password_file,
-            'bytes_written' => $bytes_written,
-            'password_length' => strlen($password)
-        ]);
-
-        // Vérification que le fichier est bien créé et lisible
-        if (!file_exists($password_file) || !is_readable($password_file)) {
-            $log->warning("Password file created but may not be accessible", [
-                'file' => $password_file,
-                'exists' => file_exists($password_file),
-                'readable' => is_readable($password_file)
-            ]);
-        }
-
-        return true;
-
-    } catch (Exception $e) {
-        $log->error("Exception during SMTP password configuration", [
-            'file' => $password_file,
-            'error' => $e->getMessage()
-        ]);
-
-        // Nettoyage en cas d'erreur
-        if (isset($fh) && $fh) {
-            fclose($fh);
-        }
-
-        return false;
-    }
+    return true;
 }

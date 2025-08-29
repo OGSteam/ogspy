@@ -603,7 +603,7 @@ php upgrade_cli.php install <db_host> <db_user> <db_password> <db_name> <admin_u
 - PHP 7.4 ou supérieur
 - Extensions PHP : mysqli, json, mbstring
 - Base de données MySQL/MariaDB
-- Permissions d'écriture sur les dossiers `cache/`, `logs/`, `parameters/`
+- Permissions d'écriture sur les dossiers `cache/`, `logs/`, `config/`
 
 ## 🛠️ Commandes CLI disponibles
 
@@ -964,7 +964,7 @@ php upgrade_cli.php install <db_host> <db_user> <db_password> <db_name> <admin_u
 - PHP 7.4 ou supérieur
 - Extensions PHP : mysqli, json, mbstring
 - Base de données MySQL/MariaDB
-- Permissions d'écriture sur les dossiers `cache/`, `logs/`, `parameters/`
+- Permissions d'écriture sur les dossiers `cache/`, `logs/`, `config/`
 
 ## 🛠️ Commandes CLI disponibles
 
@@ -1325,7 +1325,7 @@ php upgrade_cli.php install <db_host> <db_user> <db_password> <db_name> <admin_u
 - PHP 7.4 ou supérieur
 - Extensions PHP : mysqli, json, mbstring
 - Base de données MySQL/MariaDB
-- Permissions d'écriture sur les dossiers `cache/`, `logs/`, `parameters/`
+- Permissions d'écriture sur les dossiers `cache/`, `logs/`, `config/`
 
 ## 🛠️ Commandes CLI disponibles
 
@@ -1686,7 +1686,7 @@ php upgrade_cli.php install <db_host> <db_user> <db_password> <db_name> <admin_u
 - PHP 7.4 ou supérieur
 - Extensions PHP : mysqli, json, mbstring
 - Base de données MySQL/MariaDB
-- Permissions d'écriture sur les dossiers `cache/`, `logs/`, `parameters/`
+- Permissions d'écriture sur les dossiers `cache/`, `logs/`, `config/`
 
 ## 🛠️ Commandes CLI disponibles
 

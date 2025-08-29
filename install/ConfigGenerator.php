@@ -11,7 +11,7 @@ class ConfigGenerator {
     private $templatePath;
 
     public function __construct() {
-        $this->configPath = dirname(__DIR__) . '/parameters/id.php';
+        $this->configPath = dirname(__DIR__) . '/config/id.php';
         $this->templatePath = __DIR__ . '/config/id_template.php';
     }
 

@@ -31,11 +31,11 @@ try {
     // Pour l'installation, on n'a pas besoin du fichier id.php au départ
     if ($requiresIdFile) {
         // Chargement des paramètres DB pour toutes les autres actions
-        if (!file_exists(dirname(__DIR__) . '/parameters/id.php')) {
+        if (!file_exists(dirname(__DIR__) . '/config/id.php')) {
             die("Erreur: Fichier de configuration id.php introuvable.\nLancez d'abord l'installation: php upgrade_cli.php install\n");
         }
 
-        require_once dirname(__DIR__) . '/parameters/id.php';
+        require_once dirname(__DIR__) . '/config/id.php';
         require_once dirname(__DIR__) . '/includes/mysql.php';
 
         // Compatibilité ancien/nouveau format id.php
@@ -211,7 +211,7 @@ class UpgradeCLI {
         $directories = [
             dirname(__DIR__) . '/cache',
             dirname(__DIR__) . '/logs',
-            dirname(__DIR__) . '/parameters'
+            dirname(__DIR__) . '/config'
         ];
 
         foreach ($directories as $dir) {
@@ -272,7 +272,7 @@ class UpgradeCLI {
         // Recharger la connexion avec la nouvelle configuration
         global $db, $log, $logSQL, $logSlowSQL, $benchSQL;
         try {
-            require_once dirname(__DIR__) . '/parameters/id.php';
+            require_once dirname(__DIR__) . '/config/id.php';
             require_once dirname(__DIR__) . '/includes/mysql.php';
 
             // Définir les loggers SQL comme variables globales (requis par mysql.php)
@@ -571,8 +571,8 @@ class UpgradeCLI {
             ...glob(dirname(__DIR__) . '/logs/*'),
             // Fichiers dans config
             ...glob(dirname(__DIR__) . '/config/*'),
-            // Uniquement parameters/id.php
-            dirname(__DIR__) . '/parameters/id.php',
+            // Uniquement config/id.php
+            dirname(__DIR__) . '/config/id.php',
             // Fichier install.lock
             __DIR__ . '/install.lock',
         ];

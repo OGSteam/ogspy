@@ -15,7 +15,7 @@ class token
 {
     private $lifeTime;
     private $splitter = "____";
-    private $saltPath = "parameters";
+    private $saltPath = "config";
     private $salt = "&pndmfekdiè_e,frèl'";
     private $token;
 

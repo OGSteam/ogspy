@@ -34,7 +34,7 @@ services:
       - ogspy-network
     volumes:
       - ogspy-app:/var/www/html
-      - ./parameters:/var/www/html/parameters
+      - ./config:/var/www/html/config
     restart: always
     depends_on:
       - db

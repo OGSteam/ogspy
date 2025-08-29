@@ -14,7 +14,7 @@ define("IN_SPYOGAME", true);
 define("INSTALL_IN_PROGRESS", true);
 
 // SÉCURITÉ : Vérifier si l'installation est terminée
-$installCompleted = file_exists("../parameters/id.php");
+$installCompleted = file_exists("../config/id.php");
 $installLocked = file_exists("install.lock");
 
 // Si installation terminée ET verrouillée, bloquer l'accès web
@@ -127,7 +127,7 @@ if ($_POST) {
 
         if (isset($_POST['run_migrations'])) {
             // Charger la configuration et créer une connexion directe
-            require_once("../parameters/id.php");
+            require_once("../config/id.php");
             $migrationDb = sql_db::getInstance($db_host, $db_user, $db_password, $db_database);
 
             if ($migrationDb && $migrationDb->db_connect_id) {
@@ -160,7 +160,7 @@ if ($_POST) {
 
         if (isset($_POST['create_admin'])) {
             // Charger la configuration et créer une connexion directe
-            require_once("../parameters/id.php");
+            require_once("../config/id.php");
             $adminDb = sql_db::getInstance($db_host, $db_user, $db_password, $db_database);
 
             if ($adminDb && $adminDb->db_connect_id) {
@@ -219,7 +219,7 @@ if ($_POST) {
 }
 
 // Déterminer l'état du système
-$configExists = file_exists("../parameters/id.php");
+$configExists = file_exists("../config/id.php");
 $dbConnected = false;
 $pendingMigrations = [];
 $adminExists = false; // Nouveau: vérifier si un admin existe
@@ -227,7 +227,7 @@ $adminExists = false; // Nouveau: vérifier si un admin existe
 if ($configExists) {
     try {
         // Charger la configuration de base de données
-        require_once("../parameters/id.php");
+        require_once("../config/id.php");
 
         // Créer une connexion directe pour l'installation en utilisant le Singleton
         require_once("../includes/mysql.php");

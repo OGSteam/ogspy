@@ -37,14 +37,14 @@ $logSlowSQL->pushHandler(new RotatingFileHandler(__DIR__ . '/logs/OGSpy-sql-slow
 $log->info("OGSpy started");
 
 //Récupération des paramètres de connexion à la base de données
-if (file_exists("parameters/id.php")) {
-    require_once "parameters/id.php";
+if (file_exists("config/id.php")) {
+    require_once "config/id.php";
 } else {
     if (!defined("OGSPY_INSTALLED") && !defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS")) {
         header("Location: install/index.php?lang=fr");
         exit();
-    } elseif (file_exists('../parameters/id.php')) {
-        require_once '../parameters/id.php';
+    } elseif (file_exists('../config/id.php')) {
+        require_once '../config/id.php';
     }
 }
 
@@ -93,7 +93,7 @@ foreach ($_POST as $secvalue) {
 $log->info("OGSpy Parameters loaded");
 
 //Language File
-if (!isset($ui_lang)) { // Checks the ui_lang value from parameters file
+if (!isset($ui_lang)) { // Checks the ui_lang value from config file
     $ui_lang = $pub_lang ?? "fr";
     //If no language is available in id.php file we take fr by default
 }
@@ -101,8 +101,8 @@ require_once "lang/lang_main.php";
 
 // ajout fichier clef unique
 if (!defined("INSTALL_IN_PROGRESS") && !defined("UPGRADE_IN_PROGRESS")) {
-    if (file_exists('parameters/key.php')) {
-        require_once 'parameters/key.php';
+    if (file_exists('config/key.php')) {
+        require_once 'config/key.php';
     } else {
         generate_key();
     }

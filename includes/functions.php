@@ -1409,7 +1409,7 @@ function check_postvalue($secvalue)
 /**
  * OGSpy Key Generator : This key will be the unique id of the current OGSpy installation.
  *
- * The current OGSpy Key is written in a file named parameters/key.php
+ * The current OGSpy Key is written in a file named config/key.php
  */
 function generate_key()
 {
@@ -1439,8 +1439,8 @@ function generate_key()
     $key_php[] = '';
     $key_php[] = 'define("OGSPY_KEY", TRUE);';
 
-    if (!file_exists('parameters/key.php')) {
-        write_file("./parameters/key.php", "w", $key_php);
+    if (!file_exists('config/key.php')) {
+        write_file("./config/key.php", "w", $key_php);
     }
 }
 

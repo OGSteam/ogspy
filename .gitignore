@@ -17,19 +17,16 @@ cmake-build-debug/
 ## File-based project format:
 *.iws
 
-parameters/key.php
-parameters/id.php
+config/key.php
+config/id.php
 journal/*/*.htm
 journal/*/*.log
 journal/*/*.sql
 logs/*
 cache/*.php
-config/id.php
-config/key.php
 mod/*
 !mod/.htaccess
-parameters/salt
-parameters/mail.php
+config/salt
 
 
 OGSpy.code-workspace

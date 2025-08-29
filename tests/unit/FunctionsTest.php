@@ -24,7 +24,7 @@ class FunctionsTest extends TestCase
         require_once 'includes/functions.php';
         $result = generate_key();
 
-        $this->assertFileExists('./parameters/key.php');
+        $this->assertFileExists('./config/key.php');
 
     }
 
