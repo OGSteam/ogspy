@@ -1,0 +1,44 @@
+FROM php:8.4-fpm
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    mariadb-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions (clean and simple)
+RUN docker-php-ext-install \
+    mysqli \
+    pdo_mysql \
+    mbstring \
+    xml \
+    zip \
+    bcmath \
+    gd
+
+# Install Xdebug
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
+# Configure Xdebug
+RUN echo "xdebug.mode=debug,coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+# Configure PHP
+RUN echo "memory_limit = 512M" >> /usr/local/etc/php/conf.d/custom.ini \
+    && echo "upload_max_filesize = 50M" >> /usr/local/etc/php/conf.d/custom.ini \
+    && echo "post_max_size = 50M" >> /usr/local/etc/php/conf.d/custom.ini \
+    && echo "max_execution_time = 300" >> /usr/local/etc/php/conf.d/custom.ini
+
+WORKDIR /var/www/html
+EXPOSE 9000
+CMD ["php-fpm"]

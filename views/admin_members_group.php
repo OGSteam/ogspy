@@ -1,4 +1,4 @@
-<?php
+<?php global $user_data, $lang;
 /**
  * Panneau administration des options de groupes de Membres
  * @package OGSpy
@@ -13,7 +13,7 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] != 1) {
+if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1 && $user_data["management_user"] != 1) {
     redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 
@@ -30,19 +30,19 @@ if (isset($pub_group_id)) {
     <table class="og-table og-little-table">
         <thead>
             <tr>
-                <th  colspan="3"><?php echo ($lang['ADMIN_GROUP_CREATE']); ?></th>
+                <th  colspan="3"><?= ($lang['ADMIN_GROUP_CREATE']) ?></th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td class="tdstat">
-                    <?php echo ($lang['ADMIN_GROUP_NAME']); ?>
-                </td>    
+                    <?= ($lang['ADMIN_GROUP_NAME']) ?>
+                </td>
                 <td>
                     <input name="groupname" type="text" maxlength="15" size="20">
-                </td>    
+                </td>
                 <td>
-                    <input class="og-button"  type="submit" value="<?php echo ($lang['ADMIN_GROUP_CREATENEW']); ?>">
+                    <input class="og-button"  type="submit" value="<?= ($lang['ADMIN_GROUP_CREATENEW']) ?>">
                 </td>
             </tr>
         </tbody>
@@ -55,23 +55,23 @@ if (isset($pub_group_id)) {
         <form method="POST" action="index.php?action=administration&subaction=group">
             <thead>
                 <tr>
-                    <th  colspan="2"><?php echo ($lang['ADMIN_GROUP_RIGHTS']); ?></th>
+                    <th  colspan="2"><?= ($lang['ADMIN_GROUP_RIGHTS']) ?></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>
                         <select name="group_id">
-                            <option><?php echo ($lang['ADMIN_GROUP_SELECT']); ?></option>
-                            <?php foreach ($usergroup_list as $value) : ?>
-                                <option value='<?php echo $value["group_id"]; ?>'>
-                                    <?php echo $value["group_name"]; ?>
+                            <option><?= ($lang['ADMIN_GROUP_SELECT']) ?></option>
+                            <?php foreach ($usergroup_list as $usergroup) : ?>
+                                <option value='<?= $usergroup["id"] ?>'>
+                                    <?= $usergroup["name"] ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                    </td>    
+                    </td>
                     <td>
-                        <input class="og-button"  type="submit" value="<?php echo ($lang['ADMIN_GROUP_SEEPERMISSIONS']); ?>">
+                        <input class="og-button"  type="submit" value="<?= ($lang['ADMIN_GROUP_SEEPERMISSIONS']) ?>">
                     </td>
                 </tr>
             </tbody>
@@ -82,9 +82,9 @@ if (isset($pub_group_id)) {
         <table class="og-table og-medium-table">
             <thead>
                 <tr>
-                    <th colspan="8"><?php echo ($lang['ADMIN_GROUP_MEMBERS']); ?></th>
+                    <th colspan="8"><?= ($lang['ADMIN_GROUP_MEMBERS']) ?></th>
                 </tr>
-            </thead>  
+            </thead>
             <tbody>
                 <?php if (sizeof($usergroup_member) > 0) : ?>
                     <?php $index = 0; ?>
@@ -95,12 +95,12 @@ if (isset($pub_group_id)) {
                             </tr><!-- retour ligne -->
                             <tr>
                             <?php endif; ?>
-                    <form method='POST' action='index.php?action=usergroup_delmember&amp;user_id=<?php echo $user["user_id"]; ?>&group_id=<?php echo $group_id; ?>' onsubmit="return confirm("<?php echo $lang['ADMIN_GROUP_DELETE_CONFIRMATION'] . $user["user_name"]; ?> ?");>
+                    <form method='POST' action='index.php?action=usergroup_delmember&amp;user_id=<?= $user["id"] ?>&group_id=<?= $group_id ?>' onsubmit="return confirm("<?= $lang['ADMIN_GROUP_DELETE_CONFIRMATION'] . $user["name"] ?>?");>
                         <td>
-                            <?php echo $user["user_name"]; ?>
+                            <?= $user["name"] ?>
                         </td>
                         <td>
-                            <input class="og-button og-button-image  og-button-danger"  type="image" src='images/userdrop.png' title="<?php echo $lang['ADMIN_GROUP_DELETE'] . $user["user_name"]; ?> ">
+                            <input class="og-button og-button-image  og-button-danger"  type="image" src='images/userdrop.png' title="<?= $lang['ADMIN_GROUP_DELETE'] . $user["name"] ?> ">
                         </td>
                     </form>
                     <?php $index++; ?>
@@ -112,21 +112,21 @@ if (isset($pub_group_id)) {
             <?php endif; ?>
             <?php $user_list = user_get(); ?>
             <form method='POST' action='index.php?action=usergroup_newmember'>
-                <input type='hidden' name='group_id' value='<?php echo $group_id; ?>'>
+                <input type='hidden' name='group_id' value='<?= $group_id ?>'>
                 <tr>
                     <td colspan='2'>
                         <select name='user_id'>
-                            <option><?php echo $lang['ADMIN_GROUP_MEMBERLIST']; ?></option>";
+                            <option><?= $lang['ADMIN_GROUP_MEMBERLIST'] ?></option>";
                             <?php foreach ($user_list as $user): ?>
-                                <option value='<?php echo $user["user_id"]; ?>'><?php echo $user["user_name"]; ?></option>
+                                <option value='<?= $user["id"] ?>'><?= $user["name"] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </td>
                     <td colspan='2'>
-                        <input  class="og-button" type='submit' value='<?php echo $lang['ADMIN_GROUP_ADD']; ?>'>
+                        <input  class="og-button" type='submit' value='<?= $lang['ADMIN_GROUP_ADD'] ?>'>
                     </td>
                     <td colspan='4'>
-                        <input class="og-button" type='submit' name='add_all' value='<?php echo $lang['ADMIN_GROUP_ADDALL']; ?>'>
+                        <input class="og-button" type='submit' name='add_all' value='<?= $lang['ADMIN_GROUP_ADDALL'] ?>'>
                     </td>
                 </tr>
             </form>
@@ -137,147 +137,147 @@ if (isset($pub_group_id)) {
         <table class="og-table og-little-table">
             <thead>
                 <tr>
-                    <th colspan="2"><?php echo $usergroup_info["group_name"]; ?></th>
+                    <th colspan="2"><?= $usergroup_info["name"] ?></th>
                 </tr>
-            </thead>  
+            </thead>
 
             <form method="POST" action="index.php?action=usergroup_setauth">
-                <input type="hidden" name="group_id" value="<?php echo $usergroup_info["group_id"]; ?>">  
+                <input type="hidden" name="group_id" value="<?= $usergroup_info["id"] ?>">
                 <tbody>
                     <tr>
                         <td class="tdstat">
-                            <?php echo ($lang['ADMIN_GROUP_NAME']); ?>
+                            <?= ($lang['ADMIN_GROUP_NAME']) ?>
                         </td>
                         <td class="tdvalue">
-                            <input type="text" name="group_name" value="<?php echo $usergroup_info["group_name"]; ?>">
+                            <input type="text" name="group_name" value="<?= $usergroup_info["name"] ?>">
                         </td>
                     </tr>
                 </tbody>
                 <thead>
                     <tr>
-                        <th><?php echo ($lang['ADMIN_GROUP_SERVERRIGHTS']); ?></th>
-                        <th><?php echo ($lang['ADMIN_GROUP_RIGHTS']); ?></th>
+                        <th><?= ($lang['ADMIN_GROUP_SERVERRIGHTS']) ?></th>
+                        <th><?= ($lang['ADMIN_GROUP_RIGHTS']) ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td class="tdstat">
-                            <?php echo ($lang['ADMIN_GROUP_RIGHTS_ADDSYSTEMS']); ?>
+                            <?= ($lang['ADMIN_GROUP_RIGHTS_ADDSYSTEMS']) ?>
                         </td>
                         <td class="tdvalue">
-                            <input name="server_set_system" type="checkbox" value="1" <?php echo ($usergroup_info["server_set_system"]) ? "checked" : "" ?>>
+                            <input name="server_set_system" type="checkbox" value="1" <?= ($usergroup_info["server_set_system"]) ? "checked" : "" ?>>
                         </td>
                     </tr>
                     <tr>
                         <td class="tdstat">
-                            <?php echo ($lang['ADMIN_GROUP_RIGHTS_ADDCOMBAT']); ?>
+                            <?= ($lang['ADMIN_GROUP_RIGHTS_ADDCOMBAT']) ?>
                         </td>
                         <td class="tdvalue">
-                            <input name="server_set_rc" type="checkbox" value="1" <?php echo ($usergroup_info["server_set_rc"]) ? "checked" : "" ?>>
+                            <input name="server_set_rc" type="checkbox" value="1" <?= ($usergroup_info["server_set_rc"]) ? "checked" : "" ?>>
                         </td>
                     </tr>
                     <tr>
                         <td class="tdstat">
-                            <?php echo ($lang['ADMIN_GROUP_RIGHTS_ADDSPY']); ?>
+                            <?= ($lang['ADMIN_GROUP_RIGHTS_ADDSPY']) ?>
                         </td>
                         <td class="tdvalue">
-                            <input name="server_set_spy" type="checkbox" value="1" <?php echo ($usergroup_info["server_set_spy"]) ? "checked" : "" ?>>
+                            <input name="server_set_spy" type="checkbox" value="1" <?= ($usergroup_info["server_set_spy"]) ? "checked" : "" ?>>
                         </td>
                     </tr>
                     <tr>
                         <td class="tdstat">
-                            <?php echo ($lang['ADMIN_GROUP_RIGHTS_ADDRANK']); ?>
+                            <?= ($lang['ADMIN_GROUP_RIGHTS_ADDRANK']) ?>
                         </td>
                         <td class="tdvalue">
-                            <input name="server_set_ranking" type="checkbox" value="1" <?php echo ($usergroup_info["server_set_ranking"]) ? "checked" : "" ?>>
+                            <input name="server_set_ranking" type="checkbox" value="1" <?= ($usergroup_info["server_set_ranking"]) ? "checked" : "" ?>>
                         </td>
                     </tr>
                     <tr>
                         <td class="tdstat">
-                            <?php echo ($lang['ADMIN_GROUP_RIGHTS_PROTECTEDALLY']); ?>
+                            <?= ($lang['ADMIN_GROUP_RIGHTS_PROTECTEDALLY']) ?>
                         </td>
                         <td class="tdvalue">
-                            <input name="server_show_positionhided" type="checkbox" value="1" <?php echo ($usergroup_info["server_show_positionhided"]) ? "checked" : "" ?>>
+                            <input name="server_show_positionhided" type="checkbox" value="1" <?= ($usergroup_info["server_show_positionhided"]) ? "checked" : "" ?>>
                         </td>
                     </tr>
                 </tbody>
                 <thead>
                     <tr>
-                        <th><?php echo ($lang['ADMIN_GROUP_RIGHTS_EXTCLIENTS']); ?></th>
-                        <th><?php echo ($lang['ADMIN_GROUP_RIGHTS']); ?></th>
+                        <th><?= ($lang['ADMIN_GROUP_RIGHTS_EXTCLIENTS']) ?></th>
+                        <th><?= ($lang['ADMIN_GROUP_RIGHTS']) ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td class="tdstat">
-                            <?php echo ($lang['ADMIN_GROUP_RIGHTS_CONNECT']); ?>
+                            <?= ($lang['ADMIN_GROUP_RIGHTS_CONNECT']) ?>
                         </td>
                         <td class="tdvalue">
-                            <input name="ogs_connection" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_connection"]) ? "checked" : "" ?>>
+                            <input name="ogs_connection" type="checkbox" value="1" <?= ($usergroup_info["ogs_connection"]) ? "checked" : "" ?>>
                         </td>
                     </tr>
                     <tr>
                         <td class="tdstat">
-                            <?php echo ($lang['ADMIN_GROUP_EXTERNAL_ADDSYSTEM']); ?>
+                            <?= ($lang['ADMIN_GROUP_EXTERNAL_ADDSYSTEM']) ?>
                         </td>
                         <td class="tdvalue">
-                            <input name="ogs_set_system" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_set_system"]) ? "checked" : "" ?>>
+                            <input name="ogs_set_system" type="checkbox" value="1" <?= ($usergroup_info["ogs_set_system"]) ? "checked" : "" ?>>
                         </td>
                     </tr>
                     <tr>
                         <td class="tdstat">
-                            <?php echo ($lang['ADMIN_GROUP_EXTERNAL_GETSYSTEM']); ?>
+                            <?= ($lang['ADMIN_GROUP_EXTERNAL_GETSYSTEM']) ?>
                         </td>
                         <td class="tdvalue">
-                            <input name="ogs_get_system" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_get_system"]) ? "checked" : "" ?>>
+                            <input name="ogs_get_system" type="checkbox" value="1" <?= ($usergroup_info["ogs_get_system"]) ? "checked" : "" ?>>
                         </td>
                     </tr>
                     <tr>
                         <td class="tdstat">
-                            <?php echo ($lang['ADMIN_GROUP_EXTERNAL_ADDREPORT']); ?>
+                            <?= ($lang['ADMIN_GROUP_EXTERNAL_ADDREPORT']) ?>
                         </td>
                         <td class="tdvalue">
-                            <input name="ogs_set_spy" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_set_spy"]) ? "checked" : "" ?>>
+                            <input name="ogs_set_spy" type="checkbox" value="1" <?= ($usergroup_info["ogs_set_spy"]) ? "checked" : "" ?>>
                         </td>
                     </tr>
                     <tr>
                         <td class="tdstat">
-                            <?php echo ($lang['ADMIN_GROUP_EXTERNAL_GETREPORT']); ?>
+                            <?= ($lang['ADMIN_GROUP_EXTERNAL_GETREPORT']) ?>
                         </td>
                         <td class="tdvalue">
-                            <input name="ogs_get_spy" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_get_spy"]) ? "checked" : "" ?>>
+                            <input name="ogs_get_spy" type="checkbox" value="1" <?= ($usergroup_info["ogs_get_spy"]) ? "checked" : "" ?>>
                         </td>
                     </tr>
                     <tr>
                         <td class="tdstat">
-                            <?php echo ($lang['ADMIN_GROUP_EXTERNAL_ADDRANK']); ?>
+                            <?= ($lang['ADMIN_GROUP_EXTERNAL_ADDRANK']) ?>
                         </td>
                         <td class="tdvalue">
-                            <input name="ogs_set_ranking" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_set_ranking"]) ? "checked" : "" ?>>
+                            <input name="ogs_set_ranking" type="checkbox" value="1" <?= ($usergroup_info["ogs_set_ranking"]) ? "checked" : "" ?>>
                         </td>
                     </tr>
                     <tr>
                         <td class="tdstat">
-                            <?php echo ($lang['ADMIN_GROUP_EXTERNAL_GETRANK']); ?>
+                            <?= ($lang['ADMIN_GROUP_EXTERNAL_GETRANK']) ?>
                         </td>
                         <td class="tdvalue">
-                            <input name="ogs_get_ranking" type="checkbox" value="1" <?php echo ($usergroup_info["ogs_get_ranking"]) ? "checked" : "" ?>>
+                            <input name="ogs_get_ranking" type="checkbox" value="1" <?= ($usergroup_info["ogs_get_ranking"]) ? "checked" : "" ?>>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input class="og-button" type="submit" value="<?php echo ($lang['ADMIN_GROUP_EXTERNAL_VALIDATE']); ?>">
+                            <input class="og-button" type="submit" value="<?= ($lang['ADMIN_GROUP_EXTERNAL_VALIDATE']) ?>">
                         </td>
                     </tr>
                 </tbody>
             </form>
             <?php if ($group_id != 1) : ?>
                 <tbody>
-                <form method="POST" action="index.php?action=usergroup_delete" onsubmit="return confirm('<?php echo ($lang['ADMIN_GROUP_DELETE']); ?>');">
+                <form method="POST" action="index.php?action=usergroup_delete" onsubmit="return confirm('<?= ($lang['ADMIN_GROUP_DELETE']) ?>');">
                     <tr>
                         <td colspan="2">
-                            <input type="hidden" name="group_id" value="<?php echo $group_id; ?>">
-                            <input class="og-button og-button-danger" type="submit" value="<?php echo ($lang['ADMIN_GROUP_DELETE_BUTTON']); ?>">
+                            <input type="hidden" name="group_id" value="<?= $group_id ?>">
+                            <input class="og-button og-button-danger" type="submit" value="<?= ($lang['ADMIN_GROUP_DELETE_BUTTON']) ?>">
                         </td>
                     </tr>
                 </form>
@@ -291,4 +291,3 @@ if (isset($pub_group_id)) {
 
 
 
-   

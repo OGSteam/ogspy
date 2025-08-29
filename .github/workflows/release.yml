@@ -14,16 +14,16 @@ jobs:
 
     steps:
     - name : Checkout OGSPY
-      uses: actions/checkout@v3
+      uses: actions/checkout@v5
       with:
         ref: ${{ github.ref }}   # checkout the correct branch name
-        fetch-depth: 0  
-      
+        fetch-depth: 0
+
     - name: Git Version
       id: version
       # You may pin to the exact commit or the version.
       # uses: codacy/git-version@fa06788276d7492a2af01662649696d249ecf4cb
-      uses: codacy/git-version@2.8.2
+      uses: codacy/git-version@2.8.6
       with:
         # The name of the release branch
         release-branch: master
@@ -37,7 +37,7 @@ jobs:
 
     - name: Cache Composer packages
       id: composer-cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -45,8 +45,8 @@ jobs:
           ${{ runner.os }}-php-
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
-      
+      run: composer install --prefer-dist --no-progress --no-dev
+
     - name: Replace Value
       uses: jacobtomlinson/gha-find-replace@v3
       with:
@@ -54,25 +54,25 @@ jobs:
           find : '0.0.0-dev'
           replace: ${{ steps.version.outputs.version }}
           regex: false
-    
+
     - name: Checkout Xtense
-      uses: actions/checkout@v3
+      uses: actions/checkout@v5
       with:
         repository: 'ogsteam/mod-xtense'
         ref: 'master'
         path: 'mod/xtense'
-        
+
     - name: Checkout AutoUpdate
-      uses: actions/checkout@v3
+      uses: actions/checkout@v5
       with:
         repository: 'ogsteam/mod-autoupdate'
         ref: 'master'
         path: 'mod/autoupdate'
-    
+
     - name: Zip Release
       # You may pin to the exact commit or the version.
       # uses: TheDoctor0/zip-release@a24011d8d445e4da5935a7e73c1f98e22a439464
-      uses: TheDoctor0/zip-release@0.7.1
+      uses: TheDoctor0/zip-release@0.7.6
       with:
         # Filename for archive
         filename: ogspy-${{ steps.version.outputs.version }}.zip
@@ -81,19 +81,19 @@ jobs:
         # Working directory before zipping
         #directory: # optional, default is .
         # List of excluded files / directories
-        exclusions: '*.git* *.vscode* *.docker* sonar-project.properties .editorconfig composer.*'
+        exclusions: '*.git* *.vscode* *.docker* .devcontainer* sonar-project.properties .editorconfig composer.* package.json package-lock.json tests*'
         # List of excluded files / directories with recursive wildcards (only applies on Windows with `zip` type)
-        #recursive_exclusions: # optional, default is 
+        #recursive_exclusions: # optional, default is
         # Provide any custom parameters to the command
-        #custom: # optional, default is 
+        #custom: # optional, default is
         # Tool to use for archiving
         #type: # optional, default is zip
-        
+
     - uses: ncipollo/release-action@v1
       with:
         name : OGSpy ${{ steps.version.outputs.version }}
         draft: true
         artifacts: "ogspy-${{ steps.version.outputs.version }}.zip"
-        artifactContentType: zip
+        artifactContentType: application/zip
         body : "To be Completed"
         tag : ${{ steps.version.outputs.version }}

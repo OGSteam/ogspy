@@ -1,4 +1,5 @@
 <?php
+global $ui_lang;
 /**
  * Language include file list
  * @package OGSpy
@@ -12,7 +13,7 @@
 function load_lang_file($ui_lang, $filename, $parent_dir = ".") {
     global $lang;
     if(empty($lang)) {
-        $lang = array();       
+        $lang = array();
     }
     $default_language = 'fr';
     $file_path = $parent_dir . "/lang/" . $ui_lang . "/" . $filename;
@@ -87,5 +88,5 @@ if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
     load_lang_file($ui_lang, "lang_help.php");
 }
 
-//TODO: Nettoyer les fichiers de lang avant ! 
+//TODO: Nettoyer les fichiers de lang avant !
 // $lang = lang_secure($lang);

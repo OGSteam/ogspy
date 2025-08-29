@@ -58,19 +58,19 @@ class Statistics_Model extends Model_Abstract
     public function get_users_stat_sum()
     {
         $query = 'SELECT
-                SUM(`planet_added_web` + `planet_added_ogs`),
-                SUM(`spy_added_web` + `spy_added_ogs`),
-                SUM(`rank_added_web` + `rank_added_ogs`),
+                SUM(`planet_imports`),
+                SUM(`spy_imports`),
+                SUM(`rank_imports`),
                 SUM(`search`)
               FROM ' . TABLE_USER;
 
         $result = $this->db->sql_query($query);
-        list($planetimport, $spyimport, $rankimport, $search) = $this->db->sql_fetch_row($result);
+        list($planet_imports, $spy_imports, $rank_imports, $search) = $this->db->sql_fetch_row($result);
 
         $sum = array();
-        $sum["planetimport"] = $planetimport;
-        $sum["spyimport"] = $spyimport;
-        $sum["rankimport"] = $rankimport;
+        $sum["planet_imports"] = $planet_imports;
+        $sum["spy_imports"] = $spy_imports;
+        $sum["rank_imports"] = $rank_imports;
         $sum["search"] =  $search;
 
         return $sum;

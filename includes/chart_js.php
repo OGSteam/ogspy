@@ -8,21 +8,22 @@
  * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.1.0
  */
+
+use Ogsteam\Ogspy\Model\Player_Model;
+
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
 /**
- * create_pie()
- * Generate the JS Code for a Pie chart
- * Graph Name = $conteneur
+ * Generates and returns a pie chart script based on specified data, legends, and title.
  *
- * @param mixed $_data
- * @param mixed $_legend
- * @param mixed $_title
- * @param mixed $conteneur
- * @param boolean $theme
- * @return string the gerated JS Code
+ * @param string $_data A serialized string representing the data values, separated by "_x_". Must match the specified format.
+ * @param string $_legend A serialized string representing the legends for the data values, separated by "_x_". Must match the specified format.
+ * @param string $_title The title of the pie chart. Must be a valid text string.
+ * @param string $conteneur The container ID where the pie chart will be rendered. Must be a valid text string.
+ * @param bool $theme Indicates whether to include the default theme in the output. Defaults to true.
+ * @return string A formatted string containing the JavaScript code for the pie chart or error messages if the inputs are invalid.
  */
 function create_pie($_data, $_legend, $_title, $conteneur, $theme = true)
 {
@@ -64,78 +65,66 @@ function create_pie($_data, $_legend, $_title, $conteneur, $theme = true)
     $format_data = implode(" , ", $temp);
 
 
-    // création du script
-    $retour .= "<script type=\"text/javascript\">
-var " . $conteneur . ";
-$(document).ready(function() {
-
-
-    " . $conteneur . " = new Highcharts.Chart({
-      chart: {
-         renderTo: '" . $conteneur . "',
-         plotBackgroundColor: null,
-         plotBorderWidth: null,
-         plotShadow: false
-      },
-      credits: {
-        text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
-        href: 'https://www.ogsteam.eu'
-    },
-      title: {
-         text: '" . $title . "'
-      },
-      tooltip: {
-         formatter: function() {
-            return '<b>'+ this.point.name +'</b>: '+ this.percentage.toFixed(2) +' %';
-         }
-      },
-      plotOptions: {
-         pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                color: '#666666',
-               enabled: true
-
-            },
-            showInLegend: true
-         }
-      },
-       series: [{
-         type: 'pie',
-         name: 'Browser share',
-
-         data: [
-            " . $format_data . "
-         ]
-      }]
-   });
-}); ";
-
-
     // insertion du theme par defaut
-    if ($theme == true) {
-        $retour .= graph_theme();
-    }
+    $theme_script = $theme ? graph_theme() : '';
 
-
-    $retour .= "</script> ";
-
+    // création du script
+    $retour .= <<<JS
+<script type="text/javascript">
+$(document).ready(function() {
+    {$theme_script}
+    var {$conteneur} = new Highcharts.Chart({
+        chart: {
+            renderTo: "{$conteneur}",
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        credits: {
+            text: "<b>OGSteam Software</b> v {$server_config['version']}",
+            href: "https://www.ogsteam.eu"
+        },
+        title: {
+            text: "{$title}"
+        },
+        tooltip: {
+            formatter: function() {
+                return "<b>" + this.point.name + "</b>: " + this.percentage.toFixed(2) + " %";
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: "pointer",
+                dataLabels: {
+                    color: "#666666",
+                    enabled: true
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            type: "pie",
+            name: "Browser share",
+            data: [{$format_data}]
+        }]
+    });
+});
+</script>
+JS;
 
     return $retour;
 }
 
 /**
- * create_pie_numbers()
- * genere le script js d un camenbert
- *  le nom du grah = nom du $conteneur
+ * Creates and returns a pie chart script based on the provided data, legends, and title.
  *
- * @param mixed $_data
- * @param mixed $_legend
- * @param mixed $_title
- * @param mixed $conteneur
- * @param bool $theme
- * @return string contenant script js
+ * @param mixed $_data A formatted string representing numerical data values, separated by "_x_". Must match the specified format.
+ * @param mixed $_legend A formatted string representing labels for the data, separated by "_x_". Must match the specified format.
+ * @param mixed $_title The title of the pie chart. Must be a textual value.
+ * @param mixed $conteneur The name of the HTML element or container where the chart will be rendered.
+ * @param bool $theme Optional. Determines whether the default theme should be applied to the chart. Default is true.
+ * @return string A complete JavaScript string including the Highcharts pie chart configuration or an error message in case of invalid inputs.
  */
 function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true)
 {
@@ -176,50 +165,49 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
     // format hightchart
     $format_data = implode(" , ", $temp);
 
-
-    // création du script
-    $retour .= "<script type=\"text/javascript\">
-    var " . $conteneur . ";
-    $(document).ready(function() {
-
-
-    " . $conteneur . " = new Highcharts.Chart({
+    $retour .= <<<JS
+<script type="text/javascript">
+var {$conteneur};
+$(document).ready(function() {
+    {$conteneur} = new Highcharts.Chart({
         chart: {
-            renderTo: '" . $conteneur . "',
+            renderTo: "{$conteneur}",
             plotBackgroundColor: null,
             plotBorderWidth: null,
             plotShadow: false
         },
         credits: {
-            text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
-            href: 'https://www.ogsteam.eu'
+            text: "<b>OGSteam Software</b> v {$server_config['version']}",
+            href: "https://www.ogsteam.eu"
         },
         title: {
-            text: '" . $title . "'
+            text: "{$title}"
         },
         tooltip: {
             formatter: function() {
-                return '<b>' + this.point.name + '</b>: ' + number_format(this.point.y, 0, ',', ' ');
+                return "<b>" + this.point.name + "</b>: " + number_format(this.point.y, 0, ",", " ");
             }
         },
         plotOptions: {
             pie: {
                 allowPointSelect: true,
-                cursor: 'pointer',
+                cursor: "pointer",
                 dataLabels: {
-                    color: '#FFFFFF',
+                    color: "#FFFFFF",
                     enabled: true
                 },
                 showInLegend: true
             }
         },
         series: [{
-            type: 'pie',
-            name: 'Browser share',
-            data: [" . $format_data . "]
+            type: "pie",
+            name: "Browser share",
+            data: [{$format_data}]
         }]
     });
-}); ";
+});
+</script>
+JS;
 
 
     // insertion du theme par defaut
@@ -235,22 +223,20 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
 
 
 /**
- * create_curves()
- * Generate the JS Code for a Curves chart
+ * Generates and returns curves based on a specified range of dates and player data.
  *
- * @param string $_player
- * @param int $_date_min
- * @param int $_date_max
- * @param string $_comp
- * @return string the gerated JS Code
- * @todo Revoir les erreurs : la variable $conteneur semble incorrecte
+ * @param mixed $_player The primary player for whom the curves are being created. Must be specified.
+ * @param mixed $conteneur The container that manages the context of the errors or results.
+ * @param mixed $_date_min The starting date for the data range. Must be numeric.
+ * @param mixed $_date_max The ending date for the data range. Must be numeric.
+ * @param mixed $_comp An optional secondary player for comparison. If empty, curves are generated for the primary player only.
+ * @return string A formatted string containing the generated curves or error messages in case of invalid inputs.
  */
 
-function create_curves($_player, $_date_min, $_date_max, $_comp)
+function create_curves($_player, $conteneur, $_date_min, $_date_max, $_comp)
 {
     $retour = "";
 
-    // todo quel est ce $contenur ?
     if (!isset($_player)) {
         $retour .= affiche_error($conteneur, 'erreur 3');
         return $retour;
@@ -268,30 +254,30 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
     $date_max = $_date_max;
     $player_comp = $_comp;
 
+    $playerId = (new Player_Model())->getPlayerId($player);
+    if (!empty($player_comp)) {
+        $playerCompId = (new Player_Model())->getPlayerId($player_comp);
+    }
+
     // récuperation des datas
-    $name = array();
-    $data = galaxy_show_ranking_unique_player_forJS($player, $date_min, $date_max);
+    $name = [];
+    $data = galaxy_show_ranking_unique_player_forJS($playerId, $date_min, $date_max);
     $nametpl = array('general', 'Economique', 'Recherche', 'Militaire', 'Militaire Construits', 'Perte militaire', 'destruction', 'honorifique');
 
-    if ($player_comp == "") {
+
+    if (empty($player_comp)) {
         // formatages des noms pour un joueur
         foreach ($nametpl as $n) {
             $name[] = $n . " (" . $player . ")";
         }
     } else {
-        $dataplayer_comp = galaxy_show_ranking_unique_player_forJS($player_comp, $date_min, $date_max);
+        $dataplayer_comp = galaxy_show_ranking_unique_player_forJS($playerCompId, $date_min, $date_max);
 
         // fusion des datas
-        $names = array("rank", "points");
-        foreach ($names as $n) {
-            foreach ($dataplayer_comp["points"] as $key => $value) {
-                $data[$n][$key] = $value;
-            }
-        }
+        $data = array_merge_recursive($data, $dataplayer_comp);
 
         // formatages des noms pour deux joueurs
         $players = array($player, $player_comp);
-        $name = array();
         foreach ($players as $p) {
             foreach ($nametpl as $n) {
                 $name[] = $n . " (" . $p . ")";
@@ -299,23 +285,23 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
         }
     }
 
-    if (isset($data['points'])) {
+    if (isset($data['points']) && $conteneur === 'points') {
         $retour .= create_multi_curve(
             "Points",
             $player,
             $data['points'],
             $name,
-            "points"
+            $conteneur
         ); // points
     }
 
-    if (isset($data['rank'])) {
+    if (isset($data['rank']) && $conteneur === 'rank') {
         $retour .= create_multi_curve(
             "Classement",
             $player,
             $data['rank'],
             $name,
-            "rank"
+            $conteneur
         ); // rank
 
     }
@@ -325,11 +311,11 @@ function create_curves($_player, $_date_min, $_date_max, $_comp)
 
 /**
  * affiche_error()
- * Displays an error message in the selected container
+ * Generates a JavaScript snippet to display an error message within a specified HTML container.
  *
- * @param mixed $conteneur
- * @param string $error
- * @return string js
+ * @param string $conteneur The ID of the HTML container where the error message will be displayed.
+ * @param string $error The error message to be displayed.
+ * @return string The generated JavaScript code as a string.
  */
 function affiche_error($conteneur, $error)
 {
@@ -346,8 +332,9 @@ function affiche_error($conteneur, $error)
 
 /**
  * graph_theme()
- * Returns all the css for the OGSpy Graph
+ * Defines a dark blue theme for Highcharts JS and returns the configuration script as a string.
  *
+ * @return string The JavaScript code defining the Highcharts dark blue theme.
  */
 function graph_theme()
 {
@@ -625,30 +612,31 @@ var highchartsOptions = Highcharts.setOptions(Highcharts.theme); ";
 
 /**
  * create_multi_curve()
- * Generate the JS Code for a Multiple Curves chart
+ * Generate the JavaScript code for rendering a multi-curve chart using Highcharts.
  *
- * @param string $titre
- * @param string $sous_titre
- * @param string $data
- * @param string $names
- * @param string $conteneur
- * @param bool $theme
- * @return string the gerated JS Code
+ * @param string $titre The title of the chart.
+ * @param string $sous_titre The subtitle of the chart.
+ * @param array $data The dataset for the chart, where keys represent data categories and values are their corresponding numerical data.
+ * @param array $names The list of dataset names to include in the chart.
+ * @param string $conteneur The ID of the HTML container where the chart will be rendered.
+ * @param bool $theme Optional. Whether to apply the default theme to the chart. Defaults to true.
+ * @return string The generated JavaScript code to create and render the Highcharts chart.
  */
-function create_multi_curve($titre, $sous_titre, $data, $names, $conteneur, $theme = true)
+function create_multi_curve(string $titre, string $sous_titre, array $data, array $names, string $conteneur, $theme = true)
 {
     global $zoom, $server_config; // on recupere le zoom s il existe
 
-    // traitement des datas recu
-    if (isset($names)) {
-        foreach ($names as $name) {
-            if (isset($data[$name])) { //au moins 2 résultats
+    $series = []; // initialisation du tableau de series
 
-                $series[] = "{ name: '" . $name . "',data: [" . implode(',', $data[$name]) .
-                    "]}";
-            }
+    // traitement des datas recu
+
+    foreach ($names as $name) {
+        if (isset($data[$name])) { //au moins 2 résultats
+
+            $series[] = "{ name: '" . $name . "',data: [" . implode(",", $data[$name]) . "]}";
         }
     }
+
     // traitement final des données
     $serie = implode(",", $series);
 
@@ -660,56 +648,47 @@ function create_multi_curve($titre, $sous_titre, $data, $names, $conteneur, $the
         $zoom_yAxis = "  min: 0";
     }
 
-
-    $retour = "
-    <script type=\"text/javascript\">
+    $retour = <<<JS
+    <script type="text/javascript">
 var chart3;
 $(document).ready(function() {
    chart3 = new Highcharts.Chart({
       chart: {
-         renderTo: '" . $conteneur . "',
+         renderTo: "{$conteneur}",
          zoomType: 'xy'
-
-
       },
-
-
       credits: {
-        text: '<b>OGSteam Software</b> v " . $server_config["version"] . " ',
+        text: "<b>OGSteam Software</b> v {$server_config['version']}",
         href: 'https://www.ogsteam.eu'
-    },
-
+      },
       title: {
-         text: '" . $titre . "'
+         text: "{$titre}"
       },
       subtitle: {
-         text: '" . $sous_titre . "'
+         text: "{$sous_titre}"
       },
       xAxis: {
          type: 'datetime'
-
       },
       yAxis: {
          title: {
-            text: '" . $titre . "'
+            text: "{$titre}"
          },
-       " . $zoom_yAxis . "
+         {$zoom_yAxis}
       },
-
       tooltip: {
          formatter: function() {
-               return '<b>'+ this.series.name +'</b><br/>'+
-               Highcharts.dateFormat('%e. %b', this.x) +'<br/>" . $titre .
-        " : '+ Highcharts.numberFormat(this.y, 0, ' ') +' ' ;
+               return '<b>' + this.series.name + '</b><br/>' +
+               Highcharts.dateFormat('%e. %b', this.x) + '<br/>{$titre} : ' +
+               Highcharts.numberFormat(this.y, 0, ' ') + ' ';
          }
       },
       series: [
-      " . $serie . "
+         {$serie}
       ]
    });
-
-
-});";
+});
+JS;
 
     // insertion du theme par defaut
     if ($theme) {

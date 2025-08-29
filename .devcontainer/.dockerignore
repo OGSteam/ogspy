@@ -1,0 +1,22 @@
+# Ignore files that change frequently to improve Docker layer caching
+.git
+.gitignore
+.devcontainer
+.vscode
+node_modules
+vendor
+cache/*
+logs/*
+*.log
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+composer.phar
+phpunit.xml
+.phpunit.result.cache
+tests/
+README.md
+CHANGELOG.md
+.github
+sonar-project.properties

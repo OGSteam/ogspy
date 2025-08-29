@@ -16,50 +16,49 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-$search_result = array();
-list($search_result, $total_page) = galaxy_search();
 
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
+global $lang;
 
 $ToolTip_Helper = new ToolTip_Helper();
 
-$string_search = $pub_string_search;
-$type_search = $pub_type_search;
-$strict = $pub_strict;
-$sort = $pub_sort;
-$sort2 = $pub_sort2;
-$galaxy_down = $pub_galaxy_down;
-$galaxy_up = $pub_galaxy_up;
-$system_down = $pub_system_down;
-$system_up = $pub_system_up;
-$row_down = $pub_row_down;
-$row_up = $pub_row_up;
-$page = $pub_page;
+// Initialisation des variables de recherche
+$string_search = $pub_string_search ?? "";
+$type_search = $pub_type_search ?? "player"; // par défaut, on recherche les joueurs
+$strict = $pub_strict ?? true;
+$sort = $pub_sort ?? 1;
+$sort2 = $pub_sort2 ?? 0;
+$galaxy_down = $pub_galaxy_down ?? $pub_galaxy ?? "";
+$galaxy_up = $pub_galaxy_up ?? $galaxy_down;
+$system_down = $pub_system_down ?? $pub_system ?? "";
+$system_up = $pub_system_up ?? $system_down;
+$row_down = $pub_row_down ?? $pub_row ?? "";
+$row_up = $pub_row_up ?? $row_down;
+$page = $pub_page ?? 1;
 
 $link_order_coordinates = "";
 $link_order_ally = "";
 $link_order_player = "";
 $end_link = "";
 
-$individual_ranking_player = array();
-$individual_ranking_ally = array();
+$individual_ranking_player = [];
+$individual_ranking_ally = [];
 
-$tooltiptab = array("player" => array(), "ally" => array()); // conteneur des tooltips a creer
+$tooltiptab = [
+    "playerName" => [],
+    "allyName" => []
+]; // Conteneur des tooltips à créer
+
+$search_result = array();
+list($search_result, $total_page) = galaxy_search();
 
 
 $strict_on = "";
 if ($search_result) {
-    if (isset($strict)) {
+    if (!empty($strict)) {
         $strict_on = "&strict";
     }
-    $new_sort2 = 0;
-    if (isset($sort2)) {
-        if ($sort2 == 0) {
-            $new_sort2 = 1;
-        } else {
-            $new_sort2 = 0;
-        }
-    }
+    $new_sort2 = isset($sort2) && $sort2 == 0 ? 1 : 0;
 
     if ($type_search != "colonization") {
         $link_order_coordinates = "<a href='index.php?action=search&amp;sort=1&amp;sort2=" . $new_sort2 . "&amp;type_search=" . $type_search . "&amp;page=" . $page . "&amp;string_search=" . $string_search . $strict_on . "'>" . $lang['SEARCH_COORDS'];
@@ -81,13 +80,13 @@ if ($search_result) {
         } else {
             switch ($sort) {
                 case "1":
-                    $link_order_coordinates = "<img src='images/desc.png'>&nbsp;" . $link_order_coordinates . "&nbsp;<img src='images/desc.png'>";
+                    $link_order_coordinates = "<img src='images/desc.png'>&nbsp;" . $link_order_coordinates . "&nbsp;<img src='images/desc.png' alt='V'>";
                     break;
                 case "2":
-                    $link_order_ally = "<img src='images/desc.png'>&nbsp;" . $link_order_ally . "&nbsp;<img src='images/desc.png'>";
+                    $link_order_ally = "<img src='images/desc.png'>&nbsp;" . $link_order_ally . "&nbsp;<img src='images/desc.png' alt='V'>";
                     break;
                 case "3":
-                    $link_order_player = "<img src='images/desc.png'>&nbsp;" . $link_order_player . "&nbsp;<img src='images/desc.png'>";
+                    $link_order_player = "<img src='images/desc.png'>&nbsp;" . $link_order_player . "&nbsp;<img src='images/desc.png' alt='V'>";
                     break;
             }
         }
@@ -124,13 +123,7 @@ if (isset($type_search)) {
     }
 }
 
-//Données recherche coordonnées colonisables
-$galaxy_down = isset($galaxy_down) ? $galaxy_down : "";
-$galaxy_up = isset($galaxy_up) ? $galaxy_up : "";
-$system_down = isset($system_down) ? $system_down : "";
-$system_up = isset($system_up) ? $system_up : "";
-$row_down = isset($row_down) ? $row_down : "";
-$row_up = isset($row_up) ? $row_up : "";
+
 
 require_once("views/page_header.php");
 ?>
@@ -140,7 +133,7 @@ require_once("views/page_header.php");
             <input type="hidden" name="action" value="search">
             <thead>
                 <tr>
-                    <th colspan="3"><?php echo ($lang['SEARCH_GLOBAL']); ?></th>
+                    <th colspan="3"><?php echo $lang['SEARCH_GLOBAL']; ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -149,7 +142,7 @@ require_once("views/page_header.php");
                         <input name="type_search" value="player" type="radio" <?php echo $type_player; ?>>
                     </td>
                     <td>
-                        <?php echo ($lang['SEARCH_PLAYER']); ?>
+                        <?php echo $lang['SEARCH_PLAYER']; ?>
                     </td>
                     <td rowspan="3">
                         <input name="string_search" type="text" maxlength="25" size="25" value="<?php echo $string_search; ?>">
@@ -157,14 +150,14 @@ require_once("views/page_header.php");
                 </tr>
                 <tr>
                     <td><input name="type_search" value="ally" type="radio" <?php echo $type_ally; ?>></td>
-                    <td><?php echo ($lang['SEARCH_ALLIANCE']); ?></td>
+                    <td><?php echo $lang['SEARCH_ALLIANCE']; ?></td>
                 </tr>
                 <tr>
                     <td>
                         <input name="type_search" value="planet" type="radio" <?php echo $type_planet; ?>>
                     </td>
                     <td>
-                        <?php echo ($lang['SEARCH_PLANET']); ?>
+                        <?php echo $lang['SEARCH_PLANET']; ?>
                     </td>
                 </tr>
                 <tr>
@@ -172,12 +165,12 @@ require_once("views/page_header.php");
                         <input name="strict" value="false" type="checkbox" <?php echo $strict; ?>>
                     </td>
                     <td colspan="2">
-                        <?php echo ($lang['SEARCH_STRICT']); ?><?php echo help("search_strict"); ?>
+                        <?php echo $lang['SEARCH_STRICT']; ?><?php echo help("search_strict"); ?>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <input class="og-button" type="submit" value="<?php echo ($lang['SEARCH_GO']); ?>">
+                        <input class="og-button" type="submit" value="<?php echo $lang['SEARCH_GO']; ?>">
                     </td>
                 </tr>
             </tbody>
@@ -190,7 +183,7 @@ require_once("views/page_header.php");
             <thead>
                 <tr>
                     <th colspan="4">
-                        <?php echo ($lang['SEARCH_SPECIAL']); ?>
+                        <?php echo $lang['SEARCH_SPECIAL']; ?>
                     </th>
                 </tr>
             </thead>
@@ -203,36 +196,36 @@ require_once("views/page_header.php");
                             if (isset($type_search) && isset($str_selected[$type_search])) {
                                 $str_selected[$type_search] = ' selected';
                             } ?>
-                            <option value='colonization' <?php echo $str_selected['colonization'] . ">" . $lang['SEARCH_EMPTY_PLANETS'] ?></option>
-                            <option value='moon' <?php echo $str_selected['moon'] . ">" . $lang['SEARCH_MOONS'] ?></option>
-                            <option value='away' <?php echo $str_selected['away'] . ">" . $lang['SEARCH_INACTIVEPLAYERS'] ?></option>
-                            <option value='spy' <?php echo $str_selected['spy'] . ">" . $lang['SEARCH_PLANETS_SPYED'] ?></option>
+                            <option value='colonization' <?php echo $str_selected['colonization'] . ">" . $lang['SEARCH_EMPTY_PLANETS'] ?>></option>
+                            <option value='moon' <?php echo $str_selected['moon'] . ">" . $lang['SEARCH_MOONS'] ?>></option>
+                            <option value='away' <?php echo $str_selected['away'] . ">" . $lang['SEARCH_INACTIVEPLAYERS'] ?>></option>
+                            <option value='spy' <?php echo $str_selected['spy'] . ">" . $lang['SEARCH_PLANETS_SPYED'] ?>></option>
                         </select>
                     </td>
-                    <td><?php echo ($lang['SEARCH_MINIMUM']); ?></td>
-                    <td><?php echo ($lang['SEARCH_MAXIMUM']); ?></td>
+                    <td><?php echo $lang['SEARCH_MINIMUM']; ?></td>
+                    <td><?php echo $lang['SEARCH_MAXIMUM']; ?></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
-                    <td><?php echo ($lang['SEARCH_GALAXY']); ?></td>
+                    <td><?php echo $lang['SEARCH_GALAXY']; ?></td>
                     <td><input name="galaxy_down" type="text" maxlength="2" size="3" value="<?php echo $galaxy_down; ?>"></td>
                     <td><input name="galaxy_up" type="text" maxlength="2" size="3" value="<?php echo $galaxy_up; ?>"></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
-                    <td><?php echo ($lang['SEARCH_SYSTEM']); ?></td>
+                    <td><?php echo $lang['SEARCH_SYSTEM']; ?></td>
                     <td><input name="system_down" type="text" maxlength="3" size="3" value="<?php echo $system_down; ?>"></td>
                     <td><input name="system_up" type="text" maxlength="3" size="3" value="<?php echo $system_up; ?>"></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><?php echo ($lang['SEARCH_POSITION']); ?></td>
+                    <td><?php echo $lang['SEARCH_POSITION']; ?></td>
                     <td><input name="row_down" type="text" maxlength="2" size="3" value="<?php echo $row_down; ?>">
                     </td>
                     <td><input name="row_up" type="text" maxlength="2" size="3" value="<?php echo $row_up; ?>"></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><input class="og-button" type="submit" value="<?php echo ($lang['SEARCH_GO']); ?>"></td>
+                    <td colspan="4"><input class="og-button" type="submit" value="<?php echo $lang['SEARCH_GO']; ?>"></td>
                 </tr>
 
             </tbody>
@@ -241,10 +234,6 @@ require_once("views/page_header.php");
         </form>
     </table>
 
-
-
-    <? // affichage uniquement si resultat 
-    ?>
     <?php if (count($search_result) > 0) : ?>
         <table class="og-table og-medium-table og-table-galaxy ">
             <thead>
@@ -318,13 +307,10 @@ require_once("views/page_header.php");
                 <!-- affichage contenu de la reponse -->
                 <?php foreach ($search_result as $v) : ?>
 
-                    <?php if ($v["ally"] != "") : ?>
-                        <?php $tooltiptab["ally"][] = $v["ally"]; //pour calcul tooltip ;
-                        ?>
+                    <?php if ($v["ally_name"] != "") : ?>
+                        <?php $tooltiptab["allyName"][] = $v["ally_name"]; ?>
                     <?php endif; ?>
-                    <?php $tooltiptab["player"][] = $v["player"]; // pour calcul tooltip
-                    ?>
-
+                    <?php $tooltiptab["playerName"][] = $v["player_name"]; ?>
                     <?php echo displayGalaxyTabletbodytr($v, false); ?>
                 <?php endforeach; ?>
             </tbody>
@@ -346,11 +332,11 @@ require_once("views/page_header.php");
         </table>
 
         <?php if ($type_search == "ally" || $type_search == "player") : ?>
-            <? $individual_ranking = null; ?>
+            <?php $individual_ranking = null; ?>
             <?php if ($type_search == "ally") : ?>
-                <?php $individual_ranking = galaxy_show_ranking_unique_ally($string_search); ?>
+                <?php $individual_ranking = galaxy_show_ranking_unique_ally($search_result[0]['ally_id']); ?>
             <?php else : ?>
-                <?php $individual_ranking = galaxy_show_ranking_unique_player($string_search); ?>
+                <?php $individual_ranking = galaxy_show_ranking_unique_player($search_result[0]['player_id']); ?>
             <?php endif; ?>
             <table class="og-table og-medium-table og-table-ranking">
 
@@ -358,38 +344,38 @@ require_once("views/page_header.php");
                     <tr>
                         <?php if ($type_search == "ally") : ?>
                             <th colspan="16">
-                                <?php echo ($lang['SEARCH_RANKOF']); ?> <a><?php echo $string_search; ?></a>
+                                <?php echo $lang['SEARCH_RANKOF']; ?> <a><?php echo $string_search; ?></a>
                             </th>
                         <?php else : ?>
                             <th colspan="15">
-                                <?php echo ($lang['SEARCH_RANKOF']); ?> <a><?php echo $string_search; ?></a>
+                                <?php echo $lang['SEARCH_RANKOF']; ?> <a><?php echo $string_search; ?></a>
                             </th>
                         <?php endif; ?>
                     </tr>
                     <tr>
                         <th>
-                            <?php echo ($lang['SEARCH_DATE']); ?>
+                            <?php echo $lang['SEARCH_DATE']; ?>
                         </th>
                         <th colspan="2">
-                            <?php echo ($lang['SEARCH_RANK_GENERAL']); ?>
+                            <?php echo $lang['SEARCH_RANK_GENERAL']; ?>
                         </th>
                         <th colspan="2">
-                            <?php echo ($lang['SEARCH_RANK_ECONOMY']); ?>
+                            <?php echo $lang['SEARCH_RANK_ECONOMY']; ?>
                         </th>
                         <th colspan="2">
-                            <?php echo ($lang['SEARCH_RANK_RESEARCH']); ?>
+                            <?php echo $lang['SEARCH_RANK_RESEARCH']; ?>
                         </th>
                         <th colspan="2">
-                            <?php echo ($lang['SEARCH_RANK_MILITARY']); ?>
+                            <?php echo $lang['SEARCH_RANK_MILITARY']; ?>
                         </th>
                         <th colspan="2">
-                            <?php echo ($lang['SEARCH_RANK_MILITARY_LOST']); ?>
+                            <?php echo $lang['SEARCH_RANK_MILITARY_LOST']; ?>
                         </th>
                         <th colspan="2">
-                            <?php echo ($lang['SEARCH_RANK_MILITARY_DESTROYED']); ?>
+                            <?php echo $lang['SEARCH_RANK_MILITARY_DESTROYED']; ?>
                         </th>
                         <th colspan="2">
-                            <?php echo ($lang['SEARCH_RANK_MILITARY_HONOR']); ?>
+                            <?php echo $lang['SEARCH_RANK_MILITARY_HONOR']; ?>
                         </th>
 
                         <?php if ($type_search == "ally") : ?>
@@ -415,8 +401,8 @@ require_once("views/page_header.php");
                         $military_l_points = isset($ranking["military_l"]) ? formate_number($ranking["military_l"]["points"]) : "&nbsp;";
                         $military_d_rank = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["rank"]) : "&nbsp;";
                         $military_d_points = isset($ranking["military_d"]) ? formate_number($ranking["military_d"]["points"]) : "&nbsp;";
-                        $honnor_rank = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["rank"]) : "&nbsp;";
-                        $honnor_points = isset($ranking["honnor"]) ? formate_number($ranking["honnor"]["points"]) : "&nbsp;";
+                        $honor_rank = isset($ranking["honor"]) ? formate_number($ranking["honor"]["rank"]) : "&nbsp;";
+                        $honor_points = isset($ranking["honor"]) ? formate_number($ranking["honor"]["points"]) : "&nbsp;";
                         ?>
                         <tr>
                             <td>
@@ -472,11 +458,11 @@ require_once("views/page_header.php");
                             </td>
                             <td>
                                 <span class="ranking-subrank-number">
-                                    <?php echo  $honnor_rank; ?>
+                                    <?php echo  $honor_rank; ?>
                                 </span>
                             </td>
                             <td>
-                                <?php echo  $honnor_points; ?>
+                                <?php echo  $honor_points; ?>
                             </td>
                             <?php if ($type_search == "ally") : ?>
                                 <td>
@@ -494,19 +480,18 @@ require_once("views/page_header.php");
     <?php
     // calcul de tous les tooltip player et alliance
     //tooltip player
-    foreach ($tooltiptab["player"] as $player) {
+    foreach ($tooltiptab["playerName"] as $player) {
         $tooltip = displayGalaxyPlayerTooltip($player);
         //------------  Affichage Tooltip ----------------
         $ToolTip_Helper->addTooltip("ttp_player_" . $player,  $tooltip);
     }
-    //tooltup ally
-    foreach ($tooltiptab["ally"] as $ally) {
+    //tooltip ally
+    foreach ($tooltiptab["allyName"] as $ally) {
         $tooltip =  displayGalaxyAllyTooltip($ally);
         //------------  Affichage Tooltip ----------------
         $ToolTip_Helper->addTooltip("ttp_alliance_" . $ally,  $tooltip);
     }
     ?>
 
-</div> <!-- fin div class="page_search" -->
-<?php
-require_once("views/page_tail.php");
+</div>
+<?php require_once "views/page_tail.php"; ?>

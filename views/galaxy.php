@@ -1,4 +1,4 @@
-<?php global $server_config, $lang;
+<?php global $server_config, $lang, $user_data;
 
 /**
  * Fonctions Affichage de la Galaxie
@@ -16,18 +16,22 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
+use Ogsteam\Ogspy\Model\Group_Model;
+use \Ogsteam\Ogspy\Model\Player_Model;
 
-global $user_data;
 $ToolTip_Helper = new ToolTip_Helper();
-
-//var_dump($user_data);
 
 $info_system = galaxy_show();
 $population = $info_system["population"];
 $galaxy = $info_system["galaxy"];
 $system = $info_system["system"];
+$my_player_data = (new Player_Model())->get_player_data($user_data['player_id']);
 
-$phalanx_list = galaxy_get_phalanx($galaxy, $system, $user_data['user_class']);
+if( isset($my_player_data['class']) && $my_player_data['class'] != 0) {
+    $phalanx_list = galaxy_get_phalanx($galaxy, $system, $my_player_data['class']);
+} else {
+    $phalanx_list = galaxy_get_phalanx($galaxy, $system);
+}
 
 $galaxy_down = (($galaxy - 1) < 1) ? 1 : $galaxy - 1;
 $galaxy_up = (($galaxy - 1) > intval($server_config['num_of_galaxies'])) ? intval($server_config['num_of_galaxies']) : $galaxy + 1;
@@ -37,27 +41,38 @@ $system_up = (($system - 1) > intval($server_config['num_of_systems'])) ? intval
 
 $favorites = galaxy_getfavorites();
 
-$tooltiptab = array("player" => array(), "ally" => array()); // conteneur des tooltips a creer
+$tooltiptab = [
+    "playerName" => [],
+    "allyName" => []
+]; // Conteneur des tooltips à créer
 
 $missil = "";
-//TODO sortir requete de la vue
 //recherche du group
-$user_group = (new \Ogsteam\Ogspy\Model\Group_Model())->get_user_group($user_data["user_id"]);
+$user_group = (new Group_Model())->get_user_group($user_data["id"]);
 //recherche des droits liés
-$tInfosGroups = (new \Ogsteam\Ogspy\Model\Group_Model())->get_group_rights($user_group);
+$tInfosGroups = (new Group_Model())->get_group_rights($user_group);
 
+// Vérification que l'utilisateur a bien des droits de groupe
+if ($tInfosGroups === null) {
+    // Si l'utilisateur n'a pas de groupe ou que le groupe n'existe pas,
+    // on utilise des valeurs par défaut sécurisées
+    $tInfosGroups = [
+        'server_show_positionhided' => 0,
+        // Autres droits par défaut...
+    ];
+}
 
 //si autorisé server_show_positionhided doit etre a 1 !!!!!!!!!!!
 //todo info a communiquer avec release
 if ($tInfosGroups["server_show_positionhided"] == 1) {
-    if (($server_config["portee_missil"] != "0" && $server_config["portee_missil"] != "")) {
+    if ($server_config["portee_missil"] != "0" && $server_config["portee_missil"] != "") {
         $missil = galaxy_portee_missiles($galaxy, $system);
     }
 }
 
 
 
-require_once("views/page_header.php");
+require_once 'views/page_header.php';
 ?>
 <div class="page_galaxy">
 
@@ -67,38 +82,38 @@ require_once("views/page_header.php");
             <thead>
                 <tr>
                     <th colspan="3">
-                        <?php echo ($lang['GALAXY_SELECT_GALAXY']); ?>
+                        <?= $lang['GALAXY_SELECT_GALAXY'] ?>
                     </th>
                     <th colspan="3">
-                        <?php echo ($lang['GALAXY_SELECT_SYSTEM']); ?>
+                        <?= $lang['GALAXY_SELECT_SYSTEM'] ?>
                     </th>
 
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td clas="content">
-                        <input type="button" class="og-button " value="<<<" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy_down; ?>&amp;system=<?php echo $system; ?>';">
+                    <td class="content">
+                        <input type="button" class="og-button " value="<<<" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?= $galaxy_down ?>&amp;system=<?= $system ?>';">
                     </td>
-                    <td clas="content">
-                        <input type="text" name="galaxy" maxlength="3" size="5" value="<?php echo $galaxy; ?>" tabindex="1">
+                    <td class="content">
+                        <input type="text" name="galaxy" maxlength="3" size="5" value="<?= $galaxy ?>" tabindex="1">
                     </td>
-                    <td clas="content">
-                        <input type="button" class="og-button" value=">>>" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy_up; ?>&amp;system=<?php echo $system; ?>';">
+                    <td class="content">
+                        <input type="button" class="og-button" value=">>>" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?= $galaxy_up ?>&amp;system=<?= $system ?>';">
                     </td>
-                    <td clas="content">
-                        <input type="button" class="og-button" value="<<<" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy; ?>&amp;system=<?php echo $system_down; ?>';">
+                    <td class="content">
+                        <input type="button" class="og-button" value="<<<" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?= $galaxy ?>&amp;system=<?= $system_down ?>';">
                     </td>
-                    <td clas="content">
-                        <input type="text" name="system" maxlength="3" size="5" value="<?php echo $system; ?>" tabindex="2">
+                    <td class="content">
+                        <input type="text" name="system" maxlength="3" size="5" value="<?= $system ?>" tabindex="2">
                     </td>
-                    <td clas="content">
-                        <input type="button" class="og-button" value=">>>" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?php echo $galaxy; ?>&amp;system=<?php echo $system_up; ?>';">
+                    <td class="content">
+                        <input type="button" class="og-button" value=">>>" onclick="window.location = 'index.php?action=galaxy&amp;galaxy=<?= $galaxy ?>&amp;system=<?= $system_up ?>';">
                     </td>
                 </tr>
                 <tr>
                     <td colspan="6">
-                        <input type="submit" class="og-button" value="<?php echo ($lang['GALAXY_DISPLAY']); ?>">
+                        <input type="submit" class="og-button" value="<?= $lang['GALAXY_DISPLAY'] ?>">
                     </td>
                 </tr>
             </tbody>
@@ -111,43 +126,43 @@ require_once("views/page_header.php");
                 <tr>
                     <td colspan="11">
                         <select name="coordinates" onchange="this.form.submit();" onkeyup="this.form.submit();">
-                            <option><?php echo ($lang['GALAXY_FAVORITE_LIST']); ?></option>
+                            <option><?= $lang['GALAXY_FAVORITE_LIST'] ?></option>
                             <?php foreach ($favorites as $v) : ?>
-                                <?php $coordinate = $v["galaxy"] . ":" . $v["system"];; ?>
-                                <option value='<?php echo $coordinate; ?>'>
-                                    <?php echo $coordinate; ?>
+                                <?php $coordinate = $v["galaxy"] . ":" . $v["system"]; ?>
+                                <option value='<?= $coordinate ?>'>
+                                    <?= $coordinate ?>
                                 </option>
                             <?php endforeach ?>
                         </select>
 
                         <?php if (sizeof($favorites) < $server_config['max_favorites']) : ?>
-                            <?php $string_addfavorites = "window.location = 'index.php?action=add_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "';"; ?>
+                            <?php $string_addfavorites = "window.location = 'index.php?action=add_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "'"; ?>
                         <?php else : ?>
                             <?php $string_addfavorites = "alert('" . $lang['GALAXY_NO_FAVORITES_MESSAGE'] . "')"; ?>
                         <?php endif; ?>
 
                         <?php if (sizeof($favorites) > 0) : ?>
-                            <?php $string_delfavorites = "window.location ='index.php?action=del_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "';"; ?>
+                            <?php $string_delfavorites = "window.location ='index.php?action=del_favorite&amp;galaxy=" . $galaxy . "&amp;system=" . $system . "'"; ?>
                         <?php else : ?>
                             <?php $string_delfavorites = "alert('" . $lang['GALAXY_NO_FAVORITES_MESSAGE'] . "')"; ?>
                         <?php endif; ?>
 
-                        <input class="og-button og-button-success" type="button" value="<?php echo ($lang['GALAXY_ADD_FAVORITES']); ?>" onclick="<?php echo $string_addfavorites; ?>">
-                        <input class="og-button og-button-danger" type="button" value="<?php echo ($lang['GALAXY_REMOVE_FAVORITES']); ?>" onclick="<?php echo $string_delfavorites; ?>">
+                        <input class="og-button og-button-success" type="button" value="<?= $lang['GALAXY_ADD_FAVORITES'] ?>" onclick="<?= $string_addfavorites ?>">
+                        <input class="og-button og-button-danger" type="button" value="<?= $lang['GALAXY_REMOVE_FAVORITES'] ?>" onclick="<?= $string_delfavorites ?>">
                     </td>
                 </tr>
 
                 <tr>
                     <th colspan="11">
-                        <?php echo ($lang['GALAXY_SYSTEMS']); ?><?php echo $missil; ?>
+                        <?= ($lang['GALAXY_SYSTEMS']) ?><?= $missil ?>
                     </th>
                 </tr>
-                <?php echo displayGalaxyTablethead(); ?>
+                <?= displayGalaxyTablethead() ?>
 
             </thead>
             <tbody>
                 <?php foreach ($population as $v) : ?>
-                    <?php echo displayGalaxyTabletbodytr($v); ?>
+                    <?= displayGalaxyTabletbodytr($v) ?>
                 <?php endforeach; ?>
 
             </tbody>
@@ -161,7 +176,7 @@ require_once("views/page_header.php");
                     $ToolTip_Helper->addTooltip("legende",  $legend);
                     ?>
                     <th class="og-legend" colspan="11">
-                        <a <?php echo  $ToolTip_Helper->GetHTMLClassContent(); ?>><?php echo  $lang['GALAXY_LEGEND']; ?></a>
+                        <a <?= $ToolTip_Helper->GetHTMLClassContent() ?>><?= $lang['GALAXY_LEGEND'] ?></a>
                     </th>
                 </tr>
                 <!-- fin legende-->
@@ -176,7 +191,7 @@ require_once("views/page_header.php");
         <thead>
             <tr>
                 <th>
-                    <?php echo $lang['GALAXY_PHALANX_LIST'] . help("galaxy_phalanx"); ?>
+                    <?= $lang['GALAXY_PHALANX_LIST'] . help("galaxy_phalanx") ?>
                 </th>
             </tr>
         </thead>
@@ -186,22 +201,22 @@ require_once("views/page_header.php");
                     <tr>
                         <td class="tdcontent">
                             <?php if ($value["ally"] != "") : ?>
-                                <?php $tooltiptab["ally"][] = $value["ally"]; //pour calcul tooltip ;
+                                <?php $tooltiptab["allyName"][] = $value["ally"]; //pour calcul tooltip ;
                                 ?>
-                                [<a href='index.php?action=search&&amp;type_search=ally&amp;string_search=<?php echo $value["ally"]; ?>&amp;strict=on' <?php echo $ToolTip_Helper->GetHTMLClassContent(array("tooltipstered"), "ttp_alliance_" . $value["ally"]); ?>>
-                                    <?php echo $value["ally"]; ?>
+                                [<a href='index.php?action=search&&amp;type_search=ally&amp;string_search=<?= $value["ally"] ?>&amp;strict=on' <?= $ToolTip_Helper->GetHTMLClassContent(array("tooltipstered"), "ttp_alliance_" . $value["ally"]) ?>>
+                                    <?= $value["ally"] ?>
                                 </a>]
                             <?php endif; ?>
-                            <?php $tooltiptab["player"][] = $value["player"]; // pour calcul tooltip
+                            <?php $tooltiptab["playerName"][] = $value["player"]; // pour calcul tooltip
                             ?>
-                            <a href="index.php?action=search&amp;type_search=player&amp;string_search=<?php echo $value["player"]; ?>&amp;strict=on" <?php echo $ToolTip_Helper->GetHTMLClassContent(array("tooltipstered"), "ttp_player_" . $value["player"]); ?>>
-                                <?php echo  $value["player"]; ?>
+                            <a href="index.php?action=search&amp;type_search=player&amp;string_search=<?= $value["player"] ?>&amp;strict=on" <?= $ToolTip_Helper->GetHTMLClassContent(array("tooltipstered"), "ttp_player_" . $value["player"]) ?>>
+                                <?= $value["player"] ?>
                             </a>
-                            <?php echo $lang['GALAXY_LUNA_PHALANX']; ?> <span class="og-highlight"><?php echo $value["level"]; ?></span> en <a href='index.php?action=galaxy&amp;galaxy=<?php echo $value["galaxy"]; ?>&amp;system=<?php echo $value["system"]; ?>'><?php echo $value["galaxy"] . ":" . $value["system"] . ":" . $value["row"]; ?></a>
-                            [<span class="og-warning"><?php echo $value["galaxy"] . ":" . $value['range_down'] . " <-> " . $value["galaxy"] . ":" . $value['range_up']; ?></span>]
+                            <?= $lang['GALAXY_LUNA_PHALANX'] ?> <span class="og-highlight"><?= $value["level"] ?></span> en <a href='index.php?action=galaxy&amp;galaxy=<?= $value["galaxy"] ?>&amp;system=<?= $value["system"] ?>'><?= $value["galaxy"] . ":" . $value["system"] . ":" . $value["row"] ?></a>
+                            [<span class="og-warning"><?= $value["galaxy"] . ":" . $value['range_down'] . " <-> " . $value["galaxy"] . ":" . $value['range_up'] ?></span>]
 
                             <?php if ($value["gate"] == "1") : ?>
-                                <span class="og-alert"><?php echo $lang['GALAXY_LUNA_GATE']; ?></span>
+                                <span class="og-alert"><?= $lang['GALAXY_LUNA_GATE'] ?></span>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -210,7 +225,7 @@ require_once("views/page_header.php");
                 <tr>
                     <td class="tdcontent">
                         <span class=og-warning>
-                            <?php echo  $lang['GALAXY_LUNA_NOPHALANX']; ?>
+                            <?= $lang['GALAXY_LUNA_NOPHALANX'] ?>
                         </span>
                     <td>
                 </tr>
@@ -225,7 +240,7 @@ require_once("views/page_header.php");
         <thead>
             <tr>
                 <th colspan='20'>
-                    <?php echo $lang['GALAXY_SEARCH']; ?>
+                    <?= $lang['GALAXY_SEARCH'] ?>
                 </th>
             </tr>
         </thead>
@@ -233,16 +248,16 @@ require_once("views/page_header.php");
             <tr>
 
                 <td colspan="5">
-                    <?php echo $lang['GALAXY_SEARCH_PLANETS_AVAILABLE']; ?>
+                    <?= $lang['GALAXY_SEARCH_PLANETS_AVAILABLE'] ?>
                 </td>
                 <td colspan="5">
-                    <?php echo $lang['GALAXY_SEARCH_MOONS']; ?>
+                    <?= $lang['GALAXY_SEARCH_MOONS'] ?>
                 </td>
                 <td colspan="5">
-                    <?php echo $lang['GALAXY_SEARCH_INACTIVES']; ?>
+                    <?= $lang['GALAXY_SEARCH_INACTIVES'] ?>
                 </td>
                 <td colspan="5">
-                    <?php echo $lang['GALAXY_SEARCH_SPYREPORTS']; ?>
+                    <?= $lang['GALAXY_SEARCH_SPYREPORTS'] ?>
                 </td>
             </tr>
             <tr>
@@ -260,15 +275,15 @@ require_once("views/page_header.php");
                             <?php $up = intval($server_config['num_of_systems']); ?>
                         <?php endif; ?>
                         <td class="tdcontent" colspan="1">
-                            <a href="index.php?action=search&amp;type_search=<?php echo $quicktype; ?>&amp;galaxy_down=<?php echo $galaxy; ?>&amp;galaxy_up=<?php echo $galaxy; ?>&amp;system_down=<?php echo $down; ?>&amp;system_up=<?php echo $up; ?>&amp;row_down=&amp;row_up=">
-                                <?php echo $i; ?>
+                            <a href="index.php?action=search&amp;type_search=<?= $quicktype ?>&amp;galaxy_down=<?= $galaxy ?>&amp;galaxy_up=<?= $galaxy ?>&amp;system_down=<?= $down ?>&amp;system_up=<?= $up ?>&amp;row_down=&amp;row_up=">
+                                <?= $i ?>
                             </a>
                         </td>
                     <?php endfor; ?>
                 <?php endforeach; ?>
             <tr>
                 <td class="tdcontent" colspan='20'>
-                    <?php echo $lang['GALAXY_SURROUNDING_SYSTEMS']; ?>
+                    <?= $lang['GALAXY_SURROUNDING_SYSTEMS'] ?>
                 </td>
             </tr>
         </tbody>
@@ -280,19 +295,21 @@ require_once("views/page_header.php");
 <?php
 // calcul de tous les tooltip player et alliance
 //tooltip player
-foreach ($tooltiptab["player"] as $player) {
-    $tooltip = displayGalaxyPlayerTooltip($player);
+foreach ($tooltiptab["playerName"] as $player) {
+    $playerId = (new Player_Model())->get_player_id_for_name($player);
+    $tooltip = displayGalaxyPlayerTooltip($playerId);
     //------------  Affichage Tooltip ----------------
     $ToolTip_Helper->addTooltip("ttp_player_" . $player,  $tooltip);
 }
 //tooltup ally
-foreach ($tooltiptab["ally"] as $ally) {
-    $tooltip =  displayGalaxyAllyTooltip($ally);
+foreach ($tooltiptab["allyName"] as $ally) {
+    $allyId = (new Ally_Model())->get_ally_id_for_name($ally);
+    $tooltip =  displayGalaxyAllyTooltip($allyId);
     //------------  Affichage Tooltip ----------------
     $ToolTip_Helper->addTooltip("ttp_alliance_" . $ally,  $tooltip);
 }
 
 
 
-require_once("views/page_tail.php");
+require_once 'views/page_tail.php';
 ?>

@@ -8,10 +8,6 @@
  * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.0
  */
-/*
- * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
- *
- */
 
 /* galaxy.php */
 
@@ -39,7 +35,7 @@ $lang['GALAXY_RANK_MILITARY'] = "Vojska";
 $lang['GALAXY_RANK_MILITARY_BUILT'] = "Izgrađeno vojske";
 $lang['GALAXY_RANK_MILITARY_LOST'] = "Izgubljeno vojske";
 $lang['GALAXY_RANK_MILITARY_DESTROYED'] = "Uništeno vojske";
-$lang['GALAXY_RANK_MILITARY_HONNOR'] = "Čast";
+$lang['GALAXY_RANK_MILITARY_HONOR'] = "Čast";
 $lang['GALAXY_MEMBERS'] = "član(ovi)";
 $lang['GALAXY_SEE_DETAILS'] = "Pogledaj detaljnije";
 $lang['GALAXY_CR'] = "CR";

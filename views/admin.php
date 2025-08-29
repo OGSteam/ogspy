@@ -1,4 +1,4 @@
-<?php
+<?php global $user_data, $lang;
 /** $Id: admin.php 7596 2012-03-25 16:10:55Z ninety $ * */
 /**
  * Fonctions d'administrations
@@ -14,7 +14,7 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 // Verification des droits admins
-if ($user_data["user_admin"] != 1 && $user_data["user_coadmin"] != 1 && $user_data["management_user"] != 1) {
+if ($user_data["admin"] != 1 && $user_data["coadmin"] != 1 && $user_data["management_user"] != 1) {
     redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
 }
 
@@ -22,7 +22,7 @@ require_once("views/page_header.php");
 
 //determine page par defaut si non defini
 if (!isset($pub_subaction)) {
-    if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) {
+    if ($user_data["admin"] == 1 || $user_data["coadmin"] == 1) {
         $pub_subaction = "infoserver";
     } else {
         $pub_subaction = "member";
@@ -73,13 +73,13 @@ switch ($pub_subaction) {
 ?>
 
 
-<div class="page_administration"> 
+<div class="page_administration">
 
     <div class="nav-page-menu">
-        <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : //admin/co only ?>
+        <?php if ($user_data["admin"] == 1 || $user_data["coadmin"] == 1) : //admin/co only ?>
             <div class="nav-page-menu-item nav-page-menu-item-admin-infoserver <?php echo $tagactiveinfoserver; ?>">
                 <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=infoserver">
-                    <?php echo $lang['ADMIN_TITLE_GENERAL_INFO']; ?> 
+                    <?php echo $lang['ADMIN_TITLE_GENERAL_INFO']; ?>
                 </a>
             </div>
             <div class="nav-page-menu-item nav-page-menu-item-admin-parameter <?php echo $tagactiveparameter; ?>">
@@ -93,7 +93,7 @@ switch ($pub_subaction) {
                 </a>
             </div>
         <?php endif; ?>
-        <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1 || $user_data["management_user"] == 1): //admin/co + gestion membre only ?>
+        <?php if ($user_data["admin"] == 1 || $user_data["coadmin"] == 1 || $user_data["management_user"] == 1): //admin/co + gestion membre only ?>
             <div class="nav-page-menu-item nav-page-menu-item-admin-member <?php echo $tagactivemember; ?>">
                 <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=member">
                     <?php echo $lang['ADMIN_TITLE_MEMBER_CONF']; ?>
@@ -105,7 +105,7 @@ switch ($pub_subaction) {
                 </a>
             </div>
         <?php endif; ?>
-        <?php if ($user_data["user_admin"] == 1 || $user_data["user_coadmin"] == 1) : //admin/co only ?>
+        <?php if ($user_data["admin"] == 1 || $user_data["coadmin"] == 1) : //admin/co only ?>
             <div class="nav-page-menu-item nav-page-menu-item-admin-viewer <?php echo $tagactiveviewer; ?>">
                 <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=viewer">
                     <?php echo $lang['ADMIN_TITLE_LOGS_CONF']; ?>

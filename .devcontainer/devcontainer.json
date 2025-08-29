@@ -1,0 +1,54 @@
+{
+  "name": "OGSpy Development Environment",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true,
+      "username": "vscode",
+      "userUid": "automatic",
+      "userGid": "automatic"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "ms-vscode.vscode-json",
+        "formulahendry.auto-rename-tag",
+        "christian-kohler.path-intellisense",
+        "xdebug.php-debug"
+      ],
+      "settings": {
+        "php.validate.executablePath": "/usr/local/bin/php",
+        "php.debug.executablePath": "/usr/local/bin/php",
+        "intelephense.environment.phpVersion": "8.4.0"
+      }
+    }
+  },
+
+  "forwardPorts": [8080, 3306, 8025],
+  "portsAttributes": {
+    "8080": {
+      "label": "OGSpy Web Server"
+    },
+    "3306": {
+      "label": "MariaDB Database"
+    },
+    "8025": {
+      "label": "MailHog Web UI"
+    }
+  },
+
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "remoteUser": "vscode"
+}

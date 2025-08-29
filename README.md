@@ -11,13 +11,13 @@ Visitez notre forum [OGSteam.eu](https://forum.ogsteam.eu) pour en savoir plus.
 
 ## Documentation
 
-Notre espace documentaire est contruit par nos utilisateurs via notre wiki. Vous pouvez y trouver les descriptifs de nos applications ainsi que les procédures d'installation.
+Notre espace documentaire est construit par nos utilisateurs via notre wiki. Vous pouvez y trouver les descriptifs de nos applications ainsi que les procédures d'installation.
 
 [Wiki OGSteam](https://wiki.ogsteam.eu)
 
 Des tutoriels d'installation sont aussi disponibles sur notre chaine Youtube : [Youtube](https://www.youtube.com/playlist?list=PLF1RvCcSTS6M28sPpadlerKcuwhhTBtrQ)
 
-### Fonctionalités
+### Fonctionnalités
 
 - Enregistrement des Galaxies et des classements
 - Recherches des emplacements joueurs
@@ -37,7 +37,7 @@ Vous trouverez ur le wiki le manuel d'installation d'OGSpy sur un serveur web. M
 
 ### Démo
 
-Vous pouvez tester un serveur OGSpy, une démo est disponible:
+Vous pouvez tester un serveur OGSpy, une démo est disponible :
 
 - Serveur de test : <https://ogspy.fr/demo>
 - Nom d'utilisateur : demo

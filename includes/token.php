@@ -15,7 +15,7 @@ class token
 {
     private $lifeTime;
     private $splitter = "____";
-    private $saltPath = "parameters";
+    private $saltPath = "config";
     private $salt = "&pndmfekdiè_e,frèl'";
     private $token;
 
@@ -130,16 +130,18 @@ class token
 
     /**
      * Returns curent salt, if not existing, returns the default one
+     * @return string
      */
     private function getSalt()
     {
         $path = $this->get_saltpath();
         if (isset($path) && file_exists($path)) {
-            $retour =  file_get_contents($path);
-            $this->salt =  $retour;
+            $retour = file_get_contents($path);
+            $this->salt = $retour;
         } else {
             $this->salt = $this->CreateNewSalt();
         }
+        return $this->salt;
     }
 
     /**
@@ -171,11 +173,11 @@ class token
 
     /**
      * Get the Token from the Cookie
-     * @return mixed
+     * @return mixed|null
      */
     private function getInCookie()
     {
-        return $_SESSION['ogspy_token'];
+        return isset($_SESSION['ogspy_token']) ? $_SESSION['ogspy_token'] : null;
     }
 
     /**
@@ -194,24 +196,3 @@ class token
         }
     }
 }
-
-
-//usage
-//$t= new token();
-//
-//$ttokengenere = $t->getToken(600,"forumlaireX");
-//
-//verification
-//$t= new token();
-//if($t->checkToken($ttokengenere))
-//{ ok}
-//else
-//{ pas ok}
-
-// usage static
-//$ttokengenere = token::staticGetToken();
-//verification
-//if( token::staticCheckToken($ttokengenere))
-//{ ok}
-//else
-//{ pas ok}

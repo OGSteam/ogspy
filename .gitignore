@@ -17,33 +17,28 @@ cmake-build-debug/
 ## File-based project format:
 *.iws
 
-parameters/key.php
-parameters/id.php
+config/key.php
+config/id.php
 journal/*/*.htm
 journal/*/*.log
 journal/*/*.sql
+logs/*
 cache/*.php
-config/id.php
-config/key.php
 mod/*
 !mod/.htaccess
-parameters/salt
-parameters/mail.php
+config/salt
 
 
 OGSpy.code-workspace
 
 ogspy.iml
 *.zip
-install*
-!install/index.php
-!install/install.php
-!install/schemas/ogspy_structure.sql
-!install/upgrade_to_latest.php
-!install/version.php
-!install/installFunctions.php
+install/install.lock
+
 
 vendor/*
 .phpunit.result.cache
 cache/repo_info.json
 *.pb
+
+node_modules

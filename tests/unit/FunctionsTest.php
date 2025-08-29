@@ -9,13 +9,13 @@ class FunctionsTest extends TestCase
     {
         define("IN_SPYOGAME", true);
         require_once 'includes/functions.php';
-        $password = password_generator();
+        $password = generateRandomPassword();
 
         // Assert that the password is a string
         $this->assertIsString($password);
 
-        // Assert that the password length is 6
-        $this->assertEquals(8, strlen($password));
+        // Assert that the password length is 12
+        $this->assertEquals(12, strlen($password));
     }
 
     public function testPasswgenerateKey()
@@ -24,7 +24,7 @@ class FunctionsTest extends TestCase
         require_once 'includes/functions.php';
         $result = generate_key();
 
-        $this->assertFileExists('./parameters/key.php');
+        $this->assertFileExists('./config/key.php');
 
     }
 

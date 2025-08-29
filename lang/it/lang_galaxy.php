@@ -8,10 +8,6 @@
  * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @version 3.3.0
  */
-/*
- * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
- *
- */
 
 /* galaxy.php */
 
@@ -39,7 +35,7 @@ $lang['GALAXY_RANK_MILITARY'] = "Militare";
 $lang['GALAXY_RANK_MILITARY_BUILT'] = "Punti flotta costruiti";
 $lang['GALAXY_RANK_MILITARY_LOST'] = "Punti flotta persi";
 $lang['GALAXY_RANK_MILITARY_DESTROYED'] = "Punti flotta distrutti";
-$lang['GALAXY_RANK_MILITARY_HONNOR'] = "Punti onore";
+$lang['GALAXY_RANK_MILITARY_HONOR'] = "Punti onore";
 $lang['GALAXY_MEMBERS'] = "utente(i)";
 $lang['GALAXY_SEE_DETAILS'] = "Vedere dettagli";
 $lang['GALAXY_CR'] = "CR";

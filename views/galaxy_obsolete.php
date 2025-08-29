@@ -1,4 +1,4 @@
-<?php
+<?php global $lang, $server_config;
 
 /**
  * Affichage Galaxie Obsolètes
@@ -37,7 +37,7 @@ require_once("views/page_header.php");
     <form method="POST" action="index.php?action=galaxy_obsolete">
         <table border="1">
             <tr>
-                <td class="c" colspan="2"><?php echo ($lang['GALAXY_OLD_TITLE']); ?></td>
+                <td class="c" colspan="2"><?= ($lang['GALAXY_OLD_TITLE']) ?></td>
             </tr>
             <tr>
                 <th colspan="2">
@@ -50,36 +50,36 @@ require_once("views/page_header.php");
                         <option value="0" <?php if ($perimeter == 0) {
                                                 echo "selected";
                                             }
-                                            ?>><?php echo ($lang['GALAXY_OLD_ALL']); ?></option>
+                                            ?>><?= ($lang['GALAXY_OLD_ALL']) ?></option>
                     </select>
                     &nbsp;&nbsp;
-                    <?php echo ($lang['GALAXY_OLD_SINCE']); ?>
+                    <?= ($lang['GALAXY_OLD_SINCE']) ?>
                     &nbsp;&nbsp;
                     <select name="since">
                         <option value="56" <?php if ($since == 56) {
                                                 echo "selected";
                                             }
-                                            ?>>8 <?php echo ($lang['GALAXY_OLD_WEEKS']); ?></option>
+                                            ?>>8 <?= ($lang['GALAXY_OLD_WEEKS']) ?></option>
                         <option value="42" <?php if ($since == 42) {
                                                 echo "selected";
                                             }
-                                            ?>>6 <?php echo ($lang['GALAXY_OLD_WEEKS']); ?></option>
+                                            ?>>6 <?= ($lang['GALAXY_OLD_WEEKS']) ?></option>
                         <option value="28" <?php if ($since == 28) {
                                                 echo "selected";
                                             }
-                                            ?>>4 <?php echo ($lang['GALAXY_OLD_WEEKS']); ?></option>
+                                            ?>>4 <?= ($lang['GALAXY_OLD_WEEKS']) ?></option>
                         <option value="21" <?php if ($since == 21) {
                                                 echo "selected";
                                             }
-                                            ?>>3 <?php echo ($lang['GALAXY_OLD_WEEKS']); ?></option>
+                                            ?>>3 <?= ($lang['GALAXY_OLD_WEEKS']) ?></option>
                         <option value="14" <?php if ($since == 14) {
                                                 echo "selected";
                                             }
-                                            ?>>2 <?php echo ($lang['GALAXY_OLD_WEEKS']); ?></option>
+                                            ?>>2 <?= ($lang['GALAXY_OLD_WEEKS']) ?></option>
                         <option value="7" <?php if ($since == 7) {
                                                 echo "selected";
                                             }
-                                            ?>>1 <?php echo ($lang['GALAXY_OLD_WEEKS']); ?></option>
+                                            ?>>1 <?= ($lang['GALAXY_OLD_WEEKS']) ?></option>
                     </select>
                     &nbsp;&nbsp;
                 </th>
@@ -88,16 +88,16 @@ require_once("views/page_header.php");
                 <th width="50%"><input type="radio" name="typesearch" value="P" <?php if ($typesearch == "P") {
                                                                                     echo "checked";
                                                                                 }
-                                                                                ?>> <?php echo ($lang['GALAXY_OLD_DISPLAYPLANETS']); ?>
+                                                                                ?>> <?= ($lang['GALAXY_OLD_DISPLAYPLANETS']) ?>
                 </th>
                 <th width="50%"><input type="radio" name="typesearch" value="M" <?php if ($typesearch == "M") {
                                                                                     echo "checked";
                                                                                 }
-                                                                                ?>> <?php echo ($lang['GALAXY_OLD_DISPLAYMOONS']); ?>
+                                                                                ?>> <?= ($lang['GALAXY_OLD_DISPLAYMOONS']) ?>
                 </th>
             </tr>
             <tr>
-                <th colspan="2"><input type="submit" value="<?php echo ($lang['GALAXY_OLD_SEARCH']); ?>"></th>
+                <th colspan="2"><input type="submit" value="<?= ($lang['GALAXY_OLD_SEARCH']) ?>"></th>
             </tr>
         </table>
     </form>
@@ -107,17 +107,17 @@ require_once("views/page_header.php");
     ?>
         <table>
             <tr>
-                <td class="c" colspan="8"><?php echo ($lang['GALAXY_OLD_OLDERTHAN_8WEEKS']); ?></td>
+                <td class="c" colspan="8"><?= ($lang['GALAXY_OLD_OLDERTHAN_8WEEKS']) ?></td>
             </tr>
             <tr>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
             </tr>
             <?php
             if (isset($obsolete_listing[56])) {
@@ -164,17 +164,17 @@ require_once("views/page_header.php");
     ?>
         <table>
             <tr>
-                <td class="c" colspan="8"><?php echo ($lang['GALAXY_OLD_OLDERTHAN_6WEEKS']); ?></td>
+                <td class="c" colspan="8"><?= ($lang['GALAXY_OLD_OLDERTHAN_6WEEKS']) ?></td>
             </tr>
             <tr>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
             </tr>
             <?php
             if (isset($obsolete_listing[42])) {
@@ -217,17 +217,17 @@ require_once("views/page_header.php");
     ?>
         <table>
             <tr>
-                <td class="c" colspan="8"><?php echo ($lang['GALAXY_OLD_OLDERTHAN_4WEEKS']); ?></td>
+                <td class="c" colspan="8"><?= ($lang['GALAXY_OLD_OLDERTHAN_4WEEKS']) ?></td>
             </tr>
             <tr>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
             </tr>
             <?php
             if (isset($obsolete_listing[28])) {
@@ -270,17 +270,17 @@ require_once("views/page_header.php");
     ?>
         <table>
             <tr>
-                <td class="c" colspan="8"><?php echo ($lang['GALAXY_OLD_OLDERTHAN_3WEEKS']); ?></td>
+                <td class="c" colspan="8"><?= ($lang['GALAXY_OLD_OLDERTHAN_3WEEKS']) ?></td>
             </tr>
             <tr>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_SOLAR_SYSTEM']); ?></td>
-                <td class="c" width="110"><?php echo ($lang['GALAXY_OLD_LAST_UPDATE']); ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_SOLAR_SYSTEM']) ?></td>
+                <td class="c" width="110"><?= ($lang['GALAXY_OLD_LAST_UPDATE']) ?></td>
             </tr>
             <?php
             if (isset($obsolete_listing[21])) {
@@ -323,17 +323,17 @@ require_once("views/page_header.php");
     ?>
         <table>
             <tr>
-                <td class="c" colspan="8"><?php echo $lang['GALAXY_OLD_OLDERTHAN_2WEEKS']; ?></td>
+                <td class="c" colspan="8"><?= $lang['GALAXY_OLD_OLDERTHAN_2WEEKS'] ?></td>
             </tr>
             <tr>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_SOLAR_SYSTEM']; ?></td>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_LAST_UPDATE']; ?></td>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_SOLAR_SYSTEM']; ?></td>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_LAST_UPDATE']; ?></td>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_SOLAR_SYSTEM']; ?></td>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_LAST_UPDATE']; ?></td>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_SOLAR_SYSTEM']; ?></td>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_LAST_UPDATE']; ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_SOLAR_SYSTEM'] ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_LAST_UPDATE'] ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_SOLAR_SYSTEM'] ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_LAST_UPDATE'] ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_SOLAR_SYSTEM'] ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_LAST_UPDATE'] ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_SOLAR_SYSTEM'] ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_LAST_UPDATE'] ?></td>
             </tr>
             <?php
             if (isset($obsolete_listing[14])) {
@@ -376,17 +376,17 @@ require_once("views/page_header.php");
     ?>
         <table>
             <th>
-            <td class="c" colspan="8"><?php echo $lang['GALAXY_OLD_OLDERTHAN_1WEEKS']; ?></td>
+            <td class="c" colspan="8"><?= $lang['GALAXY_OLD_OLDERTHAN_1WEEKS'] ?></td>
             </th>
             <tr>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_SOLAR_SYSTEM']; ?></td>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_LAST_UPDATE']; ?></td>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_SOLAR_SYSTE']; ?></td>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_LAST_UPDATE']; ?></td>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_SOLAR_SYSTEM']; ?></td>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_LAST_UPDATE']; ?></td>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_SOLAR_SYSTEM']; ?></td>
-                <td class="c" width="110"><?php echo $lang['GALAXY_OLD_LAST_UPDATE']; ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_SOLAR_SYSTEM'] ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_LAST_UPDATE'] ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_SOLAR_SYSTE'] ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_LAST_UPDATE'] ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_SOLAR_SYSTEM'] ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_LAST_UPDATE'] ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_SOLAR_SYSTEM'] ?></td>
+                <td class="c" width="110"><?= $lang['GALAXY_OLD_LAST_UPDATE'] ?></td>
             </tr>
             <?php
             if (isset($obsolete_listing[7])) {
