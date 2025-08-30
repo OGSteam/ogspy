@@ -3,7 +3,7 @@ global $server_config, $ogspy_version, $user_data, $log, $db; // ajout de $db
 ob_start();
 session_start();
 /**
- * Fichier principal d'ogspy
+ * Fichier principal OGSpy
  * @package OGSpy
  * @subpackage main
  * @author Kyser
@@ -33,7 +33,7 @@ require_once "common.php";
  * @name $benchogspy
  */
 $benchogspy = new Ogsteam\Ogspy\Helper\Benchmark_Helper('ogspy');
-$benchogspy->addCustomBench($php_start,microtime(true),"initialisation Ogspy/include" );
+$benchogspy->addCustomBench($php_start, microtime(true), "initialisation Ogspy/include");
 $benchogspy->start();
 //$benchSQL pour temps sql
 
@@ -44,76 +44,72 @@ if (!isset($pub_action)) {
     $pub_action = "";
 }
 
-if (is_file("install/version.php")) {
-    require_once "install/version.php";
-    $log->info("Version logiciel: " . $ogspy_version);
+// Nouveau système : vérification via MigrationManager
+try {
+    require_once "install/MigrationManager.php";
+    require_once "install/AutoUpgradeManager.php";
 
-    // Nouveau système : vérification via MigrationManager
-    try {
-        require_once "install/MigrationManager.php";
-        require_once "install/AutoUpgradeManager.php";
+    global $table_prefix; // s'assurer de l'utilisation du préfixe courant
+    $migrationManager = new MigrationManager($db, $log, $table_prefix ?? null);
+    $pendingMigrations = $migrationManager->getPendingMigrations();
 
-        global $table_prefix; // s'assurer de l'utilisation du préfixe courant
-        $migrationManager = new MigrationManager($db, $log, isset($table_prefix)?$table_prefix:null);
-        $pendingMigrations = $migrationManager->getPendingMigrations();
+    if (!empty($pendingMigrations)) {
+        $log->info("Pending migrations detected: " . count($pendingMigrations));
 
-        if (!empty($pendingMigrations)) {
-            $log->info("Pending migrations detected: " . count($pendingMigrations));
+        $autoUpgrade = new AutoUpgradeManager($db, $log, $table_prefix ?? null);
 
-            $autoUpgrade = new AutoUpgradeManager($db, $log, isset($table_prefix)?$table_prefix:null);
+        // Vérifie si l'auto-upgrade est possible
+        if ($autoUpgrade->canAutoUpgrade()) {
+            $result = $autoUpgrade->checkAndUpgrade();
 
-            // Vérifie si l'auto-upgrade est possible
-            if ($autoUpgrade->canAutoUpgrade()) {
-                $result = $autoUpgrade->checkAndUpgrade();
+            switch ($result['status']) {
+                case 'up_to_date':
+                    $log->info("Database already up to date");
+                    break;
 
-                switch ($result['status']) {
-                    case 'up_to_date':
-                        $log->info("Database already up to date");
-                        break;
+                case 'success':
+                    $log->info("Auto-upgrade successful: " . $result['message']);
+                    $log->info("New DB version: " . $result['version']);
+                    break;
 
-                    case 'success':
-                        $log->info("Auto-upgrade successful: " . $result['message']);
-                        $log->info("New DB version: " . $result['version']);
-                        break;
+                case 'in_progress':
+                    // Une autre requête traite déjà l'upgrade, on attend
+                    sleep(2);
+                    header("Refresh: 3");
+                    echo "<div style='text-align:center; padding:50px;'>";
+                    echo "<h2>Mise à jour en cours...</h2>";
+                    echo "<p>Veuillez patienter, la page se rechargera automatiquement.</p>";
+                    echo "</div>";
+                    exit();
 
-                    case 'in_progress':
-                        // Une autre requête traite déjà l'upgrade, on attend
-                        sleep(2);
-                        header("Refresh: 3");
-                        echo "<div style='text-align:center; padding:50px;'>";
-                        echo "<h2>Mise à jour en cours...</h2>";
-                        echo "<p>Veuillez patienter, la page se rechargera automatiquement.</p>";
-                        echo "</div>";
-                        exit();
-
-                    case 'error':
-                    case 'critical_error':
-                        $log->error("Auto-upgrade failed: " . $result['message']);
-                        // Fallback vers l'installeur manuel
-                        redirection("install/index.php");
-                        break;
-                }
-            } else {
-                $log->warning("Conditions not met for auto-upgrade, redirecting to installer");
-                // Conditions non réunies pour l'auto-upgrade, redirection classique
-                redirection("install/index.php");
+                case 'error':
+                case 'critical_error':
+                    $log->error("Auto-upgrade failed: " . $result['message']);
+                    // Fallback vers l'installeur manuel
+                    redirection("install/index.php");
+                    break;
             }
         } else {
-            $log->debug("No pending migrations");
-
-            // Vérifier si l'installation est complète (fichier de verrouillage)
-            if (!file_exists("install/install.lock")) {
-                $log->warning("Installation not completed (no lock file), redirecting to installer");
-                redirection("install/index.php");
-            }
+            $log->warning("Conditions not met for auto-upgrade, redirecting to installer");
+            // Conditions non réunies pour l'auto-upgrade, redirection classique
+            redirection("install/index.php");
         }
+    } else {
+        $log->debug("No pending migrations");
 
-    } catch (Exception $e) {
-        $log->error("Migration verification error: " . $e->getMessage());
-        // Fallback vers l'installeur manuel en cas d'erreur
-        redirection("install/index.php");
+        // Vérifier si l'installation est complète (fichier de verrouillage)
+        if (!file_exists("install/install.lock")) {
+            $log->warning("Installation not completed (no lock file), redirecting to installer");
+            redirection("install/index.php");
+        }
     }
+
+} catch (Exception $e) {
+    $log->error("Migration verification error: " . $e->getMessage());
+    // Fallback vers l'installeur manuel en cas d'erreur
+    redirection("install/index.php");
 }
+
 
 if (
     isset($server_config["server_active"]) && $server_config["server_active"] == 0
@@ -164,10 +160,10 @@ if (!isset($pub_goto)) {
 
 switch ($pub_action) {
 
-        //----------------------------------------//
-        //--------Connexion---------//
-        //----------------------------------------//
-        //Identification
+    //----------------------------------------//
+    //--------Connexion---------//
+    //----------------------------------------//
+    //Identification
     case "login_web":
         if ($pub_goto == null) {
             user_login();
@@ -176,14 +172,14 @@ switch ($pub_action) {
         }
         break;
 
-        //Déconnexion
+    //Déconnexion
     case "logout":
         user_logout();
         break;
 
-        //----------------------------------------//
-        //---Administration---//
-        //----------------------------------------//
+    //----------------------------------------//
+    //---Administration---//
+    //----------------------------------------//
     case "administration":
         require_once "views/admin.php";
         break;
@@ -209,9 +205,9 @@ switch ($pub_action) {
         admin_raz_ratio();
         break;
 
-        //----------------------------------------//
-        //---Gestion des membres---//
-        //----------------------------------------//
+    //----------------------------------------//
+    //---Gestion des membres---//
+    //----------------------------------------//
     case "home":
         require_once "views/home.php";
         break;
@@ -268,9 +264,9 @@ switch ($pub_action) {
         usergroup_newmember();
         break;
 
-        //----------------------------------------//
-        //--- ---//
-        //----------------------------------------//
+    //----------------------------------------//
+    //--- ---//
+    //----------------------------------------//
     case "galaxy":
         require_once "views/galaxy.php";
         break;
@@ -279,129 +275,129 @@ switch ($pub_action) {
         require_once "views/galaxy_sector.php";
         break;
 
-        //
+    //
     case "show_reportspy":
         require_once "views/report_spy.php";
         break;
 
-        //
+    //
     case "show_reportrc":
         require_once "views/report_rc.php";
         break;
 
-        //
+    //
     case "add_favorite":
         user_add_favorite();
         break;
 
-        //
+    //
     case "del_favorite":
         user_del_favorite();
         break;
 
-        //
+    //
     case "search":
         require_once "views/search.php";
         break;
 
-        //
+    //
     case "cartography":
         require_once "views/cartography.php";
         break;
 
-        //
+    //
     case "statistic":
         require_once "views/statistic.php";
         break;
 
-        //
+    //
     case "ranking":
         require_once "views/ranking.php";
         break;
 
-        //
+    //
     case "drop_ranking":
         galaxy_drop_ranking();
         break;
 
-        //
+    //
     case "about":
         require_once "views/about_ogsteam.php";
         break;
 
-        //
+    //
     case "galaxy_obsolete":
         require_once "views/galaxy_obsolete.php";
         break;
 
-        //
+    //
     case "add_favorite_spy":
         user_add_favorite_spy();
         break;
 
-        //
+    //
     case "del_favorite_spy":
         user_del_favorite_spy();
         break;
 
-        //
+    //
     case "del_spy":
         user_del_spy();
         break;
 
 
 
-        //----------------------------------------//
-        //--- ---//
-        //----------------------------------------//
+    //----------------------------------------//
+    //--- ---//
+    //----------------------------------------//
     case "mod_disable":
         mod_disable();
         break;
 
-        //
+    //
     case "mod_uninstall":
         mod_uninstall();
         break;
 
-        //
+    //
     case "mod_active":
         mod_active();
         break;
 
-        //
+    //
     case "mod_admin":
         mod_admin();
         break;
 
-        //
+    //
     case "mod_normal":
         mod_normal();
         break;
 
-        //
+    //
     case "mod_install":
         mod_install();
         break;
 
-        //
+    //
     case "mod_update":
         mod_update();
         break;
 
 
-        //
+    //
     case "mod_up":
         mod_sort("up");
         break;
 
 
-        //
+    //
     case "mod_down":
         mod_sort("down");
         break;
-        //----------------------------------------//
-        //--- ---//
-        //----------------------------------------//
+    //----------------------------------------//
+    //--- ---//
+    //----------------------------------------//
     case "server_close":
         require_once "views/serverdown.php";
         break;

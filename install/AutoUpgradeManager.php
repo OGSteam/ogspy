@@ -1,22 +1,30 @@
 <?php
 
 /**
- * Auto-Upgrade Manager - Mise à jour automatique silencieuse
+ * Auto-Upgrade Manager - Mise à niveau automatique silencieuse
  * @package OGSpy
  * @subpackage install
  */
+
+require_once __DIR__ . '/ConfigGenerator.php';
 
 class AutoUpgradeManager {
     private $migrationManager;
     private $logger;
     private $lockFile;
     private $maxExecutionTime = 60; // 1 minute max
+    private $db;
+    private $tablePrefix;
+    private $targetVersion;
 
-    public function __construct($db, $logger = null, $table_prefix = 'ogspy_') {
+    public function __construct($db, $logger = null, $table_prefix = 'ogspy_', $target_version = null) {
         if (!$logger) {
             throw new InvalidArgumentException("Logger requis pour AutoUpgradeManager");
         }
 
+        $this->db = $db;
+        $this->tablePrefix = $table_prefix;
+        $this->targetVersion = $target_version;
         $this->migrationManager = new MigrationManager($db, $logger, $table_prefix);
         $this->logger = $logger;
         $this->lockFile = dirname(__DIR__) . '/cache/upgrade.lock';
@@ -85,6 +93,11 @@ class AutoUpgradeManager {
                 ];
             }
 
+            // TOUTES LES MIGRATIONS ONT RÉUSSI - Mettre à jour la version applicative
+            if ($this->targetVersion) {
+                $this->updateApplicationVersion($this->targetVersion);
+            }
+
             // Nettoyage du cache
             $this->clearCache();
 
@@ -93,6 +106,9 @@ class AutoUpgradeManager {
 
             $this->logger->info("SUCCÈS: " . count($successful) . " migration(s) réussie(s)");
             $this->logger->info("Nouvelle version DB: {$newVersion}");
+            if ($this->targetVersion) {
+                $this->logger->info("Version applicative mise à jour: {$this->targetVersion}");
+            }
             $this->logger->info("Temps d'exécution: {$executionTime}s");
             $this->logger->info("=== FIN AUTO-UPGRADE ===");
 
@@ -102,6 +118,7 @@ class AutoUpgradeManager {
                 'status' => 'success',
                 'message' => 'Mise à jour automatique réussie',
                 'version' => $newVersion,
+                'app_version' => $this->targetVersion,
                 'migrations_count' => count($successful),
                 'execution_time' => $executionTime
             ];
@@ -117,6 +134,62 @@ class AutoUpgradeManager {
                 'message' => 'Erreur critique lors de la mise à jour',
                 'error' => $e->getMessage()
             ];
+        }
+    }
+
+    /**
+     * Met à jour la version applicative en base de données après le succès des migrations
+     */
+    private function updateApplicationVersion($version) {
+        try {
+            $this->logger->info("=== APPLICATION VERSION UPDATE ===");
+            $this->logger->info("Target version: {$version}");
+
+            // Vérifier la version actuelle avant mise à jour
+            $currentVersionQuery = "SELECT value FROM {$this->tablePrefix}config WHERE name = 'version'";
+            $this->logger->debug("Current version verification query: {$currentVersionQuery}");
+
+            $result = $this->db->sql_query($currentVersionQuery);
+            $currentVersion = null;
+            if ($this->db->sql_numrows($result) > 0) {
+                $row = $this->db->sql_fetch_assoc($result);
+                $currentVersion = $row['value'];
+                $this->logger->info("Current version found: {$currentVersion}");
+            } else {
+                $this->logger->info("No application version found in database (first installation)");
+            }
+
+            // Effectuer la mise à jour via ConfigGenerator
+            $configGenerator = new ConfigGenerator();
+            $this->logger->info("Calling ConfigGenerator->setApplicationVersion()");
+            $configGenerator->setApplicationVersion($this->db, $this->tablePrefix, $version);
+
+            // Vérifier que la mise à jour a bien fonctionné
+            $verificationQuery = "SELECT value FROM {$this->tablePrefix}config WHERE name = 'version'";
+            $this->logger->debug("Post-update verification query: {$verificationQuery}");
+
+            $verificationResult = $this->db->sql_query($verificationQuery);
+            if ($this->db->sql_numrows($verificationResult) > 0) {
+                $verificationRow = $this->db->sql_fetch_assoc($verificationResult);
+                $newVersionInDb = $verificationRow['value'];
+
+                if ($newVersionInDb === $version) {
+                    $this->logger->info("✓ Application version updated successfully: {$currentVersion} → {$newVersionInDb}");
+                } else {
+                    $this->logger->error("✗ Version update failed: expected '{$version}', found '{$newVersionInDb}'");
+                    throw new Exception("Application version was not properly updated");
+                }
+            } else {
+                $this->logger->error("✗ Unable to verify version after update");
+                throw new Exception("Unable to verify application version after update");
+            }
+
+            $this->logger->info("=== END APPLICATION VERSION UPDATE ===");
+
+        } catch (Exception $e) {
+            $this->logger->error("Error during application version update: " . $e->getMessage());
+            $this->logger->error("Stack trace: " . $e->getTraceAsString());
+            throw $e;
         }
     }
 
@@ -186,7 +259,6 @@ class AutoUpgradeManager {
      * Vérifie si les migrations peuvent être exécutées automatiquement
      */
     public function canAutoUpgrade() {
-
         global $server_config;
         // Vérifie les permissions d'écriture
         $cacheDir = dirname(__DIR__) . '/cache';

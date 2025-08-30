@@ -55,8 +55,7 @@ VALUES ('allied', ''),
        ('mail_smtp_password', ''),
        ('num_of_galaxies', '9'),
        ('num_of_systems', '499'),
-       ('speed_uni', '1'),
-       ('version', '4.0.0-dev');
+       ('speed_uni', '1');
 
 
 INSERT INTO `ogspy_group`

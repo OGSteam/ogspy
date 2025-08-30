@@ -17,6 +17,10 @@ define("INSTALL_IN_PROGRESS", true);
 $installCompleted = file_exists("../config/id.php");
 $installLocked = file_exists("install.lock");
 
+if (is_file("install/version.php")) {
+    require_once "install/version.php";
+}
+
 // Si installation terminée ET verrouillée, bloquer l'accès web
 // SAUF si on affiche l'écran de finalisation
 if ($installCompleted && $installLocked && !isset($_GET['step'])) {
@@ -106,7 +110,7 @@ if ($_POST) {
 
             if ($configGenerator->generateIdFile($dbConfig)) {
                 $success = "Configuration générée avec succès !";
-                // Pas de redirection - la page se rechargera automatiquement et affichera l'étape suivante
+                // Pas de redirection — la page se rechargera automatiquement et affichera l'étape suivante
             }
         }
 
@@ -139,6 +143,12 @@ if ($_POST) {
 
                 if (empty($failed)) {
                     $success = count($successful) . " migration(s) exécutée(s) avec succès !";
+
+                    // Mise à jour de la version OGSpy dans la table config
+                    $configGenerator = new ConfigGenerator();
+                    $configGenerator->setConfigValue($migrationDb, $table_prefix, 'version', $ogspy_version);
+                    $log->info("OGSpy version set to " . $ogspy_version . " in config table.");
+
                 } else {
                     $errors[] = count($failed) . " migration(s) échouée(s)";
                     foreach ($failed as $failedMigration) {
@@ -267,7 +277,7 @@ if ($configExists) {
 <html lang="fr">
 
 <head>
-    <title>Installation OGSpy 4.0</title>
+    <title>Installation OGSpy</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="language" content="fr">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -281,7 +291,7 @@ if ($configExists) {
 <div class="container">
     <div class="header">
         <img src="../skin/OGSpy_skin/logos/logo.png" alt="OGSpy" />
-        <h1>Installation OGSpy 4.0</h1>
+        <h1>Installation OGSpy</h1>
     </div>
 
     <div class="content">
