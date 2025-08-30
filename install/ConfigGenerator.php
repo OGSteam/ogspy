@@ -52,6 +52,26 @@ class ConfigGenerator {
     }
 
     /**
+     * Insère ou met à jour une valeur dans la table de configuration
+     */
+    public function setConfigValue($db, $table_prefix, $name, $value): void
+    {
+        $configTable = $table_prefix . 'config';
+        $sql = "INSERT INTO `{$configTable}` (`name`, `value`) VALUES ('" . $db->sql_escape_string($name) . "', '" . $db->sql_escape_string($value) . "')
+                ON DUPLICATE KEY UPDATE `value` = VALUES(`value`)";
+        $db->sql_query($sql);
+    }
+
+    /**
+     * Insère ou met à jour la version applicative en base de données
+     * Utilisé uniquement par les scripts d'installation/upgrade
+     */
+    public function setApplicationVersion($db, $table_prefix, $version): void
+    {
+        $this->setConfigValue($db, $table_prefix, 'version', $version);
+    }
+
+    /**
      * Valide la configuration de base de données
      */
     private function validateDbConfig($config) {

@@ -160,17 +160,20 @@ class TestManager {
             global $table_prefix;
             $tablePrefix = $table_prefix ?? 'ogspy_';
 
-            $autoUpgrade = new AutoUpgradeManager($this->db, $this->logger, $tablePrefix);
+            $autoUpgrade = new AutoUpgradeManager($this->db, $this->logger, $tablePrefix, '9.9.9');
             $migrationManager = new MigrationManager($this->db, $this->logger, $tablePrefix);
 
             $initialVersion = $migrationManager->getCurrentDbVersion();
             echo "  Version initiale: {$initialVersion}\n";
 
+            // Vérifier l'état de la version applicative avant upgrade
+            $this->logApplicationVersionState("BEFORE UPGRADE");
+
             // 4. Exécuter la mise à niveau automatique
             $upgradeResult = $autoUpgrade->checkAndUpgrade();
 
             if ($upgradeResult['status'] !== 'success' && $upgradeResult['status'] !== 'up_to_date') {
-                throw new Exception("Mise à niveau échouée: " . $upgradeResult['message']);
+                throw new Exception("Mise à niveau échouée: " . ($upgradeResult['message'] ?? 'Erreur inconnue'));
             }
 
             // 5. Vérifier que toutes les migrations ont été appliquées
@@ -181,7 +184,17 @@ class TestManager {
                 throw new Exception("Version finale incorrecte: attendue {$expectedVersion}, trouvée {$finalVersion}");
             }
 
-            // 6. Vérifier l'intégrité après mise à niveau
+            // 6. Vérifier l'état de la version applicative après upgrade
+            $this->logApplicationVersionState("AFTER UPGRADE");
+
+            // 7. Vérifier que la version applicative a été mise à jour dans la DB
+            $appVersionInDb = $this->getConfigValue('version');
+            if ($appVersionInDb !== '9.9.9') {
+                throw new Exception("Version applicative incorrecte après upgrade: attendue 9.9.9, trouvée {$appVersionInDb}");
+            }
+            echo "  ✓ Application version verified in database: {$appVersionInDb}\n";
+
+            // 8. Vérifier l'intégrité après mise à niveau
             $this->verifyInstallIntegrity();
 
             $result['details']['initial_version'] = $initialVersion;
@@ -595,5 +608,38 @@ class Migration_20250815002_UpdateTestFeatures {
         }
 
         return $result;
+    }
+
+    /**
+     * Récupère une valeur de la table de configuration
+     */
+    private function getConfigValue($name) {
+        $result = $this->db->sql_query("SELECT value FROM ogspy_config WHERE name = '" . $this->db->sql_escape_string($name) . "'");
+        if ($this->db->sql_numrows($result) > 0) {
+            $row = $this->db->sql_fetch_assoc($result);
+            return $row['value'];
+        }
+        return null;
+    }
+
+    /**
+     * Insère la version applicative en base, uniquement comme le ferait le script d'installation ou d'upgrade
+     */
+    private function insertApplicationVersion($version) {
+        // Utiliser ConfigGenerator pour insérer la version comme le ferait le vrai script
+        $configGenerator = new ConfigGenerator();
+        global $table_prefix;
+        $tablePrefix = $table_prefix ?? 'ogspy_';
+
+        $configGenerator->setApplicationVersion($this->db, $tablePrefix, $version);
+        echo "  Version applicative insérée: {$version}\n";
+    }
+
+    /**
+     * Journalise l'état de la version applicative
+     */
+    private function logApplicationVersionState($stage) {
+        $appVersion = $this->getConfigValue('version');
+        echo "  État de la version applicative ({$stage}): {$appVersion}\n";
     }
 }
