@@ -95,6 +95,7 @@ class TestManager {
      */
     public function testFreshInstall() {
         $result = ['success' => false, 'error' => null, 'details' => []];
+        global $table_prefix;
 
         try {
             // 1. Créer une base de test vierge
@@ -104,12 +105,13 @@ class TestManager {
             $this->switchToTestDatabase();
 
             // 3. Créer le MigrationManager maintenant que nous sommes sur la bonne base
-            $migrationManager = new MigrationManager($this->db, $this->logger);
+            $migrationManager = new MigrationManager($this->db, $this->logger,$table_prefix);
 
             // 4. Vérifier qu'aucune table OGSpy n'existe (sauf migrations qui vient d'être créée)
             $existingTables = $this->getOGSpyTables();
             $filteredTables = array_filter($existingTables, function($table) {
-                return !in_array($table, ['ogspy_migrations']);
+               // Exclure toutes les tables de migrations légitimes : ogspy_migrations et custom_migrations
+                return !in_array($table, ['ogspy_migrations', 'custom_migrations']);
             });
 
             if (!empty($filteredTables)) {
@@ -132,7 +134,7 @@ class TestManager {
             }
 
             // 6. Vérifier l'intégrité de l'installation
-            $this->verifyInstallIntegrity();
+            $this->verifyInstallIntegrity($table_prefix);
 
             // 7. Vérifier que la version DB correspond
             $dbVersion = $migrationManager->getCurrentDbVersion();
@@ -207,9 +209,8 @@ class TestManager {
             echo "  ✓ Application version verified in database: {$appVersionInDb}\n";
 
             // 8. Vérifier l'intégrité après mise à niveau
-            $this->verifyInstallIntegrity();
+            $this->verifyInstallIntegrity($tablePrefix);
 
-            $result['details']['initial_version'] = $initialVersion;
             $result['details']['final_version'] = $finalVersion;
             $result['details']['upgrade_result'] = $upgradeResult;
             $result['success'] = true;
@@ -339,7 +340,8 @@ class TestManager {
      * Récupère la version de la dernière migration disponible
      */
     private function getLatestMigrationVersion() {
-        $migrationManager = new MigrationManager($this->db, $this->logger);
+        global $table_prefix;
+        $migrationManager = new MigrationManager($this->db, $this->logger, $table_prefix);
         $allMigrations = $migrationManager->getAvailableMigrations();
 
         if (empty($allMigrations)) {
@@ -626,7 +628,8 @@ class Migration_20250815002_UpdateTestFeatures {
      * Récupère une valeur de la table de configuration
      */
     private function getConfigValue($name) {
-        $result = $this->db->sql_query("SELECT value FROM ogspy_config WHERE name = '" . $this->db->sql_escape_string($name) . "'");
+        global $table_prefix;
+        $result = $this->db->sql_query("SELECT value FROM {$table_prefix}config WHERE name = '" . $this->db->sql_escape_string($name) . "'");
         if ($this->db->sql_numrows($result) > 0) {
             $row = $this->db->sql_fetch_assoc($result);
             return $row['value'];
@@ -634,18 +637,6 @@ class Migration_20250815002_UpdateTestFeatures {
         return null;
     }
 
-    /**
-     * Insère la version applicative en base, uniquement comme le ferait le script d'installation ou d'upgrade
-     */
-    private function insertApplicationVersion($version) {
-        // Utiliser ConfigGenerator pour insérer la version comme le ferait le vrai script
-        $configGenerator = new ConfigGenerator();
-        global $table_prefix;
-        $tablePrefix = $table_prefix ?? 'ogspy_';
-
-        $configGenerator->setApplicationVersion($this->db, $tablePrefix, $version);
-        echo "  Version applicative insérée: {$version}\n";
-    }
 
     /**
      * Journalise l'état de la version applicative
@@ -672,9 +663,6 @@ class Migration_20250815002_UpdateTestFeatures {
                 $this->testDbName = 'ogspy_test_prefix_' . uniqid();
                 $this->createTestDatabase();
                 $this->switchToTestDatabase();
-
-                // 2. Remplacer le préfixe de table dans les migrations de test
-                $this->replaceTablePrefixInMigrations($prefix);
 
                 // 3. Exécuter les migrations avec le nouveau préfixe
                 $migrationManager = new MigrationManager($this->db, $this->logger, $prefix);
@@ -722,24 +710,5 @@ class Migration_20250815002_UpdateTestFeatures {
         return $result;
     }
 
-    /**
-     * Remplace le préfixe de table dans les fichiers de migration de test
-     */
-    private function replaceTablePrefixInMigrations($newPrefix) {
-        $migrationsPath = __DIR__ . '/migrations/';
 
-        foreach ($this->createdTestMigrations as $migrationFile) {
-            if (file_exists($migrationFile)) {
-                $content = file_get_contents($migrationFile);
-
-                // Remplacer le préfixe de table dans le contenu de la migration
-                $newContent = str_replace('ogspy_', $newPrefix, $content);
-
-                // Écrire le nouveau contenu dans le fichier de migration
-                file_put_contents($migrationFile, $newContent);
-
-                echo "  ✓ Préfixe de table remplacé dans: " . basename($migrationFile) . "\n";
-            }
-        }
-    }
 }

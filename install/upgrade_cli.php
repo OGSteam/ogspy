@@ -390,7 +390,7 @@ class UpgradeCLI {
         echo "\n";
         echo "🎊 INSTALLATION TERMINÉE AVEC SUCCÈS !\n";
         echo "=====================================\n";
-        echo "✓ OGSpy 4.0 est maintenant prêt à être utilisé\n";
+        echo "✓ OGSpy est maintenant prêt à être utilisé\n";
         echo "✓ Connectez-vous avec: {$adminUser}\n";
         echo "✓ URL d'accès: http://votre-serveur/ogspy/\n";
         echo "\nPour gérer l'installation :\n";
