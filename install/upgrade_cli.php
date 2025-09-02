@@ -98,8 +98,9 @@ class UpgradeCLI {
 
         global $db, $log;
         try {
-            $this->migrationManager = new MigrationManager($db, $log);
-            $this->autoUpgrade = new AutoUpgradeManager($db, $log);
+            global $table_prefix; // Ajouter la variable globale table_prefix
+            $this->migrationManager = new MigrationManager($db, $log, $table_prefix ?? 'ogspy_');
+            $this->autoUpgrade = new AutoUpgradeManager($db, $log, $table_prefix ?? 'ogspy_');
         } catch (Exception $e) {
             die("Erreur initialisation classes: " . $e->getMessage() . "\n");
         }
@@ -147,6 +148,9 @@ class UpgradeCLI {
                 break;
             case 'test-performance':
                 $this->testPerformance();
+                break;
+            case 'test-prefix':
+                $this->testTablePrefix();
                 break;
             default:
                 $this->showHelp();
@@ -781,6 +785,45 @@ class UpgradeCLI {
                 exit(1);
             }
 
+
+        } catch (Exception $e) {
+            echo "❌ ERREUR CRITIQUE: " . $e->getMessage() . "\n";
+            exit(1);
+        }
+    }
+
+    /**
+     * Test la configuration des préfixes de table
+     */
+    private function testTablePrefix() {
+        global $db, $log;
+
+        echo "🔍 TEST DE LA CONFIGURATION DES PRÉFIXES DE TABLE\n";
+        echo "===============================================\n\n";
+
+        try {
+            $testManager = new TestManager($db, $log);
+            $result = $testManager->testTablePrefix();
+
+            echo "\n=== RÉSULTAT DU TEST DE PRÉFIXE DE TABLE ===\n";
+
+            if ($result['success']) {
+                echo "✅ TEST DE PRÉFIXE DE TABLE RÉUSSI\n";
+
+                foreach ($result['details'] as $prefix => $details) {
+                    if ($details['success']) {
+                        echo "✓ Préfixe '{$prefix}': RÉUSSI\n";
+                        echo "  Version finale: " . $details['version'] . "\n";
+                        echo "  Migrations exécutées: " . count($details['migrations']) . "\n";
+                    } else {
+                        echo "✗ Préfixe '{$prefix}': ÉCHOUÉ\n";
+                    }
+                }
+            } else {
+                echo "❌ TEST DE PRÉFIXE DE TABLE ÉCHOUÉ\n";
+                echo "✗ Erreur: " . $result['error'] . "\n";
+                exit(1);
+            }
         } catch (Exception $e) {
             echo "❌ ERREUR CRITIQUE: " . $e->getMessage() . "\n";
             exit(1);

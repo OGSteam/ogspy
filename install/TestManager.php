@@ -33,6 +33,7 @@ class TestManager {
         $results = [
             'install_test' => null,
             'upgrade_test' => null,
+            'table_prefix_test' => null,
             'success' => false,
             'errors' => []
         ];
@@ -57,7 +58,18 @@ class TestManager {
 
                 if ($results['upgrade_test']['success']) {
                     echo "✓ Test de mise à niveau réussi\n\n";
-                    $results['success'] = true;
+
+                    // Test 3: Configuration des préfixes de table
+                    echo "🏷️  Test de configuration des préfixes de table...\n";
+                    $results['table_prefix_test'] = $this->testTablePrefix();
+
+                    if ($results['table_prefix_test']['success']) {
+                        echo "✓ Test de préfixe de table réussi\n\n";
+                        $results['success'] = true;
+                    } else {
+                        echo "✗ Test de préfixe de table échoué\n\n";
+                        $results['errors'][] = $results['table_prefix_test']['error'];
+                    }
                 } else {
                     echo "✗ Test de mise à niveau échoué\n\n";
                     $results['errors'][] = $results['upgrade_test']['error'];
@@ -301,9 +313,9 @@ class TestManager {
     /**
      * Vérifie l'intégrité de l'installation
      */
-    private function verifyInstallIntegrity() {
+    private function verifyInstallIntegrity($tablePrefix = 'ogspy_') {
         // Vérifier que les tables essentielles existent
-        $essentialTables = ['ogspy_user', 'ogspy_config', 'ogspy_migrations'];
+        $essentialTables = [$tablePrefix . 'user', $tablePrefix . 'config', $tablePrefix . 'migrations'];
 
         foreach ($essentialTables as $table) {
             $result = $this->db->sql_query("SHOW TABLES LIKE '{$table}'");
@@ -313,7 +325,7 @@ class TestManager {
         }
 
         // Vérifier que la table de configuration a des données
-        $result = $this->db->sql_query("SELECT COUNT(*) as count FROM ogspy_config");
+        $result = $this->db->sql_query("SELECT COUNT(*) as count FROM {$tablePrefix}config");
         $row = $this->db->sql_fetch_assoc($result);
 
         if ($row['count'] == 0) {
@@ -641,5 +653,93 @@ class Migration_20250815002_UpdateTestFeatures {
     private function logApplicationVersionState($stage) {
         $appVersion = $this->getConfigValue('version');
         echo "  État de la version applicative ({$stage}): {$appVersion}\n";
+    }
+
+    /**
+     * Test avec différents préfixes de table
+     */
+    public function testTablePrefix() {
+        $result = ['success' => false, 'error' => null, 'details' => []];
+
+        // Liste des préfixes de table à tester
+        $tablePrefixes = ['ogspy_', 'ogspy_alt_', 'test_'];
+
+        try {
+            foreach ($tablePrefixes as $prefix) {
+                echo "🏷️  Test avec le préfixe de table: {$prefix}\n";
+
+                // 1. Créer une nouvelle base de test avec le préfixe spécifié
+                $this->testDbName = 'ogspy_test_prefix_' . uniqid();
+                $this->createTestDatabase();
+                $this->switchToTestDatabase();
+
+                // 2. Remplacer le préfixe de table dans les migrations de test
+                $this->replaceTablePrefixInMigrations($prefix);
+
+                // 3. Exécuter les migrations avec le nouveau préfixe
+                $migrationManager = new MigrationManager($this->db, $this->logger, $prefix);
+                $allMigrations = $migrationManager->getAvailableMigrations();
+
+                foreach ($allMigrations as $migration) {
+                    echo "  Exécution migration: {$migration['version']}\n";
+                    $migrationResult = $migrationManager->runMigration($migration);
+
+                    if (!$migrationResult) {
+                        throw new Exception("Migration {$migration['version']} échouée avec le préfixe {$prefix}");
+                    }
+                }
+
+                // 4. Vérifier l'intégrité de l'installation avec le nouveau préfixe
+                $this->verifyInstallIntegrity($prefix);
+
+                // 5. Vérifier que la version DB correspond
+                $dbVersion = $migrationManager->getCurrentDbVersion();
+                $expectedVersion = $this->getLatestMigrationVersion();
+
+                if ($dbVersion !== $expectedVersion) {
+                    throw new Exception("Version DB incorrecte avec le préfixe {$prefix}: attendue {$expectedVersion}, trouvée {$dbVersion}");
+                }
+
+                $result['details'][$prefix] = [
+                    'success' => true,
+                    'version' => $dbVersion,
+                    'migrations' => array_column($allMigrations, 'version')
+                ];
+
+                echo "✓ Test réussi avec le préfixe de table: {$prefix}\n\n";
+            }
+
+            $result['success'] = true;
+
+        } catch (Exception $e) {
+            $result['error'] = $e->getMessage();
+            $this->logger->error("Test de préfixe de table échoué", ['error' => $e->getMessage()]);
+        } finally {
+            // Nettoyage
+            $this->cleanup();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Remplace le préfixe de table dans les fichiers de migration de test
+     */
+    private function replaceTablePrefixInMigrations($newPrefix) {
+        $migrationsPath = __DIR__ . '/migrations/';
+
+        foreach ($this->createdTestMigrations as $migrationFile) {
+            if (file_exists($migrationFile)) {
+                $content = file_get_contents($migrationFile);
+
+                // Remplacer le préfixe de table dans le contenu de la migration
+                $newContent = str_replace('ogspy_', $newPrefix, $content);
+
+                // Écrire le nouveau contenu dans le fichier de migration
+                file_put_contents($migrationFile, $newContent);
+
+                echo "  ✓ Préfixe de table remplacé dans: " . basename($migrationFile) . "\n";
+            }
+        }
     }
 }
