@@ -1,54 +1,15 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ../:/workspace:cached
-    command: sleep infinity
-    networks:
-      - ogspy-network
-    depends_on:
-      - db
-      - mailhog
-    environment:
-      - PHP_EXTENSION_XDEBUG=1
-      - PHP_INI_MEMORY_LIMIT=512M
-      - PHP_INI_UPLOAD_MAX_FILESIZE=50M
-      - PHP_INI_POST_MAX_SIZE=50M
-
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile.web
+    image: php:8.4-apache
     ports:
       - "8080:80"
     volumes:
       - ../:/var/www/html:cached
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    networks:
-      - ogspy-network
-    depends_on:
-      - php-fpm
-      - db
-      - mailhog
-
-  php-fpm:
-    build:
-      context: .
-      dockerfile: Dockerfile.php-fpm
-    volumes:
-      - ../:/var/www/html:cached
+      - ./php-custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
     networks:
       - ogspy-network
     depends_on:
       - db
-      - mailhog
-    environment:
-      - PHP_EXTENSION_XDEBUG=1
-      - PHP_INI_MEMORY_LIMIT=512M
-      - PHP_INI_UPLOAD_MAX_FILESIZE=50M
-      - PHP_INI_POST_MAX_SIZE=50M
 
   db:
     image: mariadb:12.0
@@ -67,11 +28,17 @@ services:
       - ogspy-network
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
-  mailhog:
-    image: mailhog/mailhog:latest
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      PMA_HOST: db
+      PMA_USER: ogspy_user
+      PMA_PASSWORD: ogspy_password
+      PMA_ARBITRARY: 1
     ports:
-      - "8025:8025"
-      - "1025:1025"
+      - "8081:80"
+    depends_on:
+      - db
     networks:
       - ogspy-network
 

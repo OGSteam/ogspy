@@ -1,8 +1,8 @@
 {
   "name": "OGSpy Development Environment",
   "dockerComposeFile": "docker-compose.yml",
-  "service": "app",
-  "workspaceFolder": "/workspace",
+  "service": "web",
+  "workspaceFolder": "/var/www/html",
 
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
@@ -10,12 +10,7 @@
       "configureZshAsDefaultShell": true,
       "installOhMyZsh": true,
       "upgradePackages": true,
-      "username": "vscode",
-      "userUid": "automatic",
-      "userGid": "automatic"
-    },
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "lts"
+      "username": "root"
     }
   },
 
@@ -36,19 +31,20 @@
     }
   },
 
-  "forwardPorts": [8080, 3306, 8025],
+  "forwardPorts": [8080, 8081, 3306],
   "portsAttributes": {
     "8080": {
-      "label": "OGSpy Web Server"
+      "label": "OGSpy Web Server (Apache)"
+    },
+    "8081": {
+      "label": "phpMyAdmin"
     },
     "3306": {
       "label": "MariaDB Database"
-    },
-    "8025": {
-      "label": "MailHog Web UI"
     }
   },
 
-  "postCreateCommand": "bash .devcontainer/setup.sh",
-  "remoteUser": "vscode"
+  "postCreateCommand": "apt-get update && apt-get install -y libpng-dev libonig-dev libxml2-dev libzip-dev zip unzip mariadb-client && docker-php-ext-install mysqli pdo_mysql mbstring xml zip bcmath gd && pecl install xdebug && docker-php-ext-enable xdebug && a2enmod rewrite && service apache2 restart && echo 'xdebug.mode=debug,coverage' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && echo 'xdebug.start_with_request=yes' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && echo 'xdebug.client_host=host.docker.internal' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && echo 'xdebug.client_port=9003' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini",
+
+  "remoteUser": "root"
 }
