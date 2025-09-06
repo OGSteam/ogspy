@@ -33,7 +33,10 @@ class MigrationManager {
      * Initializes the migration tracking table
      */
     private function initMigrationsTable() {
-        $sql = "CREATE TABLE IF NOT EXISTS `{$this->migrations_table}` (
+        // Utiliser le préfixe passé au constructeur au lieu de la config
+        $migrationsTable = $this->table_prefix . 'migrations';
+
+        $sql = "CREATE TABLE IF NOT EXISTS `{$migrationsTable}` (
             `id` INT AUTO_INCREMENT PRIMARY KEY,
             `migration` VARCHAR(255) NOT NULL UNIQUE,
             `executed_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -45,6 +48,9 @@ class MigrationManager {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
 
         $this->db->sql_query($sql);
+
+        // Mettre à jour la propriété migrations_table avec le bon préfixe
+        $this->migrations_table = $migrationsTable;
     }
 
     /**

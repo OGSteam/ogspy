@@ -135,7 +135,7 @@ if ($_POST) {
             $migrationDb = sql_db::getInstance($db_host, $db_user, $db_password, $db_database);
 
             if ($migrationDb && $migrationDb->db_connect_id) {
-                $migrationManager = new MigrationManager($migrationDb, $log);
+                $migrationManager = new MigrationManager($migrationDb, $log, $table_prefix);
                 $results = $migrationManager->runPendingMigrations(false);
 
                 $successful = array_filter($results, function($r) { return $r['success']; });
@@ -250,7 +250,7 @@ if ($configExists) {
                 $dbConnected = true;
 
                 // Créer le gestionnaire de migrations avec la connexion directe
-                $migrationManager = new MigrationManager($testDb, $log);
+                $migrationManager = new MigrationManager($testDb, $log, $table_prefix);
                 $pendingMigrations = $migrationManager->getPendingMigrations();
 
                 // Vérifier si un compte administrateur existe déjà
