@@ -198,7 +198,7 @@ class Player_Building_Model  extends Model_Abstract
     {
         $player_id = (int)$player_id;
 
-        $tElemList = array("id", "name", "galaxy", "system","row",  "fields", "boosters", "temperature_min", "temperature_max", "Sat", "Sat_percentage", "FOR", "FOR_percentage", "M", "M_percentage", "C", "C_percentage", "D", "D_percentage", "CES", "CES_percentage", "CEF", "CEF_percentage", "UdR", "UdN", "CSp", "HM", "HC", "HD", "Lab", "Ter", "Silo", "Dock", "BaLu", "Pha", "PoSa", "DdR");
+        $tElemList = array("id", "type", "name", "galaxy", "system","row",  "fields", "boosters", "temperature_min", "temperature_max", "Sat", "Sat_percentage", "FOR", "FOR_percentage", "M", "M_percentage", "C", "C_percentage", "D", "D_percentage", "CES", "CES_percentage", "CEF", "CEF_percentage", "UdR", "UdN", "CSp", "HM", "HC", "HD", "Lab", "Ter", "Silo", "Dock", "BaLu", "Pha", "PoSa", "DdR");
 
         $request = "SELECT `" . implode("`, `", $tElemList) . "` ";
         $request .= " FROM " . TABLE_USER_BUILDING;
