@@ -19,7 +19,7 @@ docker ps -a
 
 # Correction des permissions des dossiers nécessaires
 sudo chown -R anthony:anthony ../config ../install ../cache ../logs
-sudo chmod -R 755 ../config ../install ../cache ../logs
+sudo chmod -R 777 ../config ../install ../cache ../logs ../mod
 
 echo "Déploiement des containers..."
 docker compose -f docker-compose.yml up -d --build

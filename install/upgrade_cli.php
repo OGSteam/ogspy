@@ -314,6 +314,12 @@ class UpgradeCLI {
 
                 if (empty($failed)) {
                     echo "✓ " . count($successful) . " migration(s) exécutée(s) avec succès\n";
+
+                    // Mise à jour de la version OGSpy dans la table config
+                    require_once 'ConfigGenerator.php';
+                    $configGenerator = new ConfigGenerator();
+                    $configGenerator->setConfigValue($db, $dbConfig['table_prefix'], 'version', $ogspy_version);
+                    echo "✓ Version OGSpy ({$ogspy_version}) mise à jour dans la configuration\n";
                 } else {
                     echo "❌ " . count($failed) . " migration(s) échouée(s)\n";
                     foreach ($failed as $failedMigration) {
@@ -325,6 +331,12 @@ class UpgradeCLI {
                 }
             } else {
                 echo "✓ Aucune migration nécessaire\n";
+
+                // Même si aucune migration n'est nécessaire, s'assurer que la version est à jour
+                require_once 'ConfigGenerator.php';
+                $configGenerator = new ConfigGenerator();
+                $configGenerator->setConfigValue($db, $dbConfig['table_prefix'], 'version', $ogspy_version);
+                echo "✓ Version OGSpy ({$ogspy_version}) mise à jour dans la configuration\n";
             }
         } catch (Exception $e) {
             echo "❌ Erreur lors des migrations: " . $e->getMessage() . "\n";
