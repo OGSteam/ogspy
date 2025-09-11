@@ -21,7 +21,8 @@
         "ms-vscode.vscode-json",
         "formulahendry.auto-rename-tag",
         "christian-kohler.path-intellisense",
-        "xdebug.php-debug"
+        "xdebug.php-debug",
+        "GitHub.copilot"
       ],
       "settings": {
         "php.validate.executablePath": "/usr/local/bin/php",

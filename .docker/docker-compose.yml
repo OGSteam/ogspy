@@ -12,32 +12,44 @@ volumes:
 
 services:
   db:
-    image: mariadb
+    image: mariadb:11.5
     expose:
       - 3306
     networks:
       - ogspy-network
     environment:
       MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: ogspy
       MYSQL_USER: demo
       MYSQL_PASSWORD: ogsteam
     volumes:
       - ogspy-db:/var/lib/mysql
       - ./db:/docker-entrypoint-initdb.d
     restart: always
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   ogspy:
     build:
-      context: .
-      dockerfile: Dockerfile.ogspy
+      context: ..
+      dockerfile: .docker/Dockerfile.ogspy
     networks:
       - ogspy-network
     volumes:
       - ogspy-app:/var/www/html
       - ./config:/var/www/html/config
+      # Pour le développement : monter le code source directement
+      # - ..:/var/www/html
+    environment:
+      - ENVIRONMENT=development
     restart: always
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   nginx:
     build:
@@ -49,17 +61,21 @@ services:
       - "16005:80"
     networks:
       - ogspy-network
+    depends_on:
+      - ogspy
+    restart: always
 
-
-
+  # Optionnel : PHPMyAdmin pour faciliter le développement
   phpmyadmin:
-    image: phpmyadmin
+    image: phpmyadmin:5.2
     ports:
       - "16006:80"
-    environment:
-      - PMA_HOST=db
-      - PMA_PORT=3306
-      - UPLOAD_LIMIT=50000000
     networks:
       - ogspy-network
-    restart: always
+    environment:
+      PMA_HOST: db
+      PMA_USER: demo
+      PMA_PASSWORD: ogsteam
+    depends_on:
+      db:
+        condition: service_healthy

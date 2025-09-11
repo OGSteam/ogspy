@@ -1,4 +1,4 @@
-<?php global $server_config, $lang;
+<?php global $server_config, $lang, $user_data;
 
 /**
  * Pop up Messages
@@ -44,6 +44,16 @@ switch ($pub_id_message) {
     case "errormod":
         $msgType = "danger";
         $msgContent = $lang['MSG_ERRORMOD'] ;
+
+        // Ajouter un lien vers les logs pour diagnostiquer le problème
+        if ($user_data["admin"] == 1 || $user_data["coadmin"] == 1) {
+            $today = date('Y-m-d');
+            $log_file = "OGSpy-{$today}.log";
+            $msgContent .= '<br><br>';
+            $msgContent .= '<a href="index.php?action=administration&amp;subaction=viewer&amp;show=' . $today . '&amp;typelog=log&amp;level=ERROR" style="color: #007bff; text-decoration: underline;">';
+            $msgContent .= 'Voir les logs d\'erreur';
+            $msgContent .= '</a>';
+        }
         break;
     case "errordata":
         $msgType = "danger";
