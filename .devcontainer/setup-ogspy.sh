@@ -54,3 +54,6 @@ echo "👤 Connexion: $ADMIN_USER / $ADMIN_PASSWORD"
 # Ouverture automatique du navigateur (uniquement en environnement de développement local)
 if [ "$OPEN_BROWSER" = "true" ] && [ -n "$DISPLAY" ] && command -v xdg-open >/dev/null 2>&1; then
     echo "🌐 Ouverture du navigateur..."
+    sleep 3  # Attendre que le serveur soit complètement prêt
+    xdg-open http://localhost:8080 2>/dev/null &
+fi
