@@ -17,8 +17,8 @@ DB_PREFIX=${DB_PREFIX:-"ogspy_"}
 echo "📁 Correction des permissions des dossiers nécessaires..."
 chown -R root:root /var/www/html/config /var/www/html/install /var/www/html/cache /var/www/html/logs /var/www/html/mod 2>/dev/null || true
 chmod -R 777 /var/www/html/config /var/www/html/install /var/www/html/cache /var/www/html/logs /var/www/html/mod 2>/dev/null || true
-
-echo "⏳ Attente de la base de données ($DB_HOST)..."
+    composer install --optimize-autoloader
+    echo "✅ Dépendances Composer installées (dev + prod)"
 RETRY_COUNT=0
 MAX_RETRIES=30
 until php -r "mysqli_connect('$DB_HOST','$DB_USER','$DB_PASSWORD','$DB_NAME') or exit(1);" > /dev/null 2>&1; do
