@@ -68,8 +68,12 @@ $nb_planete = count($player_planets);
 $nb_moon = count($player_moons);
 
 ?>
-
 <?php
+// compute clear colspan values (exact counts). The view already shows a warning if no planet is defined.
+$colspan_planets = $nb_planete + 1; // one extra column for the label column
+$colspan_planets_nine = $nb_planete; // used where colspan previously was '9' for content cells
+$colspan_moons = $nb_moon + 1;
+
 // Compute production per astre (normal behavior for this view)
 $user_production = [];
 // Compute production for planets
@@ -102,7 +106,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
 <table class="og-table og-full-table og-table-empire">
     <thead>
     <tr>
-        <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+    <th colspan="<?php print $colspan_planets ?>">
             🪐 <?php echo $lang['HOME_EMPIRE_SUMMARY'] . " - Planètes (" . $player_data['name'] . ")"; ?>
         </th>
     </tr>
@@ -182,7 +186,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
 
     <thead>
     <tr>
-        <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+    <th colspan="<?php print $colspan_planets ?>">
             <?php echo $lang['HOME_EMPIRE_PRODUCTION_EXPECTED']; ?>
         </th>
     </tr>
@@ -233,7 +237,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
 
     <thead>
     <tr>
-        <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+    <th colspan="<?php print $colspan_planets ?>">
             <?php echo $lang['HOME_EMPIRE_PRODUCTION_REAL']; ?>
         </th>
     </tr>
@@ -304,7 +308,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
 
     <thead>
     <tr>
-        <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+    <th colspan="<?php print $colspan_planets ?>">
             <?php echo $lang['HOME_EMPIRE_BUILDINGS']; ?>
         </th>
     </tr>
@@ -524,7 +528,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
 
     <thead>
     <tr>
-        <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+    <th colspan="<?php print $colspan_planets ?>">
             <?php echo $lang['HOME_EMPIRE_OTHERS']; ?>
         </th>
     </tr>
@@ -559,12 +563,10 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <?php endforeach; ?>
     </tr>
     </tbody>
-                <?php $For = ($planet["FOR"] == "") ? 0 : $planet["FOR"]; ?>
-                <?php $For_display = ($For == 0) ? "&nbsp;" : number_format($For, 0, ',', ' '); ?>
 
-        <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+    <thead>
     <tr>
-                    <?php echo $For_display . " / " . $nb_max; ?>
+        <th colspan="<?php print $colspan_planets ?>">
             <?php echo $lang['HOME_EMPIRE_TECHNOS']; ?>
         </th>
     </tr>
@@ -614,7 +616,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
 
     <thead>
     <tr>
-        <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+    <th colspan="<?php print $colspan_planets ?>">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_TITLE']; ?>
         </th>
     </tr>
@@ -653,7 +655,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
 
     <thead>
     <tr>
-        <th colspan="<?php print ($nb_planete < 10) ? '10' : $nb_planete + 1 ?>">
+        <th colspan="<?php print $colspan_planets ?>">
             <?php echo $lang['HOME_EMPIRE_POINTS_TITLE']; ?>
         </th>
     </tr>
@@ -708,7 +710,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_TECHNOS']; ?>
         </td>
-        <td colspan="<?php print ($nb_planete < 10) ? '9' : $nb_planete ?>" class="tdcontent">
+    <td colspan="<?php print $colspan_planets_nine ?>" class="tdcontent">
             <span id='tech_points'>
                 <?php $point = all_technology_cumulate($user_technology); ?>
                 <?php $point = round($point / 1000); ?>
@@ -724,7 +726,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
 <table class="og-table og-full-table og-table-empire" style="margin-top: 20px;">
     <thead>
     <tr>
-        <th colspan="<?php print ($nb_moon < 10) ? '10' : $nb_moon + 1 ?>">
+        <th colspan="<?php print $colspan_moons ?>">
             🌙 <?php echo $lang['HOME_EMPIRE_SUMMARY'] . " - Lunes (" . $player_data['name'] . ")"; ?>
         </th>
     </tr>
@@ -784,7 +786,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
 
     <thead>
     <tr>
-        <th colspan="<?php print ($nb_moon < 10) ? '10' : $nb_moon + 1 ?>">
+        <th colspan="<?php print $colspan_moons ?>">
             <?php echo $lang['HOME_EMPIRE_ORBITAL_BUILDINGS']; ?>
         </th>
     </tr>
@@ -872,7 +874,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
 
     <thead>
     <tr>
-        <th colspan="<?php print ($nb_moon < 10) ? '10' : $nb_moon + 1 ?>">
+        <th colspan="<?php print $colspan_moons ?>">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_TITLE']; ?>
         </th>
     </tr>
@@ -898,7 +900,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
 
     <thead>
     <tr>
-        <th colspan="<?php print ($nb_moon < 10) ? '10' : $nb_moon + 1 ?>">
+        <th colspan="<?php print $colspan_moons ?>">
             <?php echo $lang['HOME_EMPIRE_POINTS_TITLE']; ?>
         </th>
     </tr>
