@@ -1024,6 +1024,17 @@ table.og-full-table {
     width: 100%;
 }
 
+/* Wrapper to allow horizontal scrolling on wide empire tables */
+.og-table-wrapper{
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure empire tables don't collapse columns too much; adjust min-width as needed */
+table.og-table-empire{
+    min-width: 1200px;
+}
+
 table.og-little-table td {
     height: 20px;
 }

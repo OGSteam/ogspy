@@ -72,7 +72,14 @@ $nb_moon = count($player_moons);
 // compute clear colspan values (exact counts). The view already shows a warning if no planet is defined.
 $colspan_planets = $nb_planete + 1; // one extra column for the label column
 $colspan_planets_nine = $nb_planete; // used where colspan previously was '9' for content cells
-$colspan_moons = $nb_moon + 1;
+$colspan_moons = $nb_planete + 1; // moon tables are aligned under planets (one column per planet)
+
+// Map moons by coordinates so we can align them under their parent planet columns
+$moon_by_coords = [];
+foreach ($player_moons as $mid => $m) {
+    $k = $m['galaxy'] . '_' . $m['system'] . '_' . $m['row'];
+    $moon_by_coords[$k] = ['id' => $mid, 'moon' => $m];
+}
 
 // Compute production per astre (normal behavior for this view)
 $user_production = [];
@@ -103,7 +110,22 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
 <?php endif; ?>
 
 <!-- Tableau des Planètes uniquement -->
-<table class="og-table og-full-table og-table-empire">
+<div class="og-table-wrapper">
+<?php
+// compute a sensible min-width so many columns don't get squeezed too small
+// default per-column width (px) and label area width (px)
+$per_column_px = isset($per_column_px) ? intval($per_column_px) : 70;
+$label_width_px = isset($label_width_px) ? intval($label_width_px) : 140;
+$nb_planete = max(1, intval($nb_planete ?? 0));
+$min_width_px = $label_width_px + ($nb_planete * $per_column_px);
+?>
+<table class="og-table og-full-table og-table-empire" style="min-width: <?php echo $min_width_px; ?>px !important; table-layout: fixed !important;">
+    <colgroup>
+        <col style="width: <?php echo $label_width_px; ?>px;" />
+        <?php for ($ci = 0; $ci < $nb_planete; $ci++): ?>
+            <col style="width: <?php echo $per_column_px; ?>px;" />
+        <?php endfor; ?>
+    </colgroup>
     <thead>
     <tr>
     <th colspan="<?php print $colspan_planets ?>">
@@ -112,6 +134,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
     </tr>
     </thead>
     <tbody>
+    <?php // debug helpers removed (no public debug endpoint) ?>
     <tr>
         <td>&nbsp;</td>
         <?php foreach ($player_planets as $i => $planet) : ?>
@@ -720,10 +743,18 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
     </tr>
     </tbody>
 </table>
+</div>
 
 <?php if ($nb_moon > 0): ?>
 <!-- Tableau des Lunes séparé -->
-<table class="og-table og-full-table og-table-empire" style="margin-top: 20px;">
+<div class="og-table-wrapper">
+<table class="og-table og-full-table og-table-empire" style="margin-top: 20px; min-width: <?php echo $min_width_px; ?>px !important; table-layout: fixed !important;">
+    <colgroup>
+        <col style="width: <?php echo $label_width_px; ?>px;" />
+        <?php for ($ci = 0; $ci < $nb_planete; $ci++): ?>
+            <col style="width: <?php echo $per_column_px; ?>px;" />
+        <?php endfor; ?>
+    </colgroup>
     <thead>
     <tr>
         <th colspan="<?php print $colspan_moons ?>">
@@ -734,7 +765,7 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
     <tbody>
     <tr>
         <td>&nbsp;</td>
-        <?php foreach ($player_moons as $i => $moon) : ?>
+        <?php foreach ($player_planets as $i => $planet) : ?>
             <td></td>
         <?php endforeach; ?>
     </tr>
@@ -742,10 +773,12 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_NAME']; ?>
         </td>
-        <?php foreach ($player_moons as $i => $moon) : ?>
+        <?php foreach ($player_planets as $i => $planet) : ?>
+            <?php $k = $planet['galaxy'] . '_' . $planet['system'] . '_' . $planet['row']; ?>
+            <?php $moon_info = $moon_by_coords[$k] ?? null; ?>
             <td class="tdcontent">
                 <span class="og-highlight">
-                    <?php echo ($moon["name"] == "") ? "&nbsp;" : $moon["name"]; ?>
+                    <?php echo ($moon_info === null || $moon_info['moon']['name'] == "") ? "&nbsp;" : $moon_info['moon']['name']; ?>
                 </span>
             </td>
         <?php endforeach; ?>
@@ -754,9 +787,15 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_COORD']; ?>
         </td>
-        <?php foreach ($player_moons as $i => $moon) : ?>
+        <?php foreach ($player_planets as $i => $planet) : ?>
+            <?php $k = $planet['galaxy'] . '_' . $planet['system'] . '_' . $planet['row']; ?>
+            <?php $moon_info = $moon_by_coords[$k] ?? null; ?>
             <td class="tdcontent">
-                [<?php echo $moon["galaxy"] . "&nbsp;" . $moon["system"] . "&nbsp;" . $moon["row"] ?>]
+                <?php if ($moon_info === null): ?>
+                    &nbsp;
+                <?php else: ?>
+                    [<?php echo $moon_info['moon']["galaxy"] . "&nbsp;" . $moon_info['moon']["system"] . "&nbsp;" . $moon_info['moon']["row"] ?>]
+                <?php endif; ?>
             </td>
         <?php endforeach; ?>
     </tr>
@@ -764,10 +803,16 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_FIELDS']; ?>
         </td>
-        <?php foreach ($player_moons as $i => $moon) : ?>
+        <?php foreach ($player_planets as $i => $planet) : ?>
+            <?php $k = $planet['galaxy'] . '_' . $planet['system'] . '_' . $planet['row']; ?>
+            <?php $moon_info = $moon_by_coords[$k] ?? null; ?>
             <td class="tdcontent">
-                <?php $fields = ($moon["fields"] == "0") ? 0 : $moon["fields"]; ?>
-                <?php echo $moon["fields_used"] . " / " . $fields; ?>
+                <?php if ($moon_info === null): ?>
+                    &nbsp;
+                <?php else: ?>
+                    <?php $fields = ($moon_info['moon']["fields"] == "0") ? 0 : $moon_info['moon']["fields"]; ?>
+                    <?php echo $moon_info['moon']["fields_used"] . " / " . $fields; ?>
+                <?php endif; ?>
             </td>
         <?php endforeach; ?>
     </tr>
@@ -775,10 +820,16 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_EXTENSION_MOON']; ?>
         </td>
-        <?php foreach ($player_moons as $i => $moon) : ?>
+        <?php foreach ($player_planets as $i => $planet) : ?>
+            <?php $k = $planet['galaxy'] . '_' . $planet['system'] . '_' . $planet['row']; ?>
+            <?php $moon_info = $moon_by_coords[$k] ?? null; ?>
             <td class="tdcontent">
-                <?php $booster_tab = booster_decode($moon["boosters"]); ?>
-                <?php echo $booster_tab['extention_m']; ?>
+                <?php if ($moon_info === null): ?>
+                    &nbsp;
+                <?php else: ?>
+                    <?php $booster_tab = booster_decode($moon_info['moon']["boosters"]); ?>
+                    <?php echo $booster_tab['extention_m']; ?>
+                <?php endif; ?>
             </td>
         <?php endforeach; ?>
     </tr>
@@ -796,12 +847,18 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_LUNARSTATION']; ?>
         </td>
-        <?php foreach ($player_moons as $i => $moon) : ?>
+        <?php foreach ($player_planets as $i => $planet) : ?>
+            <?php $k = $planet['galaxy'] . '_' . $planet['system'] . '_' . $planet['row']; ?>
+            <?php $moon_info = $moon_by_coords[$k] ?? null; ?>
             <td class="tdcontent">
-                <?php $BaLu = ($moon["BaLu"] == "") ? "&nbsp;" : $moon["BaLu"]; ?>
-                <span id='balu_<?php echo $i ?>'>
-                    <?php echo $BaLu ?>
-                </span>
+                <?php if ($moon_info === null): ?>
+                    &nbsp;
+                <?php else: ?>
+                    <?php $BaLu = ($moon_info['moon']["BaLu"] == "") ? "&nbsp;" : $moon_info['moon']["BaLu"]; ?>
+                    <span id='balu_<?php echo $moon_info['id'] ?>'>
+                        <?php echo $BaLu ?>
+                    </span>
+                <?php endif; ?>
             </td>
         <?php endforeach; ?>
     </tr>
@@ -809,12 +866,18 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_LUNARPHALANX']; ?>
         </td>
-        <?php foreach ($player_moons as $i => $moon) : ?>
+        <?php foreach ($player_planets as $i => $planet) : ?>
+            <?php $k = $planet['galaxy'] . '_' . $planet['system'] . '_' . $planet['row']; ?>
+            <?php $moon_info = $moon_by_coords[$k] ?? null; ?>
             <td class="tdcontent">
-                <?php $Pha = ($moon["Pha"] == "") ? "&nbsp;" : $moon["Pha"]; ?>
-                <span id='pha_<?php echo $i ?>'>
-                    <?php echo $Pha ?>
-                </span>
+                <?php if ($moon_info === null): ?>
+                    &nbsp;
+                <?php else: ?>
+                    <?php $Pha = ($moon_info['moon']["Pha"] == "") ? "&nbsp;" : $moon_info['moon']["Pha"]; ?>
+                    <span id='pha_<?php echo $moon_info['id'] ?>'>
+                        <?php echo $Pha ?>
+                    </span>
+                <?php endif; ?>
             </td>
         <?php endforeach; ?>
     </tr>
@@ -822,12 +885,18 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_LUNARJUMPGATE']; ?>
         </td>
-        <?php foreach ($player_moons as $i => $moon) : ?>
+        <?php foreach ($player_planets as $i => $planet) : ?>
+            <?php $k = $planet['galaxy'] . '_' . $planet['system'] . '_' . $planet['row']; ?>
+            <?php $moon_info = $moon_by_coords[$k] ?? null; ?>
             <td class="tdcontent">
-                <?php $PoSa = ($moon["PoSa"] == "") ? "&nbsp;" : $moon["PoSa"]; ?>
-                <span id='posa_<?php echo $i ?>'>
-                    <?php echo $PoSa ?>
-                </span>
+                <?php if ($moon_info === null): ?>
+                    &nbsp;
+                <?php else: ?>
+                    <?php $PoSa = ($moon_info['moon']["PoSa"] == "") ? "&nbsp;" : $moon_info['moon']["PoSa"]; ?>
+                    <span id='posa_<?php echo $moon_info['id'] ?>'>
+                        <?php echo $PoSa ?>
+                    </span>
+                <?php endif; ?>
             </td>
         <?php endforeach; ?>
     </tr>
@@ -835,12 +904,18 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_SHIPYARD']; ?>
         </td>
-        <?php foreach ($player_moons as $i => $moon) : ?>
+        <?php foreach ($player_planets as $i => $planet) : ?>
+            <?php $k = $planet['galaxy'] . '_' . $planet['system'] . '_' . $planet['row']; ?>
+            <?php $moon_info = $moon_by_coords[$k] ?? null; ?>
             <td class="tdcontent">
-                <?php $CSp = ($moon["CSp"] == "") ? "&nbsp;" : $moon["CSp"]; ?>
-                <span id='moon_csp_<?php echo $i ?>'>
-                    <?php echo $CSp ?>
-                </span>
+                <?php if ($moon_info === null): ?>
+                    &nbsp;
+                <?php else: ?>
+                    <?php $CSp = ($moon_info['moon']["CSp"] == "") ? "&nbsp;" : $moon_info['moon']["CSp"]; ?>
+                    <span id='moon_csp_<?php echo $moon_info['id'] ?>'>
+                        <?php echo $CSp ?>
+                    </span>
+                <?php endif; ?>
             </td>
         <?php endforeach; ?>
     </tr>
@@ -848,12 +923,18 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_ROBOTS_PLANT']; ?>
         </td>
-        <?php foreach ($player_moons as $i => $moon) : ?>
+        <?php foreach ($player_planets as $i => $planet) : ?>
+            <?php $k = $planet['galaxy'] . '_' . $planet['system'] . '_' . $planet['row']; ?>
+            <?php $moon_info = $moon_by_coords[$k] ?? null; ?>
             <td class="tdcontent">
-                <?php $UdR = ($moon["UdR"] == "") ? "&nbsp;" : $moon["UdR"]; ?>
-                <span id='moon_udr_<?php echo $i ?>'>
-                    <?php echo $UdR ?>
-                </span>
+                <?php if ($moon_info === null): ?>
+                    &nbsp;
+                <?php else: ?>
+                    <?php $UdR = ($moon_info['moon']["UdR"] == "") ? "&nbsp;" : $moon_info['moon']["UdR"]; ?>
+                    <span id='moon_udr_<?php echo $moon_info['id'] ?>'>
+                        <?php echo $UdR ?>
+                    </span>
+                <?php endif; ?>
             </td>
         <?php endforeach; ?>
     </tr>
@@ -861,12 +942,18 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_NANITES_PLANT']; ?>
         </td>
-        <?php foreach ($player_moons as $i => $moon) : ?>
+        <?php foreach ($player_planets as $i => $planet) : ?>
+            <?php $k = $planet['galaxy'] . '_' . $planet['system'] . '_' . $planet['row']; ?>
+            <?php $moon_info = $moon_by_coords[$k] ?? null; ?>
             <td class="tdcontent">
-                <?php $UdN = ($moon["UdN"] == "") ? "&nbsp;" : $moon["UdN"]; ?>
-                <span id='moon_udn_<?php echo $i ?>'>
-                    <?php echo $UdN ?>
-                </span>
+                <?php if ($moon_info === null): ?>
+                    &nbsp;
+                <?php else: ?>
+                    <?php $UdN = ($moon_info['moon']["UdN"] == "") ? "&nbsp;" : $moon_info['moon']["UdN"]; ?>
+                    <span id='moon_udn_<?php echo $moon_info['id'] ?>'>
+                        <?php echo $UdN ?>
+                    </span>
+                <?php endif; ?>
             </td>
         <?php endforeach; ?>
     </tr>
@@ -886,12 +973,19 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_' . $def_lang]; ?>
         </td>
-        <?php foreach ($player_moons as $moon_id => $moon) : ?>
+        <?php foreach ($player_planets as $i => $planet) : ?>
+            <?php $k = $planet['galaxy'] . '_' . $planet['system'] . '_' . $planet['row']; ?>
+            <?php $moon_info = $moon_by_coords[$k] ?? null; ?>
             <td class="tdcontent">
-                <?php $def_value = $moon_defense[$moon_id][$def_key] ?? "0"; ?>
-                <span id='moon_<?php echo strtolower($def_key) . '_' . $moon_id ?>'>
-                    <?php echo number_format($def_value, 0, ',', ' '); ?>
-                </span>
+                <?php if ($moon_info === null): ?>
+                    &nbsp;
+                <?php else: ?>
+                    <?php $mid = $moon_info['id']; ?>
+                    <?php $def_value = $moon_defense[$mid][$def_key] ?? "0"; ?>
+                    <span id='moon_<?php echo strtolower($def_key) . '_' . $mid ?>'>
+                        <?php echo number_format($def_value, 0, ',', ' '); ?>
+                    </span>
+                <?php endif; ?>
             </td>
         <?php endforeach; ?>
     </tr>
@@ -910,13 +1004,20 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_BUILDINGS']; ?>
         </td>
-        <?php foreach ($player_moons as $i => $moon) : ?>
+        <?php foreach ($player_planets as $i => $planet) : ?>
+            <?php $k = $planet['galaxy'] . '_' . $planet['system'] . '_' . $planet['row']; ?>
+            <?php $moon_info = $moon_by_coords[$k] ?? null; ?>
             <td class="tdcontent">
-                <?php $point = all_building_cumulate(array(1 => $moon)); ?>
-                <?php $point = round($point / 1000); ?>
-                <span id='moon_building_points_<?php echo $i ?>'>
-                    <?php echo number_format($point, 0, ',', ' '); ?>
-                </span>
+                <?php if ($moon_info === null): ?>
+                    &nbsp;
+                <?php else: ?>
+                    <?php $mid = $moon_info['id']; ?>
+                    <?php $point = all_building_cumulate(array(1 => $moon_info['moon'])); ?>
+                    <?php $point = round($point / 1000); ?>
+                    <span id='moon_building_points_<?php echo $mid ?>'>
+                        <?php echo number_format($point, 0, ',', ' '); ?>
+                    </span>
+                <?php endif; ?>
             </td>
         <?php endforeach; ?>
     </tr>
@@ -924,25 +1025,33 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
         <td class="tdname">
             <?php echo $lang['HOME_EMPIRE_WEAPONS_TITLE']; ?>
         </td>
-        <?php foreach ($player_moons as $i => $moon) : ?>
+        <?php foreach ($player_planets as $i => $planet) : ?>
+            <?php $k = $planet['galaxy'] . '_' . $planet['system'] . '_' . $planet['row']; ?>
+            <?php $moon_info = $moon_by_coords[$k] ?? null; ?>
             <td class="tdcontent">
-                <?php
-                $current_moon_defense = $moon_defense[$i] ?? [];
-                $point = all_defense_cumulate(array(1 => $current_moon_defense));
-                $point = round($point / 1000);
-                ?>
-                <span id='moon_defense_points_<?php echo $i ?>'>
-                    <?php echo number_format($point, 0, ',', ' '); ?>
-                </span>
+                <?php if ($moon_info === null): ?>
+                    &nbsp;
+                <?php else: ?>
+                    <?php $mid = $moon_info['id']; ?>
+                    <?php $current_moon_defense = $moon_defense[$mid] ?? [];
+                    $point = all_defense_cumulate(array(1 => $current_moon_defense));
+                    $point = round($point / 1000);
+                    ?>
+                    <span id='moon_defense_points_<?php echo $mid ?>'>
+                        <?php echo number_format($point, 0, ',', ' '); ?>
+                    </span>
+                <?php endif; ?>
             </td>
         <?php endforeach; ?>
     </tr>
     </tbody>
 </table>
+</div>
 <?php endif; ?>
 
 <!-- Tableau des Totaux -->
-<table class="og-table og-full-table og-table-empire" style="margin-top: 20px;">
+<div class="og-table-wrapper">
+<table class="og-table og-full-table og-table-empire" style="margin-top: 20px; width: 100%; table-layout: auto;">
     <thead>
     <tr>
         <th colspan="3">
@@ -1105,10 +1214,12 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
     <thead>
     <tr>
         <th colspan="3">🏆 Totaux Empire</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
         <td class="tdname" style="font-weight: bold;">TOTAL POINTS EMPIRE (k)</td>
         <td class="tdcontent" style="text-align: center; font-weight: bold;" colspan="2">
-        <td class="tdname">TOTAL POINTS EMPIRE (k)</td>
-        <td class="tdcontent" style="text-align: center;" colspan="2">
             <?php
             $total_empire = $total_planet_buildings + $total_moon_buildings +
                            $total_planet_defense + $total_moon_defense +
@@ -1119,3 +1230,4 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
     </tr>
     </tbody>
 </table>
+</div>
