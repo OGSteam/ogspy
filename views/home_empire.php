@@ -70,6 +70,18 @@ $nb_moon = count($player_moons);
 ?>
 
 <?php
+// Compute production per astre (normal behavior for this view)
+$user_production = [];
+// Compute production for planets
+foreach ($player_planets as $i => $planet) {
+    // ogame_production_planet expects a building-like array
+    $user_production[$i] = ogame_production_planet($planet, $user_technology, $player_data, $server_config);
+}
+// Also compute for moons (some pages may reference same indices)
+foreach ($player_moons as $i => $moon) {
+    $user_production[$i] = ogame_production_planet($moon, $user_technology, $player_data, $server_config);
+}
+
 // vérification de compte de planete/lune avec la technologie astro
 if (!isset($user_technology['Astrophysique']) || $user_technology['Astrophysique'] == '') {
     $user_technology['Astrophysique'] = 0;
@@ -1091,10 +1103,8 @@ $astro = astro_max_planete($user_technology['Astrophysique']);
     <thead>
     <tr>
         <th colspan="3">🏆 Totaux Empire</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr style="background-color: #f0f0f0; font-weight: bold;">
+        <td class="tdname" style="font-weight: bold;">TOTAL POINTS EMPIRE (k)</td>
+        <td class="tdcontent" style="text-align: center; font-weight: bold;" colspan="2">
         <td class="tdname">TOTAL POINTS EMPIRE (k)</td>
         <td class="tdcontent" style="text-align: center;" colspan="2">
             <?php
