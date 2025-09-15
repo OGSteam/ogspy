@@ -1092,9 +1092,10 @@ table.og-table tbody .tdcontent {
     color: var(--color-text);
 }
 
-table.og-table tbody td.og-highlight {
-    color: var(--color-highlight);
+table.og-table tbody td.og-total {
     background-color: var(--color-table-background-hover);
+    color: var(--color-text);
+    font-weight: bold;
 }
 
 table.og-table tbody td {
