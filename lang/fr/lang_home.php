@@ -180,3 +180,13 @@ $lang['HOME_STATS_PTS_MILITARYLOST'] = "Pts Perte militaire";
 $lang['HOME_STATS_PTS_MILITARYDEST'] = "Pts destruction";
 $lang['HOME_STATS_PTS_HONOR'] = "Pts honorifique";
 $lang['HOME_STATS_PROGRESS_RATE'] = "Progression moyenne par jour";
+
+/* Sélecteur de joueur */
+$lang['HOME_EMPIRE_SELECT_PLAYER'] = "Sélectionner un joueur :";
+$lang['HOME_EMPIRE_SEARCH_PLAYER'] = "Rechercher un joueur...";
+$lang['HOME_EMPIRE_MY_PLAYER'] = "Mon joueur";
+$lang['HOME_EMPIRE_OTHER_PLAYERS'] = "Autres joueurs";
+$lang['HOME_EMPIRE_CURRENT_PLAYER'] = "Joueur actuel :";
+$lang['HOME_EMPIRE_VIEW'] = "Voir";
+
+?>

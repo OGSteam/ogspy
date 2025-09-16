@@ -17,13 +17,22 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 require_once "includes/ogame.php";
+require_once "includes/player.php";
 
 use Ogsteam\Ogspy\Model\Player_Model;
 
-global $server_config;
+$player_model = new Player_Model();
 
-// On récupère les données de l'utilisateur
-$player_data = (new Player_Model())->get_player_data($user_data['player_id']);
+// Déterminer quel joueur afficher
+$selected_player_id = $user_data['player_id']; // Par défaut, le joueur de l'utilisateur connecté
+
+// Si un joueur est sélectionné via GET/POST, l'utiliser
+if (isset($_REQUEST['selected_player_id']) && is_numeric($_REQUEST['selected_player_id'])) {
+    $selected_player_id = (int)$_REQUEST['selected_player_id'];
+}
+
+// On récupère les données du joueur sélectionné
+$player_data = $player_model->get_player_data($selected_player_id);
 if (empty($player_data)) {
     echo '<div class="og-msg og-msg-warning ">' .
         '<h3 class="og-title">' . $lang['MSG_SYSTEM'] . '</h3>' .
@@ -33,8 +42,19 @@ if (empty($player_data)) {
     exit;
 }
 
-$user_empire = player_get_empire($player_data['id']);
+// Récupérer la liste des joueurs pour le dropdown
+$all_players = $player_model->get_all_players();
 
+// Récupérer le nom du joueur de l'utilisateur connecté
+$user_player_name = '';
+if ($user_data['player_id']) {
+    $user_player_data = $player_model->get_player_data($user_data['player_id']);
+    if ($user_player_data) {
+        $user_player_name = $user_player_data['name'];
+    }
+}
+
+$user_empire = player_get_empire($player_data['id']);
 $player_building = $user_empire['building'];
 $player_defense = $user_empire['defense'];
 $user_technology = $user_empire['technology'];
@@ -44,18 +64,13 @@ $player_planets = [];
 $player_moons = [];
 $planet_defense = [];
 $moon_defense = [];
-
 foreach ($player_building as $id => $building) {
-    // Le champ 'type' est maintenant inclus dans les données récupérées
     if (isset($building['type']) && $building['type'] === 'moon') {
         $player_moons[$id] = $building;
     } else {
-        // Par défaut, considérer comme planète
         $player_planets[$id] = $building;
     }
 }
-
-// Séparation des défenses en utilisant les mêmes clés
 foreach ($player_defense as $id => $defense) {
     if (isset($player_moons[$id])) {
         $moon_defense[$id] = $defense;
@@ -63,48 +78,58 @@ foreach ($player_defense as $id => $defense) {
         $planet_defense[$id] = $defense;
     }
 }
-
 $nb_planete = count($player_planets);
 $nb_moon = count($player_moons);
 
-?>
-<?php
-// compute clear colspan values (exact counts). The view already shows a warning if no planet is defined.
-$colspan_planets = $nb_planete + 1; // one extra column for the label column
-$colspan_planets_nine = $nb_planete; // used where colspan previously was '9' for content cells
-$colspan_moons = $nb_planete + 1; // moon tables are aligned under planets (one column per planet)
+include('views/home_search.php');
 
-// Map moons by coordinates so we can align them under their parent planet columns
+
+// Calcul des colspan AVANT tout affichage HTML
+$colspan_planets = $nb_planete + 1; // une colonne de plus pour les labels
+$colspan_planets_nine = $nb_planete;
+$colspan_moons = $nb_planete + 1;
+
+// Construction du mapping lune <-> planète (clé: coordonnée)
 $moon_by_coords = [];
 foreach ($player_moons as $mid => $m) {
     $k = $m['galaxy'] . '_' . $m['system'] . '_' . $m['row'];
     $moon_by_coords[$k] = ['id' => $mid, 'moon' => $m];
 }
 
-// Compute production per astre (normal behavior for this view)
+// Calcul de la production pour chaque planète et lune
 $user_production = [];
-// Compute production for planets
-foreach ($player_planets as $i => $planet) {
-    // ogame_production_planet expects a building-like array
-    $user_production[$i] = ogame_production_planet($planet, $user_technology, $player_data, $server_config);
+if (!empty($player_planets)) {
+    foreach ($player_planets as $i => $planet) {
+        $user_production[$i] = ogame_production_planet(
+            $planet,
+            $user_technology,
+            $player_data,
+            isset($server_config) ? $server_config : null
+        );
+    }
 }
-// Also compute for moons (some pages may reference same indices)
-foreach ($player_moons as $i => $moon) {
-    $user_production[$i] = ogame_production_planet($moon, $user_technology, $player_data, $server_config);
+if (!empty($player_moons)) {
+    foreach ($player_moons as $i => $moon) {
+        $user_production[$i] = ogame_production_planet(
+            $moon,
+            $user_technology,
+            $player_data,
+            isset($server_config) ? $server_config : null
+        );
+    }
 }
 
-// vérification de compte de planete/lune avec la technologie astro
+// Vérification du nombre de planètes/lunes avec la technologie astro
 if (!isset($user_technology['Astrophysique']) || $user_technology['Astrophysique'] == '') {
     $user_technology['Astrophysique'] = 0;
 }
 $astro = astro_max_planete($user_technology['Astrophysique']);
-?>
-<?php if (((getPlanetCountForPlayer($user_data['id']) > $astro) || (find_nb_moon_user($user_data['id']) > $astro)) && $user_technology) : ?>
+if (((function_exists('getPlanetCountForPlayer') && getPlanetCountForPlayer($user_data['id']) > $astro) || (function_exists('find_nb_moon_user') && find_nb_moon_user($user_data['id']) > $astro)) && $user_technology) : ?>
     <div class="og-msg og-msg-danger">
         <h3 class="og-title"><?php echo $lang['HOME_EMPIRE_ERROR']; ?></h3>
         <p class="og-content">
-            <?php echo (getPlanetCountForPlayer($user_data['id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_PLANET'] . '<br>' : ''; ?>
-            <?php echo (find_nb_moon_user($user_data['id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_MOON'] . '<br>' : ''; ?>
+            <?php echo (function_exists('getPlanetCountForPlayer') && getPlanetCountForPlayer($user_data['id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_PLANET'] . '<br>' : ''; ?>
+            <?php echo (function_exists('find_nb_moon_user') && find_nb_moon_user($user_data['id']) > $astro) ? $lang['HOME_EMPIRE_ERROR_MOON'] . '<br>' : ''; ?>
         </p>
     </div>
 <?php endif; ?>

@@ -149,4 +149,36 @@ class Player_Model extends Model_Abstract
 
         return null; // Utilisateur non trouvé ou player_id non défini
     }
+
+    /**
+     * Récupère la liste de tous les joueurs pour alimenter un dropdown de sélection.
+     *
+     * @param string|null $search_term Terme de recherche optionnel pour filtrer les joueurs par nom.
+     * @param int $limit Limite du nombre de résultats (par défaut 100).
+     * @return array Tableau des joueurs avec id et name.
+     */
+    public function get_all_players($search_term = null, $limit = 100)
+    {
+        $request = "SELECT `id`, `name` FROM " . TABLE_GAME_PLAYER;
+        
+        if ($search_term !== null && trim($search_term) !== '') {
+            $search_term = $this->db->sql_escape_string(trim($search_term));
+            $request .= " WHERE `name` LIKE '%" . $search_term . "%'";
+        }
+        
+        $request .= " ORDER BY `name` ASC";
+        
+        if ($limit > 0) {
+            $request .= " LIMIT " . (int)$limit;
+        }
+        
+        $result = $this->db->sql_query($request);
+        $players = [];
+        
+        while ($row = $this->db->sql_fetch_assoc($result)) {
+            $players[] = $row;
+        }
+        
+        return $players;
+    }
 }
