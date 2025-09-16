@@ -1280,7 +1280,63 @@ function update_page(planetsIdList, planetBuildings, technologies, planetDefense
   techno_pts = techno_pts + techno_astro_pts;
   console.log(`Points totaux des technologies : ${techno_pts}`);
   document.getElementById('techno_pts').innerHTML = format(Math.round(techno_pts / 1000));// Cout Total Techno
-  document.getElementById('total_pts').innerHTML = format(Math.round((total_b_pts + total_d_pts /*+ total_lune_pts */+ techno_pts) / 1000) + total_sat_pts);// Cout Total
+  // Intégration éventuelle des points de lunes pré-calculés côté PHP (affichés dans #total_moon_pts en k)
+  // If there are no moons, finalize total now (moon part = 0)
+  if (!document.getElementById('total_moon_pts')) {
+    const bNode = document.getElementById('total_b_pts');
+    const dNode = document.getElementById('total_d_pts');
+    const technoNode = document.getElementById('techno_pts');
+    const satNode = document.getElementById('total_sat_pts');
+    let b = parseInt((bNode && bNode.innerText !== '-') ? bNode.innerText.replace(/[^0-9-]/g,'') : '0',10) || 0;
+    let d = parseInt((dNode && dNode.innerText !== '-') ? dNode.innerText.replace(/[^0-9-]/g,'') : '0',10) || 0;
+    let t = parseInt((technoNode && technoNode.innerText !== '-') ? technoNode.innerText.replace(/[^0-9-]/g,'') : '0',10) || 0;
+    let s = parseInt((satNode && satNode.innerText !== '-') ? satNode.innerText.replace(/[^0-9-]/g,'') : '0',10) || 0;
+    const totalNode = document.getElementById('total_pts');
+    if (totalNode) totalNode.innerHTML = format(b + d + t + s);
+  }
+}
+
+// Compute moon points (buildings, defenses) and update DOM
+function update_moon_page(moonIds, moonBuildings, technologies, moonDefenses) {
+  if (!moonIds || moonIds.length === 0) { return; }
+  const buildingCosts = { 'Lab': 800, 'Silo': 41000, 'Dock': 250, 'BaLu': 80000, 'Pha': 80000, 'PoSa': 8000000 };
+  const defenseCosts = { 'LM': 2000, 'LLE': 2000, 'LLO': 8000, 'CG': 37000, 'AI': 8000, 'LP': 130000, 'PB': 20000, 'GB': 100000, 'MIC': 10000, 'MIP': 25000 };
+  let totalMoonPts = 0;
+  moonIds.forEach(mid => {
+    const data = moonBuildings[mid] || {};
+    let bPts = 0;
+    Object.keys(buildingCosts).forEach(name => {
+      const lvl = parseInt(data[name] || 0, 10);
+      if (lvl > 0) bPts += buildingCosts[name] * (Math.pow(2, lvl) - 1);
+    });
+    let dPts = 0;
+    const defs = (moonDefenses && moonDefenses[mid]) ? moonDefenses[mid] : {};
+    Object.keys(defenseCosts).forEach(name => {
+      const amt = parseInt(defs[name] || 0, 10);
+      if (amt > 0) dPts += defenseCosts[name] * amt;
+    });
+    const total = bPts + dPts;
+    totalMoonPts += total;
+    const bNode = document.getElementById('moon_building_pts_' + mid);
+    if (bNode) bNode.innerHTML = format(Math.round(bPts / 1000));
+    const dNode = document.getElementById('moon_defense_pts_' + mid);
+    if (dNode) dNode.innerHTML = format(Math.round(dPts / 1000));
+    const tNode = document.getElementById('moon_total_pts_' + mid);
+    if (tNode) tNode.innerHTML = format(Math.round(total / 1000));
+  });
+  const totNode = document.getElementById('total_moon_pts');
+  if (totNode) totNode.innerHTML = format(Math.round(totalMoonPts / 1000));
+  // Final overall total (planets + moons)
+  const bNode = document.getElementById('total_b_pts');
+  const dNode = document.getElementById('total_d_pts');
+  const technoNode = document.getElementById('techno_pts');
+  const satNode = document.getElementById('total_sat_pts');
+  let b = parseInt((bNode && bNode.innerText !== '-') ? bNode.innerText.replace(/[^0-9-]/g,'') : '0',10) || 0;
+  let d = parseInt((dNode && dNode.innerText !== '-') ? dNode.innerText.replace(/[^0-9-]/g,'') : '0',10) || 0;
+  let t = parseInt((technoNode && technoNode.innerText !== '-') ? technoNode.innerText.replace(/[^0-9-]/g,'') : '0',10) || 0;
+  let s = parseInt((satNode && satNode.innerText !== '-') ? satNode.innerText.replace(/[^0-9-]/g,'') : '0',10) || 0;
+  const totalNode = document.getElementById('total_pts');
+  if (totalNode) totalNode.innerHTML = format(b + d + t + s + Math.round(totalMoonPts / 1000));
 }
 
 //Affiche les nombres sous format lisible (10 000 à la place de 10000)

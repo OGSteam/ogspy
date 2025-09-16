@@ -24,7 +24,23 @@ class AutoUpgradeManager {
 
         $this->db = $db;
         $this->tablePrefix = $table_prefix;
-        $this->targetVersion = $target_version;
+
+        // Si aucune version cible n'est fournie, utiliser la version globale OGSpy
+        if ($target_version === null) {
+            global $ogspy_version;
+            if (isset($ogspy_version)) {
+                $this->targetVersion = $ogspy_version;
+            } else {
+                // Fallback : charger depuis version.php
+                if (file_exists(__DIR__ . '/version.php')) {
+                    require_once __DIR__ . '/version.php';
+                    $this->targetVersion = $ogspy_version ?? null;
+                }
+            }
+        } else {
+            $this->targetVersion = $target_version;
+        }
+
         $this->migrationManager = new MigrationManager($db, $logger, $table_prefix);
         $this->logger = $logger;
         $this->lockFile = dirname(__DIR__) . '/cache/upgrade.lock';

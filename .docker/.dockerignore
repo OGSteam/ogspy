@@ -1,0 +1,38 @@
+# Fichiers de développement
+.git/
+.gitignore
+.github/
+.vscode/
+.idea/
+*.md
+README*
+
+# Docker lui-même
+.docker/
+Dockerfile*
+docker-compose*
+
+# Logs et cache temporaires
+logs/*.log
+cache/*.php
+config/id.php
+
+# Tests
+tests/
+phpunit.xml
+.phpunit.result.cache
+
+# Dépendances (seront réinstallées)
+node_modules/
+vendor/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+*.swo
+
+# Configuration locale
+.env
+.env.local
