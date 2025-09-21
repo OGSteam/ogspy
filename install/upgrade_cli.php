@@ -194,15 +194,15 @@ class UpgradeCLI {
 
         // Vérification PHP
         $phpVersion = PHP_VERSION;
-        if (version_compare($phpVersion, '7.4.0', '<')) {
+        if (version_compare($phpVersion, '8.1.0', '<')) {
             echo "❌ Version PHP incompatible: {$phpVersion}\n";
-            echo "   PHP 7.4 minimum requis\n";
+            echo "   PHP 8.1 minimum requis\n";
             exit(1);
         }
         echo "✓ Version PHP: {$phpVersion}\n";
 
         // Vérification des extensions
-        $requiredExtensions = ['mysqli', 'json', 'mbstring'];
+        $requiredExtensions = ['mysqli', 'json', 'mbstring', 'openssl', 'zlib', 'zip'];
         foreach ($requiredExtensions as $ext) {
             if (!extension_loaded($ext)) {
                 echo "❌ Extension PHP manquante: {$ext}\n";
@@ -318,7 +318,7 @@ class UpgradeCLI {
                     // Mise à jour de la version OGSpy dans la table config
                     require_once 'ConfigGenerator.php';
                     $configGenerator = new ConfigGenerator();
-                    $configGenerator->setConfigValue($db, $dbConfig['table_prefix'], 'version', $ogspy_version);
+                    $configGenerator->setApplicationVersion($db, $dbConfig['table_prefix'], $ogspy_version);
                     echo "✓ Version OGSpy ({$ogspy_version}) mise à jour dans la configuration\n";
                 } else {
                     echo "❌ " . count($failed) . " migration(s) échouée(s)\n";
@@ -335,7 +335,7 @@ class UpgradeCLI {
                 // Même si aucune migration n'est nécessaire, s'assurer que la version est à jour
                 require_once 'ConfigGenerator.php';
                 $configGenerator = new ConfigGenerator();
-                $configGenerator->setConfigValue($db, $dbConfig['table_prefix'], 'version', $ogspy_version);
+                $configGenerator->setApplicationVersion($db, $dbConfig['table_prefix'], $ogspy_version);
                 echo "✓ Version OGSpy ({$ogspy_version}) mise à jour dans la configuration\n";
             }
         } catch (Exception $e) {

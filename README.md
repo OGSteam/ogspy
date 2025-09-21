@@ -47,6 +47,45 @@ Vous pouvez tester un serveur OGSpy, une démo est disponible :
 
 ## Contribuer au projet
 
+## Gestion des montées de version
+
+OGSpy dispose d'un système de migration automatisé qui gère les montées de version de manière transparente.
+
+### Processus pour une nouvelle version
+
+**Montée de version simplifiée : il suffit de modifier `install/version.php` !**
+
+#### Mise à jour de `install/version.php`
+
+```php
+$ogspy_version = "4.0.2";        // Nouvelle version applicative
+$database_version = "20251201001"; // Inchangé (sauf si nouvelles migrations)
+```
+
+#### Synchronisation automatique
+
+Le système de migration détecte automatiquement les changements de version et synchronise la base de données :
+
+- ✅ **Détection automatique** : Compare `$ogspy_version` avec la version en base
+- ✅ **Synchronisation transparente** : Met à jour automatiquement si différente
+- ✅ **Aucune migration requise** : Pas besoin de créer de fichier de migration pour une simple montée de version
+
+#### Si nouvelles migrations nécessaires
+
+Uniquement si la nouvelle version nécessite des modifications de schéma ou de données :
+
+1. Incrémentez `$database_version` dans `version.php`
+2. Créez les migrations correspondantes dans `install/migrations/`
+3. La synchronisation de version reste automatique
+
+### Avantages
+
+- **Ultra-simplifié** : Une seule modification dans `version.php` suffit
+- **Compatible CI/CD** : Fonctionne parfaitement avec les pipelines automatisés
+- **Détection intelligente** : Compare automatiquement les versions et synchronise si nécessaire
+- **Zéro maintenance** : Plus besoin de créer des migrations vides pour les montées de version
+- **Historique propre** : Seules les vraies migrations (schéma/données) sont dans l'historique
+
 - Vous pouvez nous aider sur le développement
 - Nous avons besoins de vos idées pour améliorer l'outil
 - Des volontaires pour la documentations dans toutes les langues connues

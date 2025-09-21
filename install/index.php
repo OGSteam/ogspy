@@ -146,7 +146,7 @@ if ($_POST) {
 
                     // Mise à jour de la version OGSpy dans la table config
                     $configGenerator = new ConfigGenerator();
-                    $configGenerator->setConfigValue($migrationDb, $table_prefix, 'version', $ogspy_version);
+                    $configGenerator->setApplicationVersion($migrationDb, $table_prefix, $ogspy_version);
                     $log->info("OGSpy version set to " . $ogspy_version . " in config table.");
 
                 } else {
@@ -295,10 +295,10 @@ if ($configExists) {
     </div>
 
     <div class="content">
-        <?php if (version_compare(PHP_VERSION, "7.4.0") < 0): ?>
+        <?php if (version_compare(PHP_VERSION, "8.1.0") < 0): ?>
         <div class="install-section error">
             <h3>❌ Version PHP incompatible</h3>
-            <p>PHP 7.4 minimum requis. Version actuelle : <?= PHP_VERSION ?></p>
+            <p>PHP 8.1 minimum requis. Version actuelle : <?= PHP_VERSION ?></p>
         </div>
         <?php else: ?>
 
@@ -343,6 +343,13 @@ if ($configExists) {
                 <li>Connexion DB : <?= $dbConnected ? '✅ Active' : '❌ Inactive' ?></li>
                 <li>Migrations en attente : <?= count($pendingMigrations) ?></li>
                 <li>Version PHP : <?= PHP_VERSION ?> ✅</li>
+                <?php 
+                $requiredExtensions = ['mysqli', 'json', 'mbstring', 'openssl', 'zlib', 'zip'];
+                foreach ($requiredExtensions as $ext): 
+                    $loaded = extension_loaded($ext);
+                ?>
+                <li>Extension <?= $ext ?> : <?= $loaded ? '✅ Présente' : '❌ Manquante' ?></li>
+                <?php endforeach; ?>
             </div>
         </div>
 
