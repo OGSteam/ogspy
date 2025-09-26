@@ -316,6 +316,7 @@ class UpgradeCLI {
                     echo "✓ " . count($successful) . " migration(s) exécutée(s) avec succès\n";
 
                     // Mise à jour de la version OGSpy dans la table config
+                    global $ogspy_version;
                     require_once 'ConfigGenerator.php';
                     $configGenerator = new ConfigGenerator();
                     $configGenerator->setApplicationVersion($db, $dbConfig['table_prefix'], $ogspy_version);
@@ -333,6 +334,7 @@ class UpgradeCLI {
                 echo "✓ Aucune migration nécessaire\n";
 
                 // Même si aucune migration n'est nécessaire, s'assurer que la version est à jour
+                global $ogspy_version;
                 require_once 'ConfigGenerator.php';
                 $configGenerator = new ConfigGenerator();
                 $configGenerator->setApplicationVersion($db, $dbConfig['table_prefix'], $ogspy_version);
