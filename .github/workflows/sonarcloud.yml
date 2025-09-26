@@ -18,7 +18,7 @@ jobs:
       - name: Setup PHP with Xdebug
         uses: shivammathur/setup-php@v2
         with:
-            php-version: '8.3'
+            php-version: '8.1'
             coverage: xdebug
             
       - name: Install dependencies with composer
@@ -32,7 +32,7 @@ jobs:
           's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.xml
      
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarqube-scan-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

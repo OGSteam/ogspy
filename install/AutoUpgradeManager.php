@@ -58,9 +58,8 @@ class AutoUpgradeManager {
             $this->logger->info("  - {$version}: {$migration['description']}");
         }
 
-        if (empty($pendingMigrations)) {
-            return ['status' => 'up_to_date', 'message' => 'Base de données à jour'];
-        }
+        // Toujours exécuter runPendingMigrations pour vérifier la version
+        // (même sans migrations en attente)
 
         // Vérifie si un upgrade est déjà en cours
         if ($this->isUpgradeInProgress()) {
