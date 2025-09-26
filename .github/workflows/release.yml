@@ -18,6 +18,7 @@ jobs:
       with:
         ref: ${{ github.ref }}   # checkout the correct branch name
         fetch-depth: 0
+        fetch-tags: true
 
     - name: Git Version
       id: version
