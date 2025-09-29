@@ -40,7 +40,7 @@ OGSpy is a PHP-based web application for managing and analyzing data from the OG
 
 ## Architecture & Key Components
 - **Core Logic**: Main logic resides in `core/`, with helpers and abstract classes for extensibility.
-- **Models**: Data access and business logic are in `model/` (e.g., `Player_Model.php`, `Config_Model.php`).
+- **Models**: Data access and business logic are in `model/` (e.g., `Player_Model.php`, `Config_Model.php`). Uses namespaced OOP pattern with `Ogsteam\Ogspy\Model` namespace extending `Model_Abstract`.
 - **Views**: UI templates are in `views/`, using PHP for dynamic rendering (see `home_simulation.php`).
 - **Includes**: Shared functions and utilities in `includes/` (e.g., `functions.php`, `config.php`).
 - **Mods**: Extensions live in `mod/`, each in its own subfolder, following a convention for modularity.
@@ -60,10 +60,15 @@ OGSpy is a PHP-based web application for managing and analyzing data from the OG
   - Main config files: `config/id.php`, `config/key.php`, `config/salt`.
   - Environment variables for containers: see `.devcontainer/README.md`.
 - **Testing**:
-  - PHPUnit config in `phpunit.xml`. Tests live in `tests/`.
+  - PHPUnit config in `phpunit.xml`. Tests live in `tests/unit/`.
   - Run tests via `vendor/bin/phpunit`.
+  - Coverage includes `includes/` and `core/` directories.
 - **Debugging**:
   - Xdebug enabled in dev containers. Logs in `logs/`.
+- **CI/CD**:
+  - GitHub Actions workflows in `.github/workflows/` (release.yml, sonarcloud.yml).
+  - Automated releases on develop/master branches with semantic versioning.
+  - Conventional commits supported via commitizen (`npm run commit`).
 
 ## Project-Specific Patterns & Conventions
 - **Modular Extensions**: Mods follow a folder-per-extension pattern in `mod/`. Each mod can have its own controllers, views, and config.
@@ -108,6 +113,8 @@ OGSpy uses an automated migration system with intelligent version synchronizatio
 ## Integration Points
 - **External**: OGame data import, Monolog for logging, MariaDB for storage.
 - **Internal**: Mods communicate via shared models and helpers. Use provided APIs for user/session management.
+- **MCP Server**: MariaDB MCP server integration for database operations (see `package.json` dependencies).
+- **Composer Dependencies**: Tooltipster for UI tooltips, Whoops for error handling, Monolog for structured logging.
 
 ## Global Variables: `$log` and `$db`
 
@@ -128,6 +135,32 @@ Always declare `global $log, $db;` at the top of functions or methods that use t
 - The `includes/` folder contains legacy feature and utility code. Many older functions, helpers, and shared logic are found here.
 - The `core/` folder is the modern location for new features, helpers, and abstractions. New development should prefer `core/` for extensibility and maintainability.
 - When refactoring or adding new capabilities, use `core/` unless maintaining or patching legacy code.
+
+## Code Patterns & Examples
+
+### Model Pattern Example
+```php
+namespace Ogsteam\Ogspy\Model;
+use Ogsteam\Ogspy\Abstracts\Model_Abstract;
+
+class Your_Model extends Model_Abstract {
+    public function get_data(int $id) {
+        $request = "SELECT * FROM " . TABLE_PREFIX . "your_table WHERE id = " . $id;
+        $result = $this->db->sql_query($request);
+        return $this->db->sql_fetch_assoc($result);
+    }
+}
+```
+
+### Global Variables Usage
+```php
+function your_function() {
+    global $log, $db;
+    $log->info("Operation started");
+    $result = $db->sql_query($sql);
+    // ... process result
+}
+```
 
 ## Examples
 - **New Mod**: Create a folder in `mod/`, add entry points, config, and views following existing mod structure.

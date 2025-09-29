@@ -59,7 +59,7 @@ jobs:
       with:
           include : 'install/version.php'
           find : '\$ogspy_version = "[^"]+";'
-          replace: '$ogspy_version = "${{ steps.version.outputs.version }}";'
+          replace: '$$ogspy_version = "${{ steps.version.outputs.version }}";'
           regex: true
 
     - name: Checkout Xtense
