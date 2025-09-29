@@ -135,7 +135,7 @@ if ($_POST) {
             $migrationDb = sql_db::getInstance($db_host, $db_user, $db_password, $db_database);
 
             if ($migrationDb && $migrationDb->db_connect_id) {
-                $migrationManager = new MigrationManager($migrationDb, $log);
+                $migrationManager = new MigrationManager($migrationDb, $log, $table_prefix);
                 $results = $migrationManager->runPendingMigrations(false);
 
                 $successful = array_filter($results, function($r) { return $r['success']; });
@@ -146,7 +146,7 @@ if ($_POST) {
 
                     // Mise à jour de la version OGSpy dans la table config
                     $configGenerator = new ConfigGenerator();
-                    $configGenerator->setConfigValue($migrationDb, $table_prefix, 'version', $ogspy_version);
+                    $configGenerator->setApplicationVersion($migrationDb, $table_prefix, $ogspy_version);
                     $log->info("OGSpy version set to " . $ogspy_version . " in config table.");
 
                 } else {
@@ -250,7 +250,7 @@ if ($configExists) {
                 $dbConnected = true;
 
                 // Créer le gestionnaire de migrations avec la connexion directe
-                $migrationManager = new MigrationManager($testDb, $log);
+                $migrationManager = new MigrationManager($testDb, $log, $table_prefix);
                 $pendingMigrations = $migrationManager->getPendingMigrations();
 
                 // Vérifier si un compte administrateur existe déjà
@@ -295,10 +295,10 @@ if ($configExists) {
     </div>
 
     <div class="content">
-        <?php if (version_compare(PHP_VERSION, "7.4.0") < 0): ?>
+        <?php if (version_compare(PHP_VERSION, "8.1.0") < 0): ?>
         <div class="install-section error">
             <h3>❌ Version PHP incompatible</h3>
-            <p>PHP 7.4 minimum requis. Version actuelle : <?= PHP_VERSION ?></p>
+            <p>PHP 8.1 minimum requis. Version actuelle : <?= PHP_VERSION ?></p>
         </div>
         <?php else: ?>
 
@@ -343,6 +343,13 @@ if ($configExists) {
                 <li>Connexion DB : <?= $dbConnected ? '✅ Active' : '❌ Inactive' ?></li>
                 <li>Migrations en attente : <?= count($pendingMigrations) ?></li>
                 <li>Version PHP : <?= PHP_VERSION ?> ✅</li>
+                <?php 
+                $requiredExtensions = ['mysqli', 'json', 'mbstring', 'openssl', 'zlib', 'zip'];
+                foreach ($requiredExtensions as $ext): 
+                    $loaded = extension_loaded($ext);
+                ?>
+                <li>Extension <?= $ext ?> : <?= $loaded ? '✅ Présente' : '❌ Manquante' ?></li>
+                <?php endforeach; ?>
             </div>
         </div>
 

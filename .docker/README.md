@@ -8,7 +8,7 @@ It contains all the necessary tools to run OGSpy.:
 - Alpine Linux
 - NGINX
 - Maria DB
-- PHP 8.3
+- PHP 8.1
 - PHPMyAdmin
 
 ## Run Locally

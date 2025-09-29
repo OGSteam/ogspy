@@ -18,6 +18,7 @@ jobs:
       with:
         ref: ${{ github.ref }}   # checkout the correct branch name
         fetch-depth: 0
+        fetch-tags: true
 
     - name: Git Version
       id: version
@@ -31,6 +32,12 @@ jobs:
         dev-branch: develop
         # The prefix to use in the version
         #prefix: # optional
+
+    - name: Setup PHP 8.1
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        extensions: mysqli, json, mbstring, openssl, zlib, zip
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
@@ -47,13 +54,13 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-dev
 
-    - name: Replace Value
+    - name: Replace Version
       uses: jacobtomlinson/gha-find-replace@v3
       with:
           include : 'install/version.php'
-          find : '0.0.0-dev'
-          replace: ${{ steps.version.outputs.version }}
-          regex: false
+          find : '\$ogspy_version = "[^"]+";'
+          replace: '$$ogspy_version = "${{ steps.version.outputs.version }}";'
+          regex: true
 
     - name: Checkout Xtense
       uses: actions/checkout@v5

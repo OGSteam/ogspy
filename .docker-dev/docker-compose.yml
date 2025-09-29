@@ -15,8 +15,8 @@ services:
 
   ogspy-web:
     build:
-      context: ..
-      dockerfile: .devcontainer/Dockerfile
+      context: .
+      dockerfile: Dockerfile
     container_name: ogspy-web
     restart: always
     depends_on:
@@ -24,7 +24,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - "..:/var/www/html"
+      - "${PWD}/..:/var/www/html"
     networks:
       - ogspy-net
 

@@ -33,7 +33,10 @@ class MigrationManager {
      * Initializes the migration tracking table
      */
     private function initMigrationsTable() {
-        $sql = "CREATE TABLE IF NOT EXISTS `{$this->migrations_table}` (
+        // Utiliser le préfixe passé au constructeur au lieu de la config
+        $migrationsTable = $this->table_prefix . 'migrations';
+
+        $sql = "CREATE TABLE IF NOT EXISTS `{$migrationsTable}` (
             `id` INT AUTO_INCREMENT PRIMARY KEY,
             `migration` VARCHAR(255) NOT NULL UNIQUE,
             `executed_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -45,6 +48,9 @@ class MigrationManager {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
 
         $this->db->sql_query($sql);
+
+        // Mettre à jour la propriété migrations_table avec le bon préfixe
+        $this->migrations_table = $migrationsTable;
     }
 
     /**
@@ -242,9 +248,12 @@ class MigrationManager {
     public function runPendingMigrations($interactive = true) {
         $pendingMigrations = $this->getPendingMigrations();
 
+        // Vérification automatique de la version même sans migration
+        $versionSynced = $this->checkAndSyncVersion($interactive);
+
         if (empty($pendingMigrations)) {
             $this->logger->info("No pending migrations");
-            return [];
+            return $versionSynced ? ['version_sync' => ['success' => true]] : [];
         }
 
         $this->logger->info("Running " . count($pendingMigrations) . " migration(s)");
@@ -277,6 +286,14 @@ class MigrationManager {
 
                 // Continue even on error
                 continue;
+            }
+        }
+
+        // Synchronisation automatique de la version après toutes les migrations
+        if (!empty($results)) {
+            $successful = array_filter($results, function($r) { return $r['success']; });
+            if (!empty($successful)) {
+                $this->syncApplicationVersion();
             }
         }
 
@@ -345,6 +362,78 @@ class MigrationManager {
             $this->db->sql_transaction('rollback');
             $this->logger->error("ERROR rolling back {$migration['version']}: " . $e->getMessage());
             throw $e;
+        }
+    }
+
+    /**
+     * Vérifie si la version en base correspond à celle de version.php et synchronise si nécessaire
+     */
+    private function checkAndSyncVersion($interactive = true): bool {
+        try {
+            // Lire la version depuis version.php
+            $versionFile = __DIR__ . '/version.php';
+            if (!file_exists($versionFile)) {
+                return false;
+            }
+
+            require_once $versionFile;
+            if (!isset($ogspy_version)) {
+                return false;
+            }
+
+            // Récupérer la version actuelle en base
+            $configTable = $this->table_prefix . 'config';
+            $sql = "SELECT value FROM `{$configTable}` WHERE name = 'version'";
+            $result = $this->db->sql_query($sql);
+            $row = $this->db->sql_fetch_assoc($result);
+            $currentVersion = $row['value'] ?? null;
+
+            // Comparer les versions
+            if ($currentVersion !== $ogspy_version) {
+                if ($interactive) {
+                    echo "🔄 Version mismatch detected: DB={$currentVersion}, File={$ogspy_version}\n";
+                    echo "📱 Syncing application version... ";
+                }
+
+                $this->logger->info("Version sync required: DB version '{$currentVersion}' -> File version '{$ogspy_version}'");
+                
+                if ($this->syncApplicationVersion()) {
+                    if ($interactive) {
+                        echo "✅ OK\n";
+                    }
+                    return true;
+                }
+            }
+
+            return false;
+        } catch (Exception $e) {
+            $this->logger->error("Error checking version: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Synchronise automatiquement la version en base avec version.php
+     */
+    private function syncApplicationVersion() {
+        try {
+            // Lire la version depuis version.php
+            $versionFile = __DIR__ . '/version.php';
+            if (file_exists($versionFile)) {
+                require_once $versionFile;
+                if (isset($ogspy_version)) {
+                    $configTable = $this->table_prefix . 'config';
+                    $sql = "UPDATE `{$configTable}` SET value = '" . $this->db->sql_escape_string($ogspy_version) . "' WHERE name = 'version'";
+                    $this->db->sql_query($sql);
+                    $this->logger->info("Application version automatically synced to: {$ogspy_version}");
+                    return true;
+                }
+            }
+            $this->logger->warning("Could not sync application version: version.php not found or invalid");
+            return false;
+        } catch (Exception $e) {
+            $this->logger->error("Error syncing application version: " . $e->getMessage());
+            return false;
         }
     }
 }

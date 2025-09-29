@@ -24,7 +24,23 @@ class AutoUpgradeManager {
 
         $this->db = $db;
         $this->tablePrefix = $table_prefix;
-        $this->targetVersion = $target_version;
+
+        // Si aucune version cible n'est fournie, utiliser la version globale OGSpy
+        if ($target_version === null) {
+            global $ogspy_version;
+            if (isset($ogspy_version)) {
+                $this->targetVersion = $ogspy_version;
+            } else {
+                // Fallback : charger depuis version.php
+                if (file_exists(__DIR__ . '/version.php')) {
+                    require_once __DIR__ . '/version.php';
+                    $this->targetVersion = $ogspy_version ?? null;
+                }
+            }
+        } else {
+            $this->targetVersion = $target_version;
+        }
+
         $this->migrationManager = new MigrationManager($db, $logger, $table_prefix);
         $this->logger = $logger;
         $this->lockFile = dirname(__DIR__) . '/cache/upgrade.lock';
@@ -42,9 +58,8 @@ class AutoUpgradeManager {
             $this->logger->info("  - {$version}: {$migration['description']}");
         }
 
-        if (empty($pendingMigrations)) {
-            return ['status' => 'up_to_date', 'message' => 'Base de données à jour'];
-        }
+        // Vérifie si seule une synchronisation de version est nécessaire
+        $versionSyncNeeded = $this->isVersionSyncNeeded();
 
         // Vérifie si un upgrade est déjà en cours
         if ($this->isUpgradeInProgress()) {
@@ -52,13 +67,13 @@ class AutoUpgradeManager {
         }
 
         // Lance la mise à jour automatique
-        return $this->runAutoUpgrade($pendingMigrations);
+        return $this->runAutoUpgrade($pendingMigrations, $versionSyncNeeded);
     }
 
     /**
      * Exécute la mise à jour automatique
      */
-    private function runAutoUpgrade($migrations) {
+    private function runAutoUpgrade($migrations, $versionSyncNeeded = false) {
         $startTime = time();
 
         try {
@@ -76,8 +91,15 @@ class AutoUpgradeManager {
             // Exécute les migrations
             $results = $this->migrationManager->runPendingMigrations(false);
 
-            $successful = array_filter($results, function($r) { return $r['success']; });
-            $failed = array_filter($results, function($r) { return !$r['success']; });
+                        // Vérifier si c'est uniquement une synchronisation de version
+            $versionSyncOnly = empty($migrations) && $versionSyncNeeded;
+            
+            $successful = array_filter($results, function($r, $k) { 
+                return $k !== 'version_sync' && isset($r['success']) && $r['success']; 
+            }, ARRAY_FILTER_USE_BOTH);
+            $failed = array_filter($results, function($r, $k) { 
+                return $k !== 'version_sync' && isset($r['success']) && !$r['success']; 
+            }, ARRAY_FILTER_USE_BOTH);
 
             if (!empty($failed)) {
                 $this->logger->error("ERREUR: " . count($failed) . " migration(s) échouée(s)");
@@ -116,10 +138,11 @@ class AutoUpgradeManager {
 
             return [
                 'status' => 'success',
-                'message' => 'Mise à jour automatique réussie',
+                'message' => $versionSyncOnly ? 'Version synchronisée automatiquement' : 'Mise à jour automatique réussie',
                 'version' => $newVersion,
                 'app_version' => $this->targetVersion,
                 'migrations_count' => count($successful),
+                'version_sync_only' => $versionSyncOnly,
                 'execution_time' => $executionTime
             ];
 
@@ -283,6 +306,35 @@ class AutoUpgradeManager {
             return ['status' => 'up_to_date', 'message' => 'Aucune migration nécessaire'];
         }
 
-        return $this->runAutoUpgrade($pendingMigrations);
+        return $this->runAutoUpgrade($pendingMigrations, false);
+    }
+
+    /**
+     * Vérifie si une synchronisation de version est nécessaire
+     */
+    public function isVersionSyncNeeded() {
+        try {
+            if (!$this->targetVersion) {
+                return false;
+            }
+
+            // Vérifier la version actuelle en base
+            $currentVersionQuery = "SELECT value FROM {$this->tablePrefix}config WHERE name = 'version'";
+            $result = $this->db->sql_query($currentVersionQuery);
+            
+            if ($this->db->sql_numrows($result) > 0) {
+                $row = $this->db->sql_fetch_assoc($result);
+                $currentVersion = $row['value'];
+                
+                $this->logger->info("Version sync check: DB='{$currentVersion}', Target='{$this->targetVersion}'");
+                
+                return $currentVersion !== $this->targetVersion;
+            }
+            
+            return false;
+        } catch (Exception $e) {
+            $this->logger->error("Error checking version sync need: " . $e->getMessage());
+            return false;
+        }
     }
 }

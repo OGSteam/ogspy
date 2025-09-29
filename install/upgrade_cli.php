@@ -98,8 +98,9 @@ class UpgradeCLI {
 
         global $db, $log;
         try {
-            $this->migrationManager = new MigrationManager($db, $log);
-            $this->autoUpgrade = new AutoUpgradeManager($db, $log);
+            global $table_prefix; // Ajouter la variable globale table_prefix
+            $this->migrationManager = new MigrationManager($db, $log, $table_prefix ?? 'ogspy_');
+            $this->autoUpgrade = new AutoUpgradeManager($db, $log, $table_prefix ?? 'ogspy_');
         } catch (Exception $e) {
             die("Erreur initialisation classes: " . $e->getMessage() . "\n");
         }
@@ -148,6 +149,9 @@ class UpgradeCLI {
             case 'test-performance':
                 $this->testPerformance();
                 break;
+            case 'test-prefix':
+                $this->testTablePrefix();
+                break;
             default:
                 $this->showHelp();
         }
@@ -190,15 +194,15 @@ class UpgradeCLI {
 
         // Vérification PHP
         $phpVersion = PHP_VERSION;
-        if (version_compare($phpVersion, '7.4.0', '<')) {
+        if (version_compare($phpVersion, '8.1.0', '<')) {
             echo "❌ Version PHP incompatible: {$phpVersion}\n";
-            echo "   PHP 7.4 minimum requis\n";
+            echo "   PHP 8.1 minimum requis\n";
             exit(1);
         }
         echo "✓ Version PHP: {$phpVersion}\n";
 
         // Vérification des extensions
-        $requiredExtensions = ['mysqli', 'json', 'mbstring'];
+        $requiredExtensions = ['mysqli', 'json', 'mbstring', 'openssl', 'zlib', 'zip'];
         foreach ($requiredExtensions as $ext) {
             if (!extension_loaded($ext)) {
                 echo "❌ Extension PHP manquante: {$ext}\n";
@@ -310,6 +314,13 @@ class UpgradeCLI {
 
                 if (empty($failed)) {
                     echo "✓ " . count($successful) . " migration(s) exécutée(s) avec succès\n";
+
+                    // Mise à jour de la version OGSpy dans la table config
+                    global $ogspy_version;
+                    require_once 'ConfigGenerator.php';
+                    $configGenerator = new ConfigGenerator();
+                    $configGenerator->setApplicationVersion($db, $dbConfig['table_prefix'], $ogspy_version);
+                    echo "✓ Version OGSpy ({$ogspy_version}) mise à jour dans la configuration\n";
                 } else {
                     echo "❌ " . count($failed) . " migration(s) échouée(s)\n";
                     foreach ($failed as $failedMigration) {
@@ -321,6 +332,13 @@ class UpgradeCLI {
                 }
             } else {
                 echo "✓ Aucune migration nécessaire\n";
+
+                // Même si aucune migration n'est nécessaire, s'assurer que la version est à jour
+                global $ogspy_version;
+                require_once 'ConfigGenerator.php';
+                $configGenerator = new ConfigGenerator();
+                $configGenerator->setApplicationVersion($db, $dbConfig['table_prefix'], $ogspy_version);
+                echo "✓ Version OGSpy ({$ogspy_version}) mise à jour dans la configuration\n";
             }
         } catch (Exception $e) {
             echo "❌ Erreur lors des migrations: " . $e->getMessage() . "\n";
@@ -386,7 +404,7 @@ class UpgradeCLI {
         echo "\n";
         echo "🎊 INSTALLATION TERMINÉE AVEC SUCCÈS !\n";
         echo "=====================================\n";
-        echo "✓ OGSpy 4.0 est maintenant prêt à être utilisé\n";
+        echo "✓ OGSpy est maintenant prêt à être utilisé\n";
         echo "✓ Connectez-vous avec: {$adminUser}\n";
         echo "✓ URL d'accès: http://votre-serveur/ogspy/\n";
         echo "\nPour gérer l'installation :\n";
@@ -429,9 +447,16 @@ class UpgradeCLI {
                 echo "✓ Base de données déjà à jour\n";
                 break;
             case 'success':
-                echo "✓ Mise à jour réussie\n";
-                echo "  Nouvelle version: {$result['version']}\n";
-                echo "  Migrations exécutées: {$result['migrations_count']}\n";
+                echo "✓ {$result['message']}\n";
+                if (isset($result['version_sync_only']) && $result['version_sync_only']) {
+                    echo "  Version applicative: {$result['app_version']}\n";
+                } else {
+                    echo "  Nouvelle version DB: {$result['version']}\n";
+                    echo "  Migrations exécutées: {$result['migrations_count']}\n";
+                    if (isset($result['app_version'])) {
+                        echo "  Version applicative: {$result['app_version']}\n";
+                    }
+                }
                 echo "  Temps d'exécution: {$result['execution_time']}s\n";
                 break;
             case 'in_progress':
@@ -781,6 +806,45 @@ class UpgradeCLI {
                 exit(1);
             }
 
+
+        } catch (Exception $e) {
+            echo "❌ ERREUR CRITIQUE: " . $e->getMessage() . "\n";
+            exit(1);
+        }
+    }
+
+    /**
+     * Test la configuration des préfixes de table
+     */
+    private function testTablePrefix() {
+        global $db, $log;
+
+        echo "🔍 TEST DE LA CONFIGURATION DES PRÉFIXES DE TABLE\n";
+        echo "===============================================\n\n";
+
+        try {
+            $testManager = new TestManager($db, $log);
+            $result = $testManager->testTablePrefix();
+
+            echo "\n=== RÉSULTAT DU TEST DE PRÉFIXE DE TABLE ===\n";
+
+            if ($result['success']) {
+                echo "✅ TEST DE PRÉFIXE DE TABLE RÉUSSI\n";
+
+                foreach ($result['details'] as $prefix => $details) {
+                    if ($details['success']) {
+                        echo "✓ Préfixe '{$prefix}': RÉUSSI\n";
+                        echo "  Version finale: " . $details['version'] . "\n";
+                        echo "  Migrations exécutées: " . count($details['migrations']) . "\n";
+                    } else {
+                        echo "✗ Préfixe '{$prefix}': ÉCHOUÉ\n";
+                    }
+                }
+            } else {
+                echo "❌ TEST DE PRÉFIXE DE TABLE ÉCHOUÉ\n";
+                echo "✗ Erreur: " . $result['error'] . "\n";
+                exit(1);
+            }
         } catch (Exception $e) {
             echo "❌ ERREUR CRITIQUE: " . $e->getMessage() . "\n";
             exit(1);
