@@ -53,10 +53,15 @@ try {
     $migrationManager = new MigrationManager($db, $log, $table_prefix ?? null);
     $pendingMigrations = $migrationManager->getPendingMigrations();
 
-    if (!empty($pendingMigrations)) {
-        $log->info("Pending migrations detected: " . count($pendingMigrations));
+    $autoUpgrade = new AutoUpgradeManager($db, $log, $table_prefix ?? null);
+    
+    // Toujours vérifier s'il faut une mise à jour (migrations OU version sync)
+    $requiresUpdate = !empty($pendingMigrations) || $autoUpgrade->isVersionSyncNeeded();
 
-        $autoUpgrade = new AutoUpgradeManager($db, $log, $table_prefix ?? null);
+    if ($requiresUpdate) {
+        if (!empty($pendingMigrations)) {
+            $log->info("Pending migrations detected: " . count($pendingMigrations));
+        }
 
         // Vérifie si l'auto-upgrade est possible
         if ($autoUpgrade->canAutoUpgrade()) {

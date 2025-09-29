@@ -447,9 +447,16 @@ class UpgradeCLI {
                 echo "✓ Base de données déjà à jour\n";
                 break;
             case 'success':
-                echo "✓ Mise à jour réussie\n";
-                echo "  Nouvelle version: {$result['version']}\n";
-                echo "  Migrations exécutées: {$result['migrations_count']}\n";
+                echo "✓ {$result['message']}\n";
+                if (isset($result['version_sync_only']) && $result['version_sync_only']) {
+                    echo "  Version applicative: {$result['app_version']}\n";
+                } else {
+                    echo "  Nouvelle version DB: {$result['version']}\n";
+                    echo "  Migrations exécutées: {$result['migrations_count']}\n";
+                    if (isset($result['app_version'])) {
+                        echo "  Version applicative: {$result['app_version']}\n";
+                    }
+                }
                 echo "  Temps d'exécution: {$result['execution_time']}s\n";
                 break;
             case 'in_progress':
