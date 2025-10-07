@@ -625,7 +625,12 @@ $min_width_px = $label_width_px + ($nb_planete * $per_column_px);
                 <span id='<?php echo strtolower($tech_key) . '_' . $i; ?>'>
                     <?php if (prerequis_Valid($tech_key, $planet, $user_technology)) : ?>
                         <span class="og-success">
-                            <?php echo ($user_technology[$tech_key] != "") ? $user_technology[$tech_key] : "0"; ?>
+                            <?php 
+                            $tech_level = isset($user_technology[$tech_key]) && $user_technology[$tech_key] != "" 
+                                ? $user_technology[$tech_key] 
+                                : "0"; 
+                            echo $tech_level;
+                            ?>
                         </span>
                     <?php else : ?>
                         <span class="og-alert">-</span>

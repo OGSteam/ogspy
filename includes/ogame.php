@@ -1663,14 +1663,16 @@ function prerequis_Valid($ogame_element_name, $user_building_list, $user_technol
     foreach ($reqs as $reqName => $reqValue) {
         //prerequis recherche
         if (ogame_is_a_research($reqName) && $reqValue > 0) {
-            if ($reqValue > $user_technology_list[$reqName]) {
+            $current_tech_level = isset($user_technology_list[$reqName]) ? $user_technology_list[$reqName] : 0;
+            if ($reqValue > $current_tech_level) {
                 $log->debug("Requires $reqName technology for Tech $ogame_element_name");
                 return false;
             }
         }
         // prerequis bat
         if (ogame_is_a_building($reqName) && $reqValue > 0) {
-            if ($reqValue > $user_building_list[$reqName]) {
+            $current_building_level = isset($user_building_list[$reqName]) ? $user_building_list[$reqName] : 0;
+            if ($reqValue > $current_building_level) {
                 $log->debug("Requires $reqName building for Tech $ogame_element_name");
                 return false;
             }
@@ -1902,6 +1904,10 @@ function ogame_all_cumulate($user, $type)
         $data = current($user); //plusieurs array, les planètes/lunes, donc juste la 1er
     }
     while ($data) {
+        // Defensive programming: ensure $data is an array
+        if (!is_array($data)) {
+            break;
+        }
         foreach ($data as $key => $level) {
             if ($level == "") {
                 $level = 0;
@@ -1958,7 +1964,7 @@ function all_fleet_cumulate($user_fleet)
  * @brief Calculates the cumulative values of all technologies for a user.
  *
  * @param array $user_techno An associative array containing user technologies where keys represent technology codes and values represent their respective levels.
- * @return array An associative array containing the cumulative values of all applicable technologies.
+ * @return float|int An associative array containing the cumulative values of all applicable technologies.
  */
 function all_technology_cumulate($user_techno)
 {

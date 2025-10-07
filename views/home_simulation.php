@@ -812,27 +812,26 @@ foreach ($player_moons as $mid => $m) {
         <?php endforeach; ?>
     </tr>
     <?php
-    // Server-side moon point computation to pre-fill table
+    // Server-side moon point computation using ogame helper functions (ogame.php already loaded globally)
     $moon_building_points = [];
     $moon_defense_points = [];
     $moon_points = [];
-    $building_costs = [
-        'Lab' => 800, 'Silo' => 41000, 'Dock' => 250, 'BaLu' => 80000, 'Pha' => 80000, 'PoSa' => 8000000
-    ];
-    $defense_costs = [
-        'LM' => 2000, 'LLE' => 2000, 'LLO' => 8000, 'CG' => 37000, 'AI' => 8000,
-        'LP' => 130000, 'PB' => 20000, 'GB' => 100000, 'MIC' => 10000, 'MIP' => 25000
-    ];
+    $moon_building_list = ['Lab','Silo','Dock','BaLu','Pha','PoSa']; // Relevant moon buildings for points here
+    $moon_defense_list = ['LM','LLE','LLO','CG','AI','LP','PB','GB','MIC','MIP'];
     foreach ($player_moons as $mid => $mdata) {
         $b_pts = 0; $d_pts = 0;
-        foreach ($building_costs as $kname => $base) {
-            $lvl = isset($mdata[$kname]) ? (int)$mdata[$kname] : 0;
-            if ($lvl > 0) { $b_pts += $base * (pow(2, $lvl) - 1); }
+        foreach ($moon_building_list as $bcode) {
+            $lvl = isset($mdata[$bcode]) ? (int)$mdata[$bcode] : 0;
+            if ($lvl > 0) {
+                $cost = ogame_element_cumulate($bcode, $lvl);
+                $b_pts += $cost['M'] + $cost['C'] + $cost['D'];
+            }
         }
         if (isset($moon_defense[$mid])) {
-            foreach ($moon_defense[$mid] as $dname => $amount) {
-                if (isset($defense_costs[$dname]) && (int)$amount > 0) {
-                    $d_pts += $defense_costs[$dname] * (int)$amount;
+            foreach ($moon_defense[$mid] as $dcode => $amount) {
+                if (in_array($dcode, $moon_defense_list, true) && (int)$amount > 0) {
+                    $dcost = ogame_element_cout($dcode, (int)$amount);
+                    $d_pts += $dcost['M'] + $dcost['C'] + $dcost['D'];
                 }
             }
         }
@@ -881,120 +880,58 @@ foreach ($player_moons as $mid => $m) {
 <?php endif; ?>
 
 <?php
-// --- Server-side totals pre-calculation for initial fill ---
-// Planet Building Points
+// --- Server-side totals pre-calculation (refactored to use ogame helper functions) ---
+// Initialize accumulators
 $planet_building_total = 0; $planet_defense_total = 0; $planet_sat_total = 0; $moon_sat_total = 0; $tech_total = 0;
 
-$init_b_prix = [
-    'UdR' => 720,
-    'UdN' => 1600000,
-    'CSp' => 700,
-    'HM' => 1000,
-    'HC' => 1500,
-    'HD' => 2000,
-    'Lab' => 800,
-    'Ter' => 150000,
-    'DdR' => 60000,
-    'Silo' => 41000,
-    'Dock' => 250,
-    'BaLu' => 80000,
-    'Pha' => 80000,
-    'PoSa' => 8000000
-];
-$init_d_prix = [
-    'LM' => 2000,
-    'LLE' => 2000,
-    'LLO' => 8000,
-    'CG' => 37000,
-    'AI' => 8000,
-    'LP' => 130000,
-    'PB' => 20000,
-    'GB' => 100000,
-    'MIC' => 10000,
-    'MIP' => 25000
-];
+// Lists of element codes
+$planet_building_list = ['M','C','D','CES','CEF','UdR','UdN','CSp','HM','HC','HD','Lab','Ter','DdR','Silo','Dock','BaLu','Pha','PoSa'];
+$defense_list = ['LM','LLE','LLO','CG','AI','LP','PB','GB','MIC','MIP'];
 
+// Planet building + defense + satellite points
 foreach ($player_planets as $pid => $pdata) {
-    $M = (int)($pdata['M'] ?? 0);
-    $C = (int)($pdata['C'] ?? 0);
-    $D = (int)($pdata['D'] ?? 0);
-    $CES = (int)($pdata['CES'] ?? 0);
-    $CEF = (int)($pdata['CEF'] ?? 0);
-    // Main mines & energy buildings (match JS formulas)
-    $b_pts = ((60 + 15) * (1 - pow(1.5, $M)) / (-0.5))
-        + ((48 + 24) * (1 - pow(1.6, $C)) / (-0.6))
-        + ((225 + 75) * (1 - pow(1.5, $D)) / (-0.5))
-        + ((75 + 30) * (1 - pow(1.5, $CES)) / (-0.5))
-        + ((900 + 360 + 180) * (1 - pow(1.8, $CEF)) / (-0.8));
-    // Additional buildings
-    foreach ($init_b_prix as $bcode => $base) {
-        if (isset($pdata[$bcode])) {
-            $lvl = (int)$pdata[$bcode];
-            if ($lvl > 0) { $b_pts += $base * (pow(2, $lvl) - 1); }
+    $b_pts = 0;
+    foreach ($planet_building_list as $bcode) {
+        $lvl = isset($pdata[$bcode]) ? (int)$pdata[$bcode] : 0;
+        if ($lvl > 0) {
+            $cost = ogame_element_cumulate($bcode, $lvl);
+            $b_pts += $cost['M'] + $cost['C'] + $cost['D'];
         }
     }
     $planet_building_total += $b_pts;
-    // Defenses
     if (isset($planet_defense[$pid])) {
         foreach ($planet_defense[$pid] as $dcode => $amount) {
-            if (isset($init_d_prix[$dcode]) && (int)$amount > 0) {
-                $planet_defense_total += $init_d_prix[$dcode] * (int)$amount;
+            if (in_array($dcode, $defense_list, true) && (int)$amount > 0) {
+                $dcost = ogame_element_cout($dcode, (int)$amount);
+                $planet_defense_total += $dcost['M'] + $dcost['C'] + $dcost['D'];
             }
         }
     }
-    // Satellites (planet)
+    // Satellites -> each worth (M+C+D)/1000 = (0+2000+500)/1000 = 2.5 points
     $planet_sat_total += ((int)($pdata['Sat'] ?? 0)) * 2.5;
 }
 
-// Moon satellites (not aggregated per planet like JS, kept separate)
+// Moon satellites
 foreach ($player_moons as $mid => $mdata) {
     $moon_sat_total += ((int)($mdata['Sat'] ?? 0)) * 2.5;
 }
 
-// Tech points
-$technoPrix = [
-    'Esp' => 1400,
-    'Ordi' => 1000,
-    'Armes' => 1000,
-    'Bouclier' => 800,
-    'Protection' => 1000,
-    'NRJ' => 1200,
-    'Hyp' => 6000,
-    'RC' => 1000,
-    'RI' => 6600,
-    'PH' => 36000,
-    'Laser' => 300,
-    'Ions' => 1400,
-    'Plasma' => 7000,
-    'RRI' => 800000,
-    'Graviton' => 0,
-    'Astrophysique' => 16000
-];
+// Technologies points
 foreach ($player_technology as $tcode => $lvl) {
-    if ($tcode === 'player_id') continue;
-    if ($tcode === 'Astrophysique') continue; // special handling below
-    if (isset($technoPrix[$tcode])) {
-        $lvl_i = (int)$lvl;
-        if ($lvl_i > 0) { $tech_total += $technoPrix[$tcode] * (pow(2, $lvl_i) - 1); }
-    }
-}
-// Astrophysique progressive cost
-$astro_lvl = (int)($player_technology['Astrophysique'] ?? 0);
-if ($astro_lvl > 0) {
-    $tech_total += $technoPrix['Astrophysique'];
-    $prev = $technoPrix['Astrophysique'];
-    for ($i = 1; $i < $astro_lvl; $i++) {
-        $prev = $prev * 1.75;
-        $tech_total += $prev;
-    }
+    if ($tcode === 'player_id') { continue; }
+    $lvl_i = (int)$lvl;
+    if ($lvl_i <= 0) { continue; }
+    $cost = ogame_element_cumulate($tcode, $lvl_i);
+    $tech_total += $cost['M'] + $cost['C'] + $cost['D'];
 }
 
+// K-format values
 $total_moon_points_k = isset($total_moon_points) ? round($total_moon_points / 1000) : 0;
 $total_b_pts_k = round($planet_building_total / 1000);
 $total_d_pts_k = round($planet_defense_total / 1000);
 $tech_total_k = round($tech_total / 1000);
-$total_sat_pts_moon_k = round($moon_sat_total / 1); // already points (2.5 per sat) keep as integer display
-$total_sat_pts_k = round(($planet_sat_total + $moon_sat_total) / 1);
+$total_sat_pts_moon_k = round($moon_sat_total); // already in points
+$total_sat_pts_k = round(($planet_sat_total + $moon_sat_total));
 $overall_total_k = $total_b_pts_k + $total_d_pts_k + $tech_total_k + $total_sat_pts_k + $total_moon_points_k;
 ?>
 

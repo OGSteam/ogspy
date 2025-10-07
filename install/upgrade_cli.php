@@ -375,12 +375,40 @@ class UpgradeCLI {
 
                 if ($db->sql_query($sql)) {
                     echo "✓ Compte administrateur créé: {$adminUser}\n";
+                    
+                    // Récupérer l'ID de l'utilisateur créé
+                    $getUserId = $db->sql_query("SELECT id FROM {$tablePrefix}user WHERE name = '" . $db->sql_escape_string($adminUser) . "'");
+                    $userRow = $db->sql_fetch_assoc($getUserId);
+                    $userId = $userRow['id'];
+                    
+                    // Ajouter l'utilisateur au groupe par défaut (ID 1 = Standard)
+                    $sqlGroup = "INSERT INTO {$tablePrefix}user_group (group_id, user_id) VALUES (1, {$userId})";
+                    if ($db->sql_query($sqlGroup)) {
+                        echo "✓ Utilisateur ajouté au groupe par défaut\n";
+                    } else {
+                        echo "⚠️  Avertissement: Impossible d'ajouter l'utilisateur au groupe par défaut\n";
+                    }
                 } else {
                     echo "❌ Erreur lors de la création du compte\n";
                     exit(1);
                 }
             } else {
                 echo "⚠️  Un utilisateur avec ce nom existe déjà\n";
+                
+                // Vérifier si l'utilisateur existant est bien dans le groupe par défaut
+                $getUserId = $db->sql_query("SELECT id FROM {$tablePrefix}user WHERE name = '" . $db->sql_escape_string($adminUser) . "'");
+                $userRow = $db->sql_fetch_assoc($getUserId);
+                $userId = $userRow['id'];
+                
+                $checkGroup = $db->sql_query("SELECT COUNT(*) as count FROM {$tablePrefix}user_group WHERE user_id = {$userId} AND group_id = 1");
+                $groupExists = $db->sql_fetch_assoc($checkGroup);
+                
+                if ($groupExists['count'] == 0) {
+                    $sqlGroup = "INSERT INTO {$tablePrefix}user_group (group_id, user_id) VALUES (1, {$userId})";
+                    if ($db->sql_query($sqlGroup)) {
+                        echo "✓ Utilisateur existant ajouté au groupe par défaut\n";
+                    }
+                }
             }
         } catch (Exception $e) {
             echo "❌ Erreur: " . $e->getMessage() . "\n";
