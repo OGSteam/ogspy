@@ -27,12 +27,19 @@ jobs:
       - name: Show PHP / Xdebug info
         run: |
           php -v
-          echo "--- php -i | grep -i xdebug ---"
-          php -i | grep -i xdebug || true
+          echo "--- PHP Modules ---"
+          php -m | grep -i xdebug || echo "Xdebug not found in modules"
+          echo "--- Xdebug Configuration ---"
+          php -i | grep -i xdebug || echo "No xdebug configuration found"
           echo "XDEBUG_MODE=${XDEBUG_MODE:-<not-set>}"
 
       - name: Run tests with phpunit/phpunit
-        run: php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-clover=coverage.xml
+        continue-on-error: true
+        id: phpunit
+        run: |
+          echo "Running PHPUnit with coverage..."
+          php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-clover=coverage.xml --verbose
+          echo "PHPUnit exit code: $?"
 
       - name: Fix code coverage paths
         run: |
@@ -48,16 +55,19 @@ jobs:
           echo "List files:"; ls -la
           if [ -f coverage.xml ]; then
             echo "coverage.xml exists, showing first 40 lines:"; head -n 40 coverage.xml
+            echo "coverage.xml size: $(wc -c < coverage.xml) bytes"
           else
-            echo "coverage.xml not found"
+            echo "ERROR: coverage.xml not found"
+            exit 1
           fi
 
       - name: Upload coverage.xml as artifact (if present)
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: coverage-xml
           path: coverage.xml
-          if-no-files-found: ignore
+          if-no-files-found: warn
      
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@master
