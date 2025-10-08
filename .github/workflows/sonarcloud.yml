@@ -24,10 +24,15 @@ jobs:
       - name: Install dependencies with composer
         run: composer install --no-ansi --no-interaction --no-progress --prefer-dist
           
+      - name: Show PHP / Xdebug info
+        run: |
+          php -v
+          echo "--- php -i | grep -i xdebug ---"
+          php -i | grep -i xdebug || true
+          echo "XDEBUG_MODE=${XDEBUG_MODE:-<not-set>}"
+
       - name: Run tests with phpunit/phpunit
-        env:
-          XDEBUG_MODE: coverage
-        run: vendor/bin/phpunit --coverage-clover=coverage.xml
+        run: php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-clover=coverage.xml
 
       - name: Fix code coverage paths
         run: |
