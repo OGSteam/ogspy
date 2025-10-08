@@ -43,13 +43,19 @@ jobs:
           
           # Show what tests would run
           echo "=== Available tests ==="
-          php vendor/bin/phpunit --list-tests || true
+          php vendor/bin/phpunit --list-tests | tee /tmp/available-tests.txt || true
+          test_count=$(grep -c "^ -" /tmp/available-tests.txt || echo "0")
+          echo "Total available tests: $test_count"
           
-          # Run PHPUnit with coverage - use testdox for better visibility
-          echo "=== Running PHPUnit ==="
-          php -d xdebug.mode=coverage -d memory_limit=512M vendor/bin/phpunit --testdox
+          # Run PHPUnit with coverage and verbose output
+          echo "=== Running PHPUnit with -v for verbose output ==="
+          php -d xdebug.mode=coverage -d memory_limit=512M vendor/bin/phpunit -v 2>&1 | tee /tmp/phpunit-output.txt
           phpunit_exit=$?
           echo "PHPUnit exit code: $phpunit_exit"
+          
+          # Count actual test results
+          tests_run=$(grep -oP '\d+(?= tests?, )' /tmp/phpunit-output.txt | head -1 || echo "unknown")
+          echo "Tests actually run: $tests_run"
           
           # List all XML files to debug
           echo "=== XML files in directory ==="
@@ -61,12 +67,9 @@ jobs:
             ls -lh coverage.xml
           else
             echo "✗ ERROR: coverage.xml was NOT generated"
-            echo "Checking if PHPUnit tried to write it elsewhere..."
-            find . -name "coverage.xml" -type f 2>/dev/null || echo "Not found anywhere"
-            
-            echo "=== Checking for errors in test run ==="
-            echo "Tests ran: Check above for count"
-            echo "Expected: 21 tests"
+            echo "Expected: $test_count tests"
+            echo "Actually ran: $tests_run tests"
+            echo "Difference: Tests may have been skipped or not all ran"
             exit 1
           fi
           
