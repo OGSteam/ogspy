@@ -47,9 +47,9 @@ jobs:
           test_count=$(grep -c "^ -" /tmp/available-tests.txt || echo "0")
           echo "Total available tests: $test_count"
           
-          # Run PHPUnit with coverage and verbose output
-          echo "=== Running PHPUnit with --verbose for verbose output ==="
-          php -d xdebug.mode=coverage -d memory_limit=512M vendor/bin/phpunit --verbose 2>&1 | tee /tmp/phpunit-output.txt
+          # Run PHPUnit with coverage (PHPUnit 12 doesn't support --verbose flag)
+          echo "=== Running PHPUnit with coverage ==="
+          php -d xdebug.mode=coverage -d memory_limit=512M vendor/bin/phpunit 2>&1 | tee /tmp/phpunit-output.txt
           phpunit_exit=$?
           echo "PHPUnit exit code: $phpunit_exit"
           
