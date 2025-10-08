@@ -24,87 +24,15 @@ jobs:
       - name: Install dependencies with composer
         run: composer install --no-ansi --no-interaction --no-progress --prefer-dist
           
-      - name: Show PHP / Xdebug info
-        run: |
-          php -v
-          echo "--- PHP Modules ---"
-          php -m | grep -i xdebug || echo "Xdebug not found in modules"
-          echo "--- Xdebug Configuration ---"
-          php -i | grep -i xdebug || echo "No xdebug configuration found"
-          echo "XDEBUG_MODE=${XDEBUG_MODE:-<not-set>}"
-
-      - name: Run tests with phpunit/phpunit
-        continue-on-error: false
+      - name: Run tests with PHPUnit (coverage)
         id: phpunit
         run: |
-          echo "Running PHPUnit with coverage..."
-          echo "PWD: $(pwd)"
-          echo "phpunit.xml exists: $(test -f phpunit.xml && echo 'yes' || echo 'no')"
-          
-          # Show what tests would run
-          echo "=== Available tests ==="
-          php vendor/bin/phpunit --list-tests | tee /tmp/available-tests.txt || true
-          test_count=$(grep -c "^ -" /tmp/available-tests.txt || echo "0")
-          echo "Total available tests: $test_count"
-          
-          # Run PHPUnit with coverage (PHPUnit 12 doesn't support --verbose flag)
-          echo "=== Running PHPUnit with coverage ==="
-          php -d xdebug.mode=coverage -d memory_limit=512M vendor/bin/phpunit 2>&1 | tee /tmp/phpunit-output.txt
-          phpunit_exit=$?
-          echo "PHPUnit exit code: $phpunit_exit"
-          
-          # Count actual test results
-          tests_run=$(grep -oP '\d+(?= tests?, )' /tmp/phpunit-output.txt | head -1 || echo "unknown")
-          echo "Tests actually run: $tests_run"
-          
-          # List all XML files to debug
-          echo "=== XML files in directory ==="
-          ls -la *.xml 2>/dev/null || echo "No XML files found"
-          
-          # Check if coverage.xml was created
-          if [ -f coverage.xml ]; then
-            echo "✓ coverage.xml generated successfully"
-            ls -lh coverage.xml
-          else
-            echo "✗ ERROR: coverage.xml was NOT generated"
-            echo "Expected: $test_count tests"
-            echo "Actually ran: $tests_run tests"
-            echo "Difference: Tests may have been skipped or not all ran"
-            exit 1
-          fi
-          
-          exit $phpunit_exit
+          # Production: run tests with Xdebug coverage enabled (minimal output)
+          php -d xdebug.mode=coverage -d memory_limit=512M vendor/bin/phpunit
 
-      - name: Fix code coverage paths
-        run: |
-          if [ -f coverage.xml ]; then
-            sed -i "s@$GITHUB_WORKSPACE@/github/workspace/@g" coverage.xml
-          else
-            echo "coverage.xml not found, skipping path fix"
-          fi
-
-      - name: Debug coverage file
-        run: |
-          echo "Working directory: $(pwd)"
-          echo "List files:"; ls -la
-          if [ -f coverage.xml ]; then
-            echo "coverage.xml exists, showing first 40 lines:"; head -n 40 coverage.xml
-            echo "coverage.xml size: $(wc -c < coverage.xml) bytes"
-          else
-            echo "ERROR: coverage.xml not found"
-            exit 1
-          fi
-
-      - name: Upload coverage.xml as artifact (if present)
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: coverage-xml
-          path: coverage.xml
-          if-no-files-found: warn
      
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@master
+        uses: SonarSource/sonarqube-scan-action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
