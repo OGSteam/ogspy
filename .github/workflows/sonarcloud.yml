@@ -34,13 +34,33 @@ jobs:
           echo "XDEBUG_MODE=${XDEBUG_MODE:-<not-set>}"
 
       - name: Run tests with phpunit/phpunit
-        continue-on-error: true
+        continue-on-error: false
         id: phpunit
         run: |
           echo "Running PHPUnit with coverage..."
-          php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-clover=coverage.xml
+          echo "PWD: $(pwd)"
+          echo "phpunit.xml exists: $(test -f phpunit.xml && echo 'yes' || echo 'no')"
+          
+          # Run PHPUnit - the coverage output is configured in phpunit.xml
+          php -d xdebug.mode=coverage -d memory_limit=512M vendor/bin/phpunit
           phpunit_exit=$?
           echo "PHPUnit exit code: $phpunit_exit"
+          
+          # List all XML files to debug
+          echo "XML files in directory:"
+          ls -la *.xml 2>/dev/null || echo "No XML files found"
+          
+          # Check if coverage.xml was created
+          if [ -f coverage.xml ]; then
+            echo "✓ coverage.xml generated successfully"
+            ls -lh coverage.xml
+          else
+            echo "✗ ERROR: coverage.xml was NOT generated"
+            echo "Checking if PHPUnit tried to write it elsewhere..."
+            find . -name "coverage.xml" -type f 2>/dev/null || echo "Not found anywhere"
+            exit 1
+          fi
+          
           exit $phpunit_exit
 
       - name: Fix code coverage paths
