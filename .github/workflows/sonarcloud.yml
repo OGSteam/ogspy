@@ -41,13 +41,18 @@ jobs:
           echo "PWD: $(pwd)"
           echo "phpunit.xml exists: $(test -f phpunit.xml && echo 'yes' || echo 'no')"
           
-          # Run PHPUnit - the coverage output is configured in phpunit.xml
-          php -d xdebug.mode=coverage -d memory_limit=512M vendor/bin/phpunit
+          # Show what tests would run
+          echo "=== Available tests ==="
+          php vendor/bin/phpunit --list-tests || true
+          
+          # Run PHPUnit with coverage - use testdox for better visibility
+          echo "=== Running PHPUnit ==="
+          php -d xdebug.mode=coverage -d memory_limit=512M vendor/bin/phpunit --testdox
           phpunit_exit=$?
           echo "PHPUnit exit code: $phpunit_exit"
           
           # List all XML files to debug
-          echo "XML files in directory:"
+          echo "=== XML files in directory ==="
           ls -la *.xml 2>/dev/null || echo "No XML files found"
           
           # Check if coverage.xml was created
@@ -58,6 +63,10 @@ jobs:
             echo "✗ ERROR: coverage.xml was NOT generated"
             echo "Checking if PHPUnit tried to write it elsewhere..."
             find . -name "coverage.xml" -type f 2>/dev/null || echo "Not found anywhere"
+            
+            echo "=== Checking for errors in test run ==="
+            echo "Tests ran: Check above for count"
+            echo "Expected: 21 tests"
             exit 1
           fi
           
