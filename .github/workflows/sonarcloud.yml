@@ -36,9 +36,26 @@ jobs:
           else
             echo "coverage.xml not found, skipping path fix"
           fi
+
+      - name: Debug coverage file
+        run: |
+          echo "Working directory: $(pwd)"
+          echo "List files:"; ls -la
+          if [ -f coverage.xml ]; then
+            echo "coverage.xml exists, showing first 40 lines:"; head -n 40 coverage.xml
+          else
+            echo "coverage.xml not found"
+          fi
+
+      - name: Upload coverage.xml as artifact (if present)
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
+          if-no-files-found: ignore
      
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarqube-scan-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
