@@ -38,8 +38,10 @@ jobs:
         id: phpunit
         run: |
           echo "Running PHPUnit with coverage..."
-          php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-clover=coverage.xml --verbose
-          echo "PHPUnit exit code: $?"
+          php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-clover=coverage.xml
+          phpunit_exit=$?
+          echo "PHPUnit exit code: $phpunit_exit"
+          exit $phpunit_exit
 
       - name: Fix code coverage paths
         run: |
