@@ -36,8 +36,9 @@ class PlayerModelTest extends TestCase
         // Mock database connection using our custom mock class
         $this->mockDb = $this->createMock(MockDatabase::class);
         $this->mockDb->method('sql_query')->willReturn(true);
-        $this->mockDb->method('sql_fetch_assoc')->willReturn([]);
-        $this->mockDb->method('sql_fetch_row')->willReturn([]);
+    $this->mockDb->method('sql_fetch_assoc')->willReturn([]);
+    // Provide a default row with one null value so code expecting numeric offsets won't warn
+    $this->mockDb->method('sql_fetch_row')->willReturn([null]);
         $this->mockDb->method('sql_escape_string')->willReturnArgument(0);
 
         // Mock logger
@@ -97,7 +98,7 @@ class PlayerModelTest extends TestCase
 
         $this->mockDb->expects($this->once())
             ->method('sql_fetch_assoc')
-            ->willReturn([]);
+            ->willReturn([null]);
 
         $result = $this->playerModel->get_player_data($playerId);
 
@@ -139,7 +140,7 @@ class PlayerModelTest extends TestCase
 
         $this->mockDb->expects($this->once())
             ->method('sql_fetch_row')
-            ->willReturn([]);
+            ->willReturn([null]);
 
         $result = $this->playerModel->get_player_name($playerId);
 
@@ -182,7 +183,7 @@ class PlayerModelTest extends TestCase
 
         $this->mockDb->expects($this->once())
             ->method('sql_fetch_row')
-            ->willReturn([]); // This will make list() fail to assign, $playerId becomes null
+            ->willReturn([null]); // Simulate not found row with null value
 
         $result = $this->playerModel->getPlayerId($playerName);
 

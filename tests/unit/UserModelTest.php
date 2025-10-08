@@ -32,8 +32,9 @@ class UserModelTest extends TestCase
 
         // Mock database connection using our custom mock class
         $this->mockDb = $this->createMock(MockUserDatabase::class);
-        $this->mockDb->method('sql_query')->willReturn(true);
-        $this->mockDb->method('sql_fetch_row')->willReturn([]);
+    $this->mockDb->method('sql_query')->willReturn(true);
+    // Return a single null to mimic a row with empty columns; avoids list() warnings
+    $this->mockDb->method('sql_fetch_row')->willReturn([null]);
         $this->mockDb->method('sql_numrows')->willReturn(0);
         $this->mockDb->method('sql_escape_string')->willReturnArgument(0);
 
