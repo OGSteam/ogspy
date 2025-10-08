@@ -48,8 +48,8 @@ jobs:
           echo "Total available tests: $test_count"
           
           # Run PHPUnit with coverage and verbose output
-          echo "=== Running PHPUnit with -v for verbose output ==="
-          php -d xdebug.mode=coverage -d memory_limit=512M vendor/bin/phpunit -v 2>&1 | tee /tmp/phpunit-output.txt
+          echo "=== Running PHPUnit with --verbose for verbose output ==="
+          php -d xdebug.mode=coverage -d memory_limit=512M vendor/bin/phpunit --verbose 2>&1 | tee /tmp/phpunit-output.txt
           phpunit_exit=$?
           echo "PHPUnit exit code: $phpunit_exit"
           
