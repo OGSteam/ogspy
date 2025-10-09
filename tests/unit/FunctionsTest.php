@@ -7,7 +7,7 @@ class FunctionsTest extends TestCase
 {
     public function testPasswordGenerator()
     {
-        define("IN_SPYOGAME", true);
+        if (!defined('IN_SPYOGAME')) define('IN_SPYOGAME', true);
         require_once 'includes/functions.php';
         $password = generateRandomPassword();
 
@@ -20,7 +20,7 @@ class FunctionsTest extends TestCase
 
     public function testPasswgenerateKey()
     {
-        define("IN_SPYOGAME", true);
+        if (!defined('IN_SPYOGAME')) define('IN_SPYOGAME', true);
         require_once 'includes/functions.php';
         $result = generate_key();
 

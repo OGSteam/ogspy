@@ -42,3 +42,4 @@ cache/repo_info.json
 *.pb
 
 node_modules
+coverage.xml

@@ -1867,3 +1867,15 @@ function get_Helpers()
     }
     return $tHelpers;
 }
+
+/**
+ * Arrondit les points à l'unité de mille.
+ * @param mixed $point
+ * @return int
+ */
+function round_points_to_k($point) {
+    if (!is_numeric($point)) {
+        return 0;
+    }
+    return round($point / 1000);
+}

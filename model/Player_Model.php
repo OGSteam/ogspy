@@ -43,13 +43,12 @@ class Player_Model extends Model_Abstract
         $request .= " WHERE `id` = " . $player_id;
         $result = $this->db->sql_query($request);
 
-        list($playerName) = $this->db->sql_fetch_row($result);
-
-        if (empty($playerName)) {
+        $row = $this->db->sql_fetch_row($result);
+        if (!is_array($row) || !isset($row[0]) || $row[0] === '') {
             return false;
         }
 
-        return $playerName;
+        return $row[0];
     }
 
     /**
@@ -65,13 +64,12 @@ class Player_Model extends Model_Abstract
         $request .= " WHERE `name` = '" . $player_name . "'";
         $result = $this->db->sql_query($request);
 
-        list($playerId) = $this->db->sql_fetch_row($result);
-
-        if (empty($playerId)) {
+        $row = $this->db->sql_fetch_row($result);
+        if (!is_array($row) || !isset($row[0]) || $row[0] === '') {
             return false;
         }
 
-        return $playerId;
+        return $row[0];
     }
 
 
