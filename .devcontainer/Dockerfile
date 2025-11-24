@@ -1,4 +1,4 @@
-FROM php:8.4-apache
+FROM php:8.5-apache
 
 # Installer les extensions mysqli, pdo_mysql et zip, et activer rewrite
 RUN apt-get update && apt-get install -y libzip-dev zip unzip git \
