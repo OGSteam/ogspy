@@ -110,7 +110,7 @@ CREATE TABLE `ogspy_user_tokens`
 --
 CREATE TABLE `ogspy_config`
 (
-    `name`  VARCHAR(190) NOT NULL DEFAULT '',
+    `name`  VARCHAR(255) NOT NULL DEFAULT '',
     `value` VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (`name`),
     UNIQUE KEY `name` (`name`)
@@ -176,7 +176,7 @@ CREATE TABLE `ogspy_sessions`
 --
 CREATE TABLE `ogspy_statistics`
 (
-    `statistic_name`  VARCHAR(190) NOT NULL DEFAULT '',
+    `statistic_name`  VARCHAR(255) NOT NULL DEFAULT '',
     `statistic_value` VARCHAR(255) NOT NULL DEFAULT '0',
     PRIMARY KEY (`statistic_name`)
 )
@@ -189,10 +189,10 @@ CREATE TABLE `ogspy_statistics`
 CREATE TABLE `ogspy_mod`
 (
     `id`         INT          NOT NULL AUTO_INCREMENT,
-    `title`      VARCHAR(190) NOT NULL COMMENT 'Nom du mod',
-    `menu`       VARCHAR(190) NOT NULL COMMENT 'Titre du lien dans le menu',
-    `action`     VARCHAR(190) NOT NULL COMMENT 'Action transmise en get et traitée dans index.php',
-    `root`       VARCHAR(190) NOT NULL COMMENT 'Répertoire où se situe le mod (relatif au répertoire mods)',
+    `title`      VARCHAR(255) NOT NULL COMMENT 'Nom du mod',
+    `menu`       VARCHAR(255) NOT NULL COMMENT 'Titre du lien dans le menu',
+    `action`     VARCHAR(255) NOT NULL COMMENT 'Action transmise en get et traitée dans index.php',
+    `root`       VARCHAR(255) NOT NULL COMMENT 'Répertoire où se situe le mod (relatif au répertoire mods)',
     `link`       VARCHAR(255) NOT NULL COMMENT 'fichier principale du mod',
     `version`    VARCHAR(100) NOT NULL COMMENT 'Version du mod',
     `position`   INT          NOT NULL DEFAULT '-1',
@@ -213,7 +213,7 @@ CREATE TABLE `ogspy_mod`
 CREATE TABLE `ogspy_mod_config`
 (
     `mod`    VARCHAR(50)  NOT NULL DEFAULT '',
-    `config` VARCHAR(190) NOT NULL DEFAULT '',
+    `config` VARCHAR(255) NOT NULL DEFAULT '',
     `value`  VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (`mod`, `config`)
 )
@@ -227,7 +227,7 @@ CREATE TABLE `ogspy_mod_user_config`
 (
     `mod`     VARCHAR(50)  NOT NULL,
     `user_id` INT          NOT NULL,
-    `config`  VARCHAR(190) NOT NULL,
+    `config`  VARCHAR(255) NOT NULL,
     `value`   VARCHAR(255) NOT NULL,
     PRIMARY KEY (`mod`, `config`, `user_id`),
     UNIQUE KEY `config` (`config`)
