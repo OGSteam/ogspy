@@ -53,7 +53,7 @@ class Rankings_Player_Model extends Rankings_Model
 
         // On utilise `player_id` pour les jointures
         $request .= " LEFT JOIN " . TABLE_GAME_PLAYER . " AS `player` ON `general`.`player_id` = `player`.`id`";
-       $request .= " LEFT JOIN " . TABLE_GAME_ALLY . " AS `ally` ON `player`.`ally_id` = `ally`.`id`";
+        $request .= " LEFT JOIN " . TABLE_GAME_ALLY . " AS `ally` ON `player`.`ally_id` = `ally`.`id`";
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_ECO . " AS `eco` ON `general`.`player_id` = `eco`.`player_id` AND `eco`.`datadate` = '" . $datadate . "'";
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_TECHNOLOGY . " AS `techno` ON `general`.`player_id` = `techno`.`player_id` AND `techno`.`datadate` = '" . $datadate . "'";
         $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY . " AS `military` ON `general`.`player_id` = `military`.`player_id` AND `military`.`datadate` = '" . $datadate . "'";
@@ -72,7 +72,7 @@ class Rankings_Player_Model extends Rankings_Model
         // Remplissage du ranking content. Toutes les valeurs doivent être présentes dans l'array sous peine de soucis d'affichages
         $ranking_content = array();
         $row = 0;
-        while (list($position,$player_name , $ally_name,  $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $this->db->sql_fetch_row($result)) {
+        while (list($position, $player_name, $ally_name,  $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $this->db->sql_fetch_row($result)) {
             $ranking_content[$row]['postion'] = $position;
             $ranking_content[$row]['player_name'] = $player_name;
             $ranking_content[$row]['ally_name'] = $ally_name;
@@ -110,20 +110,31 @@ class Rankings_Player_Model extends Rankings_Model
     public function get_all_ranktable_byplayer(int $playerId)
     {
 
-        $request = "SELECT `general`.`rank`, `general`.`datadate`, `general`.`player`, `general`.`ally`, `general`.`rank`, `general`.`points` , `eco`.`rank`,
-        `eco`.`points`, `techno`.`rank`, `techno`.`points`, `military`.`rank`, `military`.`points`, `military_b`.`rank`, `military_b`.`points`, `military_l`.`rank`,
-       `military_l`.`points`, `military_d`.`rank`, `military_d`.`points`, `honor`.`rank`, `honor`.`points`";
-        $request .= " FROM `" . TABLE_RANK_PLAYER_POINTS . "` AS `general`";
-        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_ECO . " AS `eco` ON `general`.`player` = `eco`.`player` AND `eco`.`datadate` = general.`datadate`";
-        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_TECHNOLOGY . " AS `techno` ON `general`.`player` = `techno`.`player` AND `techno`.`datadate` = `general`.`datadate` ";
-        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY . " AS `military` ON `general`.`player` = `military`.`player` AND `military`.`datadate` = `general`.`datadate` ";
-        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_BUILT . " AS `military_b` ON `general`.`player` = `military_b`.`player` AND `military_b`.`datadate` = `general`.`datadate` ";
-        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " AS `military_l` ON `general`.`player` = `military_l`.`player` AND `military_l`.`datadate` = `general`.`datadate` ";
-        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " AS `military_d` ON `general`.`player` = `military_d`.`player` AND `military_d`.`datadate` = `general`.`datadate` ";
-        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_HONOR . " AS `honor` ON `general`.`player` = `honor`.`player` AND `honor`.`datadate` = `general`.`datadate` ";
-        $request .= " WHERE `general`.`player_id` = '" . $playerId . "'";
-        $request .= " ORDER BY `general`.`datadate` DESC ";
+        $request = "SELECT `general`.`rank`, `general`.`datadate`, `general`.`points`,
+            `player`.`name` as player_name, `ally`.`name` as ally_name,
+            `eco`.`rank`, `eco`.`points`,
+            `techno`.`rank`, `techno`.`points`,
+            `military`.`rank`, `military`.`points`,
+            `military_b`.`rank`, `military_b`.`points`,
+            `military_l`.`rank`, `military_l`.`points`,
+            `military_d`.`rank`, `military_d`.`points`,
+            `honor`.`rank`, `honor`.`points`";
 
+        $request .= " FROM `" . TABLE_RANK_PLAYER_POINTS . "` AS `general`";
+
+        // On utilise `player_id` pour les jointures et on récupère les noms
+        $request .= " LEFT JOIN " . TABLE_GAME_PLAYER . " AS `player` ON `general`.`player_id` = `player`.`id`";
+        $request .= " LEFT JOIN " . TABLE_GAME_ALLY . " AS `ally` ON `player`.`ally_id` = `ally`.`id`";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_ECO . " AS `eco` ON `general`.`player_id` = `eco`.`player_id` AND `eco`.`datadate` = `general`.`datadate`";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_TECHNOLOGY . " AS `techno` ON `general`.`player_id` = `techno`.`player_id` AND `techno`.`datadate` = `general`.`datadate`";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY . " AS `military` ON `general`.`player_id` = `military`.`player_id` AND `military`.`datadate` = `general`.`datadate`";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_BUILT . " AS `military_b` ON `general`.`player_id` = `military_b`.`player_id` AND `military_b`.`datadate` = `general`.`datadate`";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " AS `military_l` ON `general`.`player_id` = `military_l`.`player_id` AND `military_l`.`datadate` = `general`.`datadate`";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " AS `military_d` ON `general`.`player_id` = `military_d`.`player_id` AND `military_d`.`datadate` = `general`.`datadate`";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_HONOR . " AS `honor` ON `general`.`player_id` = `honor`.`player_id` AND `honor`.`datadate` = `general`.`datadate`";
+
+        $request .= " WHERE `general`.`player_id` = '" . $playerId . "'";
+        $request .= " ORDER BY `general`.`datadate` DESC";
 
         $result = $this->db->sql_query($request);
 
