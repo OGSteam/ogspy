@@ -110,8 +110,7 @@ class Rankings_Player_Model extends Rankings_Model
     public function get_all_ranktable_byplayer(int $playerId)
     {
 
-        $request = "SELECT `general`.`rank`, `general`.`datadate`, `general`.`points`,
-            `player`.`name` as player_name, `ally`.`name` as ally_name,
+        $request = "SELECT  `general`.`datadate`, `player`.`name` as player_name, `ally`.`name` as ally_name,  `general`.`rank` ,`general`.`points`,
             `eco`.`rank`, `eco`.`points`,
             `techno`.`rank`, `techno`.`points`,
             `military`.`rank`, `military`.`points`,
@@ -141,11 +140,13 @@ class Rankings_Player_Model extends Rankings_Model
         //Remplissage du ranking content. Toutes les valeurs doivent être présentes dans l'array sous peine de soucis d'affichages
         $ranking_content = array();
         $row = 0;
+
+
         while ($row_data = $this->db->sql_fetch_row($result)) {
-            list($position, $datadate, $player_name, $ally_name, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $row_data;
+            list( $datadate, $player_name, $ally_name, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $row_data;
 
             $ranking_content[$row] = [
-                'position' => $position,
+                'position' => $general_rank,
                 'datadate' => $datadate,
                 'player_name' => $player_name,
                 'ally_name' => $ally_name,

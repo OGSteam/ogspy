@@ -27,17 +27,14 @@ class Rankings_Ally_Model extends Rankings_Model
     }
 
     /**
-     * @param $allyName
+     * @param $allyId Id de l'alliance
 
      * @return array
      */
-    public function get_all_ranktable_byally($allyName)
+    public function get_all_ranktable_byally($allyId)
     {
-        //$ally_name = $this->db->sql_escape_string($allyName);
-        //TODO GArder byname ??? plus coherent en appelant l'ID
-
-
-        $request  = "SELECT `general`.`datadate`, `general`.`rank`, `ally`.`name` as ally_name, `general`.`number_member`, `general`.`points`,
+     
+        $request  = "SELECT `general`.`datadate`,  `ally`.`name` as ally_name, `general`.`number_member`, `general`.`rank`, `general`.`points`,
              `eco`.`rank`, `eco`.`points`,
              `techno`.`rank`, `techno`.`points`,
              `military`.`rank`, `military`.`points`,
@@ -57,7 +54,7 @@ class Rankings_Ally_Model extends Rankings_Model
         $request .= " LEFT JOIN " . TABLE_RANK_ALLY_MILITARY_DESTRUCT . " AS `military_d` ON `general`.`ally_id` = `military_d`.`ally_id` AND `military_d`.`datadate` = `general`.`datadate`";
         $request .= " LEFT JOIN " . TABLE_RANK_ALLY_HONOR . " AS `honor` ON `general`.`ally_id` = `honor`.`ally_id` AND `honor`.`datadate` = `general`.`datadate`";
 
-        $request .= " WHERE `ally`.`name` = '" . $this->db->sql_escape_string($allyName) . "'";
+        $request .= " WHERE `ally`.`id` = '" . (int)$allyId. "'";
         $request .= " ORDER BY `general`.`datadate` DESC";
 
 
@@ -66,9 +63,9 @@ class Rankings_Ally_Model extends Rankings_Model
         //Remplissage du ranking content. Toutes les valeurs doivent être présentes dans l'array sous peine de soucis d'affichages
         $ranking_content = array();
         $row = 0;
-        while (list($datadate, $position, $ally_name, $member, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $this->db->sql_fetch_row($result)) {
+        while (list($datadate, $ally_name, $member, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $this->db->sql_fetch_row($result)) {
             $ranking_content[$row]['datadate'] = $datadate;
-            $ranking_content[$row]['postion'] = $position;
+            $ranking_content[$row]['postion'] = $general_rank;
             $ranking_content[$row]['ally_name'] = $ally_name;
             $ranking_content[$row]['member'] = $member;
             $ranking_content[$row]['general_rank'] = $general_rank;

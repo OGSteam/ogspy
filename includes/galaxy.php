@@ -30,6 +30,7 @@ use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 
 
 use Ogsteam\Ogspy\Helper\SearchCriteria_Helper;
+use Ogsteam\Ogspy\Model\Ally_Model;
 
 /**
  * Checks user permissions for specific galaxy-related actions.
@@ -1020,16 +1021,16 @@ function galaxy_show_ranking_unique_player_forJS(int $playerId, $date_min = null
 /**
  * Generates ranking data for a specific alliance based on various criteria.
  *
- * @param string $ally The identifier for the specific alliance.
+ * @param string $allyId The identifier for the specific alliance.
  * @param bool $last If true, only the latest ranking data is retrieved.
  * @return array An associative array containing ranking information for the specified alliance,
  *               categorized by date and various ranking categories such as general, economy, technology,
  *               military, honor, and specific military subdivisions.
  */
-function galaxy_show_ranking_unique_ally($ally, $last = false)
+function galaxy_show_ranking_unique_ally($allyId, $last = false)
 {
     $ranking = array();
-    $tRanking = (new Rankings_Ally_Model())->get_all_ranktable_byally($ally);
+    $tRanking = (new Rankings_Ally_Model())->get_all_ranktable_byally($allyId);
     // formatage pour la vue
     foreach ($tRanking as $rank) {
         $ranking[$rank["datadate"]]["number_member"] = $rank["member"];
@@ -1839,20 +1840,21 @@ function displayGalaxyLegend()
 
 
 /**
- * @param $player Nom du joueur
+ * @param $playerId id du joueur
  * @return string
  */
-function displayGalaxyPlayerTooltip(string $playerName)
+function displayGalaxyPlayerTooltip(string $playerId)
 {
     global $lang;
 
     $Player_Model = new Player_Model();
-    $playerId = $Player_Model->getPlayerId($playerName);
-
+    $playerName = $Player_Model->get_player_name($playerId);
+    
     $tooltip = '<table class="og-table og-small-table">';
     $tooltip .= "<thead><tr><th colspan=\"3\" >" . $lang['GALAXY_PLAYER'] . " " . $playerName . "</th></tr></thead>";
     $tooltip .= '<tbody>';
     $individual_ranking = galaxy_show_ranking_unique_player($playerId);
+
     while ($ranking = current($individual_ranking)) {
         $datadate =  date("d F o G:i", key($individual_ranking));
         $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
@@ -1893,18 +1895,25 @@ function displayGalaxyPlayerTooltip(string $playerName)
 
 
 /**
- * @param $ally Nom de l'alliance
+ * @param $allyId Id de l'alliance
  * @return string
+ * 
+ * 
  */
-function displayGalaxyAllyTooltip($ally)
+function displayGalaxyAllyTooltip($allyid)
 {
     global $lang;
 
+    $Ally_Model = new Ally_Model();
+    $allyName = $Ally_Model->get_ally_name($allyid);
+
+
     $tooltip = '<table class="og-table og-small-table">';
-    $tooltip .= '<thead><tr><th colspan="3">' . $lang['GALAXY_ALLY'] . " " . $ally . '</th></tr></thead>';
+    $tooltip .= '<thead><tr><th colspan="3">' . $lang['GALAXY_ALLY'] . " " . $allyName . '</th></tr></thead>';
     $tooltip .= '<tbody>';
 
-    $individual_ranking = galaxy_show_ranking_unique_ally($ally);
+    $individual_ranking = galaxy_show_ranking_unique_ally($allyid);
+
     $ranking = current($individual_ranking);
     $datadate =  date("d F o G:i", key($individual_ranking));
     $general_rank = isset($ranking["general"]) ? formate_number($ranking["general"]["rank"]) : "&nbsp;";
@@ -1936,7 +1945,7 @@ function displayGalaxyAllyTooltip($ally)
     $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_HONOR'] . "</td><td class=\"tdcontent\">" . $honor_rank . "</td><td class=\"tdcontent\">" . $honor_points . "</td></tr>";
     $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\" ><span class=\"og-highlight\">" . $number_member . "</span> " . $lang['GALAXY_MEMBERS'] . "</td></tr>";
 
-    $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=" . $ally . "&strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
+    $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=" . $allyid . "&strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
     $tooltip .= '</tbody>';
     $tooltip .= "</table>";
 

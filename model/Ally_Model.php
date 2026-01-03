@@ -47,6 +47,6 @@ class Ally_Model extends Model_Abstract
             return false;
         }
 
-        return $allyName;
+        return $allyName['name'];
     }
 }
