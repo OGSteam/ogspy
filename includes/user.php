@@ -15,6 +15,7 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+use Ogsteam\Ogspy\Model\Player_Model;
 use Ogsteam\Ogspy\Model\Sessions_Model;
 use Ogsteam\Ogspy\Model\Statistics_Model;
 use Ogsteam\Ogspy\Model\User_Model;
@@ -694,12 +695,9 @@ function member_user_set()
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    $userModel = new User_Model();
-    $user_info = user_get($user_id);
 
-    $player_id = $user_data["player_id"];
-    $user_empire = player_get_empire($player_id);
-    $user_technology = $user_empire["technology"];
+    $userModel = new User_Model();
+    $playerModel = new Player_Model();
 
     $password_change_validated = false;
     // Validation du changement de mot de passe
@@ -756,10 +754,6 @@ function member_user_set()
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudo&info");
     }
 
-    $player_id = $user_data["player_id"];
-    $user_empire = player_get_empire($player_id);
-    $user_technology = $user_empire["technology"];
-
     //Contrôle que le pseudo ne soit pas déjà utilisé si changement
     if ($userModel->select_is_other_user_name($pub_pseudo, $user_id) === true) {
         $log->warning("Profile modification failed - username already taken", [
@@ -808,12 +802,21 @@ function member_user_set()
         $changes_made[] = 'ip_check';
     }
 
+    if (isset($pub_pseudo_ingame)) {
+        //recuperation de l'id avant insertion
+        $player_id = $playerModel->getPlayerId($pub_pseudo_ingame);
+        $playerModel->set_game_account_name($user_id, $player_id);
+        $changes_made[] = 'pseudo_ingame';
+    }
+
+
     $log->info("User profile modification completed successfully", [
         'user_id' => $user_id,
         'username' => $user_data["name"] ?? 'unknown',
         'changes_made' => $changes_made,
         'password_changed' => $password_change_validated,
         'token_renewed' => $pub_renew_user_token == 1,
+        'player_id' => (int)$player_id,
         'ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
     ]);
 

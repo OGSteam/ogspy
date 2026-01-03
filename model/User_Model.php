@@ -381,6 +381,7 @@ class User_Model extends Model_Abstract
         $this->db->sql_query($request);
     }
 
+
     /**
      * @param $user_id
      * @param $user_active boolean 1/0
