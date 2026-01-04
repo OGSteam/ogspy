@@ -49,4 +49,24 @@ class Ally_Model extends Model_Abstract
 
         return $allyName['name'];
     }
+
+
+    //TODO recherche via tag, faire une fonction via name
+     public function getAllyId(string $ally_tag)
+    {
+        $request = "SELECT `id`".
+            " FROM " . TABLE_GAME_ALLY;
+        $request .= " WHERE `tag` = '" . $ally_tag . "'";
+        $result = $this->db->sql_query($request);
+
+        $row = $this->db->sql_fetch_row($result);
+        if (!is_array($row) || !isset($row[0]) || $row[0] === '') {
+            return false;
+        }
+
+        return $row[0];
+    }
+
+
+
 }
