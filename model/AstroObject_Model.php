@@ -370,7 +370,7 @@ class AstroObject_Model extends Model_Abstract
         $request = "SELECT aub.`galaxy`, aub.`system`, aub.`row`, gp.`name` AS player_name ";
         $request .= "FROM `" . TABLE_USER_BUILDING . "` aub ";
         $request .= "INNER JOIN `" . TABLE_GAME_PLAYER . "` gp ON aub.`player_id` = gp.`id` ";
-        $request .= "INNER JOIN `" . TABLE_GAME_ALLY . "` ga ON aub.`ally_id` = ga.`id` ";
+        $request .= "INNER JOIN `" . TABLE_GAME_ALLY . "` ga ON gp.`ally_id` = ga.`id` ";
         $request .= "WHERE aub.`galaxy` = " . $galaxy . " ";
         $request .= "AND aub.`system` BETWEEN " . $system_down . " AND " . $system_up . " ";
         $request .= "AND ga.`tag` LIKE '" . $escaped_ally_tag . "' ";
