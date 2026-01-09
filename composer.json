@@ -28,7 +28,7 @@
     "ext-openssl": "*",
     "ext-mbstring": "*",
     "tooltipster/tooltipster": "^4.2",
-    "phpmailer/phpmailer": "^6.6",
+    "phpmailer/phpmailer": "^7.0",
     "filp/whoops": "^2.15",
     "components/jquery": "^3.7",
     "monolog/monolog": "^3.9"
