@@ -310,7 +310,7 @@ switch ($pub_id_message) {
     case "raz_ratio":
         $msgType = "success";
         $msgContent = $lang['MSG_RATIO_RAZ'];
-        $msgURLButton = 'action=statistic';
+        $msgURLButton = 'index.php?action=statistic';
         break;
 
     default:
