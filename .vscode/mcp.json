@@ -1,24 +1,4 @@
 {
-	"servers": {
-		"mariadb": {
-			"command": "npx",
-			"args": [
-				"mariadb-mcp-server@0.0.1"
-			],
-			"env": {
-				"MARIADB_HOST": "${input:mariadb_host}",
-				"MARIADB_PORT": "${input:mariadb_port}",
-				"MARIADB_USER": "${input:mariadb_user}",
-				"MARIADB_PASSWORD": "${input:mariadb_password}",
-				"MARIADB_ALLOW_INSERT": "false",
-				"MARIADB_ALLOW_UPDATE": "false",
-				"MARIADB_ALLOW_DELETE": "false",
-				"MARIADB_TIMEOUT_MS": "10000",
-				"MARIADB_ROW_LIMIT": "1000"
-			},
-			"type": "stdio"
-		}
-	},
 	"inputs": [
 		{
 			"id": "mariadb_host",
@@ -40,5 +20,6 @@
 			"type": "promptString",
 			"description": "MariaDB Password"
 		}
-	]
+	],
+	"servers": {}
 }
