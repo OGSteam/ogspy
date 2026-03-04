@@ -7,7 +7,7 @@
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "upgradePackages": true,
-      "username": "root"
+      "username": "www-data"
     }
   },
 
@@ -47,5 +47,5 @@
 
   "postCreateCommand": "bash .devcontainer/setup-ogspy.sh",
 
-  "remoteUser": "vscode"
+  "remoteUser": "www-data"
 }

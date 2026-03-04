@@ -3,6 +3,18 @@ set -euo pipefail
 
 echo "🔁 devcontainer entrypoint: ensuring OGSpy is installed before starting Apache"
 
+# Fix permissions on the workspace folder for www-data user
+echo "📁 Fixing permissions for www-data user..."
+chown -R www-data:www-data /var/www/html 2>/dev/null || true
+
+# Ensure writable directories have correct permissions
+for d in config cache logs mod install; do
+  if [ -d "/var/www/html/$d" ]; then
+    chmod -R u+rwX,g+rwX "/var/www/html/$d" 2>/dev/null || true
+    chown -R www-data:www-data "/var/www/html/$d" 2>/dev/null || true
+  fi
+done
+
 # Default envs
 DB_HOST=${DB_HOST:-db}
 DB_USER=${DB_USER:-ogspy}
@@ -30,7 +42,7 @@ until db_has_config_table; do
   # Try running setup if DB is reachable but table missing
   php -r "\$m = @new mysqli('${DB_HOST}','${DB_USER}','${DB_PASSWORD}','${DB_NAME}'); if (!\$m || \$m->connect_errno) exit;" >/dev/null 2>&1 && {
     echo "➡️ Running setup script to initialize OGSpy..."
-    /usr/local/bin/setup-ogspy.sh || true
+    su -s /bin/bash www-data -c "/usr/local/bin/setup-ogspy.sh" || true
   }
   RETRY=$((RETRY+1))
   sleep 2

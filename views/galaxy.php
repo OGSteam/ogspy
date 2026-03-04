@@ -296,15 +296,14 @@ require_once 'views/page_header.php';
 // calcul de tous les tooltip player et alliance
 //tooltip player
 foreach ($tooltiptab["playerName"] as $player) {
-    $playerId = (new Player_Model())->get_player_id_for_name($player);
+    $playerId = (new Player_Model())->getPlayerId($player);
     $tooltip = displayGalaxyPlayerTooltip($playerId);
     //------------  Affichage Tooltip ----------------
     $ToolTip_Helper->addTooltip("ttp_player_" . $player,  $tooltip);
 }
 //tooltup ally
 foreach ($tooltiptab["allyName"] as $ally) {
-    $allyId = (new Ally_Model())->get_ally_id_for_name($ally);
-    $tooltip =  displayGalaxyAllyTooltip($allyId);
+    $tooltip =  displayGalaxyAllyTooltip($ally);
     //------------  Affichage Tooltip ----------------
     $ToolTip_Helper->addTooltip("ttp_alliance_" . $ally,  $tooltip);
 }

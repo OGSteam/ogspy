@@ -154,6 +154,7 @@ class PlayerModelTest extends TestCase
 
         // Create a fresh mock for this test
         $mockDb = $this->createMock(MockDatabase::class);
+        $mockDb->method('sql_escape_string')->willReturnArgument(0);
         $mockDb->expects($this->once())
             ->method('sql_query')
             ->with($this->stringContains("WHERE `name` = '$playerName'"))
