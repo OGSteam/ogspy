@@ -1842,12 +1842,16 @@ function displayGalaxyLegend()
  * @param $player Nom du joueur
  * @return string
  */
-function displayGalaxyPlayerTooltip(string $playerName)
+function displayGalaxyPlayerTooltip(int $playerId)
 {
     global $lang;
 
     $Player_Model = new Player_Model();
-    $playerId = $Player_Model->getPlayerId($playerName);
+    $playerName = $Player_Model->get_player_name($playerId);
+    
+    if (!$playerName) {
+        return ''; // Return empty if player not found
+    }
 
     $tooltip = '<table class="og-table og-small-table">';
     $tooltip .= "<thead><tr><th colspan=\"3\" >" . $lang['GALAXY_PLAYER'] . " " . $playerName . "</th></tr></thead>";

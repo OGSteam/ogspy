@@ -17,7 +17,7 @@ DB_PREFIX=${DB_PREFIX:-"ogspy_"}
 echo "📁 Correction des permissions des dossiers nécessaires..."
 for d in /var/www/html/config /var/www/html/install /var/www/html/cache /var/www/html/logs /var/www/html/mod; do
   [ -d "$d" ] || continue
-  chmod -R g+rwX,u+rwX "${d}" 2>/dev/null || true
+  chmod -R u+rwX,g+rwX "${d}" 2>/dev/null || true
 done
 
 echo "📦 Installation des dépendances Composer..."
@@ -25,17 +25,11 @@ cd /var/www/html
 ## Fix Git 'dubious ownership' when repo is mounted from host (common with Docker Desktop on Windows)
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   git config --global --add safe.directory /var/www/html || true
-  if id -u vscode >/dev/null 2>&1; then
-    su -s /bin/bash -c "git config --global --add safe.directory /var/www/html || true" vscode || true
-  fi
 fi
 
-# Run composer as vscode user if available to avoid root-owned files on host mounts
-if id -u vscode >/dev/null 2>&1; then
-  su -s /bin/bash -c "composer install --no-interaction --optimize-autoloader" vscode
-else
-  composer install --no-interaction --optimize-autoloader
-fi
+# Run composer with appropriate user
+composer install --no-interaction --optimize-autoloader
+
 echo "✅ Dépendances Composer installées (dev + prod)"
 
 RETRY_COUNT=0
