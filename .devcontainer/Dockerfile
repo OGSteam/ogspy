@@ -15,17 +15,29 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Xdebug via PECL and enable it
-RUN pecl install xdebug || pecl install xdebug-3.2.0 || true \
-    && docker-php-ext-enable xdebug
+# Install PCOV for code coverage (lightweight alternative to Xdebug)
+RUN pecl install pcov \
+    && docker-php-ext-enable pcov
 
-# Configure Xdebug defaults (can be overridden with env vars)
+# Configure PCOV (append to existing config)
 RUN { \
-    echo "xdebug.mode=debug,coverage"; \
+    echo ""; \
+    echo "pcov.enabled=1"; \
+    echo "pcov.directory=/var/www/html"; \
+} >> /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
+
+# Install Xdebug for debugging (optional, separate from coverage)
+RUN pecl install xdebug || pecl install xdebug-3.2.0 || true \
+    && docker-php-ext-enable xdebug || true
+
+# Configure Xdebug for debugging only (append to existing config)
+RUN { \
+    echo ""; \
+    echo "xdebug.mode=debug"; \
     echo "xdebug.start_with_request=yes"; \
     echo "xdebug.client_host=${XDEBUG_CLIENT_HOST:-host.docker.internal}"; \
     echo "xdebug.client_port=${XDEBUG_CLIENT_PORT:-9003}"; \
-} > /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+} >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini || true
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -35,9 +47,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ARG USER_UID=1000
 ARG USER_GID=1000
 
-# Modify www-data user to use UID/GID 1000
+# Modify www-data user to use UID/GID 1000 and set bash as shell
 RUN groupmod -g ${USER_GID} www-data \
-    && usermod -u ${USER_UID} -g ${USER_GID} www-data \
+    && usermod -u ${USER_UID} -g ${USER_GID} -s /bin/bash www-data \
     && chown -R www-data:www-data /var/www
 
 # Configure Apache to run as www-data

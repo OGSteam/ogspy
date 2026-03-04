@@ -555,8 +555,6 @@ function galaxy_ally_position($step = 50)
             }
         }
     }
-    user_set_stat(null, null, 1);
-
     return $statistics;
 }
 
