@@ -20,17 +20,16 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "bmewburn.vscode-intelephense-client",
         "ms-vscode.vscode-json",
-        "formulahendry.auto-rename-tag",
-        "christian-kohler.path-intellisense",
-        "xdebug.php-debug",
-        "GitHub.copilot"
+        "ms-azuretools.vscode-docker",
+        "ms-vscode-remote.remote-containers",
+        "felixfbecker.php-debug",
+        "bmewburn.vscode-intelephense-client"
       ],
       "settings": {
         "php.validate.executablePath": "/usr/local/bin/php",
         "php.debug.executablePath": "/usr/local/bin/php",
-        "intelephense.environment.phpVersion": "8.4.0"
+        "intelephense.environment.phpVersion": "8.5.0"
       }
     }
   },
