@@ -1,0 +1,31 @@
+name: Deployment Request
+description: Request a deployment of OGSpy to Infomaniak hosting
+labels:
+  - deploy
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🚀 OGSpy Deployment Request
+
+        Submitting this form will trigger a deployment workflow.
+        **No files will be deployed until the owner manually approves the request.**
+
+  - type: input
+    id: version
+    attributes:
+      label: Version (optional)
+      description: Leave empty to deploy the latest published release from OGSteam/ogspy.
+      placeholder: "e.g. 4.0.2"
+    validations:
+      required: false
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Reason for deployment
+      description: Briefly explain why this deployment is needed.
+      placeholder: "e.g. New release with critical bug fix available"
+    validations:
+      required: true

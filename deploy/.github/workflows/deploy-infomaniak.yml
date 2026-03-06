@@ -1,0 +1,198 @@
+name: Deploy OGSpy to Infomaniak
+
+# Triggered when the "deploy" label is applied to an issue.
+# The deployment is gated behind a GitHub Environment with required reviewer approval.
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  issues: write  # post comments and close issues
+
+jobs:
+  # ────────────────────────────────────────────────────────────────
+  # Job 1 – immediately acknowledge the request on the issue
+  # ────────────────────────────────────────────────────────────────
+  notify:
+    name: Acknowledge request
+    if: github.event.label.name == 'deploy'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment on issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: [
+                '## 🕐 Deployment Request Received',
+                '',
+                'Your request has been queued and is **awaiting manual approval** before any files are deployed.',
+                '',
+                `**Workflow run:** [#${context.runId}](${runUrl})`,
+                '',
+                '> The owner must approve the deployment in the Actions tab before it proceeds.',
+              ].join('\n'),
+            });
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 2 – deploy (paused until owner approves via the environment)
+  # ────────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to Infomaniak
+    needs: notify
+    if: github.event.label.name == 'deploy'
+    runs-on: ubuntu-latest
+    # This environment has "Required reviewers" configured → the job
+    # pauses here and sends an approval notification to the owner.
+    environment: infomaniak-production
+    outputs:
+      version: ${{ steps.release.outputs.version }}
+    steps:
+      # ── Parse the issue body to extract version and action fields ──
+      - name: Parse issue body
+        id: parse
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.issue.body || '';
+
+            // GitHub issue forms render each field as "### Label\n\nValue"
+            const versionMatch = body.match(/### Version[^\n]*\n+([^\n#]+)/);
+            const version = versionMatch ? versionMatch[1].trim() : '';
+
+            core.setOutput('version', version);
+
+      # ── Download the requested (or latest) release zip from OGSteam/ogspy ──
+      - name: Download OGSpy release
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.OGSPY_GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ steps.parse.outputs.version }}"
+
+          if [ -z "$VERSION" ]; then
+            # Prefer the latest published release; fall back to latest draft
+            VERSION=$(gh release list -R OGSteam/ogspy \
+              --exclude-drafts --limit 1 --json tagName -q '.[0].tagName' 2>/dev/null || true)
+          fi
+
+          if [ -z "$VERSION" ]; then
+            echo "::error::No published release found in OGSteam/ogspy"
+            exit 1
+          fi
+
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Downloading OGSpy ${VERSION} …"
+          gh release download "$VERSION" -R OGSteam/ogspy --pattern "*.zip" -O ogspy.zip
+
+      # ── Extract the zip ──
+      - name: Extract release archive
+        run: unzip -q ogspy.zip -d ogspy/
+
+      # ── Upload files to Infomaniak via FTPS ──
+      - name: Deploy files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.INFOMANIAK_FTP_HOST }}
+          username: ${{ secrets.INFOMANIAK_FTP_USER }}
+          password: ${{ secrets.INFOMANIAK_FTP_PASSWORD }}
+          local-dir: ./ogspy/
+          server-dir: ${{ secrets.INFOMANIAK_DEPLOY_PATH }}
+          # Protect user-specific and runtime files from being overwritten
+          exclude: |
+            config/id.php
+            config/key.php
+            config/salt
+            install/install.lock
+            cache/**
+            logs/**
+
+      # ── Run the CLI upgrader on the remote server via SSH ──
+      - name: Run upgrade CLI via SSH
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.INFOMANIAK_SSH_HOST }}
+          username: ${{ secrets.INFOMANIAK_SSH_USER }}
+          key: ${{ secrets.INFOMANIAK_SSH_KEY }}
+          script: |
+            cd "${{ secrets.INFOMANIAK_DEPLOY_PATH }}"
+            php install/upgrade_cli.php upgrade
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 3 – always runs last; posts the outcome back to the issue
+  # ────────────────────────────────────────────────────────────────
+  comment-result:
+    name: Post result
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: always() && github.event.label.name == 'deploy'
+    steps:
+      - name: Comment – success
+        if: needs.deploy.result == 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const version = '${{ needs.deploy.outputs.version }}';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: [
+                '## ✅ Deployment Successful',
+                '',
+                `**Version deployed:** \`${version}\``,
+                `**Target:** Infomaniak (production)`,
+                '',
+                `**Workflow run:** [#${context.runId}](${runUrl})`,
+              ].join('\n'),
+            });
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: 'closed',
+              state_reason: 'completed',
+            });
+
+      - name: Comment – failure
+        if: needs.deploy.result == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: [
+                '## ❌ Deployment Failed',
+                '',
+                'The deployment encountered an error. Review the workflow logs for details.',
+                '',
+                `**Workflow run:** [#${context.runId}](${runUrl})`,
+              ].join('\n'),
+            });
+
+      - name: Comment – rejected / cancelled
+        if: needs.deploy.result == 'cancelled'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: '## 🚫 Deployment Rejected\n\nThe deployment request was rejected or cancelled by the owner.',
+            });
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: 'closed',
+              state_reason: 'not_planned',
+            });
