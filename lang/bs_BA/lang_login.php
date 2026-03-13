@@ -16,7 +16,7 @@ $lang['LOGIN_PASSWORD'] = "Lozinka";
 $lang['LOGIN_CONNEXION_BUTTON'] = "Spajanje";
 
 $lang['LOGIN_ACCOUNT_REQUEST'] = "Zahtjev za OGSpy računom";
-$lang['LOGIN_ACCOUNT_REQUEST_DESC'] = "Ako nemate račun, <br>morate ga zatražiti na saveznom forumu.";
+$lang['LOGIN_ACCOUNT_REQUEST_DESC'] = "Ako nemate račun, \nmorate ga zatražiti na saveznom forumu.";
 $lang['LOGIN_ACCOUNT_REQUEST_BUTTON'] = "Zatražite račun";
 
 

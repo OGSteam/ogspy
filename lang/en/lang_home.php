@@ -17,7 +17,7 @@ $lang['HOME_STATISTICS_TITLE'] = "Statistics";
 
 /* home_empire.php */
 
-$lang['HOME_EMPIRE_TITLEDESC'] = "Empire &amp; Buildings &amp; Research &amp; Defences";
+$lang['HOME_EMPIRE_TITLEDESC'] = "Empire & Buildings & Research & Defences";
 $lang['HOME_EMPIRE_PLANET'] = "Planets";
 $lang['HOME_EMPIRE_MOON'] = "Moons";
 $lang['HOME_EMPIRE_ERROR'] = "An inconsistency was found in your personal space";

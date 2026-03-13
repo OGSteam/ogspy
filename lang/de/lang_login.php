@@ -16,7 +16,7 @@ $lang['LOGIN_PASSWORD'] = "Passwort";
 $lang['LOGIN_CONNEXION_BUTTON'] = "verbinden";
 
 $lang['LOGIN_ACCOUNT_REQUEST'] = "Konto Anmeldung OGSpy";
-$lang['LOGIN_ACCOUNT_REQUEST_DESC'] = "Wenn Sie noch kein Konto haben, <br> muss man in der Allianz Forum anfordern.";
+$lang['LOGIN_ACCOUNT_REQUEST_DESC'] = "Wenn Sie noch kein Konto haben, \n muss man in der Allianz Forum anfordern.";
 $lang['LOGIN_ACCOUNT_REQUEST_BUTTON'] = "Neukunden";
 
 
