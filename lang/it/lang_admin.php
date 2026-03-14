@@ -215,7 +215,6 @@ $lang['ADMIN_PARAMS_DURATION_NUMBER'] = "Numero";
 $lang['ADMIN_PARAMS_DURATION_DAYS'] = "Giorni";
 $lang['ADMIN_PARAMS_DURATION_SPYREPORTS'] = "Tempo di mantenimento di rapporti di spionaggio [1-999 giorni o numero]";
 $lang['ADMIN_PARAMS_MAX_SPYREPORTS'] = "Numero massimo di rapporti di spionaggio per pianeta [1-50]";
-$lang['ADMIN_PARAMS_DURATION_SPYREPORTS'] = "Tempo di mantenimento di rapporti di spionaggio [1-999 giorni o numero]";
 $lang['ADMIN_PARAMS_DURATION_LOGS'] = "Durata di conservazione dei file di log [0-365 giorni]";
 $lang['ADMIN_PARAMS_GAME_OPTIONS'] = "Opzioni dell'universo";
 $lang['ADMIN_PARAMS_GAME_GALAXIES'] = "Numero di galassie";

@@ -213,7 +213,6 @@ $lang['ADMIN_PARAMS_DURATION_NUMBER'] = "Number";
 $lang['ADMIN_PARAMS_DURATION_DAYS'] = "Days";
 $lang['ADMIN_PARAMS_DURATION_SPYREPORTS'] = "Spy reports storage [1-999 days or number]";
 $lang['ADMIN_PARAMS_MAX_SPYREPORTS'] = "Spy reports storage / planet [1-50]";
-$lang['ADMIN_PARAMS_DURATION_SPYREPORTS'] = "Spy reports storage [1-999 days or number]";
 $lang['ADMIN_PARAMS_DURATION_LOGS'] = "Log retention [0-365 days]";
 $lang['ADMIN_PARAMS_GAME_OPTIONS'] = "Options of the universe";
 $lang['ADMIN_PARAMS_GAME_GALAXIES'] = "Number of galaxies";

@@ -215,7 +215,6 @@ $lang['ADMIN_PARAMS_DURATION_NUMBER'] = "Broj";
 $lang['ADMIN_PARAMS_DURATION_DAYS'] = "Dana";
 $lang['ADMIN_PARAMS_DURATION_SPYREPORTS'] = "Trajanje izvještaja o špijunaži [1-999 dana ili brojeva]";
 $lang['ADMIN_PARAMS_MAX_SPYREPORTS'] = "Maksimalni broj izvještaja o špijunaži planeta [1-50]";
-$lang['ADMIN_PARAMS_DURATION_SPYREPORTS'] = "Trajanje izvještaja o špijunaži [1-999 dana ili brojeva]";
 $lang['ADMIN_PARAMS_DURATION_LOGS'] = "Maksimalni broj log datoteka [0-365 dana]";
 $lang['ADMIN_PARAMS_GAME_OPTIONS'] = "Opcije za univerzum";
 $lang['ADMIN_PARAMS_GAME_GALAXIES'] = "Broj galaksija";
