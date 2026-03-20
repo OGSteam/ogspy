@@ -58,5 +58,4 @@ VALUES ('allied', ''),
        ('speed_uni', '1');
 
 
-INSERT INTO `ogspy_group`
-VALUES (1, 'Standard', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `ogspy_group` VALUES (1, 'Standard', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
