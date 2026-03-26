@@ -23,6 +23,7 @@ $lang['ADMIN_TITLE_GROUP_CONF'] = "Gestion des groupes";
 $lang['ADMIN_TITLE_LOGS_CONF'] = "Journal";
 $lang['ADMIN_TITLE_MODS_CONF'] = "Modules";
 $lang['ADMIN_TITLE_HELPER_CONF'] = "Helper";
+$lang['ADMIN_TITLE_RESET'] = "Remise à zéro";
 
 
 /* admin_affichage.php */
@@ -266,3 +267,13 @@ $lang['ADMIN_LOGS_VIEWER'] = "Visionneuse :";
 
 
 $lang['ADMIN_HELPER_HERE'] = "Helpers Installés :";
+
+/* admin_reset.php */
+$lang['ADMIN_RESET_TITLE'] = "Remise à zéro du serveur OGSpy";
+$lang['ADMIN_RESET_WARNING'] = "Cette opération va effacer toutes les données du jeu de manière irréversible :";
+$lang['ADMIN_RESET_ITEM_MODS'] = "Désinstallation de tous les modules";
+$lang['ADMIN_RESET_ITEM_GAMEDATA'] = "Suppression de toutes les données jeu (univers, joueurs, alliances, classements, rapports d'espionnage, rapports de combat...)";
+$lang['ADMIN_RESET_ITEM_STATS'] = "Remise à zéro des statistiques du serveur";
+$lang['ADMIN_RESET_PRESERVED'] = "Les comptes utilisateurs, groupes et la configuration du serveur sont conservés.";
+$lang['ADMIN_RESET_CONFIRM'] = "ATTENTION : Cette action est irréversible !\nÊtes-vous sûr de vouloir effacer toutes les données du jeu ?";
+$lang['ADMIN_RESET_BUTTON'] = "Remettre à zéro les données du serveur";

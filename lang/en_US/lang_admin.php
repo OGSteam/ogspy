@@ -23,6 +23,7 @@ $lang['ADMIN_TITLE_GROUP_CONF'] = "Group management";
 $lang['ADMIN_TITLE_LOGS_CONF'] = "Logs";
 $lang['ADMIN_TITLE_MODS_CONF'] = "Modules";
 $lang['ADMIN_TITLE_HELPER_CONF'] = "Helper";
+$lang['ADMIN_TITLE_RESET'] = "Reset";
 
 
 /* admin_affichage.php */
@@ -266,3 +267,13 @@ $lang['ADMIN_LOGS_VIEWER'] = "Viewer :";
 
 
 $lang['ADMIN_HELPER_HERE'] = "Helpers Available :";
+
+/* admin_reset.php */
+$lang['ADMIN_RESET_TITLE'] = "OGSpy Server Reset";
+$lang['ADMIN_RESET_WARNING'] = "This operation will permanently erase all game data:";
+$lang['ADMIN_RESET_ITEM_MODS'] = "Uninstallation of all modules";
+$lang['ADMIN_RESET_ITEM_GAMEDATA'] = "Deletion of all game data (universe, players, alliances, rankings, spy reports, combat reports...)";
+$lang['ADMIN_RESET_ITEM_STATS'] = "Reset of server statistics";
+$lang['ADMIN_RESET_PRESERVED'] = "User accounts, groups and server configuration are preserved.";
+$lang['ADMIN_RESET_CONFIRM'] = "WARNING: This action is irreversible!\nAre you sure you want to erase all game data?";
+$lang['ADMIN_RESET_BUTTON'] = "Reset server data";

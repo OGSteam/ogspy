@@ -19,6 +19,7 @@ use Ogsteam\Ogspy\Model\AstroObject_Model;
 use Ogsteam\Ogspy\Model\Player_Building_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\User_Favorites_Model;
+use Ogsteam\Ogspy\Model\Mod_Model;
 use Random\RandomException;
 
 
@@ -1332,6 +1333,90 @@ function admin_raz_ratio($maintenance_action = false)
             'admin_user_id' => $user_data['id'] ?? 'unknown'
         ]);
     }
+}
+
+/**
+ * Resets all OGSpy game data from the admin panel.
+ * Uninstalls all mods, truncates game tables and resets statistics.
+ * User accounts, groups and server configuration are preserved.
+ */
+function admin_reset_data()
+{
+    global $user_data, $log;
+
+    $log->info("Tentative de remise à zéro des données OGSpy", [
+        'type' => 'admin_reset_attempt',
+        'admin_user_id' => $user_data['id'] ?? 'unknown',
+        'admin_username' => $user_data['name'] ?? 'unknown',
+        'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+    ]);
+
+    if ($user_data["admin"] != 1) {
+        $log->critical("Tentative d'accès non autorisée à la remise à zéro OGSpy", [
+            'type' => 'admin_reset_access_denied',
+            'user_id' => $user_data['id'] ?? 'unknown',
+            'username' => $user_data['name'] ?? 'unknown',
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+        ]);
+        die("Acces interdit");
+    }
+
+    // Only accept POST requests to prevent CSRF via GET
+    if (!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
+        redirection("index.php?action=administration&subaction=reset");
+        return;
+    }
+
+    try {
+        $Mod_Model = new Mod_Model();
+        $mods = $Mod_Model->find_by();
+
+        foreach ($mods as $mod) {
+            $root = $mod['root'];
+            if (file_exists("mod/" . $root . "/uninstall.php")) {
+                try {
+                    global $db; // fix pour mod ne faisant pas l'inclusion mais l'utilisant (xtense...)
+                    require_once("mod/" . $root . "/uninstall.php");
+                    $log->debug("Uninstall script executed for mod", ['mod_root' => $root]);
+                } catch (Exception $e) {
+                    $log->warning("Error running uninstall script for mod", [
+                        'mod_root' => $root,
+                        'error' => $e->getMessage()
+                    ]);
+                }
+            }
+            $Mod_Model->delete($mod['id']);
+        }
+
+        try {
+            generate_mod_cache();
+        } catch (Exception $e) {
+            $log->warning("Failed to regenerate mod cache after reset", ['error' => $e->getMessage()]);
+        }
+
+        $dbUtils = new DBUtils_Model();
+        $dbUtils->truncate_game_data();
+        $dbUtils->reset_statistics();
+        $dbUtils->reset_user_stats();
+
+        $log->info("Remise à zéro des données OGSpy effectuée avec succès", [
+            'type' => 'admin_reset_success',
+            'admin_user_id' => $user_data['id'] ?? 'unknown',
+            'admin_username' => $user_data['name'] ?? 'unknown',
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+        ]);
+    } catch (Exception $e) {
+        $log->error("Erreur lors de la remise à zéro des données OGSpy", [
+            'type' => 'admin_reset_failed',
+            'admin_user_id' => $user_data['id'] ?? 'unknown',
+            'error' => $e->getMessage(),
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+        ]);
+        redirection("index.php?action=message&id_message=admin_reset_failed&info");
+        return;
+    }
+
+    redirection("index.php?action=message&id_message=admin_reset_success&info");
 }
 
 /**
