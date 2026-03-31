@@ -1367,6 +1367,18 @@ function admin_reset_data()
         return;
     }
 
+    // Require the typed confirmation keyword
+    $reset_confirm = $_POST['reset_confirm'] ?? '';
+    if ($reset_confirm !== 'RESET') {
+        $log->warning("Tentative de remise à zéro sans confirmation valide", [
+            'type' => 'admin_reset_invalid_confirm',
+            'admin_user_id' => $user_data['id'] ?? 'unknown',
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+        ]);
+        redirection("index.php?action=administration&subaction=reset");
+        return;
+    }
+
     try {
         $Mod_Model = new Mod_Model();
         $mods = $Mod_Model->find_by();

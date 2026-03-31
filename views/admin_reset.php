@@ -43,8 +43,21 @@ if ($user_data["admin"] != 1) {
         <tbody>
             <tr>
                 <td>
-                    <input class="og-button og-button-warning" type="submit"
-                           value="<?= $lang['ADMIN_RESET_BUTTON'] ?>">
+                    <label for="reset_confirm_input"><?= $lang['ADMIN_RESET_TYPE_LABEL'] ?></label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" id="reset_confirm_input" name="reset_confirm"
+                           placeholder="<?= htmlspecialchars($lang['ADMIN_RESET_TYPE_PLACEHOLDER'], ENT_QUOTES, 'UTF-8') ?>"
+                           autocomplete="off"
+                           oninput="document.getElementById('reset_submit_btn').disabled = (this.value !== '<?= htmlspecialchars($lang['ADMIN_RESET_TYPE_KEYWORD'], ENT_QUOTES, 'UTF-8') ?>');">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="reset_submit_btn" class="og-button og-button-warning" type="submit"
+                           value="<?= $lang['ADMIN_RESET_BUTTON'] ?>" disabled>
                 </td>
             </tr>
         </tbody>

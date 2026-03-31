@@ -125,6 +125,8 @@ switch ($pub_subaction) {
                     <?php echo $lang['ADMIN_TITLE_MODS_CONF']; ?>
                 </a>
             </div>
+        <?php endif; ?>
+        <?php if ($user_data["admin"] == 1) : //super admin only ?>
             <div class="nav-page-menu-item nav-page-menu-item-admin-reset <?php echo $tagactivereset; ?>">
                 <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=reset">
                     <?php echo $lang['ADMIN_TITLE_RESET']; ?>

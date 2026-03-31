@@ -277,3 +277,6 @@ $lang['ADMIN_RESET_ITEM_STATS'] = "Remise à zéro des statistiques du serveur";
 $lang['ADMIN_RESET_PRESERVED'] = "Les comptes utilisateurs, groupes et la configuration du serveur sont conservés.";
 $lang['ADMIN_RESET_CONFIRM'] = "ATTENTION : Cette action est irréversible !\nÊtes-vous sûr de vouloir effacer toutes les données du jeu ?";
 $lang['ADMIN_RESET_BUTTON'] = "Remettre à zéro les données du serveur";
+$lang['ADMIN_RESET_TYPE_LABEL'] = "Pour confirmer, saisissez RESET dans le champ ci-dessous :";
+$lang['ADMIN_RESET_TYPE_PLACEHOLDER'] = "Saisissez RESET";
+$lang['ADMIN_RESET_TYPE_KEYWORD'] = "RESET";
