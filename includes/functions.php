@@ -1373,6 +1373,11 @@ function admin_reset_data()
 
         foreach ($mods as $mod) {
             $root = $mod['root'];
+            if (empty($root)) {
+                $log->warning("Skipping mod with empty root during reset", ['mod_id' => $mod['id']]);
+                $Mod_Model->delete($mod['id']);
+                continue;
+            }
             if (file_exists("mod/" . $root . "/uninstall.php")) {
                 try {
                     global $db; // fix pour mod ne faisant pas l'inclusion mais l'utilisant (xtense...)
