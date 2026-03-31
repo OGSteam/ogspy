@@ -38,7 +38,7 @@ if ($user_data["admin"] != 1) {
 </table>
 
 <form method="post" action="index.php?action=admin_reset"
-      onsubmit="return confirm(<?= json_encode($lang['ADMIN_RESET_CONFIRM']) ?>)">
+      onsubmit="return confirm(<?= htmlspecialchars(json_encode($lang['ADMIN_RESET_CONFIRM']), ENT_COMPAT, 'UTF-8') ?>)">
     <input type="hidden" name="token" value="<?= htmlspecialchars(token::staticGetToken(600, 'admin_reset'), ENT_QUOTES, 'UTF-8') ?>">
     <table class="og-table og-full-table">
         <tbody>
@@ -52,7 +52,7 @@ if ($user_data["admin"] != 1) {
                     <input type="text" id="reset_confirm_input" name="reset_confirm"
                            placeholder="<?= htmlspecialchars($lang['ADMIN_RESET_TYPE_PLACEHOLDER'], ENT_QUOTES, 'UTF-8') ?>"
                            autocomplete="off"
-                           oninput="document.getElementById('reset_submit_btn').disabled = (this.value !== <?= json_encode(ADMIN_RESET_CONFIRM_KEYWORD) ?>);">
+                           oninput="document.getElementById('reset_submit_btn').disabled = (this.value !== '<?= ADMIN_RESET_CONFIRM_KEYWORD ?>');">
                 </td>
             </tr>
             <tr>
