@@ -279,4 +279,3 @@ $lang['ADMIN_RESET_CONFIRM'] = "WARNING: This action is irreversible!\nAre you s
 $lang['ADMIN_RESET_BUTTON'] = "Reset server data";
 $lang['ADMIN_RESET_TYPE_LABEL'] = "To confirm, type RESET in the field below:";
 $lang['ADMIN_RESET_TYPE_PLACEHOLDER'] = "Type RESET";
-$lang['ADMIN_RESET_TYPE_KEYWORD'] = "RESET";

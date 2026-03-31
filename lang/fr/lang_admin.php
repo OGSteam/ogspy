@@ -279,4 +279,3 @@ $lang['ADMIN_RESET_CONFIRM'] = "ATTENTION : Cette action est irréversible !\nÊ
 $lang['ADMIN_RESET_BUTTON'] = "Remettre à zéro les données du serveur";
 $lang['ADMIN_RESET_TYPE_LABEL'] = "Pour confirmer, saisissez RESET dans le champ ci-dessous :";
 $lang['ADMIN_RESET_TYPE_PLACEHOLDER'] = "Saisissez RESET";
-$lang['ADMIN_RESET_TYPE_KEYWORD'] = "RESET";

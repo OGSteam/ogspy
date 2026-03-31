@@ -316,13 +316,13 @@ switch ($pub_id_message) {
     case "admin_reset_success":
         $msgType = "success";
         $msgContent = $lang['MSG_ADMIN_RESET_SUCCESS'];
-        $msgURLButton = 'index.php?action=administration&amp;subaction=infoserver';
+        $msgURLButton = 'index.php?action=administration&subaction=infoserver';
         break;
 
     case "admin_reset_failed":
         $msgType = "danger";
         $msgContent = $lang['MSG_ADMIN_RESET_FAILED'];
-        $msgURLButton = 'index.php?action=administration&amp;subaction=reset';
+        $msgURLButton = 'index.php?action=administration&subaction=reset';
         break;
 
     default:
