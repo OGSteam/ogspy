@@ -12,7 +12,7 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 if ($user_data["admin"] != 1) {
-    redirection("index.php?action=message&amp;id_message=forbidden&amp;info");
+    redirection("index.php?action=message&id_message=forbidden&info");
 }
 ?>
 
