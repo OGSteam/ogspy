@@ -1415,7 +1415,6 @@ function generate_key()
 {
     //création de la clef
     $str = "abcdefghijklmnopqrstuvwxyzABCDEVGHIJKLMOPQRSTUVWXYZ";
-    srand((float)microtime() * 1000000);
     $pass = time();
     for ($i = 0; $i < 20; $i++) {
         $pass .= $str[random_int(0, strlen($str) - 1)];
