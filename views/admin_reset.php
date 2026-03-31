@@ -37,8 +37,7 @@ if ($user_data["admin"] != 1) {
     </tbody>
 </table>
 
-<form method="post" action="index.php?action=admin_reset"
-      onsubmit="return confirm(<?= htmlspecialchars(json_encode($lang['ADMIN_RESET_CONFIRM']), ENT_COMPAT, 'UTF-8') ?>)">
+<form method="post" action="index.php?action=admin_reset">
     <input type="hidden" name="token" value="<?= htmlspecialchars(token::staticGetToken(600, 'admin_reset'), ENT_QUOTES, 'UTF-8') ?>">
     <table class="og-table og-full-table">
         <tbody>
