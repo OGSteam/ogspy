@@ -64,4 +64,6 @@ $lang['MSG_DB_OPTIM_BEFORE'] = "Espace occupé avant optimisation";
 $lang['MSG_DB_OPTIM_AFTER'] = "Espace occupé après optimisation";
 $lang['MSG_EMPIRE_DATA_FAILURE'] = "Un problème est survenu durant l'acquisition de votre empire";
 $lang['MSG_RATIO_RAZ'] = "Remise à zéro des recherches effectuée.";
+$lang['MSG_ADMIN_RESET_SUCCESS'] = "Remise à zéro du serveur effectuée avec succès.";
+$lang['MSG_ADMIN_RESET_FAILED'] = "Une erreur est survenue lors de la remise à zéro du serveur.";
 $lang['MSG_BACK'] = "Retour";

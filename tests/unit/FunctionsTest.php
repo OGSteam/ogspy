@@ -28,8 +28,84 @@ class FunctionsTest extends TestCase
 
     }
 
+    // -------------------------------------------------------------------------
+    // admin_reset_check_preconditions() tests
+    // -------------------------------------------------------------------------
 
+    private function loadResetDeps(): void
+    {
+        if (!defined('IN_SPYOGAME')) define('IN_SPYOGAME', true);
+        require_once 'includes/functions.php';
+        require_once 'includes/token.php';
+        if (!isset($_SESSION)) {
+            $_SESSION = [];
+        }
+    }
 
+    public function testAdminResetDeniedForNonAdmin(): void
+    {
+        $this->loadResetDeps();
+        $result = admin_reset_check_preconditions(
+            ['admin' => 0, 'coadmin' => 1],
+            'POST',
+            ['reset_confirm' => ADMIN_RESET_CONFIRM_KEYWORD, 'token' => 'any']
+        );
+        $this->assertSame('access_denied', $result);
+    }
 
+    public function testAdminResetDeniedForGetRequest(): void
+    {
+        $this->loadResetDeps();
+        $result = admin_reset_check_preconditions(
+            ['admin' => 1],
+            'GET',
+            ['reset_confirm' => ADMIN_RESET_CONFIRM_KEYWORD, 'token' => 'any']
+        );
+        $this->assertSame('not_post', $result);
+    }
 
+    public function testAdminResetDeniedForWrongKeyword(): void
+    {
+        $this->loadResetDeps();
+        $result = admin_reset_check_preconditions(
+            ['admin' => 1],
+            'POST',
+            ['reset_confirm' => 'wrong', 'token' => 'any']
+        );
+        $this->assertSame('invalid_confirm', $result);
+    }
+
+    public function testAdminResetDeniedForEmptyKeyword(): void
+    {
+        $this->loadResetDeps();
+        $result = admin_reset_check_preconditions(
+            ['admin' => 1],
+            'POST',
+            []
+        );
+        $this->assertSame('invalid_confirm', $result);
+    }
+
+    public function testAdminResetDeniedForInvalidToken(): void
+    {
+        $this->loadResetDeps();
+        $result = admin_reset_check_preconditions(
+            ['admin' => 1],
+            'POST',
+            ['reset_confirm' => ADMIN_RESET_CONFIRM_KEYWORD, 'token' => 'bad____token']
+        );
+        $this->assertSame('invalid_token', $result);
+    }
+
+    public function testAdminResetAllowedWithValidToken(): void
+    {
+        $this->loadResetDeps();
+        $token = token::staticGetToken(600, 'admin_reset');
+        $result = admin_reset_check_preconditions(
+            ['admin' => 1],
+            'POST',
+            ['reset_confirm' => ADMIN_RESET_CONFIRM_KEYWORD, 'token' => $token]
+        );
+        $this->assertNull($result);
+    }
 }

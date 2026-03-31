@@ -64,4 +64,6 @@ $lang['MSG_DB_OPTIM_BEFORE'] = "Space used before optimization";
 $lang['MSG_DB_OPTIM_AFTER'] = "Space used after optimization";
 $lang['MSG_EMPIRE_DATA_FAILURE'] = "A problem has been found when getting your empire data";
 $lang['MSG_RATIO_RAZ'] = "Ratio reset has been performed";
+$lang['MSG_ADMIN_RESET_SUCCESS'] = "Server reset completed successfully.";
+$lang['MSG_ADMIN_RESET_FAILED'] = "An error occurred during the server reset.";
 $lang['MSG_BACK'] = "Back";
