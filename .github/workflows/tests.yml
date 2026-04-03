@@ -38,7 +38,7 @@ jobs:
             ${{ runner.os }}-php-
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
+        run: composer install --prefer-dist --no-progress --no-interaction
 
       - name: Run unit tests
         run: php -d xdebug.mode=coverage vendor/bin/phpunit
