@@ -88,5 +88,4 @@ if (defined("INSTALL_IN_PROGRESS") || defined("UPGRADE_IN_PROGRESS")) {
     load_lang_file($ui_lang, "lang_help.php");
 }
 
-//TODO: Nettoyer les fichiers de lang avant !
-// $lang = lang_secure($lang);
+$lang = lang_secure($lang);
