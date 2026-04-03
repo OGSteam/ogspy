@@ -21,10 +21,10 @@ $lang["help_search_strict"] = "<font color=orange>Searched Player :</font><br><i
 
 $lang["help_home_commandant"] = "Page empire commander Account";
 
-$lang["help_profile_login"] = "Must contain between 3 and 64 characters (special characters : ; &rsquo; et &quot; are not accepted)";
+$lang["help_profile_login"] = "Must contain between 3 and 64 characters (special characters : ; ’ et \" are not accepted)";
 $lang["help_profile_pseudo_email"] = "If completed, you will receive emails from some mods";
 $lang["help_profile_main_planet"] = "The Galaxy view will open directly on this solar system";
-$lang["help_profile_password"] = "Must contain between 6 and 64 characters (Except : ; &rsquo; et &quot; )";
+$lang["help_profile_password"] = "Must contain between 6 and 64 characters (Except : ; ’ et \" )";
 $lang["help_profile_galaxy"] = "Should contain a number between 1 and 999";
 $lang["help_profile_disable_ip_check"] = "Ip Adress verification prevents your account from a session steal.";
 $lang["help_profile_disable_ip_check"] .= "Si vous êtes déconnecté régulièrement (VPN, Proxy, etc), désactivez la vérification.<br><br>";

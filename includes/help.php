@@ -31,6 +31,8 @@ function help($key, $value = null, $prefixe = "")
     $key = "help_" . $key;
     $value = ($value == null) ? "Aide Introuvable" : $value;
     $value = (isset($lang[$key])) ? $lang[$key] : $value; // On ecrase la variable si présente dans ogspy donc non custom
+    // Decode HTML entities introduced by lang_secure() so that intentional HTML in help strings is preserved
+    $value = html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
     $text  = '<table class="og-table og-mini-table">';
     $text .= '<thead><tr><th>Aide</th></tr></thead>';

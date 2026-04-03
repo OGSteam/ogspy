@@ -57,11 +57,10 @@ class Sessions_Model extends Model_Abstract
         $user_id = (int)$user_id;
         $lastvisit = (int)$lastvisit;
         $cookie_id = $this->db->sql_escape_string($cookie_id);
-        $user_ip = (bool)$user_ip;
-
 
         $request = "UPDATE " . TABLE_SESSIONS . " SET `user_id` = " . $user_id . ", `session_lastvisit` = " . $lastvisit . " WHERE `id` = '" . $cookie_id . "'";
-        if ($user_ip) {
+        if ($user_ip !== false) {
+            $user_ip = $this->db->sql_escape_string($user_ip);
             $request .= " and `session_ip` = '" . $user_ip . "'";
         }
         $this->db->sql_query($request);

@@ -49,6 +49,7 @@ $nb_mail = $server_config['count_mail'] ?? 0;
 $stats = (new Statistics_Model())->find();
 //fix affichage info OGS
 //todo a supprimer, info insert xtense uniquement à la place ....
+$stats["connection_server"] = $stats["connection_server"] ?? 0;
 $stats["spyexport_ogs"] = $stats["spyexport_ogs"] ?? 0;
 $stats["spyimport_ogs"] = $stats["spyimport_ogs"] ?? 0;
 $stats["rankexport_ogs"] = $stats["rankexport_ogs"] ?? 0;

@@ -210,6 +210,10 @@ switch ($pub_action) {
         admin_raz_ratio();
         break;
 
+    case "admin_reset":
+        admin_reset_data();
+        break;
+
     //----------------------------------------//
     //---Gestion des membres---//
     //----------------------------------------//

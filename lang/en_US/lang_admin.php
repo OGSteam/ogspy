@@ -23,6 +23,7 @@ $lang['ADMIN_TITLE_GROUP_CONF'] = "Group management";
 $lang['ADMIN_TITLE_LOGS_CONF'] = "Logs";
 $lang['ADMIN_TITLE_MODS_CONF'] = "Modules";
 $lang['ADMIN_TITLE_HELPER_CONF'] = "Helper";
+$lang['ADMIN_TITLE_RESET'] = "Reset";
 
 
 /* admin_affichage.php */
@@ -31,14 +32,14 @@ $lang['ADMIN_DISPLAY_GALAXY_MIPS'] = "Showing IPMs";
 $lang['ADMIN_DISPLAY_STATS_TITLE'] = "Option of the page : Statistics";
 $lang['ADMIN_DISPLAY_STATS_MEMBER'] = "Viewing statistics Member";
 $lang['ADMIN_DISPLAY_STATS_CONNECTED'] = "Viewing members online";
-$lang['ADMIN_DISPLAY_STATS_GVIEW'] = "Number of galaxies per line <a>[1-100]</a>";
-$lang['ADMIN_DISPLAY_STATS_SVIEW'] = "Number of systems per line <a>[1-100]</a>";
+$lang['ADMIN_DISPLAY_STATS_GVIEW'] = "Number of galaxies per line [1-100]";
+$lang['ADMIN_DISPLAY_STATS_SVIEW'] = "Number of systems per line [1-100]";
 $lang['ADMIN_DISPLAY_ALLY_TITLE'] = "Option of the page : Alliance space";
-$lang['ADMIN_DISPLAY_ALLY_COLUMS'] = "Number of raw <a>[1-9]</a>";
+$lang['ADMIN_DISPLAY_ALLY_COLUMS'] = "Number of raw [1-9]";
 $lang['ADMIN_DISPLAY_ALLY_COLOR'] = "Alliance color";
 $lang['ADMIN_DISPLAY_ALLY_COLORDESC'] = "Must be the name of a color in English or code preceded by a #";
-$lang['ADMIN_DISPLAY_ALLY_GVIEW'] = "Number of galaxies per line <a>[1-100]</a>";
-$lang['ADMIN_DISPLAY_ALLY_SVIEW'] = "Number of systems per line <a>[1-100]</a>";
+$lang['ADMIN_DISPLAY_ALLY_GVIEW'] = "Number of galaxies per line [1-100]";
+$lang['ADMIN_DISPLAY_ALLY_SVIEW'] = "Number of systems per line [1-100]";
 $lang['ADMIN_DISPLAY_LOGIN_TITLE'] = "Connexion Settings";
 $lang['ADMIN_DISPLAY_LOGIN_REGISTER'] = "Displaying registration panel";
 $lang['ADMIN_DISPLAY_LOGIN_ALLYNAME'] = "Name of alliance";
@@ -193,10 +194,10 @@ $lang['ADMIN_PARAMS_ACTIVATESERVER'] = "Enable Server";
 $lang['ADMIN_PARAMS_OFFREASON'] = "Reason for closure";
 $lang['ADMIN_PARAMS_MEMBEROPTIONS'] = "Members options";
 $lang['ADMIN_PARAMS_ALLOW_IPCHECKDISABLING'] = "Allow disabling the control of IP addresses";
-$lang['ADMIN_PARAMS_MAXSSFAVORITES'] = "Maximum allowed favorites systems <a>[0-99]</a>";
+$lang['ADMIN_PARAMS_MAXSSFAVORITES'] = "Maximum allowed favorites systems [0-99]";
 $lang['ADMIN_PARAMS_MAXREFAVORITES'] = "Maximum allowed spy reports [0-99]";
 $lang['ADMIN_PARAMS_SESSIONS_TITLE'] = "Managing Sessions";
-$lang['ADMIN_PARAMS_SESSIONS_DURATION'] = "Sessions duration <a>[5-180 minutes]</a> <a>[0 = indefinite]</a>";
+$lang['ADMIN_PARAMS_SESSIONS_DURATION'] = "Sessions duration [5-180 minutes] [0 = indefinite]";
 $lang['ADMIN_PARAMS_ALLYPROTECT'] = "Protection Alliance";
 $lang['ADMIN_PARAMS_ALLYPROTECTLIST'] = "List of alliances not to display";
 $lang['ADMIN_PARAMS_ALLYPROTECTNOTICE'] = "Separate alliances with commas";
@@ -208,12 +209,11 @@ $lang['ADMIN_PARAMS_DEBUGSQLALERT'] = "Risk of degradation of server performance
 $lang['ADMIN_PARAMS_RATIOMOD'] = "Blocking mods by Ratio";
 $lang['ADMIN_PARAMS_RATIOBLIMIT'] = "Ratio of blocking limit";
 $lang['ADMIN_PARAMS_SERVICE'] = "Maintenance";
-$lang['ADMIN_PARAMS_DURATION_RANKS'] = "Rankings storage <a> [1-999 days or number] </a>";
+$lang['ADMIN_PARAMS_DURATION_RANKS'] = "Rankings storage  [1-999 days or number] ";
 $lang['ADMIN_PARAMS_DURATION_NUMBER'] = "Number";
 $lang['ADMIN_PARAMS_DURATION_DAYS'] = "Days";
-$lang['ADMIN_PARAMS_DURATION_SPYREPORTS'] = "Spy reports storage <a>[1-999 days or number]</a>";
-$lang['ADMIN_PARAMS_MAX_SPYREPORTS'] = "Spy reports storage / planet <a>[1-50]</a>";
-$lang['ADMIN_PARAMS_DURATION_SPYREPORTS'] = "Spy reports storage <a>[1-999 days or number]</a>";
+$lang['ADMIN_PARAMS_DURATION_SPYREPORTS'] = "Spy reports storage [1-999 days or number]";
+$lang['ADMIN_PARAMS_MAX_SPYREPORTS'] = "Spy reports storage / planet [1-50]";
 $lang['ADMIN_PARAMS_DURATION_LOGS'] = "Log retention [0-365 days]";
 $lang['ADMIN_PARAMS_GAME_OPTIONS'] = "Options of the universe";
 $lang['ADMIN_PARAMS_GAME_GALAXIES'] = "Number of galaxies";
@@ -261,8 +261,20 @@ $lang['ADMIN_LOGS_DELETE'] = "Clear logs";
 $lang['ADMIN_LOGS_SELECTTYPE'] = "Select the log type to view";
 $lang['ADMIN_LOGS_SQL'] = "SQL Logs";
 $lang['ADMIN_LOGS_GENERAL'] = "General Logs";
-$lang['ADMIN_LOGS_SEE_TRANSACTIONALS'] = "If you want to view SQL detailed Logs: download the <br> log file";
+$lang['ADMIN_LOGS_SEE_TRANSACTIONALS'] = "If you want to view SQL detailed Logs: download the \n log file";
 $lang['ADMIN_LOGS_VIEWER'] = "Viewer :";
 
 
 $lang['ADMIN_HELPER_HERE'] = "Helpers Available :";
+
+/* admin_reset.php */
+$lang['ADMIN_RESET_TITLE'] = "OGSpy Server Reset";
+$lang['ADMIN_RESET_WARNING'] = "This operation will permanently erase all game data:";
+$lang['ADMIN_RESET_ITEM_MODS'] = "Uninstallation of all modules";
+$lang['ADMIN_RESET_ITEM_GAMEDATA'] = "Deletion of all game data (universe, players, alliances, rankings, spy reports, combat reports...)";
+$lang['ADMIN_RESET_ITEM_STATS'] = "Reset of server statistics";
+$lang['ADMIN_RESET_PRESERVED'] = "User accounts, groups and server configuration are preserved.";
+$lang['ADMIN_RESET_CONFIRM'] = "WARNING: This action is irreversible!\nAre you sure you want to erase all game data?";
+$lang['ADMIN_RESET_BUTTON'] = "Reset server data";
+$lang['ADMIN_RESET_TYPE_LABEL'] = "To confirm, type RESET in the field below:";
+$lang['ADMIN_RESET_TYPE_PLACEHOLDER'] = "Type RESET";
