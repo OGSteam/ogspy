@@ -1,7 +1,9 @@
 <?php
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Ogsteam\Ogspy\Model\User_Model;
 use Monolog\Logger;
 
@@ -17,7 +19,7 @@ class MockUserDatabase
 class UserModelTest extends TestCase
 {
     private MockObject $mockDb;
-    private MockObject $mockLog;
+    private Stub $mockLog;
     private User_Model $userModel;
 
     protected function setUp(): void
@@ -39,7 +41,7 @@ class UserModelTest extends TestCase
         $this->mockDb->method('sql_escape_string')->willReturnArgument(0);
 
         // Mock logger
-        $this->mockLog = $this->createMock(Logger::class);
+        $this->mockLog = $this->createStub(Logger::class);
 
         // Set global variables that the model constructor expects
         $GLOBALS['db'] = $this->mockDb;
@@ -71,6 +73,7 @@ class UserModelTest extends TestCase
         $this->assertFalse($result);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testSelectUserLoginReturnsUserDataWhenFound(): void
     {
         $login = 'testuser';

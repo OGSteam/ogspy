@@ -33,11 +33,6 @@
     "components/jquery": "^3.7",
     "monolog/monolog": "^3.9"
   },
-  "config": {
-    "platform": {
-      "php": "8.4.0"
-    }
-  },
   "autoload": {
     "psr-4": {
       "Ogsteam\\Ogspy\\Core\\": "core/",
@@ -57,10 +52,10 @@
     "phpunit/phpunit": "^12.0"
   },
   "scripts": {
-  "test": [
-    "phpunit"
+    "test": [
+      "XDEBUG_MODE=coverage php vendor/bin/phpunit"
     ],
-   "server": [
+    "server": [
       "php -S localhost:8000"
     ]
   }
