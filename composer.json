@@ -20,7 +20,7 @@
     }
   ],
   "require": {
-    "php": ">=8.4.0",
+    "php": ">=8.1",
     "ext-mysqli": "*",
     "ext-json": "*",
     "ext-zlib": "*",
@@ -32,11 +32,6 @@
     "filp/whoops": "^2.15",
     "components/jquery": "^3.7",
     "monolog/monolog": "^3.9"
-  },
-  "config": {
-    "platform": {
-      "php": "8.4.1"
-    }
   },
   "autoload": {
     "psr-4": {
@@ -54,12 +49,11 @@
     "chat": "https://discord.gg/Azcb67b"
   },
   "require-dev": {
-    "phpunit/phpunit": "^13.1.0"
+    "phpunit/phpunit": "^12.0"
   },
   "scripts": {
     "test": [
-      "@putenv XDEBUG_MODE=coverage",
-      "@php vendor/bin/phpunit"
+      "XDEBUG_MODE=coverage php vendor/bin/phpunit"
     ],
     "server": [
       "php -S localhost:8000"
