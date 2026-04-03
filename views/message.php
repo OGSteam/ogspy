@@ -313,6 +313,18 @@ switch ($pub_id_message) {
         $msgURLButton = 'index.php?action=statistic';
         break;
 
+    case "admin_reset_success":
+        $msgType = "success";
+        $msgContent = $lang['MSG_ADMIN_RESET_SUCCESS'];
+        $msgURLButton = 'index.php?action=administration&subaction=infoserver';
+        break;
+
+    case "admin_reset_failed":
+        $msgType = "danger";
+        $msgContent = $lang['MSG_ADMIN_RESET_FAILED'];
+        $msgURLButton = 'index.php?action=administration&subaction=reset';
+        break;
+
     default:
         redirection('index.php');
         break;
