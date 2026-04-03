@@ -23,6 +23,7 @@ $lang['ADMIN_TITLE_GROUP_CONF'] = "Gestion des groupes";
 $lang['ADMIN_TITLE_LOGS_CONF'] = "Journal";
 $lang['ADMIN_TITLE_MODS_CONF'] = "Modules";
 $lang['ADMIN_TITLE_HELPER_CONF'] = "Helper";
+$lang['ADMIN_TITLE_RESET'] = "Remise à zéro";
 
 
 /* admin_affichage.php */
@@ -213,7 +214,6 @@ $lang['ADMIN_PARAMS_DURATION_NUMBER'] = "Nombre";
 $lang['ADMIN_PARAMS_DURATION_DAYS'] = "Jours";
 $lang['ADMIN_PARAMS_DURATION_SPYREPORTS'] = "Durée de conservation des rapports d'espionnage [1-999 jours ou nombre]";
 $lang['ADMIN_PARAMS_MAX_SPYREPORTS'] = "Nombre maximal de rapports d'espionnage par planète [1-50]";
-$lang['ADMIN_PARAMS_DURATION_SPYREPORTS'] = "Durée de conservation des rapports d'espionnage [1-999 jours ou nombre]";
 $lang['ADMIN_PARAMS_DURATION_LOGS'] = "Durée de conservation des fichiers logs [0-365 jours]";
 $lang['ADMIN_PARAMS_GAME_OPTIONS'] = "Options de l'univers";
 $lang['ADMIN_PARAMS_GAME_GALAXIES'] = "Nombre de galaxies";
@@ -266,3 +266,15 @@ $lang['ADMIN_LOGS_VIEWER'] = "Visionneuse :";
 
 
 $lang['ADMIN_HELPER_HERE'] = "Helpers Installés :";
+
+/* admin_reset.php */
+$lang['ADMIN_RESET_TITLE'] = "Remise à zéro du serveur OGSpy";
+$lang['ADMIN_RESET_WARNING'] = "Cette opération va effacer toutes les données du jeu de manière irréversible :";
+$lang['ADMIN_RESET_ITEM_MODS'] = "Désinstallation de tous les modules";
+$lang['ADMIN_RESET_ITEM_GAMEDATA'] = "Suppression de toutes les données jeu (univers, joueurs, alliances, classements, rapports d'espionnage, rapports de combat...)";
+$lang['ADMIN_RESET_ITEM_STATS'] = "Remise à zéro des statistiques du serveur";
+$lang['ADMIN_RESET_PRESERVED'] = "Les comptes utilisateurs, groupes et la configuration du serveur sont conservés.";
+$lang['ADMIN_RESET_CONFIRM'] = "ATTENTION : Cette action est irréversible !\nÊtes-vous sûr de vouloir effacer toutes les données du jeu ?";
+$lang['ADMIN_RESET_BUTTON'] = "Remettre à zéro les données du serveur";
+$lang['ADMIN_RESET_TYPE_LABEL'] = "Pour confirmer, saisissez RESET dans le champ ci-dessous :";
+$lang['ADMIN_RESET_TYPE_PLACEHOLDER'] = "Saisissez RESET";

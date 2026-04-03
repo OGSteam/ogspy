@@ -21,10 +21,10 @@ $lang["help_search_strict"] = "<font color=orange>Joueur recherché :</font><br>
 
 $lang["help_home_commandant"] = "Page empire du compte commandant";
 
-$lang["help_profile_login"] = "Doit contenir entre 3 et 64 caractères (les caractères spéciaux : ; &rsquo; et &quot; ne sont pas acceptés)";
+$lang["help_profile_login"] = "Doit contenir entre 3 et 64 caractères (les caractères spéciaux : ; ’ et \" ne sont pas acceptés)";
 $lang["help_profile_pseudo_email"] = "Si rempli, vous recevrez des mails de la part de certains mods";
 $lang["help_profile_main_planet"] = "La vue Galaxie sera ouverte directement sur ce système solaire";
-$lang["help_profile_password"] = "Doit contenir entre 6 et 15 caractères (les caractères spéciaux (; &rsquo; &quot;) ne sont pas acceptés)";
+$lang["help_profile_password"] = "Doit contenir entre 6 et 15 caractères (les caractères spéciaux (; ’ \") ne sont pas acceptés)";
 $lang["help_profile_galaxy"] = "Doit contenir un nombre de 1 à 999";
 $lang["help_profile_disable_ip_check"] = "La vérification de l'adresse IP permet de vous protéger contre le vol de session.";
 $lang["help_profile_disable_ip_check"] .= "Si vous êtes déconnecté régulièrement (VPN, Proxy, etc), désactivez la vérification.<br><br>";

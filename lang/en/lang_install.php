@@ -19,7 +19,7 @@ $lang['INSTALL_PROJECT_L3'] = "Census of all free coordinates according to sever
 $lang['INSTALL_PROJECT_L4'] = "Census of all the planets of a player or an ally. Vital information in times of war.";
 $lang['INSTALL_PROJECT_L5'] = "Possibility of extension quasi unlimited thanks to mods";
 $lang['INSTALL_PROJECT_L6'] = "Etc ...";
-$lang['INSTALL_FORUM'] = "If you need more informations, visit : <a href='http://www.ogsteam.fr/' target='_blank'>http://www.ogsteam.eu/</a>";
+$lang['INSTALL_FORUM'] = "If you need more informations, visit : http://www.ogsteam.eu/";
 
 $lang['INSTALL_PHPERROR'] = "PHP version insufficient";
 $lang['INSTALL_PHP_ADVISE'] = "To perform a complete installation of OGSpy, your must have at least PHP 8.1 version.";
@@ -33,7 +33,7 @@ $lang['INSTALL_ACTION_UPGRADE'] = "Update";
 $lang['INSTALL_WRITE_ALLOWED'] = "Writing autorized";
 $lang['INSTALL_WRITE_DENIED'] = "Writing impossible";
 $lang['INSTALL_NOT_POSSIBLE_TITLE'] = "Installation impossible :";
-$lang['INSTALL_NOT_POSSIBLE_LINE_1'] = "For a best user experience and a full OGSpy install,<br>you need to set write mode (CHMOD) on following folders.";
+$lang['INSTALL_NOT_POSSIBLE_LINE_1'] = "For a best user experience and a full OGSpy install,\nyou need to set write mode (CHMOD) on following folders.";
 $lang['INSTALL_NOT_POSSIBLE_OPTIONAL'] = "Optional error :";
 $lang['INSTALL_NOT_POSSIBLE_LINE_2'] = "These folders are used by installation and to update OGSpy mods";
 $lang['INSTALL_NOT_POSSIBLE_LINE_3'] = "Theirs folders and files must be available in write";

@@ -16,7 +16,7 @@ $lang['LOGIN_PASSWORD'] = "Password";
 $lang['LOGIN_CONNEXION_BUTTON'] = "Connessione";
 
 $lang['LOGIN_ACCOUNT_REQUEST'] = "Richiedi account OGSpy";
-$lang['LOGIN_ACCOUNT_REQUEST_DESC'] = "Se non avete un account, <br>dovete richiederlo sul forum della vostra alleanza";
+$lang['LOGIN_ACCOUNT_REQUEST_DESC'] = "Se non avete un account, \ndovete richiederlo sul forum della vostra alleanza";
 $lang['LOGIN_ACCOUNT_REQUEST_BUTTON'] = "Richiedi un account";
 
 
