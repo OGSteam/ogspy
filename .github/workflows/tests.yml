@@ -16,14 +16,14 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP with Xdebug
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: '8.4'
           coverage: xdebug
-          extensions: mysqli, json, mbstring, openssl, zlib, zip
+          extensions: curl, mysqli, json, mbstring, openssl, zlib, zip
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict

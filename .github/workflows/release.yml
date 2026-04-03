@@ -33,10 +33,10 @@ jobs:
         # The prefix to use in the version
         #prefix: # optional
 
-    - name: Setup PHP 8.1
+    - name: Setup PHP 8.4
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.1'
+        php-version: '8.4'
         extensions: mysqli, json, mbstring, openssl, zlib, zip
 
     - name: Validate composer.json and composer.lock
