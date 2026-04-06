@@ -120,10 +120,21 @@ if ($user_data['pwd_change']) {
 
                     </td>
                 </tr>
+                <tr>
+                    <td class="tdstat"><?php echo $lang['PROFILE_IPCHECK_DISABLE'] . help("profile_disable_ip_check"); ?></td>
+                    <td class="tdvalue">
+                        <label>
+                            <input name="disable_ip_check" value="1" type="checkbox" <?php echo $disable_ip_check; ?>>
+                        </label>
+                    </td>
+                </tr>
             </tbody>
             <thead>
                 <tr>
-                    <th colspan="2"><?php echo ($lang['PROFILE_GAME']); ?></th>
+                    <th colspan="2">
+                        <?php echo ($lang['PROFILE_GAME']); ?><br>
+                        <small><i><?php echo $lang['PROFILE_PLAYERNAME_XTENSE_INFO']; ?></i></small>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -139,10 +150,10 @@ if ($user_data['pwd_change']) {
                 </tr>
                 <tr>
                     <td class="tdstat">
-                        <?php echo $lang['PROFILE_PLAYERNAME'] . help("profile_pseudo_ingame"); ?>
+                        <?php echo $lang['PROFILE_PLAYERNAME']; ?>
                     </td>
                     <td class="tdvalue">
-                        <input name="pseudo_ingame" type="text" size="20" value="<?php echo $user_stat_name; ?>">
+                        <input name="pseudo_ingame" type="text" size="20" value="<?php echo htmlspecialchars($user_stat_name, ENT_QUOTES, 'UTF-8'); ?>" readonly>
                     </td>
                 </tr>
                 <tr>
@@ -151,7 +162,7 @@ if ($user_data['pwd_change']) {
                     </td>
                     <td class="tdvalue">
                         <?php $classType = ogame_get_element_names()['CLASS']; ?>
-                        <select name='user_class'>
+                        <select name='user_class' disabled>
                             <?php foreach ($classType as $class) : ?>
                                 <?php echo $class . "__" . $player_class; ?>
                                 <option value='<?php echo $class; ?>' <?php if (trim($class) == trim($player_class)) : ?> selected='selected'>
@@ -164,80 +175,24 @@ if ($user_data['pwd_change']) {
                         </select>
                     </td>
                 </tr>
-            </tbody>
-            <thead>
-                <tr>
-                    <th colspan="2"><?php echo ($lang['PROFILE_OFFICERS']); ?></th>
-                </tr>
-            </thead>
-            <tbody>
                 <tr>
                     <td class="tdstat">
-                        <?php echo ($lang['PROFILE_CODMANDER']); ?>:
+                        <?php echo ($lang['PROFILE_OFFICERS']); ?>
                     </td>
                     <td class="tdvalue">
-                        <label>
-                            <input name="off_commandant" value="1" type="checkbox" <?php echo $off_commandant; ?>>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tdstat">
-                        <?php echo ($lang['PROFILE_ADMIRAL']); ?>:
-                    </td>
-                    <td class="tdvalue">
-                        <label>
-                            <input name="off_amiral" value="1" type="checkbox" <?php echo $off_amiral; ?>>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tdstat">
-                        <?php echo ($lang['PROFILE_ENGINEER']); ?>:
-                    </td>
-                    <td class="tdvalue">
-                        <label>
-                            <input name="off_ingenieur" value="1" type="checkbox" <?php echo $off_ingenieur; ?>>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tdstat">
-                        <?php echo ($lang['PROFILE_GEOLOGIST']); ?>:
-                    </td>
-                    <td class="tdvalue">
-                        <label>
-                            <input name="off_geologue" value="1" type="checkbox" <?php echo $off_geologue; ?>>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tdstat">
-                        <?php echo ($lang['PROFILE_TECHNOCRAT']); ?>:
-                    </td>
-                    <td class="tdvalue">
-                        <label>
-                            <input name="off_technocrate" value="1" type="checkbox" <?php echo $off_technocrate; ?>>
-                        </label>
+                        <label><input name="off_commandant" value="1" type="checkbox" <?php echo $off_commandant; ?> disabled> <?php echo $lang['PROFILE_CODMANDER']; ?></label>
+                        &nbsp;
+                        <label><input name="off_amiral" value="1" type="checkbox" <?php echo $off_amiral; ?> disabled> <?php echo $lang['PROFILE_ADMIRAL']; ?></label>
+                        &nbsp;
+                        <label><input name="off_ingenieur" value="1" type="checkbox" <?php echo $off_ingenieur; ?> disabled> <?php echo $lang['PROFILE_ENGINEER']; ?></label>
+                        &nbsp;
+                        <label><input name="off_geologue" value="1" type="checkbox" <?php echo $off_geologue; ?> disabled> <?php echo $lang['PROFILE_GEOLOGIST']; ?></label>
+                        &nbsp;
+                        <label><input name="off_technocrate" value="1" type="checkbox" <?php echo $off_technocrate; ?> disabled> <?php echo $lang['PROFILE_TECHNOCRAT']; ?></label>
                     </td>
                 </tr>
             </tbody>
-            <thead>
-                <tr>
-                    <th colspan="2">
-                        <?php echo ($lang['PROFILE_OTHERS']); ?>
-                    </th>
-                </tr>
-            </thead>
             <tbody>
-                <tr>
-                    <td class="tdstat"><?php echo $lang['PROFILE_IPCHECK_DISABLE'] . help("profile_disable_ip_check"); ?></td>
-                    <td class="tdvalue">
-                        <label>
-                            <input name="disable_ip_check" value="1" type="checkbox" <?php echo $disable_ip_check; ?>>
-                        </label>
-                    </td>
-                </tr>
                 <tr>
                     <td colspan="2">
                         <input class="og-button" type="submit" value="<?php echo ($lang['PROFILE_SAVE']); ?>">

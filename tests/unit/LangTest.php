@@ -1,5 +1,6 @@
 <?php
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class LangTest extends TestCase
@@ -73,5 +74,47 @@ class LangTest extends TestCase
         $input = ['KEY' => "Line1\nLine2"];
         $result = lang_secure($input);
         $this->assertEquals('Line1<br>Line2', $result['KEY']);
+    }
+
+    /**
+     * Loads a lang file in an isolated local scope (lang files assign to $lang without global declaration).
+     * require (not require_once) is intentional: the same file may have been pre-loaded by lang_main.php,
+     * requiring it again into a local $lang is the only way to get a clean, isolated array per test.
+     */
+    private function loadProfileLang(string $langCode): array
+    {
+        $lang = [];
+        require "lang/{$langCode}/lang_profile.php"; // NOSONAR
+        return $lang;
+    }
+
+    #[DataProvider('langProvider')]
+    public function testProfileLangKeysForBug501(string $langCode): void
+    {
+        $lang = $this->loadProfileLang($langCode);
+
+        // PROFILE_PLAYERNAME_XTENSE_INFO must exist and not be empty (pseudo is xtense-managed)
+        $this->assertArrayHasKey(
+            'PROFILE_PLAYERNAME_XTENSE_INFO',
+            $lang,
+            "PROFILE_PLAYERNAME_XTENSE_INFO missing in lang/{$langCode}/lang_profile.php"
+        );
+        $this->assertNotEmpty($lang['PROFILE_PLAYERNAME_XTENSE_INFO']);
+
+        // PROFILE_GAME must not cite the game name (copyright)
+        $this->assertArrayHasKey('PROFILE_GAME', $lang);
+        $this->assertStringNotContainsStringIgnoringCase(
+            'ogame',
+            $lang['PROFILE_GAME'],
+            "PROFILE_GAME contains 'OGame' in lang/{$langCode}/lang_profile.php (copyright)"
+        );
+    }
+
+    public static function langProvider(): array
+    {
+        return [
+            ['fr'], ['en'], ['en_US'], ['es'], ['it'], ['pt_BR'],
+            ['bs'], ['bs_BA'], ['hr'], ['hr_HR'],
+        ];
     }
 }
