@@ -533,7 +533,7 @@ class AstroObject_Model extends Model_Abstract
      * @param bool $forMoon Si true, recherche les lunes obsolètes. Si false, recherche les planètes obsolètes.
      * @return array Tableau associatif regroupant les systèmes obsolètes par période, avec leurs informations de galaxie, système, position et dernière mise à jour.
      */
-    public function get_galaxy_obsolete(int $galaxy, int $system_down, int $system_up, int $indice, int $since, bool $forMoon = false)
+    public function get_galaxy_obsolete(int $galaxy, int $system_down, int $system_up, int $indice, array $since, bool $forMoon = false)
     {
         $obsolete = array();
 

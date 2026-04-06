@@ -1309,6 +1309,48 @@ function user_statistic(): array
 }
 
 /**
+ * Fonction de calcul du ratio
+ * @param int $player user_id ID du joueur
+ * @return array ratio et divers calculs intermédiaires pour l'utilisateur en question
+ * @author Bousteur 25/11/2006
+ */
+function ratio_calc($player): array
+{
+    $data_user = new User_Model();
+    $user_stat = $data_user->select_user_stats_data($player);
+    $total_user_stats = $data_user->select_user_stats_sum();
+    //pour éviter la division par zéro
+    if ($total_user_stats["planetimporttotal"] == 0) {
+        $total_user_stats["planetimporttotal"] = 1;
+    }
+    if ($total_user_stats["spyimporttotal"] == 0) {
+        $total_user_stats["spyimporttotal"] = 1;
+    }
+    if ($total_user_stats["rankimporttotal"] == 0) {
+        $total_user_stats["rankimporttotal"] = 1;
+    }
+    if ($total_user_stats["searchtotal"] == 0) {
+        $total_user_stats["searchtotal"] = 1;
+    }
+    //et on commence le calcul
+    $ratio_planet = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
+    $ratio_spy = $user_stat["spy_added_xtense"] / $total_user_stats["spyimporttotal"];
+    $ratio_rank = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
+    $ratio = ($ratio_planet * 4 + $ratio_spy * 2 + $ratio_rank) / (4 + 2 + 1);
+    $ratio_planet_penality = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
+    $ratio_spy_penality = $user_stat["spy_added_xtense"] / $total_user_stats["spyimporttotal"];
+    $ratio_rank_penality = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
+    $ratio_penality = ($ratio_planet_penality * 4 + $ratio_spy_penality * 2 + $ratio_rank_penality) / (4 + 2 + 1);
+    $ratio_search = $user_stat["search"] / $total_user_stats["searchtotal"];
+    $ratio_searchpenality = ($ratio - $ratio_search);
+    $result = ($ratio + $ratio_penality + $ratio_searchpenality) * 1000;
+    return array(
+        $result, $ratio_searchpenality, $ratio_search, $ratio_penality, $ratio_rank_penality,
+        $ratio_spy_penality, $ratio_planet_penality
+    );
+}
+
+/**
  * Fonction de test d'autorisation d'effectuer une action en fonction du ratio ou de l'appartenance à un groupe qui a un ratio illimité
  * @return bool vrai si l'utilisateur peut faire des recherches
  * @author Bousteur 28/11/2006
