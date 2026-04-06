@@ -153,7 +153,7 @@ if ($user_data['pwd_change']) {
                         <?php echo $lang['PROFILE_PLAYERNAME']; ?>
                     </td>
                     <td class="tdvalue">
-                        <input name="pseudo_ingame" type="text" size="20" value="<?php echo $user_stat_name; ?>" readonly>
+                        <input name="pseudo_ingame" type="text" size="20" value="<?php echo htmlspecialchars($user_stat_name, ENT_QUOTES, 'UTF-8'); ?>" readonly>
                     </td>
                 </tr>
                 <tr>
