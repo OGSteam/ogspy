@@ -76,30 +76,32 @@ class LangTest extends TestCase
         $this->assertEquals('Line1<br>Line2', $result['KEY']);
     }
 
-    #[DataProvider('langProvider')]
-    public function testProfilePlayernameXtenseInfoKeyExistsInAllLangs(string $langCode): void
+    /**
+     * Loads a lang file in an isolated local scope (lang files assign to $lang without global declaration).
+     * require (not require_once) is intentional: the same file may have been pre-loaded by lang_main.php,
+     * requiring it again into a local $lang is the only way to get a clean, isolated array per test.
+     */
+    private function loadProfileLang(string $langCode): array
     {
-        global $lang;
         $lang = [];
-        $filePath = "lang/{$langCode}/lang_profile.php";
-        $this->assertFileExists($filePath, "Lang file missing for: {$langCode}");
-        require $filePath;
+        require "lang/{$langCode}/lang_profile.php"; // NOSONAR
+        return $lang;
+    }
+
+    #[DataProvider('langProvider')]
+    public function testProfileLangKeysForBug501(string $langCode): void
+    {
+        $lang = $this->loadProfileLang($langCode);
+
+        // PROFILE_PLAYERNAME_XTENSE_INFO must exist and not be empty (pseudo is xtense-managed)
         $this->assertArrayHasKey(
             'PROFILE_PLAYERNAME_XTENSE_INFO',
             $lang,
             "PROFILE_PLAYERNAME_XTENSE_INFO missing in lang/{$langCode}/lang_profile.php"
         );
         $this->assertNotEmpty($lang['PROFILE_PLAYERNAME_XTENSE_INFO']);
-    }
 
-    #[DataProvider('langProvider')]
-    public function testProfileGameKeyHasNoOGameReferenceinAllLangs(string $langCode): void
-    {
-        global $lang;
-        $lang = [];
-        $filePath = "lang/{$langCode}/lang_profile.php";
-        $this->assertFileExists($filePath);
-        require $filePath;
+        // PROFILE_GAME must not cite the game name (copyright)
         $this->assertArrayHasKey('PROFILE_GAME', $lang);
         $this->assertStringNotContainsStringIgnoringCase(
             'ogame',
