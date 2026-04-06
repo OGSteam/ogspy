@@ -131,7 +131,10 @@ if ($user_data['pwd_change']) {
             </tbody>
             <thead>
                 <tr>
-                    <th colspan="2"><?php echo ($lang['PROFILE_GAME']); ?></th>
+                    <th colspan="2">
+                        <?php echo ($lang['PROFILE_GAME']); ?><br>
+                        <small><i><?php echo $lang['PROFILE_PLAYERNAME_XTENSE_INFO']; ?></i></small>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -143,11 +146,6 @@ if ($user_data['pwd_change']) {
                         <input name="galaxy" type="text" size="3" maxlength="2" value="<?php echo $user_galaxy; ?>">
                         &nbsp;
                         <input name="system" type="text" size="3" maxlength="3" value="<?php echo $user_system; ?>">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <small><i><?php echo $lang['PROFILE_PLAYERNAME_XTENSE_INFO']; ?></i></small>
                     </td>
                 </tr>
                 <tr>
