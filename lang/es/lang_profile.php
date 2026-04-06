@@ -33,6 +33,7 @@ $lang['PROFILE_TOKEN_UPDATE'] = "Reiniciar";
 $lang['PROFILE_GAME'] = "Información de juego";
 $lang['PROFILE_MAINPLANET'] = "Coordenadas del planeta principal";
 $lang['PROFILE_PLAYERNAME'] = "Apodo en el juego";
+$lang['PROFILE_PLAYERNAME_XTENSE_INFO'] = "Actualizado automáticamente por la extensión xtense";
 $lang['PROFILE_CLASS'] = "Classe dans le Jeu";
 $lang['PROFILE_CLASS_NONE'] = "sans classe";
 $lang['PROFILE_CLASS_COL'] = "Collecteur";

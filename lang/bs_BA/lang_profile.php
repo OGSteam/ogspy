@@ -33,6 +33,7 @@ $lang['PROFILE_TOKEN_UPDATE'] = "Reset";
 $lang['PROFILE_GAME'] = "Informacije o igri";
 $lang['PROFILE_MAINPLANET'] = "Pozicija glavnog planeta";
 $lang['PROFILE_PLAYERNAME'] = "Ime igrača";
+$lang['PROFILE_PLAYERNAME_XTENSE_INFO'] = "Automatski ažurirano xtense ekstenzijom";
 $lang['PROFILE_CLASS'] = "Klasa u igri";
 $lang['PROFILE_CLASS_NONE'] = "bez klase";
 $lang['PROFILE_CLASS_COL'] = "Kolektor";

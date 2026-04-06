@@ -33,6 +33,7 @@ $lang['PROFILE_TOKEN_UPDATE'] = "Resetta";
 $lang['PROFILE_GAME'] = "Informazioni del gioco";
 $lang['PROFILE_MAINPLANET'] = "Posizione del pianeta madre";
 $lang['PROFILE_PLAYERNAME'] = "Nome utente nel gioco";
+$lang['PROFILE_PLAYERNAME_XTENSE_INFO'] = "Aggiornato automaticamente dall'estensione xtense";
 $lang['PROFILE_CLASS'] = "Classe dans le Jeu";
 $lang['PROFILE_CLASS_NONE'] = "sans classe";
 $lang['PROFILE_CLASS_COL'] = "Collecteur";

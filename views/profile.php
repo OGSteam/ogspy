@@ -139,10 +139,11 @@ if ($user_data['pwd_change']) {
                 </tr>
                 <tr>
                     <td class="tdstat">
-                        <?php echo $lang['PROFILE_PLAYERNAME'] . help("profile_pseudo_ingame"); ?>
+                        <?php echo $lang['PROFILE_PLAYERNAME']; ?>
                     </td>
                     <td class="tdvalue">
-                        <input name="pseudo_ingame" type="text" size="20" value="<?php echo $user_stat_name; ?>">
+                        <input name="pseudo_ingame" type="text" size="20" value="<?php echo $user_stat_name; ?>" readonly>
+                        <small><?php echo $lang['PROFILE_PLAYERNAME_XTENSE_INFO']; ?></small>
                     </td>
                 </tr>
                 <tr>

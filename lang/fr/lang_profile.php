@@ -28,6 +28,7 @@ $lang['PROFILE_TOKEN_UPDATE'] = "Réinitialiser";
 $lang['PROFILE_GAME'] = "Informations du Jeu";
 $lang['PROFILE_MAINPLANET'] = "Position de la planète principale";
 $lang['PROFILE_PLAYERNAME'] = "Pseudo dans le Jeu";
+$lang['PROFILE_PLAYERNAME_XTENSE_INFO'] = "Mis à jour automatiquement par l'extension xtense";
 $lang['PROFILE_CLASS'] = "Classe dans le Jeu";
 $lang['PROFILE_CLASS_NONE'] = "sans classe";
 $lang['PROFILE_CLASS_COL'] = "Collecteur";
