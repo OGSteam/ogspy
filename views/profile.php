@@ -175,61 +175,20 @@ if ($user_data['pwd_change']) {
                         </select>
                     </td>
                 </tr>
-            </tbody>
-            <thead>
-                <tr>
-                    <th colspan="2"><?php echo ($lang['PROFILE_OFFICERS']); ?></th>
-                </tr>
-            </thead>
-            <tbody>
                 <tr>
                     <td class="tdstat">
-                        <?php echo ($lang['PROFILE_CODMANDER']); ?>:
+                        <?php echo ($lang['PROFILE_OFFICERS']); ?>
                     </td>
                     <td class="tdvalue">
-                        <label>
-                            <input name="off_commandant" value="1" type="checkbox" <?php echo $off_commandant; ?> disabled>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tdstat">
-                        <?php echo ($lang['PROFILE_ADMIRAL']); ?>:
-                    </td>
-                    <td class="tdvalue">
-                        <label>
-                            <input name="off_amiral" value="1" type="checkbox" <?php echo $off_amiral; ?> disabled>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tdstat">
-                        <?php echo ($lang['PROFILE_ENGINEER']); ?>:
-                    </td>
-                    <td class="tdvalue">
-                        <label>
-                            <input name="off_ingenieur" value="1" type="checkbox" <?php echo $off_ingenieur; ?> disabled>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tdstat">
-                        <?php echo ($lang['PROFILE_GEOLOGIST']); ?>:
-                    </td>
-                    <td class="tdvalue">
-                        <label>
-                            <input name="off_geologue" value="1" type="checkbox" <?php echo $off_geologue; ?> disabled>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tdstat">
-                        <?php echo ($lang['PROFILE_TECHNOCRAT']); ?>:
-                    </td>
-                    <td class="tdvalue">
-                        <label>
-                            <input name="off_technocrate" value="1" type="checkbox" <?php echo $off_technocrate; ?> disabled>
-                        </label>
+                        <label><input name="off_commandant" value="1" type="checkbox" <?php echo $off_commandant; ?> disabled> <?php echo $lang['PROFILE_CODMANDER']; ?></label>
+                        &nbsp;
+                        <label><input name="off_amiral" value="1" type="checkbox" <?php echo $off_amiral; ?> disabled> <?php echo $lang['PROFILE_ADMIRAL']; ?></label>
+                        &nbsp;
+                        <label><input name="off_ingenieur" value="1" type="checkbox" <?php echo $off_ingenieur; ?> disabled> <?php echo $lang['PROFILE_ENGINEER']; ?></label>
+                        &nbsp;
+                        <label><input name="off_geologue" value="1" type="checkbox" <?php echo $off_geologue; ?> disabled> <?php echo $lang['PROFILE_GEOLOGIST']; ?></label>
+                        &nbsp;
+                        <label><input name="off_technocrate" value="1" type="checkbox" <?php echo $off_technocrate; ?> disabled> <?php echo $lang['PROFILE_TECHNOCRAT']; ?></label>
                     </td>
                 </tr>
             </tbody>
