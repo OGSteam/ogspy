@@ -803,6 +803,7 @@ function member_user_set()
         $changes_made[] = 'ip_check';
     }
 
+    $player_id = null;
     if (isset($pub_pseudo_ingame)) {
         //recuperation de l'id avant insertion
         $player_id = $playerModel->getPlayerId($pub_pseudo_ingame);
