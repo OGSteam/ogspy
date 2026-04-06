@@ -121,16 +121,6 @@ if ($user_data['pwd_change']) {
                     </td>
                 </tr>
                 <tr>
-                    <td class="tdstat">
-                        <?php echo $lang['PROFILE_MAINPLANET'] . help("profile_main_planet"); ?>
-                    </td>
-                    <td class="tdvalue">
-                        <input name="galaxy" type="text" size="3" maxlength="2" value="<?php echo $user_galaxy; ?>">
-                        &nbsp;
-                        <input name="system" type="text" size="3" maxlength="3" value="<?php echo $user_system; ?>">
-                    </td>
-                </tr>
-                <tr>
                     <td class="tdstat"><?php echo $lang['PROFILE_IPCHECK_DISABLE'] . help("profile_disable_ip_check"); ?></td>
                     <td class="tdvalue">
                         <label>
@@ -145,6 +135,16 @@ if ($user_data['pwd_change']) {
                 </tr>
             </thead>
             <tbody>
+                <tr>
+                    <td class="tdstat">
+                        <?php echo $lang['PROFILE_MAINPLANET'] . help("profile_main_planet"); ?>
+                    </td>
+                    <td class="tdvalue">
+                        <input name="galaxy" type="text" size="3" maxlength="2" value="<?php echo $user_galaxy; ?>">
+                        &nbsp;
+                        <input name="system" type="text" size="3" maxlength="3" value="<?php echo $user_system; ?>">
+                    </td>
+                </tr>
                 <tr>
                     <td colspan="2">
                         <small><i><?php echo $lang['PROFILE_PLAYERNAME_XTENSE_INFO']; ?></i></small>
