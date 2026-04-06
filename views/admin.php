@@ -38,6 +38,7 @@ $tagactivegroup = "";
 $tagactiveviewer = "";
 $tagactivehelper = "";
 $tagactivemod = "";
+$tagactivereset = "";
 
 switch ($pub_subaction) {
     case "infoserver":
@@ -63,6 +64,9 @@ switch ($pub_subaction) {
         break;
     case "mod":
         $tagactivemod = $tagactive;
+        break;
+    case "reset":
+        $tagactivereset = $tagactive;
         break;
     default:
         break;
@@ -122,6 +126,13 @@ switch ($pub_subaction) {
                 </a>
             </div>
         <?php endif; ?>
+        <?php if ($user_data["admin"] == 1) : //super admin only ?>
+            <div class="nav-page-menu-item nav-page-menu-item-admin-reset <?php echo $tagactivereset; ?>">
+                <a class="nav-page-menu-link" href="index.php?action=administration&amp;subaction=reset">
+                    <?php echo $lang['ADMIN_TITLE_RESET']; ?>
+                </a>
+            </div>
+        <?php endif; ?>
     </div>
 
 
@@ -153,6 +164,10 @@ switch ($pub_subaction) {
 
         case "mod":
             require_once("admin_mod.php");
+            break;
+
+        case "reset":
+            require_once("admin_reset.php");
             break;
 
         default:

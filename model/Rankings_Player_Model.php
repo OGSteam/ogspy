@@ -103,23 +103,44 @@ class Rankings_Player_Model extends Rankings_Model
      * Retrieves the rank, scores, and related data of a player across various categories such as economy,
      * technology, military, etc., by querying the corresponding tables and organizing the data into an array.
      *
+     * This function accepts a player ID, looks up the player's name from the game_player table,
+     * then queries all ranking tables using that player name (as ranking tables are indexed by player name, not ID).
+     * Data is joined from all ranking category tables and returned organized by datadate.
+     *
      * @param int $playerId The ID of the player whose ranking data is to be retrieved.
-     * @return array Returns an associative array containing the ranking data for the specified player, including
-     *               general ranking, economy ranking, technology ranking, military rankings, and other categories.
+     * @return array Returns an associative array containing the ranking data for the specified player, organized by index,
+     *               with keys: datadate, player_name, ally_name, and ranking data for each category
+     *               (general_rank/pts, eco_rank/pts, tech_rank/pts, mil_rank/pts, milb_rank/pts, mill_rank/pts,
+     *               mild_rank/pts, milh_rank/pts). Returns empty array if player not found.
      */
     public function get_all_ranktable_byplayer(int $playerId)
     {
+        // Ranking tables are indexed by player NAME, not player ID (player_id column is unpopulated).
+        // Must look up the player name from game_player table to query ranking tables.
+        $playerId = (int)$playerId; // Ensure it's an integer
+        $player_request = "SELECT `name` FROM " . TABLE_GAME_PLAYER . " WHERE `id` = " . $playerId;
+        $player_result = $this->db->sql_query($player_request);
+        $player_row = $this->db->sql_fetch_row($player_result);
+        
+        if (!is_array($player_row) || !isset($player_row[0])) {
+            return array(); // Return empty if player not found
+        }
+        
+        $playerName = $this->db->sql_escape_string($player_row[0]);
 
-        $request = "SELECT  `general`.`datadate`, `player`.`name` as player_name, `ally`.`name` as ally_name,  `general`.`rank` ,`general`.`points`,
-            `eco`.`rank`, `eco`.`points`,
-            `techno`.`rank`, `techno`.`points`,
-            `military`.`rank`, `military`.`points`,
-            `military_b`.`rank`, `military_b`.`points`,
-            `military_l`.`rank`, `military_l`.`points`,
-            `military_d`.`rank`, `military_d`.`points`,
-            `honor`.`rank`, `honor`.`points`";
-
+        $request = "SELECT `general`.`datadate`, `general`.`player`, `general`.`ally`, `general`.`rank`, `general`.`points` , `eco`.`rank`,
+        `eco`.`points`, `techno`.`rank`, `techno`.`points`, `military`.`rank`, `military`.`points`, `military_b`.`rank`, `military_b`.`points`, `military_l`.`rank`,
+       `military_l`.`points`, `military_d`.`rank`, `military_d`.`points`, `honor`.`rank`, `honor`.`points`";
         $request .= " FROM `" . TABLE_RANK_PLAYER_POINTS . "` AS `general`";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_ECO . " AS `eco` ON `general`.`player` = `eco`.`player` AND `eco`.`datadate` = `general`.`datadate`";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_TECHNOLOGY . " AS `techno` ON `general`.`player` = `techno`.`player` AND `techno`.`datadate` = `general`.`datadate` ";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY . " AS `military` ON `general`.`player` = `military`.`player` AND `military`.`datadate` = `general`.`datadate` ";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_BUILT . " AS `military_b` ON `general`.`player` = `military_b`.`player` AND `military_b`.`datadate` = `general`.`datadate` ";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_LOOSE . " AS `military_l` ON `general`.`player` = `military_l`.`player` AND `military_l`.`datadate` = `general`.`datadate` ";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_MILITARY_DESTRUCT . " AS `military_d` ON `general`.`player` = `military_d`.`player` AND `military_d`.`datadate` = `general`.`datadate` ";
+        $request .= " LEFT JOIN " . TABLE_RANK_PLAYER_HONOR . " AS `honor` ON `general`.`player` = `honor`.`player` AND `honor`.`datadate` = `general`.`datadate` ";
+        $request .= " WHERE `general`.`player` = '" . $playerName . "'";
+        $request .= " ORDER BY `general`.`datadate` DESC ";
 
         // On utilise `player_id` pour les jointures et on récupère les noms
         $request .= " LEFT JOIN " . TABLE_GAME_PLAYER . " AS `player` ON `general`.`player_id` = `player`.`id`";
@@ -143,10 +164,9 @@ class Rankings_Player_Model extends Rankings_Model
 
 
         while ($row_data = $this->db->sql_fetch_row($result)) {
-            list( $datadate, $player_name, $ally_name, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $row_data;
+            list($datadate, $player_name, $ally_name, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $row_data;
 
             $ranking_content[$row] = [
-                'position' => $general_rank,
                 'datadate' => $datadate,
                 'player_name' => $player_name,
                 'ally_name' => $ally_name,

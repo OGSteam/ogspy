@@ -1,7 +1,9 @@
 <?php
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Ogsteam\Ogspy\Model\Player_Model;
 use Monolog\Logger;
 
@@ -17,7 +19,7 @@ class MockDatabase
 class PlayerModelTest extends TestCase
 {
     private MockObject $mockDb;
-    private MockObject $mockLog;
+    private Stub $mockLog;
     private Player_Model $playerModel;
 
     protected function setUp(): void
@@ -42,7 +44,7 @@ class PlayerModelTest extends TestCase
         $this->mockDb->method('sql_escape_string')->willReturnArgument(0);
 
         // Mock logger
-        $this->mockLog = $this->createMock(Logger::class);
+        $this->mockLog = $this->createStub(Logger::class);
 
         // Set global variables that the model constructor expects
         $GLOBALS['db'] = $this->mockDb;
@@ -51,6 +53,7 @@ class PlayerModelTest extends TestCase
         $this->playerModel = new Player_Model();
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetPlayerDataReturnsPlayerInfo(): void
     {
         $playerId = 123;
@@ -105,6 +108,7 @@ class PlayerModelTest extends TestCase
         $this->assertFalse($result);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetPlayerNameReturnsCorrectName(): void
     {
         $playerId = 123;
@@ -147,6 +151,7 @@ class PlayerModelTest extends TestCase
         $this->assertFalse($result);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetPlayerIdReturnsCorrectId(): void
     {
         $playerName = 'TestPlayer';
@@ -154,6 +159,7 @@ class PlayerModelTest extends TestCase
 
         // Create a fresh mock for this test
         $mockDb = $this->createMock(MockDatabase::class);
+        $mockDb->method('sql_escape_string')->willReturnArgument(0);
         $mockDb->expects($this->once())
             ->method('sql_query')
             ->with($this->stringContains("WHERE `name` = '$playerName'"))

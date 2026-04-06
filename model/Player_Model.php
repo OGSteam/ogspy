@@ -59,6 +59,7 @@ class Player_Model extends Model_Abstract
      */
     public function getPlayerId(string $player_name)
     {
+        $player_name = $this->db->sql_escape_string($player_name);
         $request = "SELECT `id`".
             " FROM " . TABLE_GAME_PLAYER;
         $request .= " WHERE `name` = '" . $player_name . "'";

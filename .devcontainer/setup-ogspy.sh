@@ -15,12 +15,21 @@ ADMIN_EMAIL=${ADMIN_EMAIL:-"admin@example.com"}
 DB_PREFIX=${DB_PREFIX:-"ogspy_"}
 
 echo "📁 Correction des permissions des dossiers nécessaires..."
-chown -R root:root /var/www/html/config /var/www/html/install /var/www/html/cache /var/www/html/logs /var/www/html/mod 2>/dev/null || true
-chmod -R 777 /var/www/html/config /var/www/html/install /var/www/html/cache /var/www/html/logs /var/www/html/mod 2>/dev/null || true
+for d in /var/www/html/config /var/www/html/install /var/www/html/cache /var/www/html/logs /var/www/html/mod; do
+  [ -d "$d" ] || continue
+  chmod -R u+rwX,g+rwX "${d}" 2>/dev/null || true
+done
 
 echo "📦 Installation des dépendances Composer..."
 cd /var/www/html
+## Fix Git 'dubious ownership' when repo is mounted from host (common with Docker Desktop on Windows)
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  git config --global --add safe.directory /var/www/html || true
+fi
+
+# Run composer with appropriate user
 composer install --no-interaction --optimize-autoloader
+
 echo "✅ Dépendances Composer installées (dev + prod)"
 
 RETRY_COUNT=0

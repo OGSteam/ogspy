@@ -21,6 +21,7 @@ use Ogsteam\Ogspy\Model\Statistics_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Tokens_Model;
+use Ogsteam\Ogspy\Model\User_Favorites_Model;
 use Ogsteam\Ogspy\Model\User_Spy_favorites_Model;
 
 require_once __DIR__ . '/token.php';
@@ -1331,6 +1332,55 @@ function ratio_is_ok(): bool
     } else {
         return true;
     }
+}
+
+/**
+ * Ajout d'un système favori
+ */
+function user_add_favorite(): void
+{
+    global $user_data, $server_config;
+    global $pub_galaxy, $pub_system;
+
+    $User_Favorites_Model = new User_Favorites_Model();
+
+    if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
+
+    if (!isset($pub_galaxy) || !isset($pub_system)) {
+        redirection("index.php?action=message&id_message=errorfatal&info");
+    }
+
+    $nb_favorites = $User_Favorites_Model->get_nb_user_favorites($user_data["id"]);
+    if ($nb_favorites < $server_config["max_favorites"]) {
+        $User_Favorites_Model->set_user_favorites($user_data["id"], $pub_galaxy, $pub_system);
+        redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system);
+    } else {
+        redirection("index.php?action=message&id_message=max_favorites&info");
+    }
+}
+
+/**
+ * Suppression d'un système favori
+ */
+function user_del_favorite(): void
+{
+    global $user_data;
+    global $pub_galaxy, $pub_system;
+
+    if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
+
+    if (!isset($pub_galaxy) || !isset($pub_system)) {
+        redirection("index.php?action=message&id_message=errorfatal&info");
+    }
+
+    $User_Favorites_Model = new User_Favorites_Model();
+    $User_Favorites_Model->delete_user_favorites($user_data["id"], $pub_galaxy, $pub_system);
+
+    redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system);
 }
 
 /**
