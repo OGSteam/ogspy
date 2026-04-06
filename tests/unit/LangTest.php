@@ -1,5 +1,6 @@
 <?php
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class LangTest extends TestCase
@@ -73,5 +74,45 @@ class LangTest extends TestCase
         $input = ['KEY' => "Line1\nLine2"];
         $result = lang_secure($input);
         $this->assertEquals('Line1<br>Line2', $result['KEY']);
+    }
+
+    #[DataProvider('langProvider')]
+    public function testProfilePlayernameXtenseInfoKeyExistsInAllLangs(string $langCode): void
+    {
+        global $lang;
+        $lang = [];
+        $filePath = "lang/{$langCode}/lang_profile.php";
+        $this->assertFileExists($filePath, "Lang file missing for: {$langCode}");
+        require $filePath;
+        $this->assertArrayHasKey(
+            'PROFILE_PLAYERNAME_XTENSE_INFO',
+            $lang,
+            "PROFILE_PLAYERNAME_XTENSE_INFO missing in lang/{$langCode}/lang_profile.php"
+        );
+        $this->assertNotEmpty($lang['PROFILE_PLAYERNAME_XTENSE_INFO']);
+    }
+
+    #[DataProvider('langProvider')]
+    public function testProfileGameKeyHasNoOGameReferenceinAllLangs(string $langCode): void
+    {
+        global $lang;
+        $lang = [];
+        $filePath = "lang/{$langCode}/lang_profile.php";
+        $this->assertFileExists($filePath);
+        require $filePath;
+        $this->assertArrayHasKey('PROFILE_GAME', $lang);
+        $this->assertStringNotContainsStringIgnoringCase(
+            'ogame',
+            $lang['PROFILE_GAME'],
+            "PROFILE_GAME contains 'OGame' in lang/{$langCode}/lang_profile.php (copyright)"
+        );
+    }
+
+    public static function langProvider(): array
+    {
+        return [
+            ['fr'], ['en'], ['en_US'], ['es'], ['it'], ['pt_BR'],
+            ['bs'], ['bs_BA'], ['hr'], ['hr_HR'],
+        ];
     }
 }
