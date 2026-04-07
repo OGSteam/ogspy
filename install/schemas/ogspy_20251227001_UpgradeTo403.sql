@@ -13,45 +13,29 @@ ALTER TABLE `ogspy_statistics` CHANGE `statistic_name` `statistic_name` VARCHAR(
 ALTER TABLE `ogspy_mod_config` CHANGE `config` `config` VARCHAR(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL; 
 ALTER TABLE `ogspy_mod_user_config` CHANGE `config` `config` VARCHAR(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL; 
 
--- Suppression champs points_per_member/ally classement alliance
--- points_per_member+
-ALTER TABLE `ogspy_game_rank_ally_honor` DROP  IF EXISTS `points_per_member`;
-ALTER TABLE `ogspy_game_rank_ally_military_loose` DROP  IF EXISTS `points_per_member`;
-ALTER TABLE `ogspy_game_rank_ally_military_destruct` DROP  IF EXISTS `points_per_member`;
-ALTER TABLE `ogspy_game_rank_ally_military_built` DROP  IF EXISTS `points_per_member`;
-ALTER TABLE `ogspy_game_rank_ally_military` DROP  IF EXISTS `points_per_member`;
-ALTER TABLE `ogspy_game_rank_ally_economics` DROP IF EXISTS `points_per_member`;
-ALTER TABLE `ogspy_game_rank_ally_technology` DROP  IF EXISTS `points_per_member`;
-ALTER TABLE `ogspy_game_rank_ally_points` DROP  IF EXISTS `points_per_member`;
--- ally
-ALTER TABLE `ogspy_game_rank_ally_honor` DROP  IF EXISTS `ally`;
-ALTER TABLE `ogspy_game_rank_ally_military_loose` DROP  IF EXISTS `ally`;
-ALTER TABLE `ogspy_game_rank_ally_military_destruct` DROP  IF EXISTS `ally`;
-ALTER TABLE `ogspy_game_rank_ally_military_built` DROP  IF EXISTS `ally`;
-ALTER TABLE `ogspy_game_rank_ally_military` DROP  IF EXISTS `ally`;
-ALTER TABLE `ogspy_game_rank_ally_economics` DROP  IF EXISTS `ally`;
-ALTER TABLE `ogspy_game_rank_ally_technology` DROP  IF EXISTS `ally`;
-ALTER TABLE `ogspy_game_rank_ally_points` DROP  IF EXISTS `ally`;
+-- Note : la suppression des colonnes legacy (ally, player, points_per_member) est différée
+-- en attendant la mise à jour coordonnée de l'extension xtense.
+-- Ces colonnes seront supprimées dans une version ultérieure (4.1.0 ou 4.0.4).
 
--- Suppression champs player/ally classement player
---ally
-ALTER TABLE `ogspy_game_rank_player_honor` DROP  IF EXISTS `ally`; 
-ALTER TABLE `ogspy_game_rank_player_military_loose` DROP IF EXISTS  `ally`;
-ALTER TABLE `ogspy_game_rank_player_military_destruct` DROP IF EXISTS  `ally`;
-ALTER TABLE `ogspy_game_rank_player_military_built` DROP IF EXISTS  `ally`;
-ALTER TABLE `ogspy_game_rank_player_military` DROP IF EXISTS  `ally`;
-ALTER TABLE `ogspy_game_rank_player_economics` DROP IF EXISTS  `ally`;
-ALTER TABLE `ogspy_game_rank_player_technology` DROP IF EXISTS  `ally`;
-ALTER TABLE `ogspy_game_rank_player_points` DROP IF EXISTS  `ally`;
---player
-ALTER TABLE `ogspy_game_rank_player_honor` DROP IF EXISTS  `player`; 
-ALTER TABLE `ogspy_game_rank_player_military_loose` DROP IF EXISTS  `player`;
-ALTER TABLE `ogspy_game_rank_player_military_destruct` DROP IF EXISTS  `player`;
-ALTER TABLE `ogspy_game_rank_player_military_built` DROP IF EXISTS  `player`;
-ALTER TABLE `ogspy_game_rank_player_military` DROP IF EXISTS  `player`;
-ALTER TABLE `ogspy_game_rank_player_economics` DROP IF EXISTS  `player`;
-ALTER TABLE `ogspy_game_rank_player_technology` DROP IF EXISTS  `player`;
-ALTER TABLE `ogspy_game_rank_player_points` DROP IF EXISTS  `player`;
+-- Mise à jour des index sur les tables de classement alliance (text ally → ally_id)
+ALTER TABLE `ogspy_game_rank_ally_economics`        DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `ally_id`);
+ALTER TABLE `ogspy_game_rank_ally_technology`        DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `ally_id`);
+ALTER TABLE `ogspy_game_rank_ally_military`          DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `ally_id`);
+ALTER TABLE `ogspy_game_rank_ally_military_built`    DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `ally_id`);
+ALTER TABLE `ogspy_game_rank_ally_military_loose`    DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `ally_id`);
+ALTER TABLE `ogspy_game_rank_ally_military_destruct` DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `ally_id`);
+ALTER TABLE `ogspy_game_rank_ally_honor`             DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `ally_id`);
+ALTER TABLE `ogspy_game_rank_ally_points`            DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `ally_id`);
+
+-- Mise à jour des index sur les tables de classement joueur (text player → player_id)
+ALTER TABLE `ogspy_game_rank_player_economics`        DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `player_id`);
+ALTER TABLE `ogspy_game_rank_player_technology`        DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `player_id`);
+ALTER TABLE `ogspy_game_rank_player_military`          DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `player_id`);
+ALTER TABLE `ogspy_game_rank_player_military_built`    DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `player_id`);
+ALTER TABLE `ogspy_game_rank_player_military_loose`    DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `player_id`);
+ALTER TABLE `ogspy_game_rank_player_military_destruct` DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `player_id`);
+ALTER TABLE `ogspy_game_rank_player_honor`             DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `player_id`);
+ALTER TABLE `ogspy_game_rank_player_points`            DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `player_id`);
 
 
 

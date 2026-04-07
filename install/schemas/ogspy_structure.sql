@@ -624,14 +624,14 @@ CREATE TABLE ogspy_game_rank_ally_economics
 (
     `datadate`          INT         NOT NULL DEFAULT '0',
     `rank`              INT         NOT NULL DEFAULT '0',
-    `ally`              VARCHAR(30) NOT NULL,
+    `ally`              VARCHAR(30) NOT NULL DEFAULT '',
     `ally_id`           INT         NOT NULL DEFAULT '-1',
     `number_member`     INT         NOT NULL,
     `points`            BIGINT      NOT NULL DEFAULT '0',
     `points_per_member` BIGINT      NOT NULL DEFAULT '0',
     `sender_id`         INT         NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `ally`)
+    KEY `datadate` (`datadate`, `ally_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -643,14 +643,14 @@ CREATE TABLE ogspy_game_rank_ally_technology
 (
     `datadate`          INT         NOT NULL DEFAULT '0',
     `rank`              INT         NOT NULL DEFAULT '0',
-    `ally`              VARCHAR(30) NOT NULL,
+    `ally`              VARCHAR(30) NOT NULL DEFAULT '',
     `ally_id`           INT         NOT NULL DEFAULT '-1',
     `number_member`     INT         NOT NULL,
     `points`            BIGINT      NOT NULL DEFAULT '0',
     `points_per_member` BIGINT      NOT NULL DEFAULT '0',
     `sender_id`         INT         NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `ally`)
+    KEY `datadate` (`datadate`, `ally_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -662,14 +662,14 @@ CREATE TABLE ogspy_game_rank_ally_military
 (
     `datadate`          INT         NOT NULL DEFAULT '0',
     `rank`              INT         NOT NULL DEFAULT '0',
-    `ally`              VARCHAR(30) NOT NULL,
+    `ally`              VARCHAR(30) NOT NULL DEFAULT '',
     `ally_id`           INT         NOT NULL DEFAULT '-1',
     `number_member`     INT         NOT NULL,
     `points`            BIGINT      NOT NULL DEFAULT '0',
     `points_per_member` BIGINT      NOT NULL DEFAULT '0',
     `sender_id`         INT         NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `ally`)
+    KEY `datadate` (`datadate`, `ally_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -681,14 +681,14 @@ CREATE TABLE ogspy_game_rank_ally_military_built
 (
     `datadate`          INT         NOT NULL DEFAULT '0',
     `rank`              INT         NOT NULL DEFAULT '0',
-    `ally`              VARCHAR(30) NOT NULL,
+    `ally`              VARCHAR(30) NOT NULL DEFAULT '',
     `ally_id`           INT         NOT NULL DEFAULT '-1',
     `number_member`     INT         NOT NULL,
     `points`            BIGINT      NOT NULL DEFAULT '0',
     `points_per_member` BIGINT      NOT NULL DEFAULT '0',
     `sender_id`         INT         NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `ally`)
+    KEY `datadate` (`datadate`, `ally_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -700,14 +700,14 @@ CREATE TABLE ogspy_game_rank_ally_military_loose
 (
     `datadate`          INT         NOT NULL DEFAULT '0',
     `rank`              INT         NOT NULL DEFAULT '0',
-    `ally`              VARCHAR(30) NOT NULL,
+    `ally`              VARCHAR(30) NOT NULL DEFAULT '',
     `ally_id`           INT         NOT NULL DEFAULT '-1',
     `number_member`     INT         NOT NULL,
     `points`            BIGINT      NOT NULL DEFAULT '0',
     `points_per_member` BIGINT      NOT NULL DEFAULT '0',
     `sender_id`         INT         NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `ally`)
+    KEY `datadate` (`datadate`, `ally_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -719,14 +719,14 @@ CREATE TABLE ogspy_game_rank_ally_military_destruct
 (
     `datadate`          INT         NOT NULL DEFAULT '0',
     `rank`              INT         NOT NULL DEFAULT '0',
-    `ally`              VARCHAR(30) NOT NULL,
+    `ally`              VARCHAR(30) NOT NULL DEFAULT '',
     `ally_id`           INT         NOT NULL DEFAULT '-1',
     `number_member`     INT         NOT NULL,
     `points`            BIGINT      NOT NULL DEFAULT '0',
     `points_per_member` BIGINT      NOT NULL DEFAULT '0',
     `sender_id`         INT         NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `ally`)
+    KEY `datadate` (`datadate`, `ally_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -738,14 +738,14 @@ CREATE TABLE ogspy_game_rank_ally_honor
 (
     `datadate`          INT         NOT NULL DEFAULT '0',
     `rank`              INT         NOT NULL DEFAULT '0',
-    `ally`              VARCHAR(30) NOT NULL,
+    `ally`              VARCHAR(30) NOT NULL DEFAULT '',
     `ally_id`           INT         NOT NULL DEFAULT '-1',
     `number_member`     INT         NOT NULL,
     `points`            BIGINT      NOT NULL DEFAULT '0',
     `points_per_member` BIGINT      NOT NULL DEFAULT '0',
     `sender_id`         INT         NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `ally`)
+    KEY `datadate` (`datadate`, `ally_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -757,14 +757,14 @@ CREATE TABLE ogspy_game_rank_ally_points
 (
     `datadate`          INT         NOT NULL DEFAULT '0',
     `rank`              INT         NOT NULL DEFAULT '0',
-    `ally`              VARCHAR(30) NOT NULL,
+    `ally`              VARCHAR(30) NOT NULL DEFAULT '',
     `ally_id`           INT         NOT NULL DEFAULT '-1',
     `number_member`     INT         NOT NULL,
     `points`            BIGINT      NOT NULL DEFAULT '0',
-    `points_per_member` BIGINT      NOT NULL,
+    `points_per_member` BIGINT      NOT NULL DEFAULT '0',
     `sender_id`         INT         NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `ally`)
+    KEY `datadate` (`datadate`, `ally_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -783,7 +783,7 @@ CREATE TABLE ogspy_game_rank_player_economics
     `points`    BIGINT       NOT NULL DEFAULT '0',
     `sender_id` INT          NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `player`)
+    KEY `datadate` (`datadate`, `player_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -802,7 +802,7 @@ CREATE TABLE ogspy_game_rank_player_technology
     `points`    BIGINT       NOT NULL DEFAULT '0',
     `sender_id` INT          NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `player`)
+    KEY `datadate` (`datadate`, `player_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -822,7 +822,7 @@ CREATE TABLE ogspy_game_rank_player_military
     `sender_id`     INT          NOT NULL DEFAULT '0',
     `nb_spacecraft` BIGINT       NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `player`)
+    KEY `datadate` (`datadate`, `player_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -841,7 +841,7 @@ CREATE TABLE ogspy_game_rank_player_military_built
     `points`    BIGINT       NOT NULL DEFAULT '0',
     `sender_id` INT          NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `player`)
+    KEY `datadate` (`datadate`, `player_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -860,7 +860,7 @@ CREATE TABLE ogspy_game_rank_player_military_loose
     `points`    BIGINT       NOT NULL DEFAULT '0',
     `sender_id` INT          NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `player`)
+    KEY `datadate` (`datadate`, `player_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -879,7 +879,7 @@ CREATE TABLE ogspy_game_rank_player_military_destruct
     `points`    BIGINT       NOT NULL DEFAULT '0',
     `sender_id` INT          NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `player`)
+    KEY `datadate` (`datadate`, `player_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -898,7 +898,7 @@ CREATE TABLE ogspy_game_rank_player_honor
     `points`    BIGINT       NOT NULL DEFAULT '0',
     `sender_id` INT          NOT NULL DEFAULT '0',
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `player`)
+    KEY `datadate` (`datadate`, `player_id`)
 )
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_bin;
@@ -917,7 +917,7 @@ CREATE TABLE ogspy_game_rank_player_points
     `points`    BIGINT       NOT NULL DEFAULT 0,
     `sender_id` INT          NOT NULL DEFAULT 0,
     PRIMARY KEY (`rank`, `datadate`),
-    KEY `datadate` (`datadate`, `player`)
+    KEY `datadate` (`datadate`, `player_id`)
 ) DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_bin;
 --
