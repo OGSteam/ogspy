@@ -313,47 +313,61 @@ class TestManager {
 
     /**
      * Vérifie l'intégrité de l'installation :
-     * - présence des tables essentielles
+     * - présence de toutes les tables définies dans ogspy_structure.sql
      * - données de configuration
      * - conformité des index avec ogspy_structure.sql
      */
     private function verifyInstallIntegrity($tablePrefix = 'ogspy_') {
-        $essentialTables = [$tablePrefix . 'user', $tablePrefix . 'config', $tablePrefix . 'migrations'];
-
-        foreach ($essentialTables as $table) {
-            $result = $this->db->sql_query("SHOW TABLES LIKE '{$table}'");
-            if ($this->db->sql_numrows($result) === 0) {
-                throw new Exception("Table essentielle manquante: {$table}");
-            }
+        $schemaFile = __DIR__ . '/schemas/ogspy_structure.sql';
+        if (!file_exists($schemaFile)) {
+            throw new Exception("Fichier de schéma introuvable: {$schemaFile}");
         }
 
+        $expectedIndexes = $this->parseIndexesFromSchema($schemaFile, 'ogspy_', $tablePrefix);
+        $expectedTables  = array_keys($expectedIndexes);
+
+        // Vérifier que toutes les tables du schéma existent en DB
+        $missingTables = [];
+        foreach ($expectedTables as $table) {
+            $result = $this->db->sql_query("SHOW TABLES LIKE '" . $this->db->sql_escape_string($table) . "'");
+            if ($this->db->sql_numrows($result) === 0) {
+                $missingTables[] = $table;
+            }
+        }
+        if (!empty($missingTables)) {
+            throw new Exception("Tables manquantes (" . count($missingTables) . "/" . count($expectedTables) . "): " . implode(', ', $missingTables));
+        }
+        echo "  Intégrité vérifiée: " . count($expectedTables) . " tables présentes\n";
+
+        // Vérifier que la table de configuration a des données
         $result = $this->db->sql_query("SELECT COUNT(*) as count FROM {$tablePrefix}config");
         $row = $this->db->sql_fetch_assoc($result);
         if ($row['count'] == 0) {
             throw new Exception("Table de configuration vide");
         }
 
-        echo "  Intégrité vérifiée: tables essentielles présentes\n";
-
         // Comparer les index de la DB avec ceux définis dans ogspy_structure.sql
-        $this->verifyIndexesAgainstSchema($tablePrefix);
+        $this->verifyIndexesAgainstSchema($tablePrefix, $expectedIndexes);
     }
 
     /**
-     * Parse ogspy_structure.sql, remplace le préfixe ogspy_ par $tablePrefix,
-     * et compare les index attendus avec ceux présents en base de données.
+     * Compare les index attendus (issus de $expectedIndexes ou parsés depuis le schéma)
+     * avec ceux présents en base de données.
      */
-    private function verifyIndexesAgainstSchema(string $tablePrefix = 'ogspy_'): void {
+    private function verifyIndexesAgainstSchema(string $tablePrefix = 'ogspy_', array $expectedIndexes = []): void {
         $schemaFile = __DIR__ . '/schemas/ogspy_structure.sql';
-        if (!file_exists($schemaFile)) {
-            throw new Exception("Fichier de schéma introuvable: {$schemaFile}");
+
+        if (empty($expectedIndexes)) {
+            if (!file_exists($schemaFile)) {
+                throw new Exception("Fichier de schéma introuvable: {$schemaFile}");
+            }
+            $expectedIndexes = $this->parseIndexesFromSchema($schemaFile, 'ogspy_', $tablePrefix);
         }
 
-        $expected = $this->parseIndexesFromSchema($schemaFile, 'ogspy_', $tablePrefix);
-        $actual   = $this->getIndexesFromDb($tablePrefix);
+        $actual = $this->getIndexesFromDb($tablePrefix);
 
         $errors = [];
-        foreach ($expected as $table => $indexes) {
+        foreach ($expectedIndexes as $table => $indexes) {
             foreach ($indexes as $indexName => $expectedCols) {
                 $actualCols = $actual[$table][$indexName] ?? null;
                 if ($actualCols === null) {
