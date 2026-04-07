@@ -314,6 +314,7 @@ class TestManager {
     /**
      * Vérifie l'intégrité de l'installation :
      * - présence de toutes les tables définies dans ogspy_structure.sql
+     * - présence de toutes les colonnes définies dans ogspy_structure.sql
      * - données de configuration
      * - conformité des index avec ogspy_structure.sql
      */
@@ -324,7 +325,8 @@ class TestManager {
         }
 
         $expectedIndexes = $this->parseIndexesFromSchema($schemaFile, 'ogspy_', $tablePrefix);
-        $expectedTables  = array_keys($expectedIndexes);
+        $expectedColumns = $this->parseColumnsFromSchema($schemaFile, 'ogspy_', $tablePrefix);
+        $expectedTables  = array_keys($expectedColumns);
 
         // Vérifier que toutes les tables du schéma existent en DB
         $missingTables = [];
@@ -345,6 +347,9 @@ class TestManager {
         if ($row['count'] == 0) {
             throw new Exception("Table de configuration vide");
         }
+
+        // Vérifier que toutes les colonnes du schéma existent en DB
+        $this->verifyColumnsAgainstSchema($tablePrefix, $expectedColumns);
 
         // Comparer les index de la DB avec ceux définis dans ogspy_structure.sql
         $this->verifyIndexesAgainstSchema($tablePrefix, $expectedIndexes);
@@ -459,6 +464,85 @@ class TestManager {
         }
 
         return $indexes;
+    }
+
+    /**
+     * Parse les colonnes de toutes les tables dans un fichier SQL de structure.
+     * Remplace $sourcePrefix par $targetPrefix dans les noms de tables.
+     * Retourne [ tableName => [col1, col2, ...] ]
+     */
+    private function parseColumnsFromSchema(string $file, string $sourcePrefix, string $targetPrefix): array {
+        $columns = [];
+        $currentTable = null;
+
+        foreach (explode("\n", file_get_contents($file)) as $line) {
+            $line = trim($line);
+
+            if (preg_match('/^CREATE\s+TABLE\s+`?(\w+)`?/i', $line, $m)) {
+                $raw = $m[1];
+                $currentTable = str_starts_with($raw, $sourcePrefix)
+                    ? $targetPrefix . substr($raw, strlen($sourcePrefix))
+                    : $raw;
+                $columns[$currentTable] = [];
+                continue;
+            }
+
+            if ($currentTable === null) {
+                continue;
+            }
+
+            // Ligne de définition de colonne : commence par `nomColonne`
+            // On exclut les lignes KEY / PRIMARY KEY / UNIQUE KEY
+            if (preg_match('/^`(\w+)`\s+/i', $line, $m)) {
+                $columns[$currentTable][] = $m[1];
+            }
+        }
+
+        return array_filter($columns, fn($cols) => !empty($cols));
+    }
+
+    /**
+     * Vérifie que toutes les colonnes définies dans le schéma existent en DB.
+     */
+    private function verifyColumnsAgainstSchema(string $tablePrefix, array $expectedColumns): void {
+        $actual = $this->getColumnsFromDb($tablePrefix);
+
+        $errors = [];
+        foreach ($expectedColumns as $table => $cols) {
+            $actualCols = $actual[$table] ?? [];
+            foreach ($cols as $col) {
+                if (!in_array($col, $actualCols, true)) {
+                    $errors[] = "Colonne '{$col}' absente sur {$table}";
+                }
+            }
+        }
+
+        if (!empty($errors)) {
+            throw new Exception("Colonnes manquantes (structure.sql vs DB):\n  - " . implode("\n  - ", $errors));
+        }
+
+        echo "  Intégrité vérifiée: colonnes conformes au schéma de référence\n";
+    }
+
+    /**
+     * Récupère toutes les colonnes des tables avec $tablePrefix depuis information_schema.
+     * Retourne [ tableName => [col1, col2, ...] ]
+     */
+    private function getColumnsFromDb(string $tablePrefix): array {
+        $result = $this->db->sql_query(
+            "SELECT Table_name, Column_name
+             FROM information_schema.COLUMNS
+             WHERE Table_schema = DATABASE()
+               AND Table_name LIKE '" . $this->db->sql_escape_string($tablePrefix) . "%'
+             ORDER BY Table_name, Ordinal_position"
+        );
+
+        $columns = [];
+        while ($row = $this->db->sql_fetch_assoc($result)) {
+            $columns[$row['Table_name']][] = $row['Column_name'];
+        }
+
+        return $columns;
     }
 
     /**
