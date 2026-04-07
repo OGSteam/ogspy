@@ -318,7 +318,7 @@ class TestManager {
      * - données de configuration
      * - conformité des index avec ogspy_structure.sql
      */
-    private function verifyInstallIntegrity($tablePrefix = 'ogspy_') {
+    public function verifyInstallIntegrity($tablePrefix = 'ogspy_') {
         $schemaFile = __DIR__ . '/schemas/ogspy_structure.sql';
         if (!file_exists($schemaFile)) {
             throw new Exception("Fichier de schéma introuvable: {$schemaFile}");

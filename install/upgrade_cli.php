@@ -152,6 +152,9 @@ class UpgradeCLI {
             case 'test-prefix':
                 $this->testTablePrefix();
                 break;
+            case 'verify':
+                $this->verifyIntegrity();
+                break;
             default:
                 $this->showHelp();
         }
@@ -632,6 +635,7 @@ class UpgradeCLI {
         echo "  test-install        - Test uniquement l'installation initiale\n";
         echo "  test-upgrade        - Test uniquement les mises à niveau\n";
         echo "  test-performance    - Test de performance des migrations\n";
+        echo "  verify              - Vérifie l'intégrité de la base de données (tables, colonnes, index)\n";
         echo "  help                - Affiche cette aide\n\n";
         echo "Installation automatisée:\n";
         echo "  php upgrade_cli.php install localhost root mypass ogspy admin admin123\n";
@@ -813,6 +817,30 @@ class UpgradeCLI {
 
         } catch (Exception $e) {
             echo "❌ ERREUR CRITIQUE: " . $e->getMessage() . "\n";
+            exit(1);
+        }
+    }
+
+    /**
+     * Vérifie l'intégrité de la base de données courante
+     */
+    private function verifyIntegrity() {
+        global $db, $log, $table_prefix;
+
+        echo "🔍 VÉRIFICATION DE L'INTÉGRITÉ DE LA BASE DE DONNÉES\n";
+        echo "====================================================\n\n";
+
+        $prefix = $table_prefix ?? 'ogspy_';
+        echo "Préfixe de table: {$prefix}\n\n";
+
+        try {
+            $testManager = new TestManager($db, $log);
+            $testManager->verifyInstallIntegrity($prefix);
+
+            echo "\n✅ INTÉGRITÉ VÉRIFIÉE AVEC SUCCÈS\n";
+        } catch (Exception $e) {
+            echo "\n❌ PROBLÈME D'INTÉGRITÉ DÉTECTÉ:\n";
+            echo $e->getMessage() . "\n";
             exit(1);
         }
     }
