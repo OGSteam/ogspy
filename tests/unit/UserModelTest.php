@@ -130,6 +130,119 @@ class UserModelTest extends TestCase
         $this->assertFalse($result);
     }
 
+    /**
+     * Test that select_is_user_name detects duplicate names case-insensitively.
+     * "Dardar" and "dardar" should be considered the same username.
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testSelectIsUserNameIsCaseInsensitive(): void
+    {
+        $mockDb = $this->createMock(MockUserDatabase::class);
+        $mockDb->method('sql_escape_string')->willReturnArgument(0);
+
+        // Simulate a row found (username already exists)
+        $resultMock = $this->createMock(\stdClass::class);
+        $resultMock->num_rows = 1;
+
+        $mockDb->expects($this->once())
+            ->method('sql_query')
+            ->with($this->stringContains("LOWER(`name`) = 'dardar'"))
+            ->willReturn($resultMock);
+
+        $GLOBALS['db'] = $mockDb;
+        $userModel = new User_Model();
+
+        // Passing "Dardar" (uppercase) should still match existing "dardar"
+        $result = $userModel->select_is_user_name('Dardar');
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test that select_is_other_user_name detects duplicate names case-insensitively.
+     * "DARDAR" and "dardar" should be considered the same username for a different user.
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testSelectIsOtherUserNameIsCaseInsensitive(): void
+    {
+        $mockDb = $this->createMock(MockUserDatabase::class);
+        $mockDb->method('sql_escape_string')->willReturnArgument(0);
+
+        $mockDb->expects($this->once())
+            ->method('sql_query')
+            ->with($this->stringContains("LOWER(`name`) = 'dardar'"))
+            ->willReturn(true);
+
+        $mockDb->expects($this->once())
+            ->method('sql_numrows')
+            ->willReturn(1);
+
+        $GLOBALS['db'] = $mockDb;
+        $userModel = new User_Model();
+
+        // Passing "DARDAR" (uppercase) should still match existing "dardar" for user id 2
+        $result = $userModel->select_is_other_user_name('DARDAR', 2);
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test that select_is_user_name uses LOWER() in the SQL query.
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testSelectIsUserNameUsesLowerInQuery(): void
+    {
+        $mockDb = $this->createMock(MockUserDatabase::class);
+        $mockDb->method('sql_escape_string')->willReturnArgument(0);
+
+        $resultMock = $this->createMock(\stdClass::class);
+        $resultMock->num_rows = 0;
+
+        $mockDb->expects($this->once())
+            ->method('sql_query')
+            ->with($this->logicalAnd(
+                $this->stringContains('LOWER(`name`)'),
+                $this->stringContains("'testuser'")
+            ))
+            ->willReturn($resultMock);
+
+        $GLOBALS['db'] = $mockDb;
+        $userModel = new User_Model();
+
+        $result = $userModel->select_is_user_name('TestUser');
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Test that select_is_other_user_name uses LOWER() in the SQL query.
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testSelectIsOtherUserNameUsesLowerInQuery(): void
+    {
+        $mockDb = $this->createMock(MockUserDatabase::class);
+        $mockDb->method('sql_escape_string')->willReturnArgument(0);
+
+        $mockDb->expects($this->once())
+            ->method('sql_query')
+            ->with($this->logicalAnd(
+                $this->stringContains('LOWER(`name`)'),
+                $this->stringContains("'testuser'")
+            ))
+            ->willReturn(true);
+
+        $mockDb->expects($this->once())
+            ->method('sql_numrows')
+            ->willReturn(0);
+
+        $GLOBALS['db'] = $mockDb;
+        $userModel = new User_Model();
+
+        $result = $userModel->select_is_other_user_name('TestUser', 5);
+
+        $this->assertFalse($result);
+    }
+
     protected function tearDown(): void
     {
         // Clean up global variables
