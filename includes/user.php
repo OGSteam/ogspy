@@ -666,7 +666,7 @@ function member_user_set()
     global $user_data, $user_technology, $log;
     global $pub_pseudo, $pub_old_password, $pub_new_password, $pub_new_password2, $pub_galaxy,
         $pub_system, $pub_disable_ip_check,
-        $pub_pseudo_ingame, $pub_pseudo_email, $pub_renew_user_token;
+        $pub_pseudo_email, $pub_renew_user_token;
 
     $user_id = $user_data["id"];
 
@@ -685,8 +685,7 @@ function member_user_set()
         !check_var($pub_pseudo_email, "Email") ||
         !check_var($pub_galaxy, "Num") ||
         !check_var($pub_system, "Num") ||
-        !check_var($pub_disable_ip_check, "Num") ||
-        !check_var($pub_pseudo_ingame, "Pseudo_ingame")
+        !check_var($pub_disable_ip_check, "Num")
     ) {
         $log->warning("Profile modification failed - invalid data format", [
             'user_id' => $user_id,
