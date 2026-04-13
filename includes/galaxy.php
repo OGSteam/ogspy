@@ -389,7 +389,7 @@ function galaxy_search()
                 !isset($planet_details['system']) ||
                 !isset($planet_details['row']) ||
                 !array_key_exists('ally_name', $planet_details)) { // Utiliser array_key_exists pour 'ally_name' car il peut être null
-                $log->warn('Skipping malformed planet data item in galaxy_search', $planet_details);
+                $log->warning('Skipping malformed planet data item in galaxy_search', $planet_details);
                 continue;
             }
 
@@ -417,7 +417,7 @@ function galaxy_search()
             $search_result_1D[] = $current_planet_output; // Ajouter à la liste 1D
         }
     } else {
-        $log->warn('No planets data or invalid format from find() in galaxy_search', $result['planets']);
+        $log->warning('No planets data or invalid format from find() in galaxy_search', $result['planets']);
     }
 
     $log->debug('Final search_result for galaxy_search (1D structure)', $search_result_1D);
