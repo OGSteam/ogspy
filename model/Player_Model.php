@@ -78,6 +78,8 @@ class Player_Model extends Model_Abstract
      * A quoi sert donc cette fonction ? :p
      * Reponse elle sert a mettre a jour le pseudo ingame afin d afficher les stats users dans son espace perso
      *
+     * set_game_account_id ?
+     * 
      * @param $user_id
      * @param $user_stat_name
      */

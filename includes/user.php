@@ -15,6 +15,7 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+use Ogsteam\Ogspy\Model\Player_Model;
 use Ogsteam\Ogspy\Model\Sessions_Model;
 use Ogsteam\Ogspy\Model\Statistics_Model;
 use Ogsteam\Ogspy\Model\User_Model;
@@ -694,12 +695,9 @@ function member_user_set()
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    $userModel = new User_Model();
-    $user_info = user_get($user_id);
 
-    $player_id = $user_data["player_id"];
-    $user_empire = player_get_empire($player_id);
-    $user_technology = $user_empire["technology"];
+    $userModel = new User_Model();
+    $playerModel = new Player_Model();
 
     $password_change_validated = false;
     // Validation du changement de mot de passe
@@ -756,10 +754,6 @@ function member_user_set()
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudo&info");
     }
 
-    $player_id = $user_data["player_id"];
-    $user_empire = player_get_empire($player_id);
-    $user_technology = $user_empire["technology"];
-
     //Contrôle que le pseudo ne soit pas déjà utilisé si changement
     if ($userModel->select_is_other_user_name($pub_pseudo, $user_id) === true) {
         $log->warning("Profile modification failed - username already taken", [
@@ -808,12 +802,22 @@ function member_user_set()
         $changes_made[] = 'ip_check';
     }
 
+    $player_id = null;
+    if (isset($pub_pseudo_ingame)) {
+        //recuperation de l'id avant insertion
+        $player_id = $playerModel->getPlayerId($pub_pseudo_ingame);
+        $playerModel->set_game_account_name($user_id, $player_id);
+        $changes_made[] = 'pseudo_ingame';
+    }
+
+
     $log->info("User profile modification completed successfully", [
         'user_id' => $user_id,
         'username' => $user_data["name"] ?? 'unknown',
         'changes_made' => $changes_made,
         'password_changed' => $password_change_validated,
         'token_renewed' => $pub_renew_user_token == 1,
+        'player_id' => (int)$player_id,
         'ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
     ]);
 
@@ -1301,6 +1305,48 @@ function user_statistic(): array
 {
     $userModel = new User_Model();
     return $userModel->select_all_user_stats_data();
+}
+
+/**
+ * Fonction de calcul du ratio
+ * @param int $player user_id ID du joueur
+ * @return array ratio et divers calculs intermédiaires pour l'utilisateur en question
+ * @author Bousteur 25/11/2006
+ */
+function ratio_calc($player): array
+{
+    $data_user = new User_Model();
+    $user_stat = $data_user->select_user_stats_data($player);
+    $total_user_stats = $data_user->select_user_stats_sum();
+    //pour éviter la division par zéro
+    if ($total_user_stats["planetimporttotal"] == 0) {
+        $total_user_stats["planetimporttotal"] = 1;
+    }
+    if ($total_user_stats["spyimporttotal"] == 0) {
+        $total_user_stats["spyimporttotal"] = 1;
+    }
+    if ($total_user_stats["rankimporttotal"] == 0) {
+        $total_user_stats["rankimporttotal"] = 1;
+    }
+    if ($total_user_stats["searchtotal"] == 0) {
+        $total_user_stats["searchtotal"] = 1;
+    }
+    //et on commence le calcul
+    $ratio_planet = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
+    $ratio_spy = $user_stat["spy_added_xtense"] / $total_user_stats["spyimporttotal"];
+    $ratio_rank = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
+    $ratio = ($ratio_planet * 4 + $ratio_spy * 2 + $ratio_rank) / (4 + 2 + 1);
+    $ratio_planet_penality = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
+    $ratio_spy_penality = $user_stat["spy_added_xtense"] / $total_user_stats["spyimporttotal"];
+    $ratio_rank_penality = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
+    $ratio_penality = ($ratio_planet_penality * 4 + $ratio_spy_penality * 2 + $ratio_rank_penality) / (4 + 2 + 1);
+    $ratio_search = $user_stat["search"] / $total_user_stats["searchtotal"];
+    $ratio_searchpenality = ($ratio - $ratio_search);
+    $result = ($ratio + $ratio_penality + $ratio_searchpenality) * 1000;
+    return array(
+        $result, $ratio_searchpenality, $ratio_search, $ratio_penality, $ratio_rank_penality,
+        $ratio_spy_penality, $ratio_planet_penality
+    );
 }
 
 /**

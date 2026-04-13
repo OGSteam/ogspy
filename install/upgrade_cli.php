@@ -152,6 +152,9 @@ class UpgradeCLI {
             case 'test-prefix':
                 $this->testTablePrefix();
                 break;
+            case 'verify':
+                $this->verifyIntegrity();
+                break;
             default:
                 $this->showHelp();
         }
@@ -632,6 +635,8 @@ class UpgradeCLI {
         echo "  test-install        - Test uniquement l'installation initiale\n";
         echo "  test-upgrade        - Test uniquement les mises à niveau\n";
         echo "  test-performance    - Test de performance des migrations\n";
+        echo "  verify              - Vérifie l'intégrité de la base de données (tables, colonnes, index)\n";
+        echo "  verify --repair     - Vérifie et tente une réparation via les migrations en attente\n";
         echo "  help                - Affiche cette aide\n\n";
         echo "Installation automatisée:\n";
         echo "  php upgrade_cli.php install localhost root mypass ogspy admin admin123\n";
@@ -813,6 +818,78 @@ class UpgradeCLI {
 
         } catch (Exception $e) {
             echo "❌ ERREUR CRITIQUE: " . $e->getMessage() . "\n";
+            exit(1);
+        }
+    }
+
+    /**
+     * Vérifie l'intégrité de la base de données courante.
+     * Avec --repair : tente d'abord d'appliquer les migrations en attente (sûr),
+     * puis re-vérifie. Ne rejoue jamais une migration déjà appliquée.
+     */
+    private function verifyIntegrity() {
+        global $db, $log, $table_prefix, $argv;
+
+        $repair = in_array('--repair', $argv);
+
+        echo "🔍 VÉRIFICATION DE L'INTÉGRITÉ DE LA BASE DE DONNÉES\n";
+        echo "====================================================\n\n";
+
+        $prefix = $table_prefix ?? 'ogspy_';
+        echo "Préfixe de table: {$prefix}\n";
+        if ($repair) {
+            echo "Mode réparation: activé (application des migrations en attente)\n";
+        }
+        echo "\n";
+
+        $testManager = new TestManager($db, $log);
+
+        // Première vérification
+        try {
+            $testManager->verifyInstallIntegrity($prefix);
+            echo "\n✅ INTÉGRITÉ VÉRIFIÉE AVEC SUCCÈS\n";
+            return;
+        } catch (Exception $e) {
+            echo "\n❌ PROBLÈME D'INTÉGRITÉ DÉTECTÉ:\n";
+            echo $e->getMessage() . "\n";
+
+            if (!$repair) {
+                echo "\nℹ️  Conseil: relancez avec --repair pour tenter une réparation automatique.\n";
+                echo "  php upgrade_cli.php verify --repair\n";
+                echo "\n⚠️  La réparation applique uniquement les migrations en attente (non-destructif).\n";
+                echo "  Elle ne peut pas corriger des divergences dues à des migrations partielles.\n";
+                exit(1);
+            }
+        }
+
+        // Mode --repair : appliquer les migrations en attente
+        echo "\n🔧 Tentative de réparation via les migrations en attente...\n";
+        $result = $this->autoUpgrade->checkAndUpgrade();
+
+        switch ($result['status']) {
+            case 'up_to_date':
+                echo "  Aucune migration en attente.\n";
+                break;
+            case 'success':
+                $count = $result['migrations_count'] ?? 0;
+                echo "  ✓ {$count} migration(s) appliquée(s).\n";
+                break;
+            case 'error':
+            case 'critical_error':
+                echo "  ✗ Échec des migrations: " . ($result['message'] ?? 'Erreur inconnue') . "\n";
+                exit(1);
+        }
+
+        // Nouvelle vérification après réparation
+        echo "\n🔍 Nouvelle vérification après réparation...\n";
+        try {
+            $testManager->verifyInstallIntegrity($prefix);
+            echo "\n✅ RÉPARATION RÉUSSIE — INTÉGRITÉ VÉRIFIÉE\n";
+        } catch (Exception $e) {
+            echo "\n❌ INTÉGRITÉ TOUJOURS COMPROMISE APRÈS RÉPARATION:\n";
+            echo $e->getMessage() . "\n";
+            echo "\n⚠️  Les divergences restantes dépassent le périmètre des migrations.\n";
+            echo "  Une intervention manuelle est nécessaire.\n";
             exit(1);
         }
     }
