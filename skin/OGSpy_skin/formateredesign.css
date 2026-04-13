@@ -725,20 +725,34 @@ nav#navbar #menu_offline {
 
 
 nav#navbar #menu_timer {
-    text-align: left;
-    background-position: top left;
-    background-size: 200px 50px;
-    background-image: url("menu/menu_title.png");
-    background-repeat: no-repeat;
-
-    padding-left: 20px;
-    padding-top: 55px;
-
-    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2px;
+    padding-left: 0;
     width: 200px;
     flex-shrink: 0;
-    display: flex;
-    align-items: flex-end;
+}
+
+#navbar-logo {
+    height: 50px;
+    width: auto;
+    display: block;
+    opacity: 0.92;
+    transition: opacity 0.2s, filter 0.2s;
+}
+
+#navbar-logo:hover {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px #26f33d55);
+}
+
+nav#navbar #menu_timer #datetime {
+    font-size: 11px;
+    color: var(--color-text);
+    opacity: 0.6;
+    padding-left: 8px;
 }
 
 /* Menu*/
@@ -783,13 +797,23 @@ nav#navbar #menu_timer {
     height: 100%;
     box-sizing: border-box;
     cursor: pointer;
+    position: relative;
 }
 
 /* Underline active au hover */
 #menu_navigate_id ul.menu_navigate > li:hover > a {
     color: var(--color-navbarmenu-link);
     text-decoration: none;
-    box-shadow: inset 0 -3px 0 var(--color-navbarmenu-link);
+}
+
+#menu_navigate_id ul.menu_navigate > li:hover > a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 62px;
+    right: 16px;
+    height: 3px;
+    background: var(--color-navbarmenu-link);
 }
 
 /*  icon*/
@@ -831,14 +855,14 @@ a span.menuitem-about-grp_icon {
     display: none;
     position: absolute;
     top: 100%;
-    left: 0;
+    left: 46px;
     z-index: 1001;
     min-width: 220px;
     background: var(--color-navbarmenu-backgroung);
     flex-flow: column nowrap;
     list-style: none;
     text-transform: capitalize;
-    padding: 12px 20px 16px;
+    padding: 12px 12px 16px;
     margin: 0;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }

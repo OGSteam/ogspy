@@ -14,7 +14,9 @@ if (!defined('IN_SPYOGAME')) {
 }
 ?>
 <div id="menu_timer">
-    <!--<?php echo ($lang['MENU_SERVER_TIME']); ?><br /> // Limite la place utilisé-->
+    <a href="index.php?action=home&amp;subaction=home">
+        <img src="./skin/OGSpy_skin/logos/logo.svg" alt="OGSpy" id="navbar-logo">
+    </a>
     <span id="datetime"><?php echo ($lang['MENU_WAITING']); ?></span>
 </div>
 
