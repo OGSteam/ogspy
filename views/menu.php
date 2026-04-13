@@ -124,7 +124,6 @@ if (!defined('IN_SPYOGAME')) {
                 $mod_model = new \Ogsteam\Ogspy\Model\Mod_Model();
                 $tMods = $mod_model->find_by(array("active" => "1"), array("position" => 'ASC', "title" => 'ASC'));
                 ?>
-                <!-- mod non admin -->
                 <?php foreach ($tMods as $mod) : ?>
                     <?php if ($mod['admin_only'] == 0) : ?>
                         <li class='menusubitem-mod menusubitem-mod-<?php echo $mod['action']; ?>'>
@@ -132,10 +131,16 @@ if (!defined('IN_SPYOGAME')) {
                         </li>
                     <?php endif; ?>
                 <?php endforeach; ?>
-                <!-- mod admin -->
-            </ul>
-            <ul class="sub_menu_navigate sub_menu_navigate_admin">
                 <?php if ($user_data["admin"] == 1 || $user_data["coadmin"] == 1) : ?>
+                    <?php
+                    $hasAdminMods = false;
+                    foreach ($tMods as $mod) {
+                        if ($mod['admin_only'] == 1) { $hasAdminMods = true; break; }
+                    }
+                    ?>
+                    <?php if ($hasAdminMods) : ?>
+                        <li class='menusubitem-mod-separator'><span>Admin</span></li>
+                    <?php endif; ?>
                     <?php foreach ($tMods as $mod) : ?>
                         <?php if ($mod['admin_only'] == 1) : ?>
                             <li class='menusubitem-mod-admin menusubitem-mod-<?php echo $mod['action']; ?>'>

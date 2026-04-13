@@ -692,11 +692,19 @@ header {
 nav#navbar {
     display: flex;
     flex-direction: row;
-    /* background: linear-gradient(to bottom, rgba(0,0,0,8) 0%, rgba(0,0,0,0.7) 85%, rgba(0,0,0,0) 100%);*/
+    align-items: stretch;
     background: var(--color-navbarmenu-backgroung);
-
     padding-left: 10px;
     padding-right: 10px;
+    position: relative;
+    z-index: 100;
+    overflow: visible;
+}
+
+nav#navbar::after {
+    content: '';
+    width: 200px;
+    flex-shrink: 0;
 }
 
 nav#navbar #menu_offline {
@@ -717,69 +725,71 @@ nav#navbar #menu_offline {
 
 
 nav#navbar #menu_timer {
-
     text-align: left;
     background-position: top left;
     background-size: 200px 50px;
     background-image: url("menu/menu_title.png");
     background-repeat: no-repeat;
 
-    padding: 0px;
     padding-left: 20px;
     padding-top: 55px;
 
     font-size: 12px;
     width: 200px;
-    height: 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-end;
 }
 
 /* Menu*/
 #menu_navigate_id {
-    margin-top: 0;
+    flex: 1;
     z-index: 1000;
-    width: 100%;
-    position: relative;
-    left: -110px;
-
 }
 
-#menu_navigate_id ul {
-    margin: 0px;
-    padding: 10px;
-
-    list-style: none;
-    text-transform: uppercase;
-    font-weight: bold;
-
+#menu_navigate_id ul.menu_navigate {
     display: flex;
     flex-direction: row;
+    align-items: stretch;
     justify-content: center;
+    list-style: none;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
-#menu_navigate_id ul li {
-    margin: 0px 10px;
-    padding: 0px;
+/* Chaque item : ancre du dropdown, prend toute la hauteur */
+#menu_navigate_id ul.menu_navigate > li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
     list-style: none;
 }
 
-#menu_navigate_id ul.menu_navigate li a {
-    display: block;
+/* Lien principal */
+#menu_navigate_id ul.menu_navigate > li > a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     color: var(--color-text);
-    transition: background-color 0.5s;
-    font-size: 18px;
+    transition: color 0.3s;
+    font-size: 16px;
     text-align: center;
-    padding: 10px 8px;
+    padding: 10px 16px;
+    height: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
 }
 
-
-#menu_navigate_id ul.menu_navigate li a:hover {
+/* Underline active au hover */
+#menu_navigate_id ul.menu_navigate > li:hover > a {
     color: var(--color-navbarmenu-link);
     text-decoration: none;
-    /*background: rgba(0,0,0,0.7);*/
-}
-
-#menu_navigate_id ul.menu_navigate li a:hover {
-    position: relative;
+    box-shadow: inset 0 -3px 0 var(--color-navbarmenu-link);
 }
 
 /*  icon*/
@@ -802,80 +812,78 @@ a span.menuitem-about-grp_icon {
 
 #menu_navigate_id ul.menu_navigate li a:hover span.icon-ogspy {
     filter: var(--color-navbarmenu-link-iconfilter);
-
-
 }
 
-
 #menu_navigate_id ul.menu_navigate li a span.icon-ogspy {
-    padding-left: 50px;
+    padding-left: 40px;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-
     filter: invert(100%);
 }
 
 /* fin icon*/
 
 
-/* sous menu */
-#menu_navigate_id li:hover>.sub_menu_navigate {
+/* ---- Dropdowns ---- */
+/* Panneau dropdown : position\u00e9 sous le li (top:100% = bas de la navbar) */
+#menu_navigate_id ul.menu_navigate > li > .sub_menu_navigate {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1001;
+    min-width: 220px;
+    background: var(--color-navbarmenu-backgroung);
+    flex-flow: column nowrap;
+    list-style: none;
+    text-transform: capitalize;
+    padding: 12px 20px 16px;
+    margin: 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* Affichage au hover */
+#menu_navigate_id ul.menu_navigate > li:hover > .sub_menu_navigate {
     display: flex;
 }
 
-#menu_navigate_id ul li .sub_menu_navigate {
-    text-decoration: none;
-    text-transform: capitalize;
-    list-style: none;
-    display: none;
-    flex-flow: column wrap;
-    width: 200px;
-    position: absolute;
-    background: var(--color-navbarmenu-backgroung);
-    padding-left: 10px;
-}
-
-#menu_navigate_id ul li .sub_menu_navigate li:first-child {
-    margin-top: 0px;
-    margin-left: 10px;
-}
-
-#menu_navigate_id ul li .sub_menu_navigate li:last-child {
-    margin-bottom: 25px;
+/* Items du dropdown */
+#menu_navigate_id ul.menu_navigate > li > .sub_menu_navigate li {
+    margin: 0;
+    padding: 0;
 }
 
 #menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a {
     color: var(--color-navbarmenu-link);
     text-align: left;
-    font-size: 12px;
+    font-size: 13px;
+    padding: 6px 4px;
+    margin: 0;
+    display: block;
+    white-space: nowrap;
+    transition: color 0.2s;
 }
 
 #menu_navigate_id ul.menu_navigate li .sub_menu_navigate li a:hover {
     color: var(--color-navbarmenu-link-hover);
 }
 
-/* decallage pour su menu mod */
-#menu_navigate_id ul li.menuitem-mod .sub_menu_navigate {
-    position: absolute;
-
+/* Séparateur visuel entre mods utilisateur et mods admin */
+#menu_navigate_id .menusubitem-mod-separator {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-#menu_navigate_id ul li.menuitem-mod .sub_menu_navigate_admin {
-    left: 220px;
-    position: relative;
+#menu_navigate_id .menusubitem-mod-separator span {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.4);
+    padding: 2px 4px;
 }
-
-/* decallage pour su menu mod */
-#menu_navigate_id ul li .sub_menu_navigate a {
-    margin: 0px;
-    padding: 5px 0px;
-}
-
-#menu_navigate_id ul li .sub_menu_navigate a:hover {
-    width: 100%;
-}
-
 
 /* fin sous menu*/
 /* fin  menu*/
@@ -1768,16 +1776,6 @@ footer#barre .notviewlittle{
         padding-left: 0px;
         padding-right: 0px;
         padding-top: 0px;
-    }
-
-    #menu_navigate_id ul li.menuitem-mod .sub_menu_navigate {
-        position: absolute;
-        left: 0px;
-    }
-
-    #menu_navigate_id ul li.menuitem-mod .sub_menu_navigate_admin {
-        left: 220px;
-        position: absolute;
     }
 
     .og-msg {
