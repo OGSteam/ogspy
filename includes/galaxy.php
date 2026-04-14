@@ -1947,7 +1947,7 @@ function displayGalaxyAllyTooltip($allyid)
     $tooltip .= "<tr><td class=\"tdstat\">" . $lang['GALAXY_RANK_MILITARY_HONOR'] . "</td><td class=\"tdcontent\">" . $honor_rank . "</td><td class=\"tdcontent\">" . $honor_points . "</td></tr>";
     $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\" ><span class=\"og-highlight\">" . $number_member . "</span> " . $lang['GALAXY_MEMBERS'] . "</td></tr>";
 
-    $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=" . htmlspecialchars($allyName) . "&strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
+    $tooltip .= "<tr><td class=\"tdcontent\" colspan=\"3\"><a href=\"index.php?action=search&amp;type_search=ally&amp;string_search=" . htmlspecialchars(rawurlencode($allyName), ENT_QUOTES) . "&strict=on\">" . $lang['GALAXY_SEE_DETAILS'] . "</a></td></tr>";
     $tooltip .= '</tbody>';
     $tooltip .= "</table>";
 
