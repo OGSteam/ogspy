@@ -1,0 +1,31 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 165 50" width="165" height="50">
+  <defs>
+    <linearGradient id="chrome" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#e8e8e8"/>
+      <stop offset="30%"  stop-color="#ffffff"/>
+      <stop offset="55%"  stop-color="#a0a0a0"/>
+      <stop offset="80%"  stop-color="#d0d0d0"/>
+      <stop offset="100%" stop-color="#808080"/>
+    </linearGradient>
+    <linearGradient id="chromeStroke" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#999"/>
+      <stop offset="50%"  stop-color="#ddd"/>
+      <stop offset="100%" stop-color="#555"/>
+    </linearGradient>
+    <filter id="halo" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#4a8ec2" flood-opacity="0.5" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <text x="6" y="38"
+    font-family="Arial Black, Arial, Helvetica, sans-serif"
+    font-size="40" font-weight="900"
+    fill="url(#chrome)" stroke="url(#chromeStroke)" stroke-width="0.6"
+    filter="url(#halo)">OGSPY</text>
+  <line x1="6" y1="45" x2="158" y2="45" stroke="#4a8ec2" stroke-width="0.8" opacity="0.5"/>
+</svg>

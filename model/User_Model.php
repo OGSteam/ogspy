@@ -44,9 +44,10 @@ class User_Model extends Model_Abstract
      */
     public function select_is_user_name($username)
     {
+        $username = mb_strtolower($username, 'UTF-8');
         $username = $this->db->sql_escape_string($username);
 
-        $request = "SELECT * FROM " . TABLE_USER . " WHERE `name` = '$username'";
+        $request = "SELECT * FROM " . TABLE_USER . " WHERE LOWER(`name`) = '$username'";
         $result = $this->db->sql_query($request);
         if ($result !== false && $result->num_rows !== 0) {
             return true;
@@ -60,10 +61,11 @@ class User_Model extends Model_Abstract
      */
     public function select_is_other_user_name($username, $user_id)
     {
+        $username = mb_strtolower($username, 'UTF-8');
         $username = $this->db->sql_escape_string($username);
         $user_id  = (int) $user_id;
 
-        $request = "SELECT * FROM " . TABLE_USER . " WHERE `name` = '" . $username . "' AND `id` <> " . $user_id;
+        $request = "SELECT * FROM " . TABLE_USER . " WHERE LOWER(`name`) = '" . $username . "' AND `id` <> " . $user_id;
         $result = $this->db->sql_query($request);
         if ($this->db->sql_numrows($result) != 0) {
             return true;
@@ -380,6 +382,7 @@ class User_Model extends Model_Abstract
         $request = "UPDATE " . TABLE_USER . " SET `disable_ip_check` = '" . $disable_ip_check . "' WHERE `id` = " . $user_id;
         $this->db->sql_query($request);
     }
+
 
     /**
      * @param $user_id

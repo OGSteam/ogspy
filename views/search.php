@@ -18,9 +18,13 @@ if (!defined('IN_SPYOGAME')) {
 
 
 use Ogsteam\Ogspy\Helper\ToolTip_Helper;
+use \Ogsteam\Ogspy\Model\Player_Model;
+use \Ogsteam\Ogspy\Model\Ally_Model;
+
 global $lang;
 
 $ToolTip_Helper = new ToolTip_Helper();
+
 
 // Initialisation des variables de recherche
 $string_search = $pub_string_search ?? "";
@@ -480,16 +484,23 @@ require_once("views/page_header.php");
     <?php
     // calcul de tous les tooltip player et alliance
     //tooltip player
+    //TODO Les recherche se font via noms, via ID possible ?
     foreach ($tooltiptab["playerName"] as $player) {
-        $tooltip = displayGalaxyPlayerTooltip($player);
-        //------------  Affichage Tooltip ----------------
-        $ToolTip_Helper->addTooltip("ttp_player_" . $player,  $tooltip);
+        $playerId = (new Player_Model())->getPlayerId($player);
+        if ($playerId !== false) {
+            $tooltip = displayGalaxyPlayerTooltip($playerId);
+            //------------  Affichage Tooltip ----------------
+            $ToolTip_Helper->addTooltip("ttp_player_" . $player,  $tooltip);
+        }
     }
     //tooltip ally
     foreach ($tooltiptab["allyName"] as $ally) {
-        $tooltip =  displayGalaxyAllyTooltip($ally);
-        //------------  Affichage Tooltip ----------------
-        $ToolTip_Helper->addTooltip("ttp_alliance_" . $ally,  $tooltip);
+        $allyId = (new Ally_Model())->getAllyId($ally);
+        if ($allyId !== false) {
+            $tooltip =  displayGalaxyAllyTooltip($allyId);
+            //------------  Affichage Tooltip ----------------
+            $ToolTip_Helper->addTooltip("ttp_alliance_" . $ally,  $tooltip);
+        }
     }
     ?>
 

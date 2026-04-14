@@ -42,7 +42,8 @@ use Ogsteam\Ogspy\Helper\ToolTip_Helper;
 <body onload="ogspy_run();">
 
     <header id="ban">
-        <img alt="Logo OGSpy" src="./skin/OGSpy_skin/<?= $banner_selected; ?>">
+        <?php $header_banner = empty($banner_selected) ? 'logos/logo.png' : $banner_selected; ?>
+        <img alt="Logo OGSpy" src="./skin/OGSpy_skin/<?= $header_banner; ?>">
     </header> <!-- fin header Banniere ogspy -->
     <nav id="navbar">
         <?php require_once "menu.php"; ?>

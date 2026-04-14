@@ -16,7 +16,7 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-require_once "includes/ogame.php";
+// Formulas are required centrally in common.php; avoid duplicate includes in views
 
 use Ogsteam\Ogspy\Model\Player_Model;
 
@@ -577,8 +577,7 @@ $min_width_px = $label_width_px + ($nb_planete * $per_column_px);
         <?php foreach ($player_planets as $i => $planet) : ?>
             <td class="tdcontent">
                 <?php $For = ($planet["FOR"] == "") ? "&nbsp;" : number_format($planet["FOR"], 0, ',', ' '); ?>
-                <?php $class_collect = ($player_data['class'] === 'COL') ? '1' : '0'; ?>
-                <?php $nb_max = foreuse_max($planet['M'], $planet['C'], $planet['D'], $player_data['off_geologue'], $class_collect); ?>
+                <?php $nb_max = ogame_production_foreuse_max($planet['M'], $planet['C'], $planet['D'], ['off_geologue' => $player_data['off_geologue'], 'class' => $player_data['class']]); ?>
                 <span id='43<?php echo '_' . $i; ?>'>
                     <?php echo $For . " / " . $nb_max; ?>
                 </span>
@@ -625,7 +624,12 @@ $min_width_px = $label_width_px + ($nb_planete * $per_column_px);
                 <span id='<?php echo strtolower($tech_key) . '_' . $i; ?>'>
                     <?php if (prerequis_Valid($tech_key, $planet, $user_technology)) : ?>
                         <span class="og-success">
-                            <?php echo ($user_technology[$tech_key] != "") ? $user_technology[$tech_key] : "0"; ?>
+                            <?php 
+                            $tech_level = isset($user_technology[$tech_key]) && $user_technology[$tech_key] != "" 
+                                ? $user_technology[$tech_key] 
+                                : "0"; 
+                            echo $tech_level;
+                            ?>
                         </span>
                     <?php else : ?>
                         <span class="og-alert">-</span>

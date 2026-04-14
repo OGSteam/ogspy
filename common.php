@@ -61,7 +61,15 @@ require_once "includes/player.php";
 require_once "includes/sessions.php";
 require_once "includes/help.php";
 require_once "includes/mod.php";
+// OGame formula includes: keep all formula-related requires centralized here so
+// domain include files do not pull in helpers on their own. Order matters.
+require_once "includes/ogame_structs.php";
+require_once "includes/ogame_elements.php";
+require_once "includes/ogame_requirements.php";
+require_once "includes/ogame_costs.php";
 require_once "includes/ogame.php";
+require_once "includes/ogame_planet.php";
+require_once "includes/ogame_production.php";
 require_once "includes/chart_js.php";
 require_once "includes/cache.php"; // Toujours inclure cache.php car nécessaire pour init_serverconfig()
 
@@ -120,7 +128,9 @@ if (!defined("INSTALL_IN_PROGRESS")) {
     }
 
     //Récupération et encodage de l'adresse ip
-    $user_ip = encode_ip($_SERVER['REMOTE_ADDR']);
+    // When running from CLI (for tests), REMOTE_ADDR may be undefined.
+    $remote_addr = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+    $user_ip = encode_ip($remote_addr);
 
     $log->info("OGSpy Database connected - " . $db_host);
 
@@ -130,7 +140,9 @@ if (!defined("INSTALL_IN_PROGRESS")) {
 
     $log->info("OGSpy Cache loaded");
 
-    if (!defined("UPGRADE_IN_PROGRESS")) {
+    if (!defined("UPGRADE_IN_PROGRESS") && PHP_SAPI !== 'cli') {
+        // Skip session initialization during CLI (phpunit) runs to avoid
+        // constructing session models that depend on full runtime state.
         session();
         maintenance_action();
     }

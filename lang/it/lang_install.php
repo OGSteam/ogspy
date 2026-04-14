@@ -18,7 +18,7 @@ $lang['INSTALL_PROJECT_L3'] = "Censimento di tutte le coordinate libere visualiz
 $lang['INSTALL_PROJECT_L4'] = "Censimento di tutti i pianeti di un giocatore o un alleato. Informazioni vitali in tempi di guerra.";
 $lang['INSTALL_PROJECT_L5'] = "Possibilità di estensione quasi illimitate grazie alle mod.";
 $lang['INSTALL_PROJECT_L6'] = "Ecc ...";
-$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : <a href='https://www.ogsteam.eu/' target='_blank'>https://www.ogsteam.eu/</a>";
+$lang['INSTALL_FORUM'] = "Si vous souhaitez plus d'informations, rendez-vous sur ce forum : https://www.ogsteam.eu/";
 
 $lang['INSTALL_PHPERROR'] = "Versione di PHP non sufficiente.";
 $lang['INSTALL_PHP_ADVISE'] = "Pour pouvoir effectuer une installation complète d'OGSpy, votre hébergement doit être doté au minimum de la version 7 de PHP.";
@@ -32,7 +32,7 @@ $lang['INSTALL_ACTION_UPGRADE'] = "Aggiornare";
 $lang['INSTALL_WRITE_ALLOWED'] = "Scrittura autorizzata";
 $lang['INSTALL_WRITE_DENIED'] = "Scrittura impossibile";
 $lang['INSTALL_NOT_POSSIBLE_TITLE'] = "Installazione impossibile:";
-$lang['INSTALL_NOT_POSSIBLE_LINE_1'] = "Per un corretto funzionamento e un'installazione completa di OGSpy,<br>è necessario autorizzare la scrittura sui file.";
+$lang['INSTALL_NOT_POSSIBLE_LINE_1'] = "Per un corretto funzionamento e un'installazione completa di OGSpy,\nè necessario autorizzare la scrittura sui file.";
 $lang['INSTALL_NOT_POSSIBLE_OPTIONAL'] = "Errore opzionale:";
 $lang['INSTALL_NOT_POSSIBLE_LINE_2'] = "Questi file vengono utilizzati per l'installazione e l'aggiornamento dei moduli di OGSpy.";
 $lang['INSTALL_NOT_POSSIBLE_LINE_3'] = "Le cartelle e i file devono essere disponibili per la scrittura.";

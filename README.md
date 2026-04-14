@@ -53,14 +53,9 @@ OGSpy dispose d'un système de migration automatisé qui gère les montées de v
 
 ### Processus pour une nouvelle version
 
-**Montée de version simplifiée : il suffit de modifier `install/version.php` !**
+**Montée de version simplifiée : il suffit de merger sur master. De build et de Retro Merge sur Develop. Le Github Actions insérera la nouvelle version à la création du package.
 
-#### Mise à jour de `install/version.php`
-
-```php
-$ogspy_version = "4.0.2";        // Nouvelle version applicative
-$database_version = "20251201001"; // Inchangé (sauf si nouvelles migrations)
-```
+Il restera à publier la Release crée en daft.
 
 #### Synchronisation automatique
 
@@ -74,13 +69,11 @@ Le système de migration détecte automatiquement les changements de version et 
 
 Uniquement si la nouvelle version nécessite des modifications de schéma ou de données :
 
-1. Incrémentez `$database_version` dans `version.php`
-2. Créez les migrations correspondantes dans `install/migrations/`
-3. La synchronisation de version reste automatique
+1. Créez les migrations correspondantes dans `install/migrations/`
+2. La synchronisation de version reste automatique
 
 ### Avantages
 
-- **Ultra-simplifié** : Une seule modification dans `version.php` suffit
 - **Compatible CI/CD** : Fonctionne parfaitement avec les pipelines automatisés
 - **Détection intelligente** : Compare automatiquement les versions et synchronise si nécessaire
 - **Zéro maintenance** : Plus besoin de créer des migrations vides pour les montées de version

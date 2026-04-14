@@ -43,13 +43,12 @@ class Player_Model extends Model_Abstract
         $request .= " WHERE `id` = " . $player_id;
         $result = $this->db->sql_query($request);
 
-        list($playerName) = $this->db->sql_fetch_row($result);
-
-        if (empty($playerName)) {
+        $row = $this->db->sql_fetch_row($result);
+        if (!is_array($row) || !isset($row[0]) || $row[0] === '') {
             return false;
         }
 
-        return $playerName;
+        return $row[0];
     }
 
     /**
@@ -60,18 +59,18 @@ class Player_Model extends Model_Abstract
      */
     public function getPlayerId(string $player_name)
     {
+        $player_name = $this->db->sql_escape_string($player_name);
         $request = "SELECT `id`".
             " FROM " . TABLE_GAME_PLAYER;
         $request .= " WHERE `name` = '" . $player_name . "'";
         $result = $this->db->sql_query($request);
 
-        list($playerId) = $this->db->sql_fetch_row($result);
-
-        if (empty($playerId)) {
+        $row = $this->db->sql_fetch_row($result);
+        if (!is_array($row) || !isset($row[0]) || $row[0] === '') {
             return false;
         }
 
-        return $playerId;
+        return $row[0];
     }
 
 
@@ -79,6 +78,8 @@ class Player_Model extends Model_Abstract
      * A quoi sert donc cette fonction ? :p
      * Reponse elle sert a mettre a jour le pseudo ingame afin d afficher les stats users dans son espace perso
      *
+     * set_game_account_id ?
+     * 
      * @param $user_id
      * @param $user_stat_name
      */

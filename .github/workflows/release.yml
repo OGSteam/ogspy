@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name : Checkout OGSPY
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         ref: ${{ github.ref }}   # checkout the correct branch name
         fetch-depth: 0
@@ -24,7 +24,7 @@ jobs:
       id: version
       # You may pin to the exact commit or the version.
       # uses: codacy/git-version@fa06788276d7492a2af01662649696d249ecf4cb
-      uses: codacy/git-version@2.8.6
+      uses: codacy/git-version@2.8.7
       with:
         # The name of the release branch
         release-branch: master
@@ -33,10 +33,10 @@ jobs:
         # The prefix to use in the version
         #prefix: # optional
 
-    - name: Setup PHP 8.1
+    - name: Setup PHP 8.4
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.1'
+        php-version: '8.4'
         extensions: mysqli, json, mbstring, openssl, zlib, zip
 
     - name: Validate composer.json and composer.lock
@@ -44,7 +44,7 @@ jobs:
 
     - name: Cache Composer packages
       id: composer-cache
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -63,14 +63,14 @@ jobs:
           regex: true
 
     - name: Checkout Xtense
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         repository: 'ogsteam/mod-xtense'
         ref: 'master'
         path: 'mod/xtense'
 
     - name: Checkout AutoUpdate
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         repository: 'ogsteam/mod-autoupdate'
         ref: 'master'

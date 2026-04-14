@@ -10,5 +10,5 @@
  * @version 4.0.0
  */
 
-$ogspy_version = "0.0.0-dev";
-$database_version = "20250001001";
+$ogspy_version = "4.0.3-dev";
+$database_version = "20251227001";

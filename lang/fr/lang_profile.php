@@ -12,9 +12,9 @@
 /* profile.php */
 
 $lang['PROFILE_ERROR_RETRY'] = "Saisissez le nouveau mot de passe et sa confirmation";
-$lang['PROFILE_ERROR_OLDPWD'] = "Saisissez l&rsquo;ancien mot de passe";
+$lang['PROFILE_ERROR_OLDPWD'] = "Saisissez l’ancien mot de passe";
 $lang['PROFILE_ERROR_ERROR'] = "Le mot de passe saisi est différent de la confirmation";
-$lang['PROFILE_ERROR_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 64 caractères et pas les caractères suivants : ; &rsquo; et &quot;";
+$lang['PROFILE_ERROR_ILLEGAL'] = "Le mot de passe doit contenir entre 6 et 64 caractères et pas les caractères suivants : ; ’ et \"";
 
 $lang['PROFILE_TITLE'] = "Informations OGSpy";
 $lang['PROFILE_PSEUDO'] = "Pseudo";
@@ -25,9 +25,10 @@ $lang['PROFILE_EMAIL'] = "Adresse Email";
 $lang['PROFILE_TOKEN'] = "Token Personnel";
 $lang['PROFILE_TOKEN_TO_BE_UPDATED'] = "Token à initialiser";
 $lang['PROFILE_TOKEN_UPDATE'] = "Réinitialiser";
-$lang['PROFILE_GAME'] = "Informations du Jeu";
+$lang['PROFILE_GAME'] = "Données du Jeu";
 $lang['PROFILE_MAINPLANET'] = "Position de la planète principale";
 $lang['PROFILE_PLAYERNAME'] = "Pseudo dans le Jeu";
+$lang['PROFILE_PLAYERNAME_XTENSE_INFO'] = "Mis à jour automatiquement par l'extension xtense";
 $lang['PROFILE_CLASS'] = "Classe dans le Jeu";
 $lang['PROFILE_CLASS_NONE'] = "sans classe";
 $lang['PROFILE_CLASS_COL'] = "Collecteur";

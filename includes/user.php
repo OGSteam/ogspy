@@ -15,11 +15,13 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
+use Ogsteam\Ogspy\Model\Player_Model;
 use Ogsteam\Ogspy\Model\Sessions_Model;
 use Ogsteam\Ogspy\Model\Statistics_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Tokens_Model;
+use Ogsteam\Ogspy\Model\User_Favorites_Model;
 use Ogsteam\Ogspy\Model\User_Spy_favorites_Model;
 
 require_once __DIR__ . '/token.php';
@@ -664,7 +666,7 @@ function member_user_set()
     global $user_data, $user_technology, $log;
     global $pub_pseudo, $pub_old_password, $pub_new_password, $pub_new_password2, $pub_galaxy,
         $pub_system, $pub_disable_ip_check,
-        $pub_pseudo_ingame, $pub_pseudo_email, $pub_renew_user_token;
+        $pub_pseudo_email, $pub_renew_user_token;
 
     $user_id = $user_data["id"];
 
@@ -683,8 +685,7 @@ function member_user_set()
         !check_var($pub_pseudo_email, "Email") ||
         !check_var($pub_galaxy, "Num") ||
         !check_var($pub_system, "Num") ||
-        !check_var($pub_disable_ip_check, "Num") ||
-        !check_var($pub_pseudo_ingame, "Pseudo_ingame")
+        !check_var($pub_disable_ip_check, "Num")
     ) {
         $log->warning("Profile modification failed - invalid data format", [
             'user_id' => $user_id,
@@ -694,12 +695,8 @@ function member_user_set()
         redirection("index.php?action=message&id_message=errordata&info");
     }
 
-    $userModel = new User_Model();
-    $user_info = user_get($user_id);
 
-    $player_id = $user_data["player_id"];
-    $user_empire = player_get_empire($player_id);
-    $user_technology = $user_empire["technology"];
+    $userModel = new User_Model();
 
     $password_change_validated = false;
     // Validation du changement de mot de passe
@@ -755,10 +752,6 @@ function member_user_set()
         ]);
         redirection("index.php?action=message&id_message=member_modifyuser_failed_pseudo&info");
     }
-
-    $player_id = $user_data["player_id"];
-    $user_empire = player_get_empire($player_id);
-    $user_technology = $user_empire["technology"];
 
     //Contrôle que le pseudo ne soit pas déjà utilisé si changement
     if ($userModel->select_is_other_user_name($pub_pseudo, $user_id) === true) {
@@ -1304,6 +1297,48 @@ function user_statistic(): array
 }
 
 /**
+ * Fonction de calcul du ratio
+ * @param int $player user_id ID du joueur
+ * @return array ratio et divers calculs intermédiaires pour l'utilisateur en question
+ * @author Bousteur 25/11/2006
+ */
+function ratio_calc($player): array
+{
+    $data_user = new User_Model();
+    $user_stat = $data_user->select_user_stats_data($player);
+    $total_user_stats = $data_user->select_user_stats_sum();
+    //pour éviter la division par zéro
+    if ($total_user_stats["planetimporttotal"] == 0) {
+        $total_user_stats["planetimporttotal"] = 1;
+    }
+    if ($total_user_stats["spyimporttotal"] == 0) {
+        $total_user_stats["spyimporttotal"] = 1;
+    }
+    if ($total_user_stats["rankimporttotal"] == 0) {
+        $total_user_stats["rankimporttotal"] = 1;
+    }
+    if ($total_user_stats["searchtotal"] == 0) {
+        $total_user_stats["searchtotal"] = 1;
+    }
+    //et on commence le calcul
+    $ratio_planet = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
+    $ratio_spy = $user_stat["spy_added_xtense"] / $total_user_stats["spyimporttotal"];
+    $ratio_rank = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
+    $ratio = ($ratio_planet * 4 + $ratio_spy * 2 + $ratio_rank) / (4 + 2 + 1);
+    $ratio_planet_penality = $user_stat["planet_added_xtense"] / $total_user_stats["planetimporttotal"];
+    $ratio_spy_penality = $user_stat["spy_added_xtense"] / $total_user_stats["spyimporttotal"];
+    $ratio_rank_penality = $user_stat["rank_added_xtense"] / $total_user_stats["rankimporttotal"];
+    $ratio_penality = ($ratio_planet_penality * 4 + $ratio_spy_penality * 2 + $ratio_rank_penality) / (4 + 2 + 1);
+    $ratio_search = $user_stat["search"] / $total_user_stats["searchtotal"];
+    $ratio_searchpenality = ($ratio - $ratio_search);
+    $result = ($ratio + $ratio_penality + $ratio_searchpenality) * 1000;
+    return array(
+        $result, $ratio_searchpenality, $ratio_search, $ratio_penality, $ratio_rank_penality,
+        $ratio_spy_penality, $ratio_planet_penality
+    );
+}
+
+/**
  * Fonction de test d'autorisation d'effectuer une action en fonction du ratio ou de l'appartenance à un groupe qui a un ratio illimité
  * @return bool vrai si l'utilisateur peut faire des recherches
  * @author Bousteur 28/11/2006
@@ -1328,6 +1363,55 @@ function ratio_is_ok(): bool
     } else {
         return true;
     }
+}
+
+/**
+ * Ajout d'un système favori
+ */
+function user_add_favorite(): void
+{
+    global $user_data, $server_config;
+    global $pub_galaxy, $pub_system;
+
+    $User_Favorites_Model = new User_Favorites_Model();
+
+    if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
+
+    if (!isset($pub_galaxy) || !isset($pub_system)) {
+        redirection("index.php?action=message&id_message=errorfatal&info");
+    }
+
+    $nb_favorites = $User_Favorites_Model->get_nb_user_favorites($user_data["id"]);
+    if ($nb_favorites < $server_config["max_favorites"]) {
+        $User_Favorites_Model->set_user_favorites($user_data["id"], $pub_galaxy, $pub_system);
+        redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system);
+    } else {
+        redirection("index.php?action=message&id_message=max_favorites&info");
+    }
+}
+
+/**
+ * Suppression d'un système favori
+ */
+function user_del_favorite(): void
+{
+    global $user_data;
+    global $pub_galaxy, $pub_system;
+
+    if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num")) {
+        redirection("index.php?action=message&id_message=errordata&info");
+    }
+
+    if (!isset($pub_galaxy) || !isset($pub_system)) {
+        redirection("index.php?action=message&id_message=errorfatal&info");
+    }
+
+    $User_Favorites_Model = new User_Favorites_Model();
+    $User_Favorites_Model->delete_user_favorites($user_data["id"], $pub_galaxy, $pub_system);
+
+    redirection("index.php?action=galaxy&galaxy=" . $pub_galaxy . "&system=" . $pub_system);
 }
 
 /**

@@ -9,17 +9,12 @@
  * @version 3.3.0
  */
 
-/*
- * <?php echo($lang['ADMIN_DISPLAY_GALAXY_TITLE']); ?>
- *
- */
-
 /* profile.php */
 
 $lang['PROFILE_ERROR_RETRY'] = "Enter your new password with the confirmation";
 $lang['PROFILE_ERROR_OLDPWD'] = "Enter your previous password";
 $lang['PROFILE_ERROR_ERROR'] = "The entered password is not the identical to the password confirmation";
-$lang['PROFILE_ERROR_ILLEGAL'] = "The password must have at least 6 characters and less than 15 characters";
+$lang['PROFILE_ERROR_ILLEGAL'] = "The password must have at least 6 characters and less than 64 characters";
 
 $lang['PROFILE_TITLE'] = "OGSpy Informations";
 $lang['PROFILE_PSEUDO'] = "Player name";
@@ -30,9 +25,10 @@ $lang['PROFILE_EMAIL'] = "Email Address";
 $lang['PROFILE_TOKEN'] = "Personal Access Token";
 $lang['PROFILE_TOKEN_TO_BE_UPDATED'] = "Initialize Token";
 $lang['PROFILE_TOKEN_UPDATE'] = "Reset";
-$lang['PROFILE_GAME'] = "Game informations";
+$lang['PROFILE_GAME'] = "Game Data";
 $lang['PROFILE_MAINPLANET'] = "Main Planet position";
 $lang['PROFILE_PLAYERNAME'] = "Player Name";
+$lang['PROFILE_PLAYERNAME_XTENSE_INFO'] = "Automatically updated by the xtense extension";
 $lang['PROFILE_CLASS'] = "Classe dans le Jeu";
 $lang['PROFILE_CLASS_NONE'] = "sans classe";
 $lang['PROFILE_CLASS_COL'] = "Collecteur";
@@ -48,8 +44,5 @@ $lang['PROFILE_OTHERS'] = "
 Miscellaneous";
 $lang['PROFILE_IPCHECK_DISABLE'] = "Disable the IP address verification";
 $lang['PROFILE_SAVE'] = "Save";
-
-
-
-
+$lang['PROFILE_CHANGEPWD'] = "You must renew your password !";
 

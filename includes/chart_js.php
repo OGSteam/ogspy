@@ -165,10 +165,13 @@ function create_pie_numbers($_data, $_legend, $_title, $conteneur, $theme = true
     // format hightchart
     $format_data = implode(" , ", $temp);
 
+    $theme_script = $theme ? graph_theme() : '';
+
     $retour .= <<<JS
 <script type="text/javascript">
-var {$conteneur};
 $(document).ready(function() {
+    {$theme_script}
+    var {$conteneur};
     {$conteneur} = new Highcharts.Chart({
         chart: {
             renderTo: "{$conteneur}",
@@ -208,15 +211,6 @@ $(document).ready(function() {
 });
 </script>
 JS;
-
-
-    // insertion du theme par defaut
-    if ($theme == true) {
-        $retour .= graph_theme();
-    }
-
-    $retour .= "</script> ";
-
 
     return $retour;
 }
@@ -648,10 +642,13 @@ function create_multi_curve(string $titre, string $sous_titre, array $data, arra
         $zoom_yAxis = "  min: 0";
     }
 
+    $theme_script = $theme ? graph_theme() : '';
+
     $retour = <<<JS
     <script type="text/javascript">
-var chart3;
 $(document).ready(function() {
+   {$theme_script}
+   var chart3;
    chart3 = new Highcharts.Chart({
       chart: {
          renderTo: "{$conteneur}",
@@ -688,15 +685,9 @@ $(document).ready(function() {
       ]
    });
 });
+</script>
 JS;
 
-    // insertion du theme par defaut
-    if ($theme) {
-        $retour .= graph_theme();
-    }
-
-
-    $retour .= "</script> ";
 
     return $retour;
 }

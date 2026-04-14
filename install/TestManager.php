@@ -312,28 +312,237 @@ class TestManager {
     }
 
     /**
-     * Vérifie l'intégrité de l'installation
+     * Vérifie l'intégrité de l'installation :
+     * - présence de toutes les tables définies dans ogspy_structure.sql
+     * - présence de toutes les colonnes définies dans ogspy_structure.sql
+     * - données de configuration
+     * - conformité des index avec ogspy_structure.sql
      */
-    private function verifyInstallIntegrity($tablePrefix = 'ogspy_') {
-        // Vérifier que les tables essentielles existent
-        $essentialTables = [$tablePrefix . 'user', $tablePrefix . 'config', $tablePrefix . 'migrations'];
+    public function verifyInstallIntegrity($tablePrefix = 'ogspy_') {
+        $schemaFile = __DIR__ . '/schemas/ogspy_structure.sql';
+        if (!file_exists($schemaFile)) {
+            throw new Exception("Fichier de schéma introuvable: {$schemaFile}");
+        }
 
-        foreach ($essentialTables as $table) {
-            $result = $this->db->sql_query("SHOW TABLES LIKE '{$table}'");
+        $expectedIndexes = $this->parseIndexesFromSchema($schemaFile, 'ogspy_', $tablePrefix);
+        $expectedColumns = $this->parseColumnsFromSchema($schemaFile, 'ogspy_', $tablePrefix);
+        $expectedTables  = array_keys($expectedColumns);
+
+        // Vérifier que toutes les tables du schéma existent en DB
+        $missingTables = [];
+        foreach ($expectedTables as $table) {
+            $result = $this->db->sql_query("SHOW TABLES LIKE '" . $this->db->sql_escape_string($table) . "'");
             if ($this->db->sql_numrows($result) === 0) {
-                throw new Exception("Table essentielle manquante: {$table}");
+                $missingTables[] = $table;
             }
         }
+        if (!empty($missingTables)) {
+            throw new Exception("Tables manquantes (" . count($missingTables) . "/" . count($expectedTables) . "): " . implode(', ', $missingTables));
+        }
+        echo "  Intégrité vérifiée: " . count($expectedTables) . " tables présentes\n";
 
         // Vérifier que la table de configuration a des données
         $result = $this->db->sql_query("SELECT COUNT(*) as count FROM {$tablePrefix}config");
         $row = $this->db->sql_fetch_assoc($result);
-
         if ($row['count'] == 0) {
             throw new Exception("Table de configuration vide");
         }
 
-        echo "  Intégrité vérifiée: tables essentielles présentes\n";
+        // Vérifier que toutes les colonnes du schéma existent en DB
+        $this->verifyColumnsAgainstSchema($tablePrefix, $expectedColumns);
+
+        // Comparer les index de la DB avec ceux définis dans ogspy_structure.sql
+        $this->verifyIndexesAgainstSchema($tablePrefix, $expectedIndexes);
+    }
+
+    /**
+     * Compare les index attendus (issus de $expectedIndexes ou parsés depuis le schéma)
+     * avec ceux présents en base de données.
+     */
+    private function verifyIndexesAgainstSchema(string $tablePrefix = 'ogspy_', array $expectedIndexes = []): void {
+        $schemaFile = __DIR__ . '/schemas/ogspy_structure.sql';
+
+        if (empty($expectedIndexes)) {
+            if (!file_exists($schemaFile)) {
+                throw new Exception("Fichier de schéma introuvable: {$schemaFile}");
+            }
+            $expectedIndexes = $this->parseIndexesFromSchema($schemaFile, 'ogspy_', $tablePrefix);
+        }
+
+        $actual = $this->getIndexesFromDb($tablePrefix);
+
+        $errors = [];
+        foreach ($expectedIndexes as $table => $indexes) {
+            foreach ($indexes as $indexName => $expectedCols) {
+                $actualCols = $actual[$table][$indexName] ?? null;
+                if ($actualCols === null) {
+                    $errors[] = "Index '{$indexName}' absent sur {$table} (attendu: " . implode(', ', $expectedCols) . ")";
+                } elseif ($actualCols !== $expectedCols) {
+                    $errors[] = "Index '{$indexName}' sur {$table}: ["
+                        . implode(', ', $actualCols) . "] (attendu: ["
+                        . implode(', ', $expectedCols) . "])";
+                }
+            }
+        }
+
+        if (!empty($errors)) {
+            throw new Exception("Divergences d'index (structure.sql vs DB):\n  - " . implode("\n  - ", $errors));
+        }
+
+        echo "  Intégrité vérifiée: index conformes au schéma de référence\n";
+    }
+
+    /**
+     * Parse les définitions d'index de toutes les tables dans un fichier SQL de structure.
+     * Remplace $sourcePrefix par $targetPrefix dans les noms de tables.
+     * Retourne [ tableName => [ indexName => [col1, col2, ...] ] ]
+     */
+    private function parseIndexesFromSchema(string $file, string $sourcePrefix, string $targetPrefix): array {
+        $indexes = [];
+        $currentTable = null;
+
+        foreach (explode("\n", file_get_contents($file)) as $line) {
+            $line = trim($line);
+
+            if (preg_match('/^CREATE\s+TABLE\s+`?(\w+)`?/i', $line, $m)) {
+                $raw = $m[1];
+                $currentTable = str_starts_with($raw, $sourcePrefix)
+                    ? $targetPrefix . substr($raw, strlen($sourcePrefix))
+                    : $raw;
+                $indexes[$currentTable] = [];
+                continue;
+            }
+
+            if ($currentTable === null) {
+                continue;
+            }
+
+            if (preg_match('/^PRIMARY\s+KEY\s+\((.+?)\)/i', $line, $m)) {
+                $indexes[$currentTable]['PRIMARY'] = $this->parseIndexColumns($m[1]);
+                continue;
+            }
+
+            if (preg_match('/^(?:UNIQUE\s+)?KEY\s+`?(\w+)`?\s+\((.+?)\)/i', $line, $m)) {
+                $indexes[$currentTable][$m[1]] = $this->parseIndexColumns($m[2]);
+            }
+        }
+
+        return array_filter($indexes, fn($idx) => !empty($idx));
+    }
+
+    /**
+     * Découpe une liste de colonnes d'index SQL en tableau.
+     * Ex: "`col1`, `col2`(191)" → ["col1", "col2"]
+     */
+    private function parseIndexColumns(string $rawCols): array {
+        $cols = [];
+        foreach (explode(',', $rawCols) as $col) {
+            $col = trim(preg_replace('/\(\d+\)/', '', trim($col, " `\t")));
+            if ($col !== '') {
+                $cols[] = $col;
+            }
+        }
+        return $cols;
+    }
+
+    /**
+     * Récupère tous les index des tables avec $tablePrefix depuis information_schema.
+     * Retourne [ tableName => [ indexName => [col1, col2, ...] ] ]
+     */
+    private function getIndexesFromDb(string $tablePrefix): array {
+        $result = $this->db->sql_query(
+            "SELECT Table_name, Index_name, Column_name
+             FROM information_schema.STATISTICS
+             WHERE Table_schema = DATABASE()
+               AND Table_name LIKE '" . $this->db->sql_escape_string($tablePrefix) . "%'
+             ORDER BY Table_name, Index_name, Seq_in_index"
+        );
+
+        $indexes = [];
+        while ($row = $this->db->sql_fetch_assoc($result)) {
+            $indexes[$row['Table_name']][$row['Index_name']][] = $row['Column_name'];
+        }
+
+        return $indexes;
+    }
+
+    /**
+     * Parse les colonnes de toutes les tables dans un fichier SQL de structure.
+     * Remplace $sourcePrefix par $targetPrefix dans les noms de tables.
+     * Retourne [ tableName => [col1, col2, ...] ]
+     */
+    private function parseColumnsFromSchema(string $file, string $sourcePrefix, string $targetPrefix): array {
+        $columns = [];
+        $currentTable = null;
+
+        foreach (explode("\n", file_get_contents($file)) as $line) {
+            $line = trim($line);
+
+            if (preg_match('/^CREATE\s+TABLE\s+`?(\w+)`?/i', $line, $m)) {
+                $raw = $m[1];
+                $currentTable = str_starts_with($raw, $sourcePrefix)
+                    ? $targetPrefix . substr($raw, strlen($sourcePrefix))
+                    : $raw;
+                $columns[$currentTable] = [];
+                continue;
+            }
+
+            if ($currentTable === null) {
+                continue;
+            }
+
+            // Ligne de définition de colonne : commence par `nomColonne`
+            // On exclut les lignes KEY / PRIMARY KEY / UNIQUE KEY
+            if (preg_match('/^`(\w+)`\s+/i', $line, $m)) {
+                $columns[$currentTable][] = $m[1];
+            }
+        }
+
+        return array_filter($columns, fn($cols) => !empty($cols));
+    }
+
+    /**
+     * Vérifie que toutes les colonnes définies dans le schéma existent en DB.
+     */
+    private function verifyColumnsAgainstSchema(string $tablePrefix, array $expectedColumns): void {
+        $actual = $this->getColumnsFromDb($tablePrefix);
+
+        $errors = [];
+        foreach ($expectedColumns as $table => $cols) {
+            $actualCols = $actual[$table] ?? [];
+            foreach ($cols as $col) {
+                if (!in_array($col, $actualCols, true)) {
+                    $errors[] = "Colonne '{$col}' absente sur {$table}";
+                }
+            }
+        }
+
+        if (!empty($errors)) {
+            throw new Exception("Colonnes manquantes (structure.sql vs DB):\n  - " . implode("\n  - ", $errors));
+        }
+
+        echo "  Intégrité vérifiée: colonnes conformes au schéma de référence\n";
+    }
+
+    /**
+     * Récupère toutes les colonnes des tables avec $tablePrefix depuis information_schema.
+     * Retourne [ tableName => [col1, col2, ...] ]
+     */
+    private function getColumnsFromDb(string $tablePrefix): array {
+        $result = $this->db->sql_query(
+            "SELECT Table_name, Column_name
+             FROM information_schema.COLUMNS
+             WHERE Table_schema = DATABASE()
+               AND Table_name LIKE '" . $this->db->sql_escape_string($tablePrefix) . "%'
+             ORDER BY Table_name, Ordinal_position"
+        );
+
+        $columns = [];
+        while ($row = $this->db->sql_fetch_assoc($result)) {
+            $columns[$row['Table_name']][] = $row['Column_name'];
+        }
+
+        return $columns;
     }
 
     /**
