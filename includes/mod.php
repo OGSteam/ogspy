@@ -1169,7 +1169,11 @@ function update_mod($mod_folder, $mod_name)
     }
 
     $Mod_Model = new Mod_Model(); //récuperation du mod
-    $mod = $Mod_Model->find_one_by(array("title" => $mod_name));
+    $mod = $Mod_Model->find_one_by(array("root" => $mod_folder));
+    if ($mod === null) {
+        $log->warning("update_mod: mod not found in database", ['root' => $mod_folder]);
+        return $is_oki;
+    }
     $mod['version'] = $mod_version;
     $Mod_Model->update($mod);
 
