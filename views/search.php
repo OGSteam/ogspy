@@ -487,16 +487,20 @@ require_once("views/page_header.php");
     //TODO Les recherche se font via noms, via ID possible ?
     foreach ($tooltiptab["playerName"] as $player) {
         $playerId = (new Player_Model())->getPlayerId($player);
-        $tooltip = displayGalaxyPlayerTooltip($playerId);
-        //------------  Affichage Tooltip ----------------
-        $ToolTip_Helper->addTooltip("ttp_player_" . $player,  $tooltip);
+        if ($playerId !== false) {
+            $tooltip = displayGalaxyPlayerTooltip($playerId);
+            //------------  Affichage Tooltip ----------------
+            $ToolTip_Helper->addTooltip("ttp_player_" . $player,  $tooltip);
+        }
     }
     //tooltip ally
     foreach ($tooltiptab["allyName"] as $ally) {
         $allyId = (new Ally_Model())->getAllyId($ally);
-        $tooltip =  displayGalaxyAllyTooltip($allyId);
-        //------------  Affichage Tooltip ----------------
-        $ToolTip_Helper->addTooltip("ttp_alliance_" . $ally,  $tooltip);
+        if ($allyId !== false) {
+            $tooltip =  displayGalaxyAllyTooltip($allyId);
+            //------------  Affichage Tooltip ----------------
+            $ToolTip_Helper->addTooltip("ttp_alliance_" . $ally,  $tooltip);
+        }
     }
     ?>
 

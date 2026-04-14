@@ -1841,9 +1841,13 @@ function displayGalaxyLegend()
  * @param $playerId id du joueur
  * @return string
  */
-function displayGalaxyPlayerTooltip(int $playerId)
+function displayGalaxyPlayerTooltip(int|false $playerId)
 {
     global $lang;
+
+    if ($playerId === false || $playerId <= 0) {
+        return '';
+    }
 
     $Player_Model = new Player_Model();
     $playerName = $Player_Model->get_player_name($playerId);
@@ -1909,8 +1913,9 @@ function displayGalaxyAllyTooltip($allyid)
     $Ally_Model = new Ally_Model();
     $allyName = $Ally_Model->get_ally_name($allyid);
 
-
-    $tooltip = '<table class="og-table og-small-table">';
+    if (!$allyName) {
+        return '';
+    }    $tooltip = '<table class="og-table og-small-table">';
     $tooltip .= '<thead><tr><th colspan="3">' . $lang['GALAXY_ALLY'] . " " . $allyName . '</th></tr></thead>';
     $tooltip .= '<tbody>';
 
@@ -2037,7 +2042,7 @@ function displayGalaxyTabletbodytr($populate, $isGalaxy = true)
     $ally = $v["ally_name"] ?? "";
     $allyId = $v["ally_id"] ?? 0;
     $player = $v["player_name"] ?? "";
-    $playerId = $v["player_id"] ?? "";
+    $playerId = $v["player_id"] ?? false;
     $row = $v["row"];
     $galaxy = $v["galaxy"];
     $system = $v["system"];

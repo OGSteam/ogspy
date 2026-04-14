@@ -697,7 +697,6 @@ function member_user_set()
 
 
     $userModel = new User_Model();
-    $playerModel = new Player_Model();
 
     $password_change_validated = false;
     // Validation du changement de mot de passe
@@ -802,22 +801,12 @@ function member_user_set()
         $changes_made[] = 'ip_check';
     }
 
-    $player_id = null;
-    if (isset($pub_pseudo_ingame)) {
-        //recuperation de l'id avant insertion
-        $player_id = $playerModel->getPlayerId($pub_pseudo_ingame);
-        $playerModel->set_game_account_name($user_id, $player_id);
-        $changes_made[] = 'pseudo_ingame';
-    }
-
-
     $log->info("User profile modification completed successfully", [
         'user_id' => $user_id,
         'username' => $user_data["name"] ?? 'unknown',
         'changes_made' => $changes_made,
         'password_changed' => $password_change_validated,
         'token_renewed' => $pub_renew_user_token == 1,
-        'player_id' => (int)$player_id,
         'ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
     ]);
 
