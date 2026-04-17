@@ -41,10 +41,11 @@ class Spy_Model extends Model_Abstract
 
         $favorite = [];
 
-        $request = "SELECT pspy.`id`, astro.`galaxy`, astro.`system`, astro.`row`, `dateRE`, `user`.`name`, `astro`.`type`, `player`.`ally_id`, `astro`.`player_id`, `player`.`status`";
-        $request .= " FROM " . TABLE_PARSEDSPY. " `pspy`";
+        $request = "SELECT pspy.`id`, astro.`galaxy`, astro.`system`, astro.`row`, `dateRE`, `user`.`name`, `astro`.`type`, `ally`.`name`, `player`.`name`, `player`.`status`";
+        $request .= " FROM " . TABLE_PARSEDSPY . " `pspy`";
         $request .= " INNER JOIN " . TABLE_USER_BUILDING . " `astro` ON `pspy`.`astro_object_id` = `astro`.`id`";
         $request .= " INNER JOIN " . TABLE_GAME_PLAYER . " `player` ON `astro`.`player_id` = `player`.`id`";
+        $request .= " LEFT JOIN " . TABLE_GAME_ALLY . " `ally` ON `player`.`ally_id` = `ally`.`id`";
         $request .= " INNER JOIN " . TABLE_USER . " `user` ON `user`.`id` = `pspy`.`sender_id`";
         $request .= " WHERE `pspy`.`sender_id`=$user_id ";
         $request .= " ORDER BY " . $ordered_by;
