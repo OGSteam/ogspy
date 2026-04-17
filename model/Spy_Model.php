@@ -41,7 +41,7 @@ class Spy_Model extends Model_Abstract
 
         $favorite = [];
 
-        $request = "SELECT pspy.`id`, astro.`galaxy`, astro.`system`, astro.`row`, `dateRE`, `user`.`name`, `astro`.`type`, `ally`.`name`, `player`.`name`, `player`.`status`";
+        $request = "SELECT pspy.`id`, astro.`galaxy`, astro.`system`, astro.`row`, `dateRE`, `user`.`name` AS `user_name`, `astro`.`type`, `ally`.`name` AS `ally_name`, `player`.`name` AS `player_name`, `player`.`status`";
         $request .= " FROM " . TABLE_PARSEDSPY . " `pspy`";
         $request .= " INNER JOIN " . TABLE_USER_BUILDING . " `astro` ON `pspy`.`astro_object_id` = `astro`.`id`";
         $request .= " INNER JOIN " . TABLE_GAME_PLAYER . " `player` ON `astro`.`player_id` = `player`.`id`";
