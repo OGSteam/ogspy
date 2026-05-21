@@ -69,6 +69,52 @@ Avant d'installer OGSpy, assurez-vous que votre serveur répond aux exigences su
 
 Apache 2.4+ ou Nginx 1.18+ avec support PHP-FPM.
 
+#### Installation rapide (Ubuntu / Debian)
+
+> **Ubuntu 26.04 LTS** : PHP 8.4 est disponible nativement, aucun PPA nécessaire.  
+> **Ubuntu 22.04 / 24.04** : PHP 8.4 nécessite le PPA `ondrej/php` :
+> ```bash
+> add-apt-repository ppa:ondrej/php -y && apt update
+> ```
+
+```bash
+# Installer Apache, MariaDB et PHP avec les extensions requises
+apt install -y mariadb-server apache2 libapache2-mod-php8.4 \
+  php8.4 php8.4-mysql php8.4-mbstring php8.4-zip php8.4-xml php8.4-curl
+
+systemctl restart apache2
+```
+
+Créer la base de données :
+
+```sql
+mysql -u root
+CREATE DATABASE ogspy;
+CREATE USER 'ogspy'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON ogspy.* TO 'ogspy'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+Télécharger et extraire la dernière release :
+
+```bash
+# Télécharger la dernière release depuis GitHub
+LATEST_ZIP=$(curl -s https://api.github.com/repos/OGSteam/ogspy/releases/latest \
+  | grep "browser_download_url.*\.zip" | cut -d '"' -f 4)
+curl -L "$LATEST_ZIP" -o ogspy.zip
+unzip ogspy.zip -d /var/www/html/
+```
+
+Puis lancer l'installation via la CLI :
+
+```bash
+cd /var/www/html
+php install/upgrade_cli.php install localhost ogspy password ogspy admin admin123 admin@example.com ogspy_
+```
+
+Ou via l'interface web : `http://votre-serveur/install/`.
+
 ---
 
 ### Installation et usages
