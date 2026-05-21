@@ -29,9 +29,51 @@ Des tutoriels d'installation sont aussi disponibles sur notre chaine Youtube : [
 
 ---
 
+### Prérequis serveur
+
+Avant d'installer OGSpy, assurez-vous que votre serveur répond aux exigences suivantes :
+
+#### PHP
+
+| Élément | Version minimale | Version recommandée |
+|---------|-----------------|---------------------|
+| PHP     | 8.1             | 8.4                 |
+
+#### Extensions PHP requises
+
+| Extension  | Rôle |
+|------------|------|
+| `mysqli`   | Connexion à la base de données |
+| `json`     | Encodage/décodage JSON |
+| `mbstring` | Gestion des chaînes multi-octets |
+| `openssl`  | Chiffrement et tokens sécurisés |
+| `zlib`     | Compression |
+| `zip`      | Gestion des archives ZIP |
+
+#### Extensions PHP recommandées (utilisées par certains mods)
+
+| Extension   | Mod concerné | Rôle |
+|-------------|-------------|------|
+| `curl`      | `bthof`     | Test de connectivité HTTP (optionnel, vérifié à l'exécution) |
+| `simplexml` | `superapix` | Lecture de fichiers XML |
+
+#### Base de données
+
+| Logiciel | Version minimale | Version recommandée |
+|----------|-----------------|---------------------|
+| MariaDB  | 10.4            | 12.2                |
+
+> **Note :** MySQL 5.7+ est également compatible mais MariaDB est recommandé.
+
+#### Serveur web
+
+Apache 2.4+ ou Nginx 1.18+ avec support PHP-FPM.
+
+---
+
 ### Installation et usages
 
-Vous trouverez ur le wiki le manuel d'installation d'OGSpy sur un serveur web. Mais il existe aussi des hébergeurs qui installent le site pour vous.
+Vous trouverez sur le wiki le manuel d'installation d'OGSpy sur un serveur web. Mais il existe aussi des hébergeurs qui installent le site pour vous.
 
 [Wiki de l'OGSteam](https://wiki.ogsteam.eu/doku.php)
 
