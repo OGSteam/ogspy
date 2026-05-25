@@ -165,7 +165,7 @@ $(document).ready(function() {
         options: {
             responsive: true,
             maintainAspectRatio: true,
-            aspectRatio: 2,
+            aspectRatio: 3,
             plugins: {
                 title: {
                     display: true,
@@ -378,6 +378,9 @@ $(document).ready(function() {
         },
         options: {
             parsing: false,
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 3,
             backgroundColor: 'rgb(0,0,0)',
             plugins: {
                 title: {
