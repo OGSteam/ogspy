@@ -73,6 +73,9 @@ $(document).ready(function() {
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 2,
             plugins: {
                 title: {
                     display: true,
@@ -160,6 +163,9 @@ $(document).ready(function() {
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 2,
             plugins: {
                 title: {
                     display: true,
