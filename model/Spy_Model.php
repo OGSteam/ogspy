@@ -23,10 +23,19 @@ class Spy_Model extends Model_Abstract
      *                   Values:
      *                   0 = descending (default).
      *                   1 = ascending.
+     * @param array $filters Optional associative array of filter criteria:
+     *                       - 'galaxy'        (int)    filter by galaxy coordinate
+     *                       - 'system'        (int)    filter by system coordinate
+     *                       - 'row'           (int)    filter by row coordinate
+     *                       - 'date_from'     (int)    UNIX timestamp lower bound for dateRE
+     *                       - 'date_to'       (int)    UNIX timestamp upper bound for dateRE
+     *                       - 'resources_min' (int)    minimum total resources (metal+crystal+deuterium)
+     *                       - 'defense'       (string) 'yes'=has defenses, 'no'=no defenses visible, 'unknown'=section not spied
+     *                       - 'incomplete'    (int)    1=only incomplete reports (defense section not spied)
      * @return array An associative array of favorite spy reports, where each report contains details such as
-     *               spy ID, galaxy, system, row, player, ally, moon, status, date, and poster name.
+     *               spy ID, galaxy, system, row, player, ally, moon, status, date, poster name, and resources.
      */
-    public function get_favoriteSpyList(int $user_id, int $sort = 5, int $sort2 = 0)
+    public function get_favoriteSpyList(int $user_id, int $sort = 5, int $sort2 = 0, array $filters = [])
     {
         $order = $sort2 === 0 ? " desc" : " asc";
 
@@ -38,25 +47,77 @@ class Spy_Model extends Model_Abstract
                 default => "dateRE"
             } . $order;
 
-
         $favorite = [];
 
         $request = "SELECT pspy.`id`, astro.`galaxy`, astro.`system`, astro.`row`, `dateRE`, `user`.`name`, `astro`.`type`, `player`.`ally_id`, `astro`.`player_id`, `player`.`status`";
+        $request .= ", pspy.`metal`, pspy.`crystal`, pspy.`deuterium`";
         $request .= " FROM " . TABLE_PARSEDSPY. " `pspy`";
         $request .= " INNER JOIN " . TABLE_USER_BUILDING . " `astro` ON `pspy`.`astro_object_id` = `astro`.`id`";
         $request .= " INNER JOIN " . TABLE_GAME_PLAYER . " `player` ON `astro`.`player_id` = `player`.`id`";
         $request .= " INNER JOIN " . TABLE_USER . " `user` ON `user`.`id` = `pspy`.`sender_id`";
-        $request .= " WHERE `pspy`.`sender_id`=$user_id ";
+        $request .= " WHERE `pspy`.`sender_id`=" . $user_id;
+
+        // Coordinates filters
+        if (!empty($filters['galaxy']) && is_numeric($filters['galaxy'])) {
+            $request .= " AND `astro`.`galaxy` = " . (int)$filters['galaxy'];
+        }
+        if (!empty($filters['system']) && is_numeric($filters['system'])) {
+            $request .= " AND `astro`.`system` = " . (int)$filters['system'];
+        }
+        if (!empty($filters['row']) && is_numeric($filters['row'])) {
+            $request .= " AND `astro`.`row` = " . (int)$filters['row'];
+        }
+
+        // Date range filters
+        if (!empty($filters['date_from']) && is_numeric($filters['date_from'])) {
+            $request .= " AND `pspy`.`dateRE` >= " . (int)$filters['date_from'];
+        }
+        if (!empty($filters['date_to']) && is_numeric($filters['date_to'])) {
+            $request .= " AND `pspy`.`dateRE` <= " . (int)$filters['date_to'];
+        }
+
+        // Minimum total resources filter (only applies when resources are known, i.e. >= 0)
+        if (isset($filters['resources_min']) && is_numeric($filters['resources_min']) && (int)$filters['resources_min'] > 0) {
+            $min = (int)$filters['resources_min'];
+            $request .= " AND pspy.`metal` >= 0 AND pspy.`crystal` >= 0 AND pspy.`deuterium` >= 0";
+            $request .= " AND (pspy.`metal` + pspy.`crystal` + pspy.`deuterium`) >= " . $min;
+        }
+
+        // Defense filter
+        if (!empty($filters['defense'])) {
+            if ($filters['defense'] === 'yes') {
+                // At least one defense field > 0 (defense section visible and non-empty)
+                $request .= " AND (`pspy`.`LM` > 0 OR `pspy`.`LLE` > 0 OR `pspy`.`LLO` > 0 OR `pspy`.`CG` > 0 OR `pspy`.`AI` > 0 OR `pspy`.`LP` > 0 OR `pspy`.`PB` > 0 OR `pspy`.`GB` > 0 OR `pspy`.`MIC` > 0 OR `pspy`.`MIP` > 0)";
+            } elseif ($filters['defense'] === 'no') {
+                // Defense section was spied (LM >= 0) but all values are 0
+                $request .= " AND `pspy`.`LM` >= 0 AND `pspy`.`LM` = 0 AND `pspy`.`LLE` = 0 AND `pspy`.`LLO` = 0 AND `pspy`.`CG` = 0 AND `pspy`.`AI` = 0 AND `pspy`.`LP` = 0 AND `pspy`.`PB` = 0 AND `pspy`.`GB` = 0 AND `pspy`.`MIC` = 0 AND `pspy`.`MIP` = 0";
+            } elseif ($filters['defense'] === 'unknown') {
+                // Defense section not visible (all fields = -1)
+                $request .= " AND `pspy`.`LM` = -1";
+            }
+        }
+
+        // Incomplete report filter: show only reports where the defense section was not spied
+        if (!empty($filters['incomplete']) && (int)$filters['incomplete'] === 1) {
+            $request .= " AND `pspy`.`LM` = -1";
+        }
+
         $request .= " ORDER BY " . $ordered_by;
         $result = $this->db->sql_query($request);
 
-        while (list($spy_id, $galaxy, $system, $row, $datadate, $sender_name, $moon, $ally, $player, $status) = $this->db->sql_fetch_row($result)) {
+        while (list($spy_id, $galaxy, $system, $row, $datadate, $sender_name, $moon, $ally, $player, $status, $metal, $crystal, $deuterium) = $this->db->sql_fetch_row($result)) {
+
+            $total_resources = ($metal >= 0 && $crystal >= 0 && $deuterium >= 0)
+                ? ($metal + $crystal + $deuterium)
+                : -1;
 
             $favorite[$spy_id] = array(
-                "spy_id" => $spy_id, "spy_galaxy" => $galaxy
-                , "spy_system" =>$system, "spy_row" => $row, "player" => $player,
+                "spy_id" => $spy_id, "spy_galaxy" => $galaxy,
+                "spy_system" => $system, "spy_row" => $row, "player" => $player,
                 "ally" => $ally, "moon" => $moon, "status" => $status, "datadate" => $datadate,
-                "poster" => $sender_name
+                "poster" => $sender_name,
+                "metal" => $metal, "crystal" => $crystal, "deuterium" => $deuterium,
+                "total_resources" => $total_resources,
             );
         }
         return $favorite;

@@ -1828,3 +1828,140 @@ footer#barre .notviewlittle{
 .og-table-log .log-critical { color: #ff4444; font-weight: bold; text-decoration: underline; } /* Rouge vif */
 .og-table-log .log-alert { background-color: #552222; color: #ffaaaa; font-weight: bold; } /* Fond rouge sombre, texte rouge très clair */
 .og-table-log .log-emergency { background-color: #dd0000; color: white; font-weight: bold; } /* Fond rouge vif, texte blanc */
+
+/* ============================================================
+ * Spy reports page – filter sidebar layout
+ * ============================================================ */
+
+.og-spy-layout {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Sidebar panel */
+.og-spy-filters {
+    flex: 0 0 220px;
+    min-width: 180px;
+    background-color: var(--color-navpagemenu-background);
+    border: 1px solid var(--color-button-border);
+    border-radius: 6px;
+    padding: 14px 12px;
+}
+
+.og-spy-filters-title {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-navpagemenu-link);
+    border-bottom: 1px solid var(--color-button-border);
+    padding-bottom: 6px;
+}
+
+.og-spy-filter-form fieldset.og-spy-filter-group {
+    border: 1px solid var(--color-button-border);
+    border-radius: 4px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+}
+
+.og-spy-filter-form fieldset.og-spy-filter-group legend {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 4px;
+    color: var(--color-text);
+    opacity: 0.7;
+}
+
+.og-spy-filter-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 6px;
+}
+
+.og-spy-filter-row:last-child {
+    margin-bottom: 0;
+}
+
+.og-spy-filter-row label {
+    font-size: 12px;
+    margin-bottom: 2px;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.og-spy-filter-row input[type="number"],
+.og-spy-filter-row input[type="date"] {
+    background-color: var(--color-button-background);
+    border: 1px solid var(--color-button-border);
+    border-radius: 3px;
+    color: var(--color-text);
+    font-size: 12px;
+    padding: 3px 6px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.og-spy-filter-row input[type="radio"],
+.og-spy-filter-row input[type="checkbox"] {
+    flex-shrink: 0;
+}
+
+.og-spy-filter-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.og-spy-filter-actions .og-button {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* Main content area (table) */
+.og-spy-content {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow-x: auto;
+}
+
+.og-spy-filter-active {
+    font-size: 12px;
+    color: var(--color-warning);
+    margin-bottom: 8px;
+}
+
+.og-spy-filter-active a {
+    color: var(--color-warning);
+    text-decoration: underline;
+}
+
+/* Resources column alignment */
+.og-spy-resources {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* Responsive: stack sidebar above table on small screens */
+@media (max-width: 900px) {
+    .og-spy-layout {
+        flex-direction: column;
+    }
+    .og-spy-filters {
+        flex: none;
+        width: 100%;
+        min-width: unset;
+    }
+}
