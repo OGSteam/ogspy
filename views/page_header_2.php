@@ -22,6 +22,6 @@ if (!defined('IN_SPYOGAME')) {
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
     <link rel="icon" type="image/icon" href="favicon.ico"/>
 </head>
-<body>
+<body class="layout-light">
 
     <section id="content"> <!-- Contenu principal Attention, fermeture dans le footer / compat legacy -->
