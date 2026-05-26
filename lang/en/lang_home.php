@@ -143,8 +143,31 @@ $lang['HOME_SPY_MOON'] = "Moon";
 $lang['HOME_SPY_UPDATE'] = "Update";
 $lang['HOME_SPY_SEE'] = "See";
 $lang['HOME_SPY_FAVDELETE'] = "Delete from Favorites";
+$lang['HOME_SPY_RESOURCES_TOTAL'] = "Total resources";
 
-/* home_stat.php */
+/* home_spy.php – filter panel */
+$lang['HOME_SPY_FILTER_TITLE']            = "Filters";
+$lang['HOME_SPY_FILTER_COORDS']           = "Coordinates";
+$lang['HOME_SPY_FILTER_GALAXY']           = "Galaxy";
+$lang['HOME_SPY_FILTER_SYSTEM']           = "System";
+$lang['HOME_SPY_FILTER_ROW']             = "Position";
+$lang['HOME_SPY_FILTER_DATE']             = "Date";
+$lang['HOME_SPY_FILTER_DATE_FROM']        = "From";
+$lang['HOME_SPY_FILTER_DATE_TO']         = "To";
+$lang['HOME_SPY_FILTER_RESOURCES']        = "Resources";
+$lang['HOME_SPY_FILTER_RESOURCES_MIN']    = "Min. total";
+$lang['HOME_SPY_FILTER_DEFENSE']          = "Defenses";
+$lang['HOME_SPY_FILTER_ALL']              = "All";
+$lang['HOME_SPY_FILTER_DEFENSE_YES']      = "Has defenses";
+$lang['HOME_SPY_FILTER_DEFENSE_NO']       = "No defenses";
+$lang['HOME_SPY_FILTER_DEFENSE_UNKNOWN']  = "Not spied";
+$lang['HOME_SPY_FILTER_REPORT']           = "Report";
+$lang['HOME_SPY_FILTER_INCOMPLETE']       = "Incomplete report";
+$lang['HOME_SPY_FILTER_APPLY']            = "Apply";
+$lang['HOME_SPY_FILTER_RESET']            = "Reset";
+$lang['HOME_SPY_FILTER_ACTIVE']           = "Active filters";
+
+
 
 $lang['HOME_STATS_STATISTICS'] = "Display statistics from ";
 $lang['HOME_STATS_OPTIONS'] = "Settings";
