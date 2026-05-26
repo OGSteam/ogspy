@@ -80,13 +80,9 @@ if (!defined('IN_SPYOGAME')) {
         </li>
 
 
-        <li class='menuitem-ogspy-grp'>
-            <a><!-- <?php echo ($lang['MENU_GALAXY']); ?>--> <span class="icon-ogspy menuitem-ogspy-grp_icon"></span> Ogspy </a>
+        <li class='menuitem-home-grp'>
+            <a><span class="icon-ogspy menuitem-home-grp_icon"></span> <?php echo ($lang['MENU_HOME']); ?></a>
             <ul class="sub_menu_navigate">
-                <li class='menuitem-home'>
-                    <a href='index.php?action=home&amp;subaction=home' ><?php echo ($lang['MENU_HOME']); ?></a>
-                </li>
-                <!-- partie home prise en charge dans page home
                 <li class='menuitem-home-empire'>
                     <a href='index.php?action=home&amp;subaction=empire' ><?php echo ($lang['HOME_EMPIRE_TITLE']); ?></a>
                 </li>
@@ -99,7 +95,12 @@ if (!defined('IN_SPYOGAME')) {
                 <li class='menuitem-home-stat'>
                     <a href='index.php?action=home&amp;subaction=stat' ><?php echo ($lang['HOME_STATISTICS_TITLE']); ?></a>
                 </li>
-                fin partie home prise en charge dans page home -->
+            </ul>
+        </li>
+
+        <li class='menuitem-ogspy-grp'>
+            <a><!-- <?php echo ($lang['MENU_GALAXY']); ?>--> <span class="icon-ogspy menuitem-ogspy-grp_icon"></span> Ogspy </a>
+            <ul class="sub_menu_navigate">
                 <li class='menuitem-ogspy-galaxy'>
                     <a href='index.php?action=galaxy' ><?php echo ($lang['MENU_GALAXY']); ?></a>
                 </li>

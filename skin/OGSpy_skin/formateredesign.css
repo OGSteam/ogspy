@@ -843,6 +843,10 @@ a span.menuitem-user-grp_icon {
     background-image: var(--icon-account);
 }
 
+a span.menuitem-home-grp_icon {
+    background-image: var(--icon-moon);
+}
+
 a span.menuitem-ogspy-grp_icon {
     background-image: var(--icon-space);
 }
