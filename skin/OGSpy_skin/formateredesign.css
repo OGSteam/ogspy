@@ -1878,49 +1878,86 @@ footer#barre .notviewlittle{
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    gap: 20px;
-    flex-wrap: wrap;
+    gap: 16px;
+    width: 100%;
 }
 
-/* Sidebar panel */
+/* ── Sidebar panel ─────────────────────────────────────────── */
 .og-spy-filters {
     flex: 0 0 220px;
-    min-width: 180px;
-    background-color: var(--color-navpagemenu-background);
-    border: 1px solid var(--color-button-border);
-    border-radius: 6px;
-    padding: 14px 12px;
+    width: 220px;
+    max-width: 220px;   /* prevents content from stretching the sidebar */
+    min-width: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(199, 86, 157, 0.35);
+    border-radius: 8px;
+    overflow: hidden;
+    position: sticky;
+    top: 8px;
+    align-self: flex-start;
 }
 
 .og-spy-filters-title {
-    margin: 0 0 12px 0;
-    font-size: 14px;
+    margin: 0;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     color: var(--color-navpagemenu-link);
-    border-bottom: 1px solid var(--color-button-border);
-    padding-bottom: 6px;
+    background: rgba(199, 86, 157, 0.12);
+    border-bottom: 1px solid rgba(199, 86, 157, 0.3);
+    padding: 9px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+/* Badge shown next to the title when filters are active */
+.og-spy-filter-badge {
+    background: var(--color-navpagemenu-link);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 9px;
+    line-height: 1;
+    padding: 2px 6px;
+    font-weight: bold;
+    letter-spacing: 0;
+    white-space: nowrap;
+}
+
+/* ── Form wrapper ──────────────────────────────────────────── */
+.og-spy-filter-form {
+    padding: 8px 10px 10px;
 }
 
 .og-spy-filter-form fieldset.og-spy-filter-group {
-    border: 1px solid var(--color-button-border);
-    border-radius: 4px;
-    padding: 8px 10px;
-    margin-bottom: 10px;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 8px 0 4px;
+    margin: 0 0 2px;
+}
+
+.og-spy-filter-form fieldset.og-spy-filter-group:first-of-type {
+    border-top: none;
+    padding-top: 2px;
 }
 
 .og-spy-filter-form fieldset.og-spy-filter-group legend {
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 0 4px;
-    color: var(--color-text);
-    opacity: 0.7;
+    letter-spacing: 0.8px;
+    padding: 0 6px 0 0;
+    color: var(--color-navpagemenu-link);
+    font-weight: bold;
+    opacity: 0.85;
 }
 
+/* ── Individual filter rows ────────────────────────────────── */
+/* Default row: label stacked above its input */
 .og-spy-filter-row {
     display: flex;
     flex-direction: column;
+    gap: 3px;
     margin-bottom: 6px;
 }
 
@@ -1928,65 +1965,100 @@ footer#barre .notviewlittle{
     margin-bottom: 0;
 }
 
-.og-spy-filter-row label {
-    font-size: 12px;
-    margin-bottom: 2px;
+/* Label above an input (for=/not-for both get same base style) */
+.og-spy-filter-row > label[for] {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.55);
+    cursor: pointer;
+}
+
+/* Rows that hold a wrapping label (radio / checkbox) — keep horizontal */
+.og-spy-filter-row > label:not([for]) {
+    font-size: 11px;
     color: var(--color-text);
     display: flex;
+    flex-direction: row;
     align-items: center;
     gap: 6px;
     cursor: pointer;
 }
 
+/* ── Inputs ─────────────────────────────────────────────────── */
 .og-spy-filter-row input[type="number"],
 .og-spy-filter-row input[type="date"] {
-    background-color: var(--color-button-background);
-    border: 1px solid var(--color-button-border);
-    border-radius: 3px;
-    color: var(--color-text);
-    font-size: 12px;
-    padding: 3px 6px;
     width: 100%;
+    min-width: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 11px;
+    padding: 4px 6px;
     box-sizing: border-box;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.og-spy-filter-row input[type="number"]:focus,
+.og-spy-filter-row input[type="date"]:focus {
+    outline: none;
+    border-color: var(--color-navpagemenu-link);
+    box-shadow: 0 0 0 2px rgba(199, 86, 157, 0.25);
 }
 
 .og-spy-filter-row input[type="radio"],
 .og-spy-filter-row input[type="checkbox"] {
     flex-shrink: 0;
+    accent-color: var(--color-navpagemenu-link);
 }
 
+/* ── Action buttons ─────────────────────────────────────────── */
 .og-spy-filter-actions {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 6px;
-    margin-top: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .og-spy-filter-actions .og-button {
-    width: 100%;
+    flex: 1;
     text-align: center;
     margin: 0;
     box-sizing: border-box;
     text-decoration: none;
     display: inline-block;
+    font-size: 11px;
+    padding: 5px 4px;
 }
 
-/* Main content area (table) */
+/* ── Main content area ──────────────────────────────────────── */
 .og-spy-content {
     flex: 1 1 0;
     min-width: 0;
     overflow-x: auto;
 }
 
+/* Active filter notice bar */
 .og-spy-filter-active {
-    font-size: 12px;
-    color: var(--color-warning);
-    margin-bottom: 8px;
+    font-size: 11px;
+    color: var(--color-navpagemenu-link);
+    margin-bottom: 10px;
+    padding: 6px 10px;
+    background: rgba(199, 86, 157, 0.1);
+    border: 1px solid rgba(199, 86, 157, 0.3);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .og-spy-filter-active a {
-    color: var(--color-warning);
+    color: var(--color-navpagemenu-link);
     text-decoration: underline;
+    margin-left: auto;
 }
 
 /* Resources column alignment */
@@ -1995,7 +2067,7 @@ footer#barre .notviewlittle{
     white-space: nowrap;
 }
 
-/* Responsive: stack sidebar above table on small screens */
+/* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 900px) {
     .og-spy-layout {
         flex-direction: column;
@@ -2003,6 +2075,18 @@ footer#barre .notviewlittle{
     .og-spy-filters {
         flex: none;
         width: 100%;
-        min-width: unset;
+        max-width: 100%;
+        position: static;
+    }
+    .og-spy-filter-form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 16px;
+    }
+    .og-spy-filter-form fieldset.og-spy-filter-group {
+        flex: 1 1 180px;
+    }
+    .og-spy-filter-actions {
+        width: 100%;
     }
 }

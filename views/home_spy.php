@@ -62,7 +62,12 @@ foreach ([
     <!-- Filter sidebar                                               -->
     <!-- ============================================================ -->
     <aside class="og-spy-filters">
-        <h3 class="og-spy-filters-title"><?= $lang['HOME_SPY_FILTER_TITLE'] ?></h3>
+        <h3 class="og-spy-filters-title">
+            <?= $lang['HOME_SPY_FILTER_TITLE'] ?>
+            <?php if ($has_active_filter) : ?>
+                <span class="og-spy-filter-badge">ON</span>
+            <?php endif; ?>
+        </h3>
 
         <form method="get" action="index.php" class="og-spy-filter-form">
             <input type="hidden" name="action" value="home">
@@ -170,7 +175,7 @@ foreach ([
     <!-- ============================================================ -->
     <div class="og-spy-content">
         <?php if ($has_active_filter) : ?>
-            <p class="og-spy-filter-active"><?= $lang['HOME_SPY_FILTER_ACTIVE'] ?> – <a href="index.php?action=home&amp;subaction=spy"><?= $lang['HOME_SPY_FILTER_RESET'] ?></a></p>
+            <p class="og-spy-filter-active"><?= $lang['HOME_SPY_FILTER_ACTIVE'] ?><a href="index.php?action=home&amp;subaction=spy"><?= $lang['HOME_SPY_FILTER_RESET'] ?></a></p>
         <?php endif; ?>
 
         <table class="og-table og-medium-table">
