@@ -18,6 +18,7 @@
 $lang['HOME_EMPIRE_TITLE'] = "Empire";
 $lang['HOME_SIMULATION_TITLE'] = "Simulation";
 $lang['HOME_REPORTS_TITLE'] = "Spy reports";
+$lang['HOME_COMBAT_TITLE'] = "Combat reports";
 $lang['HOME_STATISTICS_TITLE'] = "Statistics";
 
 /* home_empire.php */
@@ -169,6 +170,23 @@ $lang['HOME_SPY_FILTER_APPLY']            = "Apply";
 $lang['HOME_SPY_FILTER_RESET']            = "Reset";
 $lang['HOME_SPY_FILTER_ACTIVE']           = "Active filters";
 
+$lang['HOME_COMBAT_DATE'] = "Date";
+$lang['HOME_COMBAT_GAINS'] = "Gains";
+$lang['HOME_COMBAT_LOSSES'] = "Losses";
+$lang['HOME_COMBAT_DEBRIS'] = "Debris field";
+$lang['HOME_COMBAT_ROUNDS'] = "Rounds";
+$lang['HOME_COMBAT_FILTER_VALUES'] = "Values";
+$lang['HOME_COMBAT_FILTER_GAINS_MIN'] = "Min. gains";
+$lang['HOME_COMBAT_FILTER_GAINS_MAX'] = "Max. gains";
+$lang['HOME_COMBAT_FILTER_LOSSES_MIN'] = "Min. losses";
+$lang['HOME_COMBAT_FILTER_LOSSES_MAX'] = "Max. losses";
+$lang['HOME_COMBAT_FILTER_DEBRIS_MIN'] = "Min. debris";
+$lang['HOME_COMBAT_FILTER_DEBRIS_MAX'] = "Max. debris";
+$lang['HOME_COMBAT_FILTER_ROUNDS_MIN'] = "Min. rounds";
+$lang['HOME_COMBAT_FILTER_ROUNDS_MAX'] = "Max. rounds";
+$lang['HOME_COMBAT_FILTER_HIDE_ONE_ROUND'] = "Hide 1-round combats";
+$lang['HOME_COMBAT_SEE'] = "View";
+$lang['HOME_COMBAT_NOREPORTS'] = "No combat report available";
 /* home_stat.php */
 
 $lang['HOME_STATS_STATISTICS'] = "Display statistics from ";
