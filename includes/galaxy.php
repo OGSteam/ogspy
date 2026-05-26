@@ -627,7 +627,10 @@ function galaxy_reportrc_show()
 
     if (isset($pub_rc_id) && check_var($pub_rc_id, "Num")) {
         $report_id = (int)$pub_rc_id;
-        $report_list = in_array($report_id, $report_list, true) ? [$report_id] : [];
+        if (!in_array($report_id, $report_list, true)) {
+            return false;
+        }
+        $report_list = [$report_id];
     }
 
     $reports = array();

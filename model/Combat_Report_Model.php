@@ -94,7 +94,13 @@ class Combat_Report_Model  extends Model_Abstract
             return [];
         }
 
-        $request = "SELECT rc.id_rc, astro.galaxy, astro.system, astro.row, rc.dateRC, rc.nb_rounds, rc.pertes_A, rc.pertes_D, rc.gain_M, rc.gain_C, rc.gain_D, rc.debris_M, rc.debris_C, CASE WHEN rc.gain_M >= 0 AND rc.gain_C >= 0 AND rc.gain_D >= 0 THEN rc.gain_M + rc.gain_C + rc.gain_D ELSE -1 END AS total_gain, (rc.pertes_A + rc.pertes_D) AS total_losses, CASE WHEN rc.debris_M >= 0 AND rc.debris_C >= 0 THEN rc.debris_M + rc.debris_C ELSE -1 END AS total_debris";
+        $request = "SELECT rc.id_rc, astro.galaxy, astro.system, astro.row, rc.dateRC, rc.nb_rounds,";
+        $request .= " rc.pertes_A, rc.pertes_D, rc.gain_M, rc.gain_C, rc.gain_D, rc.debris_M, rc.debris_C,";
+        $request .= " CASE WHEN rc.gain_M >= 0 AND rc.gain_C >= 0 AND rc.gain_D >= 0";
+        $request .= " THEN rc.gain_M + rc.gain_C + rc.gain_D ELSE -1 END AS total_gain,";
+        $request .= " (rc.pertes_A + rc.pertes_D) AS total_losses,";
+        $request .= " CASE WHEN rc.debris_M >= 0 AND rc.debris_C >= 0";
+        $request .= " THEN rc.debris_M + rc.debris_C ELSE -1 END AS total_debris";
         $request .= " FROM " . TABLE_PARSEDRC . " rc";
         $request .= " INNER JOIN " . TABLE_USER_BUILDING . " astro ON rc.astro_object_id = astro.id";
         $request .= " WHERE astro.player_id = " . $player_id;

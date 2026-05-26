@@ -17,12 +17,12 @@ if (empty($player_data)) {
     return;
 }
 
-$reports = user_getempire_combat_reports();
 if (!isset($sort2)) {
     $sort2 = 0;
 } else {
     $sort2 = $sort2 != 0 ? 0 : 1;
 }
+$reports = user_getempire_combat_reports();
 
 $filter_galaxy         = isset($pub_rc_filter_galaxy) ? (string)$pub_rc_filter_galaxy : '';
 $filter_system         = isset($pub_rc_filter_system) ? (string)$pub_rc_filter_system : '';
@@ -216,7 +216,7 @@ foreach ([
             </tr>
             </thead>
             <tbody>
-            <?php if (sizeof($reports) == 0) : ?>
+            <?php if (count($reports) === 0) : ?>
                 <tr>
                     <td colspan="7"><?= $lang['HOME_COMBAT_NOREPORTS'] ?></td>
                 </tr>
