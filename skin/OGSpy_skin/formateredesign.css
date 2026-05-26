@@ -628,8 +628,8 @@ body {
     background-size: cover;
     background-repeat: repeat;
 
-    width: 100vw;
-    min-height: 100%;
+    width: 100%;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
     display: grid;
@@ -646,6 +646,27 @@ body {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     text-align: left;
     font-size: 11px;
+    overflow-x: hidden;
+}
+
+body.layout-light {
+    grid-template-rows: 1fr auto;
+    grid-template-areas: "content" "footer";
+}
+
+body.layout-light #content {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+body.layout-light .page_login {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
 }
 
 #navbar {
@@ -1325,6 +1346,12 @@ table.og-table tbody td.og-highlight {
 
 }
 
+body.layout-light .login_panel {
+    width: min(500px, 92vw);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 .og-login-header h2 {
     text-transform: uppercase;
     margin-bottom: 30px;
@@ -1782,6 +1809,20 @@ footer#barre .notviewlittle{
 @media(max-width: 700px) {
     body {
         grid-template-rows: 40px 1fr 30px;
+    }
+
+    body.layout-light {
+        grid-template-rows: 1fr auto;
+    }
+
+    body.layout-light #content {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    body.layout-light .page_login {
+        min-height: calc(100vh - 60px);
+        align-items: flex-start;
     }
 
     #content {
