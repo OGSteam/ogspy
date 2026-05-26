@@ -609,7 +609,7 @@ function galaxy_reportspy_show()
  */
 function galaxy_reportrc_show()
 {
-    global $pub_galaxy, $pub_system, $pub_row, $server_config;
+    global $pub_galaxy, $pub_system, $pub_row, $pub_rc_id, $server_config;
 
     if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_row, "Num")) {
         return false;
@@ -624,6 +624,11 @@ function galaxy_reportrc_show()
 
     $Combat_Report_Model = new Combat_Report_Model();
     $report_list = $Combat_Report_Model->get_cr_id_list_by_planet(intval($pub_galaxy), intval($pub_system), intval($pub_row));
+
+    if (isset($pub_rc_id) && check_var($pub_rc_id, "Num")) {
+        $report_id = (int)$pub_rc_id;
+        $report_list = in_array($report_id, $report_list, true) ? [$report_id] : [];
+    }
 
     $reports = array();
     foreach ($report_list as $report_id) {
