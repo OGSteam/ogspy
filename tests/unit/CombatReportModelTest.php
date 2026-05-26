@@ -15,8 +15,40 @@ namespace {
     use Ogsteam\Ogspy\Model\Combat_Report_Model;
     use PHPUnit\Framework\TestCase;
 
+    class FakeCombatReportDb
+    {
+        public array $queries = [];
+        private array $rows;
+
+        public function __construct(array $rows = [])
+        {
+            $this->rows = $rows;
+        }
+
+        public function sql_query(string $query): string
+        {
+            $this->queries[] = $query;
+            return 'result';
+        }
+
+        public function sql_fetch_assoc(string $result)
+        {
+            return array_shift($this->rows) ?: false;
+        }
+    }
+
     class CombatReportModelTest extends TestCase
     {
+        protected function setUp(): void
+        {
+            if (!defined('TABLE_PARSEDRC')) {
+                define('TABLE_PARSEDRC', 'ogspy_game_rc');
+            }
+            if (!defined('TABLE_USER_BUILDING')) {
+                define('TABLE_USER_BUILDING', 'ogspy_game_astro_object');
+            }
+        }
+
         public function testEmpireReportOrderByUsesExpectedColumns(): void
         {
             $this->assertSame('rc.dateRC DESC', Combat_Report_Model::get_empire_report_order_by());
@@ -70,6 +102,44 @@ namespace {
             ]);
 
             $this->assertSame([], $clauses);
+        }
+
+        public function testGetEmpireCombatReportListBuildsQueryAndFormatsCoordinates(): void
+        {
+            global $db, $log;
+
+            $db = new FakeCombatReportDb([[
+                'id_rc' => '4',
+                'galaxy' => '1',
+                'system' => '22',
+                'row' => '7',
+                'dateRC' => '1710000000',
+                'nb_rounds' => '3',
+                'pertes_A' => '1000',
+                'pertes_D' => '2000',
+                'gain_M' => '300',
+                'gain_C' => '400',
+                'gain_D' => '500',
+                'debris_M' => '600',
+                'debris_C' => '700',
+                'total_gain' => '1200',
+                'total_losses' => '3000',
+                'total_debris' => '1300',
+            ]]);
+            $log = new \Monolog\Logger();
+
+            $model = new Combat_Report_Model();
+            $reports = $model->get_empire_combat_report_list(42, 3, 1, [
+                'galaxy' => 1,
+                'hide_one_round' => 1,
+            ]);
+
+            $this->assertCount(1, $reports);
+            $this->assertSame('1:22:7', $reports[0]['coordinates']);
+            $this->assertStringContainsString('FROM ogspy_game_rc rc INNER JOIN ogspy_game_astro_object astro ON rc.astro_object_id = astro.id WHERE astro.player_id = 42', $db->queries[0]);
+            $this->assertStringContainsString('AND astro.galaxy = 1', $db->queries[0]);
+            $this->assertStringContainsString('AND rc.nb_rounds > 1', $db->queries[0]);
+            $this->assertStringContainsString('ORDER BY total_gain ASC, rc.dateRC DESC', $db->queries[0]);
         }
     }
 }
