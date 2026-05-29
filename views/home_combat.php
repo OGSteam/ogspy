@@ -17,11 +17,8 @@ if (empty($player_data)) {
     return;
 }
 
-if (!isset($sort2)) {
-    $sort2 = 0;
-} else {
-    $sort2 = $sort2 != 0 ? 0 : 1;
-}
+$current_sort2 = (isset($pub_sort2) && is_numeric($pub_sort2)) ? (int)$pub_sort2 : 0;
+$sort2 = $current_sort2 != 0 ? 0 : 1;
 $reports = user_getempire_combat_reports();
 
 $filter_galaxy         = isset($pub_rc_filter_galaxy) ? (string)$pub_rc_filter_galaxy : '';
