@@ -19,6 +19,7 @@ use Ogsteam\Ogspy\Model\Player_Model;
 use Ogsteam\Ogspy\Model\Sessions_Model;
 use Ogsteam\Ogspy\Model\Statistics_Model;
 use Ogsteam\Ogspy\Model\User_Model;
+use Ogsteam\Ogspy\Model\Combat_Report_Model;
 use Ogsteam\Ogspy\Model\Spy_Model;
 use Ogsteam\Ogspy\Model\Tokens_Model;
 use Ogsteam\Ogspy\Model\User_Favorites_Model;
@@ -1466,6 +1467,69 @@ function user_getfavorites_spy(): array
     }
 
     return $Spy_Model->get_favoriteSpyList($user_data["id"], $sort, $sort2, $filters);
+}
+
+function user_getempire_combat_reports(): array
+{
+    global $user_data;
+    global $pub_sort, $pub_sort2;
+    global $pub_rc_filter_galaxy, $pub_rc_filter_system, $pub_rc_filter_row;
+    global $pub_rc_filter_date_from, $pub_rc_filter_date_to;
+    global $pub_rc_filter_gains_min, $pub_rc_filter_gains_max;
+    global $pub_rc_filter_losses_min, $pub_rc_filter_losses_max;
+    global $pub_rc_filter_debris_min, $pub_rc_filter_debris_max;
+    global $pub_rc_filter_rounds_min, $pub_rc_filter_rounds_max;
+    global $pub_rc_filter_hide_one_round;
+
+    $Combat_Report_Model = new Combat_Report_Model();
+
+    $sort = (isset($pub_sort) && is_numeric($pub_sort)) ? (int)$pub_sort : 2;
+    $sort2 = (isset($pub_sort2) && is_numeric($pub_sort2)) ? (int)$pub_sort2 : 0;
+
+    $filters = [];
+
+    if (isset($pub_rc_filter_galaxy) && is_numeric($pub_rc_filter_galaxy) && (int)$pub_rc_filter_galaxy > 0) {
+        $filters['galaxy'] = (int)$pub_rc_filter_galaxy;
+    }
+    if (isset($pub_rc_filter_system) && is_numeric($pub_rc_filter_system) && (int)$pub_rc_filter_system > 0) {
+        $filters['system'] = (int)$pub_rc_filter_system;
+    }
+    if (isset($pub_rc_filter_row) && is_numeric($pub_rc_filter_row) && (int)$pub_rc_filter_row > 0) {
+        $filters['row'] = (int)$pub_rc_filter_row;
+    }
+    if (isset($pub_rc_filter_date_from) && $pub_rc_filter_date_from !== '') {
+        $ts = strtotime($pub_rc_filter_date_from);
+        if ($ts !== false) {
+            $filters['date_from'] = $ts;
+        }
+    }
+    if (isset($pub_rc_filter_date_to) && $pub_rc_filter_date_to !== '') {
+        $ts = strtotime($pub_rc_filter_date_to . ' 23:59:59');
+        if ($ts !== false) {
+            $filters['date_to'] = $ts;
+        }
+    }
+
+    foreach ([
+        'gains_min' => $pub_rc_filter_gains_min ?? null,
+        'gains_max' => $pub_rc_filter_gains_max ?? null,
+        'losses_min' => $pub_rc_filter_losses_min ?? null,
+        'losses_max' => $pub_rc_filter_losses_max ?? null,
+        'debris_min' => $pub_rc_filter_debris_min ?? null,
+        'debris_max' => $pub_rc_filter_debris_max ?? null,
+        'rounds_min' => $pub_rc_filter_rounds_min ?? null,
+        'rounds_max' => $pub_rc_filter_rounds_max ?? null,
+    ] as $key => $value) {
+        if ($value !== null && $value !== '' && is_numeric($value) && (int)$value >= 0) {
+            $filters[$key] = (int)$value;
+        }
+    }
+
+    if (isset($pub_rc_filter_hide_one_round) && (int)$pub_rc_filter_hide_one_round === 1) {
+        $filters['hide_one_round'] = 1;
+    }
+
+    return $Combat_Report_Model->get_empire_combat_report_list((int)$user_data["player_id"], $sort, $sort2, $filters);
 }
 
 /**

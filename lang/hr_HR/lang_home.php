@@ -18,6 +18,7 @@
 $lang['HOME_EMPIRE_TITLE'] = "Carstvo";
 $lang['HOME_SIMULATION_TITLE'] = "Simulacija";
 $lang['HOME_REPORTS_TITLE'] = "Izvještaj o špijunaži";
+$lang['HOME_COMBAT_TITLE'] = "Izvješća o borbi";
 $lang['HOME_STATISTICS_TITLE'] = "Statistika";
 
 /* home_empire.php */
@@ -169,6 +170,23 @@ $lang['HOME_SPY_FILTER_APPLY']            = "Primijeni";
 $lang['HOME_SPY_FILTER_RESET']            = "Poništi";
 $lang['HOME_SPY_FILTER_ACTIVE']           = "Aktivni filteri";
 
+$lang['HOME_COMBAT_DATE'] = "Datum";
+$lang['HOME_COMBAT_GAINS'] = "Dobici";
+$lang['HOME_COMBAT_LOSSES'] = "Gubici";
+$lang['HOME_COMBAT_DEBRIS'] = "Polje ruševina";
+$lang['HOME_COMBAT_ROUNDS'] = "Runde";
+$lang['HOME_COMBAT_FILTER_VALUES'] = "Vrijednosti";
+$lang['HOME_COMBAT_FILTER_GAINS_MIN'] = "Min. dobici";
+$lang['HOME_COMBAT_FILTER_GAINS_MAX'] = "Maks. dobici";
+$lang['HOME_COMBAT_FILTER_LOSSES_MIN'] = "Min. gubici";
+$lang['HOME_COMBAT_FILTER_LOSSES_MAX'] = "Maks. gubici";
+$lang['HOME_COMBAT_FILTER_DEBRIS_MIN'] = "Min. ruševine";
+$lang['HOME_COMBAT_FILTER_DEBRIS_MAX'] = "Maks. ruševine";
+$lang['HOME_COMBAT_FILTER_ROUNDS_MIN'] = "Min. runde";
+$lang['HOME_COMBAT_FILTER_ROUNDS_MAX'] = "Maks. runde";
+$lang['HOME_COMBAT_FILTER_HIDE_ONE_ROUND'] = "Sakrij borbe od 1 runde";
+$lang['HOME_COMBAT_SEE'] = "Prikaži";
+$lang['HOME_COMBAT_NOREPORTS'] = "Nema dostupnih izvješća o borbi";
 
 
 $lang['HOME_STATS_STATISTICS'] = "Prikaži statistike od";
