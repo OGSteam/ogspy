@@ -1472,7 +1472,7 @@ function user_getfavorites_spy(): array
 function user_getempire_combat_reports(): array
 {
     global $user_data;
-    global $sort, $sort2;
+    global $pub_sort, $pub_sort2;
     global $pub_rc_filter_galaxy, $pub_rc_filter_system, $pub_rc_filter_row;
     global $pub_rc_filter_date_from, $pub_rc_filter_date_to;
     global $pub_rc_filter_gains_min, $pub_rc_filter_gains_max;
@@ -1482,10 +1482,9 @@ function user_getempire_combat_reports(): array
     global $pub_rc_filter_hide_one_round;
 
     $Combat_Report_Model = new Combat_Report_Model();
-    if (!is_numeric($sort) || !is_numeric($sort2)) {
-        $sort = 2;
-        $sort2 = 0;
-    }
+
+    $sort = (isset($pub_sort) && is_numeric($pub_sort)) ? (int)$pub_sort : 2;
+    $sort2 = (isset($pub_sort2) && is_numeric($pub_sort2)) ? (int)$pub_sort2 : 0;
 
     $filters = [];
 
