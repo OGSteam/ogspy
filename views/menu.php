@@ -92,6 +92,9 @@ if (!defined('IN_SPYOGAME')) {
                 <li class='menuitem-home-spy'>
                     <a href='index.php?action=home&amp;subaction=spy' ><?php echo ($lang['HOME_REPORTS_TITLE']); ?></a>
                 </li>
+                <li class='menuitem-home-combat'>
+                    <a href='index.php?action=home&amp;subaction=combat' ><?php echo ($lang['HOME_COMBAT_TITLE']); ?></a>
+                </li>
                 <li class='menuitem-home-stat'>
                     <a href='index.php?action=home&amp;subaction=stat' ><?php echo ($lang['HOME_STATISTICS_TITLE']); ?></a>
                 </li>
