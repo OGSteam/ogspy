@@ -122,7 +122,7 @@ namespace {
                 'total_losses' => '3000',
                 'total_debris' => '1300',
             ]]);
-            $log = new \Monolog\Logger();
+            $log = new \Monolog\Logger('test');
 
             $model = new Combat_Report_Model();
             $reports = $model->get_empire_combat_report_list(42, 3, 1, [
