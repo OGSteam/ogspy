@@ -1,10 +1,6 @@
 <?php
 
-namespace Monolog {
-    class Logger
-    {
-    }
-}
+// Monolog is provided via composer autoload (phpunit.xml bootstrap).
 
 namespace {
     define('IN_SPYOGAME', true);
