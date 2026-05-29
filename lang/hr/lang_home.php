@@ -146,6 +146,29 @@ $lang['HOME_SPY_MOON'] = "Mjesec";
 $lang['HOME_SPY_UPDATE'] = "Update";
 $lang['HOME_SPY_SEE'] = "Pogledaj";
 $lang['HOME_SPY_FAVDELETE'] = "Obriši iz favorita";
+$lang['HOME_SPY_RESOURCES_TOTAL'] = "Ukupni resursi";
+
+/* home_spy.php – filter panel */
+$lang['HOME_SPY_FILTER_TITLE']            = "Filteri";
+$lang['HOME_SPY_FILTER_COORDS']           = "Koordinate";
+$lang['HOME_SPY_FILTER_GALAXY']           = "Galaksija";
+$lang['HOME_SPY_FILTER_SYSTEM']           = "Sistem";
+$lang['HOME_SPY_FILTER_ROW']             = "Pozicija";
+$lang['HOME_SPY_FILTER_DATE']             = "Datum";
+$lang['HOME_SPY_FILTER_DATE_FROM']        = "Od";
+$lang['HOME_SPY_FILTER_DATE_TO']         = "Do";
+$lang['HOME_SPY_FILTER_RESOURCES']        = "Resursi";
+$lang['HOME_SPY_FILTER_RESOURCES_MIN']    = "Min. ukupno";
+$lang['HOME_SPY_FILTER_DEFENSE']          = "Obrana";
+$lang['HOME_SPY_FILTER_ALL']              = "Sve";
+$lang['HOME_SPY_FILTER_DEFENSE_YES']      = "Ima obranu";
+$lang['HOME_SPY_FILTER_DEFENSE_NO']       = "Nema obrane";
+$lang['HOME_SPY_FILTER_DEFENSE_UNKNOWN']  = "Nije špijunirano";
+$lang['HOME_SPY_FILTER_REPORT']           = "Izvješće";
+$lang['HOME_SPY_FILTER_INCOMPLETE']       = "Nepotpuno izvješće";
+$lang['HOME_SPY_FILTER_APPLY']            = "Primijeni";
+$lang['HOME_SPY_FILTER_RESET']            = "Poništi";
+$lang['HOME_SPY_FILTER_ACTIVE']           = "Aktivni filteri";
 
 $lang['HOME_COMBAT_DATE'] = "Datum";
 $lang['HOME_COMBAT_GAINS'] = "Dobici";
@@ -165,7 +188,6 @@ $lang['HOME_COMBAT_FILTER_HIDE_ONE_ROUND'] = "Sakrij borbe od 1 runde";
 $lang['HOME_COMBAT_SEE'] = "Prikaži";
 $lang['HOME_COMBAT_NOREPORTS'] = "Nema dostupnih izvješća o borbi";
 
-/* home_stat.php */
 
 $lang['HOME_STATS_STATISTICS'] = "Prikaži statistike od";
 $lang['HOME_STATS_OPTIONS'] = "Postavke";

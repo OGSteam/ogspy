@@ -1422,6 +1422,9 @@ function user_getfavorites_spy(): array
 {
     global $user_data;
     global $sort, $sort2;
+    global $pub_filter_galaxy, $pub_filter_system, $pub_filter_row;
+    global $pub_filter_date_from, $pub_filter_date_to;
+    global $pub_filter_resources_min, $pub_filter_defense, $pub_filter_incomplete;
 
     $Spy_Model = new Spy_Model();
     if (!is_numeric($sort) || !is_numeric($sort2)) {
@@ -1429,7 +1432,41 @@ function user_getfavorites_spy(): array
         $sort = 5;
         $sort2 = 0;
     }
-    return $Spy_Model->get_favoriteSpyList($user_data["id"], $sort, $sort2);
+
+    $filters = [];
+
+    if (isset($pub_filter_galaxy) && is_numeric($pub_filter_galaxy) && (int)$pub_filter_galaxy > 0) {
+        $filters['galaxy'] = (int)$pub_filter_galaxy;
+    }
+    if (isset($pub_filter_system) && is_numeric($pub_filter_system) && (int)$pub_filter_system > 0) {
+        $filters['system'] = (int)$pub_filter_system;
+    }
+    if (isset($pub_filter_row) && is_numeric($pub_filter_row) && (int)$pub_filter_row > 0) {
+        $filters['row'] = (int)$pub_filter_row;
+    }
+    if (isset($pub_filter_date_from) && $pub_filter_date_from !== '') {
+        $ts = strtotime($pub_filter_date_from);
+        if ($ts !== false) {
+            $filters['date_from'] = $ts;
+        }
+    }
+    if (isset($pub_filter_date_to) && $pub_filter_date_to !== '') {
+        $ts = strtotime($pub_filter_date_to . ' 23:59:59');
+        if ($ts !== false) {
+            $filters['date_to'] = $ts;
+        }
+    }
+    if (isset($pub_filter_resources_min) && is_numeric($pub_filter_resources_min) && (int)$pub_filter_resources_min > 0) {
+        $filters['resources_min'] = (int)$pub_filter_resources_min;
+    }
+    if (isset($pub_filter_defense) && in_array($pub_filter_defense, ['yes', 'no', 'unknown'], true)) {
+        $filters['defense'] = $pub_filter_defense;
+    }
+    if (isset($pub_filter_incomplete) && (int)$pub_filter_incomplete === 1) {
+        $filters['incomplete'] = 1;
+    }
+
+    return $Spy_Model->get_favoriteSpyList($user_data["id"], $sort, $sort2, $filters);
 }
 
 function user_getempire_combat_reports(): array
