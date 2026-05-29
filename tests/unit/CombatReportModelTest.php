@@ -3,7 +3,9 @@
 // Monolog is provided via composer autoload (phpunit.xml bootstrap).
 
 namespace {
-    define('IN_SPYOGAME', true);
+    if (!defined('IN_SPYOGAME')) {
+        define('IN_SPYOGAME', true);
+    }
 
     require_once __DIR__ . '/../../core/abstract/Model_Abstract.php';
     require_once __DIR__ . '/../../model/Combat_Report_Model.php';
