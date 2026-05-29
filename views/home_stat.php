@@ -333,12 +333,14 @@ if (!empty($player_data["name"])) {
     </thead>
     <tbody>
     <tr>
-        <td style="width: 50%;">
+        <td colspan='2'>
             <div id="<?= "points" ?>">
                 <?= $lang['HOME_STATS_NOGRAPHIC'] ?>
             </div>
         </td>
-        <td style="width: 50%;">
+    </tr>
+    <tr>
+        <td colspan='2'>
             <div id="<?= "rank" ?>">
                 <?= $lang['HOME_STATS_NOGRAPHIC'] ?>
             </div>

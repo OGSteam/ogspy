@@ -146,29 +146,6 @@ $lang['HOME_SPY_MOON'] = "Lune";
 $lang['HOME_SPY_UPDATE'] = "Mises à jour";
 $lang['HOME_SPY_SEE'] = "Voir";
 $lang['HOME_SPY_FAVDELETE'] = "Supprimer des favoris";
-$lang['HOME_SPY_RESOURCES_TOTAL'] = "Ressources totales";
-
-/* home_spy.php – filter panel */
-$lang['HOME_SPY_FILTER_TITLE']            = "Filtres";
-$lang['HOME_SPY_FILTER_COORDS']           = "Coordonnées";
-$lang['HOME_SPY_FILTER_GALAXY']           = "Galaxie";
-$lang['HOME_SPY_FILTER_SYSTEM']           = "Système";
-$lang['HOME_SPY_FILTER_ROW']             = "Position";
-$lang['HOME_SPY_FILTER_DATE']             = "Date";
-$lang['HOME_SPY_FILTER_DATE_FROM']        = "Du";
-$lang['HOME_SPY_FILTER_DATE_TO']         = "Au";
-$lang['HOME_SPY_FILTER_RESOURCES']        = "Ressources";
-$lang['HOME_SPY_FILTER_RESOURCES_MIN']    = "Total min.";
-$lang['HOME_SPY_FILTER_DEFENSE']          = "Défenses";
-$lang['HOME_SPY_FILTER_ALL']              = "Toutes";
-$lang['HOME_SPY_FILTER_DEFENSE_YES']      = "Défenses présentes";
-$lang['HOME_SPY_FILTER_DEFENSE_NO']       = "Aucune défense";
-$lang['HOME_SPY_FILTER_DEFENSE_UNKNOWN']  = "Non espionné";
-$lang['HOME_SPY_FILTER_REPORT']           = "Rapport";
-$lang['HOME_SPY_FILTER_INCOMPLETE']       = "RE incomplet";
-$lang['HOME_SPY_FILTER_APPLY']            = "Appliquer";
-$lang['HOME_SPY_FILTER_RESET']            = "Réinitialiser";
-$lang['HOME_SPY_FILTER_ACTIVE']           = "Filtres actifs";
 
 $lang['HOME_COMBAT_DATE'] = "Date";
 $lang['HOME_COMBAT_GAINS'] = "Gains";
@@ -188,6 +165,7 @@ $lang['HOME_COMBAT_FILTER_HIDE_ONE_ROUND'] = "Masquer les combats à 1 tour";
 $lang['HOME_COMBAT_SEE'] = "Voir";
 $lang['HOME_COMBAT_NOREPORTS'] = "Aucun rapport de combat disponible";
 
+/* home_stat.php */
 
 $lang['HOME_STATS_STATISTICS'] = "Les statistiques de";
 $lang['HOME_STATS_OPTIONS'] = "Options";

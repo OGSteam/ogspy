@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "chart.js": "^4.5.1",
     "mariadb-mcp-server": "^0.0.1"
   },
   "devDependencies": {
