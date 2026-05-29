@@ -13,6 +13,7 @@
 $lang['HOME_EMPIRE_TITLE'] = "Empire";
 $lang['HOME_SIMULATION_TITLE'] = "Simulation";
 $lang['HOME_REPORTS_TITLE'] = "Rapports d'espionnage";
+$lang['HOME_COMBAT_TITLE'] = "Rapports de combats";
 $lang['HOME_STATISTICS_TITLE'] = "Statistiques";
 
 /* home_empire.php */
@@ -169,6 +170,23 @@ $lang['HOME_SPY_FILTER_APPLY']            = "Appliquer";
 $lang['HOME_SPY_FILTER_RESET']            = "Réinitialiser";
 $lang['HOME_SPY_FILTER_ACTIVE']           = "Filtres actifs";
 
+$lang['HOME_COMBAT_DATE'] = "Date";
+$lang['HOME_COMBAT_GAINS'] = "Gains";
+$lang['HOME_COMBAT_LOSSES'] = "Pertes";
+$lang['HOME_COMBAT_DEBRIS'] = "Champ de ruine";
+$lang['HOME_COMBAT_ROUNDS'] = "Tours";
+$lang['HOME_COMBAT_FILTER_VALUES'] = "Valeurs";
+$lang['HOME_COMBAT_FILTER_GAINS_MIN'] = "Gains min.";
+$lang['HOME_COMBAT_FILTER_GAINS_MAX'] = "Gains max.";
+$lang['HOME_COMBAT_FILTER_LOSSES_MIN'] = "Pertes min.";
+$lang['HOME_COMBAT_FILTER_LOSSES_MAX'] = "Pertes max.";
+$lang['HOME_COMBAT_FILTER_DEBRIS_MIN'] = "CDR min.";
+$lang['HOME_COMBAT_FILTER_DEBRIS_MAX'] = "CDR max.";
+$lang['HOME_COMBAT_FILTER_ROUNDS_MIN'] = "Tours min.";
+$lang['HOME_COMBAT_FILTER_ROUNDS_MAX'] = "Tours max.";
+$lang['HOME_COMBAT_FILTER_HIDE_ONE_ROUND'] = "Masquer les combats à 1 tour";
+$lang['HOME_COMBAT_SEE'] = "Voir";
+$lang['HOME_COMBAT_NOREPORTS'] = "Aucun rapport de combat disponible";
 
 
 $lang['HOME_STATS_STATISTICS'] = "Les statistiques de";

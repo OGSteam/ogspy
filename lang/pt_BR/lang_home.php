@@ -18,6 +18,7 @@
 $lang['HOME_EMPIRE_TITLE'] = "Império";
 $lang['HOME_SIMULATION_TITLE'] = "Simulação";
 $lang['HOME_REPORTS_TITLE'] = "Relatórios de espionagem";
+$lang['HOME_COMBAT_TITLE'] = "Relatórios de combate";
 $lang['HOME_STATISTICS_TITLE'] = "Estatísticas";
 
 /* home_empire.php */
@@ -169,6 +170,23 @@ $lang['HOME_SPY_FILTER_APPLY']            = "Aplicar";
 $lang['HOME_SPY_FILTER_RESET']            = "Redefinir";
 $lang['HOME_SPY_FILTER_ACTIVE']           = "Filtros ativos";
 
+$lang['HOME_COMBAT_DATE'] = "Data";
+$lang['HOME_COMBAT_GAINS'] = "Ganhos";
+$lang['HOME_COMBAT_LOSSES'] = "Perdas";
+$lang['HOME_COMBAT_DEBRIS'] = "Campo de destroços";
+$lang['HOME_COMBAT_ROUNDS'] = "Rodadas";
+$lang['HOME_COMBAT_FILTER_VALUES'] = "Valores";
+$lang['HOME_COMBAT_FILTER_GAINS_MIN'] = "Ganhos mín.";
+$lang['HOME_COMBAT_FILTER_GAINS_MAX'] = "Ganhos máx.";
+$lang['HOME_COMBAT_FILTER_LOSSES_MIN'] = "Perdas mín.";
+$lang['HOME_COMBAT_FILTER_LOSSES_MAX'] = "Perdas máx.";
+$lang['HOME_COMBAT_FILTER_DEBRIS_MIN'] = "Destroços mín.";
+$lang['HOME_COMBAT_FILTER_DEBRIS_MAX'] = "Destroços máx.";
+$lang['HOME_COMBAT_FILTER_ROUNDS_MIN'] = "Rodadas mín.";
+$lang['HOME_COMBAT_FILTER_ROUNDS_MAX'] = "Rodadas máx.";
+$lang['HOME_COMBAT_FILTER_HIDE_ONE_ROUND'] = "Ocultar combates de 1 rodada";
+$lang['HOME_COMBAT_SEE'] = "Ver";
+$lang['HOME_COMBAT_NOREPORTS'] = "Nenhum relatório de combate disponível";
 
 
 $lang['HOME_STATS_STATISTICS'] = "As estatísticas de";
