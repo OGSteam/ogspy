@@ -18,6 +18,7 @@
 $lang['HOME_EMPIRE_TITLE'] = "Imperio";
 $lang['HOME_SIMULATION_TITLE'] = "Simulación";
 $lang['HOME_REPORTS_TITLE'] = "Reportes de espionaje";
+$lang['HOME_COMBAT_TITLE'] = "Informes de combate";
 $lang['HOME_STATISTICS_TITLE'] = "Estadísticas";
 
 /* home_empire.php */
@@ -145,8 +146,48 @@ $lang['HOME_SPY_MOON'] = "Luna";
 $lang['HOME_SPY_UPDATE'] = "Actualizaciones";
 $lang['HOME_SPY_SEE'] = "Vista";
 $lang['HOME_SPY_FAVDELETE'] = "Eliminar de favoritos";
+$lang['HOME_SPY_RESOURCES_TOTAL'] = "Recursos totales";
 
-/* home_stat.php */
+/* home_spy.php – panel de filtros */
+$lang['HOME_SPY_FILTER_TITLE']            = "Filtros";
+$lang['HOME_SPY_FILTER_COORDS']           = "Coordenadas";
+$lang['HOME_SPY_FILTER_GALAXY']           = "Galaxia";
+$lang['HOME_SPY_FILTER_SYSTEM']           = "Sistema";
+$lang['HOME_SPY_FILTER_ROW']             = "Posición";
+$lang['HOME_SPY_FILTER_DATE']             = "Fecha";
+$lang['HOME_SPY_FILTER_DATE_FROM']        = "Desde";
+$lang['HOME_SPY_FILTER_DATE_TO']         = "Hasta";
+$lang['HOME_SPY_FILTER_RESOURCES']        = "Recursos";
+$lang['HOME_SPY_FILTER_RESOURCES_MIN']    = "Total mín.";
+$lang['HOME_SPY_FILTER_DEFENSE']          = "Defensas";
+$lang['HOME_SPY_FILTER_ALL']              = "Todas";
+$lang['HOME_SPY_FILTER_DEFENSE_YES']      = "Con defensas";
+$lang['HOME_SPY_FILTER_DEFENSE_NO']       = "Sin defensas";
+$lang['HOME_SPY_FILTER_DEFENSE_UNKNOWN']  = "No espiado";
+$lang['HOME_SPY_FILTER_REPORT']           = "Informe";
+$lang['HOME_SPY_FILTER_INCOMPLETE']       = "Informe incompleto";
+$lang['HOME_SPY_FILTER_APPLY']            = "Aplicar";
+$lang['HOME_SPY_FILTER_RESET']            = "Restablecer";
+$lang['HOME_SPY_FILTER_ACTIVE']           = "Filtros activos";
+
+$lang['HOME_COMBAT_DATE'] = "Fecha";
+$lang['HOME_COMBAT_GAINS'] = "Ganancias";
+$lang['HOME_COMBAT_LOSSES'] = "Pérdidas";
+$lang['HOME_COMBAT_DEBRIS'] = "Campo de escombros";
+$lang['HOME_COMBAT_ROUNDS'] = "Rondas";
+$lang['HOME_COMBAT_FILTER_VALUES'] = "Valores";
+$lang['HOME_COMBAT_FILTER_GAINS_MIN'] = "Ganancias mín.";
+$lang['HOME_COMBAT_FILTER_GAINS_MAX'] = "Ganancias máx.";
+$lang['HOME_COMBAT_FILTER_LOSSES_MIN'] = "Pérdidas mín.";
+$lang['HOME_COMBAT_FILTER_LOSSES_MAX'] = "Pérdidas máx.";
+$lang['HOME_COMBAT_FILTER_DEBRIS_MIN'] = "Escombros mín.";
+$lang['HOME_COMBAT_FILTER_DEBRIS_MAX'] = "Escombros máx.";
+$lang['HOME_COMBAT_FILTER_ROUNDS_MIN'] = "Rondas mín.";
+$lang['HOME_COMBAT_FILTER_ROUNDS_MAX'] = "Rondas máx.";
+$lang['HOME_COMBAT_FILTER_HIDE_ONE_ROUND'] = "Ocultar combates de 1 ronda";
+$lang['HOME_COMBAT_SEE'] = "Ver";
+$lang['HOME_COMBAT_NOREPORTS'] = "No hay informes de combate disponibles";
+
 
 $lang['HOME_STATS_STATISTICS'] = "Estadísticas";
 $lang['HOME_STATS_OPTIONS'] = "Opciones";
