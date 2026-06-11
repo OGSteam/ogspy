@@ -28,10 +28,10 @@ use Ogsteam\Ogspy\Helper\ToolTip_Helper;
     <link rel="stylesheet" type="text/css" href="vendor/tooltipster/tooltipster/dist/css/tooltipster.bundle.min.css" />
     <link rel="icon" type="image/icon" href="favicon.ico">
 
-    <!-- Ajout des scripts Graphique (highcharts), jquery et prototype-->
+    <!-- Ajout des scripts Graphique (chart.js), jquery et prototype-->
 
     <script src="vendor/components/jquery/jquery.min.js"></script>
-    <script src="js/highcharts.js"></script>
+    <script src="js/chart.js"></script>
     <script src="js/autocomplete.js"></script>
     <script src="vendor/tooltipster/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
     <script src="js/ogame_formula.js"></script>

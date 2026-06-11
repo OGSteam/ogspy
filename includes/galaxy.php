@@ -609,7 +609,7 @@ function galaxy_reportspy_show()
  */
 function galaxy_reportrc_show()
 {
-    global $pub_galaxy, $pub_system, $pub_row, $server_config;
+    global $pub_galaxy, $pub_system, $pub_row, $pub_rc_id, $server_config;
 
     if (!check_var($pub_galaxy, "Num") || !check_var($pub_system, "Num") || !check_var($pub_row, "Num")) {
         return false;
@@ -624,6 +624,14 @@ function galaxy_reportrc_show()
 
     $Combat_Report_Model = new Combat_Report_Model();
     $report_list = $Combat_Report_Model->get_cr_id_list_by_planet(intval($pub_galaxy), intval($pub_system), intval($pub_row));
+
+    if (isset($pub_rc_id) && check_var($pub_rc_id, "Num")) {
+        $report_id = (int)$pub_rc_id;
+        if (!in_array($report_id, $report_list, true)) {
+            return false;
+        }
+        $report_list = [$report_id];
+    }
 
     $reports = array();
     foreach ($report_list as $report_id) {
@@ -971,41 +979,42 @@ function galaxy_show_ranking_unique_player_forJS(int $playerId, $date_min = null
         if ($rank["datadate"] >= $date_min && $rank["datadate"] <= $date_max) // ajouter dans la requete ca serait top
         {
 
-            $ranking["rank"]["general (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["general_rank"] . "]";
-            $ranking["points"]["general (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["general_pts"] . "]";
+            $ts = (int)$rank["datadate"] * 1000;
+            $ranking["rank"]["general (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["general_rank"] . "}";
+            $ranking["points"]["general (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["general_pts"] . "}";
 
             if ((int)$rank["eco_rank"] > 0) {
-                $ranking["rank"]["Economique (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["eco_rank"] . "]";
-                $ranking["points"]["Economique (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["eco_pts"] . "]";
+                $ranking["rank"]["Economique (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["eco_rank"] . "}";
+                $ranking["points"]["Economique (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["eco_pts"] . "}";
             }
 
             if ((int)$rank["tech_rank"] > 0) {
-                $ranking["rank"]["Recherche (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["tech_rank"] . "]";
-                $ranking["points"]["Recherche (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["tech_pts"] . "]";
+                $ranking["rank"]["Recherche (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["tech_rank"] . "}";
+                $ranking["points"]["Recherche (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["tech_pts"] . "}";
             }
 
             if ((int)$rank["milh_rank"] > 0) {
-                $ranking["rank"]["Honneur (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["milh_rank"] . "]";
-                $ranking["points"]["Honneur (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["milh_pts"] . "]";
+                $ranking["rank"]["Honneur (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["milh_rank"] . "}";
+                $ranking["points"]["Honneur (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["milh_pts"] . "}";
             }
 
             if ((int)$rank["mil_rank"] > 0) {
-                $ranking["rank"]["Militaire (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["mil_rank"] . "]";
-                $ranking["points"]["Militaire (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["mil_pts"] . "]";
+                $ranking["rank"]["Militaire (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["mil_rank"] . "}";
+                $ranking["points"]["Militaire (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["mil_pts"] . "}";
             }
             if ((int)$rank["milb_rank"] > 0) {
-                $ranking["rank"]["Militaire Construits (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["milb_rank"] . "]";
-                $ranking["points"]["Militaire Construits (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["milb_pts"] . "]";
+                $ranking["rank"]["Militaire Construits (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["milb_rank"] . "}";
+                $ranking["points"]["Militaire Construits (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["milb_pts"] . "}";
             }
 
             if ((int)$rank["mill_rank"] > 0) {
-                $ranking["rank"]["Perte militaire (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["mill_rank"] . "]";
-                $ranking["points"]["Perte militaire (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["mill_pts"] . "]";
+                $ranking["rank"]["Perte militaire (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["mill_rank"] . "}";
+                $ranking["points"]["Perte militaire (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["mill_pts"] . "}";
             }
 
             if ((int)$rank["mild_rank"] > 0) {
-                $ranking["rank"]["destruction (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["mild_rank"] . "]";
-                $ranking["points"]["destruction (" . $player['name'] . ")"][] = "[" . $rank["datadate"] * 1000 . ", " . $rank["mild_pts"] . "]";
+                $ranking["rank"]["destruction (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["mild_rank"] . "}";
+                $ranking["points"]["destruction (" . $player['name'] . ")"][] = "{x: " . $ts . ", y: " . (int)$rank["mild_pts"] . "}";
             }
 
             if ($last) {
