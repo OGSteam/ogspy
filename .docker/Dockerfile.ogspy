@@ -1,25 +1,10 @@
 FROM php:8.4-fpm-alpine3.20 AS build
 
-# Installer les dépendances système (suppression des doublons)
 RUN apk --no-cache add \
-    php-session \
-    php-tokenizer \
-    php-xml \
-    php-ctype \
-    php-curl \
-    php-dom \
-    php-fileinfo \
-    php-mbstring \
-    php-openssl \
-    php-pdo \
-    php-pdo_mysql \
-    php-mysqli \
-    php-xmlwriter \
-    php-simplexml \
-    php-zip \
-    libzip-dev \
-    git \
-    composer
+  libzip-dev \
+  git
+
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 # Installer les extensions PHP
 RUN docker-php-ext-install mysqli pdo_mysql zip
@@ -28,12 +13,8 @@ RUN docker-php-ext-enable mysqli pdo_mysql zip
 # Créer un utilisateur non-root pour la sécurité
 RUN addgroup -g 1000 ogspy && adduser -u 1000 -G ogspy -s /bin/sh -D ogspy
 
-# Cloner OGSpy depuis votre dépôt local au lieu de GitHub pour le développement
 WORKDIR /var/www/html
 COPY . .
-
-# Alternative pour production : garder le git clone
-# RUN git clone -b develop https://github.com/ogsteam/ogspy /var/www/html
 
 # Installer les dépendances Composer
 RUN composer install --prefer-dist --no-progress --no-dev --optimize-autoloader
@@ -45,22 +26,7 @@ RUN chown -R ogspy:ogspy /var/www/html \
 
 EXPOSE 9000
 
-# Script de démarrage amélioré
-RUN printf "\
-# Optionnel : verrouiller l'installation en production\n\
-if [ \"\$ENVIRONMENT\" = \"production\" ]; then\n\
-  touch /var/www/html/install/install.lock\n\
-fi\n\
-\n\
-# Nettoyer les fichiers de développement\n\
-rm -rf /var/www/html/.git\n\
-\n\
-# Assurer les bonnes permissions\n\
-chown -R ogspy:ogspy /var/www/html\n\
-\n\
-# Démarrer PHP-FPM avec l'utilisateur ogspy\n\
-exec php-fpm\n\
-" > /start.sh
+COPY .docker/start.sh /start.sh
 
 RUN chmod +x /start.sh
 
