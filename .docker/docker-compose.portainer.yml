@@ -13,10 +13,6 @@ volumes:
 services:
   db:
     image: mariadb:11.4
-    expose:
-      - 3306
-    networks:
-      - ogspy-network
     environment:
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?Set MARIADB_ROOT_PASSWORD}
       MARIADB_DATABASE: ${MARIADB_DATABASE:-ogspy}
@@ -33,15 +29,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-
-  ogspy:
-    build:
-      context: ..
-      dockerfile: .docker/Dockerfile.ogspy
     networks:
       - ogspy-network
-    volumes:
-      - ogspy-app:/var/www/html
+
+  ogspy:
+    image: ${OGSPY_APP_IMAGE:?Set OGSPY_APP_IMAGE}
     environment:
       ENVIRONMENT: production
       MARIADB_DATABASE: ${MARIADB_DATABASE:-ogspy}
@@ -54,41 +46,27 @@ services:
       OGSPY_ADMIN_USER: ${OGSPY_ADMIN_USER:-ogsteam}
       OGSPY_ADMIN_PASSWORD: ${OGSPY_ADMIN_PASSWORD:-ogsteam}
       OGSPY_ADMIN_EMAIL: ${OGSPY_ADMIN_EMAIL:-}
-    restart: always
-    security_opt:
-      - no-new-privileges:true
-    depends_on:
-      db:
-        condition: service_healthy
-
-  nginx:
-    build:
-      context: .
-      dockerfile: Dockerfile.nginx
     volumes:
       - ogspy-app:/var/www/html
-    ports:
-      - "${OGSPY_HTTP_PORT:-16005}:80"
-    networks:
-      - ogspy-network
-    depends_on:
-      - ogspy
     restart: always
     security_opt:
       - no-new-privileges:true
-
-  # Optional admin UI. Keep disabled in production unless explicitly needed.
-  phpmyadmin:
-    image: phpmyadmin:5.2
-    profiles: ["debug"]
-    ports:
-      - "16006:80"
-    networks:
-      - ogspy-network
-    environment:
-      PMA_HOST: db
-      PMA_USER: ${MARIADB_USER:-ogspy}
-      PMA_PASSWORD: ${MARIADB_PASSWORD}
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - ogspy-network
+
+  nginx:
+    image: ${OGSPY_NGINX_IMAGE:?Set OGSPY_NGINX_IMAGE}
+    ports:
+      - "${OGSPY_HTTP_PORT:-16005}:80"
+    volumes:
+      - ogspy-app:/var/www/html
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      - ogspy
+    networks:
+      - ogspy-network
