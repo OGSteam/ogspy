@@ -12,11 +12,7 @@ volumes:
 
 services:
   db:
-<<<<<<< HEAD
     image: mariadb:11.4
-=======
-    image: mariadb:12.3
->>>>>>> 247fbb6477a82fdae326ebe1494aecc5f03412f8
     expose:
       - 3306
     networks:
