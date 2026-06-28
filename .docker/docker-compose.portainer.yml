@@ -12,7 +12,7 @@ volumes:
 
 services:
   db:
-    image: mariadb:11.4
+    image: mariadb:12.3
     environment:
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?Set MARIADB_ROOT_PASSWORD}
       MARIADB_DATABASE: ${MARIADB_DATABASE:-ogspy}
