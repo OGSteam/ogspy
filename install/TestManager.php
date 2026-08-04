@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test Manager - Tests automatisés pour installation et mises à niveau
+ * Test Manager - Tests automatisés for installation and upgrades
  * @package OGSpy
  * @subpackage install
  */
@@ -27,7 +27,7 @@ class TestManager {
     }
 
     /**
-     * Lance tous les tests (installation + mises à niveau)
+     * Lance tous the tests (installation + upgrades)
      */
     public function runAllTests() {
         $results = [
@@ -156,7 +156,7 @@ class TestManager {
     }
 
     /**
-     * Test de mise à niveau depuis une version antérieure
+     * Tests upgrade from an earlier version.
      */
     public function testUpgrade() {
         $result = ['success' => false, 'error' => null, 'details' => []];
@@ -224,7 +224,7 @@ class TestManager {
     }
 
     /**
-     * Crée une base de données de test vierge
+     * Creates an empty test database.
      */
     private function createTestDatabase() {
         $this->originalDbName = $this->db->getDatabaseName();
@@ -236,7 +236,7 @@ class TestManager {
     }
 
     /**
-     * Bascule vers la base de données de test
+     * Switches to the test database.
      */
     private function switchToTestDatabase() {
         $this->db->sql_select_db($this->testDbName);
@@ -244,7 +244,7 @@ class TestManager {
     }
 
     /**
-     * Retourne à la base de données originale
+     * Switches back to the original database.
      */
     private function switchToOriginalDatabase() {
         if ($this->originalDbName) {
@@ -253,7 +253,7 @@ class TestManager {
     }
 
     /**
-     * Récupère toutes les tables OGSpy existantes
+     * Retrieves all existing OGSpy tables.
      */
     private function getOGSpyTables() {
         $tables = [];
@@ -267,7 +267,7 @@ class TestManager {
     }
 
     /**
-     * Crée un état "ancien" pour tester les mises à niveau
+     * Creates an "older" state to test upgrades.
      */
     private function createOlderVersionState() {
         global $table_prefix;
@@ -312,11 +312,11 @@ class TestManager {
     }
 
     /**
-     * Vérifie l'intégrité de l'installation :
-     * - présence de toutes les tables définies dans ogspy_structure.sql
-     * - présence de toutes les colonnes définies dans ogspy_structure.sql
-     * - données de configuration
-     * - conformité des index avec ogspy_structure.sql
+     * Verifies installation integrity:
+     * - all tables defined in ogspy_structure.sql are present
+     * - all columns defined in ogspy_structure.sql are present
+     * - configuration data exists
+     * - indexes match ogspy_structure.sql
      */
     public function verifyInstallIntegrity($tablePrefix = 'ogspy_') {
         $schemaFile = __DIR__ . '/schemas/ogspy_structure.sql';
@@ -356,8 +356,8 @@ class TestManager {
     }
 
     /**
-     * Compare les index attendus (issus de $expectedIndexes ou parsés depuis le schéma)
-     * avec ceux présents en base de données.
+     * Compares expected indexes (from $expectedIndexes or parsed from schema)
+     * with indexes present in the database.
      */
     private function verifyIndexesAgainstSchema(string $tablePrefix = 'ogspy_', array $expectedIndexes = []): void {
         $schemaFile = __DIR__ . '/schemas/ogspy_structure.sql';
@@ -393,9 +393,9 @@ class TestManager {
     }
 
     /**
-     * Parse les définitions d'index de toutes les tables dans un fichier SQL de structure.
-     * Remplace $sourcePrefix par $targetPrefix dans les noms de tables.
-     * Retourne [ tableName => [ indexName => [col1, col2, ...] ] ]
+     * Parses index definitions for all tables in a schema SQL file.
+     * Replaces $sourcePrefix with $targetPrefix in table names.
+     * Returns [ tableName => [ indexName => [col1, col2, ...] ] ]
      */
     private function parseIndexesFromSchema(string $file, string $sourcePrefix, string $targetPrefix): array {
         $indexes = [];
@@ -431,8 +431,8 @@ class TestManager {
     }
 
     /**
-     * Découpe une liste de colonnes d'index SQL en tableau.
-     * Ex: "`col1`, `col2`(191)" → ["col1", "col2"]
+     * Splits a list of SQL index columns into an array.
+     * Example: "`col1`, `col2`(191)" -> ["col1", "col2"]
      */
     private function parseIndexColumns(string $rawCols): array {
         $cols = [];
@@ -446,8 +446,8 @@ class TestManager {
     }
 
     /**
-     * Récupère tous les index des tables avec $tablePrefix depuis information_schema.
-     * Retourne [ tableName => [ indexName => [col1, col2, ...] ] ]
+     * Retrieves all table indexes with $tablePrefix from information_schema.
+     * Returns [ tableName => [ indexName => [col1, col2, ...] ] ]
      */
     private function getIndexesFromDb(string $tablePrefix): array {
         $result = $this->db->sql_query(
@@ -467,9 +467,9 @@ class TestManager {
     }
 
     /**
-     * Parse les colonnes de toutes les tables dans un fichier SQL de structure.
-     * Remplace $sourcePrefix par $targetPrefix dans les noms de tables.
-     * Retourne [ tableName => [col1, col2, ...] ]
+     * Parses columns of all tables in a schema SQL file.
+     * Replaces $sourcePrefix with $targetPrefix in table names.
+     * Returns [ tableName => [col1, col2, ...] ]
      */
     private function parseColumnsFromSchema(string $file, string $sourcePrefix, string $targetPrefix): array {
         $columns = [];
@@ -502,7 +502,7 @@ class TestManager {
     }
 
     /**
-     * Vérifie que toutes les colonnes définies dans le schéma existent en DB.
+     * Verifies that all columns defined in the schema exist in the DB.
      */
     private function verifyColumnsAgainstSchema(string $tablePrefix, array $expectedColumns): void {
         $actual = $this->getColumnsFromDb($tablePrefix);
@@ -525,8 +525,8 @@ class TestManager {
     }
 
     /**
-     * Récupère toutes les colonnes des tables avec $tablePrefix depuis information_schema.
-     * Retourne [ tableName => [col1, col2, ...] ]
+     * Retrieves all table columns with $tablePrefix from information_schema.
+     * Returns [ tableName => [col1, col2, ...] ]
      */
     private function getColumnsFromDb(string $tablePrefix): array {
         $result = $this->db->sql_query(
@@ -546,7 +546,7 @@ class TestManager {
     }
 
     /**
-     * Récupère la version de la dernière migration disponible
+     * Retrieves the version of the latest available migration.
      */
     private function getLatestMigrationVersion() {
         global $table_prefix;
@@ -562,7 +562,7 @@ class TestManager {
     }
 
     /**
-     * Crée dynamiquement les fichiers de migration de test
+     * Creates dynamiquement the files of migration of test
      */
     private function createTestMigrations() {
         echo "🔧 Création des migrations de test...\n";
@@ -585,7 +585,7 @@ class TestManager {
     }
 
     /**
-     * Supprime les fichiers de migration de test créés
+     * Deletes the files of migration of test created
      */
     private function removeTestMigrations() {
         if (!empty($this->createdTestMigrations)) {
@@ -603,13 +603,13 @@ class TestManager {
     }
 
     /**
-     * Génère le contenu de la première migration de test
+     * Generates le contenu of the première migration of test
      */
     private function getTestMigration1Content() {
         return '<?php
 /**
- * Migration de test pour enrichir les tests d\'upgrade
- * Ajoute quelques fonctionnalités fictives pour valider le système de migration
+ * Migration of test for enrichir the tests d\'upgrade
+ * Adds quelques fonctionnalités fictives for valider le système of migration
  */
 class Migration_20250815001_AddTestFeatures {
 
@@ -659,13 +659,13 @@ class Migration_20250815001_AddTestFeatures {
     }
 
     /**
-     * Génère le contenu de la seconde migration de test
+     * Generates le contenu of the seconde migration of test
      */
     private function getTestMigration2Content() {
         return '<?php
 /**
- * Migration de test avancée pour enrichir davantage les tests
- * Simule une mise à jour de fonctionnalité existante
+ * Migration of test avancée for enrichir davantage the tests
+ * Simule une update of fonctionnalité existante
  */
 class Migration_20250815002_UpdateTestFeatures {
 
@@ -742,7 +742,7 @@ class Migration_20250815002_UpdateTestFeatures {
     }
 
     /**
-     * Nettoyage après les tests
+     * Cleanup après the tests
      */
     private function cleanup() {
         try {
@@ -765,7 +765,7 @@ class Migration_20250815002_UpdateTestFeatures {
     }
 
     /**
-     * Test de performance des migrations
+     * Test of performance des migrations
      */
     public function testMigrationPerformance() {
         $result = ['success' => false, 'error' => null, 'performance_data' => []];
@@ -834,7 +834,7 @@ class Migration_20250815002_UpdateTestFeatures {
     }
 
     /**
-     * Récupère une valeur de la table de configuration
+     * Retrieves a value from the configuration table.
      */
     private function getConfigValue($name) {
         global $table_prefix;
@@ -848,7 +848,7 @@ class Migration_20250815002_UpdateTestFeatures {
 
 
     /**
-     * Journalise l'état de la version applicative
+     * Logs application version state.
      */
     private function logApplicationVersionState($stage) {
         $appVersion = $this->getConfigValue('version');
@@ -856,7 +856,7 @@ class Migration_20250815002_UpdateTestFeatures {
     }
 
     /**
-     * Test avec différents préfixes de table
+     * Tests with different table prefixes.
      */
     public function testTablePrefix() {
         $result = ['success' => false, 'error' => null, 'details' => []];

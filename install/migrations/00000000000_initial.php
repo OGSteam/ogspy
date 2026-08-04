@@ -1,6 +1,6 @@
 <?php
 /**
- * Migration initiale OGSpy : création de la structure et insertion des données de base
+ * Initial OGSpy migration: creates schema and inserts base data.
  */
 class Migration_00000000000_Initial {
     public function getVersion(): string {
@@ -8,7 +8,7 @@ class Migration_00000000000_Initial {
     }
 
     public function getDescription(): string {
-        return 'Initialisation structure et données OGSpy';
+        return 'Initialize OGSpy schema and data';
     }
 
     public function up(): string {

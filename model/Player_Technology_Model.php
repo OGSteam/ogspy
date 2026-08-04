@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Modèle pour gérer les technologies des joueurs.
+ * Model for managing player technologies.
  *
- * Cette classe étend la classe abstraite `Model_Abstract` et fournit des méthodes
- * pour interagir avec les données des technologies des joueurs dans la base de données.
+ * This class extends `Model_Abstract` and provides methods
+ * to interact with player technology data in the database.
  *
  * @package OGSpy
  * @subpackage Model
@@ -21,11 +21,11 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class Player_Technology_Model  extends Model_Abstract
 {
     /**
-     * Récupère les technologies d'un joueur spécifique.
+    * Retrieves technologies for a specific player.
      *
-     * @param int $player_id L'identifiant unique du joueur.
-     * @return array Un tableau associatif contenant les technologies du joueur.
-     *               Les clés du tableau incluent : `Esp`, `Ordi`, `Armes`, `Bouclier`,
+    * @param int $player_id Unique player identifier.
+    * @return array Associative array containing player technologies.
+    *               Array keys include: `Esp`, `Ordi`, `Armes`, `Bouclier`,
      *               `Protection`, `NRJ`, `Hyp`, `RC`, `RI`, `PH`, `Laser`, `Ions`,
      *               `Plasma`, `RRI`, `Graviton`, `Astrophysique`.
      */
@@ -38,11 +38,11 @@ class Player_Technology_Model  extends Model_Abstract
         return  $this->db->sql_fetch_assoc($result);
     }
     /**
-     * Supprime les technologies d'un joueur spécifique.
+    * Deletes technologies for a specific player.
      *
-     * @param int $player_id L'identifiant unique du joueur.
-     *                       Correspond à la clé primaire dans la table des technologies des joueurs.
-     * @return void Cette méthode ne retourne aucune valeur.
+    * @param int $player_id Unique player identifier.
+    *                       Matches the primary key in the player technology table.
+    * @return void This method does not return a value.
      */
     public function delete_user_technologies(int $player_id)
     {
@@ -51,13 +51,13 @@ class Player_Technology_Model  extends Model_Abstract
     }
 
     /**
-     * Met à jour le niveau de la technologie d'espionnage pour un joueur spécifique.
+    * Updates espionage technology level for a specific player.
      *
-     * @param int $player_id L'identifiant unique du joueur.
-     *                       Correspond à la clé primaire dans la table des technologies des joueurs.
-     * @param int $level Le nouveau niveau de la technologie d'espionnage.
-     *                   Doit être un entier positif représentant le niveau à définir.
-     * @return void Cette méthode ne retourne aucune valeur.
+    * @param int $player_id Unique player identifier.
+    *                       Matches the primary key in the player technology table.
+    * @param int $level New espionage technology level.
+    *                   Must be a positive integer representing the target level.
+    * @return void This method does not return a value.
      */
     public function update_esp(int $player_id, int $level)
     {

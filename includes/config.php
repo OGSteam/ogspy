@@ -2,7 +2,7 @@
 global $table_prefix;
 
 /**
- * Fichier de configuration communes
+ * Fichier of configuration communes
  * @package OGSpy
  * @subpackage Main
  * @author Kyser

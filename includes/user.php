@@ -1,7 +1,7 @@
 <?php
 
 /**
- * user.php Fonctions concernant les utilisateurs
+ * user.php functions related to users
  * @package OGSpy
  * @subpackage user
  * @author Kyser
@@ -313,7 +313,7 @@ function user_set_connection($user_id, $user_active)
 }
 
 /**
- * Login d'un utilisateur avec redirection
+ * Logs in a user with redirection.
  * @global string $pub_login
  * @global string $pub_password
  * @global string $pub_goto
@@ -333,7 +333,7 @@ function user_login_redirection()
 }
 
 /**
- * Deconnection utilisateur
+ * Logs out the current user.
  */
 function user_logout()
 {
@@ -377,8 +377,8 @@ function user_logout()
 }
 
 /**
- * Création d'un utilisateur à partir des données du formulaire admin
- * @comment redirection si erreur de type de donnée
+ * Creates a user from the admin form data.
+ * @comment Redirects if input data type is invalid.
  */
 function user_create()
 {
@@ -445,7 +445,7 @@ function user_create()
 }
 
 /**
- * Modification des droits ogspy d'un utilisateur par l'admin
+ * Updates an OGSpy user's permissions by an admin.
  */
 function admin_user_set()
 {
@@ -544,7 +544,7 @@ function admin_user_set()
 }
 
 /**
- * Generation d'un mot de passe par l'admin pour un utilisateur
+ * Generates a password for a user by an admin.
  */
 function admin_regeneratepwd()
 {
@@ -659,7 +659,7 @@ function admin_regeneratepwd()
 }
 
 /**
- * Modification du profil par un utilisateur
+ * Updates a user's own profile.
  * @todo Query : x11
  */
 function member_user_set()
@@ -815,9 +815,10 @@ function member_user_set()
 }
 
 /**
- * Update the PAT on the user request
- * @param $user_id
- * @return array
+ * Updates the PAT on user request.
+ *
+ * @param int $user_id
+ * @return string Generated PAT token
  * @throws Exception
  */
 function user_profile_token_updater($user_id)
@@ -878,9 +879,10 @@ function user_profile_token_updater($user_id)
 }
 
 /**
- * Get the PAT on the user request
- * @param $user_id
- * @return array|int
+ * Retrieves the PAT on user request.
+ *
+ * @param int $user_id
+ * @return string|int PAT token or 1 if missing/invalid
  * @throws Exception
  */
 function get_user_profile_token($user_id)
@@ -938,7 +940,7 @@ function get_user_profile_token($user_id)
 }
 
 /**
- * Entree en BDD de donnees utilisateur
+ * Stores user data in the database.
  * @param $user_id
  * @param null $user_name
  * @param null $user_password_s
@@ -1096,7 +1098,7 @@ function user_set_general(
 }
 
 /**
- * Suppression d'un rapport d'espionnage
+ * Deletes a spy report.
  */
 function user_del_spy()
 {
@@ -1181,7 +1183,7 @@ function user_del_spy()
 }
 
 /**
- * Get the number of active users
+ * Retrieves the number of active users.
  * @return int Number of active users
  */
 function user_get_nb_active_users()
@@ -1208,9 +1210,9 @@ function user_get_nb_active_users()
 }
 
 /**
- * Récupération des informations d'un utilisateur
- * @param int|null $user_id ID de l'utilisateur (optionnel, récupère tous les utilisateurs si null)
- * @return array|false Informations de l'utilisateur ou false si erreur
+ * Retrieves user information.
+ * @param int|null $user_id User ID (optional, retrieves all users if null)
+ * @return array|false User information or false on error
  */
 function user_get($user_id = null)
 {
@@ -1288,7 +1290,7 @@ function user_get($user_id = null)
 }
 
 /**
- * Get user statistics data
+ * Retrieves user statistics.
  * @return array
  */
 function user_statistic(): array
@@ -1298,9 +1300,9 @@ function user_statistic(): array
 }
 
 /**
- * Fonction de calcul du ratio
- * @param int $player user_id ID du joueur
- * @return array ratio et divers calculs intermédiaires pour l'utilisateur en question
+ * Computes the user ratio.
+ * @param int $player user_id of the player
+ * @return array Ratio and intermediate calculations for the specified user
  * @author Bousteur 25/11/2006
  */
 function ratio_calc($player): array
@@ -1340,8 +1342,8 @@ function ratio_calc($player): array
 }
 
 /**
- * Fonction de test d'autorisation d'effectuer une action en fonction du ratio ou de l'appartenance à un groupe qui a un ratio illimité
- * @return bool vrai si l'utilisateur peut faire des recherches
+ * Checks whether the user is allowed to perform actions based on ratio or unlimited-ratio group membership.
+ * @return bool True if the user can perform searches
  * @author Bousteur 28/11/2006
  */
 function ratio_is_ok(): bool
@@ -1367,7 +1369,7 @@ function ratio_is_ok(): bool
 }
 
 /**
- * Ajout d'un système favori
+ * Adds a favorite system.
  */
 function user_add_favorite(): void
 {
@@ -1394,7 +1396,7 @@ function user_add_favorite(): void
 }
 
 /**
- * Suppression d'un système favori
+ * Deletes a favorite system.
  */
 function user_del_favorite(): void
 {
@@ -1416,7 +1418,7 @@ function user_del_favorite(): void
 }
 
 /**
- * Récupération des rapports favoris
+ * Retrieves favorite spy reports.
  */
 function user_getfavorites_spy(): array
 {
@@ -1533,7 +1535,7 @@ function user_getempire_combat_reports(): array
 }
 
 /**
- * Ajout d'un rapport favori
+ * Adds a favorite report.
  */
 function user_add_favorite_spy(): void
 {
@@ -1561,7 +1563,7 @@ function user_add_favorite_spy(): void
 }
 
 /**
- * Suppression d'un rapport favori
+ * Deletes a favorite report.
  */
 function user_del_favorite_spy(): true
 {
@@ -1596,7 +1598,7 @@ function user_del_favorite_spy(): true
 }
 
 /**
- * Enregistrement des droits et status utilisateurs
+ * Saves user permissions and statuses.
  * @param $user_id
  * @param null $user_admin
  * @param null $user_active
@@ -1604,7 +1606,7 @@ function user_del_favorite_spy(): true
  * @param null $management_user
  * @param null $management_ranking
  *
- * todo : ajouter la possibilité de changer admin prinicpal '$useradmin non utilisé ....
+ * todo: add the ability to change the main admin ('$useradmin' currently unused).
  */
 
 function user_set_grant(
@@ -1651,7 +1653,7 @@ function user_set_grant(
 }
 
 /**
- * Suppression d'un utilisateur ($pub_user_id)
+ * Deletes a user ($pub_user_id).
  */
 function user_delete()
 {

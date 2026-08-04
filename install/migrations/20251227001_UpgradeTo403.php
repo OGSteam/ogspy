@@ -1,6 +1,6 @@
 <?php
 /**
- * Migration Mise a jour de la structure pour la version 4.0.3
+ * Migration Mise a jour of the structure for la version 4.0.3
  */
 class Migration_20251227001_UpgradeTo403 {
     public function getVersion(): string {

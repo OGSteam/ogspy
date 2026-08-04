@@ -44,9 +44,9 @@ function redirection($url)
 
 /**
  * Write a text or a table in a file
- * @param string $file Filename
+ * @param string $filename Filename
  * @param string $mode File Opening Mode
- * @param string|Array $content String or table to write
+ * @param string|array $content String or table to write
  * @return boolean false if failed
  */
 function write_file($filename, $mode, $content)
@@ -117,7 +117,7 @@ function write_file_gz($file, $mode, $content)
 
 /**
  * Remove a Folder with its content
- * @param string $folder Chemin vers le dossier à supprimer
+ * @param string $folder Path vers le folder à delete
  */
 function remove_dir_from_ogspy($folder)
 {
@@ -949,7 +949,7 @@ function set_serverconfig()
 
 /**
  * Returns the Status of the Database used size.
- * @return Array [Server], et [Total]
+ * @return Array [Server], and [Total]
  */
 function db_size_info()
 {
@@ -1593,10 +1593,10 @@ function generate_key()
   "m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0" = string de stockage par défaut
 */
 /*##Base de donnée  ##*/
-/* Lit les informations des objets Ogame dans la BDD et les transformes en un tableau
- * @arg id_player id du joueur
- * @arg id_planet id de la planète à rechercher
- * @return tableau associatif des boosters ou NULL en cas d'échec
+/* Reads OGame item information from the database and converts it into an array.
+ * @arg id_player player ID
+ * @arg id_planet planet ID to search for
+ * @return associative array of boosters or NULL on failure
  * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date', 'extention_p', 'extention_m')
  *
 */
@@ -1607,17 +1607,17 @@ function booster_lire_bdd($id_player, $id_planet)
     $tBoosters = $userBuildingModel->get_all_booster_player($id_player);
 
     if (isset($tBoosters[$id_planet])) {
-        return booster_decode($tBoosters[$id_planet]);
+        return booster_decode($tBoosters[$id_planet]['boosters']);
     }
     return $result;
 }
 
 
-/* Écrit les informations des objets Ogame dans la BDD sous forme d'une string de stockage.
- * @arg id_player   id du joueur
- * @arg id_planet   id de la planète à rechercher
- * @tab_booster     tableau infos des boosters (donnée par les fonctions booster_lire_bdd() ou booster_decode())
- * @return FALSE en cas d'échec
+/* Writes OGame item information into the database as a storage string.
+ * @arg id_player   player ID
+ * @arg id_planet   planet ID to search for
+ * @tab_booster     booster info array (provided by booster_lire_bdd() or booster_decode())
+ * @return FALSE on failure
 */
 /**
  * @param $id_player
@@ -1632,7 +1632,7 @@ function booster_ecrire_bdd_tab($id_player, $id_planet, $tab_booster)
     return $userBuildingModel->update_booster($id_player, $id_planet, booster_encode($tab_booster));
 }
 
-/* Mets à jour les boosters de tous les users en fonction de la date de fin dans la BDD
+/* Updates boosters for all users based on end date in the database.
 */
 function booster_maj_bdd()
 {
@@ -1662,9 +1662,9 @@ function booster_maj_bdd()
 /*#######Contrôles et modifications poussées  #######*/
 
 /**
- * Contrôle la date de validité des boosters et reset si la date est dépassée
- * @param $boosters tableau infos des boosters (donnée par les fonctions booster_lire_bdd() ou booster_decode())
- * @return tableau associatif des boosters mis à jour array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date', 'extention_p', 'extention_m')
+ * Checks booster expiration dates and resets values if expired.
+ * @param $boosters Booster info array (provided by booster_lire_bdd() or booster_decode())
+ * @return Associative array of updated boosters: array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date', 'extention_p', 'extention_m')
  */
 function booster_verify($boosters)
 {
@@ -1681,9 +1681,9 @@ function booster_verify($boosters)
 }
 
 /**
- * Contrôle la date de validité des boosters et reset si la date est dépassée
- * @param $str     string de stockage des boosters (donnée par les fonctions booster_encode() ou booster_encodev() ou directement from BDD)
- * @return tableau associatif des boosters mis à jour
+ * Checks booster expiration dates and resets values if expired.
+ * @param $str     booster storage string (from booster_encode(), booster_encodev(), or directly from DB)
+ * @return associative array of updated boosters
  * array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date', 'extention_p', 'extention_m')
  */
 function booster_verify_str($str)
@@ -1692,16 +1692,19 @@ function booster_verify_str($str)
 }
 
 /**
- * donne des tableaux d'informations en relation avec les objets Ogame
- * @type    détermine les informations renvoyées
- *      [Default] donne un tableau avec les uuid des objets Ogame
- *      'definition' donne un tableau avec le nom de l'objet (ex. 'Booster de métal en or')
- *      'array'      donne un tableau asso de tab uuid=>array('booster_x'|'extension_x', valeur)
- *      'string'     donne un tableau asso de string uuid=>'x:valeur:0'|'x:valeur'
- *      'full'       donne les tableaux simple : définition, uuid, string, array)
- *      'separateur' donne le char qui sert de séparateur entre les objets Ogame
- *      'default_str' donne la string de stockage par défaut : "m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0"
- * @return  array le tableau correspondant au type
+ * Returns metadata structures related to OGame booster items.
+ *
+ * Supported `$type` values:
+ * - `''` (default): UUID list array
+ * - `definition`: item labels array
+ * - `array`: UUID => [booster/extension, value]
+ * - `string`: UUID => encoded item string
+ * - `full`: [definition, uuid, string, array]
+ * - `separateur`: separator string used in encoded storage
+ * - `default_str`: default encoded storage string
+ *
+ * @param string $type Requested metadata format
+ * @return array|string
  */
  function booster_objets_tab($type = '')
 {
@@ -1798,6 +1801,8 @@ function booster_verify_str($str)
         throw new Exception("Erreur interne : mauvais inventaire des boosters, remplissage (uid=$ni, n=" . count($objet_uuid) . ")");
     }
 
+    $result = array();
+
     switch ($type) {
         case 'definition':
             return $objet_str;
@@ -1825,8 +1830,8 @@ function booster_verify_str($str)
 }
 
 /**
- * Indique si un uuid est enregistré dans OGSpy (il existe)
- * @uuid    string uuid récupéré de la page Ogame
+ * Indicates whether a UUID is registered in OGSpy (it exists).
+ * @uuid    string UUID retrieved from the OGame page
  */
 function booster_is_uuid($uuid)
 {
@@ -1834,13 +1839,13 @@ function booster_is_uuid($uuid)
 }
 
 /**
- * Mets à jour le tableau infos des boosters.
- * @boosters tableau infos des boosters (donnée par les fonctions booster_lire_bdd() ou booster_decode())
- * @uuid     string uuid de l'objet Ogame récupéré de la page Ogame
- * @date     date de fin de l'objet Ogame. [defaut=0]
- * return   le tableau à jour (par uuid et date)
- *          si $boosters==NULL OU booster_uuid($b) sans uuid -> donne tableau avec valeurs par défaut (équivalent booster_decode())
- *          NULL en cas d'erreur (uuid inconnu)
+ * Updates the booster info array.
+ * @boosters Booster info array (provided by booster_lire_bdd() or booster_decode())
+ * @uuid     string UUID of the OGame item retrieved from the OGame page
+ * @date     OGame item end date. [default=0]
+ * return   updated array (by UUID and date)
+ *          if $boosters==NULL OR booster_uuid($b) without UUID -> returns array with default values (equivalent to booster_decode())
+ *          NULL on error (unknown UUID)
  */
 
 function booster_uuid($boosters, $uuid = '', $date = 0)
@@ -1867,9 +1872,9 @@ function booster_uuid($boosters, $uuid = '', $date = 0)
 }
 
 /**
- * Transforme la date Ogame de format "*s *j *h" en nombre de seconde 6j 23h
- * @str string contenant le temps
- * @return int nombre de seconde correspondant à $str. 0 si problème
+ * Converts an OGame date from "*w *d *h" format into seconds.
+ * @str string containing the duration
+ * @return int number of seconds corresponding to $str, or 0 on error
  */
 function booster_lire_date($str)
 {
@@ -1887,11 +1892,11 @@ function booster_lire_date($str)
 
 /*#######Lecture et modifications poussées  #######*/
 /**
- * Transforme en tableau les données des objets Ogame contenues dans une string de stockage.
- * Si aucun argument n'ai donné alors elle renvoie les valeurs des objets par défaut.
- * @param $str  string de stockage des objets Ogame
- * @param null $boosters
- * @return  array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_c_val', 'booster_c_date', 'extention_p', 'extention_m')
+ * Converts OGame item data from a storage string into an array.
+ * If no argument is provided, returns default item values.
+ * @param string|null $str Storage string of OGame items
+ * @param array<int|string, mixed>|null $boosters Regex match buffer used internally
+ * @return array<string, int>
  */
 function booster_decode($str = null, $boosters = null)
 {
@@ -1906,7 +1911,7 @@ function booster_decode($str = null, $boosters = null)
     $tab_ex = array('p', 'm');
 
     if ($str) {
-        $s = booster_objets_tab('separateur');
+        $s = (string) booster_objets_tab('separateur');
         $str_split = explode($s, $str);
         foreach ($str_split as $objet) {
             $i = 0;
@@ -1931,9 +1936,9 @@ function booster_decode($str = null, $boosters = null)
 }
 
 /**
- * Transforme le tableau des informations des objets Ogame en une string de stockage.
- * @b tableau associatif des infos array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date','extention_p', 'extention_m')
- * @return objet sous format string de stockage ("m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0 si pas d'argument)
+ * Converts the OGame item information array into a storage string.
+ * @b associative array of info: array('booster_m_val', 'booster_m_date', 'booster_c_val', 'booster_c_date', 'booster_d_val', 'booster_d_date', 'booster_e_val', 'booster_e_date','extention_p', 'extention_m')
+ * @return item in storage string format ("m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0" if no argument)
  */
 function booster_encode($b = null)
 {
@@ -1953,9 +1958,9 @@ function booster_encode($b = null)
 }
 
 /**
- * Transforme les valeurs des objets Ogame en une string de stockage.
- * string de stockage par défaut = m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0
- * @return string sous format string de stockage ("m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0" si pas d'argument)
+ * Transforme the values des objets Ogame en une string of stockage.
+ * string of stockage par défaut = m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0
+ * @return string sous format string of stockage ("m:0:0_c:0:0_d:0:0_e:0:0_p:0_m:0" si pas d'argument)
  */
 function booster_encodev(
     $booster_m_val = 0,
@@ -1984,7 +1989,7 @@ function booster_encodev(
 /********************************************************************************/
 
 /**
- * Retourne la liste des helpers presents
+ * Returns la liste des helpers presents
  * @return array
  */
 function get_Helpers()
@@ -2005,7 +2010,7 @@ function get_Helpers()
 }
 
 /**
- * Arrondit les points à l'unité de mille.
+ * Rounds the points à l'unité of thousand.
  * @param mixed $point
  * @return int
  */

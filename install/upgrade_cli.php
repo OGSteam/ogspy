@@ -2,7 +2,7 @@
 <?php
 
 /**
- * Script CLI pour la gestion des mises à jour OGSpy
+ * Script CLI for la management des mises à jour OGSpy
  * Usage: php upgrade_cli.php [action]
  * Actions: install, check, upgrade, force, status, logs
  */
@@ -161,7 +161,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Installation complète d'OGSpy via CLI
+     * Installation complete d'OGSpy via CLI
      */
     private function runInstall($argv) {
         // Vérifier si les arguments sont fournis
@@ -421,7 +421,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Vérifie le statut des migrations et de la base de données
+     * Checks migration and database status.
      */
     private function checkStatus() {
         echo "=== VÉRIFICATION DU STATUT ===\n";
@@ -569,7 +569,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Désinstalle OGSpy : purge la base et supprime les fichiers générés
+     * Uninstalls OGSpy: purges the database and removes generated files.
      */
     private function uninstall() {
         echo "=== DÉSINSTALLATION OGSpy ===\n";
@@ -647,7 +647,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Lance tous les tests (installation + mises à niveau)
+     * Runs all tests (installation + upgrades).
      */
     private function runTests() {
         global $db, $log;
@@ -695,7 +695,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Test uniquement l'installation initiale
+     * Tests initial installation only.
      */
     private function testInstall() {
         global $db, $log;
@@ -730,7 +730,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Test uniquement les mises à niveau
+     * Tests upgrades only.
      */
     private function testUpgrade() {
         global $db, $log;
@@ -766,7 +766,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Test de performance des migrations
+     * Migration performance test.
      */
     private function testPerformance() {
         global $db, $log;
@@ -823,9 +823,9 @@ class UpgradeCLI {
     }
 
     /**
-     * Vérifie l'intégrité de la base de données courante.
-     * Avec --repair : tente d'abord d'appliquer les migrations en attente (sûr),
-     * puis re-vérifie. Ne rejoue jamais une migration déjà appliquée.
+     * Verifies integrity of the current database.
+     * With --repair: first tries applying pending migrations (safe),
+     * then verifies again. Never replays an already-applied migration.
      */
     private function verifyIntegrity() {
         global $db, $log, $table_prefix, $argv;
@@ -895,7 +895,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Test la configuration des préfixes de table
+     * Tests table-prefix configuration.
      */
     private function testTablePrefix() {
         global $db, $log;

@@ -18,11 +18,11 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class Mod_User_Config_Model extends Model_Abstract
 {
     /**
-     * Retourne la configuration pour l'utilisateur du module
-     * @param string $module Nom du module
+    * Returns module configuration for the user.
+     * @param string $module Name of the module
      * @param int $userid Configuration
      * @param string $config Configuration
-     * @return array Liste des valeurs correspondantes
+     * @return array Liste des values correspondantes
      */
     public function get_user_mod_config($module, $userid, $config = null)
     {
@@ -48,10 +48,10 @@ class Mod_User_Config_Model extends Model_Abstract
     }
 
     /**
-     * Supprime la configuration souhaitée pour l'utilsateur du module
-     * @param string $module Nom du module
+     * Deletes la configuration souhaitée for l'utilsateur of the module
+     * @param string $module Name of the module
      * @param string $config Configuration
-     * @return bool succès
+     * @return bool success
      */
     public function delete_user_mod_config($module, $userid, $config = null)
     {
@@ -71,12 +71,12 @@ class Mod_User_Config_Model extends Model_Abstract
     }
 
     /**
-     * Défini la valeur de la configuration fournie pour l'utilateur du module
-     * @param string $module Nom du module
+     * Defines la value of the configuration fournie for l'utilateur of the module
+     * @param string $module Name of the module
      * @param int    $userid Configuration
      * @param string $config Configuration
      * @param string $value Valeur
-     * @return bool succès
+     * @return bool success
      */
     public function set_user_mod_config($module, $userid, $config, $value)
     {

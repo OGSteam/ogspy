@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Fonctions relatives aux mail  (via PHPMailer)
+ * Mail-related functions (via PHPMailer)
  *
  * @package OGSpy
  * @subpackage mail
@@ -25,9 +25,9 @@ use PHPMailer\PHPMailer\Exception;
 use Ogsteam\Ogspy\Model\Config_Model;
 
 /**
- * @param $dest string/array tableau de destinataire
- * @param $subject string sujet du message
- * @param $HTMLBody string contenu du message en HTML
+ * @param $dest string|array Recipient list
+ * @param $subject string Message subject
+ * @param $HTMLBody string HTML message body
  * @return bool
  * @throws Exception
  */

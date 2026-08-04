@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Générateur de fichier de configuration id.php
+ * id.php configuration file generator
  * @package OGSpy
  * @subpackage install
  */
@@ -16,7 +16,7 @@ class ConfigGenerator {
     }
 
     /**
-     * Génère le fichier id.php avec les paramètres de base de données
+     * Generates the id.php file with database settings.
      */
     public function generateIdFile($dbConfig) {
         $template = $this->getTemplate();
@@ -52,7 +52,7 @@ class ConfigGenerator {
     }
 
     /**
-     * Insère ou met à jour une valeur dans la table de configuration
+     * Inserts or updates a value in the configuration table.
      */
     public function setConfigValue($db, $table_prefix, $name, $value): void
     {
@@ -63,8 +63,8 @@ class ConfigGenerator {
     }
 
     /**
-     * Insère ou met à jour la version applicative en base de données
-     * Utilisé uniquement par les scripts d'installation/upgrade
+     * Inserts or updates the application version in the database.
+     * Used only by install/upgrade scripts.
      */
     public function setApplicationVersion($db, $table_prefix, $version): void
     {
@@ -72,7 +72,7 @@ class ConfigGenerator {
     }
 
     /**
-     * Valide la configuration de base de données
+     * Validates database configuration.
      */
     private function validateDbConfig($config) {
         $required = ['host', 'user', 'password', 'database'];
@@ -88,7 +88,7 @@ class ConfigGenerator {
     }
 
     /**
-     * Teste la connexion à la base de données
+     * Tests the database connection.
      */
     public function testDbConnection($config) {
         try {
@@ -127,7 +127,7 @@ class ConfigGenerator {
     }
 
     /**
-     * Récupère le template du fichier id.php
+     * Retrieves the id.php template.
      */
     private function getTemplate() {
         if (file_exists($this->templatePath)) {
@@ -139,15 +139,15 @@ class ConfigGenerator {
     }
 
     /**
-     * Template par défaut pour id.php
+     * Default template for id.php.
      */
     private function getDefaultTemplate() {
         return <<<'PHP'
 <?php
 /**
- * Configuration de base de données OGSpy
- * Généré automatiquement le {{GENERATION_DATE}}
- * Générateur version {{GENERATOR_VERSION}}
+ * OGSpy database configuration
+ * Auto-generated on {{GENERATION_DATE}}
+ * Generator version {{GENERATOR_VERSION}}
  */
 
 if (!defined("IN_SPYOGAME")) {
@@ -175,7 +175,7 @@ PHP;
     }
 
     /**
-     * Sauvegarde le fichier de configuration
+     * Saves the configuration file.
      */
     private function saveConfig($content) {
         $configDir = dirname($this->configPath);

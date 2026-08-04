@@ -122,13 +122,13 @@ class Combat_Report_Model  extends Model_Abstract
     }
 
     /**
-     * Retrieves the number of combat reports associated with a specific planet
-     * identified by its coordinates (galaxy, system, row).
+    * Retrieves the number of combat reports associated with a planet
+    * identified by its coordinates (galaxy, system, position).
      *
-     * @param int $galaxy The galaxy number of the planet.
-     * @param int $system The system number of the planet.
-     * @param int $row The row number of the planet.
-     * @return int The number of combat reports corresponding to the specified planet.
+    * @param int $galaxy Galaxy number of the planet.
+    * @param int $system System number of the planet.
+    * @param int $row Planet position.
+    * @return int Number of combat reports matching the planet.
      */
     public function get_nb_combat_report_by_planet(int $galaxy, int $system, int $row)
     {
@@ -147,12 +147,12 @@ class Combat_Report_Model  extends Model_Abstract
     }
 
     /**
-     * Retrieves a list of combat report (CR) IDs by planet coordinates.
+    * Retrieves the list of combat report (CR) identifiers by planet coordinates.
      *
-     * @param int $galaxy The galaxy number of the target coordinates.
-     * @param int $system The system number of the target coordinates.
-     * @param int $row The row number of the target planet within the galaxy and system.
-     * @return array An array of combat report IDs (id_rc) sorted by date in descending order.
+    * @param int $galaxy Galaxy number for target coordinates.
+    * @param int $system System number for target coordinates.
+    * @param int $row Position of the target planet in galaxy and system.
+    * @return array Array of combat report identifiers (id_rc), sorted by descending date.
      */
     public function get_cr_id_list_by_planet(int $galaxy, int $system, int $row)
     {

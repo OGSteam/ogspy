@@ -24,10 +24,10 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class Mod_Model  extends Model_Abstract
 {
     /**
-     * Fonction de recherche d'un mod en fonction des filtres définis
-     * @param array $filter Tableau associatif ayant pour clé le champ à filtrer, et pour valeur la valeur souhaitée
-     * @param array $orderBy tableau associatif sur le champ et l'ordre
-     * @return array Liste de mods
+    * Searches for a mod using the defined filters.
+     * @param array $filter Tableau associatif ayant for clé le champ à filtrer, and for value la value souhaitée
+    * @param array $orderBy Associative array for field and sort order
+     * @return array Liste of mods
      */
     public function find_by($filter = array(), $orderBy = array())
     {
@@ -89,10 +89,10 @@ class Mod_Model  extends Model_Abstract
     }
 
     /**
-     * Fonction de recherche d'un mod en fonction des filtres définis
-     * @param array $filter Tableau associatif ayant pour clé le champ à filtrer, et pour valeur la valeur souhaitée
-     * @param array $orderBy tableau associatif sur le champ et l'ordre
-     * @return array Liste de mods
+    * Searches for a mod using the defined filters.
+     * @param array $filter Tableau associatif ayant for clé le champ à filtrer, and for value la value souhaitée
+    * @param array $orderBy Associative array for field and sort order
+     * @return array Liste of mods
      */
     public function find_one_by($filter = array(), $orderBy = array())
     {
@@ -131,20 +131,21 @@ class Mod_Model  extends Model_Abstract
     }
 
     /**
-     * Indique la valeur de la position la plus élevée
+     * Indique la value of the position la plus élevée
      * @return integer
      */
     public function get_position_max()
     {
         $query = "SELECT MAX(`position`) from " . TABLE_MOD;
         $result = $this->db->sql_query($query);
-        list($position) = $this->db->sql_fetch_row($result);
+        $row = $this->db->sql_fetch_row($result);
+        $position = (is_array($row) && isset($row[0])) ? (int)$row[0] : 0;
 
         return $position;
     }
 
     /**
-     * retourne l'id du mod
+    * Returns the mod ID.
      * @return integer
      */
     public function get_mod_id_by_root($root)
@@ -153,13 +154,14 @@ class Mod_Model  extends Model_Abstract
 
         $request = "SELECT `id` from " . TABLE_MOD . " WHERE `root` = '" . $root . "'";
         $result = $this->db->sql_query($request);
-        list($id) = $this->db->sql_fetch_row($result);
+        $row = $this->db->sql_fetch_row($result);
+        $id = (is_array($row) && isset($row[0])) ? (int)$row[0] : 0;
 
         return $id;
     }
     /**
      * Met à jour le mod
-     * @param array $mod tableau associatif représentant le mod
+    * @param array $mod Associative array representing the mod
      */
     public function update(array $mod)
     {
@@ -181,7 +183,7 @@ class Mod_Model  extends Model_Abstract
 
 
     /**
-     * Actualise la position du mod
+     * Actualise la position of the mod
      */
     public function update_posisiton($mod_id, $position)
     {
@@ -194,8 +196,8 @@ class Mod_Model  extends Model_Abstract
 
 
     /**
-     * Supprime le mod
-     * @param $mod_id id du mod
+     * Deletes le mod
+     * @param $mod_id id of the mod
      */
     public function delete($mod_id)
     {
@@ -207,8 +209,8 @@ class Mod_Model  extends Model_Abstract
 
 
     /**
-     * Supprime le mod
-     * @param $mod_uninstall_title title du mod
+     * Deletes the mod.
+     * @param $mod_uninstall_title Mod title
      */
     public function delete_by_title($mod_uninstall_title)
     {
@@ -220,8 +222,8 @@ class Mod_Model  extends Model_Abstract
 
 
     /**
-     * Supprime table d un mod
-     * @param $table_name nom de la table
+     * Drops a custom mod table.
+     * @param $table_name Table name
      */
     public function drop_custum_table($table_name)
     {

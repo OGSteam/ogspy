@@ -16,8 +16,8 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 /**
- * Generates and returns a pie chart script based on specified data, legends, and title.
- * Displays each slice as a percentage of the total.
+ * Generates and returns a pie chart script from data, labels, and title.
+ * Displays chaque part en pourcentage of the total.
  *
  * @param string $_data A serialized string representing the data values, separated by "_x_". Must match the specified format.
  * @param string $_legend A serialized string representing the legends for the data values, separated by "_x_". Must match the specified format.
@@ -106,8 +106,8 @@ JS;
 }
 
 /**
- * Creates and returns a pie chart script based on the provided data, legends, and title.
- * Displays each slice with its absolute numeric value.
+ * Generates and returns a pie chart script from the provided data.
+ * Displays chaque part avec sa value numérique absolue.
  *
  * @param mixed $_data A formatted string representing numerical data values, separated by "_x_". Must match the specified format.
  * @param mixed $_legend A formatted string representing labels for the data, separated by "_x_". Must match the specified format.
@@ -195,7 +195,7 @@ JS;
 
 
 /**
- * Generates and returns curves based on a specified range of dates and player data.
+ * Generates and returns curves based on a date range and player data.
  *
  * @param mixed $_player The primary player for whom the curves are being created. Must be specified.
  * @param mixed $conteneur The container that manages the context of the errors or results.
@@ -283,7 +283,7 @@ function create_curves($_player, $conteneur, $_date_min, $_date_max, $_comp)
 
 /**
  * affiche_error()
- * Generates a JavaScript snippet to display an error message within a specified HTML container.
+ * Generates un extrait JavaScript for afficher un message d'erreur dans un conteneur HTML.
  *
  * @param string $conteneur The ID of the HTML container where the error message will be displayed.
  * @param string $error The error message to be displayed.
@@ -304,7 +304,7 @@ function affiche_error($conteneur, $error)
 
 /**
  * graph_colors()
- * Returns the color palette used for Chart.js charts (dark theme compatible).
+ * Returns la palette of couleurs used for the graphiques Chart.js.
  *
  * @return array Array of color hex strings.
  */
@@ -318,7 +318,7 @@ function graph_colors(): array
 
 /**
  * graph_theme()
- * Returns an empty string (theme is now applied inline via Chart.js options).
+ * Returns une string vide (le thème est maintenant appliqué inline via the options Chart.js).
  * Kept for backward compatibility.
  *
  * @return string Empty string.
@@ -330,7 +330,7 @@ function graph_theme(): string
 
 /**
  * create_multi_curve()
- * Generate the JavaScript code for rendering a multi-curve chart using Chart.js.
+ * Generates le code JavaScript of rendu d'un graphique multi-courbes avec Chart.js.
  *
  * @param string $titre The title of the chart.
  * @param string $sous_titre The subtitle of the chart.

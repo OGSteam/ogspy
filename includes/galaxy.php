@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Fonctions relatives aux donnees galaxies/planetes
+ * Functions related to galaxy/planet data.
  *
  * @package OGSpy
  * @subpackage galaxy
@@ -1594,21 +1594,21 @@ function UNparseRE($id_RE)
 }
 
 /**
- * Génère le modèle HTML d'un rapport d'espionnage.
+ * Generates the HTML template for a spy report.
  *
- * @param array $row Les données de la planète ou lune espionnée, incluant les ressources, flotte, défenses, bâtiments et recherches.
- * @param string $rowPlayerName Les informations sur le joueur propriétaire de la planète ou lune.
- * @param array $lang Les chaînes de langue utilisées pour les libellés du rapport.
- * @param string $dateRE La date et l'heure du rapport d'espionnage.
- * @param array $show Indique les sections à afficher dans le rapport (flotte, défense, bâtiment, recherche).
- * @param array $showLang Les libellés des catégories à afficher (flotte, défense, bâtiment, recherche).
- * @param array $showName Les noms des catégories à afficher (flotte, défense, bâtiment, recherche).
- * @param array $flotte Les libellés des types de vaisseaux.
- * @param array $defs Les libellés des types de défenses.
- * @param array $bats Les libellés des types de bâtiments.
- * @param array $techs Les libellés des types de recherches.
- * @param string $sep_mille Le séparateur utilisé pour le formatage des nombres.
- * @return string Le code HTML du rapport d'espionnage.
+ * @param array $row Data of the spied planet or moon, including resources, fleet, defenses, buildings, and research.
+ * @param string $rowPlayerName Information about the player who owns the planet or moon.
+ * @param array $lang Language strings used for report labels.
+ * @param string $dateRE Date and time of the spy report.
+ * @param array $show Indicates which sections to display in the report (fleet, defense, building, research).
+ * @param array $showLang The libellés des catégories à afficher (flotte, défense, bâtiment, recherche).
+ * @param array $showName The noms des catégories à afficher (flotte, défense, bâtiment, recherche).
+ * @param array $flotte The libellés des types of vaisseaux.
+ * @param array $defs The libellés des types of defenses.
+ * @param array $bats The libellés des types of buildings.
+ * @param array $techs The libellés des types of recherches.
+ * @param string $sep_mille Le séparateur utilisé for le formatage des nombres.
+ * @return string HTML code for the spy report.
  */
 function buildSpyReportTemplate($row, $rowPlayerName, $lang, $dateRE, $show, $showLang, $showName, $flotte, $defs, $bats, $techs, $sep_mille) {
 
@@ -1772,7 +1772,7 @@ function galaxy_portee_missiles($galaxy, $system)
 }
 
 /**
- * @param $nom_missil_joueur
+ * @param string $nom_missil_joueur
  * @param $missil_dispo
  * @param $galaxie_missil
  * @param double $sysSol_missil
@@ -1847,7 +1847,7 @@ function displayGalaxyLegend()
 
 
 /**
- * @param $playerId id du joueur
+ * @param $playerId id of the joueur
  * @return string
  */
 function displayGalaxyPlayerTooltip(int|false $playerId)
@@ -1910,7 +1910,7 @@ function displayGalaxyPlayerTooltip(int|false $playerId)
 
 
 /**
- * @param $allyId Id de l'alliance
+ * @param $allyId Id of l'alliance
  * @return string
  * 
  * 
@@ -2024,20 +2024,20 @@ function displayGalaxyTablethead()
 
 
 /**
- * Génère une ligne de tableau HTML pour afficher les informations d'une galaxie ou d'un système.
+ * Generates an HTML table row to display galaxy or system information.
  *
- * @param array $populate Tableau associatif contenant les données d'une ligne de la galaxie (row).
- *                        Les clés attendues incluent :
- *                        - 'planet' : Nom de la planète (par défaut " " si non défini).
- *                        - 'ally' : Nom de l'alliance associée.
- *                        - 'player' : Nom du joueur associé.
- *                        - 'row' : Numéro de la ligne.
- *                        - 'galaxy' : Numéro de la galaxie.
- *                        - 'system' : Numéro du système.
+ * @param array $populate Associative array containing data for one galaxy row.
+ *                        The keys attendues incluent :
+ *                        - 'planet' : Planet name (default " " if undefined).
+ *                        - 'ally' : Name of l'alliance associatede.
+ *                        - 'player' : Name of the joueur associé.
+ *                        - 'row' : Number of the ligne.
+ *                        - 'galaxy' : Galaxy number.
+ *                        - 'system' : Number of the système.
  *                        - 'hided' : Booléen indiquant si la ligne est masquée.
- * @param bool $isGalaxy Indique si les données concernent une galaxie (true) ou un autre contexte (false).
+ * @param bool $isGalaxy Indicates whether data concerns a galaxy (true) or another context (false).
  *
- * @return string Retourne une chaîne HTML représentant une ligne de tableau.
+ * @return string Returns an HTML string representing a table row.
  */
 function displayGalaxyTabletbodytr($populate, $isGalaxy = true)
 {

@@ -48,7 +48,8 @@ class Statistics_Model extends Model_Abstract
 
         $stats = array();
 
-        while (list($statistic_name, $statistic_value) = $this->db->sql_fetch_row($result)) {
+        while (($row = $this->db->sql_fetch_row($result)) !== false && $row !== null) {
+            list($statistic_name, $statistic_value) = $row;
             $stats[$statistic_name] = $statistic_value;
         }
 
@@ -65,7 +66,11 @@ class Statistics_Model extends Model_Abstract
               FROM ' . TABLE_USER;
 
         $result = $this->db->sql_query($query);
-        list($planet_imports, $spy_imports, $rank_imports, $search) = $this->db->sql_fetch_row($result);
+        $row = $this->db->sql_fetch_row($result);
+        $planet_imports = (is_array($row) && isset($row[0])) ? $row[0] : 0;
+        $spy_imports = (is_array($row) && isset($row[1])) ? $row[1] : 0;
+        $rank_imports = (is_array($row) && isset($row[2])) ? $row[2] : 0;
+        $search = (is_array($row) && isset($row[3])) ? $row[3] : 0;
 
         $sum = array();
         $sum["planet_imports"] = $planet_imports;

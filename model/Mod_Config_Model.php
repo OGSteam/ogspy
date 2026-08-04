@@ -18,10 +18,10 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class Mod_Config_Model extends Model_Abstract
 {
     /**
-     * Retourne la configuration pour le module
-     * @param string $module Nom du module
+     * Returns la configuration for le module
+     * @param string $module Name of the module
      * @param string $config Configuration
-     * @return array Liste des valeurs correspondantes
+     * @return array Liste des values correspondantes
      */
     public function get_mod_config($module, $config = null)
     {
@@ -47,10 +47,10 @@ class Mod_Config_Model extends Model_Abstract
     }
 
     /**
-     * Supprime la configuration souhaitée pour le module
-     * @param string $module Nom du module
+     * Deletes la configuration souhaitée for le module
+     * @param string $module Name of the module
      * @param string $config Configuration
-     * @return bool succès
+     * @return bool success
      */
     public function delete_mod_config($module, $config = null)
     {
@@ -70,11 +70,11 @@ class Mod_Config_Model extends Model_Abstract
     }
 
     /**
-     * Défini la valeur de la configuration fournie
-     * @param string $module Nom du module
+     * Defines la value of the configuration fournie
+     * @param string $module Name of the module
      * @param string $config Configuration
      * @param string $value Valeur
-     * @return bool succès
+     * @return bool success
      */
     public function set_mod_config($module, $config, $value)
     {
