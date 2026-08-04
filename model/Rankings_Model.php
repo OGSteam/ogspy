@@ -31,7 +31,7 @@ abstract class Rankings_Model extends Model_Abstract
         return $this->rank_table_ref;
     }
     /**
-     * Selection du max rank pour définir la taille des tableaux parmi tous les classements
+     * Selection of the max rank for définir la taille des tableaux parmi tous the classements
      * @return mixed
      */
     public function select_max_rank_row()
@@ -56,7 +56,8 @@ abstract class Rankings_Model extends Model_Abstract
 
         $request = "SELECT MAX(`datadate`) FROM `" . $rank_table . "` LIMIT 0,1";
         $result = $this->db->sql_query($request);
-        list($max) = $this->db->sql_fetch_row($result);
+        $row = $this->db->sql_fetch_row($result);
+        $max = (is_array($row) && isset($row[0])) ? $row[0] : null;
         return $max;
     }
     /**
@@ -100,6 +101,7 @@ abstract class Rankings_Model extends Model_Abstract
             $request .= " WHERE `datadate` = '" . $datadate . "'" . " AND `rank` >= '" . $higher_rank . "' AND `rank` <= '" . $lower_rank . "'";
         }
         $result = $this->db->sql_query($request);
+        $ranking_content = [];
         while ($row = $this->db->sql_fetch_assoc($result)) {
             $ranking_content[] = $row;
         }
@@ -107,10 +109,10 @@ abstract class Rankings_Model extends Model_Abstract
     }
 
     /**
-     * Remove old ranking
-     * @param datadate temps en seconde
-     * @param $table nom de la table impacté
-     * remove entry from database when datadate is out of time
+     * Removes old ranking entries.
+     * @param datadate Time in seconds
+     * @param $table Name of the impacted table
+     * Removes database entries when datadate is outdated
      */
     public function remove_all_rank_older_than($datadate, $table = null)
     {

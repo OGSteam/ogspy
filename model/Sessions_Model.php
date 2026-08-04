@@ -19,7 +19,7 @@ class Sessions_Model extends Model_Abstract
     /**
      * @param        $cookie_id
      * @param string $user_ip
-     * @return bool|mixed|\Ogsteam\Ogspy\mysqli_result
+        * @return bool
      */
     public function is_valid_session_id($cookie_id, $user_ip = '')
     {
@@ -41,7 +41,8 @@ class Sessions_Model extends Model_Abstract
         $request = "SELECT `session_type` FROM " . TABLE_SESSIONS . " WHERE `user_id` = " . $user_id;
         $result = $this->db->sql_query($request);
         if ($this->db->sql_numrows($result) > 0) {
-            list($session_type) = $this->db->sql_fetch_row($result);
+            $row = $this->db->sql_fetch_row($result);
+            $session_type = (is_array($row) && isset($row[0])) ? (int)$row[0] : -1;
             return $session_type;
         }
         return -1;
@@ -127,7 +128,7 @@ class Sessions_Model extends Model_Abstract
         $this->db->sql_query($request, true, false);
     }
     /**
-     * Deletes all sessions
+     * Deletes toutes the sessions.
      */
     public function drop_all()
     {
@@ -163,7 +164,7 @@ class Sessions_Model extends Model_Abstract
         $this->db->sql_query($request, true, false);
     }
     /**
-     * Removes all expired sessions from the table
+     * Deletes all expired sessions from the table.
      */
     public function clean_expired_sessions()
     {
@@ -216,14 +217,15 @@ class Sessions_Model extends Model_Abstract
         return $retour;
     }
     /**
-     * Number of sessions
-     * @return int number of sessions
+     * Number of sessions actives.
+     * @return int Number of sessions
      */
     public function count_online()
     {
         $request = "SELECT COUNT(`session_ip`) FROM " . TABLE_SESSIONS;
         $connectes_req = $this->db->sql_query($request);
-        list($connectes) = $this->db->sql_fetch_row($connectes_req);
+        $row = $this->db->sql_fetch_row($connectes_req);
+        $connectes = (is_array($row) && isset($row[0])) ? (int)$row[0] : 0;
         return $connectes;
     }
 }

@@ -9,7 +9,7 @@ if (!defined('IN_SPYOGAME')) {
 /**
  * @brief Calculates technical data of Ogame requirement.
  *
- * @param[in] string $nom The name, like name in Database
+ * @param[in] string $name The name, like name in Database
  * @return array('none','COL','GEN','EXP' : bool for class, 'CES',etc. : int for all bat/rech name in database)
  */
 function ogame_elements_requirement($name = 'all')

@@ -366,7 +366,7 @@ class MigrationManager {
     }
 
     /**
-     * Vérifie si la version en base correspond à celle de version.php et synchronise si nécessaire
+     * Verifies si la version en base correspond à celle of version.php and synchronise si nécessaire
      */
     private function checkAndSyncVersion($interactive = true): bool {
         try {

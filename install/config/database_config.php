@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Configuration du système de migrations OGSpy
+ * Configuration of the système of migrations OGSpy
  * @package OGSpy
  * @subpackage install
  */

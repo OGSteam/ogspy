@@ -232,7 +232,7 @@ function mod_check($check)
 }
 
 /**
- * Installs a Mod from a mod folder name (Fonction utilisée par la partie admin)
+ * Installs a mod from a mod folder name (function used by the admin section).
  * @global $pub_directory
  */
 function mod_install()
@@ -421,7 +421,7 @@ function mod_install()
 }
 
 /**
- * mod_update (Fonction utilisée par la partie admin): Updates a mod version
+ * mod_update (function used by the admin section): Updates a mod version.
  */
 function mod_update()
 {
@@ -567,7 +567,7 @@ function mod_update()
 }
 
 /**
- * mod_uninstall (Fonction utilisée par la partie admin): Uninstall a mod from the database (Mod files are not deleted)
+ * mod_uninstall (function used by the admin section): Uninstalls a mod from the database (mod files are not deleted).
  *
  */
 function mod_uninstall()
@@ -1138,7 +1138,7 @@ function uninstall_mod($mod_uninstall_name, $mod_uninstall_table = null)
 }
 
 /**
- * Fonction to update the OGSpy mod
+ * Function to update the OGSpy mod.
  * @param string $mod_folder : Folder name which contains the mod
  * @param string $mod_name : Mod name
  * @return null|boolean true if the mod has been correctly updated

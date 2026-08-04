@@ -235,7 +235,7 @@ class Group_Model extends Model_Abstract
     }
 
     /**
-     * suppression de l'utlisateur
+     * suppression of l'utlisateur
      * @param $group_id
      * @return bool
      */

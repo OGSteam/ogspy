@@ -11,8 +11,12 @@ permissions:
 
 jobs:
   test:
-    name: PHPUnit Tests
+    name: PHPUnit Tests (PHP ${{ matrix.php-version }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.4', '8.5']
 
     steps:
       - name: Checkout code
@@ -21,7 +25,7 @@ jobs:
       - name: Setup PHP with Xdebug
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: ${{ matrix.php-version }}
           coverage: xdebug
           extensions: curl, mysqli, json, mbstring, openssl, zlib, zip
 

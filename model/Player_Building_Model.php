@@ -17,36 +17,40 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class Player_Building_Model  extends Model_Abstract
 {
     /**
-     * Retrieves the list of planets associated with a user, organized by coordinates.
+    * Retrieves the list of a user's planets, indexed by coordinates.
      *
-     * This method executes an SQL query to get the planet IDs and their coordinates
-     * associated with a given user. The results are organized in an associative array
-     * where the keys are the coordinates and the values are the planet IDs.
+    * This method runs an SQL query to get planet identifiers
+    * and their coordinates for a given user.
      *
-     * @param int $user_id The user identifier.
-     * @return array An associative array containing coordinates as keys and planet IDs as values.
+    * @param int $user_id User identifier.
+    * @return array Associative array: key = coordinates, value = planet identifier.
      */
 
     public function get_planet_list($user_id)
     {
         $user_id = (int)$user_id;
+        $planet_position = [];
 
         $request = "SELECT `planet_id`, `coordinates`";
         $request .= " FROM " . TABLE_USER_BUILDING;
         $request .= " WHERE `user_id` = " . $user_id;
         $request .= " ORDER BY `planet_id`";
         $result =  $this->db->sql_query($request);
-        while (list($planet_id, $coordinates) = $this->db->sql_fetch_row($result)) {
+        while (($row = $this->db->sql_fetch_row($result)) !== false && $row !== null) {
+            [$planet_id, $coordinates] = $row;
             $planet_position[$coordinates] = $planet_id;
         }
         return $planet_position;
     }
     /**
-     * @param $user_id
-     * @return mixed
+    * Retrieves the list of a player's moons, indexed by coordinates.
+     *
+    * @param int $player_id Player identifier.
+    * @return array Associative array: key = coordinates, value = moon identifier.
      */
     public function get_moon_list($player_id)
     {
+        $moon_position = [];
         // les lunes
         $request = "SELECT `id`, `coordinates`";
         $request .= " FROM " . TABLE_USER_BUILDING;
@@ -54,19 +58,20 @@ class Player_Building_Model  extends Model_Abstract
         $request .= " AND `type` = 'moon'";
         $request .= " ORDER BY `id`";
         $result =  $this->db->sql_query($request);
-        while (list($planet_id, $coordinates) = $this->db->sql_fetch_row($result)) {
+        while (($row = $this->db->sql_fetch_row($result)) !== false && $row !== null) {
+            [$planet_id, $coordinates] = $row;
             $moon_position[$coordinates] = $planet_id;
         }
         return $moon_position;
     }
     /**
-     * Récupère le nombre de planètes d'un joueur spécifique.
+    * Retrieves the number of planets for a specific player.
      *
-     * Cette méthode exécute une requête SQL pour compter le nombre de planètes
-     * associées à un joueur donné dans la table `TABLE_USER_BUILDING`.
+    * This method runs an SQL query to count planets
+    * associated with a given player in the `TABLE_USER_BUILDING` table.
      *
-     * @param int $player_id L'identifiant du joueur dont les planètes doivent être comptées.
-     * @return int Le nombre de planètes du joueur.
+    * @param int $player_id Player identifier whose planets must be counted.
+    * @return int Number of player planets.
      */
     public function get_nb_planets(int $player_id)
     {
@@ -75,17 +80,18 @@ class Player_Building_Model  extends Model_Abstract
         $request .= " WHERE `player_id` = " . $player_id . " AND `type` = 'planet'";
 
         $result =  $this->db->sql_query($request);
-        list($count) = $this->db->sql_fetch_row($result);
+        $row = $this->db->sql_fetch_row($result);
+        $count = (is_array($row) && isset($row[0])) ? (int)$row[0] : 0;
         return  $count;
     }
     /**
-     * Récupère le nombre de lunes d'un joueur spécifique.
+    * Retrieves the number of moons for a specific player.
      *
-     * Cette méthode exécute une requête SQL pour compter le nombre de lunes
-     * associées à un joueur donné dans la table `TABLE_USER_BUILDING`.
+    * This method runs an SQL query to count moons
+    * associated with a given player in the `TABLE_USER_BUILDING` table.
      *
-     * @param int $player_id L'identifiant du joueur dont les lunes doivent être comptées.
-     * @return int Le nombre de lunes du joueur.
+    * @param int $player_id Player identifier whose moons must be counted.
+    * @return int Number of player moons.
      */
     public function get_nb_moons(int $player_id)
     {
@@ -94,24 +100,25 @@ class Player_Building_Model  extends Model_Abstract
         $request .= " WHERE `player_id` = " . $player_id . " AND `type` = 'moon'";
 
         $result = $this->db->sql_query($request);
-        list($count) = $this->db->sql_fetch_row($result);
+        $row = $this->db->sql_fetch_row($result);
+        $count = (is_array($row) && isset($row[0])) ? (int)$row[0] : 0;
         return  $count;
     }
 
 
 
     /**
-     * Récupère les boosters d'un joueur spécifique.
+    * Retrieves boosters for a specific player.
      *
-     * Cette méthode interroge la table `TABLE_USER_BUILDING` pour récupérer
-     * les informations sur les boosters associés à un joueur donné.
+    * This method queries `TABLE_USER_BUILDING` to retrieve
+    * booster information associated with a given player.
      *
-     * @param int $player_id L'identifiant du joueur dont les boosters doivent être récupérés.
-     * @return array Un tableau associatif contenant les boosters pour chaque planète du joueur.
-     *               Chaque élément du tableau est une entrée associative avec les clés :
-     *               - `user_id` : L'identifiant de l'utilisateur.
-     *               - `planet_id` : L'identifiant de la planète.
-     *               - `boosters` : Les boosters associés.
+    * @param int $player_id Player identifier whose boosters must be retrieved.
+    * @return array Associative array containing boosters for each player planet.
+    *               Each item is an associative entry with keys:
+    *               - `user_id` : User identifier.
+    *               - `planet_id` : Planet identifier.
+    *               - `boosters` : Associated boosters.
      */
     public function get_all_booster_player(int $player_id)
     {
@@ -119,23 +126,24 @@ class Player_Building_Model  extends Model_Abstract
         $result = $this->db->sql_query($request);
 
         $playerBoosters = array();
-        while (list($player_id, $id, $boosters) = $this->db->sql_fetch_row($result)) {
+        while (($row = $this->db->sql_fetch_row($result)) !== false && $row !== null) {
+            [$player_id, $id, $boosters] = $row;
             $playerBoosters[$id] = array("user_id" => $player_id, "planet_id" => $id, "boosters" => $boosters);
         }
         return $playerBoosters;
     }
 
     /**
-     * Récupère les boosters de tous les utilisateurs.
+    * Retrieves boosters for all users.
      *
-     * Cette méthode interroge la table `TABLE_USER_BUILDING` pour récupérer
-     * les informations sur les boosters associés à chaque utilisateur et planète.
+    * This method queries `TABLE_USER_BUILDING` to retrieve
+    * booster information associated with each user and planet.
      *
-     * @return array Un tableau contenant les boosters pour chaque utilisateur et planète.
-     *               Chaque élément du tableau est une entrée associative avec les clés :
-     *               - `user_id` : L'identifiant de l'utilisateur.
-     *               - `planet_id` : L'identifiant de la planète.
-     *               - `boosters` : Les boosters associés.
+    * @return array Array containing boosters for each user and planet.
+    *               Each item is an associative entry with keys:
+    *               - `user_id` : User identifier.
+    *               - `planet_id` : Planet identifier.
+    *               - `boosters` : Associated boosters.
      */
     public function get_all_booster()
     {
@@ -143,17 +151,18 @@ class Player_Building_Model  extends Model_Abstract
         $result = $this->db->sql_query($request);
 
         $Boosters = array();
-        while (list($user_id, $planet_id, $boosters) = $this->db->sql_fetch_row($result)) {
+        while (($row = $this->db->sql_fetch_row($result)) !== false && $row !== null) {
+            [$user_id, $planet_id, $boosters] = $row;
             $Boosters[] = array("user_id" => $user_id, "planet_id" => $planet_id, "boosters" => $boosters);
         }
         return $Boosters;
     }
 
     /* Écrit la string de stockage des objets Ogame dans la BDD.
-     * @arg id_player   id du joueur
-     * @arg id_planet   id de la planète à rechercher
-     * @str_booster     string de stockage des boosters (donnée par les fonctions booster_encode() ou booster_encodev())
-     * @return FALSE en cas d'échec
+     * @arg id_player   id of the joueur
+    * @arg id_planet   planet ID to search for
+    * @str_booster     booster storage string (provided by booster_encode() or booster_encodev())
+     * @return FALSE on failure
     */
     /**
      * @param $id_player
@@ -175,24 +184,24 @@ class Player_Building_Model  extends Model_Abstract
     }
 
     /**
-     * Récupère la liste des bâtiments associés à un joueur spécifique.
+    * Retrieves the list of buildings associated with a specific player.
      *
-     * Cette méthode interroge la table `TABLE_USER_BUILDING` pour obtenir les informations
-     * sur tous les bâtiments d'un joueur donné, identifiés par son `player_id`.
+    * This method queries `TABLE_USER_BUILDING` to get information
+    * about all buildings for a given player, identified by `player_id`.
      *
-     * @param int $player_id L'identifiant unique du joueur dont les bâtiments doivent être récupérés.
-     * @return array Un tableau associatif contenant les bâtiments du joueur spécifié.
-     *               Les clés principales du tableau correspondent aux identifiants uniques des bâtiments (`id`).
-     *               Chaque entrée contient un tableau associatif décrivant les attributs du bâtiment,
-     *               tels que :
-     *               - `id` : L'identifiant du bâtiment.
-     *               - `name` : Le nom du bâtiment.
-     *               - `galaxy` : La galaxie dans laquelle le bâtiment se trouve.
-     *               - `system` : Le système dans lequel le bâtiment se trouve.
-     *               - `row` : La rangée dans laquelle le bâtiment se situe.
-     *               - `fields`, `boosters`, `temperature_min`, `temperature_max`, et d'autres attributs
-     *                 spécifiques au bâtiment.
-     *               Les détails de chaque élément correspondent aux colonnes listées dans `$tElemList`.
+    * @param int $player_id Unique player identifier whose buildings must be retrieved.
+    * @return array Associative array containing buildings for the specified player.
+    *               Main keys correspond to unique building identifiers (`id`).
+    *               Each entry contains an associative array describing building attributes,
+    *               such as:
+    *               - `id` : Building identifier.
+    *               - `name` : Building name.
+    *               - `galaxy` : Galaxy where the building is located.
+    *               - `system` : System where the building is located.
+    *               - `row` : Slot where the building is located.
+    *               - `fields`, `boosters`, `temperature_min`, `temperature_max`, and other
+    *                 building-specific attributes.
+    *               Each entry details correspond to columns listed in `$tElemList`.
      */
     public function select_player_building_list($player_id)
     {
@@ -217,19 +226,19 @@ class Player_Building_Model  extends Model_Abstract
     }
 
     /**
-     * Récupère les bâtiments en fonction du niveau de silo spécifié.
+    * Retrieves buildings based on the specified silo level.
      *
-     * Cette méthode interroge la table `TABLE_USER_BUILDING` pour récupérer
-     * les informations sur les bâtiments qui ont un niveau de silo supérieur ou égal
-     * au niveau fourni en paramètre.
+    * This method queries `TABLE_USER_BUILDING` to retrieve
+    * building information where silo level is greater than or equal
+    * to the provided level.
      *
-     * @param int $silo_level Le niveau de silo minimum requis pour récupérer les bâtiments.
-     * @return array Un tableau contenant les informations des bâtiments correspondant au critère.
-     *               Chaque élément du tableau est une entrée associative avec les clés :
-     *               - `user_id` : L'identifiant de l'utilisateur.
-     *               - `planet_id` : L'identifiant de la planète.
-     *               - `coordinates` : Les coordonnées du bâtiment.
-     *               - `Silo` : Le niveau du silo.
+    * @param int $silo_level Minimum silo level required to retrieve buildings.
+    * @return array Array containing building information matching the criterion.
+    *               Each item is an associative entry with keys:
+    *               - `user_id` : User identifier.
+    *               - `planet_id` : Planet identifier.
+    *               - `coordinates` : Building coordinates.
+    *               - `Silo` : Silo level.
      */
     public function get_building_by_silo(int $silo_level)
     {
@@ -245,14 +254,14 @@ class Player_Building_Model  extends Model_Abstract
     }
 
     /**
-     * Supprime un astéroïde associé à un utilisateur spécifique.
+    * Deletes an asteroid associated with a specific user.
      *
-     * Cette méthode supprime l'enregistrement d'un astéroïde spécifique
-     * pour un utilisateur particulier de la table `TABLE_USER_BUILDING`.
+    * This method deletes the record of a specific asteroid
+    * for a given user from the `TABLE_USER_BUILDING` table.
      *
-     * @param int $user_id L'identifiant de l'utilisateur auquel l'astéroïde est associé.
-     * @param int $aster_id L'identifiant de l'astéroïde à supprimer.
-     * @return void Cette méthode ne retourne aucune valeur.
+    * @param int $user_id User identifier associated with the asteroid.
+    * @param int $aster_id Asteroid identifier to delete.
+    * @return void This method does not return a value.
      */
     public function delete_user_aster($user_id, $aster_id)
     {

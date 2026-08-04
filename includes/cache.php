@@ -74,7 +74,7 @@ function generate_mod_cache()
 }
 
 /**
- * Fonction generate_all_cache()
+ * Function generate_all_cache().
  * Description: Generates the all cache file system
  */
 function generate_all_cache()

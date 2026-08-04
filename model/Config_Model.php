@@ -19,7 +19,7 @@ class Config_Model extends Model_Abstract
 {
     //TODO: There is no method to create a new configuration if not exists
     /**
-     * Retourne tous les elements de la configuration
+     * Returns tous the elements of the configuration
      * @return array
      */
     public function get_all()
@@ -36,7 +36,7 @@ class Config_Model extends Model_Abstract
     }
 
     /**
-     * Fonction de recherche de la configuration
+    * Configuration lookup function.
      * @param array|null $filter
      * @return array|bool
      */
@@ -59,7 +59,7 @@ class Config_Model extends Model_Abstract
     }
 
     /**
-     * Fonction de recherche de la configuration
+    * Configuration lookup function.
      * @param array $filter
      * @return array
      */
@@ -90,7 +90,7 @@ class Config_Model extends Model_Abstract
     }
     /**
      * Met à jour la config
-     * @param array $config tableau associatif représentant le mod
+    * @param array $config Associative array representing the mod
      */
     public function update(array $config)
     {
@@ -102,8 +102,8 @@ class Config_Model extends Model_Abstract
 
     /**
      * Met à jour la config
-     * @$config_value valeur de la configuration
-     * @$config_name nom de la configuration
+     * @$config_value value of the configuration
+     * @$config_name name of the configuration
      * @param $configName
      * @param $configValue
      */

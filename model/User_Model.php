@@ -16,11 +16,13 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 
 class User_Model extends Model_Abstract
 {
-    /* Fonctions concerning user account */
+    /* User account related methods */
     /**
-     * @param $login
-     * @param $password
-     * @return array|bool hash or not
+     * Fetch login data for a user by username.
+     *
+     * @param string $login
+     * @param string $password
+     * @return array<int, mixed>|false
      */
     public function select_user_login($login, $password)
     {
@@ -39,7 +41,9 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $username
+     * Check whether a username already exists.
+     *
+     * @param string $username
      * @return bool
      */
     public function select_is_user_name($username)
@@ -56,7 +60,10 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $username
+     * Check whether a username exists for another user ID.
+     *
+     * @param string $username
+     * @param int $user_id
      * @return bool
      */
     public function select_is_other_user_name($username, $user_id)
@@ -74,7 +81,9 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     *  @return array
+     * Return the list of all usernames.
+     *
+     * @return array<int, string>
      */
     public function select_user_list()
     {
@@ -82,14 +91,17 @@ class User_Model extends Model_Abstract
         $list_user_name = array();
 
         $result = $this->db->sql_query($request);
-        while (list($user_name) = $this->db->sql_fetch_row($result)) {
+        while (($row = $this->db->sql_fetch_row($result)) !== false && $row !== null) {
+            list($user_name) = $row;
             $list_user_name[] = $user_name;
         }
         return $list_user_name;
     }
 
     /**
-     *  @return array
+     * Return the list of all user IDs.
+     *
+     * @return array<int, int|string>
      */
     public function select_userid_list()
     {
@@ -97,15 +109,18 @@ class User_Model extends Model_Abstract
         $list_user_id = array();
 
         $result = $this->db->sql_query($request);
-        while (list($user_id) = $this->db->sql_fetch_row($result)) {
+        while (($row = $this->db->sql_fetch_row($result)) !== false && $row !== null) {
+            list($user_id) = $row;
             $list_user_id[] = $user_id;
         }
         return $list_user_id;
     }
 
     /**
-     * @param $user_id
-     * @return mixed
+     * Get the last visit timestamp for a user.
+     *
+     * @param int $user_id
+     * @return int|string|null
      */
     public function select_last_visit($user_id)
     {
@@ -114,14 +129,17 @@ class User_Model extends Model_Abstract
         $request = "SELECT `lastvisit` FROM " . TABLE_USER;
         $request .= " WHERE `id` = '" . $user_id . "'";
         $result = $this->db->sql_query($request);
-        list($lastvisit) = $this->db->sql_fetch_row($result);
+        $row = $this->db->sql_fetch_row($result);
+        $lastvisit = (is_array($row) && isset($row[0])) ? $row[0] : null;
 
         return $lastvisit;
     }
 
     /**
-     * @param $user_id
-     * @return mixed
+     * Fetch profile data for one user.
+     *
+     * @param int $user_id
+     * @return array<int, array<string, mixed>>|false
      */
     public function select_user_data($user_id)
     {
@@ -148,7 +166,9 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @return mixed
+     * Fetch profile data for all users.
+     *
+     * @return array<int, array<string, mixed>>|false
      */
     public function select_all_user_data()
     {
@@ -172,7 +192,9 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @return mixed
+     * Fetch statistics data for all users.
+     *
+     * @return array<int, array<string, mixed>>
      */
     public function select_all_user_stats_data()
     {
@@ -187,7 +209,10 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @return mixed
+     * Fetch statistics data for one user.
+     *
+     * @param int $user_id
+     * @return array{planet_imports:int|string,search:int|string,spy_imports:int|string,rank_imports:int|string}
      */
     public function select_user_stats_data($user_id)
     {
@@ -201,18 +226,31 @@ class User_Model extends Model_Abstract
         $request .= " WHERE `id`='" . $user_id . "'";
         $result = $this->db->sql_query($request);
 
-        list($planet_imports, $search, $spy_imports, $rank_imports) = $this->db->sql_fetch_row($result);
+        $row = $this->db->sql_fetch_row($result);
+        $planet_imports = (is_array($row) && isset($row[0])) ? $row[0] : 0;
+        $search = (is_array($row) && isset($row[1])) ? $row[1] : 0;
+        $spy_imports = (is_array($row) && isset($row[2])) ? $row[2] : 0;
+        $rank_imports = (is_array($row) && isset($row[3])) ? $row[3] : 0;
 
         return array("planet_imports" => $planet_imports, "search" => $search, "spy_imports" => $spy_imports, "rank_imports" => $rank_imports);
     }
 
+    /**
+     * Compute aggregated import and search counters across all users.
+     *
+     * @return array{planetimporttotal:int|string,spyimporttotal:int|string,rankimporttotal:int|string,searchtotal:int|string}
+     */
     public function select_user_stats_sum()
     {
         $request = "SELECT SUM(planet_imports), SUM(spy_imports), SUM(rank_imports), SUM(search)";
         $request .= "FROM " . TABLE_USER;
         $resultat = $this->db->sql_query($request);
 
-        list($planetimporttotal, $spyimporttotal, $rankimporttotal, $searchtotal) = $this->db->sql_fetch_row($resultat);
+        $row = $this->db->sql_fetch_row($resultat);
+        $planetimporttotal = (is_array($row) && isset($row[0])) ? $row[0] : 0;
+        $spyimporttotal = (is_array($row) && isset($row[1])) ? $row[1] : 0;
+        $rankimporttotal = (is_array($row) && isset($row[2])) ? $row[2] : 0;
+        $searchtotal = (is_array($row) && isset($row[3])) ? $row[3] : 0;
 
         return array(
             "planetimporttotal" => $planetimporttotal,
@@ -223,8 +261,10 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @return array
+     * Fetch effective rights for a user through group membership.
+     *
+     * @param int $user_id
+     * @return array<string, int|string>
      */
     public function select_user_rights($user_id)
     {
@@ -264,7 +304,10 @@ class User_Model extends Model_Abstract
 
 
     /**
+     * Update the last visit timestamp for a user.
      *
+     * @param int $user_id
+     * @return void
      */
     public function update_lastvisit_time($user_id)
     {
@@ -275,8 +318,11 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $user_name
+     * Update a user's display name.
+     *
+     * @param int $user_id
+     * @param string $user_name
+     * @return void
      */
     public function set_user_pseudo($user_id, $user_name)
     {
@@ -288,8 +334,12 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $user_password
+     * Update a user's password hash.
+     *
+     * @param int $user_id
+     * @param string $encrypted_password
+     * @param int $user_pwd_change
+     * @return void
      */
     public function set_user_password($user_id, $encrypted_password, $user_pwd_change = 1)
     {
@@ -304,8 +354,11 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $user_email
+     * Update a user's email and reset validation state.
+     *
+     * @param int $user_id
+     * @param string $user_email
+     * @return void
      */
     public function set_user_email($user_id, $user_email)
     {
@@ -320,8 +373,11 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $default_galaxy
+     * Update a user's default galaxy.
+     *
+     * @param int $user_id
+     * @param int $default_galaxy
+     * @return void
      */
     public function set_user_default_galaxy($user_id, $default_galaxy)
     {
@@ -334,8 +390,10 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * Utilisé après un redimensionement de l'univers
-     * @param $int $nb_galaxy
+     * Reset default galaxy when universe size is reduced.
+     *
+     * @param int $nb_galaxy
+     * @return void
      */
     public function set_default_galaxy_after_resize($nb_galaxy)
     {
@@ -345,8 +403,11 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $default_system
+     * Update a user's default system.
+     *
+     * @param int $user_id
+     * @param int $default_system
+     * @return void
      */
     public function set_user_default_system($user_id, $default_system)
     {
@@ -358,8 +419,10 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * Utilisé après un redimensionement de l'univers
-     * @param $int $nb_systems
+     * Reset default system when universe size is reduced.
+     *
+     * @param int $nb_systems
+     * @return void
      */
     public function set_default_system_after_resize($nb_systems)
     {
@@ -370,8 +433,11 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $disable_ip_check
+     * Enable or disable IP checks for a user.
+     *
+     * @param int $user_id
+     * @param int $disable_ip_check
+     * @return void
      */
     public function set_user_ip_check($user_id, $disable_ip_check)
     {
@@ -385,8 +451,11 @@ class User_Model extends Model_Abstract
 
 
     /**
-     * @param $user_id
-     * @param $user_active boolean 1/0
+     * Set user active status.
+     *
+     * @param int $user_id
+     * @param int $value
+     * @return void
      */
     public function set_user_active($user_id, $value)
     {
@@ -398,8 +467,11 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $value boolean 1/0
+     * Set user co-admin status.
+     *
+     * @param int $user_id
+     * @param int $value
+     * @return void
      */
     public function set_user_coadmin($user_id, $value)
     {
@@ -412,8 +484,11 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $value boolean 1/0
+     * Set user management permission.
+     *
+     * @param int $user_id
+     * @param int $value
+     * @return void
      */
     public function set_user_management_user($user_id, $value)
     {
@@ -425,8 +500,11 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $value boolean 1/0
+     * Set user ranking management permission.
+     *
+     * @param int $user_id
+     * @param int $value
+     * @return void
      */
     public function set_user_management_ranking($user_id, $value)
     {
@@ -438,8 +516,11 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $value boolean 1/0
+     * Increment user planet import counter.
+     *
+     * @param int $user_id
+     * @param int $value
+     * @return void
      */
     public function add_stat_planet_inserted($user_id, $value)
     {
@@ -451,8 +532,11 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $value boolean 1/0
+     * Increment user spy import counter.
+     *
+     * @param int $user_id
+     * @param int $value
+     * @return void
      */
     public function add_stat_spy_inserted($user_id, $value)
     {
@@ -464,8 +548,11 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $value boolean 1/0
+     * Increment user ranking import counter.
+     *
+     * @param int $user_id
+     * @param int $value
+     * @return void
      */
     public function add_stat_rank_inserted($user_id, $value)
     {
@@ -477,8 +564,11 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $value int
+     * Increment user search counter.
+     *
+     * @param int $user_id
+     * @param int $value
+     * @return void
      */
     public function add_stat_search_made($user_id, $value)
     {
@@ -490,6 +580,9 @@ class User_Model extends Model_Abstract
     }
 
     /**
+     * Reset search counters for all users.
+     *
+     * @return void
      */
     public function all_raz_ratio_search()
     {
@@ -498,7 +591,9 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @return \Ogsteam\Ogspy\the
+     * Count active users.
+     *
+     * @return int
      */
     public function get_nb_active_users()
     {
@@ -508,19 +603,22 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @return \Ogsteam\Ogspy\the
+     * @return int
      */
     public function get_nb_users()
     {
         $result = $this->db->sql_query("SELECT COUNT(*) FROM " . TABLE_USER);
-        list($count) = $this->db->sql_fetch_row($result);
+        $row = $this->db->sql_fetch_row($result);
+        $count = (is_array($row) && isset($row[0])) ? (int)$row[0] : 0;
         return $count;
     }
 
     /**
-     * @param $pseudo
-     * @param $password
-     * @return \Ogsteam\Ogspy\Returs
+     * Create a new user and assign the default group.
+     *
+     * @param string $pseudo
+     * @param string $password
+     * @return int
      */
     public function add_new_user($pseudo, $password)
     {
@@ -540,8 +638,10 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
-     * @param $group_id
+     * Check whether a user belongs to a specific group.
+     *
+     * @param int $user_id
+     * @param int $group_id
      * @return bool
      */
     public function is_user_in_group($user_id, $group_id)
@@ -551,13 +651,17 @@ class User_Model extends Model_Abstract
 
         $request = "SELECT COUNT(*) FROM " . TABLE_USER_GROUP . " WHERE `group_id` = " . $group_id . " AND `user_id` = " . $user_id;
         $result = $this->db->sql_query($request);
-        list($count) = $this->db->sql_fetch_row($result);
+        $row = $this->db->sql_fetch_row($result);
+        $count = (is_array($row) && isset($row[0])) ? (int)$row[0] : 0;
         return $count > 0;
     }
 
     /**
-     * @param $user_id
-     * @param $group_id
+     * Add a user to a group if not already linked.
+     *
+     * @param int $user_id
+     * @param int $group_id
+     * @return void
      */
     public function add_user_to_group($user_id, $group_id)
     {
@@ -572,7 +676,10 @@ class User_Model extends Model_Abstract
     }
 
     /**
-     * @param $user_id
+     * Delete a user and linked records.
+     *
+     * @param int $user_id
+     * @return void
      */
     public function delete_user($user_id)
     {
