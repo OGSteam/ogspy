@@ -621,6 +621,10 @@ class Migration_20250815001_AddTestFeatures {
         return \'Ajout fonctionnalités de test (table test, colonnes additionnelles)\';
     }
 
+    public function canRollback(): bool {
+        return true;
+    }
+
     public function up(): string {
         global $table_prefix;
 
@@ -675,6 +679,10 @@ class Migration_20250815002_UpdateTestFeatures {
 
     public function getDescription(): string {
         return \'Mise à jour des fonctionnalités de test (nouveaux champs, optimisations)\';
+    }
+
+    public function canRollback(): bool {
+        return true;
     }
 
     public function up(): string {
