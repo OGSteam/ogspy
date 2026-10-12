@@ -336,8 +336,9 @@ class MigrationManager {
         // Verify the migration is recorded as successfully applied in the database
         $escapedTarget = $this->db->sql_escape_string($targetVersion);
         $escapedOriginal = $this->db->sql_escape_string($migration['original_version']);
+        $escapedFilename = isset($migration['filename']) ? $this->db->sql_escape_string($migration['filename']) : $escapedTarget;
         $sql = "SELECT id, migration, success FROM `{$this->migrations_table}` 
-                WHERE (migration = '{$escapedTarget}' OR migration = '{$escapedOriginal}') 
+                WHERE (migration = '{$escapedTarget}' OR migration = '{$escapedOriginal}' OR migration = '{$escapedFilename}') 
                 AND success = 1";
         $result = $this->db->sql_query($sql);
         $record = $this->db->sql_fetch_assoc($result);
