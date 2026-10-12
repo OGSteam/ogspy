@@ -29,8 +29,11 @@ class Migration_00000000000_Initial {
         return $combinedSQL;
     }
 
-    public function down($db): void {
-        // Optionnel : suppression des tables créées
-        // À compléter si besoin
+    public function canRollback(): bool {
+        return false;
+    }
+
+    public function down($db = null): void {
+        throw new RuntimeException("Rollback is not supported for migration 00000000000 (Initial schema).");
     }
 }

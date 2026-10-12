@@ -119,6 +119,9 @@ class UpgradeCLI {
             case 'upgrade':
                 $this->runUpgrade();
                 break;
+            case 'rollback':
+                $this->runRollback($argv);
+                break;
             case 'force':
                 $this->forceUpgrade();
                 break;
@@ -479,6 +482,25 @@ class UpgradeCLI {
         }
     }
 
+    private function runRollback($argv) {
+        if (!isset($argv[2])) {
+            echo "❌ Version de migration manquante pour le rollback\n";
+            echo "Usage: php upgrade_cli.php rollback <version>\n";
+            exit(1);
+        }
+
+        $version = $argv[2];
+        echo "=== ROLLBACK DE LA MIGRATION {$version} ===\n";
+
+        try {
+            $this->migrationManager->rollbackMigration($version);
+            echo "✅ Rollback réussi pour la migration {$version}\n";
+        } catch (Exception $e) {
+            echo "❌ Erreur lors du rollback: " . $e->getMessage() . "\n";
+            exit(1);
+        }
+    }
+
     private function forceUpgrade() {
         echo "=== MISE À JOUR FORCÉE ===\n";
         echo "⚠ Suppression des verrous et tentative de mise à jour...\n";
@@ -625,6 +647,7 @@ class UpgradeCLI {
         echo "                      - Installation automatisée d'OGSpy (verrouillée par défaut)\n";
         echo "  check               - Vérifie le statut des migrations\n";
         echo "  upgrade             - Lance la mise à jour automatique\n";
+        echo "  rollback <version>  - Annule une migration exécutée\n";
         echo "  force               - Force la mise à jour (supprime les verrous)\n";
         echo "  status              - Affiche le statut complet du système\n";
         echo "  logs                - Affiche les logs de mise à jour\n";
