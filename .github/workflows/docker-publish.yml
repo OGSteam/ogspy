@@ -34,7 +34,7 @@ jobs:
 
       - name: Docker metadata (app)
         id: meta_app
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/ogsteam/ogspy-app
           tags: |
@@ -56,7 +56,7 @@ jobs:
 
       - name: Docker metadata (nginx)
         id: meta_nginx
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/ogsteam/ogspy-nginx
           tags: |
