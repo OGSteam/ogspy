@@ -51,6 +51,45 @@ class MigrationRollbackTest extends TestCase
         $this->assertSame(['begin', 'rollback'], $db->transactions);
     }
 
+    public function testRollbackOfMigrationWithoutDownMethodFailsAndKeepsHistory(): void
+    {
+        $dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'ogspy_nodown_' . uniqid();
+        mkdir($dir);
+        file_put_contents($dir . '/99999999999_NoDown.php', <<<'PHP'
+<?php
+class Migration_99999999999_NoDown
+{
+    public function __construct($db = null, $logger = null, $prefix = '') {}
+    public function getVersion() { return '99999999999'; }
+    public function getDescription() { return 'No down'; }
+    public function up() {}
+}
+PHP);
+
+        try {
+            $db = $this->fakeDb();
+            $manager = new MigrationManager($db, new NullLogger(), 'ogspy_');
+            $prop = new ReflectionProperty(MigrationManager::class, 'migrations_path');
+            $prop->setAccessible(true);
+            $prop->setValue($manager, $dir);
+
+            try {
+                $manager->rollbackMigration('99999999999');
+                $this->fail('Rollback must fail explicitly');
+            } catch (Exception $e) {
+                $this->assertStringContainsString('not supported', $e->getMessage());
+            }
+
+            foreach ($db->queries as $sql) {
+                $this->assertStringNotContainsString('DELETE FROM', $sql);
+            }
+            $this->assertSame(['begin', 'rollback'], $db->transactions);
+        } finally {
+            array_map('unlink', glob($dir . '/*'));
+            rmdir($dir);
+        }
+    }
+
     public static function shippedMigrations(): array
     {
         return [['00000000000'], ['20251227001']];
