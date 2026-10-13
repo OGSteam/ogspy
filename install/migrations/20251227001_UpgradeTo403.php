@@ -31,7 +31,6 @@ class Migration_20251227001_UpgradeTo403 {
 
 
     public function down($db): void {
-        // Optionnel : suppression des tables créées
-        // À compléter si besoin
+        throw new \RuntimeException('Rollback is not supported for this migration.');
     }
 }

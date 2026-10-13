@@ -30,7 +30,6 @@ class Migration_00000000000_Initial {
     }
 
     public function down($db): void {
-        // Optionnel : suppression des tables créées
-        // À compléter si besoin
+        throw new \RuntimeException('Rollback is not supported for this migration.');
     }
 }

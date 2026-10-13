@@ -13,6 +13,19 @@ jobs:
   test:
     name: PHPUnit Tests (PHP ${{ matrix.php-version }})
     runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: test-root-password
+          MARIADB_DATABASE: ogspy_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
     strategy:
       fail-fast: false
       matrix:
@@ -44,5 +57,11 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-interaction
 
-      - name: Run unit tests
+      - name: Run PHPUnit tests
+        env:
+          OGSPY_TEST_DB_HOST: 127.0.0.1
+          OGSPY_TEST_DB_PORT: 3306
+          OGSPY_TEST_DB_NAME: ogspy_test
+          OGSPY_TEST_DB_USER: root
+          OGSPY_TEST_DB_PASSWORD: test-root-password
         run: php -d xdebug.mode=coverage vendor/bin/phpunit

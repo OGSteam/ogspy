@@ -341,9 +341,12 @@ class MigrationManager {
             $className = $migration['class_name'];
             $migrationInstance = new $className();
 
-            if (method_exists($migrationInstance, 'down')) {
-                $migrationInstance->down($this->db);
+            // Rollback contract: down() must reverse the changes or throw.
+            // History is only deleted after a successful reversal.
+            if (!method_exists($migrationInstance, 'down')) {
+                throw new Exception("Rollback is not supported for migration {$version}");
             }
+            $migrationInstance->down($this->db);
 
             // Delete the migration record
             $sql = "DELETE FROM `{$this->migrations_table}` WHERE migration = '" .
