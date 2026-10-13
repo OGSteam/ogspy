@@ -53,7 +53,7 @@ class MigrationRollbackTest extends TestCase
 
     public function testRollbackOfMigrationWithoutDownMethodFailsAndKeepsHistory(): void
     {
-        $dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'ogspy_nodown_' . uniqid();
+        $dir = __DIR__ . DIRECTORY_SEPARATOR . 'ogspy_nodown_' . uniqid();
         mkdir($dir);
         file_put_contents($dir . '/99999999999_NoDown.php', <<<'PHP'
 <?php
