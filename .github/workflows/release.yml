@@ -5,12 +5,14 @@ on:
     branches: [ "develop" , "master"]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  build:
+  package:
 
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
 
     steps:
     - name : Checkout OGSPY
@@ -54,6 +56,21 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-dev
 
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: npm
+
+    - name: Install JavaScript dependencies
+      run: npm ci
+
+    - name: Package Chart.js browser bundle
+      run: cp node_modules/chart.js/dist/chart.umd.js js/chart.js
+
+    - name: Remove JavaScript dependencies
+      run: rm -rf node_modules
+
     - name: Replace Version
       uses: jacobtomlinson/gha-find-replace@v3
       with:
@@ -76,6 +93,9 @@ jobs:
         ref: 'master'
         path: 'mod/autoupdate'
 
+    - name: Verify release package inputs
+      run: test -s js/chart.js && test -f vendor/autoload.php && test -f install/index.php
+
     - name: Zip Release
       # You may pin to the exact commit or the version.
       # uses: TheDoctor0/zip-release@a24011d8d445e4da5935a7e73c1f98e22a439464
@@ -96,11 +116,31 @@ jobs:
         # Tool to use for archiving
         #type: # optional, default is zip
 
+    - name: Upload release package
+      uses: actions/upload-artifact@v4
+      with:
+        name: ogspy-${{ steps.version.outputs.version }}
+        path: ogspy-${{ steps.version.outputs.version }}.zip
+        if-no-files-found: error
+        retention-days: 1
+
+  publish:
+    needs: package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Download release package
+      uses: actions/download-artifact@v4
+      with:
+        name: ogspy-${{ needs.package.outputs.version }}
+        path: release-package
+
     - uses: ncipollo/release-action@v1
       with:
-        name : OGSpy ${{ steps.version.outputs.version }}
+        name : OGSpy ${{ needs.package.outputs.version }}
         draft: true
-        artifacts: "ogspy-${{ steps.version.outputs.version }}.zip"
+        artifacts: "release-package/ogspy-${{ needs.package.outputs.version }}.zip"
         artifactContentType: application/zip
         body : "To be Completed"
-        tag : ${{ steps.version.outputs.version }}
+        tag : ${{ needs.package.outputs.version }}
