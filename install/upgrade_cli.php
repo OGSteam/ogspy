@@ -83,8 +83,8 @@ require_once 'TestManager.php';
 require_once 'version.php';
 
 class UpgradeCLI {
-    private $autoUpgrade;
-    private $migrationManager;
+    private ?AutoUpgradeManager $autoUpgrade = null;
+    private ?MigrationManager $migrationManager = null;
 
     public function __construct() {
         // Ne pas initialiser les objets pour l'installation ou l'aide
@@ -106,7 +106,7 @@ class UpgradeCLI {
         }
     }
 
-    public function run($argv) {
+    public function run(array $argv) {
         $action = $argv[1] ?? 'help';
 
         switch ($action) {
@@ -163,7 +163,7 @@ class UpgradeCLI {
     /**
      * Installation complete d'OGSpy via CLI
      */
-    private function runInstall($argv) {
+    private function runInstall(array $argv) {
         // Vérifier si les arguments sont fournis
         if (count($argv) < 8) {
             echo "❌ Arguments manquants pour l'installation automatisée\n";
