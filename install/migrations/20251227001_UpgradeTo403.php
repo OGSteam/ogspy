@@ -30,8 +30,17 @@ class Migration_20251227001_UpgradeTo403 {
 
 
 
-    public function down($db): void {
-        // Optionnel : suppression des tables créées
-        // À compléter si besoin
+    public function canRollback(): bool {
+        return true;
+    }
+
+    public function down($db = null): string {
+        $structureFile = __DIR__ . '/../schemas/ogspy_20251227001_UpgradeTo403_down.sql';
+
+        if (!file_exists($structureFile)) {
+            throw new RuntimeException("Rollback file not found: {$structureFile}");
+        }
+
+        return file_get_contents($structureFile);
     }
 }

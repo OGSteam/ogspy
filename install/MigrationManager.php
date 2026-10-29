@@ -322,45 +322,112 @@ class MigrationManager {
      * Rolls back a migration
      */
     public function rollbackMigration($version) {
+        $normalizedVersion = str_pad($version, 11, '0', STR_PAD_LEFT);
         $availableMigrations = $this->getAvailableMigrations();
 
-        if (!isset($availableMigrations[$version])) {
+        $migration = $availableMigrations[$normalizedVersion] ?? $availableMigrations[$version] ?? null;
+
+        if (!$migration) {
             throw new Exception("Migration {$version} not found");
         }
 
-        $migration = $availableMigrations[$version];
+        $targetVersion = $migration['version'];
+
+        // Verify the migration is recorded as successfully applied in the database
+        $escapedTarget = $this->db->sql_escape_string($targetVersion);
+        $escapedOriginal = $this->db->sql_escape_string($migration['original_version']);
+        $escapedFilename = isset($migration['filename']) ? $this->db->sql_escape_string($migration['filename']) : $escapedTarget;
+        $sql = "SELECT id, migration, success FROM `{$this->migrations_table}` 
+                WHERE (migration = '{$escapedTarget}' OR migration = '{$escapedOriginal}' OR migration = '{$escapedFilename}') 
+                AND success = 1";
+        $result = $this->db->sql_query($sql);
+        $record = $this->db->sql_fetch_assoc($result);
+
+        if (!$record) {
+            throw new Exception("Migration {$targetVersion} is not recorded as successfully applied");
+        }
+        $recordMigrationKey = $record['migration'];
+
+        if (!file_exists($migration['file'])) {
+            throw new Exception("Migration file not found: {$migration['file']}");
+        }
+
+        // Load migration class
+        require_once $migration['file'];
+        $className = $migration['class_name'];
+        if (!class_exists($className)) {
+            throw new Exception("Migration class '{$className}' not found");
+        }
+
+        $migrationInstance = new $className();
+
+        // Check if rollback is supported
+        if (method_exists($migrationInstance, 'canRollback') && !$migrationInstance->canRollback()) {
+            throw new Exception("Rollback is not supported for migration {$targetVersion}");
+        }
+
+        if (!method_exists($migrationInstance, 'down')) {
+            throw new Exception("Method 'down' missing in migration {$targetVersion}");
+        }
+
+        $startTime = microtime(true);
 
         try {
-            $this->logger->info("Rolling back migration: {$migration['version']}");
+            $this->logger->info("Rolling back migration: {$targetVersion}");
 
             // Start a transaction
             $this->db->sql_transaction('begin');
 
-            // Load and execute the rollback
-            require_once $migration['file'];
-            $className = $migration['class_name'];
-            $migrationInstance = new $className();
+            // Execute the rollback reversal
+            $downResult = $migrationInstance->down($this->db);
 
-            if (method_exists($migrationInstance, 'down')) {
-                $migrationInstance->down($this->db);
+            if (is_string($downResult)) {
+                $sqlContent = preg_replace('/^--.*$/m', '', $downResult);
+                $tablePrefix = $this->table_prefix;
+                $sqlContent = str_replace('ogspy_', $tablePrefix, $sqlContent);
+                $queries = [$sqlContent];
+
+                foreach ($queries as $query) {
+                    foreach (explode(';', $query) as $sql) {
+                        $sql = trim($sql);
+                        if ($sql) {
+                            $this->db->sql_query($sql);
+                        }
+                    }
+                }
+            } elseif (is_array($downResult)) {
+                foreach ($downResult as $query) {
+                    $query = preg_replace('/^--.*$/m', '', $query);
+                    $tablePrefix = $this->table_prefix;
+                    $query = str_replace('ogspy_', $tablePrefix, $query);
+                    foreach (explode(';', $query) as $sql) {
+                        $sql = trim($sql);
+                        if ($sql) {
+                            $this->db->sql_query($sql);
+                        }
+                    }
+                }
+            } elseif ($downResult === false) {
+                throw new Exception("Rollback execution failed for migration {$targetVersion}");
             }
 
-            // Delete the migration record
-            $sql = "DELETE FROM `{$this->migrations_table}` WHERE migration = '" .
-                   $this->db->sql_escape_string($version) . "'";
-            $this->db->sql_query($sql);
+            // Delete the migration record ONLY after successful reversal
+            $deleteSql = "DELETE FROM `{$this->migrations_table}` WHERE migration = '" .
+                         $this->db->sql_escape_string($recordMigrationKey) . "'";
+            $this->db->sql_query($deleteSql);
 
             // Commit the transaction
             $this->db->sql_transaction('commit');
 
-            $this->logger->info("Rollback {$migration['version']} completed");
+            $executionTime = microtime(true) - $startTime;
+            $this->logger->info("Rollback {$targetVersion} completed in " . round($executionTime, 3) . "s");
 
             return true;
 
         } catch (Exception $e) {
             // Rollback the transaction
             $this->db->sql_transaction('rollback');
-            $this->logger->error("ERROR rolling back {$migration['version']}: " . $e->getMessage());
+            $this->logger->error("ERROR rolling back {$targetVersion}: " . $e->getMessage());
             throw $e;
         }
     }
