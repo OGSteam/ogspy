@@ -37,7 +37,7 @@ Avant d'installer OGSpy, assurez-vous que votre serveur répond aux exigences su
 
 | Élément | Version minimale | Version recommandée |
 |---------|-----------------|---------------------|
-| PHP     | 8.1             | 8.4                 |
+| PHP     | 8.3             | 8.4                 |
 
 #### Extensions PHP requises
 

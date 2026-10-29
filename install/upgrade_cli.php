@@ -197,9 +197,9 @@ class UpgradeCLI {
 
         // Vérification PHP
         $phpVersion = PHP_VERSION;
-        if (version_compare($phpVersion, '8.1.0', '<')) {
+        if (version_compare($phpVersion, '8.3.0', '<')) {
             echo "❌ Version PHP incompatible: {$phpVersion}\n";
-            echo "   PHP 8.1 minimum requis\n";
+            echo "   PHP 8.3 minimum requis\n";
             exit(1);
         }
         echo "✓ Version PHP: {$phpVersion}\n";
