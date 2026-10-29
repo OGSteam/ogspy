@@ -295,10 +295,10 @@ if ($configExists) {
     </div>
 
     <div class="content">
-        <?php if (version_compare(PHP_VERSION, "8.1.0") < 0): ?>
+        <?php if (version_compare(PHP_VERSION, "8.3.0") < 0): ?>
         <div class="install-section error">
             <h3>❌ Version PHP incompatible</h3>
-            <p>PHP 8.1 minimum requis. Version actuelle : <?= PHP_VERSION ?></p>
+            <p>PHP 8.3 minimum requis. Version actuelle : <?= PHP_VERSION ?></p>
         </div>
         <?php else: ?>
 

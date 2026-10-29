@@ -117,7 +117,7 @@ OGSpy uses an automated migration system with intelligent version synchronizatio
 - **Installation**: Full automated installation with `php install/upgrade_cli.php install [params]`
 
 ### Requirements
-- **PHP**: Minimum version 8.1 (configured in `composer.json`, CLI, and web installer)
+- **PHP**: Minimum version 8.3 (configured in `composer.json`, CI, CLI, web installer, and language strings)
 - **Extensions**: Required extensions verified: `mysqli`, `json`, `mbstring`, `openssl`, `zlib`, `zip`
 
 ## Integration Points
