@@ -44,6 +44,7 @@ OGSpy is a PHP-based web application for managing and analyzing data from the OG
 - **Views**: UI templates are in `views/`, using PHP for dynamic rendering (see `home_simulation.php`).
 - **Includes**: Shared functions and utilities in `includes/` (e.g., `functions.php`, `config.php`).
 - **Mods**: Extensions live in `mod/`, each in its own subfolder, following a convention for modularity.
+- **Mods**: Extensions live in `mod/`, each in its own subfolder. Follow the shared [mod development workflow](../docs/development/mod-workflow.md) to keep module repositories and OGSpy core changes separate.
 - **Install & Migration**: The `install/` folder contains auto-upgrade, migration, and config generation logic. Migrations use timestamped filenames (`YYYYMMDDNNN_description.php`).
 - **Languages**: Multi-language support via `lang/` and subfolders for each locale.
 - **Assets**: Images in `images/`, JS in `js/`, CSS in `skin/`.
