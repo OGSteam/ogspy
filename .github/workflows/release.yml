@@ -63,7 +63,7 @@ jobs:
         cache: npm
 
     - name: Install JavaScript dependencies
-      run: npm ci
+      run: npm ci --ignore-scripts
 
     - name: Package Chart.js browser bundle
       run: cp node_modules/chart.js/dist/chart.umd.js js/chart.js

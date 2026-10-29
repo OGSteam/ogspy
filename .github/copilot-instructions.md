@@ -74,6 +74,7 @@ OGSpy is a PHP-based web application for managing and analyzing data from the OG
 - Keep release assembly in the `package` job and GitHub release publication in a dependent `publish` job. Pass the finished ZIP between jobs as a workflow artifact.
 - The package job installs production PHP dependencies with `composer install --no-dev`; include `vendor/` in the ZIP so the deployed application can load `vendor/autoload.php` without running Composer.
 - Chart.js is a browser asset served from `js/chart.js`. Keep its npm version locked in `package-lock.json`; build releases with `npm ci` and copy `node_modules/chart.js/dist/chart.umd.js` to `js/chart.js`. Do not include `node_modules/` in the release ZIP.
+- Chart.js is a browser asset served from `js/chart.js`. Keep its npm version locked in `package-lock.json`; build releases with `npm ci --ignore-scripts` and copy `node_modules/chart.js/dist/chart.umd.js` to `js/chart.js`. Do not include `node_modules/` in the release ZIP.
 - The release workflow checks out the bundled Xtense and AutoUpdate projects from their `master` branches. Preserve those refs unless the project explicitly changes that policy.
 - Keep test and coverage reporting in their existing workflows; do not make a coverage threshold an implicit packaging requirement.
 - For dependency changes, update the relevant lockfile, run Composer/npm validation and audits where available, and report unresolved advisories accurately in the PR description. Do not force transitive overrides without checking compatibility.
