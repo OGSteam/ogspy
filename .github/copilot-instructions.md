@@ -68,7 +68,7 @@ OGSpy is a PHP-based web application for managing and analyzing data from the OG
 - **CI/CD**:
   - GitHub Actions workflows in `.github/workflows/` (release.yml, sonarcloud.yml).
   - Automated releases on develop/master branches with semantic versioning.
-  - Conventional commits supported via commitizen (`npm run commit`).
+  - Use Conventional Commits for all commit messages (for example, `feat:`, `fix:`, `docs:`, and `chore:`). Use Commitizen via `npm run commit` when an interactive prompt is helpful.
 
 ### Release Packaging and Dependencies
 - Keep release assembly in the `package` job and GitHub release publication in a dependent `publish` job. Pass the finished ZIP between jobs as a workflow artifact.
