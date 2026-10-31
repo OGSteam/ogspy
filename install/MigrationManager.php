@@ -6,7 +6,12 @@
  * @subpackage install
  */
 
+class MigrationRollbackException extends RuntimeException {
+}
+
 class MigrationManager {
+    private const SQL_COMMENT_PATTERN = '/^--.*$/m';
+
     private $db;
     private $config;
     private $migrations_table;
@@ -195,7 +200,7 @@ class MigrationManager {
             $sqlContent = $migrationInstance->up();
             if (is_string($sqlContent)) {
                 // If it's a string, assume it's raw SQL and prepare it
-                $sqlContent = preg_replace('/^--.*$/m', '', $sqlContent);
+                $sqlContent = preg_replace(self::SQL_COMMENT_PATTERN, '', $sqlContent);
                 // Correction : gérer le cas où $table_prefix est null
                 $tablePrefix = $this->table_prefix;
                 $sqlContent = str_replace('ogspy_', $tablePrefix, $sqlContent);
@@ -324,51 +329,15 @@ class MigrationManager {
     public function rollbackMigration($version) {
         $normalizedVersion = str_pad($version, 11, '0', STR_PAD_LEFT);
         $availableMigrations = $this->getAvailableMigrations();
-
         $migration = $availableMigrations[$normalizedVersion] ?? $availableMigrations[$version] ?? null;
 
         if (!$migration) {
-            throw new Exception("Migration {$version} not found");
+            throw new MigrationRollbackException("Migration {$version} not found");
         }
 
         $targetVersion = $migration['version'];
-
-        // Verify the migration is recorded as successfully applied in the database
-        $escapedTarget = $this->db->sql_escape_string($targetVersion);
-        $escapedOriginal = $this->db->sql_escape_string($migration['original_version']);
-        $escapedFilename = isset($migration['filename']) ? $this->db->sql_escape_string($migration['filename']) : $escapedTarget;
-        $sql = "SELECT id, migration, success FROM `{$this->migrations_table}` 
-                WHERE (migration = '{$escapedTarget}' OR migration = '{$escapedOriginal}' OR migration = '{$escapedFilename}') 
-                AND success = 1";
-        $result = $this->db->sql_query($sql);
-        $record = $this->db->sql_fetch_assoc($result);
-
-        if (!$record) {
-            throw new Exception("Migration {$targetVersion} is not recorded as successfully applied");
-        }
-        $recordMigrationKey = $record['migration'];
-
-        if (!file_exists($migration['file'])) {
-            throw new Exception("Migration file not found: {$migration['file']}");
-        }
-
-        // Load migration class
-        require_once $migration['file'];
-        $className = $migration['class_name'];
-        if (!class_exists($className)) {
-            throw new Exception("Migration class '{$className}' not found");
-        }
-
-        $migrationInstance = new $className();
-
-        // Check if rollback is supported
-        if (method_exists($migrationInstance, 'canRollback') && !$migrationInstance->canRollback()) {
-            throw new Exception("Rollback is not supported for migration {$targetVersion}");
-        }
-
-        if (!method_exists($migrationInstance, 'down')) {
-            throw new Exception("Method 'down' missing in migration {$targetVersion}");
-        }
+        $recordMigrationKey = $this->getAppliedMigrationKey($migration, $targetVersion);
+        $migrationInstance = $this->getRollbackMigrationInstance($migration, $targetVersion);
 
         $startTime = microtime(true);
 
@@ -380,36 +349,7 @@ class MigrationManager {
 
             // Execute the rollback reversal
             $downResult = $migrationInstance->down($this->db);
-
-            if (is_string($downResult)) {
-                $sqlContent = preg_replace('/^--.*$/m', '', $downResult);
-                $tablePrefix = $this->table_prefix;
-                $sqlContent = str_replace('ogspy_', $tablePrefix, $sqlContent);
-                $queries = [$sqlContent];
-
-                foreach ($queries as $query) {
-                    foreach (explode(';', $query) as $sql) {
-                        $sql = trim($sql);
-                        if ($sql) {
-                            $this->db->sql_query($sql);
-                        }
-                    }
-                }
-            } elseif (is_array($downResult)) {
-                foreach ($downResult as $query) {
-                    $query = preg_replace('/^--.*$/m', '', $query);
-                    $tablePrefix = $this->table_prefix;
-                    $query = str_replace('ogspy_', $tablePrefix, $query);
-                    foreach (explode(';', $query) as $sql) {
-                        $sql = trim($sql);
-                        if ($sql) {
-                            $this->db->sql_query($sql);
-                        }
-                    }
-                }
-            } elseif ($downResult === false) {
-                throw new Exception("Rollback execution failed for migration {$targetVersion}");
-            }
+            $this->executeRollbackResult($downResult, $targetVersion);
 
             // Delete the migration record ONLY after successful reversal
             $deleteSql = "DELETE FROM `{$this->migrations_table}` WHERE migration = '" .
@@ -501,6 +441,72 @@ class MigrationManager {
         } catch (Exception $e) {
             $this->logger->error("Error syncing application version: " . $e->getMessage());
             return false;
+        }
+    }
+
+    private function getAppliedMigrationKey(array $migration, string $targetVersion): string {
+        $escapedTarget = $this->db->sql_escape_string($targetVersion);
+        $escapedOriginal = $this->db->sql_escape_string($migration['original_version']);
+        $escapedFilename = isset($migration['filename'])
+            ? $this->db->sql_escape_string($migration['filename'])
+            : $escapedTarget;
+        $sql = "SELECT id, migration, success FROM `{$this->migrations_table}`
+                WHERE (migration = '{$escapedTarget}' OR migration = '{$escapedOriginal}' OR migration = '{$escapedFilename}')
+                AND success = 1";
+        $result = $this->db->sql_query($sql);
+        $record = $this->db->sql_fetch_assoc($result);
+
+        if (!$record) {
+            throw new MigrationRollbackException("Migration {$targetVersion} is not recorded as successfully applied");
+        }
+
+        return $record['migration'];
+    }
+
+    private function getRollbackMigrationInstance(array $migration, string $targetVersion): object {
+        if (!file_exists($migration['file'])) {
+            throw new MigrationRollbackException("Migration file not found: {$migration['file']}");
+        }
+
+        require_once $migration['file'];
+        $className = $migration['class_name'];
+        if (!class_exists($className)) {
+            throw new MigrationRollbackException("Migration class '{$className}' not found");
+        }
+
+        $migrationInstance = new $className();
+        if (method_exists($migrationInstance, 'canRollback') && !$migrationInstance->canRollback()) {
+            throw new MigrationRollbackException("Rollback is not supported for migration {$targetVersion}");
+        }
+
+        if (!method_exists($migrationInstance, 'down')) {
+            throw new MigrationRollbackException("Method 'down' missing in migration {$targetVersion}");
+        }
+
+        return $migrationInstance;
+    }
+
+    private function executeRollbackResult($downResult, string $targetVersion): void {
+        if (is_string($downResult)) {
+            $this->executeRollbackSql($downResult);
+        } elseif (is_array($downResult)) {
+            foreach ($downResult as $query) {
+                $this->executeRollbackSql($query);
+            }
+        } elseif ($downResult === false) {
+            throw new MigrationRollbackException("Rollback execution failed for migration {$targetVersion}");
+        }
+    }
+
+    private function executeRollbackSql(string $query): void {
+        $query = preg_replace(self::SQL_COMMENT_PATTERN, '', $query);
+        $query = str_replace('ogspy_', $this->table_prefix, $query);
+
+        foreach (explode(';', $query) as $sql) {
+            $sql = trim($sql);
+            if ($sql) {
+                $this->db->sql_query($sql);
+            }
         }
     }
 }

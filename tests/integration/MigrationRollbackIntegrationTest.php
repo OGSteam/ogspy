@@ -1,19 +1,8 @@
 <?php declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-
-class MigrationTestLogger
-{
-    public function emergency($m, array $c = []): void {}
-    public function alert($m, array $c = []): void {}
-    public function critical($m, array $c = []): void {}
-    public function error($m, array $c = []): void {}
-    public function warning($m, array $c = []): void {}
-    public function notice($m, array $c = []): void {}
-    public function info($m, array $c = []): void {}
-    public function debug($m, array $c = []): void {}
-    public function log($l, $m, array $c = []): void {}
-}
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 final class MigrationRollbackIntegrationTest extends TestCase
 {
@@ -24,7 +13,7 @@ final class MigrationRollbackIntegrationTest extends TestCase
     private static ?string $dbUnavailableReason = null;
     private static ?sql_db $db = null;
     private static ?MigrationManager $migrationManager = null;
-    private static MigrationTestLogger $logger;
+    private static LoggerInterface $logger;
 
     public static function setUpBeforeClass(): void
     {
@@ -35,6 +24,7 @@ final class MigrationRollbackIntegrationTest extends TestCase
         require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
         require_once dirname(__DIR__, 2) . '/includes/mysql.php';
         require_once dirname(__DIR__, 2) . '/install/MigrationManager.php';
+        require_once dirname(__DIR__, 2) . '/install/migrations/00000000000_initial.php';
 
         self::$dbName = 'ogspy_test_disposable_' . bin2hex(random_bytes(4));
         $password = getenv('OGSPY_TEST_DB_PASSWORD');
@@ -61,7 +51,7 @@ final class MigrationRollbackIntegrationTest extends TestCase
             return;
         }
 
-        self::$logger = new MigrationTestLogger();
+        self::$logger = new NullLogger();
         $GLOBALS['logSQL'] = self::$logger;
         $GLOBALS['logSlowSQL'] = self::$logger;
 
@@ -207,6 +197,69 @@ final class MigrationRollbackIntegrationTest extends TestCase
         self::$migrationManager->rollbackMigration('20251227001');
     }
 
+    public function testRollbackUnknownMigrationFails(): void
+    {
+        $this->expectException(MigrationRollbackException::class);
+        $this->expectExceptionMessage('Migration 99999999999 not found');
+        self::$migrationManager->rollbackMigration('99999999999');
+    }
+
+    public function testInitialMigrationRejectsDirectRollback(): void
+    {
+        $migration = new Migration_00000000000_Initial();
+
+        $this->assertFalse($migration->canRollback());
+        $this->expectException(MigrationRollbackException::class);
+        $migration->down();
+    }
+
+    public function testRollbackProcessesArraySqlAndRetainsHistoryWhenDownReturnsFalse(): void
+    {
+        $arrayVersion = '99999999002';
+        $falseVersion = '99999999003';
+        $arrayMigrationFile = dirname(__DIR__, 2) . '/install/migrations/99999999002_rollback_array_test.php';
+        $falseMigrationFile = dirname(__DIR__, 2) . '/install/migrations/99999999003_rollback_false_test.php';
+
+        file_put_contents($arrayMigrationFile, '<?php
+class Migration_99999999002_RollbackArrayTest {
+    public function canRollback(): bool { return true; }
+    public function down($_db = null): array { return ["CREATE TABLE ogspy_rollback_array_test (id INT)"]; }
+}');
+        file_put_contents($falseMigrationFile, '<?php
+class Migration_99999999003_RollbackFalseTest {
+    public function canRollback(): bool { return true; }
+    public function down($_db = null): bool { return false; }
+}');
+
+        self::$db->sql_query("DROP TABLE IF EXISTS `ogspy_rollback_array_test`");
+        self::$db->sql_query("INSERT INTO `ogspy_migrations` (migration, success) VALUES ('{$arrayVersion}', 1), ('{$falseVersion}', 1)");
+
+        try {
+            $this->assertTrue(self::$migrationManager->rollbackMigration($arrayVersion));
+            $result = self::$db->sql_query("SHOW TABLES LIKE 'ogspy_rollback_array_test'");
+            $this->assertNotFalse(self::$db->sql_fetch_assoc($result), 'Array SQL should be executed during rollback');
+            $this->assertFalse($this->isMigrationRecorded($arrayVersion), 'Successful rollback should remove its history');
+
+            try {
+                self::$migrationManager->rollbackMigration($falseVersion);
+                $this->fail('A false down() result must fail the rollback');
+            } catch (MigrationRollbackException $exception) {
+                $this->assertStringContainsString('Rollback execution failed', $exception->getMessage());
+            }
+
+            $this->assertTrue($this->isMigrationRecorded($falseVersion), 'Failed rollback must retain its history');
+        } finally {
+            self::$db->sql_query("DROP TABLE IF EXISTS `ogspy_rollback_array_test`");
+            self::$db->sql_query("DELETE FROM `ogspy_migrations` WHERE migration IN ('{$arrayVersion}', '{$falseVersion}')");
+            if (file_exists($arrayMigrationFile)) {
+                unlink($arrayMigrationFile);
+            }
+            if (file_exists($falseMigrationFile)) {
+                unlink($falseMigrationFile);
+            }
+        }
+    }
+
     public function testRollbackFailureRetainsHistoryRecord(): void
     {
         // Insert a simulated migration into history
@@ -221,8 +274,8 @@ class Migration_99999999001_RollbackFailTest {
     public function getDescription(): string { return "Rollback failure test"; }
     public function up(): string { return ""; }
     public function canRollback(): bool { return true; }
-    public function down($db = null) {
-        throw new RuntimeException("Simulated error inside down()");
+    public function down($_db = null) {
+        throw new MigrationRollbackException("Simulated error inside down()");
     }
 }';
         file_put_contents($tempMigrationFile, $code);

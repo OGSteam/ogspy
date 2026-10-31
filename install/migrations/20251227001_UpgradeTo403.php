@@ -34,11 +34,11 @@ class Migration_20251227001_UpgradeTo403 {
         return true;
     }
 
-    public function down($db = null): string {
+    public function down($_db = null): string {
         $structureFile = __DIR__ . '/../schemas/ogspy_20251227001_UpgradeTo403_down.sql';
 
         if (!file_exists($structureFile)) {
-            throw new RuntimeException("Rollback file not found: {$structureFile}");
+            throw new MigrationRollbackException("Rollback file not found: {$structureFile}");
         }
 
         return file_get_contents($structureFile);
