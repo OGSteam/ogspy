@@ -15,6 +15,7 @@
     <include>
       <directory suffix=".php">./includes</directory>
       <directory suffix=".php">./core</directory>
+      <directory suffix=".php">./model</directory>
     </include>
   </source>
 </phpunit>
