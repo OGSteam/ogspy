@@ -8,7 +8,31 @@ permissions:
   contents: read
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout OGSPY
+      uses: actions/checkout@v7
+
+    - name: Setup PHP 8.4 with Xdebug
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.4'
+        coverage: xdebug
+        extensions: mysqli, json, mbstring, openssl, zlib, zip
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-interaction
+
+    - name: Run unit tests
+      run: php -d xdebug.mode=coverage vendor/bin/phpunit
+
   package:
+    needs: validate
 
     runs-on: ubuntu-latest
     outputs:
@@ -40,9 +64,6 @@ jobs:
       with:
         php-version: '8.4'
         extensions: mysqli, json, mbstring, openssl, zlib, zip
-
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
 
     - name: Cache Composer packages
       id: composer-cache
