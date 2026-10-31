@@ -44,11 +44,18 @@ OGSpy is a PHP-based web application for managing and analyzing data from the OG
 - **Views**: UI templates are in `views/`, using PHP for dynamic rendering (see `home_simulation.php`).
 - **Includes**: Shared functions and utilities in `includes/` (e.g., `functions.php`, `config.php`).
 - **Mods**: Extensions live in `mod/`, each in its own subfolder, following a convention for modularity.
+- **Mods**: Extensions live in `mod/`, each in its own subfolder. Follow the shared [mod development workflow](../docs/development/mod-workflow.md) to keep module repositories and OGSpy core changes separate.
 - **Install & Migration**: The `install/` folder contains auto-upgrade, migration, and config generation logic. Migrations use timestamped filenames (`YYYYMMDDNNN_description.php`).
 - **Languages**: Multi-language support via `lang/` and subfolders for each locale.
 - **Assets**: Images in `images/`, JS in `js/`, CSS in `skin/`.
 
 ## Developer Workflows
+### Before Starting Work
+- Check the current branch and worktree before making changes so existing user edits are preserved.
+- Fetch the latest development branch with `git fetch origin develop` before starting a new task.
+- For new work, switch to `develop`, fast-forward it with `git pull --ff-only origin develop`, then create the task branch from that updated base.
+- Do not pull or rebase `develop` into an existing feature branch automatically. If continuing a feature branch, update it only when requested and after confirming the worktree is clean.
+
 - **Local Development**:
   - Use Docker (`.docker/`, `.docker-dev/`) or DevContainer (`.devcontainer/`) for consistent PHP/MariaDB environments.
   - Start with `docker.exe compose -f docker-compose.yml -p my-ogspy up -d` (see `.docker/README.md`).
@@ -73,7 +80,6 @@ OGSpy is a PHP-based web application for managing and analyzing data from the OG
 ### Release Packaging and Dependencies
 - Keep release assembly in the `package` job and GitHub release publication in a dependent `publish` job. Pass the finished ZIP between jobs as a workflow artifact.
 - The package job installs production PHP dependencies with `composer install --no-dev`; include `vendor/` in the ZIP so the deployed application can load `vendor/autoload.php` without running Composer.
-- Chart.js is a browser asset served from `js/chart.js`. Keep its npm version locked in `package-lock.json`; build releases with `npm ci` and copy `node_modules/chart.js/dist/chart.umd.js` to `js/chart.js`. Do not include `node_modules/` in the release ZIP.
 - Chart.js is a browser asset served from `js/chart.js`. Keep its npm version locked in `package-lock.json`; build releases with `npm ci --ignore-scripts` and copy `node_modules/chart.js/dist/chart.umd.js` to `js/chart.js`. Do not include `node_modules/` in the release ZIP.
 - The release workflow checks out the bundled Xtense and AutoUpdate projects from their `master` branches. Preserve those refs unless the project explicitly changes that policy.
 - Keep test and coverage reporting in their existing workflows; do not make a coverage threshold an implicit packaging requirement.
@@ -117,7 +123,7 @@ OGSpy uses an automated migration system with intelligent version synchronizatio
 - **Installation**: Full automated installation with `php install/upgrade_cli.php install [params]`
 
 ### Requirements
-- **PHP**: Minimum version 8.1 (configured in `composer.json`, CLI, and web installer)
+- **PHP**: Minimum version 8.3 (configured in `composer.json`, CI, CLI, web installer, and language strings)
 - **Extensions**: Required extensions verified: `mysqli`, `json`, `mbstring`, `openssl`, `zlib`, `zip`
 
 ## Integration Points
