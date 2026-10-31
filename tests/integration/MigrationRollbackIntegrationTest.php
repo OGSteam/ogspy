@@ -18,6 +18,10 @@ class MigrationTestLogger
 final class MigrationRollbackIntegrationTest extends TestCase
 {
     private static string $dbName;
+    private static ?string $dbHost = null;
+    private static ?string $dbUser = null;
+    private static ?string $dbPassword = null;
+    private static ?string $dbUnavailableReason = null;
     private static ?sql_db $db = null;
     private static ?MigrationManager $migrationManager = null;
     private static MigrationTestLogger $logger;
@@ -33,16 +37,27 @@ final class MigrationRollbackIntegrationTest extends TestCase
         require_once dirname(__DIR__, 2) . '/install/MigrationManager.php';
 
         self::$dbName = 'ogspy_test_disposable_' . bin2hex(random_bytes(4));
+        $password = getenv('OGSPY_TEST_DB_PASSWORD');
+        if (!is_string($password) || $password === '') {
+            self::$dbUnavailableReason = 'Set OGSPY_TEST_DB_PASSWORD to run MariaDB integration tests.';
+            return;
+        }
+
+        self::$dbHost = getenv('OGSPY_TEST_DB_HOST') ?: '127.0.0.1';
+        self::$dbUser = getenv('OGSPY_TEST_DB_USER') ?: 'root';
+        self::$dbPassword = $password;
 
         try {
-            $mysqli = @new mysqli('127.0.0.1', 'root', '', '');
+            $mysqli = @new mysqli(self::$dbHost, self::$dbUser, self::$dbPassword, '');
             if ($mysqli->connect_errno) {
+                self::$dbUnavailableReason = 'MariaDB connection failed: ' . $mysqli->connect_error;
                 return;
             }
             $mysqli->query("DROP DATABASE IF EXISTS `" . self::$dbName . "`");
             $mysqli->query("CREATE DATABASE `" . self::$dbName . "` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
             $mysqli->close();
         } catch (Throwable $e) {
+            self::$dbUnavailableReason = 'MariaDB test database setup failed: ' . $e->getMessage();
             return;
         }
 
@@ -50,7 +65,7 @@ final class MigrationRollbackIntegrationTest extends TestCase
         $GLOBALS['logSQL'] = self::$logger;
         $GLOBALS['logSlowSQL'] = self::$logger;
 
-        self::$db = sql_db::getInstance('127.0.0.1', 'root', '', self::$dbName);
+        self::$db = sql_db::getInstance(self::$dbHost, self::$dbUser, self::$dbPassword, self::$dbName);
         self::$migrationManager = new MigrationManager(self::$db, self::$logger, 'ogspy_');
     }
 
@@ -61,9 +76,9 @@ final class MigrationRollbackIntegrationTest extends TestCase
             self::$db = null;
         }
 
-        if (isset(self::$dbName)) {
+        if (isset(self::$dbName) && self::$dbHost !== null && self::$dbUser !== null && self::$dbPassword !== null) {
             try {
-                $mysqli = @new mysqli('127.0.0.1', 'root', '', '');
+                $mysqli = @new mysqli(self::$dbHost, self::$dbUser, self::$dbPassword, '');
                 if (!$mysqli->connect_errno) {
                     $mysqli->query("DROP DATABASE IF EXISTS `" . self::$dbName . "`");
                     $mysqli->close();
@@ -77,7 +92,7 @@ final class MigrationRollbackIntegrationTest extends TestCase
     protected function setUp(): void
     {
         if (self::$db === null || self::$migrationManager === null) {
-            $this->markTestSkipped('Database connection to MariaDB (127.0.0.1:root) is not available.');
+            $this->markTestSkipped(self::$dbUnavailableReason ?? 'MariaDB test database is not available.');
         }
     }
 
