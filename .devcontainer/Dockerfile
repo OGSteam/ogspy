@@ -26,18 +26,22 @@ RUN { \
     echo "pcov.directory=/var/www/html"; \
 } >> /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
 
-# Install Xdebug for debugging (optional, separate from coverage)
-RUN pecl install xdebug || pecl install xdebug-3.2.0 || true \
-    && docker-php-ext-enable xdebug || true
+# Install Xdebug for on-demand debugging (separate from coverage)
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
 
 # Configure Xdebug for debugging only (append to existing config)
 RUN { \
     echo ""; \
     echo "xdebug.mode=debug"; \
-    echo "xdebug.start_with_request=yes"; \
+    echo "xdebug.start_with_request=trigger"; \
     echo "xdebug.client_host=${XDEBUG_CLIENT_HOST:-host.docker.internal}"; \
     echo "xdebug.client_port=${XDEBUG_CLIENT_PORT:-9003}"; \
 } >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini || true
+
+# Avoid Apache's FQDN warning in local development logs
+RUN echo "ServerName localhost" > /etc/apache2/conf-available/servername.conf \
+    && a2enconf servername
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

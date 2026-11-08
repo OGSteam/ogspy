@@ -14,10 +14,18 @@ ADMIN_PASSWORD=${ADMIN_PASSWORD:-"admin123"}
 ADMIN_EMAIL=${ADMIN_EMAIL:-"admin@example.com"}
 DB_PREFIX=${DB_PREFIX:-"ogspy_"}
 
-echo "📁 Correction des permissions des dossiers nécessaires..."
+if [[ ! "$DB_PREFIX" =~ ^[A-Za-z0-9_]+$ ]]; then
+  echo "❌ Le préfixe de tables doit contenir uniquement des lettres, chiffres et underscores."
+  exit 1
+fi
+
+echo "📁 Vérification des dossiers accessibles en écriture..."
 for d in /var/www/html/config /var/www/html/install /var/www/html/cache /var/www/html/logs /var/www/html/mod; do
   [ -d "$d" ] || continue
-  chmod -R u+rwX,g+rwX "${d}" 2>/dev/null || true
+  if [ ! -w "$d" ]; then
+    echo "❌ Le dossier $d n'est pas accessible en écriture par www-data."
+    exit 1
+  fi
 done
 
 echo "📦 Installation des dépendances Composer..."
@@ -28,13 +36,13 @@ if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
 fi
 
 # Run composer with appropriate user
-composer install --no-interaction --optimize-autoloader
+composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
 
 echo "✅ Dépendances Composer installées (dev + prod)"
 
 RETRY_COUNT=0
 MAX_RETRIES=30
-until php -r "mysqli_connect('$DB_HOST','$DB_USER','$DB_PASSWORD','$DB_NAME') or exit(1);" >/dev/null 2>&1; do
+until php -r '$m = @new mysqli(getenv("DB_HOST"), getenv("DB_USER"), getenv("DB_PASSWORD"), getenv("DB_NAME")); exit($m->connect_errno ? 1 : 0);' >/dev/null 2>&1; do
   RETRY_COUNT=$((RETRY_COUNT + 1))
   if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
     echo "❌ Erreur: Impossible de se connecter à la base de données après $MAX_RETRIES tentatives"
@@ -45,6 +53,11 @@ until php -r "mysqli_connect('$DB_HOST','$DB_USER','$DB_PASSWORD','$DB_NAME') or
 done
 
 echo "✅ Base de données prête."
+
+if php -r '$m = new mysqli(getenv("DB_HOST"), getenv("DB_USER"), getenv("DB_PASSWORD"), getenv("DB_NAME")); $table = getenv("DB_PREFIX") . "config"; $result = $m->query("SHOW TABLES LIKE \"$table\""); exit($result && $result->num_rows > 0 ? 0 : 1);' >/dev/null 2>&1; then
+  echo "✅ OGSpy est déjà installé, aucune réinstallation n'est nécessaire."
+  exit 0
+fi
 
 # Vérification que le fichier d'installation existe
 if [ ! -f "/var/www/html/install/upgrade_cli.php" ]; then
@@ -62,10 +75,3 @@ php install/upgrade_cli.php install "$DB_HOST" "$DB_USER" "$DB_PASSWORD" "$DB_NA
 echo "✅ Installation OGSpy terminée."
 echo "🌐 OGSpy est accessible sur http://localhost:8080"
 echo "👤 Connexion: $ADMIN_USER / $ADMIN_PASSWORD"
-
-# Ouverture automatique du navigateur (uniquement en environnement de développement local)
-if [ "${OPEN_BROWSER:-false}" = "true" ] && [ -n "${DISPLAY:-}" ] && command -v xdg-open >/dev/null 2>&1; then
-  echo "🌐 Ouverture du navigateur..."
-  sleep 3
-  xdg-open http://localhost:8080 2>/dev/null &
-fi
