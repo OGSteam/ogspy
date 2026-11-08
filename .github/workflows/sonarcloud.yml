@@ -10,6 +10,22 @@ jobs:
   sonarcloud:
     name: SonarCloud
     runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: ogspy-test-password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    env:
+      OGSPY_TEST_DB_HOST: 127.0.0.1
+      OGSPY_TEST_DB_USER: root
+      OGSPY_TEST_DB_PASSWORD: ogspy-test-password
     steps:
       - uses: actions/checkout@v7
         with:
