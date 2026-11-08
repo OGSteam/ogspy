@@ -8,7 +8,31 @@ permissions:
   contents: read
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout OGSPY
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+    - name: Setup PHP 8.4 with Xdebug
+      uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+      with:
+        php-version: '8.4'
+        coverage: xdebug
+        extensions: mysqli, json, mbstring, openssl, zlib, zip
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-interaction
+
+    - name: Run unit tests
+      run: php -d xdebug.mode=coverage vendor/bin/phpunit
+
   package:
+    needs: validate
 
     runs-on: ubuntu-latest
     outputs:
@@ -16,7 +40,7 @@ jobs:
 
     steps:
     - name : Checkout OGSPY
-      uses: actions/checkout@v7
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         ref: ${{ github.ref }}   # checkout the correct branch name
         fetch-depth: 0
@@ -40,9 +64,6 @@ jobs:
       with:
         php-version: '8.4'
         extensions: mysqli, json, mbstring, openssl, zlib, zip
-
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
 
     - name: Cache Composer packages
       id: composer-cache
@@ -80,14 +101,14 @@ jobs:
           regex: true
 
     - name: Checkout Xtense
-      uses: actions/checkout@v7
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         repository: 'ogsteam/mod-xtense'
         ref: 'master'
         path: 'mod/xtense'
 
     - name: Checkout AutoUpdate
-      uses: actions/checkout@v7
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         repository: 'ogsteam/mod-autoupdate'
         ref: 'master'
