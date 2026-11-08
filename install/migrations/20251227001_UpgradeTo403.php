@@ -42,5 +42,6 @@ class Migration_20251227001_UpgradeTo403 {
         }
 
         return file_get_contents($structureFile);
+
     }
 }

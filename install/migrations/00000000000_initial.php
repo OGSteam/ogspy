@@ -35,5 +35,6 @@ class Migration_00000000000_Initial {
 
     public function down($_db = null): void {
         throw new MigrationRollbackException("Rollback is not supported for migration 00000000000 (Initial schema).");
+
     }
 }
