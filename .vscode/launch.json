@@ -1,15 +1,31 @@
 {
-    // Utilisez IntelliSense pour en savoir plus sur les attributs possibles.
-    // Pointez pour afficher la description des attributs existants.
-    // Pour plus d'informations, visitez : https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [        
-        
-        {
-            "name": "Listen for Xdebug",
-            "type": "php",
-            "request": "launch",
-            "port": 9003
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "OGSpy: écouter Xdebug (Web)",
+      "type": "php",
+      "request": "launch",
+      "port": 9003,
+      "pathMappings": {
+        "/var/www/html": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "OGSpy: déboguer le test courant",
+      "type": "php",
+      "request": "launch",
+      "program": "${workspaceFolder}/vendor/bin/phpunit",
+      "args": [
+        "--no-coverage",
+        "${file}"
+      ],
+      "runtimeArgs": [
+        "-dxdebug.start_with_request=yes"
+      ],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "XDEBUG_MODE": "debug"
+      }
+    }
+  ]
 }

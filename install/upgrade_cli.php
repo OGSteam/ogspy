@@ -83,8 +83,8 @@ require_once 'TestManager.php';
 require_once 'version.php';
 
 class UpgradeCLI {
-    private $autoUpgrade;
-    private $migrationManager;
+    private ?AutoUpgradeManager $autoUpgrade = null;
+    private ?MigrationManager $migrationManager = null;
 
     public function __construct() {
         // Ne pas initialiser les objets pour l'installation ou l'aide
@@ -106,7 +106,7 @@ class UpgradeCLI {
         }
     }
 
-    public function run($argv) {
+    public function run(array $argv) {
         $action = $argv[1] ?? 'help';
 
         switch ($action) {
@@ -118,6 +118,9 @@ class UpgradeCLI {
                 break;
             case 'upgrade':
                 $this->runUpgrade();
+                break;
+            case 'rollback':
+                $this->runRollback($argv);
                 break;
             case 'force':
                 $this->forceUpgrade();
@@ -163,7 +166,7 @@ class UpgradeCLI {
     /**
      * Installation complete d'OGSpy via CLI
      */
-    private function runInstall($argv) {
+    private function runInstall(array $argv) {
         // Vérifier si les arguments sont fournis
         if (count($argv) < 8) {
             echo "❌ Arguments manquants pour l'installation automatisée\n";
@@ -197,9 +200,9 @@ class UpgradeCLI {
 
         // Vérification PHP
         $phpVersion = PHP_VERSION;
-        if (version_compare($phpVersion, '8.1.0', '<')) {
+        if (version_compare($phpVersion, '8.3.0', '<')) {
             echo "❌ Version PHP incompatible: {$phpVersion}\n";
-            echo "   PHP 8.1 minimum requis\n";
+            echo "   PHP 8.3 minimum requis\n";
             exit(1);
         }
         echo "✓ Version PHP: {$phpVersion}\n";
@@ -479,6 +482,25 @@ class UpgradeCLI {
         }
     }
 
+    private function runRollback($argv) {
+        if (!isset($argv[2])) {
+            echo "❌ Version de migration manquante pour le rollback\n";
+            echo "Usage: php upgrade_cli.php rollback <version>\n";
+            exit(1);
+        }
+
+        $version = $argv[2];
+        echo "=== ROLLBACK DE LA MIGRATION {$version} ===\n";
+
+        try {
+            $this->migrationManager->rollbackMigration($version);
+            echo "✅ Rollback réussi pour la migration {$version}\n";
+        } catch (Exception $e) {
+            echo "❌ Erreur lors du rollback: " . $e->getMessage() . "\n";
+            exit(1);
+        }
+    }
+
     private function forceUpgrade() {
         echo "=== MISE À JOUR FORCÉE ===\n";
         echo "⚠ Suppression des verrous et tentative de mise à jour...\n";
@@ -625,6 +647,7 @@ class UpgradeCLI {
         echo "                      - Installation automatisée d'OGSpy (verrouillée par défaut)\n";
         echo "  check               - Vérifie le statut des migrations\n";
         echo "  upgrade             - Lance la mise à jour automatique\n";
+        echo "  rollback <version>  - Annule une migration exécutée\n";
         echo "  force               - Force la mise à jour (supprime les verrous)\n";
         echo "  status              - Affiche le statut complet du système\n";
         echo "  logs                - Affiche les logs de mise à jour\n";

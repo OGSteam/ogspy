@@ -22,7 +22,7 @@ $lang['INSTALL_PROJECT_L6'] = "Etc ...";
 $lang['INSTALL_FORUM'] = "If you need more informations, visit : http://www.ogsteam.eu/";
 
 $lang['INSTALL_PHPERROR'] = "PHP version insufficient";
-$lang['INSTALL_PHP_ADVISE'] = "To perform a complete installation of OGSpy, your must have at least PHP 8.1 version.";
+$lang['INSTALL_PHP_ADVISE'] = "To perform a complete installation of OGSpy, your must have at least PHP 8.3 version.";
 $lang['INSTALL_PHPVERSION'] = "You actually dispose of version :";
 $lang['INSTALL_ACTION'] = "Choose what action you want to do :";
 $lang['INSTALL_ACTION_FULL'] = "Installation complete";

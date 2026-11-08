@@ -1,2 +1,6 @@
 config/id.php
 install/install.lock
+
+# Local development helpers must not be shipped in the production image
+dev.cmd
+tools/
