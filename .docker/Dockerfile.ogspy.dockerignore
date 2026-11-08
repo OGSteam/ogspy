@@ -1,0 +1,36 @@
+# Source control and automation
+.git/
+.gitignore
+.gitattributes
+.github/
+
+# Local development environments and helpers
+.devcontainer/
+.vscode/
+.idea/
+dev.cmd
+tools/
+
+# Test and generated artifacts
+tests/
+phpunit.xml
+.phpunit.result.cache
+coverage/
+coverage.xml
+cache/*
+logs/*
+
+# Host dependencies are installed again in the image
+node_modules/
+vendor/
+
+# Local configuration and operating-system files
+config/id.php
+install/install.lock
+.env
+.env.*
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+*.swo

@@ -8,7 +8,31 @@ permissions:
   contents: read
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout OGSPY
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+    - name: Setup PHP 8.4 with Xdebug
+      uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+      with:
+        php-version: '8.4'
+        coverage: xdebug
+        extensions: mysqli, json, mbstring, openssl, zlib, zip
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-interaction
+
+    - name: Run unit tests
+      run: php -d xdebug.mode=coverage vendor/bin/phpunit
+
   package:
+    needs: validate
 
     runs-on: ubuntu-latest
     outputs:
@@ -16,7 +40,7 @@ jobs:
 
     steps:
     - name : Checkout OGSPY
-      uses: actions/checkout@v7
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         ref: ${{ github.ref }}   # checkout the correct branch name
         fetch-depth: 0
@@ -41,9 +65,6 @@ jobs:
         php-version: '8.4'
         extensions: mysqli, json, mbstring, openssl, zlib, zip
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
-
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v6
@@ -57,9 +78,9 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-dev
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
-        node-version: '22'
+        node-version: '26'
         cache: npm
 
     - name: Install JavaScript dependencies
@@ -80,14 +101,14 @@ jobs:
           regex: true
 
     - name: Checkout Xtense
-      uses: actions/checkout@v7
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         repository: 'ogsteam/mod-xtense'
         ref: 'master'
         path: 'mod/xtense'
 
     - name: Checkout AutoUpdate
-      uses: actions/checkout@v7
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         repository: 'ogsteam/mod-autoupdate'
         ref: 'master'
@@ -108,7 +129,7 @@ jobs:
         # Working directory before zipping
         #directory: # optional, default is .
         # List of excluded files / directories
-        exclusions: '*.git* *.vscode* *.docker* .devcontainer* sonar-project.properties .editorconfig composer.* package.json package-lock.json tests*'
+        exclusions: '*.git* *.vscode* *.docker* .devcontainer* sonar-project.properties .editorconfig composer.* package.json package-lock.json tests* dev.cmd tools/*'
         # List of excluded files / directories with recursive wildcards (only applies on Windows with `zip` type)
         #recursive_exclusions: # optional, default is
         # Provide any custom parameters to the command
@@ -116,8 +137,16 @@ jobs:
         # Tool to use for archiving
         #type: # optional, default is zip
 
+    - name: Verify development tools are excluded
+      run: |
+        archive="ogspy-${{ steps.version.outputs.version }}.zip"
+        if unzip -Z1 "$archive" | grep -Eq '^(dev\.cmd|tools/)'; then
+          echo "Development tools must not be present in $archive"
+          exit 1
+        fi
+
     - name: Upload release package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: ogspy-${{ steps.version.outputs.version }}
         path: ogspy-${{ steps.version.outputs.version }}.zip
@@ -131,7 +160,7 @@ jobs:
       contents: write
     steps:
     - name: Download release package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: ogspy-${{ needs.package.outputs.version }}
         path: release-package

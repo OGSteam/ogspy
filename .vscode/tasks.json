@@ -1,0 +1,41 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "OGSpy: tests complets",
+      "type": "shell",
+      "command": "composer test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "OGSpy: tests unitaires",
+      "type": "shell",
+      "command": "composer test:unit",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "OGSpy: couverture HTML",
+      "type": "shell",
+      "command": "composer test:coverage",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "OGSpy: installer les dépendances",
+      "type": "shell",
+      "command": "composer install --prefer-dist --no-progress",
+      "problemMatcher": []
+    },
+    {
+      "label": "OGSpy: vérifier le fichier PHP courant",
+      "type": "shell",
+      "command": "php -l \"${file}\"",
+      "problemMatcher": []
+    }
+  ]
+}

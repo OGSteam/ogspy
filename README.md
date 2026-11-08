@@ -133,6 +133,26 @@ Vous pouvez tester un serveur OGSpy, une démo est disponible :
 
 ---
 
+## Développement local
+
+L'environnement Docker fournit PHP, Apache, MariaDB, Composer, PHPUnit et
+Xdebug. Le démarrage sous Windows se fait depuis PowerShell :
+
+```powershell
+.\dev.cmd help
+.\dev.cmd shell
+.\tools\dev.ps1 up
+.\tools\dev.ps1 doctor
+.\tools\dev.ps1 test
+```
+
+OGSpy est ensuite accessible sur <http://localhost:8080> et MariaDB sur
+`localhost:3306`. Consultez le
+[guide du devcontainer](.devcontainer/README.md) pour les commandes de base de
+données, la couverture et le débogage VS Code.
+
+---
+
 ## Contribuer au projet
 
 ## Gestion des montées de version
