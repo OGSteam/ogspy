@@ -38,9 +38,11 @@
       "Ogsteam\\Ogspy\\Core\\": "core/",
       "Ogsteam\\Ogspy\\Helper\\": "core/helper/",
       "Ogsteam\\Ogspy\\Abstracts\\": "core/abstract/",
-      "Ogsteam\\Ogspy\\Model\\": "model/",
-      "Ogsteam\\Ogspy\\Install\\": "install/"
-    }
+      "Ogsteam\\Ogspy\\Model\\": "model/"
+    },
+    "classmap": [
+      "install/"
+    ]
   },
   "homepage": "https://github.com/ogsteam/ogspy",
   "support": {
@@ -52,9 +54,9 @@
     "phpunit/phpunit": "^12.5"
   },
   "scripts": {
-    "test": [
-      "XDEBUG_MODE=coverage php vendor/bin/phpunit"
-    ],
+    "test": "php vendor/bin/phpunit --no-coverage",
+    "test:unit": "php vendor/bin/phpunit --testsuite Unit --no-coverage",
+    "test:coverage": "php vendor/bin/phpunit",
     "server": [
       "php -S localhost:8000"
     ]

@@ -11,12 +11,6 @@
     }
   },
 
-  "containerEnv": {
-    "OPEN_BROWSER": "true",
-    "XDEBUG_CLIENT_HOST": "host.docker.internal",
-    "XDEBUG_CLIENT_PORT": "9003"
-  },
-
   "customizations": {
     "vscode": {
       "extensions": [
@@ -34,14 +28,11 @@
     }
   },
 
-  "forwardPorts": [8080, 3306],
+  "forwardPorts": [8080],
   "portsAttributes": {
     "8080": {
       "label": "OGSpy Web Server (Apache)",
       "onAutoForward": "openBrowser"
-    },
-    "3306": {
-      "label": "MariaDB Database"
     }
   },
 

@@ -129,13 +129,21 @@ jobs:
         # Working directory before zipping
         #directory: # optional, default is .
         # List of excluded files / directories
-        exclusions: '*.git* *.vscode* *.docker* .devcontainer* sonar-project.properties .editorconfig composer.* package.json package-lock.json tests*'
+        exclusions: '*.git* *.vscode* *.docker* .devcontainer* sonar-project.properties .editorconfig composer.* package.json package-lock.json tests* dev.cmd tools/*'
         # List of excluded files / directories with recursive wildcards (only applies on Windows with `zip` type)
         #recursive_exclusions: # optional, default is
         # Provide any custom parameters to the command
         #custom: # optional, default is
         # Tool to use for archiving
         #type: # optional, default is zip
+
+    - name: Verify development tools are excluded
+      run: |
+        archive="ogspy-${{ steps.version.outputs.version }}.zip"
+        if unzip -Z1 "$archive" | grep -Eq '^(dev\.cmd|tools/)'; then
+          echo "Development tools must not be present in $archive"
+          exit 1
+        fi
 
     - name: Upload release package
       uses: actions/upload-artifact@v4
