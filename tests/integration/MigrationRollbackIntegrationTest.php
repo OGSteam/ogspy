@@ -1,0 +1,303 @@
+<?php declare(strict_types=1);
+
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+
+final class MigrationRollbackIntegrationTest extends TestCase
+{
+    private static string $dbName;
+    private static ?string $dbHost = null;
+    private static ?string $dbUser = null;
+    private static ?string $dbPassword = null;
+    private static ?string $dbUnavailableReason = null;
+    private static ?sql_db $db = null;
+    private static ?MigrationManager $migrationManager = null;
+    private static LoggerInterface $logger;
+
+    public static function setUpBeforeClass(): void
+    {
+        if (!defined('IN_SPYOGAME')) {
+            define('IN_SPYOGAME', true);
+        }
+
+        require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
+        require_once dirname(__DIR__, 2) . '/includes/mysql.php';
+        require_once dirname(__DIR__, 2) . '/install/MigrationManager.php';
+        require_once dirname(__DIR__, 2) . '/install/migrations/00000000000_initial.php';
+
+        self::$dbName = 'ogspy_test_disposable_' . bin2hex(random_bytes(4));
+        $password = getenv('OGSPY_TEST_DB_PASSWORD');
+        if (!is_string($password) || $password === '') {
+            self::$dbUnavailableReason = 'Set OGSPY_TEST_DB_PASSWORD to run MariaDB integration tests.';
+            return;
+        }
+
+        self::$dbHost = getenv('OGSPY_TEST_DB_HOST') ?: '127.0.0.1';
+        self::$dbUser = getenv('OGSPY_TEST_DB_USER') ?: 'root';
+        self::$dbPassword = $password;
+
+        try {
+            $mysqli = @new mysqli(self::$dbHost, self::$dbUser, self::$dbPassword, '');
+            if ($mysqli->connect_errno) {
+                self::$dbUnavailableReason = 'MariaDB connection failed: ' . $mysqli->connect_error;
+                return;
+            }
+            $mysqli->query("DROP DATABASE IF EXISTS `" . self::$dbName . "`");
+            $mysqli->query("CREATE DATABASE `" . self::$dbName . "` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            $mysqli->close();
+        } catch (Throwable $e) {
+            self::$dbUnavailableReason = 'MariaDB test database setup failed: ' . $e->getMessage();
+            return;
+        }
+
+        self::$logger = new NullLogger();
+        $GLOBALS['logSQL'] = self::$logger;
+        $GLOBALS['logSlowSQL'] = self::$logger;
+
+        self::$db = sql_db::getInstance(self::$dbHost, self::$dbUser, self::$dbPassword, self::$dbName);
+        self::$migrationManager = new MigrationManager(self::$db, self::$logger, 'ogspy_');
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        if (self::$db !== null) {
+            self::$db->sql_close();
+            self::$db = null;
+        }
+
+        if (isset(self::$dbName) && self::$dbHost !== null && self::$dbUser !== null && self::$dbPassword !== null) {
+            try {
+                $mysqli = @new mysqli(self::$dbHost, self::$dbUser, self::$dbPassword, '');
+                if (!$mysqli->connect_errno) {
+                    $mysqli->query("DROP DATABASE IF EXISTS `" . self::$dbName . "`");
+                    $mysqli->close();
+                }
+            } catch (Throwable $e) {
+                // Ignore cleanup errors
+            }
+        }
+    }
+
+    protected function setUp(): void
+    {
+        if (self::$db === null || self::$migrationManager === null) {
+            $this->markTestSkipped(self::$dbUnavailableReason ?? 'MariaDB test database is not available.');
+        }
+    }
+
+    private function getColumnType(string $table, string $column): ?string
+    {
+        $res = self::$db->sql_query("SHOW COLUMNS FROM `{$table}` WHERE Field = '" . self::$db->sql_escape_string($column) . "'");
+        $row = self::$db->sql_fetch_assoc($res);
+        return $row ? strtolower($row['Type']) : null;
+    }
+
+    private function getIndexColumns(string $table, string $indexName): array
+    {
+        $cols = [];
+        $res = self::$db->sql_query("SHOW INDEX FROM `{$table}` WHERE Key_name = '" . self::$db->sql_escape_string($indexName) . "'");
+        while ($row = self::$db->sql_fetch_assoc($res)) {
+            $cols[(int)$row['Seq_in_index']] = $row['Column_name'];
+        }
+        ksort($cols);
+        return array_values($cols);
+    }
+
+    private function isMigrationRecorded(string $version): bool
+    {
+        $escaped = self::$db->sql_escape_string($version);
+        $res = self::$db->sql_query("SELECT id, success FROM `ogspy_migrations` WHERE migration = '{$escaped}' AND success = 1");
+        $row = self::$db->sql_fetch_assoc($res);
+        return $row !== false && $row !== null;
+    }
+
+    public function testApplyMigrationsAndRollbackReversibleMigration(): void
+    {
+        $available = self::$migrationManager->getAvailableMigrations();
+        $this->assertArrayHasKey('00000000000', $available, 'Initial migration must be available');
+        $this->assertArrayHasKey('20251227001', $available, '4.0.3 migration must be available');
+
+        // 1. Apply initial migration
+        $initialApplied = self::$migrationManager->runMigration($available['00000000000']);
+        $this->assertTrue($initialApplied, 'Initial migration must run successfully');
+        $this->assertTrue($this->isMigrationRecorded('00000000000'), 'Initial migration must be recorded in ogspy_migrations');
+
+        // Prepare pre-4.0.3 state (VARCHAR(255) and legacy indexes) to test migration upgrade + rollback
+        self::$db->sql_query("ALTER TABLE `ogspy_config` CHANGE `name` `name` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL");
+        self::$db->sql_query("ALTER TABLE `ogspy_statistics` CHANGE `statistic_name` `statistic_name` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL");
+        self::$db->sql_query("ALTER TABLE `ogspy_mod_config` CHANGE `config` `config` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL");
+        self::$db->sql_query("ALTER TABLE `ogspy_mod_user_config` CHANGE `config` `config` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL");
+        self::$db->sql_query("ALTER TABLE `ogspy_game_rank_ally_points` DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `ally`)");
+        self::$db->sql_query("ALTER TABLE `ogspy_game_rank_player_points` DROP INDEX IF EXISTS `datadate`, ADD INDEX `datadate` (`datadate`, `player`)");
+
+        // Verify pre-4.0.3 schema state
+        $this->assertEquals('varchar(255)', $this->getColumnType('ogspy_config', 'name'));
+        $this->assertEquals(['datadate', 'ally'], $this->getIndexColumns('ogspy_game_rank_ally_points', 'datadate'));
+        $this->assertEquals(['datadate', 'player'], $this->getIndexColumns('ogspy_game_rank_player_points', 'datadate'));
+
+        // 2. Apply 4.0.3 migration
+        $v403Applied = self::$migrationManager->runMigration($available['20251227001']);
+        $this->assertTrue($v403Applied, '4.0.3 migration must run successfully');
+        $this->assertTrue($this->isMigrationRecorded('20251227001'), '4.0.3 migration must be recorded in ogspy_migrations');
+
+        // Verify 4.0.3 schema state
+        $this->assertEquals('varchar(190)', $this->getColumnType('ogspy_config', 'name'));
+        $this->assertEquals('varchar(190)', $this->getColumnType('ogspy_statistics', 'statistic_name'));
+        $this->assertEquals('varchar(190)', $this->getColumnType('ogspy_mod_config', 'config'));
+        $this->assertEquals('varchar(190)', $this->getColumnType('ogspy_mod_user_config', 'config'));
+        $this->assertEquals(['datadate', 'ally_id'], $this->getIndexColumns('ogspy_game_rank_ally_points', 'datadate'));
+        $this->assertEquals(['datadate', 'player_id'], $this->getIndexColumns('ogspy_game_rank_player_points', 'datadate'));
+
+        // 3. Rollback 4.0.3 migration
+        $rollbackSuccess = self::$migrationManager->rollbackMigration('20251227001');
+        $this->assertTrue($rollbackSuccess, 'rollbackMigration must return true on successful rollback');
+
+        // Verify schema is reversed to pre-4.0.3 state
+        $this->assertEquals('varchar(255)', $this->getColumnType('ogspy_config', 'name'), 'ogspy_config.name must revert to varchar(255)');
+        $this->assertEquals('varchar(255)', $this->getColumnType('ogspy_statistics', 'statistic_name'), 'ogspy_statistics.statistic_name must revert to varchar(255)');
+        $this->assertEquals('varchar(255)', $this->getColumnType('ogspy_mod_config', 'config'), 'ogspy_mod_config.config must revert to varchar(255)');
+        $this->assertEquals('varchar(255)', $this->getColumnType('ogspy_mod_user_config', 'config'), 'ogspy_mod_user_config.config must revert to varchar(255)');
+        $this->assertEquals(['datadate', 'ally'], $this->getIndexColumns('ogspy_game_rank_ally_points', 'datadate'), 'ogspy_game_rank_ally_points datadate index must revert to (datadate, ally)');
+        $this->assertEquals(['datadate', 'player'], $this->getIndexColumns('ogspy_game_rank_player_points', 'datadate'), 'ogspy_game_rank_player_points datadate index must revert to (datadate, player)');
+
+        // Verify migration history: 20251227001 is removed, 00000000000 remains
+        $this->assertFalse($this->isMigrationRecorded('20251227001'), '20251227001 must be removed from ogspy_migrations after rollback');
+        $this->assertTrue($this->isMigrationRecorded('00000000000'), '00000000000 must remain recorded in ogspy_migrations');
+    }
+
+    public function testRollbackUnsupportedMigrationFailsAndRetainsHistory(): void
+    {
+        $this->assertTrue($this->isMigrationRecorded('00000000000'), 'Initial migration should be recorded');
+
+        $exceptionThrown = false;
+        try {
+            self::$migrationManager->rollbackMigration('00000000000');
+        } catch (Exception $e) {
+            $exceptionThrown = true;
+            $this->assertStringContainsString('Rollback is not supported for migration 00000000000', $e->getMessage());
+        }
+
+        $this->assertTrue($exceptionThrown, 'rollbackMigration must throw when migration does not support rollback');
+
+        // History record must be retained
+        $this->assertTrue($this->isMigrationRecorded('00000000000'), '00000000000 must remain recorded in ogspy_migrations after failed rollback');
+
+        // Schema must remain intact
+        $this->assertEquals('varchar(255)', $this->getColumnType('ogspy_config', 'name'));
+    }
+
+    public function testRollbackUnappliedMigrationFails(): void
+    {
+        // 20251227001 was rolled back earlier and is not recorded
+        $this->assertFalse($this->isMigrationRecorded('20251227001'));
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('is not recorded as successfully applied');
+        self::$migrationManager->rollbackMigration('20251227001');
+    }
+
+    public function testRollbackUnknownMigrationFails(): void
+    {
+        $this->expectException(MigrationRollbackException::class);
+        $this->expectExceptionMessage('Migration 99999999999 not found');
+        self::$migrationManager->rollbackMigration('99999999999');
+    }
+
+    public function testInitialMigrationRejectsDirectRollback(): void
+    {
+        $migration = new Migration_00000000000_Initial();
+
+        $this->assertFalse($migration->canRollback());
+        $this->expectException(MigrationRollbackException::class);
+        $migration->down();
+    }
+
+    public function testRollbackProcessesArraySqlAndRetainsHistoryWhenDownReturnsFalse(): void
+    {
+        $arrayVersion = '99999999002';
+        $falseVersion = '99999999003';
+        $arrayMigrationFile = dirname(__DIR__, 2) . '/install/migrations/99999999002_rollback_array_test.php';
+        $falseMigrationFile = dirname(__DIR__, 2) . '/install/migrations/99999999003_rollback_false_test.php';
+
+        file_put_contents($arrayMigrationFile, '<?php
+class Migration_99999999002_RollbackArrayTest {
+    public function canRollback(): bool { return true; }
+    public function down($_db = null): array { return ["CREATE TABLE ogspy_rollback_array_test (id INT)"]; }
+}');
+        file_put_contents($falseMigrationFile, '<?php
+class Migration_99999999003_RollbackFalseTest {
+    public function canRollback(): bool { return true; }
+    public function down($_db = null): bool { return false; }
+}');
+
+        self::$db->sql_query("DROP TABLE IF EXISTS `ogspy_rollback_array_test`");
+        self::$db->sql_query("INSERT INTO `ogspy_migrations` (migration, success) VALUES ('{$arrayVersion}', 1), ('{$falseVersion}', 1)");
+
+        try {
+            $this->assertTrue(self::$migrationManager->rollbackMigration($arrayVersion));
+            $result = self::$db->sql_query("SHOW TABLES LIKE 'ogspy_rollback_array_test'");
+            $this->assertNotFalse(self::$db->sql_fetch_assoc($result), 'Array SQL should be executed during rollback');
+            $this->assertFalse($this->isMigrationRecorded($arrayVersion), 'Successful rollback should remove its history');
+
+            try {
+                self::$migrationManager->rollbackMigration($falseVersion);
+                $this->fail('A false down() result must fail the rollback');
+            } catch (MigrationRollbackException $exception) {
+                $this->assertStringContainsString('Rollback execution failed', $exception->getMessage());
+            }
+
+            $this->assertTrue($this->isMigrationRecorded($falseVersion), 'Failed rollback must retain its history');
+        } finally {
+            self::$db->sql_query("DROP TABLE IF EXISTS `ogspy_rollback_array_test`");
+            self::$db->sql_query("DELETE FROM `ogspy_migrations` WHERE migration IN ('{$arrayVersion}', '{$falseVersion}')");
+            if (file_exists($arrayMigrationFile)) {
+                unlink($arrayMigrationFile);
+            }
+            if (file_exists($falseMigrationFile)) {
+                unlink($falseMigrationFile);
+            }
+        }
+    }
+
+    public function testRollbackFailureRetainsHistoryRecord(): void
+    {
+        // Insert a simulated migration into history
+        self::$db->sql_query("INSERT INTO `ogspy_migrations` (migration, success) VALUES ('99999999001', 1)");
+        $this->assertTrue($this->isMigrationRecorded('99999999001'));
+
+        // Create a temporary migration file that claims canRollback() = true but throws in down()
+        $tempMigrationFile = dirname(__DIR__, 2) . '/install/migrations/99999999001_rollback_fail_test.php';
+        $code = '<?php
+class Migration_99999999001_RollbackFailTest {
+    public function getVersion(): string { return "99999999001"; }
+    public function getDescription(): string { return "Rollback failure test"; }
+    public function up(): string { return ""; }
+    public function canRollback(): bool { return true; }
+    public function down($_db = null) {
+        throw new MigrationRollbackException("Simulated error inside down()");
+    }
+}';
+        file_put_contents($tempMigrationFile, $code);
+
+        try {
+            $exceptionThrown = false;
+            try {
+                self::$migrationManager->rollbackMigration('99999999001');
+            } catch (Exception $e) {
+                $exceptionThrown = true;
+                $this->assertStringContainsString('Simulated error inside down()', $e->getMessage());
+            }
+
+            $this->assertTrue($exceptionThrown, 'rollbackMigration must throw when down() fails');
+
+            // History record MUST be retained
+            $this->assertTrue($this->isMigrationRecorded('99999999001'), 'History record must be retained when rollback fails');
+        } finally {
+            if (file_exists($tempMigrationFile)) {
+                unlink($tempMigrationFile);
+            }
+            self::$db->sql_query("DELETE FROM `ogspy_migrations` WHERE migration = '99999999001'");
+        }
+    }
+}
