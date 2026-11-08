@@ -29,7 +29,12 @@ class Migration_00000000000_Initial {
         return $combinedSQL;
     }
 
-    public function down($db): void {
-        throw new \RuntimeException('Rollback is not supported for this migration.');
+    public function canRollback(): bool {
+        return false;
+    }
+
+    public function down($_db = null): void {
+        throw new MigrationRollbackException("Rollback is not supported for migration 00000000000 (Initial schema).");
+
     }
 }

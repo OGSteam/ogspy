@@ -1,6 +1,5 @@
 <?php
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
@@ -25,30 +24,16 @@ class MigrationRollbackTest extends TestCase
                 return addslashes($s);
             }
 
+            public function sql_fetch_assoc($result)
+            {
+                return ['id' => 1, 'migration' => '99999999999', 'success' => 1];
+            }
+
             public function sql_transaction($action)
             {
                 $this->transactions[] = $action;
             }
         };
-    }
-
-    #[DataProvider('shippedMigrations')]
-    public function testRollbackOfUnsupportedMigrationFailsAndKeepsHistory(string $version): void
-    {
-        $db = $this->fakeDb();
-        $manager = new MigrationManager($db, new NullLogger(), 'ogspy_');
-
-        try {
-            $manager->rollbackMigration($version);
-            $this->fail('Rollback must fail explicitly');
-        } catch (Exception $e) {
-            $this->assertStringContainsString('not supported', $e->getMessage());
-        }
-
-        foreach ($db->queries as $sql) {
-            $this->assertStringNotContainsString('DELETE FROM', $sql);
-        }
-        $this->assertSame(['begin', 'rollback'], $db->transactions);
     }
 
     public function testRollbackOfMigrationWithoutDownMethodFailsAndKeepsHistory(): void
@@ -77,21 +62,16 @@ PHP);
                 $manager->rollbackMigration('99999999999');
                 $this->fail('Rollback must fail explicitly');
             } catch (Exception $e) {
-                $this->assertStringContainsString('not supported', $e->getMessage());
+                $this->assertStringContainsString("Method 'down' missing", $e->getMessage());
             }
 
             foreach ($db->queries as $sql) {
                 $this->assertStringNotContainsString('DELETE FROM', $sql);
             }
-            $this->assertSame(['begin', 'rollback'], $db->transactions);
+            $this->assertSame([], $db->transactions);
         } finally {
             array_map('unlink', glob($dir . '/*'));
             rmdir($dir);
         }
-    }
-
-    public static function shippedMigrations(): array
-    {
-        return [['00000000000'], ['20251227001']];
     }
 }
