@@ -36,8 +36,36 @@ function Invoke-DockerCompose {
     }
 }
 
-if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
-    throw 'Docker est introuvable. Installe ou demarre Docker Desktop.'
+function Test-DockerCommand {
+    param([string[]]$Arguments)
+
+    $previousErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = 'SilentlyContinue'
+    try {
+        & docker @Arguments *> $null
+        return $LASTEXITCODE -eq 0
+    }
+    finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+}
+
+function Assert-DockerAvailable {
+    if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
+        throw 'Docker est introuvable. Installe Docker Desktop puis reessaie.'
+    }
+
+    if (-not (Test-DockerCommand -Arguments @('info'))) {
+        throw 'Le moteur Docker ne repond pas. Demarre Docker Desktop puis reessaie.'
+    }
+
+    if (-not (Test-DockerCommand -Arguments @('compose', 'version'))) {
+        throw 'Docker Compose est indisponible. Mets Docker Desktop a jour puis reessaie.'
+    }
+}
+
+if ($Command -ne 'help') {
+    Assert-DockerAvailable
 }
 
 Push-Location $projectRoot
