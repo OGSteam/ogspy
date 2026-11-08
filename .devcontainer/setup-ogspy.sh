@@ -13,6 +13,7 @@ ADMIN_USER=${ADMIN_USER:-"admin"}
 ADMIN_PASSWORD=${ADMIN_PASSWORD:-"admin123"}
 ADMIN_EMAIL=${ADMIN_EMAIL:-"admin@example.com"}
 DB_PREFIX=${DB_PREFIX:-"ogspy_"}
+OGSPY_HTTP_PORT=${OGSPY_HTTP_PORT:-"8080"}
 
 if [[ ! "$DB_PREFIX" =~ ^[A-Za-z0-9_]+$ ]]; then
   echo "❌ Le préfixe de tables doit contenir uniquement des lettres, chiffres et underscores."
@@ -54,7 +55,9 @@ done
 
 echo "✅ Base de données prête."
 
-if php -r '$m = new mysqli(getenv("DB_HOST"), getenv("DB_USER"), getenv("DB_PASSWORD"), getenv("DB_NAME")); $table = getenv("DB_PREFIX") . "config"; $result = $m->query("SHOW TABLES LIKE \"$table\""); exit($result && $result->num_rows > 0 ? 0 : 1);' >/dev/null 2>&1; then
+if [ -f "/var/www/html/config/id.php" ] \
+  && [ -f "/var/www/html/install/install.lock" ] \
+  && php -r '$m = new mysqli(getenv("DB_HOST"), getenv("DB_USER"), getenv("DB_PASSWORD"), getenv("DB_NAME")); $table = getenv("DB_PREFIX") . "config"; $stmt = $m->prepare("SELECT 1 FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = ? LIMIT 1"); $stmt->bind_param("s", $table); $stmt->execute(); $stmt->store_result(); exit($stmt->num_rows > 0 ? 0 : 1);' >/dev/null 2>&1; then
   echo "✅ OGSpy est déjà installé, aucune réinstallation n'est nécessaire."
   exit 0
 fi
@@ -73,5 +76,5 @@ echo "🚀 Installation d'OGSpy..."
 php install/upgrade_cli.php install "$DB_HOST" "$DB_USER" "$DB_PASSWORD" "$DB_NAME" "$ADMIN_USER" "$ADMIN_PASSWORD" "$ADMIN_EMAIL" "$DB_PREFIX"
 
 echo "✅ Installation OGSpy terminée."
-echo "🌐 OGSpy est accessible sur http://localhost:8080"
+echo "🌐 OGSpy est accessible sur http://localhost:$OGSPY_HTTP_PORT"
 echo "👤 Connexion: $ADMIN_USER / $ADMIN_PASSWORD"

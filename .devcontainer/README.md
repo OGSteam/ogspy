@@ -70,7 +70,14 @@ ADMIN_PASSWORD=admin123       # Mot de passe admin
 ADMIN_EMAIL=admin@example.com # Email admin
 DB_PREFIX=ogspy_              # Préfixe des tables
 OGSPY_HTTP_PORT=8080          # Port HTTP exposé sur le PC
+USER_UID=1000                 # UID du compte hôte sous Linux (`id -u`)
+USER_GID=1000                 # GID du compte hôte sous Linux (`id -g`)
 ```
+
+Sous Linux, renseignez `USER_UID` et `USER_GID` avec les résultats de
+`id -u` et `id -g`. Si le checkout reste non accessible, l'entrypoint ajuste
+uniquement les dossiers d'écriture d'OGSpy. Sous Docker Desktop, les valeurs par
+défaut conviennent généralement.
 
 ### Services inclus
 - **Apache/PHP 8.5** : serveur web sur le port 8080
