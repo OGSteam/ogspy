@@ -160,7 +160,7 @@ jobs:
       contents: write
     steps:
     - name: Download release package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: ogspy-${{ needs.package.outputs.version }}
         path: release-package
