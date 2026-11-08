@@ -36,6 +36,34 @@ function Invoke-DockerCompose {
     }
 }
 
+function Get-DockerComposePort {
+    param(
+        [string]$Service,
+        [int]$ContainerPort,
+        [int]$FallbackPort
+    )
+
+    $binding = & docker @composeArguments port $Service $ContainerPort 2>$null
+    if ($LASTEXITCODE -eq 0 -and $binding) {
+        $firstBinding = @($binding)[0]
+        if ($firstBinding -match ':(\d+)$') {
+            return [int]$Matches[1]
+        }
+    }
+
+    return $FallbackPort
+}
+
+function Show-DevelopmentEndpoints {
+    $httpPort = Get-DockerComposePort -Service 'ogspy-web' -ContainerPort 80 -FallbackPort 8080
+    $databasePort = Get-DockerComposePort -Service 'db' -ContainerPort 3306 -FallbackPort 3306
+
+    Write-Host ''
+    Write-Host 'OGSpy est disponible :' -ForegroundColor Green
+    Write-Host "  Web       http://localhost:$httpPort"
+    Write-Host "  MariaDB   localhost:$databasePort"
+}
+
 function Test-DockerCommand {
     param([string[]]$Arguments)
 
@@ -107,9 +135,11 @@ Exemples :
         }
         'up' {
             Invoke-DockerCompose @('up', '-d')
+            Show-DevelopmentEndpoints
         }
         'build' {
             Invoke-DockerCompose @('up', '--build', '-d')
+            Show-DevelopmentEndpoints
         }
         'down' {
             Invoke-DockerCompose @('down')
@@ -119,9 +149,11 @@ Exemples :
         }
         'start' {
             Invoke-DockerCompose @('start')
+            Show-DevelopmentEndpoints
         }
         'restart' {
             Invoke-DockerCompose @('restart')
+            Show-DevelopmentEndpoints
         }
         'logs' {
             Invoke-DockerCompose @('logs', '--tail', '150', '--follow', $Service)
@@ -168,6 +200,7 @@ Exemples :
             }
 
             Invoke-DockerCompose @('up', '--build', '-d')
+            Show-DevelopmentEndpoints
         }
         'doctor' {
             & docker version
@@ -179,7 +212,8 @@ Exemples :
             Invoke-DockerCompose @('exec', '-T', 'ogspy-web', 'php', '--version')
         }
         'open' {
-            Start-Process 'http://localhost:8080'
+            $httpPort = Get-DockerComposePort -Service 'ogspy-web' -ContainerPort 80 -FallbackPort 8080
+            Start-Process "http://localhost:$httpPort"
         }
     }
 }
