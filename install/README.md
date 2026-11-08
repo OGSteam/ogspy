@@ -109,6 +109,25 @@ Le système convertit automatiquement le nom de fichier en nom de classe CamelCa
 5. **Éviter les modifications de limites PHP** (incompatibles hébergement mutualisé)
 6. **Ajouter des commentaires** pour clarifier les sections SQL
 
+### Contrat de Rollback (Annulation de migration)
+
+Le système de rollback garantit que l'historique des migrations reste strictement cohérent avec l'état réel de la base de données :
+
+1. **Déclaration de support (`canRollback(): bool`)** :
+   - Une migration indique si elle prend en charge l'inversion en implémentant `canRollback(): bool`.
+   - Si `canRollback()` retourne `false`, ou si la méthode `down()` est absente, le rollback échoue explicitement avec une exception.
+   - L'enregistrement d'historique dans `ogspy_migrations` est **conservé** en cas d'échec ou d'opération non supportée.
+   - Les migrations irréversibles (telle que `00000000000_Initial`) déclarent `canRollback(): bool { return false; }` et lèvent une exception dans `down()`.
+
+2. **Exécution de l'inversion (`down($db)`)** :
+   - La méthode `down($db)` implémente l'inversion exacte des modifications apportées par `up()`.
+   - Elle peut retourner une chaîne de requêtes SQL (qui sera exécutée par `MigrationManager` avec substitution du préfixe de table) ou exécuter directement les requêtes via l'objet `$db`.
+   - Si `down()` lève une exception ou retourne `false`, la transaction est annulée et l'enregistrement d'historique est conservé.
+
+3. **Suppression de l'historique conditionnelle au succès** :
+   - L'enregistrement correspondant dans la table `ogspy_migrations` n'est supprimé qu'après l'exécution réussie de l'inversion.
+   - Si le rollback échoue ou n'est pas supporté, la migration reste marquée comme appliquée dans la base de données.
+
 ## Auto-Upgrade
 
 ### Fonctionnement
@@ -227,6 +246,9 @@ php install/upgrade_cli.php check
 
 # Lancer une mise à jour
 php install/upgrade_cli.php upgrade
+
+# Annuler une migration spécifique
+php install/upgrade_cli.php rollback 20251227001
 
 # Forcer en cas de problème
 php install/upgrade_cli.php force

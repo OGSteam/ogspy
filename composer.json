@@ -20,7 +20,7 @@
     }
   ],
   "require": {
-    "php": ">=8.1",
+    "php": ">=8.3",
     "ext-mysqli": "*",
     "ext-json": "*",
     "ext-zlib": "*",
@@ -38,9 +38,11 @@
       "Ogsteam\\Ogspy\\Core\\": "core/",
       "Ogsteam\\Ogspy\\Helper\\": "core/helper/",
       "Ogsteam\\Ogspy\\Abstracts\\": "core/abstract/",
-      "Ogsteam\\Ogspy\\Model\\": "model/",
-      "Ogsteam\\Ogspy\\Install\\": "install/"
-    }
+      "Ogsteam\\Ogspy\\Model\\": "model/"
+    },
+    "classmap": [
+      "install/"
+    ]
   },
   "homepage": "https://github.com/ogsteam/ogspy",
   "support": {
@@ -49,12 +51,12 @@
     "chat": "https://discord.gg/Azcb67b"
   },
   "require-dev": {
-    "phpunit/phpunit": "^13.0"
+    "phpunit/phpunit": "^12.5"
   },
   "scripts": {
-    "test": [
-      "XDEBUG_MODE=coverage php vendor/bin/phpunit"
-    ],
+    "test": "php vendor/bin/phpunit --no-coverage",
+    "test:unit": "php vendor/bin/phpunit --testsuite Unit --no-coverage",
+    "test:coverage": "php vendor/bin/phpunit",
     "server": [
       "php -S localhost:8000"
     ]

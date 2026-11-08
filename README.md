@@ -37,7 +37,7 @@ Avant d'installer OGSpy, assurez-vous que votre serveur répond aux exigences su
 
 | Élément | Version minimale | Version recommandée |
 |---------|-----------------|---------------------|
-| PHP     | 8.1             | 8.4                 |
+| PHP     | 8.3             | 8.4                 |
 
 #### Extensions PHP requises
 
@@ -130,6 +130,26 @@ Vous pouvez tester un serveur OGSpy, une démo est disponible :
 - Serveur de test : <https://ogspy.fr/demo>
 - Nom d'utilisateur : demo
 - Mot de passe : ogsteam
+
+---
+
+## Développement local
+
+L'environnement Docker fournit PHP, Apache, MariaDB, Composer, PHPUnit et
+Xdebug. Le démarrage sous Windows se fait depuis PowerShell :
+
+```powershell
+.\dev.cmd help
+.\dev.cmd shell
+.\tools\dev.ps1 up
+.\tools\dev.ps1 doctor
+.\tools\dev.ps1 test
+```
+
+OGSpy est ensuite accessible sur <http://localhost:8080> et MariaDB sur
+`localhost:3306`. Consultez le
+[guide du devcontainer](.devcontainer/README.md) pour les commandes de base de
+données, la couverture et le débogage VS Code.
 
 ---
 
