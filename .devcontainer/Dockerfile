@@ -1,4 +1,4 @@
-FROM php:8.5-apache
+FROM php:8.6-apache
 
 # Install system packages and PHP extensions at build time
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
