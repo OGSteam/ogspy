@@ -25,7 +25,7 @@ class Migration_20261122001_AddLifeformData
         return true;
     }
 
-    public function down($_db = null): string
+    public function down(): string
     {
         return $this->readSchema('ogspy_20261122001_AddLifeformData_down.sql');
     }

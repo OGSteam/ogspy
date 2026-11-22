@@ -40,8 +40,12 @@ if (!defined("INSTALL_IN_PROGRESS")) {
         // Tables Player
     if (!defined("TABLE_UNIVERSE")) define("TABLE_UNIVERSE", $table_prefix . "game_universe");
     if (!defined("TABLE_USER_BUILDING")) define("TABLE_USER_BUILDING", $table_prefix . "game_astro_object");
-    if (!defined("TABLE_GAME_LIFEFORM_BUILDING")) define("TABLE_GAME_LIFEFORM_BUILDING", $table_prefix . "game_astro_object_lifeform_building");
-    if (!defined("TABLE_GAME_LIFEFORM_RESEARCH")) define("TABLE_GAME_LIFEFORM_RESEARCH", $table_prefix . "game_astro_object_lifeform_research");
+    if (!defined("TABLE_GAME_LIFEFORM_BUILDING")) {
+        define("TABLE_GAME_LIFEFORM_BUILDING", $table_prefix . "game_astro_object_lifeform_building");
+    }
+    if (!defined("TABLE_GAME_LIFEFORM_RESEARCH")) {
+        define("TABLE_GAME_LIFEFORM_RESEARCH", $table_prefix . "game_astro_object_lifeform_research");
+    }
     if (!defined("TABLE_GAME_PLAYER_DEFENSE")) define("TABLE_GAME_PLAYER_DEFENSE", $table_prefix . "game_player_defense");
     if (!defined("TABLE_GAME_PLAYER_FLEET")) define("TABLE_GAME_PLAYER_FLEET", $table_prefix . "game_player_fleet");
     if (!defined("TABLE_USER_SPY")) define("TABLE_USER_SPY", $table_prefix . "game_player_spy");

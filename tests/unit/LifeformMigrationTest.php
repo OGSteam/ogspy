@@ -11,9 +11,20 @@ class LifeformMigrationTest extends TestCase
         $migration = new Migration_20261122001_AddLifeformData();
 
         $this->assertSame('20261122001', $migration->getVersion());
+        $this->assertSame('Add life-form building and research storage', $migration->getDescription());
+        $this->assertTrue($migration->canRollback());
         $this->assertStringContainsString('game_astro_object_lifeform_building', $migration->up());
         $this->assertStringContainsString('game_astro_object_lifeform_research', $migration->up());
         $this->assertStringContainsString('DROP TABLE IF EXISTS `ogspy_game_astro_object_lifeform_building`', $migration->down());
         $this->assertStringContainsString('DROP TABLE IF EXISTS `ogspy_game_astro_object_lifeform_research`', $migration->down());
+    }
+
+    public function testMigrationReportsAMissingSchema(): void
+    {
+        $migration = new Migration_20261122001_AddLifeformData();
+        $method = new ReflectionMethod($migration, 'readSchema');
+
+        $this->expectException(MigrationRollbackException::class);
+        $method->invoke($migration, 'missing-lifeform-schema.sql');
     }
 }
