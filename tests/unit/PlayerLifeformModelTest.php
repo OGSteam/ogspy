@@ -7,8 +7,8 @@ use PHPUnit\Framework\TestCase;
 foreach ([
     'IN_SPYOGAME' => true,
     'TABLE_USER_BUILDING' => 'ogspy_game_astro_object',
-    'TABLE_GAME_LIFEFORM_BUILDING' => 'ogspy_game_astro_object_lifeform_building',
-    'TABLE_GAME_LIFEFORM_RESEARCH' => 'ogspy_game_astro_object_lifeform_research',
+    'TABLE_GAME_LIFEFORM_BUILDING' => 'ogspy_game_lifeform_building',
+    'TABLE_GAME_LIFEFORM_RESEARCH' => 'ogspy_game_lifeform_research',
 ] as $name => $value) {
     if (!defined($name)) {
         define($name, $value);

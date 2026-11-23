@@ -13,10 +13,10 @@ class LifeformMigrationTest extends TestCase
         $this->assertSame('20261122001', $migration->getVersion());
         $this->assertSame('Add life-form building and research storage', $migration->getDescription());
         $this->assertTrue($migration->canRollback());
-        $this->assertStringContainsString('game_astro_object_lifeform_building', $migration->up());
-        $this->assertStringContainsString('game_astro_object_lifeform_research', $migration->up());
-        $this->assertStringContainsString('DROP TABLE IF EXISTS `ogspy_game_astro_object_lifeform_building`', $migration->down());
-        $this->assertStringContainsString('DROP TABLE IF EXISTS `ogspy_game_astro_object_lifeform_research`', $migration->down());
+        $this->assertStringContainsString('game_lifeform_building', $migration->up());
+        $this->assertStringContainsString('game_lifeform_research', $migration->up());
+        $this->assertStringContainsString('DROP TABLE IF EXISTS `ogspy_game_lifeform_building`', $migration->down());
+        $this->assertStringContainsString('DROP TABLE IF EXISTS `ogspy_game_lifeform_research`', $migration->down());
     }
 
     public function testMigrationReportsAMissingSchema(): void

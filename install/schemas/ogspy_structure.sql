@@ -25,8 +25,8 @@ DROP TABLE IF EXISTS
     `ogspy_game_ally`,
     `ogspy_game_universe`,
     `ogspy_game_astro_object`,
-    `ogspy_game_astro_object_lifeform_building`,
-    `ogspy_game_astro_object_lifeform_research`,
+    `ogspy_game_lifeform_building`,
+    `ogspy_game_lifeform_research`,
     `ogspy_game_player_defense`,
     `ogspy_game_player_spy`,
     `ogspy_game_player_technology`,
@@ -349,7 +349,7 @@ CREATE TABLE `ogspy_game_astro_object`
 -- Buildings and selected research are planet-specific and intentionally
 -- stored separately because their identifiers may overlap.
 --
-CREATE TABLE `ogspy_game_astro_object_lifeform_building`
+CREATE TABLE `ogspy_game_lifeform_building`
 (
     `astro_object_id` INT          NOT NULL,
     `technology_id`  INT UNSIGNED NOT NULL,
@@ -360,7 +360,7 @@ CREATE TABLE `ogspy_game_astro_object_lifeform_building`
 ) DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_bin;
 
-CREATE TABLE `ogspy_game_astro_object_lifeform_research`
+CREATE TABLE `ogspy_game_lifeform_research`
 (
     `astro_object_id` INT          NOT NULL,
     `technology_id`  INT UNSIGNED NOT NULL,

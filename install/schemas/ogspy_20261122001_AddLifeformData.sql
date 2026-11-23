@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `ogspy_game_astro_object_lifeform_building`
+CREATE TABLE IF NOT EXISTS `ogspy_game_lifeform_building`
 (
     `astro_object_id` INT          NOT NULL,
     `technology_id`  INT UNSIGNED NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `ogspy_game_astro_object_lifeform_building`
     KEY `technology_id` (`technology_id`)
 ) DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_bin;
 
-CREATE TABLE IF NOT EXISTS `ogspy_game_astro_object_lifeform_research`
+CREATE TABLE IF NOT EXISTS `ogspy_game_lifeform_research`
 (
     `astro_object_id` INT          NOT NULL,
     `technology_id`  INT UNSIGNED NOT NULL,
