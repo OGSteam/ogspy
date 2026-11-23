@@ -15,20 +15,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PCOV for code coverage (lightweight alternative to Xdebug)
-RUN pecl install pcov \
-    && docker-php-ext-enable pcov
-
-# Configure PCOV (append to existing config)
-RUN { \
-    echo ""; \
-    echo "pcov.enabled=1"; \
-    echo "pcov.directory=/var/www/html"; \
-} >> /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
-
-# Install Xdebug for on-demand debugging (separate from coverage)
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
+# Xdebug 3.6 is the first release line compatible with PHP 8.6.
+RUN --mount=type=bind,from=ghcr.io/php/pie:bin,source=/pie,target=/usr/local/bin/pie \
+    pie install --no-cache xdebug/xdebug:3.6.0alpha1
 
 # Configure Xdebug for debugging only (append to existing config)
 RUN { \
