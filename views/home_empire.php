@@ -644,7 +644,7 @@ $min_width_px = $label_width_px + ($nb_planete * $per_column_px);
     <?php endforeach; ?>
     </tbody>
 
-    <?php require 'views/home_empire_lifeforms.php'; ?>
+    <?php require_once 'views/home_empire_lifeforms.php'; ?>
 
     <thead>
     <tr>

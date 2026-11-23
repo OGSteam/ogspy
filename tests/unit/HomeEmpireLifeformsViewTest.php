@@ -53,7 +53,7 @@ class HomeEmpireLifeformsViewTest extends TestCase
         $colspan_planets_nine = 2;
 
         ob_start();
-        require dirname(__DIR__, 2) . '/views/home_empire_lifeforms.php';
+        require dirname(__DIR__, 2) . '/views/home_empire_lifeforms.php'; // NOSONAR - the partial must render for every test case
         return ob_get_clean();
     }
 }

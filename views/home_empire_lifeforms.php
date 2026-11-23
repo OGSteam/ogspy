@@ -18,7 +18,7 @@ $lifeform_categories = [
 foreach ($lifeform_categories as $lifeform_category => $lifeform_technology_ids): ?>
 <thead>
 <tr>
-    <th colspan="<?php print $colspan_planets ?>">
+    <th scope="colgroup" colspan="<?php print $colspan_planets ?>">
         <?php echo htmlspecialchars($lifeform_labels[$lifeform_category], ENT_QUOTES, 'UTF-8'); ?>
     </th>
 </tr>
