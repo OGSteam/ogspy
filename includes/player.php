@@ -82,7 +82,7 @@ function player_get_empire($player_id)
         'lifeforms' => $player_lifeforms,
         'defenses' => $player_defense
     ]);
-    return array("building" => $player_building, "technology" => $player_technology, "lifeform" => $player_lifeforms, "defense" => $player_defense, "player_percentage" => $pctList);
+    return array("building" => $player_building, "technology" => $player_technology, "lifeforms" => $player_lifeforms, "defense" => $player_defense, "player_percentage" => $pctList);
 }
 
 /**
