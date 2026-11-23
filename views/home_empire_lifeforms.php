@@ -41,7 +41,6 @@ foreach ($lifeform_categories as $lifeform_category => $lifeform_technology_ids)
 <tr>
     <td class="tdname">
         <?php echo htmlspecialchars($technology_label, ENT_QUOTES, 'UTF-8'); ?>
-        <small>#<?php echo $technology_id; ?></small>
     </td>
     <?php foreach (array_keys($player_planets) as $planet_id): ?>
         <td class="tdcontent">

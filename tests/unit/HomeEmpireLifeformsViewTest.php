@@ -22,7 +22,7 @@ class HomeEmpireLifeformsViewTest extends TestCase
         $this->assertStringContainsString('Humains', $html);
         $this->assertStringContainsString('Rock&#039;tal', $html);
         $this->assertStringContainsString('Secteur résidentiel', $html);
-        $this->assertStringContainsString('#11101', $html);
+        $this->assertStringNotContainsString('#11101', $html);
         $this->assertMatchesRegularExpression('/>\s*12\s*</', $html);
         $this->assertMatchesRegularExpression('/>\s*7\s*</', $html);
     }
