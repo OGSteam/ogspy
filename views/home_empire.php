@@ -22,6 +22,8 @@ use Ogsteam\Ogspy\Model\Player_Model;
 
 global $server_config;
 
+require_once 'includes/lifeform.php';
+
 // On récupère les données de l'utilisateur
 $player_data = (new Player_Model())->get_player_data($user_data['player_id']);
 if (empty($player_data)) {
@@ -38,6 +40,7 @@ $user_empire = player_get_empire($player_data['id']);
 $player_building = $user_empire['building'];
 $player_defense = $user_empire['defense'];
 $user_technology = $user_empire['technology'];
+$player_lifeforms = $user_empire['lifeforms'] ?? [];
 
 // Séparation des planètes et des lunes
 $player_planets = [];
@@ -640,6 +643,8 @@ $min_width_px = $label_width_px + ($nb_planete * $per_column_px);
     </tr>
     <?php endforeach; ?>
     </tbody>
+
+    <?php require_once 'views/home_empire_lifeforms.php'; ?>
 
     <thead>
     <tr>

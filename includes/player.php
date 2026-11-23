@@ -3,6 +3,7 @@
 use Ogsteam\Ogspy\Model\Combat_Report_Model;
 use Ogsteam\Ogspy\Model\Player_Building_Model;
 use Ogsteam\Ogspy\Model\Player_Defense_Model;
+use Ogsteam\Ogspy\Model\Player_Lifeform_Model;
 use Ogsteam\Ogspy\Model\Player_Technology_Model;
 
 if (!defined('IN_SPYOGAME')) {
@@ -64,6 +65,7 @@ function player_get_empire($player_id)
     }
 
     $player_technology = (new Player_Technology_Model())->select_player_technologies($player_id);
+    $player_lifeforms = (new Player_Lifeform_Model())->select_player_lifeforms($player_id);
 
     $tDefenseList = (new Player_Defense_Model())->select_player_defense($player_id);
     $player_defense = [];
@@ -77,9 +79,10 @@ function player_get_empire($player_id)
     $log->info("[OGSpy_Player_Building_Model] player_get_empire - Player Empire Data:", [
         'buildings' => $player_building,
         'technologies' => $player_technology,
+        'lifeforms' => $player_lifeforms,
         'defenses' => $player_defense
     ]);
-    return array("building" => $player_building, "technology" => $player_technology, "defense" => $player_defense, "player_percentage" => $pctList);
+    return array("building" => $player_building, "technology" => $player_technology, "lifeforms" => $player_lifeforms, "defense" => $player_defense, "player_percentage" => $pctList);
 }
 
 /**
@@ -133,6 +136,7 @@ function user_del_building()
 
     $userBuildingModel = new Player_Building_Model();
     $userDefenseModel = new Player_Defense_Model();
+    $userLifeformModel = new Player_Lifeform_Model();
 
     if (!check_var($pub_planet_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
@@ -141,6 +145,7 @@ function user_del_building()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
+    $userLifeformModel->delete_astro_object(intval($pub_planet_id));
     $userBuildingModel->delete_user_aster($user_data["player_id"], intval($pub_planet_id)); //batiment
     $userDefenseModel->delete_user_aster(intval($pub_planet_id)); //defense
 
@@ -148,6 +153,7 @@ function user_del_building()
     // si on supprime une planete; la lune doit suivre
     if (intval($pub_planet_id) < 199) {
         $moon_id = (intval($pub_planet_id) + 100);
+        $userLifeformModel->delete_astro_object($moon_id);
         $userBuildingModel->delete_user_aster($user_data["player_id"], $moon_id); //batiment
         $userDefenseModel->delete_user_aster($moon_id); //defense
     }
