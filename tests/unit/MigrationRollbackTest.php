@@ -55,7 +55,6 @@ PHP);
             $db = $this->fakeDb();
             $manager = new MigrationManager($db, new NullLogger(), 'ogspy_');
             $prop = new ReflectionProperty(MigrationManager::class, 'migrations_path');
-            $prop->setAccessible(true);
             $prop->setValue($manager, $dir);
 
             try {
