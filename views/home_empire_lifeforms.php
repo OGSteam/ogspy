@@ -35,10 +35,12 @@ foreach ($lifeform_categories as $lifeform_category => $lifeform_technology_ids)
         $species_code = lifeform_species_code($technology_id);
         $species_label = $lang['HOME_EMPIRE_LIFEFORM_SPECIES_' . $species_code]
             ?? ($lang['HOME_EMPIRE_LIFEFORM_SPECIES_UNKNOWN'] ?? 'Unknown species');
+        $technology_label = $lang['HOME_EMPIRE_LIFEFORM_TECHNOLOGY_' . $technology_id]
+            ?? $species_label;
         ?>
 <tr>
     <td class="tdname">
-        <?php echo htmlspecialchars($species_label, ENT_QUOTES, 'UTF-8'); ?>
+        <?php echo htmlspecialchars($technology_label, ENT_QUOTES, 'UTF-8'); ?>
         <small>#<?php echo $technology_id; ?></small>
     </td>
     <?php foreach (array_keys($player_planets) as $planet_id): ?>

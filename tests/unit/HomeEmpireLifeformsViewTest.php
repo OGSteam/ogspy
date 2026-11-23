@@ -21,6 +21,7 @@ class HomeEmpireLifeformsViewTest extends TestCase
         $this->assertStringContainsString('Recherches des formes de vie', $html);
         $this->assertStringContainsString('Humains', $html);
         $this->assertStringContainsString('Rock&#039;tal', $html);
+        $this->assertStringContainsString('Secteur résidentiel', $html);
         $this->assertStringContainsString('#11101', $html);
         $this->assertMatchesRegularExpression('/>\s*12\s*</', $html);
         $this->assertMatchesRegularExpression('/>\s*7\s*</', $html);
@@ -44,6 +45,7 @@ class HomeEmpireLifeformsViewTest extends TestCase
             'HOME_EMPIRE_LIFEFORM_SPECIES_MECHAS' => 'Mécas',
             'HOME_EMPIRE_LIFEFORM_SPECIES_KAELESH' => 'Kaelesh',
             'HOME_EMPIRE_LIFEFORM_SPECIES_UNKNOWN' => 'Espèce inconnue',
+            'HOME_EMPIRE_LIFEFORM_TECHNOLOGY_11101' => 'Secteur résidentiel',
         ];
         $player_lifeforms = $lifeforms;
         $player_planets = [101 => ['name' => 'Planet A'], 102 => ['name' => 'Planet B']];
