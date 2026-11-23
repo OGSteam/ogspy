@@ -17,19 +17,15 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 
 # Xdebug 3.6 is the first release line compatible with PHP 8.6.
 RUN --mount=type=bind,from=ghcr.io/php/pie:bin,source=/pie,target=/usr/local/bin/pie \
-    pie install --no-cache xdebug/xdebug:3.6.0alpha1
-
-# Configure Xdebug for debugging only (append to existing config)
-RUN { \
-    echo ""; \
-    echo "xdebug.mode=debug"; \
-    echo "xdebug.start_with_request=trigger"; \
-    echo "xdebug.client_host=${XDEBUG_CLIENT_HOST:-host.docker.internal}"; \
-    echo "xdebug.client_port=${XDEBUG_CLIENT_PORT:-9003}"; \
-} >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini || true
-
-# Avoid Apache's FQDN warning in local development logs
-RUN echo "ServerName localhost" > /etc/apache2/conf-available/servername.conf \
+    pie install --no-cache xdebug/xdebug:3.6.0alpha1 \
+    && { \
+        echo ""; \
+        echo "xdebug.mode=debug"; \
+        echo "xdebug.start_with_request=trigger"; \
+        echo "xdebug.client_host=${XDEBUG_CLIENT_HOST:-host.docker.internal}"; \
+        echo "xdebug.client_port=${XDEBUG_CLIENT_PORT:-9003}"; \
+    } >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "ServerName localhost" > /etc/apache2/conf-available/servername.conf \
     && a2enconf servername
 
 # Install Composer
