@@ -45,3 +45,20 @@ function lifeform_technology_ids(array $lifeforms, string $category): array
 
     return $technologyIds;
 }
+
+/**
+ * Formats an arbitrarily large non-negative integer without losing precision.
+ */
+function lifeform_format_amount(?string $amount): string
+{
+    if ($amount === null || !preg_match('/^\d+$/', $amount)) {
+        return '-';
+    }
+
+    $amount = ltrim($amount, '0');
+    if ($amount === '') {
+        return '0';
+    }
+
+    return preg_replace('/\B(?=(\d{3})+(?!\d))/', ' ', $amount) ?? $amount;
+}

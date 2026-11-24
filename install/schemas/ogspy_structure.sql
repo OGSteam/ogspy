@@ -27,6 +27,8 @@ DROP TABLE IF EXISTS
     `ogspy_game_astro_object`,
     `ogspy_game_lifeform_building`,
     `ogspy_game_lifeform_research`,
+    `ogspy_game_lifeform_resource_history`,
+    `ogspy_game_lifeform_resource`,
     `ogspy_game_player_defense`,
     `ogspy_game_player_spy`,
     `ogspy_game_player_technology`,
@@ -368,6 +370,30 @@ CREATE TABLE `ogspy_game_lifeform_research`
     `last_update`    INT          NOT NULL DEFAULT '0',
     PRIMARY KEY (`astro_object_id`, `technology_id`),
     KEY `technology_id` (`technology_id`)
+) DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin;
+
+CREATE TABLE `ogspy_game_lifeform_resource`
+(
+    `astro_object_id` INT           NOT NULL,
+    `species_code`    VARCHAR(16)   NULL,
+    `population`      DECIMAL(30,0) NULL,
+    `food`            DECIMAL(30,0) NULL,
+    `last_update`     INT           NOT NULL DEFAULT '0',
+    PRIMARY KEY (`astro_object_id`)
+) DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin;
+
+CREATE TABLE `ogspy_game_lifeform_resource_history`
+(
+    `astro_object_id` INT           NOT NULL,
+    `observation_day` DATE          NOT NULL,
+    `species_code`    VARCHAR(16)   NULL,
+    `population`      DECIMAL(30,0) NULL,
+    `food`            DECIMAL(30,0) NULL,
+    `observed_at`     INT           NOT NULL DEFAULT '0',
+    PRIMARY KEY (`astro_object_id`, `observation_day`),
+    KEY `observed_at` (`observed_at`)
 ) DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_bin;
 --
