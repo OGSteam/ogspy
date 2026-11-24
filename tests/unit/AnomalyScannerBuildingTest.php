@@ -17,13 +17,13 @@ class AnomalyScannerBuildingDatabase
 {
     public string $query = '';
 
-    public function sql_query(string $query): string
+    public function sql_query(string $query): string // NOSONAR - mirrors the legacy database adapter API used by the model
     {
         $this->query = $query;
         return $query;
     }
 
-    public function sql_fetch_assoc(): false
+    public function sql_fetch_assoc(): false // NOSONAR - mirrors the legacy database adapter API used by the model
     {
         return false;
     }

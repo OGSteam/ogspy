@@ -21,6 +21,7 @@
       <directory suffix=".php">./model</directory>
       <directory suffix=".php">./install</directory>
       <file>./views/home_empire.php</file>
+      <file>./views/home_empire_anomaly_scanner.php</file>
       <file>./views/home_empire_lifeforms.php</file>
     </include>
   </source>
