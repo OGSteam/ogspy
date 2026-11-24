@@ -15,6 +15,7 @@ class LifeformResourceMigrationTest extends TestCase
         $this->assertTrue($migration->canRollback());
         $this->assertStringContainsString('game_lifeform_resource`', $migration->up());
         $this->assertStringContainsString('game_lifeform_resource_history`', $migration->up());
+        $this->assertSame(4, substr_count($migration->up(), 'BIGINT UNSIGNED NULL'));
         $this->assertStringContainsString('PRIMARY KEY (`astro_object_id`, `observation_day`)', $migration->up());
         $this->assertStringContainsString('DROP TABLE IF EXISTS `ogspy_game_lifeform_resource_history`', $migration->down());
         $this->assertStringContainsString('DROP TABLE IF EXISTS `ogspy_game_lifeform_resource`', $migration->down());

@@ -10,6 +10,8 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
  */
 class Player_Lifeform_Model extends Model_Abstract
 {
+    private const MAX_RESOURCE_AMOUNT = '18446744073709551615';
+
     /**
      * @return array<int, array{
      *     buildings: array<int, int>,
@@ -202,7 +204,16 @@ class Player_Lifeform_Model extends Model_Abstract
         }
 
         $amount = ltrim($amount, '0');
-        return $amount === '' ? '0' : $amount;
+        $amount = $amount === '' ? '0' : $amount;
+        if (
+            strlen($amount) > strlen(self::MAX_RESOURCE_AMOUNT)
+            || (strlen($amount) === strlen(self::MAX_RESOURCE_AMOUNT)
+                && strcmp($amount, self::MAX_RESOURCE_AMOUNT) > 0)
+        ) {
+            throw new InvalidArgumentException("The {$field} value exceeds the supported integer range.");
+        }
+
+        return $amount;
     }
 
     private function sqlNullableValue(?string $value): string

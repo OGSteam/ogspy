@@ -159,6 +159,21 @@ class PlayerLifeformModelTest extends TestCase
         $model->storeResourceObservation(101, ['species' => 'UNKNOWN'], 1795478400);
     }
 
+    public function testRejectsAmountsAboveUnsignedBigintRange(): void
+    {
+        $database = new LifeformModelDatabase();
+        $GLOBALS['db'] = $database;
+        $GLOBALS['log'] = $this->createStub(Logger::class);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('supported integer range');
+        (new Player_Lifeform_Model())->storeResourceObservation(
+            101,
+            ['population' => '18446744073709551616'],
+            1795478400
+        );
+    }
+
     public function testDeleteRemovesBothCategoriesForAstroObject(): void
     {
         $database = new LifeformModelDatabase();
