@@ -193,6 +193,7 @@ $lang['HOME_EMPIRE_ALLIANCEDEPOT'] = "Supply depot";
 $lang['HOME_EMPIRE_TERRAFORMER'] = "Terraformer";
 $lang['HOME_EMPIRE_MISSILESSILO'] = "Missile Silo";
 $lang['HOME_EMPIRE_DOCK'] = "Space Dock";
+$lang['HOME_EMPIRE_ANOMALY_SCANNER'] = "Interstellar Anomaly Scanner";
 $lang['HOME_EMPIRE_LUNARSTATION'] = "Lunar Base";
 $lang['HOME_EMPIRE_LUNARPHALANX'] = "Sensor Phalanx";
 $lang['HOME_EMPIRE_LUNARJUMPGATE'] = "Jump Gate";
