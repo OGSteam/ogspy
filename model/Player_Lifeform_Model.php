@@ -36,7 +36,7 @@ class Player_Lifeform_Model extends Model_Abstract
      * @param array{species?: ?string, population?: int|string|null, food?: int|string|null} $observation
      * @return bool Whether at least one supported field was stored.
      */
-    public function store_resource_observation(
+    public function storeResourceObservation(
         int $astroObjectId,
         array $observation,
         ?int $observedAt = null

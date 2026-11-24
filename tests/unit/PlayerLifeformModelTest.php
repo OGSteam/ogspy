@@ -47,7 +47,7 @@ class LifeformModelDatabase
         return $this->rowsByTable[$table][$offset] ?? false;
     }
 
-    public function sql_escape_string(string $value): string
+    public function sql_escape_string(string $value): string // NOSONAR - mirrors the legacy database adapter API used by the model
     {
         return addslashes($value);
     }
@@ -101,7 +101,7 @@ class PlayerLifeformModelTest extends TestCase
         $GLOBALS['db'] = $database;
         $GLOBALS['log'] = $this->createStub(Logger::class);
 
-        $stored = (new Player_Lifeform_Model())->store_resource_observation(101, [
+        $stored = (new Player_Lifeform_Model())->storeResourceObservation(101, [
             'species' => 'HUMANS',
             'population' => '0012345678901234567890',
             'food' => 0,
@@ -122,7 +122,7 @@ class PlayerLifeformModelTest extends TestCase
         $GLOBALS['db'] = $database;
         $GLOBALS['log'] = $this->createStub(Logger::class);
 
-        $stored = (new Player_Lifeform_Model())->store_resource_observation(101, [], 1795478400);
+        $stored = (new Player_Lifeform_Model())->storeResourceObservation(101, [], 1795478400);
 
         $this->assertFalse($stored);
         $this->assertSame([], $database->queries);
@@ -134,7 +134,7 @@ class PlayerLifeformModelTest extends TestCase
         $GLOBALS['db'] = $database;
         $GLOBALS['log'] = $this->createStub(Logger::class);
 
-        (new Player_Lifeform_Model())->store_resource_observation(101, ['population' => null], 1795478400);
+        (new Player_Lifeform_Model())->storeResourceObservation(101, ['population' => null], 1795478400);
 
         $this->assertStringContainsString('`population` = NULL', $database->queries[0]);
         $this->assertStringNotContainsString('`food`', $database->queries[0]);
@@ -149,14 +149,14 @@ class PlayerLifeformModelTest extends TestCase
         $model = new Player_Lifeform_Model();
 
         try {
-            $model->store_resource_observation(101, ['population' => '-1'], 1795478400);
+            $model->storeResourceObservation(101, ['population' => '-1'], 1795478400);
             $this->fail('A negative population must be rejected.');
         } catch (InvalidArgumentException $exception) {
             $this->assertStringContainsString('population', $exception->getMessage());
         }
 
         $this->expectException(InvalidArgumentException::class);
-        $model->store_resource_observation(101, ['species' => 'UNKNOWN'], 1795478400);
+        $model->storeResourceObservation(101, ['species' => 'UNKNOWN'], 1795478400);
     }
 
     public function testDeleteRemovesBothCategoriesForAstroObject(): void

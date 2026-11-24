@@ -49,7 +49,7 @@ function lifeform_technology_ids(array $lifeforms, string $category): array
 /**
  * Formats an arbitrarily large non-negative integer without losing precision.
  */
-function lifeform_format_amount(?string $amount): string
+function lifeformFormatAmount(?string $amount): string
 {
     if ($amount === null || !preg_match('/^\d+$/', $amount)) {
         return '-';

@@ -57,7 +57,7 @@ foreach ($player_lifeforms as $planet_lifeforms) {
                     ? date('d/m/Y H:i', (int)$resources['last_update'])
                     : '-'; ?>
             <?php else: ?>
-                <?php echo lifeform_format_amount($resources[$resource_name] ?? null); ?>
+                <?php echo lifeformFormatAmount($resources[$resource_name] ?? null); ?>
             <?php endif; ?>
         </td>
         <?php endforeach; ?>

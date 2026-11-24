@@ -33,9 +33,9 @@ class LifeformHelpersTest extends TestCase
 
     public function testFormatsLargeAmountsWithoutPrecisionLoss(): void
     {
-        $this->assertSame('12 345 678 901 234 567 890', lifeform_format_amount('12345678901234567890'));
-        $this->assertSame('0', lifeform_format_amount('000'));
-        $this->assertSame('-', lifeform_format_amount(null));
-        $this->assertSame('-', lifeform_format_amount('invalid'));
+        $this->assertSame('12 345 678 901 234 567 890', lifeformFormatAmount('12345678901234567890'));
+        $this->assertSame('0', lifeformFormatAmount('000'));
+        $this->assertSame('-', lifeformFormatAmount(null));
+        $this->assertSame('-', lifeformFormatAmount('invalid'));
     }
 }
