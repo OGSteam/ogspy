@@ -116,6 +116,45 @@ class PlayerLifeformModelTest extends TestCase
         $this->assertStringContainsString('ON DUPLICATE KEY UPDATE', $database->queries[1]);
     }
 
+    public function testAcceptsCompleteOverviewObservationFromXtense(): void
+    {
+        $database = new LifeformModelDatabase();
+        $GLOBALS['db'] = $database;
+        $GLOBALS['log'] = $this->createStub(Logger::class);
+
+        (new Player_Lifeform_Model())->storeResourceObservation(33717002, [
+            'species' => 'ROCKTAL',
+            'population' => 1524,
+            'food' => 120,
+        ], 1776160665);
+
+        $currentQuery = $database->queries[0];
+        $this->assertStringContainsString('33717002', $currentQuery);
+        $this->assertStringContainsString("'ROCKTAL'", $currentQuery);
+        $this->assertStringContainsString("'1524'", $currentQuery);
+        $this->assertStringContainsString("'120'", $currentQuery);
+        $this->assertStringContainsString('1776160665', $currentQuery);
+    }
+
+    public function testAcceptsSpeciesOnlyObservationFromXtenseLifeformBuildings(): void
+    {
+        $database = new LifeformModelDatabase();
+        $GLOBALS['db'] = $database;
+        $GLOBALS['log'] = $this->createStub(Logger::class);
+
+        (new Player_Lifeform_Model())->storeResourceObservation(
+            33717002,
+            ['species' => 'KAELESH'],
+            1776160665
+        );
+
+        $currentQuery = $database->queries[0];
+        $this->assertStringContainsString("`species_code` = 'KAELESH'", $currentQuery);
+        $this->assertStringNotContainsString('`population`', $currentQuery);
+        $this->assertStringNotContainsString('`food`', $currentQuery);
+        $this->assertCount(2, $database->queries);
+    }
+
     public function testMissingFieldsDoNotWriteOrEraseValues(): void
     {
         $database = new LifeformModelDatabase();
