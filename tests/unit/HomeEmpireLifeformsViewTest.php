@@ -31,7 +31,31 @@ class HomeEmpireLifeformsViewTest extends TestCase
     {
         $html = $this->render([]);
 
-        $this->assertSame(2, substr_count($html, 'Aucune donnée de formes de vie reçue'));
+        $this->assertSame(3, substr_count($html, 'Aucune donnée de formes de vie reçue'));
+    }
+
+    public function testDisplaysCurrentResourcesWithoutTechnicalIdentifiers(): void
+    {
+        $html = $this->render([
+            101 => [
+                'buildings' => [],
+                'research' => [],
+                'resources' => [
+                    'species_code' => 'HUMANS',
+                    'population' => '12345678901234567890',
+                    'food' => '0',
+                    'last_update' => 1795478400,
+                ],
+            ],
+        ]);
+
+        $this->assertStringContainsString('Ressources des formes de vie', $html);
+        $this->assertStringContainsString('Population', $html);
+        $this->assertStringContainsString('Nourriture', $html);
+        $this->assertStringContainsString('12 345 678 901 234 567 890', $html);
+        $this->assertMatchesRegularExpression('/>\s*0\s*</', $html);
+        $this->assertStringContainsString('Humains', $html);
+        $this->assertStringNotContainsString('HUMANS', $html);
     }
 
     private function render(array $lifeforms): string
@@ -40,6 +64,11 @@ class HomeEmpireLifeformsViewTest extends TestCase
             'HOME_EMPIRE_LIFEFORM_BUILDINGS' => 'Bâtiments des formes de vie',
             'HOME_EMPIRE_LIFEFORM_RESEARCH' => 'Recherches des formes de vie',
             'HOME_EMPIRE_LIFEFORM_NO_DATA' => 'Aucune donnée de formes de vie reçue',
+            'HOME_EMPIRE_LIFEFORM_RESOURCES' => 'Ressources des formes de vie',
+            'HOME_EMPIRE_LIFEFORM_SPECIES' => 'Espèce',
+            'HOME_EMPIRE_LIFEFORM_POPULATION' => 'Population',
+            'HOME_EMPIRE_LIFEFORM_FOOD' => 'Nourriture',
+            'HOME_EMPIRE_LIFEFORM_LAST_UPDATE' => 'Dernière observation',
             'HOME_EMPIRE_LIFEFORM_SPECIES_HUMANS' => 'Humains',
             'HOME_EMPIRE_LIFEFORM_SPECIES_ROCKTAL' => "Rock'tal",
             'HOME_EMPIRE_LIFEFORM_SPECIES_MECHAS' => 'Mécas',

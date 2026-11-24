@@ -30,4 +30,12 @@ class LifeformHelpersTest extends TestCase
         $this->assertSame([11201, 12201], lifeform_technology_ids($lifeforms, 'research'));
         $this->assertSame([], lifeform_technology_ids($lifeforms, 'invalid'));
     }
+
+    public function testFormatsLargeAmountsWithoutPrecisionLoss(): void
+    {
+        $this->assertSame('12 345 678 901 234 567 890', lifeformFormatAmount('12345678901234567890'));
+        $this->assertSame('0', lifeformFormatAmount('000'));
+        $this->assertSame('-', lifeformFormatAmount(null));
+        $this->assertSame('-', lifeformFormatAmount('invalid'));
+    }
 }
