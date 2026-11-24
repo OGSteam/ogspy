@@ -26,7 +26,7 @@ $planet_building_rows = [
 ?>
 <thead>
 <tr>
-    <th colspan="<?php echo (int)$colspan_planets; ?>">
+    <th scope="colgroup" colspan="<?php echo (int)$colspan_planets; ?>">
         <?php echo $lang['HOME_EMPIRE_BUILDINGS']; ?>
     </th>
 </tr>
