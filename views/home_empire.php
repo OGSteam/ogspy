@@ -550,6 +550,7 @@ $min_width_px = $label_width_px + ($nb_planete * $per_column_px);
             </td>
         <?php endforeach; ?>
     </tr>
+    <?php require __DIR__ . '/home_empire_anomaly_scanner.php'; ?>
     </tbody>
 
     <thead>

@@ -335,6 +335,7 @@ CREATE TABLE `ogspy_game_astro_object`
     `DdR`                 SMALLINT    NOT NULL DEFAULT '0',
     `Silo`                SMALLINT    NOT NULL DEFAULT '0',
     `Dock`                SMALLINT    NOT NULL DEFAULT '0',
+    `Scanner`             SMALLINT    NOT NULL DEFAULT '0',
     `BaLu`                SMALLINT    NOT NULL DEFAULT '0',
     `Pha`                 SMALLINT    NOT NULL DEFAULT '0',
     `PoSa`                SMALLINT    NOT NULL DEFAULT '0',
