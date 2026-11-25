@@ -68,11 +68,11 @@ foreach ($player_lifeforms as $planet_lifeforms) {
 <?php
 
 $lifeform_categories = [
-    'buildings' => lifeform_technology_ids($player_lifeforms, 'buildings'),
-    'research' => lifeform_technology_ids($player_lifeforms, 'research'),
+    'buildings' => lifeform_technology_groups($player_lifeforms, 'buildings'),
+    'research' => lifeform_technology_groups($player_lifeforms, 'research'),
 ];
 
-foreach ($lifeform_categories as $lifeform_category => $lifeform_technology_ids): ?>
+foreach ($lifeform_categories as $lifeform_category => $lifeform_species_groups): ?>
 <thead>
 <tr>
     <th scope="colgroup" colspan="<?php print $colspan_planets ?>">
@@ -80,21 +80,33 @@ foreach ($lifeform_categories as $lifeform_category => $lifeform_technology_ids)
     </th>
 </tr>
 </thead>
+<?php if ($lifeform_species_groups === []): ?>
 <tbody>
-<?php if ($lifeform_technology_ids === []): ?>
 <tr>
     <td class="tdname"><?php echo htmlspecialchars($lifeform_labels['no_data'], ENT_QUOTES, 'UTF-8'); ?></td>
     <td colspan="<?php print $colspan_planets_nine ?>" class="tdcontent">-</td>
 </tr>
+</tbody>
 <?php else: ?>
-    <?php foreach ($lifeform_technology_ids as $technology_id): ?>
+    <?php $show_species_groups = count($lifeform_species_groups) > 1; ?>
+    <?php foreach ($lifeform_species_groups as $species_code => $lifeform_technology_ids): ?>
         <?php
-        $species_code = lifeform_species_code($technology_id);
         $species_label = $lang['HOME_EMPIRE_LIFEFORM_SPECIES_' . $species_code]
             ?? ($lang['HOME_EMPIRE_LIFEFORM_SPECIES_UNKNOWN'] ?? 'Unknown species');
-        $technology_label = $lang['HOME_EMPIRE_LIFEFORM_TECHNOLOGY_' . $technology_id]
-            ?? $species_label;
         ?>
+<tbody>
+        <?php if ($show_species_groups): ?>
+<tr class="lifeform-species-group">
+    <th scope="rowgroup" colspan="<?php print $colspan_planets ?>">
+        <?php echo htmlspecialchars($species_label, ENT_QUOTES, 'UTF-8'); ?>
+    </th>
+</tr>
+        <?php endif; ?>
+        <?php foreach ($lifeform_technology_ids as $technology_id): ?>
+            <?php
+            $technology_label = $lang['HOME_EMPIRE_LIFEFORM_TECHNOLOGY_' . $technology_id]
+                ?? $species_label;
+            ?>
 <tr>
     <td class="tdname">
         <?php echo htmlspecialchars($technology_label, ENT_QUOTES, 'UTF-8'); ?>
@@ -109,7 +121,8 @@ foreach ($lifeform_categories as $lifeform_category => $lifeform_technology_ids)
         </td>
     <?php endforeach; ?>
 </tr>
+        <?php endforeach; ?>
+</tbody>
     <?php endforeach; ?>
 <?php endif; ?>
-</tbody>
 <?php endforeach; ?>

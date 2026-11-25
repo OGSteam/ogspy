@@ -13,8 +13,14 @@ class HomeEmpireLifeformsViewTest extends TestCase
     public function testDisplaysLevelsByTechnologyAndPlanet(): void
     {
         $html = $this->render([
-            101 => ['buildings' => [11101 => 12, 12101 => 8], 'research' => [11201 => 4]],
-            102 => ['buildings' => [11101 => 7], 'research' => [12201 => 3]],
+            101 => [
+                'buildings' => [11101 => 12, 12101 => 8],
+                'research' => [11201 => 4, 13201 => 5],
+            ],
+            102 => [
+                'buildings' => [11101 => 7, 13101 => 3, 14101 => 2],
+                'research' => [12201 => 3, 14201 => 6],
+            ],
         ]);
 
         $this->assertStringContainsString('Bâtiments des formes de vie', $html);
@@ -22,9 +28,21 @@ class HomeEmpireLifeformsViewTest extends TestCase
         $this->assertStringContainsString('Humains', $html);
         $this->assertStringContainsString('Rock&#039;tal', $html);
         $this->assertStringContainsString('Secteur résidentiel', $html);
-        $this->assertStringNotContainsString('#11101', $html);
+        $this->assertStringContainsString('Enclave stoïque', $html);
+        $this->assertStringContainsString('Chaîne de production', $html);
+        $this->assertStringContainsString('Refugium', $html);
+        $this->assertStringContainsString('Ambassadeurs intergalactiques', $html);
+        $this->assertStringContainsString('Batteries volcaniques', $html);
+        $this->assertStringContainsString('Technique de catalyse', $html);
+        $this->assertStringContainsString('Récupération de chaleur', $html);
+        $this->assertStringNotContainsString('11101', $html);
+        $this->assertStringNotContainsString('14201', $html);
         $this->assertMatchesRegularExpression('/>\s*12\s*</', $html);
         $this->assertMatchesRegularExpression('/>\s*7\s*</', $html);
+
+        $this->assertLessThan(strpos($html, 'Rock&#039;tal'), strpos($html, 'Humains'));
+        $this->assertLessThan(strpos($html, 'Mécas'), strpos($html, 'Rock&#039;tal'));
+        $this->assertLessThan(strpos($html, 'Kaelesh'), strpos($html, 'Mécas'));
     }
 
     public function testDisplaysAnExplicitMessageWithoutLifeformData(): void
@@ -32,6 +50,18 @@ class HomeEmpireLifeformsViewTest extends TestCase
         $html = $this->render([]);
 
         $this->assertSame(3, substr_count($html, 'Aucune donnée de formes de vie reçue'));
+    }
+
+    public function testOmitsRedundantSpeciesHeadingForSingleSpecies(): void
+    {
+        $html = $this->render([
+            101 => ['buildings' => [11101 => 12], 'research' => [11201 => 4]],
+            102 => ['buildings' => [11101 => 7], 'research' => [11201 => 3]],
+        ]);
+
+        $this->assertStringContainsString('Secteur résidentiel', $html);
+        $this->assertStringContainsString('Ambassadeurs intergalactiques', $html);
+        $this->assertStringNotContainsString('class="lifeform-species-group"', $html);
     }
 
     public function testDisplaysCurrentResourcesWithoutTechnicalIdentifiers(): void
@@ -75,6 +105,13 @@ class HomeEmpireLifeformsViewTest extends TestCase
             'HOME_EMPIRE_LIFEFORM_SPECIES_KAELESH' => 'Kaelesh',
             'HOME_EMPIRE_LIFEFORM_SPECIES_UNKNOWN' => 'Espèce inconnue',
             'HOME_EMPIRE_LIFEFORM_TECHNOLOGY_11101' => 'Secteur résidentiel',
+            'HOME_EMPIRE_LIFEFORM_TECHNOLOGY_11201' => 'Ambassadeurs intergalactiques',
+            'HOME_EMPIRE_LIFEFORM_TECHNOLOGY_12101' => 'Enclave stoïque',
+            'HOME_EMPIRE_LIFEFORM_TECHNOLOGY_12201' => 'Batteries volcaniques',
+            'HOME_EMPIRE_LIFEFORM_TECHNOLOGY_13101' => 'Chaîne de production',
+            'HOME_EMPIRE_LIFEFORM_TECHNOLOGY_13201' => 'Technique de catalyse',
+            'HOME_EMPIRE_LIFEFORM_TECHNOLOGY_14101' => 'Refugium',
+            'HOME_EMPIRE_LIFEFORM_TECHNOLOGY_14201' => 'Récupération de chaleur',
         ];
         $player_lifeforms = $lifeforms;
         $player_planets = [101 => ['name' => 'Planet A'], 102 => ['name' => 'Planet B']];
