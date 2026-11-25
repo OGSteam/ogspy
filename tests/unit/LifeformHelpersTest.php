@@ -31,6 +31,35 @@ class LifeformHelpersTest extends TestCase
         $this->assertSame([], lifeform_technology_ids($lifeforms, 'invalid'));
     }
 
+    public function testGroupsTechnologiesBySpeciesInDisplayOrder(): void
+    {
+        $lifeforms = [
+            101 => [
+                'buildings' => [14101 => 2, 12101 => 8, 11101 => 12],
+                'research' => [14201 => 6, 11201 => 4, 13201 => 5],
+            ],
+            102 => [
+                'buildings' => [13101 => 3, 999 => 1],
+                'research' => [12201 => 7],
+            ],
+        ];
+
+        $this->assertSame([
+            'HUMANS' => [11101],
+            'ROCKTAL' => [12101],
+            'MECHAS' => [13101],
+            'KAELESH' => [14101],
+            'UNKNOWN' => [999],
+        ], lifeform_technology_groups($lifeforms, 'buildings'));
+        $this->assertSame([
+            'HUMANS' => [11201],
+            'ROCKTAL' => [12201],
+            'MECHAS' => [13201],
+            'KAELESH' => [14201],
+        ], lifeform_technology_groups($lifeforms, 'research'));
+        $this->assertSame([], lifeform_technology_groups($lifeforms, 'invalid'));
+    }
+
     public function testFormatsLargeAmountsWithoutPrecisionLoss(): void
     {
         $this->assertSame('12 345 678 901 234 567 890', lifeformFormatAmount('12345678901234567890'));

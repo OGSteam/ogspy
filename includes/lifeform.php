@@ -47,6 +47,32 @@ function lifeform_technology_ids(array $lifeforms, string $category): array
 }
 
 /**
+ * Groups the real OGame technology IDs by their owning species.
+ *
+ * Research from several species may be selected on the same planet, so the
+ * technology ID determines the group rather than the planet's active species.
+ *
+ * @param array<int, array{buildings?: array<int, int>, research?: array<int, int>}> $lifeforms
+ * @return array<string, int[]>
+ */
+function lifeform_technology_groups(array $lifeforms, string $category): array
+{
+    $groups = [];
+    foreach (lifeform_technology_ids($lifeforms, $category) as $technologyId) {
+        $groups[lifeform_species_code($technologyId)][] = $technologyId;
+    }
+
+    $orderedGroups = [];
+    foreach (['HUMANS', 'ROCKTAL', 'MECHAS', 'KAELESH', 'UNKNOWN'] as $speciesCode) {
+        if (isset($groups[$speciesCode])) {
+            $orderedGroups[$speciesCode] = $groups[$speciesCode];
+        }
+    }
+
+    return $orderedGroups;
+}
+
+/**
  * Formats an arbitrarily large non-negative integer without losing precision.
  */
 function lifeformFormatAmount(?string $amount): string
