@@ -88,17 +88,20 @@ foreach ($lifeform_categories as $lifeform_category => $lifeform_species_groups)
 </tr>
 </tbody>
 <?php else: ?>
+    <?php $show_species_groups = count($lifeform_species_groups) > 1; ?>
     <?php foreach ($lifeform_species_groups as $species_code => $lifeform_technology_ids): ?>
         <?php
         $species_label = $lang['HOME_EMPIRE_LIFEFORM_SPECIES_' . $species_code]
             ?? ($lang['HOME_EMPIRE_LIFEFORM_SPECIES_UNKNOWN'] ?? 'Unknown species');
         ?>
 <tbody>
+        <?php if ($show_species_groups): ?>
 <tr class="lifeform-species-group">
     <th scope="rowgroup" colspan="<?php print $colspan_planets ?>">
         <?php echo htmlspecialchars($species_label, ENT_QUOTES, 'UTF-8'); ?>
     </th>
 </tr>
+        <?php endif; ?>
         <?php foreach ($lifeform_technology_ids as $technology_id): ?>
             <?php
             $technology_label = $lang['HOME_EMPIRE_LIFEFORM_TECHNOLOGY_' . $technology_id]

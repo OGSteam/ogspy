@@ -52,6 +52,18 @@ class HomeEmpireLifeformsViewTest extends TestCase
         $this->assertSame(3, substr_count($html, 'Aucune donnée de formes de vie reçue'));
     }
 
+    public function testOmitsRedundantSpeciesHeadingForSingleSpecies(): void
+    {
+        $html = $this->render([
+            101 => ['buildings' => [11101 => 12], 'research' => [11201 => 4]],
+            102 => ['buildings' => [11101 => 7], 'research' => [11201 => 3]],
+        ]);
+
+        $this->assertStringContainsString('Secteur résidentiel', $html);
+        $this->assertStringContainsString('Ambassadeurs intergalactiques', $html);
+        $this->assertStringNotContainsString('class="lifeform-species-group"', $html);
+    }
+
     public function testDisplaysCurrentResourcesWithoutTechnicalIdentifiers(): void
     {
         $html = $this->render([
