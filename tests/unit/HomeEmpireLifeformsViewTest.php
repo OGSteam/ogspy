@@ -58,7 +58,38 @@ class HomeEmpireLifeformsViewTest extends TestCase
         $this->assertStringNotContainsString('HUMANS', $html);
     }
 
-    private function render(array $lifeforms): string
+    public function testDisplaysPopulationAndFoodHistoryControls(): void
+    {
+        $html = $this->render([], [
+            101 => [
+                [
+                    'observation_day' => '2026-11-24',
+                    'population' => '12345678901234567890',
+                    'food' => '987654321',
+                    'observed_at' => 1795478400,
+                ],
+                [
+                    'observation_day' => '2026-11-25',
+                    'population' => '12345678901234567999',
+                    'food' => '987654000',
+                    'observed_at' => 1795564800,
+                ],
+            ],
+        ]);
+
+        $this->assertStringContainsString('Historique population et nourriture', $html);
+        $this->assertStringContainsString('Planet A', $html);
+        $this->assertStringContainsString('7 jours', $html);
+        $this->assertStringContainsString('30 jours', $html);
+        $this->assertStringContainsString('90 jours', $html);
+        $this->assertStringContainsString('2026-11-24', $html);
+        $this->assertStringContainsString('12345678901234567890', $html);
+        $this->assertStringContainsString('987654321', $html);
+        $this->assertStringNotContainsString('astro_object_id', $html);
+        $this->assertStringNotContainsString('value="101"', $html);
+    }
+
+    private function render(array $lifeforms, array $history = []): string
     {
         $lang = [
             'HOME_EMPIRE_LIFEFORM_BUILDINGS' => 'Bâtiments des formes de vie',
@@ -69,6 +100,11 @@ class HomeEmpireLifeformsViewTest extends TestCase
             'HOME_EMPIRE_LIFEFORM_POPULATION' => 'Population',
             'HOME_EMPIRE_LIFEFORM_FOOD' => 'Nourriture',
             'HOME_EMPIRE_LIFEFORM_LAST_UPDATE' => 'Dernière observation',
+            'HOME_EMPIRE_LIFEFORM_HISTORY' => 'Historique population et nourriture',
+            'HOME_EMPIRE_LIFEFORM_HISTORY_PLANET' => 'Planète',
+            'HOME_EMPIRE_LIFEFORM_HISTORY_PERIOD' => 'Période',
+            'HOME_EMPIRE_LIFEFORM_HISTORY_DAYS' => '%d jours',
+            'HOME_EMPIRE_LIFEFORM_HISTORY_NO_DATA' => 'Historique insuffisant',
             'HOME_EMPIRE_LIFEFORM_SPECIES_HUMANS' => 'Humains',
             'HOME_EMPIRE_LIFEFORM_SPECIES_ROCKTAL' => "Rock'tal",
             'HOME_EMPIRE_LIFEFORM_SPECIES_MECHAS' => 'Mécas',
@@ -77,6 +113,7 @@ class HomeEmpireLifeformsViewTest extends TestCase
             'HOME_EMPIRE_LIFEFORM_TECHNOLOGY_11101' => 'Secteur résidentiel',
         ];
         $player_lifeforms = $lifeforms;
+        $player_lifeform_history = $history;
         $player_planets = [101 => ['name' => 'Planet A'], 102 => ['name' => 'Planet B']];
         $colspan_planets = 3;
         $colspan_planets_nine = 2;
