@@ -75,9 +75,9 @@ foreach ($player_planets as $planet_id => $planet) {
                         </button>
                     <?php endforeach; ?>
                 </p>
-                <p id="lifeform-history-no-data" class="og-alert" role="status" hidden>
+                <output id="lifeform-history-no-data" class="og-alert" hidden>
                     <?php echo htmlspecialchars($lifeform_history_labels['no_data'], ENT_QUOTES, 'UTF-8'); ?>
-                </p>
+                </output>
                 <div style="min-height: 280px;">
                     <canvas id="lifeform-history-chart"></canvas>
                 </div>

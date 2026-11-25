@@ -373,7 +373,7 @@ if (!empty($player_data["name"])) {
     </tbody>
 </table>
 
-<?php require 'views/home_stat_lifeform_history.php'; ?>
+<?php require_once 'views/home_stat_lifeform_history.php'; ?>
 
 <table class="og-table og-full-table og-table-ranking">
     <thead>
