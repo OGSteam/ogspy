@@ -20,7 +20,8 @@ COPY . .
 RUN composer install --prefer-dist --no-progress --no-dev --optimize-autoloader
 
 # Configuration des permissions plus sécurisée
-RUN chown -R ogspy:ogspy /var/www/html \
+RUN mkdir -p /var/www/html/cache /var/www/html/logs /var/www/html/config \
+    && chown -R ogspy:ogspy /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod -R 775 /var/www/html/cache /var/www/html/logs /var/www/html/config
 
