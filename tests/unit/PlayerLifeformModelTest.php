@@ -39,6 +39,7 @@ class LifeformModelDatabase
         $table = match (true) {
             str_contains($query, TABLE_GAME_LIFEFORM_BUILDING) => TABLE_GAME_LIFEFORM_BUILDING,
             str_contains($query, TABLE_GAME_LIFEFORM_RESEARCH) => TABLE_GAME_LIFEFORM_RESEARCH,
+            str_contains($query, TABLE_GAME_LIFEFORM_RESOURCE_HISTORY) => TABLE_GAME_LIFEFORM_RESOURCE_HISTORY,
             default => TABLE_GAME_LIFEFORM_RESOURCE,
         };
         $offset = $this->offsets[$table] ?? 0;
@@ -114,6 +115,62 @@ class PlayerLifeformModelTest extends TestCase
         $this->assertStringContainsString("'0'", $database->queries[0]);
         $this->assertStringContainsString("'2026-11-24'", $database->queries[1]);
         $this->assertStringContainsString('ON DUPLICATE KEY UPDATE', $database->queries[1]);
+    }
+
+    public function testSelectsRecentResourceHistoryByPlayerAndPlanet(): void
+    {
+        $database = new LifeformModelDatabase([
+            TABLE_GAME_LIFEFORM_RESOURCE_HISTORY => [
+                [
+                    'astro_object_id' => '101',
+                    'observation_day' => '2026-11-23',
+                    'population' => '12345678901234567890',
+                    'food' => '987654321',
+                    'observed_at' => '1795392000',
+                ],
+                [
+                    'astro_object_id' => '101',
+                    'observation_day' => '2026-11-24',
+                    'population' => null,
+                    'food' => '0',
+                    'observed_at' => '1795478400',
+                ],
+            ],
+        ]);
+        $GLOBALS['db'] = $database;
+        $GLOBALS['log'] = $this->createStub(Logger::class);
+
+        $result = (new Player_Lifeform_Model())->selectResourceHistory(42, 30);
+
+        $this->assertSame([
+            101 => [
+                [
+                    'observation_day' => '2026-11-23',
+                    'population' => '12345678901234567890',
+                    'food' => '987654321',
+                    'observed_at' => 1795392000,
+                ],
+                [
+                    'observation_day' => '2026-11-24',
+                    'population' => null,
+                    'food' => '0',
+                    'observed_at' => 1795478400,
+                ],
+            ],
+        ], $result);
+        $this->assertStringContainsString('astro.`player_id` = 42', $database->queries[0]);
+        $this->assertStringContainsString('INTERVAL 29 DAY', $database->queries[0]);
+        $this->assertStringContainsString('ORDER BY history.`astro_object_id`', $database->queries[0]);
+    }
+
+    public function testRejectsInvalidResourceHistoryPeriod(): void
+    {
+        $database = new LifeformModelDatabase();
+        $GLOBALS['db'] = $database;
+        $GLOBALS['log'] = $this->createStub(Logger::class);
+
+        $this->expectException(InvalidArgumentException::class);
+        (new Player_Lifeform_Model())->selectResourceHistory(42, 0);
     }
 
     public function testAcceptsCompleteOverviewObservationFromXtense(): void

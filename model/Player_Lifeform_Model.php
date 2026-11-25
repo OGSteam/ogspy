@@ -30,6 +30,49 @@ class Player_Lifeform_Model extends Model_Abstract
     }
 
     /**
+     * Returns recent daily population and food observations grouped by planet.
+     *
+     * @return array<int, list<array{
+     *     observation_day: string,
+     *     population: ?string,
+     *     food: ?string,
+     *     observed_at: int
+     * }>>
+     */
+    public function selectResourceHistory(int $playerId, int $days = 90): array
+    {
+        if ($playerId <= 0) {
+            throw new InvalidArgumentException('The player ID must be positive.');
+        }
+        if ($days < 1 || $days > 365) {
+            throw new InvalidArgumentException('The history period must be between 1 and 365 days.');
+        }
+
+        $daysBeforeToday = $days - 1;
+        $query = "SELECT history.`astro_object_id`, history.`observation_day`,
+                history.`population`, history.`food`, history.`observed_at`
+            FROM " . TABLE_GAME_LIFEFORM_RESOURCE_HISTORY . " history
+            INNER JOIN " . TABLE_USER_BUILDING . " astro ON astro.`id` = history.`astro_object_id`
+            WHERE astro.`player_id` = {$playerId}
+              AND history.`observation_day` >= DATE_SUB(UTC_DATE(), INTERVAL {$daysBeforeToday} DAY)
+            ORDER BY history.`astro_object_id`, history.`observation_day`";
+        $result = $this->db->sql_query($query);
+        $history = [];
+
+        while ($row = $this->db->sql_fetch_assoc($result)) {
+            $astroObjectId = (int)$row['astro_object_id'];
+            $history[$astroObjectId][] = [
+                'observation_day' => (string)$row['observation_day'],
+                'population' => isset($row['population']) ? (string)$row['population'] : null,
+                'food' => isset($row['food']) ? (string)$row['food'] : null,
+                'observed_at' => (int)$row['observed_at'],
+            ];
+        }
+
+        return $history;
+    }
+
+    /**
      * Stores the latest observation and one daily UTC snapshot per planet.
      *
      * Missing fields preserve their current values. Explicit null values clear a
