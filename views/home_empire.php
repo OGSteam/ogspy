@@ -19,7 +19,6 @@ if (!defined('IN_SPYOGAME')) {
 // Formulas are required centrally in common.php; avoid duplicate includes in views
 
 use Ogsteam\Ogspy\Model\Player_Model;
-use Ogsteam\Ogspy\Model\Player_Lifeform_Model;
 
 global $server_config;
 
@@ -42,7 +41,6 @@ $player_building = $user_empire['building'];
 $player_defense = $user_empire['defense'];
 $user_technology = $user_empire['technology'];
 $player_lifeforms = $user_empire['lifeforms'] ?? [];
-$player_lifeform_history = (new Player_Lifeform_Model())->selectResourceHistory($player_data['id'], 90);
 
 // Séparation des planètes et des lunes
 $player_planets = [];

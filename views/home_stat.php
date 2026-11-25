@@ -12,6 +12,7 @@
  */
 
 use Ogsteam\Ogspy\Model\Player_Model;
+use Ogsteam\Ogspy\Model\Player_Lifeform_Model;
 
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
@@ -31,6 +32,7 @@ $user_empire = player_get_empire($player_data['id']);
 $player_building = $user_empire["building"];
 $player_defense = $user_empire["defense"];
 $user_technology = $user_empire["technology"];
+$player_lifeform_history = (new Player_Lifeform_Model())->selectResourceHistory($player_data['id'], 90);
 
 if (!isset($pub_zoom) || !isset($pub_player_comp)) {
     $pub_player_comp = "";
@@ -260,6 +262,7 @@ if (!empty($player_data["name"])) {
 }
 
 $nb_planete = getPlanetCountForPlayer($player_data["id"]);
+$player_planets = array_slice($player_building, 0, $nb_planete, true);
 
 $buildings_total = round(all_building_cumulate(array_slice($player_building, 0, $nb_planete)) / 1000);
 $defenses_total = round(all_defense_cumulate(array_slice($player_defense, 0, $nb_planete)) / 1000);
@@ -369,6 +372,8 @@ if (!empty($player_data["name"])) {
     </tr>
     </tbody>
 </table>
+
+<?php require 'views/home_stat_lifeform_history.php'; ?>
 
 <table class="og-table og-full-table og-table-ranking">
     <thead>
