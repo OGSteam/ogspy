@@ -2099,7 +2099,7 @@ function displayGalaxyTabletbodytr($populate, $isGalaxy = true)
         '<td class="tdcontent">' .
         (!empty($v["player_name"]) ? '<a ' . $ToolTip_Helper->GetHTMLClassContent(["tooltipstered"], "ttp_player_" . $v["player_name"]) . ' href="index.php?action=search&amp;type_search=player&amp;string_search=' . $player . '&strict=on">' . $player . '</a>' : '&nbsp;') .
         '</td>' .
-        '<td class="tdcontent"><span class="' . ($v["type"] === 'moon' ? 'ogame-icon ogame-icon-moon ' : '') . '">&nbsp;</span></td>' .
+        '<td class="tdcontent"><span class="' . (($v["has_moon"] ?? ($v["type"] === 'moon')) ? 'ogame-icon ogame-icon-moon ' : '') . '">&nbsp;</span></td>' .
         '<td class="tdcontent">' .
         ($v["PoSa"] > 0 ? '<span class="ogame-icon ogame-icon-gate ">P</span>' : '&nbsp;') .
         '</td>' .

@@ -573,16 +573,27 @@ class AstroObject_Model extends Model_Abstract
     public function find(SearchCriteria_Helper $criteria, array $order_by = [], int $start = 0, int $number = 30)
     {
         // Modifié pour inclure les champs nécessaires et les alias correspondants à get_system
-        $select = "SELECT uni.`type`, uni.`galaxy`, uni.`system`, uni.`row`, uni.`Pha`, uni.`PoSa`, uni.`last_update_moon`," .
+        $isMoonSearch = $criteria->getIsMoon();
+        $objectDetails = $isMoonSearch
+            ? "uni.`Pha`, uni.`PoSa`, uni.`last_update_moon`, NULL AS moon_id,"
+            : "COALESCE(moon.`Pha`, uni.`Pha`) AS Pha, COALESCE(moon.`PoSa`, uni.`PoSa`) AS PoSa,"
+                . " moon.`last_update_moon`, moon.`moon_id`,";
+
+        $select = "SELECT uni.`type`, uni.`galaxy`, uni.`system`, uni.`row`, " . $objectDetails .
             " ally.`name` AS ally_name, ally.`id` AS ally_id, player.`name` AS player_name, player.`id` AS player_id, player.`status` AS player_status," .
             " uni.`last_update`, user.`name` AS last_update_user_name, uni.`name` AS planet_name," .
             " uni.`last_update_user_id`, player.`datadate` AS player_last_active";
-        $request = " FROM " . TABLE_USER_BUILDING . " uni" .
+        $moonJoin = $isMoonSearch ? '' :
+            " LEFT JOIN " . TABLE_USER_BUILDING . " moon"
+            . " ON moon.`galaxy` = uni.`galaxy`"
+            . " AND moon.`system` = uni.`system`"
+            . " AND moon.`row` = uni.`row` AND moon.`type` = 'moon'";
+        $request = " FROM " . TABLE_USER_BUILDING . " uni" . $moonJoin .
             " LEFT JOIN " . TABLE_USER . "  user  ON uni.`last_update_user_id` = user.`id`" . // uni.last_update_user_id
             " LEFT JOIN " . TABLE_GAME_PLAYER . "  player  ON player.`id`  = uni.`player_id`" .
             " LEFT JOIN " . TABLE_GAME_ALLY . "  ally  ON ally.`id` = player.`ally_id`";
 
-        $where = "";
+        $where = $isMoonSearch ? "uni.`type` = 'moon'" : "uni.`type` = 'planet'";
         if ($criteria->getPlayerName() != null) {
             if ($where != "") {
                 $where .= " AND ";
@@ -608,30 +619,21 @@ class AstroObject_Model extends Model_Abstract
             if ($where != "") {
                 $where .= " AND ";
             }
-            $where .= " `galaxy` BETWEEN " . $criteria->getGalaxyDown() . " AND " . $criteria->getGalaxyUp();
+            $where .= " uni.`galaxy` BETWEEN " . $criteria->getGalaxyDown() . " AND " . $criteria->getGalaxyUp();
         }
 
         if ($criteria->getSystemDown() != null && $criteria->getSystemUp() != null && !$criteria->getIsSpied()) {
             if ($where != "") {
                 $where .= " AND ";
             }
-            $where .= " `system` BETWEEN " . $criteria->getSystemDown() . " AND " . $criteria->getSystemUp();
+            $where .= " uni.`system` BETWEEN " . $criteria->getSystemDown() . " AND " . $criteria->getSystemUp();
         }
 
         if ($criteria->getRowDown() != null && $criteria->getRowUp() != null && !$criteria->getIsSpied()) {
             if ($where != "") {
                 $where .= " AND ";
             }
-            $where .= " `row` BETWEEN " . $criteria->getRowDown() . " AND " . $criteria->getRowUp();
-        }
-
-        if ($criteria->getIsMoon()) {
-            if ($where != "") {
-                $where .= " AND ";
-            }
-            //Binu : ajout des cotes
-            $where .= " `type` = 'moon'";
-            //fin
+            $where .= " uni.`row` BETWEEN " . $criteria->getRowDown() . " AND " . $criteria->getRowUp();
         }
 
         if ($criteria->getIsInactive()) {
@@ -673,28 +675,20 @@ class AstroObject_Model extends Model_Abstract
 
             //Binu : Sélection des planètes ayant été espionnées
             if (isset($spy_coordinates)) {
-                if ($where != "") {
-                    $where .= " AND ";
-                }
+                $coordinateClauses = [];
                 for ($i = 0; $i < count($spy_coordinates); $i++) {
                     $split = explode(":", $spy_coordinates[$i]);
                     $galaxy = $split[0];
                     $system = $split[1];
                     $row = $split[2];
-                    if (count($spy_coordinates) > 1) {
-                        $where .= "(";
-                    }
-                    $where .= "`galaxy` = " . $galaxy . " AND `system` = " . $system . " AND `row` = " . $row;
-                    if (count($spy_coordinates) > 1) {
-                        $where .= ")";
-                        if ($i < (count($spy_coordinates) - 1)) {
-                            $where .= " OR ";
-                        }
-                    }
+                    $coordinateClauses[] = "(uni.`galaxy` = " . $galaxy
+                        . " AND uni.`system` = " . $system
+                        . " AND uni.`row` = " . $row . ")";
                 }
+                $where .= " AND (" . implode(" OR ", $coordinateClauses) . ")";
             } else {
                 //Binu : Si aucune planète de l'intervalle paramétré n'a été espionné, on s'assure qu'il n'y aura pas de résultat
-                $where .= "`galaxy` = 0";
+                $where .= " AND uni.`galaxy` = 0";
             }
         }
         //Fin correctif
@@ -752,12 +746,13 @@ class AstroObject_Model extends Model_Abstract
                 "player_name" => $planet_data['player_name'] ?? "",
                 "player_id" => $planet_data['player_id'] ?? "",
                 "type" => $planet_data['type'],
+                "has_moon" => $planet_data['type'] === 'moon' || !empty($planet_data['moon_id']),
                 "Pha" => $planet_data['Pha'] ?? "",
                 "PoSa" => $planet_data['PoSa'] ?? "",
                 "planet_name" => $planet_data['planet_name'] ?? "",
                 "status" => $planet_data['player_status'] ?? "", // de player.status
                 "last_update" => $planet_data['last_update'] ?? "", // de uni.last_update
-                "last_update_moon" => $planet_data['last_update_moon'] ?? $planet_data['last_update'],
+                "last_update_moon" => $planet_data['last_update_moon'] ?? ($planet_data['last_update'] ?? ""),
                 "last_update_user_id" => $planet_data['last_update_user_id'] ?? "",
                 "last_update_user_name" => $planet_data['last_update_user_name'] ?? "", // de user.name
                 "player_last_active" => $planet_data['player_last_active'] ?? "" // de player.datadate
