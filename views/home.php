@@ -29,6 +29,7 @@ $tagactive = "active";
 $tagactiveempire = "";
 $tagactivesimulation = "";
 $tagactivespy = "";
+$tagactivecombat = "";
 $tagactivestat = "";
 
 switch ($pub_subaction) {
@@ -40,6 +41,9 @@ switch ($pub_subaction) {
         break;
     case "spy":
         $tagactivespy = $tagactive;
+        break;
+    case "combat":
+        $tagactivecombat = $tagactive;
         break;
     case "stat":
         $tagactivestat = $tagactive;
@@ -69,6 +73,11 @@ switch ($pub_subaction) {
                 <?php echo $lang['HOME_REPORTS_TITLE']; ?>
             </a>
         </div>
+        <div class="nav-page-menu-item nav-page-menu-item-home-combat <?php echo $tagactivecombat; ?>">
+            <a class="nav-page-menu-link" href="index.php?action=home&amp;subaction=combat">
+                <?php echo $lang['HOME_COMBAT_TITLE']; ?>
+            </a>
+        </div>
         <div class="nav-page-menu-item nav-page-menu-item-home-stat <?php echo $tagactivestat; ?>">
             <a class="nav-page-menu-link" href="index.php?action=home&amp;subaction=stat">
                 <?php echo $lang['HOME_STATISTICS_TITLE']; ?>
@@ -93,6 +102,10 @@ switch ($pub_subaction) {
 
                     case "spy":
                         require_once("home_spy.php");
+                        break;
+
+                    case "combat":
+                        require_once("home_combat.php");
                         break;
 
                     default:

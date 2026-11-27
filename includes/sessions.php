@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Fichier de gestion des sessions utilisateurs sur OGSpy
+ * User session management file for OGSpy.
  * @package OGSpy
  * @subpackage Main
  * @author Kyser
@@ -46,7 +46,7 @@ function session_begin($user_ip): void
 }
 
 /**
- * Gets the current session and creates it if the session for the current user does not exists
+ * Retrieves the current session and creates it if it does not exist for the user.
  */
 function session(): void
 {

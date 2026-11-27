@@ -72,7 +72,8 @@ class Rankings_Player_Model extends Rankings_Model
         // Remplissage du ranking content. Toutes les valeurs doivent être présentes dans l'array sous peine de soucis d'affichages
         $ranking_content = array();
         $row = 0;
-        while (list($position, $player_name, $ally_name,  $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $this->db->sql_fetch_row($result)) {
+        while (($row_data = $this->db->sql_fetch_row($result)) !== false && $row_data !== null) {
+            list($position, $player_name, $ally_name,  $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $row_data;
             $ranking_content[$row]['postion'] = $position;
             $ranking_content[$row]['player_name'] = $player_name;
             $ranking_content[$row]['ally_name'] = $ally_name;

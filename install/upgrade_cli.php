@@ -2,7 +2,7 @@
 <?php
 
 /**
- * Script CLI pour la gestion des mises à jour OGSpy
+ * Script CLI for la management des mises à jour OGSpy
  * Usage: php upgrade_cli.php [action]
  * Actions: install, check, upgrade, force, status, logs
  */
@@ -83,8 +83,8 @@ require_once 'TestManager.php';
 require_once 'version.php';
 
 class UpgradeCLI {
-    private $autoUpgrade;
-    private $migrationManager;
+    private ?AutoUpgradeManager $autoUpgrade = null;
+    private ?MigrationManager $migrationManager = null;
 
     public function __construct() {
         // Ne pas initialiser les objets pour l'installation ou l'aide
@@ -106,7 +106,7 @@ class UpgradeCLI {
         }
     }
 
-    public function run($argv) {
+    public function run(array $argv) {
         $action = $argv[1] ?? 'help';
 
         switch ($action) {
@@ -118,6 +118,9 @@ class UpgradeCLI {
                 break;
             case 'upgrade':
                 $this->runUpgrade();
+                break;
+            case 'rollback':
+                $this->runRollback($argv);
                 break;
             case 'force':
                 $this->forceUpgrade();
@@ -161,9 +164,9 @@ class UpgradeCLI {
     }
 
     /**
-     * Installation complète d'OGSpy via CLI
+     * Installation complete d'OGSpy via CLI
      */
-    private function runInstall($argv) {
+    private function runInstall(array $argv) {
         // Vérifier si les arguments sont fournis
         if (count($argv) < 8) {
             echo "❌ Arguments manquants pour l'installation automatisée\n";
@@ -197,9 +200,9 @@ class UpgradeCLI {
 
         // Vérification PHP
         $phpVersion = PHP_VERSION;
-        if (version_compare($phpVersion, '8.1.0', '<')) {
+        if (version_compare($phpVersion, '8.3.0', '<')) {
             echo "❌ Version PHP incompatible: {$phpVersion}\n";
-            echo "   PHP 8.1 minimum requis\n";
+            echo "   PHP 8.3 minimum requis\n";
             exit(1);
         }
         echo "✓ Version PHP: {$phpVersion}\n";
@@ -421,7 +424,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Vérifie le statut des migrations et de la base de données
+     * Checks migration and database status.
      */
     private function checkStatus() {
         echo "=== VÉRIFICATION DU STATUT ===\n";
@@ -476,6 +479,25 @@ class UpgradeCLI {
                     echo "  Détails: {$result['error']}\n";
                 }
                 exit(1);
+        }
+    }
+
+    private function runRollback($argv) {
+        if (!isset($argv[2])) {
+            echo "❌ Version de migration manquante pour le rollback\n";
+            echo "Usage: php upgrade_cli.php rollback <version>\n";
+            exit(1);
+        }
+
+        $version = $argv[2];
+        echo "=== ROLLBACK DE LA MIGRATION {$version} ===\n";
+
+        try {
+            $this->migrationManager->rollbackMigration($version);
+            echo "✅ Rollback réussi pour la migration {$version}\n";
+        } catch (Exception $e) {
+            echo "❌ Erreur lors du rollback: " . $e->getMessage() . "\n";
+            exit(1);
         }
     }
 
@@ -569,7 +591,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Désinstalle OGSpy : purge la base et supprime les fichiers générés
+     * Uninstalls OGSpy: purges the database and removes generated files.
      */
     private function uninstall() {
         echo "=== DÉSINSTALLATION OGSpy ===\n";
@@ -625,6 +647,7 @@ class UpgradeCLI {
         echo "                      - Installation automatisée d'OGSpy (verrouillée par défaut)\n";
         echo "  check               - Vérifie le statut des migrations\n";
         echo "  upgrade             - Lance la mise à jour automatique\n";
+        echo "  rollback <version>  - Annule une migration exécutée\n";
         echo "  force               - Force la mise à jour (supprime les verrous)\n";
         echo "  status              - Affiche le statut complet du système\n";
         echo "  logs                - Affiche les logs de mise à jour\n";
@@ -647,7 +670,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Lance tous les tests (installation + mises à niveau)
+     * Runs all tests (installation + upgrades).
      */
     private function runTests() {
         global $db, $log;
@@ -695,7 +718,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Test uniquement l'installation initiale
+     * Tests initial installation only.
      */
     private function testInstall() {
         global $db, $log;
@@ -730,7 +753,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Test uniquement les mises à niveau
+     * Tests upgrades only.
      */
     private function testUpgrade() {
         global $db, $log;
@@ -766,7 +789,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Test de performance des migrations
+     * Migration performance test.
      */
     private function testPerformance() {
         global $db, $log;
@@ -823,9 +846,9 @@ class UpgradeCLI {
     }
 
     /**
-     * Vérifie l'intégrité de la base de données courante.
-     * Avec --repair : tente d'abord d'appliquer les migrations en attente (sûr),
-     * puis re-vérifie. Ne rejoue jamais une migration déjà appliquée.
+     * Verifies integrity of the current database.
+     * With --repair: first tries applying pending migrations (safe),
+     * then verifies again. Never replays an already-applied migration.
      */
     private function verifyIntegrity() {
         global $db, $log, $table_prefix, $argv;
@@ -895,7 +918,7 @@ class UpgradeCLI {
     }
 
     /**
-     * Test la configuration des préfixes de table
+     * Tests table-prefix configuration.
      */
     private function testTablePrefix() {
         global $db, $log;

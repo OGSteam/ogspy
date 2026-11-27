@@ -1,0 +1,72 @@
+name: ogspy
+
+networks:
+  ogspy-network:
+    driver: bridge
+
+volumes:
+  ogspy-db:
+    driver: local
+  ogspy-app:
+    driver: local
+
+services:
+  db:
+    image: mariadb:13.0
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?Set MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE:-ogspy}
+      MARIADB_USER: ${MARIADB_USER:-ogspy}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:?Set MARIADB_PASSWORD}
+    volumes:
+      - ogspy-db:/var/lib/mysql
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - ogspy-network
+
+  ogspy:
+    image: ${OGSPY_APP_IMAGE:?Set OGSPY_APP_IMAGE}
+    environment:
+      ENVIRONMENT: production
+      MARIADB_DATABASE: ${MARIADB_DATABASE:-ogspy}
+      MARIADB_USER: ${MARIADB_USER:-ogspy}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:?Set MARIADB_PASSWORD}
+      OGSPY_LOCK_INSTALL_ON_START: ${OGSPY_LOCK_INSTALL_ON_START:-true}
+      OGSPY_AUTO_INSTALL_ON_START: ${OGSPY_AUTO_INSTALL_ON_START:-true}
+      OGSPY_DB_HOST: ${OGSPY_DB_HOST:-db}
+      OGSPY_TABLE_PREFIX: ${OGSPY_TABLE_PREFIX:-ogspy_}
+      OGSPY_ADMIN_USER: ${OGSPY_ADMIN_USER:-ogsteam}
+      OGSPY_ADMIN_PASSWORD: ${OGSPY_ADMIN_PASSWORD:-ogsteam}
+      OGSPY_ADMIN_EMAIL: ${OGSPY_ADMIN_EMAIL:-}
+    volumes:
+      - ogspy-app:/var/www/html
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - ogspy-network
+
+  nginx:
+    image: ${OGSPY_NGINX_IMAGE:?Set OGSPY_NGINX_IMAGE}
+    ports:
+      - "${OGSPY_HTTP_PORT:-16005}:80"
+    volumes:
+      - ogspy-app:/var/www/html
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      - ogspy
+    networks:
+      - ogspy-network

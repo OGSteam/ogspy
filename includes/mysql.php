@@ -70,13 +70,13 @@ class sql_db
 
 
     /**
-     * Returns the singleton instance of the sql_db object. If the instance does not exist, it is created.
+     * Returns l'instance singleton of sql_db. Si elle n'existe pas, elle est created.
      *
-     * @param string $sqlserver The SQL server address.
-     * @param string $sqluser The username for the SQL server.
-     * @param string $sqlpassword The password for the SQL user.
-     * @param string $database The name of the database to connect to.
-     * @return sql_db The singleton instance of the sql_db object.
+     * @param string $sqlserver Adresse of the serveur SQL.
+    * @param string $sqluser SQL username.
+     * @param string $sqlpassword Mot of passe SQL.
+    * @param string $database Database name.
+     * @return sql_db Instance singleton of sql_db.
      */
     public static function getInstance($sqlserver, $sqluser, $sqlpassword, $database)
     {
@@ -89,11 +89,11 @@ class sql_db
     }
 
     /**
-     * Class Constructor
-     * @param string $sqlserver MySQL Server Name
-     * @param string $sqluser MySQL User Name
-     * @param string $sqlpassword MySQL User Password
-     * @param string $database MySQL Database Name
+     * Constructeur of the classe.
+     * @param string $sqlserver Name of the serveur MySQL
+    * @param string $sqluser MySQL username
+     * @param string $sqlpassword Mot of passe MySQL
+     * @param string $database Name of the base MySQL
      */
 
     private function __construct($sqlserver, $sqluser, $sqlpassword, $database)
@@ -120,7 +120,7 @@ class sql_db
     }
 
     /**
-     * Overload the __clone function. To forbid the use of this function for this class.
+     * Surcharge of __clone for interdire le clonage of cette classe.
      */
     public function __clone()
     {
@@ -140,8 +140,8 @@ class sql_db
     }
 
     /**
-     * MySQL Request Function
-     * @param string $query The MySQL Query
+     * Executes une query MySQL.
+     * @param string $query Requête MySQL
      * @return bool|mixed|mysqli_result
      * @throws FileAccessException
      */
@@ -168,9 +168,9 @@ class sql_db
     }
 
     /**
-     * Gets the result of the Query and returns it in a simple array
-     * @param mysqli_result|null $result The Query Result.
-     * @return array|bool array containing the Database result
+    * Returns a query result as an indexed array.
+     * @param mysqli_result|null $result Result of query.
+     * @return array|bool Tableau contenant le result of the base
      */
     public function sql_fetch_row(?mysqli_result $result = null): array|bool|null
     {
@@ -185,9 +185,9 @@ class sql_db
     }
 
     /**
-     * Gets the result of the Query and returns it in an associative array
-     * @param mysqli_result|null $result The Query id.
-     * @return array|bool the associative array containing the Database result
+    * Returns a query result as an associative array.
+     * @param mysqli_result|null $result Identifier/result of query.
+     * @return array|bool Tableau associatif contenant le result
      */
     public function sql_fetch_assoc(?mysqli_result $result = null): array|bool|null
     {
@@ -202,9 +202,9 @@ class sql_db
     }
 
     /**
-     * Gets the number of results returned by the Query
+     * Returns le nombre of lignes d'un result of query.
      * @param mysqli_result|null $result
-     * @return int|bool the number of results
+     * @return int|bool Number of résultats
      */
     public function sql_numrows(?mysqli_result $result = null): int|bool
     {
@@ -219,8 +219,8 @@ class sql_db
     }
 
     /**
-     * Gets the number of affected rows by the Query
-     * @return bool|int the number of affected rows
+     * Returns le nombre of lignes affectées par la query.
+     * @return bool|int Number of lignes affectées
      */
     public function sql_affectedrows(): int|false
     {
@@ -232,8 +232,8 @@ class sql_db
     }
 
     /**
-     * Identifier of the last insertion Query
-     * @return int|false the id
+    * Returns the last inserted ID.
+     * @return int|false Identifier inséré
      */
     public function sql_insertid(): int|false
     {
@@ -245,7 +245,7 @@ class sql_db
     }
 
     /**
-     * Returns the latest Query Error.
+     * Returns la last error SQL.
      */
     public function sql_error()
     {
@@ -258,8 +258,8 @@ class sql_db
     }
 
     /**
-     * Returns the number of queries done.
-     * @return integer number of queries done.
+     * Returns le nombre of requêtes exécutées.
+     * @return integer Number of requêtes
      */
     public function sql_nb_requete()
     {
@@ -267,9 +267,9 @@ class sql_db
     }
 
     /**
-     * Escape String Function
-     * @param string $str The string to escape
-     * @return string|false escaped string
+     * Échappe une string for un usage SQL.
+     * @param string $str Chaîne à échapper
+     * @return string|false Chaîne échappée
      */
     public function sql_escape_string($str)
     {
@@ -281,8 +281,8 @@ class sql_db
     }
 
     /**
-     * Start MySQL Transaction
-     * @param string $mode Transaction mode ('begin', 'start', 'commit', 'rollback')
+     * Starts ou pilote une transaction MySQL.
+     * @param string $mode Mode of transaction ('begin', 'start', 'commit', 'rollback')
      * @return bool Success or failure
      */
     public function sql_transaction($mode = 'begin')
@@ -309,8 +309,8 @@ class sql_db
     }
 
     /**
-     * Get the current database name
-     * @return string The current database name
+     * Returns le name of the base courante.
+     * @return string Name of the base courante
      */
     public function getDatabaseName()
     {
@@ -318,8 +318,8 @@ class sql_db
     }
 
     /**
-     * Select a different database
-     * @param string $database The database name to select
+    * Selects another database.
+     * @param string $database Name of the base à sélectionner
      * @return bool Success or failure
      */
     public function sql_select_db($database)

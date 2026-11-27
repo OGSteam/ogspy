@@ -20,7 +20,7 @@ class token
     private $token;
 
     /**
-     * version static de getToken
+     * version static of getToken
      * @param int $lifetime
      * @param string $formName
      * @param bool $inSession

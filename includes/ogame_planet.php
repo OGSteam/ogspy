@@ -21,14 +21,14 @@ if (!defined('IN_SPYOGAME')) {
  * @param[in] array $user_data       User info (array('user_class'=>'COL'/...,'off_commandant','off_amiral','off_ingenieur','off_geologue', or 'off_full')
  * @param[in] array $server_config   Ogame universe info ('speed_uni')
  * @return array('prod_reel,'prod_theorique','ratio','conso_E','prod_E',  //Production totale
- *      'prod_CES','prod_CEF','prod_SAT','prod_FOR',   //production énergie de chaque unité
- *      'prod_M','prod_C','prod_D','prod_base', //production ressources de chaque mine
+ *      'prod_CES','prod_CEF','prod_SAT','prod_FOR',   //production énergie of chaque unité
+ *      'prod_M','prod_C','prod_D','prod_base', //production ressources of chaque mine
  *      'prod_booster','prod_off','prod_Plasma','prod_classe',   //production des bonus
- *      'M','C','D','NRJ','AM', =>héritage du type ressource pour les valeurs retournées.
+ *      'M','C','D','NRJ','AM', =>héritage of the type ressource for the values retournées.
  *      'nb_FOR_maxed',
- *      ) à part conso_E/prod_E (float) les autres sont array('M','C','D','NRJ','AM')
+ *      ) à part conso_E/prod_E (float) the autres sont array('M','C','D','NRJ','AM')
  *
- * @details remplace les fonctions ratio et bilan_production_ratio
+ * @details remplace the fonctions ratio and bilan_production_ratio
  */
 function ogame_production_planet($user_building, $user_technology = null, $player_data = null, $server_config = null)
 {

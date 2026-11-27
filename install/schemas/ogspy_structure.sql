@@ -25,6 +25,10 @@ DROP TABLE IF EXISTS
     `ogspy_game_ally`,
     `ogspy_game_universe`,
     `ogspy_game_astro_object`,
+    `ogspy_game_lifeform_building`,
+    `ogspy_game_lifeform_research`,
+    `ogspy_game_lifeform_resource_history`,
+    `ogspy_game_lifeform_resource`,
     `ogspy_game_player_defense`,
     `ogspy_game_player_spy`,
     `ogspy_game_player_technology`,
@@ -331,6 +335,7 @@ CREATE TABLE `ogspy_game_astro_object`
     `DdR`                 SMALLINT    NOT NULL DEFAULT '0',
     `Silo`                SMALLINT    NOT NULL DEFAULT '0',
     `Dock`                SMALLINT    NOT NULL DEFAULT '0',
+    `Scanner`             SMALLINT    NOT NULL DEFAULT '0',
     `BaLu`                SMALLINT    NOT NULL DEFAULT '0',
     `Pha`                 SMALLINT    NOT NULL DEFAULT '0',
     `PoSa`                SMALLINT    NOT NULL DEFAULT '0',
@@ -339,6 +344,57 @@ CREATE TABLE `ogspy_game_astro_object`
     `last_update_user_id` INT         NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`),
     KEY `univers` (`galaxy`, `system`, `row`)
+) DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin;
+
+--
+-- Life-form levels are keyed by the real OGame technology identifier.
+-- Buildings and selected research are planet-specific and intentionally
+-- stored separately because their identifiers may overlap.
+--
+CREATE TABLE `ogspy_game_lifeform_building`
+(
+    `astro_object_id` INT          NOT NULL,
+    `technology_id`  INT UNSIGNED NOT NULL,
+    `level`          SMALLINT UNSIGNED NOT NULL DEFAULT '0',
+    `last_update`    INT          NOT NULL DEFAULT '0',
+    PRIMARY KEY (`astro_object_id`, `technology_id`),
+    KEY `technology_id` (`technology_id`)
+) DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin;
+
+CREATE TABLE `ogspy_game_lifeform_research`
+(
+    `astro_object_id` INT          NOT NULL,
+    `technology_id`  INT UNSIGNED NOT NULL,
+    `level`          SMALLINT UNSIGNED NOT NULL DEFAULT '0',
+    `last_update`    INT          NOT NULL DEFAULT '0',
+    PRIMARY KEY (`astro_object_id`, `technology_id`),
+    KEY `technology_id` (`technology_id`)
+) DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin;
+
+CREATE TABLE `ogspy_game_lifeform_resource`
+(
+    `astro_object_id` INT           NOT NULL,
+    `species_code`    VARCHAR(16)   NULL,
+    `population`      BIGINT UNSIGNED NULL,
+    `food`            BIGINT UNSIGNED NULL,
+    `last_update`     INT           NOT NULL DEFAULT '0',
+    PRIMARY KEY (`astro_object_id`)
+) DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin;
+
+CREATE TABLE `ogspy_game_lifeform_resource_history`
+(
+    `astro_object_id` INT           NOT NULL,
+    `observation_day` DATE          NOT NULL,
+    `species_code`    VARCHAR(16)   NULL,
+    `population`      BIGINT UNSIGNED NULL,
+    `food`            BIGINT UNSIGNED NULL,
+    `observed_at`     INT           NOT NULL DEFAULT '0',
+    PRIMARY KEY (`astro_object_id`, `observation_day`),
+    KEY `observed_at` (`observed_at`)
 ) DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_bin;
 --

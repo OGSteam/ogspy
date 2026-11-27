@@ -4,7 +4,7 @@ use Ogsteam\Ogspy\Model\Group_Model;
 use Ogsteam\Ogspy\Model\User_Model;
 
 /**
- * Création d'un groupe
+ * Creates a group.
  */
 function usergroup_create()
 {
@@ -94,7 +94,7 @@ function usergroup_create()
 }
 
 /**
- * Récupération des droits d'un groupe d'utilisateurs
+ * Retrieves permissions for a user group.
  * @param bool $group_id
  * @return array|bool
  * @throws Exception
@@ -207,7 +207,7 @@ function usergroup_get($group_id = false)
 }
 
 /**
- * Enregistrement des droits d'un groupe utilisateurs
+ * Saves permissions for a user group.
  */
 function usergroup_setauth()
 {
@@ -374,9 +374,9 @@ function usergroup_setauth()
 }
 
 /**
- * Récupération des utilisateurs appartenant à un groupe
- * @param int $group_id Identificateur du groupe demandé
- * @return Array Liste des utilisateurs
+ * Retrieves users belonging to a group.
+ * @param int $group_id Identificateur of the groupe demandé
+ * @return array List of users
  * @throws Exception
  */
 function usergroup_member($group_id)
@@ -429,7 +429,7 @@ function usergroup_member($group_id)
 }
 
 /**
- * Ajout d'un utilisateur à un groupe
+ * Adds a user to a group.
  */
 function usergroup_newmember()
 {
@@ -656,7 +656,7 @@ function usergroup_newmember()
 
 
 /**
- * Suppression d'un groupe utilisateur
+ * Deletes a user group.
  */
 function usergroup_delete()
 {

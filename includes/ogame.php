@@ -3,16 +3,16 @@
 /* Element functions were moved to includes/ogame_elements.php */
 
 /**
- * @brief Calculates technical data of Ogame requirement.
+ * Requirement technical-data helpers were moved to dedicated modules.
  *
- * @param[in] string $nom The name, like name in Database
- * @return array('none','COL','GEN','EXP' : bool for class, 'CES',etc. : int for all bat/rech name in database)
+ * @see includes/ogame_elements.php
+ * @see includes/ogame_structs.php
  */
 /* Requirement and cost/cumulate functions are now required centrally from common.php */
 
 ///////////////////// FLOTTE fonctions : ///////////////////////////////////////
 /**
- * Calculates the fuel consumption for a stationary fleet mission over a given duration.
+ * Calculates the fuel consumption of a stationary mission over a given duration.
  *
  * @param float $conso The fuel consumption rate of the fleet (consumption per hour at 100% efficiency).
  * @param int $hour The duration of the stationary mission in hours.
@@ -33,7 +33,7 @@ function ogame_fleet_conso_statio($conso, $hour)
 }
 
 /**
- * @brief Calculates the slowest speed in a fleet.
+ * Calculates the slowest speed in a fleet.
  *
  * @param array $fleet Array of fleet and their number (e.g., array('PT' => 10, etc.)).
  * @param array $user_techno List of technologies affecting fleet speed (e.g., array('RC', 'RI', 'PH')). Default is null.
@@ -59,7 +59,7 @@ function ogame_fleet_slowest_speed($fleet, $user_techno = null, $class = 'none')
 }
 
 /**
- * Calculates the distance and type of travel between two coordinates.
+ * Calcule la distance and le type of trajet entre deux coordonnées.
  *
  * @param mixed $a Starting coordinates.
  * @param mixed $b Target coordinates.
@@ -124,17 +124,18 @@ function ogame_fleet_distance($a, $b, $user_techno = null, $class = 'none', $ser
 }
 
 /**
- * @brief Calculates time and conso to send a fleet.
+ * Calculates travel time and fuel consumption for a fleet.
  *
- * @param[in] string $coord_from,$coord_to    Coordinates begin and end
- * @param[in] array  $fleet                   Array of fleet and their number (array('PT'=>10,etc.))
- * @param[in] int    $speed_per               Percentage of speed wanted
- * @param[in] array  $user_techno             List of techno ('RC','RI','PH', le reste est ignoré)
- * @param[in] string $class                   User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
- * @param[in] array  $server_config           Info of universe ('num_of_galaxies','num_of_systems','donutGalaxy','donutSystem' only these are checked) default 9/499/1/1
- * @param[in] string $type                    Indicates specific mission ('statio'/'expe', 'fuite')
- * @param[in] int    $hour_mission            Number of hour of the specific mission
- * @return array('conso', 'time'), time in seconds (one trip only)
+ * @param string $coord_from Source coordinates.
+ * @param string $coord_to Destination coordinates.
+ * @param array<string, int> $fleet Fleet composition (e.g. ['PT' => 10]).
+ * @param int $speed_per Requested speed percentage.
+ * @param array<string, int>|null $user_techno User technologies affecting speed.
+ * @param string $class User class ('COL', 'GEN', 'EXP', 'none').
+ * @param array<string, int>|null $server_config Universe config subset.
+ * @param string $type Specific mission type ('statio', 'expe', 'fuite').
+ * @param int $hour_mission Mission duration in hours for stationary/expedition cases.
+ * @return array{conso:int,time:int} One-way result in fuel units and seconds.
  */
 function ogame_fleet_send($coord_from, $coord_to, $fleet, $speed_per = 100, $user_techno = null, $class = 'none', $server_config = null, $type = '', $hour_mission = 0)
 {
@@ -209,11 +210,11 @@ function ogame_fleet_send($coord_from, $coord_to, $fleet, $speed_per = 100, $use
 
 ///////////////////// TEMPS fonctions : ////////////////////////////////////////
 /**
- * @brief Calculates cumulate lab network.
+ * Calculates cumulative laboratory network level.
  *
- * @param[in] array $user_empire       From user_get_empire()
- * @param[in] int   $current_planet_id Current planet to run a research, if not best lab (theory).
- * @return int Number of cumulate lab network
+ * @param array $user_empire From user_get_empire().
+ * @param int $current_planet_id Current planet to run a research on, if not best lab (theory).
+ * @return int Number of cumulative lab levels.
  */
 function ogame_labo_cumulate($user_empire, $current_planet_id = -1)
 {
@@ -252,14 +253,14 @@ function ogame_labo_cumulate($user_empire, $current_planet_id = -1)
 }
 
 /**
- * @brief Calculates construction time of a OGame element bat/vso/def/rech.
+ * Calculates construction time of an OGame element (BAT/VSO/DEF/RECH).
  *
- * @param[in] string $name          The name, like name in Database
- * @param[in] int    $level         The level or number for def/vso
- * @param[in] array  $user_building Array of bat level ('CSp','UdR','UdN','Lab')
- * @param[in] int    $cumul_labo    Number of cumulate lab network (only for rech)
- * @param[in] array  $user_class    User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
- * @return float Time in seconds
+ * @param string $name The element name as stored in database.
+ * @param int $level The level or number for DEF/VSO.
+ * @param array $user_building Building levels ('CSp', 'UdR', 'UdN', 'Lab').
+ * @param int $cumul_labo Number of cumulative lab levels (RECH only).
+ * @param string $player_class User class ('COL', 'GEN', 'EXP', 'none').
+ * @return float Time in seconds.
  */
 function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0, $player_class = 'none')
 {
@@ -322,18 +323,19 @@ function ogame_construction_time($name, $level, $user_building, $cumul_labo = 0,
 
 ///////////////////// DIVERS fonctions : ///////////////////////////////////////
 /**
- * @brief Return planet position from coordinates.
- * @param[in] string $coordinates planet coordinates (galaxy:system:position)
- * @return int planet position
+ * Returns the planet position from coordinates.
+ *
+ * @param string $coordinates Planet coordinates (galaxy:system:position).
+ * @return int Planet position.
  */
 // Coordinate helpers moved to includes/ogame_structs.php
 
 
 /**
- * @brief Calculates the planet storage capacity (taille hangar).
+ * Calculates the planet storage capacity.
  *
- * @param[in] int $level Storage building level
- * @return float capacity
+ * @param int $level Storage building level.
+ * @return float Capacity.
  */
 function ogame_depot_capacity($level)
 {
@@ -347,7 +349,7 @@ function ogame_depot_capacity($level)
 }
 
 /**
- * Returns the maximum numbers of planet slots available according to the Astrophysic level
+ * Returns le nombre maximal d'emplacements of planets selon le niveau d'Astrophysique.
  * @param int $level Astrophysic Level
  * @return int the maximum number of planets
  */
@@ -359,11 +361,11 @@ function astro_max_planete($level)
 
 
 /**
- * @brief Calculates phalanx range.
+ * Calculates phalanx range.
  *
- * @param[in] int   $level         Level of the phalanx
- * @param[in] array $user_class    User class ($user_data['user_class']=array('user_class'=>'COL'/GEN/EXP/none))
- * @return float Range in system
+ * @param int $level Level of the phalanx.
+ * @param string $player_class User class ('COL', 'GEN', 'EXP', 'none').
+ * @return float Range in systems.
  */
 function ogame_phalanx_range($level, $player_class = 'none')
 {
@@ -378,10 +380,10 @@ function ogame_phalanx_range($level, $player_class = 'none')
 }
 
 /**
- * @brief Calculates MIP range.
+ * Calculates MIP range.
  *
- * @param[in] int $impulsion Techno impulsion (RI)
- * @return int Range in system
+ * @param int $impulsion Impulse drive technology level (RI).
+ * @return int Range in systems.
  */
 function ogame_missile_range($impulsion = 1)
 {
@@ -389,11 +391,11 @@ function ogame_missile_range($impulsion = 1)
 }
 
 /**
- * @brief Calculates MIP speed.
+ * Calculates MIP travel time.
  *
- * @param[in] int $nb_system Number of sub-system from current planet
- * @param[in] int $speed_uni Universe speed
- * @return int Speed in seconds
+ * @param int $nb_system Number of systems from current planet.
+ * @param int $speed_uni Universe speed.
+ * @return int Travel time in seconds.
  */
 function ogame_missile_speed($nb_system, $speed_uni = 1)
 {
@@ -401,10 +403,10 @@ function ogame_missile_speed($nb_system, $speed_uni = 1)
 }
 
 /**
- * @brief Calculates additional case given by terraformer.
+ * Calculates additional slots given by terraformer.
  *
- * @param[in] int $level The terra level
- * @return int Number of additional case
+ * @param int $level Terraformer level.
+ * @return int Number of additional slots.
  */
 function ogame_terra_case($level)
 {

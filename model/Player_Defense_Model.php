@@ -15,10 +15,10 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class Player_Defense_Model  extends Model_Abstract
 {
     /**
-     * Retrieves the defense data for a specific player.
+    * Retrieves defense data for a player.
      *
-     * @param int $playerId The unique identifier of the player.
-     * @return array An associative array containing the player's defense data.
+     * @param int $playerId Identifier unique of the joueur.
+     * @return array Tableau associatif contenant the defenses of the joueur.
      */
     public function select_player_defense(int $playerId)
     {
@@ -45,10 +45,10 @@ class Player_Defense_Model  extends Model_Abstract
     }
 
     /**
-     * Retrieves the defense configuration for a specified planet.
+    * Retrieves defense configuration for a planet.
      *
-     * @param int $planet_id The unique identifier of the planet whose defense data is to be retrieved.
-     * @return array|null An associative array containing the defense information for the specified planet, or null if no data is found.
+    * @param int $planet_id Planet identifier.
+    * @return array|null Associative array of defenses, or null if no data.
      */
     public function select_player_defense_planete(int $planet_id)
     {
@@ -65,9 +65,9 @@ class Player_Defense_Model  extends Model_Abstract
 
 
     /**
-     * Deletes a specified asteroid entry from the player defense table.
+     * Deletes une entrée of défense liée à un objet astronomique.
      *
-     * @param int $aster_id The unique identifier of the asteroid to be deleted.
+     * @param int $aster_id Identifier of l'objet à delete.
      * @return void
      */
     public function delete_user_aster(int $aster_id)

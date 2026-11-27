@@ -2,7 +2,7 @@
 global $table_prefix;
 
 /**
- * Fichier de configuration communes
+ * Fichier of configuration communes
  * @package OGSpy
  * @subpackage Main
  * @author Kyser
@@ -40,6 +40,10 @@ if (!defined("INSTALL_IN_PROGRESS")) {
         // Tables Player
     if (!defined("TABLE_UNIVERSE")) define("TABLE_UNIVERSE", $table_prefix . "game_universe");
     if (!defined("TABLE_USER_BUILDING")) define("TABLE_USER_BUILDING", $table_prefix . "game_astro_object");
+    if (!defined("TABLE_GAME_LIFEFORM_BUILDING")) define("TABLE_GAME_LIFEFORM_BUILDING", $table_prefix . "game_lifeform_building"); // NOSONAR - follows the guarded legacy constant declarations in this block
+    if (!defined("TABLE_GAME_LIFEFORM_RESEARCH")) define("TABLE_GAME_LIFEFORM_RESEARCH", $table_prefix . "game_lifeform_research"); // NOSONAR - follows the guarded legacy constant declarations in this block
+    if (!defined("TABLE_GAME_LIFEFORM_RESOURCE")) define("TABLE_GAME_LIFEFORM_RESOURCE", $table_prefix . "game_lifeform_resource"); // NOSONAR - follows the guarded legacy constant declarations in this block
+    if (!defined("TABLE_GAME_LIFEFORM_RESOURCE_HISTORY")) define("TABLE_GAME_LIFEFORM_RESOURCE_HISTORY", $table_prefix . "game_lifeform_resource_history"); // NOSONAR - follows the guarded legacy constant declarations in this block
     if (!defined("TABLE_GAME_PLAYER_DEFENSE")) define("TABLE_GAME_PLAYER_DEFENSE", $table_prefix . "game_player_defense");
     if (!defined("TABLE_GAME_PLAYER_FLEET")) define("TABLE_GAME_PLAYER_FLEET", $table_prefix . "game_player_fleet");
     if (!defined("TABLE_USER_SPY")) define("TABLE_USER_SPY", $table_prefix . "game_player_spy");

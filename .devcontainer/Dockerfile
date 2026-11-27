@@ -1,4 +1,4 @@
-FROM php:8.5-apache
+FROM php:8.6-apache
 
 # Install system packages and PHP extensions at build time
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -15,29 +15,18 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PCOV for code coverage (lightweight alternative to Xdebug)
-RUN pecl install pcov \
-    && docker-php-ext-enable pcov
-
-# Configure PCOV (append to existing config)
-RUN { \
-    echo ""; \
-    echo "pcov.enabled=1"; \
-    echo "pcov.directory=/var/www/html"; \
-} >> /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
-
-# Install Xdebug for debugging (optional, separate from coverage)
-RUN pecl install xdebug || pecl install xdebug-3.2.0 || true \
-    && docker-php-ext-enable xdebug || true
-
-# Configure Xdebug for debugging only (append to existing config)
-RUN { \
-    echo ""; \
-    echo "xdebug.mode=debug"; \
-    echo "xdebug.start_with_request=yes"; \
-    echo "xdebug.client_host=${XDEBUG_CLIENT_HOST:-host.docker.internal}"; \
-    echo "xdebug.client_port=${XDEBUG_CLIENT_PORT:-9003}"; \
-} >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini || true
+# Xdebug 3.6 is the first release line compatible with PHP 8.6.
+RUN --mount=type=bind,from=ghcr.io/php/pie:bin,source=/pie,target=/usr/local/bin/pie \
+    pie install --no-cache xdebug/xdebug:3.6.0alpha1 \
+    && { \
+        echo ""; \
+        echo "xdebug.mode=debug"; \
+        echo "xdebug.start_with_request=trigger"; \
+        echo "xdebug.client_host=${XDEBUG_CLIENT_HOST:-host.docker.internal}"; \
+        echo "xdebug.client_port=${XDEBUG_CLIENT_PORT:-9003}"; \
+    } >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "ServerName localhost" > /etc/apache2/conf-available/servername.conf \
+    && a2enconf servername
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

@@ -3,6 +3,7 @@
 use Ogsteam\Ogspy\Model\Combat_Report_Model;
 use Ogsteam\Ogspy\Model\Player_Building_Model;
 use Ogsteam\Ogspy\Model\Player_Defense_Model;
+use Ogsteam\Ogspy\Model\Player_Lifeform_Model;
 use Ogsteam\Ogspy\Model\Player_Technology_Model;
 
 if (!defined('IN_SPYOGAME')) {
@@ -10,18 +11,18 @@ if (!defined('IN_SPYOGAME')) {
 }
 
 /**
- * Récupère les données de l'empire d'un joueur spécifique.
+ * Retrieves empire data for a specific player.
  *
- * Cette fonction récupère les informations des bâtiments, technologies et défenses
- * d'un joueur donné, ainsi que les pourcentages associés à certains paramètres.
- * Elle retourne un tableau structuré contenant ces données.
+ * Cette fonction récupère the informations des buildings, technologies and defenses
+ * for a given player, along with percentages associated with some parameters.
+ * It returns a structured array containing this data.
  *
- * @param int $player_id L'identifiant du joueur dont les données doivent être récupérées.
- * @return array Un tableau contenant les informations suivantes :
- *               - "building" : Liste des bâtiments du joueur, avec leurs niveaux et autres données.
- *               - "technology" : Liste des technologies du joueur.
- *               - "defense" : Liste des défenses du joueur, organisées par planète.
- *               - "user_percentage" : Pourcentages associés aux ressources et autres paramètres.
+ * @param int $player_id The player identifier whose data must be retrieved.
+ * @return array An array containing the following information:
+ *               - "building" : List of player buildings with their levels and related data.
+ *               - "technology" : Liste des technologies of the joueur.
+ *               - "defense" : List of player defenses, organized by planet.
+ *               - "player_percentage" : Pourcentages associateds aux ressources and autres paramètres.
  */
 function player_get_empire($player_id)
 {
@@ -64,6 +65,7 @@ function player_get_empire($player_id)
     }
 
     $player_technology = (new Player_Technology_Model())->select_player_technologies($player_id);
+    $player_lifeforms = (new Player_Lifeform_Model())->select_player_lifeforms($player_id);
 
     $tDefenseList = (new Player_Defense_Model())->select_player_defense($player_id);
     $player_defense = [];
@@ -77,17 +79,18 @@ function player_get_empire($player_id)
     $log->info("[OGSpy_Player_Building_Model] player_get_empire - Player Empire Data:", [
         'buildings' => $player_building,
         'technologies' => $player_technology,
+        'lifeforms' => $player_lifeforms,
         'defenses' => $player_defense
     ]);
-    return array("building" => $player_building, "technology" => $player_technology, "defense" => $player_defense, "player_percentage" => $pctList);
+    return array("building" => $player_building, "technology" => $player_technology, "lifeforms" => $player_lifeforms, "defense" => $player_defense, "player_percentage" => $pctList);
 }
 
 /**
- * Calcule le nombre total de cases utilisées sur une planète à partir d'une liste de bâtiments.
+ * Calculates the total number of used fields on a planet from a building list.
  *
- * @param array $buildingList Tableau associatif contenant les informations des bâtiments et autres données de la planète.
- *                            Certaines clés non pertinentes pour le calcul sont exclues.
- * @return int Nombre total de cases utilisées par les bâtiments.
+ * @param array $buildingList Associative array containing building information and other planet data.
+ *                            Certaines keys non pertinentes for le calcul sont exclues.
+ * @return int Number total of cases utilisées par the buildings.
  */
 function calculate_fields_used(array $buildingList): int
 {
@@ -124,7 +127,7 @@ function calculate_fields_used(array $buildingList): int
 }
 
 /**
- * Suppression des données de batiments de l'utilisateur loggé
+ * Deletes building data for the logged-in user.
  */
 function user_del_building()
 {
@@ -133,6 +136,7 @@ function user_del_building()
 
     $userBuildingModel = new Player_Building_Model();
     $userDefenseModel = new Player_Defense_Model();
+    $userLifeformModel = new Player_Lifeform_Model();
 
     if (!check_var($pub_planet_id, "Num")) {
         redirection("index.php?action=message&id_message=errordata&info");
@@ -141,15 +145,17 @@ function user_del_building()
         redirection("index.php?action=message&id_message=errorfatal&info");
     }
 
+    $userLifeformModel->delete_astro_object(intval($pub_planet_id));
     $userBuildingModel->delete_user_aster($user_data["player_id"], intval($pub_planet_id)); //batiment
-    $userDefenseModel->delete_user_aster($user_data["player_id"], intval($pub_planet_id)); //defense
+    $userDefenseModel->delete_user_aster(intval($pub_planet_id)); //defense
 
 
     // si on supprime une planete; la lune doit suivre
     if (intval($pub_planet_id) < 199) {
         $moon_id = (intval($pub_planet_id) + 100);
+        $userLifeformModel->delete_astro_object($moon_id);
         $userBuildingModel->delete_user_aster($user_data["player_id"], $moon_id); //batiment
-        $userDefenseModel->delete_user_aster($user_data["player_id"], $moon_id); //defense
+        $userDefenseModel->delete_user_aster($moon_id); //defense
     }
 
     //si plus de planete
@@ -158,20 +164,14 @@ function user_del_building()
         (new Player_Technology_Model())->delete_user_technologies($user_data["player_id"]);
     }
 
-    if ($iNBPlanet != 0) {
-        // remise en ordre des planetes :
-        //uniquement s'il en reste
-        user_set_all_empire_resync_id();
-
-    }
     redirection("index.php?action=home&subaction=empire&view=" . $pub_view);
 }
 
 /**
- * Récuperation du nombre de  planete de l utilisateur.
+ * Retrieves the number of user planets.
  *
- * @param $player_id
- * @return int|the
+ * @param int $player_id
+ * @return int
  */
 function getPlanetCountForPlayer($player_id)
 {
@@ -179,8 +179,10 @@ function getPlanetCountForPlayer($player_id)
 }
 
 /**
- * @param $user_id
- * @return int Nb of moons
+ * Retrieves the number of user moons.
+ *
+ * @param int $player_id
+ * @return int Number of moons
  */
 function find_nb_moon_user($player_id)
 {
@@ -192,7 +194,7 @@ function find_nb_moon_user($player_id)
  * @param int $id_RC RC à reconstituer
  * @return string $template_RC reconstitué
  *
- * TODO : fonctionne-t-elle ? Pleins de variables non utilisées.
+ * TODO : fonctionne-t-elle ? Pleins of variables non utilisées.
  */
 function UNparseRC($id_RC)
 {

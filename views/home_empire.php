@@ -22,6 +22,8 @@ use Ogsteam\Ogspy\Model\Player_Model;
 
 global $server_config;
 
+require_once 'includes/lifeform.php';
+
 // On récupère les données de l'utilisateur
 $player_data = (new Player_Model())->get_player_data($user_data['player_id']);
 if (empty($player_data)) {
@@ -38,6 +40,7 @@ $user_empire = player_get_empire($player_data['id']);
 $player_building = $user_empire['building'];
 $player_defense = $user_empire['defense'];
 $user_technology = $user_empire['technology'];
+$player_lifeforms = $user_empire['lifeforms'] ?? [];
 
 // Séparation des planètes et des lunes
 $player_planets = [];
@@ -329,225 +332,7 @@ $min_width_px = $label_width_px + ($nb_planete * $per_column_px);
     </tr>
     </tbody>
 
-    <thead>
-    <tr>
-    <th colspan="<?php print $colspan_planets ?>">
-            <?php echo $lang['HOME_EMPIRE_BUILDINGS']; ?>
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_MINE_METAL']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $M = ($planet["M"] == "") ? "&nbsp;" : $planet["M"]; ?>
-                <span id='15<?php echo '_' . $i ?>'>
-                    <?php echo $M ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_MINE_CRYSTAL']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $C = ($planet["C"] == "") ? "&nbsp;" : $planet["C"]; ?>
-                <span id='16<?php echo '_' . $i ?>'>
-                    <?php echo $C ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_MINE_DEUT']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $D = ($planet["D"] == "") ? "&nbsp;" : $planet["D"]; ?>
-                <span id='17<?php echo '_' . $i ?>'>
-                    <?php echo $D ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_METALSTORAGE']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $HM = ($planet["HM"] == "") ? "&nbsp;" : $planet["HM"]; ?>
-                <span id='3<?php echo '_' . $i ?>'>
-                    <?php echo $HM ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_CRYSTALSTORAGE']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $HC = ($planet["HC"] == "") ? "&nbsp;" : $planet["HC"]; ?>
-                <span id='4<?php echo '_' . $i ?>'>
-                    <?php echo $HC ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_DEUTSTORAGE']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $HD = ($planet["HD"] == "") ? "&nbsp;" : $planet["HD"]; ?>
-                <span id='5<?php echo '_' . $i ?>'>
-                    <?php echo $HD ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_SOLAR_PLANT']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $CES = ($planet["CES"] == "") ? "&nbsp;" : $planet["CES"]; ?>
-                <span id='20<?php echo '_' . $i ?>'>
-                    <?php echo $CES ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_FUSION_PLANT']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $CEF = ($planet["CEF"] == "") ? "&nbsp;" : $planet["CEF"]; ?>
-                <span id='21<?php echo '_' . $i ?>'>
-                    <?php echo $CEF ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_ROBOTS_PLANT']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $UdR = ($planet["UdR"] == "") ? "&nbsp;" : $planet["UdR"]; ?>
-                <span id='1<?php echo '_' . $i ?>'>
-                    <?php echo $UdR ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_NANITES_PLANT']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $UdN = ($planet["UdN"] == "") ? "&nbsp;" : $planet["UdN"]; ?>
-                <span id='22<?php echo '_' . $i ?>'>
-                    <?php echo $UdN ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_SHIPYARD']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $CSp = ($planet["CSp"] == "") ? "&nbsp;" : $planet["CSp"]; ?>
-                <span id='2<?php echo '_' . $i ?>'>
-                    <?php echo $CSp ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_RESEARCHLAB']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $Lab = ($planet["Lab"] == "") ? "&nbsp;" : $planet["Lab"]; ?>
-                <span id='23<?php echo '_' . $i ?>'>
-                    <?php echo $Lab ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <?php if ($server_config['ddr'] == 1) : ?>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_ALLIANCEDEPOT']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $DdR = ($planet["DdR"] == "") ? "&nbsp;" : $planet["DdR"]; ?>
-                <span id='42<?php echo '_' . $i ?>'>
-                    <?php echo $DdR ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <?php endif; ?>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_TERRAFORMER']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $Ter = ($planet["Ter"] == "") ? "&nbsp;" : $planet["Ter"]; ?>
-                <span id='24<?php echo '_' . $i ?>'>
-                    <?php echo $Ter ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_MISSILESSILO']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $Silo = ($planet["Silo"] == "") ? "&nbsp;" : $planet["Silo"]; ?>
-                <span id='25<?php echo '_' . $i ?>'>
-                    <?php echo $Silo ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    <tr>
-        <td class="tdname">
-            <?php echo $lang['HOME_EMPIRE_DOCK']; ?>
-        </td>
-        <?php foreach ($player_planets as $i => $planet) : ?>
-            <td class="tdcontent">
-                <?php $Dock = ($planet["Dock"] == "") ? "&nbsp;" : $planet["Dock"]; ?>
-                <span id='dock_<?php echo $i ?>'>
-                    <?php echo $Dock ?>
-                </span>
-            </td>
-        <?php endforeach; ?>
-    </tr>
-    </tbody>
+    <?php require_once __DIR__ . '/home_empire_buildings.php'; ?>
 
     <thead>
     <tr>
@@ -640,6 +425,8 @@ $min_width_px = $label_width_px + ($nb_planete * $per_column_px);
     </tr>
     <?php endforeach; ?>
     </tbody>
+
+    <?php require_once 'views/home_empire_lifeforms.php'; ?>
 
     <thead>
     <tr>

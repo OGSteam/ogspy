@@ -8,6 +8,11 @@
     ],
     "chat.tools.terminal.autoApprove": {
         "git add": true,
-        "git commit": true
+        "git commit": true,
+        "/^git -C \"d:\\\\Wnmp\\\\nginx\\\\www\\\\ogspy\" diff -- \\.docker/Dockerfile\\.ogspy$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        ".docker/.env.example": true
     }
 }

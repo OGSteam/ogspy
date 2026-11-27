@@ -6,14 +6,14 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 
 /**
  * Class DBUtils_Model
- * Classe de maintenance base de donnée
+ * Database maintenance class.
  * @package Ogsteam\Ogspy\Model
  */
 class DBUtils_Model extends Model_Abstract
 {
 
     /**
-     * Retourne la taille de la base ainsi que la taille total des tables ogspy
+    * Returns database size and total size of OGSpy tables.
      * @return array
      */
     public function SizeInfo()
@@ -35,13 +35,14 @@ class DBUtils_Model extends Model_Abstract
     }
 
     /**
-     * Optimize l'espace utilisé par la base de donnée
+    * Optimizes disk space used by the database.
      */
     public function Optimize()
     {
         $request = 'SHOW TABLES';
         $res = $this->db->sql_query($request);
-        while (list($table) = $this->db->sql_fetch_row($res)) {
+        while (($row = $this->db->sql_fetch_row($res)) !== false && $row !== null) {
+            [$table] = $row;
             $request = 'OPTIMIZE TABLE ' . $table;
             $this->db->sql_query($request);
         }

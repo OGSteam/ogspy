@@ -7,10 +7,10 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class Player_Model extends Model_Abstract
 {
     /**
-     * Récupère les données d'un joueur en jeu à partir de son identifiant.
+    * Retrieves in-game player data from its identifier.
      *
-     * @param int $player_id L'identifiant du joueur en jeu.
-     * @return array|bool Retourne un tableau contenant les informations du joueur, ou false si non trouvé.
+    * @param int $player_id In-game player identifier.
+    * @return array|bool Returns an array containing player information, or false if not found.
      */
     public function get_player_data(int $player_id)
     {
@@ -31,10 +31,10 @@ class Player_Model extends Model_Abstract
     }
 
     /**
-     * Obtient le nom du joueur en jeu à partir de son identifiant.
+    * Retrieves the in-game player name from its identifier.
      *
-     * @param int $player_id L'identifiant du joueur en jeu.
-     * @return string|false Retourne le nom du joueur en jeu, ou false si non trouvé.
+    * @param int $player_id In-game player identifier.
+     * @return string|false Returns le name of the joueur en jeu, ou false si non trouvé.
      */
     public function get_player_name(int $player_id)
     {
@@ -52,10 +52,10 @@ class Player_Model extends Model_Abstract
     }
 
     /**
-     * Retrieves the player ID based on the provided player name.
+    * Retrieves the player identifier from its name.
      *
-     * @param string $player_name The name of the player to retrieve the ID for.
-     * @return int|false Returns the player ID as an integer if found, or false if the player does not exist.
+     * @param string $player_name Name of the joueur.
+     * @return int|false Identifier of the joueur si trouvé, sinon false.
      */
     public function getPlayerId(string $player_name)
     {
@@ -76,7 +76,7 @@ class Player_Model extends Model_Abstract
 
     /**
      * A quoi sert donc cette fonction ? :p
-     * Reponse elle sert a mettre a jour le pseudo ingame afin d afficher les stats users dans son espace perso
+     * Reponse elle sert a mettre a jour le pseudo ingame afin d afficher the stats users dans son espace perso
      *
      * set_game_account_id ?
      * 
@@ -131,10 +131,10 @@ class Player_Model extends Model_Abstract
     }
 
     /**
-     * Récupère l'ID du joueur en jeu associé à un utilisateur OGSpy.
+    * Retrieves the in-game player ID associated with an OGSpy user.
      *
-     * @param int $ogspy_user_id L'identifiant de l'utilisateur OGSpy.
-     * @return int|null Retourne l'ID du joueur en jeu, ou null si non trouvé ou non défini.
+    * @param int $ogspy_user_id OGSpy user identifier.
+     * @return int|null Returns l'ID of the joueur en jeu, ou null si non trouvé ou non défini.
      */
     public function get_game_player_id_for_user($ogspy_user_id)
     {

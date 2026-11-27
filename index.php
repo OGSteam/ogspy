@@ -13,18 +13,18 @@ session_start();
  */
 
 /**
- * @abstract Utilisé dans les autres fichiers pour s'assurer qu'index.php est bien appelé
+ * Documentation note.
  */
 const IN_SPYOGAME = true;
 
 /**
- * Repère de début de traitement par OGSpy
+ * Documentation note.
  * @name $php_start
  */
 $php_start = microtime(true);
 
 /**
- * Tous les includes se font à partir de là
+ * Documentation note.
  */
 require_once "common.php";
 

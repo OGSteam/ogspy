@@ -11,4 +11,4 @@
  */
 
 $ogspy_version = "4.0.3-dev";
-$database_version = "20251227001";
+$database_version = "20261122001";

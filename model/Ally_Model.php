@@ -6,10 +6,10 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class Ally_Model extends Model_Abstract
 {
     /**
-     * Retrieves detailed data of the ally corresponding to the given ally ID.
+    * Retrieves detailed alliance data matching the provided identifier.
      *
-     * @param int $allyId The unique identifier of the ally.
-     * @return array|false An associative array containing the ally's data if found, or false if no ally is found.
+     * @param int $allyId Identifier unique of l'alliance.
+    * @return array|false Associative array of alliance data, or false if not found.
      */
     public function get_player_data(int $allyId)
     {
@@ -29,10 +29,10 @@ class Ally_Model extends Model_Abstract
     }
 
     /**
-     * Retrieves the name of the ally corresponding to the given ally ID.
+    * Retrieves the alliance name matching the provided identifier.
      *
-     * @param int $allyId The unique identifier of the ally.
-     * @return string|false The name of the ally if found, or false if no ally is found.
+     * @param int $allyId Identifier unique of l'alliance.
+     * @return string|false Name of l'alliance si trouvé, sinon false.
      */
     public function get_ally_name(int $allyId)
     {

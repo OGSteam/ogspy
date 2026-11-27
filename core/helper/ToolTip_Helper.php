@@ -32,7 +32,7 @@ class ToolTip_Helper extends Helper_Abstract
     }
 
     /**
-     * Retourne la cle courante si elle existe
+     * Returns la cle courante si elle existe
      *
      * @return string
      */
@@ -42,7 +42,7 @@ class ToolTip_Helper extends Helper_Abstract
     }
 
     /**
-     * Ajoute une cle/ valeur pour la création d'un tooltip
+     * Adds a key/value pair for tooltip creation.
      */
     public function addTooltip($key, $value)
     {
@@ -59,10 +59,10 @@ class ToolTip_Helper extends Helper_Abstract
     }
 
     /**
-     * Retourne Le contenu a ajouter dans la class de l'element html permettant l'affichage du tooltip
-     * si la cle n'est pas précisé on retourne le courant
+     * Returns the content to add to the HTML element class for tooltip display.
+     * If no key is provided, the current key is used.
      *
-     * @param $tclass contient les differents tags à placer en plus du tooltip
+     * @param $tclass Contains additional tags to place alongside the tooltip class
      * @return string
      */
     public function GetHTMLClassContent($tClass = array(), $key = null)
@@ -85,8 +85,8 @@ class ToolTip_Helper extends Helper_Abstract
     }
 
     /**
-     * Retourne Le contenu Html qui  sera afficher au survol
-     * ce contenu nest pas directement visible dans la page html (hide())
+     * Returns the HTML content displayed on hover.
+     * This content is hidden in the page HTML by default.
      *
      * @return string
      */
@@ -108,7 +108,7 @@ class ToolTip_Helper extends Helper_Abstract
     }
 
     /**
-     * Retroune une cle compatible avec l'element js de tooltip
+     * Retroune une cle compatible avec l'element js of tooltip
      *
      * @return string
      */

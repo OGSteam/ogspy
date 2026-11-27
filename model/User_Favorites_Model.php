@@ -18,9 +18,9 @@ use Ogsteam\Ogspy\Abstracts\Model_Abstract;
 class User_Favorites_Model  extends Model_Abstract
 {
     /**
-     * Gets the favorite system list for the defined user
-     * @param $user_id
-     * @return array $favorite Liste des systèmes favoris
+    * Retrieves the list of the user's favorite systems.
+     * @param int $user_id
+    * @return array $favorite List of favorite systems
      */
     public function select_user_favorites($user_id)
     {
@@ -33,7 +33,8 @@ class User_Favorites_Model  extends Model_Abstract
         $request .= " ORDER BY `galaxy`, `system`";
         $result = $this->db->sql_query($request);
 
-        while (list($galaxy, $system) = $this->db->sql_fetch_row($result)) {
+        while (($row = $this->db->sql_fetch_row($result)) !== false && $row !== null) {
+            list($galaxy, $system) = $row;
             $favorite[] = array("galaxy" => $galaxy, "system" => $system);
         }
 
@@ -88,7 +89,7 @@ class User_Favorites_Model  extends Model_Abstract
     }
 
     /**
-     * Supprime les Favoris qui ne sont plus accessibles après redimensionnement de univers
+     * Deletes the Favoris qui ne sont plus accessibles après redimensionnement of univers
      * @param $nb_galaxies
      * @param $nb_system
      */

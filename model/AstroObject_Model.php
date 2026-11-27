@@ -264,7 +264,8 @@ class AstroObject_Model extends Model_Abstract
         $request .= " AND `system` BETWEEN " . $system_down . " AND " . ($system_up);
 
         $result = $this->db->sql_query($request);
-        list($nb_planet) = $this->db->sql_fetch_row($result);
+        $row = $this->db->sql_fetch_row($result);
+        $nb_planet = (is_array($row) && isset($row[0])) ? (int)$row[0] : 0;
 
         return $nb_planet;
     }
@@ -290,7 +291,8 @@ class AstroObject_Model extends Model_Abstract
         $request .= " AND `system` BETWEEN " . $system_down . " AND " . ($system_up);
 
         $result = $this->db->sql_query($request);
-        list($nb_planet_used) = $this->db->sql_fetch_row($result);
+        $row = $this->db->sql_fetch_row($result);
+        $nb_planet_used = (is_array($row) && isset($row[0])) ? (int)$row[0] : 0;
 
         return $totalPlanets - $nb_planet_used;
     }
@@ -313,7 +315,8 @@ class AstroObject_Model extends Model_Abstract
         $request .= " AND `system` BETWEEN " . $system_down . " AND " . ($system_up);
 
         $result = $this->db->sql_query($request);
-        list($last_update) = $this->db->sql_fetch_row($result);
+        $row = $this->db->sql_fetch_row($result);
+        $last_update = (is_array($row) && isset($row[0])) ? $row[0] : null;
 
         return $last_update;
     }
@@ -463,7 +466,7 @@ class AstroObject_Model extends Model_Abstract
      * values associated with a specific astronomical object ID from the user
      * building database table.
      *
-     * @param int $astroobject_id The ID of the astronomical object for which to retrieve the coordinates.
+     * @param int $astroObject_id The ID of the astronomical object for which to retrieve the coordinates.
      * @return array An array containing the galaxy, system, and row coordinates of the planet.
      */
     public function getPlanetCoordsByObjectId(int $astroObject_id): array
@@ -521,17 +524,17 @@ class AstroObject_Model extends Model_Abstract
     }
 
     /**
-     * Récupère les systèmes solaires considérés comme obsolètes selon les critères spécifiés.
-     * Un système est considéré comme obsolète lorsque sa dernière mise à jour est antérieure
-     * à une date limite définie.
+    * Retrieves solar systems considered obsolete according to the specified criteria.
+    * A system is considered obsolete when its last update is older
+    * than a defined cutoff date.
      *
-     * @param int $galaxy Numéro de la galaxie à vérifier. Si 0, recherche dans toutes les galaxies.
-     * @param int $system_down Limite inférieure pour la plage des systèmes solaires à vérifier.
-     * @param int $system_up Limite supérieure pour la plage des systèmes solaires à vérifier.
-     * @param int $indice Index correspondant à la période d'obsolescence à utiliser dans le tableau $since.
-     * @param array $since Tableau contenant les différentes périodes d'obsolescence disponibles.
-     * @param bool $forMoon Si true, recherche les lunes obsolètes. Si false, recherche les planètes obsolètes.
-     * @return array Tableau associatif regroupant les systèmes obsolètes par période, avec leurs informations de galaxie, système, position et dernière mise à jour.
+    * @param int $galaxy Galaxy number to check. If 0, searches across all galaxies.
+    * @param int $system_down Lower bound of the solar system range to check.
+    * @param int $system_up Upper bound of the solar system range to check.
+    * @param int $indice Index of the obsolescence period to use from the $since array.
+    * @param array $since Array containing available obsolescence periods.
+    * @param bool $forMoon If true, searches obsolete moons. If false, searches obsolete planets.
+    * @return array Associative array grouping obsolete systems by period, with galaxy, system, position, and last update.
      */
     public function get_galaxy_obsolete(int $galaxy, int $system_down, int $system_up, int $indice, array $since, bool $forMoon = false)
     {
@@ -557,7 +560,8 @@ class AstroObject_Model extends Model_Abstract
         while ($row = $this->db->sql_fetch_assoc($result)) {
             $request = "SELECT MIN(" . $field . ") FROM " . TABLE_USER_BUILDING . " WHERE `galaxy` = " . $row["galaxy"] . " AND `system` = " . $row["system"];
             $result2 = $this->db->sql_query($request);
-            list($last_update) = $this->db->sql_fetch_row($result2);
+            $row_last_update = $this->db->sql_fetch_row($result2);
+            $last_update = (is_array($row_last_update) && isset($row_last_update[0])) ? $row_last_update[0] : null;
             $row["last_update"] = $last_update;
 
             $obsolete[$since[$indice]][] = $row;
@@ -569,16 +573,27 @@ class AstroObject_Model extends Model_Abstract
     public function find(SearchCriteria_Helper $criteria, array $order_by = [], int $start = 0, int $number = 30)
     {
         // Modifié pour inclure les champs nécessaires et les alias correspondants à get_system
-        $select = "SELECT uni.`type`, uni.`galaxy`, uni.`system`, uni.`row`, uni.`Pha`, uni.`PoSa`, uni.`last_update_moon`," .
+        $isMoonSearch = $criteria->getIsMoon();
+        $objectDetails = $isMoonSearch
+            ? "uni.`Pha`, uni.`PoSa`, uni.`last_update_moon`, NULL AS moon_id,"
+            : "COALESCE(moon.`Pha`, uni.`Pha`) AS Pha, COALESCE(moon.`PoSa`, uni.`PoSa`) AS PoSa,"
+                . " moon.`last_update_moon`, moon.`moon_id`,";
+
+        $select = "SELECT uni.`type`, uni.`galaxy`, uni.`system`, uni.`row`, " . $objectDetails .
             " ally.`name` AS ally_name, ally.`id` AS ally_id, player.`name` AS player_name, player.`id` AS player_id, player.`status` AS player_status," .
             " uni.`last_update`, user.`name` AS last_update_user_name, uni.`name` AS planet_name," .
             " uni.`last_update_user_id`, player.`datadate` AS player_last_active";
-        $request = " FROM " . TABLE_USER_BUILDING . " uni" .
+        $moonJoin = $isMoonSearch ? '' :
+            " LEFT JOIN " . TABLE_USER_BUILDING . " moon"
+            . " ON moon.`galaxy` = uni.`galaxy`"
+            . " AND moon.`system` = uni.`system`"
+            . " AND moon.`row` = uni.`row` AND moon.`type` = 'moon'";
+        $request = " FROM " . TABLE_USER_BUILDING . " uni" . $moonJoin .
             " LEFT JOIN " . TABLE_USER . "  user  ON uni.`last_update_user_id` = user.`id`" . // uni.last_update_user_id
             " LEFT JOIN " . TABLE_GAME_PLAYER . "  player  ON player.`id`  = uni.`player_id`" .
             " LEFT JOIN " . TABLE_GAME_ALLY . "  ally  ON ally.`id` = player.`ally_id`";
 
-        $where = "";
+        $where = $isMoonSearch ? "uni.`type` = 'moon'" : "uni.`type` = 'planet'";
         if ($criteria->getPlayerName() != null) {
             if ($where != "") {
                 $where .= " AND ";
@@ -604,30 +619,21 @@ class AstroObject_Model extends Model_Abstract
             if ($where != "") {
                 $where .= " AND ";
             }
-            $where .= " `galaxy` BETWEEN " . $criteria->getGalaxyDown() . " AND " . $criteria->getGalaxyUp();
+            $where .= " uni.`galaxy` BETWEEN " . $criteria->getGalaxyDown() . " AND " . $criteria->getGalaxyUp();
         }
 
         if ($criteria->getSystemDown() != null && $criteria->getSystemUp() != null && !$criteria->getIsSpied()) {
             if ($where != "") {
                 $where .= " AND ";
             }
-            $where .= " `system` BETWEEN " . $criteria->getSystemDown() . " AND " . $criteria->getSystemUp();
+            $where .= " uni.`system` BETWEEN " . $criteria->getSystemDown() . " AND " . $criteria->getSystemUp();
         }
 
         if ($criteria->getRowDown() != null && $criteria->getRowUp() != null && !$criteria->getIsSpied()) {
             if ($where != "") {
                 $where .= " AND ";
             }
-            $where .= " `row` BETWEEN " . $criteria->getRowDown() . " AND " . $criteria->getRowUp();
-        }
-
-        if ($criteria->getIsMoon()) {
-            if ($where != "") {
-                $where .= " AND ";
-            }
-            //Binu : ajout des cotes
-            $where .= " `type` = 'moon'";
-            //fin
+            $where .= " uni.`row` BETWEEN " . $criteria->getRowDown() . " AND " . $criteria->getRowUp();
         }
 
         if ($criteria->getIsInactive()) {
@@ -669,28 +675,20 @@ class AstroObject_Model extends Model_Abstract
 
             //Binu : Sélection des planètes ayant été espionnées
             if (isset($spy_coordinates)) {
-                if ($where != "") {
-                    $where .= " AND ";
-                }
+                $coordinateClauses = [];
                 for ($i = 0; $i < count($spy_coordinates); $i++) {
                     $split = explode(":", $spy_coordinates[$i]);
                     $galaxy = $split[0];
                     $system = $split[1];
                     $row = $split[2];
-                    if (count($spy_coordinates) > 1) {
-                        $where .= "(";
-                    }
-                    $where .= "`galaxy` = " . $galaxy . " AND `system` = " . $system . " AND `row` = " . $row;
-                    if (count($spy_coordinates) > 1) {
-                        $where .= ")";
-                        if ($i < (count($spy_coordinates) - 1)) {
-                            $where .= " OR ";
-                        }
-                    }
+                    $coordinateClauses[] = "(uni.`galaxy` = " . $galaxy
+                        . " AND uni.`system` = " . $system
+                        . " AND uni.`row` = " . $row . ")";
                 }
+                $where .= " AND (" . implode(" OR ", $coordinateClauses) . ")";
             } else {
                 //Binu : Si aucune planète de l'intervalle paramétré n'a été espionné, on s'assure qu'il n'y aura pas de résultat
-                $where .= "`galaxy` = 0";
+                $where .= " AND uni.`galaxy` = 0";
             }
         }
         //Fin correctif
@@ -722,7 +720,8 @@ class AstroObject_Model extends Model_Abstract
             $queryCount .= " WHERE " . $where;
         }
         $result = $this->db->sql_query($queryCount);
-        list($total_row) = $this->db->sql_fetch_row($result);
+        $row_count = $this->db->sql_fetch_row($result);
+        $total_row = (is_array($row_count) && isset($row_count[0])) ? (int)$row_count[0] : 0;
 
         $result = $this->db->sql_query($query);
 
@@ -747,12 +746,13 @@ class AstroObject_Model extends Model_Abstract
                 "player_name" => $planet_data['player_name'] ?? "",
                 "player_id" => $planet_data['player_id'] ?? "",
                 "type" => $planet_data['type'],
+                "has_moon" => $planet_data['type'] === 'moon' || !empty($planet_data['moon_id']),
                 "Pha" => $planet_data['Pha'] ?? "",
                 "PoSa" => $planet_data['PoSa'] ?? "",
                 "planet_name" => $planet_data['planet_name'] ?? "",
                 "status" => $planet_data['player_status'] ?? "", // de player.status
                 "last_update" => $planet_data['last_update'] ?? "", // de uni.last_update
-                "last_update_moon" => $planet_data['last_update_moon'] ?? $planet_data['last_update'],
+                "last_update_moon" => $planet_data['last_update_moon'] ?? ($planet_data['last_update'] ?? ""),
                 "last_update_user_id" => $planet_data['last_update_user_id'] ?? "",
                 "last_update_user_name" => $planet_data['last_update_user_name'] ?? "", // de user.name
                 "player_last_active" => $planet_data['player_last_active'] ?? "" // de player.datadate

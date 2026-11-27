@@ -1,6 +1,6 @@
 <?php
 /**
- * Migration initiale OGSpy : création de la structure et insertion des données de base
+ * Initial OGSpy migration: creates schema and inserts base data.
  */
 class Migration_00000000000_Initial {
     public function getVersion(): string {
@@ -8,7 +8,7 @@ class Migration_00000000000_Initial {
     }
 
     public function getDescription(): string {
-        return 'Initialisation structure et données OGSpy';
+        return 'Initialize OGSpy schema and data';
     }
 
     public function up(): string {
@@ -29,8 +29,12 @@ class Migration_00000000000_Initial {
         return $combinedSQL;
     }
 
-    public function down($db): void {
-        // Optionnel : suppression des tables créées
-        // À compléter si besoin
+    public function canRollback(): bool {
+        return false;
+    }
+
+    public function down($_db = null): void {
+        throw new MigrationRollbackException("Rollback is not supported for migration 00000000000 (Initial schema).");
+
     }
 }

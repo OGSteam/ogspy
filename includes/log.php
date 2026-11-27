@@ -16,7 +16,7 @@ if (!defined('IN_SPYOGAME')) {
 
 /**
  * File Log size on the Server
- * @return Array tableau [type] and [size]
+ * @return array Array with [type] and [size]
  */
 function log_size_info()
 {

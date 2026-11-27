@@ -4,6 +4,9 @@
     <testsuite name="Unit">
       <directory suffix="Test.php">./tests/unit</directory>
     </testsuite>
+    <testsuite name="Integration">
+      <directory suffix="Test.php">./tests/integration</directory>
+    </testsuite>
   </testsuites>
   <coverage>
     <report>
@@ -15,6 +18,12 @@
     <include>
       <directory suffix=".php">./includes</directory>
       <directory suffix=".php">./core</directory>
+      <directory suffix=".php">./model</directory>
+      <directory suffix=".php">./install</directory>
+      <file>./views/home_empire.php</file>
+      <file>./views/home_empire_buildings.php</file>
+      <file>./views/home_empire_lifeforms.php</file>
+      <file>./views/home_stat_lifeform_history.php</file>
     </include>
   </source>
 </phpunit>

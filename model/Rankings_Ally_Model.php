@@ -27,7 +27,7 @@ class Rankings_Ally_Model extends Rankings_Model
     }
 
     /**
-     * @param $allyId Id de l'alliance
+     * @param $allyId Id of l'alliance
 
      * @return array
      */
@@ -63,7 +63,8 @@ class Rankings_Ally_Model extends Rankings_Model
         //Remplissage du ranking content. Toutes les valeurs doivent être présentes dans l'array sous peine de soucis d'affichages
         $ranking_content = array();
         $row = 0;
-        while (list($datadate, $ally_name, $member, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $this->db->sql_fetch_row($result)) {
+        while (($row_data = $this->db->sql_fetch_row($result)) !== false && $row_data !== null) {
+            list($datadate, $ally_name, $member, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $row_data;
             $ranking_content[$row]['datadate'] = $datadate;
             $ranking_content[$row]['postion'] = $general_rank;
             $ranking_content[$row]['ally_name'] = $ally_name;
@@ -107,7 +108,7 @@ class Rankings_Ally_Model extends Rankings_Model
      * @param int $higher_rank
      * @param int $lower_rank
      * @return array
-     * todo fonction ecrrite pour 3.4 modification page view necessaire pour usage ...
+     * todo fonction ecrrite for 3.4 modification page view necessaire for usage ...
      */
     public function get_all_ranktable_bydate($datadate, $higher_rank = 1, $lower_rank = 100, $ref = "general")
     {
@@ -146,7 +147,8 @@ class Rankings_Ally_Model extends Rankings_Model
         //Remplissage du ranking content. Toutes les valeurs doivent être présentes dans l'array sous peine de soucis d'affichages
         $ranking_content = array();
         $row = 0;
-        while (list($position, $ally_name, $member, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $this->db->sql_fetch_row($result)) {
+        while (($row_data = $this->db->sql_fetch_row($result)) !== false && $row_data !== null) {
+            list($position, $ally_name, $member, $general_rank, $general_pts, $eco_rank, $eco_pts, $tech_rank, $tech_pts, $mil_rank, $mil_pts, $milb_rank, $milb_pts, $mill_rank, $mill_pts, $mild_rank, $mild_pts, $milh_rank, $milh_pts) = $row_data;
             $ranking_content[$row]['postion'] = $position;
             $ranking_content[$row]['ally_name'] = $ally_name;
             $ranking_content[$row]['member'] = $member;

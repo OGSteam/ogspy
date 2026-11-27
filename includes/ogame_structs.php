@@ -1,13 +1,13 @@
 <?php
 /** @file includes/ogame_structs.php
- * Small helpers extracted from the original ogame.php (array builders)
+ * Small helpers extracted from the original ogame.php file (array builders).
  */
 if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
 /**
- * Get an OGame resources array.
+ * Builds an OGame resource array.
  *
  * @param int $metal
  * @param int $cristal
@@ -22,7 +22,7 @@ function ogame_array_ressource($metal, $cristal, $deut, $NRJ = 0, $AM = 0)
 }
 
 /**
- * Get an OGame details array for fleet/def.
+ * Builds an OGame detail array for fleet/defense.
  *
  * @param int $structure
  * @param int $bouclier
@@ -43,7 +43,7 @@ function ogame_array_detail($structure, $bouclier, $attaque, $vitesse = 0, $fret
 }
 
 /**
- * Return coordinates in array.
+ * Returns coordinates as an array.
  *
  * @param string $string_coord Coordinates, in string like in Database ('2:3:4')
  * @return array('g','s','p') of int, default is 0 ('::6' give planet position of 6)
@@ -63,7 +63,7 @@ function ogame_find_coordinates($string_coord)
 }
 
 /**
- * Return planet position from coordinates.
+ * Returns the planet position from coordinates.
  * @param string $coordinates planet coordinates (galaxy:system:position)
  * @return int planet position
  */

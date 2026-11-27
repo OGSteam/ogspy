@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Auto-Upgrade Manager - Mise à niveau automatique silencieuse
+ * Auto-Upgrade Manager - Upgrade automatique silencieuse
  * @package OGSpy
  * @subpackage install
  */
@@ -47,7 +47,7 @@ class AutoUpgradeManager {
     }
 
     /**
-     * Vérifie si une mise à jour est nécessaire et l'exécute automatiquement
+     * Verifies si une update est nécessaire and l'exécute automatiquement
      */
     public function checkAndUpgrade() {
         // Vérifie s'il y a des migrations en attente
@@ -71,7 +71,7 @@ class AutoUpgradeManager {
     }
 
     /**
-     * Exécute la mise à jour automatique
+     * Executes la update automatique
      */
     private function runAutoUpgrade($migrations, $versionSyncNeeded = false) {
         $startTime = time();
@@ -161,7 +161,7 @@ class AutoUpgradeManager {
     }
 
     /**
-     * Met à jour la version applicative en base de données après le succès des migrations
+     * Updates the application version in the database after successful migrations.
      */
     private function updateApplicationVersion($version) {
         try {
@@ -217,7 +217,7 @@ class AutoUpgradeManager {
     }
 
     /**
-     * Vérifie si un upgrade est en cours
+     * Verifies si un upgrade est en cours
      */
     private function isUpgradeInProgress() {
         if (!file_exists($this->lockFile)) {
@@ -237,7 +237,7 @@ class AutoUpgradeManager {
     }
 
     /**
-     * Crée le fichier de verrouillage
+     * Creates le fichier of verrouillage
      */
     private function createLock() {
         $lockDir = dirname($this->lockFile);
@@ -253,7 +253,7 @@ class AutoUpgradeManager {
     }
 
     /**
-     * Supprime le fichier de verrouillage
+     * Deletes le fichier of verrouillage
      */
     private function releaseLock() {
         if (file_exists($this->lockFile)) {
@@ -262,7 +262,7 @@ class AutoUpgradeManager {
     }
 
     /**
-     * Nettoyage du cache
+     * Cleanup of the cache
      */
     private function clearCache() {
         $cacheFiles = glob(dirname(__DIR__) . '/cache/*.php');
@@ -279,7 +279,7 @@ class AutoUpgradeManager {
     }
 
     /**
-     * Vérifie si les migrations peuvent être exécutées automatiquement
+     * Verifies si the migrations peuvent être exécutées automatiquement
      */
     public function canAutoUpgrade() {
         global $server_config;
@@ -296,7 +296,7 @@ class AutoUpgradeManager {
     }
 
     /**
-     * Mode de secours : force la mise à jour même en cas de problème
+     * Mode of secours : force la update même en cas of problème
      */
     public function forceUpgrade() {
         $this->releaseLock(); // Supprime les verrous existants
@@ -310,7 +310,7 @@ class AutoUpgradeManager {
     }
 
     /**
-     * Vérifie si une synchronisation de version est nécessaire
+     * Verifies si une synchronisation of version est nécessaire
      */
     public function isVersionSyncNeeded() {
         try {
