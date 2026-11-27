@@ -33,10 +33,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Setup PHP with Xdebug
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@d52fc211a0436f8839a587b3b5b8efddab4744ea # v2
         with:
           php-version: ${{ matrix.php-version }}
           coverage: xdebug
@@ -47,7 +47,7 @@ jobs:
 
       - name: Cache Composer packages
         id: composer-cache
-        uses: actions/cache@v6
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: vendor
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}

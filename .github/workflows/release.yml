@@ -1,8 +1,9 @@
-name: OGSpy Release
+name: OGSpy Package and Release
 
 on:
   push:
-    branches: [ "develop" , "master"]
+    branches: [develop]
+    tags: ['[0-9]*.[0-9]*.[0-9]*']
 
 permissions:
   contents: read
@@ -12,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout OGSPY
+    - name: Checkout OGSpy
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
     - name: Setup PHP 8.4 with Xdebug
@@ -33,52 +34,77 @@ jobs:
 
   package:
     needs: validate
-
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.version }}
 
     steps:
-    - name : Checkout OGSPY
+    - name: Checkout OGSpy
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
-        ref: ${{ github.ref }}   # checkout the correct branch name
+        ref: ${{ github.ref }}
         fetch-depth: 0
         fetch-tags: true
 
-    - name: Git Version
-      id: version
-      # You may pin to the exact commit or the version.
-      # uses: codacy/git-version@fa06788276d7492a2af01662649696d249ecf4cb
-      uses: codacy/git-version@2.9.0
+    - name: Propose snapshot version
+      if: github.ref == 'refs/heads/develop'
+      id: snapshot_version
+      uses: codacy/git-version@5cabe6920ad6a182ba6d653ee8cb5ec65b8b4cfd # 2.9.0
       with:
-        # The name of the release branch
         release-branch: master
-        # The name of the dev branch
         dev-branch: develop
-        # The prefix to use in the version
-        #prefix: # optional
+
+    - name: Validate release tag
+      if: startsWith(github.ref, 'refs/tags/')
+      id: release_version
+      shell: bash
+      run: |
+        version="${GITHUB_REF_NAME}"
+        if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "Release tags must use MAJOR.MINOR.PATCH without a prefix: $version"
+          exit 1
+        fi
+
+        git fetch origin master:refs/remotes/origin/master
+        if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/master; then
+          echo "Release tag $version does not point to a commit on master"
+          exit 1
+        fi
+
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+
+    - name: Resolve package version
+      id: version
+      shell: bash
+      env:
+        SNAPSHOT_VERSION: ${{ steps.snapshot_version.outputs.version }}
+        RELEASE_VERSION: ${{ steps.release_version.outputs.version }}
+      run: |
+        if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+          version="$RELEASE_VERSION"
+        else
+          version="$SNAPSHOT_VERSION"
+        fi
+
+        if [[ -z "$version" ]]; then
+          echo "Unable to resolve the package version"
+          exit 1
+        fi
+
+        echo "Packaging OGSpy $version"
+        echo "version=$version" >> "$GITHUB_OUTPUT"
 
     - name: Setup PHP 8.4
-      uses: shivammathur/setup-php@v2
+      uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
       with:
         php-version: '8.4'
         extensions: mysqli, json, mbstring, openssl, zlib, zip
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v6
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
-
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-dev
+    - name: Install production dependencies
+      run: composer install --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
 
     - name: Setup Node.js
-      uses: actions/setup-node@v7
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
       with:
         node-version: '26'
         cache: npm
@@ -92,84 +118,103 @@ jobs:
     - name: Remove JavaScript dependencies
       run: rm -rf node_modules
 
-    - name: Replace Version
-      uses: jacobtomlinson/gha-find-replace@v3
-      with:
-          include : 'install/version.php'
-          find : '\$ogspy_version = "[^"]+";'
-          replace: '$$ogspy_version = "${{ steps.version.outputs.version }}";'
-          regex: true
+    - name: Set packaged application version
+      shell: bash
+      env:
+        PACKAGE_VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        php <<'PHP'
+        <?php
+        $path = 'install/version.php';
+        $contents = file_get_contents($path);
+        $replacement = '$ogspy_version = "' . getenv('PACKAGE_VERSION') . '";';
+        $updated = preg_replace('/\$ogspy_version = "[^"]+";/', $replacement, $contents, 1, $count);
+
+        if ($updated === null || $count !== 1 || file_put_contents($path, $updated) === false) {
+            fwrite(STDERR, "Unable to update the packaged OGSpy version\n");
+            exit(1);
+        }
+        PHP
 
     - name: Checkout Xtense
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
-        repository: 'ogsteam/mod-xtense'
-        ref: 'master'
-        path: 'mod/xtense'
+        repository: ogsteam/mod-xtense
+        ref: master
+        path: mod/xtense
 
     - name: Checkout AutoUpdate
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
-        repository: 'ogsteam/mod-autoupdate'
-        ref: 'master'
-        path: 'mod/autoupdate'
+        repository: ogsteam/mod-autoupdate
+        ref: master
+        path: mod/autoupdate
 
     - name: Verify release package inputs
       run: test -s js/chart.js && test -f vendor/autoload.php && test -f install/index.php
 
-    - name: Zip Release
-      # You may pin to the exact commit or the version.
-      # uses: TheDoctor0/zip-release@a24011d8d445e4da5935a7e73c1f98e22a439464
-      uses: TheDoctor0/zip-release@0.7.6
-      with:
-        # Filename for archive
-        filename: ogspy-${{ steps.version.outputs.version }}.zip
-        # Base path for archive files
-        #path: # optional, default is .
-        # Working directory before zipping
-        #directory: # optional, default is .
-        # List of excluded files / directories
-        exclusions: '*.git* *.vscode* *.docker* .devcontainer* sonar-project.properties .editorconfig composer.* package.json package-lock.json tests* dev.cmd tools/ tools/*'
-        # List of excluded files / directories with recursive wildcards (only applies on Windows with `zip` type)
-        #recursive_exclusions: # optional, default is
-        # Provide any custom parameters to the command
-        #custom: # optional, default is
-        # Tool to use for archiving
-        #type: # optional, default is zip
-
-    - name: Verify development tools are excluded
+    - name: Create package
+      shell: bash
+      env:
+        PACKAGE_VERSION: ${{ steps.version.outputs.version }}
       run: |
-        archive="ogspy-${{ steps.version.outputs.version }}.zip"
+        archive="$RUNNER_TEMP/ogspy-${PACKAGE_VERSION}.zip"
+        zip -r "$archive" . \
+          -x '*.git*' '*.vscode*' '*.docker*' '.devcontainer*' \
+             'sonar-project.properties' '.editorconfig' 'composer.*' \
+             'package.json' 'package-lock.json' 'tests*' 'dev.cmd' \
+             'tools/' 'tools/*'
+
+    - name: Verify package contents
+      shell: bash
+      env:
+        PACKAGE_VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        archive="$RUNNER_TEMP/ogspy-${PACKAGE_VERSION}.zip"
+        test -s "$archive"
+
         if unzip -Z1 "$archive" | grep -Eq '^(dev\.cmd|tools/)'; then
           echo "Development tools must not be present in $archive"
           exit 1
         fi
 
-    - name: Upload release package
-      uses: actions/upload-artifact@v7
+        if ! unzip -p "$archive" install/version.php | grep -Fq \
+          "\$ogspy_version = \"${PACKAGE_VERSION}\";"; then
+          echo "The packaged application version does not match $PACKAGE_VERSION"
+          exit 1
+        fi
+
+    - name: Upload package
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
       with:
         name: ogspy-${{ steps.version.outputs.version }}
-        path: ogspy-${{ steps.version.outputs.version }}.zip
+        path: ${{ runner.temp }}/ogspy-${{ steps.version.outputs.version }}.zip
         if-no-files-found: error
-        retention-days: 1
+        retention-days: 7
 
   publish:
+    if: startsWith(github.ref, 'refs/tags/')
     needs: package
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
     - name: Download release package
-      uses: actions/download-artifact@v8
+      uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
       with:
         name: ogspy-${{ needs.package.outputs.version }}
         path: release-package
 
-    - uses: ncipollo/release-action@v1
-      with:
-        name : OGSpy ${{ needs.package.outputs.version }}
-        draft: true
-        artifacts: "release-package/ogspy-${{ needs.package.outputs.version }}.zip"
-        artifactContentType: application/zip
-        body : "To be Completed"
-        tag : ${{ needs.package.outputs.version }}
+    - name: Create draft GitHub release
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        RELEASE_VERSION: ${{ needs.package.outputs.version }}
+      run: |
+        gh release create "$RELEASE_VERSION" \
+          "release-package/ogspy-${RELEASE_VERSION}.zip#OGSpy ${RELEASE_VERSION}" \
+          --draft \
+          --generate-notes \
+          --title "OGSpy ${RELEASE_VERSION}" \
+          --verify-tag
