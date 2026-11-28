@@ -2,7 +2,7 @@ name: ogspy_devcontainer
 
 services:
   db:
-    image: mariadb:13.0
+    image: mariadb:13.1
     restart: unless-stopped
     environment:
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
